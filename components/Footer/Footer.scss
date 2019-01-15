@@ -1,0 +1,131 @@
+@import "../../styles/colors.scss";
+
+footer {
+  text-align: center;
+  margin: 5.78em 0 0;
+  background-color: $light-blue;
+  color: #fff;
+
+  a,
+  a:hover,
+  a:visited,
+  a:active {
+    color: #fff;
+  }
+
+  p {
+    font-size: 14px;
+    font-weight: normal;
+
+    &.small-text {
+      font-size: 11px;
+    }
+  }
+  .footer_link {
+    font-size: 14px;
+  }
+
+  .footer_img {
+    width: 36px;
+
+    &--dosseal {
+      transform: translateY(25%);
+      margin-left: 5px;
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  .footer-feedback {
+    background-color: $gold;
+    color: $blue;
+
+    p {
+      font-size: 16px;
+      font-weight: bold;
+      padding: 9px;
+
+      a,
+      a:hover,
+      a:visited,
+      a:active {
+        color: $blue;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .footer-nav.ui.divided.horizontal.list {
+    > .item {
+      border-left-color: #fff;
+      font-weight: bold;
+
+      @media screen and (max-width: 460px) {
+        display: block;
+        border-left: none;
+      }
+    }
+
+    > .item:not(:last-child) {
+      padding-right: 0.8em;
+
+      @media screen and (max-width: 460px) {
+        padding-right: 0;
+        margin-bottom: 1em;
+      }
+    }
+
+    > .item:not(:first-child) {
+      padding-left: 0.8em;
+
+      @media screen and (max-width: 460px) {
+        padding-left: 0;
+      }
+    }
+  }
+
+  .footer-content {
+    padding: 2em 0;
+  }
+
+  h1.ui.header {
+    color: #fff;
+    font-weight: normal;
+
+    a,
+    a:hover,
+    a:visited,
+    a:active {
+      text-decoration: underline;
+    }
+
+    .sub.header {
+      &.subtitle {
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+      }
+
+      &.subtext {
+        font-size: 14px;
+        color: white;
+        margin-bottom: 1.5rem;
+      }
+
+      &.smalltext {
+        font-size: 11px;
+        color: white;
+        margin-bottom: 15px;
+      }
+
+      > img.footer_img--slack {
+        width: 92px;
+        height: 26px;
+        margin-top: 0;
+        margin-right: 5px;
+        margin-left: 5px;
+        transform: translateY(20%);
+      }
+    }
+  }
+}

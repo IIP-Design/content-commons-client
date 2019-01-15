@@ -1,0 +1,186 @@
+@import "../../styles/colors.scss";
+
+.bar {
+  header {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    @media screen and (max-width: 767px) {
+      flex-direction: column;
+    }
+  }
+
+  .ui.container {
+    position: relative;
+  }
+
+  .title {
+    color: #fff;
+    font-size: 1.25rem;
+    &:hover {
+      color: #fff;
+    }
+    @media screen and (min-width: 768px) {
+      font-size: 1.4rem;
+    }
+  }
+
+  &--home {
+    margin-bottom: 2.33em;
+    background: url("../../static/images/cdp_home_hero.jpg");
+    background-size: cover;
+
+    header {
+      flex-direction: column;
+      padding: 3rem 0 1.5rem;
+
+      @media screen and (min-width: 767px) {
+        padding: 7rem 0 1rem;
+      }
+    }
+
+    .ui.centered.image.seal {
+      width: 60px;
+      margin-bottom: 0.5em;
+
+      @media screen and (min-width: 768px) {
+        margin-bottom: 2rem;
+      }
+    }
+
+    .title {
+      font-size: 1.94rem;
+      @media screen and (min-width: 768px) {
+        font-size: 3.33rem;
+      }
+    }
+
+    h1.ui.header {
+      .sub.header.subtitle {
+        margin: 0.5em 0;
+        font-size: 1.55rem;
+        color: #fff;
+      }
+
+      .sub.header.subtext {
+        margin: 0;
+        font-size: 1rem;
+        color: #fff;
+      }
+    }
+
+    .search_bar {
+      margin: 3em auto;
+    }
+  }
+
+  &:not(.bar--home) {
+    .ui.centered.image.seal {
+      display: inline-block;
+      width: 30px;
+      margin: 0.3rem;
+
+      @media screen and (min-width: 768px) {
+        width: 34px;
+        margin-right: 0.5rem;
+      }
+    }
+
+    .title {
+      position: relative;
+      top: 2px;
+    }
+
+    h1.ui.header {
+      min-width: 300px;
+      margin: 0 0 4px;
+      padding: 0;
+      text-align: left;
+      @media screen and (min-width: 768px) {
+        margin-top: 8px;
+        margin-bottom: 8px;
+      }
+
+      .sub.header.subtitle,
+      .sub.header.subtext {
+        display: none;
+      }
+    }
+  }
+
+  /***  
+    About, Help, Privacy, Contact - no searchbar, white bG  
+  ***/
+  &--about,
+  &--help,
+  &--privacy,
+  &--contact {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-image: linear-gradient(60deg, $light-blue 3%, $bright-blue 100%);
+
+    .title,
+    .title:hover {
+      color: #fff;
+    }
+
+    .search_bar {
+      display: none;
+    }
+  }
+
+  /*** 
+    Results, Video - searchbar  
+  ***/
+  &--results,
+  &--video,
+  &--admin {
+    header {
+      @media screen and (max-width: 767px) {
+        text-align: left;
+      }
+    }
+
+    .search_bar {
+      width: 100%;
+      padding: 0.8em 0;
+      box-shadow: none;
+      @media screen and (min-width: 768px) {
+        width: 400px;
+        padding: 0.6em;
+      }
+      @media screen and (min-width: 900px) {
+        width: 500px;
+      }
+    }
+  }
+
+  /*** 
+    Login - no searchbar, only feedback nav item 
+  ***/
+  &--login,
+  &--register {
+    @media screen and (min-width: 768px) {
+      height: 64px;
+    }
+    .search_bar {
+      display: none;
+    }
+  }
+
+  /***  
+    Blue bG bar 
+  ***/
+  &--results,
+  &--video,
+  &--login,
+  &--register,
+  &--admin {
+    position: fixed;
+    top: 0;
+    z-index: 2;
+    width: 100%;
+    background-image: linear-gradient(60deg, $light-blue 3%, $bright-blue 100%);
+  }
+}

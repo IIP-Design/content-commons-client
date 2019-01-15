@@ -1,0 +1,146 @@
+@import "../../styles/colors.scss";
+@import "../../styles/form.scss";
+
+.register {
+  &_wrapper {
+    max-width: 650px;
+    padding: 30px;
+    margin: 0 auto;
+    color: $blue;
+    @media screen and (max-width: 600px) {
+      padding: 0;
+    }
+  }
+
+  .ui.form > p {
+    margin: 0 0 1rem 0;
+  }
+
+  &_question {
+    color: $blue;
+    margin-top: -1rem;
+  }
+
+  &_title {
+    margin-bottom: 0;
+    padding-bottom: 15px;
+    text-align: center;
+    color: $blue;
+    @media screen and (min-width: 768px) {
+      font-size: 34px;
+    }
+  }
+
+  &_review .item {
+    font-size: 0.85em;
+  }
+
+  .register_review-label .checkbox label {
+    font-size: 0.85em;
+    font-weight: normal;
+  }
+
+  .ui.pointing.secondary.menu {
+    justify-content: space-between;
+    margin: 0;
+    border-bottom-width: 1px;
+
+    &:after {
+      display: none;
+    }
+
+    .item {
+      padding: 4px 0;
+      margin: 0;
+      font-size: 18px;
+      color: $alt-grey;
+      pointer-events: none;
+      @media screen and (min-width: 601px) {
+        font-size: 20px;
+      }
+    }
+
+    .active.item {
+      z-index: 1;
+      margin-bottom: -3px;
+      border-bottom: 5px solid $light-blue;
+      font-weight: bold;
+      color: #000;
+    }
+  }
+
+  .ui.segment {
+    max-width: 500px;
+    margin: 1rem auto;
+    border: none;
+    box-shadow: none;
+    @media screen and (max-width: 425px) {
+      padding: 1em 0;
+    }
+
+    &.teamDetails {
+      display: none;
+    }
+  }
+
+  .checkbox {
+    display: block;
+    margin-bottom: 5px;
+
+    label {
+      font-weight: bold;
+    }
+
+    &_content {
+      padding-left: 1.85714em;
+      font-size: 0.9em;
+      color: #000;
+    }
+  }
+
+  // .ui.form .fields {
+  //   @media screen and (min-width: 768px) {
+  //     margin-bottom: 2em;
+  //   }
+  // }
+
+  .field.register_dropdown {
+    margin-top: 2em;
+
+    > p {
+      margin-bottom: 4px;
+    }
+  }
+
+  &_progress {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2em;
+
+    .init {
+      align-self: flex-end;
+      margin-left: auto;
+    }
+  }
+
+  .ui.button.newTeam {
+    padding: 0;
+    font-size: 0.9rem;
+    font-weight: normal;
+    background: none;
+    color: $light-blue;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 1.2rem;
+
+    &:hover {
+      background: none;
+      color: $light-blue;
+    }
+  }
+
+  .subtext {
+    font-size: 0.7em;
+    line-height: 1;
+  }
+}

@@ -1,0 +1,39 @@
+@import "../../styles/colors.scss";
+
+.embed {
+  &_keepStyles {
+    @media screen and (min-width: 768px) {
+      margin-left: 140px;
+    }
+
+    &.ui.checkbox .box:before,
+    &.ui.checkbox label:before {
+      border: 2px solid $blue;
+      background: #fff;
+    }
+
+    &.ui.checkbox input:checked ~ .box:before,
+    &.ui.checkbox input:checked ~ label:before {
+      border-color: $light-blue;
+      background: $light-blue;
+    }
+
+    &.ui.checkbox input:checked ~ .box:after,
+    &.ui.checkbox input:checked ~ label:after {
+      color: rgba(250, 250, 250, 1);
+    }
+  }
+
+  &_tooltip.icon {
+    margin-left: 3px;
+  }
+
+  &_popup.ui.bottom.center.popup {
+    border-color: $light-grey;
+
+    &:before {
+      box-shadow: none;
+      background-color: $light-grey;
+    }
+  }
+}

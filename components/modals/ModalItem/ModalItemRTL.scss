@@ -1,0 +1,13 @@
+.modal.rtl {
+
+  .modal_headline,
+  .modal_section--description,
+  .modal_section--textContent,
+  .modal_section--metaContent,
+  .modal_section--postMeta,
+  .modal_section--postTags {
+    direction: rtl;
+    text-align: right;
+  }
+
+}

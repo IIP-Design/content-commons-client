@@ -1,0 +1,35 @@
+@import "./colors.scss";
+
+.static_page {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h1 {
+    text-align: center;
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
+    line-height: 1.1em;
+    font-size: 2.2rem;
+
+    @media only screen and (min-width: 1200px) {
+      font-size: 3rem;
+    }
+
+    .sub.header {
+      font-size: 1.4rem;
+      line-height: 1.3em;
+      font-weight: 400;
+      text-align: center;
+      margin-top: 0.7rem;
+    }
+  }
+
+  blockquote {
+    text-align: center;
+    margin: 3em 0;
+  }
+
+  ul {
+    line-height: 1.4285em;
+  }
+}

@@ -1,0 +1,5 @@
+[
+  { "name": "Department of State", "code": "DOS" },
+  { "name": "Department of Transportation", "code": "DOT" },
+  { "name": "Department of Veterans Affairs", "code": "VA" }
+]

@@ -1,0 +1,136 @@
+@import "./colors.scss";
+
+/*----------------------------------
+  Override form semantic defaults
+-----------------------------------*/
+
+.ui.form .field > label {
+  font-size: 1rem;
+  font-weight: normal;
+  color: $blue;
+}
+
+.ui.form input:not([type]),
+.ui.form input[type="date"],
+.ui.form input[type="datetime-local"],
+.ui.form input[type="email"],
+.ui.form input[type="file"],
+.ui.form input[type="number"],
+.ui.form input[type="password"],
+.ui.form input[type="search"],
+.ui.form input[type="tel"],
+.ui.form input[type="text"],
+.ui.form input[type="time"],
+.ui.form input[type="url"] .ui.items > .item .meta {
+  font-size: 0.9em;
+  border-radius: 4px;
+}
+
+.ui.dropdown {
+  .menu > .item {
+    font-size: 0.77rem;
+  }
+
+  &.selection {
+    border-radius: 4px;
+
+    &.active,
+    &.active .menu {
+      border-color: $alt-grey;
+    }
+
+    &:hover {
+      border-color: $alt-grey;
+    }
+  }
+}
+
+/*------------------------------------------
+  Override form errors (TODO: clean this up)
+------------------------------------------ */
+
+.ui.form .fields.error .field .checkbox:not(.toggle):not(.slider) .box,
+.ui.form .fields.error .field .checkbox:not(.toggle):not(.slider) label,
+.ui.form .field.error .checkbox:not(.toggle):not(.slider) .box,
+.ui.form .field.error .checkbox:not(.toggle):not(.slider) label {
+  color: $blue;
+}
+
+.ui.form .field.error .input,
+.ui.form .field.error label,
+.ui.form .fields.error .field .input,
+.ui.form .fields.error .field label {
+  color: $blue;
+}
+
+.ui.form .fields.error .field .ui.dropdown,
+.ui.form .fields.error .field .ui.dropdown:hover,
+.ui.form .field.error .ui.dropdown,
+.ui.form .field.error .ui.dropdown:hover {
+  border-color: $red !important;
+  border-width: 1px;
+  background: #ffffff;
+  color: $red;
+}
+
+.ui.form.fields.error.field.ui.dropdown:hover,
+.ui.form.field.error.ui.dropdown,
+.ui.form .fields.error .field .ui.dropdown,
+.ui.form .fields.error .field .ui.dropdown .item,
+.ui.form .field.error .ui.dropdown:hover,
+.ui.form .field.error .ui.dropdown .item,
+.ui.form .field.error .ui.dropdown .text {
+  background: #ffffff;
+  color: $blue;
+}
+
+.ui.form .fields.error .field .ui.dropdown .menu .selected.item,
+.ui.form .fields.error .field .ui.dropdown .menu .active.item,
+.ui.form .fields.error .field .ui.dropdown .menu .item,
+.ui.form .field.error .ui.dropdown .menu .selected.item,
+.ui.form .field.error .ui.dropdown .menu .active.item,
+.ui.form .field.error .ui.dropdown .menu .item {
+  background: #ffffff !important;
+  &:hover {
+    background: #f9f9f9 !important;
+  }
+}
+
+.ui.form .fields.error .field textarea,
+.ui.form .fields.error .field select,
+.ui.form .fields.error .field input:not([type]),
+.ui.form .fields.error .field input[type="date"],
+.ui.form .fields.error .field input[type="datetime-local"],
+.ui.form .fields.error .field input[type="email"],
+.ui.form .fields.error .field input[type="number"],
+.ui.form .fields.error .field input[type="password"],
+.ui.form .fields.error .field input[type="search"],
+.ui.form .fields.error .field input[type="tel"],
+.ui.form .fields.error .field input[type="time"],
+.ui.form .fields.error .field input[type="text"],
+.ui.form .fields.error .field input[type="file"],
+.ui.form .fields.error .field input[type="url"],
+.ui.form .field.error textarea,
+.ui.form .field.error select,
+.ui.form .field.error input:not([type]),
+.ui.form .field.error input[type="date"],
+.ui.form .field.error input[type="datetime-local"],
+.ui.form .field.error input[type="email"],
+.ui.form .field.error input[type="number"],
+.ui.form .field.error input[type="password"],
+.ui.form .field.error input[type="search"],
+.ui.form .field.error input[type="tel"],
+.ui.form .field.error input[type="time"],
+.ui.form .field.error input[type="text"],
+.ui.form .field.error input[type="file"],
+.ui.form .field.error input[type="url"] {
+  background: #ffffff;
+  border-color: $red;
+  color: $blue;
+
+  &:focus {
+    background: #ffffff;
+    border-color: $red;
+    color: $blue;
+  }
+}

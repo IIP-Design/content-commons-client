@@ -1,0 +1,91 @@
+@import "../../styles/colors.scss";
+
+.login {
+  &_wrapper {
+    max-width: 380px;
+    padding: 30px;
+    margin: 0 auto;
+    color: $blue;
+
+    @media screen and (min-width: 900px) {
+      padding: 160px 30px;
+    }
+  }
+
+  h1 {
+    padding-bottom: 8px;
+    border-bottom: 1px solid $alt-grey;
+    text-align: center;
+  }
+
+  &_subtext {
+    font-size: 16px;
+
+    &-note {
+      font-size: 12px;
+    }
+  }
+
+  .ui.button {
+    width: 100%;
+    padding: 1em 1.5em;
+    margin: 0 0 1em 0;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0.3px;
+    background: $light-blue;
+    color: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background: $hover-blue;
+      color: #fff;
+    }
+
+    &:focus {
+      background: $light-blue;
+      color: #fff;
+    }
+  }
+
+  &_optionText {
+    margin-top: 2em;
+    margin-bottom: 1.5em;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .ui.form .field label {
+    font-size: 16px;
+    font-weight: normal;
+    color: $blue;
+  }
+
+  &_email {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    &--button {
+      //padding-right: 1em;
+      @media screen and (min-width: 390px) {
+        border-right: 1px solid $light-grey;
+      }
+      @media screen and (max-width: 389px) {
+        margin-bottom: 1em;
+      }
+
+      .ui.button {
+        width: 115px;
+        margin: 0;
+      }
+    }
+
+    &--account {
+      a,
+      p {
+        font-size: 12px;
+      }
+    }
+  }
+}

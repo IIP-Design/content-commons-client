@@ -1,0 +1,14 @@
+@import "../../../styles/colors.scss";
+
+.modal_meta {
+  &_wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &_content {
+    display: block;
+    font-size: 12px;
+    color: $shuttle-grey;
+  }
+}

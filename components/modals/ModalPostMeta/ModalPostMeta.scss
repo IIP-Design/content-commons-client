@@ -1,0 +1,18 @@
+@import "../../../styles/colors.scss";
+
+.modal_postmeta {
+  &_content {
+    display: block;
+    font-size: 12px;
+    color: $shuttle-grey;
+  }
+
+  &_logo {
+    width: 35%;
+    padding: 1em 0;
+
+    @media screen and (max-width: 767px) {
+      width: 50%;
+    }
+  }
+}

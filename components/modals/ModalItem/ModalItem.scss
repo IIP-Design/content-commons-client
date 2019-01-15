@@ -1,0 +1,106 @@
+@import "../../../styles/colors.scss";
+
+.modal {
+  .ui.toggle.checkbox label {
+    padding-left: 3.6rem;
+    padding-top: 0;
+  }
+
+  .ui.toggle.checkbox input:focus ~ label:before {
+    background-color: $medium-grey;
+  }
+
+  .ui.toggle.checkbox label:before {
+    background-color: $medium-grey;
+    width: 3rem;
+    height: 1.2rem;
+  }
+
+  .ui.toggle.checkbox input:checked ~ label:before {
+    background-color: $blue !important;
+  }
+
+  .ui.toggle.checkbox label:after {
+    border: 1px solid $medium-grey;
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .ui.toggle.checkbox input:checked ~ label:after {
+    left: 1.8rem;
+  }
+
+  /* Safari hack */
+  &.ui .close:not(:root:root) {
+    position: relative !important;
+    float: right;
+  }
+
+  &.ui .close {
+    top: auto;
+    right: auto !important;
+    left: auto;
+    color: #000;
+    font-size: 1.5em;
+    position: relative;
+    float: right;
+  }
+
+  &_section {
+    margin-top: 1em;
+
+    &--metaContent {
+      margin-top: 1em;
+    }
+
+    & figure {
+      max-width: 100%;
+
+      &.alignnone {
+        margin: 1em 0;
+      }
+    }
+
+    & figcaption {
+      color: #5b6168;
+      font-size: 12px;
+      margin-bottom: 1em;
+    }
+  }
+
+  &_headline {
+    color: $blue;
+    @media screen and (max-width: 767px) {
+      width: 95%;
+    }
+  }
+
+  &_languages {
+    margin-right: 2em;
+  }
+
+  &_options {
+    display: flex;
+    justify-content: space-between;
+    margin: 1em 0;
+    height: 1.8em;
+
+    &_share {
+      > span:first-child,
+      > img {
+        margin-right: 0.5em;
+      }
+
+      > img,
+      > span {
+        display: inline-block;
+        vertical-align: bottom;
+        float: none !important;
+      }
+
+      > img {
+        width: 1.8em;
+      }
+    }
+  }
+}

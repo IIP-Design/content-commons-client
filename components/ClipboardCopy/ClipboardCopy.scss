@@ -1,0 +1,81 @@
+@import "../../styles/colors.scss";
+
+.clipboardcopy {
+  display: flex;
+  justify-content: space-between;
+  @media screen and (max-width: 767px) {
+    display: block;
+    margin-left: 0;
+  }
+
+  &_wrapper {
+    margin: 2em 0;
+  }
+
+  &_label {
+    position: absolute;
+    top: 7px;
+    right: 0;
+    width: 100%;
+    margin-bottom: 0;
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 0.77rem;
+    @media screen and (min-width: 768px) {
+      text-align: right;
+    }
+    @media screen and (max-width: 767px) {
+      position: relative;
+      font-size: 12px;
+      top: 0;
+    }
+
+    &_wrapper {
+      position: relative;
+      min-width: 100px;
+    }
+  }
+
+  &_item {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    background-color: $light-grey;
+
+    @media screen and (max-width: 767px) {
+      font-size: 16px;
+    }
+
+    &_text {
+      width: 75%;
+      padding-left: 10px;
+      border: 0;
+      font-family: "Source Sans Pro";
+      font-size: 0.77rem;
+      color: #000;
+      background-color: $light-grey;
+    }
+
+    .ui.button {
+      font-size: 0.77rem;
+      margin-right: 0;
+      border-radius: 0;
+      background-color: $light-blue;
+      transition: background-color 0.5s ease-out;
+
+      &.copied {
+        background-color: $light-grey;
+        color: $light-blue;
+      }
+    }
+  }
+
+  &_info {
+    display: block;
+    margin-left: 140px;
+    font-size: 12px;
+    @media screen and (max-width: 767px) {
+      margin-left: 0;
+    }
+  }
+}
