@@ -77,8 +77,11 @@ class GlobalNav extends PureComponent {
           className={ mobileNavVisible ? 'mobileNav' : 'fullNav' }
         />
         <User>
-          { /* TODO: check for data */ }
-          { ( { data: { authenticatedUser } } ) => this.renderNav( authenticatedUser ) }
+          { ( { data } ) => {
+            const authenticatedUser = ( data && data.authenticatedUser ) ? data.authenticatedUser : null;
+            return this.renderNav( authenticatedUser );
+          }
+        }
         </User>
       </nav>
     );
