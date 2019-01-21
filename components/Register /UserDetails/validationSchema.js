@@ -8,6 +8,10 @@ export const validationSchema = Yup.object().shape( {
     .required( 'Last Name is required!' ),
   email: Yup.string()
     .email( 'E-mail is not valid!' )
+    .test( 'americaEmail', 'You must use an america.gov email', value => {
+      const re = /america.gov$/;
+      return re.test( value );
+    } )
     .required( 'Email is required!' ),
   country: Yup.string()
     .required( 'Country is required!' ),

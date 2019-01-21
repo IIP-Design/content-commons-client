@@ -6,7 +6,7 @@ import { optionFormatter } from '../../../lib/form';
 import { validationSchema } from './validationSchema';
 import countries from '../../../static/data/countries';
 
-const countryOptions = optionFormatter( countries );
+const countryOptions = optionFormatter( countries, 'code' );
 
 const UserDetails = ( {
   values,
@@ -67,7 +67,7 @@ const UserDetails = ( {
             error={ !!errors.email }
             required
           />
-          <span className="subtext">We recommend using your america.gov email if you have one.</span>
+          <span className="subtext">Use of an america.gov email is required.</span>
           <p className="error-message">{ errors.email }</p>
         </Form.Field>
         <Form.Input
@@ -144,28 +144,30 @@ UserDetails.propTypes = {
   setFieldValue: PropTypes.func,
   isSubmitting: PropTypes.bool,
   updateState: PropTypes.func,
-  goBack: PropTypes.func,
-  goNext: PropTypes.func
+  goBack: PropTypes.func
 };
 
+// Set the initial form values with the state props
+// Validation happens against the formik values object
+// On submit, update state with the validated values
 export default withFormik( {
   mapPropsToValues: props => {
-    const { data } = props;
+    const { user } = props;
 
     return ( {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email,
-      jobTitle: data.jobTitle,
-      country: data.country,
-      city: data.city,
-      howHeard: data.howHeard
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      jobTitle: user.jobTitle,
+      country: user.country,
+      city: user.city,
+      howHeard: user.howHeard
     } );
   },
 
-  // validationSchema,
-  // validateOnBlur: false,
-  // validateOnChange: false,
+  validationSchema,
+  validateOnBlur: false,
+  validateOnChange: false,
 
   handleSubmit: ( values, { props, setSubmitting } ) => {
     props.updateState( values );

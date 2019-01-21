@@ -42,7 +42,8 @@ class Login extends Component {
     this.setState( () => ( { accessToken, googleError: '' } ) );
   }
 
-  // TODO: Need to figure out if or why this catch block is needed to prevent a browser console error
+  // A catch block is needed to prevent a browser console error
+  // as the mutate function returns a promise
   willGoogleSignin = async googleSigninMutation => {
     try {
       await googleSigninMutation();
@@ -77,7 +78,7 @@ class Login extends Component {
                   <Button loading={ loading } onClick={ renderProps.onClick }>Log in with America.gov</Button>
                 ) }
                 onSuccess={ async response => {
-                  // 1. Fetch token from google
+                  // 1. Fetch token from google and set on state tosend to mutation
                   this.setToken( response.tokenId );
 
                   // 2. Send google token server to verfiy and fetch User

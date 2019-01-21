@@ -4,6 +4,15 @@ import getConfig from 'next/config';
 
 const { publicRuntimeConfig } = getConfig();
 
+// TODO: Add more robsut error info
+const onErrorDev = ( ( { networkError, graphQLErrors } ) => {
+  if ( graphQLErrors ) console.log( 'graphQLErrors', graphQLErrors );
+  if ( networkError ) console.log( 'networkError', networkError );
+} );
+
+// Turn off default Apollo console.log errors
+const onErrorProd = ( () => {} );
+
 const createClient = ( { headers } ) => new ApolloClient( {
   uri: publicRuntimeConfig.REACT_APP_APOLLO_ENDPOINT,
   request: operation => {
@@ -13,7 +22,9 @@ const createClient = ( { headers } ) => new ApolloClient( {
       },
       headers
     } );
-  }
+  },
+
+  onError: ( process.env.NODE_ENV === 'development' ) ? onErrorDev : onErrorProd
 } );
 
 

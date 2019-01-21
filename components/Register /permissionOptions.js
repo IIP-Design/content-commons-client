@@ -1,4 +1,5 @@
 
+// The permissions values map to the 'Permission' enum in data model on the server
 export const permissionOptions = [
   {
     key: 1,
