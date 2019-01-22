@@ -10,35 +10,8 @@ import { validationSchema } from './validationSchema';
 import { permissionOptions } from '../permissionOptions';
 import Error from '../../errors/ApolloError';
 
-
-// const SIGNUP_MUTATION = gql`
-//   mutation SIGNUP_MUTATION(
-//     $firstName: String!
-//     $lastName: String!
-//     $email: String!
-//     $jobTitle: String
-//     $country: String
-//     $city: String
-//     $howHeard: String
-//     $permissions: [Permission]
-//     $teamId: String!
-//     ) {
-//      signUp(
-//       firstName: $firstName
-//       lastName: $lastName
-//       email: $email
-//       jobTitle: $jobTitle
-//       country: $country
-//       city: $city
-//       howHeard: $howHeard
-//       permissions: $permissions
-//       teamId: $teamId
-//      ) {
-//        text
-//      }
-//   }
-// `;
-
+// UserCreateInput is a graphql input type defined in
+// the prisma.graphql on the apollo server
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION( $data: UserCreateInput ) {
     signUp( data: $data ) {
@@ -84,6 +57,8 @@ const ReviewSubmit = ( {
       <p className="error-message">{ errors.consent }</p>
       <Mutation
         mutation={ SIGNUP_MUTATION }
+        // data must conform to UserCreateInput using proper
+        // data structure, i.e. setting enums or linking relationships
         variables={ {
           data: {
             firstName: user.firstName,
