@@ -20,7 +20,8 @@
   }
 }
 
-.bar--login nav {
+.bar--login nav,
+.bar--confirm nav {
   .ui.menu .item:not(.feedback) {
     display: none;
   }

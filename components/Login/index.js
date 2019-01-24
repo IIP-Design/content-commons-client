@@ -78,7 +78,7 @@ class Login extends Component {
                   <Button loading={ loading } onClick={ renderProps.onClick }>Log in with America.gov</Button>
                 ) }
                 onSuccess={ async response => {
-                  // 1. Fetch token from google and set on state tosend to mutation
+                  // 1. Fetch token from google and set on state to send to mutation
                   this.setToken( response.tokenId );
 
                   // 2. Send google token server to verfiy and fetch User
