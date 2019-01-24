@@ -19,7 +19,6 @@ class Register extends Component {
     activeIndex: 0,
     showTeamDetails: false,
     view: 'form',
-    confirmation: '',
     data: {
       firstName: '',
       lastName: '',
@@ -159,7 +158,7 @@ class Register extends Component {
       return (
         <div className="register register_wrapper">
           <h1 className="register_title">Confirm Registration</h1>
-          <div>Confirmation</div>
+          <div style={ { textAlign: 'center' } }>Please check your email to complete your registration</div>
         </div>
       );
     }

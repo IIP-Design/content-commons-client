@@ -7,6 +7,7 @@ export const validationSchema = Yup.object().shape( {
   lastName: Yup.string()
     .required( 'Last Name is required!' ),
   email: Yup.string()
+    .lowercase()
     .email( 'E-mail is not valid!' )
     .test( 'americaEmail', 'You must use an america.gov email', value => {
       const re = /america.gov$/;

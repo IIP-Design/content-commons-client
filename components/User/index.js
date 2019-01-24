@@ -1,3 +1,6 @@
+/**
+ * Reusable component that returns an authenticated user
+ */
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';

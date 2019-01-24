@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Mutation } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withFormik } from 'formik';
 import {
@@ -25,8 +25,6 @@ const ReviewSubmit = ( {
   handleSubmit,
   handleChange,
   isSubmitting,
-  isValid,
-  handleSignUpUserSuccess,
   goBack,
   user
 } ) => {
@@ -37,7 +35,7 @@ const ReviewSubmit = ( {
   // Using user from state and NOT values from formik to popluate page as this is static info
   // and does not need validation
   return (
-    <Form>
+    <Form onSubmit={ handleSubmit }>
       <div style={ { marginBottom: '1rem' } }>Review and submit your information below to request a Content Commons account.</div>
       <List className="register_review">
         <List.Item><span><strong>Name:</strong></span>{ ' ' } { user.firstName }{ user.lastName }</List.Item>
@@ -55,67 +53,25 @@ const ReviewSubmit = ( {
         error={ !!errors.consent }
       />
       <p className="error-message">{ errors.consent }</p>
-      <Mutation
-        mutation={ SIGNUP_MUTATION }
-        // data must conform to UserCreateInput using proper
-        // data structure, i.e. setting enums or linking relationships
-        variables={ {
-          data: {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            jobTitle: user.jobTitle,
-            country: user.country,
-            city: user.city,
-            howHeard: user.howHeard,
-            permissions: {
-              set: [user.permissions]
-            },
-            team: {
-              connect: {
-                id: user.team.id
-              }
-            }
-          }
-        } }
-      >
-        {
-           ( signUp, { data, loading, error } ) => {
-             if ( data && data.signUp && data.signUp.text ) {
-               handleSignUpUserSuccess();
-               return <div />;
-             }
-             return (
-               <div>
-                 <Error error={ error } />
-                 <div className="register_progress">
-                   <Button
-                     type="button"
-                     onClick={ goBack }
-                     disabled={ isSubmitting }
-                     className="secondary"
-                   >Previous
-                   </Button>
-                   <Button
-                     onClick={ () => {
-                       if ( isValid ) {
-                         signUp().catch( err => {} );
-                       } else {
-                         handleSubmit();
-                       }
-                     } }
-                     type="submit"
-                     loading={ loading }
-                     disabled={ isSubmitting }
-                     className="primary"
-                   >Submit
-                   </Button>
-                 </div>
-               </div>
-             );
-           }
-        }
-      </Mutation>
+      <div>
+        <Error error={ errors.submit } />
+        <div className="register_progress">
+          <Button
+            type="button"
+            onClick={ goBack }
+            disabled={ isSubmitting }
+            className="secondary"
+          >Previous
+          </Button>
+          <Button
+            type="submit"
+            loading={ isSubmitting }
+            disabled={ isSubmitting }
+            className="primary"
+          >Submit
+          </Button>
+        </div>
+      </div>
     </Form>
   );
 };
@@ -125,12 +81,49 @@ ReviewSubmit.propTypes = {
   handleSubmit: PropTypes.func,
   handleChange: PropTypes.func,
   isSubmitting: PropTypes.bool,
-  isValid: PropTypes.bool,
-  handleSignUpUserSuccess: PropTypes.func,
   goBack: PropTypes.func,
   user: PropTypes.object,
 };
 
-export default withFormik( {
-  validationSchema
-} )( ReviewSubmit );
+
+export default compose(
+  graphql( SIGNUP_MUTATION, { name: 'signUp' } ),
+  withFormik( {
+    validationSchema,
+    handleSubmit: async ( { user }, { props: { signUp, handleSignUpUserSuccess }, setErrors, setSubmitting } ) => {
+      try {
+        await signUp( {
+        // data must conform to UserCreateInput using proper
+        // data structure, i.e. setting enums or linking relationships
+          variables: {
+            data: {
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email,
+              jobTitle: user.jobTitle,
+              country: user.country,
+              city: user.city,
+              howHeard: user.howHeard,
+              permissions: {
+                set: [user.permissions]
+              },
+              team: {
+                connect: {
+                  id: user.team.id
+                }
+              }
+            }
+          }
+        } );
+
+        handleSignUpUserSuccess();
+      } catch ( err ) {
+        setErrors( {
+          submit: err
+        } );
+      }
+
+      setSubmitting( false );
+    }
+  } )
+)( ReviewSubmit );

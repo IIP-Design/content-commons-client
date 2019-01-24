@@ -9,17 +9,26 @@ const ApolloError = props => {
     marginBottom: '1rem'
   };
 
-  return (
-    <div>
-      { props.error
-        && (
-          <div style={ buttonStyle }>{ props.error.graphQLErrors.map( ( { message }, i ) => (
-            <div key={ i }>{ message }</div>
-          ) ) }
-          </div>
-        )
+  const compileErrors = () => {
+    const { error } = props;
+
+    let errs = [];
+    if ( error ) {
+      const { graphQLErrors, networkError } = error;
+      if ( graphQLErrors ) {
+        errs = graphQLErrors.map( error => error.message );
       }
-    </div>
+      if ( networkError ) {
+        errs.push( networkError );
+      }
+    }
+
+    return errs.join( '\n' );
+  };
+
+
+  return (
+    <div style={ buttonStyle }>{ compileErrors() }</div>
   );
 };
 
