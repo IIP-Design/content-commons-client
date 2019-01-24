@@ -61,6 +61,10 @@
 .ui.form .fields.error .field .input,
 .ui.form .fields.error .field label {
   color: $blue;
+
+  &::placeholder {
+    color: $focus-gray;
+  }
 }
 
 .ui.form .fields.error .field .ui.dropdown,
@@ -132,5 +136,9 @@
     background: #ffffff;
     border-color: $red;
     color: $blue;
+  }
+
+  &::placeholder {
+    color: $focus-gray;
   }
 }

@@ -19,7 +19,6 @@ const CONFIRM_REGISTRATION_MUTATION = gql`
   }
 `;
 
-
 class ConfirmRegistration extends Component {
   render () {
     const {
