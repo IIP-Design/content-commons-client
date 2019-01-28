@@ -29,8 +29,8 @@ class Register extends Component {
       permissions: 'EDITOR',
       howHeard: '',
       team: {
-        id: 'cjqo8zsyq00en0981f8vd6uh0', // this will be different
-        name: 'IIP Video Production',
+        id: '', // this will be different
+        name: '',
         organization: '',
         contentTypes: []
       }
