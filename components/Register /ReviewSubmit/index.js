@@ -38,7 +38,7 @@ const ReviewSubmit = ( {
     <Form onSubmit={ handleSubmit }>
       <div style={ { marginBottom: '1rem' } }>Review and submit your information below to request a Content Commons account.</div>
       <List className="register_review">
-        <List.Item><span><strong>Name:</strong></span>{ ' ' } { user.firstName }{ user.lastName }</List.Item>
+        <List.Item><span><strong>Name:</strong></span>{ ' ' } { user.firstName }{ ' ' }{ user.lastName }</List.Item>
         <List.Item><span><strong>Email:</strong></span>{ ' ' }{ user.email }</List.Item>
         <List.Item><span><strong>Role:</strong></span>{ ' ' }{ role.label }</List.Item>
         <List.Item><span><strong>Team:</strong></span>{ ' ' }{ user.team.name }</List.Item>
