@@ -11,16 +11,21 @@ import '../styles/styles.scss';
 
 class Commons extends App {
   static async getInitialProps( { Component, ctx } ) {
+    let authenticatedUser = null;
     // If on a restricted page, check for authenticated user
     // and if not found, redirect to login page
     if ( isRestrictedPage( ctx.pathname ) ) {
-      checkForAuthenticatedUser( ctx );
+      authenticatedUser = checkForAuthenticatedUser( ctx );
     }
 
     let pageProps = {};
 
     if ( Component.getInitialProps ) {
       pageProps = await Component.getInitialProps( ctx );
+    }
+
+    if ( authenticatedUser ) {
+      pageProps.authenticatedUser = authenticatedUser;
     }
 
     // exposes apollo query to component
