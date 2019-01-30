@@ -28,7 +28,7 @@ class GoogleLoginComponent extends Component {
 
   failureGoogle = response => {
     const { error } = response;
-
+    console.log( 'Google failture from initial client request' );
     // do show an error if user closes window w/o logging in
     if ( error !== 'popup_closed_by_user' ) {
       this.setState( {
@@ -75,7 +75,7 @@ class GoogleLoginComponent extends Component {
               onSuccess={ async response => {
                 // 1. Fetch token from google and set on state to send to mutation
                 this.setToken( response.tokenId );
-                console.dir( response );
+
                 // 2. Send google token server to verfiy and fetch User
                 await this.willGoogleSignin( googleSignin );
               } }
