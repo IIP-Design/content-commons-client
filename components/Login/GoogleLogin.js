@@ -64,29 +64,29 @@ class GoogleLoginComponent extends Component {
         variables={ { token: this.state.accessToken } }
         refetchQueries={ [{ query: CURRENT_USER_QUERY }] }
       >
-        { ( googleSignin, { loading, error } ) => (
-          <div>
-            { /* <ApolloError error={ error } /> */ }
-            <Error error={ this.state.googleError } graphQLError={ error } />
-            <GoogleLogin
-              clientId={ publicRuntimeConfig.REACT_APP_GOOGLE_CLIENT_ID }
-              render={ renderProps => (
-                <Button loading={ loading } onClick={ renderProps.onClick }>Log in with America.gov</Button>
-              ) }
-              onSuccess={ async response => {
-                console.log( 'Success from client, sending to server for verification' );
-                // 1. Fetch token from google and set on state to send to mutation
-                this.setToken( response.tokenId );
+        { ( googleSignin, { loading, error } ) => {
+          console.log( `Client : ${publicRuntimeConfig.REACT_APP_GOOGLE_CLIENT_ID}` );
+          return (
+            <div>
+              { /* <ApolloError error={ error } /> */ }
+              <Error error={ this.state.googleError } graphQLError={ error } />
+              <GoogleLogin
+                clientId={ publicRuntimeConfig.REACT_APP_GOOGLE_CLIENT_ID }
+                render={ renderProps => (
+                  <Button loading={ loading } onClick={ renderProps.onClick }>Log in with America.gov</Button>
+                ) }
+                onSuccess={ async response => {
+                  // 1. Fetch token from google and set on state to send to mutation
+                  this.setToken( response.tokenId );
 
-                // 2. Send google token server to verfiy and fetch User
-                const res = await this.willGoogleSignin( googleSignin );
-                console.log( 'response from server' );
-                console.dir( res );
-              } }
-              onFailure={ this.failureGoogle }
-            />
-          </div>
-        )
+                  // 2. Send google token server to verfiy and fetch User
+                  await this.willGoogleSignin( googleSignin );
+                } }
+                onFailure={ this.failureGoogle }
+              />
+            </div>
+          );
+        }
       }
       </Mutation>
     );
