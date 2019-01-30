@@ -27,8 +27,9 @@ class GoogleLoginComponent extends Component {
   }
 
   failureGoogle = response => {
+    console.log( 'Failed from client, sending to server for verification' );
     const { error } = response;
-    console.log( 'Google failture from initial client request' );
+
     // do show an error if user closes window w/o logging in
     if ( error !== 'popup_closed_by_user' ) {
       this.setState( {
@@ -73,11 +74,14 @@ class GoogleLoginComponent extends Component {
                 <Button loading={ loading } onClick={ renderProps.onClick }>Log in with America.gov</Button>
               ) }
               onSuccess={ async response => {
+                console.log( 'Success from client, sending to server for verification' );
                 // 1. Fetch token from google and set on state to send to mutation
                 this.setToken( response.tokenId );
 
                 // 2. Send google token server to verfiy and fetch User
-                await this.willGoogleSignin( googleSignin );
+                const res = await this.willGoogleSignin( googleSignin );
+                console.log( 'response from server' );
+                console.dir( res );
               } }
               onFailure={ this.failureGoogle }
             />
