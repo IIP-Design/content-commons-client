@@ -7,7 +7,7 @@ Handles the public Content Commons as well as the client side adminstative inter
 - Clone repository
 
   ```
-  git clone git@github.com:IIP-Design/cdp-content-commons.git
+  git clone git@github.com:IIP-Design/content-commons-client.git
   ```
 
 - Run `npm install`
