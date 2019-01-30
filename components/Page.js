@@ -5,20 +5,30 @@ import Header from './Header';
 import Footer from './Footer';
 import Meta from './Meta';
 import { capitalizeFirst } from '../lib/utils';
+import Breadcrumbs from './Breadcrumbs';
 
 class Page extends Component {
+  doNotShowBreadcrumbs = [
+    '/', '/login', '/confirm'
+  ]
+
   render() {
     const { router } = this.props;
 
-    const path = router.pathname.substr( router.pathname.lastIndexOf( '/' ) + 1 );
+    const { pathname } = router;
+    const path = pathname.substr( router.pathname.lastIndexOf( '/' ) + 1 );
     const title = ( path ) ? `${capitalizeFirst( path )} | Content Commons` : 'Content Commons';
-    const bodyCls = ( router.pathname === '/' ) ? '' : 'inside';
+    const bodyCls = ( pathname === '/' ) ? '' : 'inside';
+    const hideBreadcrumbs = this.doNotShowBreadcrumbs.includes( pathname );
 
     return (
       <div>
         <Meta title={ title } />
         <Header />
-        <main className={ `ui container ${bodyCls}` }>{ this.props.children }</main>
+        <main className={ `ui container ${bodyCls}` }>
+          { !hideBreadcrumbs && <Breadcrumbs /> }
+          { this.props.children }
+        </main>
         <Footer />
       </div>
     );

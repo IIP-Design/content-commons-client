@@ -7,7 +7,8 @@ import './Breadcrumbs.scss';
 
 const Breadcrumbs = props => {
   const { router } = props;
-  const paths = ( router.pathname ).split( '/' ).slice( 1 ).filter( Boolean );
+
+  const paths = ( router.pathname ).replace( '/admin', '' ).split( '/' ).slice( 1 ).filter( Boolean );
 
   let pathCounter = 0;
   return (
