@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 import isEmpty from 'lodash/isEmpty';
 import { isRestrictedPage, checkForAuthenticatedUser } from '../lib/authentication';
+import { redirectTo } from '../lib/browser';
 import withApollo from '../hocs/withApollo';
 import Page from '../components/Page';
 import makeStore from '../lib/redux/store';
@@ -11,21 +12,23 @@ import '../styles/styles.scss';
 
 class Commons extends App {
   static async getInitialProps( { Component, ctx } ) {
-    let authenticatedUser = null;
-    // If on a restricted page, check for authenticated user
-    // and if not found, redirect to login page
-    if ( isRestrictedPage( ctx.pathname ) ) {
-      authenticatedUser = checkForAuthenticatedUser( ctx );
-    }
-
     let pageProps = {};
-
     if ( Component.getInitialProps ) {
       pageProps = await Component.getInitialProps( ctx );
     }
 
-    if ( authenticatedUser ) {
-      pageProps.authenticatedUser = authenticatedUser;
+    let authenticatedUser = null;
+    // If on a restricted page, check for authenticated user
+    if ( isRestrictedPage( ctx.pathname ) ) {
+      authenticatedUser = await checkForAuthenticatedUser( ctx.apolloClient );
+
+      if ( !authenticatedUser ) {
+        // we don't have an authenticated user, redirect to login page
+        redirectTo( '/login', { res: ctx.res } );
+      } else {
+        // set authenticatedUser prop to expose to component
+        pageProps.authenticatedUser = authenticatedUser;
+      }
     }
 
     // exposes apollo query to component
