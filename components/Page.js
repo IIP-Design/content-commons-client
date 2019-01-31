@@ -9,7 +9,7 @@ import Breadcrumbs from './Breadcrumbs';
 
 class Page extends Component {
   doNotShowBreadcrumbs = [
-    '/', '/login', '/confirm'
+    '/', '/login', '/confirm', '/_error'
   ]
 
   render() {

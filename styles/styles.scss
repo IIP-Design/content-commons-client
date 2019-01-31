@@ -81,6 +81,11 @@ h6.ui.header {
     padding-right: 2em;
   }
 
+  @media only screen and (min-width: 1200px) {
+    padding-left: 4em;
+    padding-right: 4em;
+  }
+
   @media only screen and (min-width: 1600px) {
     width: 1601px;
     margin-left: auto !important;
