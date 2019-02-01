@@ -24,7 +24,7 @@ const SelectRole = ( {
   setFieldValue,
   isSubmitting,
   teamDetails,
-  showTeamDetails,
+  // showTeamDetails,
   hideTeamDetails
 } ) => {
   const handleOnChange = ( e, { name, value, options } ) => {
@@ -123,7 +123,7 @@ SelectRole.propTypes = {
   handleSubmit: PropTypes.func,
   setFieldValue: PropTypes.func,
   isSubmitting: PropTypes.bool,
-  showTeamDetails: PropTypes.func,
+  // showTeamDetails: PropTypes.func,
   hideTeamDetails: PropTypes.func,
   teamDetails: PropTypes.bool
 };

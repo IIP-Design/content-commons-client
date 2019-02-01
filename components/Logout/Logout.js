@@ -3,7 +3,7 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Button } from 'semantic-ui-react';
 import Router from 'next/router';
-import { CURRENT_USER_QUERY } from '../User';
+import { CURRENT_USER_QUERY } from '../User/User';
 
 
 const SIGN_OUT_MUTATION = gql`

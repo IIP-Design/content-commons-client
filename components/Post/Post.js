@@ -19,7 +19,7 @@ import PopupTrigger from '../popups/PopupTrigger';
 import PopupTabbed from '../popups/PopupTabbed';
 import Popup from '../popups/Popup';
 
-import Share from '../Share';
+import Share from '../Share/Share';
 import EmbedPost from './EmbedPost';
 import EmbedHelp from './EmbedHelp';
 

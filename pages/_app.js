@@ -25,9 +25,6 @@ class Commons extends App {
       if ( !authenticatedUser ) {
         // we don't have an authenticated user, redirect to login page
         redirectTo( '/login', { res: ctx.res } );
-      } else {
-        // set authenticatedUser prop to expose to component
-        pageProps.authenticatedUser = authenticatedUser;
       }
     }
 

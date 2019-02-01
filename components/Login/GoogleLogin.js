@@ -7,7 +7,7 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Error from '../errors/AllError';
 
-import { CURRENT_USER_QUERY } from '../User';
+import { CURRENT_USER_QUERY } from '../User/User';
 import './Login.scss';
 
 const { publicRuntimeConfig } = getConfig();

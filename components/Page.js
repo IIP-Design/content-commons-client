@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
-import Header from './Header';
-import Footer from './Footer';
+import Header from './Header/Header';
+import Footer from './Footer/Footer';
 import Meta from './Meta';
 import { capitalizeFirst } from '../lib/utils';
-import Breadcrumbs from './Breadcrumbs';
+import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
 
 class Page extends Component {
   doNotShowBreadcrumbs = [

@@ -6,10 +6,10 @@
 
 import React, { Component } from 'react';
 import { Tab } from 'semantic-ui-react';
-import SelectRole from './SelectRole';
-import UserDetails from './UserDetails';
-import TeamDetails from './TeamDetails';
-import ReviewSubmit from './ReviewSubmit';
+import SelectRole from './SelectRole/SelectRole';
+import UserDetails from './UserDetails/UserDetails';
+import TeamDetails from './TeamDetails/TeamDetails';
+import ReviewSubmit from './ReviewSubmit/ReviewSubmit';
 import './Register.scss';
 
 

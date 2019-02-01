@@ -10,8 +10,8 @@ import Link from 'next/link';
 import {
   Menu, Responsive, Popup, Icon
 } from 'semantic-ui-react';
-import UserProfileMenu from '../../../menus/UserProfile';
-import NotificationsMenu from '../../../menus/Notifications';
+import UserProfileMenu from '../../../menus/UserProfile/UserProfile';
+import NotificationsMenu from '../../../menus/Notifications/Notifications';
 import notifyIcon from '../../../../static/icons/icon_notifications.svg';
 import userIcon from '../../../../static/icons/icon_user_profile.svg';
 import uploadIcon from '../../../../static/icons/icon_upload.svg';

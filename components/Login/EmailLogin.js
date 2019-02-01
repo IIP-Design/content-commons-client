@@ -7,7 +7,7 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withFormik } from 'formik';
 import ApolloError from '../errors/ApolloError';
-import { CURRENT_USER_QUERY } from '../User';
+import { CURRENT_USER_QUERY } from '../User/User';
 import { validationSchema } from './validationSchema';
 import './Login.scss';
 

@@ -15,16 +15,15 @@ import {
   makeSelectLoading,
   makeSelectError
 } from './selectors';
-import Video from '../Video';
-import Post from '../Post';
+import Video from '../Video/Video';
+import Post from '../Post/Post';
 
 import './Recents.scss';
 
 
 class Recents extends Component {
-  handleClick = e => {
+  handleClick = () => {
     // console.log( 'clicked' );
-
     // e.preventDefault();
   }
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import cachedFetch, { overrideCache } from '../../lib/cachedFetch';
 
 /**
@@ -31,10 +32,20 @@ const withCachedFetch = ( WrappedComponent, url ) => {
       return (
         <WrappedComponent
           { ...this.props }
-        /> );
+        />
+      );
     }
   }
+
+  HOC.propTypes = {
+    data: PropTypes.string,
+    isServerRendered: PropTypes.bool,
+    error: PropTypes.oneOfType( [PropTypes.number, PropTypes.bool] )
+  };
+
+
   return HOC;
 };
+
 
 export default withCachedFetch;

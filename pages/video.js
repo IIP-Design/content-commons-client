@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { normalizeItem } from '../lib/elastic/parser';
 import { getItemRequest, getDataFromHits } from '../lib/elastic/api';
-import Video from '../components/Video';
+import Video from '../components/Video/Video';
 
 class VideoPage extends Component {
   static async getInitialProps ( { query } ) {
