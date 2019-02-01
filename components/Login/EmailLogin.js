@@ -71,7 +71,7 @@ class EmailLogin extends Component {
           </div>
           <div className="login_email--account">
             <Link href="/passwordreset"><a>Forgot your password?</a></Link>
-            <p>Don't have an account? <Link href="/register"><a>Register</a></Link></p>
+            <p>{ 'Don\'t have an account? ' } <Link href="/register"><a>Register</a></Link></p>
           </div>
         </div>
       </Form>
