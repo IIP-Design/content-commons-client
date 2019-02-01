@@ -27,7 +27,7 @@ import DownloadVideo from './DownloadVideo';
 import DownloadSrt from './DownloadSrt';
 import DownloadTranscript from './DownloadTranscript';
 import DownloadHelp from './DownloadHelp';
-import Share from '../Share';
+import Share from '../Share/Share';
 import EmbedVideo from '../Embed';
 import EmbedHelp from './EmbedHelp';
 
@@ -229,6 +229,8 @@ class Video extends Component {
    * Toggle video between one with burned in captions and one without
    */
   handleCaptionChange = () => {
+    // TODO: Fix this linting errror
+    /* eslint-disable-next-line react/no-access-state-in-setstate */
     this.setState( { captions: !this.state.captions }, () => {
       this.willFetchVideoPlayer();
     } );
@@ -240,6 +242,8 @@ class Video extends Component {
    * in componentDidMount
    */
   async willFetchVideoPlayer() {
+    // TODO: Fix this linting errror
+    /* eslint-disable-next-line react/no-access-state-in-setstate */
     const video = await this.fetchVideoPlayer( this.state.unit );
     this.setState( {
       videoProps: video.props,
@@ -350,7 +354,8 @@ class Video extends Component {
                     ] }
                   />
 ) }
-              /> ) }
+              />
+              ) }
               <PopupTrigger
                 toolTip="Share video"
                 icon={ { img: shareIcon, dim: 20 } }
