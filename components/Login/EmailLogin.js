@@ -59,7 +59,7 @@ class EmailLogin extends Component {
         <p className="error-message">{ errors.password }</p>
         <div className="login_email">
           <div className="login_email--account resend">
-            <p>Haven't received the confirmation email yet? <Link href="/confirm"><a>Resend the email?</a></Link></p>
+            <p>{ 'Haven\'t received the confirmation email yet? ' }<Link href="/confirm"><a>Resend the email?</a></Link></p>
           </div>
           <div className="login_email--button">
             <Button
