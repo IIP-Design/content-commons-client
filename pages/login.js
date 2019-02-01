@@ -1,8 +1,13 @@
 import React from 'react';
-import Login from '../components/Login';
+import Login from '../components/Login/Login';
+import User from '../components/User';
 
 const LoginPage = () => (
-  <Login />
+  <User>
+    {
+      ( { data } ) => <Login user={ data.authenticatedUser } />
+    }
+  </User>
 );
 
 

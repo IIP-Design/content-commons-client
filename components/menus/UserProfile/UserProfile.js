@@ -2,28 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
-import { CURRENT_USER_QUERY } from '../../User';
+import LogoutButton from '../../Logout/Logout';
 import '../menu.scss';
-
-
-const SIGN_OUT_MUTATION = gql`
-  mutation SIGN_OUT_MUTATION {
-    signOut
-  }
-`;
 
 class UserProfileMenu extends Component {
   handleSignoutClick = signoutMutation => {
     signoutMutation();
-    const { toggleMobileNav, logout } = this.props;
+    const { toggleMobileNav } = this.props;
     if ( toggleMobileNav ) {
       toggleMobileNav();
     }
-    // Router.push( {
-    //   pathname: '/'
-    // } );
+    Router.push( {
+      pathname: '/login'
+    } );
   }
 
   linkClick = () => {
@@ -37,6 +28,14 @@ class UserProfileMenu extends Component {
   render() {
     const { user } = this.props;
     const name = ( user ) || '';
+    const logOutStyle = {
+      borderRadius: 0,
+      padding: '20px 0 20px 15px',
+      textAlign: 'left',
+      fontSize: '16px',
+      color: '#112e51',
+      backgroundColor: 'transparent'
+    };
 
     return (
       <div className="nav_submenu">
@@ -81,19 +80,7 @@ class UserProfileMenu extends Component {
           </a>
         </section>
         <section className="nav_submenu_section nav_submenu_section--logout">
-          <Mutation mutation={ SIGN_OUT_MUTATION } refetchQueries={ [{ query: CURRENT_USER_QUERY }] }>
-            { signOut => (
-              <a className="nav_submenu_item">
-                <span
-                  onClick={ () => {
-                    this.handleSignoutClick( signOut );
-                  } }
-                  role="presentation"
-                >Logout
-                </span>
-              </a>
-            ) }
-          </Mutation>
+          <LogoutButton className="primary" fluid style={ logOutStyle } />
         </section>
       </div>
     );
@@ -102,7 +89,6 @@ class UserProfileMenu extends Component {
 
 UserProfileMenu.propTypes = {
   toggleMobileNav: PropTypes.func,
-  logout: PropTypes.func,
   submenuClosePopup: PropTypes.func,
   user: PropTypes.string
 };
