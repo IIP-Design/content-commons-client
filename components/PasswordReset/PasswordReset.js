@@ -11,9 +11,9 @@ import { getValidationSchema } from './validationSchema';
 import { validate } from '../../lib/form';
 import './PasswordReset.scss';
 
-const PASSWORD_UPDATE_MUTATION = gql`
-  mutation PASSWORD_UPDATE_MUTATION($tempToken: String!, $password: String!, $confirmPassword: String!) {
-    passwordUpdateViaToken(tempToken: $tempToken, password: $password, confirmPassword: $confirmPassword) {
+const UPDATE_PASSWORD_MUTATION = gql`
+  mutation UPDATE_PASSWORD_MUTATION($tempToken: String!, $password: String!, $confirmPassword: String!) {
+    updatePassword(tempToken: $tempToken, password: $password, confirmPassword: $confirmPassword) {
       id
     }
   }
@@ -88,7 +88,7 @@ PasswordReset.propTypes = {
 
 
 export default compose(
-  graphql( PASSWORD_UPDATE_MUTATION ),
+  graphql( UPDATE_PASSWORD_MUTATION ),
   withFormik( {
     mapPropsToValues: () => ( {
       password: '',

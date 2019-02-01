@@ -7,7 +7,7 @@ import { withFormik } from 'formik';
 import { Form, Button } from 'semantic-ui-react';
 import * as Yup from 'yup';
 import Error from '../errors/ApolloError';
-import './PasswordReset.scss';
+import './RegisterConfirmation.scss';
 
 const REQUEST_ACCOUNT_ACTION_MUTATION = gql`
   mutation REQUEST_ACCOUNT_ACTION_MUTATION ( 
@@ -35,7 +35,7 @@ const validationSchema = Yup.object().shape( {
     .required( 'E-mail is required!' ),
 } );
 
-class PasswordResetReqest extends Component {
+class RegisterConfirmationRequest extends Component {
   render () {
     const {
       errors,
@@ -48,8 +48,8 @@ class PasswordResetReqest extends Component {
 
     return (
       <div className="reset reset_wrapper">
-        <h1 className="reset_title">Forgot your password?</h1>
-        <p className="reset_subtext">Instructions to reset your password will be sent to your email.</p>
+        <h1 className="reset_title">Send Confirmation</h1>
+        <p className="reset_subtext">Instructions confirm your registration will be sent to your email.</p>
         <Error error={ errors.submit } />
         <Form
           noValidate
@@ -73,7 +73,7 @@ class PasswordResetReqest extends Component {
             loading={ isSubmitting }
             disabled={ isSubmitting }
             className="primary"
-          >Send Password Reset
+          >Send Confirmation
           </Button>
         </Form>
       </div>
@@ -81,7 +81,7 @@ class PasswordResetReqest extends Component {
   }
 }
 
-PasswordResetReqest.propTypes = {
+RegisterConfirmationRequest.propTypes = {
   values: PropTypes.object,
   errors: PropTypes.object,
   handleSubmit: PropTypes.func,
@@ -106,11 +106,11 @@ export default compose(
         await mutate( {
           variables: {
             email: values.email,
-            subject: 'Reset Your Password',
-            body: 'Reset your password by using the following link:',
-            link: 'Reset your Password',
-            reply: 'A reset link has been sent to your enail',
-            page: 'passwordreset'
+            subject: 'Confirm Your Account',
+            body: 'Complete your registration by using the following link:',
+            link: 'Complete your Registration',
+            reply: 'A confirmation link has been sent to your enail',
+            page: 'confirm'
           }
         } );
 
@@ -124,4 +124,4 @@ export default compose(
       setSubmitting( false );
     }
   } )
-)( PasswordResetReqest );
+)( RegisterConfirmationRequest );

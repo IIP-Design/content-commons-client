@@ -11,9 +11,9 @@ import { getValidationSchema } from './validationSchema';
 import { validate } from '../../lib/form';
 import './RegisterConfirmation.scss';
 
-const CONFIRM_REGISTRATION_MUTATION = gql`
-  mutation CONFIRM_REGISTRATION_MUTATION($tempToken: String!, $password: String!, $confirmPassword: String!) {
-    confirmRegistration(tempToken: $tempToken, password: $password, confirmPassword: $confirmPassword) {
+const UPDATE_PASSWORD_MUTATION = gql`
+  mutation UPDATE_PASSWORD_MUTATION($tempToken: String!, $password: String!, $confirmPassword: String!) {
+    updatePassword(tempToken: $tempToken, password: $password, confirmPassword: $confirmPassword) {
       id
     }
   }
@@ -88,7 +88,7 @@ ConfirmRegistration.propTypes = {
 
 
 export default compose(
-  graphql( CONFIRM_REGISTRATION_MUTATION ),
+  graphql( UPDATE_PASSWORD_MUTATION ),
   withFormik( {
     mapPropsToValues: () => ( {
       password: '',
