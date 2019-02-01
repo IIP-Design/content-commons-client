@@ -67,7 +67,7 @@ class EmailLogin extends Component {
             </Button>
           </div>
           <div className="login_email--account">
-            <Link href="/forget"><a>Forgot your password?</a></Link>
+            <Link href="/passwordreset"><a>Forgot your password?</a></Link>
             <p>Don't have an account? <Link href="/register"><a>Register</a></Link></p>
           </div>
         </div>

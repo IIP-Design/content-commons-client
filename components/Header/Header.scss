@@ -162,7 +162,8 @@
   &--login,
   &--register,
   &--confirm,
-  &--_error {
+  &--_error,
+  &--passwordreset {
     @media screen and (min-width: 768px) {
       height: 64px;
     }
@@ -180,7 +181,8 @@
   &--register,
   &--admin,
   &--confirm,
-  &--_error {
+  &--_error,
+  &--passwordreset {
     position: fixed;
     top: 0;
     z-index: 2;
