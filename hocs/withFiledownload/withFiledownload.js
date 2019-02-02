@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import FileSaver from 'file-saver';
+// import FileSaver from 'file-saver';
 
-const withFileDownload = ( WrappedComponent ) => {
+const withFileDownload = WrappedComponent => {
   class HOC extends Component {
     constructor( props ) {
       super( props );
@@ -14,15 +14,15 @@ const withFileDownload = ( WrappedComponent ) => {
 
     download = ( url, title, locale, id = '' ) => {
       const ext = url.substr( url.lastIndexOf( '.' ) );
-      id = ( id ) ? `.${id}` : '';
-      let filename = `${title}.${locale}${id}${ext}`;
+      const downloadiId = ( id ) ? `.${id}` : '';
+      let filename = `${title}.${locale}${downloadiId}${ext}`;
       filename = filename.replace( /(\s|-)/g, '_' ).toLowerCase();
       axios
         .post( this.ENDPOINT, { url, filename }, { responseType: 'blob' } )
-        .then( ( response ) => {
-          FileSaver.saveAs( response.data, filename );
+        .then( response => {
+          // FileSaver.saveAs( response.data, filename );
         } )
-        .catch( ( err ) => {
+        .catch( err => {
           this.setState( {
             error: `Oops there was a problem downloading your file: ${err.message}`
           } );
