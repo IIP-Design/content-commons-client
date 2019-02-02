@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Embed, Checkbox } from 'semantic-ui-react';
 import axios from 'axios';
-import config from '../../config';
+import config from 'config';
 
-import { getYouTubeId } from '../../lib/utils';
-import { updateUrl } from '../../lib/browser';
+import { getYouTubeId } from 'lib/utils';
+import { updateUrl } from 'lib/browser';
 
-// import plusIcon from '../../../assets/icons/icon_plus.svg';
-import downloadIcon from '../../static/icons/icon_download.svg';
-import shareIcon from '../../static/icons/icon_share.svg';
-import embedIcon from '../../static/icons/icon_embed.svg';
+// import plusIcon from '../assets/icons/icon_plus.svg';
+import downloadIcon from 'static/icons/icon_download.svg';
+import shareIcon from 'static/icons/icon_share.svg';
+import embedIcon from 'static/icons/icon_embed.svg';
 
 import ModalItem from '../modals/ModalItem';
 import ModalLangDropdown from '../modals/ModalLangDropdown/ModalLangDropdown';

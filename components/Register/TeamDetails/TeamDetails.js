@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import { Form, Button } from 'semantic-ui-react';
-import { validationSchema } from './validationSchema';
-
-// Organizations/agency should be pulled from rest endpoint?
 import {
   optionFormatter,
   formikHandleOnChange,
   formikHandleCheckboxOnChange
-} from '../../../lib/form';
-import organizations from '../../../static/data/organizations';
+} from 'lib/form';
+import organizations from 'static/data/organizations.json';
+import { validationSchema } from './validationSchema';
+
+// Organizations/agency should be pulled from rest endpoint?
 
 const organizationOptions = optionFormatter( organizations, 'code' );
 

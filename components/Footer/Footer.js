@@ -2,9 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 import { Container, Header, List } from 'semantic-ui-react';
 import './Footer.scss';
-import slackLogo from '../../static/images/logo_slack.png';
-import flagImage from '../../static/images/flag.jpg';
-import DosSeal from '../../static/images/dos_seal.svg';
+import slackLogo from 'static/images/logo_slack.png';
+import flagImage from 'static/images/flag.jpg';
+import DosSeal from 'static/images/dos_seal.svg';
 
 const Footer = () => {
   const menuItems = [

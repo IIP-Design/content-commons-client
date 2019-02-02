@@ -9,9 +9,9 @@
  */
 import React, { PureComponent } from 'react';
 import { Icon, Responsive } from 'semantic-ui-react';
+import User from 'components/User/User';
 import LoggedInNav from './LoggedInNav/LoggedInNav';
 import LoggedOutNav from './LoggedOutNav/LoggedOutNav';
-import User from '../../User/User';
 
 import './global.scss';
 

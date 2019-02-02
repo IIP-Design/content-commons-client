@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getItemRequest } from '../../lib/elastic/api';
-import { normalizeItem } from '../../lib/elastic/parser';
+import { getItemRequest } from 'lib/elastic/api';
+import { normalizeItem } from 'lib/elastic/parser';
 
-import embedIcon from '../../static/icons/icon_embed.svg';
-import shareIcon from '../../static/icons/icon_share.svg';
+import embedIcon from 'static/icons/icon_embed.svg';
+import shareIcon from 'static/icons/icon_share.svg';
 
 import ModalItem from '../modals/ModalItem';
 import ModalLangDropdown from '../modals/ModalLangDropdown/ModalLangDropdown';

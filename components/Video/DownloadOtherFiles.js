@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Item } from 'semantic-ui-react';
 import { array, string } from 'prop-types';
-import downloadIcon from '../../static/icons/icon_download.svg';
+import downloadIcon from 'static/icons/icon_download.svg';
 
 
 const DownloadOtherFiles = ( { instructions, units } ) => {

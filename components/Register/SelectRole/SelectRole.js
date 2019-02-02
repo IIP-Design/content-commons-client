@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withFormik } from 'formik';
 import { Form, Input, Button } from 'semantic-ui-react';
-import { optionFormatter, formikHandleOnChange } from '../../../lib/form';
+import { optionFormatter, formikHandleOnChange } from 'lib/form';
 import { validationSchema } from './validationSchema';
 import { permissionOptions } from '../permissionOptions';
 

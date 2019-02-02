@@ -3,12 +3,12 @@ import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 import isEmpty from 'lodash/isEmpty';
-import { isRestrictedPage, checkForAuthenticatedUser } from '../lib/authentication';
-import { redirectTo } from '../lib/browser';
-import withApollo from '../hocs/withApollo';
-import Page from '../components/Page';
-import makeStore from '../lib/redux/store';
-import '../styles/styles.scss';
+import { isRestrictedPage, checkForAuthenticatedUser } from 'lib/authentication';
+import { redirectTo } from 'lib/browser';
+import withApollo from 'hocs/withApollo';
+import Page from 'components/Page';
+import makeStore from 'lib/redux/store';
+import 'styles/styles.scss';
 
 class Commons extends App {
   static async getInitialProps( { Component, ctx } ) {

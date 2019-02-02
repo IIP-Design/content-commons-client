@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import Error from 'next/error';
-import '../styles/static-page.scss';
+import 'styles/static-page.scss';
 
 const MarkdownPage = props => {
   const {

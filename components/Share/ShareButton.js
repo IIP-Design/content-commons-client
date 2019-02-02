@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'semantic-ui-react';
-import { openWindow, isMobile } from '../../lib/browser';
+import { openWindow, isMobile } from 'lib/browser';
 
 const ShareButton = props => {
   /**

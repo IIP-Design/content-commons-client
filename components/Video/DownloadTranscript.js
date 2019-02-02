@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Item } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import downloadIcon from '../../static/icons/icon_download.svg';
+import downloadIcon from 'static/icons/icon_download.svg';
 
 class DownloadTranscript extends Component {
   renderFormItems( units ) {

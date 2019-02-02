@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Router from 'next/router';
-import LogoutButton from '../../Logout/Logout';
+import LogoutButton from 'components/Logout/Logout';
 import '../menu.scss';
 
 class UserProfileMenu extends Component {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Item } from 'semantic-ui-react';
 import { object, string, bool } from 'prop-types';
-import downloadIcon from '../../static/icons/icon_download.svg';
+import downloadIcon from 'static/icons/icon_download.svg';
 
 // NOTE: Using the 'download' attribute to trigger downloads
 // Need to research more robust options depending on browser supprt

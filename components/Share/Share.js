@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'semantic-ui-react';
+import { stringifyQueryString } from 'lib/browser';
 import ClipboardCopy from '../ClipboardCopy';
-import { stringifyQueryString } from '../../lib/browser';
 import ShareButton from './ShareButton';
 
 import './Share.scss';

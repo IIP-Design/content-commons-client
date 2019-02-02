@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RegisterConfirmation from '../components/RegisterConfirmation/RegisterConfirmation';
-import RegisterConfirmationRequest from '../components/RegisterConfirmation/RegisterConfirmationRequest';
+import RegisterConfirmation from 'components/RegisterConfirmation/RegisterConfirmation';
+import RegisterConfirmationRequest from 'components/RegisterConfirmation/RegisterConfirmationRequest';
 
 const ConfirmPage = props => {
   if ( !props.query || !props.query.tempToken ) {

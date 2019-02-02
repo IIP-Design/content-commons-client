@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import downloadIcon from '../../static/icons/icon_download.svg';
+import downloadIcon from 'static/icons/icon_download.svg';
 import './DownloadHelp.scss';
 
 const DownloadHelp = () => (

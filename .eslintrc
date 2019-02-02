@@ -109,5 +109,10 @@
         "aspects": ["invalidHref"]
       }
     ]
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    }
   }
 }

@@ -7,11 +7,11 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 import Link from 'next/link';
 
-import imageIcon from '../../static/icons/icon_150px_images_blue.png';
-import docIcon from '../../static/icons/icon_150px_document_blue.png';
-import eduIcon from '../../static/icons/icon_150px_edu_blue.png';
-import videoIcon from '../../static/icons/icon_150px_video_blue.png';
-import audioIcon from '../../static/icons/icon_150px_audio_blue.png';
+import imageIcon from 'static/icons/icon_150px_images_blue.png';
+import docIcon from 'static/icons/icon_150px_document_blue.png';
+import eduIcon from 'static/icons/icon_150px_edu_blue.png';
+import videoIcon from 'static/icons/icon_150px_video_blue.png';
+import audioIcon from 'static/icons/icon_150px_audio_blue.png';
 
 import './Upload.scss';
 

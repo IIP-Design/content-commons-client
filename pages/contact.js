@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import config from '../config';
-import withCachedFetch from '../hocs/withCachedFetch/withCachedFetch';
-import MarkdownPage from '../components/MarkdownPage';
+import config from 'config';
+import withCachedFetch from 'hocs/withCachedFetch/withCachedFetch';
+import MarkdownPage from 'components/MarkdownPage';
 
 
 const Contact = props => {

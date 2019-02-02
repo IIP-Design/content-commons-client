@@ -5,10 +5,10 @@ import { compose, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withFormik } from 'formik';
 import { Form, Button } from 'semantic-ui-react';
+import { validate } from 'lib/form';
 import { CURRENT_USER_QUERY } from '../User/User';
 import Error from '../errors/ApolloError';
 import { getValidationSchema } from './validationSchema';
-import { validate } from '../../lib/form';
 import './PasswordReset.scss';
 
 const UPDATE_PASSWORD_MUTATION = gql`

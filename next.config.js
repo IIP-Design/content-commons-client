@@ -1,4 +1,3 @@
-const path = require( 'path' );
 const withSass = require( '@zeit/next-sass' );
 const withCss = require( '@zeit/next-css' );
 require( 'dotenv' ).config();
@@ -24,14 +23,6 @@ module.exports = withSass( withCss( {
         }
       }
     } );
-
-    config.resolve.alias = {
-      components: path.join( __dirname, './components' ),
-      lib: path.join( __dirname, './lib' ),
-      hocs: path.join( __dirname, './hocs' ),
-      static: path.join( __dirname, './static' ),
-      styles: path.join( __dirname, './styles' )
-    };
 
     return config;
   }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
+import Recents from 'components/Recents';
 import { loadRecents } from '../components/Recents/actions';
 import { loadPostTypes } from '../lib/redux/globalActions/postType';
-import Recents from '../components/Recents';
 
 class Landing extends Component {
   static async getInitialProps ( { store } ) {

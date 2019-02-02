@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import cachedFetch, { overrideCache } from '../../lib/cachedFetch';
+import cachedFetch, { overrideCache } from 'lib/cachedFetch';
 
 /**
  * Fetches markdown from either the cache (sessionStorage) or via

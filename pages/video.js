@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { normalizeItem } from '../lib/elastic/parser';
-import { getItemRequest, getDataFromHits } from '../lib/elastic/api';
-import Video from '../components/Video/Video';
+import { getItemRequest, getDataFromHits } from 'lib/elastic/api';
+import Video from 'components/Video/Video';
+import { normalizeItem } from 'lib/elastic/parser';
 
 class VideoPage extends Component {
   static async getInitialProps ( { query } ) {

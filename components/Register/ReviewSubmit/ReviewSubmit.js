@@ -6,9 +6,9 @@ import { withFormik } from 'formik';
 import {
   Form, List, Button
 } from 'semantic-ui-react';
+import Error from 'components/errors/ApolloError';
 import { validationSchema } from './validationSchema';
 import { permissionOptions } from '../permissionOptions';
-import Error from '../../errors/ApolloError';
 
 // UserCreateInput is a graphql input type defined in
 // the prisma.graphql on the apollo server

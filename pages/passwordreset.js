@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PasswordReset from '../components/PasswordReset/PasswordReset';
-import PasswordResetRequest from '../components/PasswordReset/PasswordResetRequest';
+import PasswordReset from 'components/PasswordReset/PasswordReset';
+import PasswordResetRequest from 'components/PasswordReset/PasswordResetRequest';
 
 const PasswordResetPage = props => {
   if ( !props.query || !props.query.tempToken ) {

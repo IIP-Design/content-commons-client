@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import { Form, Button } from 'semantic-ui-react';
-import { optionFormatter } from '../../../lib/form';
+import { optionFormatter } from 'lib/form';
+import countries from 'static/data/countries.json';
 import { validationSchema } from './validationSchema';
-import countries from '../../../static/data/countries';
 
 const countryOptions = optionFormatter( countries, 'code' );
 
