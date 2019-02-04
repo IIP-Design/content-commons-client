@@ -1,5 +1,5 @@
 import React from 'react';
-import Upload from 'components/Upload/Upload';
+import Upload from 'components/admin/Upload/Upload';
 
 const UploadPage = () => (
   <Upload />
