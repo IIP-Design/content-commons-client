@@ -5,7 +5,10 @@ import User from 'components/User/User';
 const LoginPage = () => (
   <User>
     {
-      ( { data } ) => <Login user={ data.authenticatedUser } />
+      ( { data } ) => {
+        const user = data ? data.authenticatedUser : null;
+        return ( <Login user={ user } /> );
+      }
     }
   </User>
 );

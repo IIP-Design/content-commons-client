@@ -97,7 +97,6 @@
       ".*": "babel-jest"
     }
   },
-  "//": "babel config as opposed to .babelrc file",
   "babel": {
     "env": {
       "development": {
