@@ -79,6 +79,7 @@ const SelectRole = ( {
                 value={ values.team }
                 onChange={ handleOnChange }
                 error={ !!errors.team }
+                required
               />
             </div>
           );
