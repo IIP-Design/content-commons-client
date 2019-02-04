@@ -14,7 +14,7 @@ import videoIcon from 'static/icons/icon_150px_video_blue.png';
 import audioIcon from 'static/icons/icon_150px_audio_blue.png';
 
 import './Upload.scss';
-
+// as="video/234/edit"
 const Upload = () => (
 
   <div>
@@ -29,9 +29,13 @@ const Upload = () => (
           </div>
         </Button>
         <Button icon className="type">
-          <img src={ videoIcon } alt="" />
           <div className="type--label">
-            Videos
+            <Link href="project?content=video&id=234&action=edit">
+              <a>
+                <img src={ videoIcon } alt="Upload video content" />
+                <div>Videos</div>
+              </a>
+            </Link>
           </div>
         </Button>
         <Button icon className="type disabled">
