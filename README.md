@@ -27,7 +27,13 @@ Client available at [http://localhost:3000/](http://localhost:3000/)
 
 ## Running Tests
 
-[TODO]
+Tests are executed using [Jest](https://jestjs.io/en/) and [Enzyme](https://airbnb.io/enzyme/)
+
+Ensure that your files following the [component name].test.js naming convention and execute:
+
+```
+npm run test
+```
 
 ## Built With
 
@@ -40,5 +46,3 @@ Client available at [http://localhost:3000/](http://localhost:3000/)
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/IIP-Design/content-commons-client/tags).
-
-Hola
