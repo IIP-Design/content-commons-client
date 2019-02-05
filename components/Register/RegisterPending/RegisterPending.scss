@@ -1,0 +1,36 @@
+@import "../../../styles/colors.scss";
+
+.register_pending {
+  max-width: 600px;
+  padding-top: 15px;
+  margin: 0 auto;
+  @media screen and (min-width: 600px) {
+    padding: 60px 30px;
+  }
+
+  &_title {
+    margin-bottom: 15px;
+    border-bottom: 2px solid $alt-grey;
+  }
+
+  &_intro {
+    color: $blue;
+  }
+
+  &_section {
+    margin-bottom: 1em;
+    color: #000;
+
+    &_header {
+      font-weight: bold;
+    }
+
+    &--links {
+      a {
+        display: block;
+        line-height: 1.4285em;
+        color: $matisse-blue;
+      }
+    }
+  }
+}

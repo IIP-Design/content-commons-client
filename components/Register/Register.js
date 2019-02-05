@@ -10,6 +10,7 @@ import SelectRole from './SelectRole/SelectRole';
 import UserDetails from './UserDetails/UserDetails';
 import TeamDetails from './TeamDetails/TeamDetails';
 import ReviewSubmit from './ReviewSubmit/ReviewSubmit';
+// import RegisterPending from './RegisterPending/RegisterPending';
 import './Register.scss';
 
 
@@ -155,10 +156,13 @@ class Register extends Component {
     const { activeIndex, view } = this.state;
 
     if ( view === 'confirmation' ) {
+      // if ( this.state.data.permissions === 'TEAM_ADMIN' ) {
+      //   return <RegisterPending />;
+      // }
       return (
         <div className="register register_wrapper">
           <h1 className="register_title">Confirm Registration</h1>
-          <div style={ { textAlign: 'center' } }>Please check your email to complete your registration</div>
+          <div style={ { textAlign: 'center' } }>Please check your email to complete your registration.</div>
         </div>
       );
     }
