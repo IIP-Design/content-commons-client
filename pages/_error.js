@@ -1,29 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'next/router';
+import NotFound404 from 'components/errors/NotFound404';
 
-export default class Error extends React.Component {
+class Error extends React.Component {
   static getInitialProps( { res, err } ) {
     // eslint-disable-next-line  no-nested-ternary
     const statusCode = res ? res.statusCode : err ? err.statusCode : null;
     return { statusCode };
   }
 
+  renderServerError = statusCode => {
+    if ( statusCode === 404 ) {
+      return <NotFound404 />;
+    }
+    return <p>{ `An error ${statusCode} occured on the server` }</p>;
+  }
+
+  renderClientError = () => <p> An error occurred on client</p>
+
   render() {
     const styleObj = {
-      width: '500px',
       textAlign: 'center',
       margin: '180px auto 120px auto'
     };
 
+    const { statusCode } = this.props;
+
     return (
-      <div style={ styleObj }>
+      <section style={ styleObj }>
         <h1>Oops</h1>
-        <p>
-          { this.props.statusCode
-            ? `An error ${this.props.statusCode} occurred on server`
-            : 'An error occurred on client' }
-        </p>
-      </div>
+        <h4 className="confirm_subtext">This usually isn't a common occurrence.</h4>
+        { statusCode
+          ? this.renderServerError( statusCode )
+          : this.renderClientError() }
+      </section>
     );
   }
 }
@@ -31,3 +42,5 @@ export default class Error extends React.Component {
 Error.propTypes = {
   statusCode: PropTypes.number
 };
+
+export default withRouter( Error );
