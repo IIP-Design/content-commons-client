@@ -4,9 +4,9 @@
   "description": "Content Commons Client",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production node server.js",
     "test": "NODE_ENV=test jest --watch",
     "deploy": "npm run build && npm run start"
   },
@@ -32,6 +32,7 @@
     "dotenv": "^6.2.0",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.8.0",
+    "express": "^4.16.4",
     "file-loader": "^3.0.1",
     "formik": "^1.4.2",
     "graphql": "^14.0.2",
