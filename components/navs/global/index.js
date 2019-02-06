@@ -74,7 +74,7 @@ class GlobalNav extends PureComponent {
           onClick={ this.handleNavClick }
           onKeyUp={ this.keyUp }
           tabIndex={ 0 }
-          className={ mobileNavVisible ? 'mobileNav' : 'fullNav' }
+          // className={ mobileNavVisible ? 'mobileNav' : 'fullNav' }
         />
         <User>
           { ( { data } ) => {
