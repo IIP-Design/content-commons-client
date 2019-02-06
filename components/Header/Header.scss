@@ -5,8 +5,9 @@
     display: flex;
     justify-content: space-between;
     text-align: center;
-    @media screen and (max-width: 767px) {
-      flex-direction: column;
+    flex-direction: column;
+    @media screen and (min-width: 767px) {
+      flex-direction: row;
     }
   }
 
@@ -70,7 +71,7 @@
     }
 
     .search_bar {
-      margin: 3em auto;
+      margin: 2.33em auto;
     }
   }
 
@@ -146,9 +147,10 @@
       width: 100%;
       padding: 0.8em 0;
       box-shadow: none;
+
       @media screen and (min-width: 768px) {
         width: 400px;
-        padding: 0.6em;
+        padding: 0.4em;
       }
       @media screen and (min-width: 900px) {
         width: 500px;
