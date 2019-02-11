@@ -1,0 +1,68 @@
+@import "../../styles/colors.scss";
+
+.results {
+  margin-top: 9em;
+  @media screen and (min-width: 768px) {
+    margin-top: 5em;
+  }
+
+  hr {
+    height: 1px;
+    color: $light-grey;
+    background-color: $light-grey;
+    border: none;
+    margin-top: 0;
+    margin-left: -1em;
+    margin-right: -1em;
+
+    @media screen and (min-width: 768px) {
+      margin-left: -2em;
+      margin-right: -2em;
+    }
+  }
+
+  &_wrapper {
+    &.ui.grid {
+      @media screen and (max-width: 425px) {
+        margin: 0;
+      }
+    }
+  }
+
+  &_noResults {
+    display: block;
+    font-size: 18px;
+    width: 100%;
+    margin: 0 auto;
+
+    @media screen and (min-width: 701px) {
+      width: 700px;
+    }
+  }
+
+  &_help {
+    margin: 0 auto 4em;
+
+    &--nomatch {
+      display: block;
+      padding: 0.5em 0 2em 0;
+      text-align: center;
+    }
+
+    &--suggestions {
+      h3 {
+        font-size: 1.111111111em; //20px pulled from design system
+        margin: 2em 0 0.2em 0;
+        color: $blue;
+      }
+
+      ul {
+        padding-left: 1.111111111em;
+        line-height: 1.2em;
+        li {
+          margin-bottom: 0.5em;
+        }
+      }
+    }
+  }
+}
