@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Recents from 'components/Recents';
 import { loadRecents } from '../components/Recents/actions';
-import { loadPostTypes } from '../lib/redux/globalActions/postType';
+import { loadPostTypes } from '../lib/redux/actions/postType';
 
 class Landing extends Component {
   static async getInitialProps ( { store } ) {
@@ -15,6 +15,8 @@ class Landing extends Component {
     await recentVideos;
     await recentPosts;
     await postTypes;
+
+    return {};
   }
 
   render() {
