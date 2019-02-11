@@ -8,7 +8,7 @@ import {
   Grid, Header, Item, Modal, Loader, Message
 } from 'semantic-ui-react';
 import { createStructuredSelector } from 'reselect';
-import { makeSelectPostTypeLabel } from '../../lib/redux/selectors';
+import { makeSelectPostTypeLabel } from 'lib/redux/global/selectors/postType';
 import {
   makeSelectRecentsByType,
   makeSelectRecentsWithMeta,
