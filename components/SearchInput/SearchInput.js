@@ -1,23 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import debounce from 'lodash/debounce';
 import { Form, Input, Icon } from 'semantic-ui-react';
 import { detectLanguage } from 'lib/language';
 import './SearchInput.scss';
 
-// import * as actions from '../../actions';
-
 const Search = props => {
-  // componentDidMount() {
-  // Clear session if on home page
-  // if ( this.props.location.pathname === '/' ) {
-  //   this.props.clearFilters();
-  //   this.props.languageUpdate( { display_name: 'English', key: 'en-us' } );
-  //   this.props.createRequest();
-  // }
-  // }
-
   const [term, setTerm] = useState( '' );
   const [language, setLanguage] = useState( {
     locale: 'en-us',
@@ -46,25 +35,32 @@ const Search = props => {
     getLanguage();
   }, [term] );
 
-  const handleQueryOnChange = async e => {
-    const text = e.target.value;
-    setTerm( text.trim() );
-  };
+  /**
+   * Since function call the language detect api on text change
+   * use debounce to enable better perfomance
+   */
+  const handleQueryOnChange = debounce( async ( e, data ) => {
+    setTerm( data.value.trim() );
+  }, 300 );
+
 
   const handleSubmit = async e => {
     e.preventDefault();
 
-    const sortBy = term ? 'relevance' : 'published';
-    props.router.push( `/results?language=${language.locale}&term=${term}&sortBy=${sortBy}` );
-    // props.router.push( {
-    //   pathname: '/results',
-    //   query: {
-    //     language: language.locale,
-    //     term: encodeURIComponent( term )
-    //   },
-    // }, `/results/${language.locale}/${sortBy}/${term}` );
+    let newPath = `/results?language=${language.locale}`;
+    if ( term ) {
+      newPath += `&term=${encodeURIComponent( term )}&sortBy=relevance`;
+    } else {
+      newPath += '&sortBy=published';
+    }
+    // debugging
+    // console.log( `old : ${props.router.asPath}` );
+    // console.log( `new : ${newPath}` );
 
-    // await this.props.createRequest();
+    // only submit if search is different from previos
+    if ( newPath !== props.router.asPath ) {
+      props.router.push( newPath );
+    }
   };
 
 
@@ -92,25 +88,8 @@ const Search = props => {
 };
 
 
-const mapStateToProps = state => ( {
-  search: state.search
-} );
-
 Search.propTypes = {
-  updateSearchQuery: PropTypes.func,
-  updateSort: PropTypes.func,
-  createRequest: PropTypes.func,
-  clearFilters: PropTypes.func,
-  languageUpdate: PropTypes.func,
-  history: PropTypes.object,
-  location: PropTypes.object,
   router: PropTypes.object,
-  search: PropTypes.shape( {
-    query: PropTypes.string
-  } )
 };
 
-
-// export default withRouter( connect( mapStateToProps, actions )( Search ) );
-
-export default withRouter( connect( mapStateToProps )( Search ) );
+export default withRouter( Search );
