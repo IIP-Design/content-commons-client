@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Grid } from 'semantic-ui-react';
 // import * as actions from '../../actions';
 import { normalizeItem } from 'lib/elastic/parser';
-// import SearchTerm from '../SearchTerm';
+import SearchTerm from 'components/SearchTerm/SearchTerm';
 // import FilterMenu from '../FilterMenu/FilterMenu';
 import ResultItem from './ResultItem/ResultItem';
 import ResultsHeader from './ResultsHeader/ResultsHeader';
@@ -16,7 +16,7 @@ import './Results.scss';
 /**
  * NOTE: Getting error: chunk styles [mini-css-extract-plugin] Conflicting order between:
  * Seems to occurs when the same styles are re imported, i.e modal styles imported in recents
- * and results
+ * and results - resolved by reordering import statements
 */
 
 const Results = props => {
@@ -34,7 +34,7 @@ const Results = props => {
     <section className="results">
       { props.search.currentPage !== -1 && (
       <div>
-        { /* <SearchTerm /> */ }
+        <SearchTerm />
         { !items.length && ( <NoResults searchTerm={ props.search.currentTerm } /> ) }
         <hr />
         { /* <FilterMenu /> */ }
