@@ -3,7 +3,7 @@ import { object, func, string } from 'prop-types';
 import { connect } from 'react-redux';
 import { Form, Select, Dropdown } from 'semantic-ui-react';
 import { numberWithCommas } from 'lib/utils';
-import { sortRequest, updateSizeRequest } from '../actions';
+import { sortRequest, updateSizeRequest } from 'lib/redux/actions/search';
 import ResultsToggleView from '../ResultsToggleView/ResultsToggleView';
 import './ResultsHeader.scss';
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { object, func } from 'prop-types';
 import { connect } from 'react-redux';
 import { Pagination } from 'semantic-ui-react';
-import * as actions from '../actions';
+import * as actions from 'lib/redux/actions/search';
 import './ResultsPagination.scss';
 
 class ResultsPagination extends Component {
