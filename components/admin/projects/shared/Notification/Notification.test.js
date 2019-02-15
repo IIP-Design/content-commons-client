@@ -32,7 +32,7 @@ describe( '<Notification />', () => {
       .toEqual( {
         padding: '1em 1.5em',
         fontSize: '0.75em',
-        backgroundColor: 'pear'
+        backgroundColor: '#aee02d'
       } );
   } );
 

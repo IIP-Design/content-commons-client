@@ -23,7 +23,7 @@ describe( '<FormInstructions />', () => {
     expect( baseMsg.prop( 'style' ) ).toEqual( {
       margin: '0',
       padding: '0.625em 1.75em',
-      backgroundColor: 'blueGreen',
+      backgroundColor: '#d6d7d9',
       textAlign: 'center'
     } );
   } );
@@ -40,7 +40,7 @@ describe( '<FormInstructions />', () => {
     expect( draftMsg.prop( 'style' ) ).toEqual( {
       margin: '0',
       padding: '0.625em 1.75em 1.5em',
-      backgroundColor: 'white',
+      backgroundColor: '#fff',
       textAlign: 'center'
     } );
   } );

@@ -9,7 +9,7 @@ exports[`<PreviewProjectContent /> renders without crashing 1`] = `
   <Notification
     customStyles={
       Object {
-        "backgroundColor": "lightningYellow",
+        "backgroundColor": "#fdb81e",
         "borderTopLeftRadius": "0.28571429rem",
         "borderTopRightRadius": "0.28571429rem",
         "fontSize": "1em",

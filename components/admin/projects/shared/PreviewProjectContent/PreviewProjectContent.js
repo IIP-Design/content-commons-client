@@ -25,7 +25,6 @@ import PopupTabbed from 'components/popups/PopupTabbed';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import { getYouTubeId } from 'lib/utils';
-import colors from 'styles/colors.scss';
 
 import './PreviewProjectContent.scss';
 
@@ -130,7 +129,7 @@ class PreviewProjectContent extends React.PureComponent {
       borderTopRightRadius: '0.28571429rem',
       padding: '1em 1.5em',
       fontSize: '1em',
-      backgroundColor: colors.lightningYellow
+      backgroundColor: '#fdb81e'
     };
 
     return (

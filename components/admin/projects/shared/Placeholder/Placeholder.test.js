@@ -59,7 +59,7 @@ describe( '<Placeholder />', () => {
         height: '0.875em',
         width: 'auto',
         marginBottom: '0.625em',
-        backgroundColor: 'altGrey'
+        backgroundColor: '#d6d7d9'
       } );
   } );
 
@@ -72,7 +72,7 @@ describe( '<Placeholder />', () => {
         height: '0.875em',
         width: 'auto',
         marginBottom: '0.625em',
-        backgroundColor: 'altGrey',
+        backgroundColor: '#d6d7d9',
         color: 'red'
       } );
   } );

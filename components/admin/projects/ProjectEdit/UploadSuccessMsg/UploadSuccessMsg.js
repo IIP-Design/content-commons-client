@@ -8,20 +8,18 @@ import React from 'react';
 import { object } from 'prop-types';
 import { Icon } from 'semantic-ui-react';
 
-import colors from 'styles/colors.scss';
-
 const UploadSuccessMsg = props => {
   const { style } = props;
   const baseStyles = {
     margin: '0',
     padding: '1rem 1.75rem',
-    backgroundColor: colors.blueGreen,
+    backgroundColor: '#d6d7d9',
     textAlign: 'center'
   };
 
   const successStyles = {
     ...baseStyles,
-    backgroundColor: colors.pear,
+    backgroundColor: '#aee02d',
     textAlign: 'initial',
     ...style
   };
