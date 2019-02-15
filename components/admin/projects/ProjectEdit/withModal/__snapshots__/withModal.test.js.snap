@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`withModal() renders without crashing 1`] = `
+<Portal
+  closeOnDocumentClick={false}
+  closeOnEscape={true}
+  eventPool="Modal"
+  mountNode={<body />}
+  onClose={[Function]}
+  onMount={[Function]}
+  onOpen={[Function]}
+  onUnmount={[Function]}
+  openOnTriggerClick={true}
+  trigger={
+    <Trigger
+      one="prop1"
+      two="prop2"
+    />
+  }
+>
+  <div
+    className="ui page modals dimmer transition visible active"
+  >
+    <Ref
+      innerRef={[Function]}
+    >
+      <div
+        className="ui modal transition visible active"
+        one="option1"
+        style={
+          Object {
+            "marginTop": undefined,
+          }
+        }
+        two="option2"
+      >
+        <MountNode />
+        <ModalContent>
+          <Content
+            one="prop3"
+            two="prop4"
+          />
+        </ModalContent>
+      </div>
+    </Ref>
+  </div>
+</Portal>
+`;
