@@ -1,0 +1,823 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PreviewProjectContent /> renders without crashing 1`] = `
+<ModalItem
+  customClassName="project-preview"
+  headline="Made in America"
+  textDirection="ltr"
+>
+  <Notification
+    customStyles={
+      Object {
+        "backgroundColor": "lightningYellow",
+        "borderTopLeftRadius": "0.28571429rem",
+        "borderTopRightRadius": "0.28571429rem",
+        "fontSize": "1em",
+        "left": "0",
+        "padding": "1em 1.5em",
+        "position": "absolute",
+        "right": "0",
+        "top": "0",
+      }
+    }
+    el="p"
+    msg="This is a preview of your video project on Content Commons."
+  />
+  <div
+    className="modal_options"
+  >
+    <Dropdown
+      additionLabel="Add "
+      additionPosition="top"
+      className="modal_languages"
+      closeOnBlur={true}
+      deburr={false}
+      icon="chevron down"
+      minCharacters={1}
+      noResultsMessage="No results found."
+      onChange={[Function]}
+      onClick={[Function]}
+      openOnFocus={true}
+      options={
+        Array [
+          Object {
+            "key": "en",
+            "text": "English",
+            "value": "English",
+          },
+          Object {
+            "key": "fr",
+            "text": "French",
+            "value": "French",
+          },
+          Object {
+            "key": "ar",
+            "text": "Arabic",
+            "value": "Arabic",
+          },
+        ]
+      }
+      renderLabel={[Function]}
+      searchInput="text"
+      selectOnBlur={true}
+      selectOnNavigation={true}
+      value="English"
+      wrapSelection={true}
+    />
+    <div
+      className="trigger-container"
+    >
+      <PopupTrigger
+        content={
+          <PopupTabbed
+            panes={
+              Array [
+                Object {
+                  "component": <DownloadVideo
+                    burnedInCaptions={false}
+                    instructions="Download the video and SRT files in English.
+                            This download option is best for uploading this video to web pages."
+                    selectedLanguageUnit={
+                      Object {
+                        "alt": "Man walking through factory (State Dept.)",
+                        "desc": "The value and meaning of the words “Made in America” come from a rich history of innovation and perseverance. Stay for a brief history of manufacturing in the USA and hear some of the positive impacts it has brought to the world and how its benefits are felt today.",
+                        "fileName": "madeinamerica_english_asdkjaf_al;kdflkeori_erpoiuzx,mnvz.mp4",
+                        "id": "3728",
+                        "language": Object {
+                          "display_name": "English",
+                          "language_code": "en",
+                          "locale": "en-us",
+                          "native_name": "English",
+                          "text_direction": "ltr",
+                        },
+                        "other": Array [
+                          Object {
+                            "fileName": "madeinamerica_english.mp3",
+                            "fileType": "mp3",
+                            "md5": "",
+                            "srcUrl": "https://other-download-url.com",
+                          },
+                        ],
+                        "source": Array [
+                          Object {
+                            "burnedInCaptions": "false",
+                            "downloadUrl": "https://video-download-url.com",
+                            "duration": "9:16",
+                            "fileName": "madeinamerica_english.mp4",
+                            "filetype": "",
+                            "md5": "",
+                            "size": Object {
+                              "bitrate": 9832917,
+                              "filesize": 662595174,
+                              "height": "1080",
+                              "width": "1920",
+                            },
+                            "stream": Object {
+                              "link": "",
+                              "site": "",
+                              "thumbnail": null,
+                              "uid": "",
+                              "url": "",
+                            },
+                            "streamUrl": Array [
+                              Object {
+                                "site": "youtube",
+                                "url": "https://youtu.be/1evw4fRu3bo",
+                              },
+                            ],
+                            "video_quality": "web",
+                          },
+                        ],
+                        "srt": Object {
+                          "md5": "",
+                          "srcUrl": "https://srt-download-url.com",
+                        },
+                        "thumbnail": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
+                        "title": "Made in America",
+                        "transcript": Object {
+                          "md5": "",
+                          "srcUrl": "",
+                        },
+                        "uploadStatus": Object {
+                          "error": false,
+                          "success": false,
+                        },
+                        "uploaded": "2018-04-13T15:45:00Z",
+                      }
+                    }
+                  />,
+                  "title": "Video File",
+                },
+                Object {
+                  "component": <DownloadSrt
+                    instructions="Download SRTs"
+                    units={
+                      Array [
+                        Object {
+                          "alt": "Man walking through factory (State Dept.)",
+                          "desc": "The value and meaning of the words “Made in America” come from a rich history of innovation and perseverance. Stay for a brief history of manufacturing in the USA and hear some of the positive impacts it has brought to the world and how its benefits are felt today.",
+                          "fileName": "madeinamerica_english_asdkjaf_al;kdflkeori_erpoiuzx,mnvz.mp4",
+                          "id": "3728",
+                          "language": Object {
+                            "display_name": "English",
+                            "language_code": "en",
+                            "locale": "en-us",
+                            "native_name": "English",
+                            "text_direction": "ltr",
+                          },
+                          "other": Array [
+                            Object {
+                              "fileName": "madeinamerica_english.mp3",
+                              "fileType": "mp3",
+                              "md5": "",
+                              "srcUrl": "https://other-download-url.com",
+                            },
+                          ],
+                          "source": Array [
+                            Object {
+                              "burnedInCaptions": "false",
+                              "downloadUrl": "https://video-download-url.com",
+                              "duration": "9:16",
+                              "fileName": "madeinamerica_english.mp4",
+                              "filetype": "",
+                              "md5": "",
+                              "size": Object {
+                                "bitrate": 9832917,
+                                "filesize": 662595174,
+                                "height": "1080",
+                                "width": "1920",
+                              },
+                              "stream": Object {
+                                "link": "",
+                                "site": "",
+                                "thumbnail": null,
+                                "uid": "",
+                                "url": "",
+                              },
+                              "streamUrl": Array [
+                                Object {
+                                  "site": "youtube",
+                                  "url": "https://youtu.be/1evw4fRu3bo",
+                                },
+                              ],
+                              "video_quality": "web",
+                            },
+                          ],
+                          "srt": Object {
+                            "md5": "",
+                            "srcUrl": "https://srt-download-url.com",
+                          },
+                          "thumbnail": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
+                          "title": "Made in America",
+                          "transcript": Object {
+                            "md5": "",
+                            "srcUrl": "",
+                          },
+                          "uploadStatus": Object {
+                            "error": false,
+                            "success": false,
+                          },
+                          "uploaded": "2018-04-13T15:45:00Z",
+                        },
+                        Object {
+                          "additionalKeywords": Array [
+                            "la valeur",
+                            "innovation",
+                            "ipsum",
+                          ],
+                          "alt": "",
+                          "desc": "La valeur et le sens de l’expression Fabriqué en Amérique, ont leur origine dans un passé riche d’innovation et de persévérance. Découvrez une partie de l’histoire de l’industrie manufacturière aux États-Unis et l’influence positive qu’elle a eue sur le monde, dans le passé et encore aujourd’hui.",
+                          "fileName": "madeinamerica_french.mp4",
+                          "id": "3729",
+                          "language": Object {
+                            "display_name": "French",
+                            "language_code": "fr",
+                            "locale": "fr-fr",
+                            "native_name": "Français",
+                            "text_direction": "ltr",
+                          },
+                          "other": Array [
+                            Object {
+                              "fileName": "",
+                              "fileType": "",
+                              "md5": "",
+                              "srcUrl": "",
+                            },
+                          ],
+                          "source": Array [
+                            Object {
+                              "burnedInCaptions": "false",
+                              "downloadUrl": "https://video-download-url.com",
+                              "duration": "9:16",
+                              "fileName": "madeinamerica_french.mp4",
+                              "filetype": "",
+                              "md5": "",
+                              "size": Object {
+                                "bitrate": 9832917,
+                                "filesize": 662595174,
+                                "height": "1080",
+                                "width": "1920",
+                              },
+                              "stream": Object {
+                                "link": "",
+                                "site": "",
+                                "thumbnail": null,
+                                "uid": "",
+                                "url": "",
+                              },
+                              "streamUrl": Array [
+                                Object {
+                                  "site": "youtube",
+                                  "url": "https://youtu.be/1evw4fRu3bo",
+                                },
+                              ],
+                              "video_quality": "web",
+                            },
+                          ],
+                          "srt": Object {
+                            "md5": "",
+                            "srcUrl": "https://srt-download-url.com",
+                          },
+                          "thumbnail": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
+                          "title": "Fabriqué en Amérique",
+                          "transcript": Object {},
+                          "uploadStatus": Object {
+                            "error": false,
+                            "success": false,
+                          },
+                          "uploaded": "2018-04-13T15:45:00Z",
+                        },
+                        Object {
+                          "additionalKeywords": Array [
+                            "ساختہ",
+                          ],
+                          "alt": "",
+                          "desc": "امریکی ساختہ کی قدر اور مفہوم نے جدت طرازی اور استقامت کی شاندار تاریخ سے جنم لیا ہے۔ امریکہ میں مصنوعات سازی کی مختصر تاریخ سے آگہی حاصل کریں اور دنیا پر مرتب ہونے والے اس کے مثبت اثرات میں سے چند ایک کا احوال سنیں اور دیکھیں کہ آج اس کے فوائد کس طرح محسوس کیے جا رہے ہیں۔",
+                          "fileName": "madeinamerica_arabic.mp4",
+                          "id": "3730",
+                          "language": Object {
+                            "display_name": "Arabic",
+                            "language_code": "ar",
+                            "locale": "ar",
+                            "native_name": "العربية",
+                            "text_direction": "rtl",
+                          },
+                          "other": Array [
+                            Object {
+                              "fileName": "",
+                              "fileType": "",
+                              "md5": "",
+                              "srcUrl": "",
+                            },
+                          ],
+                          "source": Array [
+                            Object {
+                              "burnedInCaptions": "false",
+                              "downloadUrl": "https://video-download-url.com",
+                              "duration": "9:16",
+                              "fileName": "madeinamerica_arabic.mp4",
+                              "filetype": "",
+                              "md5": "",
+                              "size": Object {
+                                "bitrate": 9832917,
+                                "filesize": 662595174,
+                                "height": "1080",
+                                "width": "1920",
+                              },
+                              "stream": Object {
+                                "link": "",
+                                "site": "",
+                                "thumbnail": null,
+                                "uid": "",
+                                "url": "",
+                              },
+                              "streamUrl": Array [
+                                Object {
+                                  "site": "youtube",
+                                  "url": "https://youtu.be/1evw4fRu3bo",
+                                },
+                              ],
+                              "video_quality": "web",
+                            },
+                          ],
+                          "srt": Object {
+                            "md5": "",
+                            "srcUrl": "https://srt-download-url.com",
+                          },
+                          "thumbnail": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
+                          "title": "عنوان: امریکی ساختہ",
+                          "transcript": Object {},
+                          "uploadStatus": Object {
+                            "error": false,
+                            "success": false,
+                          },
+                          "uploaded": "2018-04-13T15:45:00Z",
+                        },
+                      ]
+                    }
+                  />,
+                  "title": "SRT",
+                },
+                Object {
+                  "component": <DownloadThumbnail
+                    instructions="Download Thumbnail(s)"
+                    units={
+                      Array [
+                        Object {
+                          "alt": "Man walking through factory (State Dept.)",
+                          "desc": "The value and meaning of the words “Made in America” come from a rich history of innovation and perseverance. Stay for a brief history of manufacturing in the USA and hear some of the positive impacts it has brought to the world and how its benefits are felt today.",
+                          "fileName": "madeinamerica_english_asdkjaf_al;kdflkeori_erpoiuzx,mnvz.mp4",
+                          "id": "3728",
+                          "language": Object {
+                            "display_name": "English",
+                            "language_code": "en",
+                            "locale": "en-us",
+                            "native_name": "English",
+                            "text_direction": "ltr",
+                          },
+                          "other": Array [
+                            Object {
+                              "fileName": "madeinamerica_english.mp3",
+                              "fileType": "mp3",
+                              "md5": "",
+                              "srcUrl": "https://other-download-url.com",
+                            },
+                          ],
+                          "source": Array [
+                            Object {
+                              "burnedInCaptions": "false",
+                              "downloadUrl": "https://video-download-url.com",
+                              "duration": "9:16",
+                              "fileName": "madeinamerica_english.mp4",
+                              "filetype": "",
+                              "md5": "",
+                              "size": Object {
+                                "bitrate": 9832917,
+                                "filesize": 662595174,
+                                "height": "1080",
+                                "width": "1920",
+                              },
+                              "stream": Object {
+                                "link": "",
+                                "site": "",
+                                "thumbnail": null,
+                                "uid": "",
+                                "url": "",
+                              },
+                              "streamUrl": Array [
+                                Object {
+                                  "site": "youtube",
+                                  "url": "https://youtu.be/1evw4fRu3bo",
+                                },
+                              ],
+                              "video_quality": "web",
+                            },
+                          ],
+                          "srt": Object {
+                            "md5": "",
+                            "srcUrl": "https://srt-download-url.com",
+                          },
+                          "thumbnail": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
+                          "title": "Made in America",
+                          "transcript": Object {
+                            "md5": "",
+                            "srcUrl": "",
+                          },
+                          "uploadStatus": Object {
+                            "error": false,
+                            "success": false,
+                          },
+                          "uploaded": "2018-04-13T15:45:00Z",
+                        },
+                        Object {
+                          "additionalKeywords": Array [
+                            "la valeur",
+                            "innovation",
+                            "ipsum",
+                          ],
+                          "alt": "",
+                          "desc": "La valeur et le sens de l’expression Fabriqué en Amérique, ont leur origine dans un passé riche d’innovation et de persévérance. Découvrez une partie de l’histoire de l’industrie manufacturière aux États-Unis et l’influence positive qu’elle a eue sur le monde, dans le passé et encore aujourd’hui.",
+                          "fileName": "madeinamerica_french.mp4",
+                          "id": "3729",
+                          "language": Object {
+                            "display_name": "French",
+                            "language_code": "fr",
+                            "locale": "fr-fr",
+                            "native_name": "Français",
+                            "text_direction": "ltr",
+                          },
+                          "other": Array [
+                            Object {
+                              "fileName": "",
+                              "fileType": "",
+                              "md5": "",
+                              "srcUrl": "",
+                            },
+                          ],
+                          "source": Array [
+                            Object {
+                              "burnedInCaptions": "false",
+                              "downloadUrl": "https://video-download-url.com",
+                              "duration": "9:16",
+                              "fileName": "madeinamerica_french.mp4",
+                              "filetype": "",
+                              "md5": "",
+                              "size": Object {
+                                "bitrate": 9832917,
+                                "filesize": 662595174,
+                                "height": "1080",
+                                "width": "1920",
+                              },
+                              "stream": Object {
+                                "link": "",
+                                "site": "",
+                                "thumbnail": null,
+                                "uid": "",
+                                "url": "",
+                              },
+                              "streamUrl": Array [
+                                Object {
+                                  "site": "youtube",
+                                  "url": "https://youtu.be/1evw4fRu3bo",
+                                },
+                              ],
+                              "video_quality": "web",
+                            },
+                          ],
+                          "srt": Object {
+                            "md5": "",
+                            "srcUrl": "https://srt-download-url.com",
+                          },
+                          "thumbnail": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
+                          "title": "Fabriqué en Amérique",
+                          "transcript": Object {},
+                          "uploadStatus": Object {
+                            "error": false,
+                            "success": false,
+                          },
+                          "uploaded": "2018-04-13T15:45:00Z",
+                        },
+                        Object {
+                          "additionalKeywords": Array [
+                            "ساختہ",
+                          ],
+                          "alt": "",
+                          "desc": "امریکی ساختہ کی قدر اور مفہوم نے جدت طرازی اور استقامت کی شاندار تاریخ سے جنم لیا ہے۔ امریکہ میں مصنوعات سازی کی مختصر تاریخ سے آگہی حاصل کریں اور دنیا پر مرتب ہونے والے اس کے مثبت اثرات میں سے چند ایک کا احوال سنیں اور دیکھیں کہ آج اس کے فوائد کس طرح محسوس کیے جا رہے ہیں۔",
+                          "fileName": "madeinamerica_arabic.mp4",
+                          "id": "3730",
+                          "language": Object {
+                            "display_name": "Arabic",
+                            "language_code": "ar",
+                            "locale": "ar",
+                            "native_name": "العربية",
+                            "text_direction": "rtl",
+                          },
+                          "other": Array [
+                            Object {
+                              "fileName": "",
+                              "fileType": "",
+                              "md5": "",
+                              "srcUrl": "",
+                            },
+                          ],
+                          "source": Array [
+                            Object {
+                              "burnedInCaptions": "false",
+                              "downloadUrl": "https://video-download-url.com",
+                              "duration": "9:16",
+                              "fileName": "madeinamerica_arabic.mp4",
+                              "filetype": "",
+                              "md5": "",
+                              "size": Object {
+                                "bitrate": 9832917,
+                                "filesize": 662595174,
+                                "height": "1080",
+                                "width": "1920",
+                              },
+                              "stream": Object {
+                                "link": "",
+                                "site": "",
+                                "thumbnail": null,
+                                "uid": "",
+                                "url": "",
+                              },
+                              "streamUrl": Array [
+                                Object {
+                                  "site": "youtube",
+                                  "url": "https://youtu.be/1evw4fRu3bo",
+                                },
+                              ],
+                              "video_quality": "web",
+                            },
+                          ],
+                          "srt": Object {
+                            "md5": "",
+                            "srcUrl": "https://srt-download-url.com",
+                          },
+                          "thumbnail": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
+                          "title": "عنوان: امریکی ساختہ",
+                          "transcript": Object {},
+                          "uploadStatus": Object {
+                            "error": false,
+                            "success": false,
+                          },
+                          "uploaded": "2018-04-13T15:45:00Z",
+                        },
+                      ]
+                    }
+                  />,
+                  "title": "Thumbnail",
+                },
+                Object {
+                  "component": <DownloadOtherFiles
+                    instructions="Download Other File(s)"
+                    units={
+                      Array [
+                        Object {
+                          "alt": "Man walking through factory (State Dept.)",
+                          "desc": "The value and meaning of the words “Made in America” come from a rich history of innovation and perseverance. Stay for a brief history of manufacturing in the USA and hear some of the positive impacts it has brought to the world and how its benefits are felt today.",
+                          "fileName": "madeinamerica_english_asdkjaf_al;kdflkeori_erpoiuzx,mnvz.mp4",
+                          "id": "3728",
+                          "language": Object {
+                            "display_name": "English",
+                            "language_code": "en",
+                            "locale": "en-us",
+                            "native_name": "English",
+                            "text_direction": "ltr",
+                          },
+                          "other": Array [
+                            Object {
+                              "fileName": "madeinamerica_english.mp3",
+                              "fileType": "mp3",
+                              "md5": "",
+                              "srcUrl": "https://other-download-url.com",
+                            },
+                          ],
+                          "source": Array [
+                            Object {
+                              "burnedInCaptions": "false",
+                              "downloadUrl": "https://video-download-url.com",
+                              "duration": "9:16",
+                              "fileName": "madeinamerica_english.mp4",
+                              "filetype": "",
+                              "md5": "",
+                              "size": Object {
+                                "bitrate": 9832917,
+                                "filesize": 662595174,
+                                "height": "1080",
+                                "width": "1920",
+                              },
+                              "stream": Object {
+                                "link": "",
+                                "site": "",
+                                "thumbnail": null,
+                                "uid": "",
+                                "url": "",
+                              },
+                              "streamUrl": Array [
+                                Object {
+                                  "site": "youtube",
+                                  "url": "https://youtu.be/1evw4fRu3bo",
+                                },
+                              ],
+                              "video_quality": "web",
+                            },
+                          ],
+                          "srt": Object {
+                            "md5": "",
+                            "srcUrl": "https://srt-download-url.com",
+                          },
+                          "thumbnail": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
+                          "title": "Made in America",
+                          "transcript": Object {
+                            "md5": "",
+                            "srcUrl": "",
+                          },
+                          "uploadStatus": Object {
+                            "error": false,
+                            "success": false,
+                          },
+                          "uploaded": "2018-04-13T15:45:00Z",
+                        },
+                        Object {
+                          "additionalKeywords": Array [
+                            "la valeur",
+                            "innovation",
+                            "ipsum",
+                          ],
+                          "alt": "",
+                          "desc": "La valeur et le sens de l’expression Fabriqué en Amérique, ont leur origine dans un passé riche d’innovation et de persévérance. Découvrez une partie de l’histoire de l’industrie manufacturière aux États-Unis et l’influence positive qu’elle a eue sur le monde, dans le passé et encore aujourd’hui.",
+                          "fileName": "madeinamerica_french.mp4",
+                          "id": "3729",
+                          "language": Object {
+                            "display_name": "French",
+                            "language_code": "fr",
+                            "locale": "fr-fr",
+                            "native_name": "Français",
+                            "text_direction": "ltr",
+                          },
+                          "other": Array [
+                            Object {
+                              "fileName": "",
+                              "fileType": "",
+                              "md5": "",
+                              "srcUrl": "",
+                            },
+                          ],
+                          "source": Array [
+                            Object {
+                              "burnedInCaptions": "false",
+                              "downloadUrl": "https://video-download-url.com",
+                              "duration": "9:16",
+                              "fileName": "madeinamerica_french.mp4",
+                              "filetype": "",
+                              "md5": "",
+                              "size": Object {
+                                "bitrate": 9832917,
+                                "filesize": 662595174,
+                                "height": "1080",
+                                "width": "1920",
+                              },
+                              "stream": Object {
+                                "link": "",
+                                "site": "",
+                                "thumbnail": null,
+                                "uid": "",
+                                "url": "",
+                              },
+                              "streamUrl": Array [
+                                Object {
+                                  "site": "youtube",
+                                  "url": "https://youtu.be/1evw4fRu3bo",
+                                },
+                              ],
+                              "video_quality": "web",
+                            },
+                          ],
+                          "srt": Object {
+                            "md5": "",
+                            "srcUrl": "https://srt-download-url.com",
+                          },
+                          "thumbnail": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
+                          "title": "Fabriqué en Amérique",
+                          "transcript": Object {},
+                          "uploadStatus": Object {
+                            "error": false,
+                            "success": false,
+                          },
+                          "uploaded": "2018-04-13T15:45:00Z",
+                        },
+                        Object {
+                          "additionalKeywords": Array [
+                            "ساختہ",
+                          ],
+                          "alt": "",
+                          "desc": "امریکی ساختہ کی قدر اور مفہوم نے جدت طرازی اور استقامت کی شاندار تاریخ سے جنم لیا ہے۔ امریکہ میں مصنوعات سازی کی مختصر تاریخ سے آگہی حاصل کریں اور دنیا پر مرتب ہونے والے اس کے مثبت اثرات میں سے چند ایک کا احوال سنیں اور دیکھیں کہ آج اس کے فوائد کس طرح محسوس کیے جا رہے ہیں۔",
+                          "fileName": "madeinamerica_arabic.mp4",
+                          "id": "3730",
+                          "language": Object {
+                            "display_name": "Arabic",
+                            "language_code": "ar",
+                            "locale": "ar",
+                            "native_name": "العربية",
+                            "text_direction": "rtl",
+                          },
+                          "other": Array [
+                            Object {
+                              "fileName": "",
+                              "fileType": "",
+                              "md5": "",
+                              "srcUrl": "",
+                            },
+                          ],
+                          "source": Array [
+                            Object {
+                              "burnedInCaptions": "false",
+                              "downloadUrl": "https://video-download-url.com",
+                              "duration": "9:16",
+                              "fileName": "madeinamerica_arabic.mp4",
+                              "filetype": "",
+                              "md5": "",
+                              "size": Object {
+                                "bitrate": 9832917,
+                                "filesize": 662595174,
+                                "height": "1080",
+                                "width": "1920",
+                              },
+                              "stream": Object {
+                                "link": "",
+                                "site": "",
+                                "thumbnail": null,
+                                "uid": "",
+                                "url": "",
+                              },
+                              "streamUrl": Array [
+                                Object {
+                                  "site": "youtube",
+                                  "url": "https://youtu.be/1evw4fRu3bo",
+                                },
+                              ],
+                              "video_quality": "web",
+                            },
+                          ],
+                          "srt": Object {
+                            "md5": "",
+                            "srcUrl": "https://srt-download-url.com",
+                          },
+                          "thumbnail": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
+                          "title": "عنوان: امریکی ساختہ",
+                          "transcript": Object {},
+                          "uploadStatus": Object {
+                            "error": false,
+                            "success": false,
+                          },
+                          "uploaded": "2018-04-13T15:45:00Z",
+                        },
+                      ]
+                    }
+                  />,
+                  "title": "Other",
+                },
+                Object {
+                  "component": <DownloadHelp />,
+                  "title": "Help",
+                },
+              ]
+            }
+            title="Download this video."
+          />
+        }
+        icon={
+          Object {
+            "dim": 18,
+            "img": Object {},
+          }
+        }
+        position="right"
+        show={true}
+        toolTip="Download video"
+      />
+    </div>
+  </div>
+  <div
+    className="project-preview__content"
+  >
+    <Embed
+      id="1evw4fRu3bo"
+      placeholder="https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg"
+      source="youtube"
+    />
+    <ModalContentMeta
+      dateUpdated=""
+      type="video"
+    />
+    <ModalDescription
+      description="The value and meaning of the words “Made in America” come from a rich history of innovation and perseverance. Stay for a brief history of manufacturing in the USA and hear some of the positive impacts it has brought to the world and how its benefits are felt today."
+    />
+  </div>
+  <ModalPostMeta
+    datePublished="2018-04-13T15:45:00Z"
+    source=""
+  />
+</ModalItem>
+`;
