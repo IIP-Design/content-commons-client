@@ -35,25 +35,25 @@ describe( '<SupportItem />', () => {
     expect( toJSON( wrapper ) ).toMatchSnapshot();
   } );
 
-  it( 'renders error icon and message component if `supportItem` has an error `uploadStatus`', () => {
-    const wrapper = shallow( Component );
+  // it( 'renders error icon and message component if `supportItem` has an error `uploadStatus`', () => {
+  //   const wrapper = shallow( Component );
 
-    expect( wrapper.find( 'li.support-item.error' ).exists() )
-      .toEqual( false );
-    wrapper.setProps( {
-      supportItem: {
-        id: '5678',
-        lang: 'Arabic',
-        file: 'madeinamerica_arabic.srt',
-        uploadStatus: {
-          error: true,
-          success: false
-        },
-        size: { filesize: 24576 }
-      }
-    } );
-    expect( wrapper.find( 'li.support-item.error' ).exists() )
-      .toEqual( true );
-    expect( toJSON( wrapper ) ).toMatchSnapshot();
-  } );
+  //   expect( wrapper.find( 'li.support-item.error' ).exists() )
+  //     .toEqual( false );
+  //   wrapper.setProps( {
+  //     supportItem: {
+  //       id: '5678',
+  //       lang: 'Arabic',
+  //       file: 'madeinamerica_arabic.srt',
+  //       uploadStatus: {
+  //         error: true,
+  //         success: false
+  //       },
+  //       size: { filesize: 24576 }
+  //     }
+  //   } );
+  //   expect( wrapper.find( 'li.support-item.error' ).exists() )
+  //     .toEqual( true );
+  //   expect( toJSON( wrapper ) ).toMatchSnapshot();
+  // } );
 } );

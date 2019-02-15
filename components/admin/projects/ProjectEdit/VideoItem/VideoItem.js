@@ -4,12 +4,14 @@
  *
  */
 import React, { Fragment } from 'react';
-import { bool, func, object } from 'prop-types';
+import { bool, func, string } from 'prop-types';
 import {
   Icon, Loader, Progress
 } from 'semantic-ui-react';
 
 import './VideoItem.scss';
+
+import { projects } from 'components/admin/projects/ProjectEdit/mockData';
 
 /* eslint-disable react/prefer-stateless-function */
 class VideoItem extends React.PureComponent {
@@ -28,6 +30,7 @@ class VideoItem extends React.PureComponent {
     this.MAX_MB_SEC = 500;
 
     this.state = {
+      video: this.getVideoItem(),
       bytesUploaded: 0,
       nIntervId: null,
       isUploading: false
@@ -48,6 +51,15 @@ class VideoItem extends React.PureComponent {
   componentWillUnmount = () => {
     clearInterval( this.state.nIntervId );
   }
+
+  /**
+   * @todo Replace after GraphQL & Apollo
+   */
+  getVideoItem = () => {
+    const { itemId } = this.props;
+    const { videos } = projects[0];
+    return videos.find( video => video.id === itemId );
+  };
 
   /**
    * @todo simulate upload for dev purposes;
@@ -80,7 +92,7 @@ class VideoItem extends React.PureComponent {
      * min, max increment in megabytes
      */
     this.setState( nextState => {
-      const { filesize } = this.props.video.source[0].size;
+      const { filesize } = this.state.video.source[0].size;
       const { bytesUploaded } = nextState;
 
       const remainingBytes = this.getRemainingUnits( filesize, bytesUploaded );
@@ -107,9 +119,10 @@ class VideoItem extends React.PureComponent {
   render() {
     const {
       onClick,
-      video,
       displayItemInModal
     } = this.props;
+
+    const { video } = this.state;
 
     if ( !video || video.loading ) {
       return (
@@ -206,11 +219,11 @@ class VideoItem extends React.PureComponent {
 }
 
 VideoItem.propTypes = {
-  video: object,
+  // video: object,
   displayItemInModal: bool,
   onClick: func,
   // videoID: string.isRequired,
-  // itemId: string.isRequired
+  itemId: string.isRequired
 };
 
 export default VideoItem;

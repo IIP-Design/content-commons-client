@@ -4,7 +4,7 @@
  *
  */
 import React, { Fragment } from 'react';
-import { object, string } from 'prop-types';
+import { string } from 'prop-types';
 import {
   Icon, Loader, Popup, Progress
 } from 'semantic-ui-react';
@@ -13,6 +13,8 @@ import debounce from 'lodash/debounce';
 import Focusable from 'components/admin/projects/shared/Focusable/Focusable';
 import VisuallyHidden from 'components/admin/projects/shared/VisuallyHidden/VisuallyHidden';
 import './SupportItem.scss';
+
+import { projects } from 'components/admin/projects/ProjectEdit/mockData';
 
 /* eslint-disable react/prefer-stateless-function */
 class SupportItem extends React.PureComponent {
@@ -37,6 +39,7 @@ class SupportItem extends React.PureComponent {
     this._isMounted = false;
 
     this.state = {
+      supportItem: this.getSupportItem(),
       bytesUploaded: 0,
       nIntervId: null,
       isUploading: false,
@@ -67,15 +70,23 @@ class SupportItem extends React.PureComponent {
   }
 
   /**
+   * @todo Replace after GraphQL & Apollo
+   */
+  getSupportItem = () => {
+    const { fileType, itemId } = this.props;
+    const files = projects[0].supportFiles[fileType];
+    return files.find( file => file.id === itemId );
+  };
+
+  /**
    * @todo simulate upload for dev purposes;
    * replace for production
    */
   getRandomInt = ( min, max ) => {
-    /* eslint-disable no-param-reassign */
-    min = Math.ceil( min );
-    max = Math.floor( max );
+    const minNum = Math.ceil( min );
+    const maxNum = Math.floor( max );
     return (
-      Math.floor( Math.random() * ( ( max - min ) + 1 ) ) + min
+      Math.floor( Math.random() * ( ( maxNum - minNum ) + 1 ) ) + minNum
     );
   }
 
@@ -152,7 +163,7 @@ class SupportItem extends React.PureComponent {
      * min, max increment in megabytes
      */
     this.setState( nextState => {
-      const { filesize } = this.props.supportItem.size;
+      const { filesize } = this.state.supportItem.size;
       const { bytesUploaded } = nextState;
       let increment = this.incrementUpload( 'MEGABYTE', this.MIN_MB_SEC, this.MAX_MB_SEC );
       const remainingBytes = this.getRemainingUnits( filesize, bytesUploaded );
@@ -176,7 +187,8 @@ class SupportItem extends React.PureComponent {
   }
 
   render() {
-    const { fileType, supportItem } = this.props;
+    const { fileType } = this.props;
+    const { supportItem } = this.state;
 
     if ( !supportItem || supportItem.loading ) {
       return (
@@ -327,14 +339,14 @@ class SupportItem extends React.PureComponent {
 }
 
 SupportItem.propTypes = {
-  supportItem: object,
+  // supportItem: object,
   // projectId: object.isRequired,
   fileType: string.isRequired,
-  // itemId: string.isRequired
+  itemId: string.isRequired
 };
 
-SupportItem.defaultProps = {
-  supportItem: null
-};
+// SupportItem.defaultProps = {
+//   supportItem: null
+// };
 
 export default SupportItem;

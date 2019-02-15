@@ -20,25 +20,6 @@ exports[`<SupportItem /> renders \`Progress\` component if \`isUploading\` 1`] =
 </li>
 `;
 
-exports[`<SupportItem /> renders error icon and message component if \`supportItem\` has an error \`uploadStatus\` 1`] = `
-<li
-  className="support-item error"
-  key="srt-Arabic"
->
-  <p>
-    <Icon
-      as="i"
-      color="red"
-      name="exclamation triangle"
-      size="small"
-    />
-    <span>
-      Uploading  error
-    </span>
-  </p>
-</li>
-`;
-
 exports[`<SupportItem /> renders without crashing 1`] = `
 <li
   className="support-item"
