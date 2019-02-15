@@ -4,7 +4,7 @@
  *
  */
 import React, { Fragment } from 'react';
-import { func, object, string } from 'prop-types';
+import { object, string } from 'prop-types';
 import {
   Icon, Loader, Popup, Progress
 } from 'semantic-ui-react';
@@ -48,14 +48,6 @@ class SupportItem extends React.PureComponent {
 
   componentDidMount = () => {
     this._isMounted = true;
-    const {
-      projectId,
-      fileType,
-      itemId,
-      loadSupportItem
-    } = this.props;
-    loadSupportItem( projectId.videoID, fileType, itemId );
-
     /**
      * @todo simulate upload for dev purposes;
      * replace for production
@@ -150,14 +142,7 @@ class SupportItem extends React.PureComponent {
   )
 
   endUpload = intervId => {
-    const {
-      projectId,
-      fileType,
-      itemId,
-      setUploadStatus
-    } = this.props;
     clearInterval( intervId );
-    setUploadStatus( projectId.videoID, fileType, itemId );
   };
 
   uploadItem = () => {
@@ -343,11 +328,9 @@ class SupportItem extends React.PureComponent {
 
 SupportItem.propTypes = {
   supportItem: object,
-  projectId: object.isRequired,
+  // projectId: object.isRequired,
   fileType: string.isRequired,
-  itemId: string.isRequired,
-  loadSupportItem: func,
-  setUploadStatus: func
+  // itemId: string.isRequired
 };
 
 SupportItem.defaultProps = {

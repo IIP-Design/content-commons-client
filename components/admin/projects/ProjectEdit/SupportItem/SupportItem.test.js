@@ -7,9 +7,7 @@ const props = {
   supportItem: projects[0].supportFiles.srt[0],
   projectId: { videoID: 'made-in-america' },
   fileType: supportFilesConfig.srt.fileType,
-  itemId: projects[0].supportFiles.srt[0].id,
-  loadSupportItem: jest.fn(),
-  setUploadStatus: jest.fn()
+  itemId: projects[0].supportFiles.srt[0].id
 };
 
 const Component = <SupportItem { ...props } />;

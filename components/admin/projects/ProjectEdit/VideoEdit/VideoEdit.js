@@ -5,7 +5,7 @@
  */
 import React, { Fragment } from 'react';
 import { Router } from 'next/router';
-import { func, number, object } from 'prop-types';
+import { number, object } from 'prop-types';
 import {
   Button, Confirm, Loader, Progress
 } from 'semantic-ui-react';
@@ -131,8 +131,7 @@ class VideoEdit extends React.PureComponent {
   }
 
   handleDeleteConfirm = () => {
-    const { videoID } = this.props.match.params;
-    this.props.deleteVideoProject( videoID );
+    const videoID = this.props.project.projectId;
     console.log( `Deleted "${videoID}" project` );
     this.setState( {
       deleteConfirmOpen: false,
@@ -145,7 +144,7 @@ class VideoEdit extends React.PureComponent {
   }
 
   handleFinalReview = () => {
-    const { videoID } = this.props.match.params;
+    const videoID = this.props.project.projectId;
     Router.push( `/admin/video/${videoID}/review` );
   }
 
@@ -164,8 +163,7 @@ class VideoEdit extends React.PureComponent {
   }
 
   handleSaveProjectData = () => {
-    const { videoID } = this.props.match.params;
-    this.props.saveProjectData( videoID, this.state.formData );
+    console.log( 'Save project data' );
   }
 
   handleUpload = () => this.setState( { isUploadInProgress: true } );
@@ -564,10 +562,7 @@ class VideoEdit extends React.PureComponent {
 }
 
 VideoEdit.propTypes = {
-  match: object,
   project: object,
-  saveProjectData: func,
-  deleteVideoProject: func,
   uploadedVideosCount: number,
   uploadedSupportFilesCount: number
 };

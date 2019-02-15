@@ -4,9 +4,7 @@
  *
  */
 import React, { Fragment } from 'react';
-import {
-  bool, func, object, string
-} from 'prop-types';
+import { bool, func, object } from 'prop-types';
 import {
   Icon, Loader, Progress
 } from 'semantic-ui-react';
@@ -37,9 +35,6 @@ class VideoItem extends React.PureComponent {
   }
 
   componentDidMount = () => {
-    const { videoID, itemId, loadVideoItem } = this.props;
-    loadVideoItem( videoID, itemId );
-
     /**
      * @todo simulate upload for dev purposes;
      * replace for production
@@ -75,13 +70,7 @@ class VideoItem extends React.PureComponent {
   )
 
   endUpload = intervId => {
-    const {
-      videoID,
-      itemId,
-      setUploadStatus
-    } = this.props;
     clearInterval( intervId );
-    setUploadStatus( videoID, itemId );
   };
 
   uploadItem = () => {
@@ -220,10 +209,8 @@ VideoItem.propTypes = {
   video: object,
   displayItemInModal: bool,
   onClick: func,
-  videoID: string.isRequired,
-  itemId: string.isRequired,
-  loadVideoItem: func,
-  setUploadStatus: func
+  // videoID: string.isRequired,
+  // itemId: string.isRequired
 };
 
 export default VideoItem;
