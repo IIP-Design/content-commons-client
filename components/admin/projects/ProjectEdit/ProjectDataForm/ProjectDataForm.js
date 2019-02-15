@@ -67,7 +67,7 @@ const ProjectDataForm = props => {
                 control={ Input }
                 label="Video Title"
                 required
-                autoFocus="true"
+                autoFocus
                 name="title"
                 value={ videoTitle }
                 onChange={ handleChange }
