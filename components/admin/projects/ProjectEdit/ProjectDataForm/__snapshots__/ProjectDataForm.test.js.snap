@@ -1,0 +1,292 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProjectDataForm /> renders without crashing 1`] = `
+<Form
+  as="form"
+  className="edit-project__form project-data"
+  onSubmit={[MockFunction]}
+>
+  <Grid
+    stackable={true}
+  >
+    <GridRow>
+      <GridColumn
+        width="16"
+      >
+        <h2
+          className="heading"
+        >
+          <span
+            className="uppercase"
+          >
+            Project Data
+          </span>
+          <br />
+          <small
+            className="msg--required"
+          >
+            Required Fields *
+          </small>
+        </h2>
+      </GridColumn>
+    </GridRow>
+    <GridRow>
+      <GridColumn
+        computer={8}
+        mobile={16}
+      >
+        <FormGroup
+          widths="equal"
+        >
+          <FormField
+            autoFocus={true}
+            control={[Function]}
+            error={true}
+            id="video-title"
+            label="Video Title"
+            name="title"
+            onChange={[MockFunction]}
+            required={true}
+            value=""
+          />
+          <FormField
+            control={[Function]}
+            error={false}
+            id="privacy-setting"
+            label="Privacy Setting"
+            name="privacy"
+            onChange={[MockFunction]}
+            options={
+              Array [
+                Object {
+                  "text": "Anyone can see this project",
+                  "value": "anyone",
+                },
+                Object {
+                  "text": "Embargoed",
+                  "value": "embargoed",
+                },
+              ]
+            }
+            required={true}
+            value="anyone"
+          />
+        </FormGroup>
+        <FormGroup
+          widths="equal"
+        >
+          <FormField
+            control={[Function]}
+            id="author"
+            label="Author"
+            name="author"
+            onChange={[MockFunction]}
+            placeholder="Jane Doe"
+            value=""
+          />
+          <FormField
+            control={[Function]}
+            id="owner"
+            label="Owner"
+            name="owner"
+            onChange={[MockFunction]}
+            placeholder="IIP Video Production"
+            value=""
+          />
+        </FormGroup>
+        <FormGroup
+          widths="equal"
+        >
+          <div
+            className="field"
+          >
+            <FormDropdown
+              as={[Function]}
+              closeOnBlur={true}
+              closeOnChange={true}
+              control={[Function]}
+              error={true}
+              fluid={true}
+              id="video-categories"
+              label="Categories"
+              multiple={true}
+              name="categories"
+              onChange={[MockFunction]}
+              options={
+                Array [
+                  Object {
+                    "text": "About America",
+                    "value": "about-america",
+                  },
+                  Object {
+                    "text": "Arts & Culture",
+                    "value": "arts-and-culture",
+                  },
+                  Object {
+                    "text": "Democracy & Civil Society",
+                    "value": "democracy-and-civil-society",
+                  },
+                  Object {
+                    "text": "Economic Issues",
+                    "value": "economic-issues",
+                  },
+                  Object {
+                    "text": "Education",
+                    "value": "education",
+                  },
+                  Object {
+                    "text": "Environment",
+                    "value": "environment",
+                  },
+                  Object {
+                    "text": "Geography",
+                    "value": "geography",
+                  },
+                  Object {
+                    "text": "Global Issues",
+                    "value": "global-issues",
+                  },
+                  Object {
+                    "text": "Good Governance",
+                    "value": "good-governance",
+                  },
+                  Object {
+                    "text": "Health",
+                    "value": "health",
+                  },
+                  Object {
+                    "text": "Human Rights",
+                    "value": "human-rights",
+                  },
+                  Object {
+                    "text": "Press & Journalism",
+                    "value": "press-and-journalism",
+                  },
+                  Object {
+                    "text": "Religion & Values",
+                    "value": "religion-and-values",
+                  },
+                  Object {
+                    "text": "Science & Technology",
+                    "value": "science-and-technology",
+                  },
+                  Object {
+                    "text": "Sports",
+                    "value": "sports",
+                  },
+                ]
+              }
+              placeholder="-"
+              required={true}
+              search={true}
+              selection={true}
+              style={
+                Object {
+                  "marginBottom": "1em",
+                }
+              }
+              value={Array []}
+            />
+            <p>
+              Select up to 
+              2
+              .
+            </p>
+          </div>
+          <div
+            className="field"
+          >
+            <FormField
+              control={[Function]}
+              id="video-tags"
+              label="Tags"
+              name="tags"
+              onChange={[MockFunction]}
+              style={
+                Object {
+                  "marginBottom": "1em",
+                }
+              }
+              value={Array []}
+            />
+            <p>
+              Enter keywords separated by commas.
+            </p>
+          </div>
+        </FormGroup>
+      </GridColumn>
+      <GridColumn
+        computer={8}
+        mobile={16}
+      >
+        <FormField
+          control={[Function]}
+          id="public-description"
+          label="Public Description"
+          name="publicDesc"
+          onChange={[MockFunction]}
+          value=""
+        />
+        <div
+          className="field"
+        >
+          <FormField
+            control={[Function]}
+            id="internal-description"
+            label="Internal Description"
+            name="internalDesc"
+            onChange={[MockFunction]}
+            value=""
+          />
+          <p>
+            Reason for this project as it relates to Department objectives.
+          </p>
+        </div>
+      </GridColumn>
+    </GridRow>
+    <GridRow
+      reversed="computer"
+    >
+      <GridColumn
+        mobile={11}
+      >
+        <FormCheckbox
+          as={[Function]}
+          checked={false}
+          control={[Function]}
+          error={true}
+          id="terms-conditions"
+          label={
+            <label
+              htmlFor="terms-conditions"
+            >
+              By uploading these files I agree to the Content Commons 
+              <a
+                href="https://?????"
+              >
+                Terms of Use
+              </a>
+               and licensing agreements. I understand that my content will be available to the public for general use.
+            </label>
+          }
+          name="termsConditions"
+          onChange={[MockFunction]}
+          required={true}
+          type="checkbox"
+        />
+      </GridColumn>
+      <GridColumn
+        computer={5}
+        mobile={16}
+      >
+        <Button
+          as="button"
+          className="edit-project__form--save"
+          content="Save draft & upload files to this project"
+          disabled={true}
+        />
+      </GridColumn>
+    </GridRow>
+  </Grid>
+</Form>
+`;
