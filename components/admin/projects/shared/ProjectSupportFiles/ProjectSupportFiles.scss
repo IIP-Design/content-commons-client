@@ -1,0 +1,40 @@
+@import "../../../../../styles/colors.scss";
+
+.support-files {
+  ul {
+    padding-left: 0;
+    list-style: none;
+
+    > .support-item {
+      display: flex;
+
+      justify-content: space-between;
+      font-size: 0.875em;
+
+      > .item-name {
+        flex-basis: 62.5%;
+      }
+
+      > .item-lang {
+        flex-basis: 30%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .hasEllipsis {
+        cursor: default;
+      }
+    }
+  }
+
+  .ui.button {
+    margin: 0;
+    padding: 0.625em;
+  }
+
+  i.small.icon {
+    margin-left: 0.625em;
+    font-size: 0.75em;
+  }
+}
