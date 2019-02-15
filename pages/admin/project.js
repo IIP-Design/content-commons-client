@@ -4,15 +4,19 @@ import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import trim from 'lodash/trim';
 
+// @todo import mock data for now, remove after GraphQL & Apollo
+import { projects } from 'components/admin/projects/ProjectEdit/mockData';
+
 // using dynamic import so that components load when they are needed, or rendered
-const VideoEdit = dynamic( () => import( 'components/admin/projects/ProjectEdit/VideoEdit' ) );
+const VideoEdit = dynamic( () => import( 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit' ) );
 const VideoReview = dynamic( () => import( 'components/admin/projects/ProjectReview/VideoReview' ) );
 
 const CONTENT_TYPES = ['video'];
 
 const loadEditComponent = ( content, id ) => {
   if ( content === 'video' ) {
-    return <VideoEdit id={ id } />;
+    // @todo use project prop for now, remove after GraphQL & Apollo
+    return <VideoEdit id={ id } project={ projects[0] } />;
   }
 };
 

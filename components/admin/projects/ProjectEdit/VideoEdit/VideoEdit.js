@@ -1,6 +1,6 @@
 /**
  *
- * VideoEditProject
+ * VideoEdit
  *
  */
 import React, { Fragment } from 'react';
@@ -10,11 +10,7 @@ import {
   Button, Confirm, Loader, Progress
 } from 'semantic-ui-react';
 
-import Page from 'components/Page';
-import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
-
 import ConfirmModalContent from 'components/admin/projects/shared/ConfirmModalContent/ConfirmModalContent';
-import NavigationPrompt from 'components/admin/projects/shared/NavigationPrompt/NavigationPrompt';
 import Notification from 'components/admin/projects/shared/Notification/Notification';
 import PreviewProject from 'components/admin/projects/shared/PreviewProject/PreviewProject';
 import PreviewProjectContent from 'components/admin/projects/shared/PreviewProjectContent/PreviewProjectContent';
@@ -36,10 +32,10 @@ import {
 } from 'components/admin/projects/ProjectEdit/mockData';
 
 import colors from 'styles/colors.scss';
-import './VideoEditProject.scss';
+import './VideoEdit.scss';
 
 /* eslint-disable react/prefer-stateless-function */
-class VideoEditProject extends React.PureComponent {
+class VideoEdit extends React.PureComponent {
   constructor( props ) {
     super( props );
 
@@ -79,8 +75,6 @@ class VideoEditProject extends React.PureComponent {
 
   componentDidMount = () => {
     this._isMounted = true;
-    const projectId = this.props.match.params.videoID;
-    this.props.loadVideoProjects( projectId );
   }
 
   componentDidUpdate = ( prevProps, prevState ) => {
@@ -365,233 +359,222 @@ class VideoEditProject extends React.PureComponent {
     }
 
     return (
-      <Page title="Edit Project" description="Edit content project">
-
-        <NavigationPrompt when={ hasUnsavedData || isUploadInProgress }>
-          { this.renderConfirm }
-        </NavigationPrompt>
-
-        <Breadcrumbs />
-
-        <div className="edit-project">
-          <div className="edit-project__header">
-            <ProjectHeader icon="video camera" text="Project Details">
-              <Button
-                className="edit-project__btn--delete"
-                content="Delete Project"
-                basic
-                onClick={ this.displayConfirmDelete }
-                disabled={ !isUploadFinished }
-              />
-              <Confirm
-                className="delete"
-                open={ deleteConfirmOpen }
-                content={ (
-                  <ConfirmModalContent
-                    className="delete_confirm delete_confirm--video"
-                    headline="Are you sure you want to delete this video project?"
-                  >
-                    <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
-                  </ConfirmModalContent>
-                ) }
-                onCancel={ this.handleDeleteCancel }
-                onConfirm={ this.handleDeleteConfirm }
-                cancelButton="No, take me back"
-                confirmButton="Yes, delete forever"
-              />
-              <PreviewProject
-                triggerProps={ {
-                  className: 'edit-project__btn--preview',
-                  content: 'Preview Project',
-                  basic: true,
-                  disabled: !isUploadFinished
-                } }
-                contentProps={ {
-                  data: project,
-                  projecttype: `${projectType}s`
-                } }
-                modalTrigger={ Button }
-                modalContent={ PreviewProjectContent }
-                options={ { closeIcon: true } }
-              />
-              { hasSubmittedData
-                && (
-                  <Button
-                    className="edit-project__btn--save-draft"
-                    content="Save Draft"
-                    basic
-                    onClick={ this.handleSaveDraft }
-                    disabled={ !isUploadFinished || !hasUnsavedData || !hasRequiredData }
-                  />
-                ) }
-              <Button
-                className="edit-project__btn--final-review"
-                content="Final Review"
-                onClick={ this.handleFinalReview }
-                disabled={ !isUploadFinished }
-              />
-            </ProjectHeader>
-          </div>
-
-          <div className="edit-project__status alpha">
-            { !hasSubmittedData && <FormInstructions /> }
-            { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
-
-            { ( displaySaveMsg || ( hasUnsavedData && hasSubmittedData ) )
-              && (
-                <Notification
-                  el="p"
-                  customStyles={ {
-                    position: 'absolute',
-                    top: '10.75em',
-                    left: '50%',
-                    transform: 'translateX(-50%)'
-                  } }
-                  msg={ notificationMsg }
-                />
-              ) }
-
-            { isUploadInProgress
-              && (
-                <Progress
-                  value={ this.getUploadedFilesCount() }
-                  total={ filesToUploadCount }
-                  color="blue"
-                  size="medium"
-                  active
+      <div className="edit-project">
+        <div className="edit-project__header">
+          <ProjectHeader icon="video camera" text="Project Details">
+            <Button
+              className="edit-project__btn--delete"
+              content="Delete Project"
+              basic
+              onClick={ this.displayConfirmDelete }
+              disabled={ !isUploadFinished }
+            />
+            <Confirm
+              className="delete"
+              open={ deleteConfirmOpen }
+              content={ (
+                <ConfirmModalContent
+                  className="delete_confirm delete_confirm--video"
+                  headline="Are you sure you want to delete this video project?"
                 >
-                  <p>
-                    <b>Uploading files:</b> { this.getUploadedFilesCount() } of { filesToUploadCount }
-                    <br />
-                    Please keep this page open until upload is complete
-                  </p>
-                </Progress>
+                  <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
+                </ConfirmModalContent>
               ) }
-          </div>
-
-          <div className="edit-project__content" style={ contentStyle }>
-            <ProjectDataForm
-              handleSubmit={ this.handleSubmit }
-              handleChange={ this.handleChange }
-
-              videoTitle={ title || '' }
-              privacyOptions={ privacyOptions }
-              privacySetting={ privacySetting }
-
-              authorValue={ author || '' }
-              ownerValue={ owner || '' }
-
-              categoryLabel="Categories"
-              maxCategories={ this.MAX_CATEGORY_COUNT }
-              categoryOptions={ categoryData }
-              categoriesValue={ categories }
-              hasExceededMaxCategories={ hasExceededMaxCategories }
-              tagsValue={ tags || '' }
-
-              publicDescValue={ publicDesc }
-              internalDescValue={ internalDesc }
-              termsConditions={ termsConditions }
-
-              hasSubmittedData={ hasSubmittedData }
-              hasRequiredData={ hasRequiredData }
+              onCancel={ this.handleDeleteCancel }
+              onConfirm={ this.handleDeleteConfirm }
+              cancelButton="No, take me back"
+              confirmButton="Yes, delete forever"
             />
-          </div>
-
-          <div className="edit-project__status beta">
-            { !hasSubmittedData && <FormInstructions /> }
-            { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
-
-            { isUploadInProgress
-              && (
-                <Progress
-                  value={ this.getUploadedFilesCount() }
-                  total={ filesToUploadCount }
-                  color="blue"
-                  size="medium"
-                  active
-                >
-                  <p>
-                    <b>Uploading files:</b> { this.getUploadedFilesCount() } of { filesToUploadCount }
-                    <br />
-                    Please keep this page open until upload is complete
-                  </p>
-                </Progress>
-              ) }
-          </div>
-
-          <div className="edit-project__support-files">
-            <ProjectSupportFiles
-              heading="Support Files"
-              projectId={ this.props.match.params }
-              supportFiles={ supportFiles }
-              hasSubmittedData={ hasSubmittedData }
-              protectImages={ protectImages }
-              handleChange={ this.handleChange }
-              config={ supportFilesConfig }
-              hasUploaded={
-                this.getSupportFilesCount() === uploadedSupportFilesCount
-              }
+            <PreviewProject
+              triggerProps={ {
+                className: 'edit-project__btn--preview',
+                content: 'Preview Project',
+                basic: true,
+                disabled: !isUploadFinished
+              } }
+              contentProps={ {
+                data: project,
+                projecttype: `${projectType}s`
+              } }
+              modalTrigger={ Button }
+              modalContent={ PreviewProjectContent }
+              options={ { closeIcon: true } }
             />
-          </div>
-
-          <div className="edit-project__items">
-            <ProjectItemsList
-              listEl="ul"
-              data={ videos }
-              projectId={ this.props.match.params }
-              headline="Videos in Project"
-              hasSubmittedData={ hasSubmittedData }
-              projectType="video"
-              displayItemInModal
-              modalTrigger={ VideoItem }
-              modalContent={ EditSingleProjectItem }
-            />
-
             { hasSubmittedData
               && (
-                <div style={ { marginTop: '3rem' } }>
-                  <Button
-                    className="edit-project__add-more"
-                    content="+ Add more files to this project"
-                    basic
-                    onClick={ this.handleAddMoreFiles }
-                  />
-                  <VisuallyHidden>
-                    { /* eslint-disable jsx-a11y/label-has-for */
-                      /* eslint-disable jsx-a11y/label-has-associated-control */ }
-                    <label htmlFor="upload-item--multiple">upload more project items</label>
-                    <input
-                      id="upload-item--multiple"
-                      ref={ this.handleAddMoreRef }
-                      type="file"
-                      accept=".mov, .mp4, .mpg, .wmv, .avi"
-                      multiple
-                      tabIndex={ -1 }
-                    />
-                  </VisuallyHidden>
-                </div>
+                <Button
+                  className="edit-project__btn--save-draft"
+                  content="Save Draft"
+                  basic
+                  onClick={ this.handleSaveDraft }
+                  disabled={ !isUploadFinished || !hasUnsavedData || !hasRequiredData }
+                />
               ) }
-          </div>
+            <Button
+              className="edit-project__btn--final-review"
+              content="Final Review"
+              onClick={ this.handleFinalReview }
+              disabled={ !isUploadFinished }
+            />
+          </ProjectHeader>
         </div>
-      </Page>
+
+        <div className="edit-project__status alpha">
+          { !hasSubmittedData && <FormInstructions /> }
+          { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
+
+          { ( displaySaveMsg || ( hasUnsavedData && hasSubmittedData ) )
+            && (
+              <Notification
+                el="p"
+                customStyles={ {
+                  position: 'absolute',
+                  top: '10.75em',
+                  left: '50%',
+                  transform: 'translateX(-50%)'
+                } }
+                msg={ notificationMsg }
+              />
+            ) }
+
+          { isUploadInProgress
+            && (
+              <Progress
+                value={ this.getUploadedFilesCount() }
+                total={ filesToUploadCount }
+                color="blue"
+                size="medium"
+                active
+              >
+                <p>
+                  <b>Uploading files:</b> { this.getUploadedFilesCount() } of { filesToUploadCount }
+                  <br />
+                  Please keep this page open until upload is complete
+                </p>
+              </Progress>
+            ) }
+        </div>
+
+        <div className="edit-project__content" style={ contentStyle }>
+          <ProjectDataForm
+            handleSubmit={ this.handleSubmit }
+            handleChange={ this.handleChange }
+
+            videoTitle={ title || '' }
+            privacyOptions={ privacyOptions }
+            privacySetting={ privacySetting }
+
+            authorValue={ author || '' }
+            ownerValue={ owner || '' }
+
+            categoryLabel="Categories"
+            maxCategories={ this.MAX_CATEGORY_COUNT }
+            categoryOptions={ categoryData }
+            categoriesValue={ categories }
+            hasExceededMaxCategories={ hasExceededMaxCategories }
+            tagsValue={ tags || '' }
+
+            publicDescValue={ publicDesc }
+            internalDescValue={ internalDesc }
+            termsConditions={ termsConditions }
+
+            hasSubmittedData={ hasSubmittedData }
+            hasRequiredData={ hasRequiredData }
+          />
+        </div>
+
+        <div className="edit-project__status beta">
+          { !hasSubmittedData && <FormInstructions /> }
+          { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
+
+          { isUploadInProgress
+            && (
+              <Progress
+                value={ this.getUploadedFilesCount() }
+                total={ filesToUploadCount }
+                color="blue"
+                size="medium"
+                active
+              >
+                <p>
+                  <b>Uploading files:</b> { this.getUploadedFilesCount() } of { filesToUploadCount }
+                  <br />
+                  Please keep this page open until upload is complete
+                </p>
+              </Progress>
+            ) }
+        </div>
+
+        <div className="edit-project__support-files">
+          <ProjectSupportFiles
+            heading="Support Files"
+            projectId={ { videoID: this.props.project.projectId } }
+            supportFiles={ supportFiles }
+            hasSubmittedData={ hasSubmittedData }
+            protectImages={ protectImages }
+            handleChange={ this.handleChange }
+            config={ supportFilesConfig }
+            hasUploaded={
+              this.getSupportFilesCount() === uploadedSupportFilesCount
+            }
+          />
+        </div>
+
+        <div className="edit-project__items">
+          <ProjectItemsList
+            listEl="ul"
+            data={ videos }
+            projectId={ { videoID: this.props.project.projectId } }
+            headline="Videos in Project"
+            hasSubmittedData={ hasSubmittedData }
+            projectType="video"
+            displayItemInModal
+            modalTrigger={ VideoItem }
+            modalContent={ EditSingleProjectItem }
+          />
+
+          { hasSubmittedData
+            && (
+              <div style={ { marginTop: '3rem' } }>
+                <Button
+                  className="edit-project__add-more"
+                  content="+ Add more files to this project"
+                  basic
+                  onClick={ this.handleAddMoreFiles }
+                />
+                <VisuallyHidden>
+                  { /* eslint-disable jsx-a11y/label-has-for */
+                    /* eslint-disable jsx-a11y/label-has-associated-control */ }
+                  <label htmlFor="upload-item--multiple">upload more project items</label>
+                  <input
+                    id="upload-item--multiple"
+                    ref={ this.handleAddMoreRef }
+                    type="file"
+                    accept=".mov, .mp4, .mpg, .wmv, .avi"
+                    multiple
+                    tabIndex={ -1 }
+                  />
+                </VisuallyHidden>
+              </div>
+            ) }
+        </div>
+      </div>
     );
   }
 }
 
-VideoEditProject.propTypes = {
-  history: object,
+VideoEdit.propTypes = {
   match: object,
   project: object,
-  loadVideoProjects: func,
   saveProjectData: func,
   deleteVideoProject: func,
   uploadedVideosCount: number,
   uploadedSupportFilesCount: number
 };
 
-VideoEditProject.defaultProps = {
+VideoEdit.defaultProps = {
   uploadedVideosCount: 0,
   uploadedSupportFilesCount: 0
 };
 
-export default VideoEditProject;
+export default VideoEdit;
