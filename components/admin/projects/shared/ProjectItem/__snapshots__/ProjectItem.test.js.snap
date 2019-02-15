@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProjectItem /> renders a Modal component if \`isAvailable\` and \`displayItemInModal\` 1`] = `
+<Modal
+  centered={true}
+  closeIcon={true}
+  closeOnDimmerClick={true}
+  closeOnDocumentClick={false}
+  dimmer={true}
+  eventPool="Modal"
+  trigger={
+    <Trigger
+      displayItemInModal={true}
+      itemId="3728"
+      videoID="made-in-america"
+    />
+  }
+>
+  <ModalContent>
+    <Content />
+  </ModalContent>
+</Modal>
+`;
+
+exports[`<ProjectItem /> renders initially the Placeholder component 1`] = `
+<Placeholder
+  childEl="div"
+  childStyles={
+    Object {
+      "heading": Object {
+        "cursor": "not-allowed",
+        "height": "1.3em",
+        "width": "80%",
+      },
+      "language": Object {
+        "cursor": "not-allowed",
+        "width": "60%",
+      },
+      "thumbnail": Object {
+        "cursor": "not-allowed",
+        "height": "10em",
+      },
+    }
+  }
+  parentEl="li"
+  parentStyles={
+    Object {
+      "marginBottom": "1.5em",
+    }
+  }
+/>
+`;
