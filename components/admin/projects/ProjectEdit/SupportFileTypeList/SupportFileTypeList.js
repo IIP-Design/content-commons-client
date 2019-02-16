@@ -16,8 +16,6 @@ import IconPopup from 'components/admin/projects/ProjectEdit/IconPopup/IconPopup
 import SupportItem from 'components/admin/projects/ProjectEdit/SupportItem/SupportItem';
 import Placeholder from 'components/admin/projects/shared/Placeholder/Placeholder';
 
-import colors from 'styles/colors.scss';
-
 /* eslint-disable react/prefer-stateless-function */
 class SupportFileTypeList extends React.PureComponent {
   state = {}
@@ -60,7 +58,7 @@ class SupportFileTypeList extends React.PureComponent {
           language: {
             width: '20%',
             marginRight: '0',
-            backgroundColor: colors.grey
+            backgroundColor: '#5b616b'
           }
         } }
       />

@@ -31,7 +31,6 @@ import {
   supportFilesConfig
 } from 'components/admin/projects/ProjectEdit/mockData';
 
-import colors from 'styles/colors.scss';
 import './VideoEdit.scss';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -342,7 +341,7 @@ class VideoEdit extends React.PureComponent {
       protectImages
     } = formData;
 
-    const formBorderColor = `${!hasSubmittedData ? colors.brightBlue : colors.red}`;
+    const formBorderColor = `${!hasSubmittedData ? '#02bfe7' : '#cd2026'}`;
     const contentStyle = {
       border: `3px solid ${( hasRequiredData && hasSubmittedData ) ? 'transparent' : `${formBorderColor}`}`
     };
