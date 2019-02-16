@@ -74,8 +74,9 @@ const ProjectSupportFiles = props => {
                 />
                 <IconPopup
                   message={ iconMsg }
-                  size={ iconSize }
+                  iconSize={ iconSize }
                   iconType={ iconType }
+                  popupSize="mini"
                 />
               </Fragment>
             ) }

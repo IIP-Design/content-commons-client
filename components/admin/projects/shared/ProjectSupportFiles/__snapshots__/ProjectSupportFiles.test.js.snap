@@ -180,9 +180,10 @@ exports[`<ProjectSupportFiles /> renders without crashing 1`] = `
           type="checkbox"
         />
         <IconPopup
+          iconSize="small"
           iconType="info circle"
           message="Checking this prevents people from downloading and using your images. Useful if your images are licensed."
-          size="small"
+          popupSize="mini"
         />
       </GridColumn>
     </GridRow>

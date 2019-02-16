@@ -85,8 +85,9 @@ class SupportFileTypeList extends React.PureComponent {
               <Fragment>
                 <IconPopup
                   message={ popupMsg }
-                  size="small"
+                  iconSize="small"
                   iconType="info circle"
+                  popupSize="mini"
                 />
                 { hasUploaded
                   && (

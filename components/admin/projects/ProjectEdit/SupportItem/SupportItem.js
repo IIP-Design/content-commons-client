@@ -287,7 +287,7 @@ class SupportItem extends React.PureComponent {
               ? (
                 <Popup
                   content={ file }
-                  size="small"
+                  size="mini"
                   inverted
                   on={ [
                     'hover',
@@ -327,7 +327,7 @@ class SupportItem extends React.PureComponent {
                     'focus'
                   ] }
                   inverted
-                  size="small"
+                  size="mini"
                   style={ popupStyle }
                 />
               ) : lang }

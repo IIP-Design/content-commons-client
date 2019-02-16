@@ -2,13 +2,21 @@ import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import IconPopup from './IconPopup';
 
-const Component = <IconPopup message="A test message" iconType="info circle" size="tiny" />;
+const props = {
+  message: 'A test message',
+  iconType: 'info circle',
+  iconSize: 'tiny',
+  popupSize: 'mini'
+};
 
 const newProps = {
   message: 'An updated test message',
   iconType: 'undo',
-  size: 'huge'
+  iconSize: 'huge',
+  popupSize: 'large'
 };
+
+const Component = <IconPopup { ...props } />;
 
 describe( '<IconPopup />', () => {
   it( 'renders without crashing', () => {
@@ -19,15 +27,17 @@ describe( '<IconPopup />', () => {
 
   it( 'receives props', () => {
     const wrapper = shallow( Component );
-    expect( wrapper.prop( 'content' ) ).toEqual( 'A test message' );
-    expect( wrapper.prop( 'size' ) ).toEqual( 'tiny' );
+    const { message, popupSize } = props;
+    expect( wrapper.prop( 'content' ) ).toEqual( message );
+    expect( wrapper.prop( 'size' ) ).toEqual( popupSize );
   } );
 
   it( 'sets new props', () => {
     const wrapper = shallow( Component );
-    const { message, iconType, size } = newProps;
-    wrapper.setProps( { message, iconType, size } );
-    expect( wrapper.prop( 'content' ) ).toEqual( message );
-    expect( wrapper.prop( 'size' ) ).toEqual( size );
+    wrapper.setProps( { ...newProps } );
+    expect( wrapper.prop( 'content' ) )
+      .toEqual( newProps.message );
+    expect( wrapper.prop( 'size' ) )
+      .toEqual( newProps.popupSize );
   } );
 } );

@@ -5,9 +5,10 @@ exports[`<SupportFileTypeList /> renders \`SupportItem\` components if \`hasSubm
   <h3>
     SRT Files 
     <IconPopup
+      iconSize="small"
       iconType="info circle"
       message="Some info about what SRT files are."
-      size="small"
+      popupSize="mini"
     />
   </h3>
   <ul>
@@ -20,7 +21,6 @@ exports[`<SupportFileTypeList /> renders \`SupportItem\` components if \`hasSubm
           "videoID": "made-in-america",
         }
       }
-      supportItem={null}
     />
     <SupportItem
       fileType="srt"
@@ -31,7 +31,6 @@ exports[`<SupportFileTypeList /> renders \`SupportItem\` components if \`hasSubm
           "videoID": "made-in-america",
         }
       }
-      supportItem={null}
     />
     <SupportItem
       fileType="srt"
@@ -42,7 +41,6 @@ exports[`<SupportFileTypeList /> renders \`SupportItem\` components if \`hasSubm
           "videoID": "made-in-america",
         }
       }
-      supportItem={null}
     />
     <SupportItem
       fileType="srt"
@@ -53,7 +51,6 @@ exports[`<SupportFileTypeList /> renders \`SupportItem\` components if \`hasSubm
           "videoID": "made-in-america",
         }
       }
-      supportItem={null}
     />
   </ul>
 </Fragment>
@@ -73,7 +70,7 @@ exports[`<SupportFileTypeList /> renders initially \`Placeholder\` components 1`
             "width": "75%",
           },
           "language": Object {
-            "backgroundColor": "grey",
+            "backgroundColor": "#5b616b",
             "marginRight": "0",
             "width": "20%",
           },
@@ -96,7 +93,7 @@ exports[`<SupportFileTypeList /> renders initially \`Placeholder\` components 1`
             "width": "75%",
           },
           "language": Object {
-            "backgroundColor": "grey",
+            "backgroundColor": "#5b616b",
             "marginRight": "0",
             "width": "20%",
           },
@@ -119,7 +116,7 @@ exports[`<SupportFileTypeList /> renders initially \`Placeholder\` components 1`
             "width": "75%",
           },
           "language": Object {
-            "backgroundColor": "grey",
+            "backgroundColor": "#5b616b",
             "marginRight": "0",
             "width": "20%",
           },
@@ -142,7 +139,7 @@ exports[`<SupportFileTypeList /> renders initially \`Placeholder\` components 1`
             "width": "75%",
           },
           "language": Object {
-            "backgroundColor": "grey",
+            "backgroundColor": "#5b616b",
             "marginRight": "0",
             "width": "20%",
           },

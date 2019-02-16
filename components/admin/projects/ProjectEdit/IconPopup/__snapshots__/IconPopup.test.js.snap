@@ -13,7 +13,7 @@ exports[`<IconPopup /> renders without crashing 1`] = `
     ]
   }
   position="top left"
-  size="tiny"
+  size="mini"
   trigger={
     <span>
       <Focusable
