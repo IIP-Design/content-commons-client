@@ -7,7 +7,7 @@
     margin: 0 auto;
     padding: 0 1em 1.5em 1em;
     border-radius: 0;
-    transform: translateX(-50%);
+    font-size: 0.777778rem;
 
     .actions {
       display: flex;
@@ -17,8 +17,9 @@
 
       .ui.button {
         border: 2px solid $light-blue;
-        background-color: $light-blue;
+        font-size: 0.777778rem;
         color: #fff;
+        background-color: $light-blue;
 
         &.primary {
           background-color: #fff;

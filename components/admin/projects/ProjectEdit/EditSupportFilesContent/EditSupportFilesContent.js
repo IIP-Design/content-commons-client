@@ -209,6 +209,7 @@ class EditSupportFilesContent extends React.PureComponent {
               className="cancel-close"
               content={ hasSaved ? 'Close' : 'Cancel' }
               basic
+              size="tiny"
               onClick={ this.handleCancelClose }
               type="button"
             />
@@ -217,6 +218,7 @@ class EditSupportFilesContent extends React.PureComponent {
               content="Add Files"
               color="blue"
               basic
+              size="tiny"
               onClick={ this.handleAddFiles }
               type="button"
             />
@@ -236,6 +238,7 @@ class EditSupportFilesContent extends React.PureComponent {
               className="save"
               content={ saveBtnMsg }
               color="blue"
+              size="tiny"
               disabled={ !hasPopulatedLanguages || ( hasSaved && !hasUnsavedData ) }
               onClick={ this.handleSubmit }
               type="submit"

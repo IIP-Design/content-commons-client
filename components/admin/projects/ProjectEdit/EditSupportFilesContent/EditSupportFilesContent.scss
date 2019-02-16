@@ -5,6 +5,10 @@
     outline: none
   }
 
+  .ui.form {
+    font-size: 0.777778rem;
+  }
+
   .ui.basic.buttons {
     border: 0;
 
@@ -14,6 +18,7 @@
   }
 
   .ui.button {
+    // font-size: 0.777778rem;
     box-shadow: none !important;
 
     &.basic.replace,

@@ -127,10 +127,10 @@ class EditSupportFileRow extends React.PureComponent {
     const acceptedTypes = isSingleType && !isOther ? fileExtensions[0] : '';
 
     return (
-      <Button.Group basic size="massive">
+      <Button.Group basic size="large">
         <Popup
           content="Replace"
-          size="small"
+          size="mini"
           inverted
           on={ [
             'hover',
@@ -161,7 +161,7 @@ class EditSupportFileRow extends React.PureComponent {
         </VisuallyHidden>
         <Popup
           content="Delete"
-          size="small"
+          size="mini"
           inverted
           on={ [
             'hover',
@@ -228,7 +228,7 @@ class EditSupportFileRow extends React.PureComponent {
                       'hover', 'click', 'focus'
                     ] }
                     inverted
-                    size="small"
+                    size="mini"
                     style={ popupStyle }
                   />
                 )
