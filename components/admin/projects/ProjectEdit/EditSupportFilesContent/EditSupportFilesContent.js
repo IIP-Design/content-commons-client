@@ -165,7 +165,7 @@ class EditSupportFilesContent extends React.PureComponent {
 
     return (
       <ModalItem
-        customClassName={ `edit-support-files ${fileType}` }
+        className={ `edit-support-files ${fileType}` }
         headline={ `Edit ${headline} file${files.length > 1 ? 's' : ''} in this project` }
         textDirection="ltr"
       >

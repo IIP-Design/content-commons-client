@@ -2,7 +2,7 @@
 
 exports[`<PreviewProjectContent /> renders without crashing 1`] = `
 <ModalItem
-  customClassName="project-preview"
+  className="project-preview"
   headline="Made in America"
   textDirection="ltr"
 >

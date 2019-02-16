@@ -134,7 +134,7 @@ class PreviewProjectContent extends React.PureComponent {
 
     return (
       <ModalItem
-        customClassName="project-preview"
+        className="project-preview"
         headline={ title }
         textDirection={ language.text_direction }
       >
