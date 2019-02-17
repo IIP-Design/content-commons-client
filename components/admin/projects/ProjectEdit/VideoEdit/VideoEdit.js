@@ -294,7 +294,7 @@ class VideoEdit extends React.PureComponent {
     const { project, uploadedSupportFilesCount } = this.props;
 
     if ( !project && this.state.hasBeenDeleted ) {
-      Router.push( '/admin/dashboard' );
+      Router.push( { pathname: '/admin/dashboard' } );
     }
 
     if ( !project || project.loading ) {
