@@ -56,7 +56,7 @@ const ProjectSupportFiles = props => {
             hasUploaded={ hasUploaded }
           />
 
-          { type === 'other'
+          { ( type === 'other' && hasUploaded )
             && (
               <Fragment>
                 <Checkbox
