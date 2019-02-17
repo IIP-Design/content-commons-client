@@ -572,7 +572,7 @@ class VideoEdit extends React.PureComponent {
 }
 
 VideoEdit.propTypes = {
-  id: string,
+  id: string.isRequired,
   project: object,
   uploadedVideosCount: number,
   uploadedSupportFilesCount: number
