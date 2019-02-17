@@ -360,6 +360,8 @@ class VideoEdit extends React.PureComponent {
       notificationMsg = 'Saving project...';
     }
 
+    const hasSupportFiles = Object.keys( supportFiles ).length > 0;
+
     return (
       <div className="edit-project">
         <div className="edit-project__header">
@@ -507,20 +509,24 @@ class VideoEdit extends React.PureComponent {
             ) }
         </div>
 
-        <div className="edit-project__support-files">
-          <ProjectSupportFiles
-            heading="Support Files"
-            projectId={ { videoID: this.props.project.projectId } }
-            supportFiles={ supportFiles }
-            hasSubmittedData={ hasSubmittedData }
-            protectImages={ protectImages }
-            handleChange={ this.handleChange }
-            config={ supportFilesConfig }
-            hasUploaded={
-              this.getSupportFilesCount() === uploadedSupportFilesCount
-            }
-          />
-        </div>
+        { hasSupportFiles
+          && (
+            <div className="edit-project__support-files">
+              <ProjectSupportFiles
+                heading="Support Files"
+                projectId={ { videoID: this.props.project.projectId } }
+                supportFiles={ supportFiles }
+                hasSubmittedData={ hasSubmittedData }
+                protectImages={ protectImages }
+                handleChange={ this.handleChange }
+                config={ supportFilesConfig }
+                hasUploaded={
+                  this.getSupportFilesCount() === uploadedSupportFilesCount
+                }
+              />
+            </div>
+          )
+        }
 
         <div className="edit-project__items">
           <ProjectItemsList
