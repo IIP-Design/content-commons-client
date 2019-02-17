@@ -4,8 +4,8 @@
  *
  */
 import React, { Fragment } from 'react';
-import { Router } from 'next/router';
-import { number, object } from 'prop-types';
+import Router from 'next/router';
+import { number, object, string } from 'prop-types';
 import {
   Button, Confirm, Loader, Progress
 } from 'semantic-ui-react';
@@ -143,8 +143,13 @@ class VideoEdit extends React.PureComponent {
   }
 
   handleFinalReview = () => {
-    const videoID = this.props.project.projectId;
-    Router.push( `/admin/video/${videoID}/review` );
+    Router.push( {
+      pathname: '/admin/project',
+      query: {
+        content: 'video',
+        id: this.props.id
+      }
+    } );
   }
 
   handleAddMoreFiles = () => {
@@ -561,6 +566,7 @@ class VideoEdit extends React.PureComponent {
 }
 
 VideoEdit.propTypes = {
+  id: string,
   project: object,
   uploadedVideosCount: number,
   uploadedSupportFilesCount: number
