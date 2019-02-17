@@ -222,7 +222,7 @@ class PreviewProjectContent extends React.PureComponent {
               />
             ) }
 
-          <ModalContentMeta type={ projectType } dateUpdated={ updated } />
+          <ModalContentMeta type={ projectType } dateUpdated={ updated || uploaded } />
 
           <ModalDescription description={ desc } />
         </div>

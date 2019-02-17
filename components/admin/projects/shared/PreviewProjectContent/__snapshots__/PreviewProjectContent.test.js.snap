@@ -808,7 +808,7 @@ exports[`<PreviewProjectContent /> renders without crashing 1`] = `
       source="youtube"
     />
     <ModalContentMeta
-      dateUpdated=""
+      dateUpdated="2018-04-13T15:45:00Z"
       type="video"
     />
     <ModalDescription
