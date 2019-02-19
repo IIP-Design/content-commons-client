@@ -1,0 +1,26 @@
+.videoProjectType.ui.form {
+  @media screen and (min-width: 641px) {
+    padding-left: 2em;
+    padding-right: 2em;
+  }
+
+  .field {
+
+    &.disabled {
+      opacity: 0.3;
+    }
+
+    label, p {
+      font-size: 14px;
+    }
+    
+    label {
+      font-weight: bold;
+    }
+
+    > p {
+      padding-left: 1.85714em;
+    }
+  }
+  
+}

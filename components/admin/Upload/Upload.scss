@@ -3,15 +3,17 @@
 .upload-content {
   display: inline-block;
   width: 100%;
+  margin: 3em 0 6em 0;
+  @media screen and (max-width: 640px) {
+    margin: 0 0 1em 0;
+  }
 
   .contentTypes {    
     display: flex; 
-    justify-content: center;    
-    margin: 3em 0;
+    justify-content: center;        
     text-align: center;
     @media screen and (max-width: 640px) {
-      flex-wrap: wrap;      
-      margin: 0 0 2em 0;
+      flex-wrap: wrap;            
     }
 
     .type.ui.button {
@@ -106,3 +108,36 @@
   }
 }
 
+.upload_modal.ui.modal {
+  border-radius: 0;
+}
+
+.ui.form .upload_actions.field {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  text-align: center;
+}
+
+.ui.button {
+  font-size: 16px;
+
+  &.upload_button {
+    border: 2px solid $light-blue;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+    &--back {      
+      color: $light-blue;
+      background-color: #fff;
+    }
+
+    &--next {
+      color: #fff;
+      background-color: $light-blue;
+
+      &:hover {
+        border: 2px solid $blue;
+        background-color: $blue;
+      }
+    }
+  }
+}
