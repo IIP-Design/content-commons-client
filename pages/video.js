@@ -9,7 +9,7 @@ import Head from 'next/head';
 class VideoPage extends Component {
   static async getInitialProps ( { req, query, asPath } ) {
     const url = ( req && req.headers && req.headers.host && asPath )
-      ? `${req.headers.host}${asPath}`
+      ? `https://${req.headers.host}${asPath}`
       : '';
     if ( query && query.site && query.id ) {
       const response = await getItemRequest( query.site, query.id );
