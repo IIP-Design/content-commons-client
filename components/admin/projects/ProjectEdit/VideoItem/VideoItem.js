@@ -124,7 +124,9 @@ class VideoItem extends React.PureComponent {
 
     const { video } = this.state;
 
-    if ( !video || video.loading ) {
+    if ( !video || !Object.keys( video ).length ) return null;
+
+    if ( video.loading ) {
       return (
         <Loader active inline="centered">
           <p style={ { fontSize: '0.75em' } }>

@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<VideoItem /> renders \`Progress\` component if \`isUploading\` 1`] = `
+<li
+  className="item video"
+>
+  <span
+    className="modal-trigger"
+    onClick={null}
+    style={
+      Object {
+        "cursor": "not-allowed",
+      }
+    }
+  >
+    <div
+      className="thumbnail isUploading"
+    >
+      <img
+        alt="Man walking through factory (State Dept.)"
+        src="https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg"
+      />
+      <p
+        className="file-name"
+      >
+        madeinamerica_english_asdkjaf_al;kdflkeori_erpoiuzx,mnvz.mp4
+      </p>
+      <div
+        className="loading-animation"
+      >
+        <Loader
+          active={true}
+          inline="centered"
+        />
+      </div>
+    </div>
+    <Progress
+      active={true}
+      color="blue"
+      precision={0}
+      progress={true}
+      size="small"
+      total={662595174}
+      value={0}
+    >
+      <p>
+        Upload in progress
+      </p>
+    </Progress>
+    <h3
+      className="item-heading ltr"
+    >
+      Made in America
+    </h3>
+    <p
+      className="item-lang"
+    >
+      English
+    </p>
+  </span>
+</li>
+`;
+
+exports[`<VideoItem /> renders a \`span\` with correct props if \`displayItemInModal\` is \`false\` 1`] = `
+<li
+  className="item video"
+>
+  <span
+    className="wrapper"
+    onClick={null}
+    style={
+      Object {
+        "cursor": "default",
+      }
+    }
+  >
+    <div
+      className="thumbnail"
+    >
+      <img
+        alt="Man walking through factory (State Dept.)"
+        src="https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg"
+      />
+      <p
+        className="file-name"
+      >
+        madeinamerica_english_asdkjaf_al;kdflkeori_erpoiuzx,mnvz.mp4
+      </p>
+    </div>
+    <h3
+      className="item-heading ltr"
+    >
+      Made in America
+    </h3>
+    <p
+      className="item-lang"
+    >
+      English
+    </p>
+  </span>
+</li>
+`;
+
+exports[`<VideoItem /> renders without crashing 1`] = `
+<li
+  className="item video"
+>
+  <button
+    className="modal-trigger"
+    onClick={[MockFunction]}
+    style={
+      Object {
+        "cursor": "pointer",
+      }
+    }
+  >
+    <div
+      className="thumbnail"
+    >
+      <img
+        alt="Man walking through factory (State Dept.)"
+        src="https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg"
+      />
+      <p
+        className="file-name"
+      >
+        madeinamerica_english_asdkjaf_al;kdflkeori_erpoiuzx,mnvz.mp4
+      </p>
+    </div>
+    <h3
+      className="item-heading ltr"
+    >
+      Made in America
+    </h3>
+    <p
+      className="item-lang"
+    >
+      English
+    </p>
+  </button>
+</li>
+`;
