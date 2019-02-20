@@ -190,7 +190,9 @@ class SupportItem extends React.PureComponent {
     const { fileType } = this.props;
     const { supportItem } = this.state;
 
-    if ( !supportItem || supportItem.loading ) {
+    if ( !supportItem || !Object.keys( supportItem ).length ) return null;
+
+    if ( supportItem.loading ) {
       return (
         <li>
           <Loader active inline size="mini" />
@@ -244,7 +246,7 @@ class SupportItem extends React.PureComponent {
               size="small"
             />
             <span>
-              { `${supportItem.error ? 'Loading ' : 'Uploading '} error` }
+              { `${supportItem.error ? 'Loading ' : 'Uploading '}error` }
             </span>
           </p>
         </li>
