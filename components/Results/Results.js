@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid } from 'semantic-ui-react';
-// import * as actions from '../../actions';
+import * as actions from 'lib/redux/actions/filter';
 import { normalizeItem } from 'lib/elastic/parser';
 import SearchTerm from 'components/SearchTerm/SearchTerm';
-// import FilterMenu from '../FilterMenu/FilterMenu';
+import FilterMenu from 'components/FilterMenu/FilterMenu';
 import ResultItem from './ResultItem/ResultItem';
 import ResultsHeader from './ResultsHeader/ResultsHeader';
 
@@ -26,7 +26,6 @@ const Results = props => {
     setView( e.target.dataset.view );
   };
 
-
   const { hits } = props.search.response;
   const items = hits ? hits.hits : [];
 
@@ -37,7 +36,7 @@ const Results = props => {
         <SearchTerm />
         { !items.length && ( <NoResults searchTerm={ props.search.currentTerm } /> ) }
         <hr />
-        { /* <FilterMenu /> */ }
+        <FilterMenu />
         <section>
           <ResultsHeader toggleView={ toggleView } currentView={ view } />
         </section>
@@ -79,4 +78,4 @@ Results.propTypes = {
   } )
 };
 
-export default connect( mapStateToProps )( Results );
+export default connect( mapStateToProps, actions )( Results );

@@ -26,7 +26,7 @@ class Recents extends Component {
     e.preventDefault();
     this.props.router.push( {
       pathname: '/results',
-      query: { language: 'en-us', sortBy: 'published', postType: [this.props.postType] }
+      query: { language: 'en-us', sortBy: 'published', postTypes: [this.props.postType] }
     } );
   }
 

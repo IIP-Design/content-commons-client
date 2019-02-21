@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 
 import Recents from 'components/Recents/Recents';
+import { clearFilters } from 'lib/redux/actions/filter';
+import { loadPostTypes } from 'lib/redux/actions/postType';
 import { loadRecents } from '../components/Recents/actions';
-import { loadPostTypes } from '../lib/redux/actions/postType';
 
 class Landing extends Component {
   static async getInitialProps ( { store } ) {
     // trigger parellel loading calls
+    const resetFilters = store.dispatch( clearFilters() );
     const recentVideos = store.dispatch( loadRecents( 'video', 'en-us' ) );
     const recentPosts = store.dispatch( loadRecents( 'post', 'en-us' ) );
     const postTypes = store.dispatch( loadPostTypes() );
 
     // await completion
+    await resetFilters;
     await recentVideos;
     await recentPosts;
     await postTypes;

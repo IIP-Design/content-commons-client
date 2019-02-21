@@ -1,95 +1,93 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import debounce from 'lodash/debounce';
 import { Form, Input, Icon } from 'semantic-ui-react';
 import { detectLanguage } from 'lib/language';
+import { fetchQueryString } from 'lib/searchQuery';
+import * as actions from 'lib/redux/actions';
 import './SearchInput.scss';
 
-const Search = props => {
-  const [term, setTerm] = useState( '' );
-  const [language, setLanguage] = useState( {
-    locale: 'en-us',
-    direction: 'left'
-  } );
+class Search extends Component {
+  constructor( props ) {
+    super( props );
+    this.state = {
+      locale: 'en-us',
+      direction: 'left'
+    };
+  }
 
   /**
    * Send term to Google API to determine language
    * Update state if valid language detected
    */
-  const getLanguage = async () => {
-    const detected = await detectLanguage( term );
-    if ( detected ) {
-      setLanguage( {
-        ...language,
-        locale: detected.language.key,
-        direction: detected.direction,
-      } );
-    }
-  };
+ getLanguage = async term => {
+   const detected = await detectLanguage( term );
+   if ( detected ) {
+     this.setState( {
+       locale: detected.language.key,
+       direction: detected.direction,
+     } );
+   }
+ };
 
   /**
-   * Only execute if term changes
+   * NOTE: Since function call the language detect api on text change
+   * may need to use debounce to enable better perfomance
    */
-  useEffect( () => {
-    getLanguage();
-  }, [term] );
-
-  /**
-   * Since function call the language detect api on text change
-   * use debounce to enable better perfomance
-   */
-  const handleQueryOnChange = debounce( async ( e, data ) => {
-    setTerm( data.value.trim() );
-  }, 300 );
-
-
-  const handleSubmit = async e => {
-    e.preventDefault();
-
-    let newPath = `/results?language=${language.locale}`;
-    if ( term ) {
-      newPath += `&term=${encodeURIComponent( term )}&sortBy=relevance`;
-    } else {
-      newPath += '&sortBy=published';
-    }
-    // debugging
-    // console.log( `old : ${props.router.asPath}` );
-    // console.log( `new : ${newPath}` );
-
-    // only submit if search is different from previos
-    if ( newPath !== props.router.asPath ) {
-      props.router.push( newPath );
-    }
+  handleQueryOnChange = ( e, { value } ) => {
+    this.getLanguage( value );
+    this.props.updateSearchTerm( value );
   };
 
 
-  let inputProps = {};
-  if ( language.direction === 'left' ) {
-    inputProps = { className: 'search_input' };
-  } else {
-    inputProps = { className: 'search_input right', iconPosition: 'left' };
-  }
+   handleSubmit = async e => {
+     e.preventDefault();
 
-  return (
-    <section className="search_bar">
-      <Form onSubmit={ handleSubmit }>
-        <Input
-          onChange={ handleQueryOnChange }
-          // value={ term }
-          size="large"
-          icon={ <Icon name="search" onClick={ handleSubmit } /> }
-          placeholder="Type in keywords to search our content"
-          { ...inputProps }
-        />
-      </Form>
-    </section>
-  );
-};
+     const { filter, search } = this.props;
+     const query = fetchQueryString( { ...filter, term: search.term, language: this.state.locale } );
 
+     this.props.router.push( {
+       pathname: '/results',
+       query
+     } );
+   };
+
+
+   render () {
+     let inputProps = {};
+     if ( this.state.direction === 'left' ) {
+       inputProps = { className: 'search_input' };
+     } else {
+       inputProps = { className: 'search_input right', iconPosition: 'left' };
+     }
+
+     return (
+       <section className="search_bar">
+         <Form onSubmit={ this.handleSubmit }>
+           <Input
+             onChange={ this.handleQueryOnChange }
+             value={ this.props.search.term ? this.props.search.term : '' }
+             size="large"
+             icon={ <Icon name="search" onClick={ this.handleSubmit } /> }
+             placeholder="Type in keywords to search our content"
+             { ...inputProps }
+           />
+         </Form>
+       </section>
+     );
+   }
+}
+
+const mapStateToProps = state => ( {
+  search: state.search
+} );
 
 Search.propTypes = {
   router: PropTypes.object,
+  filter: PropTypes.object,
+  search: PropTypes.object,
+  updateSearchTerm: PropTypes.func
 };
 
-export default withRouter( Search );
+export default withRouter( connect( mapStateToProps, actions )( Search ) );
