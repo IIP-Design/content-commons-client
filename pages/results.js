@@ -12,20 +12,15 @@ import { loadSources } from '../lib/redux/actions/source';
 import { loadCategories } from '../lib/redux/actions/category';
 
 class ResultsPage extends Component {
+  // Get search params from url
   static async getInitialProps ( {
     query: {
       language, term, sortBy, postTypes, date, categories, sources
     }, store
   } ) {
-    let types;
-    let srcs;
-    let cats;
-
-    const { global } = store.getState();
-
     // trigger parallel loading calls
-    const languageUpdate = store.dispatch( updateLanguage( language ) );
-    const sortByUpdate = store.dispatch( updateSort( sortBy ) );
+    const languageUpdate = store.dispatch( updateLanguage( language || 'en-us' ) );
+    const sortByUpdate = store.dispatch( updateSort( sortBy || 'published' ) );
     const typeUpdate = store.dispatch( postTypeUpdate( postTypes ) );
     const termUpdate = store.dispatch( updateSearchTerm( term ) );
     const dateChange = store.dispatch( dateUpdate( date ) );
@@ -41,12 +36,14 @@ class ResultsPage extends Component {
     await sourceChange;
 
     // after all search values are updated, execute search request
-    // if this is on the client, execute search request
     store.dispatch( createRequest() );
 
-    // else update store, then execute request
-
     // load filter menus if needed
+    const { global } = store.getState();
+    let types;
+    let srcs;
+    let cats;
+
     if ( !global.postTypes.list.length ) {
       types = store.dispatch( loadPostTypes() );
     }
