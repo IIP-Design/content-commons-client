@@ -4,7 +4,7 @@ import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { Form, Input, Icon } from 'semantic-ui-react';
 import { detectLanguage } from 'lib/language';
-import { fetchQueryString } from 'lib/searchQuery';
+import { fetchQueryString } from 'lib/searchQueryString';
 import * as actions from 'lib/redux/actions';
 import './SearchInput.scss';
 

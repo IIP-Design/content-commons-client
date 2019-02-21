@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import { Form, Icon } from 'semantic-ui-react';
-import { fetchQueryString } from 'lib/searchQuery';
+import { fetchQueryString } from 'lib/searchQueryString';
 import difference from 'lodash/difference';
 import union from 'lodash/union';
 import intersection from 'lodash/intersection';
@@ -55,7 +55,8 @@ const FilterMenuItem = props => {
   };
 
   const executeQuery = value => {
-    const query = fetchQueryString( { ...props.filterStore, [props.name]: value } );
+    // Add term from search reducer to ensure that it does not get removed from the query string
+    const query = fetchQueryString( { ...props.filterStore, [props.name]: value, term: props.term } );
 
     props.router.replace( {
       pathname: '/results',
@@ -65,8 +66,9 @@ const FilterMenuItem = props => {
 
   const handleCheckboxChange = async ( e, { value, checked } ) => {
     const arr = props.filterStore[props.name].slice( 0 );
-    // Some values have mutliple search terms, i.e. YALI & YLAI so we
-    // split the value and add/remove each to search array
+    // Some values have mutliple search terms within the input value
+    // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
+    // so we split the value into array and add/remove each to search array
     const values = value.split( '|' );
 
     let updatedArr;
@@ -99,8 +101,9 @@ const FilterMenuItem = props => {
   );
 
   const renderCheckbox = option => {
-    // Some values have mutliple search terms, i.e. YALI & YLAI so we
-    // split the value and test new array against selected array
+    // Some values have mutliple search terms within the input value
+    // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
+    // so we split the value into array and add/remove each to search array
     const values = option.value.split( '|' );
     const checked = !!( intersection( selected, values ).length );
 
@@ -177,10 +180,12 @@ FilterMenuItem.propTypes = {
   router: PropTypes.object,
   filterStore: PropTypes.object,
   name: PropTypes.string,
+  term: PropTypes.string
 };
 
 const mapStateToProps = state => ( {
-  filterStore: state.filter
+  filterStore: state.filter,
+  term: state.search.term
 } );
 
 export default withRouter( connect( mapStateToProps )( FilterMenuItem ) );
