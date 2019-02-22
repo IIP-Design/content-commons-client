@@ -121,13 +121,12 @@ class EditSupportFilesContent extends React.PureComponent {
   renderRow = file => {
     const { id } = file;
     const { selectedLangValues } = this.state;
-    const { data: files, fileType } = this.props;
+    const { data: files } = this.props;
 
     return (
       <EditSupportFileRow
         key={ id }
         file={ file }
-        fileType={ fileType }
         fileExtensions={ this.getFileExtensions( files ) }
         handleChange={ this.handleChange }
         selectedLanguage={ selectedLangValues[id] }
@@ -137,6 +136,9 @@ class EditSupportFilesContent extends React.PureComponent {
 
   render() {
     const { data: files, fileType } = this.props;
+
+    if ( !files || !files.length ) return null;
+
     const {
       displaySaveMsg,
       hasSaved,
