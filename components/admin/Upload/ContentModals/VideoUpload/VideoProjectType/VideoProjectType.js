@@ -10,10 +10,18 @@ import './VideoProjectType.scss';
 class VideoProjectType extends Component {
   state = {};
 
+  componentDidMount() {
+    document.querySelector( '.upload_modal' ).classList.add( 'project-type-active' );
+  }
+
+  componentWillUnmount() {
+    document.querySelector( '.project-type-active' ).classList.remove( 'project-type-active' );
+  }
+
   handleSelection = ( e, { value } ) => this.setState( { value } );
 
   render() {
-    const { closeModal } = this.props;
+    const { closeModal, handleVideoAssetsUpload } = this.props;
     const { value } = this.state;
 
     return (
@@ -50,8 +58,16 @@ class VideoProjectType extends Component {
         </Form.Field>
         <Form.Field className="upload_actions">
           <Button className="upload_button upload_button--back" content="Cancel" onClick={ closeModal } />
-          { /* Open file upload on click */ }
-          <Button className="upload_button upload_button--next" content="Next" onClick={ closeModal } />
+          <label className="ui button upload_button upload_button--fileUpload" htmlFor="upload_video_assets">
+            <input
+              id="upload_video_assets"
+              type="file"
+              name="upload_video_assets"
+              multiple
+              onChange={ handleVideoAssetsUpload }
+            />
+            Next
+          </label>
         </Form.Field>
       </Form>
     );
@@ -59,7 +75,8 @@ class VideoProjectType extends Component {
 }
 
 VideoProjectType.propTypes = {
-  closeModal: PropTypes.func
+  closeModal: PropTypes.func,
+  handleVideoAssetsUpload: PropTypes.func
 };
 
 export default VideoProjectType;

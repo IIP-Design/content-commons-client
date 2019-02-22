@@ -1,7 +1,10 @@
 @import "../../../../../styles/colors.scss";
 
 .ui.modal.upload_modal {
-  max-width: 430px;
+
+  &.project-type-active {
+    max-width: 430px;
+  }  
 }
 
 .videoUpload {

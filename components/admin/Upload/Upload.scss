@@ -139,5 +139,12 @@
         background-color: $blue;
       }
     }
+
+    &--fileUpload {
+      display: inline-block !important;
+      font-size: 16px !important;
+      color: #fff !important;
+      background-color: $light-blue; 
+    }
   }
 }

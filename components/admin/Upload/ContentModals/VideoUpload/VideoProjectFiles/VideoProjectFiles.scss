@@ -1,0 +1,77 @@
+@import "../../../../../../styles/colors.scss";
+
+.videoProjectFiles {  
+  padding: 0 1em;
+
+  &_headline {
+    margin-top: -45px !important;
+  }
+
+  .ui.grid {
+    margin: 0;
+
+    .row {
+      padding-bottom: 0;
+    }
+  }
+
+  &_column_labels {
+    padding-bottom: 0.5em !important;
+    border-bottom: 1px solid $light-grey;
+    color: $blue;
+  }
+
+  &_steps {
+    text-align: center;
+
+    > p {
+      display: inline-block;
+    }
+
+    > i {
+      margin: 0 2em;
+      vertical-align: middle;
+    }
+  }
+
+  &_step {
+    font-size: 20px;
+    color: $alt-grey;
+
+    &.active {
+      position: relative;
+      font-weight: bold;
+      color: $blue;
+
+      &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -5px;
+        width: 125%;
+        height: 5px;
+        background-color: $light-blue;
+        transform: translateX(-10%);
+      }
+    }        
+  }
+
+  .ui.selection.dropdown {
+    min-height: auto;
+    height: 30px;
+    min-width: 100%;
+    padding: 0em;
+    border-radius: 4px;
+
+    .dropdown.icon {
+      padding: 0.4em;
+    }
+  }
+
+  &_asset {
+
+    &_file {
+      font-size: 16px;
+    }
+  }
+}
