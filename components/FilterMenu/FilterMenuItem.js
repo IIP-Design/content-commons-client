@@ -12,7 +12,6 @@ import './FilterMenuItem.scss';
 
 const FilterMenuItem = props => {
   const [filterItemOpen, setFilterItemOpen] = useState( false );
-  const [selected, setSelected] = useState( props.selected );
 
   /**
    * Format data into state that dopdowns will use
@@ -42,7 +41,7 @@ const FilterMenuItem = props => {
     }
   };
 
-  const showFilterMenu = e => {
+  const showFilterMenu = () => {
     setFilterItemOpen( true );
   };
 
@@ -54,6 +53,10 @@ const FilterMenuItem = props => {
     }
   };
 
+  /**
+   * Reload results page with updated query params
+   * @param {array|string} value - updated filter value
+   */
   const executeQuery = value => {
     // Add term from search reducer to ensure that it does not get removed from the query string
     const query = fetchQueryString( { ...props.filterStore, [props.name]: value, term: props.term } );
@@ -65,7 +68,9 @@ const FilterMenuItem = props => {
   };
 
   const handleCheckboxChange = async ( e, { value, checked } ) => {
+    // make copy of selected filter array, i.e. categories
     const arr = props.filterStore[props.name].slice( 0 );
+
     // Some values have mutliple search terms within the input value
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
     // so we split the value into array and add/remove each to search array
@@ -73,17 +78,17 @@ const FilterMenuItem = props => {
 
     let updatedArr;
     if ( checked ) {
+      // create array of unique values within arr & values
       updatedArr = union( arr, values );
     } else {
+      // create array of values not included in values array
       updatedArr = difference( arr, values );
     }
 
-    setSelected( updatedArr );
     executeQuery( updatedArr );
   };
 
   const handleRadioChange = async ( e, { value } ) => {
-    setSelected( value );
     executeQuery( value );
   };
 
@@ -95,7 +100,7 @@ const FilterMenuItem = props => {
       label={ option.label }
       value={ option.value }
       count={ option.count }
-      checked={ selected === option.value }
+      checked={ props.selected === option.value }
       onChange={ handleRadioChange }
     />
   );
@@ -105,7 +110,7 @@ const FilterMenuItem = props => {
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
     // so we split the value into array and add/remove each to search array
     const values = option.value.split( '|' );
-    const checked = !!( intersection( selected, values ).length );
+    const checked = !!( intersection( props.selected, values ).length );
 
     return (
       <Form.Checkbox
@@ -176,11 +181,12 @@ FilterMenuItem.propTypes = {
   formItem: PropTypes.string,
   filter: PropTypes.string,
   options: PropTypes.array,
-  selected: PropTypes.oneOfType( [PropTypes.array, PropTypes.string] ),
   router: PropTypes.object,
   filterStore: PropTypes.object,
   name: PropTypes.string,
-  term: PropTypes.string
+  term: PropTypes.string,
+  /* eslint-disable-next-line react/no-unused-prop-types */
+  selected: PropTypes.oneOfType( [PropTypes.string, PropTypes.array] )
 };
 
 const mapStateToProps = state => ( {

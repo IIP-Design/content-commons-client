@@ -10,6 +10,7 @@ import {
 import { loadPostTypes } from '../lib/redux/actions/postType';
 import { loadSources } from '../lib/redux/actions/source';
 import { loadCategories } from '../lib/redux/actions/category';
+import { loadLanguages } from '../lib/redux/actions/language';
 
 class ResultsPage extends Component {
   // Get search params from url
@@ -43,6 +44,7 @@ class ResultsPage extends Component {
     let types;
     let srcs;
     let cats;
+    let langs;
 
     if ( !global.postTypes.list.length ) {
       types = store.dispatch( loadPostTypes() );
@@ -56,9 +58,14 @@ class ResultsPage extends Component {
       cats = store.dispatch( loadCategories() );
     }
 
+    if ( !global.languages.list.length ) {
+      langs = store.dispatch( loadLanguages() );
+    }
+
     if ( types ) await types;
     if ( srcs ) await srcs;
     if ( cats ) await cats;
+    if ( langs ) await langs;
 
     return {};
   }

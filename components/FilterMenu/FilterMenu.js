@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/filter';
 import FilterMenuItem from './FilterMenuItem';
-// import FilterSelections from './FilterSelections';
+import FilterSelections from './FilterSelections';
 
 import './FilterMenu.scss';
 
@@ -14,7 +14,7 @@ class FilterMenu extends Component {
     return (
       <section className="filterMenu_wrapper">
         { /* SELECTION DISPLAY */ }
-        { /* <FilterSelections onFilterClearAll={ this.handleFilterClearAll } /> */ }
+        <FilterSelections />
 
         <div className="filterMenu_main">
           { /*  MAIN-MENU */ }
@@ -23,7 +23,7 @@ class FilterMenu extends Component {
             filter="Date Range"
             name="date"
             selected={ filter.date }
-            options={ filter.dateList }
+            options={ global.dates.list }
             formItem="radio"
           />
           { /* Format */ }

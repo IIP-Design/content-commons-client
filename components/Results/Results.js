@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid } from 'semantic-ui-react';
 import * as actions from 'lib/redux/actions/filter';
-import { normalizeItem } from 'lib/elastic/parser';
+import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
 import SearchTerm from 'components/SearchTerm/SearchTerm';
 import FilterMenu from 'components/FilterMenu/FilterMenu';
 import ResultItem from './ResultItem/ResultItem';
@@ -26,8 +26,7 @@ const Results = props => {
     setView( e.target.dataset.view );
   };
 
-  const { hits } = props.search.response;
-  const items = hits ? hits.hits : [];
+  const items = getDataFromHits( props.search.response );
 
   return (
     <section className="results">
