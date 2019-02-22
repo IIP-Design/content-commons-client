@@ -146,5 +146,10 @@
       color: #fff !important;
       background-color: $light-blue; 
     }
+
+    &--addFile {
+      color: $light-blue;
+      background-color: #fff; 
+    }
   }
 }

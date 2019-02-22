@@ -1,7 +1,18 @@
 @import "../../../../../../styles/colors.scss";
 
+.ui.modal.upload_modal {
+
+  &.prepare-files-active {
+    max-width: 788px;
+  }  
+}
+
 .videoProjectFiles {  
-  padding: 0 1em;
+
+  &.ui.form {
+    max-width: 640px;
+    margin: 0 auto;
+  }
 
   &_headline {
     margin-top: -45px !important;
@@ -11,7 +22,17 @@
     margin: 0;
 
     .row {
+      padding-top: 0.5em;
       padding-bottom: 0;
+
+      > .column.six {
+        padding-left: 0;
+      }
+
+      > .column.ten {
+        position: relative;
+        padding-right: 0;
+      }
     }
   }
 
@@ -19,6 +40,29 @@
     padding-bottom: 0.5em !important;
     border-bottom: 1px solid $light-grey;
     color: $blue;
+  }
+
+  &_column_label {
+    display: inline-block;
+    width: 148px;
+    margin-bottom: 0;
+
+    &:first-child {
+      margin-right: 16px;
+    }
+
+    &--required {
+      position: relative;
+
+      &:after {
+        content: '\2605';
+        position: absolute;
+        top: -3px;
+        font-size: 6px;
+        color: red;
+      }
+    }
+    
   }
 
   &_steps {
@@ -57,10 +101,12 @@
   }
 
   .ui.selection.dropdown {
+    display: inline-block;
     min-height: auto;
     height: 30px;
-    min-width: 100%;
-    padding: 0em;
+    min-width: 148px;
+    padding: 3px 0 0 8px;
+    border: 2px solid $light-grey;
     border-radius: 4px;
 
     .dropdown.icon {
@@ -71,7 +117,53 @@
   &_asset {
 
     &_file {
+      position: relative;
       font-size: 16px;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 5px;
+        left: -25px;
+        display: block;
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        background-color: green;        
+      }
+
+      &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 8px;
+        left: -20px;
+        width: 5px;
+        height: 8px;
+        border-bottom: 2px solid #fff;
+        border-right: 2px solid #fff;
+        transform: rotate(45deg);
+      }
+    } 
+
+    &_language {
+      margin-right: 16px;
+    }
+
+    &_actionBtns {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+    }
+
+    &_replaceBtn, 
+    &_removeBtn {
+      vertical-align: middle;
+    }
+
+    &_replaceBtn {
+      margin: 0 20px 0 0;      
     }
   }
 }

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import {
   Grid, Form, Button, Select, Icon
 } from 'semantic-ui-react';
+import replaceIcon from '../../../../../../static/icons/icon_replace.svg';
+import removeIcon from '../../../../../../static/icons/icon_remove.svg';
 import './VideoProjectFiles.scss';
 
 const options = [
@@ -12,6 +14,14 @@ const options = [
 ];
 
 class VideoProjectFiles extends Component {
+  componentDidMount() {
+    document.querySelector( '.upload_modal' ).classList.add( 'prepare-files-active' );
+  }
+
+  componentWillUnmount() {
+    document.querySelector( '.prepare-files-active' ).classList.remove( 'prepare-files-active' );
+  }
+
   render() {
     const filesArray = Array.from( this.props.files );
     const { closeModal, goNext } = this.props;
@@ -32,11 +42,9 @@ class VideoProjectFiles extends Component {
               <Grid.Column width={ 6 }>
                 <p className="videoProjectFiles_column_label">Files Selected</p>
               </Grid.Column>
-              <Grid.Column width={ 5 }>
-                <p className="videoProjectFiles_column_label">Language</p>
-              </Grid.Column>
-              <Grid.Column width={ 5 }>
-                <p className="videoProjectFiles_column_label">Subtitles</p>
+              <Grid.Column width={ 10 }>
+                <p className="videoProjectFiles_column_label videoProjectFiles_column_label--required">Language</p>
+                <p className="videoProjectFiles_column_label videoProjectFiles_column_label--required">Subtitles</p>
               </Grid.Column>
             </Grid.Row>
 
@@ -45,14 +53,36 @@ class VideoProjectFiles extends Component {
                 <Grid.Column width={ 6 }>
                   <p className="videoProjectFiles_asset_file">{ file.name }</p>
                 </Grid.Column>
-                <Grid.Column width={ 5 }>
-                  <Select options={ options } className="videoProjectFiles_asset_language" />
-                </Grid.Column>
-                <Grid.Column width={ 5 }>
-                  <Select options={ options } className="videoProjectFiles_asset_subtitles" />
+                <Grid.Column width={ 10 }>
+                  <Select
+                    options={ options }
+                    className="videoProjectFiles_asset_language"
+                    placeholder="-"
+                  />
+                  <Select
+                    options={ options }
+                    className="videoProjectFiles_asset_subtitles"
+                    placeholder="-"
+                  />
+                  <div className="videoProjectFiles_asset_actionBtns">
+                    <img
+                      src={ replaceIcon }
+                      alt="Replace Video File Button"
+                      className="videoProjectFiles_asset_replaceBtn"
+                    />
+                    <img
+                      src={ removeIcon }
+                      alt="Remove Video File Button"
+                      className="videoProjectFiles_asset_removeBtn"
+                    />
+                  </div>
                 </Grid.Column>
               </Grid.Row>
             ) ) }
+
+            <Grid.Row>
+              <Button className="upload_button upload_button--addFile">Add Files</Button>
+            </Grid.Row>
           </Grid>
 
           <Form.Field className="upload_actions">
