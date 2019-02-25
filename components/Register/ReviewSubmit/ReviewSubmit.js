@@ -43,6 +43,9 @@ const ReviewSubmit = ( {
         <List.Item><span><strong>Role:</strong></span>{ ' ' }{ role.label }</List.Item>
         <List.Item><span><strong>Team:</strong></span>{ ' ' }{ user.team.name }</List.Item>
         <List.Item><span><strong>Job Title:</strong></span>{ ' ' }{ user.jobTitle }</List.Item>
+        <List.Item><span><strong>Country:</strong></span>{ ' ' }{ user.country }</List.Item>
+        <List.Item><span><strong>City:</strong></span>{ ' ' }{ user.city }</List.Item>
+        <List.Item><span><strong>How did you hear about the Content Commons? </strong></span>{ ' ' }{ user.howHeard }</List.Item>
       </List>
       <Form.Checkbox
         id="consent"
