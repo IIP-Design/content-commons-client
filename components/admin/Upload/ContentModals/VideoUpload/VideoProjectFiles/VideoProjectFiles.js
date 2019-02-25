@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
   Grid, Form, Button, Select, Icon
@@ -13,13 +13,13 @@ const options = [
   { key: 'test3', value: 'test3', text: 'Test 3' }
 ];
 
-class VideoProjectFiles extends Component {
+class VideoProjectFiles extends PureComponent {
   componentDidMount() {
-    document.querySelector( '.upload_modal' ).classList.add( 'prepare-files-active' );
+    this.props.updateModalClassname( 'upload_modal prepare-files-active' );
   }
 
   componentWillUnmount() {
-    document.querySelector( '.prepare-files-active' ).classList.remove( 'prepare-files-active' );
+    this.props.updateModalClassname( 'upload_modal' );
   }
 
   render() {
@@ -99,7 +99,8 @@ class VideoProjectFiles extends Component {
 VideoProjectFiles.propTypes = {
   files: PropTypes.object,
   closeModal: PropTypes.func,
-  goNext: PropTypes.func
+  goNext: PropTypes.func,
+  updateModalClassname: PropTypes.func
 };
 
 export default VideoProjectFiles;

@@ -22,6 +22,7 @@ class VideoUpload extends Component {
             closeModal={ this.props.closeModal }
             goNext={ this.goNext }
             handleVideoAssetsUpload={ this.handleVideoAssetsUpload }
+            updateModalClassname={ this.props.updateModalClassname }
           />
         </Tab.Pane>
       )
@@ -34,6 +35,7 @@ class VideoUpload extends Component {
             closeModal={ this.props.closeModal }
             goNext={ this.goNext }
             files={ this.state.videoAssets }
+            updateModalClassname={ this.props.updateModalClassname }
           />
         </Tab.Pane>
       )
@@ -49,8 +51,6 @@ class VideoUpload extends Component {
     this.setState( prevState => ( { activeIndex: prevState.activeIndex - 1 } ) );
   }
 
-  handleTabChange = ( e, { activeIndex } ) => this.setState( { activeIndex } );
-
   handleVideoAssetsUpload = e => {
     this.setState( { videoAssets: e.target.files } );
     this.goNext();
@@ -62,7 +62,6 @@ class VideoUpload extends Component {
       <Tab
         activeIndex={ activeIndex }
         panes={ this.panes }
-        onTabChange={ this.handleTabChange }
         className="videoUpload"
       />
     );
@@ -71,6 +70,7 @@ class VideoUpload extends Component {
 
 VideoUpload.propTypes = {
   closeModal: PropTypes.func,
+  updateModalClassname: PropTypes.func
 };
 
 export default VideoUpload;

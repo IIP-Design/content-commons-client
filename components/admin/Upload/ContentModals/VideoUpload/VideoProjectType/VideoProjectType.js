@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   Form,
@@ -7,15 +7,15 @@ import {
 } from 'semantic-ui-react';
 import './VideoProjectType.scss';
 
-class VideoProjectType extends Component {
+class VideoProjectType extends PureComponent {
   state = {};
 
   componentDidMount() {
-    document.querySelector( '.upload_modal' ).classList.add( 'project-type-active' );
+    this.props.updateModalClassname( 'upload_modal project-type-active' );
   }
 
   componentWillUnmount() {
-    document.querySelector( '.project-type-active' ).classList.remove( 'project-type-active' );
+    this.props.updateModalClassname( 'upload_modal' );
   }
 
   handleSelection = ( e, { value } ) => this.setState( { value } );
@@ -76,7 +76,8 @@ class VideoProjectType extends Component {
 
 VideoProjectType.propTypes = {
   closeModal: PropTypes.func,
-  handleVideoAssetsUpload: PropTypes.func
+  handleVideoAssetsUpload: PropTypes.func,
+  updateModalClassname: PropTypes.func
 };
 
 export default VideoProjectType;
