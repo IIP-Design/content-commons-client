@@ -121,10 +121,9 @@ class EditSupportFileRow extends React.PureComponent {
   }
 
   renderIcons = () => {
-    const { fileExtensions, fileType } = this.props;
+    const { fileExtensions } = this.props;
     const isSingleType = fileExtensions.length === 1;
-    const isOther = fileType === 'other';
-    const acceptedTypes = isSingleType && !isOther ? fileExtensions[0] : '';
+    const acceptedTypes = isSingleType ? fileExtensions[0] : '';
 
     return (
       <Button.Group basic size="large">
@@ -184,6 +183,9 @@ class EditSupportFileRow extends React.PureComponent {
 
   render() {
     const { file, handleChange, selectedLanguage } = this.props;
+
+    if ( !file || !Object.keys( file ).length ) return null;
+
     const { file: fileName, id } = file;
     const { cellWidth, fileNameWidth } = this.state;
 
@@ -268,7 +270,6 @@ EditSupportFileRow.propTypes = {
   handleChange: func,
   file: object,
   fileExtensions: array,
-  fileType: string,
   selectedLanguage: string
 };
 
