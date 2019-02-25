@@ -62,7 +62,7 @@ const LoggedOutNav = props => {
             </li>
             { menuItems.map( item => (
               <li key={ item.key }>
-                <Link prefetch href={ item.to }>
+                <Link href={ item.to }>
                   <a>
                     <span onClick={ toggleMobileNav } onKeyUp={ keyUp } role="presentation">
                       { item.label }
