@@ -64,7 +64,7 @@ class VideoProjectType extends PureComponent {
               type="file"
               name="upload_video_assets"
               multiple
-              onChange={ handleVideoAssetsUpload }
+              onChange={ e => handleVideoAssetsUpload( e ) }
             />
             Next
           </label>

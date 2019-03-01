@@ -35,6 +35,7 @@ class VideoUpload extends Component {
             closeModal={ this.props.closeModal }
             goNext={ this.goNext }
             files={ this.state.videoAssets }
+            handleVideoAssetsUpload={ this.handleVideoAssetsUpload }
             updateModalClassname={ this.props.updateModalClassname }
           />
         </Tab.Pane>
@@ -51,9 +52,13 @@ class VideoUpload extends Component {
     this.setState( prevState => ( { activeIndex: prevState.activeIndex - 1 } ) );
   }
 
-  handleVideoAssetsUpload = e => {
-    this.setState( { videoAssets: e.target.files } );
-    this.goNext();
+  handleVideoAssetsUpload = ( e, isProjectFilesScreen = false ) => {
+    e.persist();
+    this.setState( prevState => ( {
+      videoAssets: prevState.videoAssets !== null ? [...prevState.videoAssets, ...e.target.files] : [...e.target.files]
+    } ) );
+
+    if ( !isProjectFilesScreen ) this.goNext();
   }
 
   render() {

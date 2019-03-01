@@ -25,7 +25,7 @@ class VideoProjectFiles extends PureComponent {
   } ) );
 
   render() {
-    const filesArray = Array.from( this.props.files );
+    const filesArray = this.props.files;
     const { closeModal } = this.props;
     const { activeStep } = this.state;
 
@@ -69,16 +69,26 @@ class VideoProjectFiles extends PureComponent {
               </Grid.Column>
             </Grid.Row>
 
-            { activeStep === 'step_1' && filesArray.map( file => (
-              <FilesStepOne key={ file.name } file={ file } />
+            { activeStep === 'step_1' && filesArray.map( ( file, i ) => (
+              <FilesStepOne key={ `${file.name}_${i}` } file={ file } />
             ) ) }
-            { activeStep === 'step_2' && filesArray.map( file => (
-              <FilesStepTwo key={ file.name } file={ file } />
+
+            { activeStep === 'step_2' && filesArray.map( ( file, i ) => (
+              <FilesStepTwo key={ `${file.name}_${i}` } file={ file } />
             ) ) }
 
             { activeStep === 'step_1' && (
               <Grid.Row>
-                <Button className="upload_button upload_button--addFile">+ Add Files</Button>
+                <label className="ui button upload_button upload_button--fileUpload addFile" htmlFor="upload_video_assets">
+                  <input
+                    id="upload_video_assets"
+                    type="file"
+                    name="upload_video_assets"
+                    multiple
+                    onChange={ e => this.props.handleVideoAssetsUpload( e, true ) }
+                  />
+                  + Add Files
+                </label>
               </Grid.Row>
             ) }
           </Grid>
@@ -104,9 +114,10 @@ class VideoProjectFiles extends PureComponent {
 }
 
 VideoProjectFiles.propTypes = {
-  files: PropTypes.object,
+  files: PropTypes.array,
   closeModal: PropTypes.func,
-  updateModalClassname: PropTypes.func
+  updateModalClassname: PropTypes.func,
+  handleVideoAssetsUpload: PropTypes.func
 };
 
 export default VideoProjectFiles;
