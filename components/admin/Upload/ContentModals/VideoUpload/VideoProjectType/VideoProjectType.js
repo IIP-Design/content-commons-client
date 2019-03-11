@@ -57,7 +57,7 @@ class VideoProjectType extends PureComponent {
           <p>Select for bulk importing multiple videos that are unrelated to each other.</p>
         </Form.Field>
         <Form.Field className="upload_actions">
-          <Button className="upload_button upload_button--cancelText" content="Cancel" onClick={ closeModal } />
+          <Button className="upload_button upload_button--cancelBtn" content="Cancel" onClick={ closeModal } />
           <label className="ui button upload_button upload_button--fileUpload" htmlFor="upload_video_assets">
             <input
               id="upload_video_assets"

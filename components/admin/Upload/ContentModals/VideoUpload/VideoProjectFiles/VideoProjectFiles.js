@@ -1,15 +1,19 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Grid, Form, Button, Icon
+  Grid,
+  Form,
+  Button,
+  Icon,
+  Modal
 } from 'semantic-ui-react';
+import VideoAssetFile from './VideoAssetFile';
 import './VideoProjectFiles.scss';
-import FilesStepOne from './FilesStepOne';
-import FilesStepTwo from './FilesStepTwo';
 
 class VideoProjectFiles extends PureComponent {
   state = {
     activeStep: 'step_1',
+    cancelModalOpen: false
   }
 
   componentDidMount() {
@@ -24,15 +28,22 @@ class VideoProjectFiles extends PureComponent {
     activeStep: prevState.activeStep === 'step_1' ? 'step_2' : 'step_1'
   } ) );
 
+  openCancelModal = () => this.setState( { cancelModalOpen: true } );
+
+  closeCancelModal = () => this.setState( { cancelModalOpen: false } );
+
   render() {
-    const filesArray = this.props.files;
-    const { closeModal } = this.props;
-    const { activeStep } = this.state;
+    const {
+      closeModal,
+      removeVideoAssetFile,
+      replaceVideoAssetFile,
+      files
+    } = this.props;
+    const { activeStep, cancelModalOpen } = this.state;
 
     return (
       <Fragment>
-        <h5 className="videoProjectFiles_headline">Preparing { filesArray.length } files for upload...</h5>
-
+        <h5 className="videoProjectFiles_headline">Preparing { files.length } files for upload...</h5>
         <div className="videoProjectFiles_steps">
           <p
             className={ `videoProjectFiles_step videoProjectFiles_step--one ${activeStep === 'step_1' ? 'active' : ''}` }
@@ -69,12 +80,14 @@ class VideoProjectFiles extends PureComponent {
               </Grid.Column>
             </Grid.Row>
 
-            { activeStep === 'step_1' && filesArray.map( ( file, i ) => (
-              <FilesStepOne key={ `${file.name}_${i}` } file={ file } />
-            ) ) }
-
-            { activeStep === 'step_2' && filesArray.map( ( file, i ) => (
-              <FilesStepTwo key={ `${file.name}_${i}` } file={ file } />
+            { files.map( ( file, i ) => (
+              <VideoAssetFile
+                key={ `${file}_${i}` }
+                activeStep={ activeStep }
+                file={ file }
+                removeVideoAssetFile={ removeVideoAssetFile }
+                replaceVideoAssetFile={ replaceVideoAssetFile }
+              />
             ) ) }
 
             { activeStep === 'step_1' && (
@@ -94,7 +107,34 @@ class VideoProjectFiles extends PureComponent {
           </Grid>
 
           <Form.Field className="upload_actions">
-            <Button className="upload_button upload_button--cancelText" content="Cancel" onClick={ closeModal } />
+            <Modal
+              className="cancelModal"
+              open={ cancelModalOpen }
+              trigger={ (
+                <Button
+                  content="Cancel"
+                  className="upload_button upload_button--cancelText"
+                  onClick={ this.openCancelModal }
+                />
+              ) }
+            >
+              <Modal.Content>
+                <h3>Are you sure you want to cancel uploading these files?</h3>
+                <p>By cancelling, your files will not be uploaded to Content Commons.</p>
+              </Modal.Content>
+              <Modal.Actions>
+                <Button
+                  className="upload_button upload_button--cancelBtn"
+                  content="No, take me back!"
+                  onClick={ this.closeCancelModal }
+                />
+                <Button
+                  className="upload_button upload_button--next"
+                  content="Yes, cancel upload"
+                  onClick={ closeModal }
+                />
+              </Modal.Actions>
+            </Modal>
             <Button
               className={ `upload_button upload_button--previous ${activeStep === 'step_2' ? 'display' : ''}` }
               content="Previous"
@@ -117,7 +157,9 @@ VideoProjectFiles.propTypes = {
   files: PropTypes.array,
   closeModal: PropTypes.func,
   updateModalClassname: PropTypes.func,
-  handleVideoAssetsUpload: PropTypes.func
+  handleVideoAssetsUpload: PropTypes.func,
+  removeVideoAssetFile: PropTypes.func,
+  replaceVideoAssetFile: PropTypes.func
 };
 
 export default VideoProjectFiles;

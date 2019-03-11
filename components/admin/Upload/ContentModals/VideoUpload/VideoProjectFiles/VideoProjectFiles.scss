@@ -146,7 +146,8 @@
       }
     } 
 
-    &_language {
+    &_language,
+    &_typeUse {
       margin-right: 16px;
     }
 
@@ -155,15 +156,55 @@
       top: 50%;
       right: 0;
       transform: translateY(-50%);
+
+      >[tooltip] {
+        margin: 0;
+
+        &:first-child {
+          margin: 0 20px 0 0;
+        }
+
+        &:after {
+          min-width: auto;
+          padding: 7px 15px;
+          border-radius: 4px;
+          font-size: 12px;
+        }
+        
+        button {
+          -webkit-appearance: none;
+          padding: 0;
+          margin: 0;
+          border: none;
+        }  
+      }
     }
 
     &_replaceBtn, 
     &_removeBtn {
-      vertical-align: middle;
+      position: relative;
+      
+      img {
+        position: relative;
+        vertical-align: middle;
+        cursor: pointer;
+      }      
     }
 
     &_replaceBtn {
-      margin: 0 20px 0 0;      
+
+      > input {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        width: 0.1px;
+        height: 0.1px;
+        padding: 0 !important;
+        border: none !important;
+        overflow: hidden;
+      }
     }
   }
 }

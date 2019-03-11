@@ -23,17 +23,11 @@ class Upload extends Component {
     modalClassname: 'upload_modal'
   }
 
-  handleModalOpen = () => {
-    this.setState( { modalOpen: true } );
-  }
+  handleModalOpen = () => this.setState( { modalOpen: true } );
 
-  handleModalClose = () => {
-    this.setState( { modalOpen: false } );
-  }
+  handleModalClose = () => this.setState( { modalOpen: false } );
 
-  handleModalClassname = updatedModalClassname => {
-    this.setState( { modalClassname: updatedModalClassname } );
-  }
+  handleModalClassname = updatedModalClassname => this.setState( { modalClassname: updatedModalClassname } );
 
   render() {
     const { modalOpen, modalClassname } = this.state;
