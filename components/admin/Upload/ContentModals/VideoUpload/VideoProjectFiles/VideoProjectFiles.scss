@@ -146,10 +146,26 @@
       }
     } 
 
-    &_language,
-    &_typeUse {
-      margin-right: 16px;
-    }
+    &_options {
+      font-size: 14px;
+      
+      .menu > .item {
+        font-size: 14px !important;
+      }
+      
+      &--language,
+      &--typeUse {
+        margin-right: 16px;        
+      }
+
+      &--notApplicable {
+        display: inline-block;
+        min-width: 148px;
+        margin: 0 15px 0 0;
+        vertical-align: middle;
+        font-size: 14px;
+      }
+    }    
 
     &_actionBtns {
       position: absolute;

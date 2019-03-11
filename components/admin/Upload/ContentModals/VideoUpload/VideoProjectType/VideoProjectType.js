@@ -8,7 +8,9 @@ import {
 import './VideoProjectType.scss';
 
 class VideoProjectType extends PureComponent {
-  state = {};
+  state = {
+    value: ''
+  };
 
   componentDidMount() {
     this.props.updateModalClassname( 'upload_modal project-type-active' );
@@ -58,8 +60,12 @@ class VideoProjectType extends PureComponent {
         </Form.Field>
         <Form.Field className="upload_actions">
           <Button className="upload_button upload_button--cancelBtn" content="Cancel" onClick={ closeModal } />
-          <label className="ui button upload_button upload_button--fileUpload" htmlFor="upload_video_assets">
+          <label
+            className={ `ui button upload_button upload_button--fileUpload ${value === '' ? 'inactive' : ''}` }
+            htmlFor="upload_video_assets"
+          >
             <input
+              disabled={ value === '' }
               id="upload_video_assets"
               type="file"
               name="upload_video_assets"

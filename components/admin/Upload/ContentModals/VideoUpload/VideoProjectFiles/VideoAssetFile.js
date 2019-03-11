@@ -1,24 +1,44 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Select } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import replaceIcon from '../../../../../../static/icons/icon_replace.svg';
 import removeIcon from '../../../../../../static/icons/icon_remove.svg';
 import '../../../../../../styles/tooltip.scss';
 import { truncateAndReplaceStr } from '../../../../../../lib/utils';
-
-const stepOneOptions = [
-  { key: 'test1', value: 'test1', text: 'STEP 1 Test 1' },
-  { key: 'test2', value: 'test2', text: 'STEP 1 Test 2' },
-  { key: 'test3', value: 'test3', text: 'STEP 1 Test 3' }
-];
-
-const stepTwoOptions = [
-  { key: 'test1', value: 'test1', text: 'STEP 2 Test 1' },
-  { key: 'test2', value: 'test2', text: 'STEP 2 Test 2' },
-  { key: 'test3', value: 'test3', text: 'STEP 2 Test 3' }
-];
+import {
+  SelectLangaugeOptions,
+  SelectTypeUseOptionsImages,
+  SelectTypeUseOptionsVideo,
+  SelectSubtitleOptions,
+  SelectQualityOptions
+} from './VideoAssetOptions';
 
 class VideoAssetFile extends PureComponent {
+  renderOptionsForVideo = Component => {
+    const { file } = this.props;
+    if ( file.indexOf( 'mp4' ) > -1 ) return <Component />;
+
+    return (
+      <p className="videoProjectFiles_asset_options videoProjectFiles_asset_options--notApplicable">
+        Not Applicable
+      </p>
+    );
+  }
+
+  renderTypeUseOptions = () => {
+    const { file } = this.props;
+    const isImage = ( /\.(gif|jpg|jpeg|tiff|png)$/i ).test( file );
+    const isVideo = file.indexOf( 'mp4' ) > -1;
+
+    if ( isImage ) return <SelectTypeUseOptionsImages />;
+    if ( isVideo ) return <SelectTypeUseOptionsVideo />;
+    return (
+      <p className="videoProjectFiles_asset_options videoProjectFiles_asset_options--notApplicable">
+        Not Applicable
+      </p>
+    );
+  }
+
   render() {
     const {
       activeStep,
@@ -27,46 +47,31 @@ class VideoAssetFile extends PureComponent {
       replaceVideoAssetFile
     } = this.props;
 
-    const name = file;
     let fileDisplayName;
 
-    if ( name.length > 30 ) {
-      fileDisplayName = truncateAndReplaceStr( name, 18, 9 );
+    if ( file.length > 30 ) {
+      fileDisplayName = truncateAndReplaceStr( file, 18, 9 );
     } else {
-      fileDisplayName = name;
+      fileDisplayName = file;
     }
 
     return (
       <Grid.Row className="videoProjectFiles_asset">
         <Grid.Column width={ 6 }>
-          <p className="videoProjectFiles_asset_file" title={ name }>{ fileDisplayName }</p>
+          <p className="videoProjectFiles_asset_file" title={ file }>{ fileDisplayName }</p>
         </Grid.Column>
         <Grid.Column width={ 10 }>
-          <Select
-            options={ activeStep === 'step_1' ? stepOneOptions : stepTwoOptions }
-            className={
-              activeStep === 'step_1'
-                ? 'videoProjectFiles_asset_language'
-                : 'videoProjectFiles_asset_typeUse'
-            }
-            placeholder="-"
-          />
-          <Select
-            options={ activeStep === 'step_1' ? stepOneOptions : stepTwoOptions }
-            className={
-              activeStep === 'step_1'
-                ? 'videoProjectFiles_asset_subtitles'
-                : 'videoProjectFiles_asset_quality'
-            }
-            placeholder="-"
-          />
+          { activeStep === 'step_1' && <SelectLangaugeOptions /> }
+          { activeStep === 'step_1' && this.renderOptionsForVideo( SelectSubtitleOptions ) }
+          { activeStep === 'step_2' && this.renderTypeUseOptions() }
+          { activeStep === 'step_2' && this.renderOptionsForVideo( SelectQualityOptions ) }
           <div className="videoProjectFiles_asset_actionBtns">
             <span tooltip="Replace">
               <label htmlFor="replace_videoAssetFile" className="videoProjectFiles_asset_replaceBtn">
                 <input
                   type="file"
                   name="replace_videoAssetFile"
-                  data-filename={ name }
+                  data-filename={ file }
                   ref={ ref => { this.replaceFile = ref; } }
                   onChange={ replaceVideoAssetFile }
                 />
@@ -79,7 +84,7 @@ class VideoAssetFile extends PureComponent {
               </label>
             </span>
             <span tooltip="Remove">
-              <button type="button" onClick={ () => removeVideoAssetFile( name ) }>
+              <button type="button" onClick={ () => removeVideoAssetFile( file ) }>
                 <img
                   src={ removeIcon }
                   alt="Remove Video File Button"

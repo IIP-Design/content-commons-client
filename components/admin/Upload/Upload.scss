@@ -163,6 +163,10 @@
       color: #fff !important;
       background-color: $light-blue; 
 
+      &.inactive {
+        opacity: 0.45;
+      }
+
       &.addFile {
         color: $light-blue !important;
         background-color: #fff;  
