@@ -52,9 +52,9 @@ exports[`<ProjectDataForm /> renders without crashing 1`] = `
           <FormField
             control={[Function]}
             error={false}
-            id="privacy-setting"
+            id="visibility-setting"
             label="Visibility Setting"
-            name="privacy"
+            name="visibility"
             onChange={[MockFunction]}
             options={
               Array [

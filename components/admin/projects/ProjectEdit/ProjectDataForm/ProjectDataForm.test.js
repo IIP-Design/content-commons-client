@@ -283,21 +283,21 @@ describe( '<ProjectDataForm />', () => {
       .toEqual( !newProps.videoTitle );
   } );
 
-  it( 'privacy field has error state if no value is entered', () => {
+  it( 'visibility field has error state if no value is entered', () => {
     const newProps = {
       ...props,
       ...{ visibility: '' }
     };
     const wrapper = shallow( <ProjectDataForm { ...newProps } /> );
-    const privacyField = wrapper.find( '#privacy-setting' );
-    expect( privacyField.prop( 'error' ) )
+    const visibilityField = wrapper.find( '#visibility-setting' );
+    expect( visibilityField.prop( 'error' ) )
       .toEqual( !newProps.visibility );
   } );
 
-  it( 'privacy field does not have error state if a value is entered', () => {
+  it( 'visibility field does not have error state if a value is entered', () => {
     const wrapper = shallow( Component );
-    const privacyField = wrapper.find( '#privacy-setting' );
-    expect( privacyField.prop( 'error' ) )
+    const visibilityField = wrapper.find( '#visibility-setting' );
+    expect( visibilityField.prop( 'error' ) )
       .toEqual( !props.visibility );
   } );
 
@@ -371,7 +371,7 @@ describe( '<ProjectDataForm />', () => {
     const wrapper = shallow( Component );
     const fields = [
       'video-title',
-      'privacy-setting',
+      'visibility-setting',
       'author',
       'team',
       'video-categories',

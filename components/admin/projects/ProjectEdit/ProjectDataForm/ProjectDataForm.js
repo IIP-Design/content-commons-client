@@ -75,12 +75,12 @@ const ProjectDataForm = props => {
               />
 
               <Form.Field
-                id="privacy-setting"
+                id="visibility-setting"
                 control={ Select }
                 label="Visibility Setting"
                 options={ privacyOptions }
                 required
-                name="privacy"
+                name="visibility"
                 value={ visibility }
                 onChange={ handleChange }
                 error={ !visibility }
