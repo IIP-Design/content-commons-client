@@ -39,7 +39,7 @@ const ProjectDataForm = props => {
     hasExceededMaxCategories,
     categoriesValue,
     tagsValue,
-    publicDescValue,
+    descPublicValue,
     internalDescValue,
     termsConditions,
     hasSubmittedData,
@@ -156,7 +156,7 @@ const ProjectDataForm = props => {
               control={ TextArea }
               label="Public Description"
               name="descPublic"
-              value={ publicDescValue }
+              value={ descPublicValue }
               onChange={ handleChange }
             />
 
@@ -226,7 +226,7 @@ ProjectDataForm.propTypes = {
   hasExceededMaxCategories: bool,
   categoriesValue: array,
   tagsValue: oneOfType( [array, string] ),
-  publicDescValue: string,
+  descPublicValue: string,
   internalDescValue: string,
   termsConditions: bool,
   hasSubmittedData: bool,

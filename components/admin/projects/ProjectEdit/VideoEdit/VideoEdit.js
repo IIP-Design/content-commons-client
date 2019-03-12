@@ -478,7 +478,7 @@ class VideoEdit extends React.PureComponent {
             hasExceededMaxCategories={ hasExceededMaxCategories }
             tagsValue={ tags || '' }
 
-            publicDescValue={ descPublic }
+            descPublicValue={ descPublic }
             internalDescValue={ internalDesc }
             termsConditions={ termsConditions }
 
