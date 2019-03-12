@@ -87,7 +87,7 @@ exports[`<ProjectDataForm /> renders without crashing 1`] = `
           <FormField
             control={[Function]}
             id="owner"
-            label="Owner"
+            label="Team"
             name="owner"
             onChange={[MockFunction]}
             placeholder="IIP Video Production"
