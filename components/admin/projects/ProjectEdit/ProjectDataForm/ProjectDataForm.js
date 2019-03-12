@@ -165,7 +165,7 @@ const ProjectDataForm = props => {
                 id="internal-description"
                 control={ TextArea }
                 label="Internal Description"
-                name="internalDesc"
+                name="descInternal"
                 value={ internalDescValue }
                 onChange={ handleChange }
               />

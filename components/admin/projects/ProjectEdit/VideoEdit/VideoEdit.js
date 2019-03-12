@@ -65,7 +65,7 @@ class VideoEdit extends React.PureComponent {
         categories: [],
         tags: [],
         descPublic: '',
-        internalDesc: '',
+        descInternal: '',
         termsConditions: false,
         protectImages: true
       }
@@ -213,7 +213,7 @@ class VideoEdit extends React.PureComponent {
       author,
       team,
       descPublic,
-      internalDesc,
+      descInternal,
       termsConditions,
       protectImages
     } = this.state.formData;
@@ -229,7 +229,7 @@ class VideoEdit extends React.PureComponent {
           author: author ? author.trimEnd() : '',
           team: team ? team.trimEnd() : '',
           descPublic: descPublic ? descPublic.trimEnd() : '',
-          internalDesc: internalDesc ? internalDesc.trimEnd() : '',
+          descInternal: descInternal ? descInternal.trimEnd() : '',
           tags: this.getTags(),
           termsConditions,
           protectImages
@@ -341,7 +341,7 @@ class VideoEdit extends React.PureComponent {
       categories,
       tags,
       descPublic,
-      internalDesc,
+      descInternal,
       termsConditions,
       protectImages
     } = formData;
@@ -479,7 +479,7 @@ class VideoEdit extends React.PureComponent {
             tagsValue={ tags || '' }
 
             descPublicValue={ descPublic }
-            internalDescValue={ internalDesc }
+            internalDescValue={ descInternal }
             termsConditions={ termsConditions }
 
             hasSubmittedData={ hasSubmittedData }

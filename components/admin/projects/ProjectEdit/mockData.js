@@ -117,7 +117,7 @@ const projects = [
       categories: [],
       tags: [],
       descPublic: '',
-      internalDesc: '',
+      descInternal: '',
       termsConditions: false,
       protectImages: false
     },

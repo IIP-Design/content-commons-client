@@ -234,7 +234,7 @@ exports[`<ProjectDataForm /> renders without crashing 1`] = `
             control={[Function]}
             id="internal-description"
             label="Internal Description"
-            name="internalDesc"
+            name="descInternal"
             onChange={[MockFunction]}
             value=""
           />
