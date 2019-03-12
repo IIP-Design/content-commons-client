@@ -61,7 +61,7 @@ class VideoEdit extends React.PureComponent {
         title: '',
         visibility: 'PUBLIC',
         author: '',
-        owner: '',
+        team: '',
         categories: [],
         tags: [],
         publicDesc: '',
@@ -211,7 +211,7 @@ class VideoEdit extends React.PureComponent {
     const {
       title,
       author,
-      owner,
+      team,
       publicDesc,
       internalDesc,
       termsConditions,
@@ -227,7 +227,7 @@ class VideoEdit extends React.PureComponent {
           ...prevState.formData,
           title: title ? title.trimEnd() : '',
           author: author ? author.trimEnd() : '',
-          owner: owner ? owner.trimEnd() : '',
+          team: team ? team.trimEnd() : '',
           publicDesc: publicDesc ? publicDesc.trimEnd() : '',
           internalDesc: internalDesc ? internalDesc.trimEnd() : '',
           tags: this.getTags(),
@@ -337,7 +337,7 @@ class VideoEdit extends React.PureComponent {
       title,
       visibility,
       author,
-      owner,
+      team,
       categories,
       tags,
       publicDesc,
@@ -469,7 +469,7 @@ class VideoEdit extends React.PureComponent {
             visibility={ visibility }
 
             authorValue={ author || '' }
-            ownerValue={ owner || '' }
+            ownerValue={ team || '' }
 
             categoryLabel="Categories"
             maxCategories={ this.MAX_CATEGORY_COUNT }

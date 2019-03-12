@@ -373,7 +373,7 @@ describe( '<ProjectDataForm />', () => {
       'video-title',
       'privacy-setting',
       'author',
-      'owner',
+      'team',
       'video-categories',
       'video-tags',
       'public-description',

@@ -99,11 +99,11 @@ const ProjectDataForm = props => {
               />
 
               <Form.Field
-                id="owner"
+                id="team"
                 control={ Input }
                 label="Team"
                 placeholder="IIP Video Production"
-                name="owner"
+                name="team"
                 value={ ownerValue }
                 onChange={ handleChange }
               />

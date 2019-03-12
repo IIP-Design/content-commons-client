@@ -96,7 +96,7 @@ class PreviewProjectContent extends React.PureComponent {
       updated,
       videos
     } = this.props.data;
-    const { owner } = projectData;
+    const { team } = projectData;
 
     const {
       dropDownIsOpen,
@@ -227,7 +227,7 @@ class PreviewProjectContent extends React.PureComponent {
           <ModalDescription description={ desc } />
         </div>
 
-        <ModalPostMeta source={ owner } datePublished={ uploaded } />
+        <ModalPostMeta source={ team } datePublished={ uploaded } />
       </ModalItem>
     );
   }

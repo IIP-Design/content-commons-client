@@ -112,7 +112,7 @@ const projects = [
     projectData: {
       title: '',
       author: '',
-      owner: '',
+      team: '',
       visibility: 'Anyone can see this project',
       categories: [],
       tags: [],
