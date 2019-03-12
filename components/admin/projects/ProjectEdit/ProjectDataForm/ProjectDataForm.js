@@ -77,7 +77,7 @@ const ProjectDataForm = props => {
               <Form.Field
                 id="privacy-setting"
                 control={ Select }
-                label="Visibility"
+                label="Visibility Setting"
                 options={ privacyOptions }
                 required
                 name="privacy"
