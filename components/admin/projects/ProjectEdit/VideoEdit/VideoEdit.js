@@ -469,7 +469,7 @@ class VideoEdit extends React.PureComponent {
             visibility={ visibility }
 
             authorValue={ author || '' }
-            ownerValue={ team || '' }
+            teamValue={ team || '' }
 
             categoryLabel="Categories"
             maxCategories={ this.MAX_CATEGORY_COUNT }

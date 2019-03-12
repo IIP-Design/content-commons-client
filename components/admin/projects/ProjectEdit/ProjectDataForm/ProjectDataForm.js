@@ -32,7 +32,7 @@ const ProjectDataForm = props => {
     privacyOptions,
     visibility,
     authorValue,
-    ownerValue,
+    teamValue,
     categoryLabel,
     maxCategories,
     categoryOptions,
@@ -104,7 +104,7 @@ const ProjectDataForm = props => {
                 label="Team"
                 placeholder="IIP Video Production"
                 name="team"
-                value={ ownerValue }
+                value={ teamValue }
                 onChange={ handleChange }
               />
             </Form.Group>
@@ -219,7 +219,7 @@ ProjectDataForm.propTypes = {
   privacyOptions: array,
   visibility: string,
   authorValue: string,
-  ownerValue: string,
+  teamValue: string,
   categoryLabel: string,
   maxCategories: number,
   categoryOptions: array,

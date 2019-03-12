@@ -10,7 +10,7 @@ const props = {
   privacyOptions,
   visibility: 'PUBLIC',
   authorValue: '',
-  ownerValue: '',
+  teamValue: '',
   categoryLabel: 'Categories',
   maxCategories: 2,
   categoryOptions: categoryData,
