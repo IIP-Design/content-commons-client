@@ -136,6 +136,7 @@
   ***/
   &--results,
   &--video,
+  &--image,
   &--admin {
     header {
       @media screen and (max-width: 767px) {
@@ -179,6 +180,7 @@
   ***/
   &--results,
   &--video,
+  &--image,
   &--login,
   &--register,
   &--admin,

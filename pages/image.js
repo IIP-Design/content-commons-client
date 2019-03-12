@@ -16,7 +16,7 @@ class ImagePage extends Component {
       const response = await getItemRequest( query.site, query.id );
       const item = getDataFromHits( response );
       // Create temp item
-      // const item = {
+      // const item = [ {
       //   _id: 'abc123',
       //   _index: 'images_20180501',
       //   _score: 1.01,
@@ -72,7 +72,7 @@ class ImagePage extends Component {
       //       }
       //     ]
       //   }
-      // };
+      // } ];
       if ( item && item[0] ) {
         return {
           item: normalizeItem( item[0], query.language ),
@@ -94,7 +94,6 @@ class ImagePage extends Component {
       }
     };
     const metaTags = populateMetaArray( item, url );
-
     if ( !item ) {
       return (
         <section className="max_width_1200" style={ styles.page }>
