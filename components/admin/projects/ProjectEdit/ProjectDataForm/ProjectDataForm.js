@@ -30,7 +30,7 @@ const ProjectDataForm = props => {
     handleChange,
     videoTitle,
     privacyOptions,
-    privacySetting,
+    visibility,
     authorValue,
     ownerValue,
     categoryLabel,
@@ -77,13 +77,13 @@ const ProjectDataForm = props => {
               <Form.Field
                 id="privacy-setting"
                 control={ Select }
-                label="Privacy Setting"
+                label="Visibility"
                 options={ privacyOptions }
                 required
                 name="privacy"
-                value={ privacySetting }
+                value={ visibility }
                 onChange={ handleChange }
-                error={ !privacySetting }
+                error={ !visibility }
               />
             </Form.Group>
 
@@ -217,7 +217,7 @@ ProjectDataForm.propTypes = {
   handleChange: func,
   videoTitle: string,
   privacyOptions: array,
-  privacySetting: string,
+  visibility: string,
   authorValue: string,
   ownerValue: string,
   categoryLabel: string,

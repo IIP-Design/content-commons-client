@@ -113,7 +113,7 @@ const projects = [
       title: '',
       author: '',
       owner: '',
-      privacySetting: 'Anyone can see this project',
+      visibility: 'Anyone can see this project',
       categories: [],
       tags: [],
       publicDesc: '',

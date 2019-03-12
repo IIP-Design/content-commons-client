@@ -8,7 +8,7 @@ const props = {
   handleChange: jest.fn(),
   videoTitle: '',
   privacyOptions,
-  privacySetting: 'anyone',
+  visibility: 'anyone',
   authorValue: '',
   ownerValue: '',
   categoryLabel: 'Categories',
@@ -49,7 +49,7 @@ describe( '<ProjectDataForm />', () => {
       ...props,
       ...{
         videoTitle: 'Test Title',
-        privacySetting: 'anyone',
+        visibility: 'anyone',
         categoriesValue: ['about-america'],
         termsConditions: true
       }
@@ -57,7 +57,7 @@ describe( '<ProjectDataForm />', () => {
 
     const {
       videoTitle,
-      privacySetting,
+      visibility,
       categoriesValue,
       termsConditions
     } = newProps;
@@ -66,7 +66,7 @@ describe( '<ProjectDataForm />', () => {
 
     const hasRequired = {
       hasRequiredData: !!videoTitle
-        && privacySetting
+        && visibility
         && categoriesCount > 0
         && categoriesCount <= props.maxCategories
         && termsConditions
@@ -83,14 +83,14 @@ describe( '<ProjectDataForm />', () => {
       ...props,
       ...{
         videoTitle: 'Test Title',
-        privacySetting: 'anyone',
+        visibility: 'anyone',
         categoriesValue: ['about-america']
       }
     };
 
     const {
       videoTitle,
-      privacySetting,
+      visibility,
       categoriesValue,
       termsConditions
     } = newProps;
@@ -99,7 +99,7 @@ describe( '<ProjectDataForm />', () => {
 
     const hasRequired = {
       hasRequiredData: !!videoTitle
-        && privacySetting
+        && visibility
         && categoriesCount > 0
         && categoriesCount <= props.maxCategories
         && termsConditions
@@ -116,7 +116,7 @@ describe( '<ProjectDataForm />', () => {
     const newProps = {
       ...props,
       ...{
-        privacySetting: 'anyone',
+        visibility: 'anyone',
         categoriesValue: ['about-america'],
         termsConditions: true
       }
@@ -124,7 +124,7 @@ describe( '<ProjectDataForm />', () => {
 
     const {
       videoTitle,
-      privacySetting,
+      visibility,
       categoriesValue,
       termsConditions
     } = newProps;
@@ -133,7 +133,7 @@ describe( '<ProjectDataForm />', () => {
 
     const hasRequired = {
       hasRequiredData: !!videoTitle
-        && privacySetting
+        && visibility
         && categoriesCount > 0
         && categoriesCount <= props.maxCategories
         && termsConditions
@@ -157,7 +157,7 @@ describe( '<ProjectDataForm />', () => {
 
     const {
       videoTitle,
-      privacySetting,
+      visibility,
       categoriesValue,
       termsConditions
     } = newProps;
@@ -166,7 +166,7 @@ describe( '<ProjectDataForm />', () => {
 
     const hasRequired = {
       hasRequiredData: !!videoTitle
-        && privacySetting
+        && visibility
         && categoriesCount > 0
         && categoriesCount <= props.maxCategories
         && termsConditions
@@ -183,14 +183,14 @@ describe( '<ProjectDataForm />', () => {
       ...props,
       ...{
         videoTitle: 'Test Title',
-        privacySetting: 'anyone',
+        visibility: 'anyone',
         termsConditions: true
       }
     };
 
     const {
       videoTitle,
-      privacySetting,
+      visibility,
       categoriesValue,
       termsConditions
     } = newProps;
@@ -199,7 +199,7 @@ describe( '<ProjectDataForm />', () => {
 
     const hasRequired = {
       hasRequiredData: !!videoTitle
-        && privacySetting
+        && visibility
         && categoriesCount > 0
         && categoriesCount <= props.maxCategories
         && termsConditions
@@ -216,7 +216,7 @@ describe( '<ProjectDataForm />', () => {
       ...props,
       ...{
         videoTitle: 'Test Title',
-        privacySetting: 'anyone',
+        visibility: 'anyone',
         categoriesValue: [
           'about-america', 'economic-issues', 'education'
         ],
@@ -226,7 +226,7 @@ describe( '<ProjectDataForm />', () => {
 
     const {
       videoTitle,
-      privacySetting,
+      visibility,
       categoriesValue,
       termsConditions
     } = newProps;
@@ -235,7 +235,7 @@ describe( '<ProjectDataForm />', () => {
 
     const hasRequired = {
       hasRequiredData: !!videoTitle
-        && privacySetting
+        && visibility
         && categoriesCount > 0
         && categoriesCount <= props.maxCategories
         && termsConditions
@@ -286,19 +286,19 @@ describe( '<ProjectDataForm />', () => {
   it( 'privacy field has error state if no value is entered', () => {
     const newProps = {
       ...props,
-      ...{ privacySetting: '' }
+      ...{ visibility: '' }
     };
     const wrapper = shallow( <ProjectDataForm { ...newProps } /> );
     const privacyField = wrapper.find( '#privacy-setting' );
     expect( privacyField.prop( 'error' ) )
-      .toEqual( !newProps.privacySetting );
+      .toEqual( !newProps.visibility );
   } );
 
   it( 'privacy field does not have error state if a value is entered', () => {
     const wrapper = shallow( Component );
     const privacyField = wrapper.find( '#privacy-setting' );
     expect( privacyField.prop( 'error' ) )
-      .toEqual( !props.privacySetting );
+      .toEqual( !props.visibility );
   } );
 
   it( 'category field has error state if no value is entered', () => {

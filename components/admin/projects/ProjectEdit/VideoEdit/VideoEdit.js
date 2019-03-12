@@ -59,7 +59,7 @@ class VideoEdit extends React.PureComponent {
       filesToUploadCount: videosCount + this.getSupportFilesCount(),
       formData: {
         title: '',
-        privacySetting: 'anyone',
+        visibility: 'anyone',
         author: '',
         owner: '',
         categories: [],
@@ -189,7 +189,7 @@ class VideoEdit extends React.PureComponent {
       const {
         categories,
         title,
-        privacySetting,
+        visibility,
         termsConditions
       } = nextState.formData;
       const categoryCount = categories.length;
@@ -198,7 +198,7 @@ class VideoEdit extends React.PureComponent {
         hasUnsavedData: true,
         hasExceededMaxCategories: categoryCount > this.MAX_CATEGORY_COUNT,
         hasRequiredData: !!title
-          && privacySetting
+          && visibility
           && categoryCount > 0
           && categoryCount <= this.MAX_CATEGORY_COUNT
           && termsConditions
@@ -335,7 +335,7 @@ class VideoEdit extends React.PureComponent {
 
     const {
       title,
-      privacySetting,
+      visibility,
       author,
       owner,
       categories,
@@ -466,7 +466,7 @@ class VideoEdit extends React.PureComponent {
 
             videoTitle={ title || '' }
             privacyOptions={ privacyOptions }
-            privacySetting={ privacySetting }
+            visibility={ visibility }
 
             authorValue={ author || '' }
             ownerValue={ owner || '' }
