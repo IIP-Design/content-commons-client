@@ -68,7 +68,7 @@ const ProjectDataForm = props => {
                 label="Video Title"
                 required
                 autoFocus
-                name="title"
+                name="projectTitle"
                 value={ videoTitle }
                 onChange={ handleChange }
                 error={ !videoTitle }

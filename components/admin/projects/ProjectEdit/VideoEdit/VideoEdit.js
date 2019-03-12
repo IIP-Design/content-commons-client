@@ -58,7 +58,7 @@ class VideoEdit extends React.PureComponent {
       hasExceededMaxCategories: false,
       filesToUploadCount: videosCount + this.getSupportFilesCount(),
       formData: {
-        title: '',
+        projectTitle: '',
         visibility: 'PUBLIC',
         author: '',
         team: '',
@@ -188,7 +188,7 @@ class VideoEdit extends React.PureComponent {
     this.setState( nextState => {
       const {
         categories,
-        title,
+        projectTitle,
         visibility,
         termsConditions
       } = nextState.formData;
@@ -197,7 +197,7 @@ class VideoEdit extends React.PureComponent {
       return ( {
         hasUnsavedData: true,
         hasExceededMaxCategories: categoryCount > this.MAX_CATEGORY_COUNT,
-        hasRequiredData: !!title
+        hasRequiredData: !!projectTitle
           && visibility
           && categoryCount > 0
           && categoryCount <= this.MAX_CATEGORY_COUNT
@@ -209,7 +209,7 @@ class VideoEdit extends React.PureComponent {
   handleSubmit = e => {
     e.preventDefault();
     const {
-      title,
+      projectTitle,
       author,
       team,
       descPublic,
@@ -225,7 +225,7 @@ class VideoEdit extends React.PureComponent {
         displaySaveMsg: true,
         formData: {
           ...prevState.formData,
-          title: title ? title.trimEnd() : '',
+          projectTitle: projectTitle ? projectTitle.trimEnd() : '',
           author: author ? author.trimEnd() : '',
           team: team ? team.trimEnd() : '',
           descPublic: descPublic ? descPublic.trimEnd() : '',
@@ -334,7 +334,7 @@ class VideoEdit extends React.PureComponent {
     } = this.state;
 
     const {
-      title,
+      projectTitle,
       visibility,
       author,
       team,
@@ -464,7 +464,7 @@ class VideoEdit extends React.PureComponent {
             handleSubmit={ this.handleSubmit }
             handleChange={ this.handleChange }
 
-            videoTitle={ title || '' }
+            videoTitle={ projectTitle || '' }
             privacyOptions={ privacyOptions }
             visibility={ visibility }
 

@@ -110,7 +110,7 @@ const projects = [
       success: false
     },
     projectData: {
-      title: '',
+      projectTitle: '',
       author: '',
       team: '',
       visibility: 'Anyone can see this project',
