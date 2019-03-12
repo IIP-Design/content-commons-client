@@ -64,7 +64,7 @@ class VideoEdit extends React.PureComponent {
         team: '',
         categories: [],
         tags: [],
-        publicDesc: '',
+        descPublic: '',
         internalDesc: '',
         termsConditions: false,
         protectImages: true
@@ -212,7 +212,7 @@ class VideoEdit extends React.PureComponent {
       title,
       author,
       team,
-      publicDesc,
+      descPublic,
       internalDesc,
       termsConditions,
       protectImages
@@ -228,7 +228,7 @@ class VideoEdit extends React.PureComponent {
           title: title ? title.trimEnd() : '',
           author: author ? author.trimEnd() : '',
           team: team ? team.trimEnd() : '',
-          publicDesc: publicDesc ? publicDesc.trimEnd() : '',
+          descPublic: descPublic ? descPublic.trimEnd() : '',
           internalDesc: internalDesc ? internalDesc.trimEnd() : '',
           tags: this.getTags(),
           termsConditions,
@@ -340,7 +340,7 @@ class VideoEdit extends React.PureComponent {
       team,
       categories,
       tags,
-      publicDesc,
+      descPublic,
       internalDesc,
       termsConditions,
       protectImages
@@ -478,7 +478,7 @@ class VideoEdit extends React.PureComponent {
             hasExceededMaxCategories={ hasExceededMaxCategories }
             tagsValue={ tags || '' }
 
-            publicDescValue={ publicDesc }
+            publicDescValue={ descPublic }
             internalDescValue={ internalDesc }
             termsConditions={ termsConditions }
 

@@ -116,7 +116,7 @@ const projects = [
       visibility: 'Anyone can see this project',
       categories: [],
       tags: [],
-      publicDesc: '',
+      descPublic: '',
       internalDesc: '',
       termsConditions: false,
       protectImages: false

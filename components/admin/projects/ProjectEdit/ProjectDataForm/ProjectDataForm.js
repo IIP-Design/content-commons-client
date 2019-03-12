@@ -155,7 +155,7 @@ const ProjectDataForm = props => {
               id="public-description"
               control={ TextArea }
               label="Public Description"
-              name="publicDesc"
+              name="descPublic"
               value={ publicDescValue }
               onChange={ handleChange }
             />
