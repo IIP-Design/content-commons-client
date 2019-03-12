@@ -93,7 +93,6 @@ class ImagePage extends Component {
         fontWeight: 700
       }
     };
-    const metaTags = populateMetaArray( item, url );
     if ( !item ) {
       return (
         <section className="max_width_1200" style={ styles.page }>
@@ -101,6 +100,7 @@ class ImagePage extends Component {
         </section>
       );
     }
+    const metaTags = populateMetaArray( item, url );
 
     return (
       <Fragment>
