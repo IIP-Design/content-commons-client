@@ -73,7 +73,7 @@ const languages = [
 
 const privacyOptions = [
   {
-    value: 'anyone',
+    value: 'PUBLIC',
     text: 'Anyone can see this project'
   },
   {

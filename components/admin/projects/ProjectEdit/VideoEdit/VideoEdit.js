@@ -59,7 +59,7 @@ class VideoEdit extends React.PureComponent {
       filesToUploadCount: videosCount + this.getSupportFilesCount(),
       formData: {
         title: '',
-        visibility: 'anyone',
+        visibility: 'PUBLIC',
         author: '',
         owner: '',
         categories: [],

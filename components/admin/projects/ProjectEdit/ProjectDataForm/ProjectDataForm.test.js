@@ -8,7 +8,7 @@ const props = {
   handleChange: jest.fn(),
   videoTitle: '',
   privacyOptions,
-  visibility: 'anyone',
+  visibility: 'PUBLIC',
   authorValue: '',
   ownerValue: '',
   categoryLabel: 'Categories',
@@ -49,7 +49,7 @@ describe( '<ProjectDataForm />', () => {
       ...props,
       ...{
         videoTitle: 'Test Title',
-        visibility: 'anyone',
+        visibility: 'PUBLIC',
         categoriesValue: ['about-america'],
         termsConditions: true
       }
@@ -83,7 +83,7 @@ describe( '<ProjectDataForm />', () => {
       ...props,
       ...{
         videoTitle: 'Test Title',
-        visibility: 'anyone',
+        visibility: 'PUBLIC',
         categoriesValue: ['about-america']
       }
     };
@@ -116,7 +116,7 @@ describe( '<ProjectDataForm />', () => {
     const newProps = {
       ...props,
       ...{
-        visibility: 'anyone',
+        visibility: 'PUBLIC',
         categoriesValue: ['about-america'],
         termsConditions: true
       }
@@ -183,7 +183,7 @@ describe( '<ProjectDataForm />', () => {
       ...props,
       ...{
         videoTitle: 'Test Title',
-        visibility: 'anyone',
+        visibility: 'PUBLIC',
         termsConditions: true
       }
     };
@@ -216,7 +216,7 @@ describe( '<ProjectDataForm />', () => {
       ...props,
       ...{
         videoTitle: 'Test Title',
-        visibility: 'anyone',
+        visibility: 'PUBLIC',
         categoriesValue: [
           'about-america', 'economic-issues', 'education'
         ],
