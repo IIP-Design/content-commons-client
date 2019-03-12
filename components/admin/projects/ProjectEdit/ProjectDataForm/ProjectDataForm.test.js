@@ -18,7 +18,7 @@ const props = {
   hasExceededMaxCategories: false,
   tagsValue: [],
   descPublicValue: '',
-  internalDescValue: '',
+  descInternalValue: '',
   termsConditions: false,
   hasSubmittedData: false,
   hasRequiredData: false

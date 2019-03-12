@@ -40,7 +40,7 @@ const ProjectDataForm = props => {
     categoriesValue,
     tagsValue,
     descPublicValue,
-    internalDescValue,
+    descInternalValue,
     termsConditions,
     hasSubmittedData,
     hasRequiredData
@@ -166,7 +166,7 @@ const ProjectDataForm = props => {
                 control={ TextArea }
                 label="Internal Description"
                 name="descInternal"
-                value={ internalDescValue }
+                value={ descInternalValue }
                 onChange={ handleChange }
               />
               <p>Reason for this project as it relates to Department objectives.</p>
@@ -227,7 +227,7 @@ ProjectDataForm.propTypes = {
   categoriesValue: array,
   tagsValue: oneOfType( [array, string] ),
   descPublicValue: string,
-  internalDescValue: string,
+  descInternalValue: string,
   termsConditions: bool,
   hasSubmittedData: bool,
   hasRequiredData: bool

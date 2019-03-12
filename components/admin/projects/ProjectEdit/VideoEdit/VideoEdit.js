@@ -479,7 +479,7 @@ class VideoEdit extends React.PureComponent {
             tagsValue={ tags || '' }
 
             descPublicValue={ descPublic }
-            internalDescValue={ descInternal }
+            descInternalValue={ descInternal }
             termsConditions={ termsConditions }
 
             hasSubmittedData={ hasSubmittedData }
