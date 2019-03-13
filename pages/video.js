@@ -21,6 +21,7 @@ class VideoPage extends Component {
         };
       }
     }
+    return {};
   }
 
   render() {
@@ -34,7 +35,6 @@ class VideoPage extends Component {
         fontWeight: 700
       }
     };
-    const metaTags = populateMetaArray( item, url );
 
     if ( !item ) {
       return (
@@ -43,6 +43,8 @@ class VideoPage extends Component {
         </section>
       );
     }
+
+    const metaTags = populateMetaArray( item, url );
 
     return (
       <Fragment>
