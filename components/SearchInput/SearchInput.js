@@ -36,7 +36,7 @@ class Search extends Component {
    * may need to use debounce to enable better perfomance
    */
   handleQueryOnChange = ( e, { value } ) => {
-    this.getLanguage( value );
+    // this.getLanguage( value );
     this.props.updateSearchTerm( value );
   };
 
@@ -46,7 +46,6 @@ class Search extends Component {
 
      const { filter, search } = this.props;
      const query = fetchQueryString( { ...filter, term: search.term, language: this.state.locale } );
-
      this.props.router.push( {
        pathname: '/results',
        query
