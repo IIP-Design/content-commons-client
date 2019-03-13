@@ -9,6 +9,8 @@ import { number, object, string } from 'prop-types';
 import {
   Button, Confirm, Loader, Progress
 } from 'semantic-ui-react';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 
 import ConfirmModalContent from 'components/admin/projects/shared/ConfirmModalContent/ConfirmModalContent';
 import Notification from 'components/admin/projects/shared/Notification/Notification';
@@ -32,6 +34,37 @@ import {
 } from 'components/admin/projects/ProjectEdit/mockData';
 
 import './VideoEdit.scss';
+
+const VIDEO_PROJECT_UNITS_QUERY = gql`
+  query VideoProjectUnits($id: ID!) {
+    videoProject(id: $id) {
+      units {
+        id
+        title
+        descPublic
+        language {
+          displayName
+          textDirection
+        }
+        files {
+          id
+          filename
+          url
+          filesize
+          videoBurnedInStatus
+          dimensions {
+            width
+            height
+          }
+          stream {
+            site
+            embedUrl
+          }
+        }
+      }
+    }
+  }
+`;
 
 /* eslint-disable react/prefer-stateless-function */
 class VideoEdit extends React.PureComponent {
@@ -314,7 +347,6 @@ class VideoEdit extends React.PureComponent {
     }
 
     const {
-      projectType,
       supportFiles,
       videos
     } = project;
@@ -389,21 +421,32 @@ class VideoEdit extends React.PureComponent {
               cancelButton="No, take me back"
               confirmButton="Yes, delete forever"
             />
-            <PreviewProject
-              triggerProps={ {
-                className: 'edit-project__btn--preview',
-                content: 'Preview Project',
-                basic: true,
-                disabled: !isUploadFinished
+
+            <Query query={ VIDEO_PROJECT_UNITS_QUERY } variables={ { id: this.props.id } }>
+              { ( { loading, error, data } ) => {
+                if ( loading ) return 'Loading...';
+                if ( error ) return `Error! ${error.message}`;
+
+                return (
+                  <PreviewProject
+                    triggerProps={ {
+                      className: 'edit-project__btn--preview',
+                      content: 'Preview Project',
+                      basic: true,
+                      disabled: !isUploadFinished
+                    } }
+                    contentProps={ {
+                      id: this.props.id,
+                      data: data.videoProject.units,
+                    } }
+                    modalTrigger={ Button }
+                    modalContent={ PreviewProjectContent }
+                    options={ { closeIcon: true } }
+                  />
+                );
               } }
-              contentProps={ {
-                data: project,
-                projecttype: `${projectType}s`
-              } }
-              modalTrigger={ Button }
-              modalContent={ PreviewProjectContent }
-              options={ { closeIcon: true } }
-            />
+            </Query>
+
             { hasSubmittedData
               && (
                 <Button
