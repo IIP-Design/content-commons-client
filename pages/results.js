@@ -7,10 +7,10 @@ import {
 import {
   updateLanguage, postTypeUpdate, dateUpdate, categoryUpdate, sourceUpdate
 } from 'lib/redux/actions/filter';
-import { loadPostTypes } from '../lib/redux/actions/postType';
-import { loadSources } from '../lib/redux/actions/source';
-import { loadCategories } from '../lib/redux/actions/category';
-import { loadLanguages } from '../lib/redux/actions/language';
+import { loadPostTypes } from 'lib/redux/actions/postType';
+import { loadSources } from 'lib/redux/actions/source';
+import { loadCategories } from 'lib/redux/actions/category';
+import { loadLanguages } from 'lib/redux/actions/language';
 
 class ResultsPage extends Component {
   // Get search params from url
@@ -30,15 +30,14 @@ class ResultsPage extends Component {
 
     await languageUpdate;
     await sortByUpdate;
-    await termUpdate;
     await typeUpdate;
+    await termUpdate;
     await dateChange;
     await categoryChange;
     await sourceChange;
 
     // after all search values are updated, execute search request
     store.dispatch( createRequest() );
-
     // load filter menus if needed
     const { global } = store.getState();
     let types;
