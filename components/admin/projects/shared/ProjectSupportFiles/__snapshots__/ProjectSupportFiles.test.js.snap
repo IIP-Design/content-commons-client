@@ -1,0 +1,192 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProjectSupportFiles /> renders without crashing 1`] = `
+<div
+  className="support-files"
+>
+  <Grid
+    stackable={true}
+  >
+    <GridRow>
+      <GridColumn
+        width={16}
+      >
+        <h2
+          className="heading uppercase"
+        >
+          Support Files
+        </h2>
+      </GridColumn>
+    </GridRow>
+    <GridRow
+      columns={2}
+      divided={true}
+    >
+      <GridColumn>
+        <SupportFileTypeList
+          data={
+            Array [
+              Object {
+                "file": "madeinamerica_arabic.srt",
+                "id": "5678",
+                "lang": "Arabic",
+                "size": Object {
+                  "filesize": 24576,
+                },
+                "uploadStatus": Object {
+                  "error": false,
+                  "success": false,
+                },
+              },
+              Object {
+                "file": "madeinamerica_chinese_ljhlkjhl_kjhlkjh_aslkfja;lskjfweoij.srt",
+                "id": "5679",
+                "lang": "Chinese (Simplified)",
+                "size": Object {
+                  "filesize": 24576,
+                },
+                "uploadStatus": Object {
+                  "error": false,
+                  "success": false,
+                },
+              },
+              Object {
+                "file": "madeinamerica_english.srt",
+                "id": "5680",
+                "lang": "English",
+                "size": Object {
+                  "filesize": 24576,
+                },
+                "uploadStatus": Object {
+                  "error": false,
+                  "success": false,
+                },
+              },
+              Object {
+                "file": "madeinamerica_french.srt",
+                "id": "5681",
+                "lang": "French",
+                "size": Object {
+                  "filesize": 24576,
+                },
+                "uploadStatus": Object {
+                  "error": false,
+                  "success": false,
+                },
+              },
+            ]
+          }
+          fileType="srt"
+          hasSubmittedData={false}
+          hasUploaded={true}
+          headline="SRT Files"
+          popupMsg="Some info about what SRT files are."
+          projectId={
+            Object {
+              "videoID": "made-in-america",
+            }
+          }
+        />
+      </GridColumn>
+      <GridColumn>
+        <SupportFileTypeList
+          data={
+            Array [
+              Object {
+                "file": "madeinamerica_arabic.jpg",
+                "id": "5682",
+                "lang": "Arabic",
+                "size": Object {
+                  "filesize": 58368,
+                },
+                "uploadStatus": Object {
+                  "error": false,
+                  "success": false,
+                },
+              },
+              Object {
+                "file": "madeinamerica_chinese.jpg",
+                "id": "5683",
+                "lang": "Chinese (Simplified)",
+                "size": Object {
+                  "filesize": 58368,
+                },
+                "uploadStatus": Object {
+                  "error": false,
+                  "success": false,
+                },
+              },
+              Object {
+                "file": "madeinamerica_english.jpg",
+                "id": "5684",
+                "lang": "English",
+                "size": Object {
+                  "filesize": 58368,
+                },
+                "uploadStatus": Object {
+                  "error": false,
+                  "success": false,
+                },
+              },
+              Object {
+                "file": "madeinamerica_french.jpg",
+                "id": "5685",
+                "lang": "French",
+                "size": Object {
+                  "filesize": 58368,
+                },
+                "uploadStatus": Object {
+                  "error": false,
+                  "success": false,
+                },
+              },
+              Object {
+                "file": "madeinamerica_english.mp3",
+                "id": "5686",
+                "lang": "English",
+                "size": Object {
+                  "filesize": 5242880,
+                },
+                "uploadStatus": Object {
+                  "error": false,
+                  "success": false,
+                },
+              },
+            ]
+          }
+          fileType="other"
+          hasSubmittedData={false}
+          hasUploaded={true}
+          headline="Additional Files"
+          popupMsg="Additional files that can be used with this video, e.g., audio file, pdf."
+          projectId={
+            Object {
+              "videoID": "made-in-america",
+            }
+          }
+        />
+        <Checkbox
+          checked={true}
+          id="protect-images"
+          label={
+            <label
+              htmlFor="protect-images"
+            >
+              Disable right-click to protect your images
+            </label>
+          }
+          name="protectImages"
+          onChange={[MockFunction]}
+          type="checkbox"
+        />
+        <IconPopup
+          iconSize="small"
+          iconType="info circle"
+          message="Checking this prevents people from downloading and using your images. Useful if your images are licensed."
+          popupSize="mini"
+        />
+      </GridColumn>
+    </GridRow>
+  </Grid>
+</div>
+`;

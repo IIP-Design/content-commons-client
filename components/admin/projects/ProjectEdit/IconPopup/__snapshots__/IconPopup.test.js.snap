@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IconPopup /> renders without crashing 1`] = `
+<Popup
+  content="A test message"
+  inverted={true}
+  keepInViewPort={true}
+  on={
+    Array [
+      "hover",
+      "click",
+      "focus",
+    ]
+  }
+  position="top left"
+  size="mini"
+  trigger={
+    <span>
+      <Focusable
+        order={0}
+      >
+        <Icon
+          as="i"
+          name="info circle"
+          size="tiny"
+        />
+      </Focusable>
+    </span>
+  }
+/>
+`;

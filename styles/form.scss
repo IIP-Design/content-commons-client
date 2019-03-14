@@ -26,6 +26,11 @@
   border-radius: 4px;
 }
 
+.ui.checkbox .box,
+.ui.checkbox label {
+  font-size: 0.77rem;
+}
+
 .ui.dropdown {
   .menu > .item {
     font-size: 0.77rem;

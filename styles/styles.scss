@@ -81,10 +81,10 @@ h6.ui.header {
     padding-right: 2em;
   }
 
-  @media only screen and (min-width: 1200px) {
-    padding-left: 4em;
-    padding-right: 4em;
-  }
+  // @media only screen and (min-width: 1200px) {
+  //   padding-left: 3em;
+  //   padding-right: 3em;
+  // }
 
   @media only screen and (min-width: 1600px) {
     width: 1601px;
@@ -94,7 +94,10 @@ h6.ui.header {
 
   /* Non home pages need margin to clear the fixed header */
   &.inside {
-    margin-top: 3.5rem;
+    margin-top: 6.7rem;
+    @media only screen and (min-width: 768px) {
+      margin-top: 3.5rem;
+    }
   }
 
   /* some inside pages should not extend to 1200px */

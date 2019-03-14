@@ -301,7 +301,7 @@ class Video extends Component {
       unit, selectedLanguage, captions, videoProps, shareLink
     } = this.state;
     const {
-      type, logo, author, owner, published, modified, id, site
+      type, logo, author, team, published, modified, id, site
     } = this.props.item;
 
     const toggleCaptions = [...new Set( unit.source.map( item => item.burnedInCaptions ) )];
@@ -421,7 +421,7 @@ class Video extends Component {
 
           <ModalContentMeta type={ type } dateUpdated={ modified } transcript={ this.getVideoTranscript() } />
           <ModalDescription description={ unit.desc } />
-          <ModalPostMeta author={ author } logo={ logo } source={ owner } datePublished={ published } />
+          <ModalPostMeta author={ author } logo={ logo } source={ team } datePublished={ published } />
           <ModalPostTags tags={ unit.categories } />
         </ModalItem>
       );

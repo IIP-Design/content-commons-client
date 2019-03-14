@@ -1,0 +1,206 @@
+@import "../../../../../styles/colors.scss";
+
+.edit-project {
+  :focus:not(:focus-visible) {
+    outline: none
+  }
+
+  @media screen and (max-width: 550px) {
+    .project_buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 0.5fr);
+      grid-gap: 1em;
+    }
+  }
+
+  .uppercase {
+    text-transform: uppercase;
+  }
+
+  .ui.button {
+    padding-top: 0.785714em;
+    padding-bottom: 0.785714em;
+    font-size: 0.777778rem;
+    box-shadow: none !important;
+
+    &:focus,
+    &.basic.buttons .button:focus,
+    &.basic:focus {
+      outline: 2px dotted $medium-grey;
+      outline-offset: 2px;
+    }
+
+    &.disabled,
+    &:disabled {
+      cursor: not-allowed;
+      pointer-events: auto !important;
+    }
+
+    &.basic.btn--edit {
+      color: $light-blue !important;
+
+      &:active,
+      &:hover,
+      &:focus {
+        color: $matisse-blue !important;
+        box-shadow: none;
+      }
+    }
+  }
+  
+  &__btn--delete {
+    &.ui.basic.button {
+      border: 2px solid transparent;
+      @media screen and (max-width: 899px) {
+        border-color: $grey;
+      }
+      color: $grey !important;
+      font-weight: normal;
+
+      &:hover,
+      &:active,
+      &:focus {
+        border-color: $grey;
+        color: #fff !important;
+        background-color: $grey !important;
+      }
+
+      &.disabled:hover,
+      &.disabled:active,
+      &.disabled:focus {
+        border-color: transparent !important;
+        @media screen and (max-width: 899px) {
+          border-color: $grey !important;
+        }
+        color: $grey !important;
+        background-color: transparent !important;
+      }
+    }
+  }
+
+  @media screen and (min-width: 992px) {
+    &__form--save {
+      width: 100%;
+    }
+  }
+
+  &__btn--preview,
+  &__btn--save-draft,
+  &__add-more {
+    &.ui.basic.button {
+      border: 2px solid $matisse-blue;
+      color: $matisse-blue !important;
+      font-weight: bold;
+      background-color: #fff;
+
+      &:hover,
+      &:active,
+      &:focus {
+        color: #fff !important;
+        background-color: $matisse-blue !important;
+      }
+
+      &.disabled:hover,
+      &.disabled:active,
+      &.disabled:focus {
+        color: $matisse-blue !important;
+        background-color: transparent !important;
+      }
+    }
+  }
+
+  &__btn--final-review,
+  &__form--save {
+    border: 2px solid $light-blue !important;
+    color: #fff !important;
+    background-color: $light-blue !important;
+
+    &:hover,
+    &:active,
+    &:focus {
+      border-color: $matisse-blue !important;
+      background-color: $matisse-blue !important;
+    }
+
+    &.disabled:hover,
+    &.disabled:active,
+    &.disabled:focus {
+      color: #fff !important;
+      background-color: $light-blue !important;
+    }
+  }
+
+  &__status {
+    font-size: 0.875em;
+
+    &.beta {
+      > .ui.progress {
+        margin-bottom: 4.75em;
+      }
+    }
+
+    > .ui.progress {
+        border-radius: 0;
+        margin-bottom: 3em;
+        font-size: 0.875em;
+        background-color: $light-grey;
+
+        .bar {
+          border-radius: 0;
+          &::after {
+            border-radius: 0;
+          }
+        }
+
+        .label {
+          font-weight: normal;
+        }
+      }
+  }
+
+  &__items {
+    /**
+     * use rem for l & r padding to
+     * match and override Semantic UI
+     */
+    padding: 1.75em 1rem;
+  }
+
+  &__content,
+  &__support-files {
+    padding: 1.75em 0;
+  }
+
+  &__content,
+  &__support-files,
+  &__items {
+    @media screen and (min-width: 768px) {
+      padding: 1.75em;
+    }
+  }
+
+  &__support-files,
+  &__items {
+    border-top: 1px solid $light-grey;
+  }
+
+  .ui.modal {
+    > .content {
+      position: relative;
+    }
+  }
+
+  .ui.active.progress {
+    .bar {
+      &::after {
+        background: repeating-linear-gradient(
+          45deg,
+          #ffffff,
+          #ffffff 1em,
+          $curious-blue 1em,
+          $curious-blue 2em
+        );
+      }
+    }
+  }
+}

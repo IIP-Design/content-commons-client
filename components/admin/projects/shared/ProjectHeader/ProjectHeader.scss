@@ -1,0 +1,31 @@
+@import "../../../../../styles/colors.scss";
+
+.section--project_header {
+  border-bottom: 1px solid $light-grey;
+  
+  @media screen and (min-width: 900px) {
+    display: flex;
+    justify-content: space-between;
+  }
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+.project_header {
+  @media screen and (max-width: 899px) {
+    margin-bottom: 1em;
+  }
+    
+  > h2 {
+    display: flex;
+    align-items: center;
+    font-size: 34px;
+    @media screen and (max-width: 450px) {
+      font-size: 20px;
+    }
+
+    > i.icon {
+      margin-right: 1rem;
+    }
+  }
+}
