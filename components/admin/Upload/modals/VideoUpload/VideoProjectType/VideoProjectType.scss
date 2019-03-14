@@ -1,3 +1,10 @@
+.ui.modal.upload_modal {
+
+  &.project-type-active {
+    max-width: 430px;
+  }  
+}
+
 .videoProjectType.ui.form {
   @media screen and (min-width: 641px) {
     padding-left: 2em;
@@ -21,6 +28,5 @@
     > p {
       padding-left: 1.85714em;
     }
-  }
-  
+  }  
 }

@@ -23,19 +23,18 @@ const VideoUpload = dynamic( () => import( './modals/VideoUpload/VideoUpload' ) 
 
 class Upload extends Component {
   state = {
-    modalOpen: false
+    modalOpen: false,
+    modalClassname: 'upload_modal'
   }
 
-  handleModalOpen = () => {
-    this.setState( { modalOpen: true } );
-  }
+  handleModalOpen = () => this.setState( { modalOpen: true } );
 
-  handleModalClose = () => {
-    this.setState( { modalOpen: false } );
-  }
+  handleModalClose = () => this.setState( { modalOpen: false } );
+
+  handleModalClassname = updatedModalClassname => this.setState( { modalClassname: updatedModalClassname } );
 
   render() {
-    const { modalOpen } = this.state;
+    const { modalOpen, modalClassname } = this.state;
     return (
       <div>
         <h1>Upload Content</h1>
@@ -46,7 +45,7 @@ class Upload extends Component {
               <span>Audio</span>
             </Button>
             <Modal
-              className="upload_modal"
+              className={ modalClassname }
               open={ modalOpen }
               trigger={ (
                 <Button className="type" aria-label="Upload Video Content" onClick={ this.handleModalOpen }>
@@ -54,7 +53,12 @@ class Upload extends Component {
                   <span>Videos</span>
                 </Button>
               ) }
-              content={ <VideoUpload closeModal={ this.handleModalClose } /> }
+              content={ (
+                <VideoUpload
+                  closeModal={ this.handleModalClose }
+                  updateModalClassname={ this.handleModalClassname }
+                />
+              ) }
             />
             <Button className="type disabled" aria-label="Upload Image Content">
               <img src={ imageIcon } alt="Upload images content" />

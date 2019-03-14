@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   Form,
@@ -7,13 +7,23 @@ import {
 } from 'semantic-ui-react';
 import './VideoProjectType.scss';
 
-class VideoProjectType extends Component {
-  state = {};
+class VideoProjectType extends PureComponent {
+  state = {
+    value: ''
+  };
+
+  componentDidMount() {
+    this.props.updateModalClassname( 'upload_modal project-type-active' );
+  }
+
+  componentWillUnmount() {
+    this.props.updateModalClassname( 'upload_modal' );
+  }
 
   handleSelection = ( e, { value } ) => this.setState( { value } );
 
   render() {
-    const { closeModal } = this.props;
+    const { closeModal, handleVideoAssetsUpload } = this.props;
     const { value } = this.state;
 
     return (
@@ -49,9 +59,21 @@ class VideoProjectType extends Component {
           <p>Select for bulk importing multiple videos that are unrelated to each other.</p>
         </Form.Field>
         <Form.Field className="upload_actions">
-          <Button className="upload_button upload_button--back" content="Cancel" onClick={ closeModal } />
-          { /* Open file upload on click */ }
-          <Button className="upload_button upload_button--next" content="Next" onClick={ closeModal } />
+          <Button className="upload_button upload_button--cancelBtn" content="Cancel" onClick={ closeModal } />
+          <label
+            className={ `ui button upload_button upload_button--fileUpload ${value === '' ? 'inactive' : ''}` }
+            htmlFor="upload_video_assets"
+          >
+            <input
+              disabled={ value === '' }
+              id="upload_video_assets"
+              type="file"
+              name="upload_video_assets"
+              multiple
+              onChange={ e => handleVideoAssetsUpload( e ) }
+            />
+            Next
+          </label>
         </Form.Field>
       </Form>
     );
@@ -59,7 +81,9 @@ class VideoProjectType extends Component {
 }
 
 VideoProjectType.propTypes = {
-  closeModal: PropTypes.func
+  closeModal: PropTypes.func,
+  handleVideoAssetsUpload: PropTypes.func,
+  updateModalClassname: PropTypes.func
 };
 
 export default VideoProjectType;
