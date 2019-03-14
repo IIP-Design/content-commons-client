@@ -35,15 +35,6 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
   query VideoProject($id: ID!) {
     videoProject(id: $id) {
       projectType
-      supportFiles {
-        url
-        filename
-        language {
-          languageCode
-          displayName
-          textDirection
-        }
-      }
       thumbnails {
         alt
         url
@@ -275,3 +266,4 @@ PreviewProjectContent.propTypes = {
 };
 
 export default PreviewProjectContent;
+export { VIDEO_PROJECT_PREVIEW_QUERY };

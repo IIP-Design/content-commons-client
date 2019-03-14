@@ -1,77 +1,138 @@
 import { shallow } from 'enzyme';
-import toJSON from 'enzyme-to-json';
-import { projects } from 'components/admin/projects/ProjectEdit/mockData';
-import PreviewProjectContent from './PreviewProjectContent';
+import TestRenderer from 'react-test-renderer';
+import wait from 'waait';
+import { MockedProvider } from 'react-apollo/test-utils';
+import { units } from 'components/admin/projects/ProjectEdit/mockData';
+import PreviewProjectContent, { VIDEO_PROJECT_PREVIEW_QUERY } from './PreviewProjectContent';
 
-const props = {
-  data: projects[0],
-  projecttype: 'videos'
-};
+const props = { id: '123', data: units };
+const mocks = [
+  {
+    request: {
+      query: VIDEO_PROJECT_PREVIEW_QUERY,
+      variables: { id: '123' }
+    },
+    result: {
+      data: {
+        videoProject: {
+          projectType: 'video',
+          thumbnails: [
+            {
+              alt: 'the alt text',
+              url: 'https://website.com/filename.jpg'
+            }
+          ],
+          team: { name: 'the team name' }
+        }
+      }
+    }
+  }
+];
 
-const Component = <PreviewProjectContent { ...props } />;
+const Component = (
+  <MockedProvider mocks={ mocks } addTypename={ false }>
+    <PreviewProjectContent { ...props } />
+  </MockedProvider>
+);
 
 describe( '<PreviewProjectContent />', () => {
-  it( 'renders without crashing', () => {
-    const wrapper = shallow( Component );
-    expect( wrapper.exists() ).toEqual( true );
-    expect( toJSON( wrapper ) ).toMatchSnapshot();
+  it( 'renders initial loading state without crashing', () => {
+    const wrapper = TestRenderer.create( Component );
+    expect( wrapper.toJSON() ).toEqual( 'Loading the project...' );
+  } );
+
+  it( 'renders final state without crashing', async () => {
+    const wrapper = TestRenderer.create( Component );
+    await wait( 0 );
+    expect( wrapper.toJSON() ).toMatchSnapshot();
+  } );
+
+  it( 'renders error message if error is thrown', async () => {
+    const errorMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_PREVIEW_QUERY,
+          variables: { id: '123' }
+        },
+        result: {
+          errors: [{ message: 'There was an error.' }]
+        }
+      }
+    ];
+    const wrapper = TestRenderer.create(
+      <MockedProvider mocks={ errorMocks } addTypename={ false }>
+        <PreviewProjectContent { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+
+    expect( wrapper.toJSON() ).toContain( 'Error! GraphQL error: There was an error.' );
+    expect( wrapper.toJSON() ).toMatchSnapshot();
   } );
 
   it( '`componentDidMount` is called and selects the project item', () => {
     jest.clearAllMocks();
     const wrapper = shallow( Component );
-    const didMountSpy = jest.spyOn( wrapper.instance(), 'componentDidMount' );
-    const selectProjectItemSpy = jest.spyOn( wrapper.instance(), 'selectProjectItem' );
+    const preview = wrapper.find( 'PreviewProjectContent' ).dive();
+    const inst = preview.instance();
+    const didMountSpy = jest.spyOn( preview.instance(), 'componentDidMount' );
+    const selectProjectItemSpy = jest.spyOn( preview.instance(), 'selectProjectItem' );
 
-    wrapper.instance().componentDidMount();
-
+    inst.componentDidMount();
     expect( didMountSpy ).toHaveBeenCalled();
     expect( selectProjectItemSpy ).toHaveBeenCalled();
 
-    const selectedItemObj = wrapper.state( 'selectedItem' );
-    const language = wrapper.state( 'selectedLanguage' );
+    const selectedItemObj = preview.state( 'selectedItem' );
+    const language = preview.state( 'selectedLanguage' );
+    const { data } = inst.props;
     expect( selectedItemObj ).toEqual(
-      props.data.videos.find( video => video.language.display_name === language )
+      data.find( unit => unit.language.displayName === language )
     );
   } );
 
   it( 'sets `dropDownIsOpen` and `selectedLanguage` in initial `state`', () => {
     const wrapper = shallow( Component );
-    expect( wrapper.state( 'dropDownIsOpen' ) )
-      .toEqual( false );
-    expect( wrapper.state( 'selectedLanguage' ) )
-      .toEqual( 'English' );
+    const preview = wrapper.find( 'PreviewProjectContent' ).dive();
+    const inst = preview.instance();
+    const { dropDownIsOpen, selectedLanguage } = inst.state;
+
+    expect( dropDownIsOpen ).toEqual( false );
+    expect( selectedLanguage ).toEqual( 'English' );
   } );
 
   it( '`getLanguages` sets `languages` in initial `state`', () => {
     jest.clearAllMocks();
     const wrapper = shallow( Component );
-    const spy = jest.spyOn( wrapper.instance(), 'getLanguages' );
+    const preview = wrapper.find( 'PreviewProjectContent' ).dive();
+    const inst = preview.instance();
+    const spy = jest.spyOn( inst, 'getLanguages' );
 
-    wrapper.instance().getLanguages( props.data, props.projecttype );
+    inst.getLanguages( inst.props.data );
 
     expect( spy ).toHaveBeenCalled();
-    expect( wrapper.state( 'languages' ) ).toEqual( [
+    expect( inst.state.languages ).toEqual( [
       { key: 'en', value: 'English', text: 'English' },
-      { key: 'fr', value: 'French', text: 'French' },
-      { key: 'ar', value: 'Arabic', text: 'Arabic' }] );
+      { key: 'fr', value: 'French', text: 'French' }] );
   } );
 
   it( '`getProjectItems` sets `projectItems` in initial `state`', () => {
     jest.clearAllMocks();
     const wrapper = shallow( Component );
-    const spy = jest.spyOn( wrapper.instance(), 'getProjectItems' );
-    wrapper.instance().getProjectItems( props.data, props.projecttype );
+    const preview = wrapper.find( 'PreviewProjectContent' ).dive();
+    const inst = preview.instance();
+    const spy = jest.spyOn( inst, 'getProjectItems' );
+    const { data } = inst.props;
 
-    const projectItemsObj = wrapper.state( 'projectItems' );
-    const objKeys = Object.keys( projectItemsObj );
+    inst.getProjectItems( data );
+
+    const { languages, projectItems } = inst.state;
+    const langKeys = Object.keys( projectItems );
 
     expect( spy ).toHaveBeenCalled();
-    expect( objKeys.length )
-      .toEqual( wrapper.state( 'languages' ).length );
-    objKeys.forEach( key => {
-      expect( projectItemsObj[key] ).toEqual(
-        props.data.videos.find( video => video.language.display_name === key )
+    expect( langKeys.length ).toEqual( languages.length );
+    langKeys.forEach( key => {
+      expect( projectItems[key] ).toEqual(
+        data.find( unit => unit.language.displayName === key )
       );
     } );
   } );
@@ -79,7 +140,9 @@ describe( '<PreviewProjectContent />', () => {
   it( '`handleChange` updates `selectedLanguage` and `selectedItem` in `state`', () => {
     jest.clearAllMocks();
     const wrapper = shallow( Component );
-    const inst = wrapper.instance();
+    const preview = wrapper.find( 'PreviewProjectContent' ).dive();
+    const inst = preview.instance();
+    const { data } = inst.props;
 
     const handleChangeSpy = jest.spyOn( inst, 'handleChange' );
     const toggleArrowSpy = jest.spyOn( inst, 'toggleArrow' );
@@ -87,67 +150,84 @@ describe( '<PreviewProjectContent />', () => {
     const selectProjectItemSpy = jest.spyOn( inst, 'selectProjectItem' );
 
     const e = {};
-    const data = { value: 'French' };
+    const selection = { value: 'French' };
 
-    inst.handleChange( e, data );
+    inst.handleChange( e, selection );
 
-    const language = wrapper.state( 'selectedLanguage' );
-    const selectedItemObj = wrapper.state( 'selectedItem' );
+    const { selectedLanguage, selectedItem } = inst.state;
 
-    expect( handleChangeSpy ).toHaveBeenCalledWith( e, data );
+    expect( handleChangeSpy ).toHaveBeenCalledWith( e, selection );
     expect( toggleArrowSpy ).toHaveBeenCalled();
-    expect( selectLanguageSpy ).toHaveBeenCalledWith( data.value );
+    expect( selectLanguageSpy ).toHaveBeenCalledWith( selection.value );
     expect( selectProjectItemSpy ).toHaveBeenCalled();
 
-    expect( language ).toEqual( data.value );
-    expect( selectedItemObj ).toEqual(
-      props.data.videos.find( video => video.language.display_name === language )
+    expect( selectedLanguage ).toEqual( selection.value );
+    expect( selectedItem ).toEqual(
+      data.find( unit => unit.language.displayName === selectedLanguage )
     );
   } );
 
-  it( '`toggleArrow` updates `dropDownIsOpen` in state', () => {
+  it( '`toggleArrow` updates `dropDownIsOpen` in state & the dropdown icon', async () => {
     jest.clearAllMocks();
-    const wrapper = shallow( Component );
-    const spy = jest.spyOn( wrapper.instance(), 'toggleArrow' );
+    const wrapper = TestRenderer.create( Component );
+    await wait( 0 );
+    const inst = wrapper.root;
+    const preview = inst.findByType( PreviewProjectContent ).instance;
+    const spy = jest.spyOn( preview, 'toggleArrow' );
+    const dropdownIcon = () => inst.findByProps( { className: 'modal_languages' } ).props.icon;
 
-    expect( wrapper.state( 'dropDownIsOpen' ) )
-      .toEqual( false );
-    expect( wrapper.find( 'Dropdown' ).prop( 'icon' ) )
-      .toEqual( 'chevron down' );
-    wrapper.instance().toggleArrow();
-    expect( spy ).toHaveBeenCalled();
-    expect( wrapper.state( 'dropDownIsOpen' ) )
-      .toEqual( true );
-    expect( wrapper.find( 'Dropdown' ).prop( 'icon' ) )
-      .toEqual( 'chevron up' );
+    expect( preview.state.dropDownIsOpen ).toEqual( false );
+
+    preview.toggleArrow();
+    expect( spy ).toHaveBeenCalledTimes( 1 );
+    expect( preview.state.dropDownIsOpen ).toEqual( true );
+    expect( dropdownIcon() ).toEqual( 'chevron up' );
+
+    preview.toggleArrow();
+    expect( spy ).toHaveBeenCalledTimes( 2 );
+    expect( preview.state.dropDownIsOpen ).toEqual( false );
+    expect( dropdownIcon() ).toEqual( 'chevron down' );
   } );
 
   it( '`selectLanguage` updates `selectedLanguage` and `selectedItem` in state', () => {
     jest.clearAllMocks();
     const wrapper = shallow( Component );
-    const inst = wrapper.instance();
+    const preview = wrapper.find( 'PreviewProjectContent' ).dive();
+    const inst = preview.instance();
+    const { data } = inst.props;
+    const selectedItem = () => inst.state.selectedItem;
+    const selectedLanguage = () => inst.state.selectedLanguage;
 
     const selectLanguageSpy = jest.spyOn( inst, 'selectLanguage' );
     const selectProjectItemSpy = jest.spyOn( inst, 'selectProjectItem' );
 
-    expect( wrapper.state( 'selectedLanguage' ) )
-      .toEqual( 'English' );
-    expect( wrapper.state( 'selectedItem' ) )
+    expect( selectedLanguage() ).toEqual( 'English' );
+    expect( selectedItem() )
       .toEqual(
-        props.data.videos.find( video => (
-          video.language.display_name === wrapper.state( 'selectedLanguage' )
+        data.find( unit => (
+          unit.language.displayName === selectedLanguage()
         ) )
       );
 
     inst.selectLanguage( 'French' );
-    expect( selectLanguageSpy ).toHaveBeenCalled();
-    expect( selectProjectItemSpy ).toHaveBeenCalled();
-    expect( wrapper.state( 'selectedLanguage' ) )
-      .toEqual( 'French' );
-    expect( wrapper.state( 'selectedItem' ) )
+    expect( selectLanguageSpy ).toHaveBeenCalledTimes( 1 );
+    expect( selectProjectItemSpy ).toHaveBeenCalledTimes( 1 );
+    expect( selectedLanguage() ).toEqual( 'French' );
+    expect( selectedItem() )
       .toEqual(
-        props.data.videos.find( video => (
-          video.language.display_name === wrapper.state( 'selectedLanguage' )
+        data.find( unit => (
+          unit.language.displayName === selectedLanguage()
+        ) )
+      );
+
+    inst.selectLanguage( 'English' );
+    expect( selectLanguageSpy ).toHaveBeenCalledTimes( 2 );
+    expect( selectProjectItemSpy ).toHaveBeenCalledTimes( 2 );
+    expect( selectedLanguage() ).toEqual( 'English' );
+    expect( selectedItem() )
+      .toEqual(
+        data.find( unit => (
+          unit.language.displayName === selectedLanguage()
         ) )
       );
   } );

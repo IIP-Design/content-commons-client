@@ -43,6 +43,7 @@ const VIDEO_PROJECT_UNITS_QUERY = gql`
         title
         descPublic
         language {
+          languageCode
           displayName
           textDirection
         }

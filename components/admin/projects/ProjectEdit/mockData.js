@@ -436,10 +436,68 @@ const projects = [
   }
 ];
 
+const units = [
+  {
+    id: '1111',
+    title: 'Video Title (English)',
+    descPublic: 'the English description',
+    language: {
+      languageCode: 'en',
+      displayName: 'English',
+      textDirection: 'LTR'
+    },
+    files: [
+      {
+        id: 'aaaa',
+        filename: 'video-filename-english.mp4',
+        url: 'https://video-download-url.com',
+        filesize: 662595174,
+        videoBurnedInStatus: 'CLEAN',
+        dimensions: {
+          width: 1920,
+          height: 1080
+        },
+        stream: {
+          site: 'YouTube',
+          embedUrl: 'https://www.youtube.com/embed/1a1a1a'
+        }
+      }
+    ]
+  },
+  {
+    id: '2222',
+    title: 'Video Title (French)',
+    descPublic: 'the French description',
+    language: {
+      languageCode: 'fr',
+      displayName: 'French',
+      textDirection: 'LTR'
+    },
+    files: [
+      {
+        id: 'bbbb',
+        filename: 'video-filename-french.mp4',
+        url: 'https://video-download-url.com',
+        filesize: 662595174,
+        videoBurnedInStatus: 'CLEAN',
+        dimensions: {
+          width: 1920,
+          height: 1080
+        },
+        stream: {
+          site: 'YouTube',
+          embedUrl: 'https://www.youtube.com/embed/1a1a1a'
+        }
+      }
+    ]
+  }
+];
+
 export {
   categoryData,
   languages,
   privacyOptions,
   supportFilesConfig,
-  projects
+  projects,
+  units
 };
