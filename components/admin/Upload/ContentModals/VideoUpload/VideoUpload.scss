@@ -1,0 +1,25 @@
+@import "../../../../../styles/colors.scss";
+
+.ui.modal.upload_modal {
+  max-width: 430px;
+}
+
+.videoUpload {
+
+  .ui.tabular.menu .item {
+    display: none;
+    font-size: 24px;
+    color: $blue;
+    cursor: pointer;
+    pointer-events: none;    
+
+    &.active {
+      display: block;
+      width: 100%;
+      text-align: center;
+      @media screen and (max-width: 400px) {
+        padding: 0.5em;
+      }
+    }
+  }
+}
