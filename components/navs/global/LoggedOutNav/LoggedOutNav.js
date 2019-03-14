@@ -39,7 +39,7 @@ const LoggedOutNav = props => {
       <Responsive as={ Menu } compact secondary minWidth={ 993 }>
         { menuItems.map( item => (
           <Menu.Item key={ item.key } name={ item.name }>
-            <Link prefetch href={ item.to }><a>{ item.label }</a></Link>
+            <Link href={ item.to }><a>{ item.label }</a></Link>
           </Menu.Item>
         ) ) }
         <a
@@ -62,7 +62,7 @@ const LoggedOutNav = props => {
             </li>
             { menuItems.map( item => (
               <li key={ item.key }>
-                <Link prefetch href={ item.to }>
+                <Link href={ item.to }>
                   <a>
                     <span onClick={ toggleMobileNav } onKeyUp={ keyUp } role="presentation">
                       { item.label }

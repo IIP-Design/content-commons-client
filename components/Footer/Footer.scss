@@ -102,7 +102,7 @@ footer {
     .sub.header {
       &.subtitle {
         font-size: 20px;
-        font-weight: bold;
+        font-weight: 600;
         color: white;
       }
 
@@ -119,12 +119,10 @@ footer {
       }
 
       > img.footer_img--slack {
-        width: 92px;
-        height: 26px;
+        width: 100px;
+        height: auto;
         margin-top: 0;
-        margin-right: 5px;
-        margin-left: 5px;
-        transform: translateY(20%);
+        transform: translateY(33%);
       }
     }
   }

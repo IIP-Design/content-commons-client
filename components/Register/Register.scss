@@ -35,6 +35,10 @@
     font-size: 0.85em;
   }
 
+  #howHeard {
+    font-size: 0.85em;
+  }
+
   .register_review-label .checkbox label {
     font-size: 0.85em;
     font-weight: normal;
@@ -83,12 +87,14 @@
     }
   }
 
+  .ui.checkbox,
   .checkbox {
     display: block;
     margin-bottom: 5px;
 
     label {
       font-weight: bold;
+      font-size: 1rem;
     }
 
     &_content {

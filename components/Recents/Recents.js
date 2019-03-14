@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Link from 'next/link';
+import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { v4 } from 'uuid';
@@ -8,7 +8,7 @@ import {
   Grid, Header, Item, Modal, Loader, Message
 } from 'semantic-ui-react';
 import { createStructuredSelector } from 'reselect';
-import { makeSelectPostTypeLabel } from '../../lib/redux/selectors';
+import { makeSelectPostTypeLabel } from 'lib/redux/selectors/postTypes';
 import {
   makeSelectRecentsByType,
   makeSelectRecentsWithMeta,
@@ -22,9 +22,12 @@ import './Recents.scss';
 
 
 class Recents extends Component {
-  handleClick = () => {
-    // console.log( 'clicked' );
-    // e.preventDefault();
+  handleOnClick = e => {
+    e.preventDefault();
+    this.props.router.push( {
+      pathname: '/results',
+      query: { language: 'en-us', sortBy: 'published', postTypes: [this.props.postType] }
+    } );
   }
 
   getModalContent = item => {
@@ -76,29 +79,18 @@ class Recents extends Component {
 
   render() {
     const {
-      recents, recentsWithMeta, postType, postTypeLabel, loading, error
+      recents, recentsWithMeta, postTypeLabel, loading, error
     } = this.props;
 
     return (
       <section className="recents">
         <div className="recentstitle">
           <Header as="h1" size="large">
-Most Recent
-            { ' ' }
-            { this.props.postTypeLabel }
-s
+            { `Most Recent ${this.props.postTypeLabel}s` }
           </Header>
-
-          <Link href={ `/results?postType=${postType}` }>
-            <a>
-              <span onClick={ this.handleClick } className="browseAll" role="presentation">
-              Browse All
-                { ' ' }
-                { this.props.postTypeLabel }
-s
-              </span>
-            </a>
-          </Link>
+          <a href="/results" onClick={ this.handleOnClick } className="browseAll">
+            { `Browse All ${this.props.postTypeLabel}s` }
+          </a>
 
         </div>
         <Loader active={ loading } />
@@ -148,6 +140,7 @@ Recents.propTypes = {
   recentsWithMeta: PropTypes.array,
   postType: PropTypes.string,
   postTypeLabel: PropTypes.string,
+  router: PropTypes.object,
   loading: PropTypes.bool,
   error: PropTypes.bool
 };
@@ -161,4 +154,4 @@ const mapStateToProps = ( state, props ) => createStructuredSelector( {
   error: makeSelectError()
 } );
 
-export default connect( mapStateToProps )( Recents );
+export default withRouter( connect( mapStateToProps )( Recents ) );

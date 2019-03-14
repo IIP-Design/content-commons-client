@@ -5,6 +5,7 @@ import Router, { withRouter } from 'next/router';
 import { Header, Image } from 'semantic-ui-react';
 import NProgress from 'nprogress';
 import DosSeal from 'static/images/dos_seal.svg';
+import SearchInput from 'components/SearchInput/SearchInput';
 import GlobalNav from '../navs/global';
 import './Header.scss';
 
@@ -39,6 +40,7 @@ const HeaderGlobal = ( { router } ) => {
             Content Commons is a U.S. Department of State portal helping public diplomacy practitioners find what they need.
             </Header.Subheader>
           </Header>
+          <SearchInput />
           <GlobalNav />
         </header>
       </div>

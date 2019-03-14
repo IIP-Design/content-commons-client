@@ -1,0 +1,48 @@
+@import "../../../styles/colors.scss";
+
+section.resultsPagination {
+  margin: 3em 0;
+  text-align: center;
+  .ui.pagination.menu {
+    font-size: 0.88rem;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    @media screen and (max-width: 767px) {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    &:after {
+      @media screen and (max-width: 767px) {
+        display: none;
+      }
+    }
+  }
+
+  .ui.pagination.menu .item:before {
+    background: white;
+  }
+  .ui.pagination.menu a.item[type="prevItem"],
+  .ui.pagination.menu a.item[type="nextItem"] {
+    color: $light-blue;
+    font-weight: bold;
+  }
+  .ui.pagination.menu a.disabled.item {
+    color: $alt-grey;
+  }
+  .ui.pagination.menu a.active.item[type="pageItem"] {
+    color: white;
+    font-weight: bold;
+    background: $light-blue;
+  }
+  .ui.pagination.menu a.item[type="pageItem"],
+  .ui.pagination.menu a.item[type="ellipsisItem"] {
+    @media screen and (max-width: 767px) {
+      display: none;
+    }
+  }
+  *:focus {
+    outline: none;
+  }
+}
