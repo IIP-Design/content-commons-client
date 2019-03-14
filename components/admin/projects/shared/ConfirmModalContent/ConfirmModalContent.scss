@@ -1,0 +1,80 @@
+@import "../../../../../styles/colors.scss";
+
+.delete,
+.confirm-modal {
+  &.ui.small.modal {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 0 1em 1.5em 1em;
+    border-radius: 0;
+    font-size: 0.777778rem;
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      border: 0;
+      background-color: #fff;
+
+      .ui.button {
+        border: 2px solid $light-blue;
+        font-size: 0.777778rem;
+        color: #fff;
+        background-color: $light-blue;
+
+        &.primary {
+          background-color: #fff;
+          color: $light-blue;
+        }
+
+        &:active,
+        &:hover,
+        &:focus {
+          border-color: $matisse-blue;
+          background-color: $matisse-blue !important;
+          color: #fff;
+        }
+
+        &:focus,
+        &.basic:focus {
+          outline: 2px dotted $medium-grey;
+          outline-offset: 2px;
+        }
+      }
+    }
+  }
+
+  .content,
+  &_confirm {
+    padding: 2em;
+  }
+
+  .content h2,
+  &_confirm {
+    text-align: center;
+  }
+}
+
+.confirm-modal {
+  &.ui.small.modal {
+    .actions {
+      .ui.button {
+        flex-basis: 50%;
+        background-color: #fff;
+        color: $light-blue;
+
+        &.primary {
+          border-color: $red;
+          background-color: $red;
+          color: #fff;
+
+          &:active,
+          &:hover,
+          &:focus {
+            border-color: darken($red, 10%) !important;
+            background-color: darken($red, 10%) !important;
+          }
+        }
+      }
+    }
+  }
+}

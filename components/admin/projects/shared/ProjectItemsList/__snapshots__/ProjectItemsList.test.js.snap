@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProjectItemsList /> renders without crashing 1`] = `
+<div
+  className="project-items"
+>
+  <h2
+    className="list-heading"
+  >
+    Videos in Project
+  </h2>
+  <ul
+    className="items-list"
+    style={
+      Object {
+        "display": "grid",
+        "gridGap": "1.5em 1em",
+        "gridTemplateColumns": "repeat(auto-fill, minmax(13em, 1fr))",
+        "listStyle": "none",
+        "paddingLeft": "0",
+      }
+    }
+  >
+    <ProjectItem
+      displayItemInModal={true}
+      isAvailable={true}
+      itemId="3728"
+      key="Made in America - en-us"
+      modalContent={[Function]}
+      modalTrigger={[Function]}
+      projectId={
+        Object {
+          "videoID": "made-in-america",
+        }
+      }
+      type="video"
+    />
+    <ProjectItem
+      displayItemInModal={true}
+      isAvailable={true}
+      itemId="3729"
+      key="Fabriqué en Amérique - fr-fr"
+      modalContent={[Function]}
+      modalTrigger={[Function]}
+      projectId={
+        Object {
+          "videoID": "made-in-america",
+        }
+      }
+      type="video"
+    />
+  </ul>
+</div>
+`;

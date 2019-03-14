@@ -4,15 +4,42 @@ import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import trim from 'lodash/trim';
 
+/**
+ * @todo Use MockQuery for now,
+ * replace with actual Apollo Query later
+ */
+import MockQuery from 'components/admin/projects/ProjectEdit/MockQuery/MockQuery';
+
 // using dynamic import so that components load when they are needed, or rendered
-const VideoEdit = dynamic( () => import( 'components/admin/projects/ProjectEdit/VideoEdit' ) );
+const VideoEdit = dynamic( () => import( 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit' ) );
 const VideoReview = dynamic( () => import( 'components/admin/projects/ProjectReview/VideoReview' ) );
 
 const CONTENT_TYPES = ['video'];
 
+/**
+ * @todo Use mock QUERY for now,
+ * replace with actual GraphQL Query later
+ */
+const CURRENT_PROJECT_QUERY = ( projects, variables ) => {
+  const { id } = variables;
+  return ( {
+    project: projects.find( project => project.projectId === id ) || {}
+  } );
+};
+
 const loadEditComponent = ( content, id ) => {
   if ( content === 'video' ) {
-    return <VideoEdit id={ id } />;
+    /**
+     * @todo Use MockQuery for now,
+     * replace with actual Apollo Query later
+     */
+    return (
+      <MockQuery query={ CURRENT_PROJECT_QUERY } variables={ { id } }>
+        { ( { project } ) => (
+          <VideoEdit id={ id } project={ project } />
+        ) }
+      </MockQuery>
+    );
   }
 };
 

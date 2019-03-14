@@ -84,13 +84,17 @@
     "eslint-plugin-react-hooks": "^1.0.1",
     "graphql-tools": "^4.0.4",
     "husky": "^1.3.1",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^24.0.0",
     "jest-transform-graphql": "^2.1.0",
     "lint-staged": "^8.1.0",
-    "prettier": "^1.15.2"
+    "prettier": "^1.15.2",
+    "waait": "^1.0.4"
   },
   "jest": {
-    "setupFilesAfterEnvc": "<rootDir>/jest.setup.js",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ],
     "testPathIgnorePatterns": [
       "<rootDir>/.next/",
       "<rootDir>/node_modules/"
@@ -98,6 +102,10 @@
     "transform": {
       "\\.(gql|graphql)$": "jest-transform-graphql",
       ".*": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|svg)$": "<rootDir>/static/__mocks__/fileMock.js",
+      "\\.(s?css)$": "identity-obj-proxy"
     }
   },
   "babel": {

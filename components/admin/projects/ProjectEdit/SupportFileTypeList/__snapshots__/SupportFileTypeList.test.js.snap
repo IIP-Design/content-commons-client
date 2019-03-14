@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SupportFileTypeList /> renders \`SupportItem\` components if \`hasSubmittedData\` 1`] = `
+<Fragment>
+  <h3>
+    SRT Files 
+    <IconPopup
+      iconSize="small"
+      iconType="info circle"
+      message="Some info about what SRT files are."
+      popupSize="mini"
+    />
+  </h3>
+  <ul>
+    <SupportItem
+      fileType="srt"
+      itemId="5678"
+      key="srt-5678"
+      projectId={
+        Object {
+          "videoID": "made-in-america",
+        }
+      }
+    />
+    <SupportItem
+      fileType="srt"
+      itemId="5679"
+      key="srt-5679"
+      projectId={
+        Object {
+          "videoID": "made-in-america",
+        }
+      }
+    />
+    <SupportItem
+      fileType="srt"
+      itemId="5680"
+      key="srt-5680"
+      projectId={
+        Object {
+          "videoID": "made-in-america",
+        }
+      }
+    />
+    <SupportItem
+      fileType="srt"
+      itemId="5681"
+      key="srt-5681"
+      projectId={
+        Object {
+          "videoID": "made-in-america",
+        }
+      }
+    />
+  </ul>
+</Fragment>
+`;
+
+exports[`<SupportFileTypeList /> renders initially \`Placeholder\` components 1`] = `
+<Fragment>
+  <h3>
+    SRT Files 
+  </h3>
+  <ul>
+    <Placeholder
+      childEl="span"
+      childStyles={
+        Object {
+          "fileName": Object {
+            "width": "75%",
+          },
+          "language": Object {
+            "backgroundColor": "#5b616b",
+            "marginRight": "0",
+            "width": "20%",
+          },
+        }
+      }
+      key="srt-5678"
+      parentEl="li"
+      parentStyles={
+        Object {
+          "display": "flex",
+          "justifyContent": "space-between",
+        }
+      }
+    />
+    <Placeholder
+      childEl="span"
+      childStyles={
+        Object {
+          "fileName": Object {
+            "width": "75%",
+          },
+          "language": Object {
+            "backgroundColor": "#5b616b",
+            "marginRight": "0",
+            "width": "20%",
+          },
+        }
+      }
+      key="srt-5679"
+      parentEl="li"
+      parentStyles={
+        Object {
+          "display": "flex",
+          "justifyContent": "space-between",
+        }
+      }
+    />
+    <Placeholder
+      childEl="span"
+      childStyles={
+        Object {
+          "fileName": Object {
+            "width": "75%",
+          },
+          "language": Object {
+            "backgroundColor": "#5b616b",
+            "marginRight": "0",
+            "width": "20%",
+          },
+        }
+      }
+      key="srt-5680"
+      parentEl="li"
+      parentStyles={
+        Object {
+          "display": "flex",
+          "justifyContent": "space-between",
+        }
+      }
+    />
+    <Placeholder
+      childEl="span"
+      childStyles={
+        Object {
+          "fileName": Object {
+            "width": "75%",
+          },
+          "language": Object {
+            "backgroundColor": "#5b616b",
+            "marginRight": "0",
+            "width": "20%",
+          },
+        }
+      }
+      key="srt-5681"
+      parentEl="li"
+      parentStyles={
+        Object {
+          "display": "flex",
+          "justifyContent": "space-between",
+        }
+      }
+    />
+  </ul>
+</Fragment>
+`;
