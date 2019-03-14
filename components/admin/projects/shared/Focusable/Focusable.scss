@@ -1,0 +1,12 @@
+@import "../../../../../styles/colors.scss";
+
+.focusable {
+  :focus:not(:focus-visible) {
+    outline: none
+  }
+
+  &:focus {
+    outline: 2px dotted $medium-grey;
+    outline-offset: 2px;
+  }
+}

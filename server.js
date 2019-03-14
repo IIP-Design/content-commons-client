@@ -14,7 +14,7 @@ app.prepare()
      * <Link as="video/123/edit" href="project?content=video&id=234&action=edit">
      * action param is optional
      */
-    server.get( '/admin/:content/:id/:action?', ( req, res ) => {
+    server.get( '/admin/project/:content/:id/:action?', ( req, res ) => {
       const { id, content, action } = req.params;
 
       const actualPage = '/admin/project';

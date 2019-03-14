@@ -13,6 +13,7 @@ import 'styles/styles.scss';
 class Commons extends App {
   static async getInitialProps( { Component, ctx } ) {
     let pageProps = {};
+
     if ( Component.getInitialProps ) {
       pageProps = await Component.getInitialProps( ctx );
     }

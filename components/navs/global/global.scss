@@ -1,6 +1,13 @@
 @import "../../../styles/colors.scss";
 
 .bar--home nav {
+  position: absolute;
+  top: 0;
+  right: 0.5rem;
+  @media screen and (max-width: 767px) {
+    position: fixed;
+  }
+
   .ui.menu .item:not(.feedback) a {
     border-radius: 0;
     color: white;
@@ -20,22 +27,12 @@
   }
 }
 
-// .bar--login nav,
-// .bar--confirm nav {
-//   .ui.menu .item:not(.feedback) {
-//     display: none;
-//   }
-// }
-
 nav {
   z-index: 2;
-  position: absolute;
-  top: 0;
-  right: 0;
 
-  @media screen and (min-width: 768px) {
-    top: 0.3em;
-    right: 1.5em;
+  @media screen and (max-width: 767px) {
+    position: absolute;
+    right: 0;
   }
 
   .ui.compact.menu {
@@ -112,7 +109,8 @@ nav {
     cursor: pointer;
 
     @media screen and (min-width: 768px) {
-      margin-top: 0.7em;
+      margin-top: 0.9em;
+      margin-right: -0.5em;
     }
 
     &.mobileNav {

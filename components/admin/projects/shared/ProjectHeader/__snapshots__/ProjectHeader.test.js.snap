@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProjectHeader /> renders without crashing 1`] = `
+<header
+  className="section section--project_header"
+>
+  <div
+    className="project_header"
+  >
+    <h2>
+      <Icon
+        as="i"
+        circular={true}
+        inverted={true}
+        name="video"
+        size="tiny"
+      />
+      <span
+        className="project_header_text"
+      >
+        Test Heading
+      </span>
+    </h2>
+  </div>
+  <div
+    className="project_buttons"
+  >
+    <Button
+      as="button"
+      content="Button 1"
+    />
+    <Button
+      as="button"
+      content="Button 2"
+    />
+  </div>
+</header>
+`;

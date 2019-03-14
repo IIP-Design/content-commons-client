@@ -27,8 +27,8 @@ class GoogleLoginComponent extends Component {
   }
 
   failureGoogle = response => {
-    const { error } = response;
-
+    const { error, details } = response;
+    console.log( details );
     // do show an error if user closes window w/o logging in
     if ( error !== 'popup_closed_by_user' ) {
       this.setState( {

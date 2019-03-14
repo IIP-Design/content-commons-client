@@ -4,10 +4,10 @@ import './ModalItem.scss';
 import './ModalItemRTL.scss';
 
 const ModalItem = props => {
-  const { headline, textDirection } = props;
+  const { className, headline, textDirection } = props;
 
   return (
-    <div className={ `modal ${textDirection}` }>
+    <div className={ `modal ${textDirection} ${className}` }>
       <h1 className="modal_headline">{ headline }</h1>
       { props.children }
     </div>
@@ -15,6 +15,7 @@ const ModalItem = props => {
 };
 
 ModalItem.propTypes = {
+  className: string,
   headline: string,
   children: node,
   textDirection: string

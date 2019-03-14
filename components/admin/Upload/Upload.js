@@ -9,13 +9,17 @@ import {
   Button,
   Modal,
 } from 'semantic-ui-react';
+import dynamic from 'next/dynamic';
 import imageIcon from 'static/icons/icon_150px_images_blue.png';
 import docIcon from 'static/icons/icon_150px_document_blue.png';
 import eduIcon from 'static/icons/icon_150px_edu_blue.png';
 import videoIcon from 'static/icons/icon_150px_video_blue.png';
 import audioIcon from 'static/icons/icon_150px_audio_blue.png';
-import VideoUpload from './ContentModals/VideoUpload/VideoUpload';
+
 import './Upload.scss';
+
+// using dynamic import so that components load when they are needed, or rendered
+const VideoUpload = dynamic( () => import( './modals/VideoUpload/VideoUpload' ) );
 
 class Upload extends Component {
   state = {

@@ -15,6 +15,7 @@
     "jquery": true,
     "jest": true
   },
+  "plugins": ["react-hooks"],
   "rules": {
     "no-debugger": 0,
     "no-alert": 0,
@@ -63,6 +64,7 @@
       { "ignoreClassFields": true }
     ],
     "react/display-name": 1,
+    "react-hooks/rules-of-hooks": "error",
     "react/jsx-curly-spacing": [
       2,
       {
