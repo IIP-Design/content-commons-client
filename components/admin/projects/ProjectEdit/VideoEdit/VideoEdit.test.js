@@ -1,29 +1,9 @@
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import { projects } from 'components/admin/projects/ProjectEdit/mockData';
-// import MockQuery from 'components/admin/projects/ProjectEdit/MockQuery/MockQuery';
-// import { CURRENT_PROJECT_QUERY } from '../../../../../pages/admin/project';
 import VideoEdit from './VideoEdit';
 
-/**
- * @todo Use mock QUERY for now,
- * replace with actual GraphQL Query later
- */
-// const CURRENT_PROJECT_QUERY = ( projects, variables ) => {
-//   const { id } = variables;
-//   return ( {
-//     project: projects.find( project => project.projectId === id ) || {}
-//   } );
-// };
-
 const TEST_ID = '234';
-// const Component = (
-//   <MockQuery query={ CURRENT_PROJECT_QUERY } variables={ { id: TEST_ID } }>
-//     { ( { project } ) => (
-//       <VideoEdit id={ TEST_ID } project={ project } />
-//     ) }
-//   </MockQuery>
-// );
 
 const Component = <VideoEdit id={ TEST_ID } project={ projects[0] } />;
 
