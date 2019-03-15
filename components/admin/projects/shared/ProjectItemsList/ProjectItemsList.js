@@ -41,7 +41,7 @@ const Component = props => {
 
   const listStyle = { ...defaultListStyle, ...customListStyle };
 
-  const { error, loading } = props.data;
+  const { error, loading } = props;
   if ( loading ) return 'Loading the project items...';
   if ( error ) return `Error! ${error.message}`;
 
@@ -70,6 +70,8 @@ const Component = props => {
 Component.propTypes = {
   listEl: string,
   data: object.isRequired,
+  error: object,
+  loading: bool,
   projectId: string.isRequired,
   headline: string,
   hasSubmittedData: bool,

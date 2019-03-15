@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
 import trim from 'lodash/trim';
 
 // using dynamic import so that components load when they are needed, or rendered
@@ -12,34 +10,9 @@ const VideoReview = dynamic( () => import( 'components/admin/projects/ProjectRev
 
 const CONTENT_TYPES = ['video'];
 
-const VIDEO_PROJECT_QUERY = gql`
-  query VideoProject($id: ID!) {
-    project: videoProject(id: $id) {
-      videos: units {
-        id
-        language {
-          languageCode
-        }
-      }
-      supportFiles {
-        id
-        filetype
-      }
-    }
-  }
-`;
-
 const loadEditComponent = ( content, id ) => {
   if ( content === 'video' ) {
-    return (
-      <Query query={ VIDEO_PROJECT_QUERY } variables={ { id } }>
-        { ( { loading, error, data } ) => {
-          if ( loading ) return 'Loading the project...';
-          if ( error ) return `Error! ${error.message}`;
-          return <VideoEdit id={ id } project={ data.project } />;
-        } }
-      </Query>
-    );
+    return <VideoEdit id={ id } />;
   }
 };
 
@@ -86,4 +59,3 @@ ProjectPage.propTypes = {
 
 
 export default withRouter( ProjectPage );
-export { VIDEO_PROJECT_QUERY };

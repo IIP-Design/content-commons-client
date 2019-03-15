@@ -5,9 +5,7 @@
  */
 
 import React, { Fragment } from 'react';
-import {
-  array, bool, object, string
-} from 'prop-types';
+import { array, bool, string } from 'prop-types';
 import { Button } from 'semantic-ui-react';
 
 import EditSupportFiles from 'components/admin/projects/ProjectEdit/EditSupportFiles/EditSupportFiles';
@@ -37,7 +35,7 @@ class SupportFileTypeList extends React.PureComponent {
       return (
         <SupportItem
           key={ `${fileType}-${item.id}` }
-          projectId={ { ...projectId } }
+          projectId={ projectId }
           fileType={ fileType }
           itemId={ item.id }
         />
@@ -126,7 +124,7 @@ class SupportFileTypeList extends React.PureComponent {
 
 SupportFileTypeList.propTypes = {
   headline: string,
-  projectId: object.isRequired,
+  projectId: string.isRequired,
   fileType: string,
   popupMsg: string,
   data: array.isRequired,

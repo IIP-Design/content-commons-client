@@ -5,10 +5,14 @@
  */
 import React, { Fragment } from 'react';
 import Router from 'next/router';
-import { number, object, string } from 'prop-types';
+import {
+  bool, number, object, string
+} from 'prop-types';
 import {
   Button, Confirm, Loader, Progress
 } from 'semantic-ui-react';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 
 import ConfirmModalContent from 'components/admin/projects/shared/ConfirmModalContent/ConfirmModalContent';
 import Notification from 'components/admin/projects/shared/Notification/Notification';
@@ -109,7 +113,7 @@ const supportFilesConfig = {
 };
 
 /* eslint-disable react/prefer-stateless-function */
-class VideoEdit extends React.PureComponent {
+class Component extends React.PureComponent {
   constructor( props ) {
     super( props );
 
@@ -175,14 +179,14 @@ class VideoEdit extends React.PureComponent {
   }
 
   getVideosCount = () => {
-    const { videos } = this.props.project;
+    const { videos } = this.props.data.project;
     if ( videos ) {
       return videos.length;
     }
   }
 
   getSupportFilesCount = () => {
-    const { supportFiles } = this.props.project;
+    const { supportFiles } = this.props.data.project;
     if ( supportFiles ) {
       return supportFiles.length;
     }
@@ -198,14 +202,14 @@ class VideoEdit extends React.PureComponent {
   }
 
   getSRTs = () => {
-    const { supportFiles } = this.props.project;
+    const { supportFiles } = this.props.data.project;
     if ( supportFiles ) {
       return supportFiles.filter( file => file.filetype === 'srt' );
     }
   }
 
   getOtherSupportFiles = () => {
-    const { supportFiles } = this.props.project;
+    const { supportFiles } = this.props.data.project;
     if ( supportFiles ) {
       return supportFiles.filter( file => file.filetype !== 'srt' );
     }
@@ -228,8 +232,7 @@ class VideoEdit extends React.PureComponent {
   }
 
   handleDeleteConfirm = () => {
-    const videoID = this.props.project.projectId;
-    console.log( `Deleted "${videoID}" project` );
+    console.log( `Deleted "${this.props.id}" project` );
     this.setState( {
       deleteConfirmOpen: false,
       hasBeenDeleted: true
@@ -389,13 +392,17 @@ class VideoEdit extends React.PureComponent {
   )
 
   render() {
-    const { id, project, uploadedSupportFilesCount } = this.props;
+    const {
+      id, error, loading, data, uploadedSupportFilesCount
+    } = this.props;
 
-    if ( !project && this.state.hasBeenDeleted ) {
+    if ( !data.project && this.state.hasBeenDeleted ) {
       Router.push( { pathname: '/admin/dashboard' } );
     }
 
-    if ( !project ) {
+    if ( error ) return `Error! ${error.message}`;
+
+    if ( loading ) {
       return (
         <div style={ {
           display: 'flex',
@@ -411,7 +418,7 @@ class VideoEdit extends React.PureComponent {
       );
     }
 
-    const { supportFiles } = project;
+    const { supportFiles } = data.project;
 
     const {
       deleteConfirmOpen,
@@ -614,7 +621,7 @@ class VideoEdit extends React.PureComponent {
             <div className="edit-project__support-files">
               <ProjectSupportFiles
                 heading="Support Files"
-                projectId={ { videoID: this.props.project.projectId } }
+                projectId={ this.props.id }
                 supportFiles={ {
                   srt: this.getSRTs(),
                   other: this.getOtherSupportFiles()
@@ -673,16 +680,43 @@ class VideoEdit extends React.PureComponent {
   }
 }
 
-VideoEdit.propTypes = {
+Component.propTypes = {
   id: string,
-  project: object.isRequired,
+  data: object.isRequired,
+  error: object,
+  loading: bool,
   uploadedVideosCount: number,
   uploadedSupportFilesCount: number
 };
 
-VideoEdit.defaultProps = {
+Component.defaultProps = {
   uploadedVideosCount: 0,
   uploadedSupportFilesCount: 0
 };
 
+const VIDEO_PROJECT_QUERY = gql`
+  query VideoProject($id: ID!) {
+    project: videoProject(id: $id) {
+      videos: units {
+        id
+        language {
+          languageCode
+        }
+      }
+      supportFiles {
+        id
+        filetype
+      }
+    }
+  }
+`;
+
+const VideoEdit = graphql( VIDEO_PROJECT_QUERY, {
+  options: props => ( {
+    variables: {
+      id: props.id
+    },
+  } )
+} )( Component );
 export default VideoEdit;
+export { VIDEO_PROJECT_QUERY };

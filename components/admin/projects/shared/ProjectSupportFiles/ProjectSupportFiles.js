@@ -104,7 +104,7 @@ const ProjectSupportFiles = props => {
 
 ProjectSupportFiles.propTypes = {
   heading: string,
-  projectId: object.isRequired,
+  projectId: string.isRequired,
   supportFiles: object.isRequired,
   hasSubmittedData: bool,
   protectImages: bool,
