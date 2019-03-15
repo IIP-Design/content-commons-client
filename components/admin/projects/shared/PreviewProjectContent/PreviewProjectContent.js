@@ -241,7 +241,6 @@ class PreviewProjectContent extends React.PureComponent {
 }
 
 PreviewProjectContent.propTypes = {
-  id: string,
   data: object.isRequired,
 };
 
