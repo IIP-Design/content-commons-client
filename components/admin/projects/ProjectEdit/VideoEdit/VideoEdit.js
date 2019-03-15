@@ -445,7 +445,7 @@ class VideoEdit extends React.PureComponent {
       );
     }
 
-    const { videos, supportFiles } = project;
+    const { supportFiles } = project;
 
     const {
       deleteConfirmOpen,
@@ -680,8 +680,7 @@ class VideoEdit extends React.PureComponent {
         <div className="edit-project__items">
           <ProjectItemsList
             listEl="ul"
-            data={ videos }
-            projectId={ { videoID: this.props.project.projectId } }
+            projectId={ this.props.id }
             headline="Videos in Project"
             hasSubmittedData={ hasSubmittedData }
             projectType="video"
