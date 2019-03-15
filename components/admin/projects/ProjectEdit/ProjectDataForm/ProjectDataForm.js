@@ -29,7 +29,7 @@ const ProjectDataForm = props => {
     handleSubmit,
     handleChange,
     videoTitle,
-    privacyOptions,
+    visibilityOptions,
     visibility,
     authorValue,
     teamValue,
@@ -78,7 +78,7 @@ const ProjectDataForm = props => {
                 id="visibility-setting"
                 control={ Select }
                 label="Visibility Setting"
-                options={ privacyOptions }
+                options={ visibilityOptions }
                 required
                 name="visibility"
                 value={ visibility }
@@ -216,7 +216,7 @@ ProjectDataForm.propTypes = {
   handleSubmit: func,
   handleChange: func,
   videoTitle: string,
-  privacyOptions: array,
+  visibilityOptions: array,
   visibility: string,
   authorValue: string,
   teamValue: string,

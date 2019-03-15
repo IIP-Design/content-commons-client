@@ -71,14 +71,14 @@ const languages = [
   { value: 'spanish', text: 'Spanish' }
 ];
 
-const privacyOptions = [
+const visibilityOptions = [
   {
     value: 'PUBLIC',
     text: 'Anyone can see this project'
   },
   {
-    value: 'embargoed',
-    text: 'Embargoed'
+    value: 'INTERNAL',
+    text: 'need text for this'
   }
 ];
 
@@ -496,7 +496,7 @@ const units = [
 export {
   categoryData,
   languages,
-  privacyOptions,
+  visibilityOptions,
   supportFilesConfig,
   projects,
   units

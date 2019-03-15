@@ -45,7 +45,8 @@ const ProjectItemsList = props => {
       <List className="items-list" style={ listStyle }>
         { data.map( item => (
           <ProjectItem
-            key={ `${item.title} - ${item.language.locale}` }
+            // key={ `${item.title} - ${item.language.locale}` }
+            key={ `${item.title} - ${item.language.languageCode}` }
             isAvailable={ hasSubmittedData }
             type={ projectType }
             displayItemInModal={ displayItemInModal }

@@ -27,13 +27,88 @@ import ProjectDataForm from 'components/admin/projects/ProjectEdit/ProjectDataFo
 import UploadSuccessMsg from 'components/admin/projects/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
 import VideoItem from 'components/admin/projects/ProjectEdit/VideoItem/VideoItem';
 
-import {
-  categoryData,
-  privacyOptions,
-  supportFilesConfig
-} from 'components/admin/projects/ProjectEdit/mockData';
-
 import './VideoEdit.scss';
+
+const categoryData = [
+  {
+    value: 'about-america',
+    text: 'About America'
+  },
+  {
+    value: 'arts-and-culture',
+    text: 'Arts & Culture'
+  },
+  {
+    value: 'democracy-and-civil-society',
+    text: 'Democracy & Civil Society'
+  },
+  {
+    value: 'economic-issues',
+    text: 'Economic Issues'
+  },
+  {
+    value: 'education',
+    text: 'Education'
+  },
+  {
+    value: 'environment',
+    text: 'Environment'
+  },
+  {
+    value: 'geography',
+    text: 'Geography'
+  },
+  {
+    value: 'global-issues',
+    text: 'Global Issues'
+  },
+  {
+    value: 'good-governance',
+    text: 'Good Governance'
+  },
+  {
+    value: 'health',
+    text: 'Health'
+  },
+  {
+    value: 'human-rights',
+    text: 'Human Rights'
+  },
+  {
+    value: 'press-and-journalism',
+    text: 'Press & Journalism'
+  },
+  {
+    value: 'religion-and-values',
+    text: 'Religion & Values'
+  },
+  {
+    value: 'science-and-technology',
+    text: 'Science & Technology'
+  },
+  {
+    value: 'sports',
+    text: 'Sports'
+  }
+];
+
+const supportFilesConfig = {
+  srt: {
+    headline: 'SRT Files',
+    fileType: 'srt',
+    popupMsg: 'Some info about what SRT files are.'
+  },
+  other: {
+    headline: 'Additional Files',
+    fileType: 'other',
+    popupMsg: 'Additional files that can be used with this video, e.g., audio file, pdf.',
+    checkBoxLabel: 'Disable right-click to protect your images',
+    checkBoxName: 'protectImages',
+    iconMsg: 'Checking this prevents people from downloading and using your images. Useful if your images are licensed.',
+    iconSize: 'small',
+    iconType: 'info circle'
+  }
+};
 
 const VIDEO_PROJECT_UNITS_QUERY = gql`
   query VideoProjectUnits($id: ID!) {
@@ -72,8 +147,6 @@ class VideoEdit extends React.PureComponent {
   constructor( props ) {
     super( props );
 
-    const videosCount = this.props.project.videos.length;
-
     this.MAX_CATEGORY_COUNT = 2;
     this.SAVE_MSG_DELAY = 2000;
     this.UPLOAD_SUCCESS_MSG_DELAY = this.SAVE_MSG_DELAY + 1000;
@@ -90,7 +163,7 @@ class VideoEdit extends React.PureComponent {
       displaySaveMsg: false,
       displayTheUploadSuccessMsg: false,
       hasExceededMaxCategories: false,
-      filesToUploadCount: videosCount + this.getSupportFilesCount(),
+      filesToUploadCount: this.getFilesToUploadCount(),
       formData: {
         projectTitle: '',
         visibility: 'PUBLIC',
@@ -135,16 +208,41 @@ class VideoEdit extends React.PureComponent {
     clearTimeout( this.saveMsgTimer );
   }
 
+  getVideosCount = () => {
+    const { videos } = this.props.project;
+    if ( videos ) {
+      return videos.length;
+    }
+  }
+
   getSupportFilesCount = () => {
     const { supportFiles } = this.props.project;
-    const types = Object.keys( supportFiles );
-    const count = ( acc, cur ) => acc + supportFiles[cur].length;
-    return types.reduce( count, 0 );
+    if ( supportFiles ) {
+      return supportFiles.length;
+    }
   }
+
+  getFilesToUploadCount = () => (
+    this.getVideosCount() + this.getSupportFilesCount()
+  )
 
   getUploadedFilesCount = () => {
     const { uploadedVideosCount, uploadedSupportFilesCount } = this.props;
     return uploadedVideosCount + uploadedSupportFilesCount;
+  }
+
+  getSRTs = () => {
+    const { supportFiles } = this.props.project;
+    if ( supportFiles ) {
+      return supportFiles.filter( file => file.filetype === 'srt' );
+    }
+  }
+
+  getOtherSupportFiles = () => {
+    const { supportFiles } = this.props.project;
+    if ( supportFiles ) {
+      return supportFiles.filter( file => file.filetype !== 'srt' );
+    }
   }
 
   getTags = () => {
@@ -331,7 +429,7 @@ class VideoEdit extends React.PureComponent {
       Router.push( { pathname: '/admin/dashboard' } );
     }
 
-    if ( !project || project.loading ) {
+    if ( !project ) {
       return (
         <div style={ {
           display: 'flex',
@@ -347,10 +445,7 @@ class VideoEdit extends React.PureComponent {
       );
     }
 
-    const {
-      supportFiles,
-      videos
-    } = project;
+    const { videos, supportFiles } = project;
 
     const {
       deleteConfirmOpen,
@@ -393,7 +488,7 @@ class VideoEdit extends React.PureComponent {
       notificationMsg = 'Saving project...';
     }
 
-    const hasSupportFiles = Object.keys( supportFiles ).length > 0;
+    const hasSupportFiles = supportFiles && supportFiles.length > 0;
 
     return (
       <div className="edit-project">
@@ -509,7 +604,14 @@ class VideoEdit extends React.PureComponent {
             handleChange={ this.handleChange }
 
             videoTitle={ projectTitle || '' }
-            privacyOptions={ privacyOptions }
+            visibilityOptions={ [{
+              value: 'PUBLIC',
+              text: 'Anyone can see this project'
+            },
+            {
+              value: 'INTERNAL',
+              text: 'need text for this'
+            }] }
             visibility={ visibility }
 
             authorValue={ author || '' }
@@ -559,7 +661,10 @@ class VideoEdit extends React.PureComponent {
               <ProjectSupportFiles
                 heading="Support Files"
                 projectId={ { videoID: this.props.project.projectId } }
-                supportFiles={ supportFiles }
+                supportFiles={ {
+                  srt: this.getSRTs(),
+                  other: this.getOtherSupportFiles()
+                } }
                 hasSubmittedData={ hasSubmittedData }
                 protectImages={ protectImages }
                 handleChange={ this.handleChange }
@@ -616,8 +721,8 @@ class VideoEdit extends React.PureComponent {
 }
 
 VideoEdit.propTypes = {
-  id: string.isRequired,
-  project: object,
+  id: string,
+  project: object.isRequired,
   uploadedVideosCount: number,
   uploadedSupportFilesCount: number
 };
