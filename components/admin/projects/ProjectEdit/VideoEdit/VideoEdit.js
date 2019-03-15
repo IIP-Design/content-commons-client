@@ -113,7 +113,7 @@ const supportFilesConfig = {
 };
 
 /* eslint-disable react/prefer-stateless-function */
-class Component extends React.PureComponent {
+class VideoEdit extends React.PureComponent {
   constructor( props ) {
     super( props );
 
@@ -680,7 +680,7 @@ class Component extends React.PureComponent {
   }
 }
 
-Component.propTypes = {
+VideoEdit.propTypes = {
   id: string,
   data: object.isRequired,
   error: object,
@@ -689,7 +689,7 @@ Component.propTypes = {
   uploadedSupportFilesCount: number
 };
 
-Component.defaultProps = {
+VideoEdit.defaultProps = {
   uploadedVideosCount: 0,
   uploadedSupportFilesCount: 0
 };
@@ -711,12 +711,11 @@ const VIDEO_PROJECT_QUERY = gql`
   }
 `;
 
-const VideoEdit = graphql( VIDEO_PROJECT_QUERY, {
+export default graphql( VIDEO_PROJECT_QUERY, {
   options: props => ( {
     variables: {
       id: props.id
     },
   } )
-} )( Component );
-export default VideoEdit;
+} )( VideoEdit );
 export { VIDEO_PROJECT_QUERY };

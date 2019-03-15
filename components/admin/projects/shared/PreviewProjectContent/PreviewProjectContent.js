@@ -31,7 +31,7 @@ import { getYouTubeId } from 'lib/utils';
 import './PreviewProjectContent.scss';
 
 /* eslint-disable react/prefer-stateless-function */
-class Component extends React.PureComponent {
+class PreviewProjectContent extends React.PureComponent {
   constructor( props ) {
     super( props );
 
@@ -240,7 +240,7 @@ class Component extends React.PureComponent {
   }
 }
 
-Component.propTypes = {
+PreviewProjectContent.propTypes = {
   id: string,
   data: object.isRequired,
 };
@@ -285,13 +285,11 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
   }
 `;
 
-const PreviewProjectContent = graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
+export default graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
   options: props => ( {
     variables: {
       id: props.id
     },
   } )
-} )( Component );
-
-export default PreviewProjectContent;
+} )( PreviewProjectContent );
 export { VIDEO_PROJECT_PREVIEW_QUERY };

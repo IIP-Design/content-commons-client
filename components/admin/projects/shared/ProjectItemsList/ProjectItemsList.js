@@ -14,7 +14,7 @@ import { graphql } from 'react-apollo';
 import ProjectItem from 'components/admin/projects/shared/ProjectItem/ProjectItem';
 import './ProjectItemsList.scss';
 
-const Component = props => {
+const ProjectItemsList = props => {
   const {
     listEl,
     data: { project: { units } },
@@ -67,7 +67,7 @@ const Component = props => {
   );
 };
 
-Component.propTypes = {
+ProjectItemsList.propTypes = {
   listEl: string,
   data: object.isRequired,
   error: object,
@@ -83,7 +83,7 @@ Component.propTypes = {
   customPlaceholderStyle: object
 };
 
-Component.defaultProps = {
+ProjectItemsList.defaultProps = {
   listEl: 'ul'
 };
 
@@ -101,12 +101,11 @@ const PROJECT_ITEMS_QUERY = gql`
   }
 `;
 
-const ProjectItemsList = graphql( PROJECT_ITEMS_QUERY, {
+export default graphql( PROJECT_ITEMS_QUERY, {
   options: props => ( {
     variables: {
       id: props.projectId
     },
   } )
-} )( Component );
-export default ProjectItemsList;
+} )( ProjectItemsList );
 export { PROJECT_ITEMS_QUERY };
