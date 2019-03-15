@@ -4,17 +4,17 @@
  *
  */
 import React, { Fragment } from 'react';
-import { string } from 'prop-types';
+import { bool, object, string } from 'prop-types';
 import {
   Icon, Loader, Popup, Progress
 } from 'semantic-ui-react';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import debounce from 'lodash/debounce';
 
 import Focusable from 'components/admin/projects/shared/Focusable/Focusable';
 import VisuallyHidden from 'components/admin/projects/shared/VisuallyHidden/VisuallyHidden';
 import './SupportItem.scss';
-
-import { projects } from 'components/admin/projects/ProjectEdit/mockData';
 
 /* eslint-disable react/prefer-stateless-function */
 class SupportItem extends React.PureComponent {
@@ -39,7 +39,6 @@ class SupportItem extends React.PureComponent {
     this._isMounted = false;
 
     this.state = {
-      supportItem: this.getSupportItem(),
       bytesUploaded: 0,
       nIntervId: null,
       isUploading: false,
@@ -68,15 +67,6 @@ class SupportItem extends React.PureComponent {
     clearInterval( this.state.nIntervId );
     window.removeEventListener( 'resize', this.debounceResize );
   }
-
-  /**
-   * @todo Replace after GraphQL & Apollo
-   */
-  getSupportItem = () => {
-    const { fileType, itemId } = this.props;
-    const files = projects[0].supportFiles[fileType];
-    return files.find( file => file.id === itemId );
-  };
 
   /**
    * @todo simulate upload for dev purposes;
@@ -163,7 +153,7 @@ class SupportItem extends React.PureComponent {
      * min, max increment in megabytes
      */
     this.setState( nextState => {
-      const { filesize } = this.state.supportItem.size;
+      const { filesize } = this.props.data.supportItem;
       const { bytesUploaded } = nextState;
       let increment = this.incrementUpload( 'MEGABYTE', this.MIN_MB_SEC, this.MAX_MB_SEC );
       const remainingBytes = this.getRemainingUnits( filesize, bytesUploaded );
@@ -187,12 +177,16 @@ class SupportItem extends React.PureComponent {
   }
 
   render() {
-    const { fileType } = this.props;
-    const { supportItem } = this.state;
+    const {
+      error, loading, fileType,
+      data: { supportItem }
+    } = this.props;
 
     if ( !supportItem || !Object.keys( supportItem ).length ) return null;
 
-    if ( supportItem.loading ) {
+    const { filename, filesize, language } = supportItem;
+
+    if ( loading ) {
       return (
         <li>
           <Loader active inline size="mini" />
@@ -203,13 +197,22 @@ class SupportItem extends React.PureComponent {
       );
     }
 
-    const {
-      error,
-      file,
-      lang,
-      size,
-      uploadStatus
-    } = supportItem;
+    if ( error ) {
+      return (
+        <li key={ `${fileType}-${language.displayName}` } className="support-item error">
+          <p>
+            <Icon
+              color="red"
+              name="exclamation triangle"
+              size="small"
+            />
+            <span>
+              { `${error ? 'Loading ' : 'Uploading '}error` }
+            </span>
+          </p>
+        </li>
+      );
+    }
 
     const {
       bytesUploaded,
@@ -223,7 +226,7 @@ class SupportItem extends React.PureComponent {
 
     const charIndex = this.getProportionalNumber( listItemWidth, this.STR_INDEX_PROPORTION );
 
-    const shortFileName = this.getShortFileName( file, charIndex );
+    const shortFileName = this.getShortFileName( filename, charIndex );
 
     const isLongFileName = this.isLongName( itemNameWidth, listItemWidth, this.ITEM_NAME_PROPORTION );
 
@@ -236,29 +239,12 @@ class SupportItem extends React.PureComponent {
       wordBreak: 'break-word'
     };
 
-    if ( error || uploadStatus.error ) {
-      return (
-        <li key={ `${fileType}-${lang}` } className="support-item error">
-          <p>
-            <Icon
-              color="red"
-              name="exclamation triangle"
-              size="small"
-            />
-            <span>
-              { `${supportItem.error ? 'Loading ' : 'Uploading '}error` }
-            </span>
-          </p>
-        </li>
-      );
-    }
-
     if ( isUploading ) {
       return (
-        <li key={ `${fileType}-${lang}` } className={ `support-item${uploadingClass}` }>
+        <li key={ `${fileType}-${language.displayName}` } className={ `support-item${uploadingClass}` }>
           <Progress
             value={ bytesUploaded }
-            total={ size.filesize }
+            total={ filesize }
             color="blue"
             size="small"
             active
@@ -272,12 +258,12 @@ class SupportItem extends React.PureComponent {
 
     return (
       <li
-        key={ `${fileType}-${lang}` }
+        key={ `${fileType}-${language.displayName}` }
         className="support-item"
         ref={ node => this.setRefWidth( node, 'listItem' ) }
       >
         <span className="item-name">
-          { isLongFileName && <VisuallyHidden>{ file }</VisuallyHidden> }
+          { isLongFileName && <VisuallyHidden>{ filename }</VisuallyHidden> }
           <span
             className={
               `item-name-wrap${isLongFileName ? ' hasEllipsis' : ''}`
@@ -288,7 +274,7 @@ class SupportItem extends React.PureComponent {
             { isLongFileName
               ? (
                 <Popup
-                  content={ file }
+                  content={ filename }
                   size="mini"
                   inverted
                   on={ [
@@ -303,7 +289,7 @@ class SupportItem extends React.PureComponent {
                   ) }
                   style={ popupStyle }
                 />
-              ) : file }
+              ) : filename }
           </span>
         </span>
 
@@ -319,10 +305,10 @@ class SupportItem extends React.PureComponent {
                 <Popup
                   trigger={ (
                     <span>
-                      <Focusable>{ lang }</Focusable>
+                      <Focusable>{ language.displayName }</Focusable>
                     </span>
                   ) }
-                  content={ lang }
+                  content={ language.displayName }
                   on={ [
                     'hover',
                     'click',
@@ -332,7 +318,7 @@ class SupportItem extends React.PureComponent {
                   size="mini"
                   style={ popupStyle }
                 />
-              ) : lang }
+              ) : language.displayName }
           </b>
         </span>
       </li>
@@ -341,14 +327,30 @@ class SupportItem extends React.PureComponent {
 }
 
 SupportItem.propTypes = {
-  // supportItem: object,
-  // projectId: object.isRequired,
-  fileType: string.isRequired,
-  itemId: string.isRequired
+  data: object.isRequired,
+  error: object,
+  loading: bool,
+  fileType: string.isRequired
 };
 
-// SupportItem.defaultProps = {
-//   supportItem: null
-// };
+const SUPPORT_ITEM_QUERY = gql`
+  query SupportItem($id: ID!) {
+    supportItem: supportFile(id: $id) {
+      id
+      filename
+      filesize
+      language {
+        displayName
+      }
+    }
+  }
+`;
 
-export default SupportItem;
+export default graphql( SUPPORT_ITEM_QUERY, {
+  options: props => ( {
+    variables: {
+      id: props.itemId
+    },
+  } )
+} )( SupportItem );
+export { SUPPORT_ITEM_QUERY };
