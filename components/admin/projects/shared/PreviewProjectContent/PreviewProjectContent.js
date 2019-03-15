@@ -5,11 +5,10 @@
  */
 
 import React from 'react';
-import { array, string } from 'prop-types';
+import { object, string } from 'prop-types';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { Dropdown, Embed } from 'semantic-ui-react';
-
 
 import DownloadVideo from 'components/Video/DownloadVideo';
 import DownloadSrt from 'components/Video/DownloadSrt';
@@ -31,34 +30,19 @@ import { getYouTubeId } from 'lib/utils';
 
 import './PreviewProjectContent.scss';
 
-const VIDEO_PROJECT_PREVIEW_QUERY = gql`
-  query VideoProject($id: ID!) {
-    videoProject(id: $id) {
-      projectType
-      thumbnails {
-        alt
-        url
-      }
-      team {
-        name
-      }
-    }
-  }
-`;
-
 /* eslint-disable react/prefer-stateless-function */
-class PreviewProjectContent extends React.PureComponent {
+class Component extends React.PureComponent {
   constructor( props ) {
     super( props );
 
-    const { data } = this.props;
+    const { units } = this.props.data.project;
 
     this.state = {
       dropDownIsOpen: false,
       selectedLanguage: 'English',
-      projectItems: this.getProjectItems( data ),
+      projectItems: this.getProjectItems( units ),
       selectedItem: {},
-      languages: this.getLanguages( data )
+      languages: this.getLanguages( units )
     };
   }
 
@@ -66,18 +50,18 @@ class PreviewProjectContent extends React.PureComponent {
     this.selectProjectItem();
   }
 
-  getLanguages = data => (
-    data.map( item => ( {
-      key: item.language.languageCode,
-      value: item.language.displayName,
-      text: item.language.displayName
+  getLanguages = units => (
+    units.map( unit => ( {
+      key: unit.language.languageCode,
+      value: unit.language.displayName,
+      text: unit.language.displayName
     } ) )
   );
 
-  getProjectItems = data => (
-    data.reduce( ( acc, item ) => ( {
+  getProjectItems = units => (
+    units.reduce( ( acc, unit ) => ( {
       ...acc,
-      [item.language.displayName]: item
+      [unit.language.displayName]: unit
     } ), {} )
   );
 
@@ -107,7 +91,19 @@ class PreviewProjectContent extends React.PureComponent {
   }
 
   render() {
-    const { data: units } = this.props;
+    const { error, loading } = this.props.data;
+    if ( loading ) return 'Loading the project...';
+    if ( error ) return `Error! ${error.message}`;
+
+    const {
+      projectType,
+      team,
+      thumbnails,
+      units
+    } = this.props.data.project;
+
+    const { url: thumbnailUrl } = thumbnails[0];
+
     const {
       dropDownIsOpen,
       selectedLanguage,
@@ -144,126 +140,158 @@ class PreviewProjectContent extends React.PureComponent {
     };
 
     return (
-      <Query query={ VIDEO_PROJECT_PREVIEW_QUERY } variables={ { id: this.props.id } }>
-        { ( { loading, error, data } ) => {
-          if ( loading ) return 'Loading the project...';
-          if ( error ) return `Error! ${error.message}`;
+      <ModalItem
+        className="project-preview"
+        headline={ title }
+        textDirection={ language.textDirection }
+      >
+        <Notification
+          el="p"
+          customStyles={ previewMsgStyles }
+          msg={ `This is a preview of your ${projectType} project on Content Commons.` }
+        />
 
-          const {
-            projectType,
-            team,
-            thumbnails
-          } = data.videoProject;
-          const { url: thumbnailUrl } = thumbnails[0];
+        <div className="modal_options">
+          <Dropdown
+            className="modal_languages"
+            value={ selectedLanguage }
+            icon={ dropDownIsOpen ? 'chevron up' : 'chevron down' }
+            options={ languages }
+            onClick={ this.toggleArrow }
+            onChange={ this.handleChange }
+          />
 
-          return (
-            <ModalItem
-              className="project-preview"
-              headline={ title }
-              textDirection={ language.textDirection }
-            >
-              <Notification
-                el="p"
-                customStyles={ previewMsgStyles }
-                msg={ `This is a preview of your ${projectType} project on Content Commons.` }
-              />
-
-              <div className="modal_options">
-                <Dropdown
-                  className="modal_languages"
-                  value={ selectedLanguage }
-                  icon={ dropDownIsOpen ? 'chevron up' : 'chevron down' }
-                  options={ languages }
-                  onClick={ this.toggleArrow }
-                  onChange={ this.handleChange }
+          <div className="trigger-container">
+            <PopupTrigger
+              toolTip="Download video"
+              icon={ { img: downloadIcon, dim: 18 } }
+              position="right"
+              show={ projectType === 'video' }
+              content={ (
+                <PopupTabbed
+                  title="Download this video."
+                  panes={ [
+                    {
+                      title: 'Video File',
+                      component: (
+                        <DownloadVideo
+                          selectedLanguageUnit={ selectedItem }
+                          instructions={ `Download the video and SRT files in ${selectedLanguage}.
+                            This download option is best for uploading this video to web pages.` }
+                          burnedInCaptions={ videoBurnedInStatus === 'CAPTIONED' }
+                        />
+                      )
+                    },
+                    {
+                      title: 'SRT',
+                      component: (
+                        <DownloadSrt
+                          instructions="Download SRTs"
+                          units={ units }
+                        />
+                      )
+                    },
+                    {
+                      title: 'Thumbnail',
+                      component: (
+                        <DownloadThumbnail
+                          instructions="Download Thumbnail(s)"
+                          units={ units }
+                        />
+                      )
+                    },
+                    {
+                      title: 'Other',
+                      component: (
+                        <DownloadOtherFiles
+                          instructions="Download Other File(s)"
+                          units={ units }
+                        />
+                      )
+                    },
+                    { title: 'Help', component: <DownloadHelp /> }
+                  ] }
                 />
+              ) }
+            />
+          </div>
+        </div>
 
-                <div className="trigger-container">
-                  <PopupTrigger
-                    toolTip="Download video"
-                    icon={ { img: downloadIcon, dim: 18 } }
-                    position="right"
-                    show={ projectType === 'video' }
-                    content={ (
-                      <PopupTabbed
-                        title="Download this video."
-                        panes={ [
-                          {
-                            title: 'Video File',
-                            component: (
-                              <DownloadVideo
-                                selectedLanguageUnit={ selectedItem }
-                                instructions={ `Download the video and SRT files in ${selectedLanguage}.
-                                  This download option is best for uploading this video to web pages.` }
-                                burnedInCaptions={ videoBurnedInStatus === 'CAPTIONED' }
-                              />
-                            )
-                          },
-                          {
-                            title: 'SRT',
-                            component: (
-                              <DownloadSrt
-                                instructions="Download SRTs"
-                                units={ units }
-                              />
-                            )
-                          },
-                          {
-                            title: 'Thumbnail',
-                            component: (
-                              <DownloadThumbnail
-                                instructions="Download Thumbnail(s)"
-                                units={ units }
-                              />
-                            )
-                          },
-                          {
-                            title: 'Other',
-                            component: (
-                              <DownloadOtherFiles
-                                instructions="Download Other File(s)"
-                                units={ units }
-                              />
-                            )
-                          },
-                          { title: 'Help', component: <DownloadHelp /> }
-                        ] }
-                      />
-                    ) }
-                  />
-                </div>
-              </div>
+        <div className="project-preview__content">
+          { /* @todo getYouTubeId may not be necessary depending
+            on how the YouTube URL is stored in data */ }
+          { youTubeUrl
+            && (
+              <Embed
+                id={ getYouTubeId( youTubeUrl ) }
+                placeholder={ thumbnailUrl }
+                source="youtube"
+              />
+            ) }
 
-              <div className="project-preview__content">
-                { /* @todo getYouTubeId may not be necessary depending
-                  on how the YouTube URL is stored in data */ }
-                { youTubeUrl
-                  && (
-                    <Embed
-                      id={ getYouTubeId( youTubeUrl ) }
-                      placeholder={ thumbnailUrl }
-                      source="youtube"
-                    />
-                  ) }
+          <ModalContentMeta type={ projectType } dateUpdated={ updated || uploaded } />
 
-                <ModalContentMeta type={ projectType } dateUpdated={ updated || uploaded } />
+          <ModalDescription description={ descPublic } />
+        </div>
 
-                <ModalDescription description={ descPublic } />
-              </div>
-
-              <ModalPostMeta source={ team.name } datePublished={ uploaded } />
-            </ModalItem>
-          );
-        } }
-      </Query>
+        <ModalPostMeta source={ team.name } datePublished={ uploaded } />
+      </ModalItem>
     );
   }
 }
 
-PreviewProjectContent.propTypes = {
+Component.propTypes = {
   id: string,
-  data: array.isRequired,
+  data: object.isRequired,
 };
+
+const VIDEO_PROJECT_PREVIEW_QUERY = gql`
+  query VideoProject($id: ID!) {
+    project: videoProject(id: $id) {
+      projectType
+      thumbnails {
+        alt
+        url
+      }
+      team {
+        name
+      }
+      units {
+        id
+        title
+        descPublic
+        language {
+          languageCode
+          displayName
+          textDirection
+        }
+        files {
+          id
+          filename
+          url
+          filesize
+          videoBurnedInStatus
+          dimensions {
+            width
+            height
+          }
+          stream {
+            site
+            embedUrl
+          }
+        }
+      }
+    }
+  }
+`;
+
+const PreviewProjectContent = graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
+  options: props => ( {
+    variables: {
+      id: props.id
+    },
+  } )
+} )( Component );
 
 export default PreviewProjectContent;
 export { VIDEO_PROJECT_PREVIEW_QUERY };

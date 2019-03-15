@@ -73,7 +73,7 @@ const ProjectItem = props => {
 };
 
 ProjectItem.propTypes = {
-  projectId: object.isRequired,
+  projectId: string.isRequired,
   itemId: string.isRequired,
   isAvailable: bool,
   displayItemInModal: bool,
