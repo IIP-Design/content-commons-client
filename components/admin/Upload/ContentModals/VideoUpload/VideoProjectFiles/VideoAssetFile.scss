@@ -2,9 +2,9 @@
 
 .videoProjectFiles_asset {
   @media screen and (max-width: 640px) {
-    padding: 15px !important;
+    padding: 7px !important;
     margin-bottom: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.2);    
+    border: 1px solid $light-grey;
   }
 
   &_file {
@@ -13,6 +13,7 @@
     @media screen and (max-width: 640px) {
       padding-left: 20px;
       padding-bottom: 3px;
+      font-size: 14px;
     }
 
     &:before {
@@ -26,7 +27,7 @@
       border-radius: 50%;
       background-color: green;
       @media screen and (max-width: 640px) {
-        top: 3px;
+        top: 2px;
         left: 0;
       }
     }
@@ -43,7 +44,7 @@
       border-right: 2px solid #fff;
       transform: rotate(45deg);
       @media screen and (max-width: 640px) {
-        top: 5px;
+        top: 4px;
         left: 5px;
       }
     }
@@ -52,7 +53,17 @@
   &_options {
     font-size: 14px;
     @media screen and (max-width: 640px) {
-      width: 100%;
+      width: 100%;      
+    }
+
+    &_wrapper {
+      @media screen and (max-width: 640px) {
+        display: none;
+        
+        &.active {
+          display: block;
+        }
+      }
     }
     
     .menu > .item {
@@ -77,9 +88,22 @@
     }
   }
   
-  .mobileActionsMenuToggle {
+  .mobileActionsMenuToggle,
+  .mobileSelectOptionsToggle {
     position: absolute;
+    top: 0;
+    transform: translateY(100%);
+    @media screen and (min-width: 641px) {
+      display: none;
+    }
+  }
+
+  .mobileActionsMenuToggle {
     right: 0;
+  }
+
+  .mobileSelectOptionsToggle {
+    right: 30px;
   }
 
   &_actionBtns {
@@ -89,15 +113,16 @@
     transform: translateY(-50%);
     @media screen and (max-width: 640px) {      
       display: none;
-      transform: translateY(-33%);
+      transform: translateY(-24%);
       top: 0;
-      right: -15px;
+      right: -7px;
       padding: 35px 10px 10px 10px;       
       background: #fff;      
       box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
 
       &.active {
         display: block;
+        z-index: 3
       }
     }
 
