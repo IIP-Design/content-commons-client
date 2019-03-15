@@ -41,6 +41,10 @@ const Component = props => {
 
   const listStyle = { ...defaultListStyle, ...customListStyle };
 
+  const { error, loading } = props.data;
+  if ( loading ) return 'Loading the project items...';
+  if ( error ) return `Error! ${error.message}`;
+
   return (
     <div className="project-items">
       <h2 className="list-heading">{ headline }</h2>
