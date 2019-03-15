@@ -1,0 +1,223 @@
+@import "../../../../../../styles/colors.scss";
+
+.videoProjectFiles_asset {
+  @media screen and (max-width: 640px) {
+    padding: 7px !important;
+    margin-bottom: 10px;
+    border: 1px solid $light-grey;
+  }
+
+  &_file {
+    position: relative;
+    font-size: 16px;
+    @media screen and (max-width: 640px) {
+      padding-left: 20px;
+      padding-bottom: 3px;
+      font-size: 14px;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: -25px;
+      display: block;
+      height: 15px;
+      width: 15px;
+      border-radius: 50%;
+      background-color: green;
+      @media screen and (max-width: 640px) {
+        top: 2px;
+        left: 0;
+      }
+    }
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 8px;
+      left: -20px;
+      width: 5px;
+      height: 8px;
+      border-bottom: 2px solid #fff;
+      border-right: 2px solid #fff;
+      transform: rotate(45deg);
+      @media screen and (max-width: 640px) {
+        top: 4px;
+        left: 5px;
+      }
+    }
+  } 
+
+  &_options {
+    font-size: 14px;
+    @media screen and (max-width: 640px) {
+      width: 100%;      
+    }
+
+    &_wrapper {
+      @media screen and (max-width: 640px) {
+        display: none;
+        
+        &.active {
+          display: block;
+        }
+      }
+    }
+    
+    .menu > .item {
+      font-size: 14px !important;
+    }
+    
+    &--language,
+    &--typeUse {
+      @media screen and (min-width: 641px) {
+        margin-right: 16px;
+      }            
+    }
+
+    &--notApplicable {
+      display: inline-block;
+      min-width: 148px;      
+      vertical-align: middle;
+      font-size: 14px;
+      @media screen and (min-width: 641px) {
+        margin: 0 15px 0 0;
+      }
+    }
+  }
+  
+  .mobileActionsMenuToggle,
+  .mobileSelectOptionsToggle {
+    position: absolute;
+    top: 0;
+    transform: translateY(100%);
+    @media screen and (min-width: 641px) {
+      display: none;
+    }
+  }
+
+  .mobileActionsMenuToggle {
+    right: 0;
+  }
+
+  .mobileSelectOptionsToggle {
+    right: 30px;
+  }
+
+  &_actionBtns {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    @media screen and (max-width: 640px) {      
+      display: none;
+      transform: translateY(-24%);
+      top: 0;
+      right: -7px;
+      padding: 35px 10px 10px 10px;       
+      background: #fff;      
+      box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+
+      &.active {
+        display: block;
+        z-index: 3
+      }
+    }
+
+    .actionsMenuCloseButton {
+      display: block;
+      position: absolute;
+      top: 3px;
+      right: 10px;
+      font-size: 1.5em;
+      color: $blue;
+      @media screen and (min-width: 641px) {
+        display: none;
+      }
+
+      &:after {
+        content: '\00d7';        
+      }
+    }
+
+    >[tooltip] {
+      margin: 0;      
+      @media screen and (max-width: 640px) {
+        display: block;      
+        padding: 7px 15px;    
+        font-size: 14px;
+        text-align: center;
+
+        button > span {
+          font-family: "Source Sans Pro", "Helvetica Neue", Arial, Helvetica, sans-serif;
+          color: $shuttle-grey;
+        }
+      }
+
+      &:first-child {
+        margin: 0 20px 0 0;
+        @media screen and (max-width: 640px) {
+          margin: 0 0 15px 0;          
+          border: 2px solid $matisse-blue;
+          border-radius: 4px;          
+
+          button > span {
+            font-weight: bold;
+            color: $matisse-blue;            
+          }
+        }        
+      }
+
+      &:after {
+        min-width: auto;
+        padding: 7px 15px;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+
+      &:after,
+      &:before {
+        @media screen and (max-width: 640px) {
+          display: none;
+        }
+      }
+      
+      button {
+        -webkit-appearance: none;
+        padding: 0;
+        margin: 0;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+      }  
+    }
+  }
+
+  &_replaceBtn, 
+  &_removeBtn {
+    position: relative;
+    
+    img {
+      position: relative;
+      vertical-align: middle;
+    }      
+  }
+
+  &_replaceBtn {
+
+    > input {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      width: 0.1px;
+      height: 0.1px;
+      padding: 0 !important;
+      border: none !important;
+      overflow: hidden;
+    }
+  }
+}
