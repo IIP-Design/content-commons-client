@@ -103,3 +103,4 @@ const ProjectItemsList = graphql( PROJECT_ITEMS_QUERY, {
   } )
 } )( Component );
 export default ProjectItemsList;
+export { PROJECT_ITEMS_QUERY };
