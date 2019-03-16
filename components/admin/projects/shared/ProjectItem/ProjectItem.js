@@ -27,7 +27,7 @@ const ProjectItem = props => {
   const Item = modalTrigger;
   const modalProps = {
     triggerProps: {
-      ...projectId,
+      projectId,
       itemId,
       displayItemInModal
     }
@@ -40,7 +40,7 @@ const ProjectItem = props => {
       ( displayItemInModal
         && withModal( modalProps, modalTrigger, modalContent, modalOptions ) ) || (
         <Item
-          { ...projectId }
+          projectId={ projectId }
           itemId={ itemId }
           displayItemInModal={ displayItemInModal }
         />
@@ -52,16 +52,26 @@ const ProjectItem = props => {
     <Placeholder
       parentEl="li"
       childEl="div"
-      parentStyles={ { marginBottom: '1.5em' } }
+      parentStyles={ {
+        position: 'relative',
+        height: '0',
+        paddingTop: '56.25%',
+        marginBottom: '1.5em'
+      } }
       childStyles={ {
         thumbnail: {
           ...sharedStyles,
-          height: '10em'
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          height: '100%',
+          width: '100%'
         },
         heading: {
           ...sharedStyles,
           height: '1.3em',
-          width: '80%'
+          width: '80%',
+          marginTop: '0.625em'
         },
         language: {
           ...sharedStyles,

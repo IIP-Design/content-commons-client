@@ -345,7 +345,7 @@ class VideoEdit extends React.PureComponent {
       this.delayUnmount( this.handleDisplaySaveMsg, this.saveMsgTimer, this.SAVE_MSG_DELAY );
     }
 
-    window.scrollTo( { top: 0, behavior: 'smooth' } );
+    // window.scrollTo( { top: 0, behavior: 'smooth' } );
   }
 
   handleDisplayUploadSuccessMsg = () => {
