@@ -5,9 +5,7 @@
  */
 import React, { Fragment } from 'react';
 import Router from 'next/router';
-import {
-  bool, number, object, string
-} from 'prop-types';
+import { number, object, string } from 'prop-types';
 import {
   Button, Confirm, Loader, Progress
 } from 'semantic-ui-react';
@@ -345,7 +343,7 @@ class VideoEdit extends React.PureComponent {
       this.delayUnmount( this.handleDisplaySaveMsg, this.saveMsgTimer, this.SAVE_MSG_DELAY );
     }
 
-    // window.scrollTo( { top: 0, behavior: 'smooth' } );
+    window.scrollTo( { top: 0, behavior: 'smooth' } );
   }
 
   handleDisplayUploadSuccessMsg = () => {
@@ -393,7 +391,10 @@ class VideoEdit extends React.PureComponent {
 
   render() {
     const {
-      id, error, loading, data, uploadedSupportFilesCount
+      id,
+      data,
+      data: { error, loading },
+      uploadedSupportFilesCount
     } = this.props;
 
     if ( !data.project && this.state.hasBeenDeleted ) {
@@ -683,8 +684,6 @@ class VideoEdit extends React.PureComponent {
 VideoEdit.propTypes = {
   id: string,
   data: object.isRequired,
-  error: object,
-  loading: bool,
   uploadedVideosCount: number,
   uploadedSupportFilesCount: number
 };

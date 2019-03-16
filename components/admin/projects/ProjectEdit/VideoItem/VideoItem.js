@@ -251,8 +251,6 @@ class VideoItem extends React.PureComponent {
 
 VideoItem.propTypes = {
   data: object.isRequired,
-  error: object,
-  loading: bool,
   displayItemInModal: bool,
   onClick: func
 };

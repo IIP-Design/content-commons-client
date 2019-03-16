@@ -88,8 +88,7 @@ ProjectItem.propTypes = {
   isAvailable: bool,
   displayItemInModal: bool,
   modalTrigger: func,
-  modalContent: func,
-  customPlaceholderStyle: object
+  modalContent: func
 };
 
 export default ProjectItem;

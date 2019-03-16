@@ -4,7 +4,7 @@
  *
  */
 import React, { Fragment } from 'react';
-import { bool, object, string } from 'prop-types';
+import { object, string } from 'prop-types';
 import {
   Icon, Loader, Popup, Progress
 } from 'semantic-ui-react';
@@ -178,8 +178,8 @@ class SupportItem extends React.PureComponent {
 
   render() {
     const {
-      error, loading, fileType,
-      data: { supportItem }
+      fileType,
+      data: { error, loading, supportItem }
     } = this.props;
 
     if ( !supportItem || !Object.keys( supportItem ).length ) return null;
@@ -328,8 +328,6 @@ class SupportItem extends React.PureComponent {
 
 SupportItem.propTypes = {
   data: object.isRequired,
-  error: object,
-  loading: bool,
   fileType: string.isRequired
 };
 
