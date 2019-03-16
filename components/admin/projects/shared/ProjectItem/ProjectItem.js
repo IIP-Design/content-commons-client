@@ -5,9 +5,7 @@
  */
 
 import React from 'react';
-import {
-  bool, func, object, string
-} from 'prop-types';
+import { bool, func, string } from 'prop-types';
 
 import withModal from 'components/admin/projects/ProjectEdit/withModal/withModal';
 import Placeholder from 'components/admin/projects/shared/Placeholder/Placeholder';
