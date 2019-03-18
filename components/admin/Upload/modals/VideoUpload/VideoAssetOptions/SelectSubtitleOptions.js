@@ -7,6 +7,7 @@ const SelectSubtitleOptions = () => (
     options={ subtitleOptions }
     className="videoProjectFiles_asset_options videoProjectFiles_asset_options--subtitles"
     placeholder="-"
+    data-label="Subtitles"
   />
 );
 

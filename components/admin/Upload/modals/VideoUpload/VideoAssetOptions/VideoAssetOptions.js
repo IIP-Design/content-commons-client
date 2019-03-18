@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import SelectLangaugeOptions from './SelectLangaugeOptions';
+import SelectLanguageOptions from './SelectLanguageOptions';
 import SelectSubtitleOptions from './SelectSubtitleOptions';
 import SelectQualityOptions from './SelectQualityOptions';
 import RenderOptionsForVideo from './RenderOptionsForVideo';
@@ -11,7 +11,7 @@ const VideoAssetOptions = props => {
   if ( isMobileDevice ) {
     return (
       <Fragment>
-        <SelectLangaugeOptions />
+        <SelectLanguageOptions />
         <RenderOptionsForVideo file={ file }><SelectSubtitleOptions /></RenderOptionsForVideo>
         <RenderTypeUseOptions file={ file } />
         <RenderOptionsForVideo file={ file }><SelectQualityOptions /></RenderOptionsForVideo>
@@ -21,7 +21,7 @@ const VideoAssetOptions = props => {
 
   return (
     <Fragment>
-      { activeStep === 'step_1' && <SelectLangaugeOptions /> }
+      { activeStep === 'step_1' && <SelectLanguageOptions /> }
       { activeStep === 'step_1' && <RenderOptionsForVideo file={ file }><SelectSubtitleOptions /></RenderOptionsForVideo> }
       { activeStep === 'step_2' && <RenderTypeUseOptions file={ file } /> }
       { activeStep === 'step_2' && <RenderOptionsForVideo file={ file }><SelectQualityOptions /></RenderOptionsForVideo> }

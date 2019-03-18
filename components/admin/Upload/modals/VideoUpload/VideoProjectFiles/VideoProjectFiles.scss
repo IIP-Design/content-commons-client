@@ -114,6 +114,10 @@
     padding: 3px 0 0 8px;
     border: 2px solid $light-grey;
     border-radius: 4px;
+    @media screen and (max-width: 640px) {
+      margin-top: 25px;
+      margin-bottom: 5px;
+    }
 
     .dropdown.icon {
       padding: 0.4em;

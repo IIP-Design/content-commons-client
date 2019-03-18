@@ -7,6 +7,7 @@ const SelectQualityOptions = () => (
     options={ qualityOptions }
     className="videoProjectFiles_asset_options videoProjectFiles_asset_options--quality"
     placeholder="-"
+    data-label="Quality"
   />
 );
 

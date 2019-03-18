@@ -51,9 +51,27 @@
   } 
 
   &_options {
+    position: relative;
     font-size: 14px;
     @media screen and (max-width: 640px) {
-      width: 100%;      
+      width: 100%;
+
+      &:before {
+        content: '\2605';
+        position: absolute;
+        top: -20px;
+        right: 0;
+        font-size: 6px;
+        color: red;
+      }
+
+      &:after {
+        content: attr(data-label);
+        position: absolute;
+        top: -20px;
+        left: 0;
+        color: $blue;
+      }
     }
 
     &_wrapper {
@@ -75,15 +93,16 @@
       @media screen and (min-width: 641px) {
         margin-right: 16px;
       }            
-    }
+    }    
 
     &--notApplicable {
       display: inline-block;
       min-width: 148px;      
+      margin: 0 15px 0 0;
       vertical-align: middle;
       font-size: 14px;
-      @media screen and (min-width: 641px) {
-        margin: 0 15px 0 0;
+      @media screen and (max-width: 640px) {
+        display: none;
       }
     }
   }

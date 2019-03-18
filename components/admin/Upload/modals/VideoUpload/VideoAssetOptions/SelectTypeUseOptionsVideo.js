@@ -7,6 +7,7 @@ const SelectTypeUseOptionsVideo = () => (
     options={ typeUseOptionsVideo }
     className="videoProjectFiles_asset_options videoProjectFiles_asset_options--typeUse"
     placeholder="-"
+    data-label="Video Type"
   />
 );
 
