@@ -4,7 +4,9 @@
  *
  */
 import React from 'react';
-import { array, func, string } from 'prop-types';
+import { func, object, string } from 'prop-types';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import { Button, Form, Table } from 'semantic-ui-react';
 
 import ModalItem from 'components/modals/ModalItem/ModalItem';
@@ -12,7 +14,7 @@ import VisuallyHidden from 'components/admin/projects/shared/VisuallyHidden/Visu
 import Notification from 'components/admin/projects/shared/Notification/Notification';
 import EditSupportFileRow from 'components/admin/projects/ProjectEdit/EditSupportFileRow/EditSupportFileRow';
 
-import { capitalizeFirst } from 'lib/utils';
+import { compareValues, capitalizeFirst } from 'lib/utils';
 
 import './EditSupportFilesContent.scss';
 
@@ -47,10 +49,41 @@ class EditSupportFilesContent extends React.PureComponent {
 
   getFileExtensions = arr => {
     const allFileExtensions = arr.reduce( ( acc, curr ) => (
-      acc.concat( this.getFileExtension( curr.file ) )
+      acc.concat( this.getFileExtension( curr.filename ) )
     ), [] );
     const uniqueExtensions = [...new Set( allFileExtensions )];
     return uniqueExtensions;
+  }
+
+  getFilesByType = ( files, type ) => {
+    /**
+     * @todo Would be better to get file types from
+     * a query. Need to figure out why these nested
+     * arguments don't work:
+     *
+       query EditSupportFiles($id: ID!) {
+        project: videoProject(id: $id) {
+          srt: supportFiles(where: {filetype: "srt"}, orderBy: filename_ASC) {
+            id
+            filetype
+            filename
+          }
+          other: supportFiles(where: {filetype_not: "srt"}, , orderBy: filetype_ASC) {
+            id
+            filetype
+            filename
+          }
+        }
+      }
+     */
+    if ( type === 'srt' ) {
+      return files
+        .filter( file => file.filetype === type )
+        .sort( compareValues( 'filename' ) );
+    }
+    return files
+      .filter( file => file.filetype !== 'srt' )
+      .sort( compareValues( 'filetype' ) );
   }
 
   handleChange = ( e, { id, value } ) => (
@@ -93,7 +126,16 @@ class EditSupportFilesContent extends React.PureComponent {
   }
 
   haveAllLangsBeenPopulated = () => {
-    const { data: files } = this.props;
+    const {
+      fileType,
+      data: { project: { supportFiles } }
+    } = this.props;
+
+    /**
+     * see @todo comment in the getFilesByType method
+     */
+    const files = this.getFilesByType( supportFiles, fileType );
+
     const { selectedLangValues } = this.state;
     const fileCount = files.length;
     const populatedLangsCount = Object.keys( selectedLangValues ).length;
@@ -121,7 +163,15 @@ class EditSupportFilesContent extends React.PureComponent {
   renderRow = file => {
     const { id } = file;
     const { selectedLangValues } = this.state;
-    const { data: files } = this.props;
+    const {
+      fileType,
+      data: { project: { supportFiles } }
+    } = this.props;
+
+    /**
+     * see @todo comment in the getFilesByType method
+     */
+    const files = this.getFilesByType( supportFiles, fileType );
 
     return (
       <EditSupportFileRow
@@ -135,8 +185,22 @@ class EditSupportFilesContent extends React.PureComponent {
   }
 
   render() {
-    const { data: files, fileType } = this.props;
+    const {
+      fileType,
+      data: {
+        error,
+        loading,
+        project: { supportFiles }
+      }
+    } = this.props;
 
+    /**
+     * see @todo comment in the getFilesByType method
+     */
+    const files = this.getFilesByType( supportFiles, fileType );
+
+    if ( loading ) return 'Loading the support files...';
+    if ( error ) return `Error! ${error.message}`;
     if ( !files || !files.length ) return null;
 
     const {
@@ -253,9 +317,28 @@ class EditSupportFilesContent extends React.PureComponent {
 }
 
 EditSupportFilesContent.propTypes = {
-  data: array.isRequired,
+  data: object.isRequired,
   fileType: string,
   closeEditModal: func
 };
 
-export default EditSupportFilesContent;
+const SUPPORT_FILES_QUERY = gql`
+  query EditSupportFiles($id: ID!) {
+    project: videoProject(id: $id) {
+      supportFiles {
+        id
+        filename
+        filetype
+      }
+    }
+  }
+`;
+
+export default graphql( SUPPORT_FILES_QUERY, {
+  options: props => ( {
+    variables: {
+      id: props.projectId
+    },
+  } )
+} )( EditSupportFilesContent );
+export { SUPPORT_FILES_QUERY };

@@ -66,9 +66,10 @@ class SupportFileTypeList extends React.PureComponent {
   render() {
     const {
       headline,
-      fileType,
-      popupMsg,
       data,
+      fileType,
+      projectId,
+      popupMsg,
       hasSubmittedData,
       hasUploaded
     } = this.props;
@@ -98,8 +99,8 @@ class SupportFileTypeList extends React.PureComponent {
                         onClick: this.toggleEditModal
                       } }
                       contentProps={ {
-                        data,
                         fileType,
+                        projectId,
                         closeEditModal: this.toggleEditModal
                       } }
                       modalTrigger={ Button }

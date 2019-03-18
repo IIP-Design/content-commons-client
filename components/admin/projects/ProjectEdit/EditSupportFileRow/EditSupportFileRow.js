@@ -182,16 +182,20 @@ class EditSupportFileRow extends React.PureComponent {
   }
 
   render() {
-    const { file, handleChange, selectedLanguage } = this.props;
+    const {
+      file,
+      file: { filename, id },
+      handleChange,
+      selectedLanguage
+    } = this.props;
 
     if ( !file || !Object.keys( file ).length ) return null;
 
-    const { file: fileName, id } = file;
     const { cellWidth, fileNameWidth } = this.state;
 
     const charIndex = this.getProportionalNumber( fileNameWidth, this.STR_INDEX_PROPORTION );
 
-    const shortFileName = this.getShortFileName( fileName, charIndex );
+    const shortFileName = this.getShortFileName( filename, charIndex );
 
     const isLongFileName = this.isLongName( fileNameWidth, cellWidth, this.ITEM_NAME_PROPORTION );
 
@@ -209,7 +213,7 @@ class EditSupportFileRow extends React.PureComponent {
             className="file-name"
             ref={ node => this.setRefWidth( node, 'cell' ) }
           >
-            { isLongFileName && <VisuallyHidden>{ fileName }</VisuallyHidden> }
+            { isLongFileName && <VisuallyHidden>{ filename }</VisuallyHidden> }
             <span
               className={
                 `file-name-wrap${isLongFileName ? ' hasEllipsis' : ''}`
@@ -225,7 +229,7 @@ class EditSupportFileRow extends React.PureComponent {
                         <Focusable>{ shortFileName }</Focusable>
                       </span>
                     ) }
-                    content={ fileName }
+                    content={ filename }
                     on={ [
                       'hover', 'click', 'focus'
                     ] }
@@ -234,7 +238,7 @@ class EditSupportFileRow extends React.PureComponent {
                     style={ popupStyle }
                   />
                 )
-                : fileName }
+                : filename }
             </span>
           </div>
         </Table.Cell>
@@ -243,7 +247,7 @@ class EditSupportFileRow extends React.PureComponent {
           { /* eslint-disable jsx-a11y/label-has-for */
             <VisuallyHidden>
               <label htmlFor={ `file-${id}` }>
-                { `${fileName} language` }
+                { `${filename} language` }
               </label>
             </VisuallyHidden> }
           <Dropdown
