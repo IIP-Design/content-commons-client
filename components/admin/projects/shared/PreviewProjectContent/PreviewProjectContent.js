@@ -35,19 +35,10 @@ class PreviewProjectContent extends React.PureComponent {
   constructor( props ) {
     super( props );
 
-    const { units } = this.props.data.project;
-
     this.state = {
       dropDownIsOpen: false,
-      selectedLanguage: 'English',
-      projectItems: this.getProjectItems( units ),
-      selectedItem: {},
-      languages: this.getLanguages( units )
+      selectedLanguage: 'English'
     };
-  }
-
-  componentDidMount = () => {
-    this.selectProjectItem();
   }
 
   getLanguages = units => (
@@ -56,7 +47,7 @@ class PreviewProjectContent extends React.PureComponent {
       value: unit.language.displayName,
       text: unit.language.displayName
     } ) )
-  );
+  )
 
   getProjectItems = units => (
     units.reduce( ( acc, unit ) => ( {
@@ -71,19 +62,9 @@ class PreviewProjectContent extends React.PureComponent {
     } ) );
   }
 
-  selectLanguage = language => {
-    this.setState(
-      () => ( { selectedLanguage: language } ),
-      this.selectProjectItem
-    );
-  }
-
-  selectProjectItem = () => {
-    const { projectItems, selectedLanguage } = this.state;
-    this.setState( {
-      selectedItem: projectItems[selectedLanguage]
-    } );
-  }
+  selectLanguage = language => (
+    this.setState( { selectedLanguage: language } )
+  )
 
   handleChange = ( e, { value } ) => {
     this.toggleArrow();
@@ -104,12 +85,10 @@ class PreviewProjectContent extends React.PureComponent {
 
     const { url: thumbnailUrl } = thumbnails[0];
 
-    const {
-      dropDownIsOpen,
-      selectedLanguage,
-      selectedItem,
-      languages
-    } = this.state;
+    const { dropDownIsOpen, selectedLanguage } = this.state;
+
+    const projectItems = this.getProjectItems( units );
+    const selectedItem = projectItems[this.state.selectedLanguage];
 
     if ( !selectedItem || !Object.keys( selectedItem ).length ) return null;
 
@@ -156,7 +135,7 @@ class PreviewProjectContent extends React.PureComponent {
             className="modal_languages"
             value={ selectedLanguage }
             icon={ dropDownIsOpen ? 'chevron up' : 'chevron down' }
-            options={ languages }
+            options={ this.getLanguages( units ) }
             onClick={ this.toggleArrow }
             onChange={ this.handleChange }
           />
