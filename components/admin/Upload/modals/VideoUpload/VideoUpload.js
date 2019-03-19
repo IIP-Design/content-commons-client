@@ -54,7 +54,7 @@ class VideoUpload extends Component {
     this.setState( prevState => ( { activeIndex: prevState.activeIndex - 1 } ) );
   }
 
-  handleVideoAssetsUpload = ( e, isProjectFilesScreen = false ) => {
+  handleVideoAssetsUpload = e => {
     const fileList = Array.from( e.target.files );
 
     this.setState( prevState => ( {
@@ -63,8 +63,6 @@ class VideoUpload extends Component {
         ? [...prevState.fileNames, ...fileList.map( file => file.name )]
         : fileList.map( file => file.name )
     } ) );
-
-    if ( !isProjectFilesScreen ) this.goNext();
   }
 
   removeVideoAssetFile = fileName => {

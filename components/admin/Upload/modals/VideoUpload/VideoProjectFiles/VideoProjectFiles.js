@@ -98,7 +98,7 @@ class VideoProjectFiles extends PureComponent {
                     type="file"
                     name="upload_video_assets"
                     multiple
-                    onChange={ e => this.props.handleVideoAssetsUpload( e, true ) }
+                    onChange={ e => this.props.handleVideoAssetsUpload( e ) }
                   />
                   + Add Files
                 </label>
@@ -124,7 +124,7 @@ class VideoProjectFiles extends PureComponent {
               </Modal.Content>
               <Modal.Actions>
                 <Button
-                  className="upload_button upload_button--cancelBtn"
+                  className="secondary"
                   content="No, take me back!"
                   onClick={ this.closeCancelModal }
                 />

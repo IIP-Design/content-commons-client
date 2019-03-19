@@ -1,13 +1,12 @@
-@import "../../../../../styles/colors.scss";
+@import "styles/colors.scss";
 
 .videoUpload {
-
   .ui.tabular.menu .item {
     display: none;
     font-size: 24px;
     color: $blue;
     cursor: pointer;
-    pointer-events: none;    
+    pointer-events: none;
 
     &.active {
       display: block;
@@ -19,7 +18,6 @@
     }
   }
 }
-
 
 .ui.modal.cancelModal {
   max-width: 478px;
@@ -33,7 +31,6 @@
   }
 
   .content {
-    
     > p {
       font-size: 18px;
     }
@@ -44,7 +41,7 @@
     justify-content: center;
     border: none;
     background: #fff;
-    
+
     > button {
       margin: 0;
 
