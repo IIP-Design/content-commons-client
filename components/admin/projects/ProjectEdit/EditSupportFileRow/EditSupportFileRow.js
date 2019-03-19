@@ -10,10 +10,14 @@ import {
 import {
   Button, Dropdown, Popup, Table
 } from 'semantic-ui-react';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import debounce from 'lodash/debounce';
 
 import Focusable from 'components/admin/projects/shared/Focusable/Focusable';
 import VisuallyHidden from 'components/admin/projects/shared/VisuallyHidden/VisuallyHidden';
+
+import { SUPPORT_FILES_QUERY } from 'components/admin/projects/ProjectEdit/EditSupportFilesContent/EditSupportFilesContent';
 
 import './EditSupportFileRow.scss';
 
@@ -117,7 +121,8 @@ class EditSupportFileRow extends React.PureComponent {
   }
 
   handleDeleteFile = () => {
-    console.log( 'delete file' );
+    const { file: { id }, mutate } = this.props;
+    mutate( { variables: { id } } );
   }
 
   renderIcons = () => {
@@ -274,7 +279,27 @@ EditSupportFileRow.propTypes = {
   handleChange: func,
   file: object,
   fileExtensions: array,
-  selectedLanguage: string
+  selectedLanguage: string,
+  mutate: func
 };
 
-export default EditSupportFileRow;
+const DELETE_SUPPORT_FILE_MUTATION = gql`
+  mutation DeleteSupportFile($id: ID!) {
+    deleteSupportFile(id: $id) {
+      id
+      filename
+    }
+  }
+`;
+
+export default graphql( DELETE_SUPPORT_FILE_MUTATION, {
+  options: props => ( {
+    refetchQueries: [
+      {
+        query: SUPPORT_FILES_QUERY,
+        variables: { id: props.projectId }
+      },
+    ],
+  } ),
+} )( EditSupportFileRow );
+export { DELETE_SUPPORT_FILE_MUTATION };

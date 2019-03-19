@@ -165,9 +165,9 @@ class EditSupportFilesContent extends React.PureComponent {
     const { selectedLangValues } = this.state;
     const {
       fileType,
+      projectId,
       data: { project: { supportFiles } }
     } = this.props;
-
     /**
      * see @todo comment in the getFilesByType method
      */
@@ -177,6 +177,7 @@ class EditSupportFilesContent extends React.PureComponent {
       <EditSupportFileRow
         key={ id }
         file={ file }
+        projectId={ projectId }
         fileExtensions={ this.getFileExtensions( files ) }
         handleChange={ this.handleChange }
         selectedLanguage={ selectedLangValues[id] }
@@ -318,6 +319,7 @@ class EditSupportFilesContent extends React.PureComponent {
 
 EditSupportFilesContent.propTypes = {
   data: object.isRequired,
+  projectId: string.isRequired,
   fileType: string,
   closeEditModal: func
 };
