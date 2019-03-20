@@ -5,7 +5,7 @@
  */
 import React, { Fragment } from 'react';
 import Router from 'next/router';
-import { number, object, string } from 'prop-types';
+import { object, string } from 'prop-types';
 import {
   Button, Confirm, Loader, Progress
 } from 'semantic-ui-react';
@@ -138,7 +138,9 @@ class VideoEdit extends React.PureComponent {
       displaySaveMsg: false,
       displayTheUploadSuccessMsg: false,
       hasExceededMaxCategories: false,
-      filesToUploadCount: this.getFilesToUploadCount(),
+      uploadedVideosCount: 0,
+      uploadedSupportFilesCount: 0,
+      filesToUploadCount: 0,
       formData: {
         projectTitle: '',
         visibility: 'PUBLIC',
@@ -156,6 +158,9 @@ class VideoEdit extends React.PureComponent {
 
   componentDidMount = () => {
     this._isMounted = true;
+    this.setState( {
+      filesToUploadCount: this.getFilesToUploadCount()
+    } );
   }
 
   componentDidUpdate = ( prevProps, prevState ) => {
@@ -184,16 +189,16 @@ class VideoEdit extends React.PureComponent {
   }
 
   getVideosCount = () => {
-    const { videos } = this.props.data.project;
-    if ( videos ) {
-      return videos.length;
+    const { project } = this.props.data;
+    if ( project ) {
+      return project.videos.length;
     }
   }
 
   getSupportFilesCount = () => {
-    const { supportFiles } = this.props.data.project;
-    if ( supportFiles ) {
-      return supportFiles.length;
+    const { project } = this.props.data;
+    if ( project ) {
+      return project.supportFiles.length;
     }
   }
 
@@ -202,7 +207,7 @@ class VideoEdit extends React.PureComponent {
   )
 
   getUploadedFilesCount = () => {
-    const { uploadedVideosCount, uploadedSupportFilesCount } = this.props;
+    const { uploadedVideosCount, uploadedSupportFilesCount } = this.state;
     return uploadedVideosCount + uploadedSupportFilesCount;
   }
 
@@ -397,9 +402,9 @@ class VideoEdit extends React.PureComponent {
   render() {
     const {
       id,
-      data,
-      data: { error, loading }
+      data
     } = this.props;
+    const { error, loading } = data;
 
     if ( error ) return `Error! ${error.message}`;
 
@@ -686,14 +691,7 @@ class VideoEdit extends React.PureComponent {
 
 VideoEdit.propTypes = {
   id: string,
-  data: object.isRequired,
-  uploadedVideosCount: number,
-  uploadedSupportFilesCount: number
-};
-
-VideoEdit.defaultProps = {
-  uploadedVideosCount: 0,
-  uploadedSupportFilesCount: 0
+  data: object.isRequired
 };
 
 const VIDEO_PROJECT_QUERY = gql`
