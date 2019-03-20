@@ -72,19 +72,16 @@ class PreviewProjectContent extends React.PureComponent {
   }
 
   render() {
-    const { error, loading } = this.props.data;
+    const {
+      error,
+      loading,
+      project
+    } = this.props.data;
+
     if ( loading ) return 'Loading the project...';
     if ( error ) return `Error! ${error.message}`;
 
-    const {
-      projectType,
-      team,
-      thumbnails,
-      units
-    } = this.props.data.project;
-
-    const { url: thumbnailUrl } = thumbnails[0];
-
+    const { projectType, team, units } = project;
     const { dropDownIsOpen, selectedLanguage } = this.state;
 
     const projectItems = this.getProjectItems( units );
@@ -104,6 +101,13 @@ class PreviewProjectContent extends React.PureComponent {
     const currentUnit = files[0];
     const youTubeUrl = currentUnit.stream.embedUrl;
     const { videoBurnedInStatus } = currentUnit;
+
+    let thumbnailUrl = '';
+    if ( selectedItem.thumbnails && selectedItem.thumbnails.length ) {
+      thumbnailUrl = selectedItem.thumbnails[0].image.url;
+    } else if ( project.thumbnails && project.thumbnails.length ) {
+      thumbnailUrl = project.thumbnails[0].url;
+    }
 
     const previewMsgStyles = {
       position: 'absolute',
@@ -238,6 +242,12 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
         id
         title
         descPublic
+        thumbnails {
+          image {
+            alt
+            url
+          }
+        }
         language {
           languageCode
           displayName
