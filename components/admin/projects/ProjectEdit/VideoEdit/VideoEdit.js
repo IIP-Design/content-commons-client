@@ -631,9 +631,7 @@ class VideoEdit extends React.PureComponent {
                 protectImages={ protectImages }
                 handleChange={ this.handleChange }
                 config={ supportFilesConfig }
-                hasUploaded={
-                  this.getSupportFilesCount() === uploadedSupportFilesCount
-                }
+                hasUploaded={ isUploadFinished }
               />
             </div>
           )
