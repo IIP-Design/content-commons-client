@@ -10,7 +10,7 @@ import {
   Button, Confirm, Loader, Progress
 } from 'semantic-ui-react';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { graphql, Mutation } from 'react-apollo';
 
 import ConfirmModalContent from 'components/admin/projects/shared/ConfirmModalContent/ConfirmModalContent';
 import Notification from 'components/admin/projects/shared/Notification/Notification';
@@ -110,6 +110,14 @@ const supportFilesConfig = {
   }
 };
 
+const DELETE_VIDEO_PROJECT_MUTATION = gql`
+  mutation DeleteVideoProject($id: ID!) {
+    deleteVideoProject(id: $id) {
+      id
+    }
+  }
+`;
+
 /* eslint-disable react/prefer-stateless-function */
 class VideoEdit extends React.PureComponent {
   constructor( props ) {
@@ -122,7 +130,6 @@ class VideoEdit extends React.PureComponent {
 
     this.state = {
       deleteConfirmOpen: false,
-      hasBeenDeleted: false,
       hasRequiredData: false,
       hasSubmittedData: false,
       isUploadInProgress: false,
@@ -229,12 +236,10 @@ class VideoEdit extends React.PureComponent {
     this.setState( { deleteConfirmOpen: true } );
   }
 
-  handleDeleteConfirm = () => {
-    console.log( `Deleted "${this.props.id}" project` );
-    this.setState( {
-      deleteConfirmOpen: false,
-      hasBeenDeleted: true
-    } );
+  handleDeleteConfirm = deleteProjectFn => {
+    console.log( `Deleted project: ${this.props.id}` );
+    deleteProjectFn();
+    Router.push( { pathname: '/admin/dashboard' } );
   }
 
   handleDeleteCancel = () => {
@@ -393,13 +398,8 @@ class VideoEdit extends React.PureComponent {
     const {
       id,
       data,
-      data: { error, loading },
-      uploadedSupportFilesCount
+      data: { error, loading }
     } = this.props;
-
-    if ( !data.project && this.state.hasBeenDeleted ) {
-      Router.push( { pathname: '/admin/dashboard' } );
-    }
 
     if ( error ) return `Error! ${error.message}`;
 
@@ -475,22 +475,27 @@ class VideoEdit extends React.PureComponent {
               onClick={ this.displayConfirmDelete }
               disabled={ !isUploadFinished }
             />
-            <Confirm
-              className="delete"
-              open={ deleteConfirmOpen }
-              content={ (
-                <ConfirmModalContent
-                  className="delete_confirm delete_confirm--video"
-                  headline="Are you sure you want to delete this video project?"
-                >
-                  <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
-                </ConfirmModalContent>
+
+            <Mutation mutation={ DELETE_VIDEO_PROJECT_MUTATION } variables={ { id: this.props.id } }>
+              { deleteVideoProject => (
+                <Confirm
+                  className="delete"
+                  open={ deleteConfirmOpen }
+                  content={ (
+                    <ConfirmModalContent
+                      className="delete_confirm delete_confirm--video"
+                      headline="Are you sure you want to delete this video project?"
+                    >
+                      <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
+                    </ConfirmModalContent>
+                  ) }
+                  onCancel={ this.handleDeleteCancel }
+                  onConfirm={ () => this.handleDeleteConfirm( deleteVideoProject ) }
+                  cancelButton="No, take me back"
+                  confirmButton="Yes, delete forever"
+                />
               ) }
-              onCancel={ this.handleDeleteCancel }
-              onConfirm={ this.handleDeleteConfirm }
-              cancelButton="No, take me back"
-              confirmButton="Yes, delete forever"
-            />
+            </Mutation>
 
             <PreviewProject
               triggerProps={ {
