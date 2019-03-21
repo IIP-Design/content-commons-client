@@ -11,7 +11,6 @@ import { Button, Form, Table } from 'semantic-ui-react';
 
 import ModalItem from 'components/modals/ModalItem/ModalItem';
 import VisuallyHidden from 'components/admin/projects/shared/VisuallyHidden/VisuallyHidden';
-import Notification from 'components/admin/projects/shared/Notification/Notification';
 import EditSupportFileRow from 'components/admin/projects/ProjectEdit/EditSupportFileRow/EditSupportFileRow';
 
 import { compareValues, capitalizeFirst } from 'lib/utils';
@@ -22,23 +21,7 @@ import './EditSupportFilesContent.scss';
 class EditSupportFilesContent extends React.PureComponent {
   constructor( props ) {
     super( props );
-
-    this.SAVE_MSG_DELAY = 2000;
-    this._isMounted = false;
-
-    this.state = {
-      displaySaveMsg: false,
-      hasSaved: false,
-      hasUnsavedData: false
-    };
-  }
-
-  componentDidMount = () => {
-    this._isMounted = true;
-  }
-
-  componentWillUnmount = () => {
-    this._isMounted = false;
+    this.state = { hasSaved: false };
   }
 
   getFileExtension = str => (
@@ -89,18 +72,6 @@ class EditSupportFilesContent extends React.PureComponent {
     this.props.closeEditModal();
   }
 
-  handleSubmit = () => {
-    console.log( 'files saved' );
-    this.setState(
-      {
-        displaySaveMsg: true,
-        hasSaved: true,
-        hasUnsavedData: false
-      },
-      () => this.delayUnmount( this.handleDisplaySaveMsg, this.saveMsgTimer, this.SAVE_MSG_DELAY )
-    );
-  }
-
   handleAddFiles = () => {
     console.log( 'add files' );
     this.addFilesInputRef.click();
@@ -109,19 +80,6 @@ class EditSupportFilesContent extends React.PureComponent {
   handleAddFilesRef = input => {
     this.addFilesInputRef = input;
   }
-
-  handleDisplaySaveMsg = () => {
-    if ( this._isMounted ) {
-      this.setState( { displaySaveMsg: false } );
-    }
-    this.saveMsgTimer = null;
-  }
-
-  delayUnmount = ( fn, timer, delay ) => {
-    if ( timer ) clearTimeout( timer );
-    /* eslint-disable no-param-reassign */
-    timer = setTimeout( fn, delay );
-  };
 
   renderRow = file => {
     const { id } = file;
@@ -167,30 +125,9 @@ class EditSupportFilesContent extends React.PureComponent {
     if ( error ) return `Error! ${error.message}`;
     if ( !files || !files.length ) return null;
 
-    const {
-      displaySaveMsg,
-      hasSaved,
-      hasUnsavedData
-    } = this.state;
-
     const headline = fileType === 'srt'
       ? fileType.toUpperCase()
       : capitalizeFirst( fileType );
-
-    const notificationStyles = {
-      position: 'absolute',
-      top: '0',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      // match Semantic UI border-radius
-      borderBottomLeftRadius: '0.28571429rem',
-      borderBottomRightRadius: '0.28571429rem',
-      padding: '1em 1.5em',
-      fontSize: '1em'
-    };
-
-    const notificationMsg = displaySaveMsg ? 'Saved' : 'You have unsaved data';
-    const saveBtnMsg = hasSaved && !hasUnsavedData ? 'Data Saved' : 'Save';
 
     return (
       <ModalItem
@@ -198,21 +135,6 @@ class EditSupportFilesContent extends React.PureComponent {
         headline={ `Edit ${headline} file${files.length > 1 ? 's' : ''} in this project` }
         textDirection="ltr"
       >
-
-        { ( displaySaveMsg || hasUnsavedData )
-          && (
-            <Notification
-              el="p"
-              customStyles={ notificationStyles }
-              msg={ notificationMsg }
-            />
-          ) }
-
-        { /**
-           * onSubmit prop not used because of Semantic UI
-           * bug where a form inside a modal does not
-           * submit when clicking enter.
-           */ }
         <Form>
           <Table basic="very">
             <Table.Header>
@@ -236,7 +158,7 @@ class EditSupportFilesContent extends React.PureComponent {
           <div className="btn-group">
             <Button
               className="cancel-close"
-              content={ hasSaved ? 'Close' : 'Cancel' }
+              content={ this.state.hasSaved ? 'Close' : 'Cancel' }
               basic
               size="tiny"
               onClick={ this.handleCancelClose }
@@ -263,15 +185,6 @@ class EditSupportFilesContent extends React.PureComponent {
                 tabIndex={ -1 }
               />
             </VisuallyHidden>
-            <Button
-              className="save"
-              content={ saveBtnMsg }
-              color="blue"
-              size="tiny"
-              disabled={ hasSaved || !hasUnsavedData }
-              onClick={ this.handleSubmit }
-              type="submit"
-            />
           </div>
         </Form>
       </ModalItem>
