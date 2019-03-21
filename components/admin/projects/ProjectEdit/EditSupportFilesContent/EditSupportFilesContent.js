@@ -325,7 +325,7 @@ EditSupportFilesContent.propTypes = {
 };
 
 const SUPPORT_FILES_QUERY = gql`
-  query EditSupportFiles($id: ID!) {
+  query SupportFiles($id: ID!) {
     project: videoProject(id: $id) {
       supportFiles {
         id

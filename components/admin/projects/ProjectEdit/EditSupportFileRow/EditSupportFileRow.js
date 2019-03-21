@@ -11,7 +11,7 @@ import {
   Button, Dropdown, Popup, Table
 } from 'semantic-ui-react';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { graphql, Query } from 'react-apollo';
 import debounce from 'lodash/debounce';
 
 import Focusable from 'components/admin/projects/shared/Focusable/Focusable';
@@ -21,15 +21,17 @@ import { SUPPORT_FILES_QUERY } from 'components/admin/projects/ProjectEdit/EditS
 
 import './EditSupportFileRow.scss';
 
-const languages = [
-  { value: 'arabic', text: 'Arabic' },
-  { value: 'chinese', text: 'Chinese' },
-  { value: 'english', text: 'English' },
-  { value: 'french', text: 'French' },
-  { value: 'portuguese', text: 'Portuguese' },
-  { value: 'russian', text: 'Russian' },
-  { value: 'spanish', text: 'Spanish' }
-];
+const LANGUAGES_QUERY = gql`
+  query Languages($orderBy: LanguageOrderByInput) {
+    languages(orderBy: $orderBy) {
+      ## use key alias to match
+      ## Semantic UI property value
+      key: id
+      value: displayName
+      text: displayName
+    }
+  }
+`;
 
 /* eslint-disable react/prefer-stateless-function */
 class EditSupportFileRow extends React.PureComponent {
@@ -255,18 +257,28 @@ class EditSupportFileRow extends React.PureComponent {
                 { `${filename} language` }
               </label>
             </VisuallyHidden> }
-          <Dropdown
-            id={ id }
-            onChange={ handleChange }
-            options={ languages }
-            placeholder="–"
-            text={ selectedLanguage }
-            value={ selectedLanguage }
-            error={ !selectedLanguage }
-            fluid
-            required
-            selection
-          />
+
+          <Query query={ LANGUAGES_QUERY } variables={ { orderBy: 'displayName_ASC' } }>
+            { ( { error, loading, data } ) => {
+              if ( loading ) return 'Loading...';
+              if ( error ) return `Error! ${error.message}`;
+
+              return (
+                <Dropdown
+                  id={ id }
+                  onChange={ handleChange }
+                  options={ data.languages }
+                  placeholder="–"
+                  text={ selectedLanguage }
+                  value={ selectedLanguage }
+                  error={ !selectedLanguage }
+                  fluid
+                  required
+                  selection
+                />
+              );
+            } }
+          </Query>
         </Table.Cell>
 
         <Table.Cell>{ this.renderIcons() }</Table.Cell>
