@@ -19,11 +19,6 @@ import './EditSupportFilesContent.scss';
 
 /* eslint-disable react/prefer-stateless-function */
 class EditSupportFilesContent extends React.PureComponent {
-  constructor( props ) {
-    super( props );
-    this.state = { hasSaved: false };
-  }
-
   getFileExtension = str => (
     str.slice( ( Math.max( 0, str.lastIndexOf( '.' ) ) || Infinity ) )
   )
@@ -158,7 +153,7 @@ class EditSupportFilesContent extends React.PureComponent {
           <div className="btn-group">
             <Button
               className="cancel-close"
-              content={ this.state.hasSaved ? 'Close' : 'Cancel' }
+              content="Cancel"
               basic
               size="tiny"
               onClick={ this.handleCancelClose }
