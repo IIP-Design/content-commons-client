@@ -1,4 +1,4 @@
-@import "../../../styles/colors.scss";
+@import "styles/colors.scss";
 
 .upload-content {
   display: inline-block;
@@ -8,12 +8,12 @@
     margin: 0 0 1em 0;
   }
 
-  .contentTypes {    
-    display: flex; 
-    justify-content: center;        
+  .contentTypes {
+    display: flex;
+    justify-content: center;
     text-align: center;
     @media screen and (max-width: 640px) {
-      flex-wrap: wrap;            
+      flex-wrap: wrap;
     }
 
     .type.ui.button {
@@ -32,16 +32,16 @@
       }
 
       img {
-        max-width: 100%;        
-        margin-bottom: .5em;
+        max-width: 100%;
+        margin-bottom: 0.5em;
         transition: transform 0.2s;
         @media screen and (max-width: 640px) {
           max-width: 69px;
           margin-bottom: 0;
         }
       }
-      
-      > span {        
+
+      > span {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
@@ -55,7 +55,7 @@
         }
       }
 
-      &:hover {        
+      &:hover {
         background: none;
         cursor: pointer;
 
@@ -83,7 +83,7 @@
   }
 
   &_advisory,
-  &_bestResults {    
+  &_bestResults {
     @media screen and (min-width: 641px) {
       width: 50%;
     }
@@ -112,8 +112,74 @@
   border-radius: 0;
 }
 
+.ui.form .upload_actions,
 .ui.form .upload_actions.field {
   margin-top: 2em;
   margin-bottom: 2em;
   text-align: center;
+}
+
+.ui.button {
+  font-size: 16px;
+
+  &.upload_button {
+    border: 2px solid $light-blue;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+    &--previous {
+      position: absolute;
+      z-index: -1;
+      color: $light-blue;
+      background-color: #fff;
+      opacity: 0;
+      transition: transform 400ms ease, opacity 300ms ease;
+      transform: translateX(100%);
+
+      &:hover {
+        border: 2px solid $light-blue;
+        background-color: #fff;
+      }
+
+      &.display {
+        position: relative;
+        z-index: 1;
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    &--next {
+      color: #fff;
+      background-color: $light-blue;
+
+      &:hover {
+        border: 2px solid $blue;
+        background-color: $blue;
+      }
+    }
+
+    &--fileUpload {
+      display: inline-block !important;
+      font-size: 16px !important;
+      color: #fff !important;
+      background-color: $light-blue;
+
+      &.inactive {
+        opacity: 0.45;
+      }
+
+      &.addFile {
+        color: $light-blue !important;
+        background-color: #fff;
+      }
+    }
+
+    &--cancelText {
+      border-color: #fff;
+      font-weight: normal;
+      color: $shuttle-grey;
+      background-color: #fff;
+      box-shadow: none;
+    }
+  }
 }

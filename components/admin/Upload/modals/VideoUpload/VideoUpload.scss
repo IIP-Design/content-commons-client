@@ -1,13 +1,12 @@
-@import "../../../../../styles/colors.scss";
+@import "styles/colors.scss";
 
 .videoUpload {
-
   .ui.tabular.menu .item {
     display: none;
     font-size: 24px;
     color: $blue;
     cursor: pointer;
-    pointer-events: none;    
+    pointer-events: none;
 
     &.active {
       display: block;
@@ -29,12 +28,12 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 
     &--previous {
-      position: absolute;     
-      z-index: -1;      
+      position: absolute;
+      z-index: -1;
       color: $light-blue;
       background-color: #fff;
-      opacity: 0;      
-      transition: transform 400ms ease, opacity 300ms ease;      
+      opacity: 0;
+      transition: transform 400ms ease, opacity 300ms ease;
       transform: translateX(100%);
       @media screen and (max-width: 640px) {
         display: none;
@@ -86,7 +85,7 @@
       display: inline-block !important;
       font-size: 16px !important;
       color: #fff !important;
-      background-color: $light-blue; 
+      background-color: $light-blue;
 
       &.inactive {
         opacity: 0.45;
@@ -94,7 +93,7 @@
 
       &.addFile {
         color: $light-blue !important;
-        background-color: #fff;  
+        background-color: #fff;
       }
 
       #upload_video_assets {
@@ -108,7 +107,7 @@
         margin: 0;
         opacity: 0;
         overflow: hidden;
-      }      
+      }
     }
 
     &--cancelBtn {
@@ -126,9 +125,8 @@
       font-weight: normal;
       color: $shuttle-grey;
       background-color: #fff;
-      box-shadow: none;      
+      box-shadow: none;
     }
-
   }
 }
 
@@ -145,7 +143,6 @@
   }
 
   .content {
-    
     > p {
       font-size: 18px;
     }
@@ -159,7 +156,7 @@
     @media screen and (max-width: 467px) {
       flex-direction: column;
     }
-    
+
     > button {
       margin: 0;
 
