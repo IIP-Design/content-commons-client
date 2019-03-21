@@ -114,6 +114,7 @@ h6.ui.header {
 
   &.primary {
     background-color: $light-blue;
+    padding: 0.7em 1.5em;
 
     &:focus {
       background-color: $hover-blue;
@@ -132,7 +133,7 @@ h6.ui.header {
   &.secondary {
     background-color: #ffffff;
     color: $hover-blue;
-    border: 2px solid $hover-blue;
+    border: 2px solid $light-blue;
 
     &:focus {
       background-color: #ffffff;
@@ -165,4 +166,18 @@ h6.ui.header {
   font-size: 0.8rem;
   font-style: italic;
   color: $red;
+}
+
+/* hide content but not from screen readers */
+.visibly-hidden {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 0.1px;
+  height: 0.1px;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  overflow: hidden;
 }

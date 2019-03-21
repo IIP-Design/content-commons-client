@@ -7,6 +7,7 @@ import {
   Icon,
   Modal
 } from 'semantic-ui-react';
+import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import VideoAssetFile from './VideoAssetFile';
 import './VideoProjectFiles.scss';
 
@@ -92,16 +93,7 @@ class VideoProjectFiles extends PureComponent {
 
             { activeStep === 'step_1' && (
               <Grid.Row>
-                <label className="ui button upload_button upload_button--fileUpload addFile" htmlFor="upload_video_assets">
-                  <input
-                    id="upload_video_assets"
-                    type="file"
-                    name="upload_video_assets"
-                    multiple
-                    onChange={ e => this.props.handleVideoAssetsUpload( e ) }
-                  />
-                  + Add Files
-                </label>
+                <ButtonAddFiles onChange={ e => this.props.handleVideoAssetsUpload( e ) } multiple className="secondary" />
               </Grid.Row>
             ) }
           </Grid>

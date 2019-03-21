@@ -16,7 +16,7 @@ class VideoUpload extends Component {
 
   panes = [
     {
-      menuItem: 'What type of video project is this?',
+      menuItem: 'Upload Files',
       render: () => (
         <Tab.Pane>
           <VideoProjectType
