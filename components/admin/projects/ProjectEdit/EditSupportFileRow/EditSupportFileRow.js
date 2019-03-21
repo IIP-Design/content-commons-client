@@ -4,9 +4,7 @@
  *
  */
 import React, { Fragment } from 'react';
-import {
-  array, func, object, string
-} from 'prop-types';
+import { array, func, object } from 'prop-types';
 import {
   Button, Dropdown, Popup, Table
 } from 'semantic-ui-react';
@@ -46,13 +44,17 @@ class EditSupportFileRow extends React.PureComponent {
 
     this.state = {
       cellWidth: null,
-      fileNameWidth: null
+      fileNameWidth: null,
+      fileLanguage: ''
     };
   }
 
   componentDidMount = () => {
     this._isMounted = true;
     window.addEventListener( 'resize', this.debounceResize );
+    this.setState( {
+      fileLanguage: this.props.file.language.displayName
+    } );
   }
 
   componentWillUnmount = () => {
@@ -116,6 +118,12 @@ class EditSupportFileRow extends React.PureComponent {
   isLongName = ( itemWidth, reference, proportion ) => (
     itemWidth >= this.getProportionalNumber( reference, proportion )
   );
+
+  handleChange = ( e, { value } ) => (
+    this.setState( {
+      fileLanguage: value
+    } )
+  )
 
   handleReplaceFile = () => {
     console.log( 'replace file' );
@@ -189,16 +197,11 @@ class EditSupportFileRow extends React.PureComponent {
   }
 
   render() {
-    const {
-      file,
-      file: { filename, id },
-      handleChange,
-      selectedLanguage
-    } = this.props;
+    const { file, file: { filename, id } } = this.props;
 
     if ( !file || !Object.keys( file ).length ) return null;
 
-    const { cellWidth, fileNameWidth } = this.state;
+    const { cellWidth, fileNameWidth, fileLanguage } = this.state;
 
     const charIndex = this.getProportionalNumber( fileNameWidth, this.STR_INDEX_PROPORTION );
 
@@ -266,12 +269,11 @@ class EditSupportFileRow extends React.PureComponent {
               return (
                 <Dropdown
                   id={ id }
-                  onChange={ handleChange }
+                  onChange={ this.handleChange }
                   options={ data.languages }
                   placeholder="–"
-                  text={ selectedLanguage }
-                  value={ selectedLanguage }
-                  error={ !selectedLanguage }
+                  text={ fileLanguage }
+                  value={ fileLanguage }
                   fluid
                   required
                   selection
@@ -288,10 +290,8 @@ class EditSupportFileRow extends React.PureComponent {
 }
 
 EditSupportFileRow.propTypes = {
-  handleChange: func,
-  file: object,
+  file: object.isRequired,
   fileExtensions: array,
-  selectedLanguage: string,
   mutate: func
 };
 

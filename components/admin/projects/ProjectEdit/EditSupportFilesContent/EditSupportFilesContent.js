@@ -29,9 +29,7 @@ class EditSupportFilesContent extends React.PureComponent {
     this.state = {
       displaySaveMsg: false,
       hasSaved: false,
-      hasUnsavedData: false,
-      hasPopulatedLanguages: false,
-      selectedLangValues: {}
+      hasUnsavedData: false
     };
   }
 
@@ -86,19 +84,6 @@ class EditSupportFilesContent extends React.PureComponent {
       .sort( compareValues( 'filetype' ) );
   }
 
-  handleChange = ( e, { id, value } ) => (
-    this.setState(
-      prevState => ( {
-        hasUnsavedData: true,
-        selectedLangValues: {
-          ...prevState.selectedLangValues,
-          [id]: capitalizeFirst( value )
-        }
-      } ),
-      this.haveAllLangsBeenPopulated
-    )
-  )
-
   handleCancelClose = () => {
     console.log( 'cancel' );
     this.props.closeEditModal();
@@ -125,28 +110,6 @@ class EditSupportFilesContent extends React.PureComponent {
     this.addFilesInputRef = input;
   }
 
-  haveAllLangsBeenPopulated = () => {
-    const {
-      fileType,
-      data: { project: { supportFiles } }
-    } = this.props;
-
-    /**
-     * see @todo comment in the getFilesByType method
-     */
-    const files = this.getFilesByType( supportFiles, fileType );
-
-    const { selectedLangValues } = this.state;
-    const fileCount = files.length;
-    const populatedLangsCount = Object.keys( selectedLangValues ).length;
-
-    if ( fileCount === populatedLangsCount ) {
-      this.setState( {
-        hasPopulatedLanguages: true
-      } );
-    }
-  }
-
   handleDisplaySaveMsg = () => {
     if ( this._isMounted ) {
       this.setState( { displaySaveMsg: false } );
@@ -162,12 +125,12 @@ class EditSupportFilesContent extends React.PureComponent {
 
   renderRow = file => {
     const { id } = file;
-    const { selectedLangValues } = this.state;
     const {
       fileType,
       projectId,
       data: { project: { supportFiles } }
     } = this.props;
+
     /**
      * see @todo comment in the getFilesByType method
      */
@@ -179,13 +142,13 @@ class EditSupportFilesContent extends React.PureComponent {
         file={ file }
         projectId={ projectId }
         fileExtensions={ this.getFileExtensions( files ) }
-        handleChange={ this.handleChange }
-        selectedLanguage={ selectedLangValues[id] }
       />
     );
   }
 
   render() {
+    if ( !this.props.data.project ) return null;
+
     const {
       fileType,
       data: {
@@ -207,8 +170,7 @@ class EditSupportFilesContent extends React.PureComponent {
     const {
       displaySaveMsg,
       hasSaved,
-      hasUnsavedData,
-      hasPopulatedLanguages
+      hasUnsavedData
     } = this.state;
 
     const headline = fileType === 'srt'
@@ -306,7 +268,7 @@ class EditSupportFilesContent extends React.PureComponent {
               content={ saveBtnMsg }
               color="blue"
               size="tiny"
-              disabled={ !hasPopulatedLanguages || ( hasSaved && !hasUnsavedData ) }
+              disabled={ hasSaved || !hasUnsavedData }
               onClick={ this.handleSubmit }
               type="submit"
             />
@@ -331,6 +293,10 @@ const SUPPORT_FILES_QUERY = gql`
         id
         filename
         filetype
+        language {
+          id
+          displayName
+        }
       }
     }
   }
