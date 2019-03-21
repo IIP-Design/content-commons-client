@@ -25,7 +25,7 @@ const LANGUAGES_QUERY = gql`
       ## use key alias to match
       ## Semantic UI property value
       key: id
-      value: displayName
+      value: id
       text: displayName
     }
   }
@@ -45,7 +45,7 @@ class EditSupportFileRow extends React.PureComponent {
     this.state = {
       cellWidth: null,
       fileNameWidth: null,
-      fileLanguage: ''
+      fileLanguageId: ''
     };
   }
 
@@ -53,7 +53,7 @@ class EditSupportFileRow extends React.PureComponent {
     this._isMounted = true;
     window.addEventListener( 'resize', this.debounceResize );
     this.setState( {
-      fileLanguage: this.props.file.language.displayName
+      fileLanguageId: this.props.file.language.id
     } );
   }
 
@@ -120,9 +120,7 @@ class EditSupportFileRow extends React.PureComponent {
   );
 
   handleChange = ( e, { value } ) => (
-    this.setState( {
-      fileLanguage: value
-    } )
+    this.setState( { fileLanguageId: value } )
   )
 
   handleReplaceFile = () => {
@@ -201,7 +199,7 @@ class EditSupportFileRow extends React.PureComponent {
 
     if ( !file || !Object.keys( file ).length ) return null;
 
-    const { cellWidth, fileNameWidth, fileLanguage } = this.state;
+    const { cellWidth, fileNameWidth, fileLanguageId } = this.state;
 
     const charIndex = this.getProportionalNumber( fileNameWidth, this.STR_INDEX_PROPORTION );
 
@@ -268,12 +266,10 @@ class EditSupportFileRow extends React.PureComponent {
 
               return (
                 <Dropdown
-                  id={ id }
+                  id={ `support-file-${id}` }
                   onChange={ this.handleChange }
                   options={ data.languages }
-                  placeholder="–"
-                  text={ fileLanguage }
-                  value={ fileLanguage }
+                  value={ fileLanguageId }
                   fluid
                   required
                   selection
