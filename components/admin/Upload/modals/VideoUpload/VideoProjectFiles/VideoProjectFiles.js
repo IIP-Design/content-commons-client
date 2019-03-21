@@ -1,5 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 import {
   Grid,
   Form,
@@ -105,7 +106,6 @@ class VideoProjectFiles extends PureComponent {
               </Grid.Row>
             ) }
           </Grid>
-
           <Form.Field className="upload_actions">
             <Modal
               className="cancelModal"
@@ -129,7 +129,7 @@ class VideoProjectFiles extends PureComponent {
                   onClick={ this.closeCancelModal }
                 />
                 <Button
-                  className="upload_button upload_button--next"
+                  className="upload_button upload_button--cancelGoBack"
                   content="Yes, cancel upload"
                   onClick={ closeModal }
                 />
@@ -141,10 +141,13 @@ class VideoProjectFiles extends PureComponent {
               onClick={ this.toggleSteps }
             />
             <Button
-              disabled={ activeStep === 'step_2' }
               className="upload_button upload_button--next"
-              content="Next"
+              content={ activeStep === 'step_2' ? <Link href="/admin/upload"><a>Next</a></Link> : 'Next' }
               onClick={ this.toggleSteps }
+            />
+            <Button
+              className="upload_button upload_button--mobileUpload"
+              content={ <Link href="/admin/upload"><a>Upload</a></Link> }
             />
           </Form.Field>
         </Form>

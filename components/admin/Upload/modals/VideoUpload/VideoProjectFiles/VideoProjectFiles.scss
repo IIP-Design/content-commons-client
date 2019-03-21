@@ -2,16 +2,29 @@
 
 .ui.modal.upload_modal {
 
+  &.scrolling {
+    @media screen and (max-width: 640px) {
+      overflow-x: hidden;
+    }
+  }  
+
   &.prepare-files-active {
     max-width: 788px;
   }  
 }
 
-.videoProjectFiles {  
+.videoProjectFiles {    
 
   &.ui.form {
     max-width: 640px;
     margin: 0 auto;
+
+    > .ui.grid {
+      @media screen and (min-width: 641px) and (max-width: 900px) {
+        padding-right: 1em;
+        padding-left: 1em;
+      }
+    }
   }
 
   &_headline {
@@ -30,13 +43,19 @@
         @media screen and (max-width: 640px) {
           padding: 0;
         }
-      }
+        @media only screen and (min-width: 641px) and (max-width: 991px) {
+          width: 37.5% !important;
+        }
+      }      
 
       > .column.ten {
         position: relative;
         padding-right: 0;
-        @media screen and (max-width: 640px) {
+        @media screen and (max-width: 690px) {
           padding: 0;
+        }
+        @media only screen and (min-width: 641px) and (max-width: 991px) {
+          width: 62.5% !important;
         }
       }
     }
@@ -46,12 +65,21 @@
     padding-bottom: 0.5em !important;
     border-bottom: 1px solid $light-grey;
     color: $blue;
+    @media screen and (max-width: 640px) {
+      display: none;
+    }
   }
 
   &_column_label {
     display: inline-block;
     width: 148px;
     margin-bottom: 0;
+    @media screen and (max-width: 640px) {
+      display: none;
+    }
+    @media screen and (min-width: 641px) and (max-width: 900px) {
+      width: 125px;
+    }    
 
     &:first-child {
       margin-right: 16px;
@@ -67,12 +95,14 @@
         font-size: 6px;
         color: red;
       }
-    }
-    
+    }    
   }
 
   &_steps {
     text-align: center;
+    @media screen and (max-width: 640px) {
+      display: none;
+    }
 
     > p {
       display: inline-block;
@@ -104,23 +134,5 @@
         transform: translateX(-10%);
       }
     }        
-  }
-
-  .ui.selection.dropdown {
-    display: inline-block;
-    min-height: auto;
-    height: 30px;
-    min-width: 148px;
-    padding: 3px 0 0 8px;
-    border: 2px solid $light-grey;
-    border-radius: 4px;
-    @media screen and (max-width: 640px) {
-      margin-top: 25px;
-      margin-bottom: 5px;
-    }
-
-    .dropdown.icon {
-      padding: 0.4em;
-    }
-  }  
+  }    
 }

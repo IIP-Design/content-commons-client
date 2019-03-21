@@ -11,9 +11,10 @@
     position: relative;
     font-size: 16px;
     @media screen and (max-width: 640px) {
+      margin-bottom: 0;
       padding-left: 20px;
       padding-bottom: 3px;
-      font-size: 14px;
+      font-size: 12px;
     }
 
     &:before {
@@ -38,7 +39,7 @@
       position: absolute;
       top: 8px;
       left: -20px;
-      width: 5px;
+      width: 5px; 
       height: 8px;
       border-bottom: 2px solid #fff;
       border-right: 2px solid #fff;
@@ -48,30 +49,62 @@
         left: 5px;
       }
     }
-  } 
+
+    &--fullFileName {      
+      display: none;
+      margin: 1em 0 !important;
+      font-size: 10px;
+      font-style: italic;
+      color: $focus-gray;
+      @media screen and (max-width: 640px) {        
+
+        &.active {
+          display: block;
+        }
+      }
+
+      > i.small.icon {
+        position: relative;
+        transform: translateY(10%);
+        padding: 5px;
+        border: 1px solid $focus-gray;
+        border-radius: 50%;
+        font-size: 0.5em;
+
+        &:before {
+          position: absolute;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+  }
+
+  .ui.selection.dropdown {
+    display: inline-block;
+    min-height: auto;
+    height: 30px;
+    min-width: 148px;
+    padding: 3px 0 0 8px;
+    border: 2px solid $light-grey;
+    border-radius: 4px;
+    @media screen and (max-width: 640px) {
+      margin-bottom: 5px;
+    }
+    @media screen and (min-width: 641px) and (max-width: 900px) {
+      min-width: 125px;
+    }
+
+    .dropdown.icon {
+      padding: 0.4em;
+    }
+  }
 
   &_options {
     position: relative;
     font-size: 14px;
     @media screen and (max-width: 640px) {
       width: 100%;
-
-      &:before {
-        content: '\2605';
-        position: absolute;
-        top: -20px;
-        right: 0;
-        font-size: 6px;
-        color: red;
-      }
-
-      &:after {
-        content: attr(data-label);
-        position: absolute;
-        top: -20px;
-        left: 0;
-        color: $blue;
-      }
     }
 
     &_wrapper {
@@ -82,6 +115,25 @@
           display: block;
         }
       }
+    }
+
+    &_mobileLabel {
+      position: relative;
+      display: none;
+      margin-bottom: 0;
+      font-size: 16px;
+      color: $blue;
+      @media screen and (max-width: 640px) {
+        display: block;
+      }
+
+      &:after {
+        content: '\2605';
+        position: absolute;
+        top: -3px;
+        font-size: 6px;
+        color: red;
+      }        
     }
     
     .menu > .item {
@@ -103,6 +155,9 @@
       font-size: 14px;
       @media screen and (max-width: 640px) {
         display: none;
+      }
+      @media screen and (min-width: 641px) and (max-width: 900px) {
+        min-width: 125px;
       }
     }
   }
@@ -127,14 +182,12 @@
 
   &_actionBtns {
     position: absolute;
-    top: 50%;
+    top: 0;
     right: 0;
-    transform: translateY(-50%);
     @media screen and (max-width: 640px) {      
       display: none;
-      transform: translateY(-24%);
       top: 0;
-      right: -7px;
+      right: 0;
       padding: 35px 10px 10px 10px;       
       background: #fff;      
       box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
@@ -186,7 +239,12 @@
             font-weight: bold;
             color: $matisse-blue;            
           }
-        }        
+        }
+        @media screen 
+        and (min-width: 640px)
+        and (max-width: 665px) {
+          margin: 0 12px 0 0;
+        }
       }
 
       &:after {
@@ -204,27 +262,53 @@
       }
       
       button {
-        -webkit-appearance: none;
         padding: 0;
         margin: 0;
-        border: none;
-        background: transparent;
         cursor: pointer;
       }  
     }
   }
 
+  button {
+    -webkit-appearance: none;    
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
   &_replaceBtn, 
   &_removeBtn {
     position: relative;
+    @media screen and (max-width: 640px) {
+      display: block;      
+      padding: 7px 15px;
+      margin: 0 auto; 
+      font-size: 14px;
+      text-align: center;
+
+      button > span,
+      > span {
+        font-family: "Source Sans Pro", "Helvetica Neue", Arial, Helvetica, sans-serif;
+        color: $shuttle-grey;
+      }
+    }
     
     img {
       position: relative;
-      vertical-align: middle;
     }      
   }
 
   &_replaceBtn {
+    @media screen and (max-width: 640px) {
+      margin: 0 0 15px 0;          
+      border: 2px solid $matisse-blue;
+      border-radius: 4px;          
+
+      button > span {
+        font-weight: bold;
+        color: $matisse-blue;            
+      }
+    }
 
     > input {
       display: none;
