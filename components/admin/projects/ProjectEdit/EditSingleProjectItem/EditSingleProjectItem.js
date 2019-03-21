@@ -7,9 +7,9 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 
 import ModalItem from 'components/modals/ModalItem/ModalItem';
+import VideoEditVideo from 'components/admin/projects/ProjectEdit/VideoEditVideo/VideoEditVideo';
 import './EditSingleProjectItem.scss';
 
-/* eslint-disable react/prefer-stateless-function */
 class EditSingleProjectItem extends React.PureComponent {
   render() {
     return (
@@ -18,7 +18,7 @@ class EditSingleProjectItem extends React.PureComponent {
         headline="The Project Title"
         textDirection="ltr"
       >
-        <p>Edit Single Project Item Component</p>
+        <VideoEditVideo id="cjtg35swx002o0775cqv9vxhs" />
       </ModalItem>
     );
   }
