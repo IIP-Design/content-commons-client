@@ -263,7 +263,7 @@ class EditSupportFileRow extends React.PureComponent {
             </VisuallyHidden> }
 
           <Dropdown
-            id={ `support-file-${id}` }
+            id={ `file-${id}` }
             onChange={ this.handleChange }
             options={ this.props.languages }
             value={ fileLanguageId }
