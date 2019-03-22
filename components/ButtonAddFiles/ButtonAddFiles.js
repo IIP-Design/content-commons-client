@@ -23,6 +23,7 @@ const ButtonAddFiles = props => {
       <input
         ref={ fileInput }
         type="file"
+        accept={ props.accept || '*' }
         multiple={ props.multiple }
         onChange={ props.onChange }
         className="visibly-hidden"
@@ -35,7 +36,8 @@ ButtonAddFiles.propTypes = {
   onChange: PropTypes.func,
   className: PropTypes.string,
   multiple: PropTypes.bool,
-  label: PropTypes.string
+  label: PropTypes.string,
+  accept: PropTypes.string
 };
 
 export default ButtonAddFiles;
