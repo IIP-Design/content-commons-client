@@ -132,8 +132,8 @@ class EditSupportFileRow extends React.PureComponent {
   }
 
   handleDeleteFile = () => {
-    const { file: { id }, mutate } = this.props;
-    mutate( { variables: { id } } );
+    const { file: { id }, deleteFile } = this.props;
+    deleteFile( { variables: { id } } );
   }
 
   renderIcons = () => {
@@ -284,7 +284,7 @@ EditSupportFileRow.propTypes = {
   fileExtensions: array,
   languages: array.isRequired,
   updateLanguage: func,
-  mutate: func
+  deleteFile: func
 };
 
 const DELETE_SUPPORT_FILE_MUTATION = gql`
@@ -312,6 +312,7 @@ const UPDATE_SUPPORT_FILE_LANGUAGE_MUTATION = gql`
 `;
 
 const deleteFileMutation = graphql( DELETE_SUPPORT_FILE_MUTATION, {
+  name: 'deleteFile',
   options: props => ( {
     refetchQueries: [
       {
