@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Icon } from 'semantic-ui-react';
-import replaceIcon from '../../../../../../static/icons/icon_replace.svg';
-import removeIcon from '../../../../../../static/icons/icon_remove.svg';
-import '../../../../../../styles/tooltip.scss';
-import { truncateAndReplaceStr } from '../../../../../../lib/utils';
-import { isWindowWidthLessThanOrEqualTo } from '../../../../../../lib/browser';
+import replaceIcon from 'static/icons/icon_replace.svg';
+import removeIcon from 'static/icons/icon_remove.svg';
+import 'styles/tooltip.scss';
+import { truncateAndReplaceStr } from 'lib/utils';
+import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import VideoAssetOptions from '../VideoAssetOptions/VideoAssetOptions';
 import './VideoAssetFile.scss';
 
@@ -165,7 +165,7 @@ class VideoAssetFile extends PureComponent {
 
 VideoAssetFile.propTypes = {
   file: PropTypes.string,
-  activeStep: PropTypes.string,
+  activeStep: PropTypes.number,
   removeVideoAssetFile: PropTypes.func,
   replaceVideoAssetFile: PropTypes.func
 };

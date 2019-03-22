@@ -21,10 +21,10 @@ const VideoAssetOptions = props => {
 
   return (
     <Fragment>
-      { activeStep === 'step_1' && <SelectLanguageOptions /> }
-      { activeStep === 'step_1' && <RenderOptionsForVideo file={ file }><SelectSubtitleOptions /></RenderOptionsForVideo> }
-      { activeStep === 'step_2' && <RenderTypeUseOptions file={ file } /> }
-      { activeStep === 'step_2' && <RenderOptionsForVideo file={ file }><SelectQualityOptions /></RenderOptionsForVideo> }
+      { activeStep === 1 && <SelectLanguageOptions /> }
+      { activeStep === 1 && <RenderOptionsForVideo file={ file }><SelectSubtitleOptions /></RenderOptionsForVideo> }
+      { activeStep === 2 && <RenderTypeUseOptions file={ file } /> }
+      { activeStep === 2 && <RenderOptionsForVideo file={ file }><SelectQualityOptions /></RenderOptionsForVideo> }
     </Fragment>
   );
 };
@@ -32,7 +32,7 @@ const VideoAssetOptions = props => {
 VideoAssetOptions.propTypes = {
   file: PropTypes.string,
   isMobileDevice: PropTypes.bool,
-  activeStep: PropTypes.string,
+  activeStep: PropTypes.number
 };
 
 export default VideoAssetOptions;
