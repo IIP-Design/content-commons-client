@@ -9,7 +9,7 @@ import {
   Button, Dropdown, Popup, Table
 } from 'semantic-ui-react';
 import gql from 'graphql-tag';
-import { graphql, Query } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import debounce from 'lodash/debounce';
 
 import Focusable from 'components/admin/projects/shared/Focusable/Focusable';
@@ -18,18 +18,6 @@ import VisuallyHidden from 'components/admin/projects/shared/VisuallyHidden/Visu
 import { SUPPORT_FILES_QUERY } from 'components/admin/projects/ProjectEdit/EditSupportFilesContent/EditSupportFilesContent';
 
 import './EditSupportFileRow.scss';
-
-const LANGUAGES_QUERY = gql`
-  query Languages($orderBy: LanguageOrderByInput) {
-    languages(orderBy: $orderBy) {
-      ## use key alias to match
-      ## Semantic UI property value
-      key: id
-      value: id
-      text: displayName
-    }
-  }
-`;
 
 /* eslint-disable react/prefer-stateless-function */
 class EditSupportFileRow extends React.PureComponent {
@@ -119,9 +107,24 @@ class EditSupportFileRow extends React.PureComponent {
     itemWidth >= this.getProportionalNumber( reference, proportion )
   );
 
-  handleChange = ( e, { value } ) => (
-    this.setState( { fileLanguageId: value } )
-  )
+  handleChange = ( e, { value } ) => {
+    const { file: { id }, updateLanguage } = this.props;
+    this.setState(
+      { fileLanguageId: value },
+      () => updateLanguage( {
+        variables: {
+          data: {
+            language: {
+              connect: {
+                id: this.state.fileLanguageId
+              }
+            }
+          },
+          where: { id }
+        }
+      } )
+    );
+  }
 
   handleReplaceFile = () => {
     console.log( 'replace file' );
@@ -195,6 +198,11 @@ class EditSupportFileRow extends React.PureComponent {
   }
 
   render() {
+    const { error, loading, languages } = this.props.data;
+
+    if ( loading ) return 'Loading support file...';
+    if ( error ) return `Error! ${error.message}`;
+
     const { file, file: { filename, id } } = this.props;
 
     if ( !file || !Object.keys( file ).length ) return null;
@@ -259,24 +267,15 @@ class EditSupportFileRow extends React.PureComponent {
               </label>
             </VisuallyHidden> }
 
-          <Query query={ LANGUAGES_QUERY } variables={ { orderBy: 'displayName_ASC' } }>
-            { ( { error, loading, data } ) => {
-              if ( loading ) return 'Loading...';
-              if ( error ) return `Error! ${error.message}`;
-
-              return (
-                <Dropdown
-                  id={ `support-file-${id}` }
-                  onChange={ this.handleChange }
-                  options={ data.languages }
-                  value={ fileLanguageId }
-                  fluid
-                  required
-                  selection
-                />
-              );
-            } }
-          </Query>
+          <Dropdown
+            id={ `support-file-${id}` }
+            onChange={ this.handleChange }
+            options={ languages }
+            value={ fileLanguageId }
+            fluid
+            required
+            selection
+          />
         </Table.Cell>
 
         <Table.Cell>{ this.renderIcons() }</Table.Cell>
@@ -286,10 +285,21 @@ class EditSupportFileRow extends React.PureComponent {
 }
 
 EditSupportFileRow.propTypes = {
+  data: object,
   file: object.isRequired,
   fileExtensions: array,
+  updateLanguage: func,
   mutate: func
 };
+
+const LANGUAGES_QUERY = gql`
+  query Languages($orderBy: LanguageOrderByInput) {
+    languages(orderBy: $orderBy) {
+      value: id
+      text: displayName
+    }
+  }
+`;
 
 const DELETE_SUPPORT_FILE_MUTATION = gql`
   mutation DeleteSupportFile($id: ID!) {
@@ -300,14 +310,50 @@ const DELETE_SUPPORT_FILE_MUTATION = gql`
   }
 `;
 
-export default graphql( DELETE_SUPPORT_FILE_MUTATION, {
+const UPDATE_SUPPORT_FILE_LANGUAGE_MUTATION = gql`
+  mutation UpdateSupportFileLanguage($data: SupportFileUpdateInput!
+  $where: SupportFileWhereUniqueInput!) {
+    updateSupportFile(data: $data, where: $where) {
+      id
+      filename
+      filetype
+      language {
+        id
+        displayName
+      }
+    }
+  }
+`;
+
+const languagesQuery = graphql( LANGUAGES_QUERY, {
+  options: {
+    variables: { orderBy: 'displayName_ASC' }
+  }
+} );
+
+const deleteFileMutation = graphql( DELETE_SUPPORT_FILE_MUTATION, {
   options: props => ( {
     refetchQueries: [
       {
         query: SUPPORT_FILES_QUERY,
         variables: { id: props.projectId }
-      },
-    ],
+      }
+    ]
   } ),
-} )( EditSupportFileRow );
-export { DELETE_SUPPORT_FILE_MUTATION };
+} );
+
+const updateFileLanguageMutation = graphql( UPDATE_SUPPORT_FILE_LANGUAGE_MUTATION, {
+  name: 'updateLanguage'
+} );
+
+export default compose(
+  updateFileLanguageMutation,
+  deleteFileMutation,
+  languagesQuery
+)( EditSupportFileRow );
+
+export {
+  LANGUAGES_QUERY,
+  DELETE_SUPPORT_FILE_MUTATION,
+  UPDATE_SUPPORT_FILE_LANGUAGE_MUTATION
+};

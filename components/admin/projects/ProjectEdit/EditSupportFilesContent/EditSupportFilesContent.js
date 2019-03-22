@@ -214,7 +214,7 @@ export default graphql( SUPPORT_FILES_QUERY, {
   options: props => ( {
     variables: {
       id: props.projectId
-    },
+    }
   } )
 } )( EditSupportFilesContent );
 export { SUPPORT_FILES_QUERY };
