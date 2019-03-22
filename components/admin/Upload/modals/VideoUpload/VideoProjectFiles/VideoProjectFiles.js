@@ -78,18 +78,15 @@ const VideoProjectFiles = props => {
         <Form.Field className="upload_actions">
           <CancelUpload closeModal={ closeModal } />
           <Button
-            className={ `upload_button upload_button--previous ${activeStep === 2 ? 'display' : ''}` }
+            className="secondary"
+            style={ activeStep === 2 ? { display: 'inline-block' } : { display: 'none' } }
             content="Previous"
             onClick={ () => setActiveStep( 1 ) }
           />
           <Button
-            className="upload_button upload_button--next"
-            content={ activeStep === 2 ? <Link href="/admin/upload"><a>Next</a></Link> : 'Next' }
+            className="primary"
+            content="Next"
             onClick={ () => setActiveStep( 2 ) }
-          />
-          <Button
-            className="upload_button upload_button--mobileUpload"
-            content={ <Link href="/admin/upload"><a>Upload</a></Link> }
           />
         </Form.Field>
       </Form>
