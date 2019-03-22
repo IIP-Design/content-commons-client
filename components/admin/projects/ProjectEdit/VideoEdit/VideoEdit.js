@@ -5,12 +5,12 @@
  */
 import React, { Fragment } from 'react';
 import Router from 'next/router';
-import { object, string } from 'prop-types';
+import { func, object, string } from 'prop-types';
 import {
   Button, Confirm, Loader, Progress
 } from 'semantic-ui-react';
 import gql from 'graphql-tag';
-import { graphql, Mutation } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 
 import ConfirmModalContent from 'components/admin/projects/shared/ConfirmModalContent/ConfirmModalContent';
 import Notification from 'components/admin/projects/shared/Notification/Notification';
@@ -109,14 +109,6 @@ const supportFilesConfig = {
     iconType: 'info circle'
   }
 };
-
-const DELETE_VIDEO_PROJECT_MUTATION = gql`
-  mutation DeleteVideoProject($id: ID!) {
-    deleteVideoProject(id: $id) {
-      id
-    }
-  }
-`;
 
 /* eslint-disable react/prefer-stateless-function */
 class VideoEdit extends React.PureComponent {
@@ -241,9 +233,10 @@ class VideoEdit extends React.PureComponent {
     this.setState( { deleteConfirmOpen: true } );
   }
 
-  handleDeleteConfirm = deleteProjectFn => {
-    console.log( `Deleted project: ${this.props.id}` );
-    deleteProjectFn();
+  handleDeleteConfirm = () => {
+    const { id, mutate } = this.props;
+    console.log( `Deleted project: ${id}` );
+    mutate( { variables: { id } } );
     Router.push( { pathname: '/admin/dashboard' } );
   }
 
@@ -481,26 +474,22 @@ class VideoEdit extends React.PureComponent {
               disabled={ !isUploadFinished }
             />
 
-            <Mutation mutation={ DELETE_VIDEO_PROJECT_MUTATION } variables={ { id: this.props.id } }>
-              { deleteVideoProject => (
-                <Confirm
-                  className="delete"
-                  open={ deleteConfirmOpen }
-                  content={ (
-                    <ConfirmModalContent
-                      className="delete_confirm delete_confirm--video"
-                      headline="Are you sure you want to delete this video project?"
-                    >
-                      <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
-                    </ConfirmModalContent>
-                  ) }
-                  onCancel={ this.handleDeleteCancel }
-                  onConfirm={ () => this.handleDeleteConfirm( deleteVideoProject ) }
-                  cancelButton="No, take me back"
-                  confirmButton="Yes, delete forever"
-                />
+            <Confirm
+              className="delete"
+              open={ deleteConfirmOpen }
+              content={ (
+                <ConfirmModalContent
+                  className="delete_confirm delete_confirm--video"
+                  headline="Are you sure you want to delete this video project?"
+                >
+                  <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
+                </ConfirmModalContent>
               ) }
-            </Mutation>
+              onCancel={ this.handleDeleteCancel }
+              onConfirm={ this.handleDeleteConfirm }
+              cancelButton="No, take me back"
+              confirmButton="Yes, delete forever"
+            />
 
             <PreviewProject
               triggerProps={ {
@@ -691,7 +680,8 @@ class VideoEdit extends React.PureComponent {
 
 VideoEdit.propTypes = {
   id: string,
-  data: object.isRequired
+  data: object.isRequired,
+  mutate: func
 };
 
 const VIDEO_PROJECT_QUERY = gql`
@@ -711,11 +701,27 @@ const VIDEO_PROJECT_QUERY = gql`
   }
 `;
 
-export default graphql( VIDEO_PROJECT_QUERY, {
+const DELETE_VIDEO_PROJECT_MUTATION = gql`
+  mutation DeleteVideoProject($id: ID!) {
+    deleteVideoProject(id: $id) {
+      id
+    }
+  }
+`;
+
+const videoProjectQuery = graphql( VIDEO_PROJECT_QUERY, {
   options: props => ( {
     variables: {
       id: props.id
     },
   } )
-} )( VideoEdit );
-export { VIDEO_PROJECT_QUERY };
+} );
+
+const deleteVideoProjectMutation = graphql( DELETE_VIDEO_PROJECT_MUTATION );
+
+export default compose(
+  deleteVideoProjectMutation,
+  videoProjectQuery
+)( VideoEdit );
+
+export { DELETE_VIDEO_PROJECT_MUTATION, VIDEO_PROJECT_QUERY };
