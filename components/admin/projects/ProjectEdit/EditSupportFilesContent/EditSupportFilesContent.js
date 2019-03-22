@@ -6,7 +6,7 @@
 import React from 'react';
 import { func, object, string } from 'prop-types';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import { Button, Form, Table } from 'semantic-ui-react';
 
 import ModalItem from 'components/modals/ModalItem/ModalItem';
@@ -77,11 +77,11 @@ class EditSupportFilesContent extends React.PureComponent {
   }
 
   renderRow = file => {
-    const { id } = file;
     const {
       fileType,
       projectId,
-      data: { project: { supportFiles } }
+      LanguagesQuery: { languages },
+      SupportFilesQuery: { project: { supportFiles } }
     } = this.props;
 
     /**
@@ -91,24 +91,25 @@ class EditSupportFilesContent extends React.PureComponent {
 
     return (
       <EditSupportFileRow
-        key={ id }
+        key={ file.id }
         file={ file }
         projectId={ projectId }
+        languages={ languages }
         fileExtensions={ this.getFileExtensions( files ) }
       />
     );
   }
 
   render() {
-    if ( !this.props.data.project ) return null;
+    if ( !this.props.LanguagesQuery.languages || !this.props.SupportFilesQuery.project ) {
+      return null;
+    }
 
     const {
       fileType,
-      data: {
-        error,
-        loading,
-        project: { supportFiles }
-      }
+      LanguagesQuery,
+      SupportFilesQuery,
+      SupportFilesQuery: { project: { supportFiles } }
     } = this.props;
 
     /**
@@ -116,8 +117,11 @@ class EditSupportFilesContent extends React.PureComponent {
      */
     const files = this.getFilesByType( supportFiles, fileType );
 
-    if ( loading ) return 'Loading the support files...';
-    if ( error ) return `Error! ${error.message}`;
+    if ( LanguagesQuery.loading || SupportFilesQuery.loading ) return 'Loading...';
+
+    if ( LanguagesQuery.error ) return `Error! ${LanguagesQuery.error.message}`;
+    if ( SupportFilesQuery.error ) return `Error! ${SupportFilesQuery.error.message}`;
+
     if ( !files || !files.length ) return null;
 
     const headline = fileType === 'srt'
@@ -188,11 +192,21 @@ class EditSupportFilesContent extends React.PureComponent {
 }
 
 EditSupportFilesContent.propTypes = {
-  data: object.isRequired,
+  LanguagesQuery: object.isRequired,
+  SupportFilesQuery: object.isRequired,
   projectId: string.isRequired,
   fileType: string,
   closeEditModal: func
 };
+
+const LANGUAGES_QUERY = gql`
+  query Languages($orderBy: LanguageOrderByInput) {
+    languages(orderBy: $orderBy) {
+      value: id
+      text: displayName
+    }
+  }
+`;
 
 const SUPPORT_FILES_QUERY = gql`
   query SupportFiles($id: ID!) {
@@ -210,11 +224,25 @@ const SUPPORT_FILES_QUERY = gql`
   }
 `;
 
-export default graphql( SUPPORT_FILES_QUERY, {
+const languagesQuery = graphql( LANGUAGES_QUERY, {
+  name: 'LanguagesQuery',
+  options: {
+    variables: { orderBy: 'displayName_ASC' }
+  }
+} );
+
+const supportFilesQuery = graphql( SUPPORT_FILES_QUERY, {
+  name: 'SupportFilesQuery',
   options: props => ( {
     variables: {
       id: props.projectId
     }
   } )
-} )( EditSupportFilesContent );
-export { SUPPORT_FILES_QUERY };
+} );
+
+export default compose(
+  languagesQuery,
+  supportFilesQuery
+)( EditSupportFilesContent );
+
+export { LANGUAGES_QUERY, SUPPORT_FILES_QUERY };

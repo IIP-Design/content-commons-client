@@ -198,11 +198,6 @@ class EditSupportFileRow extends React.PureComponent {
   }
 
   render() {
-    const { error, loading, languages } = this.props.data;
-
-    if ( loading ) return 'Loading support file...';
-    if ( error ) return `Error! ${error.message}`;
-
     const { file, file: { filename, id } } = this.props;
 
     if ( !file || !Object.keys( file ).length ) return null;
@@ -270,7 +265,7 @@ class EditSupportFileRow extends React.PureComponent {
           <Dropdown
             id={ `support-file-${id}` }
             onChange={ this.handleChange }
-            options={ languages }
+            options={ this.props.languages }
             value={ fileLanguageId }
             fluid
             required
@@ -285,21 +280,12 @@ class EditSupportFileRow extends React.PureComponent {
 }
 
 EditSupportFileRow.propTypes = {
-  data: object,
   file: object.isRequired,
   fileExtensions: array,
+  languages: array.isRequired,
   updateLanguage: func,
   mutate: func
 };
-
-const LANGUAGES_QUERY = gql`
-  query Languages($orderBy: LanguageOrderByInput) {
-    languages(orderBy: $orderBy) {
-      value: id
-      text: displayName
-    }
-  }
-`;
 
 const DELETE_SUPPORT_FILE_MUTATION = gql`
   mutation DeleteSupportFile($id: ID!) {
@@ -325,12 +311,6 @@ const UPDATE_SUPPORT_FILE_LANGUAGE_MUTATION = gql`
   }
 `;
 
-const languagesQuery = graphql( LANGUAGES_QUERY, {
-  options: {
-    variables: { orderBy: 'displayName_ASC' }
-  }
-} );
-
 const deleteFileMutation = graphql( DELETE_SUPPORT_FILE_MUTATION, {
   options: props => ( {
     refetchQueries: [
@@ -348,12 +328,10 @@ const updateFileLanguageMutation = graphql( UPDATE_SUPPORT_FILE_LANGUAGE_MUTATIO
 
 export default compose(
   updateFileLanguageMutation,
-  deleteFileMutation,
-  languagesQuery
+  deleteFileMutation
 )( EditSupportFileRow );
 
 export {
-  LANGUAGES_QUERY,
   DELETE_SUPPORT_FILE_MUTATION,
   UPDATE_SUPPORT_FILE_LANGUAGE_MUTATION
 };
