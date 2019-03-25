@@ -11,7 +11,7 @@ import {
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import ProjectItem from 'components/admin/projects/shared/ProjectItem/ProjectItem';
+import ProjectItem from 'components/admin/ProjectItem/ProjectItem';
 import './ProjectItemsList.scss';
 
 const ProjectItemsList = props => {
