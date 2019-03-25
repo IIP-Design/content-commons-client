@@ -11,7 +11,7 @@ import {
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import Placeholder from 'components/admin/projects/shared/Placeholder/Placeholder';
+import Placeholder from 'components/Placeholder/Placeholder';
 import './VideoItem.scss';
 
 /* eslint-disable react/prefer-stateless-function */

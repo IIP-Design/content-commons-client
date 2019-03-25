@@ -8,11 +8,11 @@ import React, { Fragment } from 'react';
 import { array, bool, string } from 'prop-types';
 import { Button } from 'semantic-ui-react';
 
+import IconPopup from 'components/popups/IconPopup/IconPopup';
+import Placeholder from 'components/Placeholder/Placeholder';
 import EditSupportFiles from 'components/admin/projects/ProjectEdit/EditSupportFiles/EditSupportFiles';
 import EditSupportFilesContent from 'components/admin/projects/ProjectEdit/EditSupportFilesContent/EditSupportFilesContent';
-import IconPopup from 'components/popups/IconPopup/IconPopup';
 import SupportItem from 'components/admin/projects/ProjectEdit/SupportItem/SupportItem';
-import Placeholder from 'components/admin/projects/shared/Placeholder/Placeholder';
 
 /* eslint-disable react/prefer-stateless-function */
 class SupportFileTypeList extends React.PureComponent {

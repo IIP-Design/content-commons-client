@@ -8,7 +8,7 @@ import React from 'react';
 import { bool, func, string } from 'prop-types';
 
 import withModal from 'components/admin/projects/ProjectEdit/withModal/withModal';
-import Placeholder from 'components/admin/projects/shared/Placeholder/Placeholder';
+import Placeholder from 'components/Placeholder/Placeholder';
 
 import './ProjectItem.scss';
 
