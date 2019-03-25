@@ -18,7 +18,7 @@ import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmMod
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import PreviewProject from 'components/admin/projects/shared/PreviewProject/PreviewProject';
 import PreviewProjectContent from 'components/admin/projects/shared/PreviewProjectContent/PreviewProjectContent';
-import ProjectSupportFiles from 'components/admin/projects/shared/ProjectSupportFiles/ProjectSupportFiles';
+import ProjectSupportFiles from 'components/admin/ProjectSupportFiles/ProjectSupportFiles';
 import ProjectItemsList from 'components/admin/projects/shared/ProjectItemsList/ProjectItemsList';
 
 import EditSingleProjectItem from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
