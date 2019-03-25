@@ -10,7 +10,7 @@ import { Button } from 'semantic-ui-react';
 
 import EditSupportFiles from 'components/admin/projects/ProjectEdit/EditSupportFiles/EditSupportFiles';
 import EditSupportFilesContent from 'components/admin/projects/ProjectEdit/EditSupportFilesContent/EditSupportFilesContent';
-import IconPopup from 'components/admin/projects/ProjectEdit/IconPopup/IconPopup';
+import IconPopup from 'components/popups/IconPopup/IconPopup';
 import SupportItem from 'components/admin/projects/ProjectEdit/SupportItem/SupportItem';
 import Placeholder from 'components/admin/projects/shared/Placeholder/Placeholder';
 

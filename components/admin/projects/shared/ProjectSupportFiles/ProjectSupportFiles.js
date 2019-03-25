@@ -10,7 +10,7 @@ import {
 } from 'prop-types';
 import { Checkbox, Grid } from 'semantic-ui-react';
 
-import IconPopup from 'components/admin/projects/ProjectEdit/IconPopup/IconPopup';
+import IconPopup from 'components/popups/IconPopup/IconPopup';
 import SupportFileTypeList from 'components/admin/projects/ProjectEdit/SupportFileTypeList/SupportFileTypeList';
 
 import './ProjectSupportFiles.scss';
