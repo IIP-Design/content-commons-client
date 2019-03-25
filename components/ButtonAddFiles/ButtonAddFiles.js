@@ -17,7 +17,7 @@ const ButtonAddFiles = props => {
         type="button"
         onClick={ handleOnClick }
         className={ props.className || 'primary' }
-      >{ props.label || '+ Add Files' }
+      >{ props.children }
       </Button>
       { /* Hidden files dialogue box */ }
       <input
@@ -27,6 +27,7 @@ const ButtonAddFiles = props => {
         multiple={ props.multiple }
         onChange={ props.onChange }
         className="visibly-hidden"
+        tabIndex={ -1 }
       />
     </Fragment>
   );
@@ -36,8 +37,8 @@ ButtonAddFiles.propTypes = {
   onChange: PropTypes.func,
   className: PropTypes.string,
   multiple: PropTypes.bool,
-  label: PropTypes.string,
-  accept: PropTypes.string
+  accept: PropTypes.string,
+  children: PropTypes.node
 };
 
 export default ButtonAddFiles;
