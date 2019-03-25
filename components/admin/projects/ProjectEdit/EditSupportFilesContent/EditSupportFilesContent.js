@@ -10,7 +10,7 @@ import { compose, graphql } from 'react-apollo';
 import { Button, Form, Table } from 'semantic-ui-react';
 
 import ModalItem from 'components/modals/ModalItem/ModalItem';
-import VisuallyHidden from 'components/admin/projects/shared/VisuallyHidden/VisuallyHidden';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import EditSupportFileRow from 'components/admin/projects/ProjectEdit/EditSupportFileRow/EditSupportFileRow';
 
 import { compareValues, capitalizeFirst } from 'lib/utils';

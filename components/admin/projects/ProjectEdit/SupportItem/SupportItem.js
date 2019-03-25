@@ -13,7 +13,7 @@ import { graphql } from 'react-apollo';
 import debounce from 'lodash/debounce';
 
 import Focusable from 'components/Focusable/Focusable';
-import VisuallyHidden from 'components/admin/projects/shared/VisuallyHidden/VisuallyHidden';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import './SupportItem.scss';
 
 /* eslint-disable react/prefer-stateless-function */
