@@ -14,7 +14,7 @@ import { compose, graphql } from 'react-apollo';
 
 import Notification from 'components/Notification/Notification';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import ConfirmModalContent from 'components/admin/projects/shared/ConfirmModalContent/ConfirmModalContent';
+import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import PreviewProject from 'components/admin/projects/shared/PreviewProject/PreviewProject';
 import PreviewProjectContent from 'components/admin/projects/shared/PreviewProjectContent/PreviewProjectContent';
 import ProjectHeader from 'components/admin/projects/shared/ProjectHeader/ProjectHeader';
