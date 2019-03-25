@@ -19,7 +19,7 @@ import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import PreviewProject from 'components/admin/PreviewProject/PreviewProject';
 import PreviewProjectContent from 'components/admin/projects/shared/PreviewProjectContent/PreviewProjectContent';
 import ProjectSupportFiles from 'components/admin/ProjectSupportFiles/ProjectSupportFiles';
-import ProjectItemsList from 'components/admin/projects/shared/ProjectItemsList/ProjectItemsList';
+import ProjectItemsList from 'components/admin/projects/ProjectEdit/ProjectItemsList/ProjectItemsList';
 
 import EditSingleProjectItem from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import FormInstructions from 'components/admin/projects/ProjectEdit/FormInstructions/FormInstructions';
