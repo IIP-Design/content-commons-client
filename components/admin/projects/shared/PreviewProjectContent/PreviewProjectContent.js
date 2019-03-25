@@ -21,7 +21,7 @@ import ModalContentMeta from 'components/modals/ModalContentMeta/ModalContentMet
 import ModalDescription from 'components/modals/ModalDescription/ModalDescription';
 import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
 
-import Notification from 'components/admin/projects/shared/Notification/Notification';
+import Notification from 'components/Notification/Notification';
 import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
 

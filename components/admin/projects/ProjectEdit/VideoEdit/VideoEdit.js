@@ -12,14 +12,14 @@ import {
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
 
+import Notification from 'components/Notification/Notification';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import ConfirmModalContent from 'components/admin/projects/shared/ConfirmModalContent/ConfirmModalContent';
-import Notification from 'components/admin/projects/shared/Notification/Notification';
 import PreviewProject from 'components/admin/projects/shared/PreviewProject/PreviewProject';
 import PreviewProjectContent from 'components/admin/projects/shared/PreviewProjectContent/PreviewProjectContent';
 import ProjectHeader from 'components/admin/projects/shared/ProjectHeader/ProjectHeader';
 import ProjectSupportFiles from 'components/admin/projects/shared/ProjectSupportFiles/ProjectSupportFiles';
 import ProjectItemsList from 'components/admin/projects/shared/ProjectItemsList/ProjectItemsList';
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
 import EditSingleProjectItem from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import FormInstructions from 'components/admin/projects/ProjectEdit/FormInstructions/FormInstructions';
