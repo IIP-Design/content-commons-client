@@ -8,7 +8,7 @@ import React from 'react';
 import { string } from 'prop-types';
 import { Icon, Popup } from 'semantic-ui-react';
 
-import Focusable from 'components/admin/projects/shared/Focusable/Focusable';
+import Focusable from 'components/Focusable/Focusable';
 
 const IconPopup = props => {
   const {

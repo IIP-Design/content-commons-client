@@ -12,7 +12,7 @@ import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
 import debounce from 'lodash/debounce';
 
-import Focusable from 'components/admin/projects/shared/Focusable/Focusable';
+import Focusable from 'components/Focusable/Focusable';
 import VisuallyHidden from 'components/admin/projects/shared/VisuallyHidden/VisuallyHidden';
 
 import { SUPPORT_FILES_QUERY } from 'components/admin/projects/ProjectEdit/EditSupportFilesContent/EditSupportFilesContent';
