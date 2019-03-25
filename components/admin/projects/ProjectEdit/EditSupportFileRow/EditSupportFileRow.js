@@ -19,6 +19,29 @@ import { SUPPORT_FILES_QUERY } from 'components/admin/projects/ProjectEdit/EditS
 
 import './EditSupportFileRow.scss';
 
+/**
+ * @todo delete later after updating datamodel
+ * for `SupportFile` `use` field
+ */
+const imageUses = [
+  {
+    value: '1',
+    text: 'Thumbnail/Cover Image'
+  },
+  {
+    value: '2',
+    text: 'Social Media Graphic'
+  },
+  {
+    value: '3',
+    text: 'Email Graphic'
+  },
+  {
+    value: '4',
+    text: 'Website Hero Image'
+  }
+];
+
 /* eslint-disable react/prefer-stateless-function */
 class EditSupportFileRow extends React.PureComponent {
   constructor( props ) {
@@ -33,6 +56,7 @@ class EditSupportFileRow extends React.PureComponent {
     this.state = {
       cellWidth: null,
       fileNameWidth: null,
+      fileUse: '',
       fileLanguageId: ''
     };
   }
@@ -41,6 +65,7 @@ class EditSupportFileRow extends React.PureComponent {
     this._isMounted = true;
     window.addEventListener( 'resize', this.debounceResize );
     this.setState( {
+      fileUse: '1'/* @todo replace w/ `this.props.file.use` later */,
       fileLanguageId: this.props.file.language.id
     } );
   }
@@ -107,16 +132,33 @@ class EditSupportFileRow extends React.PureComponent {
     itemWidth >= this.getProportionalNumber( reference, proportion )
   );
 
-  handleChange = ( e, { value } ) => {
-    const { file: { id }, updateLanguage } = this.props;
+  handleChange = ( e, { name, value } ) => {
+    /**
+     * @todo need to first add `use` field to `SupportFile`
+     * type in GraphQL datamodel & update type resolver
+     * for the use field.
+     */
+    const mockUpdateFileUse = args => (
+      console.log( 'updateFileUse', { ...args } )
+    );
+
+    const { file: { id }, updateLanguage /* updateFileUse */ } = this.props;
+
+    let type = 'language';
+    let updateFn = updateLanguage;
+    if ( name === 'fileUse' ) {
+      type = 'use';
+      updateFn = mockUpdateFileUse;
+    }
+
     this.setState(
-      { fileLanguageId: value },
-      () => updateLanguage( {
+      { [name]: value },
+      () => updateFn( {
         variables: {
           data: {
-            language: {
+            [type]: {
               connect: {
-                id: this.state.fileLanguageId
+                id: this.state[name]
               }
             }
           },
@@ -197,8 +239,36 @@ class EditSupportFileRow extends React.PureComponent {
     );
   }
 
+  renderFileUse = () => {
+    const { file: { filename, filetype, id } } = this.props;
+    if ( filetype === 'jpg' || filetype === 'png' ) {
+      return (
+        <Fragment>
+          { /* eslint-disable jsx-a11y/label-has-for */ }
+          <VisuallyHidden>
+            <label htmlFor={ `use-${id}` }>
+              { `${filename} use` }
+            </label>
+          </VisuallyHidden>
+
+          <Dropdown
+            id={ `use-${id}` }
+            name="fileUse"
+            onChange={ this.handleChange }
+            options={ imageUses }
+            value={ this.state.fileUse }
+            fluid
+            required
+            selection
+          />
+        </Fragment>
+      );
+    }
+    return 'Not Applicable';
+  }
+
   render() {
-    const { file, file: { filename, id } } = this.props;
+    const { file, file: { filename, filetype, id } } = this.props;
 
     if ( !file || !Object.keys( file ).length ) return null;
 
@@ -255,15 +325,16 @@ class EditSupportFileRow extends React.PureComponent {
         </Table.Cell>
 
         <Table.Cell>
-          { /* eslint-disable jsx-a11y/label-has-for */
-            <VisuallyHidden>
-              <label htmlFor={ `file-${id}` }>
-                { `${filename} language` }
-              </label>
-            </VisuallyHidden> }
+          { /* eslint-disable jsx-a11y/label-has-for */ }
+          <VisuallyHidden>
+            <label htmlFor={ `file-${id}` }>
+              { `${filename} language` }
+            </label>
+          </VisuallyHidden>
 
           <Dropdown
             id={ `file-${id}` }
+            name="fileLanguageId"
             onChange={ this.handleChange }
             options={ this.props.languages }
             value={ fileLanguageId }
@@ -272,6 +343,9 @@ class EditSupportFileRow extends React.PureComponent {
             selection
           />
         </Table.Cell>
+
+        { filetype !== 'srt'
+          && <Table.Cell>{ this.renderFileUse() }</Table.Cell> }
 
         <Table.Cell>{ this.renderIcons() }</Table.Cell>
       </Table.Row>

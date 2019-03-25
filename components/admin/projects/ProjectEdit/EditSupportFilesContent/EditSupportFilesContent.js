@@ -117,6 +117,8 @@ class EditSupportFilesContent extends React.PureComponent {
      */
     const files = this.getFilesByType( supportFiles, fileType );
 
+    const isSrt = fileType === 'srt';
+
     if ( LanguagesQuery.loading || SupportFilesQuery.loading ) return 'Loading...';
 
     if ( LanguagesQuery.error ) return `Error! ${LanguagesQuery.error.message}`;
@@ -124,7 +126,7 @@ class EditSupportFilesContent extends React.PureComponent {
 
     if ( !files || !files.length ) return null;
 
-    const headline = fileType === 'srt'
+    const headline = isSrt
       ? fileType.toUpperCase()
       : capitalizeFirst( fileType );
 
@@ -138,13 +140,22 @@ class EditSupportFilesContent extends React.PureComponent {
           <Table basic="very">
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell width={ 9 }>
+                <Table.HeaderCell width={ isSrt ? 9 : 7 }>
                   { `${headline} File${files.length > 1 ? 's' : ''} Selected` }
                 </Table.HeaderCell>
                 <Table.HeaderCell width={ 4 }>
                   Language
                   <small className="msg--required"> *</small>
                 </Table.HeaderCell>
+
+                { !isSrt
+                  && (
+                    <Table.HeaderCell width={ 4 }>
+                      Type/Use
+                      <small className="msg--required"> *</small>
+                    </Table.HeaderCell>
+                  ) }
+
                 <Table.HeaderCell />
               </Table.Row>
             </Table.Header>
