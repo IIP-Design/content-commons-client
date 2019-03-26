@@ -26,7 +26,9 @@ class FilterSelections extends Component {
    * @param {object} item
    */
   handleOnClick = item => {
-    const { filter, global, term } = this.props;
+    const {
+      filter, global, term, language
+    } = this.props;
 
     const selectedItemsFromSpecificFilter = filter[item.name].slice( 0 );
     const filterItemList = global[item.name].list;
@@ -40,7 +42,9 @@ class FilterSelections extends Component {
     const updatedArr = difference( selectedItemsFromSpecificFilter, values );
 
     // generate updated query string
-    const query = fetchQueryString( { ...filter, [item.name]: updatedArr, term } );
+    const query = fetchQueryString( {
+      ...filter, [item.name]: updatedArr, term, language
+    } );
 
     this.executeQuery( query );
   }
@@ -48,9 +52,13 @@ class FilterSelections extends Component {
   /**
    * Reset all filter to intial values
    */
-  handleClearAllFilters = () => {
-    this.props.clearFilters();
-    this.executeQuery( {} );
+  handleClearAllFilters = async () => {
+    await this.props.clearFilters();
+
+    const { filter, term, language } = this.props;
+    const query = fetchQueryString( { ...filter, term, language } );
+
+    this.executeQuery( query );
   }
 
   /**
@@ -73,7 +81,9 @@ class FilterSelections extends Component {
     } );
 
     // remove any possible duplicates (needed as some filters have multiple values, i.e YALI or YLAI)
-    selections = selections.reduce( ( acc, val ) => ( acc.findIndex( sel => sel.label === val.label ) < 0 ? [...acc, val] : acc ), [] );
+    selections = selections.reduce( ( acc, val ) => (
+      acc.findIndex( sel => sel.label === val.label ) < 0 ? [...acc, val] : acc
+    ), [] );
     return selections;
   }
 
@@ -83,7 +93,6 @@ class FilterSelections extends Component {
   getAllSelections = () => {
     let selections = [];
     const { filter, global } = this.props;
-
     // loop thru selected filters to build selection list
     Object.keys( filter ).reverse().forEach( key => {
       const value = filter[key];
@@ -94,7 +103,7 @@ class FilterSelections extends Component {
         const values = isCheckbox ? value : [value];
 
         // Single select filter props need to be made plural to match their global list name
-        const listName = ( key === 'date' || key === 'language' ) ? `${key}s` : key;
+        const listName = ( key === 'date' ) ? `${key}s` : key;
         const { list } = global[listName];
 
         // generate selection object
@@ -128,7 +137,7 @@ class FilterSelections extends Component {
             onClick={ this.handleOnClick }
           />
         ) ) }
-        { selections.length > 2 && ( // need to update to > 2 as defaults to 2
+        { selections.length > 1 && ( // need to update to > 2 as defaults to 2
           <div
             className="ui label clear_filter"
             onClick={ this.handleClearAllFilters }
@@ -149,13 +158,15 @@ FilterSelections.propTypes = {
   filter: PropTypes.object,
   global: PropTypes.object,
   term: PropTypes.string,
+  language: PropTypes.string,
   clearFilters: PropTypes.func
 };
 
 const mapStateToProps = state => ( {
   filter: state.filter,
   global: state.global,
-  term: state.search.term
+  term: state.search.term,
+  language: state.search.language
 } );
 
 export default withRouter( connect( mapStateToProps, actions )( FilterSelections ) );
