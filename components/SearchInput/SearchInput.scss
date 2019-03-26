@@ -28,9 +28,9 @@
         overflow: hidden;
       }
 
-      .ui.label {
+      .ui.label, .ui.dropdown i {
         font-weight: normal;
-        color: black;
+        color: $grey;
         font-size: 0.8em;
         line-height: 1.7em;
       }
