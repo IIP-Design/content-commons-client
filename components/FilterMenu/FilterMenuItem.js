@@ -59,7 +59,12 @@ const FilterMenuItem = props => {
    */
   const executeQuery = value => {
     // Add term from search reducer to ensure that it does not get removed from the query string
-    const query = fetchQueryString( { ...props.filterStore, [props.name]: value, term: props.term } );
+    const query = fetchQueryString( {
+      ...props.filterStore,
+      [props.name]: value,
+      term: props.term,
+      language: props.language
+    } );
 
     props.router.replace( {
       pathname: '/results',
@@ -169,7 +174,14 @@ const FilterMenuItem = props => {
            formatOptions( options, filter ).map( option => ( ( formItem === 'checkbox' )
              ? renderCheckbox( option )
              : renderRadio( option ) ) )
-        }
+          }
+          { options.length === 0
+            && (
+              <span style={ { textAlign: 'center', paddingTop: '3px' } }>
+                None Available
+              </span>
+            )
+          }
         </Form.Group>
       </Form>
     </div>
@@ -185,13 +197,15 @@ FilterMenuItem.propTypes = {
   filterStore: PropTypes.object,
   name: PropTypes.string,
   term: PropTypes.string,
+  language: PropTypes.string,
   /* eslint-disable-next-line react/no-unused-prop-types */
   selected: PropTypes.oneOfType( [PropTypes.string, PropTypes.array] )
 };
 
 const mapStateToProps = state => ( {
   filterStore: state.filter,
-  term: state.search.term
+  term: state.search.term,
+  language: state.search.language
 } );
 
 export default withRouter( connect( mapStateToProps )( FilterMenuItem ) );
