@@ -23,7 +23,7 @@ const VideoLinkDataForm = () => (
             id="video-youtube"
             control={ Input }
             label="YouTube URL - paste YouTube url link here"
-            autoFocus="true"
+            autoFocus
             name="youtube"
             // value={ videoTitle }
             // onChange={ handleChange }
@@ -33,7 +33,7 @@ const VideoLinkDataForm = () => (
             id="video-description"
             control={ Input }
             label="Vimeo URL - paste Vimeo url link here"
-            autoFocus="true"
+            autoFocus
             name="vimeo"
           />
         </Grid.Column>
