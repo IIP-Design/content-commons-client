@@ -101,6 +101,7 @@ class SupportFileTypeList extends React.PureComponent {
                       contentProps={ {
                         fileType,
                         projectId,
+                        field: fileType === 'srt' ? 'filetype' : 'filetype_not',
                         closeEditModal: this.toggleEditModal
                       } }
                       modalTrigger={ Button }

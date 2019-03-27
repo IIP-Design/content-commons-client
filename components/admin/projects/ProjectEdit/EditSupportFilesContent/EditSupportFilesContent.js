@@ -12,6 +12,7 @@ import { Button, Form, Table } from 'semantic-ui-react';
 import ModalItem from 'components/modals/ModalItem/ModalItem';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import EditSupportFileRow from 'components/admin/projects/ProjectEdit/EditSupportFileRow/EditSupportFileRow';
+import graphqlDynamicHOC from 'components/admin/graphqlDynamicHOC/graphqlDynamicHOC';
 
 import { compareValues, capitalizeFirst } from 'lib/utils';
 
@@ -31,37 +32,6 @@ class EditSupportFilesContent extends React.PureComponent {
     return uniqueExtensions;
   }
 
-  getFilesByType = ( files, type ) => {
-    /**
-     * @todo Would be better to get file types from
-     * a query. Need to figure out why these nested
-     * arguments don't work:
-     *
-       query EditSupportFiles($id: ID!) {
-        project: videoProject(id: $id) {
-          srt: supportFiles(where: {filetype: "srt"}, orderBy: filename_ASC) {
-            id
-            filetype
-            filename
-          }
-          other: supportFiles(where: {filetype_not: "srt"}, , orderBy: filetype_ASC) {
-            id
-            filetype
-            filename
-          }
-        }
-      }
-     */
-    if ( type === 'srt' ) {
-      return files
-        .filter( file => file.filetype === type )
-        .sort( compareValues( 'filename' ) );
-    }
-    return files
-      .filter( file => file.filetype !== 'srt' )
-      .sort( compareValues( 'filetype' ) );
-  }
-
   handleCancelClose = () => {
     console.log( 'cancel' );
     this.props.closeEditModal();
@@ -78,16 +48,10 @@ class EditSupportFilesContent extends React.PureComponent {
 
   renderRow = file => {
     const {
-      fileType,
       projectId,
       LanguagesQuery: { languages },
-      SupportFilesQuery: { project: { supportFiles } }
+      SupportFilesQuery: { project: { files } }
     } = this.props;
-
-    /**
-     * see @todo comment in the getFilesByType method
-     */
-    const files = this.getFilesByType( supportFiles, fileType );
 
     return (
       <EditSupportFileRow
@@ -109,13 +73,8 @@ class EditSupportFilesContent extends React.PureComponent {
       fileType,
       LanguagesQuery,
       SupportFilesQuery,
-      SupportFilesQuery: { project: { supportFiles } }
+      SupportFilesQuery: { project: { files } }
     } = this.props;
-
-    /**
-     * see @todo comment in the getFilesByType method
-     */
-    const files = this.getFilesByType( supportFiles, fileType );
 
     const isSrt = fileType === 'srt';
 
@@ -219,21 +178,23 @@ const LANGUAGES_QUERY = gql`
   }
 `;
 
-const SUPPORT_FILES_QUERY = gql`
-  query SupportFiles($id: ID!) {
-    project: videoProject(id: $id) {
-      supportFiles {
-        id
-        filename
-        filetype
-        language {
+const SUPPORT_FILES_QUERY = props => (
+  gql`
+    query SupportFiles($id: ID!, $fileType: String!) {
+      project: videoProject(id: $id) {
+        files: supportFiles(where: { ${props.field}: $fileType }) {
           id
-          displayName
+          filename
+          filetype
+          language {
+            id
+            displayName
+          }
         }
       }
     }
-  }
-`;
+  `
+);
 
 const languagesQuery = graphql( LANGUAGES_QUERY, {
   name: 'LanguagesQuery',
@@ -242,11 +203,12 @@ const languagesQuery = graphql( LANGUAGES_QUERY, {
   }
 } );
 
-const supportFilesQuery = graphql( SUPPORT_FILES_QUERY, {
+const supportFilesQuery = graphqlDynamicHOC( SUPPORT_FILES_QUERY, {
   name: 'SupportFilesQuery',
   options: props => ( {
     variables: {
-      id: props.projectId
+      id: props.projectId,
+      fileType: 'srt'
     }
   } )
 } );

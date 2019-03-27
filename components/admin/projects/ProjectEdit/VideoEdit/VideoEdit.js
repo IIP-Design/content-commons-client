@@ -190,7 +190,7 @@ class VideoEdit extends React.PureComponent {
   getSupportFilesCount = () => {
     const { project } = this.props.data;
     if ( project ) {
-      return project.supportFiles.length;
+      return project.srt.length + project.other.length;
     }
   }
 
@@ -201,20 +201,6 @@ class VideoEdit extends React.PureComponent {
   getUploadedFilesCount = () => {
     const { uploadedVideosCount, uploadedSupportFilesCount } = this.state;
     return uploadedVideosCount + uploadedSupportFilesCount;
-  }
-
-  getSRTs = () => {
-    const { supportFiles } = this.props.data.project;
-    if ( supportFiles ) {
-      return supportFiles.filter( file => file.filetype === 'srt' );
-    }
-  }
-
-  getOtherSupportFiles = () => {
-    const { supportFiles } = this.props.data.project;
-    if ( supportFiles ) {
-      return supportFiles.filter( file => file.filetype !== 'srt' );
-    }
   }
 
   getTags = () => {
@@ -417,7 +403,7 @@ class VideoEdit extends React.PureComponent {
       );
     }
 
-    const { supportFiles } = data.project;
+    const { other, srt } = data.project;
 
     const {
       deleteConfirmOpen,
@@ -460,7 +446,7 @@ class VideoEdit extends React.PureComponent {
       notificationMsg = 'Saving project...';
     }
 
-    const hasSupportFiles = supportFiles && supportFiles.length > 0;
+    const hasSupportFiles = ( srt && srt.length > 0 ) || ( other && other.length > 0 );
 
     return (
       <div className="edit-project">
@@ -622,10 +608,7 @@ class VideoEdit extends React.PureComponent {
               <ProjectSupportFiles
                 heading="Support Files"
                 projectId={ this.props.id }
-                supportFiles={ {
-                  srt: this.getSRTs(),
-                  other: this.getOtherSupportFiles()
-                } }
+                supportFiles={ { srt, other } }
                 hasSubmittedData={ hasSubmittedData }
                 protectImages={ protectImages }
                 handleChange={ this.handleChange }
@@ -693,7 +676,17 @@ const VIDEO_PROJECT_QUERY = gql`
           languageCode
         }
       }
-      supportFiles {
+      srt: supportFiles(
+        where: { filetype: "srt" },
+        orderBy: filename_ASC
+      ) {
+        id
+        filetype
+      }
+      other: supportFiles(
+        where: { filetype_not: "srt" },
+        orderBy: filename_ASC
+      ) {
         id
         filetype
       }
