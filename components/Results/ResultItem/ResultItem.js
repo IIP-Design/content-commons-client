@@ -43,7 +43,8 @@ class ResultItem extends Component {
         />
       );
     }
-    if ( !source && item.type === 'video' && ( item.owner === 'IIP Video' || item.owner === 'IIP Interactive' ) ) {
+    const dosOwners = ['IIP Video', 'IIP Interactive', 'Public Affairs'];
+    if ( !source && item.type === 'video' && dosOwners.includes( item.owner ) ) {
       source = (
         <div style={ { display: 'block', marginTop: '2px' } }>
           <div
