@@ -37,7 +37,7 @@ export const loadRecents = ( postType, locale ) => async ( dispatch, getState ) 
     }
 
     if ( response && response.hits && response.hits.hits ) {
-      items = response.hits.hits.map( item => normalizeItem( item ) );
+      items = response.hits.hits.map( item => normalizeItem( item, 'en-us' ) );
     }
 
     return dispatch( {
