@@ -672,9 +672,6 @@ const VIDEO_PROJECT_QUERY = gql`
     project: videoProject(id: $id) {
       videos: units {
         id
-        language {
-          languageCode
-        }
       }
       srt: supportFiles(
         where: { filetype: "srt" },

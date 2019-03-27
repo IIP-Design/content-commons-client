@@ -10,6 +10,7 @@ import {
 } from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import orderBy from 'lodash/orderBy';
 
 import ProjectItem from 'components/admin/ProjectItem/ProjectItem';
 import './ProjectItemsList.scss';
@@ -44,11 +45,13 @@ const ProjectItemsList = props => {
   if ( loading ) return 'Loading the project items...';
   if ( error ) return `Error! ${error.message}`;
 
+  const sortedUnits = orderBy( units, ['language.displayName', 'title'] );
+
   return (
     <div className="project-items">
       <h2 className="list-heading">{ headline }</h2>
       <List className="items-list" style={ listStyle }>
-        { units.map( unit => (
+        { sortedUnits.map( unit => (
           <ProjectItem
             key={ `${unit.title} - ${unit.language.languageCode}` }
             isAvailable={ hasSubmittedData }
@@ -91,7 +94,7 @@ const PROJECT_ITEMS_QUERY = gql`
         id
         title
         language {
-          languageCode
+          displayName
         }
       }
     }
