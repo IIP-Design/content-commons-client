@@ -7,6 +7,7 @@ import React from 'react';
 import { func, object, string } from 'prop-types';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
+import orderBy from 'lodash/orderBy';
 import { Button, Form, Table } from 'semantic-ui-react';
 
 import ModalItem from 'components/modals/ModalItem/ModalItem';
@@ -14,7 +15,7 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import EditSupportFileRow from 'components/admin/projects/ProjectEdit/EditSupportFileRow/EditSupportFileRow';
 import graphqlDynamicHOC from 'components/admin/graphqlDynamicHOC/graphqlDynamicHOC';
 
-import { compareValues, capitalizeFirst } from 'lib/utils';
+import { capitalizeFirst } from 'lib/utils';
 
 import './EditSupportFilesContent.scss';
 
@@ -85,6 +86,8 @@ class EditSupportFilesContent extends React.PureComponent {
 
     if ( !files || !files.length ) return null;
 
+    const sortedFiles = orderBy( files, ['filetype'] );
+
     const headline = isSrt
       ? fileType.toUpperCase()
       : capitalizeFirst( fileType );
@@ -120,7 +123,7 @@ class EditSupportFilesContent extends React.PureComponent {
             </Table.Header>
 
             <Table.Body>
-              { files.map( this.renderRow ) }
+              { sortedFiles.map( this.renderRow ) }
             </Table.Body>
           </Table>
 
@@ -180,9 +183,12 @@ const LANGUAGES_QUERY = gql`
 
 const SUPPORT_FILES_QUERY = props => (
   gql`
-    query SupportFiles($id: ID!, $fileType: String!) {
+    query SupportFiles($id: ID!, $fileType: String!, $orderBy: SupportFileOrderByInput) {
       project: videoProject(id: $id) {
-        files: supportFiles(where: { ${props.field}: $fileType }) {
+        files: supportFiles(
+          where: { ${props.field}: $fileType }
+          orderBy: $orderBy
+        ) {
           id
           filename
           filetype
@@ -208,7 +214,8 @@ const supportFilesQuery = graphqlDynamicHOC( SUPPORT_FILES_QUERY, {
   options: props => ( {
     variables: {
       id: props.projectId,
-      fileType: 'srt'
+      fileType: 'srt',
+      orderBy: 'filename_ASC'
     }
   } )
 } );

@@ -11,6 +11,7 @@ import {
 } from 'semantic-ui-react';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
+import orderBy from 'lodash/orderBy';
 
 import Notification from 'components/Notification/Notification';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
@@ -608,7 +609,10 @@ class VideoEdit extends React.PureComponent {
               <ProjectSupportFiles
                 heading="Support Files"
                 projectId={ this.props.id }
-                supportFiles={ { srt, other } }
+                supportFiles={ {
+                  srt,
+                  other: orderBy( other, ['filetype'] )
+                } }
                 hasSubmittedData={ hasSubmittedData }
                 protectImages={ protectImages }
                 handleChange={ this.handleChange }
