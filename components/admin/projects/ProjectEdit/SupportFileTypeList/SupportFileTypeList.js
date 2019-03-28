@@ -4,7 +4,7 @@
  *
  */
 
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { array, bool, string } from 'prop-types';
 import { Button } from 'semantic-ui-react';
 
@@ -14,23 +14,26 @@ import EditSupportFiles from 'components/admin/projects/ProjectEdit/EditSupportF
 import EditSupportFilesContent from 'components/admin/projects/ProjectEdit/EditSupportFilesContent/EditSupportFilesContent';
 import SupportItem from 'components/admin/projects/ProjectEdit/SupportItem/SupportItem';
 
-/* eslint-disable react/prefer-stateless-function */
-class SupportFileTypeList extends React.PureComponent {
-  state = {}
+const SupportFileTypeList = props => {
+  const [isEditing, setEditing] = useState( false );
 
-  toggleEditModal = () => (
-    this.setState( prevState => (
-      { isEditing: !prevState.isEditing }
-    ) )
-  )
+  const {
+    headline,
+    data,
+    fileType,
+    projectId,
+    popupMsg,
+    hasSubmittedData,
+    hasUploaded
+  } = props;
 
-  renderSupportItem = item => {
-    const {
-      projectId,
-      fileType,
-      hasSubmittedData
-    } = this.props;
+  if ( !data.length ) return null;
 
+  const toggleEditModal = () => {
+    setEditing( prevIsEditing => !prevIsEditing );
+  };
+
+  const renderSupportItem = item => {
     if ( hasSubmittedData ) {
       return (
         <SupportItem
@@ -61,68 +64,54 @@ class SupportFileTypeList extends React.PureComponent {
         } }
       />
     );
-  }
+  };
 
-  render() {
-    const {
-      headline,
-      data,
-      fileType,
-      projectId,
-      popupMsg,
-      hasSubmittedData,
-      hasUploaded
-    } = this.props;
-
-    if ( !data.length ) return null;
-
-    return (
-      <Fragment>
-        <h3>{ `${headline} ` }
-          { hasSubmittedData
-            && (
-              <Fragment>
-                <IconPopup
-                  message={ popupMsg }
-                  iconSize="small"
-                  iconType="info circle"
-                  popupSize="mini"
-                />
-                { hasUploaded
-                  && (
-                    <EditSupportFiles
-                      triggerProps={ {
-                        className: 'btn--edit',
-                        content: 'Edit',
-                        size: 'small',
-                        basic: true,
-                        onClick: this.toggleEditModal
-                      } }
-                      contentProps={ {
-                        fileType,
-                        projectId,
-                        field: fileType === 'srt' ? 'filetype' : 'filetype_not',
-                        closeEditModal: this.toggleEditModal
-                      } }
-                      modalTrigger={ Button }
-                      modalContent={ EditSupportFilesContent }
-                      options={ {
-                        closeIcon: true,
-                        onClose: this.toggleEditModal,
-                        open: this.state.isEditing
-                      } }
-                    />
-                  ) }
-              </Fragment>
-            ) }
-        </h3>
-        <ul>
-          { data.map( this.renderSupportItem ) }
-        </ul>
-      </Fragment>
-    );
-  }
-}
+  return (
+    <Fragment>
+      <h3>{ `${headline} ` }
+        { hasSubmittedData
+          && (
+            <Fragment>
+              <IconPopup
+                message={ popupMsg }
+                iconSize="small"
+                iconType="info circle"
+                popupSize="mini"
+              />
+              { hasUploaded
+                && (
+                  <EditSupportFiles
+                    triggerProps={ {
+                      className: 'btn--edit',
+                      content: 'Edit',
+                      size: 'small',
+                      basic: true,
+                      onClick: toggleEditModal
+                    } }
+                    contentProps={ {
+                      fileType,
+                      projectId,
+                      field: fileType === 'srt' ? 'filetype' : 'filetype_not',
+                      closeEditModal: toggleEditModal
+                    } }
+                    modalTrigger={ Button }
+                    modalContent={ EditSupportFilesContent }
+                    options={ {
+                      closeIcon: true,
+                      onClose: toggleEditModal,
+                      open: isEditing
+                    } }
+                  />
+                ) }
+            </Fragment>
+          ) }
+      </h3>
+      <ul>
+        { data.map( renderSupportItem ) }
+      </ul>
+    </Fragment>
+  );
+};
 
 SupportFileTypeList.propTypes = {
   headline: string,
