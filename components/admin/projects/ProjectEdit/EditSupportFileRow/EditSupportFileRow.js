@@ -4,7 +4,9 @@
  *
  */
 import React, { Fragment } from 'react';
-import { array, func, object } from 'prop-types';
+import {
+  array, func, object, string
+} from 'prop-types';
 import {
   Button, Dropdown, Popup, Table
 } from 'semantic-ui-react';
@@ -390,11 +392,15 @@ const deleteFileMutation = graphql( DELETE_SUPPORT_FILE_MUTATION, {
   options: props => ( {
     refetchQueries: [
       {
-        query: SUPPORT_FILES_QUERY,
-        variables: { id: props.projectId }
+        query: SUPPORT_FILES_QUERY( props ),
+        variables: {
+          id: props.projectId,
+          fileType: 'srt',
+          orderBy: 'filename_ASC'
+        }
       }
     ]
-  } ),
+  } )
 } );
 
 const updateFileLanguageMutation = graphql( UPDATE_SUPPORT_FILE_LANGUAGE_MUTATION, {

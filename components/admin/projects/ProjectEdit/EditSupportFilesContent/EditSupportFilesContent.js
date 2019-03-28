@@ -49,6 +49,7 @@ class EditSupportFilesContent extends React.PureComponent {
 
   renderRow = file => {
     const {
+      field,
       projectId,
       LanguagesQuery: { languages },
       SupportFilesQuery: { project: { files } }
@@ -58,6 +59,7 @@ class EditSupportFilesContent extends React.PureComponent {
       <EditSupportFileRow
         key={ file.id }
         file={ file }
+        field={ field }
         projectId={ projectId }
         languages={ languages }
         fileExtensions={ this.getFileExtensions( files ) }
@@ -169,6 +171,7 @@ EditSupportFilesContent.propTypes = {
   SupportFilesQuery: object.isRequired,
   projectId: string.isRequired,
   fileType: string,
+  field: string,
   closeEditModal: func
 };
 
