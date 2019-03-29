@@ -72,16 +72,14 @@ class PreviewProjectContent extends React.PureComponent {
   }
 
   render() {
-    const {
-      error,
-      loading,
-      project
-    } = this.props.data;
+    const { error, loading, project } = this.props.data;
 
     if ( loading ) return 'Loading the project...';
     if ( error ) return `Error! ${error.message}`;
 
-    const { projectType, team, units } = project;
+    const {
+      createdAt, updatedAt, projectType, team, units
+    } = project;
     const { dropDownIsOpen, selectedLanguage } = this.state;
 
     const projectItems = this.getProjectItems( units );
@@ -90,12 +88,7 @@ class PreviewProjectContent extends React.PureComponent {
     if ( !selectedItem || !Object.keys( selectedItem ).length ) return null;
 
     const {
-      title,
-      language,
-      descPublic,
-      updated, // currently undefined, need updatedAt from Prisma
-      uploaded, // currently undefined, need createdAt from Prisma
-      files
+      title, language, descPublic, files
     } = selectedItem;
 
     const currentUnit = files[0];
@@ -212,12 +205,12 @@ class PreviewProjectContent extends React.PureComponent {
               />
             ) }
 
-          <ModalContentMeta type={ projectType } dateUpdated={ updated || uploaded } />
+          <ModalContentMeta type={ projectType } dateUpdated={ updatedAt } />
 
           <ModalDescription description={ descPublic } />
         </div>
 
-        <ModalPostMeta source={ team.name } datePublished={ uploaded } />
+        <ModalPostMeta source={ team.name } datePublished={ createdAt } />
       </ModalItem>
     );
   }
@@ -230,6 +223,8 @@ PreviewProjectContent.propTypes = {
 const VIDEO_PROJECT_PREVIEW_QUERY = gql`
   query VideoProject($id: ID!) {
     project: videoProject(id: $id) {
+      createdAt
+      updatedAt
       projectType
       thumbnails {
         alt
