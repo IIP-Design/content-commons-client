@@ -15,7 +15,7 @@ const VideoProjectType = props => {
 
   // only called if files are selected
   const handleOnChangeFiles = e => {
-    props.handleVideoAssetsUpload( e );
+    props.addAssetFiles( e.target.files );
     props.goNext();
   };
 
@@ -31,7 +31,7 @@ const VideoProjectType = props => {
           className="secondary"
         >Cancel
         </Button>
-        <ButtonAddFiles onChange={ handleOnChangeFiles } multiple />
+        <ButtonAddFiles onChange={ handleOnChangeFiles } multiple>+ Add Files</ButtonAddFiles>
       </div>
     </Form>
 
@@ -40,7 +40,7 @@ const VideoProjectType = props => {
 
 VideoProjectType.propTypes = {
   closeModal: PropTypes.func,
-  handleVideoAssetsUpload: PropTypes.func,
+  addAssetFiles: PropTypes.func,
   updateModalClassname: PropTypes.func,
   goNext: PropTypes.func
 };

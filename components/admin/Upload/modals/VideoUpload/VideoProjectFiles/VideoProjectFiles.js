@@ -1,19 +1,41 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import Link from 'next/link';
 import {
   Grid,
   Form,
   Button,
   Step
 } from 'semantic-ui-react';
+import { withRouter } from 'next/router';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import CancelUpload from '../../CancelUpload/CancelUpload';
-import VideoAssetFile from './VideoAssetFile';
+import VideoProjectFilesRow from './VideoProjectFilesRow';
 import './VideoProjectFiles.scss';
 
 const VideoProjectFiles = props => {
   const [activeStep, setActiveStep] = useState( 1 );
+
+  const styles = {
+    hide: {
+      display: 'none'
+    },
+    show: {
+      display: 'inline-block'
+    }
+  };
+
+  const show = flag => ( activeStep === flag ? styles.show : styles.hide );
+
+  const gotoVideoEditPage = () => {
+    // /admin/project?content=video&id=234&action=edit
+    props.router.push( {
+      pathname: '/admin/project',
+      query: {
+        content: 'video',
+        action: 'edit'
+      }
+    } );
+  };
 
   // since we are using a stateless function, use a hook for mouunting/unmouting calls
   useEffect( () => {
@@ -23,9 +45,8 @@ const VideoProjectFiles = props => {
 
   const {
     closeModal,
-    removeVideoAssetFile,
-    replaceVideoAssetFile,
-    files
+    files,
+    allFieldsSelected
   } = props;
 
   return (
@@ -40,38 +61,29 @@ const VideoProjectFiles = props => {
       <Form className="videoProjectFiles">
         <Grid>
           <Grid.Row className="videoProjectFiles_column_labels">
-            <Grid.Column width={ 6 }>
-              <p className="videoProjectFiles_column_label">Files Selected</p>
-            </Grid.Column>
-            <Grid.Column width={ 10 }>
-              { activeStep === 1 && (
-              <Fragment>
-                <p className="videoProjectFiles_column_label videoProjectFiles_column_label--required">Language</p>
-                <p className="videoProjectFiles_column_label videoProjectFiles_column_label--required">Subtitles</p>
-              </Fragment>
-              ) }
-              { activeStep === 2 && (
-              <Fragment>
-                <p className="videoProjectFiles_column_label videoProjectFiles_column_label--required">Type / Use</p>
-                <p className="videoProjectFiles_column_label videoProjectFiles_column_label--required">Quality</p>
-              </Fragment>
-              ) }
-            </Grid.Column>
+            <Grid.Column width={ 6 }>Files Selected</Grid.Column>
+            <Grid.Column width={ 4 } style={ show( 1 ) }>Language</Grid.Column>
+            <Grid.Column width={ 4 } style={ show( 1 ) }>Subtitles</Grid.Column>
+            <Grid.Column width={ 4 } style={ show( 2 ) }>Type / Use</Grid.Column>
+            <Grid.Column width={ 4 } style={ show( 2 ) }>Quality</Grid.Column>
+            <Grid.Column width={ 2 }></Grid.Column>
           </Grid.Row>
 
-          { files.map( ( file, i ) => (
-            <VideoAssetFile
-              key={ `${file}_${i}` }
-              activeStep={ activeStep }
+          { files.map( file => (
+            <VideoProjectFilesRow
+              key={ file.id }
               file={ file }
-              removeVideoAssetFile={ removeVideoAssetFile }
-              replaceVideoAssetFile={ replaceVideoAssetFile }
+              updateField={ props.updateField }
+              replaceAssetFile={ props.replaceAssetFile }
+              removeAssetFile={ props.removeAssetFile }
+              showColumn={ show }
+              activeStep={ activeStep }
             />
           ) ) }
 
           { activeStep === 1 && (
           <Grid.Row>
-            <ButtonAddFiles onChange={ e => props.handleVideoAssetsUpload( e ) } multiple className="secondary" />
+            <ButtonAddFiles onChange={ e => props.addAssetFiles( e.target.files ) } multiple className="secondary">+ Add Files</ButtonAddFiles>
           </Grid.Row>
           ) }
         </Grid>
@@ -86,7 +98,15 @@ const VideoProjectFiles = props => {
           <Button
             className="primary"
             content="Next"
+            style={ show( 1 ) }
             onClick={ () => setActiveStep( 2 ) }
+          />
+          <Button
+            className="primary"
+            content="Next"
+            disabled={ !allFieldsSelected }
+            style={ show( 2 ) }
+            onClick={ gotoVideoEditPage }
           />
         </Form.Field>
       </Form>
@@ -99,9 +119,12 @@ VideoProjectFiles.propTypes = {
   files: PropTypes.array,
   closeModal: PropTypes.func,
   updateModalClassname: PropTypes.func,
-  handleVideoAssetsUpload: PropTypes.func,
-  removeVideoAssetFile: PropTypes.func,
-  replaceVideoAssetFile: PropTypes.func
+  addAssetFiles: PropTypes.func,
+  removeAssetFile: PropTypes.func,
+  replaceAssetFile: PropTypes.func,
+  updateField: PropTypes.func,
+  router: PropTypes.object,
+  allFieldsSelected: PropTypes.bool
 };
 
-export default VideoProjectFiles;
+export default withRouter( VideoProjectFiles );

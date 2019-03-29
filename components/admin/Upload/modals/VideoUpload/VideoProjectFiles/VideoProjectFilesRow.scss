@@ -1,0 +1,45 @@
+@import "styles/colors.scss";
+
+.videoProjectFilesRow {
+  &__column {
+    font-size: 0.88em;
+
+    &--not-applicable {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      font-size: 0.77rem;
+      color: $grey;
+    }
+
+    .column-filename {
+      display: flex;
+      align-items: center;
+
+      .show {
+        display: inline-block;
+      }
+
+      .hide {
+        display: none;
+      }
+
+      .item-complete {
+        flex: 0 1 30px;
+
+        .ui.mini.label {
+          font-size: 0.57rem;
+        }
+
+        i.inverted.circular.green.icon {
+          background-color: #2e8540 !important;
+          font-size: 0.57rem;
+        }
+      }
+
+      .item-text {
+        flex: 2 0 auto;
+      }
+    }
+  }
+}
