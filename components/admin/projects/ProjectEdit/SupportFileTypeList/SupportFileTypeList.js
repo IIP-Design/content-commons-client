@@ -5,16 +5,14 @@
  */
 
 import React, { Fragment } from 'react';
-import {
-  array, bool, object, string
-} from 'prop-types';
+import { array, bool, string } from 'prop-types';
 import { Button } from 'semantic-ui-react';
 
+import IconPopup from 'components/popups/IconPopup/IconPopup';
+import Placeholder from 'components/Placeholder/Placeholder';
 import EditSupportFiles from 'components/admin/projects/ProjectEdit/EditSupportFiles/EditSupportFiles';
 import EditSupportFilesContent from 'components/admin/projects/ProjectEdit/EditSupportFilesContent/EditSupportFilesContent';
-import IconPopup from 'components/admin/projects/ProjectEdit/IconPopup/IconPopup';
 import SupportItem from 'components/admin/projects/ProjectEdit/SupportItem/SupportItem';
-import Placeholder from 'components/admin/projects/shared/Placeholder/Placeholder';
 
 /* eslint-disable react/prefer-stateless-function */
 class SupportFileTypeList extends React.PureComponent {
@@ -37,7 +35,7 @@ class SupportFileTypeList extends React.PureComponent {
       return (
         <SupportItem
           key={ `${fileType}-${item.id}` }
-          projectId={ { ...projectId } }
+          projectId={ projectId }
           fileType={ fileType }
           itemId={ item.id }
         />
@@ -68,9 +66,10 @@ class SupportFileTypeList extends React.PureComponent {
   render() {
     const {
       headline,
-      fileType,
-      popupMsg,
       data,
+      fileType,
+      projectId,
+      popupMsg,
       hasSubmittedData,
       hasUploaded
     } = this.props;
@@ -100,8 +99,8 @@ class SupportFileTypeList extends React.PureComponent {
                         onClick: this.toggleEditModal
                       } }
                       contentProps={ {
-                        data,
                         fileType,
+                        projectId,
                         closeEditModal: this.toggleEditModal
                       } }
                       modalTrigger={ Button }
@@ -126,7 +125,7 @@ class SupportFileTypeList extends React.PureComponent {
 
 SupportFileTypeList.propTypes = {
   headline: string,
-  projectId: object.isRequired,
+  projectId: string.isRequired,
   fileType: string,
   popupMsg: string,
   data: array.isRequired,

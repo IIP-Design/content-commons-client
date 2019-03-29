@@ -1,13 +1,13 @@
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
-import { categoryData, privacyOptions } from 'components/admin/projects/ProjectEdit/mockData';
+import { categoryData, visibilityOptions } from 'components/admin/projects/ProjectEdit/mockData';
 import ProjectDataForm from './ProjectDataForm';
 
 const props = {
   handleSubmit: jest.fn(),
   handleChange: jest.fn(),
   videoTitle: '',
-  privacyOptions,
+  visibilityOptions,
   visibility: 'PUBLIC',
   authorValue: '',
   teamValue: '',

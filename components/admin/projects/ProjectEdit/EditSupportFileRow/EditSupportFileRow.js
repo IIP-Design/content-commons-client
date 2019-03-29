@@ -4,27 +4,42 @@
  *
  */
 import React, { Fragment } from 'react';
-import {
-  array, func, object, string
-} from 'prop-types';
+import { array, func, object } from 'prop-types';
 import {
   Button, Dropdown, Popup, Table
 } from 'semantic-ui-react';
+import gql from 'graphql-tag';
+import { compose, graphql } from 'react-apollo';
 import debounce from 'lodash/debounce';
 
-import Focusable from 'components/admin/projects/shared/Focusable/Focusable';
-import VisuallyHidden from 'components/admin/projects/shared/VisuallyHidden/VisuallyHidden';
+import Focusable from 'components/Focusable/Focusable';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+
+import { SUPPORT_FILES_QUERY } from 'components/admin/projects/ProjectEdit/EditSupportFilesContent/EditSupportFilesContent';
 
 import './EditSupportFileRow.scss';
 
-const languages = [
-  { value: 'arabic', text: 'Arabic' },
-  { value: 'chinese', text: 'Chinese' },
-  { value: 'english', text: 'English' },
-  { value: 'french', text: 'French' },
-  { value: 'portuguese', text: 'Portuguese' },
-  { value: 'russian', text: 'Russian' },
-  { value: 'spanish', text: 'Spanish' }
+/**
+ * @todo delete later after updating datamodel
+ * for `SupportFile` `use` field
+ */
+const imageUses = [
+  {
+    value: '1',
+    text: 'Thumbnail/Cover Image'
+  },
+  {
+    value: '2',
+    text: 'Social Media Graphic'
+  },
+  {
+    value: '3',
+    text: 'Email Graphic'
+  },
+  {
+    value: '4',
+    text: 'Website Hero Image'
+  }
 ];
 
 /* eslint-disable react/prefer-stateless-function */
@@ -40,13 +55,19 @@ class EditSupportFileRow extends React.PureComponent {
 
     this.state = {
       cellWidth: null,
-      fileNameWidth: null
+      fileNameWidth: null,
+      fileUse: '',
+      fileLanguageId: ''
     };
   }
 
   componentDidMount = () => {
     this._isMounted = true;
     window.addEventListener( 'resize', this.debounceResize );
+    this.setState( {
+      fileUse: '1'/* @todo replace w/ `this.props.file.use` later */,
+      fileLanguageId: this.props.file.language.id
+    } );
   }
 
   componentWillUnmount = () => {
@@ -111,13 +132,50 @@ class EditSupportFileRow extends React.PureComponent {
     itemWidth >= this.getProportionalNumber( reference, proportion )
   );
 
+  handleChange = ( e, { name, value } ) => {
+    /**
+     * @todo need to first add `use` field to `SupportFile`
+     * type in GraphQL datamodel & update type resolver
+     * for the use field.
+     */
+    const mockUpdateFileUse = args => (
+      console.log( 'updateFileUse', { ...args } )
+    );
+
+    const { file: { id }, updateLanguage /* updateFileUse */ } = this.props;
+
+    let type = 'language';
+    let updateFn = updateLanguage;
+    if ( name === 'fileUse' ) {
+      type = 'use';
+      updateFn = mockUpdateFileUse;
+    }
+
+    this.setState(
+      { [name]: value },
+      () => updateFn( {
+        variables: {
+          data: {
+            [type]: {
+              connect: {
+                id: this.state[name]
+              }
+            }
+          },
+          where: { id }
+        }
+      } )
+    );
+  }
+
   handleReplaceFile = () => {
     console.log( 'replace file' );
     this.addReplaceFileRef.click();
   }
 
   handleDeleteFile = () => {
-    console.log( 'delete file' );
+    const { file: { id }, deleteFile } = this.props;
+    deleteFile( { variables: { id } } );
   }
 
   renderIcons = () => {
@@ -181,17 +239,44 @@ class EditSupportFileRow extends React.PureComponent {
     );
   }
 
+  renderFileUse = () => {
+    const { file: { filename, filetype, id } } = this.props;
+    if ( filetype === 'jpg' || filetype === 'png' ) {
+      return (
+        <Fragment>
+          { /* eslint-disable jsx-a11y/label-has-for */ }
+          <VisuallyHidden>
+            <label htmlFor={ `use-${id}` }>
+              { `${filename} use` }
+            </label>
+          </VisuallyHidden>
+
+          <Dropdown
+            id={ `use-${id}` }
+            name="fileUse"
+            onChange={ this.handleChange }
+            options={ imageUses }
+            value={ this.state.fileUse }
+            fluid
+            required
+            selection
+          />
+        </Fragment>
+      );
+    }
+    return 'Not Applicable';
+  }
+
   render() {
-    const { file, handleChange, selectedLanguage } = this.props;
+    const { file, file: { filename, filetype, id } } = this.props;
 
     if ( !file || !Object.keys( file ).length ) return null;
 
-    const { file: fileName, id } = file;
-    const { cellWidth, fileNameWidth } = this.state;
+    const { cellWidth, fileNameWidth, fileLanguageId } = this.state;
 
     const charIndex = this.getProportionalNumber( fileNameWidth, this.STR_INDEX_PROPORTION );
 
-    const shortFileName = this.getShortFileName( fileName, charIndex );
+    const shortFileName = this.getShortFileName( filename, charIndex );
 
     const isLongFileName = this.isLongName( fileNameWidth, cellWidth, this.ITEM_NAME_PROPORTION );
 
@@ -209,7 +294,7 @@ class EditSupportFileRow extends React.PureComponent {
             className="file-name"
             ref={ node => this.setRefWidth( node, 'cell' ) }
           >
-            { isLongFileName && <VisuallyHidden>{ fileName }</VisuallyHidden> }
+            { isLongFileName && <VisuallyHidden>{ filename }</VisuallyHidden> }
             <span
               className={
                 `file-name-wrap${isLongFileName ? ' hasEllipsis' : ''}`
@@ -225,7 +310,7 @@ class EditSupportFileRow extends React.PureComponent {
                         <Focusable>{ shortFileName }</Focusable>
                       </span>
                     ) }
-                    content={ fileName }
+                    content={ filename }
                     on={ [
                       'hover', 'click', 'focus'
                     ] }
@@ -234,31 +319,33 @@ class EditSupportFileRow extends React.PureComponent {
                     style={ popupStyle }
                   />
                 )
-                : fileName }
+                : filename }
             </span>
           </div>
         </Table.Cell>
 
         <Table.Cell>
-          { /* eslint-disable jsx-a11y/label-has-for */
-            <VisuallyHidden>
-              <label htmlFor={ `file-${id}` }>
-                { `${fileName} language` }
-              </label>
-            </VisuallyHidden> }
+          { /* eslint-disable jsx-a11y/label-has-for */ }
+          <VisuallyHidden>
+            <label htmlFor={ `file-${id}` }>
+              { `${filename} language` }
+            </label>
+          </VisuallyHidden>
+
           <Dropdown
-            id={ id }
-            onChange={ handleChange }
-            options={ languages }
-            placeholder="–"
-            text={ selectedLanguage }
-            value={ selectedLanguage }
-            error={ !selectedLanguage }
+            id={ `file-${id}` }
+            name="fileLanguageId"
+            onChange={ this.handleChange }
+            options={ this.props.languages }
+            value={ fileLanguageId }
             fluid
             required
             selection
           />
         </Table.Cell>
+
+        { filetype !== 'srt'
+          && <Table.Cell>{ this.renderFileUse() }</Table.Cell> }
 
         <Table.Cell>{ this.renderIcons() }</Table.Cell>
       </Table.Row>
@@ -267,10 +354,59 @@ class EditSupportFileRow extends React.PureComponent {
 }
 
 EditSupportFileRow.propTypes = {
-  handleChange: func,
-  file: object,
+  file: object.isRequired,
   fileExtensions: array,
-  selectedLanguage: string
+  languages: array.isRequired,
+  updateLanguage: func,
+  deleteFile: func
 };
 
-export default EditSupportFileRow;
+const DELETE_SUPPORT_FILE_MUTATION = gql`
+  mutation DeleteSupportFile($id: ID!) {
+    deleteSupportFile(id: $id) {
+      id
+      filename
+    }
+  }
+`;
+
+const UPDATE_SUPPORT_FILE_LANGUAGE_MUTATION = gql`
+  mutation UpdateSupportFileLanguage($data: SupportFileUpdateInput!
+  $where: SupportFileWhereUniqueInput!) {
+    updateSupportFile(data: $data, where: $where) {
+      id
+      filename
+      filetype
+      language {
+        id
+        displayName
+      }
+    }
+  }
+`;
+
+const deleteFileMutation = graphql( DELETE_SUPPORT_FILE_MUTATION, {
+  name: 'deleteFile',
+  options: props => ( {
+    refetchQueries: [
+      {
+        query: SUPPORT_FILES_QUERY,
+        variables: { id: props.projectId }
+      }
+    ]
+  } ),
+} );
+
+const updateFileLanguageMutation = graphql( UPDATE_SUPPORT_FILE_LANGUAGE_MUTATION, {
+  name: 'updateLanguage'
+} );
+
+export default compose(
+  updateFileLanguageMutation,
+  deleteFileMutation
+)( EditSupportFileRow );
+
+export {
+  DELETE_SUPPORT_FILE_MUTATION,
+  UPDATE_SUPPORT_FILE_LANGUAGE_MUTATION
+};

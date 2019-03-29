@@ -71,14 +71,14 @@ const languages = [
   { value: 'spanish', text: 'Spanish' }
 ];
 
-const privacyOptions = [
+const visibilityOptions = [
   {
     value: 'PUBLIC',
     text: 'Anyone can see this project'
   },
   {
-    value: 'embargoed',
-    text: 'Embargoed'
+    value: 'INTERNAL',
+    text: 'need text for this'
   }
 ];
 
@@ -103,7 +103,7 @@ const supportFilesConfig = {
 const projects = [
   {
     projectType: 'video',
-    projectId: '234',
+    projectId: 'cjsyv49bs026u0756io3wvqe4',
     updated: '',
     saveStatus: {
       error: false,
@@ -436,10 +436,68 @@ const projects = [
   }
 ];
 
+const units = [
+  {
+    id: '1111',
+    title: 'Video Title (English)',
+    descPublic: 'the English description',
+    language: {
+      languageCode: 'en',
+      displayName: 'English',
+      textDirection: 'LTR'
+    },
+    files: [
+      {
+        id: 'aaaa',
+        filename: 'video-filename-english.mp4',
+        url: 'https://video-download-url.com',
+        filesize: 662595174,
+        videoBurnedInStatus: 'CLEAN',
+        dimensions: {
+          width: 1920,
+          height: 1080
+        },
+        stream: {
+          site: 'YouTube',
+          embedUrl: 'https://www.youtube.com/embed/1a1a1a'
+        }
+      }
+    ]
+  },
+  {
+    id: '2222',
+    title: 'Video Title (French)',
+    descPublic: 'the French description',
+    language: {
+      languageCode: 'fr',
+      displayName: 'French',
+      textDirection: 'LTR'
+    },
+    files: [
+      {
+        id: 'bbbb',
+        filename: 'video-filename-french.mp4',
+        url: 'https://video-download-url.com',
+        filesize: 662595174,
+        videoBurnedInStatus: 'CLEAN',
+        dimensions: {
+          width: 1920,
+          height: 1080
+        },
+        stream: {
+          site: 'YouTube',
+          embedUrl: 'https://www.youtube.com/embed/1a1a1a'
+        }
+      }
+    ]
+  }
+];
+
 export {
   categoryData,
   languages,
-  privacyOptions,
+  visibilityOptions,
   supportFilesConfig,
-  projects
+  projects,
+  units
 };

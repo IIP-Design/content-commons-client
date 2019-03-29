@@ -51,13 +51,14 @@
     text-transform: capitalize;
   }
 
-  .rtl {
+  .RTL {
     direction: rtl;
     text-align: right;
   }
 
   .modal-trigger {
     padding: 0;
+    width: 100%;
     border: 0;
     background-color: transparent;
     font-family: inherit;

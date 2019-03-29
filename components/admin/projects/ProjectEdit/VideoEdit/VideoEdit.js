@@ -5,19 +5,21 @@
  */
 import React, { Fragment } from 'react';
 import Router from 'next/router';
-import { number, object, string } from 'prop-types';
+import { func, object, string } from 'prop-types';
 import {
   Button, Confirm, Loader, Progress
 } from 'semantic-ui-react';
+import gql from 'graphql-tag';
+import { compose, graphql } from 'react-apollo';
 
-import ConfirmModalContent from 'components/admin/projects/shared/ConfirmModalContent/ConfirmModalContent';
-import Notification from 'components/admin/projects/shared/Notification/Notification';
-import PreviewProject from 'components/admin/projects/shared/PreviewProject/PreviewProject';
-import PreviewProjectContent from 'components/admin/projects/shared/PreviewProjectContent/PreviewProjectContent';
-import ProjectHeader from 'components/admin/projects/shared/ProjectHeader/ProjectHeader';
-import ProjectSupportFiles from 'components/admin/projects/shared/ProjectSupportFiles/ProjectSupportFiles';
-import ProjectItemsList from 'components/admin/projects/shared/ProjectItemsList/ProjectItemsList';
-import VisuallyHidden from 'components/admin/projects/shared/VisuallyHidden/VisuallyHidden';
+import Notification from 'components/Notification/Notification';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
+import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
+import PreviewProject from 'components/admin/PreviewProject/PreviewProject';
+import PreviewProjectContent from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
+import ProjectSupportFiles from 'components/admin/ProjectSupportFiles/ProjectSupportFiles';
+import ProjectItemsList from 'components/admin/projects/ProjectEdit/ProjectItemsList/ProjectItemsList';
 
 import EditSingleProjectItem from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import FormInstructions from 'components/admin/projects/ProjectEdit/FormInstructions/FormInstructions';
@@ -25,20 +27,93 @@ import ProjectDataForm from 'components/admin/projects/ProjectEdit/ProjectDataFo
 import UploadSuccessMsg from 'components/admin/projects/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
 import VideoItem from 'components/admin/projects/ProjectEdit/VideoItem/VideoItem';
 
-import {
-  categoryData,
-  privacyOptions,
-  supportFilesConfig
-} from 'components/admin/projects/ProjectEdit/mockData';
-
 import './VideoEdit.scss';
+
+const categoryData = [
+  {
+    value: 'about-america',
+    text: 'About America'
+  },
+  {
+    value: 'arts-and-culture',
+    text: 'Arts & Culture'
+  },
+  {
+    value: 'democracy-and-civil-society',
+    text: 'Democracy & Civil Society'
+  },
+  {
+    value: 'economic-issues',
+    text: 'Economic Issues'
+  },
+  {
+    value: 'education',
+    text: 'Education'
+  },
+  {
+    value: 'environment',
+    text: 'Environment'
+  },
+  {
+    value: 'geography',
+    text: 'Geography'
+  },
+  {
+    value: 'global-issues',
+    text: 'Global Issues'
+  },
+  {
+    value: 'good-governance',
+    text: 'Good Governance'
+  },
+  {
+    value: 'health',
+    text: 'Health'
+  },
+  {
+    value: 'human-rights',
+    text: 'Human Rights'
+  },
+  {
+    value: 'press-and-journalism',
+    text: 'Press & Journalism'
+  },
+  {
+    value: 'religion-and-values',
+    text: 'Religion & Values'
+  },
+  {
+    value: 'science-and-technology',
+    text: 'Science & Technology'
+  },
+  {
+    value: 'sports',
+    text: 'Sports'
+  }
+];
+
+const supportFilesConfig = {
+  srt: {
+    headline: 'SRT Files',
+    fileType: 'srt',
+    popupMsg: 'Some info about what SRT files are.'
+  },
+  other: {
+    headline: 'Additional Files',
+    fileType: 'other',
+    popupMsg: 'Additional files that can be used with this video, e.g., audio file, pdf.',
+    checkBoxLabel: 'Disable right-click to protect your images',
+    checkBoxName: 'protectImages',
+    iconMsg: 'Checking this prevents people from downloading and using your images. Useful if your images are licensed.',
+    iconSize: 'small',
+    iconType: 'info circle'
+  }
+};
 
 /* eslint-disable react/prefer-stateless-function */
 class VideoEdit extends React.PureComponent {
   constructor( props ) {
     super( props );
-
-    const videosCount = this.props.project.videos.length;
 
     this.MAX_CATEGORY_COUNT = 2;
     this.SAVE_MSG_DELAY = 2000;
@@ -47,7 +122,6 @@ class VideoEdit extends React.PureComponent {
 
     this.state = {
       deleteConfirmOpen: false,
-      hasBeenDeleted: false,
       hasRequiredData: false,
       hasSubmittedData: false,
       isUploadInProgress: false,
@@ -56,7 +130,9 @@ class VideoEdit extends React.PureComponent {
       displaySaveMsg: false,
       displayTheUploadSuccessMsg: false,
       hasExceededMaxCategories: false,
-      filesToUploadCount: videosCount + this.getSupportFilesCount(),
+      uploadedVideosCount: 0,
+      uploadedSupportFilesCount: 0,
+      filesToUploadCount: 0,
       formData: {
         projectTitle: '',
         visibility: 'PUBLIC',
@@ -74,6 +150,9 @@ class VideoEdit extends React.PureComponent {
 
   componentDidMount = () => {
     this._isMounted = true;
+    this.setState( {
+      filesToUploadCount: this.getFilesToUploadCount()
+    } );
   }
 
   componentDidUpdate = ( prevProps, prevState ) => {
@@ -101,16 +180,41 @@ class VideoEdit extends React.PureComponent {
     clearTimeout( this.saveMsgTimer );
   }
 
-  getSupportFilesCount = () => {
-    const { supportFiles } = this.props.project;
-    const types = Object.keys( supportFiles );
-    const count = ( acc, cur ) => acc + supportFiles[cur].length;
-    return types.reduce( count, 0 );
+  getVideosCount = () => {
+    const { project } = this.props.data;
+    if ( project ) {
+      return project.videos.length;
+    }
   }
 
+  getSupportFilesCount = () => {
+    const { project } = this.props.data;
+    if ( project ) {
+      return project.supportFiles.length;
+    }
+  }
+
+  getFilesToUploadCount = () => (
+    this.getVideosCount() + this.getSupportFilesCount()
+  )
+
   getUploadedFilesCount = () => {
-    const { uploadedVideosCount, uploadedSupportFilesCount } = this.props;
+    const { uploadedVideosCount, uploadedSupportFilesCount } = this.state;
     return uploadedVideosCount + uploadedSupportFilesCount;
+  }
+
+  getSRTs = () => {
+    const { supportFiles } = this.props.data.project;
+    if ( supportFiles ) {
+      return supportFiles.filter( file => file.filetype === 'srt' );
+    }
+  }
+
+  getOtherSupportFiles = () => {
+    const { supportFiles } = this.props.data.project;
+    if ( supportFiles ) {
+      return supportFiles.filter( file => file.filetype !== 'srt' );
+    }
   }
 
   getTags = () => {
@@ -130,12 +234,10 @@ class VideoEdit extends React.PureComponent {
   }
 
   handleDeleteConfirm = () => {
-    const videoID = this.props.project.projectId;
-    console.log( `Deleted "${videoID}" project` );
-    this.setState( {
-      deleteConfirmOpen: false,
-      hasBeenDeleted: true
-    } );
+    const { id, mutate } = this.props;
+    console.log( `Deleted project: ${id}` );
+    mutate( { variables: { id } } );
+    Router.push( { pathname: '/admin/dashboard' } );
   }
 
   handleDeleteCancel = () => {
@@ -291,13 +393,15 @@ class VideoEdit extends React.PureComponent {
   )
 
   render() {
-    const { project, uploadedSupportFilesCount } = this.props;
+    const {
+      id,
+      data
+    } = this.props;
+    const { error, loading } = data;
 
-    if ( !project && this.state.hasBeenDeleted ) {
-      Router.push( { pathname: '/admin/dashboard' } );
-    }
+    if ( error ) return `Error! ${error.message}`;
 
-    if ( !project || project.loading ) {
+    if ( loading ) {
       return (
         <div style={ {
           display: 'flex',
@@ -313,11 +417,7 @@ class VideoEdit extends React.PureComponent {
       );
     }
 
-    const {
-      projectType,
-      supportFiles,
-      videos
-    } = project;
+    const { supportFiles } = data.project;
 
     const {
       deleteConfirmOpen,
@@ -360,7 +460,7 @@ class VideoEdit extends React.PureComponent {
       notificationMsg = 'Saving project...';
     }
 
-    const hasSupportFiles = Object.keys( supportFiles ).length > 0;
+    const hasSupportFiles = supportFiles && supportFiles.length > 0;
 
     return (
       <div className="edit-project">
@@ -373,6 +473,7 @@ class VideoEdit extends React.PureComponent {
               onClick={ this.displayConfirmDelete }
               disabled={ !isUploadFinished }
             />
+
             <Confirm
               className="delete"
               open={ deleteConfirmOpen }
@@ -389,6 +490,7 @@ class VideoEdit extends React.PureComponent {
               cancelButton="No, take me back"
               confirmButton="Yes, delete forever"
             />
+
             <PreviewProject
               triggerProps={ {
                 className: 'edit-project__btn--preview',
@@ -396,14 +498,12 @@ class VideoEdit extends React.PureComponent {
                 basic: true,
                 disabled: !isUploadFinished
               } }
-              contentProps={ {
-                data: project,
-                projecttype: `${projectType}s`
-              } }
+              contentProps={ { id } }
               modalTrigger={ Button }
               modalContent={ PreviewProjectContent }
               options={ { closeIcon: true } }
             />
+
             { hasSubmittedData
               && (
                 <Button
@@ -465,7 +565,14 @@ class VideoEdit extends React.PureComponent {
             handleChange={ this.handleChange }
 
             videoTitle={ projectTitle || '' }
-            privacyOptions={ privacyOptions }
+            visibilityOptions={ [{
+              value: 'PUBLIC',
+              text: 'Anyone can see this project'
+            },
+            {
+              value: 'INTERNAL',
+              text: 'need text for this'
+            }] }
             visibility={ visibility }
 
             authorValue={ author || '' }
@@ -514,15 +621,16 @@ class VideoEdit extends React.PureComponent {
             <div className="edit-project__support-files">
               <ProjectSupportFiles
                 heading="Support Files"
-                projectId={ { videoID: this.props.project.projectId } }
-                supportFiles={ supportFiles }
+                projectId={ this.props.id }
+                supportFiles={ {
+                  srt: this.getSRTs(),
+                  other: this.getOtherSupportFiles()
+                } }
                 hasSubmittedData={ hasSubmittedData }
                 protectImages={ protectImages }
                 handleChange={ this.handleChange }
                 config={ supportFilesConfig }
-                hasUploaded={
-                  this.getSupportFilesCount() === uploadedSupportFilesCount
-                }
+                hasUploaded={ isUploadFinished }
               />
             </div>
           )
@@ -531,8 +639,7 @@ class VideoEdit extends React.PureComponent {
         <div className="edit-project__items">
           <ProjectItemsList
             listEl="ul"
-            data={ videos }
-            projectId={ { videoID: this.props.project.projectId } }
+            projectId={ this.props.id }
             headline="Videos in Project"
             hasSubmittedData={ hasSubmittedData }
             projectType="video"
@@ -572,15 +679,49 @@ class VideoEdit extends React.PureComponent {
 }
 
 VideoEdit.propTypes = {
-  id: string.isRequired,
-  project: object,
-  uploadedVideosCount: number,
-  uploadedSupportFilesCount: number
+  id: string,
+  data: object.isRequired,
+  mutate: func
 };
 
-VideoEdit.defaultProps = {
-  uploadedVideosCount: 0,
-  uploadedSupportFilesCount: 0
-};
+const VIDEO_PROJECT_QUERY = gql`
+  query VideoProject($id: ID!) {
+    project: videoProject(id: $id) {
+      videos: units {
+        id
+        language {
+          languageCode
+        }
+      }
+      supportFiles {
+        id
+        filetype
+      }
+    }
+  }
+`;
 
-export default VideoEdit;
+const DELETE_VIDEO_PROJECT_MUTATION = gql`
+  mutation DeleteVideoProject($id: ID!) {
+    deleteVideoProject(id: $id) {
+      id
+    }
+  }
+`;
+
+const videoProjectQuery = graphql( VIDEO_PROJECT_QUERY, {
+  options: props => ( {
+    variables: {
+      id: props.id
+    },
+  } )
+} );
+
+const deleteVideoProjectMutation = graphql( DELETE_VIDEO_PROJECT_MUTATION );
+
+export default compose(
+  deleteVideoProjectMutation,
+  videoProjectQuery
+)( VideoEdit );
+
+export { DELETE_VIDEO_PROJECT_MUTATION, VIDEO_PROJECT_QUERY };

@@ -5,7 +5,9 @@
  */
 
 import React from 'react';
-import { object, string } from 'prop-types';
+import { object } from 'prop-types';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import { Dropdown, Embed } from 'semantic-ui-react';
 
 import DownloadVideo from 'components/Video/DownloadVideo';
@@ -19,7 +21,7 @@ import ModalContentMeta from 'components/modals/ModalContentMeta/ModalContentMet
 import ModalDescription from 'components/modals/ModalDescription/ModalDescription';
 import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
 
-import Notification from 'components/admin/projects/shared/Notification/Notification';
+import Notification from 'components/Notification/Notification';
 import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
 
@@ -28,39 +30,29 @@ import { getYouTubeId } from 'lib/utils';
 
 import './PreviewProjectContent.scss';
 
-
 /* eslint-disable react/prefer-stateless-function */
 class PreviewProjectContent extends React.PureComponent {
   constructor( props ) {
     super( props );
 
-    const { data, projecttype } = this.props;
-
     this.state = {
       dropDownIsOpen: false,
-      selectedLanguage: 'English',
-      projectItems: this.getProjectItems( data, projecttype ),
-      selectedItem: {},
-      languages: this.getLanguages( data, projecttype )
+      selectedLanguage: 'English'
     };
   }
 
-  componentDidMount = () => {
-    this.selectProjectItem();
-  }
-
-  getLanguages = ( obj, str ) => (
-    obj[str].map( item => ( {
-      key: item.language.language_code,
-      value: item.language.display_name,
-      text: item.language.display_name
+  getLanguages = units => (
+    units.map( unit => ( {
+      key: unit.language.languageCode,
+      value: unit.language.displayName,
+      text: unit.language.displayName
     } ) )
-  );
+  )
 
-  getProjectItems = ( obj, str ) => (
-    obj[str].reduce( ( acc, item ) => ( {
+  getProjectItems = units => (
+    units.reduce( ( acc, unit ) => ( {
       ...acc,
-      [item.language.display_name]: item
+      [unit.language.displayName]: unit
     } ), {} )
   );
 
@@ -70,19 +62,9 @@ class PreviewProjectContent extends React.PureComponent {
     } ) );
   }
 
-  selectLanguage = language => {
-    this.setState(
-      () => ( { selectedLanguage: language } ),
-      this.selectProjectItem
-    );
-  }
-
-  selectProjectItem = () => {
-    const { projectItems, selectedLanguage } = this.state;
-    this.setState( {
-      selectedItem: projectItems[selectedLanguage]
-    } );
-  }
+  selectLanguage = language => (
+    this.setState( { selectedLanguage: language } )
+  )
 
   handleChange = ( e, { value } ) => {
     this.toggleArrow();
@@ -91,33 +73,41 @@ class PreviewProjectContent extends React.PureComponent {
 
   render() {
     const {
-      projectType,
-      projectData,
-      updated,
-      videos
+      error,
+      loading,
+      project
     } = this.props.data;
-    const { team } = projectData;
 
-    const {
-      dropDownIsOpen,
-      selectedLanguage,
-      selectedItem,
-      languages
-    } = this.state;
+    if ( loading ) return 'Loading the project...';
+    if ( error ) return `Error! ${error.message}`;
+
+    const { projectType, team, units } = project;
+    const { dropDownIsOpen, selectedLanguage } = this.state;
+
+    const projectItems = this.getProjectItems( units );
+    const selectedItem = projectItems[this.state.selectedLanguage];
 
     if ( !selectedItem || !Object.keys( selectedItem ).length ) return null;
 
     const {
       title,
-      thumbnail,
       language,
-      desc,
-      uploaded,
-      source
+      descPublic,
+      updated, // currently undefined, need updatedAt from Prisma
+      uploaded, // currently undefined, need createdAt from Prisma
+      files
     } = selectedItem;
 
-    const youTubeUrl = source[0].streamUrl[0].url;
-    const { burnedInCaptions } = source[0];
+    const currentUnit = files[0];
+    const youTubeUrl = currentUnit.stream.embedUrl;
+    const { videoBurnedInStatus } = currentUnit;
+
+    let thumbnailUrl = '';
+    if ( selectedItem.thumbnails && selectedItem.thumbnails.length ) {
+      thumbnailUrl = selectedItem.thumbnails[0].image.url;
+    } else if ( project.thumbnails && project.thumbnails.length ) {
+      thumbnailUrl = project.thumbnails[0].url;
+    }
 
     const previewMsgStyles = {
       position: 'absolute',
@@ -136,7 +126,7 @@ class PreviewProjectContent extends React.PureComponent {
       <ModalItem
         className="project-preview"
         headline={ title }
-        textDirection={ language.text_direction }
+        textDirection={ language.textDirection }
       >
         <Notification
           el="p"
@@ -149,7 +139,7 @@ class PreviewProjectContent extends React.PureComponent {
             className="modal_languages"
             value={ selectedLanguage }
             icon={ dropDownIsOpen ? 'chevron up' : 'chevron down' }
-            options={ languages }
+            options={ this.getLanguages( units ) }
             onClick={ this.toggleArrow }
             onChange={ this.handleChange }
           />
@@ -171,7 +161,7 @@ class PreviewProjectContent extends React.PureComponent {
                           selectedLanguageUnit={ selectedItem }
                           instructions={ `Download the video and SRT files in ${selectedLanguage}.
                             This download option is best for uploading this video to web pages.` }
-                          burnedInCaptions={ burnedInCaptions === 'true' }
+                          burnedInCaptions={ videoBurnedInStatus === 'CAPTIONED' }
                         />
                       )
                     },
@@ -180,7 +170,7 @@ class PreviewProjectContent extends React.PureComponent {
                       component: (
                         <DownloadSrt
                           instructions="Download SRTs"
-                          units={ videos }
+                          units={ units }
                         />
                       )
                     },
@@ -189,7 +179,7 @@ class PreviewProjectContent extends React.PureComponent {
                       component: (
                         <DownloadThumbnail
                           instructions="Download Thumbnail(s)"
-                          units={ videos }
+                          units={ units }
                         />
                       )
                     },
@@ -198,7 +188,7 @@ class PreviewProjectContent extends React.PureComponent {
                       component: (
                         <DownloadOtherFiles
                           instructions="Download Other File(s)"
-                          units={ videos }
+                          units={ units }
                         />
                       )
                     },
@@ -217,17 +207,17 @@ class PreviewProjectContent extends React.PureComponent {
             && (
               <Embed
                 id={ getYouTubeId( youTubeUrl ) }
-                placeholder={ thumbnail }
+                placeholder={ thumbnailUrl }
                 source="youtube"
               />
             ) }
 
           <ModalContentMeta type={ projectType } dateUpdated={ updated || uploaded } />
 
-          <ModalDescription description={ desc } />
+          <ModalDescription description={ descPublic } />
         </div>
 
-        <ModalPostMeta source={ team } datePublished={ uploaded } />
+        <ModalPostMeta source={ team.name } datePublished={ uploaded } />
       </ModalItem>
     );
   }
@@ -235,7 +225,59 @@ class PreviewProjectContent extends React.PureComponent {
 
 PreviewProjectContent.propTypes = {
   data: object.isRequired,
-  projecttype: string
 };
 
-export default PreviewProjectContent;
+const VIDEO_PROJECT_PREVIEW_QUERY = gql`
+  query VideoProject($id: ID!) {
+    project: videoProject(id: $id) {
+      projectType
+      thumbnails {
+        alt
+        url
+      }
+      team {
+        name
+      }
+      units {
+        id
+        title
+        descPublic
+        thumbnails {
+          image {
+            alt
+            url
+          }
+        }
+        language {
+          languageCode
+          displayName
+          textDirection
+        }
+        files {
+          id
+          filename
+          url
+          filesize
+          videoBurnedInStatus
+          dimensions {
+            width
+            height
+          }
+          stream {
+            site
+            embedUrl
+          }
+        }
+      }
+    }
+  }
+`;
+
+export default graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
+  options: props => ( {
+    variables: {
+      id: props.id
+    },
+  } )
+} )( PreviewProjectContent );
+export { VIDEO_PROJECT_PREVIEW_QUERY };

@@ -10,7 +10,7 @@ import {
 } from 'prop-types';
 import { Checkbox, Grid } from 'semantic-ui-react';
 
-import IconPopup from 'components/admin/projects/ProjectEdit/IconPopup/IconPopup';
+import IconPopup from 'components/popups/IconPopup/IconPopup';
 import SupportFileTypeList from 'components/admin/projects/ProjectEdit/SupportFileTypeList/SupportFileTypeList';
 
 import './ProjectSupportFiles.scss';
@@ -104,7 +104,7 @@ const ProjectSupportFiles = props => {
 
 ProjectSupportFiles.propTypes = {
   heading: string,
-  projectId: object.isRequired,
+  projectId: string.isRequired,
   supportFiles: object.isRequired,
   hasSubmittedData: bool,
   protectImages: bool,

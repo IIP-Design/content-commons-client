@@ -6,16 +6,18 @@
 
 import React from 'react';
 import {
-  array, bool, func, object, string
+  bool, func, object, string
 } from 'prop-types';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 
-import ProjectItem from 'components/admin/projects/shared/ProjectItem/ProjectItem';
+import ProjectItem from 'components/admin/ProjectItem/ProjectItem';
 import './ProjectItemsList.scss';
 
 const ProjectItemsList = props => {
   const {
     listEl,
-    data,
+    data: { error, loading, project: { units } },
     projectId,
     headline,
     hasSubmittedData,
@@ -39,18 +41,21 @@ const ProjectItemsList = props => {
 
   const listStyle = { ...defaultListStyle, ...customListStyle };
 
+  if ( loading ) return 'Loading the project items...';
+  if ( error ) return `Error! ${error.message}`;
+
   return (
     <div className="project-items">
       <h2 className="list-heading">{ headline }</h2>
       <List className="items-list" style={ listStyle }>
-        { data.map( item => (
+        { units.map( unit => (
           <ProjectItem
-            key={ `${item.title} - ${item.language.locale}` }
+            key={ `${unit.title} - ${unit.language.languageCode}` }
             isAvailable={ hasSubmittedData }
             type={ projectType }
             displayItemInModal={ displayItemInModal }
             projectId={ projectId }
-            itemId={ item.id }
+            itemId={ unit.id }
             modalTrigger={ modalTrigger }
             modalContent={ modalContent }
             customPlaceholderStyle={ customPlaceholderStyle }
@@ -63,8 +68,8 @@ const ProjectItemsList = props => {
 
 ProjectItemsList.propTypes = {
   listEl: string,
-  data: array.isRequired,
-  projectId: object.isRequired,
+  data: object.isRequired,
+  projectId: string.isRequired,
   headline: string,
   hasSubmittedData: bool,
   projectType: string.isRequired,
@@ -79,4 +84,25 @@ ProjectItemsList.defaultProps = {
   listEl: 'ul'
 };
 
-export default ProjectItemsList;
+const PROJECT_ITEMS_QUERY = gql`
+  query ProjectItems($id: ID!) {
+    project: videoProject(id: $id) {
+      units {
+        id
+        title
+        language {
+          languageCode
+        }
+      }
+    }
+  }
+`;
+
+export default graphql( PROJECT_ITEMS_QUERY, {
+  options: props => ( {
+    variables: {
+      id: props.projectId
+    },
+  } )
+} )( ProjectItemsList );
+export { PROJECT_ITEMS_QUERY };
