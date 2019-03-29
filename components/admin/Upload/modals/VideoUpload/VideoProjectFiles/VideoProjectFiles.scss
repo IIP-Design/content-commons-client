@@ -14,8 +14,8 @@
 
 .videoProjectFiles {
   &.ui.form {
-    max-width: 640px;
-    margin: 0 auto;
+    // max-width: 640px;
+    // margin: 0 auto;
 
     > .ui.grid {
       @media screen and (min-width: 641px) and (max-width: 900px) {
