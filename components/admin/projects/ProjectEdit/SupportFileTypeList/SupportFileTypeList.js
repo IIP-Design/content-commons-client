@@ -33,6 +33,8 @@ const SupportFileTypeList = props => {
     setEditing( prevIsEditing => !prevIsEditing );
   };
 
+  const orderByField = fileType === 'srt' ? 'filetype' : 'filetype_not';
+
   const renderSupportItem = item => {
     if ( hasSubmittedData ) {
       return (
@@ -91,7 +93,7 @@ const SupportFileTypeList = props => {
                     contentProps={ {
                       fileType,
                       projectId,
-                      field: fileType === 'srt' ? 'filetype' : 'filetype_not',
+                      orderByField,
                       closeEditModal: toggleEditModal
                     } }
                     modalTrigger={ Button }

@@ -49,7 +49,7 @@ class EditSupportFilesContent extends React.PureComponent {
 
   renderRow = file => {
     const {
-      field,
+      orderByField,
       projectId,
       LanguagesQuery: { languages },
       SupportFilesQuery: { project: { files } }
@@ -59,7 +59,7 @@ class EditSupportFilesContent extends React.PureComponent {
       <EditSupportFileRow
         key={ file.id }
         file={ file }
-        field={ field }
+        orderByField={ orderByField }
         projectId={ projectId }
         languages={ languages }
         fileExtensions={ this.getFileExtensions( files ) }
@@ -171,7 +171,7 @@ EditSupportFilesContent.propTypes = {
   SupportFilesQuery: object.isRequired,
   projectId: string.isRequired,
   fileType: string,
-  field: string,
+  orderByField: string,
   closeEditModal: func
 };
 
@@ -189,7 +189,7 @@ const SUPPORT_FILES_QUERY = props => (
     query SupportFiles($id: ID!, $fileType: String!, $orderBy: SupportFileOrderByInput) {
       project: videoProject(id: $id) {
         files: supportFiles(
-          where: { ${props.field}: $fileType }
+          where: { ${props.orderByField}: $fileType }
           orderBy: $orderBy
         ) {
           id
