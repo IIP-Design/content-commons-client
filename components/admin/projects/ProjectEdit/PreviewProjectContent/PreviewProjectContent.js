@@ -10,7 +10,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Dropdown, Embed } from 'semantic-ui-react';
 
-import DownloadVideo from 'components/Video/DownloadVideo';
+import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo';
 import DownloadSrt from 'components/Video/DownloadSrt';
 import DownloadThumbnail from 'components/Video/DownloadThumbnail';
 import DownloadOtherFiles from 'components/Video/DownloadOtherFiles';
@@ -152,7 +152,7 @@ class PreviewProjectContent extends React.PureComponent {
                       component: (
                         <DownloadVideo
                           selectedLanguageUnit={ selectedItem }
-                          instructions={ `Download the video and SRT files in ${selectedLanguage}.
+                          instructions={ `Download the video file in ${selectedLanguage}.
                             This download option is best for uploading this video to web pages.` }
                           burnedInCaptions={ videoBurnedInStatus === 'CAPTIONED' }
                         />
