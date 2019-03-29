@@ -99,7 +99,7 @@ const VideoUpload = props => {
       render: () => (
         <Tab.Pane>
           <VideoProjectType
-            closeModal={ props.closeModal }
+            closeModal={ closeModal }
             goNext={ goNext }
             updateModalClassname={ updateModalClassname }
             addAssetFiles={ addAssetFiles }
@@ -112,7 +112,7 @@ const VideoUpload = props => {
       render: () => (
         <Tab.Pane>
           <VideoProjectFiles
-            closeModal={ props.closeModal }
+            closeModal={ closeModal }
             goNext={ goNext }
             updateModalClassname={ updateModalClassname }
             files={ files }
