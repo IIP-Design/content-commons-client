@@ -5,13 +5,13 @@
  */
 
 import React from 'react';
-import { object } from 'prop-types';
+import { object, string } from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Dropdown, Embed } from 'semantic-ui-react';
 
 import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo';
-import DownloadSrt from 'components/Video/DownloadSrt';
+import DownloadSrt from 'components/admin/download/DownloadSrt/DownloadSrt';
 import DownloadThumbnail from 'components/Video/DownloadThumbnail';
 import DownloadOtherFiles from 'components/Video/DownloadOtherFiles';
 import DownloadHelp from 'components/Video/DownloadHelp';
@@ -162,8 +162,8 @@ class PreviewProjectContent extends React.PureComponent {
                       title: 'SRT',
                       component: (
                         <DownloadSrt
+                          id={ this.props.id }
                           instructions="Download SRTs"
-                          units={ units }
                         />
                       )
                     },
@@ -217,7 +217,8 @@ class PreviewProjectContent extends React.PureComponent {
 }
 
 PreviewProjectContent.propTypes = {
-  data: object.isRequired,
+  id: string,
+  data: object.isRequired
 };
 
 const VIDEO_PROJECT_PREVIEW_QUERY = gql`
