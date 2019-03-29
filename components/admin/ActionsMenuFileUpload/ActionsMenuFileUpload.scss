@@ -1,0 +1,14 @@
+.ui.basic.buttons {
+  &.file-upload__btn-group {
+    border: none;
+  }
+
+  .button {
+    border-left: none;
+    padding: 0.5em;
+  }
+}
+
+[tooltip] {
+  margin: 0;
+}
