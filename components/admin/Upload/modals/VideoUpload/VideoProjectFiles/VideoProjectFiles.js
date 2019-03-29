@@ -1,165 +1,130 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
   Grid,
   Form,
   Button,
-  Icon,
-  Modal
+  Step
 } from 'semantic-ui-react';
-import VideoAssetFile from './VideoAssetFile';
+import { withRouter } from 'next/router';
+import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
+import CancelUpload from '../../CancelUpload/CancelUpload';
+import VideoProjectFilesRow from './VideoProjectFilesRow';
 import './VideoProjectFiles.scss';
 
-class VideoProjectFiles extends PureComponent {
-  state = {
-    activeStep: 'step_1',
-    cancelModalOpen: false
-  }
+const VideoProjectFiles = props => {
+  const [activeStep, setActiveStep] = useState( 1 );
 
-  componentDidMount() {
-    this.props.updateModalClassname( 'upload_modal prepare-files-active' );
-  }
+  const styles = {
+    hide: {
+      display: 'none'
+    },
+    show: {
+      display: 'inline-block'
+    }
+  };
 
-  componentWillUnmount() {
-    this.props.updateModalClassname( 'upload_modal' );
-  }
+  const show = flag => ( activeStep === flag ? styles.show : styles.hide );
 
-  toggleSteps = () => this.setState( prevState => ( {
-    activeStep: prevState.activeStep === 'step_1' ? 'step_2' : 'step_1'
-  } ) );
+  const gotoVideoEditPage = () => {
+    // /admin/project?content=video&id=234&action=edit
+    props.router.push( {
+      pathname: '/admin/project',
+      query: {
+        content: 'video',
+        action: 'edit'
+      }
+    } );
+  };
 
-  openCancelModal = () => this.setState( { cancelModalOpen: true } );
+  // since we are using a stateless function, use a hook for mouunting/unmouting calls
+  useEffect( () => {
+    props.updateModalClassname( 'upload_modal prepare-files-active' );
+    return () => props.updateModalClassname( 'upload_modal' );
+  }, [] );
 
-  closeCancelModal = () => this.setState( { cancelModalOpen: false } );
+  const {
+    closeModal,
+    files,
+    allFieldsSelected
+  } = props;
 
-  render() {
-    const {
-      closeModal,
-      removeVideoAssetFile,
-      replaceVideoAssetFile,
-      files
-    } = this.props;
-    const { activeStep, cancelModalOpen } = this.state;
+  return (
+    <Fragment>
+      <h5 className="videoProjectFiles_headline">Preparing { files.length } files for upload...</h5>
+      <div className="videoProjectFiles_steps">
+        <Step.Group>
+          <Step active={ activeStep === 1 } title="Step 1" />
+          <Step active={ activeStep === 2 } title="Step 2" />
+        </Step.Group>
+      </div>
+      <Form className="videoProjectFiles">
+        <Grid>
+          <Grid.Row className="videoProjectFiles_column_labels">
+            <Grid.Column width={ 6 }>Files Selected</Grid.Column>
+            <Grid.Column width={ 4 } style={ show( 1 ) }>Language</Grid.Column>
+            <Grid.Column width={ 4 } style={ show( 1 ) }>Subtitles</Grid.Column>
+            <Grid.Column width={ 4 } style={ show( 2 ) }>Type / Use</Grid.Column>
+            <Grid.Column width={ 4 } style={ show( 2 ) }>Quality</Grid.Column>
+            <Grid.Column width={ 2 }></Grid.Column>
+          </Grid.Row>
 
-    return (
-      <Fragment>
-        <h5 className="videoProjectFiles_headline">Preparing { files.length } files for upload...</h5>
-        <div className="videoProjectFiles_steps">
-          <p
-            className={ `videoProjectFiles_step videoProjectFiles_step--one ${activeStep === 'step_1' ? 'active' : ''}` }
-          >
-            Step 1
-          </p>
-          <Icon name="chevron right" size="tiny" />
-          <p
-            className={ `videoProjectFiles_step videoProjectFiles_step--two ${activeStep === 'step_2' ? 'active' : ''}` }
-          >
-            Step 2
-          </p>
-        </div>
-
-        <Form className="videoProjectFiles">
-          <Grid>
-            <Grid.Row className="videoProjectFiles_column_labels">
-              <Grid.Column width={ 6 }>
-                <p className="videoProjectFiles_column_label">Files Selected</p>
-              </Grid.Column>
-              <Grid.Column width={ 10 }>
-                { activeStep === 'step_1' && (
-                  <Fragment>
-                    <p className="videoProjectFiles_column_label videoProjectFiles_column_label--required">Language</p>
-                    <p className="videoProjectFiles_column_label videoProjectFiles_column_label--required">Subtitles</p>
-                  </Fragment>
-                ) }
-                { activeStep === 'step_2' && (
-                  <Fragment>
-                    <p className="videoProjectFiles_column_label videoProjectFiles_column_label--required">Type / Use</p>
-                    <p className="videoProjectFiles_column_label videoProjectFiles_column_label--required">Quality</p>
-                  </Fragment>
-                ) }
-              </Grid.Column>
-            </Grid.Row>
-
-            { files.map( ( file, i ) => (
-              <VideoAssetFile
-                key={ `${file}_${i}` }
-                activeStep={ activeStep }
-                file={ file }
-                removeVideoAssetFile={ removeVideoAssetFile }
-                replaceVideoAssetFile={ replaceVideoAssetFile }
-              />
-            ) ) }
-
-            { activeStep === 'step_1' && (
-              <Grid.Row>
-                <label className="ui button upload_button upload_button--fileUpload addFile" htmlFor="upload_video_assets">
-                  <input
-                    id="upload_video_assets"
-                    type="file"
-                    name="upload_video_assets"
-                    multiple
-                    onChange={ e => this.props.handleVideoAssetsUpload( e, true ) }
-                  />
-                  + Add Files
-                </label>
-              </Grid.Row>
-            ) }
-          </Grid>
-
-          <Form.Field className="upload_actions">
-            <Modal
-              className="cancelModal"
-              open={ cancelModalOpen }
-              trigger={ (
-                <Button
-                  content="Cancel"
-                  className="upload_button upload_button--cancelText"
-                  onClick={ this.openCancelModal }
-                />
-              ) }
-            >
-              <Modal.Content>
-                <h3>Are you sure you want to cancel uploading these files?</h3>
-                <p>By cancelling, your files will not be uploaded to Content Commons.</p>
-              </Modal.Content>
-              <Modal.Actions>
-                <Button
-                  className="upload_button upload_button--cancelBtn"
-                  content="No, take me back!"
-                  onClick={ this.closeCancelModal }
-                />
-                <Button
-                  className="upload_button upload_button--next"
-                  content="Yes, cancel upload"
-                  onClick={ closeModal }
-                />
-              </Modal.Actions>
-            </Modal>
-            <Button
-              className={ `upload_button upload_button--previous ${activeStep === 'step_2' ? 'display' : ''}` }
-              content="Previous"
-              onClick={ this.toggleSteps }
+          { files.map( file => (
+            <VideoProjectFilesRow
+              key={ file.id }
+              file={ file }
+              updateField={ props.updateField }
+              replaceAssetFile={ props.replaceAssetFile }
+              removeAssetFile={ props.removeAssetFile }
+              showColumn={ show }
+              activeStep={ activeStep }
             />
-            <Button
-              disabled={ activeStep === 'step_2' }
-              className="upload_button upload_button--next"
-              content="Next"
-              onClick={ this.toggleSteps }
-            />
-          </Form.Field>
-        </Form>
-      </Fragment>
-    );
-  }
-}
+          ) ) }
+
+          { activeStep === 1 && (
+          <Grid.Row>
+            <ButtonAddFiles onChange={ e => props.addAssetFiles( e.target.files ) } multiple className="secondary">+ Add Files</ButtonAddFiles>
+          </Grid.Row>
+          ) }
+        </Grid>
+        <Form.Field className="upload_actions">
+          <CancelUpload closeModal={ closeModal } />
+          <Button
+            className="secondary"
+            style={ activeStep === 2 ? { display: 'inline-block' } : { display: 'none' } }
+            content="Previous"
+            onClick={ () => setActiveStep( 1 ) }
+          />
+          <Button
+            className="primary"
+            content="Next"
+            style={ show( 1 ) }
+            onClick={ () => setActiveStep( 2 ) }
+          />
+          <Button
+            className="primary"
+            content="Next"
+            disabled={ !allFieldsSelected }
+            style={ show( 2 ) }
+            onClick={ gotoVideoEditPage }
+          />
+        </Form.Field>
+      </Form>
+    </Fragment>
+  );
+};
+
 
 VideoProjectFiles.propTypes = {
   files: PropTypes.array,
   closeModal: PropTypes.func,
   updateModalClassname: PropTypes.func,
-  handleVideoAssetsUpload: PropTypes.func,
-  removeVideoAssetFile: PropTypes.func,
-  replaceVideoAssetFile: PropTypes.func
+  addAssetFiles: PropTypes.func,
+  removeAssetFile: PropTypes.func,
+  replaceAssetFile: PropTypes.func,
+  updateField: PropTypes.func,
+  router: PropTypes.object,
+  allFieldsSelected: PropTypes.bool
 };
 
-export default VideoProjectFiles;
+export default withRouter( VideoProjectFiles );

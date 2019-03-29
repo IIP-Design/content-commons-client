@@ -6,6 +6,7 @@ import Video from 'components/Video/Video';
 import Post from 'components/Post/Post';
 import './ResultItem.scss';
 import './ResultItemRTL.scss';
+import logoDos from 'static/images/dos_seal.svg';
 
 class ResultItem extends Component {
   getModalContent = item => {
@@ -28,8 +29,8 @@ class ResultItem extends Component {
   getItemSource( textDirection ) {
     const { item } = this.props;
     let source;
+    const textDir = textDirection === 'ltr' ? 'left' : 'right';
     if ( item.logo ) {
-      const textDir = textDirection === 'ltr' ? 'left' : 'right';
       source = (
         <div
           style={ {
@@ -40,6 +41,24 @@ class ResultItem extends Component {
           } }
           alt={ item.site }
         />
+      );
+    }
+    const dosOwners = ['IIP Video', 'IIP Interactive', 'Public Affairs'];
+    if ( !source && item.type === 'video' && dosOwners.includes( item.owner ) ) {
+      source = (
+        <div style={ { display: 'block', marginTop: '2px' } }>
+          <div
+            style={ {
+              background: `url( ${logoDos} ) no-repeat`,
+              height: '16px',
+              width: '16px',
+              float: textDir,
+              marginLeft: textDir === 'left' ? '0' : '0.3em'
+            } }
+            alt={ item.owner }
+          />
+          <span style={ { marginTop: '1px', float: textDir } }>{ item.owner }</span>
+        </div>
       );
     }
     if ( !source && item.type === 'video' ) source = item.owner;

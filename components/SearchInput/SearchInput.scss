@@ -16,9 +16,31 @@
   }
 
   .ui.form {
+    input[type="text"] {
+      width: auto;
+      border-radius: 5px;
+    }
     .search_input {
       width: 100%;
       font-size: 18px;
+
+      ::placeholder {
+        overflow: hidden;
+      }
+
+      .ui.label, .ui.dropdown i {
+        font-weight: normal;
+        color: $grey;
+        font-size: 0.8em;
+        line-height: 1.7em;
+      }
+
+      .ui.dropdown > .text {
+        display: inline-flex;
+        width: 4em;
+        overflow: hidden;
+        white-space: nowrap;
+      }
 
       > input {
         padding-top: 0.6em;
@@ -32,13 +54,31 @@
       i {
         color: $light-blue;
         font-size: 18px;
+        
+        &.search {
+          color: $light-grey;
+          opacity: 1;
+          background: $blue;
+        }
+
+        &.search:hover {
+          background: $light-blue;
+        }
       }
+
 
       &.right {
         input[type="text"] {
           text-align: right;
         }
       }
+    }
+    .ui[class*="left icon"].input > i.icon {
+      left: 0;
+    }
+    .ui[class*="right labeled"].input > div.dropdown {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
     }
   }
 }

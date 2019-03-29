@@ -1,0 +1,326 @@
+@import "../../../../../../styles/colors.scss";
+
+.videoProjectFiles_asset {
+  @media screen and (max-width: 640px) {
+    padding: 7px !important;
+    margin-bottom: 10px;
+    border: 1px solid $light-grey;
+  }
+
+  &_file {
+    position: relative;
+    font-size: 16px;
+    @media screen and (max-width: 640px) {
+      margin-bottom: 0;
+      padding-left: 20px;
+      padding-bottom: 3px;
+      font-size: 12px;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: -25px;
+      display: block;
+      height: 15px;
+      width: 15px;
+      border-radius: 50%;
+      background-color: green;
+      @media screen and (max-width: 640px) {
+        top: 2px;
+        left: 0;
+      }
+    }
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 8px;
+      left: -20px;
+      width: 5px; 
+      height: 8px;
+      border-bottom: 2px solid #fff;
+      border-right: 2px solid #fff;
+      transform: rotate(45deg);
+      @media screen and (max-width: 640px) {
+        top: 4px;
+        left: 5px;
+      }
+    }
+
+    &--fullFileName {      
+      display: none;
+      margin: 1em 0 !important;
+      font-size: 10px;
+      font-style: italic;
+      color: $focus-gray;
+      @media screen and (max-width: 640px) {        
+
+        &.active {
+          display: block;
+        }
+      }
+
+      > i.small.icon {
+        position: relative;
+        transform: translateY(10%);
+        padding: 5px;
+        border: 1px solid $focus-gray;
+        border-radius: 50%;
+        font-size: 0.5em;
+
+        &:before {
+          position: absolute;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+  }
+
+  .ui.selection.dropdown {
+    display: inline-block;
+    min-height: auto;
+    height: 30px;
+    min-width: 148px;
+    padding: 3px 0 0 8px;
+    border: 2px solid $light-grey;
+    border-radius: 4px;
+    @media screen and (max-width: 640px) {
+      margin-bottom: 5px;
+    }
+    @media screen and (min-width: 641px) and (max-width: 900px) {
+      min-width: 125px;
+    }
+
+    .dropdown.icon {
+      padding: 0.4em;
+    }
+  }
+
+  &_options {
+    position: relative;
+    font-size: 14px;
+    @media screen and (max-width: 640px) {
+      width: 100%;
+    }
+
+    &_wrapper {
+      @media screen and (max-width: 640px) {
+        display: none;
+        
+        &.active {
+          display: block;
+        }
+      }
+    }
+
+    &_mobileLabel {
+      position: relative;
+      display: none;
+      margin-bottom: 0;
+      font-size: 16px;
+      color: $blue;
+      @media screen and (max-width: 640px) {
+        display: block;
+      }
+
+      &:after {
+        content: '\2605';
+        position: absolute;
+        top: -3px;
+        font-size: 6px;
+        color: red;
+      }        
+    }
+    
+    .menu > .item {
+      font-size: 14px !important;
+    }
+    
+    &--language,
+    &--typeUse {
+      @media screen and (min-width: 641px) {
+        margin-right: 16px;
+      }            
+    }    
+
+    &--notApplicable {
+      display: inline-block;
+      min-width: 148px;      
+      margin: 0 15px 0 0;
+      vertical-align: middle;
+      font-size: 14px;
+      @media screen and (max-width: 640px) {
+        display: none;
+      }
+      @media screen and (min-width: 641px) and (max-width: 900px) {
+        min-width: 125px;
+      }
+    }
+  }
+  
+  .mobileActionsMenuToggle,
+  .mobileSelectOptionsToggle {
+    position: absolute;
+    top: 0;
+    transform: translateY(100%);
+    @media screen and (min-width: 641px) {
+      display: none;
+    }
+  }
+
+  .mobileActionsMenuToggle {
+    right: 0;
+  }
+
+  .mobileSelectOptionsToggle {
+    right: 30px;
+  }
+
+  &_actionBtns {
+    position: absolute;
+    top: 0;
+    right: 0;
+    @media screen and (max-width: 640px) {      
+      display: none;
+      top: 0;
+      right: 0;
+      padding: 35px 10px 10px 10px;       
+      background: #fff;      
+      box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+
+      &.active {
+        display: block;
+        z-index: 3
+      }
+    }
+
+    .actionsMenuCloseButton {
+      display: block;
+      position: absolute;
+      top: 3px;
+      right: 10px;
+      font-size: 1.5em;
+      color: $blue;
+      @media screen and (min-width: 641px) {
+        display: none;
+      }
+
+      &:after {
+        content: '\00d7';        
+      }
+    }
+
+    >[tooltip] {
+      margin: 0;      
+      @media screen and (max-width: 640px) {
+        display: block;      
+        padding: 7px 15px;    
+        font-size: 14px;
+        text-align: center;
+
+        button > span {
+          font-family: "Source Sans Pro", "Helvetica Neue", Arial, Helvetica, sans-serif;
+          color: $shuttle-grey;
+        }
+      }
+
+      &:first-child {
+        margin: 0 20px 0 0;
+        @media screen and (max-width: 640px) {
+          margin: 0 0 15px 0;          
+          border: 2px solid $matisse-blue;
+          border-radius: 4px;          
+
+          button > span {
+            font-weight: bold;
+            color: $matisse-blue;            
+          }
+        }
+        @media screen 
+        and (min-width: 640px)
+        and (max-width: 665px) {
+          margin: 0 12px 0 0;
+        }
+      }
+
+      &:after {
+        min-width: auto;
+        padding: 7px 15px;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+
+      &:after,
+      &:before {
+        @media screen and (max-width: 640px) {
+          display: none;
+        }
+      }
+      
+      button {
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+      }  
+    }
+  }
+
+  button {
+    -webkit-appearance: none;    
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  &_replaceBtn, 
+  &_removeBtn {
+    position: relative;
+    @media screen and (max-width: 640px) {
+      display: block;      
+      padding: 7px 15px;
+      margin: 0 auto; 
+      font-size: 14px;
+      text-align: center;
+
+      button > span,
+      > span {
+        font-family: "Source Sans Pro", "Helvetica Neue", Arial, Helvetica, sans-serif;
+        color: $shuttle-grey;
+      }
+    }
+    
+    img {
+      position: relative;
+    }      
+  }
+
+  &_replaceBtn {
+    @media screen and (max-width: 640px) {
+      margin: 0 0 15px 0;          
+      border: 2px solid $matisse-blue;
+      border-radius: 4px;          
+
+      button > span {
+        font-weight: bold;
+        color: $matisse-blue;            
+      }
+    }
+
+    > input {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      width: 0.1px;
+      height: 0.1px;
+      padding: 0 !important;
+      border: none !important;
+      overflow: hidden;
+    }
+  }
+}
