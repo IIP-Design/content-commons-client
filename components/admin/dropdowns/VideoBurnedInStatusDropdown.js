@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'semantic-ui-react';
-import VisuallyHidden from 'components/admin/projects/shared/VisuallyHidden/VisuallyHidden';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { titleCase } from 'lib/utils';

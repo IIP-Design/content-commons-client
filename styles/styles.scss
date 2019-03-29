@@ -112,13 +112,16 @@ h6.ui.header {
   color: #ffffff;
   padding: 0.6em 1.5em;
 
+  &:focus {
+    outline: 2px dotted $focus-gray;
+  }
+
   &.primary {
     background-color: $light-blue;
     padding: 0.7em 1.5em;
 
     &:focus {
       background-color: $hover-blue;
-      outline: 2px dotted $focus-gray;
     }
 
     &:hover {
@@ -139,7 +142,6 @@ h6.ui.header {
       background-color: #ffffff;
       color: $hover-blue;
       border: 2px solid $hover-blue;
-      outline: 2px dotted $focus-gray;
     }
 
     &:hover {
