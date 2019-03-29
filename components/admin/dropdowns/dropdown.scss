@@ -1,0 +1,12 @@
+@import "styles/colors.scss";
+@import "styles/form.scss";
+
+.ui.fluid.dropdown,
+.ui.selection.dropdown {
+  padding: 10px 10px;
+  font-size: 0.77rem;
+
+  .menu > .item {
+    padding: 10px 10px !important;
+  }
+}
