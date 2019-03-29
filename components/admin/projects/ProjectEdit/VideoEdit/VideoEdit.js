@@ -682,14 +682,12 @@ const VIDEO_PROJECT_QUERY = gql`
         orderBy: filename_ASC
       ) {
         id
-        filetype
       }
       other: supportFiles(
         where: { filetype_not: "srt" },
         orderBy: filename_ASC
       ) {
         id
-        filetype
       }
     }
   }
