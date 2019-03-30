@@ -1,17 +1,21 @@
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
 import { Item } from 'semantic-ui-react';
 import { object, string } from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import downloadIcon from 'static/icons/icon_download.svg';
 
-class DownloadSrt extends Component {
-  renderFormItems( units ) {
-    const srts = units.filter( unit => unit && unit.url ).map( ( unit, i ) => this.renderFormItem( unit, i ) );
-    return srts.length ? srts : 'There are no SRTs available for download at this time';
-  }
+const DownloadSrt = ( { instructions, data } ) => {
+  const { error, loading, project } = data;
 
-  renderFormItem = unit => {
+  if ( loading ) return 'Loading the project...';
+  if ( error ) return `Error! ${error.message}`;
+
+  if ( !project || !Object.keys( project ).length ) return null;
+
+  const { units } = project;
+
+  const renderFormItem = unit => {
     const { id, url, language: { displayName } } = unit;
     return (
       <Item.Group key={ `fs_${id}` } className="download-item">
@@ -34,31 +38,27 @@ class DownloadSrt extends Component {
     );
   };
 
-  render() {
-    const { error, loading, project } = this.props.data;
+  const renderFormItems = () => {
+    const srts = units
+      .filter( unit => unit && unit.url )
+      .map( unit => renderFormItem( unit ) );
+    return srts.length ? srts : 'There are no SRTs available for download at this time';
+  };
 
-    if ( loading ) return 'Loading the project...';
-    if ( error ) return `Error! ${error.message}`;
-
-    if ( !project || !Object.keys( project ).length ) return null;
-
-    const { units } = project;
-
-    return (
-      <div>
-        <div className="form-group_instructions">{ this.props.instructions }</div>
-        { units && this.renderFormItems( units ) }
-      </div>
-    );
-  }
-}
+  return (
+    <Fragment>
+      <p className="form-group_instructions">{ instructions }</p>
+      { units && renderFormItems( units ) }
+    </Fragment>
+  );
+};
 
 DownloadSrt.propTypes = {
   data: object,
   instructions: string
 };
 
-const VIDEO_PROJECT_SRTS_QUERY = gql`
+const VIDEO_PROJECT_PREVIEW_SRTS_QUERY = gql`
   query VideoProjectPreviewSrts($id: ID!) {
     project: videoProject(id: $id) {
       units: supportFiles(
@@ -75,7 +75,7 @@ const VIDEO_PROJECT_SRTS_QUERY = gql`
   }
 `;
 
-export default graphql( VIDEO_PROJECT_SRTS_QUERY, {
+export default graphql( VIDEO_PROJECT_PREVIEW_SRTS_QUERY, {
   options: props => ( {
     variables: {
       id: props.id
@@ -83,4 +83,4 @@ export default graphql( VIDEO_PROJECT_SRTS_QUERY, {
   } )
 } )( DownloadSrt );
 
-export { VIDEO_PROJECT_SRTS_QUERY };
+export { VIDEO_PROJECT_PREVIEW_SRTS_QUERY };
