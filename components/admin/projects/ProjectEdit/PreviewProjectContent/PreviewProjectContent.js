@@ -13,7 +13,7 @@ import { Dropdown, Embed } from 'semantic-ui-react';
 import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo';
 import DownloadSrt from 'components/admin/download/DownloadSrt/DownloadSrt';
 import DownloadThumbnail from 'components/admin/download/DownloadThumbnail/DownloadThumbnail';
-import DownloadOtherFiles from 'components/Video/DownloadOtherFiles';
+import DownloadOtherFiles from 'components/admin/download/DownloadOtherFiles/DownloadOtherFiles';
 import DownloadHelp from 'components/Video/DownloadHelp';
 
 import ModalItem from 'components/modals/ModalItem/ModalItem';
@@ -181,8 +181,8 @@ class PreviewProjectContent extends React.PureComponent {
                       title: 'Other',
                       component: (
                         <DownloadOtherFiles
+                          id={ this.props.id }
                           instructions="Download Other File(s)"
-                          units={ units }
                         />
                       )
                     },
