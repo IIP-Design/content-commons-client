@@ -87,7 +87,7 @@ class Upload extends Component {
           </div>
           <div className="upload_information_bestResults">
             <h3>For best results:</h3>
-            <p>We recommend naming files descriptively using keywords or languages, ex: "<i>project-tile_arabic.jpg</i>", to help pre-populate metadata fields and save you time when uplaoding content!</p>
+            <p>We recommend naming files descriptively using keywords or languages, ex: "<i>project-tile_arabic.jpg</i>", to help pre-populate metadata fields and save you time when uploading content!</p>
           </div>
         </section>
       </div>
