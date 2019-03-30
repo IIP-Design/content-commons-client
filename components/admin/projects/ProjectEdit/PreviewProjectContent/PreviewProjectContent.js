@@ -164,7 +164,7 @@ class PreviewProjectContent extends React.PureComponent {
                       component: (
                         <DownloadSrt
                           id={ this.props.id }
-                          instructions="Download SRTs"
+                          instructions="Download SRT(s)"
                         />
                       )
                     },
