@@ -5,7 +5,6 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import downloadIcon from 'static/icons/icon_download.svg';
 
-
 const DownloadOtherFiles = ( { instructions, data } ) => {
   const { error, loading, project } = data;
 
