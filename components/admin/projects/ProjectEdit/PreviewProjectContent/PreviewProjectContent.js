@@ -76,6 +76,7 @@ class PreviewProjectContent extends React.PureComponent {
 
     if ( loading ) return 'Loading the project...';
     if ( error ) return `Error! ${error.message}`;
+    if ( !project || !Object.keys( project ).length ) return null;
 
     const {
       createdAt, updatedAt, projectType, team, units
