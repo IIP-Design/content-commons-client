@@ -222,7 +222,7 @@ PreviewProjectContent.propTypes = {
 };
 
 const VIDEO_PROJECT_PREVIEW_QUERY = gql`
-  query VideoProject($id: ID!) {
+  query VideoProjectPreview($id: ID!) {
     project: videoProject(id: $id) {
       createdAt
       updatedAt
