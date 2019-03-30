@@ -12,7 +12,7 @@ import { Dropdown, Embed } from 'semantic-ui-react';
 
 import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo';
 import DownloadSrt from 'components/admin/download/DownloadSrt/DownloadSrt';
-import DownloadThumbnail from 'components/Video/DownloadThumbnail';
+import DownloadThumbnail from 'components/admin/download/DownloadThumbnail/DownloadThumbnail';
 import DownloadOtherFiles from 'components/Video/DownloadOtherFiles';
 import DownloadHelp from 'components/Video/DownloadHelp';
 
@@ -172,8 +172,8 @@ class PreviewProjectContent extends React.PureComponent {
                       title: 'Thumbnail',
                       component: (
                         <DownloadThumbnail
+                          id={ this.props.id }
                           instructions="Download Thumbnail(s)"
-                          units={ units }
                         />
                       )
                     },
@@ -277,4 +277,5 @@ export default graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
     },
   } )
 } )( PreviewProjectContent );
+
 export { VIDEO_PROJECT_PREVIEW_QUERY };
