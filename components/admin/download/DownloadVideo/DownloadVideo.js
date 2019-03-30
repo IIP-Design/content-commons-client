@@ -1,26 +1,22 @@
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
 import { Item } from 'semantic-ui-react';
 import { object, string, bool } from 'prop-types';
 import downloadIcon from 'static/icons/icon_download.svg';
 
 // NOTE: Using the 'download' attribute to trigger downloads
 // Need to research more robust options depending on browser supprt
-class DownloadVideo extends Component {
-  getSizeInfo = ( dimensions, filesize ) => {
-    if ( !Object.keys( dimensions ) || !filesize ) return null;
-    return {
-      label: `${dimensions.width} x ${dimensions.height}`,
-      weight: this.formatBytes( filesize )
-    };
-  };
+const DownloadVideo = props => {
+  const {
+    instructions, selectedLanguageUnit, burnedInCaptions
+  } = props;
 
-  getFnExt = url => {
+  const getFnExt = url => {
     const extRe = /([0-9a-z]+)$/i;
     const exts = url.match( extRe );
     return exts[0];
   };
 
-  formatBytes = ( bytes, decimals ) => {
+  const formatBytes = ( bytes, decimals ) => {
     if ( bytes === 0 ) return;
     const k = 1024;
     const dm = decimals || 2;
@@ -35,21 +31,29 @@ class DownloadVideo extends Component {
     return `${parseFloat( ( bytes / ( k ** i ) ).toFixed( dm ) )}  ${sizes[i]}`;
   };
 
-  sortByFilesize = ( a, b ) => {
+  const getSizeInfo = ( dimensions, filesize ) => {
+    if ( !Object.keys( dimensions ) || !filesize ) return null;
+    return {
+      label: `${dimensions.width} x ${dimensions.height}`,
+      weight: formatBytes( filesize )
+    };
+  };
+
+  const sortByFilesize = ( a, b ) => {
     if ( a.filesize && b.filesize ) {
       return +a.filesize > +b.filesize;
     }
     return true;
   };
 
-  renderFormItem( video, index ) {
-    const { title } = this.props.selectedLanguageUnit;
-    const size = this.getSizeInfo( video.dimensions, video.filesize );
-    const fn = `${title.replace( /\s/g, '_' )}_${video.dimensions.width}.${this.getFnExt( video.url )}`;
+  const renderFormItem = video => {
+    const { id, title } = props.selectedLanguageUnit;
+    const size = getSizeInfo( video.dimensions, video.filesize );
+    const fn = `${title.replace( /\s/g, '_' )}_${video.dimensions.width}.${getFnExt( video.url )}`;
     const videoQuality = `${video.quality && video.quality === 'BROADCAST' ? 'broadcast' : 'web'}`;
 
     return (
-      <Item.Group key={ `fs_${index}` } className="download-item">
+      <Item.Group key={ `fs_${id}` } className="download-item">
         <Item as="a" href={ video.url } download={ fn }>
           <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
           <Item.Content>
@@ -76,35 +80,32 @@ for
         </Item>
       </Item.Group>
     );
-  }
+  };
 
-  renderFormItems( unit, burnedInCaptions ) {
+  const renderFormItems = unit => {
     // fetch all source videos with NO burned in captions and then sort by file size
     const videos = unit.files.filter( video => ( video.videoBurnedInStatus === 'true' ) === burnedInCaptions );
     const videosWithSizeProp = unit.files.filter( video => video.filesize );
 
     // only sort the videos if each video has a filesize prop for comparison
     if ( videosWithSizeProp.length === videos.length ) {
-      videos.sort( this.sortByFilesize );
+      videos.sort( sortByFilesize );
     }
 
-    const videosArr = videosWithSizeProp.map( ( v, i ) => v.url && this.renderFormItem( v, i ) );
+    const videosArr = videosWithSizeProp
+      .map( ( v, i ) => v.url && renderFormItem( v, i ) );
     return <div>{ videosArr.length ? videosArr : 'There are no videos available for download at this time' }</div>;
-  }
+  };
 
-  render() {
-    const { selectedLanguageUnit, burnedInCaptions } = this.props;
-    return (
-      <div>
-        <div className="form-group_instructions">{ this.props.instructions }</div>
-        { this.props.selectedLanguageUnit && this.renderFormItems( selectedLanguageUnit, burnedInCaptions ) }
-      </div>
-    );
-  }
-}
+  return (
+    <Fragment>
+      <p className="form-group_instructions">{ instructions }</p>
+      { selectedLanguageUnit && renderFormItems( selectedLanguageUnit, burnedInCaptions ) }
+    </Fragment>
+  );
+};
 
 DownloadVideo.propTypes = {
-  title: string,
   selectedLanguageUnit: object,
   instructions: string,
   burnedInCaptions: bool
