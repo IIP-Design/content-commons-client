@@ -9,7 +9,7 @@ import {
 } from 'prop-types';
 import Router from 'next/router';
 
-import { Button, Confirm } from 'semantic-ui-react';
+import { Button, Confirm, Grid } from 'semantic-ui-react';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import VideoProjectData from 'components/admin/projects/ProjectReview/VideoProjectData/VideoProjectData';
 import VideoSupportFiles from 'components/admin/projects/ProjectReview/VideoSupportFiles/VideoSupportFiles';
@@ -99,13 +99,21 @@ class VideoReview extends React.PureComponent {
           </div>
         </ProjectHeader>
 
-        <VideoProjectData id={ id } />
+        <Grid stackable>
+          <Grid.Row>
+            <Grid.Column mobile={ 16 } computer={ 8 }>
+              <VideoProjectData id={ id } />
+            </Grid.Column>
 
-        <VideoSupportFiles
-          id={ id }
-          disableRightClick={ disableRightClick }
-          toggleDisableRightClick={ this.toggleDisableRightClick }
-        />
+            <Grid.Column mobile={ 16 } computer={ 8 }>
+              <VideoSupportFiles
+                id={ id }
+                disableRightClick={ disableRightClick }
+                toggleDisableRightClick={ this.toggleDisableRightClick }
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
 
         <VideoProjectFiles id={ id } />
 
