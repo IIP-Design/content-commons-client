@@ -28,7 +28,7 @@ import ProjectDataForm from 'components/admin/projects/ProjectEdit/ProjectDataFo
 import UploadSuccessMsg from 'components/admin/projects/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
 import VideoItem from 'components/admin/projects/ProjectEdit/VideoItem/VideoItem';
 
-import Dashboard from 'components/admin/Dashboard/Dashboard';
+import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
 
 import './VideoEdit.scss';
 
@@ -402,7 +402,7 @@ class VideoEdit extends React.PureComponent {
       );
     }
 
-    if ( !data.project ) return <Dashboard />;
+    if ( !data.project ) return <ProjectNotFound />;
 
     const { other, srt } = data.project;
 

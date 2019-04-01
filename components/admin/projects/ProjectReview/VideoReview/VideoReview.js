@@ -17,7 +17,7 @@ import VideoProjectData from 'components/admin/projects/ProjectReview/VideoProje
 import VideoSupportFiles from 'components/admin/projects/ProjectReview/VideoSupportFiles/VideoSupportFiles';
 import VideoProjectFiles from 'components/admin/projects/ProjectReview/VideoProjectFiles/VideoProjectFiles';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
-import Dashboard from 'components/admin/Dashboard/Dashboard';
+import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
 
 import { DELETE_VIDEO_PROJECT_MUTATION } from 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit';
 
@@ -62,7 +62,7 @@ class VideoReview extends React.PureComponent {
   render() {
     const { id, data, disableRightClick } = this.props;
 
-    if ( !data.project ) return <Dashboard />;
+    if ( !data.project ) return <ProjectNotFound />;
 
     return (
       <div className="review-project">
