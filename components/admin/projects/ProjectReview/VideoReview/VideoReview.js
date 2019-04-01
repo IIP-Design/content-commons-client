@@ -52,11 +52,7 @@ class VideoReview extends React.PureComponent {
   }
 
   render() {
-    const { id, videoReviewProject, disableRightClick } = this.props;
-
-    if ( videoReviewProject === null ) {
-      Router.push( { pathname: '/admin/dashboard' } );
-    }
+    const { id, disableRightClick } = this.props;
 
     return (
       <div className="review-project">
@@ -134,7 +130,6 @@ class VideoReview extends React.PureComponent {
 VideoReview.propTypes = {
   id: string,
   match: object,
-  videoReviewProject: object,
   disableRightClick: bool,
   toggleDisableRightClick: func
 };
