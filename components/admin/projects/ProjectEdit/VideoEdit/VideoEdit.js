@@ -233,11 +233,7 @@ class VideoEdit extends React.PureComponent {
 
   handleFinalReview = () => {
     Router.push( {
-      pathname: '/admin/project',
-      query: {
-        content: 'video',
-        id: this.props.id
-      }
+      pathname: `/admin/project/video/${this.props.id}`
     } );
   }
 
