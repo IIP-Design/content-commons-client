@@ -7,6 +7,7 @@ import React from 'react';
 import { bool, func, object } from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import orderBy from 'lodash/orderBy';
 import { Checkbox } from 'semantic-ui-react';
 
 import './VideoSupportFiles.scss';
@@ -21,6 +22,7 @@ const VideoSupportFiles = props => {
   if ( !project || !Object.keys( project ).length ) return null;
 
   const { srts, additionalFiles } = project;
+  const additionalFilesSorted = orderBy( additionalFiles, ['filetype'] );
 
   return (
     <section className="section section--project_support-files project_support-files">
@@ -36,7 +38,7 @@ const VideoSupportFiles = props => {
 
       <section className="addtl_files section">
         <p className="label">Additional files</p>
-        { additionalFiles.map( file => (
+        { additionalFilesSorted.map( file => (
           <p key={ file.id }><span className="label">{ file.language.displayName }:</span> { file.filename }</p>
         ) ) }
       </section>
@@ -75,6 +77,7 @@ const VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY = gql`
       ) {
         id
         filename
+        filetype
         language {
           displayName
         }
