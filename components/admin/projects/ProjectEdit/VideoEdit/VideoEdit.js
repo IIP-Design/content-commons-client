@@ -28,6 +28,8 @@ import ProjectDataForm from 'components/admin/projects/ProjectEdit/ProjectDataFo
 import UploadSuccessMsg from 'components/admin/projects/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
 import VideoItem from 'components/admin/projects/ProjectEdit/VideoItem/VideoItem';
 
+import Dashboard from 'components/admin/Dashboard/Dashboard';
+
 import './VideoEdit.scss';
 
 const categoryData = [
@@ -399,6 +401,8 @@ class VideoEdit extends React.PureComponent {
         </div>
       );
     }
+
+    if ( !data.project ) return <Dashboard />;
 
     const { other, srt } = data.project;
 

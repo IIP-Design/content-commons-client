@@ -72,6 +72,7 @@ VideoProjectData.propTypes = {
 const VIDEO_PROJECT_REVIEW_DATA_QUERY = gql`
   query VideoProjectReviewData($id: ID!) {
     project: videoProject(id: $id) {
+      id
       projectTitle
       author
       team {

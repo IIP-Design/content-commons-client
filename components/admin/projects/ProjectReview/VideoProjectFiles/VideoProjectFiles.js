@@ -96,6 +96,7 @@ VideoProjectFiles.propTypes = {
 const VIDEO_PROJECT_REVIEW_PROJECT_FILES_QUERY = gql`
   query VideoProjectReviewProjectFiles($id: ID!) {
     project: videoProject(id: $id) {
+      id
       videos: units {
         id
         title

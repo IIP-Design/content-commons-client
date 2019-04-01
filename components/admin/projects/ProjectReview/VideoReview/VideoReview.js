@@ -8,7 +8,8 @@ import {
   bool, func, object, string
 } from 'prop-types';
 import Router from 'next/router';
-import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import { compose, graphql } from 'react-apollo';
 import { Button, Confirm, Grid } from 'semantic-ui-react';
 
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
@@ -16,6 +17,7 @@ import VideoProjectData from 'components/admin/projects/ProjectReview/VideoProje
 import VideoSupportFiles from 'components/admin/projects/ProjectReview/VideoSupportFiles/VideoSupportFiles';
 import VideoProjectFiles from 'components/admin/projects/ProjectReview/VideoProjectFiles/VideoProjectFiles';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
+import Dashboard from 'components/admin/Dashboard/Dashboard';
 
 import { DELETE_VIDEO_PROJECT_MUTATION } from 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit';
 
@@ -32,9 +34,9 @@ class VideoReview extends React.PureComponent {
 
   handleDeleteConfirm = () => {
     this.setState( { deleteConfirmOpen: false } );
-    const { id, mutate } = this.props;
+    const { id, deleteProject } = this.props;
     console.log( `Deleted project: ${id}` );
-    mutate( { variables: { id } } );
+    deleteProject( { variables: { id } } );
     Router.push( { pathname: '/admin/dashboard' } );
   }
 
@@ -58,7 +60,9 @@ class VideoReview extends React.PureComponent {
   }
 
   render() {
-    const { id, disableRightClick } = this.props;
+    const { id, data, disableRightClick } = this.props;
+
+    if ( !data.project ) return <Dashboard />;
 
     return (
       <div className="review-project">
@@ -136,9 +140,34 @@ class VideoReview extends React.PureComponent {
 VideoReview.propTypes = {
   id: string,
   match: object,
+  data: object,
   disableRightClick: bool,
   toggleDisableRightClick: func,
-  mutate: func
+  deleteProject: func
 };
 
-export default graphql( DELETE_VIDEO_PROJECT_MUTATION )( VideoReview );
+const VIDEO_REVIEW_PROJECT = gql`
+  query VideoReviewProject($id: ID!) {
+    project: videoProject(id: $id) {
+      id
+    }
+  }
+`;
+
+const deleteProjectMutation = graphql( DELETE_VIDEO_PROJECT_MUTATION, {
+  name: 'deleteProject',
+  options: props => ( {
+    variables: { id: props.id }
+  } )
+} );
+
+const videoReviewQuery = graphql( VIDEO_REVIEW_PROJECT, {
+  options: props => ( {
+    variables: { id: props.id }
+  } )
+} );
+
+export default compose(
+  deleteProjectMutation,
+  videoReviewQuery
+)( VideoReview );

@@ -61,6 +61,7 @@ VideoSupportFiles.propTypes = {
 const VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY = gql`
   query VideoProjectReviewSupportFiles($id: ID!) {
     project: videoProject(id: $id) {
+      id
       srts: supportFiles(
         where: {filetype: "srt"},
         orderBy: filename_ASC
