@@ -8,13 +8,16 @@ import {
   bool, func, object, string
 } from 'prop-types';
 import Router from 'next/router';
-
+import { graphql } from 'react-apollo';
 import { Button, Confirm, Grid } from 'semantic-ui-react';
+
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import VideoProjectData from 'components/admin/projects/ProjectReview/VideoProjectData/VideoProjectData';
 import VideoSupportFiles from 'components/admin/projects/ProjectReview/VideoSupportFiles/VideoSupportFiles';
 import VideoProjectFiles from 'components/admin/projects/ProjectReview/VideoProjectFiles/VideoProjectFiles';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
+
+import { DELETE_VIDEO_PROJECT_MUTATION } from 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit';
 
 import './VideoReview.scss';
 
@@ -28,8 +31,11 @@ class VideoReview extends React.PureComponent {
   }
 
   handleDeleteConfirm = () => {
-    /* DELETE_PROJECT_FN() */
     this.setState( { deleteConfirmOpen: false } );
+    const { id, mutate } = this.props;
+    console.log( `Deleted project: ${id}` );
+    mutate( { variables: { id } } );
+    Router.push( { pathname: '/admin/dashboard' } );
   }
 
   handleDeleteCancel = () => {
@@ -131,7 +137,8 @@ VideoReview.propTypes = {
   id: string,
   match: object,
   disableRightClick: bool,
-  toggleDisableRightClick: func
+  toggleDisableRightClick: func,
+  mutate: func
 };
 
-export default VideoReview;
+export default graphql( DELETE_VIDEO_PROJECT_MUTATION )( VideoReview );
