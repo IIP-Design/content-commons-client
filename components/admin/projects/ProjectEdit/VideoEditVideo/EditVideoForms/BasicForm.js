@@ -1,25 +1,62 @@
 /**
  *
- * VideoBasicDataForm
+ * BasicForm
  *
  */
 
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
-import { object } from 'prop-types';
+import { object, string } from 'prop-types';
 
 import {
-  Form,
-  Grid,
-  Input,
-  Select,
-  TextArea
+  Form, Grid, Input, Select, Loader, TextArea
 } from 'semantic-ui-react';
 
 import IconPopup from 'components/admin/projects/ProjectEdit/IconPopup/IconPopup';
 
-class VideoBasicDataForm extends Component {
+class BasicForm extends Component {
+  state = {
+    descPublic: '',
+    language: {},
+    title: ''
+  }
+
+  componentDidMount() {
+    this.getProjectData();
+  }
+
+  getProjectData = () => {
+    const { unit } = this.props.data;
+
+    if ( unit ) {
+      this.setState( {
+        descPublic: unit.descPublic,
+        language: unit.language,
+        title: unit.title
+      } );
+    }
+  }
+
+  handleInput = e => {
+    this.setState( {
+      [e.target.name]: e.target.value
+    } );
+  }
+
+  updateUnit = e => {
+    const { id } = this.props;
+    const { name } = e.target;
+
+
+    this.props[`${name}UpdateVideoUnit`]( {
+      variables: {
+        id,
+        [name]: this.state[name]
+      }
+    } );
+  }
+
   render() {
     const videoQuality = (
       <label htmlFor="video-quality"> { /* eslint-disable-line */ }
@@ -34,10 +71,27 @@ class VideoBasicDataForm extends Component {
     );
 
     const {
-      data: { error, loading, videoUnit }
+      data: { error, loading, unit }
     } = this.props;
 
-    if ( loading ) return 'Loading video data...';
+    const { descPublic, language, title } = this.state;
+
+    if ( !unit || loading ) {
+      return (
+        <div style={ {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh'
+        } }
+        >
+          <Loader active inline="centered" style={ { marginBottom: '1em' } } />
+          <p>Loading the project...</p>
+        </div>
+      );
+    }
+
     if ( error ) return `Error! ${error.message}`;
 
     return (
@@ -46,30 +100,34 @@ class VideoBasicDataForm extends Component {
           <Grid.Row>
             <Grid.Column mobile={ 16 } computer={ 10 }>
               <Form.Field
+                autoFocus
+                control={ Input }
                 id="video-title"
-                control={ Input }
                 label="Video Title in Language"
-                autoFocus
                 name="title"
-                value={ videoUnit.title }
-                // onChange={ handleChange }
+                onBlur={ this.updateUnit }
+                onChange={ this.handleInput }
+                value={ title }
               />
 
               <Form.Field
-                id="video-description"
+                autoFocus
                 control={ TextArea }
+                id="video-description"
                 label="Public Description in Language (e.g. - YouTube)"
-                autoFocus
-                name="description"
-                value={ videoUnit.descPublic }
+                name="descPublic"
+                onBlur={ this.updateUnit }
+                onChange={ this.handleInput }
+                value={ descPublic }
               />
 
               <Form.Field
-                id="video-keywords"
-                control={ Input }
-                label="Additional Keywords in Language"
                 autoFocus
+                control={ Input }
+                id="video-keywords"
+                label="Additional Keywords in Language"
                 name="keywords"
+                onChange={ this.handleInput }
               />
             </Grid.Column>
 
@@ -185,6 +243,7 @@ class VideoBasicDataForm extends Component {
                 value="web"
                 name="quality"
               />
+
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -193,25 +252,63 @@ class VideoBasicDataForm extends Component {
   }
 }
 
-VideoBasicDataForm.propTypes = {
-  data: object
+BasicForm.propTypes = {
+  data: object,
+  id: string
 };
 
 const CURRENT_VIDEO_UNIT = gql`
   query CURRENT_VIDEO_UNIT( $id: ID! ) {
-    videoUnit( id: $id ) {
+    unit: videoUnit( id: $id ) {
       title
       descPublic
+      language {
+        displayName
+      }
     }
   } 
 `;
 
-export default graphql( CURRENT_VIDEO_UNIT, {
+const currentVideoUnit = graphql( CURRENT_VIDEO_UNIT, {
   options: props => ( {
     variables: {
       id: props.id
     },
   } )
-} )( VideoBasicDataForm );
+} );
 
-// export default VideoBasicDataForm;
+const UPDATE_VIDEO_UNIT_DESC = gql`
+  mutation UPDATE_VIDEO_UNIT_DESC( $id: ID!, $descPublic: String ) {
+    updateVideoUnit(
+      data: {
+        descPublic: $descPublic
+      },
+      where: {
+        id: $id
+      }
+    ) {
+      descPublic
+    }
+  }
+`;
+
+const UPDATE_VIDEO_UNIT_TITLE = gql`
+  mutation UPDATE_VIDEO_UNIT_TITLE( $id: ID!, $title: String ) {
+    updateVideoUnit(
+      data: {
+        title: $title
+      },
+      where: {
+        id: $id
+      }
+    ) {
+      title
+    }
+  }
+`;
+
+export default compose(
+  graphql( UPDATE_VIDEO_UNIT_DESC, { name: 'descPublicUpdateVideoUnit' } ),
+  graphql( UPDATE_VIDEO_UNIT_TITLE, { name: 'titleUpdateVideoUnit' } ),
+  currentVideoUnit
+)( BasicForm );

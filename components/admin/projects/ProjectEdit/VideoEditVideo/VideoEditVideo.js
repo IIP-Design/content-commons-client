@@ -10,8 +10,8 @@ import { string } from 'prop-types';
 
 import { Query } from 'react-apollo';
 import { Tab } from 'semantic-ui-react';
-import VideoBasicDataForm from 'components/admin/projects/ProjectEdit/VideoBasicDataForm/VideoBasicDataForm';
-import VideoLinkDataForm from 'components/admin/projects/ProjectEdit/VideoLinkDataForm/VideoLinkDataForm';
+import BasicForm from 'components/admin/projects/ProjectEdit/VideoEditVideo/EditVideoForms/BasicForm';
+import LinkForm from 'components/admin/projects/ProjectEdit/VideoEditVideo/EditVideoForms/LinkForm';
 
 import './VideoEditVideo.scss';
 
@@ -33,14 +33,13 @@ class VideoEditVideo extends React.PureComponent {
     const { id } = this.props;
 
     const panes = [
-      { menuItem: 'Basic', render: () => <Tab.Pane attached={ false }><VideoBasicDataForm id={ id } /></Tab.Pane> },
-      { menuItem: 'Links', render: () => <Tab.Pane attached={ false }><VideoLinkDataForm id={ id } /></Tab.Pane> }
+      { menuItem: 'Basic', render: () => <Tab.Pane attached={ false }><BasicForm id={ id } /></Tab.Pane> },
+      { menuItem: 'Links', render: () => <Tab.Pane attached={ false }><LinkForm id={ id } /></Tab.Pane> }
     ];
 
     return (
       <Query query={ CURRENT_VIDEO_UNIT } variables={ { id } }>
         { ( { loading, error, data } ) => {
-          console.log( data );
           if ( loading ) return <p>Loading...</p>;
           if ( error ) return <p>Error</p>;
           const { image } = data.videoUnit.thumbnails[0];

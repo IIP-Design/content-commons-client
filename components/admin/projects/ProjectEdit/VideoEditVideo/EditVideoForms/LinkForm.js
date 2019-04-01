@@ -1,12 +1,12 @@
 /**
  *
- * VideoLinkDataForm
+ * LinkForm
  *
  */
 
 import React from 'react';
 // import PropTypes from 'prop-types';
-// import './VideoLinkDataForm.css';
+// import './LinkForm.css';
 
 import {
   Form,
@@ -14,7 +14,7 @@ import {
   Input
 } from 'semantic-ui-react';
 
-const VideoLinkDataForm = () => (
+const LinkForm = () => (
   <Form className="edit-video__form video-link-data">
     <Grid stackable>
       <Grid.Row>
@@ -42,6 +42,6 @@ const VideoLinkDataForm = () => (
   </Form>
 );
 
-VideoLinkDataForm.propTypes = {};
+LinkForm.propTypes = {};
 
-export default VideoLinkDataForm;
+export default LinkForm;
