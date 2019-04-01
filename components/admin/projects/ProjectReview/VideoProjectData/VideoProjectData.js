@@ -44,11 +44,15 @@ const VideoProjectData = props => {
           <section className="project-data_taxonomy section">
             <p>
               <span className="label">Categories: </span>
-              { categories.map( ( cat, i, arr ) => ( arr.length - 1 === i ? cat : `${cat}, ` ) ) }
+              { categories
+                .map( category => category.translations.name )
+                .join( ', ' ) }
             </p>
             <p>
               <span className="label">Tags: </span>
-              { tags.map( ( tag, i, arr ) => ( arr.length - 1 === i ? tag : `${tag}, ` ) ) }
+              { tags
+                .map( tag => tag.translations.name )
+                .join( ', ' ) }
             </p>
           </section>
         ) : null }
