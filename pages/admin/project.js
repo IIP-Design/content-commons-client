@@ -6,7 +6,7 @@ import trim from 'lodash/trim';
 
 // using dynamic import so that components load when they are needed, or rendered
 const VideoEdit = dynamic( () => import( 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit' ) );
-const VideoReview = dynamic( () => import( 'components/admin/projects/ProjectReview/VideoReview' ) );
+const VideoReview = dynamic( () => import( 'components/admin/projects/ProjectReview/VideoReview/VideoReview' ) );
 
 const CONTENT_TYPES = ['video'];
 
