@@ -108,6 +108,7 @@ const VIDEO_PROJECT_REVIEW_PROJECT_FILES_QUERY = gql`
           }
         }
         files {
+          id
           createdAt
           duration
           filename
