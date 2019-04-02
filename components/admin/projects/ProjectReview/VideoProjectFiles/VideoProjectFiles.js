@@ -78,7 +78,7 @@ const VideoProjectFiles = props => {
                   <span className="label">Public Description:</span>
                   <span>{ unit.descPublic }</span>
                 </p>
-                <p><span className="label">YouTube URL:</span> { unit.files[0].stream.url }</p>
+                <p><span className="label">{ unit.files[0].stream.site } URL:</span> { unit.files[0].stream.url }</p>
               </Grid.Column>
             </Grid.Row>
           </Grid>
