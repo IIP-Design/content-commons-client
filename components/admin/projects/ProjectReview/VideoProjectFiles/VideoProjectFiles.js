@@ -62,7 +62,7 @@ const VideoProjectFiles = props => {
                 <p><span className="label">Filesize:</span> { formatBytes( unit.files[0].filesize ) }</p>
                 <p><span className="label">Dimensions:</span> { `${unit.files[0].dimensions.width} x ${unit.files[0].dimensions.height}` }</p>
                 <p><span className="label">Uploaded:</span> { formatDate( unit.files[0].createdAt ) }</p>
-                <p><span className="label">Duration:</span> { millisToMinutesAndSeconds( unit.files[0].duration ) }</p>
+                <p><span className="label">Duration:</span> { millisToMinutesAndSeconds( unit.files[0].duration, 0 ) }</p>
               </Grid.Column>
 
               <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_info">
