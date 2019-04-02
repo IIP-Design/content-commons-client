@@ -105,8 +105,7 @@ class VideoReview extends React.PureComponent {
             <PreviewProject
               triggerProps={ {
                 className: 'project_button project_button--preview',
-                content: 'Preview Project',
-                basic: true
+                content: 'Preview Project'
               } }
               contentProps={ { id } }
               modalTrigger={ Button }

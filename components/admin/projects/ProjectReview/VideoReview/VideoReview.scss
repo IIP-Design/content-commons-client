@@ -1,21 +1,24 @@
 @import "../../../../../styles/colors.scss";
 
 .review-project {  
-  
-
   .section {
     margin-bottom: 1em;
     
     p {
       margin-bottom: 2px;
-      font-size: 14px;
+      font-size: 0.777778rem;
     }
 
     .label {
       font-weight: bold;
     }
 
+    .ui.checkbox label {
+      font-size: 0.777778rem !important;
+    }
+
     .title {
+      font-size: 1rem;
       font-weight: normal;
     }
 
@@ -71,8 +74,11 @@
   }
 
   .project_button {
+    padding-top: 0.785714em;
+    padding-bottom: 0.785714em;
     border: 2px solid $matisse-blue;
     color: $matisse-blue;
+    font-size: 0.777778rem;
     background-color: #fff;
     box-shadow: none !important;    
 
