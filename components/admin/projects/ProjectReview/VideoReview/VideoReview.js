@@ -17,6 +17,8 @@ import VideoProjectData from 'components/admin/projects/ProjectReview/VideoProje
 import VideoSupportFiles from 'components/admin/projects/ProjectReview/VideoSupportFiles/VideoSupportFiles';
 import VideoProjectFiles from 'components/admin/projects/ProjectReview/VideoProjectFiles/VideoProjectFiles';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
+import PreviewProject from 'components/admin/PreviewProject/PreviewProject';
+import PreviewProjectContent from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
 
 import { DELETE_VIDEO_PROJECT_MUTATION } from 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit';
@@ -100,7 +102,17 @@ class VideoReview extends React.PureComponent {
           </div>
 
           <div className="button_column_wrapper">
-            <Button className="project_button project_button--preview">Preview Project</Button>
+            <PreviewProject
+              triggerProps={ {
+                className: 'project_button project_button--preview',
+                content: 'Preview Project',
+                basic: true
+              } }
+              contentProps={ { id } }
+              modalTrigger={ Button }
+              modalContent={ PreviewProjectContent }
+              options={ { closeIcon: true } }
+            />
             <Button className="project_button project_button--publish" onClick={ this.handlePublish }>Publish</Button>
           </div>
         </ProjectHeader>
