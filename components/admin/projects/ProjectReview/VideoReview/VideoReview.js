@@ -4,9 +4,7 @@
  *
  */
 import React from 'react';
-import {
-  bool, func, object, string
-} from 'prop-types';
+import { func, object, string } from 'prop-types';
 import Router from 'next/router';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
@@ -63,12 +61,8 @@ class VideoReview extends React.PureComponent {
     Router.push( { pathname: '/admin/dashboard' } );
   }
 
-  toggleDisableRightClick = () => {
-    this.props.toggleDisableRightClick( this.props.match.params.videoID );
-  }
-
   render() {
-    const { id, data, disableRightClick } = this.props;
+    const { id, data } = this.props;
 
     if ( !data.project ) return <ProjectNotFound />;
 
@@ -129,11 +123,7 @@ class VideoReview extends React.PureComponent {
             </Grid.Column>
 
             <Grid.Column mobile={ 16 } computer={ 8 }>
-              <VideoSupportFiles
-                id={ id }
-                disableRightClick={ disableRightClick }
-                toggleDisableRightClick={ this.toggleDisableRightClick }
-              />
+              <VideoSupportFiles id={ id } />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -156,10 +146,7 @@ class VideoReview extends React.PureComponent {
 
 VideoReview.propTypes = {
   id: string,
-  match: object,
   data: object,
-  disableRightClick: bool,
-  toggleDisableRightClick: func,
   deleteProject: func
 };
 
