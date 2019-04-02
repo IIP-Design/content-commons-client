@@ -35,19 +35,21 @@ class VideoReview extends React.PureComponent {
   }
 
   handleDeleteConfirm = () => {
-    this.setState( { deleteConfirmOpen: false } );
-    const { id, deleteProject } = this.props;
-    console.log( `Deleted project: ${id}` );
-    deleteProject( { variables: { id } } );
-    Router.push( { pathname: '/admin/dashboard' } );
+    this.setState(
+      { deleteConfirmOpen: false },
+      this.handleDeleteProject
+    );
   }
 
   handleDeleteCancel = () => {
     this.setState( { deleteConfirmOpen: false } );
   }
 
-  toggleDisableRightClick = () => {
-    this.props.toggleDisableRightClick( this.props.match.params.videoID );
+  handleDeleteProject = () => {
+    const { id, deleteProject } = this.props;
+    console.log( `Deleted project: ${id}` );
+    deleteProject( { variables: { id } } );
+    Router.push( { pathname: '/admin/dashboard' } );
   }
 
   handleEdit = () => {
@@ -59,6 +61,10 @@ class VideoReview extends React.PureComponent {
 
   handlePublish = () => {
     Router.push( { pathname: '/admin/dashboard' } );
+  }
+
+  toggleDisableRightClick = () => {
+    this.props.toggleDisableRightClick( this.props.match.params.videoID );
   }
 
   render() {
