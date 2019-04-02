@@ -7,11 +7,14 @@
 import React from 'react';
 import { object, string } from 'prop-types';
 import Router from 'next/router';
-import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Grid, Button } from 'semantic-ui-react';
 
-import { formatBytes, formatDate, millisToMinutesAndSeconds } from 'lib/utils';
+import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
+
+import {
+  formatBytes, formatDate, millisToMinutesAndSeconds
+} from 'lib/utils';
 
 import './VideoProjectFiles.scss';
 
@@ -68,7 +71,7 @@ const VideoProjectFiles = props => {
               <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_info">
                 <p><span className="label">Language:</span> { unit.files[0].language.displayName }</p>
                 <p><span className="label">Subtitles & Captions:</span> { unit.files[0].videoBurnedInStatus }</p>
-                <p><span className="label">Video Type:</span> { unit.video_type }</p>
+                <p><span className="label">Video Type:</span> { unit.videoType }</p>
                 <p><span className="label">Quality:</span> { unit.files[0].quality }</p>
                 <p
                   className={
@@ -93,52 +96,11 @@ VideoProjectFiles.propTypes = {
   data: object
 };
 
-const VIDEO_PROJECT_REVIEW_PROJECT_FILES_QUERY = gql`
-  query VideoProjectReviewProjectFiles($id: ID!) {
-    project: videoProject(id: $id) {
-      id
-      units {
-        id
-        title
-        descPublic
-        thumbnails {
-          image {
-            alt
-            url
-          }
-        }
-        files {
-          id
-          createdAt
-          duration
-          filename
-          filesize
-          videoBurnedInStatus
-          quality
-          stream {
-            site
-            url
-          }
-          dimensions {
-            height
-            width
-          }
-          language {
-            displayName
-            textDirection
-          }
-        }
-      }
-    }
-  }
-`;
-
-export default graphql( VIDEO_PROJECT_REVIEW_PROJECT_FILES_QUERY, {
+export default graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
   options: props => ( {
     variables: {
-      id: props.id
+      id: props.id,
+      isReviewPage: true
     },
   } )
 } )( VideoProjectFiles );
-
-export { VIDEO_PROJECT_REVIEW_PROJECT_FILES_QUERY };

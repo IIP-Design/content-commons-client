@@ -223,17 +223,17 @@ PreviewProjectContent.propTypes = {
 };
 
 const VIDEO_PROJECT_PREVIEW_QUERY = gql`
-  query VideoProjectPreview($id: ID!) {
+  query VideoProjectPreview($id: ID!, $isReviewPage: Boolean!) {
     project: videoProject(id: $id) {
       id
-      createdAt
-      updatedAt
-      projectType
-      thumbnails {
+      createdAt @skip(if: $isReviewPage)
+      updatedAt @skip(if: $isReviewPage)
+      projectType @skip(if: $isReviewPage)
+      thumbnails @skip(if: $isReviewPage) {
         alt
         url
       }
-      team {
+      team @skip(if: $isReviewPage) {
         name
       }
       units {
@@ -246,7 +246,7 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
             url
           }
         }
-        language {
+        language @skip(if: $isReviewPage) {
           languageCode
           displayName
           textDirection
@@ -257,13 +257,21 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
           url
           filesize
           videoBurnedInStatus
+          createdAt @include(if: $isReviewPage)
+          duration @include(if: $isReviewPage)
+          quality @include(if: $isReviewPage)
           dimensions {
             width
             height
           }
           stream {
             site
-            embedUrl
+            embedUrl @skip(if: $isReviewPage)
+            url @include(if: $isReviewPage)
+          }
+          language @include(if: $isReviewPage) {
+            displayName
+            textDirection
           }
         }
       }
@@ -274,7 +282,8 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
 export default graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
   options: props => ( {
     variables: {
-      id: props.id
+      id: props.id,
+      isReviewPage: false
     },
   } )
 } )( PreviewProjectContent );
