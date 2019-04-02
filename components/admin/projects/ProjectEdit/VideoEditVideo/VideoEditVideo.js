@@ -24,6 +24,15 @@ const CURRENT_VIDEO_UNIT = gql`
           url
         }
       }
+      files {
+        duration
+        filename
+        filesize
+        dimensions {
+          width
+          height
+        }
+      }
     }
   } 
 `;
@@ -42,7 +51,11 @@ class VideoEditVideo extends React.PureComponent {
         { ( { loading, error, data } ) => {
           if ( loading ) return <p>Loading...</p>;
           if ( error ) return <p>Error</p>;
-          const { image } = data.videoUnit.thumbnails[0];
+
+          const { videoUnit } = data;
+          const { image } = videoUnit.thumbnails[0];
+          const file = videoUnit.files[0];
+
           return (
             <div className="edit-video-modal">
               <figure className="modal_thumbnail overlay">
@@ -55,20 +68,20 @@ class VideoEditVideo extends React.PureComponent {
                 <div className="modal_meta_wrapper">
                   <div className="modal_meta">
                     <span className="modal_meta_content modal_meta_content--filename">
-                      { /* { data.fileName } */ }
+                      { file.filename }
                     </span>
                     <br />
                     <span className="modal_meta_content modal_meta_content--filesize">
-                      { 'Filesize: ' }
+                      { `Filesize: ${file.filesize}` }
                     </span>
                     <span className="modal_meta_content modal_meta_content--dimensions">
-                      { 'Dimensions: ' }
+                      { `Dimensions: ${file.width} x ${file.height}` }
                     </span>
                     <span className="modal_meta_content modal_meta_content--date">
                       { /* { `Uploaded: ${moment( data.uploaded ).format( 'MMMM DD, YYYY [at] h:mm A' )}` } */ }
                     </span>
                     <span className="modal_meta_content modal_meta_content--duration">
-                      { 'Duration: ' }
+                      { `Duration: ${file.duration}` }
                     </span>
                   </div>
                 </div>
