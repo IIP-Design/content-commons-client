@@ -61,6 +61,7 @@ DownloadSrt.propTypes = {
 const VIDEO_PROJECT_PREVIEW_SRTS_QUERY = gql`
   query VideoProjectPreviewSrts($id: ID!) {
     project: videoProject(id: $id) {
+      id
       units: supportFiles(
         where: {filetype: "srt"},
         orderBy: filename_ASC

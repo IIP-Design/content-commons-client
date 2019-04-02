@@ -57,6 +57,7 @@ DownloadThumbnail.propTypes = {
 const VIDEO_PROJECT_PREVIEW_THUMBNAILS_QUERY = gql`
   query VideoProjectPreviewThumbnails($id: ID!) {
     project: videoProject(id: $id) {
+      id
       units: supportFiles(
         where: {
           OR: [
