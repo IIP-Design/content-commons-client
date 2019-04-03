@@ -3,7 +3,7 @@
  * VideoSupportFiles
  *
  */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { func, object, string } from 'prop-types';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
@@ -12,74 +12,60 @@ import { Checkbox } from 'semantic-ui-react';
 
 import './VideoSupportFiles.scss';
 
-class VideoSupportFiles extends React.PureComponent {
-  state = {};
+const VideoSupportFiles = props => {
+  const { error, loading, project } = props.data;
 
-  componentDidMount = () => {
-    this.setState( {
-      protectImages: this.props.data.project.protectImages
-    } );
-  }
+  const [protectImages, setProtectImages] = useState( project.protectImages );
 
-  componentDidUpdate = prevProps => {
-    const { project } = this.props.data;
-    const { project: prevProject } = prevProps.data;
-    if ( project.protectImages !== prevProject.protectImages ) {
-      this.setState( {
-        protectImages: project.protectImages
-      } );
-    }
-  }
+  const updateState = () => setProtectImages( project.protectImages );
 
-  handleUpdateProtectImages = () => {
-    const { id, updateProtectImages } = this.props;
+  useEffect( updateState );
+
+  if ( loading ) return 'Loading the project...';
+  if ( error ) return `Error! ${error.message}`;
+
+  if ( !project || !Object.keys( project ).length ) return null;
+
+  const handleUpdateProtectImages = () => {
+    const { id, updateProtectImages } = props;
     updateProtectImages( {
       variables: {
-        data: { protectImages: !this.state.protectImages },
+        data: { protectImages: !protectImages },
         where: { id }
       }
     } );
-  }
+  };
 
-  render() {
-    const { error, loading, project } = this.props.data;
+  const { srts, additionalFiles } = project;
+  const additionalFilesSorted = orderBy( additionalFiles, ['filetype'] );
 
-    if ( loading ) return 'Loading the project...';
-    if ( error ) return `Error! ${error.message}`;
-
-    if ( !project || !Object.keys( project ).length ) return null;
-
-    const { srts, additionalFiles } = project;
-    const additionalFilesSorted = orderBy( additionalFiles, ['filetype'] );
-
-    return (
-      <section className="section section--project_support-files project_support-files">
-        <h3>SUPPORT FILES</h3>
-        <section className="files section">
-          <p className="label">SRT files</p>
-          { srts.map( srt => (
-            <p key={ srt.id } className="file">
-              <span className="label">{ srt.language.displayName }:</span> { srt.filename }
-            </p>
-          ) ) }
-        </section>
-
-        <section className="addtl_files section">
-          <p className="label">Additional files</p>
-          { additionalFilesSorted.map( file => (
-            <p key={ file.id }><span className="label">{ file.language.displayName }:</span> { file.filename }</p>
-          ) ) }
-        </section>
-
-        <Checkbox
-          label="Disable right-click to protect your images"
-          checked={ this.state.protectImages }
-          onClick={ this.handleUpdateProtectImages }
-        />
+  return (
+    <section className="section section--project_support-files project_support-files">
+      <h3>SUPPORT FILES</h3>
+      <section className="files section">
+        <p className="label">SRT files</p>
+        { srts.map( srt => (
+          <p key={ srt.id } className="file">
+            <span className="label">{ srt.language.displayName }:</span> { srt.filename }
+          </p>
+        ) ) }
       </section>
-    );
-  }
-}
+
+      <section className="addtl_files section">
+        <p className="label">Additional files</p>
+        { additionalFilesSorted.map( file => (
+          <p key={ file.id }><span className="label">{ file.language.displayName }:</span> { file.filename }</p>
+        ) ) }
+      </section>
+
+      <Checkbox
+        label="Disable right-click to protect your images"
+        checked={ protectImages }
+        onClick={ handleUpdateProtectImages }
+      />
+    </section>
+  );
+};
 
 VideoSupportFiles.propTypes = {
   id: string,
