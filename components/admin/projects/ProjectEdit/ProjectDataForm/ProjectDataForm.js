@@ -22,6 +22,8 @@ import {
   Select,
   TextArea
 } from 'semantic-ui-react';
+import Link from 'next/link';
+
 import './ProjectDataForm.scss';
 
 const ProjectDataForm = props => {
@@ -183,11 +185,8 @@ const ProjectDataForm = props => {
                   label={ (
                     /* eslint-disable jsx-a11y/label-has-for */
                     /* eslint-disable jsx-a11y/label-has-associated-control */
-                    /**
-                     * @todo need Terms of Use link
-                     */
                     <label htmlFor="terms-conditions">
-                      By uploading these files I agree to the Content Commons <a href="https://?????">Terms of Use</a> and licensing agreements. I understand that my content will be available to the public for general use.
+                      By uploading these files I agree to the Content Commons <Link href="/about"><a>Terms of Use</a></Link> and licensing agreements. I understand that my content will be available to the public for general use.
                     </label>
                   ) }
                   name="termsConditions"
