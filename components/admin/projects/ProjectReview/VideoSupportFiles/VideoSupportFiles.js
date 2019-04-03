@@ -43,19 +43,23 @@ const VideoSupportFiles = props => {
     <section className="section section--project_support-files project_support-files">
       <h3>SUPPORT FILES</h3>
       <section className="files section">
-        <p className="label">SRT files</p>
-        { srts.map( srt => (
-          <p key={ srt.id } className="file">
-            <span className="label">{ srt.language.displayName }:</span> { srt.filename }
-          </p>
-        ) ) }
+        <p id="srt-files" className="label">SRT files</p>
+        <ul aria-describedby="srt-files">
+          { srts.map( srt => (
+            <li key={ srt.id } className="file">
+              <span className="label">{ srt.language.displayName }:</span> { srt.filename }
+            </li>
+          ) ) }
+        </ul>
       </section>
 
       <section className="addtl_files section">
-        <p className="label">Additional files</p>
-        { additionalFilesSorted.map( file => (
-          <p key={ file.id }><span className="label">{ file.language.displayName }:</span> { file.filename }</p>
-        ) ) }
+        <p id="additional-files" className="label">Additional files</p>
+        <ul aria-describedby="additional-files">
+          { additionalFilesSorted.map( file => (
+            <li key={ file.id }><span className="label">{ file.language.displayName }:</span> { file.filename }</li>
+          ) ) }
+        </ul>
       </section>
 
       <Checkbox
