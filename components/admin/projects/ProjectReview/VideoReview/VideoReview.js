@@ -69,51 +69,46 @@ class VideoReview extends React.PureComponent {
     return (
       <div className="review-project">
         <ProjectHeader icon="video camera" text="Project Details - Review">
-          <div className="button_column_wrapper">
-            <div className="button_delete_wrapper">
-              <Button
-                className="project_button project_button--delete"
-                onClick={ this.displayConfirmDelete }
-              >
-                Delete Project
-              </Button>
-              <Confirm
-                className="delete"
-                open={ this.state.deleteConfirmOpen }
-                content={ (
-                  <ConfirmModalContent
-                    className="delete_confirm delete_confirm--video"
-                    headline="Are you sure you want to delete this video project?"
-                  >
-                    <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
-                  </ConfirmModalContent>
-                ) }
-                onCancel={ this.handleDeleteCancel }
-                onConfirm={ this.handleDeleteConfirm }
-                cancelButton="No, take me back"
-                confirmButton="Yes, delete forever"
-              />
-            </div>
-            <Button
-              className="project_button project_button--edit"
-              content="Edit"
-              onClick={ this.handleEdit }
-            />
-          </div>
+          <Button
+            content="Delete Project"
+            className="project_button project_button--delete"
+            onClick={ this.displayConfirmDelete }
+          />
 
-          <div className="button_column_wrapper">
-            <PreviewProject
-              triggerProps={ {
-                className: 'project_button project_button--preview',
-                content: 'Preview Project'
-              } }
-              contentProps={ { id } }
-              modalTrigger={ Button }
-              modalContent={ PreviewProjectContent }
-              options={ { closeIcon: true } }
-            />
-            <Button className="project_button project_button--publish" onClick={ this.handlePublish }>Publish</Button>
-          </div>
+          <Confirm
+            className="delete"
+            open={ this.state.deleteConfirmOpen }
+            content={ (
+              <ConfirmModalContent
+                className="delete_confirm delete_confirm--video"
+                headline="Are you sure you want to delete this video project?"
+              >
+                <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
+              </ConfirmModalContent>
+            ) }
+            onCancel={ this.handleDeleteCancel }
+            onConfirm={ this.handleDeleteConfirm }
+            cancelButton="No, take me back"
+            confirmButton="Yes, delete forever"
+          />
+
+          <Button
+            className="project_button project_button--edit"
+            content="Edit"
+            onClick={ this.handleEdit }
+          />
+
+          <PreviewProject
+            triggerProps={ {
+              className: 'project_button project_button--preview',
+              content: 'Preview Project'
+            } }
+            contentProps={ { id } }
+            modalTrigger={ Button }
+            modalContent={ PreviewProjectContent }
+            options={ { closeIcon: true } }
+          />
+          <Button className="project_button project_button--publish" onClick={ this.handlePublish }>Publish</Button>
         </ProjectHeader>
 
         <Grid stackable>

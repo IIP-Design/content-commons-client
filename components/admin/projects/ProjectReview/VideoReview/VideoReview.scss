@@ -1,6 +1,20 @@
 @import "../../../../../styles/colors.scss";
 
 .review-project {
+  .section--project_header {
+    display: block;
+    @media screen and (min-width: 960px) {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  @media screen and (max-width: 959px) {
+    .project_header {
+      margin-bottom: 1em;
+    }
+  }
+
   .section {
     margin-bottom: 1em;
     
@@ -46,28 +60,11 @@
     }
   }
 
-  .project_buttons {
-    @media screen and (max-width: 505px) {
-      display: flex !important;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-
-    .button_column_wrapper {
-      display: inline;
-      @media screen and (max-width: 505px) {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-
-        &:first-child {
-          margin-bottom: 1em;
-        }
-      }
-    }
-
-    .button_delete_wrapper {
-      display: inline;
+  @media screen and (max-width: 550px) {
+    .project_buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 0.5fr);
+      grid-gap: 1em;
     }
   }
 
@@ -109,11 +106,11 @@
 
     &--delete {
       border: 2px solid #fff;
-      font-weight: normal;
-      color: $grey;
-      @media screen and (max-width: 505px) {
+      @media screen and (max-width: 550px) {
         border-color: $grey;
       }
+      font-weight: normal;
+      color: $grey;
 
       &:hover,
       &:active,
