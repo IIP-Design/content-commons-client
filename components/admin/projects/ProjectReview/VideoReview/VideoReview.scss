@@ -39,6 +39,13 @@
     }
   }
 
+  @media screen and (min-width: 768px) {
+    .layout,
+    .ui.grid > .row.layout {
+      padding: 1.75em;
+    }
+  }
+
   .project_buttons {
     @media screen and (max-width: 505px) {
       display: flex !important;

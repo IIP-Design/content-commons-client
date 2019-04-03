@@ -36,7 +36,7 @@ const VideoProjectFiles = props => {
   };
 
   return (
-    <section className="section section--project_files project_files">
+    <section className="section section--project_files project_files layout">
       <h3 className="project_files_headline">VIDEOS IN PROJECT</h3>
       { units.map( unit => (
         <div key={ unit.title } className="project_file">

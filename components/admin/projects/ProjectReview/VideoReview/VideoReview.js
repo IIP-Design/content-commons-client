@@ -117,7 +117,7 @@ class VideoReview extends React.PureComponent {
         </ProjectHeader>
 
         <Grid stackable>
-          <Grid.Row>
+          <Grid.Row className="layout">
             <Grid.Column mobile={ 16 } computer={ 8 }>
               <VideoProjectData id={ id } />
             </Grid.Column>
