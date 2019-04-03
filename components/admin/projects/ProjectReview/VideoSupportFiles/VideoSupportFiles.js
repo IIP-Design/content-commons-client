@@ -47,7 +47,7 @@ const VideoSupportFiles = props => {
         <ul aria-describedby="srt-files">
           { srts.map( srt => (
             <li key={ srt.id } className="file">
-              <span className="label">{ srt.language.displayName }:</span> { srt.filename }
+              <b className="label">{ srt.language.displayName }:</b> { srt.filename }
             </li>
           ) ) }
         </ul>
@@ -57,7 +57,7 @@ const VideoSupportFiles = props => {
         <h4 id="additional-files">Additional files</h4>
         <ul aria-describedby="additional-files">
           { additionalFilesSorted.map( file => (
-            <li key={ file.id }><span className="label">{ file.language.displayName }:</span> { file.filename }</li>
+            <li key={ file.id }><b className="label">{ file.language.displayName }:</b> { file.filename }</li>
           ) ) }
         </ul>
       </section>

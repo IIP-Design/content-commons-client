@@ -61,27 +61,27 @@ const VideoProjectFiles = props => {
             <Grid.Row className="project_file_contents">
               <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_meta">
                 <img src={ unit.thumbnails[0].image.url } alt={ unit.thumbnails[0].image.alt } />
-                <p><span className="label">File Name:</span> { unit.files[0].filename }</p>
-                <p><span className="label">Filesize:</span> { formatBytes( unit.files[0].filesize ) }</p>
-                <p><span className="label">Dimensions:</span> { `${unit.files[0].dimensions.width} x ${unit.files[0].dimensions.height}` }</p>
-                <p><span className="label">Uploaded:</span> { formatDate( unit.files[0].createdAt ) }</p>
-                <p><span className="label">Duration:</span> { millisToMinutesAndSeconds( unit.files[0].duration, 0 ) }</p>
+                <p><b className="label">File Name:</b> { unit.files[0].filename }</p>
+                <p><b className="label">Filesize:</b> { formatBytes( unit.files[0].filesize ) }</p>
+                <p><b className="label">Dimensions:</b> { `${unit.files[0].dimensions.width} x ${unit.files[0].dimensions.height}` }</p>
+                <p><b className="label">Uploaded:</b> { formatDate( unit.files[0].createdAt ) }</p>
+                <p><b className="label">Duration:</b> { millisToMinutesAndSeconds( unit.files[0].duration, 0 ) }</p>
               </Grid.Column>
 
               <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_info">
-                <p><span className="label">Language:</span> { unit.files[0].language.displayName }</p>
-                <p><span className="label">Subtitles & Captions:</span> { unit.files[0].videoBurnedInStatus }</p>
-                <p><span className="label">Video Type:</span> { unit.videoType }</p>
-                <p><span className="label">Quality:</span> { unit.files[0].quality }</p>
+                <p><b className="label">Language:</b> { unit.files[0].language.displayName }</p>
+                <p><b className="label">Subtitles & Captions:</b> { unit.files[0].videoBurnedInStatus }</p>
+                <p><b className="label">Video Type:</b> { unit.videoType }</p>
+                <p><b className="label">Quality:</b> { unit.files[0].quality }</p>
                 <p
                   className={
                     `public_description ${unit.files[0].language.textDirection}`
                   }
                 >
-                  <span className="label">Public Description:</span>
+                  <b className="label">Public Description:</b>
                   <span>{ unit.descPublic }</span>
                 </p>
-                <p><span className="label">{ unit.files[0].stream.site } URL:</span> { unit.files[0].stream.url }</p>
+                <p><b className="label">{ unit.files[0].stream.site } URL:</b> { unit.files[0].stream.url }</p>
               </Grid.Column>
             </Grid.Row>
           </Grid>

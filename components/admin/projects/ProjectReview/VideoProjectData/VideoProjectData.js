@@ -33,23 +33,23 @@ const VideoProjectData = props => {
     <section className="section section--project_data">
       <h3>PROJECT DATA</h3>
       <section className="project-data_meta section">
-        <p><span className="label">Video Title:</span> { projectTitle }</p>
-        <p><span className="label">Author:</span> { author }</p>
-        <p><span className="label">Owner:</span> { owner }</p>
-        <p><span className="label">Privacy Setting:</span> { visibility }</p>
+        <p><b className="label">Video Title:</b> { projectTitle }</p>
+        <p><b className="label">Author:</b> { author }</p>
+        <p><b className="label">Owner:</b> { owner }</p>
+        <p><b className="label">Privacy Setting:</b> { visibility }</p>
       </section>
 
       { ( categories.length && tags.length )
         ? (
           <section className="project-data_taxonomy section">
             <p>
-              <span className="label">Categories: </span>
+              <b className="label">Categories: </b>
               { categories
                 .map( category => category.translations.name )
                 .join( ', ' ) }
             </p>
             <p>
-              <span className="label">Tags: </span>
+              <b className="label">Tags: </b>
               { tags
                 .map( tag => tag.translations.name )
                 .join( ', ' ) }
@@ -58,8 +58,8 @@ const VideoProjectData = props => {
         ) : null }
 
       <section className="project-data_description section">
-        <p><span className="label">Public Description:</span> { descPublic }</p>
-        <p><span className="label">Internal Description:</span> { descInternal }</p>
+        <p><b className="label">Public Description:</b> { descPublic }</p>
+        <p><b className="label">Internal Description:</b> { descInternal }</p>
       </section>
     </section>
   );
