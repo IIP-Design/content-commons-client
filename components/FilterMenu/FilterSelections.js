@@ -93,25 +93,26 @@ class FilterSelections extends Component {
   getAllSelections = () => {
     let selections = [];
     const { filter, global } = this.props;
-    // loop thru selected filters to build selection list
-    Object.keys( filter ).reverse().forEach( key => {
+
+    // manually set filter order due to Safari issue
+    const filterOrder = ['date', 'postTypes', 'sources', 'categories'];
+
+    // loop thru filters to build selection list
+    filterOrder.forEach( key => {
       const value = filter[key];
 
-      // dateFrom and dateTo are not being used so skip
-      if ( key !== 'dateFrom' && key !== 'dateTo' ) {
-        const isCheckbox = Array.isArray( value );
-        const values = isCheckbox ? value : [value];
+      const isCheckbox = Array.isArray( value );
+      const values = isCheckbox ? value : [value];
 
-        // Single select filter props need to be made plural to match their global list name
-        const listName = ( key === 'date' ) ? `${key}s` : key;
-        const { list } = global[listName];
+      // Single select filter props need to be made plural to match their global list name
+      const listName = ( key === 'date' ) ? `${key}s` : key;
+      const { list } = global[listName];
 
-        // generate selection object
-        const itemSelections = this.getSelection( values, key, list, !isCheckbox );
+      // generate selection object
+      const itemSelections = this.getSelection( values, key, list, !isCheckbox );
 
-        // update array
-        selections = [...selections, ...itemSelections];
-      }
+      // update array
+      selections = [...selections, ...itemSelections];
     } );
 
     return selections;
