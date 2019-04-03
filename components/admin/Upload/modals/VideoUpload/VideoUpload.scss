@@ -1,4 +1,4 @@
-@import "../../../../../styles/colors.scss";
+@import "styles/colors.scss";
 
 .videoUpload {
 
@@ -63,10 +63,14 @@
       &:hover {
         border: 2px solid $blue;
         background-color: $blue;
-      }
+      }      
 
       > a {
         color: inherit;
+      }
+
+      &.filesIncomplete {
+        opacity: 0.45;
       }
     }
 

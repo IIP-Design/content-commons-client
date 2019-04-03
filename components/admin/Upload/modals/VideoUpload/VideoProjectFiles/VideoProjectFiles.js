@@ -8,22 +8,90 @@ import {
   Icon,
   Modal
 } from 'semantic-ui-react';
+import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import VideoAssetFile from './VideoAssetFile';
 import './VideoProjectFiles.scss';
 
 class VideoProjectFiles extends PureComponent {
   state = {
+    isMobileDevice: false,
     activeStep: 'step_1',
-    cancelModalOpen: false
+    cancelModalOpen: false,
+    optionsIncomplete: 0,
+    step2Complete: false,
+    step2IncompleteCount: ''
   }
 
   componentDidMount() {
     this.props.updateModalClassname( 'upload_modal prepare-files-active' );
+    const isMobileDevice = isWindowWidthLessThanOrEqualTo( 640 );
+    const options = Array.from( document.querySelectorAll( '.videoProjectFiles_asset_options' ) ).filter(
+      option => !option.className.includes( 'notApplicable' )
+    );
+    this.setState( { isMobileDevice, optionsIncomplete: options.length } );
+  }
+
+  componentDidUpdate( prevProps, prevState ) {
+    const {
+      isMobileDevice,
+      activeStep,
+      optionsIncomplete,
+      step2Complete,
+      step2IncompleteCount
+    } = this.state;
+
+    const options = Array.from( document.querySelectorAll( '.videoProjectFiles_asset_options' ) ).filter(
+      option => !option.className.includes( 'notApplicable' )
+    );
+
+    // Both Steps & all dropdown options display on mobile, reset optionsIncomplete count
+    if ( isMobileDevice && prevState.optionsIncomplete === 0 ) {
+      /* eslint-disable-next-line react/no-did-update-set-state */
+      this.setState( { optionsIncomplete: options.length } );
+    }
+
+    if ( !isMobileDevice ) {
+      // Completed Step 1, proceeding to Step 2
+      // Reset optionsIncomplete count unless previously selected options on Step 2 but not complete
+      // reset to previous Step 2 optionsIncomplete count
+      if (
+        activeStep === 'step_2'
+        && prevState.optionsIncomplete === 0
+        && !step2Complete
+      ) {
+        /* eslint-disable-next-line react/no-did-update-set-state */
+        return this.setState( {
+          optionsIncomplete: step2IncompleteCount === '' ? options.length : step2IncompleteCount
+        } );
+      }
+
+      // Completed Step 2
+      if ( activeStep === 'step_2' && optionsIncomplete === 0 ) {
+        /* eslint-disable-next-line react/no-did-update-set-state */
+        return this.setState( { step2Complete: true, step2IncompleteCount: 0 } );
+      }
+
+      // Going back to Step 1, reset optionsIncomplete to 0
+      // Store the optionsIncompleted from Step 2 if Step 2 not completed
+      if ( prevState.activeStep === 'step_2' && activeStep === 'step_1' ) {
+        /* eslint-disable-next-line react/no-did-update-set-state */
+        return this.setState( {
+          optionsIncomplete: 0,
+          step2IncompleteCount: optionsIncomplete !== 0 ? prevState.optionsIncomplete : ''
+        } );
+      }
+    }
   }
 
   componentWillUnmount() {
     this.props.updateModalClassname( 'upload_modal' );
   }
+
+  setOptionsComplete = () => this.setState( prevState => ( {
+    optionsIncomplete: prevState.optionsIncomplete !== 0
+      ? prevState.optionsIncomplete - 1
+      : prevState.optionsIncomplete
+  } ) );
 
   toggleSteps = () => this.setState( prevState => ( {
     activeStep: prevState.activeStep === 'step_1' ? 'step_2' : 'step_1'
@@ -40,7 +108,12 @@ class VideoProjectFiles extends PureComponent {
       replaceVideoAssetFile,
       files
     } = this.props;
-    const { activeStep, cancelModalOpen } = this.state;
+
+    const {
+      activeStep,
+      cancelModalOpen,
+      optionsIncomplete
+    } = this.state;
 
     return (
       <Fragment>
@@ -88,6 +161,7 @@ class VideoProjectFiles extends PureComponent {
                 file={ file }
                 removeVideoAssetFile={ removeVideoAssetFile }
                 replaceVideoAssetFile={ replaceVideoAssetFile }
+                setOptionsComplete={ this.setOptionsComplete }
               />
             ) ) }
 
@@ -141,11 +215,13 @@ class VideoProjectFiles extends PureComponent {
               onClick={ this.toggleSteps }
             />
             <Button
+              disabled={ optionsIncomplete !== 0 }
               className="upload_button upload_button--next"
               content={ activeStep === 'step_2' ? <Link href="/admin/upload"><a>Next</a></Link> : 'Next' }
               onClick={ this.toggleSteps }
             />
             <Button
+              disabled={ optionsIncomplete !== 0 }
               className="upload_button upload_button--mobileUpload"
               content={ <Link href="/admin/upload"><a>Upload</a></Link> }
             />
