@@ -49,7 +49,7 @@ const ProjectItemsList = props => {
 
   return (
     <div className="project-items">
-      <h2 className="list-heading">{ headline }</h2>
+      <h3 className="list-heading">{ headline }</h3>
       <List className="items-list" style={ listStyle }>
         { sortedUnits.map( unit => (
           <ProjectItem

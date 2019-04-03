@@ -70,7 +70,7 @@ const SupportFileTypeList = props => {
 
   return (
     <Fragment>
-      <h3>{ `${headline} ` }
+      <h4>{ `${headline} ` }
         { hasSubmittedData
           && (
             <Fragment>
@@ -107,7 +107,7 @@ const SupportFileTypeList = props => {
                 ) }
             </Fragment>
           ) }
-      </h3>
+      </h4>
       <ul>
         { data.map( renderSupportItem ) }
       </ul>

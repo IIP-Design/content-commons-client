@@ -90,7 +90,7 @@ const ProjectSupportFiles = props => {
       <Grid stackable>
         <Grid.Row>
           <Grid.Column width={ 16 }>
-            <h2 className="heading uppercase">{ heading }</h2>
+            <h3 className="heading uppercase">{ heading }</h3>
           </Grid.Column>
         </Grid.Row>
 

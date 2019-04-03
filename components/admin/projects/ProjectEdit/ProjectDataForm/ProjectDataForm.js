@@ -51,11 +51,11 @@ const ProjectDataForm = props => {
       <Grid stackable>
         <Grid.Row>
           <Grid.Column width="16">
-            <h2 className="heading">
+            <h3 className="heading">
               <span className="uppercase">Project Data</span>
               <br />
               <small className="msg--required">Required Fields *</small>
-            </h2>
+            </h3>
           </Grid.Column>
         </Grid.Row>
 
