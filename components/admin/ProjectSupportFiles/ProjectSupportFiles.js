@@ -13,6 +13,8 @@ import { Checkbox, Grid } from 'semantic-ui-react';
 import IconPopup from 'components/popups/IconPopup/IconPopup';
 import SupportFileTypeList from 'components/admin/projects/ProjectEdit/SupportFileTypeList/SupportFileTypeList';
 
+import { getPluralStringOrNot } from 'lib/utils';
+
 import './ProjectSupportFiles.scss';
 
 const ProjectSupportFiles = props => {
@@ -47,7 +49,9 @@ const ProjectSupportFiles = props => {
       <Fragment key={ `file-type-${type}` }>
         <Grid.Column>
           <SupportFileTypeList
-            headline={ headline }
+            headline={
+              getPluralStringOrNot( supportFiles[type], headline )
+            }
             projectId={ projectId }
             fileType={ type }
             popupMsg={ popupMsg }

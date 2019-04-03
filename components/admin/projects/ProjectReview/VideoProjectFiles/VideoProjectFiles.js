@@ -13,7 +13,10 @@ import { Grid, Button } from 'semantic-ui-react';
 import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 
 import {
-  formatBytes, formatDate, millisToMinutesAndSeconds
+  formatBytes,
+  formatDate,
+  getPluralStringOrNot,
+  millisToMinutesAndSeconds
 } from 'lib/utils';
 
 import './VideoProjectFiles.scss';
@@ -37,7 +40,9 @@ const VideoProjectFiles = props => {
 
   return (
     <section className="section section--project_files project_files layout">
-      <h3 className="project_files_headline">VIDEOS IN PROJECT</h3>
+      <h3 className="project_files_headline uppercase">
+        { `${getPluralStringOrNot( units, 'Video' )} in Project` }
+      </h3>
       { units.map( unit => (
         <div key={ unit.title } className="project_file">
           <Grid>

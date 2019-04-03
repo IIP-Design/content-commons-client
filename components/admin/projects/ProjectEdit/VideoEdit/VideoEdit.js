@@ -30,6 +30,8 @@ import VideoItem from 'components/admin/projects/ProjectEdit/VideoItem/VideoItem
 
 import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
 
+import { getPluralStringOrNot } from 'lib/utils';
+
 import './VideoEdit.scss';
 
 const categoryData = [
@@ -97,12 +99,12 @@ const categoryData = [
 
 const supportFilesConfig = {
   srt: {
-    headline: 'SRT Files',
+    headline: 'SRT File',
     fileType: 'srt',
     popupMsg: 'Some info about what SRT files are.'
   },
   other: {
-    headline: 'Additional Files',
+    headline: 'Additional File',
     fileType: 'other',
     popupMsg: 'Additional files that can be used with this video, e.g., audio file, pdf.',
     checkBoxLabel: 'Disable right-click to protect your images',
@@ -404,7 +406,7 @@ class VideoEdit extends React.PureComponent {
 
     if ( !data.project ) return <ProjectNotFound />;
 
-    const { other, srt } = data.project;
+    const { other, srt, videos } = data.project;
 
     const {
       deleteConfirmOpen,
@@ -607,7 +609,9 @@ class VideoEdit extends React.PureComponent {
           && (
             <div className="edit-project__support-files">
               <ProjectSupportFiles
-                heading="Support Files"
+                heading={
+                  getPluralStringOrNot( [...srt, ...other], 'Support File' )
+                }
                 projectId={ this.props.id }
                 supportFiles={ {
                   srt,
@@ -627,7 +631,9 @@ class VideoEdit extends React.PureComponent {
           <ProjectItemsList
             listEl="ul"
             projectId={ this.props.id }
-            headline="Videos in Project"
+            headline={
+              `${getPluralStringOrNot( videos, 'Video' )} in Project`
+            }
             hasSubmittedData={ hasSubmittedData }
             projectType="video"
             displayItemInModal

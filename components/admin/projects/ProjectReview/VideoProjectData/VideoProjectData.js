@@ -31,7 +31,7 @@ const VideoProjectData = props => {
 
   return (
     <section className="section section--project_data">
-      <h3>PROJECT DATA</h3>
+      <h3 className="uppercase">Project Data</h3>
       <section className="project-data_meta section">
         <p><b className="label">Video Title:</b> { projectTitle }</p>
         <p><b className="label">Author:</b> { author }</p>

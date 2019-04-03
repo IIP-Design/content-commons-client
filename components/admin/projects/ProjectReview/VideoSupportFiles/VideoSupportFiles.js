@@ -10,6 +10,8 @@ import { compose, graphql } from 'react-apollo';
 import orderBy from 'lodash/orderBy';
 import { Checkbox } from 'semantic-ui-react';
 
+import { getPluralStringOrNot } from 'lib/utils';
+
 import './VideoSupportFiles.scss';
 
 const VideoSupportFiles = props => {
@@ -41,9 +43,14 @@ const VideoSupportFiles = props => {
 
   return (
     <section className="section section--project_support-files project_support-files">
-      <h3>SUPPORT FILES</h3>
+      <h3 className="uppercase">
+        { getPluralStringOrNot( [...srts, ...additionalFiles], 'Support File' ) }
+      </h3>
+
       <section className="files section">
-        <h4 id="srt-files">SRT files</h4>
+        <h4 id="srt-files">
+          { getPluralStringOrNot( srts, 'SRT file' ) }
+        </h4>
         <ul aria-describedby="srt-files">
           { srts.map( srt => (
             <li key={ srt.id } className="file">
@@ -54,7 +61,9 @@ const VideoSupportFiles = props => {
       </section>
 
       <section className="addtl_files section">
-        <h4 id="additional-files">Additional files</h4>
+        <h4 id="additional-files">
+          { `Additional file${additionalFilesSorted.length > 1 ? 's' : ''}` }
+        </h4>
         <ul aria-describedby="additional-files">
           { additionalFilesSorted.map( file => (
             <li key={ file.id }><b className="label">{ file.language.displayName }:</b> { file.filename }</li>
