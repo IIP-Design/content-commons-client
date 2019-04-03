@@ -8,7 +8,7 @@ import { func, object, string } from 'prop-types';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
 import orderBy from 'lodash/orderBy';
-import { Checkbox } from 'semantic-ui-react';
+import { Checkbox, Loader } from 'semantic-ui-react';
 
 import { getPluralStringOrNot } from 'lib/utils';
 
@@ -23,7 +23,26 @@ const VideoSupportFiles = props => {
 
   useEffect( updateState );
 
-  if ( loading ) return 'Loading the project...';
+  if ( loading ) {
+    return (
+      <div style={ {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '200px'
+      } }
+      >
+        <Loader
+          active
+          inline="centered"
+          style={ { marginBottom: '1em' } }
+          content="Loading support file(s)..."
+        />
+      </div>
+    );
+  }
+
   if ( error ) return `Error! ${error.message}`;
 
   if ( !project || !Object.keys( project ).length ) return null;

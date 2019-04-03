@@ -11,6 +11,7 @@ import {
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import orderBy from 'lodash/orderBy';
+import { Loader } from 'semantic-ui-react';
 
 import ProjectItem from 'components/admin/ProjectItem/ProjectItem';
 import './ProjectItemsList.scss';
@@ -42,7 +43,26 @@ const ProjectItemsList = props => {
 
   const listStyle = { ...defaultListStyle, ...customListStyle };
 
-  if ( loading ) return 'Loading the project items...';
+  if ( loading ) {
+    return (
+      <div style={ {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '200px'
+      } }
+      >
+        <Loader
+          active
+          inline="centered"
+          style={ { marginBottom: '1em' } }
+          content="Loading the project items..."
+        />
+      </div>
+    );
+  }
+
   if ( error ) return `Error! ${error.message}`;
 
   const sortedUnits = orderBy( units, ['language.displayName', 'title'] );

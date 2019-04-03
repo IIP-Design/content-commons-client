@@ -398,8 +398,12 @@ class VideoEdit extends React.PureComponent {
           height: '100vh'
         } }
         >
-          <Loader active inline="centered" style={ { marginBottom: '1em' } } />
-          <p>Loading the project...</p>
+          <Loader
+            active
+            inline="centered"
+            style={ { marginBottom: '1em' } }
+            content="Loading the project..."
+          />
         </div>
       );
     }

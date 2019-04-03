@@ -8,7 +8,9 @@ import { func, object, string } from 'prop-types';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
 import orderBy from 'lodash/orderBy';
-import { Button, Form, Table } from 'semantic-ui-react';
+import {
+  Button, Form, Loader, Table
+} from 'semantic-ui-react';
 
 import ModalItem from 'components/modals/ModalItem/ModalItem';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
@@ -81,7 +83,25 @@ class EditSupportFilesContent extends React.PureComponent {
 
     const isSrt = fileType === 'srt';
 
-    if ( LanguagesQuery.loading || SupportFilesQuery.loading ) return 'Loading...';
+    if ( LanguagesQuery.loading || SupportFilesQuery.loading ) {
+      return (
+        <div style={ {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '200px'
+        } }
+        >
+          <Loader
+            active
+            inline="centered"
+            style={ { marginBottom: '1em' } }
+          />
+          <p>Loading support file(s)...</p>
+        </div>
+      );
+    }
 
     if ( LanguagesQuery.error ) return `Error! ${LanguagesQuery.error.message}`;
     if ( SupportFilesQuery.error ) return `Error! ${SupportFilesQuery.error.message}`;

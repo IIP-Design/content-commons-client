@@ -8,7 +8,7 @@ import React from 'react';
 import { object, string } from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { Dropdown, Embed } from 'semantic-ui-react';
+import { Dropdown, Embed, Loader } from 'semantic-ui-react';
 
 import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo';
 import DownloadSrt from 'components/admin/download/DownloadSrt/DownloadSrt';
@@ -74,7 +74,22 @@ class PreviewProjectContent extends React.PureComponent {
   render() {
     const { error, loading, project } = this.props.data;
 
-    if ( loading ) return 'Loading the project...';
+    if ( loading ) {
+      return (
+        <div style={ {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '200px'
+        } }
+        >
+          <Loader active inverted inline="centered" style={ { marginBottom: '1em' } } />
+          <p>Loading the project preview...</p>
+        </div>
+      );
+    }
+
     if ( error ) return `Error! ${error.message}`;
     if ( !project || !Object.keys( project ).length ) return null;
 

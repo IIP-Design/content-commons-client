@@ -8,7 +8,9 @@ import { func, object, string } from 'prop-types';
 import Router from 'next/router';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
-import { Button, Confirm, Grid } from 'semantic-ui-react';
+import {
+  Button, Confirm, Grid, Loader
+} from 'semantic-ui-react';
 
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import VideoProjectData from 'components/admin/projects/ProjectReview/VideoProjectData/VideoProjectData';
@@ -26,9 +28,31 @@ import './VideoReview.scss';
 const VideoReview = props => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
 
-  const { id, data } = props;
+  const { id, data, data: { error, loading } } = props;
 
   if ( !data.project ) return <ProjectNotFound />;
+
+  if ( loading ) {
+    return (
+      <div style={ {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '200px'
+      } }
+      >
+        <Loader
+          active
+          inline="centered"
+          style={ { marginBottom: '1em' } }
+          content="Loading the project..."
+        />
+      </div>
+    );
+  }
+
+  if ( error ) return `Error! ${error.message}`;
 
   const displayConfirmDelete = () => setDeleteConfirmOpen( true );
   const handleDeleteCancel = () => setDeleteConfirmOpen( false );

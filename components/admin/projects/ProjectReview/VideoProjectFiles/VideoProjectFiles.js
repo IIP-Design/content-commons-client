@@ -8,7 +8,7 @@ import React from 'react';
 import { object, string } from 'prop-types';
 import Router from 'next/router';
 import { graphql } from 'react-apollo';
-import { Grid, Button } from 'semantic-ui-react';
+import { Button, Grid, Loader } from 'semantic-ui-react';
 
 import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 
@@ -24,7 +24,26 @@ import './VideoProjectFiles.scss';
 const VideoProjectFiles = props => {
   const { error, loading, project } = props.data;
 
-  if ( loading ) return 'Loading the project...';
+  if ( loading ) {
+    return (
+      <div style={ {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '200px'
+      } }
+      >
+        <Loader
+          active
+          inline="centered"
+          style={ { marginBottom: '1em' } }
+          content="Loading project file(s)..."
+        />
+      </div>
+    );
+  }
+
   if ( error ) return `Error! ${error.message}`;
 
   if ( !project || !Object.keys( project ).length ) return null;

@@ -7,13 +7,33 @@ import React from 'react';
 import { object } from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import { Loader } from 'semantic-ui-react';
 
 import './VideoProjectData.scss';
 
 const VideoProjectData = props => {
   const { error, loading, project } = props.data;
 
-  if ( loading ) return 'Loading the project...';
+  if ( loading ) {
+    return (
+      <div style={ {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '200px'
+      } }
+      >
+        <Loader
+          active
+          inline="centered"
+          style={ { marginBottom: '1em' } }
+          content="Loading project data..."
+        />
+      </div>
+    );
+  }
+
   if ( error ) return `Error! ${error.message}`;
 
   if ( !project || !Object.keys( project ).length ) return null;
