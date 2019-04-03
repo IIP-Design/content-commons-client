@@ -47,7 +47,7 @@ const VideoProjectFiles = props => {
               }
             >
               <Grid.Column floated="left" mobile={ 8 }>
-                <h3 className="title">{ unit.title }</h3>
+                <h4 className="title">{ unit.title }</h4>
               </Grid.Column>
               <Grid.Column floated="right" mobile={ 8 } className="project_file_edit">
                 <Button
