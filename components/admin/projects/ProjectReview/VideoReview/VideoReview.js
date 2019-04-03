@@ -3,7 +3,7 @@
  * VideoReview
  *
  */
-import React from 'react';
+import React, { useState } from 'react';
 import { func, object, string } from 'prop-types';
 import Router from 'next/router';
 import gql from 'graphql-tag';
@@ -23,121 +23,104 @@ import { DELETE_VIDEO_PROJECT_MUTATION } from 'components/admin/projects/Project
 
 import './VideoReview.scss';
 
-class VideoReview extends React.PureComponent {
-  state = {
-    deleteConfirmOpen: false
-  }
+const VideoReview = props => {
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
 
-  displayConfirmDelete = () => {
-    this.setState( { deleteConfirmOpen: true } );
-  }
+  const { id, data } = props;
 
-  handleDeleteConfirm = () => {
-    this.setState(
-      { deleteConfirmOpen: false },
-      this.handleDeleteProject
-    );
-  }
+  if ( !data.project ) return <ProjectNotFound />;
 
-  handleDeleteCancel = () => {
-    this.setState( { deleteConfirmOpen: false } );
-  }
+  const displayConfirmDelete = () => setDeleteConfirmOpen( true );
+  const handleDeleteCancel = () => setDeleteConfirmOpen( false );
 
-  handleDeleteProject = () => {
-    const { id, deleteProject } = this.props;
+  const handleDeleteProject = () => {
+    const { deleteProject } = props;
     console.log( `Deleted project: ${id}` );
     deleteProject( { variables: { id } } );
     Router.push( { pathname: '/admin/dashboard' } );
-  }
+  };
 
-  handleEdit = () => {
-    const { id } = this.props;
+  const handleEdit = () => (
     Router.push( {
       pathname: `/admin/project/video/${id}/edit`
-    } );
-  }
+    } )
+  );
 
-  handlePublish = () => {
+  const handlePublish = () => {
     Router.push( { pathname: '/admin/dashboard' } );
-  }
+  };
 
-  render() {
-    const { id, data } = this.props;
+  return (
+    <div className="review-project">
+      <ProjectHeader icon="video camera" text="Project Details - Review">
+        <Button
+          content="Delete Project"
+          className="project_button project_button--delete"
+          onClick={ displayConfirmDelete }
+        />
 
-    if ( !data.project ) return <ProjectNotFound />;
+        <Confirm
+          className="delete"
+          open={ deleteConfirmOpen }
+          content={ (
+            <ConfirmModalContent
+              className="delete_confirm delete_confirm--video"
+              headline="Are you sure you want to delete this video project?"
+            >
+              <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
+            </ConfirmModalContent>
+          ) }
+          onCancel={ handleDeleteCancel }
+          onConfirm={ handleDeleteProject }
+          cancelButton="No, take me back"
+          confirmButton="Yes, delete forever"
+        />
 
-    return (
-      <div className="review-project">
-        <ProjectHeader icon="video camera" text="Project Details - Review">
-          <Button
-            content="Delete Project"
-            className="project_button project_button--delete"
-            onClick={ this.displayConfirmDelete }
-          />
+        <Button
+          className="project_button project_button--edit"
+          content="Edit"
+          onClick={ handleEdit }
+        />
 
-          <Confirm
-            className="delete"
-            open={ this.state.deleteConfirmOpen }
-            content={ (
-              <ConfirmModalContent
-                className="delete_confirm delete_confirm--video"
-                headline="Are you sure you want to delete this video project?"
-              >
-                <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
-              </ConfirmModalContent>
-            ) }
-            onCancel={ this.handleDeleteCancel }
-            onConfirm={ this.handleDeleteConfirm }
-            cancelButton="No, take me back"
-            confirmButton="Yes, delete forever"
-          />
+        <PreviewProject
+          triggerProps={ {
+            className: 'project_button project_button--preview',
+            content: 'Preview Project'
+          } }
+          contentProps={ { id } }
+          modalTrigger={ Button }
+          modalContent={ PreviewProjectContent }
+          options={ { closeIcon: true } }
+        />
+        <Button className="project_button project_button--publish" onClick={ handlePublish }>Publish</Button>
+      </ProjectHeader>
 
-          <Button
-            className="project_button project_button--edit"
-            content="Edit"
-            onClick={ this.handleEdit }
-          />
+      <Grid stackable>
+        <Grid.Row className="layout">
+          <Grid.Column mobile={ 16 } computer={ 8 }>
+            <VideoProjectData id={ id } />
+          </Grid.Column>
 
-          <PreviewProject
-            triggerProps={ {
-              className: 'project_button project_button--preview',
-              content: 'Preview Project'
-            } }
-            contentProps={ { id } }
-            modalTrigger={ Button }
-            modalContent={ PreviewProjectContent }
-            options={ { closeIcon: true } }
-          />
-          <Button className="project_button project_button--publish" onClick={ this.handlePublish }>Publish</Button>
-        </ProjectHeader>
+          <Grid.Column mobile={ 16 } computer={ 8 }>
+            <VideoSupportFiles id={ id } />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
 
-        <Grid stackable>
-          <Grid.Row className="layout">
-            <Grid.Column mobile={ 16 } computer={ 8 }>
-              <VideoProjectData id={ id } />
-            </Grid.Column>
+      <VideoProjectFiles id={ id } />
 
-            <Grid.Column mobile={ 16 } computer={ 8 }>
-              <VideoSupportFiles id={ id } />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-
-        <VideoProjectFiles id={ id } />
-
-        <section className="section section--publish">
-          <h3 className="title">Your project looks great! Are you ready to Publish?</h3>
-          <Button
-            className="project_button project_button--edit"
-            content="Edit"
-            onClick={ this.handleEdit }
-          />
-          <Button className="project_button project_button--publish" onClick={ this.handlePublish }>Publish</Button>
-        </section>
-      </div>
-    );
-  }
-}
+      <section className="section section--publish">
+        <h3 className="title">Your project looks great! Are you ready to Publish?</h3>
+        <Button
+          className="project_button project_button--edit"
+          content="Edit"
+          onClick={ handleEdit }
+        />
+        <Button className="project_button project_button--publish" onClick={ handlePublish }>Publish</Button>
+      </section>
+    </div>
+  );
+};
 
 VideoReview.propTypes = {
   id: string,
