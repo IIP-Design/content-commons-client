@@ -1,6 +1,10 @@
 @import "../../../../../styles/colors.scss";
 
 .review-project {
+  :focus:not(:focus-visible) {
+    outline: none
+  }
+
   .section--project_header {
     display: block;
     @media screen and (min-width: 960px) {
@@ -119,6 +123,15 @@
         background-color: $grey;
         color: #fff;
       }
+    }
+  }
+
+  .ui.button {
+    &:focus,
+    &.basic.buttons .button:focus,
+    &.basic:focus {
+      outline: 2px dotted $medium-grey;
+      outline-offset: 2px;
     }
   }
 }
