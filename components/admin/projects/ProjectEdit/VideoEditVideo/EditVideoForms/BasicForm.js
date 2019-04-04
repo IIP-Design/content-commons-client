@@ -10,7 +10,7 @@ import { compose, graphql } from 'react-apollo';
 import { object, string } from 'prop-types';
 
 import {
-  Form, Grid, Input, Select, Loader, TextArea
+  Form, Grid, Select, Loader
 } from 'semantic-ui-react';
 
 import IconPopup from 'components/admin/projects/ProjectEdit/IconPopup/IconPopup';
@@ -19,21 +19,28 @@ class BasicForm extends Component {
   state = {
     descPublic: '',
     language: {},
+    quality: 'WEB',
+    subtitles: 'CLEAN',
     title: ''
   }
 
   componentDidMount() {
-    this.getProjectData();
+    // this.getProjectData();
   }
 
   getProjectData = () => {
     const { unit } = this.props.data;
 
     if ( unit ) {
+      const file = unit.files[0];
+
       this.setState( {
         descPublic: unit.descPublic,
         language: unit.language,
-        title: unit.title
+        quality: file.quality,
+        subtitles: file.videoBurnedInStatus,
+        title: unit.title,
+        use: file.use.name
       } );
     }
   }
@@ -48,13 +55,14 @@ class BasicForm extends Component {
     const { id } = this.props;
     const { name } = e.target;
 
-
     this.props[`${name}UpdateVideoUnit`]( {
       variables: {
         id,
         [name]: this.state[name]
       }
     } );
+
+    this.props.data.refetch();
   }
 
   render() {
@@ -71,12 +79,15 @@ class BasicForm extends Component {
     );
 
     const {
-      data: { error, loading, unit }
+      data: { error, loading, file }
     } = this.props;
 
-    const { descPublic, language, title } = this.state;
+    const {
+      language, quality, subtitles
+    } = this.state;
 
-    if ( !unit || loading ) {
+    if ( error ) return `Error! ${error.message}`;
+    if ( !file || loading ) {
       return (
         <div style={ {
           display: 'flex',
@@ -87,55 +98,32 @@ class BasicForm extends Component {
         } }
         >
           <Loader active inline="centered" style={ { marginBottom: '1em' } } />
-          <p>Loading the project...</p>
+          <p>Loading the file data...</p>
         </div>
       );
     }
 
-    if ( error ) return `Error! ${error.message}`;
+    console.log( file );
 
     return (
       <Form className="edit-video__form video-basic-data">
         <Grid stackable>
           <Grid.Row>
-            <Grid.Column mobile={ 16 } computer={ 10 }>
-              <Form.Field
-                autoFocus
-                control={ Input }
-                id="video-title"
-                label="Video Title in Language"
-                name="title"
-                onBlur={ this.updateUnit }
-                onChange={ this.handleInput }
-                value={ title }
-              />
-
-              <Form.Field
-                autoFocus
-                control={ TextArea }
-                id="video-description"
-                label="Public Description in Language (e.g. - YouTube)"
-                name="descPublic"
-                onBlur={ this.updateUnit }
-                onChange={ this.handleInput }
-                value={ descPublic }
-              />
-
-              <Form.Field
-                autoFocus
-                control={ Input }
-                id="video-keywords"
-                label="Additional Keywords in Language"
-                name="keywords"
-                onChange={ this.handleInput }
-              />
+            <Grid.Column mobile={ 16 } computer={ 8 }>
+              <section>
+                <p>{ file.filename }</p>
+                <p>{ `Filesize: ${file.filesize}` }</p>
+                <p>{ `Dimensions: ${file.dimensions.width} x ${file.dimensions.height}` }</p>
+                <p>{ `Duration: ${file.duration}` }</p>
+              </section>
             </Grid.Column>
 
-            <Grid.Column mobile={ 16 } computer={ 6 }>
+            <Grid.Column mobile={ 16 } computer={ 8 }>
               <Form.Field
-                id="video-language"
                 control={ Select }
+                id="video-language"
                 label="Language"
+                name="language"
                 options={
                   [
                     {
@@ -169,31 +157,33 @@ class BasicForm extends Component {
                   ]
                 }
                 required
-                autoFocus
                 value="english"
-                name="language"
               />
 
               <Form.Field
-                id="video-subtitles"
                 control={ Select }
+                id="video-subtitles"
                 label="Subtitles & Captions"
+                name="subtitles"
+                onChange={ this.handleInput }
                 options={
                   [
                     {
-                      value: 'clean',
+                      value: 'CLEAN',
                       text: 'Clean'
                     },
                     {
-                      value: 'subtitles',
+                      value: 'SUBTITLED',
                       text: 'Subtitles'
+                    },
+                    {
+                      value: 'CAPTIONED',
+                      text: 'Captions'
                     }
                   ]
                 }
                 required
-                autoFocus
-                value="clean"
-                name="subtitles"
+                value={ subtitles }
               />
 
               <Form.Field
@@ -217,31 +207,29 @@ class BasicForm extends Component {
                   ]
                 }
                 required
-                autoFocus
                 value="full"
                 name="type"
               />
 
               <Form.Field
-                id="video-quality"
                 control={ Select }
+                id="video-quality"
                 label={ videoQuality }
+                name="quality"
                 options={
                   [
                     {
-                      value: 'web',
+                      value: 'WEB',
                       text: 'For web'
                     },
                     {
-                      value: 'broadcast',
+                      value: 'BROADCAST',
                       text: 'For broadcast'
                     }
                   ]
                 }
                 required
-                autoFocus
-                value="web"
-                name="quality"
+                value={ quality }
               />
 
             </Grid.Column>
@@ -257,24 +245,31 @@ BasicForm.propTypes = {
   id: string
 };
 
-const CURRENT_VIDEO_UNIT = gql`
-  query CURRENT_VIDEO_UNIT( $id: ID! ) {
-    unit: videoUnit( id: $id ) {
-      title
-      descPublic
-      language {
-        displayName
+const VIDEO_FILE_QUERY = gql`
+  query VIDEO_FILE_QUERY( $id: ID! ) {
+    file: videoFile( id: $id ) {
+      duration
+      filename
+      filesize
+      quality
+      videoBurnedInStatus
+      dimensions {
+        height
+        width
+      }
+      use {
+        name
       }
     }
-  } 
+  }
 `;
 
-const currentVideoUnit = graphql( CURRENT_VIDEO_UNIT, {
-  options: props => ( {
+const currentVideoFile = graphql( VIDEO_FILE_QUERY, {
+  options: {
     variables: {
-      id: props.id
+      id: 'cju34dnpw002p087504alx7bg'
     },
-  } )
+  }
 } );
 
 const UPDATE_VIDEO_UNIT_DESC = gql`
@@ -310,5 +305,5 @@ const UPDATE_VIDEO_UNIT_TITLE = gql`
 export default compose(
   graphql( UPDATE_VIDEO_UNIT_DESC, { name: 'descPublicUpdateVideoUnit' } ),
   graphql( UPDATE_VIDEO_UNIT_TITLE, { name: 'titleUpdateVideoUnit' } ),
-  currentVideoUnit
+  currentVideoFile
 )( BasicForm );

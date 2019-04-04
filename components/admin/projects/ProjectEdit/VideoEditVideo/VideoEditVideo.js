@@ -12,6 +12,7 @@ import { Query } from 'react-apollo';
 import { Tab } from 'semantic-ui-react';
 import BasicForm from 'components/admin/projects/ProjectEdit/VideoEditVideo/EditVideoForms/BasicForm';
 import LinkForm from 'components/admin/projects/ProjectEdit/VideoEditVideo/EditVideoForms/LinkForm';
+import ProjectDataForm from 'components/admin/projects/ProjectEdit/VideoEditVideo/EditVideoForms/ProjectDataForm';
 
 import './VideoEditVideo.scss';
 
@@ -53,39 +54,11 @@ class VideoEditVideo extends React.PureComponent {
           if ( error ) return <p>Error</p>;
 
           const { videoUnit } = data;
-          const { image } = videoUnit.thumbnails[0];
           const file = videoUnit.files[0];
 
           return (
             <div className="edit-video-modal">
-              <figure className="modal_thumbnail overlay">
-                <img className="overlay-image" src={ image.url } alt={ image.alt } />
-                <div className="overlay-hover">
-                  <div className="overlay-text">Change Thumbnail</div>
-                </div>
-              </figure>
-              <section className="modal_section modal_section--metaContent">
-                <div className="modal_meta_wrapper">
-                  <div className="modal_meta">
-                    <span className="modal_meta_content modal_meta_content--filename">
-                      { file.filename }
-                    </span>
-                    <br />
-                    <span className="modal_meta_content modal_meta_content--filesize">
-                      { `Filesize: ${file.filesize}` }
-                    </span>
-                    <span className="modal_meta_content modal_meta_content--dimensions">
-                      { `Dimensions: ${file.width} x ${file.height}` }
-                    </span>
-                    <span className="modal_meta_content modal_meta_content--date">
-                      { /* { `Uploaded: ${moment( data.uploaded ).format( 'MMMM DD, YYYY [at] h:mm A' )}` } */ }
-                    </span>
-                    <span className="modal_meta_content modal_meta_content--duration">
-                      { `Duration: ${file.duration}` }
-                    </span>
-                  </div>
-                </div>
-              </section>
+              <ProjectDataForm id={ id } />
               <section className="tabbed-container">
                 <Tab menu={ { secondary: true, pointing: true } } panes={ panes } />
               </section>
