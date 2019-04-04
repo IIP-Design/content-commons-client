@@ -1,0 +1,19 @@
+.items_table .ui.sortable.table thead tr th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  width: 150px;
+  border-right: 1px solid #fff;
+  border-radius: 0;
+  color: #fff;
+  background-color: #0071bc;
+  box-shadow: 3px 0 3px 1px rgba(0, 0, 0, 0.1);
+  cursor: pointer; }
+  .items_table .ui.sortable.table thead tr th:first-child {
+    z-index: 4;
+    box-shadow: 3px 0 3px 1px rgba(0, 0, 0, 0.1); }
+  .items_table .ui.sortable.table thead tr th:hover, .items_table .ui.sortable.table thead tr th.sorted:hover {
+    color: #fff;
+    background: #205493; }
+  .items_table .ui.sortable.table thead tr th label {
+    color: #fff; }

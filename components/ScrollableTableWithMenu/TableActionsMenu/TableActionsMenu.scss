@@ -1,0 +1,63 @@
+@import "../../../styles/colors.scss";
+
+.actionsMenu {
+  z-index: 3;
+  display: none;
+  width: 100%;
+  margin-top: -5px;
+  @media screen and (min-width: 768px) {
+    min-width: 300px;
+  }
+  @media screen and (max-width: 767px) {
+    z-index: 3;    
+    padding: 3px 0 1px 0;
+    background-color: #fff;
+    box-shadow: 1px 1px 5px $medium-grey;
+  }
+
+  &.active {
+    display: block;
+  }
+
+  &_wrapper {
+    display: flex;
+  }
+
+  &_toggle {
+    min-height: 30px !important;
+    @media screen and (max-width: 767px) {
+      margin-right: 3px;
+    }
+
+    &:after {
+      content: 'Select All';
+      position: absolute;
+      left: 25px;
+      min-width: 75px;
+    }
+    
+    &--active {
+
+      &:after {
+        content: '';
+      }
+    }    
+  }
+
+  img {    
+    margin-left: 1em;
+    cursor: pointer;
+  }
+
+  .unpublish {
+    vertical-align: top;
+    display: inline-block;    
+    margin-left: 0.5em;
+    margin-top: 2px;
+
+    &--text {
+      margin-left: 0.5em;
+      color: $light-blue;
+    }
+  }
+}

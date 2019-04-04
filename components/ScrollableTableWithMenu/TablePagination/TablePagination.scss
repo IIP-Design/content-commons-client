@@ -1,0 +1,56 @@
+@import "../../../styles/colors.scss";
+
+.items_tablePagination {
+  margin: 4em 0;
+  text-align: center;
+  .ui.pagination.menu {
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    @media screen and (max-width: 767px) {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    &:after {
+      @media screen and (max-width: 767px) {
+        display:none;
+      }
+    }
+
+    .item:before {
+      background: white;
+    }
+
+    a.item {
+      &[type="prevItem"],
+      &[type="nextItem"] {
+        color: $light-blue;
+        font-weight: bold;
+      }
+
+      &.disabled {
+        color: $alt-grey;
+      }
+
+      &.active[type="pageItem"] {
+        color: white;
+        font-weight: bold;
+        background: $light-blue;
+      }
+
+      &[type="pageItem"],
+      &[type="ellipsisItem"] {
+        @media screen and (max-width: 767px) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  *:focus {
+    outline: none;
+  }
+}
+
+

@@ -1,0 +1,30 @@
+.items_tablePagination {
+  margin: 4em 0;
+  text-align: center; }
+  .items_tablePagination .ui.pagination.menu {
+    border: none;
+    box-shadow: none;
+    border-radius: 0; }
+    @media screen and (max-width: 767px) {
+      .items_tablePagination .ui.pagination.menu {
+        width: 100%;
+        justify-content: space-between; } }
+    @media screen and (max-width: 767px) {
+      .items_tablePagination .ui.pagination.menu:after {
+        display: none; } }
+    .items_tablePagination .ui.pagination.menu .item:before {
+      background: white; }
+    .items_tablePagination .ui.pagination.menu a.item[type="prevItem"], .items_tablePagination .ui.pagination.menu a.item[type="nextItem"] {
+      color: #0071bc;
+      font-weight: bold; }
+    .items_tablePagination .ui.pagination.menu a.item.disabled {
+      color: #d6d7d9; }
+    .items_tablePagination .ui.pagination.menu a.item.active[type="pageItem"] {
+      color: white;
+      font-weight: bold;
+      background: #0071bc; }
+    @media screen and (max-width: 767px) {
+      .items_tablePagination .ui.pagination.menu a.item[type="pageItem"], .items_tablePagination .ui.pagination.menu a.item[type="ellipsisItem"] {
+        display: none; } }
+  .items_tablePagination *:focus {
+    outline: none; }

@@ -1,0 +1,11 @@
+.items_table_mobileDataToggleIcon.icon {
+  position: absolute;
+  top: 0;
+  right: 20px; }
+  @media screen and (min-width: 768px) {
+    .items_table_mobileDataToggleIcon.icon {
+      display: none; } }
+
+.items_table table.ui.sortable.table .activeTableRow > td.items_table_item:not(:first-child) {
+  max-height: 100px;
+  opacity: 1; }

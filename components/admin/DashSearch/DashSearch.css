@@ -1,0 +1,12 @@
+.dashSearch__searchTerm {
+  width: 100%; }
+  .dashSearch__searchTerm > input {
+    border-color: #000 !important; }
+  .dashSearch__searchTerm > button.ui.button {
+    background-color: #0071bc;
+    color: #fff;
+    transition: color 0.4s; }
+    .dashSearch__searchTerm > button.ui.button > i.icon {
+      font-size: 1.4rem; }
+    .dashSearch__searchTerm > button.ui.button:hover {
+      color: #112e51; }

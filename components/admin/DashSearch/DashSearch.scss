@@ -1,0 +1,25 @@
+@import '../../../styles/colors.scss';
+
+.dashSearch {
+  &__searchTerm {
+    width: 100%;
+
+    > input {
+      border-color: #000 !important;
+    }
+
+    > button.ui.button {
+      background-color: $light-blue;
+      color: #fff;
+      transition: color 0.4s;
+
+      > i.icon {
+        font-size: 1.4rem;
+      }
+
+      &:hover {
+        color: $blue;
+      }
+    }
+  }
+}
