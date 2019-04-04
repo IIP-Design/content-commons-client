@@ -32,7 +32,6 @@ class TableActionsMenu extends React.Component {
           <img src={ archiveIcon } alt="Archive Selection(s)" title="Archive Selection(s)" />
           <div className="unpublish">|<span className="unpublish--text">Unpublish</span></div>
         </div>
-
       </div>
     );
   }
