@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'semantic-ui-react';
-import './TableHeader.css';
+import './TableHeader.scss';
 
 const TableHeader = props => {
   const {

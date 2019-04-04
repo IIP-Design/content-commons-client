@@ -10,7 +10,7 @@ import Link from 'next/link';
 import truncate from 'lodash/truncate';
 import { Checkbox, Icon, Popup } from 'semantic-ui-react';
 import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
-import './MyProjectPrimaryCol.css';
+import './MyProjectPrimaryCol.scss';
 
 const DetailsFiles = () => (
   <div>
@@ -26,6 +26,10 @@ class MyProjectPrimaryCol extends React.Component {
   state = {
     detailsPopupOpen: false
   };
+
+  componentDidMount() {
+    this.setState( { windowWidth: isWindowWidthLessThanOrEqualTo( 400 ) } );
+  }
 
   componentWillUnmount() {
     // Handles React subscription error 'cannot setState on unmounted component'
@@ -90,7 +94,7 @@ class MyProjectPrimaryCol extends React.Component {
   }
 
   render() {
-    const { detailsPopupOpen } = this.state;
+    const { detailsPopupOpen, windowWidth } = this.state;
 
     return (
       <Fragment>
@@ -130,7 +134,7 @@ class MyProjectPrimaryCol extends React.Component {
                 trigger={ <button type="button" className="linkStyle myProjects_data_actions_action">Details</button> }
                 content={ <DetailsFiles /> }
                 on="click"
-                position={ isWindowWidthLessThanOrEqualTo( 400 ) ? 'bottom right' : 'bottom center' }
+                position={ windowWidth <= 400 ? 'bottom right' : 'bottom center' }
                 hideOnScroll
                 keepInViewPort={ false }
                 open={ detailsPopupOpen }

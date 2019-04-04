@@ -1,20 +1,26 @@
 @import '../../../styles/colors.scss';
 
+.ui.grid .row.items_tableSearch {
+  padding-bottom: 0;
+}
+
 .dashSearch {
   &__searchTerm {
-    width: 100%;
+    width: 100%;    
 
     > input {
+      font-size: 12px;
       border-color: #000 !important;
     }
 
     > button.ui.button {
+      padding: 12px !important;
       background-color: $light-blue;
       color: #fff;
       transition: color 0.4s;
 
       > i.icon {
-        font-size: 1.4rem;
+        font-size: 20px;
       }
 
       &:hover {

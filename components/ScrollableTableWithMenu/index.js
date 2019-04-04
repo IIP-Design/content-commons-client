@@ -13,7 +13,7 @@ import TableMenu from './TableMenu';
 import TableHeader from './TableHeader';
 import TableActionsMenu from './TableActionsMenu';
 import TablePagination from './TablePagination';
-import './ScrollableTableWithMenu.css';
+import './ScrollableTableWithMenu.scss';
 
 /* eslint-disable react/prefer-stateless-function */
 class ScrollableTableWithMenu extends React.Component {

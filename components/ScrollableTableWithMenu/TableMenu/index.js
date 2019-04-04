@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { Checkbox, Icon } from 'semantic-ui-react';
 import { titleCase } from 'lib/utils';
 import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
-import './TableMenu.css';
+import './TableMenu.scss';
 
 class TableMenu extends React.Component {
   state = {

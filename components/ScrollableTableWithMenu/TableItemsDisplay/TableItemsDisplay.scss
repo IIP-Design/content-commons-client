@@ -2,9 +2,10 @@
 
 .items_display {
   margin-right: 3em;
+  font-size: 14px;
   color: $blue;
 
-  .ui.inline.dropdown {
+  .ui.inline.dropdown {    
 
     > .text {
       font-weight: normal;
@@ -13,6 +14,10 @@
     .dropdown.icon {
       margin-right: 3px;
       margin-left: 3px;
+    }
+
+    .menu > .item {
+      font-size: 14px;
     }
   }
 }

@@ -1,4 +1,4 @@
-@import "../..styles/colors.scss";
+@import "../../styles/colors.scss";
 
 .ui.grid {
   
@@ -63,6 +63,7 @@
       border-radius: 0;
 
       thead {
+        font-size: 14px;
         @media screen and (max-width: 767px) {
           display: none;
         }
@@ -92,6 +93,7 @@
 
       td {
         z-index: 1;
+        font-size: 12px;
         background-color: #fff;
         box-shadow: 3px 0 3px 1px rgba(0,0,0,0.1);
         

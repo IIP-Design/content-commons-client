@@ -10,7 +10,7 @@ import ScrollableTableWithMenu from 'components/ScrollableTableWithMenu';
 import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon';
 import MyProjectPrimaryCol from './MyProjectPrimaryCol';
 import DashSearch from '../../DashSearch';
-import './MyProjects.css';
+import './MyProjects.scss';
 
 import { tempData, menuItems } from './constants';
 
@@ -33,11 +33,7 @@ class MyProjects extends React.Component {
           tableData={ tempData }
           columnMenu={ menuItems }
           persistentTableHeaders={ persistentTableHeaders }
-          renderDashSearch={
-            () => (
-              <DashSearch />
-            )
-          }
+          renderDashSearch={ () => <DashSearch /> }
           renderTableBody={ ( {
             tableHeaders,
             selectedItems,

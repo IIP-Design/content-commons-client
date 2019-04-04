@@ -7,7 +7,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import { Grid, Dropdown } from 'semantic-ui-react';
-import './TableItemsDisplay.css';
+import './TableItemsDisplay.scss';
 
 const displaySizeOptions = [
   { key: 25, value: 25, text: '25' },

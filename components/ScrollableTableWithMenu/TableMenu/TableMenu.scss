@@ -4,9 +4,10 @@
   
   &_menu {
     position: relative;
-    display: inline-block;
-    cursor: pointer;
+    display: inline-block;    
+    font-size: 14px;
     color: $blue;
+    cursor: pointer;
 
     &_wrapper {
       text-align: right;
@@ -54,6 +55,10 @@
       .ui.checkbox {
         display: block;
         margin-bottom: 5px;
+
+        > label {
+          font-size: 14px;
+        }
       }
     }
   }

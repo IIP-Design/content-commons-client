@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import { object, func } from 'prop-types';
 // import { connect } from 'react-redux';
 // import * as actions from '../../../actions/search';
-import './TablePagination.css';
+import './TablePagination.scss';
 
 import { Pagination } from 'semantic-ui-react';
 

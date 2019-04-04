@@ -5,7 +5,7 @@
  */
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
-import './TableMobileDataToggleIcon.css';
+import './TableMobileDataToggleIcon.scss';
 
 const toggleMobileData = e => {
   e.persist();

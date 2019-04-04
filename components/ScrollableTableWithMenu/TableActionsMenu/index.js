@@ -12,7 +12,7 @@ import createIcon from 'static/images/dashboard/create.svg';
 import deleteIcon from 'static/images/dashboard/delete.svg';
 import archiveIcon from 'static/images/dashboard/archive.svg';
 import unpublishIcon from 'static/images/dashboard/unpublish.svg';
-import './TableActionsMenu.css';
+import './TableActionsMenu.scss';
 
 /* eslint-disable react/prefer-stateless-function */
 class TableActionsMenu extends React.Component {

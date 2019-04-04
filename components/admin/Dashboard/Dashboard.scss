@@ -1,0 +1,60 @@
+@import "../../../styles/colors.scss";
+
+.dashboard {
+  .userIcon {
+    height: 3em;
+    width: 3em;
+  }
+
+  .currentDashboard {
+    color: $blue;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-left: 1em;
+    text-transform: capitalize;
+    vertical-align: top;
+    line-height: 3em;
+  }
+
+  .filters {
+    margin-top: 0.8em;
+  }
+
+  .ui.text.menu {
+    margin: 6px -0.5em 8px;
+    border-bottom: 1px solid #ccc;
+
+    .item {
+      margin-right: 1em;
+      font-size: 16px;
+
+      &.active {
+        position: relative;
+        font-weight: bold;
+        color: $blue;
+
+        &:after {
+          content: '';
+          position: absolute;
+          top: 32px;
+          left: 0;
+          width: 100%;
+          height: 4px;
+          background-color: $light-blue;
+        }
+      }
+    }
+    
+    .disabled.item {
+      color: $alt-grey;
+    }
+
+  }
+
+  .ui.segment {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+  
+}

@@ -1,9 +1,10 @@
 @import "../../../styles/colors.scss";
 
 .items_tablePagination {
-  margin: 4em 0;
   text-align: center;
+
   .ui.pagination.menu {
+    min-height: auto;
     border: none;
     box-shadow: none;
     border-radius: 0;
@@ -23,10 +24,15 @@
     }
 
     a.item {
+      min-width: 2em;
+      padding: 6px 12px;
+      margin: 0 2px;
+
       &[type="prevItem"],
       &[type="nextItem"] {
-        color: $light-blue;
+        font-size: 16px;
         font-weight: bold;
+        color: $light-blue;        
       }
 
       &.disabled {
