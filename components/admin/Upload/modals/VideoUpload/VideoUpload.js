@@ -15,8 +15,8 @@ const VideoUpload = props => {
   const [files, setFiles] = useState( [] );
   const [allFieldsSelected, setAllFieldsSelected] = useState( false );
 
-  const videoUseDefault = props.videoUseData.videoUses.find( use => use.name === 'Full Video' );
-  const imageUseDefault = props.imageUseData.imageUses.find( use => use.name === 'Thumbnail/Cover Image' );
+  let videoUseDefaultId = '';
+  let imageUseDefaultId = '';
 
   useEffect( () => {
     // check to see if all required dropdowns are completed
@@ -35,15 +35,28 @@ const VideoUpload = props => {
   }, [files] );
 
   /**
-   * Pre-poulate fields
+   * Pre-populate applicable default.  Default id is pulled from the respective use query
    * @param {string} type filetype
    */
   const getUse = type => {
+    const { videoUseData: { videoUses }, imageUseData: { imageUses } } = props;
+
     if ( type.includes( 'video' ) ) {
-      return videoUseDefault.id; // 'Full Video';
-    } if ( type.includes( 'image' ) ) {
-      return imageUseDefault.id; // 'Thumbnail/Cover Image';
+      if ( !videoUseDefaultId ) {
+        const videoUseDefault = videoUses.find( use => use.name === 'Full Video' );
+        videoUseDefaultId = videoUseDefault.id;
+      }
+      return videoUseDefaultId;
     }
+
+    if ( type.includes( 'image' ) ) {
+      if ( !imageUseDefaultId ) {
+        const imageUseDefault = imageUses.find( use => use.name === 'Thumbnail/Cover Image' );
+        imageUseDefaultId = imageUseDefault.id;
+      }
+      return imageUseDefaultId;
+    }
+
     return '';
   };
 
