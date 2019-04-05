@@ -85,13 +85,15 @@ class EditSupportFilesContent extends React.PureComponent {
 
     if ( LanguagesQuery.loading || SupportFilesQuery.loading ) {
       return (
-        <div style={ {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '200px'
-        } }
+        <div
+          className="edit-support-files-loader"
+          style={ {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '200px'
+          } }
         >
           <Loader
             active

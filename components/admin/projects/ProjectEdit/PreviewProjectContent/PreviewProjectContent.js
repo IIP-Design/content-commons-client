@@ -76,15 +76,21 @@ class PreviewProjectContent extends React.PureComponent {
 
     if ( loading ) {
       return (
-        <div style={ {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '200px'
-        } }
+        <div
+          className="preview-project-loader"
+          style={ {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '200px'
+          } }
         >
-          <Loader active inverted inline="centered" style={ { marginBottom: '1em' } } />
+          <Loader
+            active
+            inline="centered"
+            style={ { marginBottom: '1em' } }
+          />
           <p>Loading the project preview...</p>
         </div>
       );
