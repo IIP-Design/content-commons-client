@@ -4,6 +4,8 @@ import {
   Tab
 } from 'semantic-ui-react';
 import { v4 } from 'uuid';
+import { compose, graphql } from 'react-apollo';
+import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown';
 import VideoProjectType from './VideoProjectType/VideoProjectType';
 import VideoProjectFiles from './VideoProjectFiles/VideoProjectFiles';
 import './VideoUpload.scss';
@@ -12,6 +14,9 @@ const VideoUpload = props => {
   const [activeIndex, setActiveIndex] = useState( 0 );
   const [files, setFiles] = useState( [] );
   const [allFieldsSelected, setAllFieldsSelected] = useState( false );
+
+  const videoUseDefault = props.videoUseData.videoUses.find( use => use.name === 'Full Video' );
+  const imageUseDefault = props.imageUseData.imageUses.find( use => use.name === 'Thumbnail/Cover Image' );
 
   useEffect( () => {
     // check to see if all required dropdowns are completed
@@ -35,9 +40,9 @@ const VideoUpload = props => {
    */
   const getUse = type => {
     if ( type.includes( 'video' ) ) {
-      return 'Full Video';
+      return videoUseDefault.id; // 'Full Video';
     } if ( type.includes( 'image' ) ) {
-      return 'Thumbnail/Cover Image';
+      return imageUseDefault.id; // 'Thumbnail/Cover Image';
     }
     return '';
   };
@@ -139,7 +144,18 @@ const VideoUpload = props => {
 
 VideoUpload.propTypes = {
   closeModal: PropTypes.func,
-  updateModalClassname: PropTypes.func
+  updateModalClassname: PropTypes.func,
+  videoUseData: PropTypes.shape( {
+    videoUses: PropTypes.array
+  } ),
+  imageUseData: PropTypes.shape( {
+    imageUses: PropTypes.array
+  } )
 };
 
-export default VideoUpload;
+// @todo - add videoUseByName, imageUseByName queries to server
+// as opposed to pulling whole list and filtering needed value
+export default compose(
+  graphql( VIDEO_USE_QUERY, { name: 'videoUseData' } ),
+  graphql( IMAGE_USE_QUERY, { name: 'imageUseData' } )
+)( VideoUpload );
