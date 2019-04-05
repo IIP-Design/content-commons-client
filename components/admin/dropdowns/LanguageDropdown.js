@@ -28,7 +28,7 @@ const LanguageDropdown = props => {
 
         let options = [];
         if ( data && data.languages ) {
-          options = data.languages.map( lang => ( { key: lang.id, text: lang.displayName, value: lang.displayName } ) );
+          options = data.languages.map( lang => ( { key: lang.id, text: lang.displayName, value: lang.id } ) );
         }
 
         return (

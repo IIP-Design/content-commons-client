@@ -39,7 +39,7 @@ const UseDropdown = props => {
           const { videoUses, imageUses } = data;
           const uses = videoUses || imageUses;
           if ( uses ) { // checks for uses in the event we have neither video or image
-            options = uses.map( u => ( { key: u.id, text: u.name, value: u.name } ) );
+            options = uses.map( u => ( { key: u.id, text: u.name, value: u.id } ) );
           }
         }
 
