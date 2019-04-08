@@ -12,7 +12,7 @@ exports[`<ProjectItem /> renders a Modal component if \`isAvailable\` and \`disp
     <Trigger
       displayItemInModal={true}
       itemId="3728"
-      videoID="made-in-america"
+      projectId="123"
     />
   }
 >
@@ -30,6 +30,7 @@ exports[`<ProjectItem /> renders initially the Placeholder component 1`] = `
       "heading": Object {
         "cursor": "not-allowed",
         "height": "1.3em",
+        "marginTop": "0.625em",
         "width": "80%",
       },
       "language": Object {
@@ -38,14 +39,21 @@ exports[`<ProjectItem /> renders initially the Placeholder component 1`] = `
       },
       "thumbnail": Object {
         "cursor": "not-allowed",
-        "height": "10em",
+        "height": "100%",
+        "left": "0",
+        "position": "absolute",
+        "top": "0",
+        "width": "100%",
       },
     }
   }
   parentEl="li"
   parentStyles={
     Object {
+      "height": "0",
       "marginBottom": "1.5em",
+      "paddingTop": "56.25%",
+      "position": "relative",
     }
   }
 />

@@ -5,7 +5,7 @@ import ProjectItem from './ProjectItem';
 const Trigger = () => <div className="trigger">Trigger</div>;
 const Content = () => <div className="content">Content</div>;
 const props = {
-  projectId: { videoID: 'made-in-america' },
+  projectId: '123',
   itemId: '3728',
   isAvailable: false,
   displayItemInModal: true,
@@ -57,7 +57,7 @@ describe( '<ProjectItem />', () => {
     expect( wrapper.type()() ).toEqual( Trigger() );
     expect( wrapper.props() )
       .toEqual( {
-        videoID: 'made-in-america',
+        projectId: '123',
         itemId: '3728',
         displayItemInModal: false
       } );
