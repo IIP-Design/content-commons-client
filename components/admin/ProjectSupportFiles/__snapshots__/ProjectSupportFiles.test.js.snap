@@ -11,11 +11,11 @@ exports[`<ProjectSupportFiles /> renders without crashing 1`] = `
       <GridColumn
         width={16}
       >
-        <h2
+        <h3
           className="heading uppercase"
         >
           Support Files
-        </h2>
+        </h3>
       </GridColumn>
     </GridRow>
     <GridRow
@@ -27,52 +27,16 @@ exports[`<ProjectSupportFiles /> renders without crashing 1`] = `
           data={
             Array [
               Object {
-                "file": "madeinamerica_arabic.srt",
-                "id": "5678",
-                "lang": "Arabic",
-                "size": Object {
-                  "filesize": 24576,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
+                "id": "qwqw",
               },
               Object {
-                "file": "madeinamerica_chinese_ljhlkjhl_kjhlkjh_aslkfja;lskjfweoij.srt",
-                "id": "5679",
-                "lang": "Chinese (Simplified)",
-                "size": Object {
-                  "filesize": 24576,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
+                "id": "erer",
               },
               Object {
-                "file": "madeinamerica_english.srt",
-                "id": "5680",
-                "lang": "English",
-                "size": Object {
-                  "filesize": 24576,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
+                "id": "asas",
               },
               Object {
-                "file": "madeinamerica_french.srt",
-                "id": "5681",
-                "lang": "French",
-                "size": Object {
-                  "filesize": 24576,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
+                "id": "dfdf",
               },
             ]
           }
@@ -81,11 +45,7 @@ exports[`<ProjectSupportFiles /> renders without crashing 1`] = `
           hasUploaded={true}
           headline="SRT Files"
           popupMsg="Some info about what SRT files are."
-          projectId={
-            Object {
-              "videoID": "made-in-america",
-            }
-          }
+          projectId="123"
         />
       </GridColumn>
       <GridColumn>
@@ -93,64 +53,13 @@ exports[`<ProjectSupportFiles /> renders without crashing 1`] = `
           data={
             Array [
               Object {
-                "file": "madeinamerica_arabic.jpg",
-                "id": "5682",
-                "lang": "Arabic",
-                "size": Object {
-                  "filesize": 58368,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
+                "id": "tyty",
               },
               Object {
-                "file": "madeinamerica_chinese.jpg",
-                "id": "5683",
-                "lang": "Chinese (Simplified)",
-                "size": Object {
-                  "filesize": 58368,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
+                "id": "ghgh",
               },
               Object {
-                "file": "madeinamerica_english.jpg",
-                "id": "5684",
-                "lang": "English",
-                "size": Object {
-                  "filesize": 58368,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
-              },
-              Object {
-                "file": "madeinamerica_french.jpg",
-                "id": "5685",
-                "lang": "French",
-                "size": Object {
-                  "filesize": 58368,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
-              },
-              Object {
-                "file": "madeinamerica_english.mp3",
-                "id": "5686",
-                "lang": "English",
-                "size": Object {
-                  "filesize": 5242880,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
+                "id": "vbvb",
               },
             ]
           }
@@ -159,11 +68,7 @@ exports[`<ProjectSupportFiles /> renders without crashing 1`] = `
           hasUploaded={true}
           headline="Additional Files"
           popupMsg="Additional files that can be used with this video, e.g., audio file, pdf."
-          projectId={
-            Object {
-              "videoID": "made-in-america",
-            }
-          }
+          projectId="123"
         />
         <Checkbox
           checked={true}

@@ -726,4 +726,8 @@ export default compose(
   videoProjectQuery
 )( VideoEdit );
 
-export { DELETE_VIDEO_PROJECT_MUTATION, VIDEO_PROJECT_QUERY };
+export {
+  supportFilesConfig,
+  DELETE_VIDEO_PROJECT_MUTATION,
+  VIDEO_PROJECT_QUERY
+};

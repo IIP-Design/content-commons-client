@@ -82,24 +82,6 @@ const visibilityOptions = [
   }
 ];
 
-const supportFilesConfig = {
-  srt: {
-    headline: 'SRT Files',
-    fileType: 'srt',
-    popupMsg: 'Some info about what SRT files are.'
-  },
-  other: {
-    headline: 'Additional Files',
-    fileType: 'other',
-    popupMsg: 'Additional files that can be used with this video, e.g., audio file, pdf.',
-    checkBoxLabel: 'Disable right-click to protect your images',
-    checkBoxName: 'protectImages',
-    iconMsg: 'Checking this prevents people from downloading and using your images. Useful if your images are licensed.',
-    iconSize: 'small',
-    iconType: 'info circle'
-  }
-};
-
 const projects = [
   {
     projectType: 'video',
@@ -585,7 +567,6 @@ export {
   categoryData,
   languages,
   visibilityOptions,
-  supportFilesConfig,
   projects,
   units,
   videoProjectPreview

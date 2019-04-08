@@ -1,12 +1,24 @@
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
-import { projects, supportFilesConfig } from 'components/admin/projects/ProjectEdit/mockData';
+import { supportFilesConfig } from 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit';
 import ProjectSupportFiles from './ProjectSupportFiles';
 
 const props = {
   heading: 'Support Files',
-  projectId: { videoID: 'made-in-america' },
-  supportFiles: projects[0].supportFiles,
+  projectId: '123',
+  supportFiles: {
+    srt: [
+      { id: 'qwqw' },
+      { id: 'erer' },
+      { id: 'asas' },
+      { id: 'dfdf' }
+    ],
+    other: [
+      { id: 'tyty' },
+      { id: 'ghgh' },
+      { id: 'vbvb' }
+    ]
+  },
   hasSubmittedData: false,
   protectImages: true,
   handleChange: jest.fn(),
@@ -26,7 +38,7 @@ describe( '<ProjectSupportFiles />', () => {
   it( 'renders the heading', () => {
     const wrapper = shallow( Component );
     const heading = wrapper.find( '.heading' );
-    expect( heading.name() ).toEqual( 'h2' );
+    expect( heading.name() ).toEqual( 'h3' );
     expect( heading.text() ).toEqual( props.heading );
   } );
 
