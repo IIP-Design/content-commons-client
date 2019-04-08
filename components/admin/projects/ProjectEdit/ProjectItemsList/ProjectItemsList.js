@@ -11,7 +11,7 @@ import {
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import orderBy from 'lodash/orderBy';
-import { Loader } from 'semantic-ui-react';
+import { Icon, Loader } from 'semantic-ui-react';
 
 import ProjectItem from 'components/admin/ProjectItem/ProjectItem';
 import './ProjectItemsList.scss';
@@ -19,7 +19,7 @@ import './ProjectItemsList.scss';
 const ProjectItemsList = props => {
   const {
     listEl,
-    data: { error, loading, project: { units } },
+    data: { error, loading, project },
     projectId,
     headline,
     hasSubmittedData,
@@ -63,7 +63,20 @@ const ProjectItemsList = props => {
     );
   }
 
-  if ( error ) return `Error! ${error.message}`;
+  if ( error ) {
+    return (
+      <div className="project-items-list error">
+        <p>
+          <Icon color="red" name="exclamation triangle" />
+          <span>Loading error</span>
+        </p>
+      </div>
+    );
+  }
+
+  if ( !project ) return null;
+
+  const { units } = project;
 
   const sortedUnits = orderBy( units, ['language.displayName', 'title'] );
 
@@ -128,4 +141,5 @@ export default graphql( PROJECT_ITEMS_QUERY, {
     },
   } )
 } )( ProjectItemsList );
+
 export { PROJECT_ITEMS_QUERY };
