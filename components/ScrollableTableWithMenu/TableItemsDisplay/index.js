@@ -35,7 +35,7 @@ class TableItemsDisplay extends React.Component {
             defaultValue={ displaySizeOptions[0].value }
             onChange={ this.handleChange }
           />
-          <span> | 1-{ value } of 137 for 'search term'`</span>
+          <span> | 1-{ value } of 137 for 'search term'</span>
         </span>
       </Grid.Column>
     );
