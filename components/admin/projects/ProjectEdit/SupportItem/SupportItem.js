@@ -182,10 +182,6 @@ class SupportItem extends React.PureComponent {
       data: { error, loading, supportItem }
     } = this.props;
 
-    if ( !supportItem || !Object.keys( supportItem ).length ) return null;
-
-    const { filename, filesize, language } = supportItem;
-
     if ( loading ) {
       return (
         <li>
@@ -199,7 +195,7 @@ class SupportItem extends React.PureComponent {
 
     if ( error ) {
       return (
-        <li key={ `${fileType}-${language.displayName}` } className="support-item error">
+        <li className="support-item error">
           <p>
             <Icon
               color="red"
@@ -213,6 +209,10 @@ class SupportItem extends React.PureComponent {
         </li>
       );
     }
+
+    if ( !supportItem || !Object.keys( supportItem ).length ) return null;
+
+    const { filename, filesize, language } = supportItem;
 
     const {
       bytesUploaded,
@@ -351,4 +351,5 @@ export default graphql( SUPPORT_ITEM_QUERY, {
     },
   } )
 } )( SupportItem );
+
 export { SUPPORT_ITEM_QUERY };

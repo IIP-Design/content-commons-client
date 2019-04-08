@@ -1,115 +1,117 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<SupportItem /> renders \`Progress\` component if \`isUploading\` 1`] = `
-<li
-  className="support-item isUploading"
-  key="srt-Arabic"
+<SupportItem
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": false,
+      "networkStatus": 7,
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "supportItem": Object {
+        "filename": "madeinamerica_english.srt",
+        "filesize": "24576",
+        "id": "qwqw",
+        "language": Object {
+          "displayName": "English",
+        },
+      },
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "qwqw",
+      },
+    }
+  }
+  fileType="srt"
+  itemId="qwqw"
+  projectId="123"
 >
-  <Progress
-    active={true}
-    color="blue"
-    precision={0}
-    progress={true}
-    size="small"
-    total={24576}
-    value={0}
-  />
-  <span>
-    Uploading item
-  </span>
-</li>
+  <li
+    className="support-item isUploading"
+    key="srt-English"
+  >
+    <Progress
+      active={true}
+      color="blue"
+      precision={0}
+      progress={true}
+      size="small"
+      total="24576"
+      value={0}
+    >
+      <div
+        className="ui blue small active progress"
+        data-percent={0}
+      >
+        <div
+          className="bar"
+          style={
+            Object {
+              "width": "0%",
+            }
+          }
+        >
+          <div
+            className="progress"
+          >
+            0%
+          </div>
+        </div>
+      </div>
+    </Progress>
+    <span>
+      Uploading item
+    </span>
+  </li>
+</SupportItem>
 `;
 
-exports[`<SupportItem /> renders without crashing 1`] = `
-<li
-  className="support-item"
-  key="srt-Arabic"
+exports[`<SupportItem /> renders initial loading state without crashing 1`] = `
+<SupportItem
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": true,
+      "networkStatus": 1,
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "qwqw",
+      },
+    }
+  }
+  fileType="srt"
+  itemId="qwqw"
+  projectId="123"
 >
-  <span
-    className="item-name"
-  >
-    <VisuallyHidden>
-      madeinamerica_arabic.srt
-    </VisuallyHidden>
+  <li>
+    <Loader
+      active={true}
+      inline={true}
+      size="mini"
+    >
+      <div
+        className="ui mini active inline loader"
+      />
+    </Loader>
     <span
-      aria-hidden={true}
-      className="item-name-wrap hasEllipsis"
+      style={
+        Object {
+          "fontSize": "0.75em",
+          "marginLeft": "0.5em",
+        }
+      }
     >
-      <Popup
-        content="madeinamerica_arabic.srt"
-        inverted={true}
-        keepInViewPort={true}
-        on={
-          Array [
-            "hover",
-            "click",
-            "focus",
-          ]
-        }
-        position="top left"
-        size="mini"
-        style={
-          Object {
-            "msWordBreak": "break-all",
-            "overflowWrap": "break-word",
-            "wordBreak": "break-word",
-            "wordWrap": "break-word",
-          }
-        }
-        trigger={
-          <span>
-            <Focusable
-              order={0}
-            >
-              <React.Fragment>
-                
-                …
-                madeinamerica_arabic.srt
-              </React.Fragment>
-            </Focusable>
-          </span>
-        }
-      />
+      Preparing file for upload...
     </span>
-  </span>
-  <span
-    className="item-lang"
-  >
-    <b
-      className="item-lang-wrap hasEllipsis"
-    >
-      <Popup
-        content="Arabic"
-        inverted={true}
-        keepInViewPort={true}
-        on={
-          Array [
-            "hover",
-            "click",
-            "focus",
-          ]
-        }
-        position="top left"
-        size="mini"
-        style={
-          Object {
-            "msWordBreak": "break-all",
-            "overflowWrap": "break-word",
-            "wordBreak": "break-word",
-            "wordWrap": "break-word",
-          }
-        }
-        trigger={
-          <span>
-            <Focusable
-              order={0}
-            >
-              Arabic
-            </Focusable>
-          </span>
-        }
-      />
-    </b>
-  </span>
-</li>
+  </li>
+</SupportItem>
 `;

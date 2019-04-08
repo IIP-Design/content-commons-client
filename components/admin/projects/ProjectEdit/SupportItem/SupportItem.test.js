@@ -1,15 +1,36 @@
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
+import wait from 'waait';
+import { MockedProvider } from 'react-apollo/test-utils';
 import { Icon, Loader } from 'semantic-ui-react';
-import { projects, supportFilesConfig } from 'components/admin/projects/ProjectEdit/mockData';
-import SupportItem from './SupportItem';
+import SupportItem, { SUPPORT_ITEM_QUERY } from './SupportItem';
 
 const props = {
-  supportItem: projects[0].supportFiles.srt[0],
-  projectId: { videoID: 'made-in-america' },
-  fileType: supportFilesConfig.srt.fileType,
-  itemId: projects[0].supportFiles.srt[0].id
+  projectId: '123',
+  fileType: 'srt',
+  itemId: 'qwqw'
 };
+
+const mocks = [
+  {
+    request: {
+      query: SUPPORT_ITEM_QUERY,
+      variables: { id: props.itemId }
+    },
+    result: {
+      data: {
+        supportItem: {
+          id: props.itemId,
+          filename: 'madeinamerica_english.srt',
+          filesize: '24576',
+          language: {
+            displayName: 'English'
+          }
+        }
+      }
+    }
+  }
+];
 
 const resizeWindow = ( x, y ) => {
   window.innerWidth = x;
@@ -17,149 +38,137 @@ const resizeWindow = ( x, y ) => {
   window.dispatchEvent( new Event( 'resize' ) );
 };
 
-const Component = <SupportItem { ...props } />;
+const Component = (
+  <MockedProvider mocks={ mocks } addTypename={ false }>
+    <SupportItem { ...props } />
+  </MockedProvider>
+);
 
 describe( '<SupportItem />', () => {
-  it( 'renders without crashing', () => {
-    const wrapper = shallow( Component );
-    expect( wrapper.exists() ).toEqual( true );
-    expect( toJSON( wrapper ) ).toMatchSnapshot();
+  it( 'renders initial loading state without crashing', () => {
+    const wrapper = mount( Component );
+    const supportItem = wrapper.find( 'SupportItem' );
+    const loader = <Loader active inline size="mini" />;
+
+    expect( supportItem.exists() ).toEqual( true );
+    expect( supportItem.contains( loader ) ).toEqual( true );
+    expect( supportItem.find( 'span' ).text() )
+      .toEqual( 'Preparing file for upload...' );
+    expect( toJSON( supportItem ) ).toMatchSnapshot();
   } );
 
-  it( '`componentDidMount` sets `_isMounted`', () => {
-    const wrapper = shallow( Component );
-    wrapper.instance().componentDidMount();
-    expect( wrapper.instance()._isMounted ).toEqual( true );
+  it( 'renders error message & icon if error is thrown', async () => {
+    const errorMocks = [
+      {
+        request: {
+          query: SUPPORT_ITEM_QUERY,
+          variables: { id: props.itemId }
+        },
+        result: {
+          errors: [{ message: 'There was an error.' }]
+        }
+      }
+    ];
+    const wrapper = mount(
+      <MockedProvider mocks={ errorMocks } addTypename={ false }>
+        <SupportItem { ...props } />
+      </MockedProvider>
+    );
+    // wait for the data and !loading
+    await wait( 0 );
+    wrapper.update();
+
+    const supportItem = wrapper.find( 'SupportItem' );
+    const li = supportItem.find( 'li.support-item.error' );
+    const icon = <Icon color="red" name="exclamation triangle" size="small" as="i" />;
+    const span = <span>Loading error</span>;
+
+    expect( supportItem.exists() ).toEqual( true );
+    expect( li.exists() ).toEqual( true );
+    expect( supportItem.contains( icon ) ).toEqual( true );
+    expect( supportItem.contains( span ) ).toEqual( true );
   } );
 
-  it( '`componentWillUnmount` sets `_isMounted` to false', () => {
-    const wrapper = shallow( Component );
-    wrapper.instance().componentWillUnmount();
-    expect( wrapper.instance()._isMounted ).toEqual( false );
+  it( '`componentDidMount` sets `_isMounted`', async () => {
+    const wrapper = mount( Component );
+    // wait for the data and !loading
+    await wait( 0 );
+    wrapper.update();
+
+    const supportItem = wrapper.find( 'SupportItem' );
+    const inst = supportItem.instance();
+
+    inst.componentDidMount();
+    expect( inst._isMounted ).toEqual( true );
   } );
 
-  it( 'renders `Progress` component if `isUploading`', () => {
-    const wrapper = shallow( Component );
-    const progress = () => wrapper.find( 'Progress' );
-    const isUploading = () => wrapper.state( 'isUploading' );
+  it( '`componentWillUnmount` sets `_isMounted` to false', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const supportItem = wrapper.find( 'SupportItem' );
+    const inst = supportItem.instance();
+
+    inst.componentWillUnmount();
+    expect( inst._isMounted ).toEqual( false );
+  } );
+
+  it( 'renders `Progress` component if `isUploading`', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const supportItem = () => wrapper.find( 'SupportItem' );
+    const progress = () => supportItem().find( 'Progress' );
+    const isUploading = () => supportItem().state( 'isUploading' );
+    const filesize = () => supportItem().prop( 'data' ).supportItem.filesize;
 
     expect( isUploading() ).toEqual( false );
     expect( progress().exists() ).toEqual( isUploading() );
 
-    wrapper.setState( { isUploading: true } );
+    supportItem().setState( { isUploading: true } );
+
+    expect( isUploading() ).toEqual( true );
     expect( progress().exists() ).toEqual( isUploading() );
-    expect( progress().prop( 'total' ) )
-      .toEqual( props.supportItem.size.filesize );
-    expect( toJSON( wrapper ) ).toMatchSnapshot();
+    expect( progress().prop( 'total' ) ).toEqual( filesize() );
+    expect( toJSON( supportItem() ) ).toMatchSnapshot();
   } );
 
-  it( 'renders null if `supportItem` is empty', () => {
-    const wrapper = shallow( Component );
-
-    wrapper.setState( { supportItem: {} } );
-    expect( wrapper.state( 'supportItem' ) ).toEqual( {} );
-    expect( wrapper.html() ).toEqual( null );
-  } );
-
-  it( 'renders null if there is no `supportItem`', () => {
-    const wrapper = shallow( Component );
-
-    wrapper.setState( { supportItem: null } );
-    expect( wrapper.state( 'supportItem' ) ).toEqual( null );
-    expect( wrapper.html() ).toEqual( null );
-  } );
-
-  it( 'renders an uploading message and `Loader` if `supportItem` is loading', () => {
-    const wrapper = shallow( Component );
-
-    wrapper.setState( {
-      supportItem: {
-        id: '5678',
-        lang: 'Arabic',
-        file: 'madeinamerica_arabic.srt',
-        uploadStatus: {
-          error: false,
-          success: false
+  it( 'renders null if `supportItem` is null', async () => {
+    const nullMocks = [
+      {
+        request: {
+          query: SUPPORT_ITEM_QUERY,
+          variables: { id: props.itemId }
         },
-        size: {
-          filesize: 24576
-        },
-        loading: true
+        result: { data: { supportItem: null } }
       }
-    } );
+    ];
 
-    expect( wrapper.state( 'supportItem' ).loading )
-      .toEqual( true );
-    expect( wrapper.contains( <Loader active inline size="mini" /> ) )
-      .toEqual( true );
-    expect( wrapper.find( 'span' ).text() )
-      .toEqual( 'Preparing file for upload...' );
+    const wrapper = mount(
+      <MockedProvider mocks={ nullMocks } addTypename={ false }>
+        <SupportItem { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const supportItem = wrapper.find( 'SupportItem' );
+
+    expect( supportItem.html() ).toEqual( null );
   } );
 
-  it( 'renders error icon and message if `supportItem` has an error `uploadStatus`', () => {
-    const wrapper = shallow( Component );
+  it( 'calls `debounceResize` when window is resized', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
 
-    expect( wrapper.find( 'li.support-item.error' ).exists() )
-      .toEqual( false );
+    const supportItem = wrapper.find( 'SupportItem' );
+    const inst = supportItem.instance();
+    const spy = jest.spyOn( inst, 'debounceResize' );
 
-    wrapper.setState( {
-      supportItem: {
-        id: '5678',
-        lang: 'Arabic',
-        file: 'madeinamerica_arabic.srt',
-        uploadStatus: {
-          error: true,
-          success: false
-        },
-        size: { filesize: 24576 }
-      }
-    } );
-
-    expect( wrapper.state( 'supportItem' ).uploadStatus.error )
-      .toEqual( true );
-    expect( wrapper.find( 'li.support-item.error' ).exists() )
-      .toEqual( true );
-    expect( wrapper.contains( <Icon color="red" name="exclamation triangle" size="small" as="i" /> ) )
-      .toEqual( true );
-    expect( wrapper.find( 'span' ).text() )
-      .toEqual( 'Uploading error' );
-  } );
-
-  it( 'renders error icon and message if `supportItem` has an error', () => {
-    const wrapper = shallow( Component );
-
-    expect( wrapper.find( 'li.support-item.error' ).exists() )
-      .toEqual( false );
-
-    wrapper.setState( {
-      supportItem: {
-        id: '5678',
-        lang: 'Arabic',
-        file: 'madeinamerica_arabic.srt',
-        uploadStatus: {
-          error: false,
-          success: false
-        },
-        size: { filesize: 24576 },
-        error: true
-      }
-    } );
-
-    expect( wrapper.state( 'supportItem' ).error )
-      .toEqual( true );
-    expect( wrapper.find( 'li.support-item.error' ).exists() )
-      .toEqual( true );
-    expect( wrapper.contains( <Icon color="red" name="exclamation triangle" size="small" as="i" /> ) )
-      .toEqual( true );
-    expect( wrapper.find( 'span' ).text() )
-      .toEqual( 'Loading error' );
-  } );
-
-  it( 'calls `debounceResize` when window is resized', () => {
-    const wrapper = shallow( Component );
-    const spy = jest.spyOn( wrapper.instance(), 'debounceResize' );
-
-    wrapper.instance().componentDidMount();
+    inst.componentDidMount();
 
     const map = {};
     window.addEventListener = jest.fn( ( event, cb ) => {
@@ -170,22 +179,35 @@ describe( '<SupportItem />', () => {
     expect( spy ).toHaveBeenCalled();
   } );
 
-  it( '`componentWillUnmount` removes the `resize` event listener', () => {
-    const wrapper = shallow( Component );
+  it( '`componentWillUnmount` removes the `resize` event listener', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const supportItem = wrapper.find( 'SupportItem' );
+    const inst = supportItem.instance();
+
     const map = {};
     window.removeEventListener = jest.fn( ( event, cb ) => {
       map[event] = cb;
     } );
 
-    wrapper.instance().componentWillUnmount();
-    expect( window.removeEventListener ).toHaveBeenCalledWith( 'resize', wrapper.instance().debounceResize );
+    inst.componentWillUnmount();
+    expect( window.removeEventListener )
+      .toHaveBeenCalledWith( 'resize', inst.debounceResize );
   } );
 
-  it( '`getShortFileName` returns an ellipsis shortened file name', () => {
-    const wrapper = shallow( Component );
+  it( '`getShortFileName` returns an ellipsis shortened file name', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const supportItem = wrapper.find( 'SupportItem' );
+    const inst = supportItem.instance();
+
     const longName = 'madeinamerica_chinese_ljhlkjhl_kjhlkjh_aslkfja;lskjfweoij.srt';
     const index = 8;
-    const shortName = wrapper.instance()
+    const shortName = inst
       .getShortFileName( longName, index )
       .props
       .children;
@@ -197,24 +219,35 @@ describe( '<SupportItem />', () => {
     expect( shortName.join( '' ) ).toEqual( 'madeinam…eoij.srt' );
   } );
 
-  it( '`getProportionalNumber` returns a number that is proportional to a reference', () => {
-    const wrapper = shallow( Component );
+  it( '`getProportionalNumber` returns a number that is proportional to a reference', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const supportItem = wrapper.find( 'SupportItem' );
+    const inst = supportItem.instance();
+
     const reference = 500;
     const proportion = 0.625;
-    const num = wrapper.instance()
+    const num = inst
       .getProportionalNumber( reference, proportion );
     expect( num ).toEqual( 312 );
   } );
 
-  it( '`isLongName` returns a boolean whether given number is greater or equal to another', () => {
-    const wrapper = shallow( Component );
+  it( '`isLongName` returns a boolean whether given number is greater or equal to another', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const supportItem = wrapper.find( 'SupportItem' );
+    const inst = supportItem.instance();
+
     let itemWidth = 290;
     const reference = 500;
     const proportion = 0.625;
 
     const isLongName = () => (
-      wrapper.instance()
-        .isLongName( itemWidth, reference, proportion )
+      inst.isLongName( itemWidth, reference, proportion )
     );
 
     expect( isLongName() ).toEqual( false );
@@ -222,11 +255,17 @@ describe( '<SupportItem />', () => {
     expect( isLongName() ).toEqual( true );
   } );
 
-  it( '`setRefWidth` and `resetWidths` sets ref widths in state', () => {
-    const wrapper = shallow( Component );
-    const li = wrapper.find( '.support-item' );
-    const span = wrapper.find( '.item-name-wrap' );
-    const b = wrapper.find( '.item-lang-wrap' );
+  it( '`setRefWidth` and `resetWidths` sets ref widths in state', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const supportItem = wrapper.find( 'SupportItem' );
+    const inst = supportItem.instance();
+
+    const li = supportItem.find( '.support-item' );
+    const span = supportItem.find( '.item-name-wrap' );
+    const b = supportItem.find( '.item-lang-wrap' );
 
     const nodes = [li, span, b];
     const names = ['listItem', 'itemName', 'itemLang'];
@@ -236,29 +275,35 @@ describe( '<SupportItem />', () => {
     b.offsetWidth = 50;
 
     nodes.forEach( ( n, i ) => {
-      expect( wrapper.state( `${names[i]}Width` ) )
-        .toEqual( null );
+      expect( supportItem.state( `${names[i]}Width` ) )
+        .toEqual( 0 );
     } );
 
     nodes.forEach( ( n, i ) => {
-      wrapper.instance().setRefWidth( n, names[i] );
-      expect( wrapper.state( `${names[i]}Width` ) )
+      inst.setRefWidth( n, names[i] );
+      expect( supportItem.state( `${names[i]}Width` ) )
         .toEqual( n.offsetWidth );
     } );
 
-    wrapper.instance().resetWidths();
+    inst.resetWidths();
 
     nodes.forEach( ( n, i ) => {
-      expect( wrapper.state( `${names[i]}Width` ) )
-        .toEqual( null );
+      expect( supportItem.state( `${names[i]}Width` ) )
+        .toEqual( 0 );
     } );
   } );
 
-  it( '`resetWidths` does not reset ref widths in state if component is unmounted', () => {
-    const wrapper = shallow( Component );
-    const li = wrapper.find( '.support-item' );
-    const span = wrapper.find( '.item-name-wrap' );
-    const b = wrapper.find( '.item-lang-wrap' );
+  it( '`resetWidths` does not reset ref widths in state if component is unmounted', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const supportItem = wrapper.find( 'SupportItem' );
+    const inst = supportItem.instance();
+
+    const li = supportItem.find( '.support-item' );
+    const span = supportItem.find( '.item-name-wrap' );
+    const b = supportItem.find( '.item-lang-wrap' );
 
     const nodes = [li, span, b];
     const names = ['listItem', 'itemName', 'itemLang'];
@@ -267,29 +312,29 @@ describe( '<SupportItem />', () => {
     span.offsetWidth = 170;
     b.offsetWidth = 50;
 
-    wrapper.instance().componentDidMount();
-    const isMounted = () => wrapper.instance()._isMounted;
+    inst.componentDidMount();
+    const isMounted = () => inst._isMounted;
 
     expect( isMounted() ).toEqual( true );
 
     nodes.forEach( ( n, i ) => {
-      expect( wrapper.state( `${names[i]}Width` ) )
-        .toEqual( null );
+      expect( supportItem.state( `${names[i]}Width` ) )
+        .toEqual( 0 );
     } );
 
     nodes.forEach( ( n, i ) => {
-      wrapper.instance().setRefWidth( n, names[i] );
-      expect( wrapper.state( `${names[i]}Width` ) )
+      inst.setRefWidth( n, names[i] );
+      expect( supportItem.state( `${names[i]}Width` ) )
         .toEqual( n.offsetWidth );
     } );
 
-    wrapper.instance().componentWillUnmount();
+    inst.componentWillUnmount();
     expect( isMounted() ).toEqual( false );
 
-    wrapper.instance().resetWidths();
+    inst.resetWidths();
 
     nodes.forEach( ( n, i ) => {
-      expect( wrapper.state( `${names[i]}Width` ) )
+      expect( supportItem.state( `${names[i]}Width` ) )
         .toEqual( n.offsetWidth );
     } );
   } );
