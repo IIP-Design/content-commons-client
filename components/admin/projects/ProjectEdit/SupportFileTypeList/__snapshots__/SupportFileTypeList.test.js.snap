@@ -2,7 +2,7 @@
 
 exports[`<SupportFileTypeList /> renders \`SupportItem\` components if \`hasSubmittedData\` 1`] = `
 <Fragment>
-  <h3>
+  <h4>
     SRT Files 
     <IconPopup
       iconSize="small"
@@ -10,47 +10,31 @@ exports[`<SupportFileTypeList /> renders \`SupportItem\` components if \`hasSubm
       message="Some info about what SRT files are."
       popupSize="mini"
     />
-  </h3>
+  </h4>
   <ul>
-    <SupportItem
+    <Apollo(SupportItem)
       fileType="srt"
-      itemId="5678"
-      key="srt-5678"
-      projectId={
-        Object {
-          "videoID": "made-in-america",
-        }
-      }
+      itemId="qwqw"
+      key="srt-qwqw"
+      projectId="123"
     />
-    <SupportItem
+    <Apollo(SupportItem)
       fileType="srt"
-      itemId="5679"
-      key="srt-5679"
-      projectId={
-        Object {
-          "videoID": "made-in-america",
-        }
-      }
+      itemId="erer"
+      key="srt-erer"
+      projectId="123"
     />
-    <SupportItem
+    <Apollo(SupportItem)
       fileType="srt"
-      itemId="5680"
-      key="srt-5680"
-      projectId={
-        Object {
-          "videoID": "made-in-america",
-        }
-      }
+      itemId="asas"
+      key="srt-asas"
+      projectId="123"
     />
-    <SupportItem
+    <Apollo(SupportItem)
       fileType="srt"
-      itemId="5681"
-      key="srt-5681"
-      projectId={
-        Object {
-          "videoID": "made-in-america",
-        }
-      }
+      itemId="dfdf"
+      key="srt-dfdf"
+      projectId="123"
     />
   </ul>
 </Fragment>
@@ -58,9 +42,9 @@ exports[`<SupportFileTypeList /> renders \`SupportItem\` components if \`hasSubm
 
 exports[`<SupportFileTypeList /> renders initially \`Placeholder\` components 1`] = `
 <Fragment>
-  <h3>
-    SRT Files 
-  </h3>
+  <h4>
+    SRT File 
+  </h4>
   <ul>
     <Placeholder
       childEl="span"
@@ -76,7 +60,7 @@ exports[`<SupportFileTypeList /> renders initially \`Placeholder\` components 1`
           },
         }
       }
-      key="srt-5678"
+      key="srt-qwqw"
       parentEl="li"
       parentStyles={
         Object {
@@ -99,7 +83,7 @@ exports[`<SupportFileTypeList /> renders initially \`Placeholder\` components 1`
           },
         }
       }
-      key="srt-5679"
+      key="srt-erer"
       parentEl="li"
       parentStyles={
         Object {
@@ -122,7 +106,7 @@ exports[`<SupportFileTypeList /> renders initially \`Placeholder\` components 1`
           },
         }
       }
-      key="srt-5680"
+      key="srt-asas"
       parentEl="li"
       parentStyles={
         Object {
@@ -145,7 +129,7 @@ exports[`<SupportFileTypeList /> renders initially \`Placeholder\` components 1`
           },
         }
       }
-      key="srt-5681"
+      key="srt-dfdf"
       parentEl="li"
       parentStyles={
         Object {
