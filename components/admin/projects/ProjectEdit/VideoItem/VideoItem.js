@@ -125,8 +125,6 @@ class VideoItem extends React.PureComponent {
       displayItemInModal
     } = this.props;
 
-    if ( !video ) return null;
-
     if ( loading ) {
       return (
         <Loader active inline="centered">
@@ -151,6 +149,8 @@ class VideoItem extends React.PureComponent {
         </li>
       );
     }
+
+    if ( !video ) return null;
 
     const {
       title,
@@ -289,4 +289,5 @@ export default graphql( VIDEO_ITEM_QUERY, {
     },
   } )
 } )( VideoItem );
+
 export { VIDEO_ITEM_QUERY };

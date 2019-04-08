@@ -1,142 +1,356 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<VideoItem /> renders \`Progress\` component if \`isUploading\` 1`] = `
-<li
-  className="item video"
->
-  <span
-    className="modal-trigger"
-    onClick={null}
-    style={
-      Object {
-        "cursor": "not-allowed",
-      }
+<VideoItem
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": false,
+      "networkStatus": 7,
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "3728",
+      },
+      "video": Object {
+        "files": Array [
+          Object {
+            "filename": "test-file.mp4",
+            "filesize": 662595174,
+          },
+        ],
+        "id": "xyz123",
+        "language": Object {
+          "displayName": "English",
+          "textDirection": "LTR",
+        },
+        "thumbnails": Object {
+          "image": Object {
+            "alt": "some alt text",
+            "dimensions": Object {
+              "height": 393,
+              "width": 770,
+            },
+            "url": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
+          },
+        },
+        "title": "Test Title",
+      },
     }
+  }
+  displayItemInModal={true}
+  itemId="3728"
+  onClick={[MockFunction]}
+>
+  <li
+    className="item video"
   >
-    <div
-      className="thumbnail isUploading"
+    <span
+      className="modal-trigger"
+      onClick={null}
+      style={
+        Object {
+          "cursor": "not-allowed",
+        }
+      }
     >
-      <img
-        alt="Man walking through factory (State Dept.)"
-        src="https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg"
-      />
-      <p
-        className="file-name"
-      >
-        madeinamerica_english_asdkjaf_al;kdflkeori_erpoiuzx,mnvz.mp4
-      </p>
       <div
-        className="loading-animation"
+        className="thumbnail isUploading"
       >
-        <Loader
-          active={true}
-          inline="centered"
-        />
+        <Placeholder
+          childEl="div"
+          childStyles={
+            Object {
+              "thumbnail": Object {
+                "height": "100%",
+                "left": "0",
+                "position": "absolute",
+                "top": "0",
+                "width": "100%",
+              },
+            }
+          }
+          parentEl="div"
+          parentStyles={
+            Object {
+              "height": "0",
+              "overflow": "hidden",
+              "paddingTop": "56.25%",
+              "position": "relative",
+            }
+          }
+        >
+          <div
+            className="placeholder"
+            style={
+              Object {
+                "height": "0",
+                "overflow": "hidden",
+                "paddingTop": "56.25%",
+                "position": "relative",
+              }
+            }
+          >
+            <div
+              key="thumbnail"
+              style={
+                Object {
+                  "backgroundColor": "#d6d7d9",
+                  "height": "100%",
+                  "left": "0",
+                  "marginBottom": "0.625em",
+                  "position": "absolute",
+                  "top": "0",
+                  "width": "100%",
+                }
+              }
+            />
+          </div>
+        </Placeholder>
+        <p
+          className="file-name"
+        >
+          test-file.mp4
+        </p>
+        <div
+          className="loading-animation"
+        >
+          <Loader
+            active={true}
+            inline="centered"
+          >
+            <div
+              className="ui active centered inline loader"
+            />
+          </Loader>
+        </div>
       </div>
-    </div>
-    <Progress
-      active={true}
-      color="blue"
-      precision={0}
-      progress={true}
-      size="small"
-      total={662595174}
-      value={0}
-    >
-      <p>
-        Upload in progress
+      <Progress
+        active={true}
+        color="blue"
+        precision={0}
+        progress={true}
+        size="small"
+        total={662595174}
+        value={0}
+      >
+        <div
+          className="ui blue small active progress"
+          data-percent={0}
+        >
+          <div
+            className="bar"
+            style={
+              Object {
+                "width": "0%",
+              }
+            }
+          >
+            <div
+              className="progress"
+            >
+              0%
+            </div>
+          </div>
+          <div
+            className="label"
+          >
+            <p>
+              Upload in progress
+            </p>
+          </div>
+        </div>
+      </Progress>
+      <h3
+        className="item-heading LTR"
+      >
+        Test Title
+      </h3>
+      <p
+        className="item-lang"
+      >
+        English
       </p>
-    </Progress>
-    <h3
-      className="item-heading ltr"
-    >
-      Made in America
-    </h3>
-    <p
-      className="item-lang"
-    >
-      English
-    </p>
-  </span>
-</li>
+    </span>
+  </li>
+</VideoItem>
 `;
 
 exports[`<VideoItem /> renders a \`span\` with correct props if \`displayItemInModal\` is \`false\` 1`] = `
-<li
-  className="item video"
->
-  <span
-    className="wrapper"
-    onClick={null}
-    style={
-      Object {
-        "cursor": "default",
-      }
+<VideoItem
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": false,
+      "networkStatus": 7,
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "3728",
+      },
+      "video": Object {
+        "files": Array [
+          Object {
+            "filename": "test-file.mp4",
+            "filesize": 662595174,
+          },
+        ],
+        "id": "xyz123",
+        "language": Object {
+          "displayName": "English",
+          "textDirection": "LTR",
+        },
+        "thumbnails": Object {
+          "image": Object {
+            "alt": "some alt text",
+            "dimensions": Object {
+              "height": 393,
+              "width": 770,
+            },
+            "url": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
+          },
+        },
+        "title": "Test Title",
+      },
     }
+  }
+  displayItemInModal={false}
+  itemId="3728"
+  onClick={[MockFunction]}
+>
+  <li
+    className="item video"
   >
-    <div
-      className="thumbnail"
+    <span
+      className="wrapper"
+      onClick={null}
+      style={
+        Object {
+          "cursor": "default",
+        }
+      }
     >
-      <img
-        alt="Man walking through factory (State Dept.)"
-        src="https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg"
-      />
-      <p
-        className="file-name"
+      <div
+        className="thumbnail"
       >
-        madeinamerica_english_asdkjaf_al;kdflkeori_erpoiuzx,mnvz.mp4
+        <Placeholder
+          childEl="div"
+          childStyles={
+            Object {
+              "thumbnail": Object {
+                "height": "100%",
+                "left": "0",
+                "position": "absolute",
+                "top": "0",
+                "width": "100%",
+              },
+            }
+          }
+          parentEl="div"
+          parentStyles={
+            Object {
+              "height": "0",
+              "overflow": "hidden",
+              "paddingTop": "56.25%",
+              "position": "relative",
+            }
+          }
+        >
+          <div
+            className="placeholder"
+            style={
+              Object {
+                "height": "0",
+                "overflow": "hidden",
+                "paddingTop": "56.25%",
+                "position": "relative",
+              }
+            }
+          >
+            <div
+              key="thumbnail"
+              style={
+                Object {
+                  "backgroundColor": "#d6d7d9",
+                  "height": "100%",
+                  "left": "0",
+                  "marginBottom": "0.625em",
+                  "position": "absolute",
+                  "top": "0",
+                  "width": "100%",
+                }
+              }
+            />
+          </div>
+        </Placeholder>
+        <p
+          className="file-name"
+        >
+          test-file.mp4
+        </p>
+      </div>
+      <h3
+        className="item-heading LTR"
+      >
+        Test Title
+      </h3>
+      <p
+        className="item-lang"
+      >
+        English
       </p>
-    </div>
-    <h3
-      className="item-heading ltr"
-    >
-      Made in America
-    </h3>
-    <p
-      className="item-lang"
-    >
-      English
-    </p>
-  </span>
-</li>
+    </span>
+  </li>
+</VideoItem>
 `;
 
-exports[`<VideoItem /> renders without crashing 1`] = `
-<li
-  className="item video"
->
-  <button
-    className="modal-trigger"
-    onClick={[MockFunction]}
-    style={
-      Object {
-        "cursor": "pointer",
-      }
+exports[`<VideoItem /> renders initial loading state without crashing 1`] = `
+<VideoItem
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": true,
+      "networkStatus": 1,
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "3728",
+      },
     }
+  }
+  displayItemInModal={true}
+  itemId="3728"
+  onClick={[MockFunction]}
+>
+  <Loader
+    active={true}
+    inline="centered"
   >
     <div
-      className="thumbnail"
+      className="ui active text centered inline loader"
     >
-      <img
-        alt="Man walking through factory (State Dept.)"
-        src="https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg"
-      />
       <p
-        className="file-name"
+        style={
+          Object {
+            "fontSize": "0.75em",
+          }
+        }
       >
-        madeinamerica_english_asdkjaf_al;kdflkeori_erpoiuzx,mnvz.mp4
+        Preparing file for upload...
       </p>
     </div>
-    <h3
-      className="item-heading ltr"
-    >
-      Made in America
-    </h3>
-    <p
-      className="item-lang"
-    >
-      English
-    </p>
-  </button>
-</li>
+  </Loader>
+</VideoItem>
 `;
