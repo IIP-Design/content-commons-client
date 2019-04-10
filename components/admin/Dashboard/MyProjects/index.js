@@ -4,7 +4,9 @@
  *
  */
 import React, { Fragment } from 'react';
-// import PropTypes from 'prop-types';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
 import { Table } from 'semantic-ui-react';
 import ScrollableTableWithMenu from 'components/ScrollableTableWithMenu';
 import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon';
@@ -13,6 +15,100 @@ import DashSearch from '../../DashSearch';
 import './MyProjects.scss';
 
 import { tempData, menuItems } from './constants';
+
+const USER_VIDEO_PROJECTS_QUERY = gql`
+  query {
+    videoProjects {
+      id
+      author
+      team {
+        name
+        organization        
+      }
+      projectType
+      projectTitle
+      descPublic
+      descInternal
+      status
+      visibility
+      units {
+        id
+        title
+        descPublic
+        language {
+          languageCode
+          locale
+          textDirection
+          displayName
+        }
+        files {
+          id
+          language {
+            languageCode
+            locale
+            textDirection
+            displayName
+          }
+          filetype
+          filename
+          use {
+            id
+            name
+          }
+          quality
+          videoBurnedInStatus
+          url
+          md5
+          duration
+          bitrate
+          filesize
+          dimensions {
+            width
+            height
+          }
+          stream {
+            id
+            site
+            url
+            embedUrl
+          }
+        }
+        thumbnails {
+          size
+          image {
+            filetype
+            filename
+            url
+            alt
+            caption            
+          }
+        }
+      }
+      supportFiles {
+        language {
+          displayName
+        }
+        url
+        filename
+        filetype
+        filesize
+      }
+      thumbnails {
+        alt
+        caption
+        dimensions {
+          width
+          height
+        }
+        alt
+        caption
+        filename
+        filetype
+        url
+      }
+    }
+  }
+`;
 
 /* eslint-disable react/prefer-stateless-function */
 class MyProjects extends React.Component {

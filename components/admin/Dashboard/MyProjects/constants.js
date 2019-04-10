@@ -9,11 +9,9 @@ import thumbnailVideo from 'static/images/thumbnail_video.jpg';
 export const DEFAULT_ACTION = 'default_action';
 
 export const menuItems = [
-  { name: 'analytics', label: 'ANALYTICS' },
   { name: 'author', label: 'AUTHOR' },
   { name: 'categories', label: 'CATEGORIES' },
   { name: 'published', label: 'DATE' },
-  { name: 'source', label: 'SOURCE' },
 ];
 
 export const tempData = [
