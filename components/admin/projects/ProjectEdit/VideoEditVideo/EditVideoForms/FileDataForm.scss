@@ -1,0 +1,9 @@
+.video-file-form {
+  margin: 1rem;
+
+  &-col-1 {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}

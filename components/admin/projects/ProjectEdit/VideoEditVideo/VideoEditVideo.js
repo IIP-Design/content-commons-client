@@ -6,13 +6,11 @@
 import React from 'react';
 // import moment from 'moment';
 import gql from 'graphql-tag';
-import { string } from 'prop-types';
+import propTypes from 'prop-types';
 
 import { Query } from 'react-apollo';
-import { Tab } from 'semantic-ui-react';
-import BasicForm from 'components/admin/projects/ProjectEdit/VideoEditVideo/EditVideoForms/BasicForm';
-import LinkForm from 'components/admin/projects/ProjectEdit/VideoEditVideo/EditVideoForms/LinkForm';
-import ProjectDataForm from 'components/admin/projects/ProjectEdit/VideoEditVideo/EditVideoForms/ProjectDataForm';
+import UnitDataForm from 'components/admin/projects/ProjectEdit/VideoEditVideo/EditVideoForms/UnitDataForm';
+import FileSection from 'components/admin/projects/ProjectEdit/VideoEditVideo/FileSection';
 
 import './VideoEditVideo.scss';
 
@@ -26,6 +24,7 @@ const CURRENT_VIDEO_UNIT = gql`
         }
       }
       files {
+        id
         duration
         filename
         filesize
@@ -42,26 +41,20 @@ class VideoEditVideo extends React.PureComponent {
   render() {
     const { id } = this.props;
 
-    const panes = [
-      { menuItem: 'Basic', render: () => <Tab.Pane attached={ false }><BasicForm id={ id } /></Tab.Pane> },
-      { menuItem: 'Links', render: () => <Tab.Pane attached={ false }><LinkForm id={ id } /></Tab.Pane> }
-    ];
-
     return (
       <Query query={ CURRENT_VIDEO_UNIT } variables={ { id } }>
         { ( { loading, error, data } ) => {
           if ( loading ) return <p>Loading...</p>;
           if ( error ) return <p>Error</p>;
 
-          const { videoUnit } = data;
-          const file = videoUnit.files[0];
+          // const { videoUnit } = data;
+          // const firstFile = data.videoUnit.files[0];
+          // console.log( firstFile );
 
           return (
             <div className="edit-video-modal">
-              <ProjectDataForm id={ id } />
-              <section className="tabbed-container">
-                <Tab menu={ { secondary: true, pointing: true } } panes={ panes } />
-              </section>
+              <UnitDataForm id={ id } />
+              <FileSection id={ id } />
               <section className="video-carousel">
                 <h3 className="video-carousel-header">Videos in this Project</h3>
               </section>
@@ -74,7 +67,7 @@ class VideoEditVideo extends React.PureComponent {
 }
 
 VideoEditVideo.propTypes = {
-  id: string
+  id: propTypes.string
 };
 
 export default VideoEditVideo;

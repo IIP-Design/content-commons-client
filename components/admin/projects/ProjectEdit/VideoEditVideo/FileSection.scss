@@ -1,0 +1,12 @@
+@import "styles/colors.scss";
+
+.edit-file {
+  margin: 1rem 0;
+}
+
+.edit-file-form-container {
+  border-top: 1px solid $blue-green;
+  display: grid;
+  grid-template-columns: 20% 1fr;
+  margin: 0 -1rem -1rem;
+}

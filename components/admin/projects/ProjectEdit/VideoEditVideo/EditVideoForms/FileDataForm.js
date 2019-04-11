@@ -1,49 +1,43 @@
 /**
  *
- * BasicForm
+ * FileDataForm
  *
  */
 
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
-import { object, string } from 'prop-types';
+import propTypes from 'prop-types';
 
 import {
-  Form, Grid, Select, Loader
+  Form, Grid, Input, Select, Loader
 } from 'semantic-ui-react';
 
 import IconPopup from 'components/admin/projects/ProjectEdit/IconPopup/IconPopup';
 
-class BasicForm extends Component {
+import './FileDataForm.scss';
+
+class FileDataForm extends Component {
   state = {
-    descPublic: '',
     language: {},
     quality: 'WEB',
-    subtitles: 'CLEAN',
-    title: ''
+    subtitles: 'CLEAN'
   }
 
   componentDidMount() {
-    // this.getProjectData();
-  }
+    const { file } = this.props.data;
 
-  getProjectData = () => {
-    const { unit } = this.props.data;
-
-    if ( unit ) {
-      const file = unit.files[0];
-
+    if ( file ) {
       this.setState( {
-        descPublic: unit.descPublic,
-        language: unit.language,
+        language: file.language,
         quality: file.quality,
         subtitles: file.videoBurnedInStatus,
-        title: unit.title,
         use: file.use.name
       } );
     }
   }
+
+  getProjectData = () => {}
 
   handleInput = e => {
     this.setState( {
@@ -55,7 +49,7 @@ class BasicForm extends Component {
     const { id } = this.props;
     const { name } = e.target;
 
-    this.props[`${name}UpdateVideoUnit`]( {
+    this.props[`${name}VideoUnitMutation`]( {
       variables: {
         id,
         [name]: this.state[name]
@@ -78,44 +72,73 @@ class BasicForm extends Component {
       </label>
     );
 
-    const {
-      data: { error, loading, file }
-    } = this.props;
+    // const {
+    //   data: { error, loading, file }
+    // } = this.props;
 
-    const {
-      language, quality, subtitles
-    } = this.state;
+    // const {
+    //   language, quality, subtitles
+    // } = this.state;
 
-    if ( error ) return `Error! ${error.message}`;
-    if ( !file || loading ) {
-      return (
-        <div style={ {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh'
-        } }
-        >
-          <Loader active inline="centered" style={ { marginBottom: '1em' } } />
-          <p>Loading the file data...</p>
-        </div>
-      );
-    }
+    // if ( error ) return `Error! ${error.message}`;
+    // if ( !file || loading ) {
+    //   return (
+    //     <div style={ {
+    //       display: 'flex',
+    //       flexDirection: 'column',
+    //       alignItems: 'center',
+    //       justifyContent: 'center',
+    //       height: '100vh'
+    //     } }
+    //     >
+    //       <Loader active inline="centered" style={ { marginBottom: '1em' } } />
+    //       <p>Loading the file data...</p>
+    //     </div>
+    //   );
+    // }
 
-    console.log( file );
+    // console.log( file );
+
+    const { language, quality, subtitles } = this.state;
 
     return (
-      <Form className="edit-video__form video-basic-data">
+      <Form className="edit-video__form video-file-form">
         <Grid stackable>
           <Grid.Row>
-            <Grid.Column mobile={ 16 } computer={ 8 }>
-              <section>
-                <p>{ file.filename }</p>
-                <p>{ `Filesize: ${file.filesize}` }</p>
-                <p>{ `Dimensions: ${file.dimensions.width} x ${file.dimensions.height}` }</p>
-                <p>{ `Duration: ${file.duration}` }</p>
-              </section>
+            <Grid.Column className="video-file-form-col-1" mobile={ 16 } computer={ 8 }>
+              <div className="modal_meta">
+                { /* <span className="modal_meta_content modal_meta_content--filetype">
+                  { file.filename }
+                </span>
+                <span className="modal_meta_content modal_meta_content--filesize">
+                  { `Filesize: ${file.filesize}` }
+                </span>
+                <span className="modal_meta_content modal_meta_content--dimensions">
+                  { `Dimensions: ${file.dimensions.width} x ${file.dimensions.height}` }
+                </span>
+                <span className="modal_meta_content modal_meta_content--duration">
+                  { `Duration: ${file.duration}` }
+                </span> */ }
+              </div>
+              <div className="video-links">
+                <Form.Field
+                  id="video-youtube"
+                  control={ Input }
+                  label="YouTube URL"
+                  autoFocus
+                  name="youtube"
+                  // value={ videoTitle }
+                  // onChange={ handleChange }
+                />
+
+                <Form.Field
+                  id="video-description"
+                  control={ Input }
+                  label="Vimeo URL"
+                  autoFocus
+                  name="vimeo"
+                />
+              </div>
             </Grid.Column>
 
             <Grid.Column mobile={ 16 } computer={ 8 }>
@@ -175,10 +198,6 @@ class BasicForm extends Component {
                     {
                       value: 'SUBTITLED',
                       text: 'Subtitles'
-                    },
-                    {
-                      value: 'CAPTIONED',
-                      text: 'Captions'
                     }
                   ]
                 }
@@ -186,9 +205,8 @@ class BasicForm extends Component {
                 value={ subtitles }
               />
 
-              <Form.Field
+              <Form.Select
                 id="video-type"
-                control={ Select }
                 label="Video Type"
                 options={
                   [
@@ -207,6 +225,7 @@ class BasicForm extends Component {
                   ]
                 }
                 required
+                selection="full"
                 value="full"
                 name="type"
               />
@@ -240,9 +259,10 @@ class BasicForm extends Component {
   }
 }
 
-BasicForm.propTypes = {
-  data: object,
-  id: string
+FileDataForm.propTypes = {
+  data: propTypes.object,
+  file: propTypes.object,
+  id: propTypes.string
 };
 
 const VIDEO_FILE_QUERY = gql`
@@ -272,8 +292,8 @@ const currentVideoFile = graphql( VIDEO_FILE_QUERY, {
   }
 } );
 
-const UPDATE_VIDEO_UNIT_DESC = gql`
-  mutation UPDATE_VIDEO_UNIT_DESC( $id: ID!, $descPublic: String ) {
+const VIDEO_UNIT_DESC_MUTATION = gql`
+  mutation VIDEO_UNIT_DESC_MUTATION( $id: ID!, $descPublic: String ) {
     updateVideoUnit(
       data: {
         descPublic: $descPublic
@@ -287,8 +307,8 @@ const UPDATE_VIDEO_UNIT_DESC = gql`
   }
 `;
 
-const UPDATE_VIDEO_UNIT_TITLE = gql`
-  mutation UPDATE_VIDEO_UNIT_TITLE( $id: ID!, $title: String ) {
+const VIDEO_UNIT_TITLE_MUTATION = gql`
+  mutation VIDEO_UNIT_TITLE_MUTATION( $id: ID!, $title: String ) {
     updateVideoUnit(
       data: {
         title: $title
@@ -303,7 +323,7 @@ const UPDATE_VIDEO_UNIT_TITLE = gql`
 `;
 
 export default compose(
-  graphql( UPDATE_VIDEO_UNIT_DESC, { name: 'descPublicUpdateVideoUnit' } ),
-  graphql( UPDATE_VIDEO_UNIT_TITLE, { name: 'titleUpdateVideoUnit' } ),
+  graphql( VIDEO_UNIT_DESC_MUTATION, { name: 'descPublicVideoUnitMutation' } ),
+  graphql( VIDEO_UNIT_TITLE_MUTATION, { name: 'titleVideoUnitMutation' } ),
   currentVideoFile
-)( BasicForm );
+)( FileDataForm );

@@ -1,0 +1,28 @@
+@import "styles/colors.scss";
+
+.edit-video-sidebar {
+  background-color: $light-grey;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 1rem;
+
+  &-image {
+    max-width: 100%;
+  }
+
+  &-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: .7rem;
+
+    &:not(:first-child) {
+      padding-top: .7rem;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $blue-green;
+    }
+  }
+}

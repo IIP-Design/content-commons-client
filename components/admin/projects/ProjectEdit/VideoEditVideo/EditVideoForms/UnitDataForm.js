@@ -22,7 +22,7 @@ const VIDEO_UNIT_QUERY = gql`
   } 
 `;
 
-class ProjectDataForm extends Component {
+class UnitDataForm extends Component {
   render() {
     const { id } = this.props;
 
@@ -52,7 +52,7 @@ class ProjectDataForm extends Component {
 
           return (
             <Form className="edit-video__form video-basic-data">
-              <Grid stackable className="middle aligned">
+              <Grid stackable className="aligned">
                 <Grid.Row>
                   <Grid.Column mobile={ 16 } computer={ 9 }>
                     <figure className="modal_thumbnail overlay">
@@ -76,7 +76,7 @@ class ProjectDataForm extends Component {
                     <Form.Field
                       control={ TextArea }
                       id="video-description"
-                      label="Public Description in Language (e.g. - YouTube)"
+                      label="Public Description in Language"
                       name="descPublic"
                       // onBlur={ this.updateUnit }
                       // onChange={ this.handleInput }
@@ -101,8 +101,8 @@ class ProjectDataForm extends Component {
   }
 }
 
-ProjectDataForm.propTypes = {
+UnitDataForm.propTypes = {
   id: string
 };
 
-export default ProjectDataForm;
+export default UnitDataForm;
