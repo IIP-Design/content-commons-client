@@ -153,6 +153,12 @@ h6.ui.header {
       background-color: $blue;
     }
   }
+
+  &.no-background {
+    border: none;
+    background: transparent;
+    color: $blue;
+  }
 }
 
 .ui.modal > .content {
