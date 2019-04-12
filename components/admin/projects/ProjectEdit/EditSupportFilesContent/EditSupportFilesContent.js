@@ -198,6 +198,7 @@ const SUPPORT_FILES_QUERY = props => (
   gql`
     query SupportFiles($id: ID!, $fileType: String!, $orderBy: SupportFileOrderByInput) {
       project: videoProject(id: $id) {
+        id
         files: supportFiles(
           where: { ${props.orderByField}: $fileType }
           orderBy: $orderBy
