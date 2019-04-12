@@ -6,6 +6,8 @@ import { graphql } from 'react-apollo';
 
 const DropdownSupportFileUse = props => {
   const { data, ...rest } = props;
+  if ( data.loading ) return 'Loading file use...';
+  if ( data.error ) return 'Loading error...';
   return <Dropdown { ...rest } options={ data.uses } selection />;
 };
 

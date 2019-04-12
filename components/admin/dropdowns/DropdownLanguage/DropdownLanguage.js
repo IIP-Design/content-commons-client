@@ -6,6 +6,8 @@ import { graphql } from 'react-apollo';
 
 const DropdownLanguage = props => {
   const { data, ...rest } = props;
+  if ( data.loading ) return 'Loading language...';
+  if ( data.error ) return 'Loading error...';
   return <Dropdown { ...rest } options={ data.languages } selection />;
 };
 
