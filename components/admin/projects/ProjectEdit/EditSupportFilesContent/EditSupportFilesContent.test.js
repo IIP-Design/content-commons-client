@@ -1,4 +1,4 @@
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import { MockedProvider } from 'react-apollo/test-utils';
@@ -182,7 +182,7 @@ describe( '<EditSupportFilesContent />', () => {
     wrapper.update();
 
     const editSupportFilesContent = wrapper.find( 'EditSupportFilesContent' );
-    const cancelCloseBtn = wrapper.find( 'Button.cancel-close' );
+    const cancelCloseBtn = editSupportFilesContent.find( 'Button.cancel-close' );
 
     cancelCloseBtn.simulate( 'click' );
 
