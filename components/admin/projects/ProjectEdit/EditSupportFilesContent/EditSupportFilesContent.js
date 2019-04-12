@@ -200,6 +200,10 @@ const SUPPORT_FILES_QUERY = props => (
           id
           filename
           filetype
+          use {
+            id
+            name
+          }
           language {
             id
             displayName

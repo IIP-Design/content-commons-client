@@ -5,43 +5,19 @@
  */
 import React, { Fragment } from 'react';
 import { array, func, object } from 'prop-types';
-import {
-  Button, Dropdown, Popup, Table
-} from 'semantic-ui-react';
+import { Button, Popup, Table } from 'semantic-ui-react';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
 import debounce from 'lodash/debounce';
 
 import Focusable from 'components/Focusable/Focusable';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import DropdownSupportFileUse from 'components/admin/dropdowns/DropdownSupportFileUse/DropdownSupportFileUse';
 import DropdownLanguage from 'components/admin/dropdowns/DropdownLanguage/DropdownLanguage';
 
 import { SUPPORT_FILES_QUERY } from 'components/admin/projects/ProjectEdit/EditSupportFilesContent/EditSupportFilesContent';
 
 import './EditSupportFileRow.scss';
-
-/**
- * @todo delete later after updating datamodel
- * for `SupportFile` `use` field
- */
-const imageUses = [
-  {
-    value: '1',
-    text: 'Thumbnail/Cover Image'
-  },
-  {
-    value: '2',
-    text: 'Social Media Graphic'
-  },
-  {
-    value: '3',
-    text: 'Email Graphic'
-  },
-  {
-    value: '4',
-    text: 'Website Hero Image'
-  }
-];
 
 /* eslint-disable react/prefer-stateless-function */
 class EditSupportFileRow extends React.PureComponent {
@@ -65,10 +41,14 @@ class EditSupportFileRow extends React.PureComponent {
   componentDidMount = () => {
     this._isMounted = true;
     window.addEventListener( 'resize', this.debounceResize );
-    this.setState( {
-      fileUse: '1'/* @todo replace w/ `this.props.file.use` later */,
-      fileLanguageId: this.props.file.language.id
-    } );
+
+    const { file: { use, language } } = this.props;
+    const newState = { fileLanguageId: language.id };
+    if ( use && use.id ) {
+      newState.fileUse = use.id;
+    }
+
+    this.setState( newState );
   }
 
   componentWillUnmount = () => {
@@ -134,22 +114,13 @@ class EditSupportFileRow extends React.PureComponent {
   );
 
   handleChange = ( e, { name, value } ) => {
-    /**
-     * @todo need to first add `use` field to `SupportFile`
-     * type in GraphQL datamodel & update type resolver
-     * for the use field.
-     */
-    const mockUpdateFileUse = args => (
-      console.log( 'updateFileUse', { ...args } )
-    );
-
-    const { file: { id }, updateLanguage /* updateFileUse */ } = this.props;
+    const { file: { id }, updateLanguage, updateFileUse } = this.props;
 
     let type = 'language';
     let updateFn = updateLanguage;
     if ( name === 'fileUse' ) {
       type = 'use';
-      updateFn = mockUpdateFileUse;
+      updateFn = updateFileUse;
     }
 
     this.setState(
@@ -252,11 +223,10 @@ class EditSupportFileRow extends React.PureComponent {
             </label>
           </VisuallyHidden>
 
-          <Dropdown
+          <DropdownSupportFileUse
             id={ `use-${id}` }
             name="fileUse"
             onChange={ this.handleChange }
-            options={ imageUses }
             value={ this.state.fileUse }
             fluid
             required
@@ -357,6 +327,7 @@ EditSupportFileRow.propTypes = {
   file: object.isRequired,
   fileExtensions: array,
   updateLanguage: func,
+  updateFileUse: func,
   deleteFile: func
 };
 
@@ -384,6 +355,19 @@ const UPDATE_SUPPORT_FILE_LANGUAGE_MUTATION = gql`
   }
 `;
 
+const UPDATE_SUPPORT_FILE_USE_MUTATION = gql`
+  mutation UpdateSupportFileLanguage($data: SupportFileUpdateInput!
+$where: SupportFileWhereUniqueInput!) {
+    updateSupportFile(data: $data, where: $where) {
+      id
+      use {
+        id
+        name
+      }
+    }
+  }
+`;
+
 const deleteFileMutation = graphql( DELETE_SUPPORT_FILE_MUTATION, {
   name: 'deleteFile',
   options: props => ( {
@@ -404,12 +388,18 @@ const updateFileLanguageMutation = graphql( UPDATE_SUPPORT_FILE_LANGUAGE_MUTATIO
   name: 'updateLanguage'
 } );
 
+const updateFileUseMutation = graphql( UPDATE_SUPPORT_FILE_USE_MUTATION, {
+  name: 'updateFileUse'
+} );
+
 export default compose(
   updateFileLanguageMutation,
+  updateFileUseMutation,
   deleteFileMutation
 )( EditSupportFileRow );
 
 export {
   DELETE_SUPPORT_FILE_MUTATION,
+  UPDATE_SUPPORT_FILE_USE_MUTATION,
   UPDATE_SUPPORT_FILE_LANGUAGE_MUTATION
 };
