@@ -1,0 +1,43 @@
+@import "styles/colors.scss";
+
+.videoProjectFilesDesktop {
+  &__wrapper {
+    display: none;
+    @media screen and (min-width: 768px) {
+      display: block;
+    }
+  }
+
+  &__steps {
+    text-align: center;
+    padding-bottom: 1em;
+
+    .ui.steps {
+      border: none;
+
+      .step {
+        background: transparent;
+        border: transparent;
+        color: $alt-grey;
+
+        &::after {
+          background: transparent;
+          width: 0.4em;
+          height: 0.4em;
+          border-color: $blue;
+          border-width: 0px 2px 2px 0px;
+        }
+
+        &.active .title {
+          color: $blue;
+        }
+      }
+    }
+  }
+
+  &__row-header {
+    padding-bottom: 0.5em !important;
+    border-bottom: 1px solid $light-grey;
+    color: $blue;
+  }
+}
