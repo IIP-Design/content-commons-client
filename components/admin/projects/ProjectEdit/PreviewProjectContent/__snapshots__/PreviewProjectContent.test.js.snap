@@ -33,10 +33,16 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                 "filename": "madeinamerica_english_asdkjaf_al;kdflkeori_erpoiuzx,mnvz.mp4",
                 "filesize": 662595174,
                 "id": "cjsw7urxd00oc0756llfh4ihs",
-                "stream": Object {
-                  "embedUrl": "https://www.youtube.com/embed/1evw4fRu3bo",
-                  "site": "YouTube",
-                },
+                "stream": Array [
+                  Object {
+                    "embedUrl": "https://www.youtube.com/embed/1evw4fRu3bo",
+                    "site": "YouTube",
+                  },
+                  Object {
+                    "embedUrl": "https://player.vimeo.com/video/827301171",
+                    "site": "Vimeo",
+                  },
+                ],
                 "url": "https://video-download-url.com",
                 "videoBurnedInStatus": "CLEAN",
               },
@@ -68,10 +74,16 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                 "filename": "madeinamerica_french.mp4",
                 "filesize": 662595174,
                 "id": "cjsxe6k6w01z7075657wt2ork",
-                "stream": Object {
-                  "embedUrl": "https://www.youtube.com/embed/1evw4fRu3bo",
-                  "site": "YouTube",
-                },
+                "stream": Array [
+                  Object {
+                    "embedUrl": "https://www.youtube.com/embed/1evw4fRu3bo",
+                    "site": "YouTube",
+                  },
+                  Object {
+                    "embedUrl": "https://player.vimeo.com/video/827301171",
+                    "site": "Vimeo",
+                  },
+                ],
                 "url": "https://video-download-url.com",
                 "videoBurnedInStatus": "CLEAN",
               },
@@ -319,10 +331,16 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                                 "filename": "madeinamerica_english_asdkjaf_al;kdflkeori_erpoiuzx,mnvz.mp4",
                                 "filesize": 662595174,
                                 "id": "cjsw7urxd00oc0756llfh4ihs",
-                                "stream": Object {
-                                  "embedUrl": "https://www.youtube.com/embed/1evw4fRu3bo",
-                                  "site": "YouTube",
-                                },
+                                "stream": Array [
+                                  Object {
+                                    "embedUrl": "https://www.youtube.com/embed/1evw4fRu3bo",
+                                    "site": "YouTube",
+                                  },
+                                  Object {
+                                    "embedUrl": "https://player.vimeo.com/video/827301171",
+                                    "site": "Vimeo",
+                                  },
+                                ],
                                 "url": "https://video-download-url.com",
                                 "videoBurnedInStatus": "CLEAN",
                               },
@@ -417,10 +435,16 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                                     "filename": "madeinamerica_english_asdkjaf_al;kdflkeori_erpoiuzx,mnvz.mp4",
                                     "filesize": 662595174,
                                     "id": "cjsw7urxd00oc0756llfh4ihs",
-                                    "stream": Object {
-                                      "embedUrl": "https://www.youtube.com/embed/1evw4fRu3bo",
-                                      "site": "YouTube",
-                                    },
+                                    "stream": Array [
+                                      Object {
+                                        "embedUrl": "https://www.youtube.com/embed/1evw4fRu3bo",
+                                        "site": "YouTube",
+                                      },
+                                      Object {
+                                        "embedUrl": "https://player.vimeo.com/video/827301171",
+                                        "site": "Vimeo",
+                                      },
+                                    ],
                                     "url": "https://video-download-url.com",
                                     "videoBurnedInStatus": "CLEAN",
                                   },

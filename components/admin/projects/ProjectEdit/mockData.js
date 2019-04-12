@@ -439,10 +439,18 @@ const units = [
           width: 1920,
           height: 1080
         },
-        stream: {
-          site: 'YouTube',
-          embedUrl: 'https://www.youtube.com/embed/1a1a1a'
-        }
+        stream: [
+          {
+            site: 'YouTube',
+            url: 'https://www.youtube.com/watch?1evw4fRu3bo',
+            embedUrl: 'https://www.youtube.com/embed/1evw4fRu3bo'
+          },
+          {
+            site: 'Vimeo',
+            url: 'https://vimeo.com/827301171',
+            embedUrl: 'https://player.vimeo.com/video/827301171'
+          }
+        ]
       }
     ]
   },
@@ -466,10 +474,18 @@ const units = [
           width: 1920,
           height: 1080
         },
-        stream: {
-          site: 'YouTube',
-          embedUrl: 'https://www.youtube.com/embed/1a1a1a'
-        }
+        stream: [
+          {
+            site: 'YouTube',
+            url: 'https://www.youtube.com/watch?1evw4fRu3bo',
+            embedUrl: 'https://www.youtube.com/embed/1evw4fRu3bo'
+          },
+          {
+            site: 'Vimeo',
+            url: 'https://vimeo.com/827301171',
+            embedUrl: 'https://player.vimeo.com/video/827301171'
+          }
+        ]
       }
     ]
   }
@@ -518,10 +534,18 @@ const videoProjectPreview = {
             width: 1920,
             height: 1080
           },
-          stream: {
-            site: 'YouTube',
-            embedUrl: 'https://www.youtube.com/embed/1evw4fRu3bo'
-          }
+          stream: [
+            {
+              site: 'YouTube',
+              url: 'https://www.youtube.com/watch?1evw4fRu3bo',
+              embedUrl: 'https://www.youtube.com/embed/1evw4fRu3bo'
+            },
+            {
+              site: 'Vimeo',
+              url: 'https://vimeo.com/827301171',
+              embedUrl: 'https://player.vimeo.com/video/827301171'
+            }
+          ]
         }
       ]
     },
@@ -553,10 +577,18 @@ const videoProjectPreview = {
             width: 1920,
             height: 1080
           },
-          stream: {
-            site: 'YouTube',
-            embedUrl: 'https://www.youtube.com/embed/1evw4fRu3bo'
-          }
+          stream: [
+            {
+              site: 'YouTube',
+              url: 'https://www.youtube.com/watch?1evw4fRu3bo',
+              embedUrl: 'https://www.youtube.com/embed/1evw4fRu3bo'
+            },
+            {
+              site: 'Vimeo',
+              url: 'https://vimeo.com/827301171',
+              embedUrl: 'https://player.vimeo.com/video/827301171'
+            }
+          ]
         }
       ]
     }

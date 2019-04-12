@@ -81,7 +81,6 @@ describe( '<PreviewProjectContent />', () => {
       .toEqual( 'Error! GraphQL error: There was an error.' );
   } );
 
-
   it( 'renders `null` if `!project`', async () => {
     const nullMocks = [
       {
@@ -200,7 +199,6 @@ describe( '<PreviewProjectContent />', () => {
     expect( spy ).toHaveBeenCalledTimes( 2 );
     expect( selectedLanguage() ).toEqual( 'English' );
   } );
-
 
   it( '`handleChange` calls `toggleArrow` and `selectLanguage`', async () => {
     const wrapper = mount( Component );
