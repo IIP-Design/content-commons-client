@@ -97,6 +97,7 @@ const VIDEO_PROJECT_PREVIEW_OTHER_FILES_QUERY = gql`
         filetype
         url
         language {
+          id
           displayName
         }
       }

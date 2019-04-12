@@ -89,6 +89,7 @@ const VIDEO_PROJECT_PREVIEW_SRTS_QUERY = gql`
         id
         url
         language {
+          id
           displayName
         }
       }

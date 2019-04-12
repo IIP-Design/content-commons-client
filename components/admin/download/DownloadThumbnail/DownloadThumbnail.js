@@ -90,6 +90,7 @@ const VIDEO_PROJECT_PREVIEW_THUMBNAILS_QUERY = gql`
         id
         url
         language {
+          id
           displayName
         }
       }
