@@ -1,316 +1,220 @@
 import { mount, shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
-import { projects } from 'components/admin/projects/ProjectEdit/mockData';
-import EditSupportFilesContent from './EditSupportFilesContent';
+import { MockedProvider } from 'react-apollo/test-utils';
+import { Icon, Loader } from 'semantic-ui-react';
+import EditSupportFilesContent, { SUPPORT_FILES_QUERY } from './EditSupportFilesContent';
 
 const props = {
-  data: projects[0].supportFiles.other,
+  projectId: '123',
   fileType: 'other',
-  closeEditModal: jest.fn()
+  closeEditModal: jest.fn(),
+  orderByField: 'filetype_not',
 };
 
-const Component = <EditSupportFilesContent { ...props } />;
+const mocks = [
+  {
+    request: {
+      query: SUPPORT_FILES_QUERY( props ),
+      variables: {
+        id: props.projectId,
+        fileType: 'srt',
+        orderBy: 'filename_ASC'
+      }
+    },
+    result: {
+      data: {
+        project: {
+          id: '123',
+          files: [
+            {
+              id: 'euosiq',
+              filename: 'file-1.jpg',
+              filetype: 'jpg',
+              use: {
+                id: 'th89',
+                name: 'Thumbnail/Cover Image'
+              },
+              language: { id: '8h8sof', displayName: 'English' }
+            },
+            {
+              id: 'aewk81',
+              filename: 'file-2.mp3',
+              filetype: 'mp3',
+              use: {
+                id: 'me92',
+                name: 'Memes'
+              },
+              language: { id: '9weijd', displayName: 'French' }
+            }
+          ]
+        }
+      }
+    }
+  }
+];
+
+const Component = (
+  <MockedProvider mocks={ mocks } addTypename={ false }>
+    <EditSupportFilesContent { ...props } />
+  </MockedProvider>
+);
 
 describe( '<EditSupportFilesContent />', () => {
-  it( 'renders without crashing', () => {
-    const wrapper = shallow( Component );
-    expect( wrapper.exists() ).toEqual( true );
-    expect( toJSON( wrapper ) ).toMatchSnapshot();
+  it( 'renders initial loading state without crashing', () => {
+    const wrapper = mount( Component );
+    const editSupportFilesContent = wrapper.find( 'EditSupportFilesContent' );
+    const loader = (
+      <Loader
+        active
+        inline="centered"
+        style={ { marginBottom: '1em' } }
+      />
+    );
+
+    expect( editSupportFilesContent.exists() ).toEqual( true );
+    expect( editSupportFilesContent.contains( loader ) ).toEqual( true );
+    expect( editSupportFilesContent.find( 'p' ).text() )
+      .toEqual( 'Loading support file(s)...' );
+    expect( toJSON( editSupportFilesContent ) ).toMatchSnapshot();
   } );
 
-  it( '`componentDidMount` sets `_isMounted`', () => {
-    const wrapper = shallow( Component );
-    wrapper.instance().componentDidMount();
-    expect( wrapper.instance()._isMounted ).toEqual( true );
-  } );
-
-  it( '`componentWillUnmount` sets `_isMounted` to false', () => {
-    const wrapper = shallow( Component );
-    wrapper.instance().componentWillUnmount();
-    expect( wrapper.instance()._isMounted ).toEqual( false );
-  } );
-
-  it( '`getFileExtension` returns a file\'s extension', () => {
-    const wrapper = shallow( Component );
-    const fileName = 'madeinamerica_arabic.srt';
-    const extension = wrapper.instance().getFileExtension( fileName );
-    expect( extension ).toEqual( '.srt' );
-  } );
-
-  it( '`getFileExtensions` returns an array of unique file extensions', () => {
-    const wrapper = shallow( Component );
-    const extensions = wrapper.instance().getFileExtensions( props.data );
-    expect( extensions ).toEqual( ['.jpg', '.mp3'] );
-  } );
-
-  it( '`haveAllLangsBeenPopulated` does not set `hasPopulatedLanguages` state if all languages have not been populated', () => {
-    const wrapper = shallow( Component );
-
-    expect( wrapper.state( 'selectedLangValues' ) ).toEqual( {} );
-
-    wrapper.setState( {
-      selectedLangValues: {
-        5682: 'Arabic',
-        5683: 'Chinese (Simplified)',
-        5684: 'English'
+  it( 'renders error message & icon if error is thrown', async () => {
+    const errorMocks = [
+      {
+        request: {
+          query: SUPPORT_FILES_QUERY( props ),
+          variables: {
+            id: props.projectId,
+            fileType: 'srt',
+            orderBy: 'filename_ASC'
+          }
+        },
+        result: {
+          errors: [{ message: 'There was an error.' }]
+        }
       }
-    } );
+    ];
 
-    wrapper.instance().haveAllLangsBeenPopulated();
-    expect( wrapper.state( 'selectedLangValues' ) )
-      .toEqual( {
-        5682: 'Arabic',
-        5683: 'Chinese (Simplified)',
-        5684: 'English'
-      } );
-    expect( wrapper.state( 'hasPopulatedLanguages' ) )
-      .toEqual( false );
-  } );
+    const wrapper = mount(
+      <MockedProvider mocks={ errorMocks }>
+        <EditSupportFilesContent { ...props } />
+      </MockedProvider>
+    );
+    // wait for the data and !loading
+    await wait( 0 );
+    wrapper.update();
 
-  it( '`haveAllLangsBeenPopulated` does set `hasPopulatedLanguages` state if all languages have been populated', () => {
-    const wrapper = shallow( Component );
+    const editSupportFilesContent = wrapper.find( 'EditSupportFilesContent' );
+    const div = editSupportFilesContent
+      .find( 'div.edit-support-files-content.error' );
+    const icon = <Icon color="red" name="exclamation triangle" />;
+    const span = <span>Loading error...</span>;
 
-    expect( wrapper.state( 'selectedLangValues' ) ).toEqual( {} );
-
-    wrapper.setState( {
-      selectedLangValues: {
-        5682: 'Arabic',
-        5683: 'Chinese (Simplified)',
-        5684: 'English',
-        5685: 'French',
-        5686: 'English'
-      }
-    } );
-
-    wrapper.instance().haveAllLangsBeenPopulated();
-    expect( wrapper.state( 'selectedLangValues' ) )
-      .toEqual( {
-        5682: 'Arabic',
-        5683: 'Chinese (Simplified)',
-        5684: 'English',
-        5685: 'French',
-        5686: 'English'
-      } );
-    expect( wrapper.state( 'hasPopulatedLanguages' ) )
+    expect( div.exists() ).toEqual( true );
+    expect( editSupportFilesContent.contains( icon ) )
+      .toEqual( true );
+    expect( editSupportFilesContent.contains( span ) )
       .toEqual( true );
   } );
 
-  it( '`handleChange` sets `selectedLangValues` and `hasUnsavedData` in state', () => {
-    const wrapper = shallow( Component );
-    const spy = jest.spyOn(
-      wrapper.instance(), 'haveAllLangsBeenPopulated'
+  it( 'renders `null` if project is `null`', async () => {
+    const nullMocks = [
+      {
+        request: {
+          query: SUPPORT_FILES_QUERY( props ),
+          variables: {
+            id: props.projectId,
+            fileType: 'srt',
+            orderBy: 'filename_ASC'
+          }
+        },
+        result: {
+          data: { project: null }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ nullMocks }>
+        <EditSupportFilesContent { ...props } />
+      </MockedProvider>
     );
-    const e = {};
-    const data = { id: '5682', value: 'Arabic' };
+    await wait( 0 );
+    wrapper.update();
 
-    expect( wrapper.state( 'hasUnsavedData' ) ).toEqual( false );
-    expect( wrapper.state( 'selectedLangValues' ) ).toEqual( {} );
+    const editSupportFilesContent = wrapper.find( 'EditSupportFilesContent' );
 
-    wrapper.instance().handleChange( e, data );
-
-    expect( wrapper.state( 'hasUnsavedData' ) ).toEqual( true );
-    expect( wrapper.state( 'selectedLangValues' ) )
-      .toEqual( { 5682: 'Arabic' } );
-    expect( spy ).toHaveBeenCalled();
+    expect( editSupportFilesContent.html() ).toEqual( null );
   } );
 
-  it( '`handleSubmit` sets `displaySaveMsg`, `hasSaved`, and `hasUnsavedData` in state', () => {
-    const wrapper = shallow( Component );
+  it( '`getFileExtension` returns a file\'s extension', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
 
-    wrapper.instance().handleSubmit();
+    const editSupportFilesContent = wrapper.find( 'EditSupportFilesContent' );
+    const inst = editSupportFilesContent.instance();
+    const { files } = inst.props.data.project;
 
-    expect( wrapper.state( 'displaySaveMsg' ) ).toEqual( true );
-    expect( wrapper.state( 'hasSaved' ) ).toEqual( true );
-    expect( wrapper.state( 'hasUnsavedData' ) ).toEqual( false );
-  } );
-
-  it( '`handleSubmit` calls `delayUnmount` and `handleDisplaySaveMsg` as callback', async () => {
-    const wrapper = shallow( Component );
-    const delayUnmountSpy = jest.spyOn( wrapper.instance(), 'delayUnmount' );
-    const handleDisplaySaveMsgSpy = jest.spyOn( wrapper.instance(), 'handleDisplaySaveMsg' );
-
-    wrapper.instance().handleSubmit();
-
-    expect( delayUnmountSpy ).toHaveBeenCalled();
-    await wait( wrapper.instance().SAVE_MSG_DELAY );
-    expect( handleDisplaySaveMsgSpy ).toHaveBeenCalled();
-    expect( wrapper.state( 'displaySaveMsg' ) ).toEqual( false );
-    expect( wrapper.instance().saveMsgTimer ).toEqual( null );
-  } );
-
-  it( '`delayUnmount` calls a function after a delay', async () => {
-    const wrapper = shallow( Component );
-    const fn = jest.fn();
-    const timer = () => wrapper.instance().saveMsgTimer;
-    const delay = wrapper.instance().SAVE_MSG_DELAY;
-
-    wrapper.instance().delayUnmount( fn, timer(), delay );
-    await wait( delay );
-    expect( fn ).toHaveBeenCalled();
-  } );
-
-  it( 'renders the `Notification` component and correct props if `displaySaveMsg` or `hasUnsavedData`', () => {
-    const wrapper = shallow( Component );
-    const notification = () => wrapper.find( 'Notification' );
-
-    expect( notification().exists() ).toEqual( false );
-
-    wrapper.setState( { displaySaveMsg: true, hasUnsavedData: false } );
-    expect( notification().exists() ).toEqual( true );
-    expect( notification().prop( 'el' ) ).toEqual( 'p' );
-    expect( notification().prop( 'msg' ) ).toEqual( 'Saved' );
-    expect( notification().prop( 'customStyles' ) )
-      .toEqual( {
-        position: 'absolute',
-        top: '0',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        borderBottomLeftRadius: '0.28571429rem',
-        borderBottomRightRadius: '0.28571429rem',
-        padding: '1em 1.5em',
-        fontSize: '1em'
-      } );
-
-    wrapper.setState( { displaySaveMsg: false, hasUnsavedData: false } );
-    expect( notification().exists() ).toEqual( false );
-
-    wrapper.setState( { displaySaveMsg: false, hasUnsavedData: true } );
-    expect( notification().exists() ).toEqual( true );
-    expect( notification().prop( 'el' ) ).toEqual( 'p' );
-    expect( notification().prop( 'msg' ) )
-      .toEqual( 'You have unsaved data' );
-    expect( notification().prop( 'customStyles' ) )
-      .toEqual( {
-        position: 'absolute',
-        top: '0',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        borderBottomLeftRadius: '0.28571429rem',
-        borderBottomRightRadius: '0.28571429rem',
-        padding: '1em 1.5em',
-        fontSize: '1em'
-      } );
-  } );
-
-  it( 'renders the Save button with correct message', () => {
-    const wrapper = shallow( Component );
-    const saveBtn = () => wrapper.find( 'Button.save' );
-
-    expect( saveBtn().prop( 'content' ) ).toEqual( 'Save' );
-    wrapper.setState( { hasSaved: true, hasUnsavedData: false } );
-    expect( saveBtn().prop( 'content' ) ).toEqual( 'Data Saved' );
-  } );
-
-  it( 'renders the Save button with correct disabled state', () => {
-    const wrapper = shallow( Component );
-    const saveBtn = () => wrapper.find( 'Button.save' );
-
-    expect( saveBtn().prop( 'disabled' ) ).toEqual( true );
-    wrapper.setState( {
-      hasSaved: true,
-      hasUnsavedData: false,
-      hasPopulatedLanguages: true
+    files.forEach( ( file, i ) => {
+      expect( inst.getFileExtension( file.filename ) )
+        .toEqual( `.${files[i].filetype}` );
     } );
-    expect( saveBtn().prop( 'disabled' ) ).toEqual( true );
-
-    wrapper.setState( {
-      hasSaved: false,
-      hasUnsavedData: true,
-      hasPopulatedLanguages: false
-    } );
-    expect( saveBtn().prop( 'disabled' ) ).toEqual( true );
-
-    wrapper.setState( {
-      hasSaved: false,
-      hasUnsavedData: true,
-      hasPopulatedLanguages: true
-    } );
-    expect( saveBtn().prop( 'disabled' ) ).toEqual( false );
-
-    wrapper.setState( {
-      hasSaved: true,
-      hasUnsavedData: false,
-      hasPopulatedLanguages: false
-    } );
-    expect( saveBtn().prop( 'disabled' ) ).toEqual( true );
-
-    wrapper.setState( {
-      hasSaved: true,
-      hasUnsavedData: true,
-      hasPopulatedLanguages: true
-    } );
-    expect( saveBtn().prop( 'disabled' ) ).toEqual( false );
-
-    wrapper.setState( {
-      hasSaved: false,
-      hasUnsavedData: false,
-      hasPopulatedLanguages: false
-    } );
-    expect( saveBtn().prop( 'disabled' ) ).toEqual( true );
   } );
 
-  it( 'clicking the Save button calls the `handleSubmit`', () => {
-    const wrapper = shallow( Component );
-    const saveBtn = () => wrapper.find( 'Button.save' );
-    const spy = jest.spyOn( wrapper.instance(), 'handleSubmit' );
+  it( '`getFileExtensions` returns an array of unique file extensions', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
 
-    wrapper.setState( {
-      hasSaved: false,
-      hasUnsavedData: true,
-      hasPopulatedLanguages: true
-    } );
-    expect( saveBtn().prop( 'disabled' ) ).toEqual( false );
+    const editSupportFilesContent = wrapper.find( 'EditSupportFilesContent' );
+    const inst = editSupportFilesContent.instance();
+    const { files } = inst.props.data.project;
+    const extensions = inst.getFileExtensions( files );
 
-    saveBtn().simulate( 'click' );
-    expect( spy ).toHaveBeenCalled();
+    expect( extensions ).toEqual( ['.jpg', '.mp3'] );
   } );
 
-  it( 'renders the Cancel button with the correct content', () => {
-    const wrapper = shallow( Component );
-    const cancelCloseBtn = () => wrapper.find( 'Button.cancel-close' );
+  it( 'clicking the Cancel button calls `closeEditModal`', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
 
-    wrapper.setState( { hasSaved: true } );
-    expect( cancelCloseBtn().prop( 'content' ) ).toEqual( 'Close' );
-
-    wrapper.setState( { hasSaved: false } );
-    expect( cancelCloseBtn().prop( 'content' ) ).toEqual( 'Cancel' );
-  } );
-
-  it( '`handleCancelClose` calls `closeEditModal`', () => {
-    const wrapper = shallow( Component );
-    wrapper.instance().handleCancelClose();
-    expect( props.closeEditModal ).toHaveBeenCalled();
-  } );
-
-  it( 'clicking the Cancel button calls `handleCancelClose`', () => {
-    const wrapper = shallow( Component );
+    const editSupportFilesContent = wrapper.find( 'EditSupportFilesContent' );
     const cancelCloseBtn = wrapper.find( 'Button.cancel-close' );
-    // const spy = jest.spyOn( wrapper.instance(), 'handleCancelClose' );
 
     cancelCloseBtn.simulate( 'click' );
-    /**
-     * @todo Need to figure out why this spy assertion fails
-     * even though if its return fn, props.closeEditModal, is called.
-     * This would be evidence that the spy was called.
-     */
-    // expect( spy ).toHaveBeenCalled();
+
     expect( props.closeEditModal ).toHaveBeenCalled();
   } );
 
-  it( 'renders `addFilesInputRef`', () => {
+  it( 'assigns `addFilesInputRef` to the file `input` element', async () => {
     const wrapper = mount( Component );
-    const input = wrapper.find( 'input#upload-file--multiple' );
+    await wait( 0 );
+    wrapper.update();
+
+    const editSupportFilesContent = wrapper.find( 'EditSupportFilesContent' );
+    const inst = editSupportFilesContent.instance();
+    const input = editSupportFilesContent.find( 'input#upload-file--multiple' );
+
     expect( input.exists() ).toEqual( true );
-    expect( wrapper.instance().addFilesInputRef ).toBeTruthy();
+    expect( inst.addFilesInputRef ).toBeTruthy();
   } );
 
-  it( '`null` or `[]` `data` does not crash the component', () => {
-    const wrapper = shallow( Component );
+  it( 'clicking Add Files button calls `handleAddFiles`', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
 
-    wrapper.setProps( { data: null } );
-    expect( wrapper.html() ).toEqual( null );
-    wrapper.setProps( { data: [] } );
-    expect( wrapper.html() ).toEqual( null );
+    const editSupportFilesContent = wrapper.find( 'EditSupportFilesContent' );
+    const addFilesBtn = wrapper.find( 'Button.add-files' );
+    const inst = editSupportFilesContent.instance();
+    const spy = jest.spyOn( inst, 'handleAddFiles' );
+
+    inst.forceUpdate();
+    addFilesBtn.simulate( 'click' );
+
+    expect( spy ).toHaveBeenCalled();
   } );
 } );

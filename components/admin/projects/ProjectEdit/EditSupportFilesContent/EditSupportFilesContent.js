@@ -8,7 +8,7 @@ import { func, object, string } from 'prop-types';
 import gql from 'graphql-tag';
 import orderBy from 'lodash/orderBy';
 import {
-  Button, Form, Loader, Table
+  Button, Form, Icon, Loader, Table
 } from 'semantic-ui-react';
 
 import ModalItem from 'components/modals/ModalItem/ModalItem';
@@ -34,13 +34,7 @@ class EditSupportFilesContent extends React.PureComponent {
     return uniqueExtensions;
   }
 
-  handleCancelClose = () => {
-    console.log( 'cancel' );
-    this.props.closeEditModal();
-  }
-
   handleAddFiles = () => {
-    console.log( 'add files' );
     this.addFilesInputRef.click();
   }
 
@@ -67,17 +61,13 @@ class EditSupportFilesContent extends React.PureComponent {
   }
 
   render() {
-    if ( !this.props.data.project ) return null;
-
     const {
       fileType,
-      data,
-      data: { project: { files } }
+      closeEditModal,
+      data: { error, loading, project }
     } = this.props;
 
-    const isSrt = fileType === 'srt';
-
-    if ( data.loading ) {
+    if ( loading ) {
       return (
         <div
           className="edit-support-files-loader"
@@ -99,11 +89,26 @@ class EditSupportFilesContent extends React.PureComponent {
       );
     }
 
-    if ( data.error ) return `Error! ${data.error.message}`;
+    if ( error ) {
+      return (
+        <div className="edit-support-files-content error">
+          <p>
+            <Icon color="red" name="exclamation triangle" />
+            <span>Loading error...</span>
+          </p>
+        </div>
+      );
+    }
+
+    if ( !project ) return null;
+
+    const { files } = project;
 
     if ( !files || !files.length ) return null;
 
     const sortedFiles = orderBy( files, ['filetype'] );
+
+    const isSrt = fileType === 'srt';
 
     const headline = isSrt
       ? fileType.toUpperCase()
@@ -150,7 +155,7 @@ class EditSupportFilesContent extends React.PureComponent {
               content="Cancel"
               basic
               size="tiny"
-              onClick={ this.handleCancelClose }
+              onClick={ closeEditModal }
               type="button"
             />
             <Button
