@@ -1,0 +1,39 @@
+.ui.modal.cancel-upload-modal {
+  max-width: 478px;
+  padding-top: 2em;
+  padding-bottom: 2em;
+  border-radius: 0;
+
+  .content,
+  .actions {
+    text-align: center;
+  }
+
+  .content {
+    > p {
+      font-size: 18px;
+    }
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    border: none;
+    background: #fff;
+    @media screen and (max-width: 467px) {
+      flex-direction: column;
+    }
+
+    > button {
+      margin: 0;
+
+      &:first-child {
+        margin-right: 1em;
+        @media screen and (max-width: 467px) {
+          margin-right: 0;
+          margin-bottom: 1em;
+        }
+      }
+    }
+  }
+}

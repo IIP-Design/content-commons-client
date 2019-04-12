@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'semantic-ui-react';
+import './CancelUpload.scss';
 
 const CancelUpload = props => {
   const [modalOpen, setModalOpen] = useState( false );
 
   return (
     <Modal
-      className="cancelModal"
+      className="cancel-upload-modal"
       open={ modalOpen }
       trigger={ (
         <Button
@@ -28,7 +29,7 @@ const CancelUpload = props => {
           onClick={ () => setModalOpen( false ) }
         />
         <Button
-          className="upload_button upload_button--cancelGoBack"
+          className="primary"
           content="Yes, cancel upload"
           onClick={ props.closeModal }
         />
