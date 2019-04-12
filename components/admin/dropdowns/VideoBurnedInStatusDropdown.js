@@ -17,61 +17,56 @@ const VIDEO_BURNED_IN_STATUS_QUERY = gql`
  `;
 
 
-const VideoBurnedInStatusDropdown = props => {
-  const handleChange = ( e, data ) => {
-    props.onChange( e, data, 'videoBurnedinStatus' );
-  };
+const VideoBurnedInStatusDropdown = props => (
+  <Query query={ VIDEO_BURNED_IN_STATUS_QUERY }>
+    { ( { data, loading, error } ) => {
+      if ( error ) return `Error! ${error.message}`;
 
-  return (
-    <Query query={ VIDEO_BURNED_IN_STATUS_QUERY }>
-      { ( { data, loading, error } ) => {
-        if ( error ) return `Error! ${error.message}`;
+      let options = [];
 
-        let options = [];
+      if ( data && data.__type && data.__type.enumValues ) {
+        options = data.__type.enumValues
+          .filter( enumValue => enumValue.name !== 'CAPTIONED' ) // currently not using CAPTIONED
+          .map( enumValue => {
+            let text = titleCase( enumValue.name );
+            text = ( text === 'Clean' ) ? `${text} - No captions` : text;
 
-        if ( data && data.__type && data.__type.enumValues ) {
-          options = data.__type.enumValues
-            .filter( enumValue => enumValue.name !== 'CAPTIONED' ) // currently not using CAPTIONED
-            .map( enumValue => {
-              let text = titleCase( enumValue.name );
-              text = ( text === 'Clean' ) ? `${text} - No captions` : text;
+            return {
+              key: enumValue.name,
+              text,
+              value: enumValue.name
+            };
+          } );
+      }
 
-              return {
-                key: enumValue.name,
-                text,
-                value: enumValue.name
-              };
-            } );
-        }
+      return (
+        <Fragment>
+          { /* eslint-disable jsx-a11y/label-has-for */ }
+          <VisuallyHidden>
+            <label htmlFor={ props.id }>
+              { `${props.forFn} subtitle` }
+            </label>
+          </VisuallyHidden>
 
-        return (
-          <Fragment>
-            { /* eslint-disable jsx-a11y/label-has-for */ }
-            <VisuallyHidden>
-              <label htmlFor={ props.id }>
-                { `${props.forFn} subtitle` }
-              </label>
-            </VisuallyHidden>
-
-            <Dropdown
-              id={ props.id }
-              onChange={ handleChange }
-              options={ options }
-              placeholder="–"
-              value={ props.selected }
+          <Dropdown
+            id={ props.id }
+            name="videoBurnedInStatus"
+            onChange={ props.onChange }
+            options={ options }
+            placeholder="–"
+            value={ props.selected }
               // error={ !selectedLanguage }
-              fluid
-              required={ props.required }
-              selection
-              loading={ loading }
-            />
-          </Fragment>
-        );
-      } }
-    </Query>
+            fluid
+            required={ props.required }
+            selection
+            loading={ loading }
+          />
+        </Fragment>
+      );
+    } }
+  </Query>
 
-  );
-};
+);
 
 VideoBurnedInStatusDropdown.propTypes = {
   id: PropTypes.string,

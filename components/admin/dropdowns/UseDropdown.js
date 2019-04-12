@@ -23,54 +23,49 @@ const IMAGE_USE_QUERY = gql`
   }
 `;
 
-const UseDropdown = props => {
-  const handleChange = ( e, data ) => {
-    props.onChange( e, data, 'use' );
-  };
+const UseDropdown = props => (
+  <Query query={ props.type === 'video' ? VIDEO_USE_QUERY : IMAGE_USE_QUERY }>
+    { ( { data, loading, error } ) => {
+      if ( error ) return `Error! ${error.message}`;
 
-  return (
-    <Query query={ props.type === 'video' ? VIDEO_USE_QUERY : IMAGE_USE_QUERY }>
-      { ( { data, loading, error } ) => {
-        if ( error ) return `Error! ${error.message}`;
+      let options = [];
 
-        let options = [];
-
-        if ( data ) {
-          const { videoUses, imageUses } = data;
-          const uses = videoUses || imageUses;
-          if ( uses ) { // checks for uses in the event we have neither video or image
-            options = uses.map( u => ( { key: u.id, text: u.name, value: u.name } ) );
-          }
+      if ( data ) {
+        const { videoUses, imageUses } = data;
+        const uses = videoUses || imageUses;
+        if ( uses ) { // checks for uses in the event we have neither video or image
+          options = uses.map( u => ( { key: u.id, text: u.name, value: u.id } ) );
         }
+      }
 
-        return (
-          <Fragment>
-            { /* eslint-disable jsx-a11y/label-has-for */ }
-            <VisuallyHidden>
-              <label htmlFor={ props.id }>
-                { `${props.forFn} use` }
-              </label>
-            </VisuallyHidden>
+      return (
+        <Fragment>
+          { /* eslint-disable jsx-a11y/label-has-for */ }
+          <VisuallyHidden>
+            <label htmlFor={ props.id }>
+              { `${props.forFn} use` }
+            </label>
+          </VisuallyHidden>
 
-            <Dropdown
-              id={ props.id }
-              onChange={ handleChange }
-              options={ options }
-              placeholder="–"
-              value={ props.selected }
+          <Dropdown
+            id={ props.id }
+            name="use"
+            onChange={ props.onChange }
+            options={ options }
+            placeholder="–"
+            value={ props.selected }
               // error={ !selectedLanguage }
-              fluid
-              required={ props.required }
-              selection
-              loading={ loading }
-            />
-          </Fragment>
-        );
-      } }
-    </Query>
+            fluid
+            required={ props.required }
+            selection
+            loading={ loading }
+          />
+        </Fragment>
+      );
+    } }
+  </Query>
 
-  );
-};
+);
 
 UseDropdown.propTypes = {
   id: PropTypes.string,

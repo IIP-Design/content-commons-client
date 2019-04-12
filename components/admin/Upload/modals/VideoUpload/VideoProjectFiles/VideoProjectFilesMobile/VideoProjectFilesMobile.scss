@@ -1,0 +1,14 @@
+@import "styles/colors.scss";
+
+.videoProjectFilesMobile {
+  &__wrapper {
+    display: block;
+    @media screen and (min-width: 768px) {
+      display: none;
+    }
+
+    .secondary {
+      margin-top: 1em;
+    }
+  }
+}
