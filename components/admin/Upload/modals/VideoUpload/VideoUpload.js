@@ -51,7 +51,9 @@ const VideoUpload = props => {
     if ( type.includes( 'video' ) ) {
       if ( !videoUseDefaultId ) {
         const videoUseDefault = videoUses.find( use => use.name === 'Full Video' );
-        videoUseDefaultId = videoUseDefault.id;
+        if ( videoUseDefault ) {
+          videoUseDefaultId = videoUseDefault.id;
+        }
       }
       return videoUseDefaultId;
     }
@@ -59,7 +61,9 @@ const VideoUpload = props => {
     if ( type.includes( 'image' ) ) {
       if ( !imageUseDefaultId ) {
         const imageUseDefault = imageUses.find( use => use.name === 'Thumbnail/Cover Image' );
-        imageUseDefaultId = imageUseDefault.id;
+        if ( imageUseDefault ) {
+          imageUseDefaultId = imageUseDefault.id;
+        }
       }
       return imageUseDefaultId;
     }
