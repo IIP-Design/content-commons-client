@@ -13,7 +13,7 @@ exports[`<ProjectDataForm /> renders without crashing 1`] = `
       <GridColumn
         width="16"
       >
-        <h2
+        <h3
           className="heading"
         >
           <span
@@ -27,7 +27,7 @@ exports[`<ProjectDataForm /> renders without crashing 1`] = `
           >
             Required Fields *
           </small>
-        </h2>
+        </h3>
       </GridColumn>
     </GridRow>
     <GridRow>
@@ -63,8 +63,8 @@ exports[`<ProjectDataForm /> renders without crashing 1`] = `
                   "value": "PUBLIC",
                 },
                 Object {
-                  "text": "Embargoed",
-                  "value": "embargoed",
+                  "text": "need text for this",
+                  "value": "INTERNAL",
                 },
               ]
             }
@@ -261,11 +261,13 @@ exports[`<ProjectDataForm /> renders without crashing 1`] = `
               htmlFor="terms-conditions"
             >
               By uploading these files I agree to the Content Commons 
-              <a
-                href="https://?????"
+              <Link
+                href="/about"
               >
-                Terms of Use
-              </a>
+                <a>
+                  Terms of Use
+                </a>
+              </Link>
                and licensing agreements. I understand that my content will be available to the public for general use.
             </label>
           }
