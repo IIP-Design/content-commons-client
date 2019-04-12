@@ -1,0 +1,178 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DropdownLanguage /> renders the dropdown with correct languages 1`] = `
+<DropdownLanguage
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "languages": Array [
+        Object {
+          "text": "English",
+          "value": "eng13",
+        },
+        Object {
+          "text": "French",
+          "value": "fr143",
+        },
+      ],
+      "loading": false,
+      "networkStatus": 7,
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "orderBy": "displayName_ASC",
+      },
+    }
+  }
+  fluid={true}
+  id="m123"
+  name="fileLanguageId"
+  onChange={[MockFunction]}
+  required={true}
+  value="eng13"
+>
+  <Dropdown
+    additionLabel="Add "
+    additionPosition="top"
+    closeOnBlur={true}
+    deburr={false}
+    fluid={true}
+    icon="dropdown"
+    id="m123"
+    minCharacters={1}
+    name="fileLanguageId"
+    noResultsMessage="No results found."
+    onChange={[MockFunction]}
+    openOnFocus={true}
+    options={
+      Array [
+        Object {
+          "text": "English",
+          "value": "eng13",
+        },
+        Object {
+          "text": "French",
+          "value": "fr143",
+        },
+      ]
+    }
+    renderLabel={[Function]}
+    required={true}
+    searchInput="text"
+    selectOnBlur={true}
+    selectOnNavigation={true}
+    selection={true}
+    value="eng13"
+    wrapSelection={true}
+  >
+    <div
+      aria-expanded={false}
+      className="ui fluid selection dropdown"
+      id="m123"
+      name="fileLanguageId"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onMouseDown={[Function]}
+      required={true}
+      role="listbox"
+      tabIndex={0}
+    >
+      <div
+        aria-live="polite"
+        className="text"
+        role="alert"
+      >
+        English
+      </div>
+      <Icon
+        as="i"
+        className=""
+        name="dropdown"
+        onClick={[Function]}
+      >
+        <i
+          aria-hidden="true"
+          className="dropdown icon"
+          onClick={[Function]}
+        />
+      </Icon>
+      <DropdownMenu>
+        <div
+          className="menu transition"
+        >
+          <DropdownItem
+            active={true}
+            key="eng13"
+            onClick={[Function]}
+            selected={true}
+            style={
+              Object {
+                "pointerEvents": "all",
+              }
+            }
+            text="English"
+            value="eng13"
+          >
+            <div
+              aria-checked={true}
+              aria-selected={true}
+              className="active selected item"
+              onClick={[Function]}
+              role="option"
+              style={
+                Object {
+                  "pointerEvents": "all",
+                }
+              }
+            >
+              <span
+                className="text"
+              >
+                English
+              </span>
+            </div>
+          </DropdownItem>
+          <DropdownItem
+            active={false}
+            key="fr143"
+            onClick={[Function]}
+            selected={false}
+            style={
+              Object {
+                "pointerEvents": "all",
+              }
+            }
+            text="French"
+            value="fr143"
+          >
+            <div
+              aria-checked={false}
+              aria-selected={false}
+              className="item"
+              onClick={[Function]}
+              role="option"
+              style={
+                Object {
+                  "pointerEvents": "all",
+                }
+              }
+            >
+              <span
+                className="text"
+              >
+                French
+              </span>
+            </div>
+          </DropdownItem>
+        </div>
+      </DropdownMenu>
+    </div>
+  </Dropdown>
+</DropdownLanguage>
+`;
