@@ -6,7 +6,7 @@ import { graphql } from 'react-apollo';
 
 const DropdownLanguage = props => {
   const { data, ...rest } = props;
-  return <Dropdown { ...rest } options={ data.languages } />;
+  return <Dropdown { ...rest } options={ data.languages } selection />;
 };
 
 DropdownLanguage.propTypes = {
@@ -16,9 +16,7 @@ DropdownLanguage.propTypes = {
   value: PropTypes.string,
   data: PropTypes.object,
   fluid: PropTypes.bool,
-  required: PropTypes.bool,
-  selection: PropTypes.bool,
-  options: PropTypes.array
+  required: PropTypes.bool
 };
 
 const LANGUAGES_QUERY = gql`

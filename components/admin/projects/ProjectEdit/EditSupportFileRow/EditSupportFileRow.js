@@ -230,7 +230,6 @@ class EditSupportFileRow extends React.PureComponent {
             value={ this.state.fileUse }
             fluid
             required
-            selection
           />
         </Fragment>
       );
@@ -310,7 +309,6 @@ class EditSupportFileRow extends React.PureComponent {
             value={ fileLanguageId }
             fluid
             required
-            selection
           />
         </Table.Cell>
 

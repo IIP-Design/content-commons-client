@@ -6,7 +6,7 @@ import { graphql } from 'react-apollo';
 
 const DropdownSupportFileUse = props => {
   const { data, ...rest } = props;
-  return <Dropdown { ...rest } options={ data.uses } />;
+  return <Dropdown { ...rest } options={ data.uses } selection />;
 };
 
 DropdownSupportFileUse.propTypes = {
@@ -16,9 +16,7 @@ DropdownSupportFileUse.propTypes = {
   value: PropTypes.string,
   data: PropTypes.object,
   fluid: PropTypes.bool,
-  required: PropTypes.bool,
-  selection: PropTypes.bool,
-  options: PropTypes.array
+  required: PropTypes.bool
 };
 
 const SUPPORT_FILE_USES_QUERY = gql`
