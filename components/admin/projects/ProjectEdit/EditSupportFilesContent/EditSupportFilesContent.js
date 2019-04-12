@@ -6,7 +6,6 @@
 import React from 'react';
 import { func, object, string } from 'prop-types';
 import gql from 'graphql-tag';
-import { compose, graphql } from 'react-apollo';
 import orderBy from 'lodash/orderBy';
 import {
   Button, Form, Loader, Table
@@ -53,8 +52,7 @@ class EditSupportFilesContent extends React.PureComponent {
     const {
       orderByField,
       projectId,
-      LanguagesQuery: { languages },
-      SupportFilesQuery: { project: { files } }
+      data: { project: { files } }
     } = this.props;
 
     return (
@@ -63,27 +61,23 @@ class EditSupportFilesContent extends React.PureComponent {
         file={ file }
         orderByField={ orderByField }
         projectId={ projectId }
-        languages={ languages }
         fileExtensions={ this.getFileExtensions( files ) }
       />
     );
   }
 
   render() {
-    if ( !this.props.LanguagesQuery.languages || !this.props.SupportFilesQuery.project ) {
-      return null;
-    }
+    if ( !this.props.data.project ) return null;
 
     const {
       fileType,
-      LanguagesQuery,
-      SupportFilesQuery,
-      SupportFilesQuery: { project: { files } }
+      data,
+      data: { project: { files } }
     } = this.props;
 
     const isSrt = fileType === 'srt';
 
-    if ( LanguagesQuery.loading || SupportFilesQuery.loading ) {
+    if ( data.loading ) {
       return (
         <div
           className="edit-support-files-loader"
@@ -105,8 +99,7 @@ class EditSupportFilesContent extends React.PureComponent {
       );
     }
 
-    if ( LanguagesQuery.error ) return `Error! ${LanguagesQuery.error.message}`;
-    if ( SupportFilesQuery.error ) return `Error! ${SupportFilesQuery.error.message}`;
+    if ( data.error ) return `Error! ${data.error.message}`;
 
     if ( !files || !files.length ) return null;
 
@@ -189,22 +182,12 @@ class EditSupportFilesContent extends React.PureComponent {
 }
 
 EditSupportFilesContent.propTypes = {
-  LanguagesQuery: object.isRequired,
-  SupportFilesQuery: object.isRequired,
+  data: object.isRequired,
   projectId: string.isRequired,
   fileType: string,
   orderByField: string,
   closeEditModal: func
 };
-
-const LANGUAGES_QUERY = gql`
-  query Languages($orderBy: LanguageOrderByInput) {
-    languages(orderBy: $orderBy) {
-      value: id
-      text: displayName
-    }
-  }
-`;
 
 const SUPPORT_FILES_QUERY = props => (
   gql`
@@ -227,15 +210,7 @@ const SUPPORT_FILES_QUERY = props => (
   `
 );
 
-const languagesQuery = graphql( LANGUAGES_QUERY, {
-  name: 'LanguagesQuery',
-  options: {
-    variables: { orderBy: 'displayName_ASC' }
-  }
-} );
-
-const supportFilesQuery = graphqlDynamicHOC( SUPPORT_FILES_QUERY, {
-  name: 'SupportFilesQuery',
+export default graphqlDynamicHOC( SUPPORT_FILES_QUERY, {
   options: props => ( {
     variables: {
       id: props.projectId,
@@ -243,11 +218,6 @@ const supportFilesQuery = graphqlDynamicHOC( SUPPORT_FILES_QUERY, {
       orderBy: 'filename_ASC'
     }
   } )
-} );
+} )( EditSupportFilesContent );
 
-export default compose(
-  languagesQuery,
-  supportFilesQuery
-)( EditSupportFilesContent );
-
-export { LANGUAGES_QUERY, SUPPORT_FILES_QUERY };
+export { SUPPORT_FILES_QUERY };

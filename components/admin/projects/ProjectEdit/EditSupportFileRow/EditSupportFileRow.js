@@ -4,9 +4,7 @@
  *
  */
 import React, { Fragment } from 'react';
-import {
-  array, func, object, string
-} from 'prop-types';
+import { array, func, object } from 'prop-types';
 import {
   Button, Dropdown, Popup, Table
 } from 'semantic-ui-react';
@@ -16,6 +14,7 @@ import debounce from 'lodash/debounce';
 
 import Focusable from 'components/Focusable/Focusable';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import DropdownLanguage from 'components/admin/dropdowns/DropdownLanguage/DropdownLanguage';
 
 import { SUPPORT_FILES_QUERY } from 'components/admin/projects/ProjectEdit/EditSupportFilesContent/EditSupportFilesContent';
 
@@ -334,11 +333,10 @@ class EditSupportFileRow extends React.PureComponent {
             </label>
           </VisuallyHidden>
 
-          <Dropdown
+          <DropdownLanguage
             id={ `file-${id}` }
             name="fileLanguageId"
             onChange={ this.handleChange }
-            options={ this.props.languages }
             value={ fileLanguageId }
             fluid
             required
@@ -358,7 +356,6 @@ class EditSupportFileRow extends React.PureComponent {
 EditSupportFileRow.propTypes = {
   file: object.isRequired,
   fileExtensions: array,
-  languages: array.isRequired,
   updateLanguage: func,
   deleteFile: func
 };
