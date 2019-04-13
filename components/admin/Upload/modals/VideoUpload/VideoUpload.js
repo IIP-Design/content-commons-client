@@ -1,29 +1,184 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Tab
-} from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import * as actions from 'lib/redux/actions/fileUpload';
+import { withRouter } from 'next/router';
+import { compose, graphql } from 'react-apollo';
+import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown';
+import { Tab } from 'semantic-ui-react';
+import { v4 } from 'uuid';
 import VideoProjectType from './VideoProjectType/VideoProjectType';
 import VideoProjectFiles from './VideoProjectFiles/VideoProjectFiles';
 import './VideoUpload.scss';
 
-class VideoUpload extends Component {
-  state = {
-    activeIndex: 0,
-    videoAssets: null,
-    fileNames: []
-  }
+export const VideoUploadContext = React.createContext();
 
-  panes = [
+const VideoUpload = props => {
+  const [activeIndex, setActiveIndex] = useState( 0 );
+  const [files, setFiles] = useState( [] );
+  const [allFieldsSelected, setAllFieldsSelected] = useState( false );
+
+  // Store GraphQL id for each use default
+  // i.e. default use for video is 'Full Video'
+  // id, not name used for mutation
+  let videoUseDefaultId = '';
+  let imageUseDefaultId = '';
+
+  useEffect( () => {
+    // Check to see if all required dropdowns are completed
+    // when the the files state changes. All fields do not need
+    // to be checked as some are pre-populated on initialization or
+    // not applicable.  Submit button (Next) becomes active when all
+    // complete
+    const complete = files.every( file => {
+      const { fileInput: { type } } = file;
+      if ( type.includes( 'video' ) ) {
+        return ( file.language && file.videoBurnedInStatus && file.quality );
+      }
+      return ( file.language );
+    } );
+
+    setAllFieldsSelected( complete );
+  }, [files] );
+
+  /**
+   * Pre-populate applicable default.  Default id is pulled from the respective use query
+   * @param {string} type filetype
+   */
+  const getUse = type => {
+    const { videoUseData: { videoUses }, imageUseData: { imageUses } } = props;
+
+    if ( type.includes( 'video' ) ) {
+      if ( !videoUseDefaultId ) {
+        const videoUseDefault = videoUses.find( use => use.name === 'Full Video' );
+        if ( videoUseDefault ) {
+          videoUseDefaultId = videoUseDefault.id;
+        }
+      }
+      return videoUseDefaultId;
+    }
+
+    if ( type.includes( 'image' ) ) {
+      if ( !imageUseDefaultId ) {
+        const imageUseDefault = imageUses.find( use => use.name === 'Thumbnail/Cover Image' );
+        if ( imageUseDefault ) {
+          imageUseDefaultId = imageUseDefault.id;
+        }
+      }
+      return imageUseDefaultId;
+    }
+
+    return '';
+  };
+
+  const goNext = () => {
+    setActiveIndex( 1 );
+  };
+
+  /**
+   * Add files to files state array.  For each file selected,
+   * create/init a file object with applicable props & add.
+   * Generate a file id to track changes to file
+   * @param {array-like} filesFromInputSelection selected files from file selection dialogue
+   */
+  const addAssetFiles = filesFromInputSelection => {
+    const fileList = Array.from( filesFromInputSelection );
+
+    const filesToAdd = fileList.map( file => ( {
+      language: '',
+      use: getUse( file.type ),
+      quality: '',
+      videoBurnedInStatus: '',
+      fileInput: file,
+      id: v4()
+    } ) );
+    setFiles( prevFiles => [...prevFiles, ...filesToAdd] );
+  };
+
+  /**
+   * Remove file from files state array
+   * @param {string} id id of file to remove
+   */
+  const removeAssetFile = id => {
+    setFiles( prevFiles => prevFiles.filter( file => file.id !== id ) );
+  };
+
+  /**
+   * Replace file from files state array
+   * @param {string} id id of file to replace
+   * @param {array-like} fileFromInputSelection selected file from file selection dialogue
+   */
+  const replaceAssetFile = ( id, fileFromInputSelection ) => {
+    setFiles( prevFiles => prevFiles.map( file => {
+      if ( file.id !== id ) {
+        return file;
+      }
+      return { ...file, fileInput: fileFromInputSelection };
+    } ) );
+  };
+
+  /**
+   * Update the files state with the selected value of an applicable file
+   * updateField is called when a selection is made from a dropdown
+   * Note: the name of field passed as param must match the state prop name
+   * @param {object} e event object
+   * @param {object} data data from selected field
+   */
+  const updateField = ( e, data ) => {
+    setFiles( prevFiles => prevFiles.map( file => {
+      if ( file.id !== data.id ) {
+        return file;
+      }
+      return { ...file, [data.name]: data.value };
+    } ) );
+  };
+
+  // @todo complete wiring before activating router
+  const gotoVideoEditPage = () => {
+    // props.router.push( {
+    //   pathname: '/admin/project',
+    //   query: {
+    //     content: 'video',
+    //     action: 'edit'
+    //   }
+    // } );
+  };
+
+  /**
+   * Called on submit. Saves applicabe file properties
+   * to redux store. Object is then accessed from ProjectDataForm
+   * in order to process upload
+   * Note: would have preferred using Apollo cache but file object
+   * would not serialize properly.
+   * @todo Research issue when time permits
+   */
+  const handleAddFilesToUpload = async () => {
+    const filesToUpload = files.map( file => ( {
+      language: file.language,
+      use: file.use,
+      quality: file.quality,
+      videoBurnedInStatus: file.videoBurnedInStatus,
+      fileObject: file.fileInput
+    } ) );
+
+    await props.addFilesToUpload( filesToUpload ); // coming from redux
+    gotoVideoEditPage();
+  };
+
+
+  const { updateModalClassname, closeModal } = props;
+
+  /* eslint-disable react/display-name */
+  const panes = [
     {
-      menuItem: 'What type of video project is this?',
+      menuItem: 'Upload Files',
       render: () => (
         <Tab.Pane>
           <VideoProjectType
-            closeModal={ this.props.closeModal }
-            goNext={ this.goNext }
-            updateModalClassname={ this.props.updateModalClassname }
-            handleVideoAssetsUpload={ this.handleVideoAssetsUpload }
+            closeModal={ closeModal }
+            goNext={ goNext }
+            updateModalClassname={ updateModalClassname }
+            addAssetFiles={ addAssetFiles }
           />
         </Tab.Pane>
       )
@@ -32,89 +187,56 @@ class VideoUpload extends Component {
       menuItem: '',
       render: () => (
         <Tab.Pane>
-          <VideoProjectFiles
-            closeModal={ this.props.closeModal }
-            goNext={ this.goNext }
-            updateModalClassname={ this.props.updateModalClassname }
-            files={ this.state.fileNames }
-            handleVideoAssetsUpload={ this.handleVideoAssetsUpload }
-            removeVideoAssetFile={ this.removeVideoAssetFile }
-            replaceVideoAssetFile={ this.replaceVideoAssetFile }
-          />
+          <VideoUploadContext.Provider value={ {
+            files,
+            addAssetFiles,
+            removeAssetFile,
+            replaceAssetFile,
+            updateField,
+            allFieldsSelected,
+            closeModal,
+            handleAddFilesToUpload
+          } }
+          >
+            <VideoProjectFiles
+              closeModal={ closeModal }
+              goNext={ goNext }
+              updateModalClassname={ updateModalClassname }
+            />
+          </VideoUploadContext.Provider>
         </Tab.Pane>
       )
     }
   ];
 
-  goNext = () => {
-    this.setState( prevState => ( { activeIndex: prevState.activeIndex + 1 } ) );
-  }
+  return (
+    <Tab
+      activeIndex={ activeIndex }
+      panes={ panes }
+      className="videoUpload"
+    />
+  );
+};
 
-  goBack = () => {
-    this.setState( prevState => ( { activeIndex: prevState.activeIndex - 1 } ) );
-  }
-
-  handleVideoAssetsUpload = ( e, isProjectFilesScreen = false ) => {
-    const fileList = Array.from( e.target.files );
-
-    this.setState( prevState => ( {
-      videoAssets: prevState.videoAssets !== null ? [...prevState.videoAssets, ...fileList] : [...fileList],
-      fileNames: prevState.fileNames.length > 0
-        ? [...prevState.fileNames, ...fileList.map( file => file.name )]
-        : fileList.map( file => file.name )
-    } ) );
-
-    if ( !isProjectFilesScreen ) this.goNext();
-  }
-
-  removeVideoAssetFile = fileName => {
-    this.setState( prevState => ( {
-      videoAssets: prevState.videoAssets.filter( file => file.name !== fileName ),
-      fileNames: prevState.videoAssets.filter( file => file.name !== fileName ).map( file => file.name )
-    } ) );
-  }
-
-  replaceVideoAssetFile = e => {
-    e.persist();
-    const { files, dataset: { filename } } = e.target;
-
-    this.setState( prevState => {
-      const { videoAssets } = prevState;
-
-      // Find index of file in videoAssets
-      const assetIndex = videoAssets.map( file => file.name ).indexOf( filename );
-
-      // Set index to new uploaded file
-      const uploadedFile = files[0];
-      videoAssets[assetIndex] = uploadedFile;
-
-      // Reset value attached to input
-      // so browser doesn't think selecting same file again if need to upload file w/ same name
-      e.target.value = '';
-
-      // Update state with new videoAssets array
-      return {
-        videoAssets,
-        fileNames: videoAssets.map( file => file.name )
-      };
-    } );
-  }
-
-  render() {
-    const { activeIndex } = this.state;
-    return (
-      <Tab
-        activeIndex={ activeIndex }
-        panes={ this.panes }
-        className="videoUpload"
-      />
-    );
-  }
-}
 
 VideoUpload.propTypes = {
   closeModal: PropTypes.func,
-  updateModalClassname: PropTypes.func
+  updateModalClassname: PropTypes.func,
+  videoUseData: PropTypes.shape( {
+    videoUses: PropTypes.array
+  } ),
+  imageUseData: PropTypes.shape( {
+    imageUses: PropTypes.array
+  } ),
+  // router: PropTypes.object,
+  addFilesToUpload: PropTypes.func // from redux
 };
 
-export default VideoUpload;
+// @todo - add videoUseByName, imageUseByName queries to server
+// as opposed to pulling whole list and filtering needed value
+export default compose(
+  withRouter,
+  connect( null, actions ),
+  graphql( VIDEO_USE_QUERY, { name: 'videoUseData' } ),
+  graphql( IMAGE_USE_QUERY, { name: 'imageUseData' } )
+)( VideoUpload );

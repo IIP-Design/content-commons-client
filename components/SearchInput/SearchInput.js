@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { Form, Input, Icon } from 'semantic-ui-react';
-import { detectLanguage } from 'lib/language';
+import {
+  Form, Input, Icon, Dropdown
+} from 'semantic-ui-react';
+// import { detectLanguage } from 'lib/language';
+import { getDirection } from 'lib/language';
 import { fetchQueryString } from 'lib/searchQueryString';
 import * as actions from 'lib/redux/actions';
 import './SearchInput.scss';
@@ -11,81 +14,105 @@ import './SearchInput.scss';
 class Search extends Component {
   constructor( props ) {
     super( props );
+    const { search } = this.props;
     this.state = {
-      locale: 'en-us',
+      locale: search.language,
       direction: 'left'
     };
+    this.props.loadLanguages();
   }
 
   /**
    * Send term to Google API to determine language
    * Update state if valid language detected
    */
- getLanguage = async term => {
-   const detected = await detectLanguage( term );
-   if ( detected ) {
-     this.setState( {
-       locale: detected.language.key,
-       direction: detected.direction,
-     } );
-   }
- };
+  // getLanguage = async term => {
+  //   const detected = await detectLanguage( term );
+  //   if ( detected ) {
+  //     this.setState( {
+  //       locale: detected.language.key,
+  //       direction: detected.direction,
+  //     } );
+  //   }
+  // };
 
-  /**
-   * NOTE: Since function call the language detect api on text change
-   * may need to use debounce to enable better perfomance
-   */
+  handleLangOnChange = ( e, { value } ) => {
+    this.setState( {
+      locale: value,
+      direction: getDirection( value )
+    } );
+  }
+
   handleQueryOnChange = ( e, { value } ) => {
     // this.getLanguage( value );
     this.props.updateSearchTerm( value );
   };
 
 
-   handleSubmit = async e => {
-     e.preventDefault();
+  handleSubmit = async e => {
+    e.preventDefault();
 
-     const { filter, search } = this.props;
-     const query = fetchQueryString( { ...filter, term: search.term, language: this.state.locale } );
-     this.props.router.push( {
-       pathname: '/results',
-       query
-     } );
-   };
+    const { filter, search } = this.props;
+    const query = fetchQueryString( { ...filter, term: search.term, language: this.state.locale } );
+    this.props.router.push( {
+      pathname: '/results',
+      query
+    } );
+  };
 
+  render () {
+    let inputProps = {};
+    if ( this.state.direction === 'left' ) {
+      inputProps = { className: 'search_input' };
+    } else {
+      inputProps = { className: 'search_input right', iconPosition: 'left', labelPosition: 'right' };
+    }
 
-   render () {
-     let inputProps = {};
-     if ( this.state.direction === 'left' ) {
-       inputProps = { className: 'search_input' };
-     } else {
-       inputProps = { className: 'search_input right', iconPosition: 'left' };
-     }
+    let langOptions = this.props.languages.list.map( l => ( {
+      key: l.key,
+      text: l.display_name,
+      value: l.key
+    } ) );
 
-     return (
-       <section className="search_bar">
-         <Form onSubmit={ this.handleSubmit }>
-           <Input
-             onChange={ this.handleQueryOnChange }
-             value={ this.props.search.term ? this.props.search.term : '' }
-             size="large"
-             icon={ <Icon name="search" onClick={ this.handleSubmit } /> }
-             placeholder="Type in keywords to search our content"
-             { ...inputProps }
-           />
-         </Form>
-       </section>
-     );
-   }
+    if ( langOptions.length === 0 ) langOptions = [{ key: 'en-us', text: 'English', value: 'en-us' }];
+
+    return (
+      <section className="search_bar">
+        <Form onSubmit={ this.handleSubmit }>
+          <Input
+            label={ (
+              <Dropdown
+                value={ this.state.locale }
+                options={ langOptions }
+                onChange={ this.handleLangOnChange }
+              />
+            ) }
+            labelPosition="left"
+            onChange={ this.handleQueryOnChange }
+            value={ this.props.search.term ? this.props.search.term : '' }
+            size="large"
+            icon={ <Icon name="search" onClick={ this.handleSubmit } /> }
+            placeholder="Type in keywords to search"
+            { ...inputProps }
+          />
+        </Form>
+      </section>
+    );
+  }
 }
 
 const mapStateToProps = state => ( {
-  search: state.search
+  search: state.search,
+  languages: state.global.languages,
+  filter: state.filter
 } );
 
 Search.propTypes = {
   router: PropTypes.object,
   filter: PropTypes.object,
   search: PropTypes.object,
+  languages: PropTypes.object,
+  loadLanguages: PropTypes.func,
   updateSearchTerm: PropTypes.func
 };
 

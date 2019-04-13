@@ -31,8 +31,11 @@
   font-size: 0.77rem;
 }
 
-.ui.dropdown {
-  .menu > .item {
+.ui.dropdown,
+.ui.fluid.dropdown,
+.ui.selection.dropdown {
+  .menu > .item,
+  .text {
     font-size: 0.77rem;
   }
 
@@ -41,11 +44,11 @@
 
     &.active,
     &.active .menu {
-      border-color: $alt-grey;
+      border-color: $light-grey;
     }
 
     &:hover {
-      border-color: $alt-grey;
+      border-color: $light-grey;
     }
   }
 }

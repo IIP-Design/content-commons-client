@@ -50,7 +50,7 @@ const Results = props => {
                   }
               key={ item._id }
             >
-              <ResultItem key={ item._id } item={ normalizeItem( item ) } />
+              <ResultItem key={ item._id } item={ normalizeItem( item, props.search.language ) } />
             </Grid.Column>
           ) ) }
         </Grid>
@@ -66,15 +66,7 @@ const mapStateToProps = state => ( {
 } );
 
 Results.propTypes = {
-  search: PropTypes.shape( {
-    response: PropTypes.shape( {
-      hits: PropTypes.shape( {
-        hits: PropTypes.array
-      } )
-    } ),
-    currentPage: PropTypes.number,
-    currentTerm: PropTypes.string
-  } )
+  search: PropTypes.object
 };
 
 export default connect( mapStateToProps, actions )( Results );

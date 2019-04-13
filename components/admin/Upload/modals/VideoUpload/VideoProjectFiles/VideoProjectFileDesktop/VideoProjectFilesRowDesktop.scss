@@ -1,0 +1,55 @@
+@import "styles/colors.scss";
+
+.ui.grid {
+  .videoProjectFilesDesktopRow {
+    &.row {
+      padding-top: 0.5em;
+      padding-bottom: 0.5em;
+    }
+
+    &__column {
+      font-size: 0.88em;
+
+      .show {
+        display: flex !important;
+      }
+
+      .hide {
+        display: none !important;
+      }
+
+      &--not-applicable {
+        font-size: 0.77rem;
+        color: $grey;
+        display: flex;
+        height: 100%;
+        align-items: center;
+      }
+
+      &--filename {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 0.5rem;
+        padding-bottom: 0;
+
+        .item-complete {
+          flex: 0 1 30px;
+
+          .ui.mini.label {
+            font-size: 0.57rem;
+          }
+
+          i.inverted.circular.green.icon {
+            background-color: #2e8540 !important;
+            font-size: 0.57rem;
+          }
+        }
+
+        .item-text {
+          flex: 2 0 auto;
+        }
+      }
+    }
+  }
+}

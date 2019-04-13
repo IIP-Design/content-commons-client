@@ -1,0 +1,84 @@
+@import "styles/colors.scss";
+
+.videoProjectFilesRowMobile {
+  border: 1px solid $light-grey;
+  margin: 0 -0.5em 1em -0.5em;
+  padding: 0.2em 0.5em 0.5em 0.5em;
+
+  &.row {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+  }
+
+  &__dropdowns {
+    transition: max-height 0.2s ease-out;
+    max-height: 400px;
+
+    &.show {
+      height: auto;
+    }
+
+    &.hide {
+      max-height: 0;
+      overflow: hidden;
+    }
+
+    &--filename-full {
+      color: $focus-gray;
+      font-size: 0.77em;
+      padding-bottom: 0.5em;
+    }
+  }
+
+  &__label {
+    font-size: 0.77em;
+    font-weight: 600;
+    margin-bottom: 0.5em;
+    margin-top: 1em;
+    color: $blue;
+  }
+
+  &__column {
+    font-size: 0.88em;
+
+    &--filename {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0;
+      padding-bottom: 0;
+
+      .ui.icon.button {
+        padding: 0.6rem 0.4em;
+        margin-right: 0;
+        transition: 0.2s ease-in-out;
+        transform: rotate(0deg);
+
+        &.open {
+          transform: rotate(-180deg);
+        }
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      .item-complete {
+        flex: 0 1 30px;
+
+        .ui.mini.label {
+          font-size: 0.57rem;
+        }
+
+        i.inverted.circular.green.icon {
+          background-color: #2e8540 !important;
+          font-size: 0.57rem;
+        }
+      }
+
+      .item-text {
+        flex: 2 0 auto;
+      }
+    }
+  }
+}

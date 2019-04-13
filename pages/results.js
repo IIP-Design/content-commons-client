@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import Results from 'components/Results/Results/';
 
 import {
-  updateSort, updateSearchTerm, createRequest
+  updateLanguage, updateSort, updateSearchTerm, createRequest
 } from 'lib/redux/actions/search';
 import {
-  updateLanguage, postTypeUpdate, dateUpdate, categoryUpdate, sourceUpdate
+  postTypeUpdate, dateUpdate, categoryUpdate, sourceUpdate
 } from 'lib/redux/actions/filter';
 import { loadPostTypes } from 'lib/redux/actions/postType';
 import { loadSources } from 'lib/redux/actions/source';
@@ -40,21 +40,16 @@ class ResultsPage extends Component {
     store.dispatch( createRequest() );
     // load filter menus if needed
     const { global } = store.getState();
+
+    // Always load srcs and cats based on query
+    const srcs = store.dispatch( loadSources() );
+    const cats = store.dispatch( loadCategories() );
+
     let types;
-    let srcs;
-    let cats;
     let langs;
 
     if ( !global.postTypes.list.length ) {
       types = store.dispatch( loadPostTypes() );
-    }
-
-    if ( !global.sources.list.length ) {
-      srcs = store.dispatch( loadSources() );
-    }
-
-    if ( !global.categories.list.length ) {
-      cats = store.dispatch( loadCategories() );
     }
 
     if ( !global.languages.list.length ) {
