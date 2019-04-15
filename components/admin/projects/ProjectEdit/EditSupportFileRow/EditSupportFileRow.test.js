@@ -1,24 +1,108 @@
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
-import { projects } from 'components/admin/projects/ProjectEdit/mockData';
-import EditSupportFileRow from './EditSupportFileRow';
+import { MockedProvider } from 'react-apollo/test-utils';
+import EditSupportFileRow, {
+  DELETE_SUPPORT_FILE_MUTATION,
+  UPDATE_SUPPORT_FILE_USE_MUTATION,
+  UPDATE_SUPPORT_FILE_LANGUAGE_MUTATION
+} from './EditSupportFileRow';
 
 const props = {
-  handleChange: jest.fn(),
-  file: projects[0].supportFiles.other[0],
-  fileExtensions: ['.jpg', '.mp3'],
-  selectedLanguage: projects[0].supportFiles.other[0].lang
+  file: {
+    id: '8e7eu',
+    filename: 'madeinamerica_english.jpg',
+    filetype: 'jpg',
+    use: {
+      id: 'eisu',
+      name: 'Thumbnail/Cover Image'
+    },
+    language: {
+      id: 'ewi237',
+      displayName: 'English'
+    }
+  },
+  fileExtensions: ['.jpg', '.mp3']
 };
 
-const languages = [
-  { value: 'arabic', text: 'Arabic' },
-  { value: 'chinese', text: 'Chinese' },
-  { value: 'english', text: 'English' },
-  { value: 'french', text: 'French' },
-  { value: 'portuguese', text: 'Portuguese' },
-  { value: 'russian', text: 'Russian' },
-  { value: 'spanish', text: 'Spanish' }
+const mocks = [
+  {
+    request: {
+      query: UPDATE_SUPPORT_FILE_LANGUAGE_MUTATION,
+      variables: {
+        data: {
+          language: { connect: { id: 'fr143' } }
+        },
+        where: { id: props.file.id }
+      }
+    },
+    result: {
+      data: {
+        updateSupportFile: {
+          id: props.file.id,
+          filename: 'madeinamerica_french.jpg',
+          filetype: 'jpg',
+          language: {
+            id: 'fr143',
+            displayName: 'French'
+          }
+        }
+      }
+    }
+  },
+  {
+    request: {
+      query: UPDATE_SUPPORT_FILE_USE_MUTATION,
+      variables: {
+        data: {
+          use: { connect: { id: 'em92' } }
+        },
+        where: { id: props.file.id }
+      }
+    },
+    result: {
+      data: {
+        updateSupportFile: {
+          id: props.file.id,
+          use: {
+            id: 'em92',
+            name: 'Email Graphic'
+          }
+        }
+      }
+    }
+  },
+  {
+    request: {
+      query: DELETE_SUPPORT_FILE_MUTATION,
+      variables: { id: props.file.id },
+    },
+    result: {
+      data: {
+        deleteSupportFile: {
+          id: props.file.id,
+          filename: props.file.filename
+        }
+      }
+    }
+  }
 ];
+
+/**
+  * Wrap in `<table><tbody></tbody></table>` to prevent
+  * this annoying terminal console warning:
+  *
+  * `Warning: validateDOMNesting(...): <tr> cannot appear as a child of <div>.`
+  *
+  */
+const Component = (
+  <MockedProvider mocks={ mocks } addTypename={ false }>
+    <table>
+      <tbody>
+        <EditSupportFileRow { ...props } />
+      </tbody>
+    </table>
+  </MockedProvider>
+);
 
 const resizeWindow = ( x, y ) => {
   window.innerWidth = x;
@@ -26,32 +110,43 @@ const resizeWindow = ( x, y ) => {
   window.dispatchEvent( new Event( 'resize' ) );
 };
 
-const Component = <EditSupportFileRow { ...props } />;
-
 describe( '<EditSupportFileRow />', () => {
   it( 'renders without crashing', () => {
-    const wrapper = shallow( Component );
-    expect( wrapper.exists() ).toEqual( true );
-    expect( toJSON( wrapper ) ).toMatchSnapshot();
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
+
+    expect( row.exists() ).toEqual( true );
+    expect( toJSON( row ) ).toMatchSnapshot();
   } );
 
   it( '`componentDidMount` sets `_isMounted`', () => {
-    const wrapper = shallow( Component );
-    wrapper.instance().componentDidMount();
-    expect( wrapper.instance()._isMounted ).toEqual( true );
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
+    const inst = row.instance();
+
+    inst.componentDidMount();
+
+    expect( inst._isMounted ).toEqual( true );
   } );
 
   it( '`componentWillUnmount` sets `_isMounted` to false', () => {
-    const wrapper = shallow( Component );
-    wrapper.instance().componentWillUnmount();
-    expect( wrapper.instance()._isMounted ).toEqual( false );
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
+    const inst = row.instance();
+
+    inst.componentWillUnmount();
+
+    expect( inst._isMounted ).toEqual( false );
   } );
 
   it( 'calls `debounceResize` when window is resized', () => {
-    const wrapper = shallow( Component );
-    const spy = jest.spyOn( wrapper.instance(), 'debounceResize' );
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
+    const inst = row.instance();
 
-    wrapper.instance().componentDidMount();
+    const spy = jest.spyOn( inst, 'debounceResize' );
+
+    inst.componentDidMount();
 
     const map = {};
     window.addEventListener = jest.fn( ( event, cb ) => {
@@ -63,23 +158,29 @@ describe( '<EditSupportFileRow />', () => {
   } );
 
   it( '`componentWillUnmount` removes the `resize` event listener', () => {
-    const wrapper = shallow( Component );
-    const inst = wrapper.instance();
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
+    const inst = row.instance();
+
     const map = {};
     window.removeEventListener = jest.fn( ( event, cb ) => {
       map[event] = cb;
     } );
 
-    wrapper.instance().componentWillUnmount();
+    inst.componentWillUnmount();
+
     expect( window.removeEventListener )
       .toHaveBeenCalledWith( 'resize', inst.debounceResize );
   } );
 
   it( '`getShortFileName` returns an ellipsis shortened file name', () => {
-    const wrapper = shallow( Component );
-    const longName = props.file.file; // madeinamerica_arabic.jpg
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
+    const inst = row.instance();
+
+    const longName = props.file.filename; // madeinamerica_english.jpg
     const index = 8;
-    const shortName = wrapper.instance()
+    const shortName = inst
       .getShortFileName( longName, index )
       .props
       .children;
@@ -88,27 +189,33 @@ describe( '<EditSupportFileRow />', () => {
     expect( shortName[0] ).toHaveLength( 8 );
     expect( shortName[1] ).toHaveLength( 1 );
     expect( shortName[2] ).toHaveLength( 8 );
-    expect( shortName.join( '' ) ).toEqual( 'madeinam…abic.jpg' );
+    expect( shortName.join( '' ) ).toEqual( 'madeinam…lish.jpg' );
   } );
 
   it( '`getProportionalNumber` returns a number that is proportional to a reference', () => {
-    const wrapper = shallow( Component );
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
+    const inst = row.instance();
+
     const reference = 500;
-    const proportion = wrapper.instance().ITEM_NAME_PROPORTION;
-    const num = wrapper.instance()
+    const proportion = inst.ITEM_NAME_PROPORTION;
+    const num = inst
       .getProportionalNumber( reference, proportion );
+
     expect( num ).toEqual( 425 );
   } );
 
   it( '`isLongName` returns a boolean whether given number is greater or equal to another', () => {
-    const wrapper = shallow( Component );
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
+    const inst = row.instance();
+
     let itemWidth = 290;
     const reference = 500;
-    const proportion = wrapper.instance().ITEM_NAME_PROPORTION;
+    const proportion = inst.ITEM_NAME_PROPORTION;
 
     const isLongName = () => (
-      wrapper.instance()
-        .isLongName( itemWidth, reference, proportion )
+      inst.isLongName( itemWidth, reference, proportion )
     );
 
     expect( isLongName() ).toEqual( false );
@@ -117,9 +224,12 @@ describe( '<EditSupportFileRow />', () => {
   } );
 
   it( '`setRefWidth` and `resetWidths` sets ref widths in state', () => {
-    const wrapper = shallow( Component );
-    const div = wrapper.find( '.file-name' );
-    const span = wrapper.find( '.file-name-wrap' );
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
+    const inst = row.instance();
+
+    const div = row.find( 'div.file-name' );
+    const span = row.find( 'span.file-name-wrap' );
 
     const nodes = [div, span];
     const names = ['cell', 'fileName'];
@@ -128,23 +238,26 @@ describe( '<EditSupportFileRow />', () => {
     span.offsetWidth = 170;
 
     nodes.forEach( ( n, i ) => {
-      expect( wrapper.state( `${names[i]}Width` ) )
-        .toEqual( null );
+      expect( row.state( `${names[i]}Width` ) )
+        .toEqual( 0 );
 
-      wrapper.instance().setRefWidth( n, names[i] );
-      expect( wrapper.state( `${names[i]}Width` ) )
+      inst.setRefWidth( n, names[i] );
+      expect( row.state( `${names[i]}Width` ) )
         .toEqual( n.offsetWidth );
 
-      wrapper.instance().resetWidths();
-      expect( wrapper.state( `${names[i]}Width` ) )
-        .toEqual( null );
+      inst.resetWidths();
+      expect( row.state( `${names[i]}Width` ) )
+        .toEqual( 0 );
     } );
   } );
 
   it( '`resetWidths` does not reset ref widths in state if component is unmounted', () => {
-    const wrapper = shallow( Component );
-    const div = wrapper.find( '.file-name' );
-    const span = wrapper.find( '.file-name-wrap' );
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
+    const inst = row.instance();
+
+    const div = row.find( 'div.file-name' );
+    const span = row.find( 'span.file-name-wrap' );
 
     const nodes = [div, span];
     const names = ['cell', 'fileName'];
@@ -152,151 +265,147 @@ describe( '<EditSupportFileRow />', () => {
     div.offsetWidth = 200;
     span.offsetWidth = 170;
 
-    wrapper.instance().componentDidMount();
-    const isMounted = () => wrapper.instance()._isMounted;
+    inst.componentDidMount();
+    const isMounted = () => inst._isMounted;
 
     expect( isMounted() ).toEqual( true );
 
     nodes.forEach( ( n, i ) => {
-      expect( wrapper.state( `${names[i]}Width` ) )
-        .toEqual( null );
+      expect( row.state( `${names[i]}Width` ) )
+        .toEqual( 0 );
 
-      wrapper.instance().setRefWidth( n, names[i] );
-      expect( wrapper.state( `${names[i]}Width` ) )
+      inst.setRefWidth( n, names[i] );
+      expect( row.state( `${names[i]}Width` ) )
         .toEqual( n.offsetWidth );
     } );
 
-    wrapper.instance().componentWillUnmount();
+    inst.componentWillUnmount();
     expect( isMounted() ).toEqual( false );
 
-    wrapper.instance().resetWidths();
+    inst.resetWidths();
 
     nodes.forEach( ( n, i ) => {
-      expect( wrapper.state( `${names[i]}Width` ) )
+      expect( row.state( `${names[i]}Width` ) )
         .toEqual( n.offsetWidth );
     } );
   } );
 
   it( 'renders `setReplaceFileRef`', () => {
-    /**
-     * Wrap Component in `<table><tbody></tbody></table>`
-     * to prevent this terminal console warning:
-     *
-     * `Warning: validateDOMNesting(...): <tr> cannot appear as a child of <div>.`
-     *
-     * `mount` instead of `shallow` to get access to `ref`.
-     */
-    const wrapper = mount(
-      <table>
-        <tbody>
-          <EditSupportFileRow { ...props } />
-        </tbody>
-      </table>
-    );
+    const wrapper = mount( Component );
     const row = wrapper.find( 'EditSupportFileRow' );
+    const inst = row.instance();
     const input = wrapper.find( 'input#upload-file--single' );
+
     expect( input.exists() ).toEqual( true );
-    expect( row.instance().setReplaceFileRef ).toBeTruthy();
+    expect( inst.setReplaceFileRef ).toBeTruthy();
   } );
 
   it( 'sets correct `acceptedTypes` for the file upload `input`', () => {
-    const wrapper = shallow( Component );
+    const newProps = { ...props, ...{ fileExtensions: ['.srt'] } };
+    const wrapper = mount(
+      <MockedProvider mocks={ mocks } addTypename={ false }>
+        <table>
+          <tbody>
+            <EditSupportFileRow { ...newProps } />
+          </tbody>
+        </table>
+      </MockedProvider>
+    );
+
     const input = () => wrapper.find( 'input#upload-file--single' );
 
-    expect( input().prop( 'accept' ) ).toEqual( '' );
-    wrapper.setProps( { fileExtensions: ['.srt'], fileType: 'srt' } );
     expect( input().prop( 'accept' ) ).toEqual( '.srt' );
   } );
 
-  it( '`null` or `{}` `file` does not crash the component', () => {
-    const wrapper = shallow( Component );
+  it( '`handleChange` sets `fileLanguageId` in state', () => {
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
+    const inst = () => row.instance();
 
-    wrapper.setProps( { file: null } );
-    expect( wrapper.html() ).toEqual( null );
-    wrapper.setProps( { file: {} } );
-    expect( wrapper.html() ).toEqual( null );
+    const e = {};
+    const selection = { value: 'fr143', name: 'fileLanguageId' };
+
+    expect( inst().state.fileLanguageId ).toEqual( 'ewi237' );
+
+    inst().handleChange( e, selection );
+
+    inst().forceUpdate();
+
+    expect( inst().state.fileLanguageId ).toEqual( 'fr143' );
   } );
 
-  it( 'selecting a language from the Dropdown calls `handleChange`', () => {
-    const wrapper = shallow( Component );
-    const dropdown = wrapper.find( 'Dropdown' );
+  it( '`handleChange` sets `fileUse` in state', () => {
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
+    const inst = () => row.instance();
 
-    dropdown.simulate( 'change' );
-    expect( props.handleChange ).toHaveBeenCalled();
-  } );
+    const e = {};
+    const selection = { value: 'em92', name: 'fileUse' };
 
-  it( 'renders Dropdown with correct `options`', () => {
-    const wrapper = shallow( Component );
-    const dropdown = wrapper.find( 'Dropdown' );
+    expect( inst().state.fileUse ).toEqual( 'eisu' );
 
-    expect( dropdown.prop( 'options' ) ).toEqual( languages );
-  } );
+    inst().handleChange( e, selection );
 
-  it( 'renders Dropdown with correct `text` and `value`', () => {
-    const wrapper = shallow( Component );
-    const dropdown = wrapper.find( 'Dropdown' );
-    const { selectedLanguage } = props;
-
-    expect( dropdown.prop( 'text' ) ).toEqual( selectedLanguage );
-    expect( dropdown.prop( 'value' ) ).toEqual( selectedLanguage );
-  } );
-
-  it( 'renders Dropdown with error if no `selectedLanguage`', () => {
-    const newProps = { ...props, selectedLanguage: '' };
-    const wrapper = shallow( <EditSupportFileRow { ...newProps } /> );
-    const dropdown = wrapper.find( 'Dropdown' );
-
-    expect( dropdown.prop( 'error' ) ).toEqual( !newProps.selectedLanguage );
+    expect( inst().state.fileUse ).toEqual( 'em92' );
   } );
 
   it( 'Popup is rendered if file name is long', () => {
-    const wrapper = shallow( Component );
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
     const popup = () => (
-      wrapper.find( `Popup[content="${props.file.file}"]` )
+      wrapper.find( `Popup[content="${props.file.filename}"]` )
     );
 
-    wrapper.setState( { cellWidth: 400, fileNameWidth: 350 } );
+    /**
+     * file name is long if `isLongName` is `true`, i.e.,
+     * fileNameWidth/cellWidth >= 0.85 (ITEM_NAME_PROPORTION)
+     */
+    row.setState( { cellWidth: 400, fileNameWidth: 350 } );
     expect( popup().exists() ).toEqual( true );
-    wrapper.setState( { cellWidth: 400, fileNameWidth: 300 } );
+
+    row.setState( { cellWidth: 400, fileNameWidth: 300 } );
     expect( popup().exists() ).toEqual( false );
   } );
 
   it( '`fileName` only (i.e., no Popup) is rendered if file name is not long', () => {
-    const wrapper = shallow( Component );
-    const span = () => wrapper.find( '.file-name-wrap' );
-    const popup = () => (
-      wrapper.find( `Popup[content="${props.file.file}"]` )
-    );
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
+    const span = wrapper.find( 'span.file-name-wrap' );
 
-    wrapper.setState( { cellWidth: 400, fileNameWidth: 300 } );
-    expect( popup().exists() ).toEqual( false );
-    expect( span().children().text() ).toEqual( props.file.file );
+    row.setState( { cellWidth: 400, fileNameWidth: 300 } );
+    const popup = wrapper.find( `Popup[content="${props.file.filename}"]` );
+
+    expect( popup.exists() ).toEqual( false );
+    expect( span.text() ).toEqual( props.file.filename );
   } );
 
-  // it( 'clicking Delete icon calls `handleDeleteFile`', () => {
-  //   const wrapper = shallow( Component );
-  //   const popup = wrapper.find( 'Popup[content="Delete"]' );
-  //   const deleteBtn = shallow( popup.prop( 'trigger' ) );
-  //   const spy = jest.spyOn( wrapper.instance(), 'handleDeleteFile' );
+  it( 'clicking Delete icon calls `handleDeleteFile`', () => {
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
+    const inst = row.instance();
+    const deleteBtn = row.find( 'Button.delete' );
+    const spy = jest.spyOn( inst, 'handleDeleteFile' );
 
-  //   deleteBtn.simulate( 'click' );
-  //   expect( spy ).toHaveBeenCalled();
-  // } );
+    inst.forceUpdate();
+    deleteBtn.simulate( 'click' );
 
-  // it( 'clicking Replace icon calls `handleReplaceFile`', () => {
-  //   const wrapper = mount(
-  //     <table>
-  //       <tbody>
-  //         <EditSupportFileRow { ...props } />
-  //       </tbody>
-  //     </table>
-  //   );
-  //   const row = wrapper.find( 'EditSupportFileRow' );
-  //   const popup = row.find( 'Popup[content="Replace"]' );
-  //   const replaceBtn = shallow( popup.prop( 'trigger' ) );
-  //   const spy = jest.spyOn( row.instance(), 'handleReplaceFile' );
+    expect( spy ).toHaveBeenCalled();
+  } );
 
-  //   replaceBtn.simulate( 'click' );
-  //   expect( spy ).toHaveBeenCalled();
-  // } );
+  it( 'clicking Replace icon calls `handleReplaceFile`', () => {
+    const wrapper = mount( Component );
+    const row = wrapper.find( 'EditSupportFileRow' );
+    const inst = row.instance();
+    const replaceBtn = row.find( 'Button.replace' );
+    const spy = jest.spyOn( inst, 'handleReplaceFile' );
+    inst.addReplaceFileRef = {
+      click: jest.fn()
+    };
+
+    inst.forceUpdate();
+    replaceBtn.simulate( 'click' );
+
+    expect( spy ).toHaveBeenCalled();
+    expect( inst.addReplaceFileRef.click ).toHaveBeenCalled();
+  } );
 } );

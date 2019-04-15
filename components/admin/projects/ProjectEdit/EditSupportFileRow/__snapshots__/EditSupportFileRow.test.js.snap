@@ -1,197 +1,708 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<EditSupportFileRow /> renders without crashing 1`] = `
-<TableRow
-  as="tr"
-  cellAs="td"
+<EditSupportFileRow
+  deleteFile={[Function]}
+  file={
+    Object {
+      "filename": "madeinamerica_english.jpg",
+      "filetype": "jpg",
+      "id": "8e7eu",
+      "language": Object {
+        "displayName": "English",
+        "id": "ewi237",
+      },
+      "use": Object {
+        "id": "eisu",
+        "name": "Thumbnail/Cover Image",
+      },
+    }
+  }
+  fileExtensions={
+    Array [
+      ".jpg",
+      ".mp3",
+    ]
+  }
+  updateFileUse={[Function]}
+  updateLanguage={[Function]}
 >
-  <TableCell
-    as="td"
+  <TableRow
+    as="tr"
+    cellAs="td"
   >
-    <div
-      className="file-name"
+    <tr
+      className=""
     >
-      <VisuallyHidden>
-        madeinamerica_arabic.jpg
-      </VisuallyHidden>
-      <span
-        aria-hidden={true}
-        className="file-name-wrap hasEllipsis"
+      <TableCell
+        as="td"
       >
-        <Popup
-          content="madeinamerica_arabic.jpg"
-          inverted={true}
-          keepInViewPort={true}
-          on={
-            Array [
-              "hover",
-              "click",
-              "focus",
-            ]
-          }
-          position="top left"
-          size="mini"
-          style={
-            Object {
-              "msWordBreak": "break-all",
-              "overflowWrap": "break-word",
-              "wordBreak": "break-word",
-              "wordWrap": "break-word",
-            }
-          }
-          trigger={
-            <span>
-              <Focusable
-                order={0}
-              >
-                <React.Fragment>
-                  
-                  …
-                  madeinamerica_arabic.jpg
-                </React.Fragment>
-              </Focusable>
-            </span>
-          }
-        />
-      </span>
-    </div>
-  </TableCell>
-  <TableCell
-    as="td"
-  >
-    <VisuallyHidden>
-      <label
-        htmlFor="file-5682"
-      >
-        madeinamerica_arabic.jpg language
-      </label>
-    </VisuallyHidden>
-    <Dropdown
-      additionLabel="Add "
-      additionPosition="top"
-      closeOnBlur={true}
-      deburr={false}
-      error={false}
-      fluid={true}
-      icon="dropdown"
-      id="5682"
-      minCharacters={1}
-      noResultsMessage="No results found."
-      onChange={[MockFunction]}
-      openOnFocus={true}
-      options={
-        Array [
-          Object {
-            "text": "Arabic",
-            "value": "arabic",
-          },
-          Object {
-            "text": "Chinese",
-            "value": "chinese",
-          },
-          Object {
-            "text": "English",
-            "value": "english",
-          },
-          Object {
-            "text": "French",
-            "value": "french",
-          },
-          Object {
-            "text": "Portuguese",
-            "value": "portuguese",
-          },
-          Object {
-            "text": "Russian",
-            "value": "russian",
-          },
-          Object {
-            "text": "Spanish",
-            "value": "spanish",
-          },
-        ]
-      }
-      placeholder="–"
-      renderLabel={[Function]}
-      required={true}
-      searchInput="text"
-      selectOnBlur={true}
-      selectOnNavigation={true}
-      selection={true}
-      text="Arabic"
-      value="Arabic"
-      wrapSelection={true}
-    />
-  </TableCell>
-  <TableCell
-    as="td"
-  >
-    <ButtonGroup
-      basic={true}
-      size="large"
-    >
-      <Popup
-        content="Replace"
-        inverted={true}
-        keepInViewPort={true}
-        on={
-          Array [
-            "hover",
-            "click",
-            "focus",
-          ]
-        }
-        position="top left"
-        size="mini"
-        trigger={
-          <Button
-            aria-label="replace file"
-            as="button"
-            basic={true}
-            className="replace"
-            icon="refresh"
-            onClick={[Function]}
-          />
-        }
-      />
-      <VisuallyHidden>
-        <label
-          htmlFor="upload-file--single"
+        <td
+          className=""
         >
-          upload file
-        </label>
-        <input
-          accept=""
-          id="upload-file--single"
-          tabIndex={-1}
-          type="file"
-        />
-      </VisuallyHidden>
-      <Popup
-        content="Delete"
-        inverted={true}
-        keepInViewPort={true}
-        on={
-          Array [
-            "hover",
-            "click",
-            "focus",
-          ]
-        }
-        position="top left"
-        size="mini"
-        trigger={
-          <Button
-            aria-label="delete file"
-            as="button"
+          <div
+            className="file-name"
+          >
+            <VisuallyHidden>
+              <div
+                className="hide-visually"
+              >
+                madeinamerica_english.jpg
+              </div>
+            </VisuallyHidden>
+            <span
+              aria-hidden={true}
+              className="file-name-wrap hasEllipsis"
+            >
+              <Popup
+                content="madeinamerica_english.jpg"
+                inverted={true}
+                keepInViewPort={true}
+                on={
+                  Array [
+                    "hover",
+                    "click",
+                    "focus",
+                  ]
+                }
+                position="top left"
+                size="mini"
+                style={
+                  Object {
+                    "msWordBreak": "break-all",
+                    "overflowWrap": "break-word",
+                    "wordBreak": "break-word",
+                    "wordWrap": "break-word",
+                  }
+                }
+                trigger={
+                  <span>
+                    <Focusable
+                      order={0}
+                    >
+                      <React.Fragment>
+                        
+                        …
+                        madeinamerica_english.jpg
+                      </React.Fragment>
+                    </Focusable>
+                  </span>
+                }
+              >
+                <Portal
+                  closeOnDocumentClick={true}
+                  closeOnEscape={true}
+                  closeOnTriggerBlur={true}
+                  closeOnTriggerClick={true}
+                  closeOnTriggerMouseLeave={true}
+                  eventPool="default"
+                  mouseEnterDelay={50}
+                  mouseLeaveDelay={70}
+                  onClose={[Function]}
+                  onMount={[Function]}
+                  onOpen={[Function]}
+                  onUnmount={[Function]}
+                  openOnTriggerClick={true}
+                  openOnTriggerFocus={true}
+                  openOnTriggerMouseEnter={true}
+                  trigger={
+                    <span>
+                      <Focusable
+                        order={0}
+                      >
+                        <React.Fragment>
+                          
+                          …
+                          madeinamerica_english.jpg
+                        </React.Fragment>
+                      </Focusable>
+                    </span>
+                  }
+                  triggerRef={[Function]}
+                >
+                  <Ref
+                    innerRef={[Function]}
+                  >
+                    <span
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      <Focusable
+                        order={0}
+                      >
+                        <span
+                          className="focusable"
+                          tabIndex={0}
+                        >
+                          …
+                          madeinamerica_english.jpg
+                        </span>
+                      </Focusable>
+                    </span>
+                  </Ref>
+                </Portal>
+              </Popup>
+            </span>
+          </div>
+        </td>
+      </TableCell>
+      <TableCell
+        as="td"
+      >
+        <td
+          className=""
+        >
+          <VisuallyHidden>
+            <div
+              className="hide-visually"
+            >
+              <label
+                htmlFor="file-8e7eu"
+              >
+                madeinamerica_english.jpg language
+              </label>
+            </div>
+          </VisuallyHidden>
+          <Apollo(DropdownLanguage)
+            fluid={true}
+            id="file-8e7eu"
+            name="fileLanguageId"
+            onChange={[Function]}
+            required={true}
+            value="ewi237"
+          >
+            <Query
+              displayName="Apollo(DropdownLanguage)"
+              query={
+                Object {
+                  "definitions": Array [
+                    Object {
+                      "directives": Array [],
+                      "kind": "OperationDefinition",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "Languages",
+                      },
+                      "operation": "query",
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [
+                              Object {
+                                "kind": "Argument",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "orderBy",
+                                },
+                                "value": Object {
+                                  "kind": "Variable",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "orderBy",
+                                  },
+                                },
+                              },
+                            ],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "languages",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": Object {
+                                    "kind": "Name",
+                                    "value": "value",
+                                  },
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "id",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": Object {
+                                    "kind": "Name",
+                                    "value": "text",
+                                  },
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "displayName",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                      "variableDefinitions": Array [
+                        Object {
+                          "defaultValue": undefined,
+                          "kind": "VariableDefinition",
+                          "type": Object {
+                            "kind": "NamedType",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "LanguageOrderByInput",
+                            },
+                          },
+                          "variable": Object {
+                            "kind": "Variable",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "orderBy",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                  "kind": "Document",
+                  "loc": Object {
+                    "end": 138,
+                    "start": 0,
+                  },
+                }
+              }
+              skip={false}
+              variables={
+                Object {
+                  "orderBy": "displayName_ASC",
+                }
+              }
+              warnUnhandledError={true}
+            >
+              <DropdownLanguage
+                data={
+                  Object {
+                    "error": undefined,
+                    "fetchMore": [Function],
+                    "loading": true,
+                    "networkStatus": 1,
+                    "refetch": [Function],
+                    "startPolling": [Function],
+                    "stopPolling": [Function],
+                    "subscribeToMore": [Function],
+                    "updateQuery": [Function],
+                    "variables": Object {
+                      "orderBy": "displayName_ASC",
+                    },
+                  }
+                }
+                fluid={true}
+                id="file-8e7eu"
+                name="fileLanguageId"
+                onChange={[Function]}
+                required={true}
+                value="ewi237"
+              >
+                Loading language...
+              </DropdownLanguage>
+            </Query>
+          </Apollo(DropdownLanguage)>
+        </td>
+      </TableCell>
+      <TableCell
+        as="td"
+      >
+        <td
+          className=""
+        >
+          <VisuallyHidden>
+            <div
+              className="hide-visually"
+            >
+              <label
+                htmlFor="use-8e7eu"
+              >
+                madeinamerica_english.jpg use
+              </label>
+            </div>
+          </VisuallyHidden>
+          <Apollo(DropdownSupportFileUse)
+            fluid={true}
+            id="use-8e7eu"
+            name="fileUse"
+            onChange={[Function]}
+            required={true}
+            value="eisu"
+          >
+            <Query
+              displayName="Apollo(DropdownSupportFileUse)"
+              query={
+                Object {
+                  "definitions": Array [
+                    Object {
+                      "directives": Array [],
+                      "kind": "OperationDefinition",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "SupportFileUse",
+                      },
+                      "operation": "query",
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": Object {
+                              "kind": "Name",
+                              "value": "uses",
+                            },
+                            "arguments": Array [
+                              Object {
+                                "kind": "Argument",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "orderBy",
+                                },
+                                "value": Object {
+                                  "kind": "Variable",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "orderBy",
+                                  },
+                                },
+                              },
+                            ],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "supportFileUses",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": Object {
+                                    "kind": "Name",
+                                    "value": "value",
+                                  },
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "id",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": Object {
+                                    "kind": "Name",
+                                    "value": "text",
+                                  },
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "name",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                      "variableDefinitions": Array [
+                        Object {
+                          "defaultValue": undefined,
+                          "kind": "VariableDefinition",
+                          "type": Object {
+                            "kind": "NamedType",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "SupportFileUseOrderByInput",
+                            },
+                          },
+                          "variable": Object {
+                            "kind": "Variable",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "orderBy",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                  "kind": "Document",
+                  "loc": Object {
+                    "end": 154,
+                    "start": 0,
+                  },
+                }
+              }
+              skip={false}
+              variables={
+                Object {
+                  "orderBy": "name_ASC",
+                }
+              }
+              warnUnhandledError={true}
+            >
+              <DropdownSupportFileUse
+                data={
+                  Object {
+                    "error": undefined,
+                    "fetchMore": [Function],
+                    "loading": true,
+                    "networkStatus": 1,
+                    "refetch": [Function],
+                    "startPolling": [Function],
+                    "stopPolling": [Function],
+                    "subscribeToMore": [Function],
+                    "updateQuery": [Function],
+                    "variables": Object {
+                      "orderBy": "name_ASC",
+                    },
+                  }
+                }
+                fluid={true}
+                id="use-8e7eu"
+                name="fileUse"
+                onChange={[Function]}
+                required={true}
+                value="eisu"
+              >
+                Loading file use...
+              </DropdownSupportFileUse>
+            </Query>
+          </Apollo(DropdownSupportFileUse)>
+        </td>
+      </TableCell>
+      <TableCell
+        as="td"
+      >
+        <td
+          className=""
+        >
+          <ButtonGroup
             basic={true}
-            className="delete"
-            icon="delete"
-            onClick={[Function]}
-          />
-        }
-      />
-    </ButtonGroup>
-  </TableCell>
-</TableRow>
+            size="large"
+          >
+            <div
+              className="ui large basic buttons"
+            >
+              <Popup
+                content="Replace"
+                inverted={true}
+                keepInViewPort={true}
+                on={
+                  Array [
+                    "hover",
+                    "click",
+                    "focus",
+                  ]
+                }
+                position="top left"
+                size="mini"
+                trigger={
+                  <Button
+                    aria-label="replace file"
+                    as="button"
+                    basic={true}
+                    className="replace"
+                    icon="refresh"
+                    onClick={[Function]}
+                  />
+                }
+              >
+                <Portal
+                  closeOnDocumentClick={true}
+                  closeOnEscape={true}
+                  closeOnTriggerBlur={true}
+                  closeOnTriggerClick={true}
+                  closeOnTriggerMouseLeave={true}
+                  eventPool="default"
+                  mouseEnterDelay={50}
+                  mouseLeaveDelay={70}
+                  onClose={[Function]}
+                  onMount={[Function]}
+                  onOpen={[Function]}
+                  onUnmount={[Function]}
+                  openOnTriggerClick={true}
+                  openOnTriggerFocus={true}
+                  openOnTriggerMouseEnter={true}
+                  trigger={
+                    <Button
+                      aria-label="replace file"
+                      as="button"
+                      basic={true}
+                      className="replace"
+                      icon="refresh"
+                      onClick={[Function]}
+                    />
+                  }
+                  triggerRef={[Function]}
+                >
+                  <Ref
+                    innerRef={[Function]}
+                  >
+                    <Button
+                      aria-label="replace file"
+                      as="button"
+                      basic={true}
+                      className="replace"
+                      icon="refresh"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      <button
+                        aria-label="replace file"
+                        className="ui basic icon button replace"
+                        onBlur={[Function]}
+                        onClick={[Function]}
+                        onFocus={[Function]}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                      >
+                        <Icon
+                          as="i"
+                          name="refresh"
+                        >
+                          <i
+                            aria-hidden="true"
+                            className="refresh icon"
+                          />
+                        </Icon>
+                      </button>
+                    </Button>
+                  </Ref>
+                </Portal>
+              </Popup>
+              <VisuallyHidden>
+                <div
+                  className="hide-visually"
+                >
+                  <label
+                    htmlFor="upload-file--single"
+                  >
+                    upload file
+                  </label>
+                  <input
+                    accept=""
+                    id="upload-file--single"
+                    tabIndex={-1}
+                    type="file"
+                  />
+                </div>
+              </VisuallyHidden>
+              <Popup
+                content="Delete"
+                inverted={true}
+                keepInViewPort={true}
+                on={
+                  Array [
+                    "hover",
+                    "click",
+                    "focus",
+                  ]
+                }
+                position="top left"
+                size="mini"
+                trigger={
+                  <Button
+                    aria-label="delete file"
+                    as="button"
+                    basic={true}
+                    className="delete"
+                    icon="delete"
+                    onClick={[Function]}
+                  />
+                }
+              >
+                <Portal
+                  closeOnDocumentClick={true}
+                  closeOnEscape={true}
+                  closeOnTriggerBlur={true}
+                  closeOnTriggerClick={true}
+                  closeOnTriggerMouseLeave={true}
+                  eventPool="default"
+                  mouseEnterDelay={50}
+                  mouseLeaveDelay={70}
+                  onClose={[Function]}
+                  onMount={[Function]}
+                  onOpen={[Function]}
+                  onUnmount={[Function]}
+                  openOnTriggerClick={true}
+                  openOnTriggerFocus={true}
+                  openOnTriggerMouseEnter={true}
+                  trigger={
+                    <Button
+                      aria-label="delete file"
+                      as="button"
+                      basic={true}
+                      className="delete"
+                      icon="delete"
+                      onClick={[Function]}
+                    />
+                  }
+                  triggerRef={[Function]}
+                >
+                  <Ref
+                    innerRef={[Function]}
+                  >
+                    <Button
+                      aria-label="delete file"
+                      as="button"
+                      basic={true}
+                      className="delete"
+                      icon="delete"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      <button
+                        aria-label="delete file"
+                        className="ui basic icon button delete"
+                        onBlur={[Function]}
+                        onClick={[Function]}
+                        onFocus={[Function]}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                      >
+                        <Icon
+                          as="i"
+                          name="delete"
+                        >
+                          <i
+                            aria-hidden="true"
+                            className="delete icon"
+                          />
+                        </Icon>
+                      </button>
+                    </Button>
+                  </Ref>
+                </Portal>
+              </Popup>
+            </div>
+          </ButtonGroup>
+        </td>
+      </TableCell>
+    </tr>
+  </TableRow>
+</EditSupportFileRow>
 `;

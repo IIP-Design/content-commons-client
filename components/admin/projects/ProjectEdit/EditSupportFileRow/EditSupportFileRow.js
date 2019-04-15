@@ -141,7 +141,6 @@ class EditSupportFileRow extends React.PureComponent {
   }
 
   handleReplaceFile = () => {
-    console.log( 'replace file' );
     this.addReplaceFileRef.click();
   }
 
