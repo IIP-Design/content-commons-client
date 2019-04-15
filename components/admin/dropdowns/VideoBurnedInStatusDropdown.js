@@ -1,7 +1,6 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'semantic-ui-react';
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { titleCase } from 'lib/utils';
@@ -40,28 +39,19 @@ const VideoBurnedInStatusDropdown = props => (
       }
 
       return (
-        <Fragment>
-          { /* eslint-disable jsx-a11y/label-has-for */ }
-          <VisuallyHidden>
-            <label htmlFor={ props.id }>
-              { `${props.forFn} subtitle` }
-            </label>
-          </VisuallyHidden>
-
-          <Dropdown
-            id={ props.id }
-            name="videoBurnedInStatus"
-            onChange={ props.onChange }
-            options={ options }
-            placeholder="–"
-            value={ props.selected }
-              // error={ !selectedLanguage }
-            fluid
-            required={ props.required }
-            selection
-            loading={ loading }
-          />
-        </Fragment>
+        <Dropdown
+          id={ props.id }
+          name="videoBurnedInStatus"
+          onChange={ props.onChange }
+          options={ options }
+          placeholder="–"
+          value={ props.selected }
+          // error={ !selectedLanguage }
+          fluid
+          required={ props.required }
+          selection
+          loading={ loading }
+        />
       );
     } }
   </Query>
@@ -72,7 +62,6 @@ VideoBurnedInStatusDropdown.propTypes = {
   id: PropTypes.string,
   selected: PropTypes.string,
   onChange: PropTypes.func,
-  forFn: PropTypes.string,
   required: PropTypes.bool,
 };
 
