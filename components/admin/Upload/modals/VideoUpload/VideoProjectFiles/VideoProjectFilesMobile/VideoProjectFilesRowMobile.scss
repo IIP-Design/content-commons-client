@@ -10,6 +10,14 @@
     padding-bottom: 0.5em;
   }
 
+  &.ui.form .field > label {
+    font-size: 0.77em !important;
+    font-weight: 600 !important;
+    margin-bottom: 0.5em;
+    margin-top: 1em;
+    color: $blue;
+  }
+
   &__dropdowns {
     transition: max-height 0.2s ease-out;
     max-height: 400px;
@@ -30,14 +38,6 @@
     }
   }
 
-  .ui.form .field > &__label {
-    font-size: 0.77em;
-    font-weight: 600;
-    margin-bottom: 0.5em;
-    margin-top: 1em;
-    color: $blue;
-  }
-
   &__column {
     font-size: 0.88em;
 
@@ -47,6 +47,7 @@
       justify-content: space-between;
       padding-top: 0;
       padding-bottom: 0;
+      cursor: pointer;
 
       .ui.icon.button {
         padding: 0.6rem 0.4em;

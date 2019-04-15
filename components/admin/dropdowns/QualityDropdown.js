@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown } from 'semantic-ui-react';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -43,18 +44,27 @@ const QualityDropdown = props => (
       }
 
       return (
-        <Dropdown
-          id={ props.id }
-          name="quality"
-          onChange={ props.onChange }
-          options={ options }
-          placeholder="–"
-          value={ props.selected }
-              // error={ !selectedLanguage }
-          fluid
-          selection
-          loading={ loading }
-        />
+        <Fragment>
+          { !props.label && (
+
+            <VisuallyHidden>
+              { /* eslint-disable jsx-a11y/label-has-for */ }
+              <label htmlFor={ props.id }>
+                { `${props.id} quality` }
+              </label>
+            </VisuallyHidden>
+          ) }
+          <Form.Dropdown
+            id={ props.id }
+            name="quality"
+            options={ options }
+            placeholder="–"
+            loading={ loading }
+            fluid
+            selection
+            { ...props }
+          />
+        </Fragment>
 
       );
     } }
@@ -62,12 +72,17 @@ const QualityDropdown = props => (
 
 );
 
+QualityDropdown.defaultProps = {
+  id: ''
+};
+
+
 QualityDropdown.propTypes = {
   id: PropTypes.string,
-  selected: PropTypes.string,
-  onChange: PropTypes.func,
-  type: PropTypes.string,
+  label: PropTypes.string,
+  type: PropTypes.string
 };
+
 
 export default QualityDropdown;
 export { VIDEO_QUALITY_QUERY };

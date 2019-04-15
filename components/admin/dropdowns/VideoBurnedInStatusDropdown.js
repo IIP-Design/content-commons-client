@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown } from 'semantic-ui-react';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { titleCase } from 'lib/utils';
@@ -39,30 +40,42 @@ const VideoBurnedInStatusDropdown = props => (
       }
 
       return (
-        <Dropdown
-          id={ props.id }
-          name="videoBurnedInStatus"
-          onChange={ props.onChange }
-          options={ options }
-          placeholder="–"
-          value={ props.selected }
-          // error={ !selectedLanguage }
-          fluid
-          required={ props.required }
-          selection
-          loading={ loading }
-        />
+        <Fragment>
+          { !props.label && (
+
+            <VisuallyHidden>
+              { /* eslint-disable jsx-a11y/label-has-for */ }
+              <label htmlFor={ props.id }>
+                { `${props.id} subtitles` }
+              </label>
+            </VisuallyHidden>
+          ) }
+
+          <Form.Dropdown
+            id={ props.id }
+            name="videoBurnedInStatus"
+            options={ options }
+            placeholder="–"
+            loading={ loading }
+            fluid
+            selection
+            { ...props }
+          />
+        </Fragment>
       );
     } }
   </Query>
 
 );
 
+
+VideoBurnedInStatusDropdown.defaultProps = {
+  id: ''
+};
+
 VideoBurnedInStatusDropdown.propTypes = {
   id: PropTypes.string,
-  selected: PropTypes.string,
-  onChange: PropTypes.func,
-  required: PropTypes.bool,
+  label: PropTypes.string
 };
 
 export default VideoBurnedInStatusDropdown;
