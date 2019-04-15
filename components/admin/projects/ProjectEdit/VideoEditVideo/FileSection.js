@@ -54,7 +54,7 @@ class FileSection extends Component {
       <section className="edit-file">
         <h4>{ `File Data ${lang}` }</h4>
         <div className="edit-file-form-container">
-          <FileSidebar callback={ this.handleFileChoice } id={ unitId } />
+          <FileSidebar callback={ this.handleFileChoice } id={ unitId } selected={ selected } />
           <FileDataForm id={ selected } />
         </div>
       </section>

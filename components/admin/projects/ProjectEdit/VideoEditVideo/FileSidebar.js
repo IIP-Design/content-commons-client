@@ -1,7 +1,7 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
 import propTypes from 'prop-types';
+import { Query } from 'react-apollo';
 
 import './FileSidebar.scss';
 
@@ -17,18 +17,20 @@ const VIDEO_UNIT_QUERY = gql`
         id
         quality
         videoBurnedInStatus
+        use {
+          name
+        }
       }
     }
   } 
 `;
 
-const FileSidebar = ( { callback, id } ) => (
+const FileSidebar = ( { callback, id, selected } ) => (
   <Query query={ VIDEO_UNIT_QUERY } variables={ { id } }>
     { ( { loading, error, data } ) => {
       if ( loading ) return <p>Loading...</p>;
-      if ( error ) return <p>Error</p>;
+      if ( error ) return <p>{ `Error: ${error.message}` }</p>;
 
-      console.log( data );
       const thumbnail = data.videoUnit.thumbnails[0];
       const image = thumbnail.image.url;
       const { files } = data.videoUnit;
@@ -45,8 +47,13 @@ const FileSidebar = ( { callback, id } ) => (
                 role="button"
                 tabIndex="0"
               >
-                <img className="edit-video-sidebar-image" src={ image } alt="" />
-                <p>{ `${file.quality}, ${file.videoBurnedInStatus}` }</p>
+                <img
+                  alt=""
+                  className={ selected === file.id ? 'edit-video-sidebar-image selected' : 'edit-video-sidebar-image' }
+                  src={ image }
+                />
+                <p>{ `${file.quality} | ${file.use.name}` }</p>
+                <p>{ file.videoBurnedInStatus }</p>
               </div>
             ) )
           ) }
@@ -58,7 +65,8 @@ const FileSidebar = ( { callback, id } ) => (
 
 FileSidebar.propTypes = {
   callback: propTypes.func,
-  id: propTypes.string
+  id: propTypes.string,
+  selected: propTypes.string
 };
 
 export default FileSidebar;
