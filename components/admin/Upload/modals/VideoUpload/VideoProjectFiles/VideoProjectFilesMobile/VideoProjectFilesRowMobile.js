@@ -1,6 +1,7 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'semantic-ui-react';
+import { Form, Button } from 'semantic-ui-react';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown';
@@ -57,7 +58,7 @@ const VideoProjectFilesRowMobile = props => {
     // Context API is used to avoind having to pass props down multiple levels
     <VideoUploadContext.Consumer>
       { ( { replaceAssetFile, removeAssetFile, updateField } ) => (
-        <div className="videoProjectFilesRowMobile">
+        <Form className="videoProjectFilesRowMobile">
 
           { /* Filename */ }
           <div className="videoProjectFilesRowMobile__column">
@@ -75,46 +76,63 @@ const VideoProjectFilesRowMobile = props => {
             <p className="videoProjectFilesRowMobile__dropdowns--filename-full">{ name }</p>
 
             { /* Language */ }
-            <div>
-              <div className="videoProjectFilesRowMobile__label">Language</div>
+            <Form.Field required>
+              { /* eslint-disable jsx-a11y/label-has-for */ }
+              <VisuallyHidden>
+                <label className="videoProjectFilesRowMobile__label" htmlFor={ id }>
+                  { `${name} language` }
+                </label>
+              </VisuallyHidden>
               <LanguageDropdown id={ id } selected={ language } forFn={ name } onChange={ updateField } />
-            </div>
+            </Form.Field>
 
             { /* VideoBurnedInStatus */ }
-            <div>
-              { fileType === 'video' && (
-                <Fragment>
-                  <div className="videoProjectFilesRowMobile__label">Subtitles</div>
-                  <VideoBurnedInStatusDropdown id={ id } selected={ videoBurnedInStatus } forFn={ name } onChange={ updateField } />
-                </Fragment>
-              )
-              }
-            </div>
+
+            { fileType === 'video' && (
+              <Form.Field required>
+                { /* eslint-disable jsx-a11y/label-has-for */ }
+                <VisuallyHidden>
+                  <label className="videoProjectFilesRowMobile__label" htmlFor={ id }>
+                    { `${name} subtitles` }
+                  </label>
+                </VisuallyHidden>
+                <VideoBurnedInStatusDropdown id={ id } selected={ videoBurnedInStatus } forFn={ name } onChange={ updateField } />
+              </Form.Field>
+            )
+            }
 
             { /* Type/Use */ }
-            <div>
-              { ( fileType === 'video' || fileType === 'image' ) && (
-                <Fragment>
-                  <div className="videoProjectFilesRowMobile__label">Type/Use</div>
-                  <UseDropdown id={ id } type={ fileType } selected={ use } forFn={ name } onChange={ updateField } />
-                </Fragment>
-              )
-              }
-            </div>
+
+            { ( fileType === 'video' || fileType === 'image' ) && (
+              <Form.Field required>
+                { /* eslint-disable jsx-a11y/label-has-for */ }
+                <VisuallyHidden>
+                  <label className="videoProjectFilesRowMobile__label" htmlFor={ id }>
+                    { `${name} type/use` }
+                  </label>
+                </VisuallyHidden>
+                <UseDropdown id={ id } type={ fileType } selected={ use } forFn={ name } onChange={ updateField } />
+              </Form.Field>
+            )
+            }
 
             { /* Quality */ }
-            <div>
-              { fileType === 'video' && (
-                <Fragment>
-                  <div className="videoProjectFilesRowMobile__label">Quality</div>
-                  <QualityDropdown id={ id } type={ fileType } selected={ quality } forFn={ name } onChange={ updateField } />
-                </Fragment>
-              )
-              }
-            </div>
+
+            { fileType === 'video' && (
+              <Form.Field required>
+                { /* eslint-disable jsx-a11y/label-has-for */ }
+                <VisuallyHidden>
+                  <label className="videoProjectFilesRowMobile__label" htmlFor={ id }>
+                    { `${name} quality` }
+                  </label>
+                </VisuallyHidden>
+                <QualityDropdown id={ id } type={ fileType } selected={ quality } forFn={ name } onChange={ updateField } />
+              </Form.Field>
+            )
+            }
 
           </div>
-        </div>
+        </Form>
       ) }
     </VideoUploadContext.Consumer>
   );

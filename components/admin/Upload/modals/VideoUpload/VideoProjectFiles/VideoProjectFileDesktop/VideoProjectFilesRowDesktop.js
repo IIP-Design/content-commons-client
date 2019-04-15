@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown';
@@ -77,13 +78,29 @@ const VideoProjectFilesDesktopRow = props => {
 
             { /* Language */ }
             <Grid.Column width={ 4 } style={ show( 1 ) }>
-              <LanguageDropdown id={ id } selected={ language } forFn={ name } onChange={ updateField } />
+              { /* eslint-disable jsx-a11y/label-has-for */ }
+              <VisuallyHidden>
+                <label htmlFor={ id }>
+                  { `${name} language` }
+                </label>
+              </VisuallyHidden>
+              <LanguageDropdown id={ id } selected={ language } onChange={ updateField } />
             </Grid.Column>
 
             { /* VideoBurnedInStatus */ }
             <Grid.Column width={ 4 } style={ show( 1 ) }>
               { fileType === 'video'
-                ? <VideoBurnedInStatusDropdown id={ id } selected={ videoBurnedInStatus } forFn={ name } onChange={ updateField } />
+                ? (
+                  <Fragment>
+                    { /* eslint-disable jsx-a11y/label-has-for */ }
+                    <VisuallyHidden>
+                      <label htmlFor={ id }>
+                        { `${name} subtitles` }
+                      </label>
+                    </VisuallyHidden>
+                    <VideoBurnedInStatusDropdown id={ id } selected={ videoBurnedInStatus } onChange={ updateField } />
+                  </Fragment>
+                )
                 : renderNotApplicable()
               }
             </Grid.Column>
@@ -91,15 +108,36 @@ const VideoProjectFilesDesktopRow = props => {
             { /* Type/Use */ }
             <Grid.Column width={ 4 } style={ show( 2 ) }>
               { ( fileType === 'video' || fileType === 'image' )
-                ? <UseDropdown id={ id } type={ fileType } selected={ use } forFn={ name } onChange={ updateField } />
+                ? (
+                  <Fragment>
+                    { /* eslint-disable jsx-a11y/label-has-for */ }
+                    <VisuallyHidden>
+                      <label htmlFor={ id }>
+                        { `${name} type/use` }
+                      </label>
+                    </VisuallyHidden>
+                    <UseDropdown id={ id } type={ fileType } selected={ use } onChange={ updateField } />
+                  </Fragment>
+                )
                 : renderNotApplicable()
+
               }
             </Grid.Column>
 
             { /* Quality */ }
             <Grid.Column width={ 4 } style={ show( 2 ) }>
               { fileType === 'video'
-                ? <QualityDropdown id={ id } type={ fileType } selected={ quality } forFn={ name } onChange={ updateField } />
+                ? (
+                  <Fragment>
+                    { /* eslint-disable jsx-a11y/label-has-for */ }
+                    <VisuallyHidden>
+                      <label htmlFor={ id }>
+                        { `${name} quality` }
+                      </label>
+                    </VisuallyHidden>
+                    <QualityDropdown id={ id } type={ fileType } selected={ quality } onChange={ updateField } />
+                  </Fragment>
+                )
                 : renderNotApplicable()
               }
             </Grid.Column>
