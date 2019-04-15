@@ -211,10 +211,14 @@ describe( '<EditSupportFilesContent />', () => {
     const addFilesBtn = wrapper.find( 'Button.add-files' );
     const inst = editSupportFilesContent.instance();
     const spy = jest.spyOn( inst, 'handleAddFiles' );
+    inst.addFilesInputRef = {
+      click: jest.fn()
+    };
 
     inst.forceUpdate();
     addFilesBtn.simulate( 'click' );
 
     expect( spy ).toHaveBeenCalled();
+    expect( inst.addFilesInputRef.click ).toHaveBeenCalled();
   } );
 } );
