@@ -28,6 +28,10 @@ const ProjectItem = props => {
       projectId,
       itemId,
       displayItemInModal
+    },
+    contentProps: {
+      itemId,
+      projectId
     }
   };
   const sharedStyles = { cursor: 'not-allowed' };

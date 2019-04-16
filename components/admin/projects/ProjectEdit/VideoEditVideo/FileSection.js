@@ -11,6 +11,7 @@ import './FileSection.scss';
 const VIDEO_UNIT_QUERY = gql`
   query VIDEO_UNIT_QUERY( $id: ID! ) {
     videoUnit( id: $id ) {
+      id
       language {
         displayName
       }

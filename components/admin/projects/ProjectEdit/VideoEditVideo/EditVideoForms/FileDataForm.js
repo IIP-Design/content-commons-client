@@ -11,7 +11,7 @@ import {
   Form, Grid, Input, Select, Loader
 } from 'semantic-ui-react';
 
-import IconPopup from 'components/admin/projects/ProjectEdit/IconPopup/IconPopup';
+import IconPopup from 'components/popups/IconPopup/IconPopup';
 
 import './FileDataForm.scss';
 

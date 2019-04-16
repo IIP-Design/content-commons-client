@@ -6,7 +6,7 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
-import { object } from 'prop-types';
+import propTypes from 'prop-types';
 
 import { Loader } from 'semantic-ui-react';
 
@@ -17,6 +17,7 @@ import './EditSingleProjectItem.scss';
 const VIDEO_PROJECT_QUERY = gql`
   query VIDEO_PROJECT_QUERY( $id: ID! ) {
     project: videoProject( id: $id ) {
+      id
       projectTitle
     }
   }
@@ -25,6 +26,7 @@ const VIDEO_PROJECT_QUERY = gql`
 const VIDEO_UNIT_QUERY = gql`
   query VIDEO_UNIT_QUERY( $id: ID! ) {
     unit: videoUnit( id: $id ) {
+      id
       language {
         displayName
       }
@@ -34,6 +36,7 @@ const VIDEO_UNIT_QUERY = gql`
 
 class EditSingleProjectItem extends React.PureComponent {
   render() {
+    const { itemId } = this.props;
     const { project } = this.props.videoProjectQuery;
     const { unit } = this.props.videoUnitQuery;
 
@@ -59,28 +62,30 @@ class EditSingleProjectItem extends React.PureComponent {
         headline={ `${project.projectTitle} in ${unit.language.displayName}` }
         textDirection="ltr"
       >
-        <VideoEditVideo id="cju34f1iv003908755bm55l35" />
+        <VideoEditVideo id={ itemId } />
       </ModalItem>
     );
   }
 }
 
 EditSingleProjectItem.propTypes = {
-  videoProjectQuery: object,
-  videoUnitQuery: object
+  itemId: propTypes.string,
+  // projectId: propTypes.string,
+  videoProjectQuery: propTypes.object,
+  videoUnitQuery: propTypes.object
 };
 
 export default compose(
   graphql( VIDEO_PROJECT_QUERY, {
     name: 'videoProjectQuery',
-    options: {
-      variables: { id: 'cjtg3ecxk003c0775o7uxt3mj' }
-    }
+    options: props => ( {
+      variables: { id: props.projectId },
+    } )
   } ),
   graphql( VIDEO_UNIT_QUERY, {
     name: 'videoUnitQuery',
-    options: {
-      variables: { id: 'cju34f1iv003908755bm55l35' }
-    }
+    options: props => ( {
+      variables: { id: props.itemId },
+    } )
   } )
 )( EditSingleProjectItem );

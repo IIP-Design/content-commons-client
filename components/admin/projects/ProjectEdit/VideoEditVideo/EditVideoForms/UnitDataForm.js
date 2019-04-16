@@ -10,6 +10,7 @@ import {
 const VIDEO_UNIT_QUERY = gql`
   query VIDEO_UNIT_QUERY( $id: ID! ) {
     unit: videoUnit( id: $id ) {
+      id
       title
       descPublic
       language {
@@ -76,10 +77,8 @@ class UnitDataForm extends Component {
     return (
       <Query query={ VIDEO_UNIT_QUERY } variables={ { id } }>
         { ( { loading, error, data } ) => {
-          const { unit } = data;
-
           if ( error ) return `Error! ${error.message}`;
-          if ( !unit || loading ) {
+          if ( !data || loading ) {
             return (
               <div style={ {
                 display: 'flex',
@@ -95,6 +94,7 @@ class UnitDataForm extends Component {
             );
           }
 
+          const { unit } = data;
           const { image } = unit.thumbnails[0];
           const lang = `in ${unit.language.displayName}` || '';
 

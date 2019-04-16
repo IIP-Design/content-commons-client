@@ -13,9 +13,10 @@ import FileSection from 'components/admin/projects/ProjectEdit/VideoEditVideo/Fi
 
 import './VideoEditVideo.scss';
 
-const CURRENT_VIDEO_UNIT = gql`
-  query CURRENT_VIDEO_UNIT( $id: ID! ) {
+const VIDEO_UNIT_QUERY = gql`
+  query VIDEO_UNIT_QUERY( $id: ID! ) {
     videoUnit( id: $id ) {
+      id
       files {
         id
       }
@@ -28,10 +29,10 @@ class VideoEditVideo extends React.PureComponent {
     const { id } = this.props;
 
     return (
-      <Query query={ CURRENT_VIDEO_UNIT } variables={ { id } }>
+      <Query query={ VIDEO_UNIT_QUERY } variables={ { id } }>
         { ( { loading, error, data } ) => {
-          if ( loading ) return <p>Loading...</p>;
-          if ( error ) return <p>Error</p>;
+          if ( loading || !data ) return <p>Loading...</p>;
+          if ( error ) return <p>{ `Error: ${error.message}` }</p>;
 
           const initialFile = data.videoUnit.files[0].id;
 
