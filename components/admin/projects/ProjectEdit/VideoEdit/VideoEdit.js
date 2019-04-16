@@ -7,7 +7,7 @@ import React, { Fragment } from 'react';
 import Router from 'next/router';
 import { func, object, string } from 'prop-types';
 import {
-  Button, Confirm, Loader, Progress
+  Button, Confirm, Icon, Loader, Progress
 } from 'semantic-ui-react';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
@@ -386,8 +386,6 @@ class VideoEdit extends React.PureComponent {
     } = this.props;
     const { error, loading } = data;
 
-    if ( error ) return `Error! ${error.message}`;
-
     if ( loading ) {
       return (
         <div style={ {
@@ -403,6 +401,18 @@ class VideoEdit extends React.PureComponent {
             inline="centered"
             style={ { marginBottom: '1em' } }
             content="Loading the project..."
+          />
+        </div>
+      );
+    }
+
+    if ( error ) {
+      return (
+        <div className="video-edit error">
+          <Icon
+            color="red"
+            name="exclamation triangle"
+            content="Loading error..."
           />
         </div>
       );
