@@ -12,6 +12,9 @@ const VIDEO_UNIT_QUERY = gql`
     unit: videoUnit( id: $id ) {
       title
       descPublic
+      language {
+        displayName
+      }
       thumbnails {
         image {
           alt
@@ -22,7 +25,51 @@ const VIDEO_UNIT_QUERY = gql`
   } 
 `;
 
+const VIDEO_UNIT_DESC_MUTATION = gql`
+  mutation VIDEO_UNIT_DESC_MUTATION( $id: ID!, $descPublic: String ) {
+    updateVideoUnit(
+      data: {
+        descPublic: $descPublic
+      },
+      where: {
+        id: $id
+      }
+    ) {
+      descPublic
+    }
+  }
+`;
+
+const VIDEO_UNIT_TITLE_MUTATION = gql`
+  mutation VIDEO_UNIT_TITLE_MUTATION( $id: ID!, $title: String ) {
+    updateVideoUnit(
+      data: {
+        title: $title
+      },
+      where: {
+        id: $id
+      }
+    ) {
+      title
+    }
+  }
+`;
+
 class UnitDataForm extends Component {
+  updateUnit = e => {
+    // const { id } = this.props;
+    // const { name } = e.target;
+
+    // this.props[`${name}VideoUnitMutation`]( {
+    //   variables: {
+    //     id,
+    //     [name]: this.state[name]
+    //   }
+    // } );
+
+    // this.props.unit.refetch();
+  }
+
   render() {
     const { id } = this.props;
 
@@ -49,6 +96,7 @@ class UnitDataForm extends Component {
           }
 
           const { image } = unit.thumbnails[0];
+          const lang = `in ${unit.language.displayName}` || '';
 
           return (
             <Form className="edit-video__form video-basic-data">
@@ -66,7 +114,7 @@ class UnitDataForm extends Component {
                     <Form.Field
                       control={ Input }
                       id="video-title"
-                      label="Video Title in Language"
+                      label={ `Video Title ${lang}` }
                       name="title"
                       // onBlur={ this.updateUnit }
                       // onChange={ this.handleInput }
@@ -76,7 +124,7 @@ class UnitDataForm extends Component {
                     <Form.Field
                       control={ TextArea }
                       id="video-description"
-                      label="Public Description in Language"
+                      label={ `Public Description ${lang}` }
                       name="descPublic"
                       // onBlur={ this.updateUnit }
                       // onChange={ this.handleInput }
@@ -86,7 +134,7 @@ class UnitDataForm extends Component {
                     <Form.Field
                       control={ Input }
                       id="video-keywords"
-                      label="Additional Keywords in Language"
+                      label={ `Additional Keywords ${lang}` }
                       name="keywords"
                       // onChange={ this.handleInput }
                     />

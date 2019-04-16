@@ -1,3 +1,11 @@
+@import "styles/colors.scss";
+
+.file_meta_content {
+  color: $blue;
+  display: block;
+  font-size: .9rem;
+}
+
 .video-file-form {
   margin: 1rem;
 

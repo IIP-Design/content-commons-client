@@ -56,7 +56,7 @@ class EditSingleProjectItem extends React.PureComponent {
     return (
       <ModalItem
         customClassName="edit-project-item"
-        headline={ `${project.projectTitle || ''} | ${unit.language.displayName || ''}` }
+        headline={ `${project.projectTitle} in ${unit.language.displayName}` }
         textDirection="ltr"
       >
         <VideoEditVideo id="cju34f1iv003908755bm55l35" />

@@ -3,12 +3,10 @@
  * FileDataForm
  *
  */
-
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
 import propTypes from 'prop-types';
-
 import {
   Form, Grid, Input, Select, Loader
 } from 'semantic-ui-react';
@@ -17,27 +15,103 @@ import IconPopup from 'components/admin/projects/ProjectEdit/IconPopup/IconPopup
 
 import './FileDataForm.scss';
 
-class FileDataForm extends Component {
-  state = {
-    language: {},
-    quality: 'WEB',
-    subtitles: 'CLEAN'
+const VIDEO_FILE_QUERY = gql`
+  query VIDEO_FILE_QUERY( $id: ID! ) {
+    file: videoFile( id: $id ) {
+      duration
+      filename
+      filesize
+      quality
+      videoBurnedInStatus
+      dimensions {
+        height
+        width
+      }
+      language {
+        displayName
+      }
+      use {
+        name
+      }
+    }
   }
+`;
 
-  componentDidMount() {
-    const { file } = this.props.data;
+const VIDEO_FILE_LANG_MUTATION = gql`
+  mutation VIDEO_FILE_LANG_MUTATION( $id: ID!, $descPublic: String ) {
+    updateVideoFile(
+      data: {
+        descPublic: $descPublic
+      },
+      where: {
+        id: $id
+      }
+    ) {
+      descPublic
+    }
+  }
+`;
 
-    if ( file ) {
+const VIDEO_FILE_SUBTITLES_MUTATION = gql`
+  mutation VIDEO_FILE_SUBTITLES_MUTATION( $id: ID!, $use: VideoUse ) {
+    updateVideoFile(
+      data: {
+        use: $title
+      },
+      where: {
+        id: $id
+      }
+    ) {
+      title
+    }
+  }
+`;
+
+const VIDEO_FILE_USE_MUTATION = gql`
+  mutation VIDEO_FILE_USE_MUTATION( $id: ID!, $use: VideoUse ) {
+    updateVideoFile(
+      data: {
+        use: $use
+      },
+      where: {
+        id: $id
+      }
+    ) {
+      use
+    }
+  }
+`;
+
+const VIDEO_FILE_QUALITY_MUTATION = gql`
+  mutation VIDEO_FILE_QUALITY_MUTATION( $id: ID!, $title: String ) {
+    updateVideoFile(
+      data: {
+        title: $title
+      },
+      where: {
+        id: $id
+      }
+    ) {
+      title
+    }
+  }
+`;
+
+class FileDataForm extends Component {
+  state = {}
+
+  componentDidUpdate = prevProps => {
+    const { file } = this.props.videoFileQuery;
+
+    if ( file !== prevProps.videoFileQuery.file ) {
       this.setState( {
-        language: file.language,
+        language: file.language.displayName,
         quality: file.quality,
         subtitles: file.videoBurnedInStatus,
         use: file.use.name
       } );
     }
   }
-
-  getProjectData = () => {}
 
   handleInput = e => {
     this.setState( {
@@ -49,7 +123,7 @@ class FileDataForm extends Component {
     const { id } = this.props;
     const { name } = e.target;
 
-    this.props[`${name}VideoUnitMutation`]( {
+    this.props[`${name}VideoFileMutation`]( {
       variables: {
         id,
         [name]: this.state[name]
@@ -72,32 +146,23 @@ class FileDataForm extends Component {
       </label>
     );
 
-    // const {
-    //   data: { error, loading, file }
-    // } = this.props;
+    const { file, loading } = this.props.videoFileQuery;
 
-    // const {
-    //   language, quality, subtitles
-    // } = this.state;
-
-    // if ( error ) return `Error! ${error.message}`;
-    // if ( !file || loading ) {
-    //   return (
-    //     <div style={ {
-    //       display: 'flex',
-    //       flexDirection: 'column',
-    //       alignItems: 'center',
-    //       justifyContent: 'center',
-    //       height: '100vh'
-    //     } }
-    //     >
-    //       <Loader active inline="centered" style={ { marginBottom: '1em' } } />
-    //       <p>Loading the file data...</p>
-    //     </div>
-    //   );
-    // }
-
-    // console.log( file );
+    if ( !file || loading ) {
+      return (
+        <div style={ {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh'
+        } }
+        >
+          <Loader active inline="centered" style={ { marginBottom: '1em' } } />
+          <p>Loading the file data...</p>
+        </div>
+      );
+    }
 
     const { language, quality, subtitles } = this.state;
 
@@ -106,19 +171,19 @@ class FileDataForm extends Component {
         <Grid stackable>
           <Grid.Row>
             <Grid.Column className="video-file-form-col-1" mobile={ 16 } computer={ 8 }>
-              <div className="modal_meta">
-                { /* <span className="modal_meta_content modal_meta_content--filetype">
+              <div className="file_meta">
+                <span className="file_meta_content file_meta_content--filetype">
                   { file.filename }
                 </span>
-                <span className="modal_meta_content modal_meta_content--filesize">
+                <span className="file_meta_content file_meta_content--filesize">
                   { `Filesize: ${file.filesize}` }
                 </span>
-                <span className="modal_meta_content modal_meta_content--dimensions">
+                <span className="file_meta_content file_meta_content--dimensions">
                   { `Dimensions: ${file.dimensions.width} x ${file.dimensions.height}` }
                 </span>
-                <span className="modal_meta_content modal_meta_content--duration">
+                <span className="file_meta_content file_meta_content--duration">
                   { `Duration: ${file.duration}` }
-                </span> */ }
+                </span>
               </div>
               <div className="video-links">
                 <Form.Field
@@ -150,37 +215,37 @@ class FileDataForm extends Component {
                 options={
                   [
                     {
-                      value: 'english',
+                      value: 'English',
                       text: 'English'
                     },
                     {
-                      value: 'arabic',
+                      value: 'Arabic',
                       text: 'Arabic'
                     },
                     {
-                      value: 'chinese',
+                      value: 'Chinese',
                       text: 'Chinese (Simplified)'
                     },
                     {
-                      value: 'french',
+                      value: 'French',
                       text: 'French'
                     },
                     {
-                      value: 'portuguese',
+                      value: 'Portuguese',
                       text: 'Portuguese'
                     },
                     {
-                      value: 'russian',
+                      value: 'Russian',
                       text: 'Russian'
                     },
                     {
-                      value: 'spanish',
+                      value: 'Spanish',
                       text: 'Spanish'
                     }
                   ]
                 }
                 required
-                value="english"
+                value={ language }
               />
 
               <Form.Field
@@ -261,69 +326,19 @@ class FileDataForm extends Component {
 
 FileDataForm.propTypes = {
   data: propTypes.object,
-  file: propTypes.object,
-  id: propTypes.string
+  id: propTypes.string,
+  videoFileQuery: propTypes.object
 };
 
-const VIDEO_FILE_QUERY = gql`
-  query VIDEO_FILE_QUERY( $id: ID! ) {
-    file: videoFile( id: $id ) {
-      duration
-      filename
-      filesize
-      quality
-      videoBurnedInStatus
-      dimensions {
-        height
-        width
-      }
-      use {
-        name
-      }
-    }
-  }
-`;
-
-const currentVideoFile = graphql( VIDEO_FILE_QUERY, {
-  options: {
-    variables: {
-      id: 'cju34dnpw002p087504alx7bg'
-    },
-  }
-} );
-
-const VIDEO_UNIT_DESC_MUTATION = gql`
-  mutation VIDEO_UNIT_DESC_MUTATION( $id: ID!, $descPublic: String ) {
-    updateVideoUnit(
-      data: {
-        descPublic: $descPublic
-      },
-      where: {
-        id: $id
-      }
-    ) {
-      descPublic
-    }
-  }
-`;
-
-const VIDEO_UNIT_TITLE_MUTATION = gql`
-  mutation VIDEO_UNIT_TITLE_MUTATION( $id: ID!, $title: String ) {
-    updateVideoUnit(
-      data: {
-        title: $title
-      },
-      where: {
-        id: $id
-      }
-    ) {
-      title
-    }
-  }
-`;
-
 export default compose(
-  graphql( VIDEO_UNIT_DESC_MUTATION, { name: 'descPublicVideoUnitMutation' } ),
-  graphql( VIDEO_UNIT_TITLE_MUTATION, { name: 'titleVideoUnitMutation' } ),
-  currentVideoFile
+  graphql( VIDEO_FILE_QUALITY_MUTATION, { name: 'qualityVideoFileMutation' } ),
+  graphql( VIDEO_FILE_USE_MUTATION, { name: 'useVideoFileMutation' } ),
+  graphql( VIDEO_FILE_SUBTITLES_MUTATION, { name: 'subtitlesVideoFileMutation' } ),
+  graphql( VIDEO_FILE_LANG_MUTATION, { name: 'languageVideoFileMutation' } ),
+  graphql( VIDEO_FILE_QUERY, {
+    name: 'videoFileQuery',
+    options: props => ( {
+      variables: { id: props.id },
+    } )
+  } )
 )( FileDataForm );
