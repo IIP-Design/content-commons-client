@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
@@ -63,7 +63,15 @@ const VideoProjectFilesRowMobile = props => {
           <div className="videoProjectFilesRowMobile__column">
             <div className="videoProjectFilesRowMobile__column--filename">
               <UploadCompletionTracker fields={ getFields() } />
-              <span className="item-text">{ filename }</span>
+              { /* eslint-disable jsx-a11y/interactive-supports-focus */ }
+              <span
+                className="item-text"
+                role="button"
+                onClick={ handleToggleDropdowns }
+                onKeyPress={ handleToggleDropdowns }
+              >
+                { filename }
+              </span>
               <Button icon="chevron down" className={ `${open} no-background` } onClick={ handleToggleDropdowns } />
               <FileRemoveReplaceMenu
                 onReplace={ e => replaceAssetFile( id, e.target.files[0] ) }
@@ -75,44 +83,32 @@ const VideoProjectFilesRowMobile = props => {
             <p className="videoProjectFilesRowMobile__dropdowns--filename-full">{ name }</p>
 
             { /* Language */ }
-            <div>
-              <div className="videoProjectFilesRowMobile__label">Language</div>
-              <LanguageDropdown id={ id } selected={ language } forFn={ name } onChange={ updateField } />
-            </div>
+            <LanguageDropdown id={ id } label="Language" value={ language } onChange={ updateField } required />
 
             { /* VideoBurnedInStatus */ }
-            <div>
-              { fileType === 'video' && (
-                <Fragment>
-                  <div className="videoProjectFilesRowMobile__label">Subtitles</div>
-                  <VideoBurnedInStatusDropdown id={ id } selected={ videoBurnedInStatus } forFn={ name } onChange={ updateField } />
-                </Fragment>
-              )
-              }
-            </div>
+            { fileType === 'video' && (
+            <VideoBurnedInStatusDropdown id={ id } label="Subtitles" value={ videoBurnedInStatus } onChange={ updateField } />
+            )
+            }
 
             { /* Type/Use */ }
-            <div>
-              { ( fileType === 'video' || fileType === 'image' ) && (
-                <Fragment>
-                  <div className="videoProjectFilesRowMobile__label">Type/Use</div>
-                  <UseDropdown id={ id } type={ fileType } selected={ use } forFn={ name } onChange={ updateField } />
-                </Fragment>
-              )
-              }
-            </div>
+            { ( fileType === 'video' || fileType === 'image' ) && (
+            <UseDropdown id={ id } label="Type/Use" value={ use } type={ fileType } onChange={ updateField } required />
+            )
+            }
 
             { /* Quality */ }
-            <div>
-              { fileType === 'video' && (
-                <Fragment>
-                  <div className="videoProjectFilesRowMobile__label">Quality</div>
-                  <QualityDropdown id={ id } type={ fileType } selected={ quality } forFn={ name } onChange={ updateField } />
-                </Fragment>
-              )
-              }
-            </div>
-
+            { fileType === 'video' && (
+            <QualityDropdown
+              id={ id }
+              label="Quality"
+              value={ quality }
+              type={ fileType }
+              onChange={ updateField }
+              required
+            />
+            )
+            }
           </div>
         </div>
       ) }

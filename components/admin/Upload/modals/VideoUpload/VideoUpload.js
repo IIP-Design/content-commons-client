@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/fileUpload';
 import { withRouter } from 'next/router';
 import { compose, graphql } from 'react-apollo';
 import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown';
-import { Tab } from 'semantic-ui-react';
+import { Tab, Dimmer, Loader } from 'semantic-ui-react';
 import { v4 } from 'uuid';
 import VideoProjectType from './VideoProjectType/VideoProjectType';
 import VideoProjectFiles from './VideoProjectFiles/VideoProjectFiles';
@@ -15,6 +15,7 @@ export const VideoUploadContext = React.createContext();
 
 const VideoUpload = props => {
   const [activeIndex, setActiveIndex] = useState( 0 );
+  const [loading, setLoading] = useState( false );
   const [files, setFiles] = useState( [] );
   const [allFieldsSelected, setAllFieldsSelected] = useState( false );
 
@@ -153,6 +154,7 @@ const VideoUpload = props => {
    * @todo Research issue when time permits
    */
   const handleAddFilesToUpload = async () => {
+    setLoading( true );
     const filesToUpload = files.map( file => ( {
       language: file.language,
       use: file.use,
@@ -210,11 +212,16 @@ const VideoUpload = props => {
   ];
 
   return (
-    <Tab
-      activeIndex={ activeIndex }
-      panes={ panes }
-      className="videoUpload"
-    />
+    <Fragment>
+      <Dimmer active={ loading } inverted>
+        <Loader>Preparing files...</Loader>
+      </Dimmer>
+      <Tab
+        activeIndex={ activeIndex }
+        panes={ panes }
+        className="videoUpload"
+      />
+    </Fragment>
   );
 };
 

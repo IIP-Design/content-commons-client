@@ -4,11 +4,10 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { titleCase } from 'lib/utils';
 
-const VIDEO_BURNED_IN_STATUS_QUERY = gql`
-  query VIDEO_BURNED_IN_STATUS_QUERY {
-    __type(name: "VideoBurnedInStatus"){
+const PROJECT_VISIBILITY_QUERY = gql`
+  query PROJECT_VISIBILITY_QUERY {
+    __type(name: "ProjectVisibility"){
      enumValues {
        name
      }
@@ -17,8 +16,8 @@ const VIDEO_BURNED_IN_STATUS_QUERY = gql`
  `;
 
 
-const VideoBurnedInStatusDropdown = props => (
-  <Query query={ VIDEO_BURNED_IN_STATUS_QUERY }>
+const ProjectVisibilityDropdown = props => (
+  <Query query={ PROJECT_VISIBILITY_QUERY }>
     { ( { data, loading, error } ) => {
       if ( error ) return `Error! ${error.message}`;
 
@@ -26,10 +25,10 @@ const VideoBurnedInStatusDropdown = props => (
 
       if ( data && data.__type && data.__type.enumValues ) {
         options = data.__type.enumValues
-          .filter( enumValue => enumValue.name !== 'CAPTIONED' ) // currently not using CAPTIONED
           .map( enumValue => {
-            let text = titleCase( enumValue.name );
-            text = ( text === 'Clean' ) ? `${text} - No captions` : text;
+            const text = enumValue.name === 'PUBLIC'
+              ? 'Anyone can see this project'
+              : 'Internal use only';
 
             return {
               key: enumValue.name,
@@ -46,14 +45,14 @@ const VideoBurnedInStatusDropdown = props => (
             <VisuallyHidden>
               { /* eslint-disable jsx-a11y/label-has-for */ }
               <label htmlFor={ props.id }>
-                { `${props.id} subtitles` }
+                { `${props.id} project visibilty` }
               </label>
             </VisuallyHidden>
           ) }
 
           <Form.Dropdown
             id={ props.id }
-            name="videoBurnedInStatus"
+            name="projectVisibility"
             options={ options }
             placeholder="–"
             loading={ loading }
@@ -68,15 +67,14 @@ const VideoBurnedInStatusDropdown = props => (
 
 );
 
-
-VideoBurnedInStatusDropdown.defaultProps = {
+ProjectVisibilityDropdown.defaultProps = {
   id: ''
 };
 
-VideoBurnedInStatusDropdown.propTypes = {
+ProjectVisibilityDropdown.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string
 };
 
-export default VideoBurnedInStatusDropdown;
-export { VIDEO_BURNED_IN_STATUS_QUERY };
+export default ProjectVisibilityDropdown;
+export { PROJECT_VISIBILITY_QUERY };

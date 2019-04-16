@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown } from 'semantic-ui-react';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import './dropdown.scss';
@@ -28,40 +28,41 @@ const LanguageDropdown = props => (
 
       return (
         <Fragment>
-          { /* eslint-disable jsx-a11y/label-has-for */ }
-          <VisuallyHidden>
-            <label htmlFor={ props.id }>
-              { `${props.forFn} language` }
-            </label>
-          </VisuallyHidden>
+          { !props.label && (
 
-          <Dropdown
+            <VisuallyHidden>
+              { /* eslint-disable jsx-a11y/label-has-for */ }
+              <label htmlFor={ props.id }>
+                { `${props.id} language` }
+              </label>
+            </VisuallyHidden>
+          ) }
+
+          <Form.Dropdown
             id={ props.id }
             name="language"
-            onChange={ props.onChange }
             options={ options }
             placeholder="–"
-            value={ props.selected }
-              // error={ !selectedLanguage }
-            fluid
-            required={ props.required }
-            selection
             loading={ loading }
+            fluid
+            selection
+            { ...props }
           />
         </Fragment>
       );
     } }
 
-
   </Query>
 );
 
+LanguageDropdown.defaultProps = {
+  id: ''
+};
+
+
 LanguageDropdown.propTypes = {
   id: PropTypes.string,
-  selected: PropTypes.string,
-  onChange: PropTypes.func,
-  forFn: PropTypes.string,
-  required: PropTypes.bool,
+  label: PropTypes.string
 };
 
 export default LanguageDropdown;

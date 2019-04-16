@@ -77,13 +77,13 @@ const VideoProjectFilesDesktopRow = props => {
 
             { /* Language */ }
             <Grid.Column width={ 4 } style={ show( 1 ) }>
-              <LanguageDropdown id={ id } selected={ language } forFn={ name } onChange={ updateField } />
+              <LanguageDropdown id={ id } value={ language } onChange={ updateField } required />
             </Grid.Column>
 
             { /* VideoBurnedInStatus */ }
             <Grid.Column width={ 4 } style={ show( 1 ) }>
               { fileType === 'video'
-                ? <VideoBurnedInStatusDropdown id={ id } selected={ videoBurnedInStatus } forFn={ name } onChange={ updateField } />
+                ? <VideoBurnedInStatusDropdown id={ id } value={ videoBurnedInStatus } onChange={ updateField } required />
                 : renderNotApplicable()
               }
             </Grid.Column>
@@ -91,7 +91,7 @@ const VideoProjectFilesDesktopRow = props => {
             { /* Type/Use */ }
             <Grid.Column width={ 4 } style={ show( 2 ) }>
               { ( fileType === 'video' || fileType === 'image' )
-                ? <UseDropdown id={ id } type={ fileType } selected={ use } forFn={ name } onChange={ updateField } />
+                ? <UseDropdown id={ id } value={ use } type={ fileType } onChange={ updateField } />
                 : renderNotApplicable()
               }
             </Grid.Column>
@@ -99,7 +99,7 @@ const VideoProjectFilesDesktopRow = props => {
             { /* Quality */ }
             <Grid.Column width={ 4 } style={ show( 2 ) }>
               { fileType === 'video'
-                ? <QualityDropdown id={ id } type={ fileType } selected={ quality } forFn={ name } onChange={ updateField } />
+                ? <QualityDropdown id={ id } type={ fileType } value={ quality } onChange={ updateField } />
                 : renderNotApplicable()
               }
             </Grid.Column>
