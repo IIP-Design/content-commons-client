@@ -44,61 +44,57 @@ const VIDEO_FILE_QUERY = gql`
 `;
 
 const VIDEO_FILE_LANG_MUTATION = gql`
-  mutation VIDEO_FILE_LANG_MUTATION( $id: ID!, $descPublic: String ) {
+  mutation VIDEO_FILE_LANG_MUTATION( $id: ID!, $language: ID! ) {
     updateVideoFile(
       data: {
-        descPublic: $descPublic
+        language: {
+          connect: { id: $language }
+        }
       },
-      where: {
-        id: $id
-      }
+      where: { id: $id }
     ) {
-      descPublic
+      id
+      language { id }
     }
   }
 `;
 
 const VIDEO_FILE_SUBTITLES_MUTATION = gql`
-  mutation VIDEO_FILE_SUBTITLES_MUTATION( $id: ID!, $use: VideoUse ) {
+  mutation VIDEO_FILE_SUBTITLES_MUTATION( $id: ID!, $videoBurnedInStatus: VideoBurnedInStatus! ) {
     updateVideoFile(
-      data: {
-        use: $title
-      },
-      where: {
-        id: $id
-      }
+      data: { videoBurnedInStatus: $videoBurnedInStatus },
+      where: { id: $id }
     ) {
-      title
+      id
+      videoBurnedInStatus
     }
   }
 `;
 
 const VIDEO_FILE_USE_MUTATION = gql`
-  mutation VIDEO_FILE_USE_MUTATION( $id: ID!, $use: VideoUse ) {
+  mutation VIDEO_FILE_USE_MUTATION( $id: ID!, $use: ID! ) {
     updateVideoFile(
       data: {
-        use: $use
+        use: {
+          connect: { id: $use }
+        }
       },
-      where: {
-        id: $id
-      }
+      where: { id: $id }
     ) {
-      use
+      id
+      use { id }
     }
   }
 `;
 
 const VIDEO_FILE_QUALITY_MUTATION = gql`
-  mutation VIDEO_FILE_QUALITY_MUTATION( $id: ID!, $title: String ) {
+  mutation VIDEO_FILE_QUALITY_MUTATION( $id: ID!, $quality: VideoQuality! ) {
     updateVideoFile(
-      data: {
-        title: $title
-      },
-      where: {
-        id: $id
-      }
+      data: { quality: $quality },
+      where: { id: $id }
     ) {
-      title
+      id
+      quality
     }
   }
 `;
@@ -113,30 +109,45 @@ class FileDataForm extends Component {
       this.setState( {
         language: file.language.id,
         quality: file.quality,
-        subtitles: file.videoBurnedInStatus,
+        videoBurnedInStatus: file.videoBurnedInStatus,
         use: file.use.id
       } );
     }
   }
 
-  handleInput = e => {
+  updateUnit = ( name, value ) => {
+    const { id } = this.props;
+
+    this.props[`${name}VideoFileMutation`]( {
+      variables: {
+        id,
+        [name]: value
+      }
+    } );
+
+    this.props.videoFileQuery.refetch();
+  }
+
+  handleInputChange = e => {
     this.setState( {
       [e.target.name]: e.target.value
     } );
   }
 
-  updateUnit = e => {
-    const { id } = this.props;
+  handleInputSave = e => {
     const { name } = e.target;
+    const value = this.state[name];
 
-    this.props[`${name}VideoFileMutation`]( {
-      variables: {
-        id,
-        [name]: this.state[name]
-      }
-    } );
+    this.updateUnit( name, value );
+  }
 
-    this.props.data.refetch();
+  handleDropdownSave = ( e, data ) => {
+    const { name, value } = data;
+
+    this.setState(
+      { [name]: value },
+      () => this.updateUnit( name, value )
+    );
   }
 
   render() {
@@ -172,7 +183,7 @@ class FileDataForm extends Component {
     }
 
     const {
-      language, quality, subtitles, use
+      language, quality, use, videoBurnedInStatus
     } = this.state;
 
     return (
@@ -216,8 +227,8 @@ class FileDataForm extends Component {
             <Grid.Column mobile={ 16 } computer={ 8 }>
               <LanguageDropdown
                 id="video-language"
+                onChange={ this.handleDropdownSave }
                 label="Language"
-                name="language"
                 required
                 value={ language }
               />
@@ -225,15 +236,16 @@ class FileDataForm extends Component {
               <VideoBurnedInStatusDropdown
                 id="video-subtitles"
                 label="Subtitles & Captions"
-                name="subtitles"
+                onChange={ this.handleDropdownSave }
                 required
                 type="video"
-                value={ subtitles }
+                value={ videoBurnedInStatus }
               />
 
               <UseDropdown
                 id="video-use"
                 label="Video Type"
+                onChange={ this.handleDropdownSave }
                 required
                 type="video"
                 value={ use }
@@ -242,7 +254,7 @@ class FileDataForm extends Component {
               <QualityDropdown
                 id="video-quality"
                 label={ videoQuality }
-                name="quality"
+                onChange={ this.handleDropdownSave }
                 required
                 type="video"
                 value={ quality }
@@ -257,7 +269,6 @@ class FileDataForm extends Component {
 }
 
 FileDataForm.propTypes = {
-  data: propTypes.object,
   id: propTypes.string,
   videoFileQuery: propTypes.object
 };
@@ -265,7 +276,7 @@ FileDataForm.propTypes = {
 export default compose(
   graphql( VIDEO_FILE_QUALITY_MUTATION, { name: 'qualityVideoFileMutation' } ),
   graphql( VIDEO_FILE_USE_MUTATION, { name: 'useVideoFileMutation' } ),
-  graphql( VIDEO_FILE_SUBTITLES_MUTATION, { name: 'subtitlesVideoFileMutation' } ),
+  graphql( VIDEO_FILE_SUBTITLES_MUTATION, { name: 'videoBurnedInStatusVideoFileMutation' } ),
   graphql( VIDEO_FILE_LANG_MUTATION, { name: 'languageVideoFileMutation' } ),
   graphql( VIDEO_FILE_QUERY, {
     name: 'videoFileQuery',
