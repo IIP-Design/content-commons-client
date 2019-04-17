@@ -22,6 +22,23 @@ class Search extends Component {
     this.props.loadLanguages();
   }
 
+  componentDidUpdate( prevProps ) {
+    const { router } = this.props;
+    if ( router.pathname !== prevProps.router.pathname ) {
+      this.onRouteChanged( router.pathname );
+    }
+  }
+
+  onRouteChanged( pathname ) {
+    if ( pathname === '/' ) {
+      this.setState( { locale: 'en-us', direction: 'left' } );
+      this.props.updateSearchTerm( '' );
+    } else {
+      const { language } = this.props.search;
+      this.setState( { locale: language, direction: getDirection( language ) } );
+    }
+  }
+
   /**
    * Send term to Google API to determine language
    * Update state if valid language detected
