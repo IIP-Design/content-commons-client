@@ -8,9 +8,13 @@ import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
 import propTypes from 'prop-types';
 import {
-  Form, Grid, Input, Select, Loader
+  Form, Grid, Input, Loader
 } from 'semantic-ui-react';
 
+import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
+import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
+import UseDropdown from 'components/admin/dropdowns/UseDropdown';
+import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
 import IconPopup from 'components/popups/IconPopup/IconPopup';
 
 import './FileDataForm.scss';
@@ -28,9 +32,11 @@ const VIDEO_FILE_QUERY = gql`
         width
       }
       language {
+        id
         displayName
       }
       use {
+        id
         name
       }
     }
@@ -105,10 +111,10 @@ class FileDataForm extends Component {
 
     if ( file !== prevProps.videoFileQuery.file ) {
       this.setState( {
-        language: file.language.displayName,
+        language: file.language.id,
         quality: file.quality,
         subtitles: file.videoBurnedInStatus,
-        use: file.use.name
+        use: file.use.id
       } );
     }
   }
@@ -138,10 +144,11 @@ class FileDataForm extends Component {
       <label htmlFor="video-quality"> { /* eslint-disable-line */ }
         Video Quality
         <IconPopup
+          iconSize="small"
           iconType="info circle"
           id="video-quality"
           message="Web: small - for social sharing, Broadcast: large - ambassador videos"
-          size="small"
+          popupSize="small"
         />
       </label>
     );
@@ -164,7 +171,9 @@ class FileDataForm extends Component {
       );
     }
 
-    const { language, quality, subtitles } = this.state;
+    const {
+      language, quality, subtitles, use
+    } = this.state;
 
     return (
       <Form className="edit-video__form video-file-form">
@@ -190,7 +199,6 @@ class FileDataForm extends Component {
                   id="video-youtube"
                   control={ Input }
                   label="YouTube URL"
-                  autoFocus
                   name="youtube"
                   // value={ videoTitle }
                   // onChange={ handleChange }
@@ -200,119 +208,43 @@ class FileDataForm extends Component {
                   id="video-description"
                   control={ Input }
                   label="Vimeo URL"
-                  autoFocus
                   name="vimeo"
                 />
               </div>
             </Grid.Column>
 
             <Grid.Column mobile={ 16 } computer={ 8 }>
-              <Form.Field
-                control={ Select }
+              <LanguageDropdown
                 id="video-language"
                 label="Language"
                 name="language"
-                options={
-                  [
-                    {
-                      value: 'English',
-                      text: 'English'
-                    },
-                    {
-                      value: 'Arabic',
-                      text: 'Arabic'
-                    },
-                    {
-                      value: 'Chinese',
-                      text: 'Chinese (Simplified)'
-                    },
-                    {
-                      value: 'French',
-                      text: 'French'
-                    },
-                    {
-                      value: 'Portuguese',
-                      text: 'Portuguese'
-                    },
-                    {
-                      value: 'Russian',
-                      text: 'Russian'
-                    },
-                    {
-                      value: 'Spanish',
-                      text: 'Spanish'
-                    }
-                  ]
-                }
                 required
                 value={ language }
               />
 
-              <Form.Field
-                control={ Select }
+              <VideoBurnedInStatusDropdown
                 id="video-subtitles"
                 label="Subtitles & Captions"
                 name="subtitles"
-                onChange={ this.handleInput }
-                options={
-                  [
-                    {
-                      value: 'CLEAN',
-                      text: 'Clean'
-                    },
-                    {
-                      value: 'SUBTITLED',
-                      text: 'Subtitles'
-                    }
-                  ]
-                }
                 required
+                type="video"
                 value={ subtitles }
               />
 
-              <Form.Select
-                id="video-type"
+              <UseDropdown
+                id="video-use"
                 label="Video Type"
-                options={
-                  [
-                    {
-                      value: 'full',
-                      text: 'Full Video'
-                    },
-                    {
-                      value: 'teaser',
-                      text: 'Promotional Teaser'
-                    },
-                    {
-                      value: 'embargoed',
-                      text: 'Embargoed'
-                    }
-                  ]
-                }
                 required
-                selection="full"
-                value="full"
-                name="type"
+                type="video"
+                value={ use }
               />
 
-              <Form.Field
-                control={ Select }
+              <QualityDropdown
                 id="video-quality"
                 label={ videoQuality }
                 name="quality"
-                options={
-                  [
-                    {
-                      value: 'WEB',
-                      text: 'For web'
-                    },
-                    {
-                      value: 'BROADCAST',
-                      text: 'For broadcast'
-                    }
-                  ]
-                }
                 required
+                type="video"
                 value={ quality }
               />
 
