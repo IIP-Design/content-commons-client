@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Embed, Checkbox } from 'semantic-ui-react';
 import axios from 'axios';
 import config from 'config';
+import { withRouter } from 'next/router';
 
 import { getYouTubeId } from 'lib/utils';
 import { updateUrl } from 'lib/browser';
@@ -69,10 +70,6 @@ class Video extends Component {
 
   componentDidUpdate() {
     this.willUpdateUrl();
-  }
-
-  componentWillUnmount() {
-    updateUrl( '/' );
   }
 
   /**
@@ -255,9 +252,10 @@ class Video extends Component {
    * Update the location url the direct link to selected video
    */
   willUpdateUrl() {
+    const { pathname } = this.props.router;
     const { id, site } = this.props.item;
     const { selectedLanguage } = this.state;
-    if ( id && site && selectedLanguage ) {
+    if ( id && site && selectedLanguage && pathname === '/video' ) {
       updateUrl( `/video?id=${id}&site=${site}&language=${selectedLanguage.locale}` );
     }
   }
@@ -432,7 +430,8 @@ class Video extends Component {
 }
 
 Video.propTypes = {
+  router: PropTypes.object,
   item: PropTypes.object
 };
 
-export default Video;
+export default withRouter( Video );
