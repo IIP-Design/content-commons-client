@@ -5,11 +5,9 @@
  */
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import { compose, graphql } from 'react-apollo';
 import propTypes from 'prop-types';
-import {
-  Form, Grid, Input, Loader
-} from 'semantic-ui-react';
+import { compose, graphql } from 'react-apollo';
+import { Form, Grid, Loader } from 'semantic-ui-react';
 
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
@@ -22,6 +20,7 @@ import './FileDataForm.scss';
 const VIDEO_FILE_QUERY = gql`
   query VIDEO_FILE_QUERY( $id: ID! ) {
     file: videoFile( id: $id ) {
+      id
       duration
       filename
       filesize
@@ -34,6 +33,11 @@ const VIDEO_FILE_QUERY = gql`
       language {
         id
         displayName
+      }
+      stream {
+        id
+        site
+        url
       }
       use {
         id
@@ -99,6 +103,64 @@ const VIDEO_FILE_QUALITY_MUTATION = gql`
   }
 `;
 
+const VIDEO_FILE_CREATE_STREAM_MUTATION = gql`
+  mutation VIDEO_FILE_CREATE_STREAM_MUTATION( $id: ID!, $site: String!, $url: String! ) {
+    updateVideoFile(
+      data: { 
+        stream: {
+          create: {
+            site: $site,
+            url: $url
+          }
+        }
+      },
+      where: { id: $id }
+    ) {
+      id
+      stream { id }
+    }
+  }
+`;
+
+const VIDEO_FILE_UPDATE_STREAM_MUTATION = gql`
+  mutation VIDEO_FILE_UPDATE_STREAM_MUTATION( $id: ID!, $streamId: ID! $url: String! ) {
+    updateVideoFile(
+      data: {
+        stream: {
+          update: {
+            data: {
+              url: $url
+            },
+            where: {
+              id: $streamId
+            }
+          }
+        }
+      },
+      where: { id: $id }
+    ) {
+      id
+      stream { id }
+    }
+  }
+`;
+
+const VIDEO_FILE_DELETE_STREAM_MUTATION = gql`
+  mutation VIDEO_FILE_DELETE_STREAM_MUTATION( $id: ID!, $streamId: ID! ) {
+    updateVideoFile(
+      data: {
+        stream: {
+          delete: { id: $streamId }
+        }
+      },
+      where: { id: $id }
+    ) {
+      id
+      stream { id }
+    }
+  }
+`;
+
 class FileDataForm extends Component {
   state = {}
 
@@ -109,10 +171,38 @@ class FileDataForm extends Component {
       this.setState( {
         language: file.language.id,
         quality: file.quality,
+        streams: this.getStreamObjects( file.stream ),
         videoBurnedInStatus: file.videoBurnedInStatus,
         use: file.use.id
       } );
     }
+  }
+
+  getStreamObjects = streamList => {
+    const streams = [];
+
+    if ( streamList && streamList.length > 0 ) {
+      streamList.forEach( stream => {
+        if ( stream.site === 'youtube' || stream.site === 'vimeo' ) {
+          const obj = {
+            [stream.site]: {
+              id: stream.id,
+              url: stream.url
+            }
+          };
+          streams.push( obj );
+          return streams;
+        }
+      } );
+    }
+
+    const streamObj = streams.reduce( ( obj, item ) => {
+      const key = Object.keys( item )[0];
+      obj[key] = item[key];
+      return obj;
+    }, {} );
+
+    return streamObj;
   }
 
   updateUnit = ( name, value ) => {
@@ -126,6 +216,57 @@ class FileDataForm extends Component {
     } );
 
     this.props.videoFileQuery.refetch();
+  }
+
+  updateStreams = e => {
+    const unitId = this.props.id;
+    const { name } = e.target;
+    const { streams } = this.state;
+
+    if ( streams[name] ) {
+      const { url } = streams[name];
+      const streamId = streams[name].id;
+
+      if ( streamId && url !== '' ) {
+        this.props.streamUpdateVideoFileMutation( {
+          variables: {
+            id: unitId,
+            streamId,
+            url
+          }
+        } );
+      } else if ( streamId && url === '' ) {
+        this.props.streamDeleteVideoFileMutation( {
+          variables: {
+            id: unitId,
+            streamId
+          }
+        } );
+      } else {
+        this.props.streamCreateVideoFileMutation( {
+          variables: {
+            id: unitId,
+            site: name,
+            url
+          }
+        } );
+      }
+    }
+
+    this.props.videoFileQuery.refetch();
+  }
+
+  handleStreamsInputChange = e => {
+    const { name, value } = e.target;
+    this.setState( prevState => ( {
+      streams: {
+        ...prevState.streams,
+        [name]: {
+          ...prevState.streams[name],
+          url: value
+        }
+      }
+    } ) );
   }
 
   handleInputChange = e => {
@@ -183,8 +324,11 @@ class FileDataForm extends Component {
     }
 
     const {
-      language, quality, use, videoBurnedInStatus
+      language, quality, streams, use, videoBurnedInStatus
     } = this.state;
+
+    const youtube = streams && streams.youtube ? streams.youtube : {};
+    const vimeo = streams && streams.vimeo ? streams.vimeo : {};
 
     return (
       <Form className="edit-video__form video-file-form">
@@ -206,20 +350,22 @@ class FileDataForm extends Component {
                 </span>
               </div>
               <div className="video-links">
-                <Form.Field
+                <Form.Input
                   id="video-youtube"
-                  control={ Input }
                   label="YouTube URL"
                   name="youtube"
-                  // value={ videoTitle }
-                  // onChange={ handleChange }
+                  onBlur={ this.updateStreams }
+                  onChange={ this.handleStreamsInputChange }
+                  value={ youtube.url ? youtube.url : '' }
                 />
 
-                <Form.Field
-                  id="video-description"
-                  control={ Input }
+                <Form.Input
+                  id="video-vimeo"
                   label="Vimeo URL"
                   name="vimeo"
+                  onBlur={ this.updateStreams }
+                  onChange={ this.handleStreamsInputChange }
+                  value={ vimeo.url ? vimeo.url : '' }
                 />
               </div>
             </Grid.Column>
@@ -270,10 +416,16 @@ class FileDataForm extends Component {
 
 FileDataForm.propTypes = {
   id: propTypes.string,
+  streamCreateVideoFileMutation: propTypes.func,
+  streamDeleteVideoFileMutation: propTypes.func,
+  streamUpdateVideoFileMutation: propTypes.func,
   videoFileQuery: propTypes.object
 };
 
 export default compose(
+  graphql( VIDEO_FILE_DELETE_STREAM_MUTATION, { name: 'streamDeleteVideoFileMutation' } ),
+  graphql( VIDEO_FILE_UPDATE_STREAM_MUTATION, { name: 'streamUpdateVideoFileMutation' } ),
+  graphql( VIDEO_FILE_CREATE_STREAM_MUTATION, { name: 'streamCreateVideoFileMutation' } ),
   graphql( VIDEO_FILE_QUALITY_MUTATION, { name: 'qualityVideoFileMutation' } ),
   graphql( VIDEO_FILE_USE_MUTATION, { name: 'useVideoFileMutation' } ),
   graphql( VIDEO_FILE_SUBTITLES_MUTATION, { name: 'videoBurnedInStatusVideoFileMutation' } ),
