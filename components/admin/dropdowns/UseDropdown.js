@@ -43,7 +43,6 @@ const UseDropdown = props => (
           { !props.label && (
 
             <VisuallyHidden>
-              { /* eslint-disable jsx-a11y/label-has-for */ }
               <label htmlFor={ props.id }>
                 { `${props.id} use` }
               </label>
