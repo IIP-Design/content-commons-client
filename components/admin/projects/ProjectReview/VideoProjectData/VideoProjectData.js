@@ -41,7 +41,7 @@ const VideoProjectData = props => {
   const {
     projectTitle,
     author,
-    owner,
+    team,
     visibility,
     categories,
     tags,
@@ -55,7 +55,7 @@ const VideoProjectData = props => {
       <section className="project-data_meta section">
         <p><b className="label">Video Title:</b> { projectTitle }</p>
         <p><b className="label">Author:</b> { author }</p>
-        <p><b className="label">Owner:</b> { owner }</p>
+        <p><b className="label">Team:</b> { team.name }</p>
         <p><b className="label">Privacy Setting:</b> { visibility }</p>
       </section>
 
