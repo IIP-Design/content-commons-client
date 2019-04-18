@@ -99,7 +99,7 @@ const VideoProjectFiles = props => {
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_info">
                   <p><b className="label">Language:</b> { unit.files[0].language.displayName }</p>
                   <p><b className="label">Subtitles & Captions:</b> { unit.files[0].videoBurnedInStatus }</p>
-                  <p><b className="label">Video Type:</b> { unit.videoType }</p>
+                  <p><b className="label">Video Type:</b> { unit.files[0].use.name }</p>
                   <p><b className="label">Quality:</b> { unit.files[0].quality }</p>
                   <p
                     className={

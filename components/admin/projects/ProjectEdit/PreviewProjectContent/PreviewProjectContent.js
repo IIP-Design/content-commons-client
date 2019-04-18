@@ -284,6 +284,9 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
           id
           filename
           url
+          use @include(if: $isReviewPage) {
+            name
+          }
           filesize
           videoBurnedInStatus
           createdAt @include(if: $isReviewPage)
