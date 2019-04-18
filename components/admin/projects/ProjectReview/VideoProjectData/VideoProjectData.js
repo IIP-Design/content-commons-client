@@ -54,7 +54,7 @@ const VideoProjectData = props => {
       <h3 className="uppercase">Project Data</h3>
       <section className="project-data_meta section">
         <p><b className="label">Video Title:</b> { projectTitle }</p>
-        <p><b className="label">Author:</b> { author }</p>
+        <p><b className="label">Author:</b> { author && `${author.firstName} ${author.lastName}` }</p>
         <p><b className="label">Team:</b> { team.name }</p>
         <p><b className="label">Privacy Setting:</b> { visibility }</p>
       </section>
@@ -94,7 +94,11 @@ const VIDEO_PROJECT_REVIEW_DATA_QUERY = gql`
     project: videoProject(id: $id) {
       id
       projectTitle
-      author
+      author {
+        id
+        firstName
+        lastName
+      }
       team {
         name
       }
