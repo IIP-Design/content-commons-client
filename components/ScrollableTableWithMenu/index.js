@@ -18,7 +18,7 @@ import './ScrollableTableWithMenu.scss';
 /* eslint-disable react/prefer-stateless-function */
 class ScrollableTableWithMenu extends React.Component {
   state = {
-    data: this.props.tableData,
+    tableData: this.props.tableData,
     tableHeaders: this.props.persistentTableHeaders,
     selectAllItems: false,
     selectedItems: new Map(),
@@ -187,7 +187,6 @@ class ScrollableTableWithMenu extends React.Component {
                   toggleAllItemsSelection={ this.toggleAllItemsSelection }
                   displayActionsMenu={ displayActionsMenu }
                 />
-
                 { /* ADD CUSTOM TABLE BODY */ }
                 { renderTableBody( this.state, this.toggleItemSelection ) }
               </Table>

@@ -10,17 +10,8 @@ import Link from 'next/link';
 import truncate from 'lodash/truncate';
 import { Checkbox, Icon, Popup } from 'semantic-ui-react';
 import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
+import SupportFiles from './SupportFiles';
 import './MyProjectPrimaryCol.scss';
-
-const DetailsFiles = () => (
-  <div>
-    <p>Files:</p>
-    <p>Poster | <a>PDF - web</a> | <a>English (5 MB)</a></p>
-    <p>Poster | <a>PDF - print</a> | <a>English (13 MB)</a></p>
-    <p>Commemorative Postcard Set (English Only) | <a>PDF - web</a> | <a>English (3MB)</a></p>
-    <p>Commemorative Postcard Set (English Only) | <a>PDF - print</a> | <a>English (9MB)</a></p>
-  </div>
-);
 
 class MyProjectPrimaryCol extends React.Component {
   state = {
@@ -95,6 +86,7 @@ class MyProjectPrimaryCol extends React.Component {
 
   render() {
     const { detailsPopupOpen, windowWidth } = this.state;
+    const { supportFiles } = this.props.d;
 
     return (
       <Fragment>
@@ -107,7 +99,7 @@ class MyProjectPrimaryCol extends React.Component {
           { /* <div className="myProjects_favorite"><Icon name='star' /></div> */ }
         </div>
         <div className="myProjects_thumbnail">
-          <img src={ this.props.d.thumbnail } alt={ this.props.d.title } />
+          <img src={ this.props.d.thumbnail.url } alt={ this.props.d.thumbnail.alt } />
         </div>
         <div className="myProjects_data">
           <Link href={ `/admin/projects/${this.props.d[this.props.header.name]}` }>
@@ -118,21 +110,12 @@ class MyProjectPrimaryCol extends React.Component {
               { truncate( this.props.d[this.props.header.name], { length: 35 } ) }
             </a>
           </Link>
-
-          { /* <Link
-            to={ `/admin/projects/${this.props.d[this.props.header.name]}` }
-            className="myProjects_data_title"
-            title={ this.props.d[this.props.header.name] }
-          >
-            { truncate( this.props.d[this.props.header.name], { length: 35 } ) }
-          </Link> */ }
-
           <div className="myProjects_data_actions">
             <div className="myProjects_data_actions_wrapper">
               <Popup
                 className="detailsFiles_popup"
                 trigger={ <button type="button" className="linkStyle myProjects_data_actions_action">Details</button> }
-                content={ <DetailsFiles /> }
+                content={ <SupportFiles supportFiles={ supportFiles } /> }
                 on="click"
                 position={ windowWidth <= 400 ? 'bottom right' : 'bottom center' }
                 hideOnScroll
@@ -141,8 +124,6 @@ class MyProjectPrimaryCol extends React.Component {
                 onOpen={ this.handleDetailsPopupOpen }
                 onClose={ this.handleDetailsPopupClose }
               />
-              <span> | </span>
-              <button type="button" className="linkStyle myProjects_data_actions_action">Preview</button>
               <span> | </span>
               <button type="button" className="linkStyle myProjects_data_actions_action">Share</button>
             </div>

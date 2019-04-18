@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Item } from 'semantic-ui-react';
 import { object, string, bool } from 'prop-types';
+import { formatBytes } from 'lib/utils';
 import downloadIcon from 'static/icons/icon_download.svg';
 
 // NOTE: Using the 'download' attribute to trigger downloads
@@ -20,7 +21,7 @@ class DownloadVideo extends Component {
     if ( !size ) return null;
     return {
       label: `${size.width} x ${size.height}`,
-      weight: this.formatBytes( size.filesize )
+      weight: formatBytes( size.filesize )
     };
   };
 
@@ -28,21 +29,6 @@ class DownloadVideo extends Component {
     const extRe = /([0-9a-z]+)$/i;
     const exts = url.match( extRe );
     return exts[0];
-  };
-
-  formatBytes = ( bytes, decimals ) => {
-    if ( bytes === 0 ) return;
-    const k = 1024;
-    const dm = decimals || 2;
-    const sizes = [
-      'Bytes',
-      'KB',
-      'MB',
-      'GB',
-      'TB'
-    ];
-    const i = Math.floor( Math.log( bytes ) / Math.log( k ) );
-    return `${parseFloat( ( bytes / ( k ** i ) ).toFixed( dm ) )}  ${sizes[i]}`;
   };
 
   sortByFilesize = ( a, b ) => {

@@ -17,6 +17,10 @@ const CURRENT_USER_QUERY = gql`
       city
       howHeard
       permissions
+      team {
+        id
+        name                
+      }
     }
   }
 `;
