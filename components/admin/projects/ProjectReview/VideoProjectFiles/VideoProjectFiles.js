@@ -65,7 +65,7 @@ const VideoProjectFiles = props => {
   const handleEdit = () => {
     const { id } = props;
     Router.push( {
-      pathname: `/admin/project/unit/${id}/edit`
+      pathname: `/admin/project/video/${id}/edit`
     } );
   };
 
