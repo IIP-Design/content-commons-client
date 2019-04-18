@@ -92,7 +92,7 @@ const VideoSupportFiles = props => {
 
       <Checkbox
         label="Disable right-click to protect your images"
-        checked={ protectImages }
+        checked={ !!protectImages }
         onClick={ handleUpdateProtectImages }
       />
     </section>
