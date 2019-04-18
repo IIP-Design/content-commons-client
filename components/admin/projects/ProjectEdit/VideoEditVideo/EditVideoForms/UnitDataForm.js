@@ -13,7 +13,10 @@ const VIDEO_UNIT_QUERY = gql`
       id
       title
       descPublic
-      language { displayName }
+      language {
+        id
+        displayName
+      }
       tags {
         id
         translations {
@@ -23,6 +26,7 @@ const VIDEO_UNIT_QUERY = gql`
       }
       thumbnails {
         image {
+          id
           alt
           url
         }
@@ -36,7 +40,10 @@ const VIDEO_UNIT_TITLE_MUTATION = gql`
     updateVideoUnit(
       data: { title: $title },
       where: { id: $id }
-    ) { title }
+    ) {
+      id
+      title
+    }
   }
 `;
 
@@ -45,7 +52,10 @@ const VIDEO_UNIT_DESC_MUTATION = gql`
     updateVideoUnit(
       data: { descPublic: $descPublic },
       where: { id: $id }
-    ) { descPublic }
+    ) {
+      id
+      descPublic
+    }
   }
 `;
 
@@ -59,6 +69,7 @@ const VIDEO_UNIT_TAG_MUTATION = gql`
         id: $id
       }
     ) {
+      id
       descPublic
     }
   }
@@ -82,12 +93,12 @@ class UnitDataForm extends Component {
   }
 
   updateUnit = e => {
-    const { id } = this.props;
+    const { unitId } = this.props;
     const { name } = e.target;
 
     this.props[`${name}VideoUnitMutation`]( {
       variables: {
-        id,
+        id: unitId,
         [name]: this.state[name]
       }
     } );
@@ -174,7 +185,7 @@ class UnitDataForm extends Component {
 }
 
 UnitDataForm.propTypes = {
-  id: propTypes.string,
+  unitId: propTypes.string,
   unit: propTypes.object,
   videoUnitQuery: propTypes.object
 };
@@ -187,7 +198,7 @@ export default compose(
   graphql( VIDEO_UNIT_QUERY, {
     name: 'videoUnitQuery',
     options: props => ( {
-      variables: { id: props.id },
+      variables: { id: props.unitId },
     } )
   } )
 )( UnitDataForm );

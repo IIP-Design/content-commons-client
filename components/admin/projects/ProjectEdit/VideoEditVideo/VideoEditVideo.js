@@ -3,56 +3,53 @@
  * VideoEditVideo
  *
  */
-import React from 'react';
-import gql from 'graphql-tag';
+import React, { Component } from 'react';
 import propTypes from 'prop-types';
-import { Query } from 'react-apollo';
 
-import UnitDataForm from 'components/admin/projects/ProjectEdit/VideoEditVideo/EditVideoForms/UnitDataForm';
 import FileSection from 'components/admin/projects/ProjectEdit/VideoEditVideo/FileSection';
+import UnitDataForm from 'components/admin/projects/ProjectEdit/VideoEditVideo/EditVideoForms/UnitDataForm';
+import VideoUnitCarousel from 'components/admin/projects/ProjectEdit/VideoEditVideo/VideoUnitCarousel';
 
 import './VideoEditVideo.scss';
 
-const VIDEO_UNIT_QUERY = gql`
-  query VIDEO_UNIT_QUERY( $id: ID! ) {
-    videoUnit( id: $id ) {
-      id
-      files {
-        id
-      }
-    }
-  } 
-`;
+class VideoEditVideo extends Component {
+  state = {}
 
-class VideoEditVideo extends React.PureComponent {
+  componentDidMount() {
+    const { unitId } = this.props;
+
+    this.setState( {
+      selected: unitId
+    } );
+  }
+
+  handleUnitChoice = selected => {
+    this.setState( {
+      selected
+    } );
+  }
+
   render() {
-    const { id } = this.props;
+    const { projectId } = this.props;
+    const { selected } = this.state;
 
     return (
-      <Query query={ VIDEO_UNIT_QUERY } variables={ { id } }>
-        { ( { loading, error, data } ) => {
-          if ( loading || !data ) return <p>Loading...</p>;
-          if ( error ) return <p>{ `Error: ${error.message}` }</p>;
-
-          const initialFile = data.videoUnit.files[0].id;
-
-          return (
-            <div className="edit-video-modal">
-              <UnitDataForm id={ id } />
-              <FileSection unitId={ id } fileId={ initialFile } />
-              <section className="video-carousel">
-                <h3 className="video-carousel-header">Videos in this Project</h3>
-              </section>
-            </div>
-          );
-        } }
-      </Query>
+      <div className="edit-video-modal">
+        <UnitDataForm unitId={ selected } />
+        <FileSection unitId={ selected } />
+        <VideoUnitCarousel
+          callback={ this.handleUnitChoice }
+          projectId={ projectId }
+          unitId={ selected }
+        />
+      </div>
     );
   }
 }
 
 VideoEditVideo.propTypes = {
-  id: propTypes.string
+  projectId: propTypes.string,
+  unitId: propTypes.string
 };
 
 export default VideoEditVideo;

@@ -28,6 +28,7 @@ const VIDEO_UNIT_QUERY = gql`
     unit: videoUnit( id: $id ) {
       id
       language {
+        id
         displayName
       }
     }
@@ -36,7 +37,7 @@ const VIDEO_UNIT_QUERY = gql`
 
 class EditSingleProjectItem extends React.PureComponent {
   render() {
-    const { itemId } = this.props;
+    const { itemId, projectId } = this.props;
     const { project } = this.props.videoProjectQuery;
     const { unit } = this.props.videoUnitQuery;
 
@@ -62,7 +63,7 @@ class EditSingleProjectItem extends React.PureComponent {
         headline={ `${project.projectTitle} in ${unit.language.displayName}` }
         textDirection="ltr"
       >
-        <VideoEditVideo id={ itemId } />
+        <VideoEditVideo projectId={ projectId } unitId={ itemId } />
       </ModalItem>
     );
   }
@@ -70,7 +71,7 @@ class EditSingleProjectItem extends React.PureComponent {
 
 EditSingleProjectItem.propTypes = {
   itemId: propTypes.string,
-  // projectId: propTypes.string,
+  projectId: propTypes.string,
   videoProjectQuery: propTypes.object,
   videoUnitQuery: propTypes.object
 };

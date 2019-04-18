@@ -21,6 +21,7 @@ const VIDEO_FILE_QUERY = gql`
   query VIDEO_FILE_QUERY( $id: ID! ) {
     file: videoFile( id: $id ) {
       id
+      createdAt
       duration
       filename
       filesize
@@ -167,7 +168,7 @@ class FileDataForm extends Component {
   componentDidUpdate = prevProps => {
     const { file } = this.props.videoFileQuery;
 
-    if ( file !== prevProps.videoFileQuery.file ) {
+    if ( file && file !== prevProps.videoFileQuery.file ) {
       this.setState( {
         language: file.language.id,
         quality: file.quality,
@@ -344,6 +345,9 @@ class FileDataForm extends Component {
                 </span>
                 <span className="file_meta_content file_meta_content--dimensions">
                   { `Dimensions: ${file.dimensions.width} x ${file.dimensions.height}` }
+                </span>
+                <span className="file_meta_content file_meta_content--uploaded">
+                  { `Uploaded: ${file.createdAt}` }
                 </span>
                 <span className="file_meta_content file_meta_content--duration">
                   { `Duration: ${file.duration}` }

@@ -12,6 +12,9 @@ const VIDEO_UNIT_QUERY = gql`
   query VIDEO_UNIT_QUERY( $id: ID! ) {
     videoUnit( id: $id ) {
       id
+      files {
+        id
+      }
       language {
         displayName
       }
@@ -20,12 +23,21 @@ const VIDEO_UNIT_QUERY = gql`
 `;
 
 class FileSection extends Component {
-  state = { selected: '' }
+  state = {}
 
-  componentDidMount() {
-    const { fileId } = this.props;
+  componentDidUpdate= ( prevProps, prevState ) => {
+    const { videoUnitQuery } = this.props;
 
-    if ( fileId ) {
+    let fileId = '';
+    if (
+      videoUnitQuery.videoUnit
+      && videoUnitQuery.videoUnit.files
+      && videoUnitQuery.videoUnit.files[0].id
+    ) {
+      fileId = videoUnitQuery.videoUnit.files[0].id;
+    }
+
+    if ( fileId && fileId !== prevState.selected ) {
       this.setState( {
         selected: fileId
       } );
@@ -64,7 +76,6 @@ class FileSection extends Component {
 }
 
 FileSection.propTypes = {
-  fileId: propTypes.string,
   unitId: propTypes.string,
   videoUnitQuery: propTypes.object
 };

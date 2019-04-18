@@ -11,6 +11,7 @@ const VIDEO_UNIT_QUERY = gql`
       id
       thumbnails {
         image {
+          id
           url
         }
       }
@@ -19,6 +20,7 @@ const VIDEO_UNIT_QUERY = gql`
         quality
         videoBurnedInStatus
         use {
+          id
           name
         }
       }
