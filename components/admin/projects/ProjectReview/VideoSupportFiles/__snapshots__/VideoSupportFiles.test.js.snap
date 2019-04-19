@@ -1,0 +1,230 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<VideoSupportFiles /> renders initial loading state without crashing 1`] = `
+<VideoSupportFiles
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": true,
+      "networkStatus": 1,
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "123",
+      },
+    }
+  }
+  id="123"
+  updateProtectImages={[Function]}
+>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "center",
+        "minHeight": "200px",
+      }
+    }
+  >
+    <Loader
+      active={true}
+      content="Loading support file(s)..."
+      inline="centered"
+      style={
+        Object {
+          "marginBottom": "1em",
+        }
+      }
+    >
+      <div
+        className="ui active text centered inline loader"
+        style={
+          Object {
+            "marginBottom": "1em",
+          }
+        }
+      >
+        Loading support file(s)...
+      </div>
+    </Loader>
+  </div>
+</VideoSupportFiles>
+`;
+
+exports[`<VideoSupportFiles /> renders the final state 1`] = `
+<VideoSupportFiles
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": false,
+      "networkStatus": 7,
+      "project": Object {
+        "additionalFiles": Array [
+          Object {
+            "filename": "image-1.jpg",
+            "filetype": "jpg",
+            "id": "82kw",
+            "language": Object {
+              "displayName": "English",
+            },
+          },
+          Object {
+            "filename": "image-2.jpg",
+            "filetype": "jpg",
+            "id": "28zi",
+            "language": Object {
+              "displayName": "French",
+            },
+          },
+        ],
+        "id": "123",
+        "protectImages": null,
+        "srts": Array [
+          Object {
+            "filename": "srt-1.srt",
+            "id": "34is",
+            "language": Object {
+              "displayName": "English",
+            },
+          },
+          Object {
+            "filename": "srt-2.srt",
+            "id": "48sa",
+            "language": Object {
+              "displayName": "French",
+            },
+          },
+        ],
+      },
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "123",
+      },
+    }
+  }
+  id="123"
+  updateProtectImages={[Function]}
+>
+  <section
+    className="section section--project_support-files project_support-files"
+  >
+    <h3
+      className="uppercase"
+    >
+      Support Files
+    </h3>
+    <section
+      className="files section"
+    >
+      <h4
+        id="srt-files"
+      >
+        SRT files
+      </h4>
+      <ul
+        aria-describedby="srt-files"
+      >
+        <li
+          className="file"
+          key="34is"
+        >
+          <b
+            className="label"
+          >
+            English
+            :
+          </b>
+           
+          srt-1.srt
+        </li>
+        <li
+          className="file"
+          key="48sa"
+        >
+          <b
+            className="label"
+          >
+            French
+            :
+          </b>
+           
+          srt-2.srt
+        </li>
+      </ul>
+    </section>
+    <section
+      className="addtl_files section"
+    >
+      <h4
+        id="additional-files"
+      >
+        Additional files
+      </h4>
+      <ul
+        aria-describedby="additional-files"
+      >
+        <li
+          key="82kw"
+        >
+          <b
+            className="label"
+          >
+            English
+            :
+          </b>
+           
+          image-1.jpg
+        </li>
+        <li
+          key="28zi"
+        >
+          <b
+            className="label"
+          >
+            French
+            :
+          </b>
+           
+          image-2.jpg
+        </li>
+      </ul>
+    </section>
+    <Checkbox
+      checked={false}
+      label="Disable right-click to protect your images"
+      onClick={[Function]}
+      type="checkbox"
+    >
+      <div
+        className="ui checkbox"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+      >
+        <input
+          checked={false}
+          className="hidden"
+          readOnly={true}
+          tabIndex={0}
+          type="checkbox"
+        />
+        <label>
+          Disable right-click to protect your images
+        </label>
+      </div>
+    </Checkbox>
+  </section>
+</VideoSupportFiles>
+`;

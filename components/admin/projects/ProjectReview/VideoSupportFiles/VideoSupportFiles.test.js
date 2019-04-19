@@ -1,10 +1,201 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
+import toJSON from 'enzyme-to-json';
+import wait from 'waait';
+import { MockedProvider } from 'react-apollo/test-utils';
+import { Icon, Loader } from 'semantic-ui-react';
+import VideoSupportFiles, {
+  VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
+  UPDATE_PROTECT_IMAGES_MUTATION
+} from './VideoSupportFiles';
 
-import VideoSupportFiles from './VideoSupportFiles';
+const props = { id: '123' };
+
+const mocks = [
+  {
+    request: {
+      query: VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
+      variables: { id: props.id }
+    },
+    result: {
+      data: {
+        project: {
+          id: '123',
+          protectImages: null,
+          srts: [
+            {
+              id: '34is',
+              filename: 'srt-1.srt',
+              language: {
+                displayName: 'English'
+              }
+            },
+            {
+              id: '48sa',
+              filename: 'srt-2.srt',
+              language: {
+                displayName: 'French'
+              }
+            }
+          ],
+          additionalFiles: [
+            {
+              id: '82kw',
+              filename: 'image-1.jpg',
+              filetype: 'jpg',
+              language: {
+                displayName: 'English'
+              }
+            },
+            {
+              id: '28zi',
+              filename: 'image-2.jpg',
+              filetype: 'jpg',
+              language: {
+                displayName: 'French'
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    request: {
+      query: UPDATE_PROTECT_IMAGES_MUTATION,
+      variables: {
+        data: { protectImages: true },
+        where: { id: props.id }
+      }
+    },
+    result: {
+      data: {
+        updateVideoProject: {
+          id: '123',
+          protectImages: true
+        }
+      }
+    }
+  }
+];
+
+const Component = (
+  <MockedProvider mocks={ mocks } addTypename={ false }>
+    <VideoSupportFiles { ...props } />
+  </MockedProvider>
+);
 
 describe( '<VideoSupportFiles />', () => {
-  it( 'renders without crashing', () => {
-    shallow( <VideoSupportFiles /> );
+  it( 'renders initial loading state without crashing', () => {
+    const wrapper = mount( Component );
+    const videoSupportFiles = wrapper.find( 'VideoSupportFiles' );
+    const loader = (
+      <Loader
+        active
+        inline="centered"
+        style={ { marginBottom: '1em' } }
+        content="Loading support file(s)..."
+      />
+    );
+
+    expect( videoSupportFiles.exists() ).toEqual( true );
+    expect( videoSupportFiles.contains( loader ) ).toEqual( true );
+    expect( toJSON( videoSupportFiles ) ).toMatchSnapshot();
+  } );
+
+  it( 'renders error message & icon if error is thrown', async () => {
+    const errorMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
+          variables: { id: props.id }
+        },
+        result: {
+          errors: [{ message: 'There was an error.' }]
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ errorMocks }>
+        <VideoSupportFiles { ...props } />
+      </MockedProvider>
+    );
+    // wait for the data and !loading
+    await wait( 0 );
+    wrapper.update();
+
+    const videoSupportFiles = wrapper.find( 'VideoSupportFiles' );
+    const div = videoSupportFiles
+      .find( 'div.video-support-files.error' );
+    const icon = <Icon color="red" name="exclamation triangle" />;
+    const span = <span>Loading error...</span>;
+
+    expect( div.exists() ).toEqual( true );
+    expect( videoSupportFiles.contains( icon ) )
+      .toEqual( true );
+    expect( videoSupportFiles.contains( span ) )
+      .toEqual( true );
+  } );
+
+  it( 'renders `null` if project is `null`', async () => {
+    const nullMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
+          variables: { id: props.id }
+        },
+        result: {
+          data: { project: null }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ nullMocks }>
+        <VideoSupportFiles { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoSupportFiles = wrapper.find( 'VideoSupportFiles' );
+
+    expect( videoSupportFiles.html() ).toEqual( null );
+  } );
+
+  it( 'renders the final state', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoSupportFiles = wrapper.find( 'VideoSupportFiles' );
+
+    expect( toJSON( videoSupportFiles ) ).toMatchSnapshot();
+  } );
+
+  /**
+   * @todo Need to revisit this test when
+   * enzyme supports hooks.
+   */
+  it.skip( 'clicking the protect images Checkbox', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoSupportFiles = wrapper.find( 'VideoSupportFiles' );
+    const checkbox = videoSupportFiles.find( 'Checkbox' );
+    const spy = jest.spyOn( checkbox.props(), 'onClick' );
+    // const spy = jest.spyOn( videoSupportFiles().props(), 'updateProtectImages' );
+
+    checkbox.prop( 'onClick' )();
+    // checkbox.simulate( 'change' );
+
+    expect( spy ).toHaveBeenCalled();
+    // expect( spy ).toHaveBeenCalledWith( {
+    //   variables: {
+    //     data: { protectImages: true },
+    //     where: { id: props.id }
+    //   }
+    // } );
   } );
 } );
