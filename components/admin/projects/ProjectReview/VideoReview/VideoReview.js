@@ -54,6 +54,8 @@ const VideoReview = props => {
 
   if ( error ) return `Error! ${error.message}`;
 
+  if ( !data.project ) return <ProjectNotFound />;
+
   const displayConfirmDelete = () => setDeleteConfirmOpen( true );
   const handleDeleteCancel = () => setDeleteConfirmOpen( false );
 
