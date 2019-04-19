@@ -8,7 +8,7 @@ import { func, object, string } from 'prop-types';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
 import orderBy from 'lodash/orderBy';
-import { Checkbox, Loader } from 'semantic-ui-react';
+import { Checkbox, Icon, Loader } from 'semantic-ui-react';
 
 import { getPluralStringOrNot } from 'lib/utils';
 
@@ -43,7 +43,16 @@ const VideoSupportFiles = props => {
     );
   }
 
-  if ( error ) return `Error! ${error.message}`;
+  if ( error ) {
+    return (
+      <div className="video-support-files error">
+        <p>
+          <Icon color="red" name="exclamation triangle" />
+          <span>Loading error...</span>
+        </p>
+      </div>
+    );
+  }
 
   if ( !project || !Object.keys( project ).length ) return null;
 
