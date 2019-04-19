@@ -19,7 +19,11 @@ const VideoSupportFiles = props => {
 
   const [protectImages, setProtectImages] = useState( project ? project.protectImages : false );
 
-  const updateState = () => setProtectImages( project.protectImages );
+  const updateState = () => {
+    if ( project ) {
+      setProtectImages( project.protectImages );
+    }
+  };
 
   useEffect( updateState );
 
