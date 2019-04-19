@@ -152,7 +152,7 @@ VideoReview.propTypes = {
   deleteProject: func
 };
 
-const VIDEO_REVIEW_PROJECT = gql`
+const VIDEO_REVIEW_PROJECT_QUERY = gql`
   query VideoReviewProject($id: ID!) {
     project: videoProject(id: $id) {
       id
@@ -167,7 +167,7 @@ const deleteProjectMutation = graphql( DELETE_VIDEO_PROJECT_MUTATION, {
   } )
 } );
 
-const videoReviewQuery = graphql( VIDEO_REVIEW_PROJECT, {
+const videoReviewQuery = graphql( VIDEO_REVIEW_PROJECT_QUERY, {
   options: props => ( {
     variables: { id: props.id }
   } )
