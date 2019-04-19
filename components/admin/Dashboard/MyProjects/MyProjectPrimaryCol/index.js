@@ -86,28 +86,34 @@ class MyProjectPrimaryCol extends React.Component {
 
   render() {
     const { detailsPopupOpen, windowWidth } = this.state;
-    const { supportFiles } = this.props.d;
+    const {
+      d,
+      d: { supportFiles },
+      header,
+      selectedItems,
+      toggleItemSelection
+    } = this.props;
 
     return (
       <Fragment>
         <div className="myProjects_actions">
           <Checkbox
-            data-label={ this.props.d.id }
-            checked={ this.props.selectedItems.get( `${this.props.d.id}` ) }
-            onChange={ this.props.toggleItemSelection }
+            data-label={ d.id }
+            checked={ selectedItems.get( `${d.id}` ) }
+            onChange={ toggleItemSelection }
           />
           { /* <div className="myProjects_favorite"><Icon name='star' /></div> */ }
         </div>
         <div className="myProjects_thumbnail">
-          <img src={ this.props.d.thumbnail.url } alt={ this.props.d.thumbnail.alt } />
+          <img src={ d.thumbnail.url } alt={ d.thumbnail.alt } />
         </div>
         <div className="myProjects_data">
-          <Link href={ `/admin/projects/${this.props.d[this.props.header.name]}` }>
+          <Link href={ `/admin/project/video/${d.id}/review` }>
             <a
               className="myProjects_data_title"
-              title={ this.props.d[this.props.header.name] }
+              title={ d[header.name] }
             >
-              { truncate( this.props.d[this.props.header.name], { length: 35 } ) }
+              { truncate( d[header.name], { length: 35 } ) }
             </a>
           </Link>
           <div className="myProjects_data_actions">
@@ -124,6 +130,8 @@ class MyProjectPrimaryCol extends React.Component {
                 onOpen={ this.handleDetailsPopupOpen }
                 onClose={ this.handleDetailsPopupClose }
               />
+              <span> | </span>
+              <button type="button" className="linkStyle myProjects_data_actions_action">Preview</button>
               <span> | </span>
               <button type="button" className="linkStyle myProjects_data_actions_action">Share</button>
             </div>

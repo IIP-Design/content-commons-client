@@ -32,6 +32,10 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
         name
         organization
       }
+      author {
+        firstName
+        lastName
+      }
       projectType
       projectTitle
       descPublic
@@ -161,7 +165,7 @@ const MyProjects = () => (
                   createdAt: { value: moment( videoProject.createdAt ).format( 'MMMM DD, YYYY' ) },
                   updatedAt: { value: moment( videoProject.updatedAt ).format( 'MMMM DD, YYYY' ) },
                   projectTitle: { value: videoProject.projectTitle },
-                  author: { value: videoProject.author },
+                  author: { value: `${videoProject.author.firstName} ${videoProject.author.lastName}` },
                   team: { value: videoProject.team.name },
                   visibility: { value: videoProject.visibility },
                   thumbnail: {
