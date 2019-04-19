@@ -177,3 +177,5 @@ export default compose(
   deleteProjectMutation,
   videoReviewQuery
 )( VideoReview );
+
+export { VIDEO_REVIEW_PROJECT_QUERY };
