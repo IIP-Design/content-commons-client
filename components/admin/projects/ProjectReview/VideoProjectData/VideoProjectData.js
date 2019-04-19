@@ -7,7 +7,7 @@ import React from 'react';
 import { object } from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { Loader } from 'semantic-ui-react';
+import { Icon, Loader } from 'semantic-ui-react';
 
 import './VideoProjectData.scss';
 
@@ -34,7 +34,16 @@ const VideoProjectData = props => {
     );
   }
 
-  if ( error ) return `Error! ${error.message}`;
+  if ( error ) {
+    return (
+      <div className="video-project-data error">
+        <p>
+          <Icon color="red" name="exclamation triangle" />
+          <span>Loading error...</span>
+        </p>
+      </div>
+    );
+  }
 
   if ( !project || !Object.keys( project ).length ) return null;
 
