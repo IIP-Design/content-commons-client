@@ -17,7 +17,7 @@ import './VideoSupportFiles.scss';
 const VideoSupportFiles = props => {
   const { error, loading, project } = props.data;
 
-  const [protectImages, setProtectImages] = useState( project.protectImages );
+  const [protectImages, setProtectImages] = useState( project ? project.protectImages : false );
 
   const updateState = () => setProtectImages( project.protectImages );
 
