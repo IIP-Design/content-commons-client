@@ -9,7 +9,7 @@ import Router from 'next/router';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
 import {
-  Button, Confirm, Grid, Loader
+  Button, Confirm, Grid, Icon, Loader
 } from 'semantic-ui-react';
 
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
@@ -29,8 +29,6 @@ const VideoReview = props => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
 
   const { id, data, data: { error, loading } } = props;
-
-  if ( !data.project ) return <ProjectNotFound />;
 
   if ( loading ) {
     return (
@@ -52,7 +50,16 @@ const VideoReview = props => {
     );
   }
 
-  if ( error ) return `Error! ${error.message}`;
+  if ( error ) {
+    return (
+      <div className="video-review-project error">
+        <p>
+          <Icon color="red" name="exclamation triangle" />
+          <span>Loading error...</span>
+        </p>
+      </div>
+    );
+  }
 
   if ( !data.project ) return <ProjectNotFound />;
 
