@@ -71,7 +71,6 @@ const Component = (
   </MockedProvider>
 );
 
-
 describe( '<VideoEdit />', () => {
   it( 'renders initial loading state without crashing', () => {
     const wrapper = mount( Component );
