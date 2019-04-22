@@ -62,6 +62,8 @@ const VideoProjectFiles = props => {
 
   const { units } = project;
 
+  if ( !units || ( units && !units.length ) ) return null;
+
   const handleEdit = () => {
     const { id } = props;
     Router.push( {
@@ -75,14 +77,18 @@ const VideoProjectFiles = props => {
         { `${getPluralStringOrNot( units, 'Video' )} in Project` }
       </h3>
       { units.map( unit => {
-        const youTubeUrl = getStreamData( unit.files[0].stream, 'youtube', 'url' );
-        const vimeoUrl = getStreamData( unit.files[0].stream, 'vimeo', 'url' );
+        const { files, thumbnails } = unit;
+        if ( !files || ( files && !files.length ) ) return;
+
+        const youTubeUrl = getStreamData( files[0].stream, 'youtube', 'url' );
+        const vimeoUrl = getStreamData( files[0].stream, 'vimeo', 'url' );
+
         return (
           <div key={ unit.title } className="project_file">
             <Grid>
               <Grid.Row
                 className={
-                  `project_file_header ${unit.files[0].language.textDirection}`
+                  `project_file_header ${files[0].language.textDirection}`
                 }
               >
                 <Grid.Column floated="left" mobile={ 8 }>
@@ -99,22 +105,29 @@ const VideoProjectFiles = props => {
 
               <Grid.Row className="project_file_contents">
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_meta">
-                  <img src={ unit.thumbnails[0].image.url } alt={ unit.thumbnails[0].image.alt } />
-                  <p><b className="label">File Name:</b> { unit.files[0].filename }</p>
-                  <p><b className="label">Filesize:</b> { formatBytes( unit.files[0].filesize ) }</p>
-                  <p><b className="label">Dimensions:</b> { `${unit.files[0].dimensions.width} x ${unit.files[0].dimensions.height}` }</p>
-                  <p><b className="label">Uploaded:</b> { formatDate( unit.files[0].createdAt ) }</p>
-                  <p><b className="label">Duration:</b> { millisToMinutesAndSeconds( unit.files[0].duration, 0 ) }</p>
+                  { ( thumbnails && thumbnails.length )
+                    ? (
+                      <img
+                        src={ thumbnails[0].image.url }
+                        alt={ thumbnails[0].image.alt }
+                      />
+                    )
+                    : null }
+                  <p><b className="label">File Name:</b> { files[0].filename }</p>
+                  <p><b className="label">Filesize:</b> { formatBytes( files[0].filesize ) }</p>
+                  <p><b className="label">Dimensions:</b> { `${files[0].dimensions.width} x ${files[0].dimensions.height}` }</p>
+                  <p><b className="label">Uploaded:</b> { formatDate( files[0].createdAt ) }</p>
+                  <p><b className="label">Duration:</b> { millisToMinutesAndSeconds( files[0].duration, 0 ) }</p>
                 </Grid.Column>
 
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_info">
-                  <p><b className="label">Language:</b> { unit.files[0].language.displayName }</p>
-                  <p><b className="label">Subtitles & Captions:</b> { unit.files[0].videoBurnedInStatus }</p>
-                  <p><b className="label">Video Type:</b> { unit.files[0].use.name }</p>
-                  <p><b className="label">Quality:</b> { unit.files[0].quality }</p>
+                  <p><b className="label">Language:</b> { files[0].language.displayName }</p>
+                  <p><b className="label">Subtitles & Captions:</b> { files[0].videoBurnedInStatus }</p>
+                  <p><b className="label">Video Type:</b> { files[0].use.name }</p>
+                  <p><b className="label">Quality:</b> { files[0].quality }</p>
                   <p
                     className={
-                      `public_description ${unit.files[0].language.textDirection}`
+                      `public_description ${files[0].language.textDirection}`
                     }
                   >
                     <b className="label">Public Description:</b>
