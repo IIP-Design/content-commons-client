@@ -23,35 +23,17 @@ const mocks = [
             firstName: 'Jane',
             lastName: 'Doe'
           },
-          team: {
-            name: 'IIP Video Production'
-          },
+          team: { name: 'IIP Video Production' },
           visibility: 'PUBLIC',
           descPublic: 'The public description',
           descInternal: 'The internal description',
           categories: [
-            {
-              translations: {
-                name: 'about america'
-              }
-            },
-            {
-              translations: {
-                name: 'Amérique'
-              }
-            }
+            { translations: { name: 'about america' } },
+            { translations: { name: 'Amérique' } }
           ],
           tags: [
-            {
-              translations: {
-                name: 'american culture'
-              }
-            },
-            {
-              translations: {
-                name: 'Culture américaine'
-              }
-            }
+            { translations: { name: 'american culture' } },
+            { translations: { name: 'Culture américaine' } }
           ]
         }
       }
@@ -152,5 +134,185 @@ describe( '<VideoProjectData />', () => {
     const videoProjectData = wrapper.find( 'VideoProjectData' );
 
     expect( toJSON( videoProjectData ) ).toMatchSnapshot();
+  } );
+
+  it( 'does not crash if categories and tags are `null`', async () => {
+    const nullCatTagsMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_REVIEW_DATA_QUERY,
+          variables: { id: props.id }
+        },
+        result: {
+          data: {
+            project: {
+              id: '123',
+              projectTitle: 'test title',
+              author: {
+                id: 'au438',
+                firstName: 'Jane',
+                lastName: 'Doe'
+              },
+              team: { name: 'IIP Video Production' },
+              visibility: 'PUBLIC',
+              descPublic: 'The public description',
+              descInternal: 'The internal description',
+              categories: null,
+              tags: null
+            }
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ nullCatTagsMocks } addTypename={ false }>
+        <VideoProjectData { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoProjectData = wrapper.find( 'VideoProjectData' );
+    const taxonomySection = videoProjectData.find( 'section.project-data_taxonomy' );
+
+    expect( videoProjectData.exists() ).toEqual( true );
+    expect( toJSON( taxonomySection ) ).toMatchSnapshot();
+  } );
+
+  it( 'does not crash if categories and tags are `[]`', async () => {
+    const emptyCatTagsMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_REVIEW_DATA_QUERY,
+          variables: { id: props.id }
+        },
+        result: {
+          data: {
+            project: {
+              id: '123',
+              projectTitle: 'test title',
+              author: {
+                id: 'au438',
+                firstName: 'Jane',
+                lastName: 'Doe'
+              },
+              team: { name: 'IIP Video Production' },
+              visibility: 'PUBLIC',
+              descPublic: 'The public description',
+              descInternal: 'The internal description',
+              categories: [],
+              tags: []
+            }
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ emptyCatTagsMocks } addTypename={ false }>
+        <VideoProjectData { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoProjectData = wrapper.find( 'VideoProjectData' );
+    const taxonomySection = videoProjectData.find( 'section.project-data_taxonomy' );
+
+    expect( videoProjectData.exists() ).toEqual( true );
+    expect( toJSON( taxonomySection ) ).toMatchSnapshot();
+  } );
+
+  it( 'does not crash if author and team are `null`', async () => {
+    const nullAuthorTeamMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_REVIEW_DATA_QUERY,
+          variables: { id: props.id }
+        },
+        result: {
+          data: {
+            project: {
+              id: '123',
+              projectTitle: 'test title',
+              author: null,
+              team: null,
+              visibility: 'PUBLIC',
+              descPublic: 'The public description',
+              descInternal: 'The internal description',
+              categories: [
+                { translations: { name: 'about america' } },
+                { translations: { name: 'Amérique' } }
+              ],
+              tags: [
+                { translations: { name: 'american culture' } },
+                { translations: { name: 'Culture américaine' } }
+              ]
+            }
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ nullAuthorTeamMocks } addTypename={ false }>
+        <VideoProjectData { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoProjectData = wrapper.find( 'VideoProjectData' );
+    const metaSection = videoProjectData.find( 'section.project-data_meta' );
+
+    expect( videoProjectData.exists() ).toEqual( true );
+    expect( toJSON( metaSection ) ).toMatchSnapshot();
+  } );
+
+  it( 'does not crash if author and team are `{}`', async () => {
+    const emptyAuthorTeamMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_REVIEW_DATA_QUERY,
+          variables: { id: props.id }
+        },
+        result: {
+          data: {
+            project: {
+              id: '123',
+              projectTitle: 'test title',
+              author: {},
+              team: {},
+              visibility: 'PUBLIC',
+              descPublic: 'The public description',
+              descInternal: 'The internal description',
+              categories: [
+                { translations: { name: 'about america' } },
+                { translations: { name: 'Amérique' } }
+              ],
+              tags: [
+                { translations: { name: 'american culture' } },
+                { translations: { name: 'Culture américaine' } }
+              ]
+            }
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ emptyAuthorTeamMocks } addTypename={ false }>
+        <VideoProjectData { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoProjectData = wrapper.find( 'VideoProjectData' );
+    const metaSection = videoProjectData.find( 'section.project-data_meta' );
+
+    expect( videoProjectData.exists() ).toEqual( true );
+    expect( toJSON( metaSection ) ).toMatchSnapshot();
   } );
 } );

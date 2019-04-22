@@ -1,5 +1,90 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<VideoProjectData /> does not crash if author and team are \`{}\` 1`] = `null`;
+
+exports[`<VideoProjectData /> does not crash if author and team are \`null\` 1`] = `
+<section
+  className="project-data_meta section"
+>
+  <p>
+    <b
+      className="label"
+    >
+      Video Title:
+    </b>
+     
+    test title
+  </p>
+  <p>
+    <b
+      className="label"
+    >
+      Author:
+    </b>
+     
+  </p>
+  <p>
+    <b
+      className="label"
+    >
+      Team:
+    </b>
+     
+  </p>
+  <p>
+    <b
+      className="label"
+    >
+      Privacy Setting:
+    </b>
+     
+    PUBLIC
+  </p>
+</section>
+`;
+
+exports[`<VideoProjectData /> does not crash if categories and tags are \`[]\` 1`] = `
+<section
+  className="project-data_taxonomy section"
+>
+  <p>
+    <b
+      className="label"
+    >
+      Categories: 
+    </b>
+  </p>
+  <p>
+    <b
+      className="label"
+    >
+      Tags: 
+    </b>
+  </p>
+</section>
+`;
+
+exports[`<VideoProjectData /> does not crash if categories and tags are \`null\` 1`] = `
+<section
+  className="project-data_taxonomy section"
+>
+  <p>
+    <b
+      className="label"
+    >
+      Categories: 
+    </b>
+  </p>
+  <p>
+    <b
+      className="label"
+    >
+      Tags: 
+    </b>
+  </p>
+</section>
+`;
+
 exports[`<VideoProjectData /> renders initial loading state without crashing 1`] = `
 <VideoProjectData
   data={
