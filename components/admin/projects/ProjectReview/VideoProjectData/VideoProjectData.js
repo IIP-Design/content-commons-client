@@ -68,23 +68,20 @@ const VideoProjectData = props => {
         <p><b className="label">Privacy Setting:</b> { visibility }</p>
       </section>
 
-      { ( categories.length && tags.length )
-        ? (
-          <section className="project-data_taxonomy section">
-            <p>
-              <b className="label">Categories: </b>
-              { categories
-                .map( category => category.translations.name )
-                .join( ', ' ) }
-            </p>
-            <p>
-              <b className="label">Tags: </b>
-              { tags
-                .map( tag => tag.translations.name )
-                .join( ', ' ) }
-            </p>
-          </section>
-        ) : null }
+      <section className="project-data_taxonomy section">
+        <p>
+          <b className="label">Categories: </b>
+          { ( categories && categories.length ) && categories
+            .map( category => category.translations.name )
+            .join( ', ' ) }
+        </p>
+        <p>
+          <b className="label">Tags: </b>
+          { ( tags && tags.length ) && tags
+            .map( tag => tag.translations.name )
+            .join( ', ' ) }
+        </p>
+      </section>
 
       <section className="project-data_description section">
         <p><b className="label">Public Description:</b> { descPublic }</p>
