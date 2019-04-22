@@ -69,7 +69,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
         "id": "123",
         "units": Array [
           Object {
-            "descPublic": "The value and meaning of the words “Made in America” come from a rich history of innovation and perseverance. Stay for a brief history of manufacturing in the USA and hear some of the positive impacts it has brought to the world and how its benefits are felt today.",
+            "descPublic": "A public description (English)",
             "files": Array [
               Object {
                 "createdAt": "2019-03-20T15:09:24.975Z",
@@ -115,7 +115,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
             "title": "Made in America",
           },
           Object {
-            "descPublic": "La valeur et le sens de l’expression Fabriqué en Amérique, ont leur origine dans un passé riche d’innovation et de persévérance. Découvrez une partie de l’histoire de l’industrie manufacturière aux États-Unis et l’influence positive qu’elle a eue sur le monde, dans le passé et encore aujourd’hui.",
+            "descPublic": "A public description (French)",
             "files": Array [
               Object {
                 "createdAt": "2019-03-20T15:09:24.975Z",
@@ -352,7 +352,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                       Public Description:
                     </b>
                     <span>
-                      The value and meaning of the words “Made in America” come from a rich history of innovation and perseverance. Stay for a brief history of manufacturing in the USA and hear some of the positive impacts it has brought to the world and how its benefits are felt today.
+                      A public description (English)
                     </span>
                   </p>
                   <p>
@@ -545,7 +545,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                       Public Description:
                     </b>
                     <span>
-                      La valeur et le sens de l’expression Fabriqué en Amérique, ont leur origine dans un passé riche d’innovation et de persévérance. Découvrez une partie de l’histoire de l’industrie manufacturière aux États-Unis et l’influence positive qu’elle a eue sur le monde, dans le passé et encore aujourd’hui.
+                      A public description (French)
                     </span>
                   </p>
                   <p>

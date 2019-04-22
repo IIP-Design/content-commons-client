@@ -23,7 +23,7 @@ const mocks = [
             {
               id: 'eng931',
               title: 'Made in America',
-              descPublic: 'The value and meaning of the words “Made in America” come from a rich history of innovation and perseverance. Stay for a brief history of manufacturing in the USA and hear some of the positive impacts it has brought to the world and how its benefits are felt today.',
+              descPublic: 'A public description (English)',
               thumbnails: [
                 {
                   image: {
@@ -72,7 +72,7 @@ const mocks = [
             {
               id: 'fr0381',
               title: 'Fabriqué en Amérique',
-              descPublic: 'La valeur et le sens de l’expression Fabriqué en Amérique, ont leur origine dans un passé riche d’innovation et de persévérance. Découvrez une partie de l’histoire de l’industrie manufacturière aux États-Unis et l’influence positive qu’elle a eue sur le monde, dans le passé et encore aujourd’hui.',
+              descPublic: 'A public description (French)',
               thumbnails: [
                 {
                   image: {
@@ -231,5 +231,421 @@ describe( '<VideoProjectFiles />', () => {
         pathname: `/admin/project/video/${props.id}/edit`
       } );
     } );
+  } );
+
+  it( 'renders `null` if units is `null`', async () => {
+    const nullUnitsMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_PREVIEW_QUERY,
+          variables: { id: props.id, isReviewPage: true }
+        },
+        result: {
+          data: {
+            project: {
+              id: '123',
+              units: null
+            }
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ nullUnitsMocks } addTypename={ false }>
+        <VideoProjectFiles { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoProjectFiles = wrapper.find( 'VideoProjectFiles' );
+
+    expect( videoProjectFiles.exists() ).toEqual( true );
+    expect( videoProjectFiles.html() ).toEqual( null );
+  } );
+
+  it( 'renders `null` if units is `[]`', async () => {
+    const emptyUnitsMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_PREVIEW_QUERY,
+          variables: { id: props.id, isReviewPage: true }
+        },
+        result: {
+          data: {
+            project: {
+              id: '123',
+              units: []
+            }
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ emptyUnitsMocks } addTypename={ false }>
+        <VideoProjectFiles { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoProjectFiles = wrapper.find( 'VideoProjectFiles' );
+
+    expect( videoProjectFiles.exists() ).toEqual( true );
+    expect( videoProjectFiles.html() ).toEqual( null );
+  } );
+
+  it( 'does not render div.project_file if unit.files is `null`', async () => {
+    const nullFilesMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_PREVIEW_QUERY,
+          variables: { id: props.id, isReviewPage: true }
+        },
+        result: {
+          data: {
+            project: {
+              id: '123',
+              units: [
+                {
+                  id: 'eng931',
+                  title: 'Made in America',
+                  descPublic: 'A public description (English)',
+                  thumbnails: [
+                    {
+                      image: {
+                        alt: 'A man wearing a hardhat walks through an empty factory.',
+                        url: 'https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg'
+                      }
+                    }
+                  ],
+                  files: null
+                },
+                {
+                  id: 'fr0381',
+                  title: 'Fabriqué en Amérique',
+                  descPublic: 'A public description (French)',
+                  thumbnails: [
+                    {
+                      image: {
+                        alt: 'A man wearing a hardhat walks through an empty factory.',
+                        url: 'https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg'
+                      }
+                    }
+                  ],
+                  files: null
+                }
+              ]
+            }
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ nullFilesMocks } addTypename={ false }>
+        <VideoProjectFiles { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoProjectFiles = wrapper.find( 'VideoProjectFiles' );
+    const projectFile = videoProjectFiles.find( 'div.project_file' );
+
+    expect( videoProjectFiles.exists() ).toEqual( true );
+    expect( projectFile.exists() ).toEqual( false );
+  } );
+
+  it( 'does not render div.project_file if unit.files is `[]`', async () => {
+    const emptyFilesMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_PREVIEW_QUERY,
+          variables: { id: props.id, isReviewPage: true }
+        },
+        result: {
+          data: {
+            project: {
+              id: '123',
+              units: [
+                {
+                  id: 'eng931',
+                  title: 'Made in America',
+                  descPublic: 'A public description (English)',
+                  thumbnails: [
+                    {
+                      image: {
+                        alt: 'A man wearing a hardhat walks through an empty factory.',
+                        url: 'https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg'
+                      }
+                    }
+                  ],
+                  files: []
+                },
+                {
+                  id: 'fr0381',
+                  title: 'Fabriqué en Amérique',
+                  descPublic: 'A public description (French)',
+                  thumbnails: [
+                    {
+                      image: {
+                        alt: 'A man wearing a hardhat walks through an empty factory.',
+                        url: 'https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg'
+                      }
+                    }
+                  ],
+                  files: []
+                }
+              ]
+            }
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ emptyFilesMocks } addTypename={ false }>
+        <VideoProjectFiles { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoProjectFiles = wrapper.find( 'VideoProjectFiles' );
+    const projectFile = videoProjectFiles.find( 'div.project_file' );
+
+    expect( videoProjectFiles.exists() ).toEqual( true );
+    expect( projectFile.exists() ).toEqual( false );
+  } );
+
+  it( 'does not render the thumbnail if unit.thumbnails is `null`', async () => {
+    const nullThumbnailsMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_PREVIEW_QUERY,
+          variables: { id: props.id, isReviewPage: true }
+        },
+        result: {
+          data: {
+            project: {
+              id: '123',
+              units: [
+                {
+                  id: 'eng931',
+                  title: 'Made in America',
+                  descPublic: 'A public description (English)',
+                  thumbnails: null,
+                  files: [
+                    {
+                      id: 'eng183',
+                      filename: 'madeinamerica_english.mp4',
+                      url: 'https://video-download-url.com',
+                      use: {
+                        name: 'Full Video'
+                      },
+                      filesize: 662595174,
+                      videoBurnedInStatus: 'CLEAN',
+                      createdAt: '2019-03-20T15:09:24.975Z',
+                      updatedAt: '2019-04-02T16:28:31.888Z',
+                      quality: 'WEB',
+                      duration: 556000,
+                      dimensions: {
+                        width: 1920,
+                        height: 1080
+                      },
+                      stream: [
+                        {
+                          site: 'YouTube',
+                          url: 'https://www.youtube.com/watch?1evw4fRu3bo',
+                          embedUrl: 'https://www.youtube.com/embed/1evw4fRu3bo'
+                        },
+                        {
+                          site: 'Vimeo',
+                          url: 'https://vimeo.com/827301171',
+                          embedUrl: 'https://player.vimeo.com/video/827301171'
+                        }
+                      ],
+                      language: {
+                        displayName: 'English',
+                        textDirection: 'LTR'
+                      }
+                    }
+                  ]
+                },
+                {
+                  id: 'fr0381',
+                  title: 'Fabriqué en Amérique',
+                  descPublic: 'A public description (French)',
+                  thumbnails: null,
+                  files: [
+                    {
+                      id: 'fr1911',
+                      filename: 'madeinamerica_french.mp4',
+                      url: 'https://video-download-url.com',
+                      use: {
+                        name: 'Full Video'
+                      },
+                      filesize: 662595174,
+                      videoBurnedInStatus: 'CLEAN',
+                      createdAt: '2019-03-20T15:09:24.975Z',
+                      updatedAt: '2019-04-02T16:28:31.888Z',
+                      quality: 'WEB',
+                      duration: 556000,
+                      dimensions: {
+                        width: 1920,
+                        height: 1080
+                      },
+                      stream: [
+                        {
+                          site: 'Vimeo',
+                          url: 'https://vimeo.com/827301171',
+                          embedUrl: 'https://player.vimeo.com/video/827301171'
+                        }
+                      ],
+                      language: {
+                        displayName: 'French',
+                        textDirection: 'LTR'
+                      },
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ nullThumbnailsMocks } addTypename={ false }>
+        <VideoProjectFiles { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoProjectFiles = wrapper.find( 'VideoProjectFiles' );
+    const fileMeta = videoProjectFiles.find( '.file_meta' );
+    const thumbnail = fileMeta.find( 'img' );
+
+    expect( videoProjectFiles.exists() ).toEqual( true );
+    expect( thumbnail.exists() ).toEqual( false );
+  } );
+
+  it( 'does not render the thumbnail if unit.thumbnails is `[]`', async () => {
+    const emptyThumbnailsMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_PREVIEW_QUERY,
+          variables: { id: props.id, isReviewPage: true }
+        },
+        result: {
+          data: {
+            project: {
+              id: '123',
+              units: [
+                {
+                  id: 'eng931',
+                  title: 'Made in America',
+                  descPublic: 'A public description (English)',
+                  thumbnails: [],
+                  files: [
+                    {
+                      id: 'eng183',
+                      filename: 'madeinamerica_english.mp4',
+                      url: 'https://video-download-url.com',
+                      use: {
+                        name: 'Full Video'
+                      },
+                      filesize: 662595174,
+                      videoBurnedInStatus: 'CLEAN',
+                      createdAt: '2019-03-20T15:09:24.975Z',
+                      updatedAt: '2019-04-02T16:28:31.888Z',
+                      quality: 'WEB',
+                      duration: 556000,
+                      dimensions: {
+                        width: 1920,
+                        height: 1080
+                      },
+                      stream: [
+                        {
+                          site: 'YouTube',
+                          url: 'https://www.youtube.com/watch?1evw4fRu3bo',
+                          embedUrl: 'https://www.youtube.com/embed/1evw4fRu3bo'
+                        },
+                        {
+                          site: 'Vimeo',
+                          url: 'https://vimeo.com/827301171',
+                          embedUrl: 'https://player.vimeo.com/video/827301171'
+                        }
+                      ],
+                      language: {
+                        displayName: 'English',
+                        textDirection: 'LTR'
+                      }
+                    }
+                  ]
+                },
+                {
+                  id: 'fr0381',
+                  title: 'Fabriqué en Amérique',
+                  descPublic: 'A public description (French)',
+                  thumbnails: [],
+                  files: [
+                    {
+                      id: 'fr1911',
+                      filename: 'madeinamerica_french.mp4',
+                      url: 'https://video-download-url.com',
+                      use: {
+                        name: 'Full Video'
+                      },
+                      filesize: 662595174,
+                      videoBurnedInStatus: 'CLEAN',
+                      createdAt: '2019-03-20T15:09:24.975Z',
+                      updatedAt: '2019-04-02T16:28:31.888Z',
+                      quality: 'WEB',
+                      duration: 556000,
+                      dimensions: {
+                        width: 1920,
+                        height: 1080
+                      },
+                      stream: [
+                        {
+                          site: 'Vimeo',
+                          url: 'https://vimeo.com/827301171',
+                          embedUrl: 'https://player.vimeo.com/video/827301171'
+                        }
+                      ],
+                      language: {
+                        displayName: 'French',
+                        textDirection: 'LTR'
+                      },
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ emptyThumbnailsMocks } addTypename={ false }>
+        <VideoProjectFiles { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoProjectFiles = wrapper.find( 'VideoProjectFiles' );
+    const fileMeta = videoProjectFiles.find( '.file_meta' );
+    const thumbnail = fileMeta.find( 'img' );
+
+    expect( videoProjectFiles.exists() ).toEqual( true );
+    expect( thumbnail.exists() ).toEqual( false );
   } );
 } );
