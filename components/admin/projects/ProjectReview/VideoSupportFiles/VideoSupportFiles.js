@@ -71,37 +71,57 @@ const VideoSupportFiles = props => {
   };
 
   const { srts, additionalFiles } = project;
-  const additionalFilesSorted = orderBy( additionalFiles, ['filetype'] );
+
+  const additionalFilesSorted = ( additionalFiles && additionalFiles.length )
+    ? orderBy( additionalFiles, ['filetype'] )
+    : [];
+
+  let allFiles = [];
+  if ( Array.isArray( srts ) && Array.isArray( additionalFiles ) ) {
+    allFiles = [...srts, ...additionalFiles];
+  } else if ( Array.isArray( srts ) && !Array.isArray( additionalFiles ) ) {
+    allFiles = [...srts];
+  } else if ( !Array.isArray( srts ) && Array.isArray( additionalFiles ) ) {
+    allFiles = [...additionalFiles];
+  }
+
+  if ( !allFiles.length ) return null;
 
   return (
     <section className="section section--project_support-files project_support-files">
       <h3 className="uppercase">
-        { getPluralStringOrNot( [...srts, ...additionalFiles], 'Support File' ) }
+        { getPluralStringOrNot( allFiles, 'Support File' ) }
       </h3>
 
-      <section className="files section">
-        <h4 id="srt-files">
-          { getPluralStringOrNot( srts, 'SRT file' ) }
-        </h4>
-        <ul aria-describedby="srt-files">
-          { srts.map( srt => (
-            <li key={ srt.id } className="file">
-              <b className="label">{ srt.language.displayName }:</b> { srt.filename }
-            </li>
-          ) ) }
-        </ul>
-      </section>
+      { ( srts && srts.length )
+        && (
+          <section className="files section">
+            <h4 id="srt-files">
+              { getPluralStringOrNot( srts, 'SRT file' ) }
+            </h4>
+            <ul aria-describedby="srt-files">
+              { srts.map( srt => (
+                <li key={ srt.id } className="file">
+                  <b className="label">{ srt.language.displayName }:</b> { srt.filename }
+                </li>
+              ) ) }
+            </ul>
+          </section>
+        ) }
 
-      <section className="addtl_files section">
-        <h4 id="additional-files">
-          { `Additional file${additionalFilesSorted.length > 1 ? 's' : ''}` }
-        </h4>
-        <ul aria-describedby="additional-files">
-          { additionalFilesSorted.map( file => (
-            <li key={ file.id }><b className="label">{ file.language.displayName }:</b> { file.filename }</li>
-          ) ) }
-        </ul>
-      </section>
+      { ( additionalFiles && additionalFiles.length )
+        && (
+          <section className="addtl_files section">
+            <h4 id="additional-files">
+              { `Additional file${additionalFilesSorted.length > 1 ? 's' : ''}` }
+            </h4>
+            <ul aria-describedby="additional-files">
+              { additionalFilesSorted.map( file => (
+                <li key={ file.id }><b className="label">{ file.language.displayName }:</b> { file.filename }</li>
+              ) ) }
+            </ul>
+          </section>
+        ) }
 
       <Checkbox
         label="Disable right-click to protect your images"
