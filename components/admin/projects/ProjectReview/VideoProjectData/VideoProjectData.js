@@ -63,8 +63,8 @@ const VideoProjectData = props => {
       <h3 className="uppercase">Project Data</h3>
       <section className="project-data_meta section">
         <p><b className="label">Video Title:</b> { projectTitle }</p>
-        <p><b className="label">Author:</b> { author && `${author.firstName} ${author.lastName}` }</p>
-        <p><b className="label">Team:</b> { team.name }</p>
+        <p><b className="label">Author:</b> { ( author && Object.keys( author ).length ) && `${author.firstName} ${author.lastName}` }</p>
+        <p><b className="label">Team:</b> { ( team && Object.keys( team ).length ) && team.name }</p>
         <p><b className="label">Privacy Setting:</b> { visibility }</p>
       </section>
 
