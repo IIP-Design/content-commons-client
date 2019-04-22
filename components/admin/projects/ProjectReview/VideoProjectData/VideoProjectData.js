@@ -71,15 +71,19 @@ const VideoProjectData = props => {
       <section className="project-data_taxonomy section">
         <p>
           <b className="label">Categories: </b>
-          { ( categories && categories.length ) && categories
-            .map( category => category.translations.name )
-            .join( ', ' ) }
+          { ( categories && categories.length )
+            ? categories
+              .map( category => category.translations.name )
+              .join( ', ' )
+            : null }
         </p>
         <p>
           <b className="label">Tags: </b>
-          { ( tags && tags.length ) && tags
-            .map( tag => tag.translations.name )
-            .join( ', ' ) }
+          { ( tags && tags.length )
+            ? tags
+              .map( tag => tag.translations.name )
+              .join( ', ' )
+            : null }
         </p>
       </section>
 
