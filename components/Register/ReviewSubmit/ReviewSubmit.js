@@ -52,7 +52,7 @@ const ReviewSubmit = ( {
         id="consent"
         name="consent"
         className="register_review-label"
-        label={ <label>I agree to the Content Commons <Link href="/privacy"><a target="_blank">Terms of Use</a></Link></label> }
+        label={ <label>I agree to the Content Commons <Link href="/about"><a target="_blank">Terms of Service</a></Link></label> }
         onChange={ handleChange }
         error={ !!errors.consent }
       />
