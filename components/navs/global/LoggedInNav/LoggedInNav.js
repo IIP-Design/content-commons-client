@@ -46,7 +46,8 @@ const menuItems = [
 class LoggedInNav extends Component {
   state = {
     user_profile: false,
-    notifications: false
+    notifications: false,
+    hasNotifications: false
   }
 
   getIcon = item => (
@@ -54,6 +55,7 @@ class LoggedInNav extends Component {
   )
 
   displayPopup = ( e, data ) => {
+    if ( data.id === 'notifications' && !this.state.hasNotifications ) return;
     this.setState( { [data.id]: true } );
   }
 
@@ -80,7 +82,9 @@ class LoggedInNav extends Component {
     const {
       mobileNavVisible, toggleMobileNav, keyUp, user
     } = this.props;
-    const { popupIsOpen } = this.state;
+    const { popupIsOpen, hasNotifications } = this.state;
+
+    const active = hasNotifications ? 'active' : '';
 
     return (
       <span>
@@ -90,7 +94,7 @@ class LoggedInNav extends Component {
             menuItems.map( item => {
               if ( item.name === 'upload' ) {
                 return (
-                  <Menu.Item key={ item.key } name={ item.name } className="nav_loggedin">
+                  <Menu.Item key={ item.key } name={ item.name } className={ `nav_loggedin ${item.name}` }>
                     <Link prefetch href="/admin/upload" passHref>{ this.getIcon( item ) }</Link>
                   </Menu.Item>
                 );
@@ -102,7 +106,15 @@ class LoggedInNav extends Component {
                   id={ item.name }
                   className="nav_submenu_popup"
                   trigger={ (
-                    <Menu.Item key={ item.key } name={ item.name } className="nav_loggedin">
+                    <Menu.Item
+                      key={ item.key }
+                      name={ item.name }
+                      className={
+                        item.name === 'notifications'
+                          ? `nav_loggedin ${item.name} ${active}`
+                          : `nav_loggedin ${item.name}`
+                      }
+                    >
                       { this.getIcon( item ) }
                     </Menu.Item>
                   ) }
