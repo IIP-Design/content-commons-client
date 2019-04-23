@@ -89,7 +89,7 @@ class Register extends Component {
       )
     },
     {
-      menuItem: 'Review Submit',
+      menuItem: 'Review & Submit',
       render: () => (
         <Tab.Pane attached={ false }>
           <ReviewSubmit
