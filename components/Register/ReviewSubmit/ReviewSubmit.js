@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withFormik } from 'formik';
+import Link from 'next/link';
 import {
   Form, List, Button
 } from 'semantic-ui-react';
@@ -51,7 +52,7 @@ const ReviewSubmit = ( {
         id="consent"
         name="consent"
         className="register_review-label"
-        label="I agree to the Content Commons Terms of Use"
+        label={ <label>I agree to the Content Commons <Link href="/privacy"><a target="_blank">Terms of Use</a></Link></label> }
         onChange={ handleChange }
         error={ !!errors.consent }
       />
