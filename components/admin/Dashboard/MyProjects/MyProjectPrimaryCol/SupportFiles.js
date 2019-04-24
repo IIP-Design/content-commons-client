@@ -1,33 +1,66 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import capitalize from 'lodash.capitalize';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import ApolloError from 'components/errors/ApolloError';
 import { formatBytes } from 'lib/utils';
 
-const SupportFiles = ( { supportFiles } ) => (
-  <div>
-    <p>Files:</p>
-    {
-      supportFiles.map( file => {
-        const {
-          id,
-          url,
-          filetype,
-          filesize,
-          language: { displayName },
-          use
-        } = file;
-        return (
-          <p key={ id }>
-            { use.name } | <a href={ url }>{ filetype }</a> | <a href={ url }>{ capitalize( displayName ) } { formatBytes( filesize ) }</a>
-          </p>
-        );
-      } )
+const VIDEO_PROJECT_SUPPORT_FILES_QUERY = gql`
+  query VideoProjectSupportFiles( $id: ID! ) {
+    videoProject( id: $id ) {
+      id
+      supportFiles {
+        id
+        url
+        filetype
+        filesize
+        language {
+          displayName
+        }
+        use {
+          id
+          name
+        }
+      }
     }
-  </div>
+  }
+`;
+
+const SupportFiles = props => (
+  <Query query={ VIDEO_PROJECT_SUPPORT_FILES_QUERY } variables={ { id: props.id } }>
+    { ( { loading, error, data } ) => {
+      if ( loading ) return <p>Loading....</p>;
+      if ( error ) return <ApolloError error={ error } />;
+      const { supportFiles } = data.videoProject;
+      return (
+        <div>
+          <p>Files:</p>
+          {
+            supportFiles.map( file => {
+              const {
+                id,
+                url,
+                filetype,
+                filesize,
+                language: { displayName },
+                use
+              } = file;
+              return (
+                <p key={ id }>
+                  { use.name } | <a href={ url }>{ filetype }</a> | <a href={ url }>{ capitalize( displayName ) } { formatBytes( filesize ) }</a>
+                </p>
+              );
+            } )
+          }
+        </div>
+      );
+    } }
+  </Query>
 );
 
 SupportFiles.propTypes = {
-  supportFiles: PropTypes.array
+  id: PropTypes.string
 };
 
 export default SupportFiles;

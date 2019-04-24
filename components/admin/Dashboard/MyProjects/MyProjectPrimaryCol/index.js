@@ -8,10 +8,16 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import truncate from 'lodash/truncate';
-import { Checkbox, Icon, Popup } from 'semantic-ui-react';
+import {
+  Checkbox, Icon, Popup, Modal
+} from 'semantic-ui-react';
 import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import SupportFiles from './SupportFiles';
 import './MyProjectPrimaryCol.scss';
+
+
+import PreviewProjectItem from '../PreviewProjectItem';
+
 
 class MyProjectPrimaryCol extends React.Component {
   state = {
@@ -88,7 +94,7 @@ class MyProjectPrimaryCol extends React.Component {
     const { detailsPopupOpen, windowWidth } = this.state;
     const {
       d,
-      d: { supportFiles },
+      d: { id },
       header,
       selectedItems,
       toggleItemSelection
@@ -98,8 +104,8 @@ class MyProjectPrimaryCol extends React.Component {
       <Fragment>
         <div className="myProjects_actions">
           <Checkbox
-            data-label={ d.id }
-            checked={ selectedItems.get( `${d.id}` ) }
+            data-label={ id }
+            checked={ selectedItems.get( `${id}` ) }
             onChange={ toggleItemSelection }
           />
           { /* <div className="myProjects_favorite"><Icon name='star' /></div> */ }
@@ -108,7 +114,7 @@ class MyProjectPrimaryCol extends React.Component {
           <img src={ d.thumbnail.url } alt={ d.thumbnail.alt } />
         </div>
         <div className="myProjects_data">
-          <Link href={ `/admin/project/video/${d.id}/review` }>
+          <Link href={ `/admin/project/video/${id}/review` }>
             <a
               className="myProjects_data_title"
               title={ d[header.name] }
@@ -121,7 +127,7 @@ class MyProjectPrimaryCol extends React.Component {
               <Popup
                 className="detailsFiles_popup"
                 trigger={ <button type="button" className="linkStyle myProjects_data_actions_action">Details</button> }
-                content={ <SupportFiles supportFiles={ supportFiles } /> }
+                content={ <SupportFiles id={ id } /> }
                 on="click"
                 position={ windowWidth <= 400 ? 'bottom right' : 'bottom center' }
                 hideOnScroll
@@ -131,7 +137,15 @@ class MyProjectPrimaryCol extends React.Component {
                 onClose={ this.handleDetailsPopupClose }
               />
               <span> | </span>
-              <button type="button" className="linkStyle myProjects_data_actions_action">Preview</button>
+
+              <Modal
+                trigger={ <button type="button" className="linkStyle myProjects_data_actions_action">Preview</button> }
+              >
+                <Modal.Content>
+                  <PreviewProjectItem id={ id } />
+                </Modal.Content>
+              </Modal>
+
               <span> | </span>
               <button type="button" className="linkStyle myProjects_data_actions_action">Share</button>
             </div>

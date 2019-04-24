@@ -36,92 +36,19 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
         firstName
         lastName
       }
-      projectType
       projectTitle
-      descPublic
-      descInternal
-      status
       visibility
-      units {
-        id
-        title
-        descPublic
-        language {
-          languageCode
-          locale
-          textDirection
-          displayName
-        }
-        files {
-          id
-          language {
-            languageCode
-            locale
-            textDirection
-            displayName
-          }
-          filetype
-          filename
-          use {
-            id
-            name
-          }
-          quality
-          videoBurnedInStatus
-          url
-          md5
-          duration
-          bitrate
-          filesize
-          dimensions {
-            width
-            height
-          }
-          stream {
-            id
-            site
-            url
-            embedUrl
-          }
-        }
-        thumbnails {
-          size
-          image {
-            filetype
-            filename
-            url
-            alt
-            caption
-          }
-        }
-      }
-      supportFiles {
-        id
-        language {
-          displayName
-        }
-        url
-        filename
-        filetype
-        filesize
-        use {
-          id
-          name
-        }
-      }
       thumbnails {
+        url
         alt
         caption
+        filename
+        filetype
         dimensions {
           width
           height
-        }
-        alt
-        caption
-        filename
-        filetype
-        url
-      }
+        }                
+      }      
     }
   }
 `;
@@ -173,8 +100,7 @@ const MyProjects = () => (
                       url: videoProject.thumbnails[0].url,
                       alt: videoProject.thumbnails[0].alt
                     }
-                  },
-                  supportFiles: { value: videoProject.supportFiles }
+                  }
                 } );
                 normalizedVideoProjects.push( normalizedProject );
               } );
