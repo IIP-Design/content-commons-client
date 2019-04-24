@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import propTypes from 'prop-types';
 import gql from 'graphql-tag';
-
 import {
   Form, Grid, Input, Loader, TextArea
 } from 'semantic-ui-react';
+
+import TagTypeahead from 'components/admin/dropdowns/TagTypeahead';
 
 const VIDEO_UNIT_QUERY = gql`
   query VIDEO_UNIT_QUERY( $id: ID! ) {
@@ -20,8 +21,11 @@ const VIDEO_UNIT_QUERY = gql`
       tags {
         id
         translations {
+          id
           name
-          language { displayName }
+          language {
+            id
+          }
         }
       }
       thumbnails {
@@ -86,10 +90,19 @@ class UnitDataForm extends Component {
         descPublic: unit.descPublic,
         imageAlt: unit.thumbnails[0].image.alt,
         imageUrl: unit.thumbnails[0].image.url,
-        // tag: unit.tag,
+        tags: this.getTagList( unit.tags ),
         title: unit.title
       } );
     }
+  }
+
+  getTagList = arr => {
+    const tagList = [];
+    arr.map( tag => {
+      tagList.push( tag.id );
+      return tagList;
+    } );
+    return tagList;
   }
 
   updateUnit = e => {
@@ -110,6 +123,15 @@ class UnitDataForm extends Component {
     this.setState( {
       [e.target.name]: e.target.value
     } );
+  }
+
+  handleDropdownSelection = ( e, data ) => {
+    const { name, value } = data;
+
+    this.setState(
+      { [name]: value },
+      () => this.updateUnit( name, value )
+    );
   }
 
   render() {
@@ -133,7 +155,7 @@ class UnitDataForm extends Component {
 
     const lang = `in ${unit.language.displayName}` || '';
     const {
-      descPublic, imageAlt, imageUrl, title
+      descPublic, imageAlt, imageUrl, tags, title
     } = this.state;
 
     return (
@@ -169,13 +191,14 @@ class UnitDataForm extends Component {
                 value={ descPublic }
               />
 
-              { /* <Form.Field
-                control={ Input }
+              <TagTypeahead
+                onChange={ this.handleTagSelection }
                 id="video-tags"
                 label={ `Additional Keywords ${lang}` }
-                name="tag"
-                // onChange={ this.handleInput }
-              /> */ }
+                langId={ unit.language.id }
+                value={ tags }
+              />
+
             </Grid.Column>
           </Grid.Row>
         </Grid>

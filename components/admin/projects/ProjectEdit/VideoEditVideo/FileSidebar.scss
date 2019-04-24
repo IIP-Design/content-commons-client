@@ -5,6 +5,8 @@
   display: flex;
   flex-direction: column;
   margin: 0;
+  max-height: 390px;
+  overflow: hidden;
   padding: 1rem;
 
   &-image {

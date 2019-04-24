@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import { Loader } from 'semantic-ui-react';
 
 import FileSidebar from 'components/admin/projects/ProjectEdit/VideoEditVideo/FileSidebar';
 import FileDataForm from 'components/admin/projects/ProjectEdit/VideoEditVideo/EditVideoForms/FileDataForm';
@@ -10,12 +11,13 @@ import './FileSection.scss';
 
 const VIDEO_UNIT_QUERY = gql`
   query VIDEO_UNIT_QUERY( $id: ID! ) {
-    videoUnit( id: $id ) {
+    unit: videoUnit( id: $id ) {
       id
       files {
         id
       }
       language {
+        id
         displayName
       }
     }
@@ -28,14 +30,9 @@ class FileSection extends Component {
   componentDidUpdate= ( prevProps, prevState ) => {
     const { videoUnitQuery } = this.props;
 
-    let fileId = '';
-    if (
-      videoUnitQuery.videoUnit
-      && videoUnitQuery.videoUnit.files
-      && videoUnitQuery.videoUnit.files[0].id
-    ) {
-      fileId = videoUnitQuery.videoUnit.files[0].id;
-    }
+    const fileId = videoUnitQuery.unit && videoUnitQuery.unit.files && videoUnitQuery.unit.files[0].id
+      ? videoUnitQuery.unit.files[0].id
+      : '';
 
     if ( fileId && fileId !== prevState.selected ) {
       this.setState( {
@@ -52,16 +49,26 @@ class FileSection extends Component {
 
   render() {
     const { unitId, videoUnitQuery } = this.props;
-    const { selected } = this.state;
+    const { loading, unit } = videoUnitQuery;
 
-    let lang = '';
-    if (
-      videoUnitQuery.videoUnit
-      && videoUnitQuery.videoUnit.language
-      && videoUnitQuery.videoUnit.language.displayName
-    ) {
-      lang = `in ${videoUnitQuery.videoUnit.language.displayName}`;
+    if ( !unit || loading ) {
+      return (
+        <div style={ {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh'
+        } }
+        >
+          <Loader active inline="centered" style={ { marginBottom: '1em' } } />
+          <p>Loading the file data...</p>
+        </div>
+      );
     }
+
+    const { selected } = this.state;
+    const lang = unit.language && unit.language.displayName ? `in ${unit.language.displayName}` : '';
 
     return (
       <section className="edit-file">
