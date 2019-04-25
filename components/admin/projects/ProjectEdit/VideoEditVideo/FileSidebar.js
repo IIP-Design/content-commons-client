@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import propTypes from 'prop-types';
 import { Query } from 'react-apollo';
 
+import { titleCase } from 'lib/utils';
 import './FileSidebar.scss';
 
 const VIDEO_UNIT_QUERY = gql`
@@ -55,8 +56,8 @@ const FileSidebar = ( { callback, id, selected } ) => (
                   className={ selected === file.id ? 'edit-video-sidebar-image selected' : 'edit-video-sidebar-image' }
                   src={ image }
                 />
-                <p>{ `${file.quality} | ${file.use.name}` }</p>
-                <p>{ file.videoBurnedInStatus }</p>
+                <p>{ `${titleCase( file.quality )} | ${file.use.name}` }</p>
+                <p>{ titleCase( file.videoBurnedInStatus ) }</p>
               </div>
             ) )
           ) }
