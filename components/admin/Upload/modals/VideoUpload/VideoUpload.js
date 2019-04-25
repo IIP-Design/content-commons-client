@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as actions from 'lib/redux/actions/fileUpload';
+import * as actions from 'lib/redux/actions/files';
 import { withRouter } from 'next/router';
 import { compose, graphql } from 'react-apollo';
 import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown';
@@ -136,13 +136,13 @@ const VideoUpload = props => {
 
   // @todo complete wiring before activating router
   const gotoVideoEditPage = () => {
-    // props.router.push( {
-    //   pathname: '/admin/project',
-    //   query: {
-    //     content: 'video',
-    //     action: 'edit'
-    //   }
-    // } );
+    props.router.push( {
+      pathname: '/admin/project',
+      query: {
+        content: 'video',
+        action: 'edit'
+      }
+    } );
   };
 
   /**
@@ -163,7 +163,7 @@ const VideoUpload = props => {
       fileObject: file.fileInput
     } ) );
 
-    await props.addFilesToUpload( filesToUpload ); // coming from redux
+    await props.addFiles( filesToUpload ); // coming from redux
     gotoVideoEditPage();
   };
 
@@ -235,8 +235,8 @@ VideoUpload.propTypes = {
   imageUseData: PropTypes.shape( {
     imageUses: PropTypes.array
   } ),
-  // router: PropTypes.object,
-  addFilesToUpload: PropTypes.func // from redux
+  router: PropTypes.object,
+  addFiles: PropTypes.func // from redux
 };
 
 // @todo - add videoUseByName, imageUseByName queries to server

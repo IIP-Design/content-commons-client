@@ -3,48 +3,78 @@
  * ProjectDataForm
  *
  */
-
 import React from 'react';
-import {
-  array,
-  bool,
-  func,
-  number,
-  oneOfType,
-  string
-} from 'prop-types';
+import PropTypes from 'prop-types';
 import {
   Button,
-  Dropdown,
   Form,
   Grid,
   Input,
-  Select,
   TextArea
 } from 'semantic-ui-react';
+import Link from 'next/link';
+import { withRouter } from 'next/router';
+import { compose, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import { withFormik } from 'formik';
+import ProjectVisibilityDropdown from 'components/admin/dropdowns/ProjectVisibilityDropdown';
+import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown';
+import UserDropdown from 'components/admin/dropdowns/UserDropdown';
+import { CURRENT_USER_QUERY } from 'components/User/User';
+import { validationSchema } from './validationSchema';
 import './ProjectDataForm.scss';
+
+const VIDEO_PROJECT_QUERY = gql`
+  query VIDEO_PROJECT_QUERY( $id: ID! ) {
+    videoProject( id: $id ) {
+      projectTitle
+      descPublic
+      descInternal 
+      status
+      visibility
+      categories {
+        id
+      }
+      tags {
+        id
+      }
+    }
+}
+`;
+
+const CREATE_VIDEO_PROJECT_MUTATION = gql`
+  mutation CREATE_VIDEO_PROJECT_MUTATION( $data: VideoProjectCreateInput! ) {
+    createVideoProject( data: $data ) {
+      id
+    }
+}
+`;
 
 const ProjectDataForm = props => {
   const {
+    values,
+    errors,
+    touched,
+    status,
     handleSubmit,
     handleChange,
-    videoTitle,
-    visibilityOptions,
-    visibility,
-    authorValue,
-    teamValue,
-    categoryLabel,
-    maxCategories,
-    categoryOptions,
-    hasExceededMaxCategories,
-    categoriesValue,
-    tagsValue,
-    descPublicValue,
-    descInternalValue,
-    termsConditions,
-    hasSubmittedData,
-    hasRequiredData
+    setFieldValue,
+    isSubmitting,
+    isValid,
+    setFieldTouched,
+    maxCategories
   } = props;
+
+  const handleOnChange = ( e, {
+    name, value, type, checked
+  } ) => {
+    if ( type === 'checkbox' ) {
+      setFieldValue( name, checked );
+    } else {
+      setFieldValue( name, value );
+    }
+    setFieldTouched( name, true, false );
+  };
 
   return (
     <Form className="edit-project__form project-data" onSubmit={ handleSubmit }>
@@ -62,86 +92,86 @@ const ProjectDataForm = props => {
         <Grid.Row>
           <Grid.Column mobile={ 16 } computer={ 8 }>
             <Form.Group widths="equal">
-              <Form.Field
-                id="video-title"
-                control={ Input }
-                label="Video Title"
-                required
-                autoFocus
-                name="projectTitle"
-                value={ videoTitle }
-                onChange={ handleChange }
-                error={ !videoTitle }
-              />
+              <div className="field">
+                <Form.Field
+                  id="projectTitle"
+                  name="projectTitle"
+                  control={ Input }
+                  label="Video Title"
+                  required
+                  autoFocus
+                  value={ values.projectTitle }
+                  onChange={ handleOnChange }
+                  error={ touched.projectTitle && !!errors.projectTitle }
+                />
+                <p className="error-message">{ touched.projectTitle ? errors.projectTitle : '' }</p>
+              </div>
 
-              <Form.Field
-                id="visibility-setting"
-                control={ Select }
-                label="Visibility Setting"
-                options={ visibilityOptions }
-                required
-                name="visibility"
-                value={ visibility }
-                onChange={ handleChange }
-                error={ !visibility }
-              />
+              <div className="field">
+                <div className="field">
+                  <ProjectVisibilityDropdown
+                    id="visibility"
+                    name="visibility"
+                    label="Visibility Setting"
+                    value={ values.visibility }
+                    onChange={ handleOnChange }
+                    error={ touched.visibility && !!errors.visibility }
+                    required
+                  />
+                </div>
+                <p className="error-message">{ touched.visibility ? errors.visibility : '' }</p>
+              </div>
             </Form.Group>
 
             <Form.Group widths="equal">
-              <Form.Field
+              <UserDropdown
                 id="author"
-                control={ Input }
-                label="Author"
-                placeholder="Jane Doe"
                 name="author"
-                value={ authorValue }
-                onChange={ handleChange }
+                label="Author"
+                value={ values.author }
+                onChange={ handleOnChange }
               />
 
               <Form.Field
                 id="team"
                 control={ Input }
                 label="Team"
-                placeholder="IIP Video Production"
+                placeholder=""
                 name="team"
-                value={ teamValue }
-                onChange={ handleChange }
+                value={ values.team }
               />
             </Form.Group>
 
             <Form.Group widths="equal">
               <div className="field">
-                <Form.Dropdown
-                  id="video-categories"
-                  control={ Dropdown }
-                  label={ categoryLabel }
-                  required
-                  placeholder="-"
-                  options={ categoryOptions }
-                  fluid
+                <CategoryDropdown
+                  id="categories"
+                  name="categories"
+                  label="Categories"
+                  value={ values.categories }
+                  onChange={ handleOnChange }
+                  error={ touched.categories && !!errors.categories }
                   multiple
                   search
-                  selection
                   closeOnBlur
                   closeOnChange
-                  name="categories"
-                  value={ categoriesValue }
-                  onChange={ handleChange }
-                  error={
-                    !categoriesValue.length > 0 || hasExceededMaxCategories
-                  }
+                  required
                   style={ { marginBottom: '1em' } }
                 />
-                <p>Select up to { maxCategories }.</p>
+
+                { errors.categories
+                  ? <p className="error-message">{ touched.categories ? errors.categories : '' }</p>
+                  : <p>Select up to { maxCategories }.</p>
+              }
               </div>
 
               <div className="field">
                 <Form.Field
-                  id="video-tags"
+                  id="tags"
                   control={ Input }
                   label="Tags"
                   name="tags"
-                  value={ tagsValue }
+                  value={ values.tags }
                   onChange={ handleChange }
                   style={ { marginBottom: '1em' } }
                 />
@@ -152,21 +182,21 @@ const ProjectDataForm = props => {
 
           <Grid.Column mobile={ 16 } computer={ 8 }>
             <Form.Field
-              id="public-description"
+              id="descPublic"
+              name="descPublic"
               control={ TextArea }
               label="Public Description"
-              name="descPublic"
-              value={ descPublicValue }
+              value={ values.descPublic }
               onChange={ handleChange }
             />
 
             <div className="field">
               <Form.Field
-                id="internal-description"
+                id="descInternal"
+                name="descInternal"
                 control={ TextArea }
                 label="Internal Description"
-                name="descInternal"
-                value={ descInternalValue }
+                value={ values.descInternal }
                 onChange={ handleChange }
               />
               <p>Reason for this project as it relates to Department objectives.</p>
@@ -174,35 +204,31 @@ const ProjectDataForm = props => {
           </Grid.Column>
         </Grid.Row>
 
-        { !hasSubmittedData
+        { !props.id && status !== 'CREATED'
           && (
             <Grid.Row reversed="computer">
               <Grid.Column mobile={ 11 }>
                 <Form.Checkbox
-                  id="terms-conditions"
+                  id="termsConditions"
+                  name="termsConditions"
                   label={ (
-                    /* eslint-disable jsx-a11y/label-has-for */
-                    /* eslint-disable jsx-a11y/label-has-associated-control */
-                    /**
-                     * @todo need Terms of Use link
-                     */
-                    <label htmlFor="terms-conditions">
-                      By uploading these files I agree to the Content Commons <a href="https://?????">Terms of Use</a> and licensing agreements. I understand that my content will be available to the public for general use.
+                    <label htmlFor="termsConditions">
+                      By uploading these files I agree to the Content Commons <Link href="/privacy"><a>Terms of Use</a></Link> and licensing agreements. I understand that my content will be available to the public for general use.
                     </label>
                   ) }
-                  name="termsConditions"
                   type="checkbox"
                   required
-                  checked={ termsConditions }
-                  onChange={ handleChange }
-                  error={ !termsConditions }
+                  onChange={ handleOnChange }
+                  error={ touched.termsConditions && !!errors.termsConditions }
                 />
               </Grid.Column>
               <Grid.Column mobile={ 16 } computer={ 5 }>
                 <Button
+                  type="submit"
+                  onClick={ handleSubmit }
                   className="edit-project__form--save"
                   content="Save draft & upload files to this project"
-                  disabled={ !hasRequiredData }
+                  disabled={ !isValid || isSubmitting }
                 />
               </Grid.Column>
             </Grid.Row>
@@ -213,24 +239,120 @@ const ProjectDataForm = props => {
 };
 
 ProjectDataForm.propTypes = {
-  handleSubmit: func,
-  handleChange: func,
-  videoTitle: string,
-  visibilityOptions: array,
-  visibility: string,
-  authorValue: string,
-  teamValue: string,
-  categoryLabel: string,
-  maxCategories: number,
-  categoryOptions: array,
-  hasExceededMaxCategories: bool,
-  categoriesValue: array,
-  tagsValue: oneOfType( [array, string] ),
-  descPublicValue: string,
-  descInternalValue: string,
-  termsConditions: bool,
-  hasSubmittedData: bool,
-  hasRequiredData: bool
+  id: PropTypes.string,
+  handleSubmit: PropTypes.func,
+  handleChange: PropTypes.func,
+  values: PropTypes.object,
+  errors: PropTypes.object,
+  touched: PropTypes.object,
+  status: PropTypes.string,
+  setFieldValue: PropTypes.func,
+  isSubmitting: PropTypes.bool,
+  isValid: PropTypes.bool,
+  setFieldTouched: PropTypes.func,
+  maxCategories: PropTypes.number,
 };
 
-export default ProjectDataForm;
+
+// what happens if there is a project id but it returns an error?
+export default compose(
+  withRouter,
+  graphql( CURRENT_USER_QUERY, { name: 'user' } ), // only run on create
+  graphql( VIDEO_PROJECT_QUERY, {
+    name: 'project',
+    skip: props => !props.id,
+    options: props => ( {
+      variables: {
+        id: props.id
+      },
+    } )
+  } ),
+  graphql( CREATE_VIDEO_PROJECT_MUTATION, { name: 'createVideoProject' } ),
+
+  // use formik to make validation easier
+  withFormik( {
+    // set initial form values, either from current project or from default values if new project
+    mapPropsToValues: props => {
+      const { user: { authenticatedUser }, project } = props;
+      const videoProject = ( project && project.videoProject ) ? project.videoProject : {};
+
+      const categories = videoProject.categories
+        ? videoProject.categories.map( category => category.id )
+        : [];
+
+      return {
+        author: videoProject.author || authenticatedUser.id,
+        team: videoProject.team ? videoProject.team.name : authenticatedUser.team.name,
+        projectTitle: videoProject.projectTitle || '',
+        visibility: videoProject.visibility || '',
+        categories,
+        tags: videoProject.tags || [],
+        descPublic: videoProject.descPublic || '',
+        descInternal: videoProject.descInternal || '',
+        termsConditions: false
+      };
+    },
+
+    // schema to validate against
+    validationSchema,
+
+    // handle form submission
+    handleSubmit: async ( values, {
+      props: {
+        updateNotification, createVideoProject, handleUpload, user, router
+      }, setSubmitting, setErrors, setStatus
+    } ) => {
+      // 1. let user know systme is saving
+      updateNotification( 'Saving project...' );
+
+      // 2. Do an initial save.  Upon successful save, system will return a project id
+      try {
+        const res = await createVideoProject( {
+          variables: {
+            data: {
+              projectTitle: values.projectTitle.trimEnd(),
+              projectType: 'language',
+              descPublic: values.descPublic.trimEnd(),
+              descInternal: values.descInternal.trimEnd(),
+              visibility: values.visibility,
+              author: {
+                connect: {
+                  id: values.author
+                }
+              },
+              team: {
+                connect: {
+                  id: user.authenticatedUser.team.id
+                }
+              },
+              categories: {
+                connect: values.categories.map( category => ( { id: category } ) )
+              },
+              tags: {
+                connect: values.tags.map( tag => ( { id: tag.id } ) )
+              }
+            }
+          }
+        } );
+
+        // 3. Use formik handled to update status to hide submit button upon project creation
+        //    Button only appears for project creation
+        setStatus( 'CREATED' );
+
+        // 4. Append the new project id to the current url to idicate we are no longer
+        //    in a 'create' status
+        const path = `${router.asPath}&id=${res.data.createVideoProject.id}`;
+        router.replace( router.asPath, path, { shallow: true } );
+
+        // 5. Start upload of files.
+        handleUpload( res.data.createVideoProject.id );
+      } catch ( err ) {
+        setErrors( {
+          submit: err
+        } );
+      }
+
+      setSubmitting( false );
+    }
+  } )
+)( ProjectDataForm );

@@ -31,13 +31,12 @@ const CategoryDropdown = props => {
   /**
    *
    * @param {array} categories categories returned from graphql query
-   * @param {*} locale  language in which to return categories
+   * @param {string} locale  language in which to return categories
    */
   const getCategoriesByLocale = ( categories, locale = props.locale ) => categories.map( category => ( {
     id: category.id,
     translations: category.translations.filter( translation => translation.language.locale === locale )
   } ) );
-
 
   return (
     <Query query={ CATEGORIES_QUERY } variables={ { locale: 'en-us' } }>
