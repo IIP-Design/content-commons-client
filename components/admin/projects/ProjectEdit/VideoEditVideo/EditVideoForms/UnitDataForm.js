@@ -18,16 +18,7 @@ const VIDEO_UNIT_QUERY = gql`
         id
         displayName
       }
-      tags {
-        id
-        translations {
-          id
-          name
-          language {
-            id
-          }
-        }
-      }
+      tags { id }
       thumbnails {
         image {
           id
@@ -64,17 +55,19 @@ const VIDEO_UNIT_DESC_MUTATION = gql`
 `;
 
 const VIDEO_UNIT_TAG_MUTATION = gql`
-  mutation VIDEO_UNIT_TAG_MUTATION( $id: ID!, $descPublic: String ) {
+  mutation VIDEO_UNIT_TAG_MUTATION( $id: ID!, $tagId: ID! ) {
     updateVideoUnit(
       data: {
-        descPublic: $descPublic
+        tags: {
+          connect: {
+            id: $tagId
+          }
+        }
       },
-      where: {
-        id: $id
-      }
+      where: { id: $id }
     ) {
       id
-      descPublic
+      tags { id }
     }
   }
 `;
@@ -119,6 +112,21 @@ class UnitDataForm extends Component {
     this.props.videoUnitQuery.refetch();
   }
 
+  updateTags = tags => {
+    const { unitId } = this.props;
+
+    tags.map( tag => (
+      this.props.tagsVideoUnitMutation( {
+        variables: {
+          id: unitId,
+          tagId: tag
+        }
+      } )
+    ) );
+
+    this.props.videoUnitQuery.refetch();
+  }
+
   handleInput = e => {
     this.setState( {
       [e.target.name]: e.target.value
@@ -130,7 +138,7 @@ class UnitDataForm extends Component {
 
     this.setState(
       { [name]: value },
-      () => this.updateUnit( name, value )
+      () => this.updateTags( value )
     );
   }
 
@@ -192,7 +200,7 @@ class UnitDataForm extends Component {
               />
 
               <TagTypeahead
-                onChange={ this.handleTagSelection }
+                onChange={ this.handleDropdownSelection }
                 id="video-tags"
                 label={ `Additional Keywords ${lang}` }
                 langId={ unit.language.id }
@@ -208,6 +216,7 @@ class UnitDataForm extends Component {
 }
 
 UnitDataForm.propTypes = {
+  tagsVideoUnitMutation: propTypes.func,
   unitId: propTypes.string,
   unit: propTypes.object,
   videoUnitQuery: propTypes.object
@@ -215,7 +224,7 @@ UnitDataForm.propTypes = {
 
 
 export default compose(
-  graphql( VIDEO_UNIT_TAG_MUTATION, { name: 'tagVideoUnitMutation' } ),
+  graphql( VIDEO_UNIT_TAG_MUTATION, { name: 'tagsVideoUnitMutation' } ),
   graphql( VIDEO_UNIT_DESC_MUTATION, { name: 'descPublicVideoUnitMutation' } ),
   graphql( VIDEO_UNIT_TITLE_MUTATION, { name: 'titleVideoUnitMutation' } ),
   graphql( VIDEO_UNIT_QUERY, {

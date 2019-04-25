@@ -7,28 +7,6 @@ import gql from 'graphql-tag';
 
 import { titleCase } from 'lib/utils';
 
-// const TAG_QUERY = gql`
-//   query TAG_QUERY( $id: ID! ) {
-//     tags(
-//       where: {
-//         translations_some: {
-//           language: { id: $id }
-//         }
-//       }
-//     ) {
-//       id
-//       translations(
-//         where: {
-//           language: { id: $id }
-//         }
-//       ) {
-//         id
-//         name
-//       }
-//     }
-//   }
-// `;
-
 const TAG_QUERY = gql`
   query TAG_QUERY {
     tags {
