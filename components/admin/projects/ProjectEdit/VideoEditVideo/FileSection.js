@@ -34,7 +34,11 @@ class FileSection extends Component {
       ? videoUnitQuery.unit.files[0].id
       : '';
 
-    if ( fileId && fileId !== prevState.selected ) {
+    const prevId = prevProps.videoUnitQuery && prevProps.videoUnitQuery.unit && prevProps.videoUnitQuery.unit.files && prevProps.videoUnitQuery.unit.files[0].id
+      ? prevProps.videoUnitQuery.unit.files[0].id
+      : '';
+
+    if ( fileId && fileId !== prevId && fileId !== prevState.selected ) {
       this.setState( {
         selected: fileId
       } );

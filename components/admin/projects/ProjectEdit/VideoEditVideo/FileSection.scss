@@ -9,6 +9,11 @@
   display: grid;
   grid-template-columns: 20% 1fr;
   margin: 0 -1rem -1rem;
+
+  @media screen and ( max-width: 991px ) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
 }
 
 .file_meta {

@@ -11,6 +11,14 @@
     flex-direction: column;
     margin: .5rem;
 
+    @media screen and ( max-width: 700px ) and ( min-width: 450px ) {
+      flex-basis: 45%;
+    }
+
+    @media screen and ( max-width: 450px ) {
+      flex-basis: 90%;
+    }
+
     &:focus {
       outline: none;
     }

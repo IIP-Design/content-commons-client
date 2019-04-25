@@ -5,9 +5,11 @@
   display: flex;
   flex-direction: column;
   margin: 0;
-  max-height: 390px;
   overflow: hidden;
-  padding: 1rem;
+
+  @media screen and ( max-width: 991px ) {
+    flex-direction: row;
+  }
 
   &-image {
     max-width: 100%;
@@ -38,5 +40,86 @@
     > p {
       margin: 0;
     }
+
+    @media screen and ( max-width: 991px ) {
+      flex-basis: 33%;
+      padding: .7rem;
+      min-width: 33%;
+    }
+
+    @media screen and ( max-width: 700px ) {
+      flex-basis: 45%;
+      padding: .7rem;
+      min-width: 45%;
+    }
+
+    @media screen and ( max-width: 450px ) {
+      flex-basis: 90%;
+      padding: .7rem;
+      min-width: 90%;
+    }
+  }
+
+  &-items {
+    display: flex;
+    flex-direction: column;
+    height: 390px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0 1rem;
+
+    @media screen and ( max-width: 991px ) {
+      flex-direction: row;
+      height: auto;
+    }
+  }
+}
+
+.scroll {
+
+  &-button {
+    background-color: $matisse-blue;
+    color: white;
+    text-align: center;
+
+    @media screen and ( max-width: 991px ) {
+      align-items: center;
+      display: flex;
+    }
+
+    &.up {
+      transform: translateY( -1rem );
+
+      @media screen and ( max-width: 991px ) {
+        transform: translateY( 0 );
+      }
+
+      &:hover {
+        transform: translateY( 0 );
+      }
+    }
+
+    &.down {
+      transform: translateY( 1rem );
+
+      @media screen and ( max-width: 991px ) {
+        transform: translateY( 0 );
+      }
+
+      &:hover {
+        transform: translateY( 0 );
+      }
+    }
+
+    > i {
+      @media screen and ( max-width: 991px ) {
+        transform: rotate( -90deg );
+        padding: 0;
+      }
+    }
+  }
+
+  &-icon {
+    padding: 5px 0;
   }
 }

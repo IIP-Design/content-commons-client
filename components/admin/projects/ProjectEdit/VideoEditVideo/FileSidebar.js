@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import gql from 'graphql-tag';
 import propTypes from 'prop-types';
 import { Query } from 'react-apollo';
@@ -41,26 +41,34 @@ const FileSidebar = ( { callback, id, selected } ) => (
 
       return (
         <div className="edit-video-sidebar">
-          { files && (
-            files.map( file => (
-              <div
-                className="edit-video-sidebar-item"
-                key={ file.id }
-                onClick={ () => callback( file.id ) }
-                onKeyUp={ () => callback( file.id ) }
-                role="button"
-                tabIndex="0"
-              >
-                <img
-                  alt=""
-                  className={ selected === file.id ? 'edit-video-sidebar-image selected' : 'edit-video-sidebar-image' }
-                  src={ image }
-                />
-                <p>{ `${titleCase( file.quality )} | ${file.use.name}` }</p>
-                <p>{ titleCase( file.videoBurnedInStatus ) }</p>
-              </div>
-            ) )
-          ) }
+          <div className="scroll-button up">
+            <i className="angle up icon scroll-icon" />
+          </div>
+          <div className="edit-video-sidebar-items">
+            { files && (
+              files.map( file => (
+                <div
+                  className="edit-video-sidebar-item"
+                  key={ file.id }
+                  onClick={ () => callback( file.id ) }
+                  onKeyUp={ () => callback( file.id ) }
+                  role="button"
+                  tabIndex="0"
+                >
+                  <img
+                    alt=""
+                    className={ selected === file.id ? 'edit-video-sidebar-image selected' : 'edit-video-sidebar-image' }
+                    src={ image }
+                  />
+                  <p>{ `${titleCase( file.quality )} | ${file.use.name}` }</p>
+                  <p>{ titleCase( file.videoBurnedInStatus ) }</p>
+                </div>
+              ) )
+            ) }
+          </div>
+          <div className="scroll-button down">
+            <i className="angle down icon scroll-icon" />
+          </div>
         </div>
       );
     } }
