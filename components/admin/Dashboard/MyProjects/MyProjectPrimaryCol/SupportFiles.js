@@ -47,7 +47,7 @@ const SupportFiles = props => (
               } = file;
               return (
                 <p key={ id }>
-                  { use && use.name } | <a href={ url }>{ filetype }</a> | <a href={ url }>{ displayName } { formatBytes( filesize ) }</a>
+                  { use && use.name } | <a href={ url }>{ filetype }</a> | <a href={ url }>{ displayName } { filesize && formatBytes( filesize ) }</a>
                 </p>
               );
             } )
