@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Grid, Dropdown } from 'semantic-ui-react';
 import './TableItemsDisplay.scss';
 
@@ -16,32 +16,27 @@ const displaySizeOptions = [
   { key: 100, value: 100, text: '100' }
 ];
 
-class TableItemsDisplay extends React.Component {
-  state = {
-    value: 25
-  }
+const TableItemsDisplay = props => {
+  const { value: count, handleChange } = props;
+  return (
+    <Grid.Column className="items_display">
+      <span>
+        Show:{ ' ' }
+        <Dropdown
+          inline
+          options={ displaySizeOptions }
+          value={ count }
+          onChange={ ( e, { value } ) => handleChange( e, value ) }
+        />
+        <span> | 1 - { count } of 137 for 'search term'</span>
+      </span>
+    </Grid.Column>
+  );
+};
 
-  handleChange = ( e, { value } ) => this.setState( { value } );
-
-  render() {
-    const { value } = this.state;
-    return (
-      <Grid.Column className="items_display">
-        <span>
-          Show:{ ' ' }
-          <Dropdown
-            inline
-            options={ displaySizeOptions }
-            defaultValue={ displaySizeOptions[0].value }
-            onChange={ this.handleChange }
-          />
-          <span> | 1-{ value } of 137 for 'search term'</span>
-        </span>
-      </Grid.Column>
-    );
-  }
-}
-
-// TableItemsDisplay.propTypes = {};
+TableItemsDisplay.propTypes = {
+  value: PropTypes.number,
+  handleChange: PropTypes.func
+};
 
 export default TableItemsDisplay;

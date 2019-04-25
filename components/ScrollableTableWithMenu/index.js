@@ -26,7 +26,8 @@ class ScrollableTableWithMenu extends React.Component {
     displayActionsMenu: false,
     column: null,
     direction: null,
-    windowWidth: ''
+    windowWidth: '',
+    itemsPerPage: 25
   };
 
   componentDidMount() {
@@ -37,6 +38,10 @@ class ScrollableTableWithMenu extends React.Component {
   componentWillUnmount() {
     window.removeEventListener( 'resize', this.tableMenuSelectionsOnResize );
   }
+
+  handleItemsPerPageChange = ( e, value ) => {
+    this.setState( { itemsPerPage: value } );
+  };
 
   tableMenuOnChange = e => {
     e.persist();
@@ -147,7 +152,8 @@ class ScrollableTableWithMenu extends React.Component {
       tableHeaders,
       displayActionsMenu,
       column,
-      direction
+      direction,
+      itemsPerPage
     } = this.state;
 
     const { columnMenu, renderTableBody } = this.props;
@@ -165,7 +171,10 @@ class ScrollableTableWithMenu extends React.Component {
             />
           </Grid.Column>
           <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 } className="items_tableMenus">
-            <TableItemsDisplay />
+            <TableItemsDisplay
+              value={ itemsPerPage }
+              handleChange={ this.handleItemsPerPageChange }
+            />
             <TableMenu
               columnMenu={ columnMenu }
               tableMenuOnChange={ this.tableMenuOnChange }
