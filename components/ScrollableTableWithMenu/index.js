@@ -199,7 +199,7 @@ class ScrollableTableWithMenu extends React.Component {
         createdAt: { value: moment( videoProject.createdAt ).format( 'MMMM DD, YYYY' ) },
         updatedAt: { value: moment( videoProject.updatedAt ).format( 'MMMM DD, YYYY' ) },
         projectTitle: { value: videoProject.projectTitle },
-        author: { value: `${videoProjects.author ? videoProject.author.firstName : ''} ${videoProjects.author ? videoProject.author.lastName : ''}` },
+        author: { value: `${videoProject.author ? videoProject.author.firstName : ''} ${videoProject.author ? videoProject.author.lastName : ''}` },
         team: { value: videoProject.team.name },
         visibility: { value: videoProject.visibility },
         thumbnail: {
