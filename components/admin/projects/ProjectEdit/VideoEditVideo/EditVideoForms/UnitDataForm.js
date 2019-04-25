@@ -54,12 +54,30 @@ const VIDEO_UNIT_DESC_MUTATION = gql`
   }
 `;
 
-const VIDEO_UNIT_TAG_MUTATION = gql`
-  mutation VIDEO_UNIT_TAG_MUTATION( $id: ID!, $tagId: ID! ) {
+const VIDEO_UNIT_ADD_TAG_MUTATION = gql`
+  mutation VIDEO_UNIT_ADD_TAG_MUTATION( $id: ID!, $tagId: ID! ) {
     updateVideoUnit(
       data: {
         tags: {
           connect: {
+            id: $tagId
+          }
+        }
+      },
+      where: { id: $id }
+    ) {
+      id
+      tags { id }
+    }
+  }
+`;
+
+const VIDEO_UNIT_REMOVE_TAG_MUTATION = gql`
+  mutation VIDEO_UNIT_REMOVE_TAG_MUTATION( $id: ID!, $tagId: ID! ) {
+    updateVideoUnit(
+      data: {
+        tags: {
+          disconnect: {
             id: $tagId
           }
         }
@@ -112,17 +130,39 @@ class UnitDataForm extends Component {
     this.props.videoUnitQuery.refetch();
   }
 
-  updateTags = tags => {
+  updateTags = newTags => {
+    const { tags } = this.props.videoUnitQuery.unit;
     const { unitId } = this.props;
 
-    tags.map( tag => (
-      this.props.tagsVideoUnitMutation( {
-        variables: {
-          id: unitId,
-          tagId: tag
-        }
-      } )
+    const currentTags = [];
+    tags.forEach( tag => (
+      currentTags.push( tag.id )
     ) );
+
+    const removed = currentTags.filter( item => newTags.indexOf( item ) === -1 );
+    const added = newTags.filter( item => currentTags.indexOf( item ) === -1 );
+
+    if ( added.length > 0 ) {
+      added.map( tag => (
+        this.props.tagsAddVideoUnitMutation( {
+          variables: {
+            id: unitId,
+            tagId: tag
+          }
+        } )
+      ) );
+    }
+
+    if ( removed.length > 0 ) {
+      removed.map( tag => (
+        this.props.tagsRemoveVideoUnitMutation( {
+          variables: {
+            id: unitId,
+            tagId: tag
+          }
+        } )
+      ) );
+    }
 
     this.props.videoUnitQuery.refetch();
   }
@@ -140,6 +180,10 @@ class UnitDataForm extends Component {
       { [name]: value },
       () => this.updateTags( value )
     );
+  }
+
+  handleDropdownRemoval = ( e, data ) => {
+    console.log( e, data );
   }
 
   render() {
@@ -201,6 +245,7 @@ class UnitDataForm extends Component {
 
               <TagTypeahead
                 onChange={ this.handleDropdownSelection }
+                onRemove={ this.handleDropdownRemoval }
                 id="video-tags"
                 label={ `Additional Keywords ${lang}` }
                 langId={ unit.language.id }
@@ -216,7 +261,8 @@ class UnitDataForm extends Component {
 }
 
 UnitDataForm.propTypes = {
-  tagsVideoUnitMutation: propTypes.func,
+  tagsAddVideoUnitMutation: propTypes.func,
+  tagsRemoveVideoUnitMutation: propTypes.func,
   unitId: propTypes.string,
   unit: propTypes.object,
   videoUnitQuery: propTypes.object
@@ -224,7 +270,8 @@ UnitDataForm.propTypes = {
 
 
 export default compose(
-  graphql( VIDEO_UNIT_TAG_MUTATION, { name: 'tagsVideoUnitMutation' } ),
+  graphql( VIDEO_UNIT_REMOVE_TAG_MUTATION, { name: 'tagsRemoveVideoUnitMutation' } ),
+  graphql( VIDEO_UNIT_ADD_TAG_MUTATION, { name: 'tagsAddVideoUnitMutation' } ),
   graphql( VIDEO_UNIT_DESC_MUTATION, { name: 'descPublicVideoUnitMutation' } ),
   graphql( VIDEO_UNIT_TITLE_MUTATION, { name: 'titleVideoUnitMutation' } ),
   graphql( VIDEO_UNIT_QUERY, {
