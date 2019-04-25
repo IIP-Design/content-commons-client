@@ -13,7 +13,6 @@ import User from 'components/User/User';
 import ScrollableTableWithMenu from 'components/ScrollableTableWithMenu';
 import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon';
 import MyProjectPrimaryCol from './MyProjectPrimaryCol';
-import DashSearch from '../../DashSearch';
 import './MyProjects.scss';
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
@@ -111,7 +110,6 @@ const MyProjects = () => (
                   tableData={ normalizedVideoProjects }
                   columnMenu={ menuItems }
                   persistentTableHeaders={ persistentTableHeaders }
-                  renderDashSearch={ () => <DashSearch /> }
                   renderTableBody={ ( {
                     tableHeaders,
                     selectedItems,
