@@ -17,13 +17,14 @@ import DashSearch from '../../DashSearch';
 import './MyProjects.scss';
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
-  query VideoProjectsByTeam( $team: String! ) {
+  query VideoProjectsByTeam( $team: String!, $first: Int ) {
     videoProjects(
       where: {
         team: {
           name: $team
         }
-      }
+      },
+      first: $first
      ) {
       id
       createdAt
