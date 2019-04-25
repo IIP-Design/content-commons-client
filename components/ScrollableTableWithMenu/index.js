@@ -3,23 +3,66 @@
  * ScrollableTableWithMenu
  *
  */
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 import sortBy from 'lodash/sortBy';
+import moment from 'moment';
 import { Table, Grid } from 'semantic-ui-react';
 import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
+import ApolloError from 'components/errors/ApolloError';
 import DashSearch from 'components/admin/DashSearch';
+import MyProjectPrimaryCol from 'components/admin/Dashboard/MyProjects/MyProjectPrimaryCol';
+import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon';
+import TableHeader from './TableHeader';
 import TableItemsDisplay from './TableItemsDisplay';
 import TableMenu from './TableMenu';
-import TableHeader from './TableHeader';
 import TableActionsMenu from './TableActionsMenu';
 import TablePagination from './TablePagination';
 import './ScrollableTableWithMenu.scss';
 
+const TEAM_VIDEO_PROJECTS_QUERY = gql`
+  query VideoProjectsByTeam( $team: String!, $first: Int ) {
+    videoProjects(
+      where: {
+        team: {
+          name: $team
+        }
+      },
+      first: $first
+     ) {
+      id
+      createdAt
+      updatedAt
+      team {
+        name
+        organization
+      }
+      author {
+        firstName
+        lastName
+      }
+      projectTitle
+      visibility
+      thumbnails {
+        url
+        alt
+        caption
+        filename
+        filetype
+        dimensions {
+          width
+          height
+        }                
+      }      
+    }
+  }
+`;
+
 /* eslint-disable react/prefer-stateless-function */
 class ScrollableTableWithMenu extends React.Component {
   state = {
-    tableData: this.props.tableData,
     tableHeaders: this.props.persistentTableHeaders,
     selectAllItems: false,
     selectedItems: new Map(),
@@ -147,73 +190,150 @@ class ScrollableTableWithMenu extends React.Component {
     } );
   };
 
+  normalizeData = videoProjects => {
+    const normalizedVideoProjects = [];
+
+    videoProjects.forEach( videoProject => {
+      const normalizedProject = Object.create( {}, {
+        id: { value: videoProject.id },
+        createdAt: { value: moment( videoProject.createdAt ).format( 'MMMM DD, YYYY' ) },
+        updatedAt: { value: moment( videoProject.updatedAt ).format( 'MMMM DD, YYYY' ) },
+        projectTitle: { value: videoProject.projectTitle },
+        author: { value: `${videoProjects.author ? videoProject.author.firstName : ''} ${videoProjects.author ? videoProject.author.lastName : ''}` },
+        team: { value: videoProject.team.name },
+        visibility: { value: videoProject.visibility },
+        thumbnail: {
+          value: {
+            url: videoProject.thumbnails[0].url,
+            alt: videoProject.thumbnails[0].alt
+          }
+        }
+      } );
+      normalizedVideoProjects.push( normalizedProject );
+    } );
+
+    return normalizedVideoProjects;
+  }
+
   render() {
     const {
       tableHeaders,
       displayActionsMenu,
       column,
       direction,
+      selectedItems,
       itemsPerPage
     } = this.state;
 
-    const { columnMenu, renderTableBody } = this.props;
+    const { columnMenu, team } = this.props;
 
     return (
-      <Grid>
-        <Grid.Row className="items_tableSearch">
-          <DashSearch />
-        </Grid.Row>
-        <Grid.Row className="items_tableMenus_wrapper">
-          <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
-            <TableActionsMenu
-              displayActionsMenu={ displayActionsMenu }
-              toggleAllItemsSelection={ this.toggleAllItemsSelection }
-            />
-          </Grid.Column>
-          <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 } className="items_tableMenus">
-            <TableItemsDisplay
-              value={ itemsPerPage }
-              handleChange={ this.handleItemsPerPageChange }
-            />
-            <TableMenu
-              columnMenu={ columnMenu }
-              tableMenuOnChange={ this.tableMenuOnChange }
-            />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column className="items_table_wrapper">
-            <div className="items_table">
-              <Table sortable celled>
-                <TableHeader
-                  tableHeaders={ tableHeaders }
-                  column={ column }
-                  direction={ direction }
-                  handleSort={ this.handleSort }
-                  toggleAllItemsSelection={ this.toggleAllItemsSelection }
-                  displayActionsMenu={ displayActionsMenu }
-                />
-                { /* ADD CUSTOM TABLE BODY */ }
-                { renderTableBody( this.state, this.toggleItemSelection ) }
-              </Table>
-            </div>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column className="items_tablePagination">
-            <TablePagination />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <Query
+        query={ TEAM_VIDEO_PROJECTS_QUERY }
+        variables={ { team, first: itemsPerPage } }
+      >
+        { ( { loading, error, data: { videoProjects } } ) => {
+          if ( loading ) return <p>Loading....</p>;
+          if ( error ) return <ApolloError error={ error } />;
+          if ( !videoProjects ) return null;
+
+          const tableData = this.normalizeData( videoProjects );
+
+          return (
+            <Grid>
+              <Grid.Row className="items_tableSearch">
+                <DashSearch />
+              </Grid.Row>
+              <Grid.Row className="items_tableMenus_wrapper">
+                <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
+                  <TableActionsMenu
+                    displayActionsMenu={ displayActionsMenu }
+                    toggleAllItemsSelection={ this.toggleAllItemsSelection }
+                  />
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 } className="items_tableMenus">
+                  <TableItemsDisplay
+                    value={ itemsPerPage }
+                    handleChange={ this.handleItemsPerPageChange }
+                  />
+                  <TableMenu
+                    columnMenu={ columnMenu }
+                    tableMenuOnChange={ this.tableMenuOnChange }
+                  />
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column className="items_table_wrapper">
+                  <div className="items_table">
+                    <Table sortable celled>
+                      <TableHeader
+                        tableHeaders={ tableHeaders }
+                        column={ column }
+                        direction={ direction }
+                        handleSort={ this.handleSort }
+                        toggleAllItemsSelection={ this.toggleAllItemsSelection }
+                        displayActionsMenu={ displayActionsMenu }
+                      />
+                      { /* ADD CUSTOM TABLE BODY */ }
+                      <Table.Body className="myProjects">
+                        { tableData.map( d => (
+                          <Table.Row
+                            key={ d.id }
+                            className={ d.isNew ? 'myProjects_newItem' : '' }
+                          >
+                            { tableHeaders.map( ( header, i ) => (
+                              <Table.Cell
+                                data-header={ header.label }
+                                key={ `${d.id}_${header.name}` }
+                                className="items_table_item"
+                              >
+                                { i === 0 && (
+                                  // Table must include .primary_col div for fixed column
+                                  <Fragment>
+                                    <div className="primary_col">
+                                      <MyProjectPrimaryCol
+                                        d={ d }
+                                        header={ header }
+                                        selectedItems={ selectedItems }
+                                        toggleItemSelection={ this.toggleItemSelection }
+                                      />
+                                    </div>
+                                    <TableMobileDataToggleIcon />
+                                  </Fragment>
+                                ) }
+                                { i !== 0 && (
+                                  <span>
+                                    <div className="items_table_mobileHeader">{ header.label }</div>
+                                    { d[header.name] }
+                                  </span>
+                                ) }
+                              </Table.Cell>
+                            ) ) }
+                          </Table.Row>
+                        ) ) }
+                      </Table.Body>
+                    </Table>
+                  </div>
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column className="items_tablePagination">
+                  <TablePagination />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          );
+        } }
+      </Query>
     );
   }
 }
 
 ScrollableTableWithMenu.propTypes = {
-  tableData: PropTypes.array,
   persistentTableHeaders: PropTypes.array,
   columnMenu: PropTypes.array,
-  renderTableBody: PropTypes.func
+  team: PropTypes.string
 };
 
 export default ScrollableTableWithMenu;
+export { TEAM_VIDEO_PROJECTS_QUERY };
