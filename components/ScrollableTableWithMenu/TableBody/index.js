@@ -2,11 +2,11 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import moment from 'moment';
 import { Table } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import MyProjectPrimaryCol from 'components/admin/Dashboard/MyProjects/MyProjectPrimaryCol';
 import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon';
+import { formatDate } from 'lib/utils';
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
   query VideoProjectsByTeam( $team: String!, $first: Int ) {
@@ -52,8 +52,8 @@ const normalizeData = videoProjects => {
   videoProjects.forEach( videoProject => {
     const normalizedProject = Object.create( {}, {
       id: { value: videoProject.id },
-      createdAt: { value: moment( videoProject.createdAt ).format( 'MMMM DD, YYYY' ) },
-      updatedAt: { value: moment( videoProject.updatedAt ).format( 'MMMM DD, YYYY' ) },
+      createdAt: { value: formatDate( videoProject.createdAt ) },
+      updatedAt: { value: formatDate( videoProject.updatedAt ) },
       projectTitle: { value: videoProject.projectTitle },
       author: { value: `${videoProject.author ? videoProject.author.firstName : ''} ${videoProject.author ? videoProject.author.lastName : ''}` },
       team: { value: videoProject.team.name },
