@@ -136,6 +136,7 @@ class MyProjectPrimaryCol extends React.Component {
               <span> | </span>
               <Modal
                 trigger={ <button type="button" className="linkStyle myProjects_data_actions_action">Preview</button> }
+                closeIcon
               >
                 <Modal.Content>
                   <PreviewProjectItem id={ id } />
