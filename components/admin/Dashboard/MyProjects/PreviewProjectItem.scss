@@ -1,6 +1,44 @@
+@import "../../../../styles/colors.scss";
+
 .videoProjectPreview {
+
 
   .modal_headline {
     margin-top: 1.5em;
+  }
+
+
+  .modal_languages.ui.dropdown {
+
+    &:hover:after {
+      content: "";
+      display: block;
+      height: 3px;
+      background-color: $light-blue;
+    }
+
+    > .menu {
+      border-radius: 0;
+
+      > .item {
+        font-size: 1em;
+      }
+    }    
+
+  }
+
+
+  .ui.dimmer.modals {
+    
+    .preview-project-loader {
+      
+      .ui.loader:before {
+        border-color: rgba(0, 0, 0, 0.1);
+      }
+
+      .ui.loader:after {
+        border-color: #767676 transparent transparent;
+      }
+    }
   }
 }

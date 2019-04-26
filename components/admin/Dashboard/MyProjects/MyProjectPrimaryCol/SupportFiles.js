@@ -16,6 +16,7 @@ const VIDEO_PROJECT_SUPPORT_FILES_QUERY = gql`
         filetype
         filesize
         language {
+          id
           displayName
         }
         use {
@@ -32,29 +33,37 @@ const SupportFiles = props => (
     { ( { loading, error, data } ) => {
       if ( loading ) return <p>Loading....</p>;
       if ( error ) return <ApolloError error={ error } />;
+
       const { supportFiles } = data.videoProject;
-      return (
-        <div>
-          <p>Files:</p>
-          {
-            supportFiles.map( file => {
-              const {
-                id,
-                url,
-                filetype,
-                filesize,
-                language: { displayName },
-                use
-              } = file;
-              return (
-                <p key={ id }>
-                  { use.name } | <a href={ url }>{ filetype }</a> | <a href={ url }>{ capitalize( displayName ) } { formatBytes( filesize ) }</a>
-                </p>
-              );
-            } )
-          }
-        </div>
-      );
+      if ( supportFiles.length > 0 ) {
+        return (
+          <div>
+            <p>Files:</p>
+            {
+              supportFiles.map( file => {
+                const {
+                  id,
+                  url,
+                  filetype,
+                  filesize,
+                  language: { displayName },
+                  use
+                } = file;
+                if ( filetype !== 'srt' ) {
+                  return (
+                    <p key={ id }>
+                      { use.name } | <a href={ url }>{ filetype }</a> | <a href={ url }>{ capitalize( displayName ) } { formatBytes( filesize ) }</a>
+                    </p>
+                  );
+                }
+                return null;
+              } )
+            }
+          </div>
+        );
+      }
+
+      return <p>There are no supporting files for this project.</p>;
     } }
   </Query>
 );
