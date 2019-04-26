@@ -228,53 +228,71 @@ class ScrollableTableWithMenu extends React.Component {
     const { columnMenu, team } = this.props;
 
     return (
-      <Query
-        query={ TEAM_VIDEO_PROJECTS_QUERY }
-        variables={ { team, first: itemsPerPage } }
-      >
-        { ( { loading, error, data: { videoProjects } } ) => {
-          if ( loading ) return <p>Loading....</p>;
-          if ( error ) return <ApolloError error={ error } />;
-          if ( !videoProjects ) return null;
+      <Grid>
+        <Grid.Row className="items_tableSearch">
+          <DashSearch />
+        </Grid.Row>
+        <Grid.Row className="items_tableMenus_wrapper">
+          <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
+            <TableActionsMenu
+              displayActionsMenu={ displayActionsMenu }
+              toggleAllItemsSelection={ this.toggleAllItemsSelection }
+            />
+          </Grid.Column>
+          <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 } className="items_tableMenus">
+            <TableItemsDisplay
+              value={ itemsPerPage }
+              handleChange={ this.handleItemsPerPageChange }
+            />
+            <TableMenu
+              columnMenu={ columnMenu }
+              tableMenuOnChange={ this.tableMenuOnChange }
+            />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column className="items_table_wrapper">
+            <div className="items_table">
+              <Table sortable celled>
+                <TableHeader
+                  tableHeaders={ tableHeaders }
+                  column={ column }
+                  direction={ direction }
+                  handleSort={ this.handleSort }
+                  toggleAllItemsSelection={ this.toggleAllItemsSelection }
+                  displayActionsMenu={ displayActionsMenu }
+                />
+                { /* ADD CUSTOM TABLE BODY */ }
+                <Query
+                  query={ TEAM_VIDEO_PROJECTS_QUERY }
+                  variables={ { team, first: itemsPerPage } }
+                >
+                  { ( { loading, error, data: { videoProjects } } ) => {
+                    if ( loading ) {
+                      return (
+                        <Table.Body>
+                          <Table.Row>
+                            <Table.Cell>Loading....</Table.Cell>
+                          </Table.Row>
+                        </Table.Body>
+                      );
+                    }
+                    if ( error ) {
+                      return (
+                        <Table.Body>
+                          <Table.Row>
+                            <Table.Cell>
+                              <ApolloError error={ error } />
+                            </Table.Cell>
+                          </Table.Row>
+                        </Table.Body>
+                      );
+                    }
+                    if ( !videoProjects ) return null;
 
-          const tableData = this.normalizeData( videoProjects );
+                    const tableData = this.normalizeData( videoProjects );
 
-          return (
-            <Grid>
-              <Grid.Row className="items_tableSearch">
-                <DashSearch />
-              </Grid.Row>
-              <Grid.Row className="items_tableMenus_wrapper">
-                <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
-                  <TableActionsMenu
-                    displayActionsMenu={ displayActionsMenu }
-                    toggleAllItemsSelection={ this.toggleAllItemsSelection }
-                  />
-                </Grid.Column>
-                <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 } className="items_tableMenus">
-                  <TableItemsDisplay
-                    value={ itemsPerPage }
-                    handleChange={ this.handleItemsPerPageChange }
-                  />
-                  <TableMenu
-                    columnMenu={ columnMenu }
-                    tableMenuOnChange={ this.tableMenuOnChange }
-                  />
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column className="items_table_wrapper">
-                  <div className="items_table">
-                    <Table sortable celled>
-                      <TableHeader
-                        tableHeaders={ tableHeaders }
-                        column={ column }
-                        direction={ direction }
-                        handleSort={ this.handleSort }
-                        toggleAllItemsSelection={ this.toggleAllItemsSelection }
-                        displayActionsMenu={ displayActionsMenu }
-                      />
-                      { /* ADD CUSTOM TABLE BODY */ }
+                    return (
                       <Table.Body className="myProjects">
                         { tableData.map( d => (
                           <Table.Row
@@ -287,44 +305,45 @@ class ScrollableTableWithMenu extends React.Component {
                                 key={ `${d.id}_${header.name}` }
                                 className="items_table_item"
                               >
-                                { i === 0 && (
-                                  // Table must include .primary_col div for fixed column
-                                  <Fragment>
-                                    <div className="primary_col">
-                                      <MyProjectPrimaryCol
-                                        d={ d }
-                                        header={ header }
-                                        selectedItems={ selectedItems }
-                                        toggleItemSelection={ this.toggleItemSelection }
-                                      />
-                                    </div>
-                                    <TableMobileDataToggleIcon />
-                                  </Fragment>
-                                ) }
-                                { i !== 0 && (
-                                  <span>
-                                    <div className="items_table_mobileHeader">{ header.label }</div>
-                                    { d[header.name] }
-                                  </span>
-                                ) }
+                                { i === 0
+                                  ? (
+                                    // Table must include .primary_col div for fixed column
+                                    <Fragment>
+                                      <div className="primary_col">
+                                        <MyProjectPrimaryCol
+                                          d={ d }
+                                          header={ header }
+                                          selectedItems={ selectedItems }
+                                          toggleItemSelection={ this.toggleItemSelection }
+                                        />
+                                      </div>
+                                      <TableMobileDataToggleIcon />
+                                    </Fragment>
+                                  )
+                                  : (
+                                    <span>
+                                      <div className="items_table_mobileHeader">{ header.label }</div>
+                                      { d[header.name] }
+                                    </span>
+                                  ) }
                               </Table.Cell>
                             ) ) }
                           </Table.Row>
                         ) ) }
                       </Table.Body>
-                    </Table>
-                  </div>
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column className="items_tablePagination">
-                  <TablePagination />
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          );
-        } }
-      </Query>
+                    );
+                  } }
+                </Query>
+              </Table>
+            </div>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column className="items_tablePagination">
+            <TablePagination />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 }
