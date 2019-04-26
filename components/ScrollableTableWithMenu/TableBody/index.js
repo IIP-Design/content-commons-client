@@ -73,8 +73,13 @@ const normalizeData = videoProjects => {
 
 const TableBody = props => {
   const {
-    selectedItems, tableHeaders, toggleItemSelection, variables
+    selectedItems,
+    tableHeaders,
+    toggleItemSelection,
+    variables,
+    windowWidth
   } = props;
+
   return (
     <Query
       query={ TEAM_VIDEO_PROJECTS_QUERY }
@@ -130,7 +135,7 @@ const TableBody = props => {
                               toggleItemSelection={ toggleItemSelection }
                             />
                           </div>
-                          <TableMobileDataToggleIcon />
+                          { windowWidth && <TableMobileDataToggleIcon /> }
                         </Fragment>
                       )
                       : (
@@ -154,7 +159,11 @@ TableBody.propTypes = {
   selectedItems: PropTypes.object,
   tableHeaders: PropTypes.array,
   toggleItemSelection: PropTypes.func,
-  variables: PropTypes.object
+  variables: PropTypes.object,
+  windowWidth: PropTypes.oneOfType( [
+    PropTypes.string,
+    PropTypes.number
+  ] )
 };
 
 export default TableBody;

@@ -154,7 +154,8 @@ class ScrollableTableWithMenu extends React.Component {
       column,
       direction,
       selectedItems,
-      itemsPerPage
+      itemsPerPage,
+      windowWidth
     } = this.state;
 
     const { columnMenu, team } = this.props;
@@ -199,6 +200,7 @@ class ScrollableTableWithMenu extends React.Component {
                   tableHeaders={ tableHeaders }
                   toggleItemSelection={ this.toggleItemSelection }
                   variables={ { team, first: itemsPerPage } }
+                  windowWidth={ windowWidth }
                 />
               </Table>
             </div>
