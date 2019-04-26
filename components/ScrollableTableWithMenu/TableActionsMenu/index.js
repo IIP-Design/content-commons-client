@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox } from 'semantic-ui-react';
+import { Button, Checkbox } from 'semantic-ui-react';
 import editIcon from 'static/images/dashboard/edit.svg';
 import createIcon from 'static/images/dashboard/create.svg';
 import deleteIcon from 'static/images/dashboard/delete.svg';
@@ -28,12 +28,24 @@ class TableActionsMenu extends React.Component {
           onChange={ toggleAllItemsSelection }
         />
         <div className={ displayActionsMenu ? 'actionsMenu active' : 'actionsMenu' }>
-          <img src={ editIcon } alt="Edit Selection(s)" title="Edit Selection(s)" />
-          <img src={ deleteIcon } alt="Delete Selection(s)" title="Delete Selection(s)" />
-          <img src={ unpublishIcon } alt="Unpublish Selection(s)" title="Unpublish Selection(s)" />
-          <img src={ createIcon } alt="Create Selection(s)" title="Create Selection(s)" />
-          <img src={ archiveIcon } alt="Archive Selection(s)" title="Archive Selection(s)" />
-          <div className="unpublish">|<span className="unpublish--text">Unpublish</span></div>
+          <Button size="mini" basic>
+            <img src={ editIcon } alt="Edit Selection(s)" title="Edit Selection(s)" />
+          </Button>
+          <Button size="mini" basic>
+            <img src={ deleteIcon } alt="Delete Selection(s)" title="Delete Selection(s)" />
+          </Button>
+          <Button size="mini" basic>
+            <img src={ unpublishIcon } alt="Unpublish Selection(s)" title="Unpublish Selection(s)" />
+          </Button>
+          <Button size="mini" basic>
+            <img src={ createIcon } alt="Create Selection(s)" title="Create Selection(s)" />
+          </Button>
+          <Button size="mini" basic>
+            <img src={ archiveIcon } alt="Archive Selection(s)" title="Archive Selection(s)" />
+          </Button>
+          <Button className="unpublish" size="mini" basic>
+            |<span className="unpublish--text">Unpublish</span>
+          </Button>
         </div>
       </div>
     );

@@ -10,7 +10,7 @@
     min-width: 300px;
   }
   @media screen and (max-width: 767px) {
-    z-index: 3;    
+    z-index: 3;
     padding: 3px 0 1px 0;
     background-color: #fff;
     box-shadow: 1px 1px 5px $medium-grey;
@@ -25,7 +25,9 @@
   }
 
   &_toggle {
-    min-height: 30px !important;    
+    min-height: 30px !important;
+    margin-right: 0.5em;
+    margin-left: 0.5em;
     @media screen and (max-width: 767px) {
       margin-right: 3px;
     }
@@ -37,29 +39,35 @@
       min-width: 75px;
       font-size: 14px;
     }
-    
+
     &--active {
 
       &:after {
         content: '';
       }
-    }    
+    }
   }
 
-  img {    
-    margin-left: 1em;
+  img {
+    margin-right: 0.5em;
+    margin-left: 0.5em;
     cursor: pointer;
   }
 
   .unpublish {
     vertical-align: top;
-    display: inline-block;    
-    margin-left: 0.5em;
-    margin-top: 2px;
+    display: inline-block;
+    margin-top: 4px;
 
     &--text {
       margin-left: 0.5em;
       color: $light-blue;
     }
+  }
+
+  .ui.basic.button {
+    padding: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
   }
 }
