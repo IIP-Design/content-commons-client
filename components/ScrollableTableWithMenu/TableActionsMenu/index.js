@@ -17,7 +17,10 @@ import './TableActionsMenu.scss';
 /* eslint-disable react/prefer-stateless-function */
 class TableActionsMenu extends React.Component {
   render() {
-    const { displayActionsMenu, toggleAllItemsSelection } = this.props;
+    const {
+      displayActionsMenu, selectedItems, toggleAllItemsSelection
+    } = this.props;
+
     return (
       <div className="actionsMenu_wrapper">
         <Checkbox
@@ -39,6 +42,7 @@ class TableActionsMenu extends React.Component {
 
 TableActionsMenu.propTypes = {
   displayActionsMenu: PropTypes.bool,
+  selectedItems: PropTypes.object,
   toggleAllItemsSelection: PropTypes.func
 };
 
