@@ -8,13 +8,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Button, Checkbox } from 'semantic-ui-react';
+import { Button, Checkbox, Confirm } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import editIcon from 'static/images/dashboard/edit.svg';
 import createIcon from 'static/images/dashboard/create.svg';
 import deleteIcon from 'static/images/dashboard/delete.svg';
 import archiveIcon from 'static/images/dashboard/archive.svg';
 import unpublishIcon from 'static/images/dashboard/unpublish.svg';
+import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import './TableActionsMenu.scss';
 
 const UNPUBLISH_VIDEO_PROJECTS_MUTATION = gql`
@@ -29,6 +30,10 @@ const UNPUBLISH_VIDEO_PROJECTS_MUTATION = gql`
 
 /* eslint-disable react/prefer-stateless-function */
 class TableActionsMenu extends React.Component {
+  state = {
+    deleteConfirmOpen: false
+  };
+
   handleUnpublish = unpublishFn => {
     const { selectedItems } = this.props;
     unpublishFn( {
@@ -44,6 +49,20 @@ class TableActionsMenu extends React.Component {
     } );
   }
 
+  handleDeleteCancel = () => {
+    this.setState( { deleteConfirmOpen: false } );
+  }
+
+  handleDeleteConfirm = () => {
+    const { selectedItems } = this.props;
+    console.log( 'Deleted: ', [...selectedItems.keys()] );
+    this.setState( { deleteConfirmOpen: false } );
+  }
+
+  displayConfirmDelete = () => {
+    this.setState( { deleteConfirmOpen: true } );
+  }
+
   render() {
     const { displayActionsMenu, toggleAllItemsSelection } = this.props;
 
@@ -57,9 +76,32 @@ class TableActionsMenu extends React.Component {
           <Button size="mini" basic>
             <img src={ editIcon } alt="Edit Selection(s)" title="Edit Selection(s)" />
           </Button>
-          <Button size="mini" basic>
+
+          <Button
+            size="mini"
+            basic
+            onClick={ this.displayConfirmDelete }
+          >
             <img src={ deleteIcon } alt="Delete Selection(s)" title="Delete Selection(s)" />
           </Button>
+
+          <Confirm
+            className="delete"
+            open={ this.state.deleteConfirmOpen }
+            content={ (
+              <ConfirmModalContent
+                className="delete_confirm delete_confirm--video"
+                headline="Are you sure you want to delete these video projects?"
+              >
+                <p>These video projects will be permanently removed from the Content Cloud.</p>
+              </ConfirmModalContent>
+            ) }
+            onCancel={ this.handleDeleteCancel }
+            onConfirm={ this.handleDeleteConfirm }
+            cancelButton="No, take me back"
+            confirmButton="Yes, delete forever"
+          />
+
           <Button size="mini" basic>
             <img src={ unpublishIcon } alt="Unpublish Selection(s)" title="Unpublish Selection(s)" />
           </Button>
