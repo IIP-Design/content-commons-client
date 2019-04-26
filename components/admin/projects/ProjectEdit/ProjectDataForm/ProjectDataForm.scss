@@ -19,6 +19,14 @@
         font-weight: normal;
       }
 
+      &.disabled {
+        opacity: 1;
+
+        > label {
+          opacity: 1;
+        }
+      }
+
       &.error {
         input[type="text"],
         .ui.dropdown,

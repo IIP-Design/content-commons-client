@@ -12,9 +12,11 @@ const UploadSuccessMsg = props => {
   const { style } = props;
   const baseStyles = {
     margin: '0',
-    padding: '1rem 1.75rem',
+    padding: '0.3rem 1rem',
     backgroundColor: '#d6d7d9',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: '.77rem',
+    fontWeight: 600
   };
 
   const successStyles = {
@@ -24,9 +26,14 @@ const UploadSuccessMsg = props => {
     ...style
   };
 
+  const iconStyles = {
+    fontSize: '1.2em',
+    fontWeight: 600
+  };
+
   return (
     <p style={ successStyles }>
-      <Icon size="large" name="check circle outline" />
+      <Icon name="check circle outline" style={ iconStyles } />
       { ' ' }
       Files uploaded successfully!
     </p>
