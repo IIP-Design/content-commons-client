@@ -57,12 +57,17 @@
   .unpublish {
     vertical-align: top;
     display: inline-block;
-    margin-top: 4px;
+    margin-left: 0.75em;
+    margin-top: 6px;
 
     &--text {
-      margin-left: 0.5em;
       color: $light-blue;
     }
+  }
+
+  .separator {
+    vertical-align: top;
+    color: $medium-grey;
   }
 
   .ui.basic.button {

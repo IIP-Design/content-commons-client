@@ -6,7 +6,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 import { Button, Checkbox } from 'semantic-ui-react';
+import ApolloError from 'components/errors/ApolloError';
 import editIcon from 'static/images/dashboard/edit.svg';
 import createIcon from 'static/images/dashboard/create.svg';
 import deleteIcon from 'static/images/dashboard/delete.svg';
@@ -14,12 +17,35 @@ import archiveIcon from 'static/images/dashboard/archive.svg';
 import unpublishIcon from 'static/images/dashboard/unpublish.svg';
 import './TableActionsMenu.scss';
 
+const UNPUBLISH_VIDEO_PROJECTS_MUTATION = gql`
+  mutation UnpublishManyVideoProjects(
+    $data: VideoProjectUpdateManyMutationInput!,
+    $where: VideoProjectWhereInput) {
+    unpublish: updateManyVideoProjects(data: $data, where: $where) {
+      count
+    }
+  }
+`;
+
 /* eslint-disable react/prefer-stateless-function */
 class TableActionsMenu extends React.Component {
+  handleUnpublish = unpublishFn => {
+    const { selectedItems } = this.props;
+    unpublishFn( {
+      variables: {
+        data: { status: 'DRAFT', visibility: 'INTERNAL' },
+        where: {
+          AND: [
+            { id_in: [...selectedItems.keys()] },
+            { status_not: 'DRAFT' }
+          ]
+        }
+      }
+    } );
+  }
+
   render() {
-    const {
-      displayActionsMenu, selectedItems, toggleAllItemsSelection
-    } = this.props;
+    const { displayActionsMenu, toggleAllItemsSelection } = this.props;
 
     return (
       <div className="actionsMenu_wrapper">
@@ -43,9 +69,26 @@ class TableActionsMenu extends React.Component {
           <Button size="mini" basic>
             <img src={ archiveIcon } alt="Archive Selection(s)" title="Archive Selection(s)" />
           </Button>
-          <Button className="unpublish" size="mini" basic>
-            |<span className="unpublish--text">Unpublish</span>
-          </Button>
+
+          <span className="separator">|</span>
+
+          <Mutation mutation={ UNPUBLISH_VIDEO_PROJECTS_MUTATION }>
+            { ( unpublish, { error } ) => {
+              if ( error ) return <ApolloError error={ error } />;
+              return (
+                <Button
+                  className="unpublish"
+                  size="mini"
+                  basic
+                  onClick={
+                    () => this.handleUnpublish( unpublish )
+                  }
+                >
+                  <span className="unpublish--text">Unpublish</span>
+                </Button>
+              );
+            } }
+          </Mutation>
         </div>
       </div>
     );
