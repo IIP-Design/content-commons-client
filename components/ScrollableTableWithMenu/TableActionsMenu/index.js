@@ -16,7 +16,16 @@ import deleteIcon from 'static/images/dashboard/delete.svg';
 import archiveIcon from 'static/images/dashboard/archive.svg';
 import unpublishIcon from 'static/images/dashboard/unpublish.svg';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
+import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody';
 import './TableActionsMenu.scss';
+
+const DELETE_VIDEO_PROJECTS_MUTATION = gql`
+  mutation DeleteManyVideoProjects($where: VideoProjectWhereInput) {
+    deleteProjects: deleteManyVideoProjects(where: $where) {
+      count
+    }
+  }
+`;
 
 const UNPUBLISH_VIDEO_PROJECTS_MUTATION = gql`
   mutation UnpublishManyVideoProjects(
@@ -53,10 +62,17 @@ class TableActionsMenu extends React.Component {
     this.setState( { deleteConfirmOpen: false } );
   }
 
-  handleDeleteConfirm = () => {
-    const { selectedItems } = this.props;
-    console.log( 'Deleted: ', [...selectedItems.keys()] );
-    this.setState( { deleteConfirmOpen: false } );
+  handleDeleteConfirm = deleteFn => {
+    const { queryVariables, selectedItems } = this.props;
+    deleteFn( {
+      variables: {
+        where: { id_in: [...selectedItems.keys()] }
+      },
+      refetchQueries: [{
+        query: TEAM_VIDEO_PROJECTS_QUERY,
+        variables: { ...queryVariables }
+      }]
+    } );
   }
 
   displayConfirmDelete = () => {
@@ -85,22 +101,33 @@ class TableActionsMenu extends React.Component {
             <img src={ deleteIcon } alt="Delete Selection(s)" title="Delete Selection(s)" />
           </Button>
 
-          <Confirm
-            className="delete"
-            open={ this.state.deleteConfirmOpen }
-            content={ (
-              <ConfirmModalContent
-                className="delete_confirm delete_confirm--video"
-                headline="Are you sure you want to delete these video projects?"
-              >
-                <p>These video projects will be permanently removed from the Content Cloud.</p>
-              </ConfirmModalContent>
-            ) }
-            onCancel={ this.handleDeleteCancel }
-            onConfirm={ this.handleDeleteConfirm }
-            cancelButton="No, take me back"
-            confirmButton="Yes, delete forever"
-          />
+          <Mutation
+            mutation={ DELETE_VIDEO_PROJECTS_MUTATION }
+            onCompleted={ this.handleDeleteCancel }
+          >
+            { ( deleteProjects, { error } ) => {
+              if ( error ) return <ApolloError error={ error } />;
+
+              return (
+                <Confirm
+                  className="delete"
+                  open={ this.state.deleteConfirmOpen }
+                  content={ (
+                    <ConfirmModalContent
+                      className="delete_confirm delete_confirm--video"
+                      headline="Are you sure you want to delete the selected video project(s)?"
+                    >
+                      <p>The selected video project(s) will be permanently removed from the Content Cloud.</p>
+                    </ConfirmModalContent>
+                  ) }
+                  onCancel={ this.handleDeleteCancel }
+                  onConfirm={ () => this.handleDeleteConfirm( deleteProjects ) }
+                  cancelButton="No, take me back"
+                  confirmButton="Yes, delete forever"
+                />
+              );
+            } }
+          </Mutation>
 
           <Button size="mini" basic>
             <img src={ unpublishIcon } alt="Unpublish Selection(s)" title="Unpublish Selection(s)" />
@@ -139,6 +166,7 @@ class TableActionsMenu extends React.Component {
 
 TableActionsMenu.propTypes = {
   displayActionsMenu: PropTypes.bool,
+  queryVariables: PropTypes.object,
   selectedItems: PropTypes.object,
   toggleAllItemsSelection: PropTypes.func
 };

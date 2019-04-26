@@ -169,6 +169,7 @@ class ScrollableTableWithMenu extends React.Component {
           <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
             <TableActionsMenu
               displayActionsMenu={ displayActionsMenu }
+              queryVariables={ { team, first: itemsPerPage } }
               selectedItems={ selectedItems }
               toggleAllItemsSelection={ this.toggleAllItemsSelection }
             />
