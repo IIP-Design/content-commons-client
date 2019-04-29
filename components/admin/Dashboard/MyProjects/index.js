@@ -4,12 +4,12 @@
  *
  */
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import { Table } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
-import User from 'components/User/User';
 import ScrollableTableWithMenu from 'components/ScrollableTableWithMenu';
 import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon';
 import MyProjectPrimaryCol from './MyProjectPrimaryCol';
@@ -66,103 +66,97 @@ const menuItems = [
   { name: 'createdAt', label: 'DATE' },
 ];
 
-const MyProjects = () => (
-  <Fragment>
-    <p className="myProjects_headline">
-      Overview, Team Projects, Favorites, and Collections coming in future iterations!
-    </p>
-    <User>
-      { ( { data } ) => {
-        const team = ( data && data.authenticatedUser && data.authenticatedUser.team )
-          ? data.authenticatedUser.team.name
-          : null;
+class MyProjects extends React.PureComponent {
+  render() {
+    const team = this.props.user.team.name;
+    return (
+      <Query query={ TEAM_VIDEO_PROJECTS_QUERY } variables={ { team } }>
+        { ( { loading, error, data: videoProjectsData } ) => {
+          if ( loading ) return <p>Loading....</p>;
+          if ( error ) return <ApolloError error={ error } />;
 
-        return (
-          <Query query={ TEAM_VIDEO_PROJECTS_QUERY } variables={ { team } }>
-            { ( { loading, error, data: videoProjectsData } ) => {
-              if ( loading ) return <p>Loading....</p>;
-              if ( error ) return <ApolloError error={ error } />;
+          const { videoProjects } = videoProjectsData;
+          const normalizedVideoProjects = [];
 
-              const { videoProjects } = videoProjectsData;
-              const normalizedVideoProjects = [];
+          videoProjects.forEach( videoProject => {
+            const normalizedProject = Object.create( {}, {
+              id: { value: videoProject.id },
+              createdAt: { value: moment( videoProject.createdAt ).format( 'MMMM DD, YYYY' ) },
+              updatedAt: { value: moment( videoProject.updatedAt ).format( 'MMMM DD, YYYY' ) },
+              projectTitle: { value: videoProject.projectTitle },
+              author: { value: `${videoProject.author.firstName} ${videoProject.author.lastName}` },
+              team: { value: videoProject.team.name },
+              visibility: { value: videoProject.visibility },
+              thumbnail: {
+                value: {
+                  url: videoProject.thumbnails[0].url,
+                  alt: videoProject.thumbnails[0].alt
+                }
+              }
+            } );
+            normalizedVideoProjects.push( normalizedProject );
+          } );
 
-              videoProjects.forEach( videoProject => {
-                const normalizedProject = Object.create( {}, {
-                  id: { value: videoProject.id },
-                  createdAt: { value: moment( videoProject.createdAt ).format( 'MMMM DD, YYYY' ) },
-                  updatedAt: { value: moment( videoProject.updatedAt ).format( 'MMMM DD, YYYY' ) },
-                  projectTitle: { value: videoProject.projectTitle },
-                  author: { value: `${videoProject.author.firstName} ${videoProject.author.lastName}` },
-                  team: { value: videoProject.team.name },
-                  visibility: { value: videoProject.visibility },
-                  thumbnail: {
-                    value: {
-                      url: videoProject.thumbnails[0].url,
-                      alt: videoProject.thumbnails[0].alt
-                    }
-                  }
-                } );
-                normalizedVideoProjects.push( normalizedProject );
-              } );
-
-              return (
-                <ScrollableTableWithMenu
-                  tableData={ normalizedVideoProjects }
-                  columnMenu={ menuItems }
-                  persistentTableHeaders={ persistentTableHeaders }
-                  renderDashSearch={ () => <DashSearch /> }
-                  renderTableBody={ ( {
-                    tableHeaders,
-                    selectedItems,
-                    tableData
-                  }, toggleItemSelection ) => (
-                    <Table.Body className="myProjects">
-                      { tableData.map( d => (
-                        <Table.Row
-                          key={ d.id }
-                          className={ d.isNew ? 'myProjects_newItem' : '' }
+          return (
+            <ScrollableTableWithMenu
+              tableData={ normalizedVideoProjects }
+              columnMenu={ menuItems }
+              persistentTableHeaders={ persistentTableHeaders }
+              renderDashSearch={ () => <DashSearch /> }
+              renderTableBody={ ( {
+                tableHeaders,
+                selectedItems,
+                tableData
+              }, toggleItemSelection ) => (
+                <Table.Body className="myProjects">
+                  { tableData.map( d => (
+                    <Table.Row
+                      key={ d.id }
+                      className={ d.isNew ? 'myProjects_newItem' : '' }
+                    >
+                      { tableHeaders.map( ( header, i ) => (
+                        <Table.Cell
+                          data-header={ header.label }
+                          key={ `${d.id}_${header.name}` }
+                          className="items_table_item"
                         >
-                          { tableHeaders.map( ( header, i ) => (
-                            <Table.Cell
-                              data-header={ header.label }
-                              key={ `${d.id}_${header.name}` }
-                              className="items_table_item"
-                            >
-                              { i === 0 && (
-                                // Table must include .primary_col div for fixed column
-                                <Fragment>
-                                  <div className="primary_col">
-                                    <MyProjectPrimaryCol
-                                      d={ d }
-                                      header={ header }
-                                      selectedItems={ selectedItems }
-                                      toggleItemSelection={ toggleItemSelection }
-                                    />
-                                  </div>
-                                  <TableMobileDataToggleIcon />
-                                </Fragment>
-                              ) }
-                              { i !== 0 && (
-                                <span>
-                                  <div className="items_table_mobileHeader">{ header.label }</div>
-                                  { d[header.name] }
-                                </span>
-                              ) }
-                            </Table.Cell>
-                          ) ) }
-                        </Table.Row>
+                          { i === 0 && (
+                            // Table must include .primary_col div for fixed column
+                            <Fragment>
+                              <div className="primary_col">
+                                <MyProjectPrimaryCol
+                                  d={ d }
+                                  header={ header }
+                                  selectedItems={ selectedItems }
+                                  toggleItemSelection={ toggleItemSelection }
+                                />
+                              </div>
+                              <TableMobileDataToggleIcon />
+                            </Fragment>
+                          ) }
+                          { i !== 0 && (
+                            <span>
+                              <div className="items_table_mobileHeader">{ header.label }</div>
+                              { d[header.name] }
+                            </span>
+                          ) }
+                        </Table.Cell>
                       ) ) }
-                    </Table.Body>
-                  ) }
-                />
-              );
-            } }
-          </Query>
-        );
-      } }
-    </User>
-  </Fragment>
-);
+                    </Table.Row>
+                  ) ) }
+                </Table.Body>
+              ) }
+            />
+          );
+        } }
+      </Query>
+    );
+  }
+}
+
+MyProjects.propTypes = {
+  user: PropTypes.object
+};
 
 export default MyProjects;
 export { TEAM_VIDEO_PROJECTS_QUERY };
