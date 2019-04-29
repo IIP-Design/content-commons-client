@@ -117,6 +117,7 @@ class MyProjectPrimaryCol extends React.Component {
               title={ d[header.name] }
             >
               { truncate( d[header.name], { length: 35 } ) }
+              <span className="myProjects_data_title--accessibility">{ d[header.name] }</span>
             </a>
           </Link>
           <div className="myProjects_data_actions">

@@ -9,6 +9,7 @@ import sortBy from 'lodash/sortBy';
 import { Table, Grid } from 'semantic-ui-react';
 import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import TableItemsDisplay from './TableItemsDisplay';
+import TableSearch from './TableSearch/TableSearch';
 import TableMenu from './TableMenu';
 import TableHeader from './TableHeader';
 import TableActionsMenu from './TableActionsMenu';
@@ -151,14 +152,13 @@ class ScrollableTableWithMenu extends React.Component {
 
     const {
       columnMenu,
-      renderTableBody,
-      renderDashSearch
+      renderTableBody
     } = this.props;
 
     return (
       <Grid>
         <Grid.Row className="items_tableSearch">
-          { renderDashSearch() }
+          <TableSearch />
         </Grid.Row>
         <Grid.Row className="items_tableMenus_wrapper">
           <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
@@ -207,8 +207,7 @@ ScrollableTableWithMenu.propTypes = {
   tableData: PropTypes.array,
   persistentTableHeaders: PropTypes.array,
   columnMenu: PropTypes.array,
-  renderTableBody: PropTypes.func,
-  renderDashSearch: PropTypes.func
+  renderTableBody: PropTypes.func
 };
 
 export default ScrollableTableWithMenu;

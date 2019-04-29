@@ -7,13 +7,12 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import moment from 'moment';
 import { Table } from 'semantic-ui-react';
+import { formatDate } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import ScrollableTableWithMenu from 'components/ScrollableTableWithMenu';
 import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon';
 import MyProjectPrimaryCol from './MyProjectPrimaryCol';
-import DashSearch from '../../DashSearch';
 import './MyProjects.scss';
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
@@ -81,8 +80,8 @@ class MyProjects extends React.PureComponent {
           videoProjects.forEach( videoProject => {
             const normalizedProject = Object.create( {}, {
               id: { value: videoProject.id },
-              createdAt: { value: moment( videoProject.createdAt ).format( 'MMMM DD, YYYY' ) },
-              updatedAt: { value: moment( videoProject.updatedAt ).format( 'MMMM DD, YYYY' ) },
+              createdAt: { value: formatDate( videoProject.createdAt ) },
+              updatedAt: { value: formatDate( videoProject.updatedAt ) },
               projectTitle: { value: videoProject.projectTitle },
               author: { value: `${videoProject.author.firstName} ${videoProject.author.lastName}` },
               team: { value: videoProject.team.name },
@@ -102,7 +101,6 @@ class MyProjects extends React.PureComponent {
               tableData={ normalizedVideoProjects }
               columnMenu={ menuItems }
               persistentTableHeaders={ persistentTableHeaders }
-              renderDashSearch={ () => <DashSearch /> }
               renderTableBody={ ( {
                 tableHeaders,
                 selectedItems,
