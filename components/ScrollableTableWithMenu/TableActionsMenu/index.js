@@ -75,6 +75,31 @@ class TableActionsMenu extends React.Component {
     } );
   }
 
+  handleUnpublishCacheUpdate = cache => {
+    const { queryVariables, selectedItems } = this.props;
+    const items = [...selectedItems.keys()];
+    const data = cache.readQuery( {
+      query: TEAM_VIDEO_PROJECTS_QUERY,
+      variables: { ...queryVariables }
+    } );
+
+    // set status & visibility
+    this.setStatusVisibility( items, data.videoProjects );
+
+    // write transformed data to cache to match server
+    cache.writeQuery( { query: TEAM_VIDEO_PROJECTS_QUERY, data } );
+  }
+
+  setStatusVisibility = ( items, projects ) => {
+    items.forEach( item => {
+      const selections = projects.filter( project => project.id === item );
+      selections.forEach( project => {
+        project.status = 'DRAFT';
+        project.visibility = 'INTERNAL';
+      } );
+    } );
+  }
+
   displayConfirmDelete = () => {
     this.setState( { deleteConfirmOpen: true } );
   }
@@ -146,6 +171,7 @@ class TableActionsMenu extends React.Component {
 
           <Mutation
             mutation={ UNPUBLISH_VIDEO_PROJECTS_MUTATION }
+            update={ this.handleUnpublishCacheUpdate }
             onCompleted={ () => this.props.handleResetSelections() }
           >
             { ( unpublish, { error } ) => {
