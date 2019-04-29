@@ -14,7 +14,6 @@ import editIcon from 'static/images/dashboard/edit.svg';
 import createIcon from 'static/images/dashboard/create.svg';
 import deleteIcon from 'static/images/dashboard/delete.svg';
 import archiveIcon from 'static/images/dashboard/archive.svg';
-import unpublishIcon from 'static/images/dashboard/unpublish.svg';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody';
 import './TableActionsMenu.scss';
@@ -157,9 +156,6 @@ class TableActionsMenu extends React.Component {
             } }
           </Mutation>
 
-          <Button size="mini" basic>
-            <img src={ unpublishIcon } alt="Unpublish Selection(s)" title="Unpublish Selection(s)" />
-          </Button>
           <Button size="mini" basic>
             <img src={ createIcon } alt="Create Selection(s)" title="Create Selection(s)" />
           </Button>
