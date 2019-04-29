@@ -8,7 +8,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Button, Checkbox, Confirm } from 'semantic-ui-react';
+import {
+  Button, Checkbox, Confirm, Icon, Modal
+} from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import editIcon from 'static/images/dashboard/edit.svg';
 import createIcon from 'static/images/dashboard/create.svg';
@@ -39,8 +41,28 @@ const UNPUBLISH_VIDEO_PROJECTS_MUTATION = gql`
 /* eslint-disable react/prefer-stateless-function */
 class TableActionsMenu extends React.Component {
   state = {
+    displayConfirmationMsg: false,
     deleteConfirmOpen: false
   };
+
+  _isMounted = false;
+
+  CONFIRMATION_MSG_DELAY = 5000;
+
+  componentDidMount = () => {
+    this._isMounted = true;
+  }
+
+  componentDidUpdate = () => {
+    if ( this.state.displayConfirmationMsg ) {
+      this.delayUnmount( this.hideConfirmationMsg, this.confirmationMsgTimer, this.CONFIRMATION_MSG_DELAY );
+    }
+  }
+
+  componentWillUnmount = () => {
+    this._isMounted = false;
+    clearTimeout( this.confirmationMsgTimer );
+  }
 
   handleUnpublish = unpublishFn => {
     const { selectedItems } = this.props;
@@ -99,12 +121,30 @@ class TableActionsMenu extends React.Component {
     } );
   }
 
+  showConfirmationMsg = () => {
+    this.setState( { displayConfirmationMsg: true } );
+  }
+
+  hideConfirmationMsg = () => {
+    if ( this._isMounted ) {
+      this.setState( { displayConfirmationMsg: false } );
+    }
+    this.confirmationMsgTimer = null;
+  }
+
+  delayUnmount = ( fn, timer, delay ) => {
+    if ( timer ) clearTimeout( timer );
+    /* eslint-disable no-param-reassign */
+    timer = setTimeout( fn, delay );
+  }
+
   displayConfirmDelete = () => {
     this.setState( { deleteConfirmOpen: true } );
   }
 
   render() {
     const { displayActionsMenu, toggleAllItemsSelection } = this.props;
+    const { displayConfirmationMsg } = this.state;
 
     return (
       <div className="actionsMenu_wrapper">
@@ -113,6 +153,27 @@ class TableActionsMenu extends React.Component {
           onChange={ toggleAllItemsSelection }
         />
         <div className={ displayActionsMenu ? 'actionsMenu active' : 'actionsMenu' }>
+
+          <Modal
+            className="confirmation"
+            closeIcon
+            onClose={ this.hideConfirmationMsg }
+            open={ displayConfirmationMsg }
+            size="tiny"
+          >
+            <Modal.Content>
+              <Modal.Description>
+                <Icon color="green" name="check circle outline" size="big" />
+                <span
+                  className="msg"
+                  style={ { verticalAlign: 'middle', fontSize: '1rem' } }
+                >
+                  You&rsquo;ve successfully updated your projects.
+                </span>
+              </Modal.Description>
+            </Modal.Content>
+          </Modal>
+
           <Button size="mini" basic>
             <img src={ editIcon } alt="Edit Selection(s)" title="Edit Selection(s)" />
           </Button>
@@ -130,6 +191,7 @@ class TableActionsMenu extends React.Component {
             onCompleted={ () => {
               this.props.handleResetSelections();
               this.handleDeleteCancel();
+              this.showConfirmationMsg();
             } }
           >
             { ( deleteProjects, { error } ) => {
@@ -168,7 +230,10 @@ class TableActionsMenu extends React.Component {
           <Mutation
             mutation={ UNPUBLISH_VIDEO_PROJECTS_MUTATION }
             update={ this.handleUnpublishCacheUpdate }
-            onCompleted={ () => this.props.handleResetSelections() }
+            onCompleted={ () => {
+              this.props.handleResetSelections();
+              this.showConfirmationMsg();
+            } }
           >
             { ( unpublish, { error } ) => {
               if ( error ) return <ApolloError error={ error } />;
