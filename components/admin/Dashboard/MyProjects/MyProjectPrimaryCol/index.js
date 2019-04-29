@@ -105,7 +105,7 @@ class MyProjectPrimaryCol extends React.Component {
         <div className="myProjects_actions">
           <Checkbox
             data-label={ id }
-            checked={ selectedItems.get( `${id}` ) }
+            checked={ !!selectedItems.get( `${id}` ) }
             onChange={ toggleItemSelection }
           />
           { /* <div className="myProjects_favorite"><Icon name='star' /></div> */ }
