@@ -103,7 +103,10 @@ class TableActionsMenu extends React.Component {
 
           <Mutation
             mutation={ DELETE_VIDEO_PROJECTS_MUTATION }
-            onCompleted={ this.handleDeleteCancel }
+            onCompleted={ () => {
+              this.props.handleResetSelections();
+              this.handleDeleteCancel();
+            } }
           >
             { ( deleteProjects, { error } ) => {
               if ( error ) return <ApolloError error={ error } />;
@@ -141,7 +144,10 @@ class TableActionsMenu extends React.Component {
 
           <span className="separator">|</span>
 
-          <Mutation mutation={ UNPUBLISH_VIDEO_PROJECTS_MUTATION }>
+          <Mutation
+            mutation={ UNPUBLISH_VIDEO_PROJECTS_MUTATION }
+            onCompleted={ () => this.props.handleResetSelections() }
+          >
             { ( unpublish, { error } ) => {
               if ( error ) return <ApolloError error={ error } />;
               return (
@@ -168,6 +174,7 @@ TableActionsMenu.propTypes = {
   displayActionsMenu: PropTypes.bool,
   queryVariables: PropTypes.object,
   selectedItems: PropTypes.object,
+  handleResetSelections: PropTypes.func,
   toggleAllItemsSelection: PropTypes.func
 };
 

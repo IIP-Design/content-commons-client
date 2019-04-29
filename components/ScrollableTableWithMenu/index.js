@@ -123,6 +123,13 @@ class ScrollableTableWithMenu extends React.Component {
     } );
   }
 
+  handleResetSelections = () => {
+    this.setState( {
+      selectedItems: new Map(),
+      displayActionsMenu: false
+    } );
+  }
+
   handleSort = clickedColumn => () => {
     const {
       column,
@@ -171,6 +178,7 @@ class ScrollableTableWithMenu extends React.Component {
               displayActionsMenu={ displayActionsMenu }
               queryVariables={ { team, first: itemsPerPage } }
               selectedItems={ selectedItems }
+              handleResetSelections={ this.handleResetSelections }
               toggleAllItemsSelection={ this.toggleAllItemsSelection }
             />
           </Grid.Column>
