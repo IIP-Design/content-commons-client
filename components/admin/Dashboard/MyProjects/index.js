@@ -83,7 +83,9 @@ class MyProjects extends React.PureComponent {
               createdAt: { value: formatDate( videoProject.createdAt ) },
               updatedAt: { value: formatDate( videoProject.updatedAt ) },
               projectTitle: { value: videoProject.projectTitle },
-              author: { value: `${videoProject.author.firstName} ${videoProject.author.lastName}` },
+              author: {
+                value: videoProject.author ? `${videoProject.author.firstName} ${videoProject.author.lastName}` : ''
+              },
               team: { value: videoProject.team.name },
               visibility: { value: videoProject.visibility },
               thumbnail: {
