@@ -121,23 +121,3 @@ td.items_table_item.displayDataActions {
     display: block;
   }
 }
-
-.ui.popup.detailsFiles_popup {
-  max-width: inherit;
-  padding-top: 1em;
-  padding-bottom: 1em;
-  color: $shuttle-grey;
-  background-color: $light-grey;
-  @media screen and (max-width: 400px) {
-    margin-left: 1em;
-  }
-
-  &:before {
-    background-color: $light-grey !important;
-  }
-
-  p {
-    margin-bottom: 3px;
-    font-size: 11px;  
-  }
-}
