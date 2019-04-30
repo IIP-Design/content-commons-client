@@ -7,6 +7,7 @@ import ApolloError from 'components/errors/ApolloError';
 import MyProjectPrimaryCol from 'components/admin/Dashboard/MyProjects/MyProjectPrimaryCol';
 import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon';
 import { formatDate } from 'lib/utils';
+import './TableBody.scss';
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
   query VideoProjectsByTeam( $team: String!, $first: Int ) {
@@ -30,6 +31,7 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
         lastName
       }
       projectTitle
+      status
       visibility
       thumbnails {
         url
@@ -57,6 +59,7 @@ const normalizeData = videoProjects => {
       projectTitle: { value: videoProject.projectTitle },
       author: { value: `${videoProject.author ? videoProject.author.firstName : ''} ${videoProject.author ? videoProject.author.lastName : ''}` },
       team: { value: videoProject.team.name },
+      status: { value: videoProject.status },
       visibility: { value: videoProject.visibility },
       thumbnail: {
         value: {
@@ -139,10 +142,16 @@ const TableBody = props => {
                         </Fragment>
                       )
                       : (
-                        <span>
-                          <div className="items_table_mobileHeader">{ header.label }</div>
-                          { d[header.name] }
-                        </span>
+                        <Fragment>
+                          <span>
+                            <div className="items_table_mobileHeader">{ header.label }</div>
+                            { d[header.name] }
+                          </span>
+                          <br />
+                          { header.label === 'MODIFIED'
+                            ? <span>{ d.status }</span>
+                            : null }
+                        </Fragment>
                       ) }
                   </Table.Cell>
                 ) ) }
