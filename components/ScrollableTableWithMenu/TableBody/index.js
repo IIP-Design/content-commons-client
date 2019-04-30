@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Table } from 'semantic-ui-react';
+import { Loader, Table } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import MyProjectPrimaryCol from 'components/admin/Dashboard/MyProjects/MyProjectPrimaryCol';
 import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon';
@@ -94,7 +94,12 @@ const TableBody = props => {
           return (
             <Table.Body>
               <Table.Row>
-                <Table.Cell>Loading....</Table.Cell>
+                <Table.Cell>
+                  <Loader active inline size="small" />
+                  <span style={ { marginLeft: '0.5em', fontSize: '1.5em' } }>
+                    Loading...
+                  </span>
+                </Table.Cell>
               </Table.Row>
             </Table.Body>
           );
