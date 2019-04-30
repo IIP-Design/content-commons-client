@@ -16,6 +16,7 @@ const CHECK_PROJECT_TYPE_QUERY = gql`
 `;
 
 const VideoDetailsPopup = dynamic( () => import( './VideoDetailsPopup' ) );
+const ImageDetailsPopup = dynamic( () => import( './ImageDetailsPopup' ) );
 
 const DetailsPopup = props => (
   <Query query={ CHECK_PROJECT_TYPE_QUERY } variables={ { id: props.id } }>
@@ -27,6 +28,9 @@ const DetailsPopup = props => (
         const { projectType } = data.videoProject;
         if ( projectType === 'video' ) {
           return <VideoDetailsPopup id={ props.id } />;
+        }
+        if ( projectType === 'image' ) {
+          return <ImageDetailsPopup id={ props.id } />;
         }
         return <p>There are no supporting files for this project.</p>;
       }

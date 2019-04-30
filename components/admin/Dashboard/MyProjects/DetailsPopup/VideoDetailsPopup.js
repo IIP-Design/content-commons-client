@@ -60,12 +60,12 @@ const VideoDetailsPopup = props => (
             <div>
               <p>Files:</p>
               <ul>
-                { videoFiles.map( vidFile => (
+                { videoFiles && videoFiles.map( vidFile => (
                   <li key={ vidFile.id }>
                     { vidFile.use.name } | <a href={ vidFile.url }>{ vidFile.quality }</a> | <a href={ vidFile.url }>{ vidFile.language.displayName } ({ formatBytes( vidFile.filesize ) })</a>
                   </li>
                 ) ) }
-                { supportFiles.map( sprtFile => (
+                { supportFiles && supportFiles.map( sprtFile => (
                   <li key={ sprtFile.id }>SRT | <a href={ sprtFile.url }>{ sprtFile.language.displayName }</a> | <a href={ sprtFile.url }>{ formatBytes( sprtFile.filesize ) }</a></li>
                 ) ) }
               </ul>
