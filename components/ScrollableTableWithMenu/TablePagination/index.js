@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
-// import { object, func } from 'prop-types';
-// import { connect } from 'react-redux';
-// import * as actions from '../../../actions/search';
+import React from 'react';
+import PropTypes from 'prop-types';
 import './TablePagination.scss';
 
 import { Pagination } from 'semantic-ui-react';
 
-class TablePagination extends Component {
+class TablePagination extends React.Component {
   constructor( props ) {
     super( props );
     this.state = {
@@ -33,14 +31,9 @@ class TablePagination extends Component {
   }
 }
 
-// const mapStateToProps = state => ( {
-//   dashSearch: state.dashSearch
-// } );
-
 // TablePagination.propTypes = {
 //   dashSearch: object
 //   targetRequest: func
 // };
 
-// export default connect( mapStateToProps, actions )( TablePagination );
 export default TablePagination;
