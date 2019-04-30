@@ -11,7 +11,7 @@ import propTypes from 'prop-types';
 import { Loader } from 'semantic-ui-react';
 
 import ModalItem from 'components/modals/ModalItem/ModalItem';
-import VideoEditVideo from 'components/admin/projects/ProjectEdit/VideoEditVideo/VideoEditVideo';
+import EditVideoModal from 'components/admin/projects/ProjectEdit/EditVideoModal/EditVideoModal';
 import './EditSingleProjectItem.scss';
 
 const VIDEO_PROJECT_QUERY = gql`
@@ -63,7 +63,7 @@ class EditSingleProjectItem extends React.PureComponent {
         headline={ `${project.projectTitle} in ${unit.language.displayName}` }
         textDirection="ltr"
       >
-        <VideoEditVideo projectId={ projectId } unitId={ itemId } />
+        <EditVideoModal projectId={ projectId } unitId={ itemId } />
       </ModalItem>
     );
   }

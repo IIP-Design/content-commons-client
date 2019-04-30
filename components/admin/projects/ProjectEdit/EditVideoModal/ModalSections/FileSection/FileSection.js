@@ -4,8 +4,8 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Loader } from 'semantic-ui-react';
 
-import FileSidebar from 'components/admin/projects/ProjectEdit/VideoEditVideo/FileSidebar';
-import FileDataForm from 'components/admin/projects/ProjectEdit/VideoEditVideo/EditVideoForms/FileDataForm';
+import FileSidebar from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalSections/FileSidebar/FileSidebar';
+import FileDataForm from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalForms/FileDataForm/FileDataForm';
 
 import './FileSection.scss';
 

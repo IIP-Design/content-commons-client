@@ -1,18 +1,18 @@
 /**
  *
- * VideoEditVideo
+ * EditVideoModal
  *
  */
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 
-import FileSection from 'components/admin/projects/ProjectEdit/VideoEditVideo/FileSection';
-import UnitDataForm from 'components/admin/projects/ProjectEdit/VideoEditVideo/EditVideoForms/UnitDataForm';
-import VideoUnitCarousel from 'components/admin/projects/ProjectEdit/VideoEditVideo/VideoUnitCarousel';
+import FileSection from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalSections/FileSection/FileSection';
+import UnitDataForm from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalForms/UnitDataForm';
+import VideoUnitCarousel from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalSections/VideoUnitCarousel/VideoUnitCarousel';
 
-import './VideoEditVideo.scss';
+import './EditVideoModal.scss';
 
-class VideoEditVideo extends Component {
+class EditVideoModal extends Component {
   state = {}
 
   componentDidMount() {
@@ -47,9 +47,9 @@ class VideoEditVideo extends Component {
   }
 }
 
-VideoEditVideo.propTypes = {
+EditVideoModal.propTypes = {
   projectId: propTypes.string,
   unitId: propTypes.string
 };
 
-export default VideoEditVideo;
+export default EditVideoModal;
