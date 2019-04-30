@@ -27,7 +27,9 @@ class ScrollableTableWithMenu extends React.Component {
     column: null,
     direction: null,
     windowWidth: '',
-    itemsPerPage: 25
+    activePage: 1,
+    itemsPerPage: 2, // set to low number for dev
+    skip: 0
   };
 
   componentDidMount() {
@@ -41,6 +43,13 @@ class ScrollableTableWithMenu extends React.Component {
 
   handleItemsPerPageChange = ( e, value ) => {
     this.setState( { itemsPerPage: value } );
+  };
+
+  handlePageChange = ( e, { activePage } ) => {
+    this.setState( prevState => {
+      const skip = activePage * prevState.itemsPerPage - prevState.itemsPerPage;
+      return { activePage, skip };
+    } );
   };
 
   tableMenuOnChange = e => {
@@ -161,7 +170,9 @@ class ScrollableTableWithMenu extends React.Component {
       column,
       direction,
       selectedItems,
+      activePage,
       itemsPerPage,
+      skip,
       windowWidth
     } = this.state;
 
@@ -176,7 +187,7 @@ class ScrollableTableWithMenu extends React.Component {
           <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
             <TableActionsMenu
               displayActionsMenu={ displayActionsMenu }
-              queryVariables={ { team, first: itemsPerPage } }
+              queryVariables={ { team, first: itemsPerPage, skip } }
               selectedItems={ selectedItems }
               handleResetSelections={ this.handleResetSelections }
               toggleAllItemsSelection={ this.toggleAllItemsSelection }
@@ -209,7 +220,7 @@ class ScrollableTableWithMenu extends React.Component {
                   selectedItems={ selectedItems }
                   tableHeaders={ tableHeaders }
                   toggleItemSelection={ this.toggleItemSelection }
-                  variables={ { team, first: itemsPerPage } }
+                  variables={ { team, first: itemsPerPage, skip } }
                   windowWidth={ windowWidth }
                 />
               </Table>
@@ -218,7 +229,12 @@ class ScrollableTableWithMenu extends React.Component {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column className="items_tablePagination">
-            <TablePagination />
+            <TablePagination
+              activePage={ activePage }
+              handlePageChange={ this.handlePageChange }
+              itemsPerPage={ itemsPerPage }
+              team={ team }
+            />
           </Grid.Column>
         </Grid.Row>
       </Grid>

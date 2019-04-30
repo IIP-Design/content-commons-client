@@ -10,14 +10,15 @@ import { formatDate } from 'lib/utils';
 import './TableBody.scss';
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
-  query VideoProjectsByTeam( $team: String!, $first: Int ) {
+  query VideoProjectsByTeam( $team: String!, $first: Int, $skip: Int ) {
     videoProjects(
       where: {
         team: {
           name: $team
         }
       },
-      first: $first
+      first: $first,
+      skip: $skip
      ) {
       id
       createdAt
