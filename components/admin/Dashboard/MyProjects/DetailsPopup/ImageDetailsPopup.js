@@ -44,21 +44,23 @@ const ImageDetailsPopup = props => (
           return (
             <div>
               <p>Files:</p>
-              { supportFiles.map( file => {
-                const {
-                  id,
-                  url,
-                  filetype,
-                  filesize,
-                  language: { displayName },
-                  use
-                } = file;
-                return (
-                  <p key={ id }>
-                    { use.name } | <a href={ url }>{ filetype }</a> | <a href={ url }>{ displayName } { formatBytes( filesize ) }</a>
-                  </p>
-                );
-              } ) }
+              <ul>
+                { supportFiles.map( file => {
+                  const {
+                    id,
+                    url,
+                    filetype,
+                    filesize,
+                    language: { displayName },
+                    use
+                  } = file;
+                  return (
+                    <li key={ id }>
+                      { use.name } | <a href={ url }>{ filetype }</a> | <a href={ url }>{ displayName } { formatBytes( filesize ) }</a>
+                    </li>
+                  );
+                } ) }
+              </ul>
             </div>
           );
         }
