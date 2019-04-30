@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import capitalize from 'lodash/capitalize';
 import ApolloError from 'components/errors/ApolloError';
 import { Dropdown, Embed, Loader } from 'semantic-ui-react';
 
@@ -99,14 +98,14 @@ const previewMsgStyles = {
 class PreviewProjectItem extends React.Component {
   state = {
     dropDownIsOpen: false,
-    selectedLanguage: 'english'
+    selectedLanguage: 'English'
   }
 
   getLanguages = units => (
     units.map( unit => ( {
       key: unit.language.languageCode,
       value: unit.language.displayName,
-      text: capitalize( unit.language.displayName )
+      text: unit.language.displayName
     } ) )
   );
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import capitalize from 'lodash.capitalize';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import ApolloError from 'components/errors/ApolloError';
@@ -52,7 +51,7 @@ const SupportFiles = props => (
                 if ( filetype !== 'srt' ) {
                   return (
                     <p key={ id }>
-                      { use.name } | <a href={ url }>{ filetype }</a> | <a href={ url }>{ capitalize( displayName ) } { formatBytes( filesize ) }</a>
+                      { use.name } | <a href={ url }>{ filetype }</a> | <a href={ url }>{ displayName } { formatBytes( filesize ) }</a>
                     </p>
                   );
                 }
