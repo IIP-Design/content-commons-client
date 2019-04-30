@@ -21,3 +21,11 @@
     margin: 1rem 0;
   }
 }
+
+.delete-file-link {
+  color: $light-blue;
+  cursor: pointer;
+  display: block;
+  font-size: .8rem;
+  margin-top: .3rem;
+}

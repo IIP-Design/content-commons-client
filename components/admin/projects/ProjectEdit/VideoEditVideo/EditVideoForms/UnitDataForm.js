@@ -182,10 +182,6 @@ class UnitDataForm extends Component {
     );
   }
 
-  handleDropdownRemoval = ( e, data ) => {
-    console.log( e, data );
-  }
-
   render() {
     const { loading, unit } = this.props.videoUnitQuery;
 
@@ -245,7 +241,6 @@ class UnitDataForm extends Component {
 
               <TagTypeahead
                 onChange={ this.handleDropdownSelection }
-                onRemove={ this.handleDropdownRemoval }
                 id="video-tags"
                 label={ `Additional Keywords ${lang}` }
                 langId={ unit.language.id }

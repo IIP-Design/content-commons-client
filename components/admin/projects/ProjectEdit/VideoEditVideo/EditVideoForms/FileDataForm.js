@@ -7,13 +7,16 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import propTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
-import { Form, Grid, Loader } from 'semantic-ui-react';
+import {
+  Confirm, Form, Grid, Loader
+} from 'semantic-ui-react';
 
+import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
+import IconPopup from 'components/popups/IconPopup/IconPopup';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
-import IconPopup from 'components/popups/IconPopup/IconPopup';
 
 import './FileDataForm.scss';
 
@@ -162,19 +165,32 @@ const VIDEO_FILE_DELETE_STREAM_MUTATION = gql`
   }
 `;
 
+const VIDEO_FILE_DELETE_MUTATION = gql`
+  mutation VIDEO_FILE_DELETE_MUTATION( $id: ID! ) {
+    deleteVideoFile( id: $id ) {
+      id
+    }
+  }
+`;
+
 class FileDataForm extends Component {
-  state = {}
+  state = {
+    deleteConfirmOpen: false
+  }
 
   componentDidUpdate = prevProps => {
     const { file } = this.props.videoFileQuery;
 
     if ( file && file !== prevProps.videoFileQuery.file ) {
+      const use = file.use && file.use.id ? file.use.id : '';
+      const language = file.language && file.language.id ? file.language.id : '';
+
       this.setState( {
-        language: file.language.id,
-        quality: file.quality,
+        language,
+        quality: file.quality || '',
         streams: this.getStreamObjects( file.stream ),
-        videoBurnedInStatus: file.videoBurnedInStatus,
-        use: file.use.id
+        videoBurnedInStatus: file.videoBurnedInStatus || '',
+        use
       } );
     }
   }
@@ -292,6 +308,24 @@ class FileDataForm extends Component {
     );
   }
 
+  displayConfirmDelete = () => {
+    this.setState( { deleteConfirmOpen: true } );
+  }
+
+  handleDeleteConfirm = () => {
+    const { file } = this.props.videoFileQuery;
+    const { id } = file;
+    console.log( `Deleted video: ${id}` );
+    this.props.deleteVideoFileMutation( id );
+    this.props.videoFileQuery.refetch();
+
+    this.setState( { deleteConfirmOpen: false } );
+  }
+
+  handleDeleteCancel = () => {
+    this.setState( { deleteConfirmOpen: false } );
+  }
+
   render() {
     const videoQuality = (
       <label htmlFor="video-quality"> { /* eslint-disable-line */ }
@@ -325,9 +359,12 @@ class FileDataForm extends Component {
     }
 
     const {
-      language, quality, streams, use, videoBurnedInStatus
+      deleteConfirmOpen, language, quality, streams, use, videoBurnedInStatus
     } = this.state;
 
+    const width = file.dimensions && file.dimensions.width ? file.dimensions.width : '';
+    const height = file.dimensions && file.dimensions.height ? file.dimensions.height : '';
+    const dimensions = width && height ? `Dimensions: ${width} x ${height}` : '';
     const youtube = streams && streams.youtube ? streams.youtube : {};
     const vimeo = streams && streams.vimeo ? streams.vimeo : {};
 
@@ -344,7 +381,7 @@ class FileDataForm extends Component {
                   { `Filesize: ${file.filesize}` }
                 </span>
                 <span className="file_meta_content file_meta_content--dimensions">
-                  { `Dimensions: ${file.dimensions.width} x ${file.dimensions.height}` }
+                  { dimensions }
                 </span>
                 <span className="file_meta_content file_meta_content--uploaded">
                   { `Uploaded: ${file.createdAt}` }
@@ -352,7 +389,28 @@ class FileDataForm extends Component {
                 <span className="file_meta_content file_meta_content--duration">
                   { `Duration: ${file.duration}` }
                 </span>
+                <span className="delete-file-link" onClick={ this.displayConfirmDelete } onKeyUp={ this.displayConfirmDelete } role="button" tabIndex={ 0 }>
+                  Delete file from project
+                </span>
               </div>
+
+              <Confirm
+                className="delete"
+                open={ deleteConfirmOpen }
+                content={ (
+                  <ConfirmModalContent
+                    className="delete_confirm delete_confirm--video"
+                    headline="Are you sure you want to delete this video?"
+                  >
+                    <p>This video will be permanently removed from the Content Commons and any other projects or collections it appears on.</p>
+                  </ConfirmModalContent>
+                ) }
+                onCancel={ this.handleDeleteCancel }
+                onConfirm={ this.handleDeleteConfirm }
+                cancelButton="No, take me back"
+                confirmButton="Yes, delete forever"
+              />
+
               <div className="video-links">
                 <Form.Input
                   id="video-youtube"
@@ -419,6 +477,7 @@ class FileDataForm extends Component {
 }
 
 FileDataForm.propTypes = {
+  deleteVideoFileMutation: propTypes.func,
   id: propTypes.string,
   streamCreateVideoFileMutation: propTypes.func,
   streamDeleteVideoFileMutation: propTypes.func,
@@ -427,6 +486,7 @@ FileDataForm.propTypes = {
 };
 
 export default compose(
+  graphql( VIDEO_FILE_DELETE_MUTATION, { name: 'deleteVideoFileMutation' } ),
   graphql( VIDEO_FILE_DELETE_STREAM_MUTATION, { name: 'streamDeleteVideoFileMutation' } ),
   graphql( VIDEO_FILE_UPDATE_STREAM_MUTATION, { name: 'streamUpdateVideoFileMutation' } ),
   graphql( VIDEO_FILE_CREATE_STREAM_MUTATION, { name: 'streamCreateVideoFileMutation' } ),
