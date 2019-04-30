@@ -47,7 +47,7 @@ class TableActionsMenu extends React.Component {
 
   _isMounted = false;
 
-  CONFIRMATION_MSG_DELAY = 5000;
+  CONFIRMATION_MSG_DELAY = 3000;
 
   componentDidMount = () => {
     this._isMounted = true;
