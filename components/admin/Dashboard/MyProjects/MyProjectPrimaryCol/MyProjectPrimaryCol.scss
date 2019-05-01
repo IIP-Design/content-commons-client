@@ -43,14 +43,6 @@
       &:hover {
         color: $light-blue;
       }
-
-      &--accessibility {
-        position: absolute;
-        top: -10px;
-        height: 1px;
-        width: 1px;
-        overflow: hidden;        
-      }
     }
 
     &_actions {

@@ -12,6 +12,7 @@ import {
   Checkbox, Icon, Popup, Modal
 } from 'semantic-ui-react';
 import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import SupportFiles from './SupportFiles';
 import PreviewProjectItem from '../PreviewProjectItem';
 import './MyProjectPrimaryCol.scss';
@@ -97,6 +98,8 @@ class MyProjectPrimaryCol extends React.Component {
       toggleItemSelection
     } = this.props;
 
+    const projectTitleLength = d[header.name].length >= 35;
+
     return (
       <Fragment>
         <div className="myProjects_actions">
@@ -116,8 +119,8 @@ class MyProjectPrimaryCol extends React.Component {
               className="myProjects_data_title"
               title={ d[header.name] }
             >
-              { truncate( d[header.name], { length: 35 } ) }
-              <span className="myProjects_data_title--accessibility">{ d[header.name] }</span>
+              <span aria-hidden={ projectTitleLength }>{ truncate( d[header.name], { length: 35 } ) }</span>
+              { projectTitleLength && <VisuallyHidden>{ d[header.name] }</VisuallyHidden> }
             </a>
           </Link>
           <div className="myProjects_data_actions">
