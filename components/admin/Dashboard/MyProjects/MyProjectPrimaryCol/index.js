@@ -13,7 +13,7 @@ import {
 } from 'semantic-ui-react';
 import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import SupportFiles from './SupportFiles';
+import DetailsPopup from '../DetailsPopup/DetailsPopup';
 import PreviewProjectItem from '../PreviewProjectItem';
 import './MyProjectPrimaryCol.scss';
 
@@ -128,7 +128,7 @@ class MyProjectPrimaryCol extends React.Component {
               <Popup
                 className="detailsFiles_popup"
                 trigger={ <button type="button" className="linkStyle myProjects_data_actions_action">Details</button> }
-                content={ <SupportFiles id={ id } /> }
+                content={ <DetailsPopup id={ id } /> }
                 on="click"
                 position={ windowWidth <= 400 ? 'bottom right' : 'bottom center' }
                 hideOnScroll
