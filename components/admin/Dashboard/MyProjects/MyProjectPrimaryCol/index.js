@@ -13,11 +13,8 @@ import {
 } from 'semantic-ui-react';
 import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import SupportFiles from './SupportFiles';
-import './MyProjectPrimaryCol.scss';
-
-
 import PreviewProjectItem from '../PreviewProjectItem';
-
+import './MyProjectPrimaryCol.scss';
 
 class MyProjectPrimaryCol extends React.Component {
   state = {
@@ -120,6 +117,7 @@ class MyProjectPrimaryCol extends React.Component {
               title={ d[header.name] }
             >
               { truncate( d[header.name], { length: 35 } ) }
+              <span className="myProjects_data_title--accessibility">{ d[header.name] }</span>
             </a>
           </Link>
           <div className="myProjects_data_actions">
@@ -137,15 +135,14 @@ class MyProjectPrimaryCol extends React.Component {
                 onClose={ this.handleDetailsPopupClose }
               />
               <span> | </span>
-
               <Modal
                 trigger={ <button type="button" className="linkStyle myProjects_data_actions_action">Preview</button> }
+                closeIcon
               >
                 <Modal.Content>
                   <PreviewProjectItem id={ id } />
                 </Modal.Content>
               </Modal>
-
               <span> | </span>
               <button type="button" className="linkStyle myProjects_data_actions_action">Share</button>
             </div>

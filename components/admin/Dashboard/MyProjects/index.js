@@ -3,8 +3,8 @@
  * MyProjects
  *
  */
-import React, { Fragment } from 'react';
-import User from 'components/User/User';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ScrollableTableWithMenu from 'components/ScrollableTableWithMenu';
 import './MyProjects.scss';
 
@@ -21,27 +21,16 @@ const menuItems = [
   { name: 'createdAt', label: 'DATE' },
 ];
 
-const MyProjects = () => (
-  <Fragment>
-    <p className="myProjects_headline">
-      Overview, Team Projects, Favorites, and Collections coming in future iterations!
-    </p>
-    <User>
-      { ( { data } ) => {
-        const team = ( data && data.authenticatedUser && data.authenticatedUser.team )
-          ? data.authenticatedUser.team.name
-          : null;
-
-        return (
-          <ScrollableTableWithMenu
-            columnMenu={ menuItems }
-            persistentTableHeaders={ persistentTableHeaders }
-            team={ team }
-          />
-        );
-      } }
-    </User>
-  </Fragment>
+const MyProjects = props => (
+  <ScrollableTableWithMenu
+    columnMenu={ menuItems }
+    persistentTableHeaders={ persistentTableHeaders }
+    team={ props.user.team.name }
+  />
 );
+
+MyProjects.propTypes = {
+  user: PropTypes.object
+};
 
 export default MyProjects;
