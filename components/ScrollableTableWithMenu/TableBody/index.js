@@ -10,12 +10,36 @@ import { formatDate } from 'lib/utils';
 import './TableBody.scss';
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
-  query VideoProjectsByTeam( $team: String!, $first: Int, $skip: Int ) {
+  query VideoProjectsByTeam(
+    $team: String!, $first: Int, $skip: Int, $searchTerm: String
+  ) {
     videoProjects(
       where: {
-        team: {
-          name: $team
-        }
+        AND: [
+          { team: { name: $team } },
+          {
+            OR: [
+              { projectTitle_contains: $searchTerm },
+              { descPublic_contains: $searchTerm },
+              { descInternal_contains: $searchTerm },
+              { projectType_contains: $searchTerm },
+              {
+                categories_some: {
+                  translations_some: { name_contains: $searchTerm }
+                }
+              },
+              {
+                author: {
+                  OR: [
+                    { firstName_contains: $searchTerm },
+                    { lastName_contains: $searchTerm },
+                    { email_contains: $searchTerm }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       },
       first: $first,
       skip: $skip

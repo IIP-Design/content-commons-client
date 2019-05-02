@@ -84,24 +84,24 @@ class TableActionsMenu extends React.Component {
   }
 
   handleDeleteConfirm = deleteFn => {
-    const { queryVariables, selectedItems } = this.props;
+    const { variables, selectedItems } = this.props;
     deleteFn( {
       variables: {
         where: { id_in: [...selectedItems.keys()] }
       },
       refetchQueries: [{
         query: TEAM_VIDEO_PROJECTS_QUERY,
-        variables: { ...queryVariables }
+        variables: { ...variables }
       }]
     } );
   }
 
   handleUnpublishCacheUpdate = cache => {
-    const { queryVariables, selectedItems } = this.props;
+    const { variables, selectedItems } = this.props;
     const items = [...selectedItems.keys()];
     const data = cache.readQuery( {
       query: TEAM_VIDEO_PROJECTS_QUERY,
-      variables: { ...queryVariables }
+      variables: { ...variables }
     } );
 
     // set status & visibility
@@ -259,7 +259,7 @@ class TableActionsMenu extends React.Component {
 
 TableActionsMenu.propTypes = {
   displayActionsMenu: PropTypes.bool,
-  queryVariables: PropTypes.object,
+  variables: PropTypes.object,
   selectedItems: PropTypes.object,
   handleResetSelections: PropTypes.func,
   toggleAllItemsSelection: PropTypes.func

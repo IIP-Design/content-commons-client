@@ -189,6 +189,10 @@ class ScrollableTableWithMenu extends React.Component {
 
     const { columnMenu, team } = this.props;
 
+    const variables = { team, searchTerm };
+
+    const paginationVars = { first: itemsPerPage, skip };
+
     return (
       <Grid>
         <Grid.Row className="items_tableSearch">
@@ -198,7 +202,7 @@ class ScrollableTableWithMenu extends React.Component {
           <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
             <TableActionsMenu
               displayActionsMenu={ displayActionsMenu }
-              queryVariables={ { team, first: itemsPerPage, skip } }
+              variables={ { ...variables, ...paginationVars } }
               selectedItems={ selectedItems }
               handleResetSelections={ this.handleResetSelections }
               toggleAllItemsSelection={ this.toggleAllItemsSelection }
@@ -231,7 +235,7 @@ class ScrollableTableWithMenu extends React.Component {
                   selectedItems={ selectedItems }
                   tableHeaders={ tableHeaders }
                   toggleItemSelection={ this.toggleItemSelection }
-                  variables={ { team, first: itemsPerPage, skip } }
+                  variables={ { ...variables, ...paginationVars } }
                   windowWidth={ windowWidth }
                 />
               </Table>
@@ -244,7 +248,7 @@ class ScrollableTableWithMenu extends React.Component {
               activePage={ activePage }
               handlePageChange={ this.handlePageChange }
               itemsPerPage={ itemsPerPage }
-              team={ team }
+              variables={ variables }
             />
           </Grid.Column>
         </Grid.Row>
