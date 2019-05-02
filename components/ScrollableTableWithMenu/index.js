@@ -212,6 +212,7 @@ class ScrollableTableWithMenu extends React.Component {
             <TableItemsDisplay
               value={ itemsPerPage }
               handleChange={ this.handleItemsPerPageChange }
+              searchTerm={ searchTerm }
             />
             <TableMenu
               columnMenu={ columnMenu }

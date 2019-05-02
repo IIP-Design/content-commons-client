@@ -19,7 +19,7 @@ const displaySizeOptions = [
 ];
 
 const TableItemsDisplay = props => {
-  const { value: count, handleChange } = props;
+  const { value: count, handleChange, searchTerm } = props;
   return (
     <Grid.Column className="items_display">
       <span>
@@ -30,7 +30,7 @@ const TableItemsDisplay = props => {
           value={ count }
           onChange={ ( e, { value } ) => handleChange( e, value ) }
         />
-        <span> | 1 - { count } of 137 for 'search term'</span>
+        <span> | 1 - { count } of 137{ searchTerm && <span> for &ldquo;{ searchTerm }&rdquo;</span> }</span>
       </span>
     </Grid.Column>
   );
@@ -38,7 +38,8 @@ const TableItemsDisplay = props => {
 
 TableItemsDisplay.propTypes = {
   value: PropTypes.number,
-  handleChange: PropTypes.func
+  handleChange: PropTypes.func,
+  searchTerm: PropTypes.string
 };
 
 export default TableItemsDisplay;
