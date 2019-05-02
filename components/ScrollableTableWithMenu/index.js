@@ -233,6 +233,7 @@ class ScrollableTableWithMenu extends React.Component {
                   displayActionsMenu={ displayActionsMenu }
                 />
                 <TableBody
+                  searchTerm={ searchTerm }
                   selectedItems={ selectedItems }
                   tableHeaders={ tableHeaders }
                   toggleItemSelection={ this.toggleItemSelection }

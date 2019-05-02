@@ -101,6 +101,7 @@ const normalizeData = videoProjects => {
 
 const TableBody = props => {
   const {
+    searchTerm,
     selectedItems,
     tableHeaders,
     toggleItemSelection,
@@ -140,6 +141,18 @@ const TableBody = props => {
           );
         }
         if ( !videoProjects ) return null;
+
+        if ( searchTerm && !videoProjects.length ) {
+          return (
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell>
+                  No results for &ldquo;{ searchTerm }&rdquo;
+                </Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          );
+        }
 
         const tableData = normalizeData( videoProjects );
 
@@ -195,6 +208,7 @@ const TableBody = props => {
 };
 
 TableBody.propTypes = {
+  searchTerm: PropTypes.string,
   selectedItems: PropTypes.object,
   tableHeaders: PropTypes.array,
   toggleItemSelection: PropTypes.func,

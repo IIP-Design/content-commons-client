@@ -59,18 +59,21 @@ const TablePagination = props => {
         const projectsCount = videoProjects.length;
         const totalPages = Math.ceil( projectsCount / itemsPerPage );
 
-        return (
-          <Pagination
-            activePage={ activePage }
-            totalPages={ totalPages }
-            nextItem={ { content: 'Next >', disabled: activePage === totalPages } }
-            prevItem={ { content: '< Previous', disabled: activePage === 1 } }
-            siblingRange="2"
-            firstItem={ null }
-            lastItem={ null }
-            onPageChange={ handlePageChange }
-          />
-        );
+        if ( projectsCount > 0 ) {
+          return (
+            <Pagination
+              activePage={ activePage }
+              totalPages={ totalPages }
+              nextItem={ { content: 'Next >', disabled: activePage === totalPages } }
+              prevItem={ { content: '< Previous', disabled: activePage === 1 } }
+              siblingRange="2"
+              firstItem={ null }
+              lastItem={ null }
+              onPageChange={ handlePageChange }
+            />
+          );
+        }
+        return null;
       } }
     </Query>
   );
