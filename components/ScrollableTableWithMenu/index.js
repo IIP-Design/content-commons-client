@@ -146,7 +146,7 @@ class ScrollableTableWithMenu extends React.Component {
 
   handleSearchSubmit = ( e, searchTerm ) => {
     e.preventDefault();
-    this.setState( { searchTerm } );
+    this.setState( { searchTerm: searchTerm.trim() } );
   }
 
   handleSort = clickedColumn => () => {
