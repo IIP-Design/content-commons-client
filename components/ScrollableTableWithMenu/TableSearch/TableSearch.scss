@@ -6,11 +6,9 @@
 
 .tableSearch {
   &__searchTerm {
-    width: 100%;    
-
     > input {
       font-size: 12px;
-      border-color: #000 !important;
+      border-color: #5b616b !important;
     }
 
     > button.ui.button {

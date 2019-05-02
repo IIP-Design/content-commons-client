@@ -27,6 +27,7 @@ class ScrollableTableWithMenu extends React.Component {
     column: null,
     direction: null,
     windowWidth: '',
+    searchTerm: '',
     activePage: 1,
     itemsPerPage: 2, // set to low number for dev
     skip: 0
@@ -143,6 +144,11 @@ class ScrollableTableWithMenu extends React.Component {
     } );
   }
 
+  handleSearchSubmit = ( e, searchTerm ) => {
+    e.preventDefault();
+    this.setState( { searchTerm } );
+  }
+
   handleSort = clickedColumn => () => {
     const {
       column,
@@ -174,6 +180,7 @@ class ScrollableTableWithMenu extends React.Component {
       column,
       direction,
       selectedItems,
+      searchTerm,
       activePage,
       itemsPerPage,
       skip,
@@ -185,7 +192,7 @@ class ScrollableTableWithMenu extends React.Component {
     return (
       <Grid>
         <Grid.Row className="items_tableSearch">
-          <TableSearch />
+          <TableSearch handleSearchSubmit={ this.handleSearchSubmit } />
         </Grid.Row>
         <Grid.Row className="items_tableMenus_wrapper">
           <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
