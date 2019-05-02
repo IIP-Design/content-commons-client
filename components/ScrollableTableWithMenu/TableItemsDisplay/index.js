@@ -6,7 +6,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Dropdown } from 'semantic-ui-react';
+import { Query } from 'react-apollo';
+import { Dropdown, Grid, Loader } from 'semantic-ui-react';
+import ApolloError from 'components/errors/ApolloError';
+import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination';
 import './TableItemsDisplay.scss';
 
 const displaySizeOptions = [
@@ -19,27 +22,66 @@ const displaySizeOptions = [
 ];
 
 const TableItemsDisplay = props => {
-  const { value: count, handleChange, searchTerm } = props;
+  const {
+    handleChange,
+    searchTerm,
+    value: count,
+    variables,
+    variables: { skip }
+  } = props;
+
   return (
-    <Grid.Column className="items_display">
-      <span>
-        Show:{ ' ' }
-        <Dropdown
-          inline
-          options={ displaySizeOptions }
-          value={ count }
-          onChange={ ( e, { value } ) => handleChange( e, value ) }
-        />
-        <span> | 1 - { count } of 137{ searchTerm && <span> for &ldquo;{ searchTerm }&rdquo;</span> }</span>
-      </span>
-    </Grid.Column>
+    <Query
+      query={ TEAM_VIDEO_PROJECTS_COUNT_QUERY }
+      variables={ { ...variables } }
+    >
+      { ( { loading, error, data: { videoProjects } } ) => {
+        if ( loading ) {
+          return (
+            <Grid.Column className="items_display">
+              <Loader active inline size="mini" />
+              <span>Loading...</span>
+            </Grid.Column>
+          );
+        }
+        if ( error ) {
+          return (
+            <Grid.Column className="items_display">
+              <ApolloError error={ error } />
+            </Grid.Column>
+          );
+        }
+        if ( !videoProjects ) return null;
+
+        const projectsCount = videoProjects.length;
+        const firstPageItem = skip + 1;
+        const range = skip + count;
+        const lastPageItem = range < projectsCount ? range : projectsCount;
+
+        return (
+          <Grid.Column className="items_display">
+            <span>
+              Show:{ ' ' }
+              <Dropdown
+                inline
+                options={ displaySizeOptions }
+                value={ count }
+                onChange={ ( e, { value } ) => handleChange( e, value ) }
+              />
+              <span> | { firstPageItem } - { lastPageItem } of { projectsCount }{ searchTerm && <span> for &ldquo;{ searchTerm }&rdquo;</span> }</span>
+            </span>
+          </Grid.Column>
+        );
+      } }
+    </Query>
   );
 };
 
 TableItemsDisplay.propTypes = {
-  value: PropTypes.number,
   handleChange: PropTypes.func,
-  searchTerm: PropTypes.string
+  searchTerm: PropTypes.string,
+  value: PropTypes.number,
+  variables: PropTypes.object,
 };
 
 export default TableItemsDisplay;

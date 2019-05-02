@@ -146,7 +146,11 @@ class ScrollableTableWithMenu extends React.Component {
 
   handleSearchSubmit = ( e, searchTerm ) => {
     e.preventDefault();
-    this.setState( { searchTerm: searchTerm.trim() } );
+    this.setState( {
+      activePage: 1,
+      skip: 0,
+      searchTerm: searchTerm.trim()
+    } );
   }
 
   handleSort = clickedColumn => () => {
@@ -210,9 +214,10 @@ class ScrollableTableWithMenu extends React.Component {
           </Grid.Column>
           <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 } className="items_tableMenus">
             <TableItemsDisplay
-              value={ itemsPerPage }
               handleChange={ this.handleItemsPerPageChange }
               searchTerm={ searchTerm }
+              value={ itemsPerPage }
+              variables={ { ...variables, ...paginationVars } }
             />
             <TableMenu
               columnMenu={ columnMenu }

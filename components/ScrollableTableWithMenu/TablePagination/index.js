@@ -87,3 +87,4 @@ TablePagination.propTypes = {
 };
 
 export default TablePagination;
+export { TEAM_VIDEO_PROJECTS_COUNT_QUERY };
