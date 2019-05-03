@@ -61,13 +61,6 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
       thumbnails {
         url
         alt
-        caption
-        filename
-        filetype
-        dimensions {
-          width
-          height
-        }
       }
       categories {
       id
