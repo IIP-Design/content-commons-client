@@ -76,13 +76,16 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
   }
 `;
 
-const getLangTaxonomies = ( array, locale = 'en-us' ) => (
-  array.map( tax => (
-    tax.translations
-      .find( translation => translation.language.locale === locale )
-      .name
-  ) ).join( ', ' )
-);
+const getLangTaxonomies = ( array, locale = 'en-us' ) => {
+  if ( !Array.isArray( array ) || !array.length ) return '';
+  return (
+    array.map( tax => (
+      tax.translations
+        .find( translation => translation.language.locale === locale )
+        .name
+    ) ).join( ', ' )
+  );
+};
 
 const normalizeData = videoProjects => {
   const normalizedVideoProjects = [];
