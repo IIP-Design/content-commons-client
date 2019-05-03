@@ -17,6 +17,11 @@
       color: #fff;
       transition: color 0.4s;
 
+      &.basic.clear {
+        -webkit-box-shadow: 0px 0px 0px 1px #5b616b inset;
+        box-shadow: 0px 0px 0px 1px #5b616b inset;
+      }
+
       > i.icon {
         font-size: 20px;
       }
