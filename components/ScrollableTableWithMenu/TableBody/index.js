@@ -67,7 +67,7 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
         dimensions {
           width
           height
-        }                
+        }
       }
       categories {
       id
@@ -78,7 +78,7 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
           locale
         }
       }
-    }      
+    }
     }
   }
 `;

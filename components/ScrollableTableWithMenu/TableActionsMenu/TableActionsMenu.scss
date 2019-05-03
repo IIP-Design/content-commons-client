@@ -25,11 +25,12 @@
   }
 
   &_toggle {
-    min-height: 30px !important;
+    min-height: 33px !important;
     margin-right: 0.5em;
     margin-left: 0.5em;
     @media screen and (max-width: 767px) {
       margin-right: 3px;
+      margin-left: 4px;
     }
 
     &:after {

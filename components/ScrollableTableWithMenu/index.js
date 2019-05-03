@@ -203,7 +203,7 @@ class ScrollableTableWithMenu extends React.Component {
           <TableSearch handleSearchSubmit={ this.handleSearchSubmit } />
         </Grid.Row>
         <Grid.Row className="items_tableMenus_wrapper">
-          <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
+          <Grid.Column mobile={ 16 } computer={ 3 }>
             <TableActionsMenu
               displayActionsMenu={ displayActionsMenu }
               variables={ { ...variables, ...paginationVars } }
@@ -212,7 +212,7 @@ class ScrollableTableWithMenu extends React.Component {
               toggleAllItemsSelection={ this.toggleAllItemsSelection }
             />
           </Grid.Column>
-          <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 } className="items_tableMenus">
+          <Grid.Column mobile={ 16 } computer={ 13 } className="items_tableMenus">
             <TableItemsDisplay
               handleChange={ this.handleItemsPerPageChange }
               searchTerm={ searchTerm }

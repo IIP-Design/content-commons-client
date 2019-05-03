@@ -1,11 +1,12 @@
 @import "../../styles/colors.scss";
 
 .ui.grid {
-  
   .row.items_tableMenus_wrapper {
+    align-items: center;
     padding-bottom: 0;
-    @media screen and (max-width: 930px) {
+    @media screen and (max-width: 991px) {
       flex-direction: column-reverse;
+      margin-bottom: 0.5rem;
     }
 
     .column {
@@ -13,16 +14,18 @@
         padding-left: 0;
         padding-right: 0;
       }
-  
+
       &.items_tableMenus {
         display: flex;
-        @media screen and (min-width: 930px) {
-          justify-content: flex-end;          
-          margin-bottom: 1em;
+        align-items: baseline;
+        margin-bottom: 1em;
+        padding-left: 0.25rem;
+        @media screen and (min-width: 768px) and (max-width: 991px) {
+          padding-left: 1.5rem;
         }
-        @media screen and (max-width: 929px) {         
-          margin-bottom: 1em;
-        }     
+        @media screen and (min-width: 992px) {
+          justify-content: flex-end;
+        }
       }
     }
   }  
@@ -38,7 +41,7 @@
     @media screen and (max-width: 767px) {
       border: none;
       max-height: 300px;
-      overflow: auto;      
+      overflow: auto;
     }
 
     /* ONLY IN WORKS IN CHROME & SAFARI */
@@ -49,9 +52,9 @@
     &_wrapper {
       padding-bottom: 0;
       margin-top: -1.5em !important;
-      @media screen and (max-width: 767px) {        
+      @media screen and (max-width: 767px) {
         padding: 20px 0 0 0 !important;
-        margin-top: -2em !important;        
+        margin-top: -2em !important;
       }
     }
 
@@ -82,8 +85,7 @@
         }
       }
 
-      td, th {        
-  
+      td, th {
         &:first-child {
           position: sticky;
           left: 0;
@@ -101,12 +103,12 @@
           @media screen and (max-width: 767px){
             position: relative;
             z-index: 2;
-            width: auto !important;            
+            width: auto !important;
             padding: 0 !important;
 
             &:not(:first-child) {
               max-height: 0;
-              height: auto;              
+              height: auto;
               opacity: 0;
               transition: max-height 0.3s ease, opacity 0.2s ease;
             }
@@ -114,9 +116,9 @@
         }
 
         .primary_col {
-          display: flex;          
+          display: flex;
         }
-      }      
+      }
     }
 
     &_mobileHeader {
@@ -124,9 +126,9 @@
       width: 60px;
       margin-right: 2em;
       @media screen and (min-width: 768px) {
-        display: none;        
+        display: none;
       }
     }
-      
-  }  
+
+  }
 }

@@ -21,7 +21,7 @@ const TableSearch = props => {
   };
 
   return (
-    <Grid.Column floated="right" width={ 6 } className="tableSearch_wrapper">
+    <Grid.Column floated="right" mobile={ 16 } computer={ 6 } className="tableSearch_wrapper">
       <Form onSubmit={ handleSubmit } size="tiny">
         <VisuallyHidden>
           <label htmlFor="search-projects">Search projects</label>

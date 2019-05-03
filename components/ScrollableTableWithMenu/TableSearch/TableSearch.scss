@@ -5,6 +5,13 @@
 }
 
 .tableSearch {
+  @media screen and (max-width: 767px) {
+    &_wrapper {
+      padding-left: 0.25rem !important;
+      padding-right: 0.25rem !important;
+    }
+  }
+
   &__searchTerm {
     > input {
       font-size: 12px;
