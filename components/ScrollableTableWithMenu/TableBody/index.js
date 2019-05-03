@@ -68,10 +68,28 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
           width
           height
         }                
-      }      
+      }
+      categories {
+      id
+      translations {
+        id
+        name
+        language {
+          locale
+        }
+      }
+    }      
     }
   }
 `;
+
+const getLangTaxonomies = ( array, locale = 'en-us' ) => (
+  array.map( tax => (
+    tax.translations
+      .find( translation => translation.language.locale === locale )
+      .name
+  ) ).join( ', ' )
+);
 
 const normalizeData = videoProjects => {
   const normalizedVideoProjects = [];
@@ -91,7 +109,8 @@ const normalizeData = videoProjects => {
           url: videoProject.thumbnails[0].url,
           alt: videoProject.thumbnails[0].alt
         }
-      }
+      },
+      categories: { value: getLangTaxonomies( videoProject.categories ) }
     } );
     normalizedVideoProjects.push( normalizedProject );
   } );
