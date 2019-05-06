@@ -168,7 +168,7 @@ class TableActionsMenu extends React.Component {
                   className="msg"
                   style={ { verticalAlign: 'middle', fontSize: '1rem' } }
                 >
-                  You&rsquo;ve successfully updated your projects.
+                  You&rsquo;ve updated your projects successfully.
                 </span>
               </Modal.Description>
             </Modal.Content>
