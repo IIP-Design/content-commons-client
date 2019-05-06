@@ -97,13 +97,13 @@ const normalizeData = videoProjects => {
       updatedAt: { value: formatDate( videoProject.updatedAt ) },
       projectTitle: { value: videoProject.projectTitle },
       author: { value: `${videoProject.author ? videoProject.author.firstName : ''} ${videoProject.author ? videoProject.author.lastName : ''}` },
-      team: { value: videoProject.team.name },
+      team: { value: videoProject.team ? videoProject.team.name : '' },
       status: { value: videoProject.status },
       visibility: { value: videoProject.visibility },
       thumbnail: {
         value: {
-          url: videoProject.thumbnails[0].url,
-          alt: videoProject.thumbnails[0].alt
+          url: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].url : '',
+          alt: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].alt : ''
         }
       },
       categories: { value: getLangTaxonomies( videoProject.categories ) }
