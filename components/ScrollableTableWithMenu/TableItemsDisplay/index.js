@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { Dropdown, Grid, Loader } from 'semantic-ui-react';
@@ -68,7 +68,10 @@ const TableItemsDisplay = props => {
                 value={ count }
                 onChange={ ( e, { value } ) => handleChange( e, value ) }
               />
-              <span> | { firstPageItem } - { lastPageItem } of { projectsCount }{ searchTerm && <span> for &ldquo;{ searchTerm }&rdquo;</span> }</span>
+              { ' | ' }
+              { projectsCount > 0
+                ? <span>{ firstPageItem } - { lastPageItem } of { projectsCount }{ searchTerm && <Fragment> for &ldquo;{ searchTerm }&rdquo;</Fragment> }</span>
+                : <span>No results for &ldquo;{ searchTerm }&rdquo;</span> }
             </span>
           </Grid.Column>
         );
