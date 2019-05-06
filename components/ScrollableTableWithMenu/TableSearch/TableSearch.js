@@ -8,16 +8,26 @@ import './TableSearch.scss';
 
 const TableSearch = props => {
   const [searchTerm, setSearchTerm] = useState( '' );
+  const [hasActiveSearch, setHasActiveSearch] = useState( false );
 
   const { handleSearchSubmit } = props;
 
-  const handleChange = ( e, { value } ) => setSearchTerm( value );
-
-  const handleSubmit = e => handleSearchSubmit( e, searchTerm );
-
   const handleClear = e => {
     setSearchTerm( '' );
+    setHasActiveSearch( false );
     handleSearchSubmit( e, '' );
+  };
+
+  const handleChange = ( e, { value } ) => {
+    if ( hasActiveSearch && value === '' ) {
+      handleClear( e );
+    }
+    setSearchTerm( value );
+  };
+
+  const handleSubmit = e => {
+    setHasActiveSearch( true );
+    handleSearchSubmit( e, searchTerm );
   };
 
   return (
