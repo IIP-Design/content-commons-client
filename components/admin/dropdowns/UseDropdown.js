@@ -4,6 +4,7 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import sortBy from 'lodash/sortBy';
 
 const VIDEO_USE_QUERY = gql`
   query VIDEO_USE_QUERY {
@@ -34,7 +35,7 @@ const UseDropdown = props => (
         const { videoUses, imageUses } = data;
         const uses = videoUses || imageUses;
         if ( uses ) { // checks for uses in the event we have neither video or image
-          options = uses.map( u => ( { key: u.id, text: u.name, value: u.id } ) );
+          options = sortBy( uses, use => use.name ).map( u => ( { key: u.id, text: u.name, value: u.id } ) );
         }
       }
 

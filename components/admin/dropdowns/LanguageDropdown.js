@@ -4,6 +4,8 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import sortBy from 'lodash/sortBy';
+
 import './dropdown.scss';
 
 const LANGUAGES_QUERY = gql`
@@ -23,7 +25,8 @@ const LanguageDropdown = props => (
 
       let options = [];
       if ( data && data.languages ) {
-        options = data.languages.map( lang => ( { key: lang.id, text: lang.displayName, value: lang.id } ) );
+        options = sortBy( data.languages, lang => lang.displayName )
+          .map( lang => ( { key: lang.id, text: lang.displayName, value: lang.id } ) );
       }
 
       return (
@@ -44,6 +47,7 @@ const LanguageDropdown = props => (
             placeholder="–"
             loading={ loading }
             fluid
+            search
             selection
             { ...props }
           />

@@ -4,6 +4,7 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import sortBy from 'lodash/sortBy';
 import './dropdown.scss';
 
 const USERS_QUERY = gql`
@@ -30,7 +31,8 @@ const UserDropdown = props => (
 
       let options = [];
       if ( data && data.users ) {
-        options = data.users.map( user => ( { key: user.id, text: `${user.firstName} ${user.lastName}`, value: user.id } ) );
+        options = sortBy( data.users, user => user.lastName )
+          .map( user => ( { key: user.id, text: `${user.lastName}, ${user.firstName}`, value: user.id } ) );
       }
 
       return (
