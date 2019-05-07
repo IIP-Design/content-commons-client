@@ -82,7 +82,7 @@ class Upload extends Component {
               <li>Are allowed on the CDP servers.</li>
             </ol>
             <p>By uploading content you agree to our <Link href="/about"><a>Terms of Use</a></Link>.</p>
-            <p>Read our <Link href="/about"><a>FAQs</a></Link> about uploading content.</p>
+            <p>Still have questions? Read our <Link href="/about"><a>FAQs</a></Link> about uploading content.</p>
           </div>
           <div className="upload_information_bestResults">
             <h3>For best results:</h3>
