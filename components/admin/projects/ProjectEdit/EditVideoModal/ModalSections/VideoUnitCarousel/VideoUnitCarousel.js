@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import propTypes from 'prop-types';
 import { Query } from 'react-apollo';
 
-import Carousel from '../../Carousel/Carousel';
+import Carousel from 'components/admin/projects/ProjectEdit/EditVideoModal/Carousel/Carousel';
 import './VideoUnitCarousel.scss';
 
 const VIDEO_PROJECT_QUERY = gql`

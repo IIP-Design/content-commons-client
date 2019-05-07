@@ -2,8 +2,41 @@
 
 .carousel {
 
+  &-container.mobile {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  &-content.vertical {
+    display: flex;
+    flex-direction: row-reverse;
+
+    &.mobile {
+      flex-grow: 1;
+    }
+  }
+
   &-items {
     display: flex;
+    overflow: hidden;
+    margin: 0;
+    padding: 0 1rem;
+
+    &.vertical {
+      flex-basis: 100%;
+      flex-direction: column;
+      height: 390px;
+
+      &.mobile {
+        height: auto;
+        flex-direction: row;
+      }
+
+      &.with-legend {
+        flex-basis: 90%;
+      }
+    }
   }
 
   &-legend {
@@ -30,6 +63,11 @@
         margin: 0
       }
     }
+
+    &.vertical {
+      align-items: center;
+      margin-top: 0;
+    }
   }
 
   &-progress {
@@ -37,6 +75,10 @@
     &-bar {
       align-items: center;
       display: flex;
+
+      &.vertical {
+        flex-direction: column;
+      }
     }
     
     &-item {
@@ -49,6 +91,63 @@
       &.selected {
         background-color: $matisse-blue;
       }
+
+      &.vertical {
+        margin: .2rem 0;
+      }
     }
+  }
+}
+
+.scroll {
+
+  &-button {
+    background-color: $matisse-blue;
+    color: white;
+    text-align: center;
+
+    &.hidden {
+      visibility: hidden;
+    }
+
+    @media screen and ( max-width: 991px ) {
+      align-items: center;
+      display: flex;
+    }
+
+    &.up {
+      transform: translateY( -1rem );
+
+      @media screen and ( max-width: 991px ) {
+        transform: translateY( 0 );
+      }
+
+      &:hover {
+        transform: translateY( 0 );
+      }
+    }
+
+    &.down {
+      transform: translateY( 1rem );
+
+      @media screen and ( max-width: 991px ) {
+        transform: translateY( 0 );
+      }
+
+      &:hover {
+        transform: translateY( 0 );
+      }
+    }
+
+    > i {
+      @media screen and ( max-width: 991px ) {
+        transform: rotate( -90deg );
+        padding: 0;
+      }
+    }
+  }
+
+  &-icon {
+    padding: 5px 0;
   }
 }

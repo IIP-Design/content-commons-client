@@ -4,6 +4,8 @@ import propTypes from 'prop-types';
 import { Query } from 'react-apollo';
 
 import { titleCase } from 'lib/utils';
+import Carousel from 'components/admin/projects/ProjectEdit/EditVideoModal/Carousel/Carousel';
+
 import './FileSidebar.scss';
 
 const VIDEO_UNIT_QUERY = gql`
@@ -41,16 +43,14 @@ const FileSidebar = ( { callback, id, selected } ) => (
 
       return (
         <div className="edit-video-sidebar">
-          <div className="scroll-button up">
-            <i className="angle up icon scroll-icon" />
-          </div>
-          <div className="edit-video-sidebar-items">
+          <Carousel callback={ callback } legend={ false } selectedItem={ selected } vertical>
             { files && (
               files.map( file => {
                 const fileUse = file.use && file.use.name ? `| ${file.use.name}` : '';
                 return (
                   <div
                     className="edit-video-sidebar-item"
+                    id={ file.id }
                     key={ file.id }
                     onClick={ () => callback( file.id ) }
                     onKeyUp={ () => callback( file.id ) }
@@ -68,10 +68,7 @@ const FileSidebar = ( { callback, id, selected } ) => (
                 );
               } )
             ) }
-          </div>
-          <div className="scroll-button down">
-            <i className="angle down icon scroll-icon" />
-          </div>
+          </Carousel>
         </div>
       );
     } }

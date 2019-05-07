@@ -4,7 +4,9 @@ import { Icon } from 'semantic-ui-react';
 
 import './Carousel.scss';
 
-const Carousel = ( { callback, children, selectedItem } ) => {
+const Carousel = ( {
+  callback, children, legend, selectedItem, vertical
+} ) => {
   const [selected, setSelected] = useState( () => {
     let initialItem;
     children.forEach( ( child, index ) => {
@@ -29,56 +31,94 @@ const Carousel = ( { callback, children, selectedItem } ) => {
     setSelected( next );
   };
 
-  return (
-    <div className="carousel-container">
-      <div className="carousel-items">
-        { children.map( ( child, index ) => (
-          <div
-            className="carousel-item"
-            key={ child.key }
-            onClick={ () => handleSelection( child.props.id, index ) }
-            onKeyUp={ () => handleSelection( child.props.id, index ) }
-            role="button"
-            tabIndex={ 0 }
-          >
-            { child }
-          </div>
-        ) ) }
-      </div>
-      <div className="carousel-legend">
-        <button
-          className="carousel-legend-button"
-          disabled={ selected === 0 }
-          onClick={ () => handleButton( -1 ) }
-          type="button"
-        >
-          <Icon name="angle left" size="large" />
-        </button>
-        <div className="carousel-progress-bar">
-          { children.map( ( child, index ) => {
-            const isSelected = ( index === selected ) ? 'selected' : '';
+  const isVertical = vertical ? 'vertical' : '';
+  const withLegend = legend ? 'with-legend' : '';
 
-            return (
-              <div
-                className={ `carousel-progress-item ${isSelected}` }
-                key={ child.key }
-                onClick={ () => handleSelection( child.props.id, index ) }
-                onKeyUp={ () => handleSelection( child.props.id, index ) }
-                role="button"
-                tabIndex={ 0 }
-              />
-            );
-          } ) }
-        </div>
-        <button
-          className="carousel-legend-button"
-          disabled={ selected === itemCount - 1 }
-          onClick={ () => handleButton( 1 ) }
-          type="button"
+  const viewportWidth = window.innerWidth || 0;
+  const isMobile = viewportWidth < 991 ? 'mobile' : '';
+  const onFirst = selected === 0 ? 'hidden' : '';
+  const onLast = selected === itemCount - 1 ? 'hidden' : '';
+
+  return (
+    <div className={ `carousel-container ${isMobile}` }>
+      { vertical && (
+        <div
+          className={ `scroll-button up ${isMobile} ${onFirst}` }
+          onClick={ () => handleButton( -1 ) }
+          onKeyUp={ () => handleButton( -1 ) }
+          role="button"
+          tabIndex={ 0 }
         >
-          <Icon name="angle right" size="large" />
-        </button>
+          <i className="angle up icon scroll-icon" />
+        </div>
+      ) }
+      <div className={ `carousel-content ${isMobile} ${isVertical}` }>
+        <div className={ `carousel-items ${isMobile} ${isVertical} ${withLegend}` }>
+          { children.map( ( child, index ) => (
+            <div
+              className="carousel-item"
+              key={ child.key }
+              onClick={ () => handleSelection( child.props.id, index ) }
+              onKeyUp={ () => handleSelection( child.props.id, index ) }
+              role="button"
+              tabIndex={ 0 }
+            >
+              { child }
+            </div>
+          ) ) }
+        </div>
+        { legend && (
+          <div className={ `carousel-legend ${isVertical}` }>
+            { !vertical && (
+              <button
+                className="carousel-legend-button"
+                disabled={ selected === 0 }
+                onClick={ () => handleButton( -1 ) }
+                type="button"
+              >
+                <Icon name="angle left" size="large" />
+              </button>
+            ) }
+            <div className={ `carousel-progress-bar ${isVertical}` }>
+              { children.map( ( child, index ) => {
+                const isSelected = ( index === selected ) ? 'selected' : '';
+
+                return (
+                  <div
+                    className={ `carousel-progress-item ${isSelected} ${isVertical}` }
+                    key={ child.key }
+                    onClick={ () => handleSelection( child.props.id, index ) }
+                    onKeyUp={ () => handleSelection( child.props.id, index ) }
+                    role="button"
+                    tabIndex={ 0 }
+                  />
+                );
+              } ) }
+            </div>
+            { !vertical && (
+              <button
+                className="carousel-legend-button"
+                disabled={ selected === itemCount - 1 }
+                onClick={ () => handleButton( 1 ) }
+                type="button"
+              >
+                <Icon name="angle right" size="large" />
+              </button>
+            ) }
+          </div>
+        ) }
       </div>
+      { vertical && (
+        <div
+          className={ `scroll-button down ${isMobile} ${onLast}` }
+          onClick={ () => handleButton( 1 ) }
+          onKeyUp={ () => handleButton( 1 ) }
+          role="button"
+          tabIndex={ 0 }
+        >
+          <i className="angle down icon scroll-icon" />
+        </div>
+      ) }
     </div>
   );
 };
@@ -86,7 +126,14 @@ const Carousel = ( { callback, children, selectedItem } ) => {
 Carousel.propTypes = {
   callback: propTypes.func,
   children: propTypes.element,
-  selectedItem: propTypes.string
+  legend: propTypes.bool,
+  selectedItem: propTypes.string,
+  vertical: propTypes.bool
+};
+
+Carousel.defaultProps = {
+  legend: true,
+  vertical: false
 };
 
 export default Carousel;

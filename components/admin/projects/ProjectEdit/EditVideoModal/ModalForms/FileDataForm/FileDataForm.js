@@ -369,7 +369,7 @@ class FileDataForm extends Component {
     const vimeo = streams && streams.vimeo ? streams.vimeo : {};
 
     return (
-      <Form className="edit-video__form video-file-form">
+      <Form className="edit-video__form video-file-form" style={ { overflow: 'hidden' } }>
         <Grid stackable>
           <Grid.Row>
             <Grid.Column className="video-file-form-col-1" mobile={ 16 } computer={ 8 }>
