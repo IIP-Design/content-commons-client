@@ -1,0 +1,54 @@
+@import "styles/colors.scss";
+
+.carousel {
+
+  &-items {
+    display: flex;
+  }
+
+  &-legend {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+
+    &-button {
+      background-color: $matisse-blue;
+      border: none;
+      color: white;
+      cursor: pointer;
+      height: 36px;
+      padding: 0;
+      width: 36px;
+
+      &:disabled {
+        background-color: white;
+        color: $blue-green;
+        cursor: default;
+      }
+
+      > i {
+        margin: 0
+      }
+    }
+  }
+
+  &-progress {
+
+    &-bar {
+      align-items: center;
+      display: flex;
+    }
+    
+    &-item {
+      background-color: $blue-green;
+      border-radius: 50%;
+      height: 10px;
+      margin: 0 .2rem;
+      width: 10px;
+
+      &.selected {
+        background-color: $matisse-blue;
+      }
+    }
+  }
+}

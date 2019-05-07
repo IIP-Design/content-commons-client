@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import propTypes from 'prop-types';
 import { Query } from 'react-apollo';
 
+import Carousel from '../../Carousel/Carousel';
 import './VideoUnitCarousel.scss';
 
 const VIDEO_PROJECT_QUERY = gql`
@@ -44,7 +45,7 @@ const VideoUnitCarousel = ( { callback, projectId, unitId } ) => (
           const { units } = project;
 
           return (
-            <div className="video-carousel">
+            <Carousel callback={ callback } selectedItem={ unitId }>
               { units && (
                 units.map( unit => {
                   const { image } = unit.thumbnails[0];
@@ -53,10 +54,12 @@ const VideoUnitCarousel = ( { callback, projectId, unitId } ) => (
                   return (
                     <div
                       className={ `video-carousel-item ${selected}` }
+                      id={ unit.id }
                       key={ unit.id }
                       onClick={ () => callback( unit.id ) }
                       onKeyUp={ () => callback( unit.id ) }
                       role="button"
+                      selected={ selected }
                       tabIndex="0"
                     >
                       <img className={ `video-carousel-item-image ${selected}` } src={ image.url } alt={ image.alt } />
@@ -70,7 +73,7 @@ const VideoUnitCarousel = ( { callback, projectId, unitId } ) => (
                   );
                 } )
               ) }
-            </div>
+            </Carousel>
           );
         }
       }
