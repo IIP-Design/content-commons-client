@@ -11,6 +11,7 @@ const Breadcrumbs = props => {
   const paths = ( router.pathname ).replace( '/admin', '' ).split( '/' ).slice( 1 ).filter( Boolean );
 
   let pathCounter = 0;
+  let displayname = '';
   return (
     <Breadcrumb size="mini">
       <Breadcrumb.Section>
@@ -18,10 +19,11 @@ const Breadcrumbs = props => {
       </Breadcrumb.Section>
       { paths.map( ( pathname, i, arr ) => {
         pathCounter += 1;
+        displayname = ( pathname === 'upload' ) ? 'upload content' : pathname;
         return (
           <span key={ pathCounter }>
             <Breadcrumb.Divider icon="right angle" />
-            <Breadcrumb.Section active={ arr.length - 1 === i } className="pathname">{ pathname }</Breadcrumb.Section>
+            <Breadcrumb.Section active={ arr.length - 1 === i } className="pathname">{ displayname }</Breadcrumb.Section>
           </span>
         );
       } ) }
