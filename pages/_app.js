@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import App, { Container } from 'next/app';
 import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
