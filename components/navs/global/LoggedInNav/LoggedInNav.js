@@ -82,7 +82,7 @@ class LoggedInNav extends Component {
     const {
       mobileNavVisible, toggleMobileNav, keyUp, user
     } = this.props;
-    const { popupIsOpen, hasNotifications } = this.state;
+    const { hasNotifications } = this.state;
 
     const active = hasNotifications ? 'active' : '';
 
@@ -168,11 +168,23 @@ class LoggedInNav extends Component {
                 return (
                   <Popup
                     key={ item.key }
+                    id={ item.name }
                     className="nav_submenu_popup"
-                    trigger={ <li key={ item.key }>{ this.getIcon( item ) }</li> }
+                    trigger={ (
+                      <li
+                        key={ item.key }
+                        className={
+                          item.name === 'notifications'
+                            ? `mobile_loggedin ${item.name} ${active}`
+                            : `mobile_loggedin ${item.name}`
+                        }
+                      >
+                        { this.getIcon( item ) }
+                      </li>
+                    ) }
                     content={ this.renderMenu( item.name ) }
                     on="click"
-                    open={ popupIsOpen }
+                    open={ this.state[`${item.name}`] }
                     onOpen={ this.displayPopup }
                     onClose={ this.closePopup }
                     position="bottom center"
