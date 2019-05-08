@@ -32,7 +32,7 @@ const VideoProjectFilesMobile = () => (
             <CancelUpload closeModal={ closeModal } />
             <Button
               className="primary"
-              content="Next"
+              content="Continue"
               disabled={ !allFieldsSelected }
               onClick={ handleAddFilesToUpload }
             />

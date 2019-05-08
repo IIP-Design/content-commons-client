@@ -79,7 +79,7 @@ const VideoProjectFilesDesktop = () => {
 
               <Button
                 className="primary"
-                content="Next"
+                content="Continue"
                 disabled={ !allFieldsSelected }
                 style={ show( 2 ) }
                 onClick={ handleAddFilesToUpload }
