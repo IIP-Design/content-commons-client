@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import {
-  Button, Checkbox, Confirm, Icon, Modal
+  Button, Checkbox, Confirm, Icon, Modal, Popup
 } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import editIcon from 'static/images/dashboard/edit.svg';
@@ -178,13 +178,22 @@ class TableActionsMenu extends React.Component {
             <img src={ editIcon } alt="Edit Selection(s)" title="Edit Selection(s)" />
           </Button>
 
-          <Button
+          <Popup
+            trigger={ (
+              <Button
+                size="mini"
+                basic
+                onClick={ this.displayConfirmDelete }
+              >
+                <img src={ deleteIcon } alt="Delete Selection(s)" />
+              </Button>
+            ) }
+            content="Delete Selection(s)"
+            hideOnScroll
+            inverted
+            on={ ['hover', 'focus'] }
             size="mini"
-            basic
-            onClick={ this.displayConfirmDelete }
-          >
-            <img src={ deleteIcon } alt="Delete Selection(s)" title="Delete Selection(s)" />
-          </Button>
+          />
 
           <Mutation
             mutation={ DELETE_VIDEO_PROJECTS_MUTATION }
@@ -238,16 +247,25 @@ class TableActionsMenu extends React.Component {
             { ( unpublish, { error } ) => {
               if ( error ) return <ApolloError error={ error } />;
               return (
-                <Button
-                  className="unpublish"
+                <Popup
+                  trigger={ (
+                    <Button
+                      className="unpublish"
+                      size="mini"
+                      basic
+                      onClick={
+                        () => this.handleUnpublish( unpublish )
+                      }
+                    >
+                      <span className="unpublish--text">Unpublish</span>
+                    </Button>
+                  ) }
+                  content="Unpublish Selection(s)"
+                  hideOnScroll
+                  inverted
+                  on={ ['hover', 'focus'] }
                   size="mini"
-                  basic
-                  onClick={
-                    () => this.handleUnpublish( unpublish )
-                  }
-                >
-                  <span className="unpublish--text">Unpublish</span>
-                </Button>
+                />
               );
             } }
           </Mutation>

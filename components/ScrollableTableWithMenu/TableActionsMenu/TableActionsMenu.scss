@@ -58,10 +58,10 @@
   .unpublish {
     vertical-align: top;
     display: inline-block;
-    margin-left: 0.75em;
-    margin-top: 6px;
 
     &--text {
+      display: inline-block;
+      padding: 0.4rem 0.6rem;
       color: $light-blue;
     }
   }
