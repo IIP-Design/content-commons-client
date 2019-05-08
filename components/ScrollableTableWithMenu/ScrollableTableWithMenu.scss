@@ -1,6 +1,15 @@
 @import "../../styles/colors.scss";
 
 .ui.grid {
+  :focus:not(:focus-visible) {
+    outline: none
+  }
+
+  :focus {
+    outline: 2px dotted $medium-grey;
+    outline-offset: 2px;
+  }
+
   .row.items_tableMenus_wrapper {
     align-items: center;
     padding-bottom: 0;
