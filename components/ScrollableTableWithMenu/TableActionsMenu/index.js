@@ -174,7 +174,7 @@ class TableActionsMenu extends React.Component {
             </Modal.Content>
           </Modal>
 
-          <Button size="mini" basic>
+          <Button size="mini" basic disabled>
             <img src={ editIcon } alt="Edit Selection(s)" title="Edit Selection(s)" />
           </Button>
 
@@ -218,10 +218,10 @@ class TableActionsMenu extends React.Component {
             } }
           </Mutation>
 
-          <Button size="mini" basic>
+          <Button size="mini" basic disabled>
             <img src={ createIcon } alt="Create Selection(s)" title="Create Selection(s)" />
           </Button>
-          <Button size="mini" basic>
+          <Button size="mini" basic disabled>
             <img src={ archiveIcon } alt="Archive Selection(s)" title="Archive Selection(s)" />
           </Button>
 
