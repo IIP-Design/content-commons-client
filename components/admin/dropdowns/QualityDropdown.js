@@ -78,7 +78,7 @@ QualityDropdown.defaultProps = {
 
 QualityDropdown.propTypes = {
   id: PropTypes.string,
-  label: PropTypes.string,
+  label: PropTypes.object,
   type: PropTypes.string
 };
 

@@ -97,12 +97,26 @@ class UnitDataForm extends Component {
     const { unit } = this.props.videoUnitQuery;
 
     if ( unit !== prevProps.videoUnitQuery.unit ) {
+      const imageUrl = unit.thumbnails
+        && unit.thumbnails[0]
+        && unit.thumbnails[0].image
+        && unit.thumbnails[0].image.url
+        ? unit.thumbnails[0].image.url
+        : '';
+
+      const imageAlt = unit.thumbnails
+        && unit.thumbnails[0]
+        && unit.thumbnails[0].image
+        && unit.thumbnails[0].image.alt
+        ? unit.thumbnails[0].image.alt
+        : '';
+
       this.setState( {
-        descPublic: unit.descPublic,
-        imageAlt: unit.thumbnails[0].image.alt,
-        imageUrl: unit.thumbnails[0].image.url,
+        descPublic: unit.descPublic || '',
+        imageAlt,
+        imageUrl,
         tags: this.getTagList( unit.tags ),
-        title: unit.title
+        title: unit.title || ''
       } );
     }
   }
@@ -213,9 +227,14 @@ class UnitDataForm extends Component {
             <Grid.Column mobile={ 16 } computer={ 9 }>
               <figure className="modal_thumbnail overlay">
                 <img className="overlay-image" src={ imageUrl } alt={ imageAlt } />
-                <div className="overlay-hover">
-                  <div className="overlay-text">Change Thumbnail</div>
-                </div>
+                { /*
+                   * Removing change thumbnail hover state
+                   * since this functionality not part of MVP
+                   *
+                  <div className="overlay-hover">
+                    <div className="overlay-text">Change Thumbnail</div>
+                  </div>
+                */ }
               </figure>
             </Grid.Column>
             <Grid.Column mobile={ 16 } computer={ 7 }>
