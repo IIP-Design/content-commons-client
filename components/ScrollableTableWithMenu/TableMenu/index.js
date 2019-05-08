@@ -110,7 +110,7 @@ class TableMenu extends React.Component {
             data-tablearrow="left"
             onClick={ this.handleTableScroll }
             onKeyDown={ this.handleTableScroll }
-            tabIndex="-1"
+            tabIndex="0"
           >
             <Icon name="angle left" data-tablearrow="left" />
           </span>
@@ -119,7 +119,7 @@ class TableMenu extends React.Component {
             data-tablearrow="right"
             onClick={ this.handleTableScroll }
             onKeyDown={ this.handleTableScroll }
-            tabIndex="-1"
+            tabIndex="0"
           >
             <Icon name="angle right" data-tablearrow="right" />
           </span>
