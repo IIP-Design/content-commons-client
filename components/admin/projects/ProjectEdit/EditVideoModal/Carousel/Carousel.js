@@ -27,8 +27,18 @@ const Carousel = ( {
     const next = selected + num;
     const nextValue = children[next];
 
+    const list = document.querySelector( '.carousel-items' );
+    const listItem = document.querySelector( '.carousel-item' );
+    const itemHeight = listItem.clientHeight;
+    const itemWidth = listItem.clientWidth;
+    const xVert = num > 0 ? itemWidth : -itemWidth;
+    const yVert = num > 0 ? itemHeight : -itemHeight;
+    const x = vertical ? 0 : xVert;
+    const y = vertical ? yVert : 0;
+
     callback( nextValue.props.id );
     setSelected( next );
+    list.scrollBy( x, y );
   };
 
   const isVertical = vertical ? 'vertical' : '';
@@ -125,7 +135,7 @@ const Carousel = ( {
 
 Carousel.propTypes = {
   callback: propTypes.func,
-  children: propTypes.element,
+  children: propTypes.array,
   legend: propTypes.bool,
   selectedItem: propTypes.string,
   vertical: propTypes.bool
