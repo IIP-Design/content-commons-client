@@ -31,10 +31,10 @@ const Carousel = ( {
     const listItem = document.querySelector( '.carousel-item' );
     const itemHeight = listItem.clientHeight;
     const itemWidth = listItem.clientWidth;
-    const xVert = num > 0 ? itemWidth : -itemWidth;
-    const yVert = num > 0 ? itemHeight : -itemHeight;
-    const x = vertical ? 0 : xVert;
-    const y = vertical ? yVert : 0;
+    const xOffset = num > 0 ? itemWidth : -itemWidth;
+    const yOffset = num > 0 ? itemHeight : -itemHeight;
+    const x = vertical ? 0 : xOffset;
+    const y = vertical ? yOffset : 0;
 
     callback( nextValue.props.id );
     setSelected( next );
@@ -142,6 +142,7 @@ Carousel.propTypes = {
 };
 
 Carousel.defaultProps = {
+  callback: () => {},
   legend: true,
   vertical: false
 };
