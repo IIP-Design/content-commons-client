@@ -3,7 +3,7 @@
  * EditSingleProjectItem
  *
  */
-import React from 'react';
+import React, { useState } from 'react';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
 import propTypes from 'prop-types';
@@ -12,6 +12,7 @@ import { Loader } from 'semantic-ui-react';
 
 import ModalItem from 'components/modals/ModalItem/ModalItem';
 import EditVideoModal from 'components/admin/projects/ProjectEdit/EditVideoModal/EditVideoModal';
+
 import './EditSingleProjectItem.scss';
 
 const VIDEO_PROJECT_QUERY = gql`
@@ -35,39 +36,64 @@ const VIDEO_UNIT_QUERY = gql`
   }
 `;
 
-class EditSingleProjectItem extends React.PureComponent {
-  render() {
-    const { itemId, projectId } = this.props;
-    const { project } = this.props.videoProjectQuery;
-    const { unit } = this.props.videoUnitQuery;
+export const EditSingleProjectItemContext = React.createContext();
 
-    if ( !unit || !project ) {
-      return (
-        <div style={ {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh'
-        } }
-        >
-          <Loader active inline="centered" style={ { marginBottom: '1em' } } />
-          <p>Loading the video...</p>
-        </div>
-      );
-    }
+const EditSingleProjectItem = ( {
+  itemId, projectId, videoProjectQuery, videoUnitQuery
+} ) => {
+  const { project } = videoProjectQuery;
+  const { unit } = videoUnitQuery;
 
+  const [selectedProject, setSelectedProject] = useState( projectId );
+  const [selectedUnit, setSelectedUnit] = useState( itemId );
+  const [language, setLanguage] = useState( '' );
+
+  const updateProject = id => (
+    setSelectedProject( id )
+  );
+
+  const updateUnit = async id => {
+    setSelectedUnit( id );
+  };
+
+  if ( !unit || !project ) {
     return (
-      <ModalItem
-        customClassName="edit-project-item"
-        headline={ `${project.projectTitle} in ${unit.language.displayName}` }
-        textDirection="ltr"
+      <div style={ {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh'
+      } }
       >
-        <EditVideoModal projectId={ projectId } unitId={ itemId } />
-      </ModalItem>
+        <Loader active inline="centered" style={ { marginBottom: '1em' } } />
+        <p>Loading the video...</p>
+      </div>
     );
   }
-}
+
+  const lang = unit.language && unit.language.displayName ? unit.language.displayName : '';
+
+  return (
+    <EditSingleProjectItemContext.Provider
+      value={ {
+        language,
+        selectedProject,
+        selectedUnit,
+        updateProject,
+        updateUnit
+      } }
+    >
+      <ModalItem
+        customClassName="edit-project-item"
+        headline={ `${project.projectTitle} ${language ? `in ${language}` : ''}` }
+        textDirection="ltr"
+      >
+        <EditVideoModal projectId={ selectedProject } unitId={ selectedUnit } />
+      </ModalItem>
+    </EditSingleProjectItemContext.Provider>
+  );
+};
 
 EditSingleProjectItem.propTypes = {
   itemId: propTypes.string,

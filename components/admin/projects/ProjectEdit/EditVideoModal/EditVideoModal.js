@@ -3,53 +3,29 @@
  * EditVideoModal
  *
  */
-import React, { Component } from 'react';
-import propTypes from 'prop-types';
+import React from 'react';
 
 import FileSection from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalSections/FileSection/FileSection';
 import UnitDataForm from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalForms/UnitDataForm';
 import VideoUnitCarousel from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalSections/VideoUnitCarousel/VideoUnitCarousel';
+import { EditSingleProjectItemContext } from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 
 import './EditVideoModal.scss';
 
-class EditVideoModal extends Component {
-  state = {}
-
-  componentDidMount() {
-    const { unitId } = this.props;
-
-    this.setState( {
-      selected: unitId
-    } );
-  }
-
-  handleUnitChoice = selected => {
-    this.setState( {
-      selected
-    } );
-  }
-
-  render() {
-    const { projectId } = this.props;
-    const { selected } = this.state;
-
-    return (
+const EditVideoModal = () => (
+  <EditSingleProjectItemContext.Consumer>
+    { ( { selectedProject, selectedUnit, updateUnit } ) => (
       <div className="edit-video-modal">
-        <UnitDataForm unitId={ selected } />
-        <FileSection unitId={ selected } />
+        <UnitDataForm unitId={ selectedUnit } />
+        <FileSection unitId={ selectedUnit } />
         <VideoUnitCarousel
-          callback={ this.handleUnitChoice }
-          projectId={ projectId }
-          unitId={ selected }
+          callback={ updateUnit }
+          projectId={ selectedProject }
+          unitId={ selectedUnit }
         />
       </div>
-    );
-  }
-}
-
-EditVideoModal.propTypes = {
-  projectId: propTypes.string,
-  unitId: propTypes.string
-};
+    ) }
+  </EditSingleProjectItemContext.Consumer>
+);
 
 export default EditVideoModal;

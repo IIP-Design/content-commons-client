@@ -6,6 +6,7 @@ import { Loader } from 'semantic-ui-react';
 
 import FileSidebar from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalSections/FileSidebar/FileSidebar';
 import FileDataForm from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalForms/FileDataForm/FileDataForm';
+import { EditSingleProjectItemContext } from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 
 import './FileSection.scss';
 
@@ -52,7 +53,7 @@ class FileSection extends Component {
   }
 
   render() {
-    const { unitId, videoUnitQuery } = this.props;
+    const { videoUnitQuery } = this.props;
     const { loading, unit } = videoUnitQuery;
 
     if ( !unit || loading ) {
@@ -75,19 +76,22 @@ class FileSection extends Component {
     const lang = unit.language && unit.language.displayName ? `in ${unit.language.displayName}` : '';
 
     return (
-      <section className="edit-file">
-        <h4>{ `File Data ${lang}` }</h4>
-        <div className="edit-file-form-container">
-          <FileSidebar callback={ this.handleFileChoice } id={ unitId } selected={ selected } />
-          <FileDataForm id={ selected } />
-        </div>
-      </section>
+      <EditSingleProjectItemContext.Consumer>
+        { ( { selectedUnit, language } ) => (
+          <section className="edit-file">
+            <h4>{ `File Data ${lang ? `in ${lang}` : ''}` }</h4>
+            <div className="edit-file-form-container">
+              <FileSidebar callback={ this.handleFileChoice } id={ selectedUnit } selected={ selected } />
+              <FileDataForm id={ selected } />
+            </div>
+          </section>
+        ) }
+      </EditSingleProjectItemContext.Consumer>
     );
   }
 }
 
 FileSection.propTypes = {
-  unitId: propTypes.string,
   videoUnitQuery: propTypes.object
 };
 
