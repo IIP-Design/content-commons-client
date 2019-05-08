@@ -15,9 +15,13 @@ const FileUploadProgressBar = props => (
     active
   >
     <p>
-      <b>Uploading files:</b> { props.filesUploaded + 1 } of { props.filesToUploadCount }
+      {
+        props.filesUploaded === props.filesToUploadCount
+          ? <b>Saving file metadata</b>
+          : <span><b>Uploading files:</b> { props.filesUploaded + 1 } of { props.filesToUploadCount }</span>
+      }
       <br />
-    Please keep this page open until upload is complete
+      Please keep this page open until upload is complete
     </p>
   </Progress>
 );

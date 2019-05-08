@@ -33,6 +33,7 @@ const CREATE_VIDEO_PROJECT_MUTATION = gql`
   mutation CREATE_VIDEO_PROJECT_MUTATION( $data: VideoProjectCreateInput! ) {
     createVideoProject( data: $data ) {
       id
+      projectTitle
     }
 }
 `;
@@ -82,7 +83,7 @@ export default compose(
     // handle form submission
     handleSubmit: async ( values, {
       props: {
-        updateNotification, createVideoProject, handleUpload, user, router
+        updateNotification, createVideoProject, handleUpload, user
       }, setSubmitting, setErrors, setStatus
     } ) => {
       // 1. let user know systme is saving
@@ -122,13 +123,8 @@ export default compose(
         //    Button only appears for project creation
         setStatus( 'CREATED' );
 
-        // 4. Append the new project id to the current url to idicate we are no longer
-        //    in a 'create' status
-        const path = `${router.asPath}&id=${res.data.createVideoProject.id}`;
-        router.replace( router.asPath, path, { shallow: true } );
-
-        // 5. Start upload of files.
-        handleUpload( res.data.createVideoProject.id );
+        // 4. Start upload of files.
+        handleUpload( res.data.createVideoProject );
       } catch ( err ) {
         setErrors( {
           submit: err

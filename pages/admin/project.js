@@ -10,46 +10,49 @@ const VideoReview = dynamic( () => import( 'components/admin/projects/ProjectRev
 
 const CONTENT_TYPES = ['video'];
 
-const loadEditComponent = ( content, id ) => {
-  if ( content === 'video' ) {
-    return <VideoEdit id={ id } />;
-  }
-};
-
-const loadReviewComponent = ( content, id ) => {
-  if ( content === 'video' ) {
-    return <VideoReview id={ id } />;
-  }
-};
-
-/**
- * Verify that a content type and project id query params are present,
- * if not send to dashboard
- * @param {object} query { content, id, action }
- */
-const isPathValid = query => {
-  if ( !query
-    || !query.content
-    || !query.id
-    || !CONTENT_TYPES.includes( trim( query.content ) ) ) {
-    return false;
-  }
-
-  return true;
-};
-
 const ProjectPage = props => {
-  if ( !isPathValid( props.query ) ) {
-    props.router.push( '/admin/dashboard' );
-  }
+  const { query: { id, content, action }, router } = props;
 
-  const { id, content, action } = props.query;
+  const loadEditComponent = () => {
+    if ( content === 'video' ) {
+      return <VideoEdit id={ id } />;
+    }
+  };
+
+  const loadReviewComponent = () => {
+    if ( content === 'video' ) {
+      return <VideoReview id={ id } />;
+    }
+  };
+
+  const redirectToDashboard = () => {
+    router.push( '/admin/dashboard' );
+  };
+
+  /**
+   * Verify that a content type uery param are present,
+   * if not send to dashboard
+   * @param {object} query { content, action }
+   */
+  const isPathValid = query => {
+    if ( !query
+      || !content
+      || !CONTENT_TYPES.includes( trim( content ) ) ) {
+      return false;
+    }
+
+    return true;
+  };
+
+  if ( !isPathValid( props.query ) ) {
+    redirectToDashboard();
+  }
 
   if ( action === 'edit' ) {
-    return loadEditComponent( content, id );
+    return loadEditComponent();
   }
 
-  return loadReviewComponent( content, id );
+  return loadReviewComponent();
 };
 
 

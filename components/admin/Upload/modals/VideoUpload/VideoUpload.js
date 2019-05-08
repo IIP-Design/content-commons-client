@@ -86,12 +86,12 @@ const VideoUpload = props => {
     const fileList = Array.from( filesFromInputSelection );
 
     const filesToAdd = fileList.map( file => ( {
+      id: v4(),
       language: '',
       use: getUse( file.type ),
       quality: '',
       videoBurnedInStatus: '',
-      fileInput: file,
-      id: v4()
+      fileInput: file
     } ) );
     setFiles( prevFiles => [...prevFiles, ...filesToAdd] );
   };
@@ -156,11 +156,13 @@ const VideoUpload = props => {
   const handleAddFilesToUpload = async () => {
     setLoading( true );
     const filesToUpload = files.map( file => ( {
+      id: file.id,
       language: file.language,
       use: file.use,
       quality: file.quality,
       videoBurnedInStatus: file.videoBurnedInStatus,
-      fileObject: file.fileInput
+      fileObject: file.fileInput,
+      loaded: 0
     } ) );
 
     await props.addFiles( filesToUpload ); // coming from redux

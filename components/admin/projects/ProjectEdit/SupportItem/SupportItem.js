@@ -3,86 +3,65 @@
  * SupportItem
  *
  */
-import React, { Fragment } from 'react';
-import { object, string } from 'prop-types';
-import {
-  Icon, Loader, Popup, Progress
-} from 'semantic-ui-react';
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import React, {
+  Fragment, useState, useEffect, useRef, useContext
+} from 'react';
+import PropTypes from 'prop-types';
+import { Loader, Popup } from 'semantic-ui-react';
 import debounce from 'lodash/debounce';
-
 import Focusable from 'components/Focusable/Focusable';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import { UploadContext } from '../VideoEdit/VideoEdit';
+
 import './SupportItem.scss';
 
+
 /* eslint-disable react/prefer-stateless-function */
-class SupportItem extends React.PureComponent {
-  constructor( props ) {
-    super( props );
+const SupportItem = props => {
+  const STR_INDEX_PROPORTION = 0.04;
+  const ITEM_NAME_PROPORTION = 0.625;
+  const ITEM_LANG_PROPORTION = 0.3;
+  const DELAY_INTERVAL = 1000;
 
-    /**
-     * @todo simulate upload for dev purposes;
-     * replace for production
-     * 1MB = 1,048,576 Bytes
-     */
-    this.MEGABYTE = 1048576;
-    this.MIN_INTERVAL = 500;
-    this.MAX_INTERVAL = 1500;
-    this.MIN_MB_SEC = 1;
-    this.MAX_MB_SEC = 5;
-    this.STR_INDEX_PROPORTION = 0.04;
-    this.ITEM_NAME_PROPORTION = 0.625;
-    this.ITEM_LANG_PROPORTION = 0.3;
-    this.DELAY_INTERVAL = 1000;
-    this.debounceResize = debounce( this.resetWidths, this.DELAY_INTERVAL );
-    this._isMounted = false;
+  const listEl = useRef( null );
+  const filenameEl = useRef( null );
+  const languageEl = useRef( null );
+  const mounted = useRef( true );
 
-    this.state = {
-      bytesUploaded: 0,
-      nIntervId: null,
-      isUploading: false,
-      listItemWidth: null,
-      itemNameWidth: null,
-      itemLangWidth: null
+  const uploadInProgress = useContext( UploadContext );
+
+  const [widths, setWidths] = useState( {
+    listItem: 0,
+    itemName: 0,
+    itemLang: 0
+  } );
+
+  const { item } = props;
+  const { listItem, itemName, itemLang } = widths;
+
+  const updateWidths = () => {
+    if ( mounted.current ) {
+      setWidths( {
+        listItem: listEl.current.offsetWidth,
+        itemName: filenameEl.current.offsetWidth,
+        itemLang: languageEl.current.offsetWidth
+      } );
+    }
+  };
+
+
+  const debounceResize = debounce( updateWidths, DELAY_INTERVAL );
+
+  useEffect( () => {
+    window.addEventListener( 'resize', debounceResize );
+    updateWidths();
+
+    return () => {
+      window.removeEventListener( 'resize', debounceResize );
+      mounted.current = false;
     };
-  }
+  }, [] );
 
-  componentDidMount = () => {
-    this._isMounted = true;
-    /**
-     * @todo simulate upload for dev purposes;
-     * replace for production
-     * min, max interval in milliseconds
-     */
-    const interval = this.getRandomInt( this.MIN_INTERVAL, this.MAX_INTERVAL );
-    const nIntervId = setInterval( this.uploadItem, interval );
-    this.setState( { nIntervId } );
-
-    window.addEventListener( 'resize', this.debounceResize );
-  }
-
-  componentWillUnmount = () => {
-    this._isMounted = false;
-    clearInterval( this.state.nIntervId );
-    window.removeEventListener( 'resize', this.debounceResize );
-  }
-
-  /**
-   * @todo simulate upload for dev purposes;
-   * replace for production
-   */
-  getRandomInt = ( min, max ) => {
-    const minNum = Math.ceil( min );
-    const maxNum = Math.floor( max );
-    return (
-      Math.floor( Math.random() * ( ( maxNum - minNum ) + 1 ) ) + minNum
-    );
-  }
-
-  getRemainingUnits = ( totalUnits, unitsUploaded ) => (
-    totalUnits - unitsUploaded
-  )
 
   /**
    * Truncates long strings with ellipsis
@@ -91,7 +70,7 @@ class SupportItem extends React.PureComponent {
    * @param {number} end index for ending cutoff point
    * @return truncated string
    */
-  getShortFileName = ( str, index ) => (
+  const getShortFileName = ( str, index ) => (
     <Fragment>
       { `${str.substr( 0, index )}` }&hellip;{ `${str.substr( -index )}` }
     </Fragment>
@@ -103,252 +82,130 @@ class SupportItem extends React.PureComponent {
    * @param {number} reference
    * @return {number}
    */
-  getProportionalNumber = ( reference, proportion ) => (
+  const getProportionalNumber = ( reference, proportion ) => (
     Math.floor( reference * proportion )
-  )
-
-  /**
-   * Declares a React ref & sets its width in state
-   * @param {node} React node
-   * @param {string} name of React ref
-   */
-  setRefWidth = ( node, ref ) => {
-    if ( node ) {
-      this.setState( prevState => {
-        if ( !prevState[`${ref}Width`] ) {
-          return ( {
-            [`${ref}Width`]: Math.ceil( node.offsetWidth )
-          } );
-        }
-      } );
-    }
-  }
-
-  resetWidths = () => {
-    if ( this._isMounted ) {
-      this.setState( {
-        listItemWidth: null,
-        itemNameWidth: null,
-        itemLangWidth: null
-      } );
-    }
-  }
-
-  isLongName = ( itemWidth, reference, proportion ) => (
-    itemWidth >= this.getProportionalNumber( reference, proportion )
   );
 
-  incrementUpload = ( unit, min, max ) => (
-    this[unit] * this.getRandomInt( min, max )
-  )
+  const isLongName = ( itemWidth, reference, proportion ) => (
+    itemWidth >= getProportionalNumber( reference, proportion )
+  );
 
-  endUpload = intervId => {
-    clearInterval( intervId );
+
+  const normalizeLanguage = lang => {
+    if ( typeof ( lang ) === 'string' ) {
+      return { id: lang, displayName: 'English' };
+    }
+    return lang;
   };
 
-  uploadItem = () => {
-    /**
-     * @todo simulate upload for dev purposes;
-     * replace for production
-     * min, max increment in megabytes
-     */
-    this.setState( nextState => {
-      const { filesize } = this.props.data.supportItem;
-      const { bytesUploaded } = nextState;
-      let increment = this.incrementUpload( 'MEGABYTE', this.MIN_MB_SEC, this.MAX_MB_SEC );
-      const remainingBytes = this.getRemainingUnits( filesize, bytesUploaded );
+  const normalizeItem = ( prop, defaultValue ) => {
+    const fileProp = item[prop];
 
-      if ( remainingBytes < increment ) {
-        increment = remainingBytes;
-      }
-
-      // continue uploading
-      if ( bytesUploaded < filesize ) {
-        return {
-          isUploading: true,
-          bytesUploaded: this.state.bytesUploaded + increment
-        };
-      }
-
-      // stop uploading
-      this.endUpload( nextState.nIntervId );
-      return { isUploading: false };
-    } );
-  }
-
-  render() {
-    const {
-      fileType,
-      data: { error, loading, supportItem }
-    } = this.props;
-
-    if ( !supportItem || !Object.keys( supportItem ).length ) return null;
-
-    const { filename, filesize, language } = supportItem;
-
-    if ( loading ) {
-      return (
-        <li>
-          <Loader active inline size="mini" />
-          <span style={ { marginLeft: '0.5em', fontSize: '0.75em' } }>
-            Preparing file for upload...
-          </span>
-        </li>
-      );
+    if ( fileProp ) {
+      return fileProp;
+    } if ( item.fileObject ) {
+      return item.fileObject[prop.replace( 'file', '' )];
     }
+    return defaultValue;
+  };
 
-    if ( error ) {
-      return (
-        <li key={ `${fileType}-${language.displayName}` } className="support-item error">
-          <p>
-            <Icon
-              color="red"
-              name="exclamation triangle"
-              size="small"
-            />
-            <span>
-              { `${error ? 'Loading ' : 'Uploading '}error` }
-            </span>
-          </p>
-        </li>
-      );
-    }
+  const filename = normalizeItem( 'filename', '' );
+  const filesize = normalizeItem( 'filesize', 0 );
+  const language = normalizeLanguage( item.language );
+  const loaded = item.loaded === 0 ? item.loaded : filesize;
 
-    const {
-      bytesUploaded,
-      isUploading,
-      listItemWidth,
-      itemNameWidth,
-      itemLangWidth
-    } = this.state;
+  const charIndex = getProportionalNumber( listItem, STR_INDEX_PROPORTION );
 
-    const uploadingClass = isUploading ? ' isUploading' : '';
+  const shortFileName = getShortFileName( filename, charIndex );
 
-    const charIndex = this.getProportionalNumber( listItemWidth, this.STR_INDEX_PROPORTION );
+  const isLongFileName = isLongName( itemName, listItem, ITEM_NAME_PROPORTION );
 
-    const shortFileName = this.getShortFileName( filename, charIndex );
+  const isLongLangName = isLongName( itemLang, listItem, ITEM_LANG_PROPORTION );
 
-    const isLongFileName = this.isLongName( itemNameWidth, listItemWidth, this.ITEM_NAME_PROPORTION );
+  const isUploading = uploadInProgress && ( loaded < filesize );
 
-    const isLongLangName = this.isLongName( itemLangWidth, listItemWidth, this.ITEM_LANG_PROPORTION );
+  const popupStyle = {
+    overflowWrap: 'break-word',
+    wordWrap: 'break-word',
+    msWordBreak: 'break-all',
+    wordBreak: 'break-word'
+  };
 
-    const popupStyle = {
-      overflowWrap: 'break-word',
-      wordWrap: 'break-word',
-      msWordBreak: 'break-all',
-      wordBreak: 'break-word'
-    };
-
-    if ( isUploading ) {
-      return (
-        <li key={ `${fileType}-${language.displayName}` } className={ `support-item${uploadingClass}` }>
-          <Progress
-            value={ bytesUploaded }
-            total={ filesize }
-            color="blue"
-            size="small"
-            active
-            progress
-            precision={ 0 }
-          />
-          <span>Uploading item</span>
-        </li>
-      );
-    }
-
-    return (
-      <li
-        key={ `${fileType}-${language.displayName}` }
-        className="support-item"
-        ref={ node => this.setRefWidth( node, 'listItem' ) }
-      >
-        <span className="item-name">
-          { isLongFileName && <VisuallyHidden>{ filename }</VisuallyHidden> }
-          <span
-            className={
+  return (
+    <li
+      key={ `${item.id}-${language.id}` }
+      className={ `support-item ${( loaded < filesize ) ? 'new' : ''}` }
+      ref={ listEl }
+    >
+      <span className="item-name">
+        { isLongFileName && <VisuallyHidden>{ filename }</VisuallyHidden> }
+        <span
+          className={
               `item-name-wrap${isLongFileName ? ' hasEllipsis' : ''}`
             }
-            aria-hidden={ isLongFileName }
-            ref={ node => this.setRefWidth( node, 'itemName' ) }
-          >
-            { isLongFileName
-              ? (
-                <Popup
-                  content={ filename }
-                  size="mini"
-                  inverted
-                  on={ [
-                    'hover',
-                    'click',
-                    'focus'
-                  ] }
-                  trigger={ (
-                    <span>
-                      <Focusable>{ shortFileName }</Focusable>
-                    </span>
+          aria-hidden={ isLongFileName }
+          ref={ filenameEl }
+        >
+          { isLongFileName
+            ? (
+              <Popup
+                content={ filename }
+                size="mini"
+                inverted
+                on={ [
+                  'hover',
+                  'click',
+                  'focus'
+                ] }
+                trigger={ (
+                  <span>
+                    <Focusable>{ shortFileName }</Focusable>
+                  </span>
                   ) }
-                  style={ popupStyle }
-                />
-              ) : filename }
-          </span>
+                style={ popupStyle }
+              />
+            ) : filename }
         </span>
 
-        <span className="item-lang">
-          <b
-            className={
+        <Loader active={ isUploading } inline size="mini" style={ { marginLeft: '.5rem' } } />
+
+      </span>
+
+      <span className="item-lang">
+        <b
+          className={
               `item-lang-wrap${isLongLangName ? ' hasEllipsis' : ''}`
             }
-            ref={ node => this.setRefWidth( node, 'itemLang' ) }
-          >
-            { isLongLangName
-              ? (
-                <Popup
-                  trigger={ (
-                    <span>
-                      <Focusable>{ language.displayName }</Focusable>
-                    </span>
+          ref={ languageEl }
+        >
+          { isLongLangName
+            ? (
+              <Popup
+                trigger={ (
+                  <span>
+                    <Focusable>{ language.displayName }</Focusable>
+                  </span>
                   ) }
-                  content={ language.displayName }
-                  on={ [
-                    'hover',
-                    'click',
-                    'focus'
-                  ] }
-                  inverted
-                  size="mini"
-                  style={ popupStyle }
-                />
-              ) : language.displayName }
-          </b>
-        </span>
-      </li>
-    );
-  }
-}
-
-SupportItem.propTypes = {
-  data: object.isRequired,
-  fileType: string.isRequired
+                content={ language.displayName }
+                on={ [
+                  'hover',
+                  'click',
+                  'focus'
+                ] }
+                inverted
+                size="mini"
+                style={ popupStyle }
+              />
+            ) : language.displayName }
+        </b>
+      </span>
+    </li>
+  );
 };
 
-const SUPPORT_ITEM_QUERY = gql`
-  query SupportItem($id: ID!) {
-    supportItem: supportFile(id: $id) {
-      id
-      filename
-      filesize
-      language {
-        displayName
-      }
-    }
-  }
-`;
 
-export default graphql( SUPPORT_ITEM_QUERY, {
-  options: props => ( {
-    variables: {
-      id: props.itemId
-    },
-  } )
-} )( SupportItem );
-export { SUPPORT_ITEM_QUERY };
+SupportItem.propTypes = {
+  item: PropTypes.object
+};
+
+export default SupportItem;
