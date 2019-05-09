@@ -43,17 +43,59 @@ class ScrollableTableWithMenu extends React.Component {
   }
 
   handleItemsPerPageChange = ( e, value ) => {
-    this.setState( {
-      activePage: 1,
-      itemsPerPage: value,
-      skip: 0
-    } );
+    this.setState(
+      { itemsPerPage: value, },
+      this.handleResetActivePage
+    );
   };
 
   handlePageChange = ( e, { activePage } ) => {
     this.setState( prevState => {
       const skip = activePage * prevState.itemsPerPage - prevState.itemsPerPage;
       return { activePage, skip };
+    } );
+  };
+
+  handleResetActivePage = () => {
+    this.setState( { activePage: 1, skip: 0 } );
+  }
+
+  handleResetSelections = () => {
+    this.setState( {
+      selectedItems: new Map(),
+      displayActionsMenu: false
+    } );
+  }
+
+  handleSearchSubmit = ( e, searchTerm ) => {
+    e.preventDefault();
+    this.setState(
+      { searchTerm: searchTerm.trim() },
+      this.handleResetActivePage
+    );
+  }
+
+  handleSort = clickedColumn => () => {
+    const {
+      column,
+      data,
+      direction,
+      displayActionsMenu
+    } = this.state;
+
+    if ( displayActionsMenu ) return;
+
+    if ( column !== clickedColumn ) {
+      return this.setState( {
+        column: clickedColumn,
+        data: sortBy( data, [clickedColumn] ),
+        direction: 'ascending'
+      } );
+    }
+
+    this.setState( {
+      data: data.reverse(),
+      direction: direction === 'ascending' ? 'descending' : 'ascending'
     } );
   };
 
@@ -136,46 +178,6 @@ class ScrollableTableWithMenu extends React.Component {
       };
     } );
   }
-
-  handleResetSelections = () => {
-    this.setState( {
-      selectedItems: new Map(),
-      displayActionsMenu: false
-    } );
-  }
-
-  handleSearchSubmit = ( e, searchTerm ) => {
-    e.preventDefault();
-    this.setState( {
-      activePage: 1,
-      skip: 0,
-      searchTerm: searchTerm.trim()
-    } );
-  }
-
-  handleSort = clickedColumn => () => {
-    const {
-      column,
-      data,
-      direction,
-      displayActionsMenu
-    } = this.state;
-
-    if ( displayActionsMenu ) return;
-
-    if ( column !== clickedColumn ) {
-      return this.setState( {
-        column: clickedColumn,
-        data: sortBy( data, [clickedColumn] ),
-        direction: 'ascending'
-      } );
-    }
-
-    this.setState( {
-      data: data.reverse(),
-      direction: direction === 'ascending' ? 'descending' : 'ascending'
-    } );
-  };
 
   render() {
     const {
