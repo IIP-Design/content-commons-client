@@ -7,10 +7,12 @@ import React, {
   Fragment, useState, useEffect, useRef, useContext
 } from 'react';
 import PropTypes from 'prop-types';
+import { compose, graphql } from 'react-apollo';
 import { Loader, Popup } from 'semantic-ui-react';
 import debounce from 'lodash/debounce';
 import Focusable from 'components/Focusable/Focusable';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
 import { UploadContext } from '../VideoEdit/VideoEdit';
 
 import './SupportItem.scss';
@@ -92,8 +94,8 @@ const SupportItem = props => {
 
 
   const normalizeLanguage = lang => {
-    if ( typeof ( lang ) === 'string' ) {
-      return { id: lang, displayName: 'English' };
+    if ( typeof ( lang ) === 'string' ) { // will be object if coming from graphql
+      return props.data.languages.filter( l => l.id === lang )[0];
     }
     return lang;
   };
@@ -205,7 +207,10 @@ const SupportItem = props => {
 
 
 SupportItem.propTypes = {
-  item: PropTypes.object
+  item: PropTypes.object,
+  data: PropTypes.object
 };
 
-export default SupportItem;
+export default compose(
+  graphql( LANGUAGES_QUERY )
+)( SupportItem );
