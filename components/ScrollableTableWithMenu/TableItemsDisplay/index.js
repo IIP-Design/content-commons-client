@@ -71,7 +71,7 @@ const TableItemsDisplay = props => {
               { ' | ' }
               { projectsCount > 0
                 ? <span>{ firstPageItem } - { lastPageItem } of { projectsCount }{ searchTerm && <Fragment> for &ldquo;{ searchTerm }&rdquo;</Fragment> }</span>
-                : <span>No results for &ldquo;{ searchTerm }&rdquo;</span> }
+                : <span>No results{ searchTerm && <Fragment> for &ldquo;{ searchTerm }&rdquo;</Fragment> }</span> }
             </span>
           </Grid.Column>
         );
