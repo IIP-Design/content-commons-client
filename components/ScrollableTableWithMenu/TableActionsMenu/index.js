@@ -18,6 +18,7 @@ import deleteIcon from 'static/images/dashboard/delete.svg';
 import archiveIcon from 'static/images/dashboard/archive.svg';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody';
+import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination';
 import './TableActionsMenu.scss';
 
 const DELETE_VIDEO_PROJECTS_MUTATION = gql`
@@ -91,6 +92,10 @@ class TableActionsMenu extends React.Component {
       },
       refetchQueries: [{
         query: TEAM_VIDEO_PROJECTS_QUERY,
+        variables: { ...variables }
+      },
+      {
+        query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
         variables: { ...variables }
       }]
     } );
