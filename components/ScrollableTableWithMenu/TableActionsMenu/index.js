@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Mutation } from 'react-apollo';
+import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import {
   Button, Checkbox, Confirm, Icon, Modal, Popup
@@ -148,15 +148,34 @@ class TableActionsMenu extends React.Component {
   }
 
   render() {
-    const { displayActionsMenu, toggleAllItemsSelection } = this.props;
+    const {
+      displayActionsMenu, toggleAllItemsSelection, variables
+    } = this.props;
     const { displayConfirmationMsg } = this.state;
 
     return (
       <div className="actionsMenu_wrapper">
-        <Checkbox
-          className={ displayActionsMenu ? 'actionsMenu_toggle actionsMenu_toggle--active' : 'actionsMenu_toggle' }
-          onChange={ toggleAllItemsSelection }
-        />
+        <Query
+          query={ TEAM_VIDEO_PROJECTS_COUNT_QUERY }
+          variables={ { ...variables } }
+        >
+          { ( { loading, error, data: { videoProjects } } ) => {
+            if ( loading ) return 'Loading....';
+            if ( error ) return <ApolloError error={ error } />;
+            if ( !videoProjects ) return null;
+
+            const isDisabled = videoProjects && !videoProjects.length;
+
+            return (
+              <Checkbox
+                className={ displayActionsMenu ? 'actionsMenu_toggle actionsMenu_toggle--active' : 'actionsMenu_toggle' }
+                onChange={ toggleAllItemsSelection }
+                disabled={ isDisabled }
+              />
+            );
+          } }
+        </Query>
+
         <div className={ displayActionsMenu ? 'actionsMenu active' : 'actionsMenu' }>
 
           <Modal
