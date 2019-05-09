@@ -29,14 +29,14 @@ const ProjectDataForm = props => {
     values,
     errors,
     touched,
-    status,
     handleSubmit,
     handleChange,
     setFieldValue,
     isSubmitting,
     isValid,
     setFieldTouched,
-    maxCategories
+    maxCategories,
+    status
   } = props;
 
   const handleOnChange = ( e, {
@@ -65,6 +65,7 @@ const ProjectDataForm = props => {
 
         <Grid.Row>
           <Grid.Column mobile={ 16 } computer={ 8 }>
+
             <Form.Group widths="equal">
               <div className="field">
                 <Form.Field
@@ -113,7 +114,6 @@ const ProjectDataForm = props => {
                 placeholder=""
                 name="team"
                 value={ values.team }
-                disabled
               />
             </Form.Group>
 
@@ -215,12 +215,12 @@ const ProjectDataForm = props => {
 
 ProjectDataForm.propTypes = {
   id: PropTypes.string,
+  status: PropTypes.string,
   handleSubmit: PropTypes.func,
   handleChange: PropTypes.func,
   values: PropTypes.object,
   errors: PropTypes.object,
   touched: PropTypes.object,
-  status: PropTypes.string,
   setFieldValue: PropTypes.func,
   isSubmitting: PropTypes.bool,
   isValid: PropTypes.bool,
@@ -228,4 +228,6 @@ ProjectDataForm.propTypes = {
   maxCategories: PropTypes.number
 };
 
+
+// what happens if there is a project id but it returns an error?
 export default ProjectDataForm;

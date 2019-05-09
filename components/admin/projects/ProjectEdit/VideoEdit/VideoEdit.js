@@ -9,13 +9,12 @@ import PropTypes from 'prop-types';
 import { Button, Confirm } from 'semantic-ui-react';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
+import { connect } from 'react-redux';
+import * as actions from 'lib/redux/actions/files';
 
 import { uploadToS3, uploadToVimeo } from 'lib/upload';
 import mime from 'mime-types';
 import { buildUpdateVideoProjectData } from 'lib/graphql/video';
-
-import { connect } from 'react-redux';
-import * as actions from 'lib/redux/actions/files';
 
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import Notification from 'components/Notification/Notification';
@@ -129,6 +128,10 @@ class VideoEdit extends React.PureComponent {
   }
 
   componentDidMount = () => {
+    // console.log( 'componentDidMount' );
+    // console.log( `id ${this.props.id}` );
+    // console.dir( this.props.fileUpload.length );
+
     this._isMounted = true;
   }
 
@@ -458,6 +461,7 @@ class VideoEdit extends React.PureComponent {
           </ProjectHeader>
         </div>
 
+        { /* status notification need to be separate component */ }
         <div className="edit-project__status alpha">
           { !projectId && <FormInstructions /> }
           { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
@@ -498,6 +502,7 @@ class VideoEdit extends React.PureComponent {
           />
         </div>
 
+        { /* upload progress notification - sep component -- created shared component with save notification */ }
         <div className="edit-project__status beta">
           { !projectId && <FormInstructions /> }
           { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
