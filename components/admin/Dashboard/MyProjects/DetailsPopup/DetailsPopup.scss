@@ -1,0 +1,29 @@
+@import "../../../../../styles/colors.scss";
+
+.ui.popup.detailsFiles_popup {
+  max-width: inherit;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  color: $shuttle-grey;
+  background-color: $light-grey;
+  @media screen and (max-width: 400px) {
+    margin-left: 1em;
+  }
+
+  &:before {
+    background-color: $light-grey !important;
+  }
+
+  p {
+    margin-bottom: 3px;
+    font-size: 11px;  
+  }
+
+  ul {
+    padding-left: 0;
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.6;
+    list-style: none;        
+  }
+}

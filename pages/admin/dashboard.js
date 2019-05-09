@@ -1,13 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import User from 'components/User/User';
 import Dashboard from 'components/admin/Dashboard/Dashboard';
 
 const DashboardPage = props => (
-  <Dashboard />
+  <User>
+    {
+      ( { data } ) => {
+        const user = data ? data.authenticatedUser : null;
+        return <Dashboard user={ user } />;
+      }
+    }
+  </User>
 );
-
-DashboardPage.propTypes = {
-
-};
 
 export default DashboardPage;

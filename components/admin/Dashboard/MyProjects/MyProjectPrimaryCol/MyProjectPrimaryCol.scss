@@ -1,0 +1,115 @@
+@import "../../../../../styles/colors.scss";
+
+.myProjects {
+
+  &_actions {
+    margin-right: 15px;
+    @media screen and (max-width: 767px) {
+      margin-right: 0;
+    }
+  }
+
+  &_thumbnail {
+    flex: 1;
+    margin-right: 15px;
+    @media screen and (max-width: 767px) {
+      margin-right: 0;
+      padding: 0 3px;
+      max-width: 66px;
+    }
+
+    img {
+      width: 100%;
+    }
+  }
+
+  &_data {
+    position: relative;
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+
+    &_title {
+      flex: 1;
+      margin-bottom: 0;
+      font-size: 18px;
+      font-weight: bold;
+      color: $blue;
+      @media screen and (max-width: 767px) {
+        max-width: 155px;
+        font-size: 14px;
+      }
+
+      &:hover {
+        color: $light-blue;
+      }
+    }
+
+    &_actions {
+
+      button {
+        -webkit-appearance: none;
+        padding: 0;
+        border: none;
+        background-color: transparent; 
+      }
+
+      &_wrapper {
+        @media screen and (max-width: 767px) {
+          display: none;
+          position: absolute;
+          top: 0;
+          right: 8px;
+          z-index: 2;
+          padding: 10px;          
+          background-color: #fff;
+          box-shadow: 1px 1px 1px 1px $medium-grey;
+
+          > span {
+            display: none;
+          }
+        }
+      }
+
+      &_action {
+        font-size: 11px;
+        font-weight: normal;
+        @media screen and (max-width: 767px) {
+          display: block;
+          padding: 3px;
+          margin-bottom: 8px;
+          font-size: 1em;
+
+          &:not(:first-child) {
+            padding: 3px !important;
+          }
+        }
+      }
+
+      &_mobileToggle {
+        position: absolute;
+        top: 0;
+        right: 5px;
+        font-size: 1.5em;
+        color: $blue;
+        @media screen and (min-width: 768px) {
+          display: none;
+        }
+
+        i.icon {
+          margin: 0;
+          width: auto;
+        }
+      }
+    }
+  }
+}
+
+// Display data actions menu
+td.items_table_item.displayDataActions {
+  z-index: 3 !important;
+
+  .myProjects_data_actions_wrapper {
+    display: block;
+  }
+}

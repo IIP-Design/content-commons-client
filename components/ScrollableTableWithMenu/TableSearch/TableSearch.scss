@@ -1,0 +1,41 @@
+@import '../../../styles/colors.scss';
+
+.ui.grid .row.items_tableSearch {
+  padding-bottom: 0;
+}
+
+.tableSearch {
+  @media screen and (max-width: 767px) {
+    &_wrapper {
+      padding-left: 0.25rem !important;
+      padding-right: 0.25rem !important;
+    }
+  }
+
+  &__searchTerm {
+    > input {
+      font-size: 12px;
+      border-color: #5b616b !important;
+    }
+
+    > button.ui.button {
+      padding: 12px !important;
+      background-color: $light-blue;
+      color: #fff;
+      transition: color 0.4s;
+
+      &.basic.clear {
+        -webkit-box-shadow: 0px 0px 0px 1px #5b616b inset;
+        box-shadow: 0px 0px 0px 1px #5b616b inset;
+      }
+
+      > i.icon {
+        font-size: 20px;
+      }
+
+      &:hover {
+        color: $blue;
+      }
+    }
+  }
+}
