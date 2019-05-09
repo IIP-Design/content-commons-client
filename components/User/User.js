@@ -19,7 +19,7 @@ const CURRENT_USER_QUERY = gql`
       permissions
       team {
         id
-        name                
+        name
       }
     }
   }
