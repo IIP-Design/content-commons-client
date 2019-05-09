@@ -65,7 +65,7 @@ const DetailsPopup = props => {
           if ( error ) return <ApolloError error={ error } />;
 
           if ( data.videoProject ) {
-            const { projectType } = data.videoProject;
+            // const { projectType } = data.videoProject;
             return (
               <Popup
                 className="detailsFiles_popup"
@@ -78,7 +78,7 @@ const DetailsPopup = props => {
                     Details
                   </button>
                 ) }
-                content={ renderPopup( projectType, id ) }
+                content={ renderPopup( 'video', id ) } // TEMP UNTIL DATA MODEL EDIT
                 on="click"
                 position={ windowWidth <= 767 ? 'bottom right' : 'bottom center' }
                 hideOnScroll
