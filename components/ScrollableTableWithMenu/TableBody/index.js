@@ -168,6 +168,16 @@ const TableBody = props => {
           );
         }
 
+        if ( videoProjects && !videoProjects.length ) {
+          return (
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell>No projects</Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          );
+        }
+
         const tableData = normalizeData( videoProjects );
 
         return (
