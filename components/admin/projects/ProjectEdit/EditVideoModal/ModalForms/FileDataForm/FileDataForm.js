@@ -17,6 +17,7 @@ import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
+import { EditSingleProjectItemContext } from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 
 import './FileDataForm.scss';
 
@@ -349,7 +350,7 @@ class FileDataForm extends Component {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          height: '100vh'
+          maxHeight: '438px'
         } }
         >
           <Loader active inline="centered" style={ { marginBottom: '1em' } } />
@@ -475,6 +476,8 @@ class FileDataForm extends Component {
     );
   }
 }
+
+FileDataForm.contextType = EditSingleProjectItemContext;
 
 FileDataForm.propTypes = {
   deleteVideoFileMutation: propTypes.func,

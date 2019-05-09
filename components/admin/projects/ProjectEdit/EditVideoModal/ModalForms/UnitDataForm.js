@@ -6,7 +6,6 @@ import {
   Form, Grid, Input, Loader, TextArea
 } from 'semantic-ui-react';
 
-import { EditSingleProjectItemContext } from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import TagTypeahead from 'components/admin/dropdowns/TagTypeahead';
 
 const VIDEO_UNIT_QUERY = gql`
@@ -93,7 +92,7 @@ const VIDEO_UNIT_REMOVE_TAG_MUTATION = gql`
 `;
 
 class UnitDataForm extends Component {
-  state = {}
+  state = { title: '' }
 
   componentDidUpdate = prevProps => {
     const { unit } = this.props.videoUnitQuery;

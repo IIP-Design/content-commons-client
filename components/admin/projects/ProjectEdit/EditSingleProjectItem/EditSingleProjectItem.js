@@ -32,6 +32,9 @@ const VIDEO_UNIT_QUERY = gql`
         id
         displayName
       }
+      files {
+        id
+      }
     }
   }
 `;
@@ -42,21 +45,39 @@ const EditSingleProjectItem = ( {
   itemId, projectId, videoProjectQuery, videoUnitQuery
 } ) => {
   const { project } = videoProjectQuery;
-  const { unit } = videoUnitQuery;
+  const { loading, unit } = videoUnitQuery;
 
+  const [selectedFile, setSelectedFile] = useState( () => {
+    let initialFile = '';
+    if ( !loading && unit ) {
+      initialFile = unit && unit.files && unit.files[0]
+        ? unit.files[0].id
+        : '';
+      return initialFile;
+    }
+    return initialFile;
+  } );
   const [selectedProject, setSelectedProject] = useState( projectId );
   const [selectedUnit, setSelectedUnit] = useState( itemId );
   const [language, setLanguage] = useState( '' );
+
+  const updateFile = id => (
+    setSelectedFile( id )
+  );
+
+  const updateLanguage = lang => {
+    setLanguage( lang );
+  };
 
   const updateProject = id => (
     setSelectedProject( id )
   );
 
-  const updateUnit = async id => {
+  const updateUnit = id => {
     setSelectedUnit( id );
   };
 
-  if ( !unit || !project ) {
+  if ( !project ) {
     return (
       <div style={ {
         display: 'flex',
@@ -72,14 +93,15 @@ const EditSingleProjectItem = ( {
     );
   }
 
-  const lang = unit.language && unit.language.displayName ? unit.language.displayName : '';
-
   return (
     <EditSingleProjectItemContext.Provider
       value={ {
         language,
+        selectedFile,
         selectedProject,
         selectedUnit,
+        updateFile,
+        updateLanguage,
         updateProject,
         updateUnit
       } }
@@ -89,7 +111,7 @@ const EditSingleProjectItem = ( {
         headline={ `${project.projectTitle} ${language ? `in ${language}` : ''}` }
         textDirection="ltr"
       >
-        <EditVideoModal projectId={ selectedProject } unitId={ selectedUnit } />
+        <EditVideoModal />
       </ModalItem>
     </EditSingleProjectItemContext.Provider>
   );

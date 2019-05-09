@@ -14,15 +14,11 @@ import './EditVideoModal.scss';
 
 const EditVideoModal = () => (
   <EditSingleProjectItemContext.Consumer>
-    { ( { selectedProject, selectedUnit, updateUnit } ) => (
+    { ( { selectedUnit } ) => (
       <div className="edit-video-modal">
         <UnitDataForm unitId={ selectedUnit } />
-        <FileSection unitId={ selectedUnit } />
-        <VideoUnitCarousel
-          callback={ updateUnit }
-          projectId={ selectedProject }
-          unitId={ selectedUnit }
-        />
+        <FileSection />
+        <VideoUnitCarousel />
       </div>
     ) }
   </EditSingleProjectItemContext.Consumer>

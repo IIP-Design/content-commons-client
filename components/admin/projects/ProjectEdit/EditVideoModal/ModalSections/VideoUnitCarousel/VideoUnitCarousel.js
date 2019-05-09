@@ -1,9 +1,15 @@
+/**
+ *
+ * VideoUnitCarousel
+ *
+ */
 import React from 'react';
 import gql from 'graphql-tag';
-import propTypes from 'prop-types';
 import { Query } from 'react-apollo';
 
 import Carousel from 'components/admin/projects/ProjectEdit/EditVideoModal/Carousel/Carousel';
+import { EditSingleProjectItemContext } from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
+
 import './VideoUnitCarousel.scss';
 
 const VIDEO_PROJECT_QUERY = gql`
@@ -32,59 +38,55 @@ const VIDEO_PROJECT_QUERY = gql`
   }
 `;
 
-const VideoUnitCarousel = ( { callback, projectId, unitId } ) => (
-  <section className="video-carousel-section">
-    <h3 className="video-carousel-section-header">Videos in this Project</h3>
-    <Query query={ VIDEO_PROJECT_QUERY } variables={ { id: projectId } }>
-      {
-        ( { loading, error, data } ) => {
-          if ( loading || !data ) return <p>Loading...</p>;
-          if ( error ) return <p>{ `Error: ${error.message}` }</p>;
+const VideoUnitCarousel = () => (
+  <EditSingleProjectItemContext.Consumer>
+    { ( { selectedProject, selectedUnit, updateUnit } ) => (
+      <section className="video-carousel-section">
+        <h3 className="video-carousel-section-header">Videos in this Project</h3>
+        <Query query={ VIDEO_PROJECT_QUERY } variables={ { id: selectedProject } }>
+          { ( { loading, error, data } ) => {
+            if ( loading || !data ) return <p>Loading...</p>;
+            if ( error ) return <p>{ `Error: ${error.message}` }</p>;
 
-          const { project } = data;
-          const { units } = project;
+            const { project } = data;
+            const { units } = project;
 
-          return (
-            <Carousel callback={ callback } selectedItem={ unitId }>
-              { units && (
-                units.map( unit => {
-                  const { image } = unit.thumbnails[0];
-                  const selected = unit.id === unitId ? 'selected' : '';
+            return (
+              <Carousel callback={ updateUnit } selectedItem={ selectedUnit }>
+                { units && (
+                  units.map( unit => {
+                    const { image } = unit.thumbnails[0];
+                    const selected = unit.id === selectedUnit ? 'selected' : '';
 
-                  return (
-                    <div
-                      className={ `video-carousel-item ${selected}` }
-                      id={ unit.id }
-                      key={ unit.id }
-                      onClick={ () => callback( unit.id ) }
-                      onKeyUp={ () => callback( unit.id ) }
-                      role="button"
-                      selected={ selected }
-                      tabIndex="0"
-                    >
-                      <img className={ `video-carousel-item-image ${selected}` } src={ image.url } alt={ image.alt } />
-                      <div className="video-carousel-item-heading">
-                        { `${unit.title} | ${unit.language.displayName}` }
+                    return (
+                      <div
+                        className={ `video-carousel-item ${selected}` }
+                        id={ unit.id }
+                        key={ unit.id }
+                        onClick={ () => updateUnit( unit.id ) }
+                        onKeyUp={ () => updateUnit( unit.id ) }
+                        role="button"
+                        selected={ selected }
+                        tabIndex="0"
+                      >
+                        <img className={ `video-carousel-item-image ${selected}` } src={ image.url } alt={ image.alt } />
+                        <div className="video-carousel-item-heading">
+                          { `${unit.title} | ${unit.language.displayName}` }
+                        </div>
+                        <div className="video-carousel-item-meta">
+                          { `${unit.files.length} files` }
+                        </div>
                       </div>
-                      <div className="video-carousel-item-meta">
-                        { `${unit.files.length} files` }
-                      </div>
-                    </div>
-                  );
-                } )
-              ) }
-            </Carousel>
-          );
-        }
-      }
-    </Query>
-  </section>
+                    );
+                  } )
+                ) }
+              </Carousel>
+            );
+          } }
+        </Query>
+      </section>
+    ) }
+  </EditSingleProjectItemContext.Consumer>
 );
-
-VideoUnitCarousel.propTypes = {
-  callback: propTypes.func,
-  projectId: propTypes.string,
-  unitId: propTypes.string
-};
 
 export default VideoUnitCarousel;
