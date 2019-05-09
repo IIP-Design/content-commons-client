@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import ApolloError from 'components/errors/ApolloError';
@@ -172,6 +173,15 @@ class PreviewProjectItem extends React.Component {
 
           const projectItems = this.getProjectItems( units );
           const selectedItem = projectItems[String( selectedLanguage )];
+
+          if ( !selectedItem || !Object.keys( selectedItem ).length ) {
+            return (
+              <p style={ { fontSize: '1rem' } }>
+                This project does not have any videos yet. <Link href={ `/admin/project/video/${id}/edit` }><a>Add videos &raquo;</a></Link>
+              </p>
+            );
+          }
+
           const {
             title,
             descPublic,
