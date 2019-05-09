@@ -1,32 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import debounce from 'lodash/debounce';
 import { Popup } from 'semantic-ui-react';
-import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import ClipboardCopy from 'components/ClipboardCopy';
 import './ShareProjectItem.scss';
 
 const ShareProjectItem = props => {
-  const [windowWidth, setWindowWidth] = useState( 0 );
+  const { id, windowWidth } = props;
   const [sharePopupOpen, setSharePopupOpen] = useState( false );
 
-  useEffect( () => {
-    const handleResize = () => {
-      setWindowWidth( isWindowWidthLessThanOrEqualTo( 400 ) );
-      setSharePopupOpen( false );
-    };
+  const handleResize = debounce( () => {
+    handleClose();
+  }, 50, { leading: false, trailing: true } );
+
+  const handleTableScroll = debounce( () => {
+    handleClose();
+  }, 500, { leading: true, trailing: false } );
+
+  const handleOpen = () => {
+    setSharePopupOpen( true );
     window.addEventListener( 'resize', handleResize );
 
     const itemsTable = document.querySelector( '.items_table' );
-    const handleTableScroll = () => setSharePopupOpen( false );
     itemsTable.addEventListener( 'scroll', handleTableScroll );
+  };
 
-    return () => {
-      window.removeEventListener( 'resize', handleResize );
-      itemsTable.removeEventListener( 'scroll', handleTableScroll );
-    };
-  } );
+  const handleClose = () => {
+    setSharePopupOpen( false );
+    window.removeEventListener( 'resize', handleResize );
 
-  const { id } = props;
+    const itemsTable = document.querySelector( '.items_table' );
+    itemsTable.removeEventListener( 'scroll', handleTableScroll );
+  };
+
   const [projectReviewURL, setProjectReviewURL] = useState( '' );
   useEffect( () => {
     const { protocol, host } = window.location;
@@ -48,18 +54,19 @@ const ShareProjectItem = props => {
       ) }
       content={ <ClipboardCopy label="Direct Link" copyItem={ projectReviewURL } /> }
       on="click"
-      position={ windowWidth <= 400 ? 'bottom right' : 'bottom center' }
+      position={ windowWidth <= 767 ? 'bottom right' : 'bottom center' }
       hideOnScroll
       keepInViewPort={ false }
       open={ sharePopupOpen }
-      onOpen={ () => setSharePopupOpen( true ) }
-      onClose={ () => setSharePopupOpen( false ) }
+      onOpen={ handleOpen }
+      onClose={ handleClose }
     />
   );
 };
 
 ShareProjectItem.propTypes = {
-  id: PropTypes.string
+  id: PropTypes.string,
+  windowWidth: PropTypes.number
 };
 
 export default ShareProjectItem;

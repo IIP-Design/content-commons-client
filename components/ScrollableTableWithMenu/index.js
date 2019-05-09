@@ -6,6 +6,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import sortBy from 'lodash/sortBy';
+import debounce from 'lodash/debounce';
 import { Table, Grid } from 'semantic-ui-react';
 import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import TableHeader from './TableHeader';
@@ -21,17 +22,18 @@ import './ScrollableTableWithMenu.scss';
 class ScrollableTableWithMenu extends React.Component {
   state = {
     tableHeaders: this.props.persistentTableHeaders,
-    selectAllItems: false,
     selectedItems: new Map(),
     displayActionsMenu: false,
     column: null,
     direction: null,
-    windowWidth: '',
+    windowWidth: null,
     searchTerm: '',
     activePage: 1,
     itemsPerPage: 2, // set to low number for dev
     skip: 0
   };
+
+  _selectAllItems = false;
 
   componentDidMount() {
     this.tableMenuSelectionsOnMobile();
@@ -119,13 +121,10 @@ class ScrollableTableWithMenu extends React.Component {
   };
 
   tableMenuSelectionsOnResize = () => {
-    const { persistentTableHeaders, columnMenu } = this.props;
-    const windowWidth = window.innerWidth;
-    const prevWindowWidth = this.state.windowWidth;
-
-    let resizeMenuSelectionsTimer = null;
-    if ( resizeMenuSelectionsTimer !== null ) clearTimeout( resizeMenuSelectionsTimer );
-    resizeMenuSelectionsTimer = setTimeout( () => {
+    ( debounce( () => {
+      const { persistentTableHeaders, columnMenu } = this.props;
+      const windowWidth = window.innerWidth;
+      const prevWindowWidth = this.state.windowWidth;
       if ( prevWindowWidth !== '' && prevWindowWidth <= 767 && !isWindowWidthLessThanOrEqualTo( 767 ) ) {
         return this.setState( { tableHeaders: persistentTableHeaders, windowWidth } );
       }
@@ -133,12 +132,12 @@ class ScrollableTableWithMenu extends React.Component {
         return this.setState( { tableHeaders: [...persistentTableHeaders, ...columnMenu], windowWidth } );
       }
       return this.setState( { windowWidth } );
-    }, 500 );
+    }, 500, { leading: false, trailing: true } ) )();
   }
 
   tableMenuSelectionsOnMobile = () => {
-    const { columnMenu } = this.props;
     if ( isMobile() ) {
+      const { columnMenu } = this.props;
       this.setState( prevState => ( {
         tableHeaders: [...prevState.tableHeaders, ...columnMenu]
       } ) );
@@ -151,21 +150,22 @@ class ScrollableTableWithMenu extends React.Component {
       .from( document.querySelectorAll( '[data-label]' ) )
       .map( item => item.dataset.label );
 
-    this.setState( prevState => {
+    this.setState( () => {
       const newSelectedItems = new Map();
 
       allItems.forEach( item => {
-        if ( prevState.selectAllItems ) {
+        if ( this._selectAllItems ) {
           newSelectedItems.set( item, false );
         } else {
           newSelectedItems.set( item, true );
         }
       } );
 
+      this._selectAllItems = !this._selectAllItems;
+
       return ( {
-        selectAllItems: !prevState.selectAllItems,
         selectedItems: newSelectedItems,
-        displayActionsMenu: !prevState.selectAllItems
+        displayActionsMenu: this._selectAllItems
       } );
     } );
   }

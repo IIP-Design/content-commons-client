@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import debounce from 'lodash/debounce';
 import { Popup } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
-import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import './DetailsPopup.scss';
 
 const CHECK_PROJECT_TYPE_QUERY = gql`
@@ -30,26 +30,32 @@ const renderPopup = ( projectType, id ) => {
 };
 
 const DetailsPopup = props => {
-  const { id } = props;
-  const [windowWidth, setWindowWidth] = useState( 0 );
+  const { id, windowWidth } = props;
   const [detailsPopupOpen, setDetailsPopupOpen] = useState( false );
 
-  useEffect( () => {
-    const handleResize = () => {
-      setWindowWidth( isWindowWidthLessThanOrEqualTo( 400 ) );
-      setDetailsPopupOpen( false );
-    };
+  const handleResize = debounce( () => {
+    handleClose();
+  }, 50, { leading: false, trailing: true } );
+
+  const handleTableScroll = debounce( () => {
+    handleClose();
+  }, 500, { leading: true, trailing: false } );
+
+  const handleOpen = () => {
+    setDetailsPopupOpen( true );
     window.addEventListener( 'resize', handleResize );
 
     const itemsTable = document.querySelector( '.items_table' );
-    const handleTableScroll = () => setDetailsPopupOpen( false );
     itemsTable.addEventListener( 'scroll', handleTableScroll );
+  };
 
-    return () => {
-      window.removeEventListener( 'resize', handleResize );
-      itemsTable.removeEventListener( 'scroll', handleTableScroll );
-    };
-  } );
+  const handleClose = () => {
+    setDetailsPopupOpen( false );
+    window.removeEventListener( 'resize', handleResize );
+
+    const itemsTable = document.querySelector( '.items_table' );
+    itemsTable.removeEventListener( 'scroll', handleTableScroll );
+  };
 
   return (
     <Query query={ CHECK_PROJECT_TYPE_QUERY } variables={ { id: props.id } }>
@@ -74,12 +80,12 @@ const DetailsPopup = props => {
                 ) }
                 content={ renderPopup( projectType, id ) }
                 on="click"
-                position={ windowWidth <= 400 ? 'bottom right' : 'bottom center' }
+                position={ windowWidth <= 767 ? 'bottom right' : 'bottom center' }
                 hideOnScroll
                 keepInViewPort={ false }
                 open={ detailsPopupOpen }
-                onOpen={ () => setDetailsPopupOpen( true ) }
-                onClose={ () => setDetailsPopupOpen( false ) }
+                onOpen={ handleOpen }
+                onClose={ handleClose }
               />
             );
           }
@@ -92,7 +98,8 @@ const DetailsPopup = props => {
 };
 
 DetailsPopup.propTypes = {
-  id: PropTypes.string
+  id: PropTypes.string,
+  windowWidth: PropTypes.number
 };
 
 export default DetailsPopup;

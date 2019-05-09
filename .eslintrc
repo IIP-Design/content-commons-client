@@ -112,7 +112,8 @@
         "specialLink": ["hrefLeft", "hrefRight"],
         "aspects": ["invalidHref"]
       }
-    ]
+    ],
+    "no-use-before-define": ["error", { "variables": false }]
   },
   "settings": {
     "import/resolver": {

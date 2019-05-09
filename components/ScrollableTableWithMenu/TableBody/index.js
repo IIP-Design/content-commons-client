@@ -203,6 +203,7 @@ const TableBody = props => {
                               header={ header }
                               selectedItems={ selectedItems }
                               toggleItemSelection={ toggleItemSelection }
+                              windowWidth={ windowWidth }
                             />
                           </div>
                           { windowWidth && <TableMobileDataToggleIcon /> }
