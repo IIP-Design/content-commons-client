@@ -17,7 +17,6 @@ const TEAM_VIDEO_PROJECTS_COUNT_QUERY = gql`
               { projectTitle_contains: $searchTerm },
               { descPublic_contains: $searchTerm },
               { descInternal_contains: $searchTerm },
-              { projectType_contains: $searchTerm },
               {
                 categories_some: {
                   translations_some: { name_contains: $searchTerm }
