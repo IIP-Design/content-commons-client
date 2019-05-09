@@ -87,6 +87,7 @@ ProjectItemsList.defaultProps = {
 const PROJECT_ITEMS_QUERY = gql`
   query ProjectItems($id: ID!) {
     project: videoProject(id: $id) {
+      id
       units {
         id
         title

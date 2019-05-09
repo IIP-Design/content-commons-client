@@ -1,0 +1,89 @@
+@import "styles/colors.scss";
+
+.edit-video-modal {
+
+  .edit-video__form {
+    min-height: 350px;
+  }
+}
+
+.overlay {
+  margin: 0;
+  position: relative;
+  width: 100%;
+
+  &:hover .overlay-hover {
+    opacity: .8;
+  }
+
+  & .overlay {
+
+    &-image {
+      display: block;
+      height: auto;
+      width: 100%;
+    }
+
+    &-text {
+      color: #FFFFFF;
+      font-size: 1.5em;
+      font-weight: bold;
+      left: 50%;
+      line-height: 1.5em;
+      position: absolute;
+      text-align: center;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+    }
+
+    &-hover {
+      background-color: $grey;
+      height: 100%;
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      transition: .5s ease-in;
+      width: 100%;
+    }
+  }
+}
+
+.tabbed-container {
+
+  margin: .5em 0;
+
+  .ui.secondary.pointing.menu {
+    justify-content: center;
+
+    & .item,
+    & .item:hover {
+      color: $blue;
+      font-size: 1.5em;
+      padding: .5em 1em;
+    }
+
+    & .active,
+    & .active:hover {
+      border-bottom-width: 3px;
+      border-color: $light-blue;
+    }
+  }
+
+  .ui.segment.active.tab {
+    border: none;
+    box-shadow: none;
+  }
+}
+
+.edit-video__form {
+
+  .ui.grid .field > label {
+    font-size: 1.2em;
+    font-weight: normal;
+  }
+
+  i.small.icon {
+    margin-left: 5px;
+  }
+}

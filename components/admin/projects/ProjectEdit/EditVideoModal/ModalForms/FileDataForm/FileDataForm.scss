@@ -1,0 +1,31 @@
+@import "styles/colors.scss";
+
+.file_meta_content {
+  color: $blue;
+  display: block;
+  font-size: .9rem;
+}
+
+.video-file-form {
+  margin: 1rem;
+
+  &-col-1 {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+
+.video-links {
+  @media screen and ( max-width: 991px ) {
+    margin: 1rem 0;
+  }
+}
+
+.delete-file-link {
+  color: $light-blue;
+  cursor: pointer;
+  display: block;
+  font-size: .8rem;
+  margin-top: .3rem;
+}
