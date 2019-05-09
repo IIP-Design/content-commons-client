@@ -18,6 +18,7 @@ const VIDEO_UNIT_QUERY = gql`
       language {
         id
         displayName
+        locale
       }
       tags { id }
       thumbnails {
@@ -263,7 +264,7 @@ class UnitDataForm extends Component {
                 onChange={ this.handleDropdownSelection }
                 id="video-tags"
                 label={ `Additional Keywords ${lang}` }
-                langId={ unit.language.id }
+                locale={ unit.language.locale }
                 value={ tags }
               />
 

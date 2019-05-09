@@ -14,30 +14,33 @@ const TAG_QUERY = gql`
       translations {
         id
         name
-        language { id }
+        language {
+          id
+          locale
+        }
       }
     }
   }
 `;
 
 const TagTypeahead = props => {
-  const getTagsByLang = ( tags, langId ) => (
+  const getTagsByLang = ( tags, locale ) => (
     tags.map( tag => ( {
       id: tag.id,
-      translations: tag.translations.filter( translation => translation.language.id === langId )
+      translations: tag.translations.filter( translation => translation.language.locale === locale )
     } ) )
   );
 
   return (
-    <Query query={ TAG_QUERY } variables={ { langId: props.langId } }>
+    <Query query={ TAG_QUERY } variables={ { langId: props.locale } }>
       { ( { data, loading, error } ) => {
-        if ( error ) return `Error! ${error.message}`;
+        if ( error ) return 'Error!';
         if ( loading || !data ) return <p>Loading...</p>;
 
         let options = [];
 
         if ( data && data.tags ) {
-          const tagsInLang = getTagsByLang( data.tags, props.langId );
+          const tagsInLang = getTagsByLang( data.tags, props.locale );
 
           options = tagsInLang.map( tag => ( {
             key: tag.id,
@@ -86,7 +89,7 @@ TagTypeahead.defaultProps = {
 TagTypeahead.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
-  langId: PropTypes.string
+  locale: PropTypes.string
 };
 
 export default TagTypeahead;
