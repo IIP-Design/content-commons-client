@@ -16,6 +16,7 @@ import Link from 'next/link';
 import ProjectVisibilityDropdown from 'components/admin/dropdowns/ProjectVisibilityDropdown';
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown';
 import UserDropdown from 'components/admin/dropdowns/UserDropdown';
+import TagTypeahead from 'components/admin/dropdowns/TagTypeahead';
 
 import './ProjectDataForm.scss';
 
@@ -141,7 +142,16 @@ const ProjectDataForm = props => {
               </div>
 
               <div className="field">
-                <Form.Field
+
+                <TagTypeahead
+                  // onChange={ this.handleDropdownSelection }
+                  // id="video-tags"
+                  label="Tags"
+                  langid="cjufoyqtq01uh0807iejci3vu"
+                  // langId={ unit.language.id }
+                  // value={ tags }
+                />
+                { /* <Form.Field
                   id="tags"
                   control={ Input }
                   label="Tags"
@@ -149,7 +159,7 @@ const ProjectDataForm = props => {
                   value={ values.tags }
                   onChange={ handleChange }
                   style={ { marginBottom: '1em' } }
-                />
+                /> */ }
                 <p>Enter keywords separated by commas.</p>
               </div>
             </Form.Group>
