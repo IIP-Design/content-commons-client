@@ -61,10 +61,13 @@ class ScrollableTableWithMenu extends React.Component {
   }
 
   handleResetSelections = () => {
-    this.setState( {
-      selectedItems: new Map(),
-      displayActionsMenu: false
-    } );
+    this.setState(
+      {
+        selectedItems: new Map(),
+        displayActionsMenu: false
+      },
+      this.handleResetActivePage
+    );
   }
 
   handleSearchSubmit = ( e, searchTerm ) => {
