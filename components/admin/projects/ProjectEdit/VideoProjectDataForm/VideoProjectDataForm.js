@@ -95,7 +95,6 @@ export default compose(
           variables: {
             data: {
               projectTitle: values.projectTitle.trimEnd(),
-              projectType: 'language',
               descPublic: values.descPublic.trimEnd(),
               descInternal: values.descInternal.trimEnd(),
               visibility: values.visibility,
