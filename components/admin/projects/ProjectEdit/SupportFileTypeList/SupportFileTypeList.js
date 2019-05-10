@@ -4,13 +4,13 @@
  *
  */
 
-import React, { Fragment, useState, useEffect } from 'react';
+import React, {
+  Fragment, useState, useEffect, useContext
+} from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, Button } from 'semantic-ui-react';
 
 import { connect } from 'react-redux';
-import gql from 'graphql-tag';
-import { compose, graphql } from 'react-apollo';
 import { getFileExt } from 'lib/utils';
 
 import IconPopup from 'components/popups/IconPopup/IconPopup';
@@ -18,37 +18,16 @@ import EditSupportFiles from 'components/admin/projects/ProjectEdit/EditSupportF
 import EditSupportFilesContent from 'components/admin/projects/ProjectEdit/EditSupportFilesContent/EditSupportFilesContent';
 import SupportItem from 'components/admin/projects/ProjectEdit/SupportItem/SupportItem';
 
-const VIDEO_PROJECT_QUERY = gql`
-  query VIDEO_PROJECT_QUERY($id: ID!) {
-    video: videoProject(id: $id) { 
-      supportFiles {
-        id
-        filename
-        filetype
-        filesize
-        language {
-          id
-          displayName
-        }
-      } 
-      thumbnails {
-        id
-        filename
-        filetype
-        filesize
-        language {
-          id
-          displayName
-        }
-      } 
-    }
-  }
-`;
+import { ProjectContext } from 'pages/admin/project';
 
 const SupportFileTypeList = props => {
   const [isEditing, setIsEditing] = useState( false );
   const [supFiles, setSupFiles] = useState( [] );
   const [hasImages, setHasImages] = useState( false );
+
+  const data = useContext( ProjectContext );
+  const supportFiles = data.supportFiles || [];
+  const thumbnails = data.thumbnails || [];
 
   const { config } = props;
 
@@ -60,15 +39,9 @@ const SupportFileTypeList = props => {
   };
 
   const getFilesForExisitingProject = () => {
-    const { project } = props;
     const { extensions } = config;
-
-    if ( project && project.video ) {
-      const { supportFiles, thumbnails } = project.video;
-      const files = [...supportFiles, ...thumbnails];
-      return files.filter( file => extensions.includes( getFileExt( file.filename ) ) );
-    }
-    return []; // reset to empty array in the event the query throws an error
+    const files = [...supportFiles, ...thumbnails];
+    return files.filter( file => extensions.includes( getFileExt( file.filename ) ) );
   };
 
   useEffect( () => {
@@ -184,7 +157,6 @@ const SupportFileTypeList = props => {
 
 SupportFileTypeList.propTypes = {
   config: PropTypes.object.isRequired,
-  project: PropTypes.object,
   projectId: PropTypes.string,
   /* eslint-disable-next-line react/no-unused-prop-types */
   fileType: PropTypes.string,
@@ -195,15 +167,5 @@ const mapStateToProps = state => ( {
   files: state.files
 } );
 
-export default compose(
-  connect( mapStateToProps ),
-  graphql( VIDEO_PROJECT_QUERY, {
-    name: 'project',
-    skip: props => !props.projectId,
-    options: props => ( {
-      variables: {
-        id: props.projectId
-      },
-    } )
-  } )
-)( SupportFileTypeList );
+
+export default connect( mapStateToProps )( SupportFileTypeList );

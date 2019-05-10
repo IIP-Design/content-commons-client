@@ -11,24 +11,6 @@ import ProjectDataForm from 'components/admin/projects/ProjectEdit/ProjectDataFo
 import { withFormik } from 'formik';
 import { validationSchema } from './validationSchema';
 
-const VIDEO_PROJECT_FORM_QUERY = gql`
-  query VIDEO_PROJECT_FORM_QUERY( $id: ID! ) {
-    videoProject( id: $id ) {
-      projectTitle
-      descPublic
-      descInternal 
-      status
-      visibility
-      categories {
-        id
-      }
-      tags {
-        id
-      }
-    }
-}
-`;
-
 const CREATE_VIDEO_PROJECT_MUTATION = gql`
   mutation CREATE_VIDEO_PROJECT_MUTATION( $data: VideoProjectCreateInput! ) {
     createVideoProject( data: $data ) {
@@ -38,41 +20,36 @@ const CREATE_VIDEO_PROJECT_MUTATION = gql`
 }
 `;
 
+
 // what happens if there is a project id but it returns an error?
 export default compose(
   withRouter,
   graphql( CURRENT_USER_QUERY, { name: 'user' } ), // only run on create
-  graphql( VIDEO_PROJECT_FORM_QUERY, {
-    name: 'project',
-    skip: props => !props.id,
-    options: props => ( {
-      variables: {
-        id: props.id
-      },
-    } )
-  } ),
   graphql( CREATE_VIDEO_PROJECT_MUTATION, { name: 'createVideoProject' } ),
 
   // use formik to make validation easier
   withFormik( {
     // set initial form values, either from current project or from default values if new project
+    // data param coming from context in pages/admin/project, passed in as prop
     mapPropsToValues: props => {
-      const { user: { authenticatedUser }, project } = props;
-      const videoProject = ( project && project.videoProject ) ? project.videoProject : {};
+      const { user: { authenticatedUser }, data } = props;
+      const categories = data.categories
+        ? data.categories.map( category => category.id )
+        : [];
 
-      const categories = videoProject.categories
-        ? videoProject.categories.map( category => category.id )
+      const tags = data.tags
+        ? data.tags.map( tag => tag.id )
         : [];
 
       return {
-        author: videoProject.author || authenticatedUser.id,
-        team: videoProject.team ? videoProject.team.name : authenticatedUser.team.name,
-        projectTitle: videoProject.projectTitle || '',
-        visibility: videoProject.visibility || 'PUBLIC',
+        author: data.author || authenticatedUser.id,
+        team: data.team ? data.team.name : authenticatedUser.team.name,
+        projectTitle: data.projectTitle || '',
+        visibility: data.visibility || 'PUBLIC',
         categories,
-        tags: videoProject.tags || [],
-        descPublic: videoProject.descPublic || '',
-        descInternal: videoProject.descInternal || '',
+        tags,
+        descPublic: data.descPublic || '',
+        descInternal: data.descInternal || '',
         termsConditions: false
       };
     },
@@ -112,7 +89,7 @@ export default compose(
                 connect: values.categories.map( category => ( { id: category } ) )
               },
               tags: {
-                connect: values.tags.map( tag => ( { id: tag.id } ) )
+                connect: values.tags.map( tag => ( { id: tag } ) )
               }
             }
           }

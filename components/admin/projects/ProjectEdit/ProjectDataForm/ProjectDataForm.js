@@ -142,24 +142,15 @@ const ProjectDataForm = props => {
               </div>
 
               <div className="field">
-
                 <TagTypeahead
-                  // onChange={ this.handleDropdownSelection }
-                  // id="video-tags"
-                  label="Tags"
-                  langid="cjufoyqtq01uh0807iejci3vu"
-                  // langId={ unit.language.id }
-                  // value={ tags }
-                />
-                { /* <Form.Field
                   id="tags"
-                  control={ Input }
                   label="Tags"
                   name="tags"
+                  locale="en-us"
                   value={ values.tags }
-                  onChange={ handleChange }
+                  onChange={ handleOnChange }
                   style={ { marginBottom: '1em' } }
-                /> */ }
+                />
                 <p>Enter keywords separated by commas.</p>
               </div>
             </Form.Group>

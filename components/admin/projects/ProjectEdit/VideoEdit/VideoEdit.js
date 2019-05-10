@@ -16,7 +16,6 @@ import { uploadToS3, uploadToVimeo } from 'lib/upload';
 import mime from 'mime-types';
 import { buildUpdateVideoProjectData } from 'lib/graphql/video';
 
-import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import Notification from 'components/Notification/Notification';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
@@ -24,13 +23,14 @@ import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import PreviewProject from 'components/admin/PreviewProject/PreviewProject';
 import PreviewProjectContent from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 import ProjectSupportFiles from 'components/admin/ProjectSupportFiles/ProjectSupportFiles';
-// import ProjectItemsList from 'components/admin/projects/ProjectEdit/ProjectItemsList/ProjectItemsList';
+import ProjectItemsList from 'components/admin/projects/ProjectEdit/ProjectItemsList/ProjectItemsList';
 
 // import EditSingleProjectItem from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import FormInstructions from 'components/admin/projects/ProjectEdit/FormInstructions/FormInstructions';
 import VideoProjectDataForm from 'components/admin/projects/ProjectEdit/VideoProjectDataForm/VideoProjectDataForm';
 import UploadSuccessMsg from 'components/admin/projects/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
 // import VideoItem from 'components/admin/projects/ProjectEdit/VideoItem/VideoItem';
+import { ProjectContext } from 'pages/admin/project';
 import FileUploadProgressBar from '../FileUploadProgressBar/FileUploadProgressBar';
 
 import './VideoEdit.scss';
@@ -128,10 +128,6 @@ class VideoEdit extends React.PureComponent {
   }
 
   componentDidMount = () => {
-    // console.log( 'componentDidMount' );
-    // console.log( `id ${this.props.id}` );
-    // console.dir( this.props.fileUpload.length );
-
     this._isMounted = true;
   }
 
@@ -160,18 +156,6 @@ class VideoEdit extends React.PureComponent {
 
     return res;
   };
-
-  getTags = () => {
-    const { tags } = this.state.formData;
-    const tagsArray = ( tags && tags.length > 0 && !Array.isArray( tags ) ) ? tags.split( /\s?[,;]\s?/ ) : tags;
-
-    if ( tagsArray && Array.isArray( tagsArray ) ) {
-      return tagsArray
-        .map( tag => tag.trim() )
-        .filter( tag => /\S/.test( tag ) );
-    }
-    return [];
-  }
 
   displayConfirmDelete = () => {
     this.setState( { deleteConfirmOpen: true } );
@@ -385,100 +369,88 @@ class VideoEdit extends React.PureComponent {
     };
 
     return (
-      <div className="edit-project">
-        { /* action buttons at top need to be separate component */ }
-        <div className="edit-project__header">
-          <ProjectHeader icon="video camera" text="Project Details">
-            <ButtonAddFiles
-              className="edit-project__btn--final-review"
-              onChange={ this.handleUploadTest }
-              multiple
-            >Upload Files
-            </ButtonAddFiles>
+      <ProjectContext.Consumer>
+        { context => (
+          <div className="edit-project">
+            { /* action buttons at top need to be separate component */ }
+            <div className="edit-project__header">
+              <ProjectHeader icon="video camera" text="Project Details">
 
-            <Button
-              className="ui button primary"
-              content="File Info"
-              basic
-              onClick={ this.getFileInfo }
-            />
+                <Button
+                  className="edit-project__btn--delete"
+                  content="Delete Project"
+                  basic
+                  onClick={ this.displayConfirmDelete }
+                  disabled={ !projectId }
+                />
 
-            <Button
-              className="edit-project__btn--delete"
-              content="Delete Project"
-              basic
-              onClick={ this.displayConfirmDelete }
-              disabled={ !projectId }
-            />
-
-            <Confirm
-              className="delete"
-              open={ deleteConfirmOpen }
-              content={ (
-                <ConfirmModalContent
-                  className="delete_confirm delete_confirm--video"
-                  headline="Are you sure you want to delete this video project?"
-                >
-                  <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
-                </ConfirmModalContent>
+                <Confirm
+                  className="delete"
+                  open={ deleteConfirmOpen }
+                  content={ (
+                    <ConfirmModalContent
+                      className="delete_confirm delete_confirm--video"
+                      headline="Are you sure you want to delete this video project?"
+                    >
+                      <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
+                    </ConfirmModalContent>
               ) }
-              onCancel={ this.handleDeleteCancel }
-              onConfirm={ this.handleDeleteConfirm }
-              cancelButton="No, take me back"
-              confirmButton="Yes, delete forever"
-            />
+                  onCancel={ this.handleDeleteCancel }
+                  onConfirm={ this.handleDeleteConfirm }
+                  cancelButton="No, take me back"
+                  confirmButton="Yes, delete forever"
+                />
 
-            <PreviewProject
-              triggerProps={ {
-                className: 'edit-project__btn--preview',
-                content: 'Preview Project',
-                basic: true,
-                disabled: !projectId
-              } }
+                <PreviewProject
+                  triggerProps={ {
+                    className: 'edit-project__btn--preview',
+                    content: 'Preview Project',
+                    basic: true,
+                    disabled: !projectId
+                  } }
               // contentProps={ { id } }
-              modalTrigger={ Button }
-              modalContent={ PreviewProjectContent }
-              options={ { closeIcon: true } }
-            />
+                  modalTrigger={ Button }
+                  modalContent={ PreviewProjectContent }
+                  options={ { closeIcon: true } }
+                />
 
-            { projectId
+                { projectId
               && (
                 <Button
                   className="edit-project__btn--save-draft"
                   content="Save Draft"
                   basic
                   onClick={ this.handleSaveDraft }
-                  // disabled={ !projectId }
-                  // disabled={ !isUploadFinished || !hasUnsavedData || !hasRequiredData }
+                  disabled={ !projectId }
                 />
               ) }
-            <Button
-              className="edit-project__btn--final-review"
-              content="Final Review"
-              onClick={ this.handleFinalReview }
-              disabled={ !projectId }
-            />
-          </ProjectHeader>
-        </div>
+                <Button
+                  className="edit-project__btn--final-review"
+                  content="Final Review"
+                  onClick={ this.handleFinalReview }
+                  disabled={ !projectId }
+                />
+              </ProjectHeader>
+            </div>
 
-        { /* status notification need to be separate component */ }
-        <div className="edit-project__status alpha">
-          { !projectId && <FormInstructions /> }
-          { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
+            { /* status notification need to be separate component */ }
+            <div className="edit-project__status alpha">
+              { !projectId && <FormInstructions /> }
+              { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
 
-          <Notification
-            el="p"
-            customStyles={ {
-              position: 'absolute',
-              top: '10.75em',
-              left: '50%',
-              transform: 'translateX(-50%)'
-            } }
-            show={ showNotification }
-            msg={ notificationMessage }
-          />
+              <Notification
+                el="p"
+                customStyles={ {
+                  position: 'absolute',
+                  top: '10.75em',
+                  left: '50%',
+                  transform: 'translateX(-50%)'
+                } }
+                show={ showNotification }
+                msg={ notificationMessage }
+              />
 
-          { isUploadInProgress
+              { isUploadInProgress
             && (
             <FileUploadProgressBar
               total={ filesTotalSize }
@@ -487,27 +459,25 @@ class VideoEdit extends React.PureComponent {
               filesToUploadCount={ filesToUploadCount }
             />
             ) }
-        </div>
+            </div>
 
-        <div className="edit-project__content" style={ contentStyle }>
-          <VideoProjectDataForm
-            id={ projectId }
-            updateNotification={ this.updateNotification }
-            handleUpload={ this.handleUpload }
-            // id="cjuk9tkli025a0707ez4lvaid"
-            // handleSubmit={ this.handleSubmit }
-            // handleChange={ this.handleChange }
-            maxCategories={ this.MAX_CATEGORY_COUNT }
+            <div className="edit-project__content" style={ contentStyle }>
+              <VideoProjectDataForm
+                id={ projectId }
+                updateNotification={ this.updateNotification }
+                handleUpload={ this.handleUpload }
+                // handleChange={ this.handleChange }
+                maxCategories={ this.MAX_CATEGORY_COUNT }
+                data={ context }
+              />
+            </div>
 
-          />
-        </div>
+            { /* upload progress notification - sep component -- created shared component with save notification */ }
+            <div className="edit-project__status beta">
+              { !projectId && <FormInstructions /> }
+              { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
 
-        { /* upload progress notification - sep component -- created shared component with save notification */ }
-        <div className="edit-project__status beta">
-          { !projectId && <FormInstructions /> }
-          { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
-
-          { isUploadInProgress
+              { isUploadInProgress
             && (
             <FileUploadProgressBar
               total={ filesTotalSize }
@@ -516,34 +486,34 @@ class VideoEdit extends React.PureComponent {
               filesToUploadCount={ filesToUploadCount }
             />
             ) }
-        </div>
+            </div>
 
-        { /* support files */ }
-        <div className="edit-project__support-files">
-          <UploadContext.Provider value={ isUploadInProgress }>
-            <ProjectSupportFiles
-              heading="Support Files"
-              projectId={ projectId }
-              config={ supportFilesConfig }
-            />
-          </UploadContext.Provider>
-        </div>
+            { /* support files */ }
+            <div className="edit-project__support-files">
+              <UploadContext.Provider value={ isUploadInProgress }>
+                <ProjectSupportFiles
+                  heading="Support Files"
+                  projectId={ projectId }
+                  config={ supportFilesConfig }
+                />
+              </UploadContext.Provider>
+            </div>
 
-        <div className="edit-project__items">
-          { /* project thumbnails */ }
-          { /* <ProjectItemsList
+            <div className="edit-project__items">
+              { /* project thumbnails */ }
+              { /* <ProjectItemsList
             listEl="ul"
-            projectId={ this.props.id }
+            projectId={ projectId }
             headline="Videos in Project"
-            hasSubmittedData={ hasSubmittedData }
+           // hasSubmittedData={ hasSubmittedData }
             projectType="video"
             displayItemInModal
-            modalTrigger={ VideoItem }
-            modalContent={ EditSingleProjectItem }
+            // modalTrigger={ VideoItem }
+            // modalContent={ EditSingleProjectItem }
           /> */ }
 
-          { /* Add more files button */ }
-          { projectId
+              { /* Add more files button */ }
+              { projectId
             && (
               <div style={ { marginTop: '3rem' } }>
                 <Button
@@ -565,8 +535,10 @@ class VideoEdit extends React.PureComponent {
                 </VisuallyHidden>
               </div>
             ) }
-        </div>
-      </div>
+            </div>
+          </div>
+        ) }
+      </ProjectContext.Consumer>
     );
   }
 }

@@ -3,19 +3,41 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import trim from 'lodash/trim';
+import { VIDEO_PROJECT_QUERY } from 'lib/graphql/queries/VideoProject';
 
 // using dynamic import so that components load when they are needed, or rendered
 const VideoEdit = dynamic( () => import( 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit' ) );
 const VideoReview = dynamic( () => import( 'components/admin/projects/ProjectReview/VideoReview' ) );
 
+export const ProjectContext = React.createContext();
+
 const CONTENT_TYPES = ['video'];
+
+/**
+ * Verify that valid query params are present,
+ * to execute a project query
+ * @param {object} query { content, action }
+ */
+const isQueryValid = query => {
+  if ( !query
+    || !query.id
+    || !query.content
+    || !CONTENT_TYPES.includes( trim( query.content ) ) ) {
+    return false;
+  }
+
+  return true;
+};
+
 
 const ProjectPage = props => {
   const { query: { id, content, action }, router } = props;
 
   const loadEditComponent = () => {
     if ( content === 'video' ) {
-      return <VideoEdit id={ id } />;
+      return (
+        <VideoEdit id={ id } />
+      );
     }
   };
 
@@ -27,6 +49,19 @@ const ProjectPage = props => {
 
   const redirectToDashboard = () => {
     router.push( '/admin/dashboard' );
+  };
+
+
+  const getProjectData = () => {
+    const { videoProject } = props;
+
+    switch ( content ) {
+      case 'video':
+        return videoProject || {};
+
+      default:
+        return {};
+    }
   };
 
   /**
@@ -44,20 +79,43 @@ const ProjectPage = props => {
     return true;
   };
 
+
   if ( !isPathValid( props.query ) ) {
     redirectToDashboard();
   }
 
-  if ( action === 'edit' ) {
-    return loadEditComponent();
+  return (
+    <ProjectContext.Provider value={ getProjectData( props ) }>
+      { action === 'edit'
+        ? loadEditComponent()
+        : loadReviewComponent()
+      }
+    </ProjectContext.Provider>
+  );
+};
+
+
+ProjectPage.getInitialProps = async props => {
+  if ( !isQueryValid( props.query ) ) {
+    return {};
   }
 
-  return loadReviewComponent();
+  // This will check for other content type queries go forward
+  const query = VIDEO_PROJECT_QUERY;
+
+  const { data } = await props.apolloClient.query( {
+    query,
+    variables: { id: props.query.id }
+  } );
+
+  return data;
 };
 
 
 ProjectPage.propTypes = {
-  query: PropTypes.object
+  query: PropTypes.object,
+  router: PropTypes.object,
+  videoProject: PropTypes.object
 };
 
 
