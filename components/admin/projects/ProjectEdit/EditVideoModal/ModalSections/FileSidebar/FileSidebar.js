@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
@@ -31,53 +31,53 @@ const VIDEO_UNIT_QUERY = gql`
   } 
 `;
 
-const FileSidebar = () => (
-  <EditSingleProjectItemContext.Consumer>
-    { ( { selectedFile, selectedUnit, updateFile } ) => (
-      <Query query={ VIDEO_UNIT_QUERY } variables={ { id: selectedUnit } }>
-        { ( { loading, error, data } ) => {
-          if ( loading || !data ) return <p>Loading...</p>;
-          if ( error ) return <p>{ `Error: ${error.message}` }</p>;
+const FileSidebar = () => {
+  const { selectedFile, selectedUnit, updateFile } = useContext( EditSingleProjectItemContext );
 
-          const thumbnail = data.videoUnit && data.videoUnit.thumbnails ? data.videoUnit.thumbnails[0] : {};
-          const image = thumbnail && thumbnail.image && thumbnail.image.url ? thumbnail.image.url : '';
-          const files = data.videoUnit && data.videoUnit.files ? data.videoUnit.files : [];
+  return (
+    <Query query={ VIDEO_UNIT_QUERY } variables={ { id: selectedUnit } }>
+      { ( { loading, error, data } ) => {
+        if ( loading || !data ) return <p>Loading...</p>;
+        if ( error ) return <p>{ `Error: ${error.message}` }</p>;
 
-          return (
-            <div className="edit-video-sidebar">
-              <Carousel callback={ updateFile } legend={ false } selectedItem={ selectedFile } vertical>
-                { files && (
-                  files.map( file => {
-                    const fileUse = file.use && file.use.name ? file.use.name : '';
-                    const captionStatus = file.videoBurnedInStatus ? `| ${file.videoBurnedInStatus}` : '';
-                    return (
-                      <div
-                        className="edit-video-sidebar-item"
-                        id={ file.id }
-                        key={ file.id }
-                        onClick={ () => updateFile( file.id ) }
-                        onKeyUp={ () => updateFile( file.id ) }
-                        role="button"
-                        tabIndex="0"
-                      >
-                        <img
-                          alt=""
-                          className={ selectedFile === file.id ? 'edit-video-sidebar-image selected' : 'edit-video-sidebar-image' }
-                          src={ image }
-                        />
-                        <p>{ `${titleCase( file.quality )} ${titleCase( captionStatus )}` }</p>
-                        <p>{ titleCase( fileUse ) }</p>
-                      </div>
-                    );
-                  } )
-                ) }
-              </Carousel>
-            </div>
-          );
-        } }
-      </Query>
-    ) }
-  </EditSingleProjectItemContext.Consumer>
-);
+        const thumbnail = data.videoUnit && data.videoUnit.thumbnails ? data.videoUnit.thumbnails[0] : {};
+        const image = thumbnail && thumbnail.image && thumbnail.image.url ? thumbnail.image.url : '';
+        const files = data.videoUnit && data.videoUnit.files ? data.videoUnit.files : [];
+
+        return (
+          <div className="edit-video-sidebar">
+            <Carousel callback={ updateFile } legend={ false } selectedItem={ selectedFile } vertical>
+              { files && (
+                files.map( file => {
+                  const fileUse = file.use && file.use.name ? file.use.name : '';
+                  const captionStatus = file.videoBurnedInStatus ? `| ${file.videoBurnedInStatus}` : '';
+                  return (
+                    <div
+                      className="edit-video-sidebar-item"
+                      id={ file.id }
+                      key={ file.id }
+                      onClick={ () => updateFile( file.id ) }
+                      onKeyUp={ () => updateFile( file.id ) }
+                      role="button"
+                      tabIndex="0"
+                    >
+                      <img
+                        alt=""
+                        className={ selectedFile === file.id ? 'edit-video-sidebar-image selected' : 'edit-video-sidebar-image' }
+                        src={ image }
+                      />
+                      <p>{ `${titleCase( file.quality )} ${titleCase( captionStatus )}` }</p>
+                      <p>{ titleCase( fileUse ) }</p>
+                    </div>
+                  );
+                } )
+              ) }
+            </Carousel>
+          </div>
+        );
+      } }
+    </Query>
+  );
+};
 
 export default FileSidebar;

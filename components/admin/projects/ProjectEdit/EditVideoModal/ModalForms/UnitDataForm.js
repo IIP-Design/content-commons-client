@@ -97,7 +97,7 @@ class UnitDataForm extends Component {
   componentDidUpdate = prevProps => {
     const { unit } = this.props.videoUnitQuery;
 
-    if ( unit !== prevProps.videoUnitQuery.unit ) {
+    if ( unit && unit !== prevProps.videoUnitQuery.unit ) {
       const imageUrl = unit.thumbnails
         && unit.thumbnails[0]
         && unit.thumbnails[0].image

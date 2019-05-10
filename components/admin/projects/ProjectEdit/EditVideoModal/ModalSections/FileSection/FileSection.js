@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { Loader } from 'semantic-ui-react';
@@ -24,50 +24,50 @@ const VIDEO_UNIT_QUERY = gql`
   } 
 `;
 
-const FileSection = () => (
-  <EditSingleProjectItemContext.Consumer>
-    { ( {
-      language, selectedFile, selectedUnit, updateLanguage, updateFile
-    } ) => (
-      <Query query={ VIDEO_UNIT_QUERY } variables={ { id: selectedUnit } }>
-        { ( { loading, error, data } ) => {
-          if ( error ) return 'Error!';
-          if ( loading || !data ) {
-            return (
-              <div style={ {
-                alignItems: 'center',
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100vh',
-                justifyContent: 'center'
-              } }
-              >
-                <Loader active inline="centered" style={ { marginBottom: '1em' } } />
-                <p>Loading the file data...</p>
-              </div>
-            );
-          }
+const FileSection = () => {
+  const {
+    language, selectedFile, selectedUnit, updateFile, updateLanguage
+  } = useContext( EditSingleProjectItemContext );
 
-          const { unit } = data;
-          const lang = unit && unit.language && unit.language.displayName ? unit.language.displayName : '';
-          // const initialFile = unit && unit.files && unit.files[0] ? unit.files[0].id : '';
-
-          updateLanguage( lang );
-          // updateFile( initialFile );
-
+  return (
+    <Query query={ VIDEO_UNIT_QUERY } variables={ { id: selectedUnit } }>
+      { ( { loading, error, data } ) => {
+        if ( error ) return 'Error!';
+        if ( loading || !data ) {
           return (
-            <section className="edit-file">
-              <h4>{ `File Data ${language ? `in ${language}` : ''}` }</h4>
-              <div className="edit-file-form-container">
-                <FileSidebar />
-                <FileDataForm id={ selectedFile } />
-              </div>
-            </section>
+            <div style={ {
+              alignItems: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100vh',
+              justifyContent: 'center'
+            } }
+            >
+              <Loader active inline="centered" style={ { marginBottom: '1em' } } />
+              <p>Loading the file data...</p>
+            </div>
           );
-        } }
-      </Query>
-    ) }
-  </EditSingleProjectItemContext.Consumer>
-);
+        }
+
+        const { unit } = data;
+        const lang = unit && unit.language && unit.language.displayName ? unit.language.displayName : '';
+        if ( lang && !language ) updateLanguage( lang );
+
+        const files = unit && unit.files ? unit.files : [];
+        if ( files[0] && files[0].id && !selectedFile ) updateFile( files[0].id );
+
+        return (
+          <section className="edit-file">
+            <h4>{ `File Data ${language ? `in ${language}` : ''}` }</h4>
+            <div className="edit-file-form-container">
+              <FileSidebar />
+              <FileDataForm id={ selectedFile } />
+            </div>
+          </section>
+        );
+      } }
+    </Query>
+  );
+};
 
 export default FileSection;

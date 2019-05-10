@@ -4,7 +4,6 @@
  *
  */
 import React, { Component } from 'react';
-import gql from 'graphql-tag';
 import propTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
 import {
@@ -17,7 +16,6 @@ import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
-import { EditSingleProjectItemContext } from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 
 import {
   VIDEO_FILE_QUERY, VIDEO_FILE_LANG_MUTATION, VIDEO_FILE_SUBTITLES_MUTATION,
@@ -329,8 +327,6 @@ class FileDataForm extends Component {
     );
   }
 }
-
-FileDataForm.contextType = EditSingleProjectItemContext;
 
 FileDataForm.propTypes = {
   deleteVideoFileMutation: propTypes.func,

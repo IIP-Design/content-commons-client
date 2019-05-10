@@ -5,7 +5,7 @@
  */
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import propTypes from 'prop-types';
 
 import { Loader } from 'semantic-ui-react';
@@ -24,39 +24,12 @@ const VIDEO_PROJECT_QUERY = gql`
   }
 `;
 
-const VIDEO_UNIT_QUERY = gql`
-  query VIDEO_UNIT_QUERY( $id: ID! ) {
-    unit: videoUnit( id: $id ) {
-      id
-      language {
-        id
-        displayName
-      }
-      files {
-        id
-      }
-    }
-  }
-`;
-
 export const EditSingleProjectItemContext = React.createContext();
 
-const EditSingleProjectItem = ( {
-  itemId, projectId, videoProjectQuery, videoUnitQuery
-} ) => {
+const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
   const { project } = videoProjectQuery;
-  const { loading, unit } = videoUnitQuery;
 
-  const [selectedFile, setSelectedFile] = useState( () => {
-    let initialFile = '';
-    if ( !loading && unit ) {
-      initialFile = unit && unit.files && unit.files[0]
-        ? unit.files[0].id
-        : '';
-      return initialFile;
-    }
-    return initialFile;
-  } );
+  const [selectedFile, setSelectedFile] = useState( '' );
   const [selectedProject, setSelectedProject] = useState( projectId );
   const [selectedUnit, setSelectedUnit] = useState( itemId );
   const [language, setLanguage] = useState( '' );
@@ -74,6 +47,8 @@ const EditSingleProjectItem = ( {
   );
 
   const updateUnit = id => {
+    setLanguage( '' );
+    setSelectedFile( '' );
     setSelectedUnit( id );
   };
 
@@ -120,21 +95,12 @@ const EditSingleProjectItem = ( {
 EditSingleProjectItem.propTypes = {
   itemId: propTypes.string,
   projectId: propTypes.string,
-  videoProjectQuery: propTypes.object,
-  videoUnitQuery: propTypes.object
+  videoProjectQuery: propTypes.object
 };
 
-export default compose(
-  graphql( VIDEO_PROJECT_QUERY, {
-    name: 'videoProjectQuery',
-    options: props => ( {
-      variables: { id: props.projectId },
-    } )
-  } ),
-  graphql( VIDEO_UNIT_QUERY, {
-    name: 'videoUnitQuery',
-    options: props => ( {
-      variables: { id: props.itemId },
-    } )
+export default graphql( VIDEO_PROJECT_QUERY, {
+  name: 'videoProjectQuery',
+  options: props => ( {
+    variables: { id: props.projectId },
   } )
-)( EditSingleProjectItem );
+} )( EditSingleProjectItem );
