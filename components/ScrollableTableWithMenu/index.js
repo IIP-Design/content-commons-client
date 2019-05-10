@@ -42,15 +42,18 @@ class ScrollableTableWithMenu extends React.Component {
     window.addEventListener( 'resize', this.tableMenuSelectionsOnResize );
   }
 
+  componentDidUpdate = ( prevProps, prevState ) => {
+    if ( prevState.itemsPerPage !== this.state.itemsPerPage ) {
+      this.handleResetActivePage();
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener( 'resize', this.tableMenuSelectionsOnResize );
   }
 
   handleItemsPerPageChange = ( e, value ) => {
-    this.setState(
-      { itemsPerPage: value },
-      this.handleResetActivePage
-    );
+    this.setState( { itemsPerPage: value } );
   };
 
   handlePageChange = ( e, { activePage } ) => {
