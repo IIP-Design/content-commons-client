@@ -21,10 +21,10 @@ const VideoDetailsPopup = dynamic( () => import( './VideoDetailsPopup' ) );
 const ImageDetailsPopup = dynamic( () => import( './ImageDetailsPopup' ) );
 
 const renderPopup = ( projectType, id ) => {
-  if ( projectType === 'video' ) {
+  if ( projectType === 'VideoProject' ) {
     return <VideoDetailsPopup id={ id } />;
   }
-  if ( projectType === 'image' ) {
+  if ( projectType === 'ImageProject' ) {
     return <ImageDetailsPopup id={ id } />;
   }
 };
@@ -34,10 +34,12 @@ const DetailsPopup = props => {
   const [detailsPopupOpen, setDetailsPopupOpen] = useState( false );
 
   const handleResize = debounce( () => {
+    /* eslint-disable no-use-before-define */
     handleClose();
-  }, 50, { leading: false, trailing: true } );
+  }, 500, { leading: true, trailing: false } );
 
   const handleTableScroll = debounce( () => {
+    /* eslint-disable no-use-before-define */
     handleClose();
   }, 500, { leading: true, trailing: false } );
 
@@ -65,7 +67,7 @@ const DetailsPopup = props => {
           if ( error ) return <ApolloError error={ error } />;
 
           if ( data.videoProject ) {
-            // const { projectType } = data.videoProject;
+            const { __typename } = data.videoProject;
             return (
               <Popup
                 className="detailsFiles_popup"
@@ -78,7 +80,7 @@ const DetailsPopup = props => {
                     Details
                   </button>
                 ) }
-                content={ renderPopup( 'video', id ) } // TEMP UNTIL DATA MODEL EDIT
+                content={ renderPopup( __typename, id ) }
                 on="click"
                 position={ windowWidth <= 767 ? 'bottom right' : 'bottom center' }
                 hideOnScroll

@@ -35,7 +35,10 @@ class ScrollableTableWithMenu extends React.Component {
 
   _selectAllItems = false;
 
+  _breakpoint = 767;
+
   componentDidMount() {
+    this.setState( { windowWidth: window.innerWidth } );
     this.tableMenuSelectionsOnMobile();
     window.addEventListener( 'resize', this.tableMenuSelectionsOnResize );
   }
@@ -125,10 +128,10 @@ class ScrollableTableWithMenu extends React.Component {
       const { persistentTableHeaders, columnMenu } = this.props;
       const windowWidth = window.innerWidth;
       const prevWindowWidth = this.state.windowWidth;
-      if ( prevWindowWidth !== '' && prevWindowWidth <= 767 && !isWindowWidthLessThanOrEqualTo( 767 ) ) {
+      if ( prevWindowWidth !== '' && prevWindowWidth <= this._breakpoint && !isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
         return this.setState( { tableHeaders: persistentTableHeaders, windowWidth } );
       }
-      if ( isWindowWidthLessThanOrEqualTo( 767 ) ) {
+      if ( isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
         return this.setState( { tableHeaders: [...persistentTableHeaders, ...columnMenu], windowWidth } );
       }
       return this.setState( { windowWidth } );

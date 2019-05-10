@@ -7,13 +7,23 @@ import './ShareProjectItem.scss';
 
 const ShareProjectItem = props => {
   const { id, windowWidth } = props;
+
+  const [projectReviewURL, setProjectReviewURL] = useState( '' );
+  useEffect( () => {
+    const { protocol, host } = window.location;
+    const link = `${protocol}//${host}/admin/project/video/${id}/review`;
+    setProjectReviewURL( link );
+  } );
+
   const [sharePopupOpen, setSharePopupOpen] = useState( false );
 
   const handleResize = debounce( () => {
+    /* eslint-disable no-use-before-define */
     handleClose();
-  }, 50, { leading: false, trailing: true } );
+  }, 500, { leading: true, trailing: false } );
 
   const handleTableScroll = debounce( () => {
+    /* eslint-disable no-use-before-define */
     handleClose();
   }, 500, { leading: true, trailing: false } );
 
@@ -32,13 +42,6 @@ const ShareProjectItem = props => {
     const itemsTable = document.querySelector( '.items_table' );
     itemsTable.removeEventListener( 'scroll', handleTableScroll );
   };
-
-  const [projectReviewURL, setProjectReviewURL] = useState( '' );
-  useEffect( () => {
-    const { protocol, host } = window.location;
-    const link = `${protocol}//${host}/admin/project/video/${id}/review`;
-    setProjectReviewURL( link );
-  } );
 
   return (
     <Popup
