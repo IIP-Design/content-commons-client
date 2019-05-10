@@ -164,12 +164,15 @@ class PreviewProjectItem extends React.Component {
           if ( error ) return <ApolloError error={ error } />;
 
           const {
-            projectType,
+            // projectType,
             createdAt,
             updatedAt,
             team,
             units
           } = data.videoProject;
+
+          // TEMP - UNTIL DATA MODEL EDIT
+          const projectType = 'video';
 
           const projectItems = this.getProjectItems( units );
           const selectedItem = projectItems[String( selectedLanguage )];
