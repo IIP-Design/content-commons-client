@@ -92,7 +92,7 @@ const MyProjectPrimaryCol = props => {
                   className="myProjects_data_title"
                 >
                   <span aria-hidden>{ truncate( d[header.name], { length: 35 } ) }</span>
-                  <VisuallyHidden>{ d[header.name] }</VisuallyHidden>
+                  <VisuallyHidden el="span">{ d[header.name] }</VisuallyHidden>
                 </a>
               ) }
               content={ d[header.name] }
