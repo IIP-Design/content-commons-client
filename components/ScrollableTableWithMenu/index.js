@@ -33,11 +33,7 @@ class ScrollableTableWithMenu extends React.Component {
     skip: 0
   };
 
-  _selectAllItems = false;
-
-  _breakpoint = 767;
-
-  componentDidMount() {
+  componentDidMount = () => {
     this.tableMenuSelectionsOnMobile();
     window.addEventListener( 'resize', this.tableMenuSelectionsOnResize );
   }
@@ -48,7 +44,7 @@ class ScrollableTableWithMenu extends React.Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount = () => {
     window.removeEventListener( 'resize', this.tableMenuSelectionsOnResize );
   }
 
