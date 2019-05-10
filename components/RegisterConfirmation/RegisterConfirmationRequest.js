@@ -13,7 +13,7 @@ const RegisterConfirmationRequest = () => {
   return (
     <EmailRequest
       title="Send Confirmation"
-      instructions="Instructions confirm your registration will be sent to your email."
+      instructions="Instructions to confirm your registration will be sent to your email."
       button="Send Confirmation"
       email={ email }
     />
