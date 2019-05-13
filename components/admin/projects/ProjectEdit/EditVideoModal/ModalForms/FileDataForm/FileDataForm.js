@@ -16,6 +16,7 @@ import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
+import { formatBytes, formatDate } from 'lib/utils';
 
 import {
   VIDEO_PROJECT_QUERY, VIDEO_FILE_QUERY, VIDEO_FILE_LANG_MUTATION, VIDEO_UNIT_CONNECT_FILE_MUTATION,
@@ -293,13 +294,13 @@ class FileDataForm extends Component {
                   { file.filename }
                 </span>
                 <span className="file_meta_content file_meta_content--filesize">
-                  { `Filesize: ${file.filesize}` }
+                  { `Filesize: ${formatBytes( file.filesize || 0 )}` }
                 </span>
                 <span className="file_meta_content file_meta_content--dimensions">
                   { dimensions }
                 </span>
                 <span className="file_meta_content file_meta_content--uploaded">
-                  { `Uploaded: ${file.createdAt}` }
+                  { `Uploaded: ${formatDate( file.createdAt )}` }
                 </span>
                 <span className="file_meta_content file_meta_content--duration">
                   { `Duration: ${file.duration}` }
