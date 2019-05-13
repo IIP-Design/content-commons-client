@@ -23,10 +23,12 @@ class TableMenu extends React.Component {
 
   componentDidMount() {
     this.menuHeadersOnMobile();
+    window.addEventListener( 'keyup', this.handleKbdAccess );
     window.addEventListener( 'resize', this.menuHeadersOnResize );
   }
 
   componentWillUnmount() {
+    window.removeEventListener( 'keyup', this.handleKbdAccess );
     window.removeEventListener( 'resize', this.menuHeadersOnResize );
   }
 
@@ -55,6 +57,12 @@ class TableMenu extends React.Component {
       }
       return this.setState( { windowWidth } );
     }, 500 );
+  }
+
+  handleKbdAccess = e => {
+    if ( e.key === 'Escape' ) {
+      this.setState( { displayTableMenu: false } );
+    }
   }
 
   toggleTableMenu = () => {
