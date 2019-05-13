@@ -6,7 +6,9 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, Icon } from 'semantic-ui-react';
+import {
+  Accordion, Form, Icon, Menu
+} from 'semantic-ui-react';
 import { titleCase } from 'lib/utils';
 import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import './TableMenu.scss';
@@ -19,13 +21,11 @@ class TableMenu extends React.Component {
   }
 
   componentDidMount() {
-    document.addEventListener( 'click', this.toggleTableMenu, false );
     this.menuHeadersOnMobile();
     window.addEventListener( 'resize', this.menuHeadersOnResize );
   }
 
   componentWillUnmount() {
-    document.removeEventListener( 'click', this.toggleTableMenu, false );
     window.removeEventListener( 'resize', this.menuHeadersOnResize );
   }
 
@@ -56,19 +56,10 @@ class TableMenu extends React.Component {
     }, 500 );
   }
 
-  toggleTableMenu = e => {
-    const isTableMenu = e.target.dataset.tablemenu;
-    const isTableMenuItem = e.target.parentNode ? e.target.parentNode.dataset.tablemenuitem : null;
-
-    if ( isTableMenu ) {
-      return this.setState( prevState => ( { displayTableMenu: !prevState.displayTableMenu } ) );
-    }
-
-    if ( isTableMenuItem ) {
-      return this.setState( { displayTableMenu: true } );
-    }
-
-    return this.setState( { displayTableMenu: false } );
+  toggleTableMenu = () => {
+    this.setState( prevState => ( {
+      displayTableMenu: !prevState.displayTableMenu
+    } ) );
   }
 
   toggleCheckbox = ( e, data ) => {
@@ -104,7 +95,40 @@ class TableMenu extends React.Component {
     return (
       <div className="items_menu_wrapper">
         <div className={ displayTableMenu ? 'items_menu active' : 'items_menu' }>
-          <span data-tablemenu>See More <Icon data-tablemenu name="angle down" /></span>
+          <Accordion as={ Menu } vertical>
+            <Menu.Item>
+              <Accordion.Title
+                as="button"
+                active={ !displayTableMenu }
+                content="Show More"
+                data-tablemenu
+                onClick={ this.toggleTableMenu }
+                onFocus={ this.toggleTableMenu }
+              />
+              <Accordion.Content
+                as="form"
+                active={ displayTableMenu }
+                content={ (
+                  <Form.Group grouped>
+                    { columnMenu.map( item => (
+                      <Form.Checkbox
+                        data-tablemenuitem
+                        data-propname={ item.name }
+                        data-proplabel={ item.label }
+                        id={ item.label }
+                        label={ titleCase( item.label ) }
+                        key={ item.name }
+                        onChange={ tableMenuOnChange }
+                        onClick={ this.toggleCheckbox }
+                        checked={ menuHeaders.includes( item.label ) }
+                      />
+                    ) ) }
+                  </Form.Group>
+                ) }
+              />
+            </Menu.Item>
+          </Accordion>
+
           <span
             role="button"
             data-tablearrow="left"
@@ -123,20 +147,6 @@ class TableMenu extends React.Component {
           >
             <Icon name="angle right" data-tablearrow="right" />
           </span>
-          <div className={ displayTableMenu ? 'items_menu_list display' : 'items_menu_list' }>
-            { columnMenu.map( item => (
-              <Checkbox
-                data-tablemenuitem
-                data-propname={ item.name }
-                data-proplabel={ item.label }
-                label={ titleCase( item.label ) }
-                key={ item.name }
-                onChange={ tableMenuOnChange }
-                onClick={ this.toggleCheckbox }
-                checked={ menuHeaders.includes( item.label ) }
-              />
-            ) ) }
-          </div>
         </div>
       </div>
     );
