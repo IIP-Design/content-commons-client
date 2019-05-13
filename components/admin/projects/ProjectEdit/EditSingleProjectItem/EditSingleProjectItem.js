@@ -32,7 +32,7 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
   const [selectedFile, setSelectedFile] = useState( '' );
   const [selectedProject, setSelectedProject] = useState( projectId );
   const [selectedUnit, setSelectedUnit] = useState( itemId );
-  const [language, setLanguage] = useState( '' );
+  const [language, setLanguage] = useState( null );
 
   const updateFile = id => (
     setSelectedFile( id )
@@ -83,7 +83,7 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
     >
       <ModalItem
         customClassName="edit-project-item"
-        headline={ `${project.projectTitle} ${language ? `in ${language}` : ''}` }
+        headline={ `${project.projectTitle} ${language && language.displayName ? `in ${language.displayName}` : ''}` }
         textDirection="ltr"
       >
         <EditVideoModal />

@@ -62,34 +62,34 @@ export const VIDEO_FILE_LANG_MUTATION = gql`
   }
 `;
 
-export const VIDEO_PROJECT_MUTATION = gql`
-  mutation VIDEO_PROJECT_MUTATION( $projectId: ID!, $currentUnitId: ID!, $newUnitId: ID!, $fileId: ID! ) {
-    updateVideoProject(
+export const VIDEO_UNIT_CONNECT_FILE_MUTATION = gql`
+  mutation VIDEO_UNIT_CONNECT_FILE_MUTATION( $id: ID!, $fileId: ID! ) {
+    updateVideoUnit(
       data: {
-        units: {
-          update: {
-            data: {
-              files: {
-                connect: { id: $fileId }
-              }
-            },
-            where: { id: $newUnitId },
-            data: {
-              files: {
-                disconnect: { id: $fileId }
-              }
-            },
-            where: { id: $currentUnitId }
-          }
+        files: {
+          connect: { id: $fileId }
         }
       },
-      where: { id: $projectId }
+      where: { id: $id }
     ) {
       id
-      units {
-        id
-        files { id }
-      }
+      files { id }
+    }
+  }
+`;
+
+export const VIDEO_UNIT_DISCONNECT_FILE_MUTATION = gql`
+  mutation VIDEO_UNIT_DISCONNECT_FILE_MUTATION( $id: ID!, $fileId: ID! ) {
+    updateVideoUnit(
+      data: {
+        files: {
+          disconnect: { id: $fileId }
+        }
+      },
+      where: { id: $id }
+    ) {
+      id
+      files { id }
     }
   }
 `;

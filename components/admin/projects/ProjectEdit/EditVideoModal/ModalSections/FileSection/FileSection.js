@@ -19,6 +19,7 @@ const VIDEO_UNIT_QUERY = gql`
       language {
         id
         displayName
+        locale
       }
     }
   } 
@@ -50,7 +51,7 @@ const FileSection = () => {
         }
 
         const { unit } = data;
-        const lang = unit && unit.language && unit.language.displayName ? unit.language.displayName : '';
+        const lang = unit && unit.language ? unit.language : { id: '', displayName: '', locale: '' };
         if ( lang && !language ) updateLanguage( lang );
 
         const files = unit && unit.files ? unit.files : [];
@@ -58,10 +59,11 @@ const FileSection = () => {
 
         return (
           <section className="edit-file">
-            <h4>{ `File Data ${language ? `in ${language}` : ''}` }</h4>
+            <h4>{ `File Data ${language && language.displayName ? `in ${language.displayName}` : ''}` }</h4>
             <div className="edit-file-form-container">
               <FileSidebar />
               <FileDataForm
+                language={ language }
                 selectedFile={ selectedFile }
                 selectedProject={ selectedProject }
                 selectedUnit={ selectedUnit }

@@ -18,9 +18,9 @@ import UseDropdown from 'components/admin/dropdowns/UseDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
 
 import {
-  VIDEO_PROJECT_QUERY, VIDEO_FILE_QUERY, VIDEO_FILE_LANG_MUTATION, VIDEO_PROJECT_MUTATION,
-  VIDEO_FILE_SUBTITLES_MUTATION, VIDEO_FILE_USE_MUTATION, VIDEO_FILE_QUALITY_MUTATION,
-  VIDEO_FILE_CREATE_STREAM_MUTATION, VIDEO_FILE_UPDATE_STREAM_MUTATION,
+  VIDEO_PROJECT_QUERY, VIDEO_FILE_QUERY, VIDEO_FILE_LANG_MUTATION, VIDEO_UNIT_CONNECT_FILE_MUTATION,
+  VIDEO_UNIT_DISCONNECT_FILE_MUTATION, VIDEO_FILE_SUBTITLES_MUTATION, VIDEO_FILE_USE_MUTATION,
+  VIDEO_FILE_QUALITY_MUTATION, VIDEO_FILE_CREATE_STREAM_MUTATION, VIDEO_FILE_UPDATE_STREAM_MUTATION,
   VIDEO_FILE_DELETE_STREAM_MUTATION, VIDEO_FILE_DELETE_MUTATION
 } from './FileDataFormQueries';
 import './FileDataForm.scss';
@@ -162,8 +162,8 @@ class FileDataForm extends Component {
 
   handleLanguageChange = ( e, data ) => {
     const {
-      languageVideoFileMutation, selectedFile, selectedProject,
-      selectedUnit, updateUnit, videoProjectMutation, videoProjectQuery
+      language, languageVideoFileMutation, selectedFile, selectedUnit, updateUnit,
+      videoProjectQuery, videoUnitConnectFileMutation, videoUnitDisconnectFileMutation
     } = this.props;
     const { project } = videoProjectQuery && videoProjectQuery.project ? videoProjectQuery : {};
 
@@ -178,24 +178,33 @@ class FileDataForm extends Component {
     const selectedLang = data.value;
     const newUnit = unitsByLang.filter( unit => unit.langId === selectedLang );
 
-    languageVideoFileMutation( {
-      variables: {
-        id: selectedFile,
-        language: selectedLang
-      }
-    } );
+    if ( selectedLang && selectedLang !== language.id ) {
+      languageVideoFileMutation( {
+        variables: {
+          id: selectedFile,
+          language: selectedLang
+        }
+      } );
+      this.props.videoFileQuery.refetch();
 
-    videoProjectMutation( {
-      variables: {
-        currentUnitId: selectedUnit,
-        newUnitId: newUnit[0].unitId,
-        fileId: selectedFile,
-        projectId: selectedProject
-      }
-    } );
+      videoUnitDisconnectFileMutation( {
+        variables: {
+          id: selectedUnit,
+          fileId: selectedFile
+        }
+      } );
+      this.props.videoFileQuery.refetch();
 
-    updateUnit( newUnit[0].unitId );
-    this.props.videoFileQuery.refetch();
+      videoUnitConnectFileMutation( {
+        variables: {
+          id: newUnit[0].unitId,
+          fileId: selectedFile
+        }
+      } );
+      this.props.videoFileQuery.refetch();
+
+      updateUnit( newUnit[0].unitId );
+    }
   }
 
   displayConfirmDelete = () => {
@@ -325,8 +334,9 @@ class FileDataForm extends Component {
             <Grid.Column mobile={ 16 } computer={ 8 }>
               <LanguageDropdown
                 id="video-language"
-                onChange={ this.handleLanguageChange }
+                locales={ ['es-es', 'en-us'] }
                 label="Language"
+                onChange={ this.handleLanguageChange }
                 required
                 value={ language }
               />
@@ -368,16 +378,17 @@ class FileDataForm extends Component {
 
 FileDataForm.propTypes = {
   deleteVideoFileMutation: propTypes.func,
+  language: propTypes.object,
   languageVideoFileMutation: propTypes.func,
   selectedFile: propTypes.string,
-  selectedProject: propTypes.string,
   selectedUnit: propTypes.string,
   streamCreateVideoFileMutation: propTypes.func,
   streamDeleteVideoFileMutation: propTypes.func,
   streamUpdateVideoFileMutation: propTypes.func,
   updateUnit: propTypes.func,
   videoFileQuery: propTypes.object,
-  videoProjectMutation: propTypes.func,
+  videoUnitConnectFileMutation: propTypes.func,
+  videoUnitDisconnectFileMutation: propTypes.func,
   videoProjectQuery: propTypes.object
 };
 
@@ -389,7 +400,8 @@ export default compose(
   graphql( VIDEO_FILE_QUALITY_MUTATION, { name: 'qualityVideoFileMutation' } ),
   graphql( VIDEO_FILE_USE_MUTATION, { name: 'useVideoFileMutation' } ),
   graphql( VIDEO_FILE_SUBTITLES_MUTATION, { name: 'videoBurnedInStatusVideoFileMutation' } ),
-  graphql( VIDEO_PROJECT_MUTATION, { name: 'videoProjectMutation' } ),
+  graphql( VIDEO_UNIT_DISCONNECT_FILE_MUTATION, { name: 'videoUnitDisconnectFileMutation' } ),
+  graphql( VIDEO_UNIT_CONNECT_FILE_MUTATION, { name: 'videoUnitConnectFileMutation' } ),
   graphql( VIDEO_FILE_LANG_MUTATION, { name: 'languageVideoFileMutation' } ),
   graphql( VIDEO_FILE_QUERY, {
     name: 'videoFileQuery',
