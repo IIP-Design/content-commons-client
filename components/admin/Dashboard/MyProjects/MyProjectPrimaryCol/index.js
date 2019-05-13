@@ -59,8 +59,7 @@ const MyProjectPrimaryCol = props => {
     d: { id },
     header,
     selectedItems,
-    toggleItemSelection,
-    windowWidth
+    toggleItemSelection
   } = props;
 
   const projectTitleLength = d[header.name].length >= 35;
@@ -89,7 +88,7 @@ const MyProjectPrimaryCol = props => {
         </Link>
         <div className="myProjects_data_actions">
           <div className="myProjects_data_actions_wrapper">
-            <DetailsPopup id={ id } windowWidth={ windowWidth } />
+            <DetailsPopup id={ id } />
             <span> | </span>
             <Modal
               trigger={ <button type="button" className="linkStyle myProjects_data_actions_action">Preview</button> }
@@ -100,7 +99,7 @@ const MyProjectPrimaryCol = props => {
               </Modal.Content>
             </Modal>
             <span> | </span>
-            <ShareProjectItem id={ id } windowWidth={ windowWidth } />
+            <ShareProjectItem id={ id } />
           </div>
           <button
             type="button"
@@ -119,8 +118,7 @@ MyProjectPrimaryCol.propTypes = {
   d: PropTypes.object,
   header: PropTypes.object,
   selectedItems: PropTypes.instanceOf( Map ),
-  toggleItemSelection: PropTypes.func,
-  windowWidth: PropTypes.number
+  toggleItemSelection: PropTypes.func
 };
 
 export default MyProjectPrimaryCol;

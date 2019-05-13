@@ -38,7 +38,6 @@ class ScrollableTableWithMenu extends React.Component {
   _breakpoint = 767;
 
   componentDidMount() {
-    this.setState( { windowWidth: window.innerWidth } );
     this.tableMenuSelectionsOnMobile();
     window.addEventListener( 'resize', this.tableMenuSelectionsOnResize );
   }

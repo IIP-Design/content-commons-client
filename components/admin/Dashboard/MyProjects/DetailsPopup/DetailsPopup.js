@@ -30,7 +30,7 @@ const renderPopup = ( projectType, id ) => {
 };
 
 const DetailsPopup = props => {
-  const { id, windowWidth } = props;
+  const { id } = props;
   const [detailsPopupOpen, setDetailsPopupOpen] = useState( false );
 
   const handleResize = debounce( () => {
@@ -82,7 +82,7 @@ const DetailsPopup = props => {
                 ) }
                 content={ renderPopup( __typename, id ) }
                 on="click"
-                position={ windowWidth <= 767 ? 'bottom right' : 'bottom center' }
+                position="bottom right"
                 hideOnScroll
                 keepInViewPort={ false }
                 open={ detailsPopupOpen }
@@ -100,8 +100,7 @@ const DetailsPopup = props => {
 };
 
 DetailsPopup.propTypes = {
-  id: PropTypes.string,
-  windowWidth: PropTypes.number
+  id: PropTypes.string
 };
 
 export default DetailsPopup;

@@ -6,7 +6,7 @@ import ClipboardCopy from 'components/ClipboardCopy';
 import './ShareProjectItem.scss';
 
 const ShareProjectItem = props => {
-  const { id, windowWidth } = props;
+  const { id } = props;
 
   const [projectReviewURL, setProjectReviewURL] = useState( '' );
   useEffect( () => {
@@ -57,7 +57,7 @@ const ShareProjectItem = props => {
       ) }
       content={ <ClipboardCopy label="Direct Link" copyItem={ projectReviewURL } /> }
       on="click"
-      position={ windowWidth <= 767 ? 'bottom right' : 'bottom center' }
+      position="bottom right"
       hideOnScroll
       keepInViewPort={ false }
       open={ sharePopupOpen }
@@ -68,8 +68,7 @@ const ShareProjectItem = props => {
 };
 
 ShareProjectItem.propTypes = {
-  id: PropTypes.string,
-  windowWidth: PropTypes.number
+  id: PropTypes.string
 };
 
 export default ShareProjectItem;
