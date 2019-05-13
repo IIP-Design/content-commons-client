@@ -26,7 +26,7 @@ const VIDEO_UNIT_QUERY = gql`
 
 const FileSection = () => {
   const {
-    language, selectedFile, selectedUnit, updateFile, updateLanguage
+    language, selectedFile, selectedProject, selectedUnit, updateFile, updateUnit, updateLanguage
   } = useContext( EditSingleProjectItemContext );
 
   return (
@@ -61,7 +61,12 @@ const FileSection = () => {
             <h4>{ `File Data ${language ? `in ${language}` : ''}` }</h4>
             <div className="edit-file-form-container">
               <FileSidebar />
-              <FileDataForm id={ selectedFile } />
+              <FileDataForm
+                selectedFile={ selectedFile }
+                selectedProject={ selectedProject }
+                selectedUnit={ selectedUnit }
+                updateUnit={ updateUnit }
+              />
             </div>
           </section>
         );

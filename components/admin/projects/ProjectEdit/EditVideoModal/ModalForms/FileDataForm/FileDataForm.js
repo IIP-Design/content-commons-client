@@ -18,8 +18,8 @@ import UseDropdown from 'components/admin/dropdowns/UseDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
 
 import {
-  VIDEO_FILE_QUERY, VIDEO_FILE_LANG_MUTATION, VIDEO_FILE_SUBTITLES_MUTATION,
-  VIDEO_FILE_USE_MUTATION, VIDEO_FILE_QUALITY_MUTATION,
+  VIDEO_PROJECT_QUERY, VIDEO_FILE_QUERY, VIDEO_FILE_LANG_MUTATION, VIDEO_PROJECT_MUTATION,
+  VIDEO_FILE_SUBTITLES_MUTATION, VIDEO_FILE_USE_MUTATION, VIDEO_FILE_QUALITY_MUTATION,
   VIDEO_FILE_CREATE_STREAM_MUTATION, VIDEO_FILE_UPDATE_STREAM_MUTATION,
   VIDEO_FILE_DELETE_STREAM_MUTATION, VIDEO_FILE_DELETE_MUTATION
 } from './FileDataFormQueries';
@@ -75,11 +75,11 @@ class FileDataForm extends Component {
   }
 
   updateUnit = ( name, value ) => {
-    const { id } = this.props;
+    const { selectedFile } = this.props;
 
     this.props[`${name}VideoFileMutation`]( {
       variables: {
-        id,
+        id: selectedFile,
         [name]: value
       }
     } );
@@ -88,7 +88,7 @@ class FileDataForm extends Component {
   }
 
   updateStreams = e => {
-    const unitId = this.props.id;
+    const unitId = this.props.selectedFile;
     const { name } = e.target;
     const { streams } = this.state;
 
@@ -158,6 +158,44 @@ class FileDataForm extends Component {
       { [name]: value },
       () => this.updateUnit( name, value )
     );
+  }
+
+  handleLanguageChange = ( e, data ) => {
+    const {
+      languageVideoFileMutation, selectedFile, selectedProject,
+      selectedUnit, updateUnit, videoProjectMutation, videoProjectQuery
+    } = this.props;
+    const { project } = videoProjectQuery && videoProjectQuery.project ? videoProjectQuery : {};
+
+    const unitsByLang = [];
+    if ( project.units ) {
+      project.units.forEach( unit => {
+        unitsByLang.push( { unitId: unit.id, langId: unit.language.id } );
+        return unitsByLang;
+      } );
+    }
+
+    const selectedLang = data.value;
+    const newUnit = unitsByLang.filter( unit => unit.langId === selectedLang );
+
+    languageVideoFileMutation( {
+      variables: {
+        id: selectedFile,
+        language: selectedLang
+      }
+    } );
+
+    videoProjectMutation( {
+      variables: {
+        currentUnitId: selectedUnit,
+        newUnitId: newUnit[0].unitId,
+        fileId: selectedFile,
+        projectId: selectedProject
+      }
+    } );
+
+    updateUnit( newUnit[0].unitId );
+    this.props.videoFileQuery.refetch();
   }
 
   displayConfirmDelete = () => {
@@ -287,7 +325,7 @@ class FileDataForm extends Component {
             <Grid.Column mobile={ 16 } computer={ 8 }>
               <LanguageDropdown
                 id="video-language"
-                onChange={ this.handleDropdownSave }
+                onChange={ this.handleLanguageChange }
                 label="Language"
                 required
                 value={ language }
@@ -330,11 +368,17 @@ class FileDataForm extends Component {
 
 FileDataForm.propTypes = {
   deleteVideoFileMutation: propTypes.func,
-  id: propTypes.string,
+  languageVideoFileMutation: propTypes.func,
+  selectedFile: propTypes.string,
+  selectedProject: propTypes.string,
+  selectedUnit: propTypes.string,
   streamCreateVideoFileMutation: propTypes.func,
   streamDeleteVideoFileMutation: propTypes.func,
   streamUpdateVideoFileMutation: propTypes.func,
-  videoFileQuery: propTypes.object
+  updateUnit: propTypes.func,
+  videoFileQuery: propTypes.object,
+  videoProjectMutation: propTypes.func,
+  videoProjectQuery: propTypes.object
 };
 
 export default compose(
@@ -345,11 +389,18 @@ export default compose(
   graphql( VIDEO_FILE_QUALITY_MUTATION, { name: 'qualityVideoFileMutation' } ),
   graphql( VIDEO_FILE_USE_MUTATION, { name: 'useVideoFileMutation' } ),
   graphql( VIDEO_FILE_SUBTITLES_MUTATION, { name: 'videoBurnedInStatusVideoFileMutation' } ),
+  graphql( VIDEO_PROJECT_MUTATION, { name: 'videoProjectMutation' } ),
   graphql( VIDEO_FILE_LANG_MUTATION, { name: 'languageVideoFileMutation' } ),
   graphql( VIDEO_FILE_QUERY, {
     name: 'videoFileQuery',
     options: props => ( {
-      variables: { id: props.id },
+      variables: { id: props.selectedFile },
+    } )
+  } ),
+  graphql( VIDEO_PROJECT_QUERY, {
+    name: 'videoProjectQuery',
+    options: props => ( {
+      variables: { id: props.selectedProject },
     } )
   } )
 )( FileDataForm );

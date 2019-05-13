@@ -1,5 +1,20 @@
 import gql from 'graphql-tag';
 
+export const VIDEO_PROJECT_QUERY = gql`
+  query VIDEO_PROJECT_QUERY( $id: ID! ) {
+    project: videoProject( id: $id ) {
+      id
+      units {
+        id
+        language {
+          id
+          locale
+        }
+      }
+    }
+  }
+`;
+
 export const VIDEO_FILE_QUERY = gql`
   query VIDEO_FILE_QUERY( $id: ID! ) {
     file: videoFile( id: $id ) {
@@ -43,6 +58,38 @@ export const VIDEO_FILE_LANG_MUTATION = gql`
     ) {
       id
       language { id }
+    }
+  }
+`;
+
+export const VIDEO_PROJECT_MUTATION = gql`
+  mutation VIDEO_PROJECT_MUTATION( $projectId: ID!, $currentUnitId: ID!, $newUnitId: ID!, $fileId: ID! ) {
+    updateVideoProject(
+      data: {
+        units: {
+          update: {
+            data: {
+              files: {
+                connect: { id: $fileId }
+              }
+            },
+            where: { id: $newUnitId },
+            data: {
+              files: {
+                disconnect: { id: $fileId }
+              }
+            },
+            where: { id: $currentUnitId }
+          }
+        }
+      },
+      where: { id: $projectId }
+    ) {
+      id
+      units {
+        id
+        files { id }
+      }
     }
   }
 `;
