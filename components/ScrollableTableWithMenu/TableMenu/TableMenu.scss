@@ -1,7 +1,6 @@
 @import "../../../styles/colors.scss";
 
 .items {
-  
   &_menu {
     position: relative;
     display: inline-block;    
@@ -71,33 +70,6 @@
     
     [data-tablearrow='right'].right.icon {
       margin-right: 0;
-    }
-
-    &_list {
-      position: absolute;
-      left: -5px;
-      top: 100%;
-      z-index: 4;
-      display: none;
-      width: 100%;      
-      padding: 5px;
-      margin-top: 3px;
-      border: 1px solid #ccc;
-      text-align: left;
-      background: #fff;
-
-      &.display {
-        display: block;
-      }
-
-      .ui.checkbox {
-        display: block;
-        margin-bottom: 5px;
-
-        > label {
-          font-size: 14px;
-        }
-      }
     }
   }
 }
