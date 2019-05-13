@@ -112,7 +112,6 @@ class TableMenu extends React.Component {
                 active={ !displayTableMenu }
                 data-tablemenu
                 onClick={ this.toggleTableMenu }
-                onFocus={ this.toggleTableMenu }
               >
                 Show More <VisuallyHidden el="span">columns</VisuallyHidden>
                 <Icon name={ `angle ${displayTableMenu ? 'up' : 'down'}` } />
