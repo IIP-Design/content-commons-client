@@ -50,7 +50,7 @@ const VideoUnitCarousel = () => {
           if ( error ) return <p>{ `Error: ${error.message}` }</p>;
 
           const { project } = data;
-          const { units } = project;
+          const units = project && project.units ? project.units : {};
 
           return (
             <Carousel callback={ updateUnit } selectedItem={ selectedUnit }>

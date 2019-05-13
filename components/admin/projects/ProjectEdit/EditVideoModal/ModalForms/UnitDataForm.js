@@ -3,7 +3,7 @@ import { compose, graphql } from 'react-apollo';
 import propTypes from 'prop-types';
 import gql from 'graphql-tag';
 import {
-  Form, Grid, Input, Loader, TextArea
+  Form, Grid, Loader, TextArea
 } from 'semantic-ui-react';
 
 import TagTypeahead from 'components/admin/dropdowns/TagTypeahead';
@@ -14,11 +14,6 @@ const VIDEO_UNIT_QUERY = gql`
       id
       title
       descPublic
-      language {
-        id
-        displayName
-        locale
-      }
       tags { id }
       thumbnails {
         image {
@@ -216,7 +211,9 @@ class UnitDataForm extends Component {
       );
     }
 
-    const lang = `in ${unit.language.displayName}` || '';
+    const { language } = this.props;
+    const lang = language && language.displayName ? `in ${language.displayName}` : '';
+    const locale = language && language.locale ? language.locale : '';
     const {
       descPublic, imageAlt, imageUrl, tags, title
     } = this.state;
@@ -239,8 +236,7 @@ class UnitDataForm extends Component {
               </figure>
             </Grid.Column>
             <Grid.Column mobile={ 16 } computer={ 7 }>
-              <Form.Field
-                control={ Input }
+              <Form.Input
                 id="video-title"
                 label={ `Video Title ${lang}` }
                 name="title"
@@ -263,7 +259,7 @@ class UnitDataForm extends Component {
                 onChange={ this.handleDropdownSelection }
                 id="video-tags"
                 label={ `Additional Keywords ${lang}` }
-                locale={ unit.language.locale }
+                locale={ locale }
                 value={ tags }
               />
 
@@ -276,6 +272,7 @@ class UnitDataForm extends Component {
 }
 
 UnitDataForm.propTypes = {
+  language: propTypes.object,
   tagsAddVideoUnitMutation: propTypes.func,
   tagsRemoveVideoUnitMutation: propTypes.func,
   unitId: propTypes.string,

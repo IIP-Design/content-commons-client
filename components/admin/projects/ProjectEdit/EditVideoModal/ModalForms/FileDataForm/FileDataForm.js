@@ -160,6 +160,19 @@ class FileDataForm extends Component {
     );
   }
 
+  getLocales = arr => {
+    const locales = [];
+    if ( Array.isArray( arr ) && arr.length > 0 ) {
+      arr.forEach( unit => {
+        if ( unit.language && unit.language.locale ) {
+          locales.push( unit.language.locale );
+        }
+        return locales;
+      } );
+    }
+    return locales;
+  }
+
   handleLanguageChange = ( e, data ) => {
     const {
       language, languageVideoFileMutation, selectedFile, selectedUnit, updateUnit,
@@ -240,6 +253,7 @@ class FileDataForm extends Component {
     );
 
     const { file, loading } = this.props.videoFileQuery;
+    const { project } = this.props.videoProjectQuery;
 
     if ( !file || loading ) {
       return (
@@ -266,6 +280,8 @@ class FileDataForm extends Component {
     const dimensions = width && height ? `Dimensions: ${width} x ${height}` : '';
     const youtube = streams && streams.youtube ? streams.youtube : {};
     const vimeo = streams && streams.vimeo ? streams.vimeo : {};
+
+    const units = project && project.units ? project.units : [];
 
     return (
       <Form className="edit-video__form video-file-form" style={ { overflow: 'hidden' } }>
@@ -334,7 +350,7 @@ class FileDataForm extends Component {
             <Grid.Column mobile={ 16 } computer={ 8 }>
               <LanguageDropdown
                 id="video-language"
-                locales={ ['es-es', 'en-us'] }
+                locales={ this.getLocales( units ) }
                 label="Language"
                 onChange={ this.handleLanguageChange }
                 required

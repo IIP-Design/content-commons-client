@@ -14,11 +14,11 @@ import './EditVideoModal.scss';
 
 
 const EditVideoModal = () => {
-  const { selectedUnit } = useContext( EditSingleProjectItemContext );
+  const { language, selectedUnit } = useContext( EditSingleProjectItemContext );
 
   return (
     <div className="edit-video-modal">
-      <UnitDataForm unitId={ selectedUnit } />
+      <UnitDataForm language={ language } unitId={ selectedUnit } />
       <FileSection />
       <VideoUnitCarousel />
     </div>
