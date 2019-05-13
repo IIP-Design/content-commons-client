@@ -7,8 +7,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Accordion, Form, Icon, Menu
+  Accordion, Checkbox, Icon, Menu
 } from 'semantic-ui-react';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { titleCase } from 'lib/utils';
 import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import './TableMenu.scss';
@@ -98,34 +99,36 @@ class TableMenu extends React.Component {
           <Accordion as={ Menu } vertical>
             <Menu.Item>
               <Accordion.Title
+                aria-expanded={ displayTableMenu }
                 as="button"
                 active={ !displayTableMenu }
-                content="Show More"
                 data-tablemenu
                 onClick={ this.toggleTableMenu }
                 onFocus={ this.toggleTableMenu }
-              />
+              >
+                Show More <VisuallyHidden el="span">columns</VisuallyHidden>
+                <Icon name={ `angle ${displayTableMenu ? 'up' : 'down'}` } />
+              </Accordion.Title>
               <Accordion.Content
-                as="form"
+                as="ul"
                 active={ displayTableMenu }
-                content={ (
-                  <Form.Group grouped>
-                    { columnMenu.map( item => (
-                      <Form.Checkbox
-                        data-tablemenuitem
-                        data-propname={ item.name }
-                        data-proplabel={ item.label }
-                        id={ item.label }
-                        label={ titleCase( item.label ) }
-                        key={ item.name }
-                        onChange={ tableMenuOnChange }
-                        onClick={ this.toggleCheckbox }
-                        checked={ menuHeaders.includes( item.label ) }
-                      />
-                    ) ) }
-                  </Form.Group>
-                ) }
-              />
+                hidden={ !displayTableMenu }
+              >
+                { columnMenu.map( item => (
+                  <li key={ item.name }>
+                    <Checkbox
+                      data-tablemenuitem
+                      data-propname={ item.name }
+                      data-proplabel={ item.label }
+                      id={ item.label }
+                      label={ titleCase( item.label ) }
+                      onChange={ tableMenuOnChange }
+                      onClick={ this.toggleCheckbox }
+                      checked={ menuHeaders.includes( item.label ) }
+                    />
+                  </li>
+                ) ) }
+              </Accordion.Content>
             </Menu.Item>
           </Accordion>
 

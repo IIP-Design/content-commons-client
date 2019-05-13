@@ -26,9 +26,14 @@
           position: absolute;
           left: 0;
           z-index: 10;
-          width: 100%;
+          border: 1px solid #ccc;
+          border-top: 3px solid $blue;
+          width: 7.75rem;
+          margin: 0.25rem 0 0 0;
+          padding: 0.5rem !important;
           text-align: left;
           background-color: #fff;
+          list-style: none;
         }
 
         button {
@@ -40,14 +45,9 @@
           background-color: #fff;
         }
 
-        .grouped {
-          border: 1px solid #ccc;
-          border-top: 3px solid $blue;
-          padding: 0.5rem;
-
-          [data-tablemenuitem] {
-            padding: 0.25rem 0;
-          }
+        [data-tablemenuitem] {
+          width: 100%;
+          padding: 0.25rem 0;
         }
       }
     }
