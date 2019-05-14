@@ -116,26 +116,29 @@ class TableMenu extends React.Component {
                 Show More <VisuallyHidden el="span">columns</VisuallyHidden>
                 <Icon name={ `angle ${displayTableMenu ? 'up' : 'down'}` } />
               </Accordion.Title>
-              <Accordion.Content
-                as="ul"
-                active={ displayTableMenu }
-                hidden={ !displayTableMenu }
-              >
-                { columnMenu.map( item => (
-                  <li key={ item.name }>
-                    <Checkbox
-                      data-tablemenuitem
-                      data-propname={ item.name }
-                      data-proplabel={ item.label }
-                      id={ item.label }
-                      label={ titleCase( item.label ) }
-                      onChange={ tableMenuOnChange }
-                      onClick={ this.toggleCheckbox }
-                      checked={ menuHeaders.includes( item.label ) }
-                    />
-                  </li>
-                ) ) }
-              </Accordion.Content>
+              { displayTableMenu
+                && (
+                  <Accordion.Content
+                    as="ul"
+                    active={ displayTableMenu }
+                    hidden={ !displayTableMenu }
+                  >
+                    { columnMenu.map( item => (
+                      <li key={ item.name }>
+                        <Checkbox
+                          data-tablemenuitem
+                          data-propname={ item.name }
+                          data-proplabel={ item.label }
+                          id={ item.label }
+                          label={ titleCase( item.label ) }
+                          onChange={ tableMenuOnChange }
+                          onClick={ this.toggleCheckbox }
+                          checked={ menuHeaders.includes( item.label ) }
+                        />
+                      </li>
+                    ) ) }
+                  </Accordion.Content>
+                ) }
             </Menu.Item>
           </Accordion>
 
