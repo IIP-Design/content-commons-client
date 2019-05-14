@@ -151,25 +151,23 @@ class TableMenu extends React.Component {
             </Menu.Item>
           </Accordion>
 
-          <span
-            role="button"
+          <button
             data-tablearrow="left"
             onClick={ this.handleTableScroll }
-            onKeyDown={ this.handleTableScroll }
             onFocus={ displayTableMenu ? this.toggleTableMenu : null }
-            tabIndex="0"
+            type="button"
           >
+            <VisuallyHidden el="span">scroll table left</VisuallyHidden>
             <Icon name="angle left" data-tablearrow="left" />
-          </span>
-          <span
-            role="button"
+          </button>
+          <button
             data-tablearrow="right"
             onClick={ this.handleTableScroll }
-            onKeyDown={ this.handleTableScroll }
-            tabIndex="0"
+            type="button"
           >
+            <VisuallyHidden el="span">scroll table right</VisuallyHidden>
             <Icon name="angle right" data-tablearrow="right" />
-          </span>
+          </button>
         </div>
       </div>
     );

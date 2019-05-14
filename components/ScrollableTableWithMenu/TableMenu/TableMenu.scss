@@ -64,13 +64,18 @@
       }
     }
 
-    [data-tablearrow]:hover {
-      background-color: $light-blue;
-      color: #fff;
+    [data-tablearrow] {
+      display: inline-block;
+      border: 0;
+      padding-left: 0.222222222rem;
+      padding-right: 0.222222222rem;
+      color: $blue;
+      background-color: #fff;
+      cursor: pointer;
     }
-    
-    [data-tablearrow='right'].right.icon {
-      margin-right: 0;
+
+    [data-tablearrow]:focus {
+      transform: rotate(0);
     }
   }
 }
