@@ -8,6 +8,7 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
 import Carousel from 'components/admin/projects/ProjectEdit/EditVideoModal/Carousel/Carousel';
+import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
 import { EditSingleProjectItemContext } from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 
 import './VideoUnitCarousel.scss';
@@ -46,7 +47,7 @@ const VideoUnitCarousel = () => {
       <h3 className="video-carousel-section-header">Videos in this Project</h3>
       <Query query={ VIDEO_PROJECT_QUERY } variables={ { id: selectedProject } }>
         { ( { loading, error, data } ) => {
-          if ( loading || !data ) return <p>Loading...</p>;
+          if ( loading || !data ) return <Loader height="300px" text="Loading video units..." />;
           if ( error ) return <p>{ `Error: ${error.message}` }</p>;
 
           const { project } = data;

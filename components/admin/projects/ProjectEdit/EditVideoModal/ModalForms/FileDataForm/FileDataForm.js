@@ -6,13 +6,12 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
-import {
-  Confirm, Form, Grid, Loader
-} from 'semantic-ui-react';
+import { Confirm, Form, Grid } from 'semantic-ui-react';
 
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import IconPopup from 'components/popups/IconPopup/IconPopup';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
+import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
@@ -280,21 +279,7 @@ class FileDataForm extends Component {
     const { file, loading } = this.props.videoFileQuery;
     const { project } = this.props.videoProjectQuery;
 
-    if ( !file || loading ) {
-      return (
-        <div style={ {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          maxHeight: '438px'
-        } }
-        >
-          <Loader active inline="centered" style={ { marginBottom: '1em' } } />
-          <p>Loading the file data...</p>
-        </div>
-      );
-    }
+    if ( !file || loading ) return <Loader height="330px" text="Loading the file data..." />;
 
     const {
       deleteConfirmOpen, language, quality, streams, use, videoBurnedInStatus

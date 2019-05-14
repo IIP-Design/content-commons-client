@@ -34,14 +34,14 @@ const FileSection = () => {
     <Query query={ VIDEO_UNIT_QUERY } variables={ { id: selectedUnit } }>
       { ( { loading, error, data } ) => {
         if ( error ) return 'Error!';
-        if ( loading || !data ) return ( <Loader height="402px" text="Loading the file data..." /> );
+        if ( loading || !data ) return <Loader height="402px" text="Loading the file data..." />;
 
         const { unit } = data;
         const lang = unit && unit.language ? unit.language : { id: '', displayName: '', locale: '' };
         if ( lang && !language ) updateSelectedLanguage( lang );
 
         const files = unit && unit.files ? unit.files : [];
-        if ( Array.isArray( files ) && files.length === 0 ) return ( <Loader height="402px" text="No files in this unit..." /> );
+        if ( Array.isArray( files ) && files.length === 0 ) return <Loader height="402px" text="No files in this unit..." />;
         if ( files[0] && files[0].id && !selectedFile ) updateSelectedFile( files[0].id );
 
 

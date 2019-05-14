@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 
 import { titleCase } from 'lib/utils';
 import { EditSingleProjectItemContext } from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
+import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
 import Carousel from 'components/admin/projects/ProjectEdit/EditVideoModal/Carousel/Carousel';
 
 import './FileSidebar.scss';
@@ -37,7 +38,7 @@ const FileSidebar = () => {
   return (
     <Query query={ VIDEO_UNIT_QUERY } variables={ { id: selectedUnit } }>
       { ( { loading, error, data } ) => {
-        if ( loading || !data ) return <p>Loading...</p>;
+        if ( loading || !data ) return <Loader text="Loading files..." />;
         if ( error ) return <p>{ `Error: ${error.message}` }</p>;
 
         const thumbnail = data.videoUnit && data.videoUnit.thumbnails ? data.videoUnit.thumbnails[0] : {};

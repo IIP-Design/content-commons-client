@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import propTypes from 'prop-types';
 import gql from 'graphql-tag';
-import {
-  Form, Grid, Loader, TextArea
-} from 'semantic-ui-react';
+import { Form, Grid, TextArea } from 'semantic-ui-react';
 
+import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
 import TagTypeahead from 'components/admin/dropdowns/TagTypeahead';
 
 const VIDEO_UNIT_QUERY = gql`
@@ -194,22 +193,7 @@ class UnitDataForm extends Component {
 
   render() {
     const { loading, unit } = this.props.videoUnitQuery;
-
-    if ( !unit || loading ) {
-      return (
-        <div style={ {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh'
-        } }
-        >
-          <Loader active inline="centered" style={ { marginBottom: '1em' } } />
-          <p>Loading the video data...</p>
-        </div>
-      );
-    }
+    if ( !unit || loading ) return <Loader height="368px" text="Loading the video data..." />;
 
     const { language } = this.props;
     const lang = language && language.displayName ? `in ${language.displayName}` : '';
