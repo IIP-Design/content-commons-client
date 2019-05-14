@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import { Loader } from 'semantic-ui-react';
 
 import FileSidebar from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalSections/FileSidebar/FileSidebar';
 import FileDataForm from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalForms/FileDataForm/FileDataForm';
+import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
 import { EditSingleProjectItemContext } from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 
 import './FileSection.scss';
@@ -27,35 +27,23 @@ const VIDEO_UNIT_QUERY = gql`
 
 const FileSection = () => {
   const {
-    language, selectedFile, selectedProject, selectedUnit, updateFile, updateUnit, updateLanguage
+    language, selectedFile, selectedProject, selectedUnit, updateSelectedFile, updateSelectedUnit, updateSelectedLanguage
   } = useContext( EditSingleProjectItemContext );
 
   return (
     <Query query={ VIDEO_UNIT_QUERY } variables={ { id: selectedUnit } }>
       { ( { loading, error, data } ) => {
         if ( error ) return 'Error!';
-        if ( loading || !data ) {
-          return (
-            <div style={ {
-              alignItems: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              height: '100vh',
-              justifyContent: 'center'
-            } }
-            >
-              <Loader active inline="centered" style={ { marginBottom: '1em' } } />
-              <p>Loading the file data...</p>
-            </div>
-          );
-        }
+        if ( loading || !data ) return ( <Loader height="402px" text="Loading the file data..." /> );
 
         const { unit } = data;
         const lang = unit && unit.language ? unit.language : { id: '', displayName: '', locale: '' };
-        if ( lang && !language ) updateLanguage( lang );
+        if ( lang && !language ) updateSelectedLanguage( lang );
 
         const files = unit && unit.files ? unit.files : [];
-        if ( files[0] && files[0].id && !selectedFile ) updateFile( files[0].id );
+        if ( Array.isArray( files ) && files.length === 0 ) return ( <Loader height="402px" text="No files in this unit..." /> );
+        if ( files[0] && files[0].id && !selectedFile ) updateSelectedFile( files[0].id );
+
 
         return (
           <section className="edit-file">
@@ -67,7 +55,8 @@ const FileSection = () => {
                 selectedFile={ selectedFile }
                 selectedProject={ selectedProject }
                 selectedUnit={ selectedUnit }
-                updateUnit={ updateUnit }
+                updateSelectedUnit={ updateSelectedUnit }
+                updateSelectedFile={ updateSelectedFile }
               />
             </div>
           </section>
@@ -78,3 +67,4 @@ const FileSection = () => {
 };
 
 export default FileSection;
+export { VIDEO_UNIT_QUERY };
