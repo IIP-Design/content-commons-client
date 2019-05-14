@@ -63,6 +63,7 @@ const TableItemsDisplay = props => {
             <span>
               Show:{ ' ' }
               <Dropdown
+                id="items-per-page"
                 inline
                 options={ displaySizeOptions }
                 value={ count }
