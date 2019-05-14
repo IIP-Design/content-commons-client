@@ -110,9 +110,9 @@ class TableMenu extends React.Component {
           <Accordion as={ Menu } vertical>
             <Menu.Item>
               <Accordion.Title
-                aria-expanded={ displayTableMenu }
                 as="button"
                 active={ !displayTableMenu }
+                aria-expanded={ displayTableMenu }
                 data-tablemenu
                 onClick={ this.toggleTableMenu }
               >
@@ -124,7 +124,7 @@ class TableMenu extends React.Component {
                   <Accordion.Content
                     as="ul"
                     active={ displayTableMenu }
-                    hidden={ !displayTableMenu }
+                    aria-hidden={ !displayTableMenu }
                   >
                     { columnMenu.map( item => (
                       <li key={ item.name }>
