@@ -110,10 +110,13 @@ class TableMenu extends React.Component {
           <Accordion as={ Menu } vertical>
             <Menu.Item>
               <Accordion.Title
-                as="button"
                 active={ !displayTableMenu }
+                aria-controls="show-more-columns"
                 aria-expanded={ displayTableMenu }
+                aria-haspopup
+                as="button"
                 data-tablemenu
+                id="show-more-btn"
                 onClick={ this.toggleTableMenu }
               >
                 Show More <VisuallyHidden el="span">columns</VisuallyHidden>
@@ -122,21 +125,24 @@ class TableMenu extends React.Component {
               { displayTableMenu
                 && (
                   <Accordion.Content
-                    as="ul"
                     active={ displayTableMenu }
                     aria-hidden={ !displayTableMenu }
+                    aria-labelledby="show-more-btn"
+                    as="ul"
+                    id="show-more-columns"
+                    role="menu"
                   >
                     { columnMenu.map( item => (
-                      <li key={ item.name }>
+                      <li key={ item.name } role="menuitem">
                         <Checkbox
-                          data-tablemenuitem
-                          data-propname={ item.name }
+                          checked={ menuHeaders.includes( item.label ) }
                           data-proplabel={ item.label }
+                          data-propname={ item.name }
+                          data-tablemenuitem
                           id={ item.label }
                           label={ titleCase( item.label ) }
                           onChange={ tableMenuOnChange }
                           onClick={ this.toggleCheckbox }
-                          checked={ menuHeaders.includes( item.label ) }
                         />
                       </li>
                     ) ) }
