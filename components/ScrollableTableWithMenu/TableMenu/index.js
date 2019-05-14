@@ -163,6 +163,7 @@ class TableMenu extends React.Component {
           <button
             data-tablearrow="right"
             onClick={ this.handleTableScroll }
+            onFocus={ displayTableMenu ? this.toggleTableMenu : null }
             type="button"
           >
             <VisuallyHidden el="span">scroll table right</VisuallyHidden>
