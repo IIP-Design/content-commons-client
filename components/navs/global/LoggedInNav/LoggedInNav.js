@@ -90,7 +90,6 @@ class LoggedInNav extends Component {
       <span>
         <Responsive as={ Menu } compact secondary minWidth={ 993 }>
           {
-
             menuItems.map( item => {
               if ( item.name === 'upload' ) {
                 return (

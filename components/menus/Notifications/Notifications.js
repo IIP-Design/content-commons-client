@@ -9,6 +9,14 @@ class NotificationsMenu extends Component {
     this.linkClick = this.linkClick.bind( this );
   }
 
+  componentDidMount() {
+    window.addEventListener( 'resize', this.props.submenuClosePopup );
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener( 'resize', this.props.submenuClosePopup );
+  }
+
   linkClick() {
     const { toggleMobileNav, submenuClosePopup } = this.props;
     if ( toggleMobileNav ) {
