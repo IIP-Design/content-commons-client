@@ -48,6 +48,20 @@ class FileDataForm extends Component {
     }
   }
 
+  // Iterates through an array of units to return an array of locales (one for each unit)
+  getLocales = arr => {
+    const locales = [];
+    if ( Array.isArray( arr ) && arr.length > 0 ) {
+      arr.forEach( unit => {
+        if ( unit.language && unit.language.locale ) {
+          locales.push( unit.language.locale );
+        }
+        return locales;
+      } );
+    }
+    return locales;
+  }
+
   getStreamObjects = streamList => {
     const streams = [];
 
@@ -75,6 +89,7 @@ class FileDataForm extends Component {
     return streamObj;
   }
 
+  // Runs GraphQl mutation and updates the cache after a dropdown selection
   updateUnit = ( name, value ) => {
     const { selectedFile } = this.props;
 
@@ -82,10 +97,29 @@ class FileDataForm extends Component {
       variables: {
         id: selectedFile,
         [name]: value
+      },
+      update: ( cache, { data: { updateVideoFile } } ) => {
+        try {
+          const cachedData = cache.readQuery( {
+            query: VIDEO_FILE_QUERY,
+            variables: { id: selectedFile }
+          } );
+
+          if ( name === 'use' ) {
+            cachedData.file.use.id = value;
+          } else {
+            cachedData.file[name] = value;
+          }
+
+          cache.writeQuery( {
+            query: VIDEO_FILE_QUERY,
+            data: { file: cachedData.file }
+          } );
+        } catch ( error ) {
+          console.log( error );
+        }
       }
     } );
-
-    this.props.videoFileQuery.refetch();
   }
 
   updateStreams = e => {
@@ -139,19 +173,6 @@ class FileDataForm extends Component {
     } ) );
   }
 
-  handleInputChange = e => {
-    this.setState( {
-      [e.target.name]: e.target.value
-    } );
-  }
-
-  handleInputSave = e => {
-    const { name } = e.target;
-    const value = this.state[name];
-
-    this.updateUnit( name, value );
-  }
-
   handleDropdownSave = ( e, data ) => {
     const { name, value } = data;
 
@@ -161,19 +182,6 @@ class FileDataForm extends Component {
     );
   }
 
-  getLocales = arr => {
-    const locales = [];
-    if ( Array.isArray( arr ) && arr.length > 0 ) {
-      arr.forEach( unit => {
-        if ( unit.language && unit.language.locale ) {
-          locales.push( unit.language.locale );
-        }
-        return locales;
-      } );
-    }
-    return locales;
-  }
-
   handleLanguageChange = ( e, data ) => {
     const {
       language, languageVideoFileMutation, selectedFile, selectedUnit, updateSelectedUnit,
@@ -181,6 +189,7 @@ class FileDataForm extends Component {
     } = this.props;
     const { project } = videoProjectQuery && videoProjectQuery.project ? videoProjectQuery : {};
 
+    // Get array of units and the language they are in
     const unitsByLang = [];
     if ( project.units ) {
       project.units.forEach( unit => {
@@ -193,29 +202,45 @@ class FileDataForm extends Component {
     const newUnit = unitsByLang.filter( unit => unit.langId === selectedLang );
 
     if ( selectedLang && selectedLang !== language.id ) {
+      // Update file language
       languageVideoFileMutation( {
         variables: {
           id: selectedFile,
           language: selectedLang
         }
       } );
-      this.props.videoFileQuery.refetch();
-
+      // Disconnect File from old language unit
       videoUnitDisconnectFileMutation( {
         variables: {
           id: selectedUnit,
           fileId: selectedFile
+        },
+        update: ( cache, { data: { updateVideoUnit } } ) => {
+          try {
+            const cachedData = cache.readQuery( {
+              query: VIDEO_UNIT_QUERY,
+              variables: { id: selectedUnit }
+            } );
+
+            const newFiles = cachedData.unit.files.filter( file => file.id !== selectedFile );
+            cachedData.unit.files = newFiles;
+
+            cache.writeQuery( {
+              query: VIDEO_UNIT_QUERY,
+              data: { unit: cachedData.unit }
+            } );
+          } catch ( error ) {
+            console.log( error );
+          }
         }
       } );
-      this.props.videoFileQuery.refetch();
-
+      // Connect file to new unit
       videoUnitConnectFileMutation( {
         variables: {
           id: newUnit[0].unitId,
           fileId: selectedFile
         }
       } );
-      this.props.videoFileQuery.refetch();
 
       updateSelectedUnit( newUnit[0].unitId );
     }
@@ -227,7 +252,6 @@ class FileDataForm extends Component {
 
   handleDeleteConfirm = () => {
     const { selectedFile, selectedUnit, updateSelectedFile } = this.props;
-    console.log( `Deleted video: ${selectedFile}` );
 
     this.props.deleteVideoFileMutation( {
       variables: { id: selectedFile },
@@ -245,6 +269,8 @@ class FileDataForm extends Component {
             query: VIDEO_UNIT_QUERY,
             data: { unit: cachedData.unit }
           } );
+
+          console.log( `Deleted video: ${selectedFile}` );
 
           const newSelectedFile = cachedData.unit.files && cachedData.unit.files[0] && cachedData.unit.files[0].id
             ? cachedData.unit.files[0].id

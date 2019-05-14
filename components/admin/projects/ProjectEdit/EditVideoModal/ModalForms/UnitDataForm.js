@@ -128,15 +128,31 @@ class UnitDataForm extends Component {
   updateUnit = e => {
     const { unitId } = this.props;
     const { name } = e.target;
+    const value = this.state[name];
 
     this.props[`${name}VideoUnitMutation`]( {
       variables: {
         id: unitId,
-        [name]: this.state[name]
+        [name]: value
+      },
+      update: ( cache, { data: { updateVideoUnit } } ) => {
+        try {
+          const cachedData = cache.readQuery( {
+            query: VIDEO_UNIT_QUERY,
+            variables: { id: unitId }
+          } );
+
+          cachedData.unit[name] = value;
+
+          cache.writeQuery( {
+            query: VIDEO_UNIT_QUERY,
+            data: { unit: cachedData.unit }
+          } );
+        } catch ( error ) {
+          console.log( error );
+        }
       }
     } );
-
-    this.props.videoUnitQuery.refetch();
   }
 
   updateTags = newTags => {
