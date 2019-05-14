@@ -39,7 +39,7 @@ const VIDEO_PROJECT_QUERY = gql`
 `;
 
 const VideoUnitCarousel = () => {
-  const { selectedProject, selectedUnit, updateUnit } = useContext( EditSingleProjectItemContext );
+  const { selectedProject, selectedUnit, updateSelectedUnit } = useContext( EditSingleProjectItemContext );
 
   return (
     <section className="video-carousel-section">
@@ -53,7 +53,7 @@ const VideoUnitCarousel = () => {
           const units = project && project.units ? project.units : {};
 
           return (
-            <Carousel callback={ updateUnit } selectedItem={ selectedUnit }>
+            <Carousel callback={ updateSelectedUnit } selectedItem={ selectedUnit }>
               { units && (
                 units.map( unit => {
                   const image = unit.thumbnails && unit.thumbnails[0] && unit.thumbnails[0].image ? unit.thumbnails[0].image : '';
@@ -65,8 +65,8 @@ const VideoUnitCarousel = () => {
                       className={ `video-carousel-item ${selected}` }
                       id={ unit.id }
                       key={ unit.id }
-                      onClick={ () => updateUnit( unit.id ) }
-                      onKeyUp={ () => updateUnit( unit.id ) }
+                      onClick={ () => updateSelectedUnit( unit.id ) }
+                      onKeyUp={ () => updateSelectedUnit( unit.id ) }
                       role="button"
                       selected={ selected }
                       tabIndex="0"

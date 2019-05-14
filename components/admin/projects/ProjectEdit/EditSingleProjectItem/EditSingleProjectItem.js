@@ -34,19 +34,19 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
   const [selectedUnit, setSelectedUnit] = useState( itemId );
   const [language, setLanguage] = useState( null );
 
-  const updateFile = id => (
+  const updateSelectedFile = id => (
     setSelectedFile( id )
   );
 
-  const updateLanguage = lang => {
+  const updateSelectedLanguage = lang => {
     setLanguage( lang );
   };
 
-  const updateProject = id => (
+  const updateSelectedProject = id => (
     setSelectedProject( id )
   );
 
-  const updateUnit = id => {
+  const updateSelectedUnit = id => {
     setLanguage( null );
     setSelectedFile( '' );
     setSelectedUnit( id );
@@ -75,10 +75,10 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
         selectedFile,
         selectedProject,
         selectedUnit,
-        updateFile,
-        updateLanguage,
-        updateProject,
-        updateUnit
+        updateSelectedFile,
+        updateSelectedLanguage,
+        updateSelectedProject,
+        updateSelectedUnit
       } }
     >
       <ModalItem
