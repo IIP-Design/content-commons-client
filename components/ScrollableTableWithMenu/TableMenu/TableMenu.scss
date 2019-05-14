@@ -26,8 +26,9 @@
           position: absolute;
           left: 0;
           z-index: 10;
-          border: 1px solid #ccc;
+          border: 1px solid $alt-grey;
           border-top: 3px solid $blue;
+          border-radius: 0.28571429rem;
           width: 7.75rem;
           margin: 0.25rem 0 0 0;
           padding: 0.5rem !important;
