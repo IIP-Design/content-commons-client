@@ -21,13 +21,15 @@ class TableMenu extends React.Component {
     windowWidth: ''
   }
 
-  componentDidMount() {
+  breakpoint = 767;
+
+  componentDidMount = () => {
     this.menuHeadersOnMobile();
     window.addEventListener( 'keyup', this.handleKbdAccess );
     window.addEventListener( 'resize', this.menuHeadersOnResize );
   }
 
-  componentWillUnmount() {
+  componentWillUnmount = () => {
     window.removeEventListener( 'keyup', this.handleKbdAccess );
     window.removeEventListener( 'resize', this.menuHeadersOnResize );
   }
@@ -48,10 +50,10 @@ class TableMenu extends React.Component {
     let resizeMenuHeadersTimer = null;
     if ( resizeMenuHeadersTimer !== null ) clearTimeout( resizeMenuHeadersTimer );
     resizeMenuHeadersTimer = setTimeout( () => {
-      if ( prevWindowWidth !== '' && prevWindowWidth <= 767 && !isWindowWidthLessThanOrEqualTo( 767 ) ) {
+      if ( prevWindowWidth !== '' && prevWindowWidth <= this.breakpoint && !isWindowWidthLessThanOrEqualTo( this.breakpoint ) ) {
         return this.setState( { menuHeaders: [], windowWidth } );
       }
-      if ( isWindowWidthLessThanOrEqualTo( 767 ) ) {
+      if ( isWindowWidthLessThanOrEqualTo( this.breakpoint ) ) {
         const allMenuHeaders = this.props.columnMenu.map( menu => menu.label );
         return this.setState( { menuHeaders: [...allMenuHeaders], windowWidth } );
       }
