@@ -60,7 +60,8 @@ class TableMenu extends React.Component {
   }
 
   handleKbdAccess = e => {
-    if ( e.key === 'Escape' ) {
+    const isTableMenu = e.target.dataset.tablemenu;
+    if ( e.key === 'Escape' || ( isTableMenu && e.key === 'Shift' ) ) {
       this.setState( { displayTableMenu: false } );
     }
   }
@@ -147,6 +148,7 @@ class TableMenu extends React.Component {
             data-tablearrow="left"
             onClick={ this.handleTableScroll }
             onKeyDown={ this.handleTableScroll }
+            onFocus={ displayTableMenu ? this.toggleTableMenu : null }
             tabIndex="0"
           >
             <Icon name="angle left" data-tablearrow="left" />
