@@ -25,11 +25,13 @@ class TableMenu extends React.Component {
 
   componentDidMount = () => {
     this.menuHeadersOnMobile();
+    window.addEventListener( 'click', this.toggleTableMenu );
     window.addEventListener( 'keyup', this.handleKbdAccess );
     window.addEventListener( 'resize', this.menuHeadersOnResize );
   }
 
   componentWillUnmount = () => {
+    window.removeEventListener( 'click', this.toggleTableMenu );
     window.removeEventListener( 'keyup', this.handleKbdAccess );
     window.removeEventListener( 'resize', this.menuHeadersOnResize );
   }
@@ -70,10 +72,22 @@ class TableMenu extends React.Component {
     }
   }
 
-  toggleTableMenu = () => {
-    this.setState( prevState => ( {
-      displayTableMenu: !prevState.displayTableMenu
-    } ) );
+  toggleTableMenu = e => {
+    const isTableMenu = !!e.target.dataset.tablemenu;
+    const isTableMenuItem = !!e.target.parentNode.dataset.tablemenuitem || !!e.target.dataset.tablemenuitem;
+    const isShowMoreColumns = e.target.id === 'show-more-columns';
+
+    this.setState( prevState => {
+      if ( isTableMenu ) {
+        return { displayTableMenu: !prevState.displayTableMenu };
+      }
+
+      if ( isTableMenuItem || isShowMoreColumns ) {
+        return { displayTableMenu: true };
+      }
+
+      return { displayTableMenu: false };
+    } );
   }
 
   toggleCheckbox = ( e, data ) => {
@@ -119,10 +133,12 @@ class TableMenu extends React.Component {
                 as="button"
                 data-tablemenu
                 id="show-more-btn"
-                onClick={ this.toggleTableMenu }
               >
                 Show More <VisuallyHidden el="span">columns</VisuallyHidden>
-                <Icon name={ `angle ${displayTableMenu ? 'up' : 'down'}` } />
+                <Icon
+                  data-tablemenu
+                  name={ `angle ${displayTableMenu ? 'up' : 'down'}` }
+                />
               </Accordion.Title>
               { displayTableMenu
                 && (
