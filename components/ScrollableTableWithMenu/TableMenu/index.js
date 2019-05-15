@@ -154,7 +154,7 @@ class TableMenu extends React.Component {
                     role="menu"
                   >
                     { columnMenu.map( item => (
-                      <li key={ item.name } role="menuitem">
+                      <li key={ item.name }>
                         <Checkbox
                           checked={ menuHeaders.includes( item.label ) }
                           data-proplabel={ item.label }
@@ -164,6 +164,7 @@ class TableMenu extends React.Component {
                           label={ titleCase( item.label ) }
                           onChange={ tableMenuOnChange }
                           onClick={ this.toggleCheckbox }
+                          role="menuitem"
                         />
                       </li>
                     ) ) }
