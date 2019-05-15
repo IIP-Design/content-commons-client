@@ -31,8 +31,8 @@ const REQUEST_ACCOUNT_ACTION_MUTATION = gql`
 
 const validationSchema = Yup.object().shape( {
   email: Yup.string()
-    .email( 'E-mail is not valid!' )
-    .required( 'E-mail is required!' ),
+    .email( 'Email is not valid!' )
+    .required( 'Email is required!' ),
 } );
 
 class EmailRequest extends Component {

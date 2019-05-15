@@ -1,5 +1,9 @@
 @import "../../../styles/colors.scss";
 
+.ui.modal > .content {
+  position: relative;
+} 
+
 .modal {
   .ui.toggle.checkbox label {
     padding-left: 3.6rem;
