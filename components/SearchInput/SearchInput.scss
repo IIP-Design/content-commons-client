@@ -16,16 +16,33 @@
   }
 
   .ui.form {
+    
     input[type="text"] {
       width: auto;
-      border-radius: 5px;
+      border: none;
+      border-radius: 0;
+      @media screen and (max-width: 320px) {
+        max-width: 155px;
+      }
+
+      &:focus {
+        border-radius: 0;
+      }
     }
+
     .search_input {
+      display: inline-flex;
       width: 100%;
       font-size: 18px;
 
       ::placeholder {
         overflow: hidden;
+      }
+
+      .ui.label.dropdown {
+        @media screen and (max-width: 320px) {
+          padding: 0.5em;
+        }
       }
 
       .ui.label, .ui.dropdown i {
@@ -40,11 +57,18 @@
         width: 4em;
         overflow: hidden;
         white-space: nowrap;
+        @media screen and (max-width: 425px) {
+          width: auto;
+        }        
       }
 
       > input {
         padding-top: 0.6em;
         padding-bottom: 0.6em;
+        padding-right: 1em !important;
+        @media screen and (max-width: 425px) {
+          padding: 0.3em !important;
+        }
       }
 
       > input[type="text"]::-ms-clear {
@@ -56,9 +80,19 @@
         font-size: 18px;
         
         &.search {
-          color: $light-grey;
-          opacity: 1;
+          position: relative;
+          height: auto;
+          color: $light-grey;          
           background: $blue;
+          opacity: 1;
+
+          &:before {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin-top: 0;
+          }
         }
 
         &.search:hover {
