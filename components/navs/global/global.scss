@@ -29,7 +29,9 @@
 
 nav {
   z-index: 2;
-
+  @media screen and (min-width: 993px) {
+    margin-left: 0.8em;
+  }
   @media screen and (max-width: 767px) {
     position: absolute;
     right: 0;
