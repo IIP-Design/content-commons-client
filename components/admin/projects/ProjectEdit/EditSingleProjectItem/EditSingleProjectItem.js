@@ -46,9 +46,9 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
     setSelectedProject( id )
   );
 
-  const updateSelectedUnit = id => {
+  const updateSelectedUnit = ( id, file ) => {
     setLanguage( null );
-    setSelectedFile( '' );
+    setSelectedFile( file || '' );
     setSelectedUnit( id );
   };
 

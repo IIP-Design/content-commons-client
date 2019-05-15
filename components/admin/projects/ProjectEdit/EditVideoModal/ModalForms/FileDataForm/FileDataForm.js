@@ -184,8 +184,8 @@ class FileDataForm extends Component {
 
   handleLanguageChange = ( e, data ) => {
     const {
-      language, languageVideoFileMutation, selectedFile, selectedUnit, updateSelectedUnit,
-      videoProjectQuery, videoUnitConnectFileMutation, videoUnitDisconnectFileMutation
+      language, languageVideoFileMutation, selectedFile, selectedUnit, updateSelectedFile,
+      updateSelectedUnit, videoProjectQuery, videoUnitConnectFileMutation, videoUnitDisconnectFileMutation
     } = this.props;
     const { project } = videoProjectQuery && videoProjectQuery.project ? videoProjectQuery : {};
 
@@ -242,7 +242,7 @@ class FileDataForm extends Component {
         }
       } );
 
-      updateSelectedUnit( newUnit[0].unitId );
+      updateSelectedUnit( newUnit[0].unitId, selectedFile );
     }
   }
 
