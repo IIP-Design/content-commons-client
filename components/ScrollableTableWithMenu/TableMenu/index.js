@@ -66,6 +66,9 @@ class TableMenu extends React.Component {
   handleKbdAccess = e => {
     const isTableMenu = e.target.dataset.tablemenu;
     const isItemsPerPage = e.target.id === 'items-per-page';
+    const { displayTableMenu } = this.state;
+
+    if ( !displayTableMenu ) return;
 
     if ( e.key === 'Escape' || ( isTableMenu && e.key === 'Shift' ) || ( isItemsPerPage && e.key === 'Shift' ) ) {
       this.setState( { displayTableMenu: false } );
