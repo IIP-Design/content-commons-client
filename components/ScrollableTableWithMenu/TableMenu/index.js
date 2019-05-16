@@ -68,16 +68,16 @@ class TableMenu extends React.Component {
 
     if ( !displayTableMenu ) return;
 
+    if ( e.key === 'Escape' || ( isTableMenu && e.key === 'Shift' ) || ( isItemsPerPage && e.key === 'Shift' ) ) {
+      this.setState( { displayTableMenu: false } );
+    }
+
     const columns = this.getColumns();
     const current = columns.indexOf( e.target.id );
     const first = 0;
     const last = columns.length - 1;
     const next = current + 1;
     const previous = current - 1;
-
-    if ( e.key === 'Escape' || ( isTableMenu && e.key === 'Shift' ) || ( isItemsPerPage && e.key === 'Shift' ) ) {
-      this.setState( { displayTableMenu: false } );
-    }
 
     if ( ['Home', 'End', 'ArrowDown', 'ArrowUp'].indexOf( e.key ) > -1 ) {
       e.preventDefault();
