@@ -26,14 +26,18 @@ class TableMenu extends React.Component {
   componentDidMount = () => {
     this.menuHeadersOnMobile();
     window.addEventListener( 'click', this.toggleTableMenu );
-    window.addEventListener( 'keyup', this.handleKbdAccess );
+    window.addEventListener( 'keydown', this.handleKbdAccess );
     window.addEventListener( 'resize', this.menuHeadersOnResize );
   }
 
   componentWillUnmount = () => {
     window.removeEventListener( 'click', this.toggleTableMenu );
-    window.removeEventListener( 'keyup', this.handleKbdAccess );
+    window.removeEventListener( 'keydown', this.handleKbdAccess );
     window.removeEventListener( 'resize', this.menuHeadersOnResize );
+  }
+
+  setRef = ( node, ref ) => {
+    this[ref] = node;
   }
 
   menuHeadersOnMobile = () => {
@@ -63,6 +67,16 @@ class TableMenu extends React.Component {
     }, 500 );
   }
 
+  getColumns = () => (
+    this.props.columnMenu.reduce( ( acc, cur ) => (
+      [...acc, cur.label]
+    ), [] )
+  )
+
+  handleFocus = ( array, i ) => {
+    this[array[i]].inputRef.focus();
+  };
+
   handleKbdAccess = e => {
     const isTableMenu = e.target.dataset.tablemenu;
     const isItemsPerPage = e.target.id === 'items-per-page';
@@ -70,8 +84,43 @@ class TableMenu extends React.Component {
 
     if ( !displayTableMenu ) return;
 
+    const columns = this.getColumns();
+    const current = columns.indexOf( e.target.id );
+    const first = 0;
+    const last = columns.length - 1;
+    const next = current + 1;
+    const previous = current - 1;
+
     if ( e.key === 'Escape' || ( isTableMenu && e.key === 'Shift' ) || ( isItemsPerPage && e.key === 'Shift' ) ) {
       this.setState( { displayTableMenu: false } );
+    }
+
+    if ( ['Home', 'End', 'ArrowDown', 'ArrowUp'].indexOf( e.key ) > -1 ) {
+      e.preventDefault();
+    }
+
+    let i;
+    switch ( e.key ) {
+      case 'ArrowDown':
+        i = current === last ? first : next;
+        this.handleFocus( columns, i );
+        break;
+
+      case 'ArrowUp':
+        i = current === first ? last : previous;
+        this.handleFocus( columns, i );
+        break;
+
+      case 'Home':
+        this.handleFocus( columns, first );
+        break;
+
+      case 'End':
+        this.handleFocus( columns, last );
+        break;
+
+      default:
+        break;
     }
   }
 
@@ -164,7 +213,9 @@ class TableMenu extends React.Component {
                           label={ titleCase( item.label ) }
                           onChange={ tableMenuOnChange }
                           onClick={ this.toggleCheckbox }
+                          ref={ node => this.setRef( node, item.label ) }
                           role="menuitem"
+                          tabIndex="-1"
                         />
                       </li>
                     ) ) }
