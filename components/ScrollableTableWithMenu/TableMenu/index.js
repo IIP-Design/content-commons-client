@@ -47,33 +47,6 @@ class TableMenu extends React.Component {
     this[ref] = node;
   }
 
-  menuHeadersOnMobile = () => {
-    const allMenuHeaders = this.props.columnMenu.map( menu => menu.label );
-    if ( isMobile() ) {
-      this.setState( {
-        menuHeaders: [...allMenuHeaders]
-      } );
-    }
-  }
-
-  menuHeadersOnResize = () => {
-    const windowWidth = window.innerWidth;
-    const prevWindowWidth = this.state.windowWidth;
-
-    let resizeMenuHeadersTimer = null;
-    if ( resizeMenuHeadersTimer !== null ) clearTimeout( resizeMenuHeadersTimer );
-    resizeMenuHeadersTimer = setTimeout( () => {
-      if ( prevWindowWidth !== '' && prevWindowWidth <= this._breakpoint && !isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
-        return this.setState( { menuHeaders: [], windowWidth } );
-      }
-      if ( isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
-        const allMenuHeaders = this.props.columnMenu.map( menu => menu.label );
-        return this.setState( { menuHeaders: [...allMenuHeaders], windowWidth } );
-      }
-      return this.setState( { windowWidth } );
-    }, 500 );
-  }
-
   getColumns = () => (
     this.props.columnMenu.reduce( ( acc, cur ) => (
       [...acc, cur.label]
@@ -131,6 +104,16 @@ class TableMenu extends React.Component {
     }
   }
 
+  handleTableScroll = e => {
+    const itemsTable = document.querySelector( '.items_table' );
+    const tableArrowDirection = e.target.dataset.tablearrow;
+    if ( tableArrowDirection === 'right' ) {
+      itemsTable.scrollLeft += 200;
+    } else {
+      itemsTable.scrollLeft -= 200;
+    }
+  }
+
   toggleTableMenu = e => {
     const isTableMenu = !!e.target.dataset.tablemenu;
     const isTableMenuItem = !!e.target.parentNode.dataset.tablemenuitem || !!e.target.dataset.tablemenuitem;
@@ -165,14 +148,31 @@ class TableMenu extends React.Component {
     } );
   }
 
-  handleTableScroll = e => {
-    const itemsTable = document.querySelector( '.items_table' );
-    const tableArrowDirection = e.target.dataset.tablearrow;
-    if ( tableArrowDirection === 'right' ) {
-      itemsTable.scrollLeft += 200;
-    } else {
-      itemsTable.scrollLeft -= 200;
+  menuHeadersOnMobile = () => {
+    const allMenuHeaders = this.props.columnMenu.map( menu => menu.label );
+    if ( isMobile() ) {
+      this.setState( {
+        menuHeaders: [...allMenuHeaders]
+      } );
     }
+  }
+
+  menuHeadersOnResize = () => {
+    const windowWidth = window.innerWidth;
+    const prevWindowWidth = this.state.windowWidth;
+
+    let resizeMenuHeadersTimer = null;
+    if ( resizeMenuHeadersTimer !== null ) clearTimeout( resizeMenuHeadersTimer );
+    resizeMenuHeadersTimer = setTimeout( () => {
+      if ( prevWindowWidth !== '' && prevWindowWidth <= this._breakpoint && !isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
+        return this.setState( { menuHeaders: [], windowWidth } );
+      }
+      if ( isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
+        const allMenuHeaders = this.props.columnMenu.map( menu => menu.label );
+        return this.setState( { menuHeaders: [...allMenuHeaders], windowWidth } );
+      }
+      return this.setState( { windowWidth } );
+    }, 500 );
   }
 
   render() {
