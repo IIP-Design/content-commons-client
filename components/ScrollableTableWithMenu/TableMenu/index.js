@@ -64,14 +64,13 @@ class TableMenu extends React.Component {
   handleCloseMenu = () => this.setState( { displayTableMenu: false } );
 
   handleKbdAccess = e => {
-    const isTableMenu = e.target.dataset.tablemenu;
-    const isItemsPerPage = e.target.id === 'items-per-page';
     const columns = this.getColumns();
     const current = columns.indexOf( e.target.id );
     const first = 0;
     const last = columns.length - 1;
     const next = current + 1;
     const previous = current - 1;
+    const isCheckbox = e.target.type === 'checkbox';
 
     if ( !this.state.displayTableMenu ) return;
 
@@ -85,10 +84,8 @@ class TableMenu extends React.Component {
         this.handleCloseMenu();
         break;
 
-      case 'Shift':
-        if ( isTableMenu || isItemsPerPage ) {
-          this.handleCloseMenu();
-        }
+      case 'Tab':
+        if ( isCheckbox ) this.handleCloseMenu();
         break;
 
       case 'ArrowDown':
