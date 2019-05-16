@@ -30,6 +30,13 @@ class TableMenu extends React.Component {
     window.addEventListener( 'resize', this.menuHeadersOnResize );
   }
 
+  componentDidUpdate = ( _, prevState ) => {
+    if ( !prevState.displayTableMenu && this.state.displayTableMenu ) {
+      const columns = this.getColumns();
+      this.handleFocus( columns, 0 );
+    }
+  }
+
   componentWillUnmount = () => {
     window.removeEventListener( 'click', this.toggleTableMenu );
     window.removeEventListener( 'keydown', this.handleKbdAccess );
