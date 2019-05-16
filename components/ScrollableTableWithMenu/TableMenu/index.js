@@ -37,7 +37,7 @@ class TableMenu extends React.Component {
   componentDidUpdate = ( _, prevState ) => {
     if ( !prevState.displayTableMenu && this.state.displayTableMenu ) {
       const columns = this.getColumns();
-      this.handleFocus( columns, 0 );
+      this.handleCheckboxFocus( columns, 0 );
     }
   }
 
@@ -57,7 +57,7 @@ class TableMenu extends React.Component {
     ), [] )
   )
 
-  handleFocus = ( array, i ) => {
+  handleCheckboxFocus = ( array, i ) => {
     this[array[i]].inputRef.focus();
   };
 
@@ -87,20 +87,20 @@ class TableMenu extends React.Component {
     switch ( e.key ) {
       case 'ArrowDown':
         i = current === last ? first : next;
-        this.handleFocus( columns, i );
+        this.handleCheckboxFocus( columns, i );
         break;
 
       case 'ArrowUp':
         i = current === first ? last : previous;
-        this.handleFocus( columns, i );
+        this.handleCheckboxFocus( columns, i );
         break;
 
       case 'Home':
-        this.handleFocus( columns, first );
+        this.handleCheckboxFocus( columns, first );
         break;
 
       case 'End':
-        this.handleFocus( columns, last );
+        this.handleCheckboxFocus( columns, last );
         break;
 
       default:
