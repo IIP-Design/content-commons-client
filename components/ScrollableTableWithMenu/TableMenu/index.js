@@ -23,6 +23,8 @@ class TableMenu extends React.Component {
 
   _breakpoint = 767;
 
+  _scrollPixels = 200;
+
   componentDidMount = () => {
     this.menuHeadersOnMobile();
     window.addEventListener( 'click', this.toggleTableMenu );
@@ -108,9 +110,9 @@ class TableMenu extends React.Component {
     const itemsTable = document.querySelector( '.items_table' );
     const tableArrowDirection = e.target.dataset.tablearrow;
     if ( tableArrowDirection === 'right' ) {
-      itemsTable.scrollLeft += 200;
+      itemsTable.scrollLeft += this._scrollPixels;
     } else {
-      itemsTable.scrollLeft -= 200;
+      itemsTable.scrollLeft -= this._scrollPixels;
     }
   }
 
