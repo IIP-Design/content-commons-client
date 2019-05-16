@@ -29,7 +29,19 @@
         }
 
         &.active .title {
+          position: relative;
           color: $blue;
+
+          &:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -7px;
+            width: 120%;
+            height: 4px;
+            margin-left: -10%;
+            background-color: $light-blue;
+          }
         }
       }
     }
