@@ -64,13 +64,6 @@ class TableMenu extends React.Component {
   handleKbdAccess = e => {
     const isTableMenu = e.target.dataset.tablemenu;
     const isItemsPerPage = e.target.id === 'items-per-page';
-
-    if ( !this.state.displayTableMenu ) return;
-
-    if ( e.key === 'Escape' || ( isTableMenu && e.key === 'Shift' ) || ( isItemsPerPage && e.key === 'Shift' ) ) {
-      this.setState( { displayTableMenu: false } );
-    }
-
     const columns = this.getColumns();
     const current = columns.indexOf( e.target.id );
     const first = 0;
@@ -78,12 +71,24 @@ class TableMenu extends React.Component {
     const next = current + 1;
     const previous = current - 1;
 
+    if ( !this.state.displayTableMenu ) return;
+
     if ( ['Home', 'End', 'ArrowDown', 'ArrowUp'].indexOf( e.key ) > -1 ) {
       e.preventDefault();
     }
 
     let i;
     switch ( e.key ) {
+      case 'Escape':
+        this.setState( { displayTableMenu: false } );
+        break;
+
+      case 'Shift':
+        if ( isTableMenu || isItemsPerPage ) {
+          this.setState( { displayTableMenu: false } );
+        }
+        break;
+
       case 'ArrowDown':
         i = current === last ? first : next;
         this.handleCheckboxFocus( columns, i );
