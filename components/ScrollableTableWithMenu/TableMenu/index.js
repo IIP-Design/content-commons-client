@@ -25,6 +25,8 @@ class TableMenu extends React.Component {
 
   _scrollPixels = 200;
 
+  _timeOutDelay = 500;
+
   componentDidMount = () => {
     this.menuHeadersOnMobile();
     window.addEventListener( 'click', this.toggleTableMenu );
@@ -174,7 +176,7 @@ class TableMenu extends React.Component {
         return this.setState( { menuHeaders: [...allMenuHeaders], windowWidth } );
       }
       return this.setState( { windowWidth } );
-    }, 500 );
+    }, this._timeOutDelay );
   }
 
   render() {
