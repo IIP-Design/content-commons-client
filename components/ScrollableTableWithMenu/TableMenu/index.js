@@ -61,6 +61,8 @@ class TableMenu extends React.Component {
     this[array[i]].inputRef.focus();
   };
 
+  handleCloseMenu = () => this.setState( { displayTableMenu: false } );
+
   handleKbdAccess = e => {
     const isTableMenu = e.target.dataset.tablemenu;
     const isItemsPerPage = e.target.id === 'items-per-page';
@@ -80,12 +82,12 @@ class TableMenu extends React.Component {
     let i;
     switch ( e.key ) {
       case 'Escape':
-        this.setState( { displayTableMenu: false } );
+        this.handleCloseMenu();
         break;
 
       case 'Shift':
         if ( isTableMenu || isItemsPerPage ) {
-          this.setState( { displayTableMenu: false } );
+          this.handleCloseMenu();
         }
         break;
 
