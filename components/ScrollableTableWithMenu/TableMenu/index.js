@@ -64,6 +64,12 @@ class TableMenu extends React.Component {
   handleCloseMenu = () => this.setState( { displayTableMenu: false } );
 
   handleKbdAccess = e => {
+    if ( !this.state.displayTableMenu ) return;
+
+    if ( ['Home', 'End', 'ArrowDown', 'ArrowUp'].indexOf( e.key ) > -1 ) {
+      e.preventDefault();
+    }
+
     const columns = this.getColumns();
     const current = columns.indexOf( e.target.id );
     const first = 0;
@@ -71,12 +77,6 @@ class TableMenu extends React.Component {
     const next = current + 1;
     const previous = current - 1;
     const isCheckbox = e.target.type === 'checkbox';
-
-    if ( !this.state.displayTableMenu ) return;
-
-    if ( ['Home', 'End', 'ArrowDown', 'ArrowUp'].indexOf( e.key ) > -1 ) {
-      e.preventDefault();
-    }
 
     let i;
     switch ( e.key ) {
