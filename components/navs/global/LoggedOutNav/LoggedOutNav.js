@@ -8,7 +8,7 @@
 import React from 'react';
 import { bool, func } from 'prop-types';
 import Link from 'next/link';
-import { Menu, Responsive, Icon } from 'semantic-ui-react';
+import { Menu, Icon } from 'semantic-ui-react';
 
 const menuItems = [
   {
@@ -36,7 +36,7 @@ const LoggedOutNav = props => {
 
   return (
     <span>
-      <Responsive as={ Menu } compact secondary minWidth={ 993 }>
+      <div className="ui compact secondary menu nav_loggedout_wrapper">
         { menuItems.map( item => (
           <Menu.Item key={ item.key } name={ item.name }>
             <Link href={ item.to }><a>{ item.label }</a></Link>
@@ -50,39 +50,37 @@ const LoggedOutNav = props => {
         >
           Feedback
         </a>
-      </Responsive>
+      </div>
 
       {
         mobileNavVisible
         && (
-        <Responsive maxWidth={ 992 }>
-          <ul className="mobileMenu">
-            <li>
-              <Icon name="close" onClick={ toggleMobileNav } onKeyUp={ keyUp } tabIndex={ 0 } />
+        <ul className="mobileMenu">
+          <li>
+            <Icon name="close" onClick={ toggleMobileNav } onKeyUp={ keyUp } tabIndex={ 0 } />
+          </li>
+          { menuItems.map( item => (
+            <li key={ item.key }>
+              <Link href={ item.to }>
+                <a>
+                  <span onClick={ toggleMobileNav } onKeyUp={ keyUp } role="presentation">
+                    { item.label }
+                  </span>
+                </a>
+              </Link>
             </li>
-            { menuItems.map( item => (
-              <li key={ item.key }>
-                <Link href={ item.to }>
-                  <a>
-                    <span onClick={ toggleMobileNav } onKeyUp={ keyUp } role="presentation">
-                      { item.label }
-                    </span>
-                  </a>
-                </Link>
-              </li>
-            ) ) }
-            <li>
-              <a
-                href="https://goo.gl/forms/PyLjAiaJVt3xONsd2"
-                target="_blank"
-                className="item feedback"
-                rel="noopener noreferrer"
-              >
-                Feedback
-              </a>
-            </li>
-          </ul>
-        </Responsive>
+          ) ) }
+          <li>
+            <a
+              href="https://goo.gl/forms/PyLjAiaJVt3xONsd2"
+              target="_blank"
+              className="item feedback"
+              rel="noopener noreferrer"
+            >
+              Feedback
+            </a>
+          </li>
+        </ul>
         )
       }
     </span>
