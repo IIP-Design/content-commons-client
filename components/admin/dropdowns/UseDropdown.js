@@ -4,6 +4,7 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { addEmptyOption } from 'lib/utils';
 
 const VIDEO_USE_QUERY = gql`
   query VIDEO_USE_QUERY {
@@ -37,6 +38,8 @@ const UseDropdown = props => (
           options = uses.map( u => ( { key: u.id, text: u.name, value: u.id } ) );
         }
       }
+
+      addEmptyOption( options );
 
       return (
         <Fragment>

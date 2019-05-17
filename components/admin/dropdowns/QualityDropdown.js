@@ -4,6 +4,7 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { addEmptyOption } from 'lib/utils';
 
 const VIDEO_QUALITY_QUERY = gql`
   query VIDEO_QUALITY_QUERY {
@@ -42,6 +43,8 @@ const QualityDropdown = props => (
           };
         } );
       }
+
+      addEmptyOption( options );
 
       return (
         <Fragment>

@@ -5,6 +5,7 @@ import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import './dropdown.scss';
+import { addEmptyOption } from 'lib/utils';
 
 const LANGUAGES_QUERY = gql`
   query LANGUAGES_QUERY {
@@ -25,6 +26,8 @@ const LanguageDropdown = props => (
       if ( data && data.languages ) {
         options = data.languages.map( lang => ( { key: lang.id, text: lang.displayName, value: lang.id } ) );
       }
+
+      addEmptyOption( options );
 
       return (
         <Fragment>

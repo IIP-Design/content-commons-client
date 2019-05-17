@@ -4,7 +4,7 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { titleCase } from 'lib/utils';
+import { titleCase, addEmptyOption } from 'lib/utils';
 
 const VIDEO_BURNED_IN_STATUS_QUERY = gql`
   query VIDEO_BURNED_IN_STATUS_QUERY {
@@ -38,6 +38,8 @@ const VideoBurnedInStatusDropdown = props => (
             };
           } );
       }
+
+      addEmptyOption( options );
 
       return (
         <Fragment>
