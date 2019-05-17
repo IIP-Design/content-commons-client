@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
@@ -6,13 +6,14 @@ import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedI
 import UseDropdown from 'components/admin/dropdowns/UseDropdown';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import FileRemoveReplaceMenu from 'components/admin/FileRemoveReplaceMenu/FileRemoveReplaceMenu';
-
 import { truncateAndReplaceStr } from 'lib/utils';
 import UploadCompletionTracker from '../UploadCompletionTracker';
-import { VideoUploadContext } from '../../VideoUpload';
 import './VideoProjectFilesRowMobile.scss';
+import { UploadFilesContext } from '../../../../UploadFilesContext';
 
 const VideoProjectFilesRowMobile = props => {
+  const { replaceFile, removeFile, updateField } = useContext( UploadFilesContext );
+
   const {
     file: {
       id, language, videoBurnedInStatus, use, quality, fileInput: { name, type }
@@ -54,65 +55,62 @@ const VideoProjectFilesRowMobile = props => {
   };
 
   return (
-    // Context API is used to avoind having to pass props down multiple levels
-    <VideoUploadContext.Consumer>
-      { ( { replaceAssetFile, removeAssetFile, updateField } ) => (
-        <div className="videoProjectFilesRowMobile">
 
-          { /* Filename */ }
-          <div className="videoProjectFilesRowMobile__column">
-            <div className="videoProjectFilesRowMobile__column--filename">
-              <UploadCompletionTracker fields={ getFields() } />
-              { /* eslint-disable jsx-a11y/interactive-supports-focus */ }
-              <span
-                className="item-text"
-                role="button"
-                onClick={ handleToggleDropdowns }
-                onKeyPress={ handleToggleDropdowns }
-              >
-                { filename }
-              </span>
-              <Button icon="chevron down" className={ `${open} no-background` } onClick={ handleToggleDropdowns } />
-              <FileRemoveReplaceMenu
-                onReplace={ e => replaceAssetFile( id, e.target.files[0] ) }
-                onRemove={ () => removeAssetFile( id ) }
-              />
-            </div>
-          </div>
-          <div className={ `videoProjectFilesRowMobile__dropdowns ${toggleState}` }>
-            <p className="videoProjectFilesRowMobile__dropdowns--filename-full">{ name }</p>
+    <div className="videoProjectFilesRowMobile">
 
-            { /* Language */ }
-            <LanguageDropdown id={ id } label="Language" value={ language } onChange={ updateField } required />
-
-            { /* VideoBurnedInStatus */ }
-            { fileType === 'video' && (
-            <VideoBurnedInStatusDropdown id={ id } label="Subtitles" value={ videoBurnedInStatus } onChange={ updateField } />
-            )
-            }
-
-            { /* Type/Use */ }
-            { ( fileType === 'video' || fileType === 'image' ) && (
-            <UseDropdown id={ id } label="Type/Use" value={ use } type={ fileType } onChange={ updateField } required />
-            )
-            }
-
-            { /* Quality */ }
-            { fileType === 'video' && (
-            <QualityDropdown
-              id={ id }
-              label="Quality"
-              value={ quality }
-              type={ fileType }
-              onChange={ updateField }
-              required
-            />
-            )
-            }
-          </div>
+      { /* Filename */ }
+      <div className="videoProjectFilesRowMobile__column">
+        <div className="videoProjectFilesRowMobile__column--filename">
+          <UploadCompletionTracker fields={ getFields() } />
+          { /* eslint-disable jsx-a11y/interactive-supports-focus */ }
+          <span
+            className="item-text"
+            role="button"
+            onClick={ handleToggleDropdowns }
+            onKeyPress={ handleToggleDropdowns }
+          >
+            { filename }
+          </span>
+          <Button icon="chevron down" className={ `${open} no-background` } onClick={ handleToggleDropdowns } />
+          <FileRemoveReplaceMenu
+            onReplace={ e => replaceFile( id, e.target.files[0] ) }
+            onRemove={ () => removeFile( id ) }
+          />
         </div>
-      ) }
-    </VideoUploadContext.Consumer>
+      </div>
+      <div className={ `videoProjectFilesRowMobile__dropdowns ${toggleState}` }>
+        <p className="videoProjectFilesRowMobile__dropdowns--filename-full">{ name }</p>
+
+        { /* Language */ }
+        <LanguageDropdown id={ id } label="Language" value={ language } onChange={ updateField } required />
+
+        { /* VideoBurnedInStatus */ }
+        { fileType === 'video' && (
+        <VideoBurnedInStatusDropdown id={ id } label="Subtitles" value={ videoBurnedInStatus } onChange={ updateField } />
+        )
+        }
+
+        { /* Type/Use */ }
+        { ( fileType === 'video' || fileType === 'image' ) && (
+          <UseDropdown id={ id } label="Type/Use" value={ use } type={ fileType } onChange={ updateField } required />
+        )
+        }
+
+        { /* Quality */ }
+        { fileType === 'video' && (
+        <QualityDropdown
+          id={ id }
+          label="Quality"
+          value={ quality }
+          type={ fileType }
+          onChange={ updateField }
+          required
+        />
+        )
+        }
+      </div>
+    </div>
+
   );
 };
 
