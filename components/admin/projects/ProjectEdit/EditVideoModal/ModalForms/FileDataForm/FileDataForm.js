@@ -9,7 +9,6 @@ import { compose, graphql } from 'react-apollo';
 import { Confirm, Form, Grid } from 'semantic-ui-react';
 
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
-import IconPopup from 'components/popups/IconPopup/IconPopup';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
 import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
@@ -289,19 +288,6 @@ class FileDataForm extends Component {
   }
 
   render() {
-    const videoQuality = (
-      <label htmlFor="video-quality"> { /* eslint-disable-line */ }
-        Video Quality
-        <IconPopup
-          iconSize="small"
-          iconType="info circle"
-          id="video-quality"
-          message="Web: small - for social sharing, Broadcast: large - ambassador videos"
-          popupSize="small"
-        />
-      </label>
-    );
-
     const { file, loading } = this.props.videoFileQuery;
     const { project } = this.props.videoProjectQuery;
 
@@ -413,9 +399,10 @@ class FileDataForm extends Component {
 
               <QualityDropdown
                 id="video-quality"
-                label={ videoQuality }
+                label="Video Quality"
                 onChange={ this.handleDropdownSave }
                 required
+                infotip="Web: small - for social sharing, Broadcast: large - ambassador videos"
                 type="video"
                 value={ quality }
               />
