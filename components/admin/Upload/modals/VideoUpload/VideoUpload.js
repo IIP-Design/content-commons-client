@@ -77,6 +77,14 @@ const VideoUpload = props => {
   };
 
   /**
+   * Compares file object file names for use in sorting.
+   * @param {object} a file object
+   * @param {object} b file object
+   * @returns {number}
+   */
+  const compareFileNames = ( a, b ) => a.fileInput.name.localeCompare( b.fileInput.name );
+
+  /**
    * Add files to files state array.  For each file selected,
    * create/init a file object with applicable props & add.
    * Generate a file id to track changes to file
@@ -100,7 +108,7 @@ const VideoUpload = props => {
       }
       return arr;
     };
-    setFiles( prevFiles => [...prevFiles, ...filesToAdd].reduce( reduceDuplicates, [] ) );
+    setFiles( prevFiles => [...prevFiles, ...filesToAdd].reduce( reduceDuplicates, [] ).sort( compareFileNames ) );
   };
 
   /**
@@ -122,7 +130,7 @@ const VideoUpload = props => {
         return file;
       }
       return { ...file, fileInput: fileFromInputSelection };
-    } ) );
+    } ).sort( compareFileNames ) );
   };
 
   /**
