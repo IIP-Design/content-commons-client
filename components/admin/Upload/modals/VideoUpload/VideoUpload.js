@@ -93,7 +93,14 @@ const VideoUpload = props => {
       fileInput: file,
       id: v4()
     } ) );
-    setFiles( prevFiles => [...prevFiles, ...filesToAdd] );
+
+    const reduceDuplicates = ( arr, file ) => {
+      if ( !arr.find( file2 => file.fileInput.name === file2.fileInput.name ) ) {
+        arr.push( file );
+      }
+      return arr;
+    };
+    setFiles( prevFiles => [...prevFiles, ...filesToAdd].reduce( reduceDuplicates, [] ) );
   };
 
   /**
