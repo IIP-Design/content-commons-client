@@ -16,7 +16,7 @@ const VideoProjectFilesRowMobile = props => {
 
   const {
     file: {
-      id, language, videoBurnedInStatus, use, quality, fileInput: { name, type }
+      id, language, videoBurnedInStatus, use, quality, input: { name, type }
     }
   } = props;
 
@@ -122,7 +122,7 @@ VideoProjectFilesRowMobile.propTypes = {
     videoBurnedInStatus: PropTypes.string,
     use: PropTypes.string,
     quality: PropTypes.string,
-    fileInput: PropTypes.object
+    input: PropTypes.object
   } )
 };
 

@@ -16,7 +16,7 @@ const VideoProjectFilesDesktopRow = props => {
 
   const {
     show, activeStep, file: {
-      id, language, videoBurnedInStatus, use, quality, fileInput: { name, type }
+      id, language, videoBurnedInStatus, use, quality, input: { name, type }
     }
   } = props;
 
@@ -121,7 +121,7 @@ VideoProjectFilesDesktopRow.propTypes = {
     videoBurnedInStatus: PropTypes.string,
     use: PropTypes.string,
     quality: PropTypes.string,
-    fileInput: PropTypes.object
+    input: PropTypes.object
   } ),
   activeStep: PropTypes.number,
   show: PropTypes.func

@@ -1,8 +1,8 @@
-@import "../../../../../styles/colors.scss";
+@import "styles/colors.scss";
 
 .edit-project {
   :focus:not(:focus-visible) {
-    outline: none
+    outline: none;
   }
 
   @media screen and (max-width: 550px) {
@@ -47,7 +47,7 @@
       }
     }
   }
-  
+
   &__btn--delete {
     &.ui.basic.button {
       border: 2px solid transparent;
@@ -140,22 +140,22 @@
     }
 
     > .ui.progress {
+      border-radius: 0;
+      margin-bottom: 3em;
+      font-size: 0.875em;
+      background-color: $light-grey;
+
+      .bar {
         border-radius: 0;
-        margin-bottom: 3em;
-        font-size: 0.875em;
-        background-color: $light-grey;
-
-        .bar {
+        &::after {
           border-radius: 0;
-          &::after {
-            border-radius: 0;
-          }
-        }
-
-        .label {
-          font-weight: normal;
         }
       }
+
+      .label {
+        font-weight: normal;
+      }
+    }
   }
 
   &__items {

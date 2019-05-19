@@ -33,15 +33,15 @@ const getDefaultUse = type => {
   }
 
   // if we already have a default id, return that
-  if ( defaultUse.id ) {
-    return defaultUse.id;
+  if ( defaultContentUse.id ) {
+    return defaultContentUse.id;
   }
 
   // look in the use list for a matching name, if found, set id or return ''
   const u = defaultContentUse.uses.find( use => use.name === defaultContentUse.name );
   if ( u ) {
-    defaultUse.id = u.id;
-    return defaultUse.id;
+    defaultContentUse.id = u.id;
+    return defaultContentUse.id;
   }
 
   return '';
@@ -53,7 +53,7 @@ const add = files => files.map( file => ( {
   use: getDefaultUse( file.type.substr( 0, file.type.indexOf( '/' ) ) ),
   quality: '',
   videoBurnedInStatus: '',
-  fileInput: file
+  input: file
 } ) );
 
 const reducer = ( state, action ) => {
@@ -84,7 +84,7 @@ const reducer = ( state, action ) => {
           if ( file.id !== action.payload.fileId ) {
             return file;
           }
-          return { ...file, fileInput: action.payload.fileFromInputSelection };
+          return { ...file, input: action.payload.fileFromInputSelection };
         } )
       } );
     }
@@ -157,7 +157,7 @@ const UploadFilesProvider = props => {
 
     if ( files.length ) {
       const isComplete = files.every( file => {
-        const { fileInput: { type } } = file;
+        const { input: { type } } = file;
         if ( type.includes( 'video' ) ) {
           return ( file.language && file.videoBurnedInStatus && file.quality );
         }

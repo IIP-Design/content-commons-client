@@ -1,111 +1,112 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { redirectTo } from 'lib/browser';
 import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import trim from 'lodash/trim';
-import { VIDEO_PROJECT_QUERY } from 'lib/graphql/queries/VideoProject';
+import isEmpty from 'lodash/isEmpty';
+import { VIDEO_PROJECT_QUERY } from 'lib/graphql/queries/video';
+import { ProjectProvider } from 'components/admin/context/ProjectContext';
 
 // using dynamic import so that components load when they are needed, or rendered
 const VideoEdit = dynamic( () => import( 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit' ) );
 const VideoReview = dynamic( () => import( 'components/admin/projects/ProjectReview/VideoReview' ) );
 
-export const ProjectContext = React.createContext();
-
 const CONTENT_TYPES = ['video'];
 
-/**
- * Verify that valid query params are present,
- * to execute a project query
- * @param {object} query { content, action }
- */
-const isQueryValid = query => {
-  if ( !query
-    || !query.id
-    || !query.content
-    || !CONTENT_TYPES.includes( trim( query.content ) ) ) {
-    return false;
-  }
+const allowedContentTypes = content => content && CONTENT_TYPES.includes( trim( content ) );
 
-  return true;
+/**
+ * Returns query applicable to content type
+ * @param {String} content content type, i.e. video, image, etc
+ */
+const getProjectQuery = content => {
+  switch ( content ) {
+    case 'video':
+      return VIDEO_PROJECT_QUERY;
+
+    default:
+      return null;
+  }
 };
 
-
 const ProjectPage = props => {
-  const { query: { id, content, action }, router } = props;
+  // Handles client side route checking
+  const isValidPath = query => query && allowedContentTypes( query.content );
 
   const loadEditComponent = () => {
-    if ( content === 'video' ) {
+    if ( props.query.content === 'video' ) {
       return (
-        <VideoEdit id={ id } />
+        <VideoEdit id={ props.query.id } />
       );
     }
   };
 
   const loadReviewComponent = () => {
-    if ( content === 'video' ) {
-      return <VideoReview id={ id } />;
+    if ( props.query.content === 'video' ) {
+      return <VideoReview id={ props.query.id } />;
     }
   };
 
-  const redirectToDashboard = () => {
-    router.push( '/admin/dashboard' );
-  };
 
-
-  const getProjectData = () => {
-    const { videoProject } = props;
-
-    switch ( content ) {
+  const getProject = () => {
+    switch ( props.query.content ) {
       case 'video':
-        return videoProject || {};
+        return props.videoProject || {};
 
       default:
         return {};
     }
   };
 
-  /**
-   * Verify that a content type uery param are present,
-   * if not send to dashboard
-   * @param {object} query { content, action }
-   */
-  const isPathValid = query => {
-    if ( !query
-      || !content
-      || !CONTENT_TYPES.includes( trim( content ) ) ) {
-      return false;
-    }
 
-    return true;
-  };
-
-
-  if ( !isPathValid( props.query ) ) {
-    redirectToDashboard();
+  if ( !isValidPath( props.query ) ) {
+    props.router.push( '/admin/dashboard' );
   }
 
+  const { action: actionQry } = props.query;
+
+  const initialState = getProject();
+
+  const reducer = ( state, action ) => {
+    switch ( action.type ) {
+      case 'updateProject':
+        return {
+          ...state
+        };
+
+      default:
+        return state;
+    }
+  };
+
   return (
-    <ProjectContext.Provider value={ getProjectData( props ) }>
-      { action === 'edit'
+    <ProjectProvider initialState={ initialState } reducer={ reducer }>
+      { actionQry === 'edit'
         ? loadEditComponent()
         : loadReviewComponent()
       }
-    </ProjectContext.Provider>
+    </ProjectProvider>
   );
 };
 
 
-ProjectPage.getInitialProps = async props => {
-  if ( !isQueryValid( props.query ) ) {
+ProjectPage.getInitialProps = async ( { query, res, apolloClient } ) => {
+  // Send to dahsboard if the query is not present or the content type is not valid
+  // Handles server side route checking
+  if ( isEmpty( query ) || !allowedContentTypes( query.content ) ) {
+    redirectTo( '/admin/dashboard', { res } );
+  }
+
+  // If there is no id return empty project data object
+  if ( !query.id ) {
     return {};
   }
 
-  // This will check for other content type queries go forward
-  const query = VIDEO_PROJECT_QUERY;
-
-  const { data } = await props.apolloClient.query( {
-    query,
-    variables: { id: props.query.id }
+  // Fetch applicable query and populate project data for use in child components
+  const { data } = await apolloClient.query( {
+    query: getProjectQuery( query.content ),
+    variables: { id: query.id }
   } );
 
   return data;
