@@ -35,7 +35,7 @@ const TableItemsDisplay = props => {
       query={ TEAM_VIDEO_PROJECTS_COUNT_QUERY }
       variables={ { ...variables } }
     >
-      { ( { loading, error, data: { videoProjects } } ) => {
+      { ( { loading, error, data } ) => {
         if ( loading ) {
           return (
             <Grid.Column className="items_display">
@@ -51,9 +51,9 @@ const TableItemsDisplay = props => {
             </Grid.Column>
           );
         }
-        if ( !videoProjects ) return null;
+        if ( data && !data.videoProjects ) return null;
 
-        const projectsCount = videoProjects.length;
+        const projectsCount = data.videoProjects.length;
         const firstPageItem = skip + 1;
         const range = skip + count;
         const lastPageItem = range < projectsCount ? range : projectsCount;
