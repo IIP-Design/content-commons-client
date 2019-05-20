@@ -6,7 +6,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, Icon } from 'semantic-ui-react';
+import {
+  Accordion, Checkbox, Icon, Menu
+} from 'semantic-ui-react';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { titleCase } from 'lib/utils';
 import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import './TableMenu.scss';
@@ -18,57 +21,122 @@ class TableMenu extends React.Component {
     windowWidth: ''
   }
 
-  componentDidMount() {
-    document.addEventListener( 'click', this.toggleTableMenu, false );
+  _breakpoint = 767;
+
+  _scrollPixels = 200;
+
+  _timeOutDelay = 500;
+
+  componentDidMount = () => {
     this.menuHeadersOnMobile();
+    window.addEventListener( 'click', this.toggleTableMenu );
+    window.addEventListener( 'keydown', this.handleKbdAccess );
     window.addEventListener( 'resize', this.menuHeadersOnResize );
   }
 
-  componentWillUnmount() {
-    document.removeEventListener( 'click', this.toggleTableMenu, false );
+  componentDidUpdate = ( _, prevState ) => {
+    if ( !prevState.displayTableMenu && this.state.displayTableMenu ) {
+      const columns = this.getColumns();
+      this.handleCheckboxFocus( columns, 0 );
+    }
+  }
+
+  componentWillUnmount = () => {
+    window.removeEventListener( 'click', this.toggleTableMenu );
+    window.removeEventListener( 'keydown', this.handleKbdAccess );
     window.removeEventListener( 'resize', this.menuHeadersOnResize );
   }
 
-  menuHeadersOnMobile = () => {
-    const allMenuHeaders = this.props.columnMenu.map( menu => menu.label );
-    if ( isMobile() ) {
-      this.setState( {
-        menuHeaders: [...allMenuHeaders]
-      } );
+  setRef = ( node, ref ) => {
+    this[ref] = node;
+  }
+
+  getColumns = () => (
+    this.props.columnMenu.reduce( ( acc, cur ) => (
+      [...acc, cur.label]
+    ), [] )
+  )
+
+  handleCheckboxFocus = ( array, i ) => {
+    this[array[i]].inputRef.focus();
+  };
+
+  handleCloseMenu = () => this.setState( { displayTableMenu: false } );
+
+  handleKbdAccess = e => {
+    if ( !this.state.displayTableMenu ) return;
+
+    if ( ['Home', 'End', 'ArrowDown', 'ArrowUp'].indexOf( e.key ) > -1 ) {
+      e.preventDefault();
+    }
+
+    const columns = this.getColumns();
+    const current = columns.indexOf( e.target.id );
+    const first = 0;
+    const last = columns.length - 1;
+    const next = current + 1;
+    const previous = current - 1;
+    const isCheckbox = e.target.type === 'checkbox';
+
+    let i;
+    switch ( e.key ) {
+      case 'Escape':
+        this.handleCloseMenu();
+        break;
+
+      case 'Tab':
+        if ( isCheckbox ) this.handleCloseMenu();
+        break;
+
+      case 'ArrowDown':
+        i = current === last ? first : next;
+        this.handleCheckboxFocus( columns, i );
+        break;
+
+      case 'ArrowUp':
+        i = current === first ? last : previous;
+        this.handleCheckboxFocus( columns, i );
+        break;
+
+      case 'Home':
+        this.handleCheckboxFocus( columns, first );
+        break;
+
+      case 'End':
+        this.handleCheckboxFocus( columns, last );
+        break;
+
+      default:
+        break;
     }
   }
 
-  menuHeadersOnResize = () => {
-    const windowWidth = window.innerWidth;
-    const prevWindowWidth = this.state.windowWidth;
-
-    let resizeMenuHeadersTimer = null;
-    if ( resizeMenuHeadersTimer !== null ) clearTimeout( resizeMenuHeadersTimer );
-    resizeMenuHeadersTimer = setTimeout( () => {
-      if ( prevWindowWidth !== '' && prevWindowWidth <= 767 && !isWindowWidthLessThanOrEqualTo( 767 ) ) {
-        return this.setState( { menuHeaders: [], windowWidth } );
-      }
-      if ( isWindowWidthLessThanOrEqualTo( 767 ) ) {
-        const allMenuHeaders = this.props.columnMenu.map( menu => menu.label );
-        return this.setState( { menuHeaders: [...allMenuHeaders], windowWidth } );
-      }
-      return this.setState( { windowWidth } );
-    }, 500 );
+  handleTableScroll = e => {
+    const itemsTable = document.querySelector( '.items_table' );
+    const tableArrowDirection = e.target.dataset.tablearrow;
+    if ( tableArrowDirection === 'right' ) {
+      itemsTable.scrollLeft += this._scrollPixels;
+    } else {
+      itemsTable.scrollLeft -= this._scrollPixels;
+    }
   }
 
   toggleTableMenu = e => {
-    const isTableMenu = e.target.dataset.tablemenu;
-    const isTableMenuItem = e.target.parentNode ? e.target.parentNode.dataset.tablemenuitem : null;
+    const isTableMenu = !!e.target.dataset.tablemenu;
+    const isTableMenuItem = !!e.target.parentNode.dataset.tablemenuitem || !!e.target.dataset.tablemenuitem;
+    const isShowMoreColumns = e.target.id === 'show-more-columns';
 
-    if ( isTableMenu ) {
-      return this.setState( prevState => ( { displayTableMenu: !prevState.displayTableMenu } ) );
-    }
+    this.setState( prevState => {
+      if ( isTableMenu ) {
+        return { displayTableMenu: !prevState.displayTableMenu };
+      }
 
-    if ( isTableMenuItem ) {
-      return this.setState( { displayTableMenu: true } );
-    }
+      if ( isTableMenuItem || isShowMoreColumns ) {
+        return { displayTableMenu: true };
+      }
 
-    return this.setState( { displayTableMenu: false } );
+      return { displayTableMenu: false };
+    } );
   }
 
   toggleCheckbox = ( e, data ) => {
@@ -87,14 +155,31 @@ class TableMenu extends React.Component {
     } );
   }
 
-  handleTableScroll = e => {
-    const itemsTable = document.querySelector( '.items_table' );
-    const tableArrowDirection = e.target.dataset.tablearrow;
-    if ( tableArrowDirection === 'right' ) {
-      itemsTable.scrollLeft += 200;
-    } else {
-      itemsTable.scrollLeft -= 200;
+  menuHeadersOnMobile = () => {
+    const allMenuHeaders = this.props.columnMenu.map( menu => menu.label );
+    if ( isMobile() ) {
+      this.setState( {
+        menuHeaders: [...allMenuHeaders]
+      } );
     }
+  }
+
+  menuHeadersOnResize = () => {
+    const windowWidth = window.innerWidth;
+    const prevWindowWidth = this.state.windowWidth;
+
+    let resizeMenuHeadersTimer = null;
+    if ( resizeMenuHeadersTimer !== null ) clearTimeout( resizeMenuHeadersTimer );
+    resizeMenuHeadersTimer = setTimeout( () => {
+      if ( prevWindowWidth !== '' && prevWindowWidth <= this._breakpoint && !isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
+        return this.setState( { menuHeaders: [], windowWidth } );
+      }
+      if ( isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
+        const allMenuHeaders = this.props.columnMenu.map( menu => menu.label );
+        return this.setState( { menuHeaders: [...allMenuHeaders], windowWidth } );
+      }
+      return this.setState( { windowWidth } );
+    }, this._timeOutDelay );
   }
 
   render() {
@@ -104,39 +189,73 @@ class TableMenu extends React.Component {
     return (
       <div className="items_menu_wrapper">
         <div className={ displayTableMenu ? 'items_menu active' : 'items_menu' }>
-          <span data-tablemenu>See More <Icon data-tablemenu name="angle down" /></span>
-          <span
-            role="button"
+          <Accordion as={ Menu } vertical>
+            <Menu.Item>
+              <Accordion.Title
+                active={ !displayTableMenu }
+                aria-controls="show-more-columns"
+                aria-expanded={ displayTableMenu }
+                aria-haspopup
+                as="button"
+                data-tablemenu
+                id="show-more-btn"
+              >
+                Show More <VisuallyHidden el="span">columns</VisuallyHidden>
+                <Icon
+                  data-tablemenu
+                  name={ `angle ${displayTableMenu ? 'up' : 'down'}` }
+                />
+              </Accordion.Title>
+              { displayTableMenu
+                && (
+                  <Accordion.Content
+                    active={ displayTableMenu }
+                    aria-hidden={ !displayTableMenu }
+                    aria-labelledby="show-more-btn"
+                    as="ul"
+                    id="show-more-columns"
+                    role="menu"
+                  >
+                    { columnMenu.map( item => (
+                      <li key={ item.name }>
+                        <Checkbox
+                          checked={ menuHeaders.includes( item.label ) }
+                          data-proplabel={ item.label }
+                          data-propname={ item.name }
+                          data-tablemenuitem
+                          id={ item.label }
+                          label={ titleCase( item.label ) }
+                          onChange={ tableMenuOnChange }
+                          onClick={ this.toggleCheckbox }
+                          ref={ node => this.setRef( node, item.label ) }
+                          role="menuitem"
+                          tabIndex="-1"
+                        />
+                      </li>
+                    ) ) }
+                  </Accordion.Content>
+                ) }
+            </Menu.Item>
+          </Accordion>
+
+          <button
             data-tablearrow="left"
             onClick={ this.handleTableScroll }
-            onKeyDown={ this.handleTableScroll }
-            tabIndex="0"
+            onFocus={ displayTableMenu ? this.toggleTableMenu : null }
+            type="button"
           >
+            <VisuallyHidden el="span">scroll table left</VisuallyHidden>
             <Icon name="angle left" data-tablearrow="left" />
-          </span>
-          <span
-            role="button"
+          </button>
+          <button
             data-tablearrow="right"
             onClick={ this.handleTableScroll }
-            onKeyDown={ this.handleTableScroll }
-            tabIndex="0"
+            onFocus={ displayTableMenu ? this.toggleTableMenu : null }
+            type="button"
           >
+            <VisuallyHidden el="span">scroll table right</VisuallyHidden>
             <Icon name="angle right" data-tablearrow="right" />
-          </span>
-          <div className={ displayTableMenu ? 'items_menu_list display' : 'items_menu_list' }>
-            { columnMenu.map( item => (
-              <Checkbox
-                data-tablemenuitem
-                data-propname={ item.name }
-                data-proplabel={ item.label }
-                label={ titleCase( item.label ) }
-                key={ item.name }
-                onChange={ tableMenuOnChange }
-                onClick={ this.toggleCheckbox }
-                checked={ menuHeaders.includes( item.label ) }
-              />
-            ) ) }
-          </div>
+          </button>
         </div>
       </div>
     );
