@@ -15,7 +15,7 @@ import TableItemsDisplay from './TableItemsDisplay/TableItemsDisplay';
 import TableSearch from './TableSearch/TableSearch';
 import TableMenu from './TableMenu/TableMenu';
 import TableActionsMenu from './TableActionsMenu/TableActionsMenu';
-import TablePagination from './TablePagination';
+import TablePagination from './TablePagination/TablePagination';
 import './ScrollableTableWithMenu.scss';
 
 /* eslint-disable react/prefer-stateless-function */
