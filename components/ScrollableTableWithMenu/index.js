@@ -11,7 +11,7 @@ import { Table, Grid } from 'semantic-ui-react';
 import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import TableHeader from './TableHeader/TableHeader';
 import TableBody from './TableBody/TableBody';
-import TableItemsDisplay from './TableItemsDisplay';
+import TableItemsDisplay from './TableItemsDisplay/TableItemsDisplay';
 import TableSearch from './TableSearch/TableSearch';
 import TableMenu from './TableMenu';
 import TableActionsMenu from './TableActionsMenu/TableActionsMenu';
