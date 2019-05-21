@@ -123,7 +123,7 @@ class TableMenu extends React.Component {
 
   toggleTableMenu = e => {
     const isTableMenu = !!e.target.dataset.tablemenu;
-    const isTableMenuItem = !!e.target.parentNode.dataset.tablemenuitem || !!e.target.dataset.tablemenuitem;
+    const isTableMenuItem = ( e.target.parentNode && !!e.target.parentNode.dataset.tablemenuitem ) || !!e.target.dataset.tablemenuitem;
     const isShowMoreColumns = e.target.id === 'show-more-columns';
 
     this.setState( prevState => {
