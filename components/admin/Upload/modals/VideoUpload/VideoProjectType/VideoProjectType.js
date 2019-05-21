@@ -21,8 +21,7 @@ const VideoProjectType = props => {
 
   return (
     <Form>
-      <strong>Upload Files to create a new video project</strong>
-      <p>A video project consists of at least one video file, optional translations of the video, and any support files associated with it.</p>
+      <p>A video project consists of <strong>at least one video file</strong>, optional translations of the video, and any support files associated with it.</p>
       <p>Acceptable file types include .mp4 and .mov, .srt, and .jpg or .png files that may be used for thumbnails.</p>
       <div className="upload_actions">
         <Button
