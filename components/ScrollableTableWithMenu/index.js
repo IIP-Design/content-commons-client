@@ -13,7 +13,7 @@ import TableHeader from './TableHeader/TableHeader';
 import TableBody from './TableBody/TableBody';
 import TableItemsDisplay from './TableItemsDisplay/TableItemsDisplay';
 import TableSearch from './TableSearch/TableSearch';
-import TableMenu from './TableMenu';
+import TableMenu from './TableMenu/TableMenu';
 import TableActionsMenu from './TableActionsMenu/TableActionsMenu';
 import TablePagination from './TablePagination';
 import './ScrollableTableWithMenu.scss';
