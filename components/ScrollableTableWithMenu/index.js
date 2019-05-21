@@ -14,7 +14,7 @@ import TableBody from './TableBody';
 import TableItemsDisplay from './TableItemsDisplay';
 import TableSearch from './TableSearch/TableSearch';
 import TableMenu from './TableMenu';
-import TableActionsMenu from './TableActionsMenu';
+import TableActionsMenu from './TableActionsMenu/TableActionsMenu';
 import TablePagination from './TablePagination';
 import './ScrollableTableWithMenu.scss';
 
