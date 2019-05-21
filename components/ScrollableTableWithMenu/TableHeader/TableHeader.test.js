@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import TableHeader from './index';
+import TableHeader from './TableHeader';
 
 describe( '<TableHeader />', () => {
   it( 'renders without crashing', () => {
