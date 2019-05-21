@@ -15,11 +15,11 @@ import docIcon from 'static/icons/icon_150px_document_blue.png';
 import eduIcon from 'static/icons/icon_150px_edu_blue.png';
 import videoIcon from 'static/icons/icon_150px_video_blue.png';
 import audioIcon from 'static/icons/icon_150px_audio_blue.png';
-import UploadFilesProvider from './UploadFilesContext';
 import './Upload.scss';
 
 // using dynamic import so that components load when they are needed, or rendered
 const VideoUpload = dynamic( () => import( './modals/VideoUpload/VideoUpload' ) );
+
 class Upload extends Component {
   state = {
     modalOpen: false,
@@ -33,51 +33,46 @@ class Upload extends Component {
   handleModalClassname = updatedModalClassname => this.setState( { modalClassname: updatedModalClassname } );
 
   render() {
-    console.log( 'rendering Upload' );
     const { modalOpen, modalClassname } = this.state;
     return (
       <div>
         <h1>Upload Content</h1>
-
         <section className="upload-content">
-          <UploadFilesProvider>
-            <div className="contentTypes">
-              <Button className="type disabled" aria-label="Upload Audio Content">
-                <img src={ audioIcon } alt="Upload Audio Content" />
-                <span>Audio</span>
-              </Button>
-              <Modal
-                className={ modalClassname }
-                open={ modalOpen }
-                trigger={ (
-                  <Button className="type" aria-label="Upload Video Content" onClick={ this.handleModalOpen }>
-                    <img src={ videoIcon } alt="Upload video content" />
-                    <span>Videos</span>
-                  </Button>
+          <div className="contentTypes">
+            <Button className="type disabled" aria-label="Upload Audio Content">
+              <img src={ audioIcon } alt="Upload Audio Content" />
+              <span>Audio</span>
+            </Button>
+            <Modal
+              className={ modalClassname }
+              open={ modalOpen }
+              trigger={ (
+                <Button className="type" aria-label="Upload Video Content" onClick={ this.handleModalOpen }>
+                  <img src={ videoIcon } alt="Upload video content" />
+                  <span>Videos</span>
+                </Button>
               ) }
-                content={ (
-                  <VideoUpload
-                    closeModal={ this.handleModalClose }
-                    updateModalClassname={ this.handleModalClassname }
-                  />
+              content={ (
+                <VideoUpload
+                  closeModal={ this.handleModalClose }
+                  updateModalClassname={ this.handleModalClassname }
+                />
               ) }
-              />
-              <Button className="type disabled" aria-label="Upload Image Content">
-                <img src={ imageIcon } alt="Upload images content" />
-                <span>Images</span>
-              </Button>
-              <Button className="type disabled" aria-label="Upload Document Content">
-                <img src={ docIcon } alt="Upload document content" />
-                <span>Documents</span>
-              </Button>
-              <Button className="type disabled" aria-label="Upload Teaching Material Content">
-                <img src={ eduIcon } alt="Upload teaching material content" />
-                <span>Teaching Materials</span>
-              </Button>
-            </div>
-          </UploadFilesProvider>
+            />
+            <Button className="type disabled" aria-label="Upload Image Content">
+              <img src={ imageIcon } alt="Upload images content" />
+              <span>Images</span>
+            </Button>
+            <Button className="type disabled" aria-label="Upload Document Content">
+              <img src={ docIcon } alt="Upload document content" />
+              <span>Documents</span>
+            </Button>
+            <Button className="type disabled" aria-label="Upload Teaching Material Content">
+              <img src={ eduIcon } alt="Upload teaching material content" />
+              <span>Teaching Materials</span>
+            </Button>
+          </div>
         </section>
-
 
         <section className="upload_information">
           <div className="upload_information_advisory">

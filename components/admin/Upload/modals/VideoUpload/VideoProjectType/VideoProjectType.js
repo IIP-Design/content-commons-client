@@ -1,17 +1,12 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button } from 'semantic-ui-react';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import './VideoProjectType.scss';
-import { UploadFilesContext } from '../../../UploadFilesContext';
+
 
 const VideoProjectType = props => {
-  console.log( 'rendering VideoProjectType' );
-
-  const { addFiles } = useContext( UploadFilesContext );
-
   // since we are using a stateless function, use a hook for mouunting/unmouting calls
-  // @todo this renders twice3, fix
   useEffect( () => {
     props.updateModalClassname( 'upload_modal project-type-active' );
     return () => props.updateModalClassname( 'upload_modal' );
@@ -20,7 +15,7 @@ const VideoProjectType = props => {
 
   // only called if files are selected
   const handleOnChangeFiles = e => {
-    addFiles( e.target.files );
+    props.addAssetFiles( e.target.files );
     props.goNext();
   };
 
@@ -45,6 +40,7 @@ const VideoProjectType = props => {
 
 VideoProjectType.propTypes = {
   closeModal: PropTypes.func,
+  addAssetFiles: PropTypes.func,
   updateModalClassname: PropTypes.func,
   goNext: PropTypes.func
 };
