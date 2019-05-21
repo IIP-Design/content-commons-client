@@ -17,7 +17,7 @@ import createIcon from 'static/images/dashboard/create.svg';
 import deleteIcon from 'static/images/dashboard/delete.svg';
 import archiveIcon from 'static/images/dashboard/archive.svg';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
-import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody';
+import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
 import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination';
 import './TableActionsMenu.scss';
 

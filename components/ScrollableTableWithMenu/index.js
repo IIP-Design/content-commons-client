@@ -10,7 +10,7 @@ import debounce from 'lodash/debounce';
 import { Table, Grid } from 'semantic-ui-react';
 import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import TableHeader from './TableHeader';
-import TableBody from './TableBody';
+import TableBody from './TableBody/TableBody';
 import TableItemsDisplay from './TableItemsDisplay';
 import TableSearch from './TableSearch/TableSearch';
 import TableMenu from './TableMenu';
