@@ -25,6 +25,8 @@ query IMAGE_QUALITY_QUERY {
 }
 `;
 
+const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
+
 const QualityDropdown = props => (
   <Query query={ props.type === 'video' ? VIDEO_QUALITY_QUERY : IMAGE_QUALITY_QUERY }>
     { ( { data, loading, error } ) => {
@@ -82,7 +84,6 @@ QualityDropdown.propTypes = {
   type: PropTypes.string
 };
 
-
-export default QualityDropdown;
+export default React.memo( QualityDropdown, areEqual );
 export { VIDEO_QUALITY_QUERY };
 export { IMAGE_QUALITY_QUERY };

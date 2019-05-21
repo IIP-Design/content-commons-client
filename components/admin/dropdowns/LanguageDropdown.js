@@ -18,6 +18,8 @@ const LANGUAGES_QUERY = gql`
 `;
 
 
+const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
+
 const LanguageDropdown = props => (
   <Query query={ LANGUAGES_QUERY }>
     { ( { data, loading, error } ) => {
@@ -58,15 +60,15 @@ const LanguageDropdown = props => (
   </Query>
 );
 
+
 LanguageDropdown.defaultProps = {
   id: ''
 };
-
 
 LanguageDropdown.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string
 };
 
-export default LanguageDropdown;
+export default React.memo( LanguageDropdown, areEqual );
 export { LANGUAGES_QUERY };

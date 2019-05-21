@@ -16,6 +16,7 @@ const VIDEO_BURNED_IN_STATUS_QUERY = gql`
   }
  `;
 
+const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
 const VideoBurnedInStatusDropdown = props => (
   <Query query={ VIDEO_BURNED_IN_STATUS_QUERY }>
@@ -77,5 +78,5 @@ VideoBurnedInStatusDropdown.propTypes = {
   label: PropTypes.string
 };
 
-export default VideoBurnedInStatusDropdown;
+export default React.memo( VideoBurnedInStatusDropdown, areEqual );
 export { VIDEO_BURNED_IN_STATUS_QUERY };

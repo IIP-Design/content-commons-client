@@ -24,6 +24,8 @@ const IMAGE_USE_QUERY = gql`
   }
 `;
 
+const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
+
 const UseDropdown = props => (
   <Query query={ props.type === 'video' ? VIDEO_USE_QUERY : IMAGE_USE_QUERY }>
     { ( { data, loading, error } ) => {
@@ -64,7 +66,6 @@ const UseDropdown = props => (
       );
     } }
   </Query>
-
 );
 
 UseDropdown.defaultProps = {
@@ -77,6 +78,7 @@ UseDropdown.propTypes = {
   type: PropTypes.string
 };
 
-export default UseDropdown;
+export default React.memo( UseDropdown, areEqual );
+
 export { VIDEO_USE_QUERY };
 export { IMAGE_USE_QUERY };
