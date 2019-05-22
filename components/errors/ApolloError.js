@@ -23,7 +23,11 @@ const ApolloError = props => {
       }
     }
 
-    return errs.join( '\n' );
+    if ( errs[0] === 'This token is either invalid or expired!' ) {
+      return <div>Your link has expired. Please return to the <a href="/login">login page</a>.</div>;
+    }
+
+    return errs.join( '\n' ).replace( 'AuthenticationError:', '' ).trim();
   };
 
 
