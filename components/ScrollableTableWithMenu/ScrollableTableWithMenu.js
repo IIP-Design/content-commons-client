@@ -9,13 +9,13 @@ import sortBy from 'lodash/sortBy';
 import debounce from 'lodash/debounce';
 import { Table, Grid } from 'semantic-ui-react';
 import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
-import TableHeader from './TableHeader';
-import TableBody from './TableBody';
-import TableItemsDisplay from './TableItemsDisplay';
+import TableHeader from './TableHeader/TableHeader';
+import TableBody from './TableBody/TableBody';
+import TableItemsDisplay from './TableItemsDisplay/TableItemsDisplay';
 import TableSearch from './TableSearch/TableSearch';
-import TableMenu from './TableMenu';
-import TableActionsMenu from './TableActionsMenu';
-import TablePagination from './TablePagination';
+import TableMenu from './TableMenu/TableMenu';
+import TableActionsMenu from './TableActionsMenu/TableActionsMenu';
+import TablePagination from './TablePagination/TablePagination';
 import './ScrollableTableWithMenu.scss';
 
 /* eslint-disable react/prefer-stateless-function */

@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { Dropdown, Grid, Loader } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
-import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination';
+import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
 import './TableItemsDisplay.scss';
 
 const displaySizeOptions = [
