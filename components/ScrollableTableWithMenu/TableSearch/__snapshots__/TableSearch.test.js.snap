@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TableSearch /> renders without crashing 1`] = `
+<GridColumn
+  className="tableSearch_wrapper"
+  computer={6}
+  floated="right"
+  mobile={16}
+>
+  <Form
+    as="form"
+    onSubmit={[Function]}
+    size="tiny"
+  >
+    <VisuallyHidden
+      el="div"
+    >
+      <label
+        htmlFor="search-projects"
+      >
+        Search projects
+      </label>
+    </VisuallyHidden>
+    <Input
+      action={true}
+      className="tableSearch__searchTerm"
+      fluid={true}
+      id="search-projects"
+      onChange={[Function]}
+      placeholder="search term"
+      type="text"
+      value=""
+    >
+      <input />
+      <Button
+        aria-label="search"
+        as="button"
+        icon="search"
+      />
+    </Input>
+  </Form>
+</GridColumn>
+`;
