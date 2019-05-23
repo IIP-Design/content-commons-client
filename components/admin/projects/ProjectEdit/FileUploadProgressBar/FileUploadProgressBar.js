@@ -11,6 +11,7 @@ const FileUploadProgressBar = props => {
     filesToUpload, showMessage
   } = props;
 
+
   const size = filesToUpload.reduce( ( acc, curr ) => acc + curr.input.size, 0 );
   const uploadCount = filesToUpload.length;
 

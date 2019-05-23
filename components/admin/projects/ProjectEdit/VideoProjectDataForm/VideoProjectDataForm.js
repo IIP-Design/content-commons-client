@@ -5,27 +5,25 @@
  */
 import { withRouter } from 'next/router';
 import { compose, graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 import { CURRENT_USER_QUERY } from 'components/User/User';
 import ProjectDataForm from 'components/admin/projects/ProjectEdit/ProjectDataForm/ProjectDataForm';
 import { withFormik } from 'formik';
+import {
+  CREATE_VIDEO_PROJECT_MUTATION,
+  VIDEO_PROJECT_FORM_QUERY
+} from 'lib/graphql/queries/video';
+import { buildCreateVideoProjectTree } from 'lib/graphql/builders/video';
 import { validationSchema } from './validationSchema';
-
-const CREATE_VIDEO_PROJECT_MUTATION = gql`
-  mutation CREATE_VIDEO_PROJECT_MUTATION( $data: VideoProjectCreateInput! ) {
-    createVideoProject( data: $data ) {
-      id
-      projectTitle
-    }
-}
-`;
-
 
 // what happens if there is a project id but it returns an error?
 export default compose(
   withRouter,
   graphql( CURRENT_USER_QUERY, { name: 'user' } ), // only run on create
   graphql( CREATE_VIDEO_PROJECT_MUTATION, { name: 'createVideoProject' } ),
+  graphql( VIDEO_PROJECT_FORM_QUERY, {
+    partialRefetch: true,
+    skip: props => !props.id
+  } ),
 
   // use formik to make validation easier
   withFormik( {
@@ -33,23 +31,26 @@ export default compose(
     // data param coming from context in pages/admin/project, passed in as prop
     mapPropsToValues: props => {
       const { user: { authenticatedUser }, data } = props;
-      const categories = data.categories
-        ? data.categories.map( category => category.id )
+
+      const videoProject = ( data && data.projectForm ) ? data.projectForm : {};
+
+      const categories = videoProject.categories
+        ? videoProject.categories.map( category => category.id )
         : [];
 
-      const tags = data.tags
-        ? data.tags.map( tag => tag.id )
+      const tags = videoProject.tags
+        ? videoProject.tags.map( tag => tag.id )
         : [];
 
       return {
-        author: data.author || authenticatedUser.id,
-        team: data.team ? data.team.name : authenticatedUser.team.name,
-        projectTitle: data.projectTitle || '',
-        visibility: data.visibility || 'PUBLIC',
+        author: videoProject.author || authenticatedUser.id,
+        team: videoProject.team ? videoProject.team.name : authenticatedUser.team.name,
+        projectTitle: videoProject.projectTitle || '',
+        visibility: videoProject.visibility || 'PUBLIC',
         categories,
         tags,
-        descPublic: data.descPublic || '',
-        descInternal: data.descInternal || '',
+        descPublic: videoProject.descPublic || '',
+        descInternal: videoProject.descInternal || '',
         termsConditions: false
       };
     },
@@ -70,28 +71,7 @@ export default compose(
       try {
         const res = await createVideoProject( {
           variables: {
-            data: {
-              projectTitle: values.projectTitle.trimEnd(),
-              descPublic: values.descPublic.trimEnd(),
-              descInternal: values.descInternal.trimEnd(),
-              visibility: values.visibility,
-              author: {
-                connect: {
-                  id: values.author
-                }
-              },
-              team: {
-                connect: {
-                  id: user.authenticatedUser.team.id
-                }
-              },
-              categories: {
-                connect: values.categories.map( category => ( { id: category } ) )
-              },
-              tags: {
-                connect: values.tags.map( tag => ( { id: tag } ) )
-              }
-            }
+            data: buildCreateVideoProjectTree( user, values )
           }
         } );
 
@@ -99,7 +79,7 @@ export default compose(
         //    Button only appears for project creation
         setStatus( 'CREATED' );
 
-        // 4. Start upload of files.
+        // 4. Start upload of files. (if there are files to upload)
         handleUpload( res.data.createVideoProject );
       } catch ( err ) {
         setErrors( {

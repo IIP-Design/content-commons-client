@@ -5,60 +5,74 @@
  */
 
 import React, {
-  Fragment, useState, useEffect, useContext
+  Fragment, useState, useEffect
 } from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, Button } from 'semantic-ui-react';
 
 import { connect } from 'react-redux';
+import { compose, graphql } from 'react-apollo';
 import { getFileExt } from 'lib/utils';
+import isEmpty from 'lodash/isEmpty';
 
 import IconPopup from 'components/popups/IconPopup/IconPopup';
 import EditSupportFiles from 'components/admin/projects/ProjectEdit/EditSupportFiles/EditSupportFiles';
 import EditSupportFilesContent from 'components/admin/projects/ProjectEdit/EditSupportFilesContent/EditSupportFilesContent';
 import SupportItem from 'components/admin/projects/ProjectEdit/SupportItem/SupportItem';
 
-import { ProjectContext } from 'pages/admin/project';
+import { VIDEO_PROJECT_FILES_QUERY } from 'lib/graphql/queries/video';
 
 const SupportFileTypeList = props => {
+  const { projectId, config: { types } } = props;
+  const type = types[props.type];
+  const {
+    headline, popupMsg, checkBoxLabel, checkBoxName, iconMsg, iconSize, iconType, protectImages,
+  } = type;
+
   const [isEditing, setIsEditing] = useState( false );
-  const [supFiles, setSupFiles] = useState( [] );
   const [hasImages, setHasImages] = useState( false );
 
-  const data = useContext( ProjectContext );
-  const supportFiles = data.supportFiles || [];
-  const thumbnails = data.thumbnails || [];
-
-  const { config } = props;
-
-  const getFilesForNewproject = () => {
-    const { files } = props;
-    const { extensions } = config;
-
-    return files.filter( file => extensions.includes( getFileExt( file.fileObject.name ) ) );
+  const getFilesForNewProject = filesToUpload => {
+    const { extensions } = type;
+    return filesToUpload.filter( file => extensions.includes( getFileExt( file.input.name ) ) );
   };
 
-  const getFilesForExisitingProject = () => {
-    const { extensions } = config;
-    const files = [...supportFiles, ...thumbnails];
+  const getFilesForExisitingProject = files => {
+    const { extensions } = type;
     return files.filter( file => extensions.includes( getFileExt( file.filename ) ) );
   };
 
+  const fetchFiles = data => {
+    const { filesToUpload } = props;
+
+    if ( !isEmpty( data ) && data.projectFiles ) {
+      const { supportFiles, thumbnails } = data.projectFiles;
+      const files = [...supportFiles, ...thumbnails];
+      return getFilesForExisitingProject( files );
+    }
+
+    if ( filesToUpload ) {
+      return getFilesForNewProject( filesToUpload );
+    }
+
+    return [];
+  };
+
+  const [supFiles, setSupFiles] = useState( [] );
+
+  const checkForImages = () => supFiles.some( file => {
+    let filetype = file.filetype || file.input.type;
+    filetype = filetype || '';
+    return filetype.includes( 'image' );
+  } );
+
   useEffect( () => {
-    setSupFiles( props.projectId ? getFilesForExisitingProject : getFilesForNewproject );
+    setSupFiles( fetchFiles( props.data ) );
   }, [] );
 
-
   useEffect( () => {
-    const has = supFiles.some( file => {
-      let filetype = file.filetype || file.fileObject.type;
-      filetype = filetype || '';
-      return filetype.includes( 'image' );
-    } );
-
-    setHasImages( has );
+    setHasImages( checkForImages() );
   }, [supFiles] );
-
 
   const toggleEditModal = () => (
     setIsEditing( !isEditing )
@@ -75,11 +89,6 @@ const SupportFileTypeList = props => {
     );
   };
 
-  const {
-    headline, popupMsg, checkBoxLabel, checkBoxName, iconMsg, iconSize, iconType, protectImages,
-  } = config;
-
-  const { projectId } = props;
 
   return (
     <Fragment>
@@ -91,34 +100,36 @@ const SupportFileTypeList = props => {
           popupSize="mini"
         />
         { projectId
-            && (
-            <Fragment>
-              { !!supFiles.length // verify has upload completed
-                  && (
-                  <EditSupportFiles
-                    triggerProps={ {
-                      className: 'btn--edit',
-                      content: 'Edit',
-                      size: 'small',
-                      basic: true,
-                      onClick: toggleEditModal
-                    } }
-                    contentProps={ {
-                      // fileType,
-                      // projectId,
-                      closeEditModal: toggleEditModal
-                    } }
-                    modalTrigger={ Button }
-                    modalContent={ EditSupportFilesContent }
-                    options={ {
-                      closeIcon: true,
-                      onClose: toggleEditModal,
-                      open: isEditing
-                    } }
-                  />
-                  ) }
-            </Fragment>
-            ) }
+          && (
+          <Fragment>
+            { !!supFiles.length // verify has upload completed
+              && (
+              <EditSupportFiles
+                triggerProps={ {
+                  className: 'btn--edit',
+                  content: 'Edit',
+                  size: 'small',
+                  basic: true,
+                  onClick: toggleEditModal
+                } }
+                contentProps={ {
+                  // fileType,
+                  // projectId,
+                  closeEditModal: toggleEditModal
+                } }
+                modalTrigger={ Button }
+                modalContent={ EditSupportFilesContent }
+                options={ {
+                  closeIcon: true,
+                  onClose: toggleEditModal,
+                  open: isEditing
+                } }
+              />
+              )
+            }
+          </Fragment>
+          )
+        }
       </h3>
       <ul>
         { supFiles.length
@@ -129,43 +140,57 @@ const SupportFileTypeList = props => {
 
       { hasImages
         && (
-          <Fragment>
-            <Checkbox
-              id="protect-images"
-              label={ (
+        <Fragment>
+          <Checkbox
+            id="protect-images"
+            label={ (
                 /* eslint-disable jsx-a11y/label-has-for */
-                <label htmlFor="protect-images">
-                  { checkBoxLabel }
-                </label>
+              <label htmlFor="protect-images">
+                { checkBoxLabel }
+              </label>
               ) }
-              name={ checkBoxName }
-              type="checkbox"
-              checked={ protectImages }
-              // onChange={ handleChange }
-            />
-            <IconPopup
-              message={ iconMsg }
-              iconSize={ iconSize }
-              iconType={ iconType }
-              popupSize="mini"
-            />
-          </Fragment>
-        ) }
+            name={ checkBoxName }
+            type="checkbox"
+            checked={ protectImages }
+          />
+          <IconPopup
+            message={ iconMsg }
+            iconSize={ iconSize }
+            iconType={ iconType }
+            popupSize="mini"
+          />
+        </Fragment>
+        )
+      }
     </Fragment>
   );
 };
 
+
 SupportFileTypeList.propTypes = {
   config: PropTypes.object.isRequired,
   projectId: PropTypes.string,
+  type: PropTypes.string,
+  data: PropTypes.object,
   /* eslint-disable-next-line react/no-unused-prop-types */
   fileType: PropTypes.string,
-  files: PropTypes.array, // from redux
+  filesToUpload: PropTypes.array, // from redux
 };
 
 const mapStateToProps = state => ( {
-  files: state.files
+  filesToUpload: state.upload.filesToUpload
 } );
 
 
-export default connect( mapStateToProps )( SupportFileTypeList );
+export default compose(
+  connect( mapStateToProps, null ),
+  graphql( VIDEO_PROJECT_FILES_QUERY, {
+    partialRefetch: true,
+    options: props => ( {
+      variables: {
+        id: props.projectId
+      }
+    } ),
+    skip: props => !props.projectId
+  } )
+)( SupportFileTypeList );

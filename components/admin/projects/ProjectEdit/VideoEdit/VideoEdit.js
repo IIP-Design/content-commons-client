@@ -17,8 +17,13 @@ import * as actions from 'lib/redux/actions/upload';
 import { uploadToS3, uploadToVimeo, getFileMetadata } from 'lib/upload';
 import { buildUpdateVideoProjectTree } from 'lib/graphql/builders/video';
 import { buildThumbnailTree } from 'lib/graphql/builders/common';
-import { useProjectStateValue } from 'components/admin/context/ProjectContext';
-import { UPDATE_VIDEO_PROJECT_MUTATION, DELETE_VIDEO_PROJECT_MUTATION, UPDATE_VIDEO_UNIT_MUTATION } from 'lib/graphql/queries/video';
+import {
+  UPDATE_VIDEO_PROJECT_MUTATION,
+  DELETE_VIDEO_PROJECT_MUTATION,
+  UPDATE_VIDEO_UNIT_MUTATION,
+  VIDEO_PROJECT_FILES_QUERY,
+  VIDEO_PROJECT_UNITS_QUERY
+} from 'lib/graphql/queries/video';
 import { IMAGE_USES_QUERY } from 'lib/graphql/queries/common';
 import { SIGNED_S3_URL_MUTATION, FILE_INFO_MUTATION } from 'lib/graphql/queries/util';
 
@@ -45,9 +50,6 @@ export const UploadContext = React.createContext( false );
 
 /* eslint-disable react/prefer-stateless-function */
 const VideoEdit = props => {
-  // query is run in the project page to populate project state if available
-  const [state, dispatch] = useProjectStateValue();
-
   const MAX_CATEGORY_COUNT = 2;
   const SAVE_MSG_DELAY = 2000;
   const UPLOAD_SUCCESS_MSG_DELAY = SAVE_MSG_DELAY + 1000;
@@ -75,9 +77,10 @@ const VideoEdit = props => {
       clearTimeout( uploadSuccessTimer );
       clearTimeout( saveMsgTimer );
 
-      props.uploadClearFiles(); // clear redux file store
+      props.uploadReset(); // clear files to upload store
     };
   }, [] );
+
 
   const updateNotification = msg => {
     setNotification( {
@@ -136,7 +139,6 @@ const VideoEdit = props => {
     const { data: { updateVideoProject: { units, thumbnails } } } = res;
     const { updateVideoUnit } = props;
 
-
     if ( units.length && thumbnails.length ) {
       units.forEach( async unit => {
         let thumbnail = thumbnails.find( tn => tn.language.id === unit.language.id );
@@ -145,7 +147,7 @@ const VideoEdit = props => {
         thumbnail = thumbnail || thumbnails.find( tn => tn.language.locale === 'en-us' );
 
         if ( thumbnail ) {
-          const response = await updateVideoUnit( {
+          updateVideoUnit( {
             variables: {
               data: buildThumbnailTree( thumbnail ),
               where: {
@@ -153,12 +155,6 @@ const VideoEdit = props => {
               }
             }
           } ).catch( err => console.dir( err ) );
-          console.dir( response.data.updateVideoUnit );
-          // project.units.forEach( u => {
-          //   if ( u.id === unit.id ) {
-          //     u.thumbnails = response.data.updateVideoUnit.thumbnails;
-          //   }
-          // } );
         }
       } );
     }
@@ -177,13 +173,7 @@ const VideoEdit = props => {
       }
     } ).catch( err => console.dir( err ) );
 
-
     connectUnitThumbnails( res );
-
-
-    // are there units?
-    // are there unit in thumbnail language?
-    // connect thumns to unit
   };
 
 
@@ -207,9 +197,10 @@ const VideoEdit = props => {
 
 
   const handleUploadComplete = () => {
-    const { setIsUploading } = props;
+    const { setIsUploading, uploadReset } = props;
 
     setIsUploading( false );
+    uploadReset(); // reset upload redux store
     setDisplayTheUploadSuccessMsg( true );
     updateNotification( 'Project saved as draft' );
     delayUnmount( handleDisplaySaveMsg, saveMsgTimer, SAVE_MSG_DELAY );
@@ -220,14 +211,16 @@ const VideoEdit = props => {
   const isVideo = fileType => fileType.includes( 'video' );
   const isImage = fileType => fileType.includes( 'image' );
 
-  const handleUpload = async data => {
-    const { id, projectTitle } = data;
+  const handleUpload = async project => {
+    const { id, projectTitle } = project;
     const { getSignedS3Url, getFileInfo, setIsUploading } = props;
 
     // 1. set project id to newly created project (what if exsiting project?)
     setProjectId( id );
 
     // 2. If there are files to upload, upload them
+    //    as upload(s) complete, we update the file object as it gets passed
+    //    to the method that saves to the db
     if ( filesToUpload && filesToUpload.length ) {
       setIsUploading( true );
 
@@ -264,11 +257,10 @@ const VideoEdit = props => {
       // 4. clean up upload process
       handleUploadComplete();
 
-      // 5. update url to reflect new project (only new)
+      // 5. update url to reflect a new project (only new)
       addProjectIdToUrl( id );
     }
   };
-
 
   const renderConfirm = ( isOpen, onConfirm, onCancel ) => (
     <Fragment>
@@ -393,9 +385,7 @@ const VideoEdit = props => {
           id={ projectId }
           updateNotification={ updateNotification }
           handleUpload={ handleUpload }
-          // handleChange={ this.handleChange }
           maxCategories={ MAX_CATEGORY_COUNT }
-          data={ state }
         />
       </div>
 
@@ -425,11 +415,13 @@ const VideoEdit = props => {
 
       <div className="edit-project__items">
         { /* project thumbnails */ }
-        <ProjectUnitItems
-          projectId={ projectId }
-          heading="Videos in Project"
-          extensions={ ['.mov', '.mp4'] }
-        />
+        <UploadContext.Provider value={ isUploading }>
+          <ProjectUnitItems
+            projectId={ projectId }
+            heading="Videos in Project"
+            extensions={ ['.mov', '.mp4'] }
+          />
+        </UploadContext.Provider>
 
         { /* Add more files button */ }
         { projectId && (
@@ -469,7 +461,7 @@ VideoEdit.propTypes = {
   updateVideoUnit: PropTypes.func,
   router: PropTypes.object,
   setIsUploading: PropTypes.func, // from redux
-  uploadClearFiles: PropTypes.func, // from redux
+  uploadReset: PropTypes.func, // from redux
   uploadProgress: PropTypes.func, // from redux
   upload: PropTypes.object // from redux
 };
@@ -478,15 +470,50 @@ const mapStateToProps = state => ( {
   upload: state.upload
 } );
 
+
+const refetchVideoProject = result => {
+  // This intermittently throws an error due to a null result
+  // null result results in returning a null query
+  // console.dir( result );
+
+  // rerun sub queries, form, units, supportfiles
+  try {
+    const { data } = result;
+    const node = data.updateVideoProject || data.updateVideoUnit;
+
+    return ( [{
+      query: VIDEO_PROJECT_FILES_QUERY,
+      variables: { id: node.id },
+    },
+    {
+      query: VIDEO_PROJECT_UNITS_QUERY,
+      variables: { id: node.id },
+    }
+    ] );
+  } catch ( err ) {
+    console.log( err );
+  }
+};
+
 export default compose(
   withRouter,
   connect( mapStateToProps, actions ),
   graphql( SIGNED_S3_URL_MUTATION, { name: 'getSignedS3Url' } ),
   graphql( FILE_INFO_MUTATION, { name: 'getFileInfo' } ),
   graphql( IMAGE_USES_QUERY ),
-  graphql( UPDATE_VIDEO_PROJECT_MUTATION, { name: 'updateVideoProject' } ),
+  graphql( UPDATE_VIDEO_PROJECT_MUTATION, {
+    name: 'updateVideoProject',
+    options: () => ( {
+      refetchQueries: result => refetchVideoProject( result )
+    } )
+  } ),
   graphql( DELETE_VIDEO_PROJECT_MUTATION ),
-  graphql( UPDATE_VIDEO_UNIT_MUTATION, { name: 'updateVideoUnit' } )
+  graphql( UPDATE_VIDEO_UNIT_MUTATION, {
+    name: 'updateVideoUnit',
+    options: () => ( {
+      refetchQueries: result => refetchVideoProject( result )
+    } )
+  } )
 )( VideoEdit );
 
 

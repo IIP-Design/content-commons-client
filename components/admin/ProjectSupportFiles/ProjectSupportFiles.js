@@ -18,15 +18,15 @@ const ProjectSupportFiles = props => {
     config
   } = props;
 
-
-  const fileTypes = Object.keys( config );
+  const fileTypes = Object.keys( config.types );
 
   const renderFileTypes = type => (
     <Fragment key={ `file-type-${type}` }>
       <Grid.Column>
         <SupportFileTypeList
           projectId={ projectId }
-          config={ config[type] }
+          type={ type }
+          config={ config }
         />
 
       </Grid.Column>

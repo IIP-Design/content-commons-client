@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { redirectTo } from 'lib/browser';
 import { withRouter } from 'next/router';
@@ -6,7 +6,6 @@ import dynamic from 'next/dynamic';
 import trim from 'lodash/trim';
 import isEmpty from 'lodash/isEmpty';
 import { VIDEO_PROJECT_QUERY } from 'lib/graphql/queries/video';
-import { ProjectProvider } from 'components/admin/context/ProjectContext';
 
 // using dynamic import so that components load when they are needed, or rendered
 const VideoEdit = dynamic( () => import( 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit' ) );
@@ -31,6 +30,7 @@ const getProjectQuery = content => {
 };
 
 const ProjectPage = props => {
+  // console.log( 'rendering ProjectPage' );
   // Handles client side route checking
   const isValidPath = query => query && allowedContentTypes( query.content );
 
@@ -49,48 +49,23 @@ const ProjectPage = props => {
   };
 
 
-  const getProject = () => {
-    switch ( props.query.content ) {
-      case 'video':
-        return props.videoProject || {};
-
-      default:
-        return {};
-    }
-  };
-
-
   if ( !isValidPath( props.query ) ) {
     props.router.push( '/admin/dashboard' );
   }
 
   const { action: actionQry } = props.query;
 
-  const initialState = getProject();
-
-  const reducer = ( state, action ) => {
-    switch ( action.type ) {
-      case 'updateProject':
-        return {
-          ...state
-        };
-
-      default:
-        return state;
-    }
-  };
-
   return (
-    <ProjectProvider initialState={ initialState } reducer={ reducer }>
+    <Fragment>
       { actionQry === 'edit'
         ? loadEditComponent()
         : loadReviewComponent()
       }
-    </ProjectProvider>
+    </Fragment>
   );
 };
 
-
+// Executes before page renders
 ProjectPage.getInitialProps = async ( { query, res, apolloClient } ) => {
   // Send to dahsboard if the query is not present or the content type is not valid
   // Handles server side route checking
@@ -104,19 +79,18 @@ ProjectPage.getInitialProps = async ( { query, res, apolloClient } ) => {
   }
 
   // Fetch applicable query and populate project data for use in child components
-  const { data } = await apolloClient.query( {
+  await apolloClient.query( {
     query: getProjectQuery( query.content ),
     variables: { id: query.id }
   } );
 
-  return data;
+  return {};
 };
 
 
 ProjectPage.propTypes = {
   query: PropTypes.object,
-  router: PropTypes.object,
-  videoProject: PropTypes.object
+  router: PropTypes.object
 };
 
 

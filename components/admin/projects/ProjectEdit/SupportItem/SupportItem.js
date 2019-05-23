@@ -51,7 +51,6 @@ const SupportItem = props => {
     }
   };
 
-
   const debounceResize = debounce( updateWidths, DELAY_INTERVAL );
 
   useEffect( () => {
@@ -105,8 +104,8 @@ const SupportItem = props => {
 
     if ( fileProp ) {
       return fileProp;
-    } if ( item.fileObject ) {
-      return item.fileObject[prop.replace( 'file', '' )];
+    } if ( item.input ) {
+      return item.input[prop.replace( 'file', '' )];
     }
     return defaultValue;
   };
@@ -114,17 +113,11 @@ const SupportItem = props => {
   const filename = normalizeItem( 'filename', '' );
   const filesize = normalizeItem( 'filesize', 0 );
   const language = normalizeLanguage( item.language );
-  const loaded = item.loaded === 0 ? item.loaded : filesize;
-
   const charIndex = getProportionalNumber( listItem, STR_INDEX_PROPORTION );
-
   const shortFileName = getShortFileName( filename, charIndex );
-
   const isLongFileName = isLongName( itemName, listItem, ITEM_NAME_PROPORTION );
-
   const isLongLangName = isLongName( itemLang, listItem, ITEM_LANG_PROPORTION );
-
-  const isUploading = uploadInProgress && ( loaded < filesize );
+  const isUploading = uploadInProgress && ( item.loaded < filesize );
 
   const popupStyle = {
     overflowWrap: 'break-word',
@@ -136,7 +129,7 @@ const SupportItem = props => {
   return (
     <li
       key={ `${item.id}-${language.id}` }
-      className={ `support-item ${( loaded < filesize ) ? 'new' : ''}` }
+      className={ `support-item ${( item.loaded < filesize ) ? 'new' : ''}` }
       ref={ listEl }
     >
       <span className="item-name">
