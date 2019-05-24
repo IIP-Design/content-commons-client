@@ -1,17 +1,23 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'semantic-ui-react';
 import MyProjectPrimaryCol from 'components/admin/Dashboard/MyProjects/MyProjectPrimaryCol/MyProjectPrimaryCol';
 import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon/TableMobileDataToggleIcon';
 
 const TableRow = props => {
+  const [displayMobileData, setDisplayMobileData] = useState( false );
+
+  const handleDisplayMobileData = () => {
+    setDisplayMobileData( prevDisplayMobileData => !prevDisplayMobileData );
+  };
+
   const {
     d, selectedItems, tableHeaders, toggleItemSelection
   } = props;
 
   return (
     <Table.Row
-      className={ d.isNew ? 'myProjects_newItem' : '' }
+      className={ `${d.isNew ? 'myProjects_newItem' : ''} ${displayMobileData ? 'activeTableRow' : ''}` }
     >
       { tableHeaders.map( ( header, i ) => (
         <Table.Cell
@@ -31,7 +37,10 @@ const TableRow = props => {
                     toggleItemSelection={ toggleItemSelection }
                   />
                 </div>
-                <TableMobileDataToggleIcon />
+                <TableMobileDataToggleIcon
+                  isOpen={ displayMobileData }
+                  toggleDisplay={ handleDisplayMobileData }
+                />
               </Fragment>
             )
             : (
