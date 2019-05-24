@@ -1,11 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Loader, Table } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
-import MyProjectPrimaryCol from 'components/admin/Dashboard/MyProjects/MyProjectPrimaryCol/MyProjectPrimaryCol';
-import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon/TableMobileDataToggleIcon';
+import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import { formatDate } from 'lib/utils';
 import './TableBody.scss';
 
@@ -182,46 +181,13 @@ const TableBody = props => {
         return (
           <Table.Body className="myProjects">
             { tableData.map( d => (
-              <Table.Row
+              <TableRow
                 key={ d.id }
-                className={ d.isNew ? 'myProjects_newItem' : '' }
-              >
-                { tableHeaders.map( ( header, i ) => (
-                  <Table.Cell
-                    data-header={ header.label }
-                    key={ `${d.id}_${header.name}` }
-                    className="items_table_item"
-                  >
-                    { i === 0
-                      ? (
-                        // Table must include .primary_col div for fixed column
-                        <Fragment>
-                          <div className="primary_col">
-                            <MyProjectPrimaryCol
-                              d={ d }
-                              header={ header }
-                              selectedItems={ selectedItems }
-                              toggleItemSelection={ toggleItemSelection }
-                            />
-                          </div>
-                          <TableMobileDataToggleIcon />
-                        </Fragment>
-                      )
-                      : (
-                        <Fragment>
-                          <span>
-                            <div className="items_table_mobileHeader">{ header.label }</div>
-                            { d[header.name] }
-                          </span>
-                          <br />
-                          { header.label === 'MODIFIED'
-                            ? <span>{ d.status }</span>
-                            : null }
-                        </Fragment>
-                      ) }
-                  </Table.Cell>
-                ) ) }
-              </Table.Row>
+                d={ d }
+                selectedItems={ selectedItems }
+                tableHeaders={ tableHeaders }
+                toggleItemSelection={ toggleItemSelection }
+              />
             ) ) }
           </Table.Body>
         );
