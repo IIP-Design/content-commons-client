@@ -119,8 +119,7 @@ const TableBody = props => {
     selectedItems,
     tableHeaders,
     toggleItemSelection,
-    variables,
-    windowWidth
+    variables
   } = props;
 
   return (
@@ -205,7 +204,7 @@ const TableBody = props => {
                               toggleItemSelection={ toggleItemSelection }
                             />
                           </div>
-                          { windowWidth && <TableMobileDataToggleIcon /> }
+                          <TableMobileDataToggleIcon />
                         </Fragment>
                       )
                       : (
@@ -236,11 +235,7 @@ TableBody.propTypes = {
   selectedItems: PropTypes.object,
   tableHeaders: PropTypes.array,
   toggleItemSelection: PropTypes.func,
-  variables: PropTypes.object,
-  windowWidth: PropTypes.oneOfType( [
-    PropTypes.string,
-    PropTypes.number
-  ] )
+  variables: PropTypes.object
 };
 
 export default TableBody;
