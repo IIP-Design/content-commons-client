@@ -19,7 +19,8 @@ class Page extends Component {
     const path = pathname.substr( router.pathname.lastIndexOf( '/' ) + 1 );
     const title = ( path ) ? `${capitalizeFirst( path )} | Content Commons` : 'Content Commons';
     const bodyCls = ( pathname === '/' ) ? '' : 'inside';
-    const hideBreadcrumbs = this.doNotShowBreadcrumbs.includes( pathname );
+    // const hideBreadcrumbs = this.doNotShowBreadcrumbs.includes( pathname );
+    const hideBreadcrumbs = true;
 
     return (
       <div>
