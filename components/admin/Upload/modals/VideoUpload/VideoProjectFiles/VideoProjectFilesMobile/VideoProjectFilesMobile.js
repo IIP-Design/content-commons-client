@@ -31,6 +31,7 @@ const VideoProjectFilesMobile = () => (
           <Form.Field className="upload_actions">
             <CancelUpload closeModal={ closeModal } />
             <Button
+              type="button"
               className="primary"
               content="Continue"
               disabled={ !allFieldsSelected }

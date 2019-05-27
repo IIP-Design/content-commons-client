@@ -79,6 +79,7 @@ const VideoProjectFilesDesktop = () => {
 
               <Button
                 className="primary"
+                type="button"
                 content="Continue"
                 disabled={ !allFieldsSelected }
                 style={ show( 2 ) }
