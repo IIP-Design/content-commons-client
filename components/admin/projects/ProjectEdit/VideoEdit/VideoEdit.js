@@ -4,7 +4,7 @@
  *
  */
 import React, {
-  Fragment, useState, useEffect, useContext
+  Fragment, useState, useEffect
 } from 'react';
 import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
@@ -34,7 +34,7 @@ import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import PreviewProject from 'components/admin/ProjectPreview/ProjectPreview';
 import PreviewProjectContent from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 import ProjectSupportFiles from 'components/admin/ProjectSupportFiles/ProjectSupportFiles';
-import ProjectUnitItems from 'components/admin/projects/ProjectEdit/ProjectUnitItems/ProjectUnitItems';
+import ProjectUnits from 'components/admin/projects/ProjectEdit/ProjectUnits/ProjectUnits';
 // import EditSingleProjectItem from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import FormInstructions from 'components/admin/projects/ProjectEdit/FormInstructions/FormInstructions';
 import VideoProjectDataForm from 'components/admin/projects/ProjectEdit/VideoProjectDataForm/VideoProjectDataForm';
@@ -95,7 +95,6 @@ const VideoEdit = props => {
 
     const path = `${router.asPath}&id=${id}`;
     router.replace( router.asPath, path, { shallow: true } );
-    setProjectId( id );
   };
 
   const delayUnmount = ( fn, timer, delay ) => {
@@ -215,10 +214,7 @@ const VideoEdit = props => {
     const { id, projectTitle } = project;
     const { getSignedS3Url, getFileInfo, setIsUploading } = props;
 
-    // 1. set project id to newly created project (what if exsiting project?)
-    setProjectId( id );
-
-    // 2. If there are files to upload, upload them
+    // 1. If there are files to upload, upload them
     //    as upload(s) complete, we update the file object as it gets passed
     //    to the method that saves to the db
     if ( filesToUpload && filesToUpload.length ) {
@@ -251,11 +247,14 @@ const VideoEdit = props => {
       } ) );
 
 
-      // 3. once all files have been uploaded, create and save new project (only new)
+      // 2. once all files have been uploaded, create and save new project (only new)
       handleSaveDraft( id, projectTitle );
 
-      // 4. clean up upload process
+      // 3. clean up upload process
       handleUploadComplete();
+
+      // 4. set project id to newly created project (what if exsiting project?)
+      setProjectId( id );
 
       // 5. update url to reflect a new project (only new)
       addProjectIdToUrl( id );
@@ -284,6 +283,7 @@ const VideoEdit = props => {
       />
     </Fragment>
   );
+
 
   const contentStyle = {
     border: `3px solid ${( projectId ) ? 'transparent' : '#02bfe7'}`
@@ -354,32 +354,34 @@ const VideoEdit = props => {
         </ProjectHeader>
       </div>
 
-      { /* status notification need to be separate component */ }
-      <div className="edit-project__status alpha">
-        { !projectId && <FormInstructions /> }
-        { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
+      <Notification
+        el="p"
+        customStyles={ {
+          position: 'absolute',
+          top: '9em',
+          left: '50%',
+          transform: 'translateX(-50%)'
+        } }
+        show={ showNotification }
+        msg={ notificationMessage }
+      />
 
-        <Notification
-          el="p"
-          customStyles={ {
-            position: 'absolute',
-            top: '10.75em',
-            left: '50%',
-            transform: 'translateX(-50%)'
-          } }
-          show={ showNotification }
-          msg={ notificationMessage }
-        />
+      { /* upload progress  */ }
+      <div className="edit-project__status alpha">
+        { !projectId && !isUploading && <FormInstructions /> }
+        { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
 
         { isUploading
           && (
           <FileUploadProgressBar
             filesToUpload={ filesToUpload }
-            showMessage
+            label="Please keep this page open until upload is complete"
+            fileProgessMessage
           />
           ) }
       </div>
 
+      { /* project details form */ }
       <div className="edit-project__content" style={ contentStyle }>
         <VideoProjectDataForm
           id={ projectId }
@@ -389,42 +391,43 @@ const VideoEdit = props => {
         />
       </div>
 
+      { /* upload progress */ }
       <div className="edit-project__status beta">
-        { !projectId && <FormInstructions /> }
+        { !projectId && !isUploading && <FormInstructions /> }
         { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
 
         { isUploading
           && (
           <FileUploadProgressBar
             filesToUpload={ filesToUpload }
-            showMessage
+            label="Please keep this page open until upload is complete"
+            fileProgessMessage
           />
           ) }
       </div>
 
-      { /* support files */ }
-      <div className="edit-project__support-files">
-        <UploadContext.Provider value={ isUploading }>
+      <UploadContext.Provider value={ isUploading }>
+        { /* support files */ }
+        <div className="edit-project__support-files">
           <ProjectSupportFiles
-            heading="Support Files"
             projectId={ projectId }
+            heading="Support Files"
             config={ config.supportFiles }
           />
-        </UploadContext.Provider>
-      </div>
+        </div>
 
-      <div className="edit-project__items">
         { /* project thumbnails */ }
-        <UploadContext.Provider value={ isUploading }>
-          <ProjectUnitItems
+        <div className="edit-project__items">
+          <ProjectUnits
             projectId={ projectId }
             heading="Videos in Project"
             extensions={ ['.mov', '.mp4'] }
           />
-        </UploadContext.Provider>
+        </div>
+      </UploadContext.Provider>
 
-        { /* Add more files button */ }
-        { projectId && (
+      { /* add more files button */ }
+      { projectId && (
         <div style={ { marginTop: '3rem' } }>
           <Button
             className="edit-project__add-more"
@@ -444,8 +447,8 @@ const VideoEdit = props => {
             />
           </VisuallyHidden>
         </div>
-        ) }
-      </div>
+      ) }
+
     </div>
   );
 };

@@ -64,7 +64,7 @@ export default compose(
         updateNotification, createVideoProject, handleUpload, user
       }, setSubmitting, setErrors, setStatus
     } ) => {
-      // 1. let user know systme is saving
+      // 1. let user know system is saving
       updateNotification( 'Saving project...' );
 
       // 2. Do an initial save.  Upon successful save, system will return a project id

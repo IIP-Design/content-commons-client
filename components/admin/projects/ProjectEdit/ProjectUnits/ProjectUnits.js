@@ -15,17 +15,17 @@ import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
 import { VIDEO_PROJECT_UNITS_QUERY } from 'lib/graphql/queries/video';
 
 import ProjectUnitItem from '../ProjectUnitItem/ProjectUnitItem';
-import './ProjectUnitItems.scss';
+import './ProjectUnits.scss';
 
-const ProjectUnitItems = props => {
+const ProjectUnits = props => {
   const {
     data,
+    projectId,
     filesToUpload,
     heading,
     extensions,
     // modalContent
   } = props;
-
 
   const hasProjectUnits = () => ( !isEmpty( data ) && data.projectUnits && data.projectUnits.units );
   const allowedFiles = filesToUpload.filter( file => extensions.includes( getFileExt( file.input.name ) ) );
@@ -84,13 +84,13 @@ const ProjectUnitItems = props => {
     }
   }, [data] );
 
-
   const renderUnits = () => (
     <Card.Group>
       { units.map( unit => (
         <ProjectUnitItem
           key={ unit.language.id }
           unit={ unit }
+          projectId={ projectId }
           filesToUpload={ allowedFiles }
          // modalContent={ modalContent }
         />
@@ -99,7 +99,7 @@ const ProjectUnitItems = props => {
   );
 
   return (
-    <div className="project-items">
+    <div className="project-units">
       <h2 className="list-heading" style={ { marginBottom: '1rem' } }>{ heading }</h2>
       { units && units.length
         ? renderUnits( units )
@@ -110,8 +110,9 @@ const ProjectUnitItems = props => {
 };
 
 
-ProjectUnitItems.propTypes = {
+ProjectUnits.propTypes = {
   languageList: PropTypes.object,
+  projectId: PropTypes.string,
   heading: PropTypes.string,
   extensions: PropTypes.array,
   // modalContent: PropTypes.func,
@@ -137,4 +138,4 @@ export default compose(
     } ),
     skip: props => !props.projectId
   } )
-)( ProjectUnitItems );
+)( ProjectUnits );

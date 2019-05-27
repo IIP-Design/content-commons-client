@@ -1,0 +1,47 @@
+.ui.progress {
+  border-radius: 0;
+  //margin: 0.5em 0 0;
+
+  .bar {
+    border-radius: 0;
+    .progress {
+      font-size: 12px;
+    }
+  }
+
+  &.tiny {
+    font-size: 1.3rem;
+  }
+}
+
+.ui.progress.active {
+  margin-bottom: 20px;
+  margin-top: 5px;
+  flex-grow: 1;
+  .bar {
+    min-width: 0;
+  }
+}
+
+.file-progress--wrapper {
+  display: flex;
+  align-items: start;
+  span {
+    font-size: 12px;
+    margin-top: -1px;
+    padding-left: 5px;
+  }
+}
+
+.file-progress--label {
+  font-size: 0.777rem;
+  font-weight: normal;
+
+  &.left {
+    text-align: left;
+  }
+
+  div {
+    margin-top: -5px;
+  }
+}
