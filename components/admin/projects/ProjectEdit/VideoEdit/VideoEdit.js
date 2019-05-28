@@ -14,7 +14,6 @@ import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/upload';
 
-import { uploadToS3, uploadToVimeo, getFileMetadata } from 'lib/upload';
 import { buildUpdateVideoProjectTree } from 'lib/graphql/builders/video';
 import { buildThumbnailTree } from 'lib/graphql/builders/common';
 import {
@@ -25,7 +24,6 @@ import {
   VIDEO_PROJECT_UNITS_QUERY
 } from 'lib/graphql/queries/video';
 import { IMAGE_USES_QUERY } from 'lib/graphql/queries/common';
-import { SIGNED_S3_URL_MUTATION, FILE_INFO_MUTATION } from 'lib/graphql/queries/util';
 
 import Notification from 'components/Notification/Notification';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
@@ -41,6 +39,7 @@ import VideoProjectDataForm from 'components/admin/projects/ProjectEdit/VideoPro
 import UploadSuccessMsg from 'components/admin/projects/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
 import FileUploadProgressBar from 'components/admin/projects/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
 // import VideoItem from 'components/admin/projects/ProjectEdit/VideoItem/VideoItem';
+import withFileUpload from 'hocs/withFileUpload/withFileUpload';
 
 import { config } from './config';
 
@@ -48,7 +47,6 @@ import './VideoEdit.scss';
 
 export const UploadContext = React.createContext( false );
 
-/* eslint-disable react/prefer-stateless-function */
 const VideoEdit = props => {
   const MAX_CATEGORY_COUNT = 2;
   const SAVE_MSG_DELAY = 2000;
@@ -134,36 +132,11 @@ const VideoEdit = props => {
     addMoreInputRef = c;
   };
 
-  const connectUnitThumbnails = async res => {
-    const { data: { updateVideoProject: { units, thumbnails } } } = res;
-    const { updateVideoUnit } = props;
-
-    if ( units.length && thumbnails.length ) {
-      units.forEach( async unit => {
-        let thumbnail = thumbnails.find( tn => tn.language.id === unit.language.id );
-
-        // if an applicable language thumbnail doesn't exist, use english version if available
-        thumbnail = thumbnail || thumbnails.find( tn => tn.language.locale === 'en-us' );
-
-        if ( thumbnail ) {
-          updateVideoUnit( {
-            variables: {
-              data: buildThumbnailTree( thumbnail ),
-              where: {
-                id: unit.id
-              }
-            }
-          } ).catch( err => console.dir( err ) );
-        }
-      } );
-    }
-  };
-
   const handleSaveDraft = async ( id, projectTitle ) => {
     const { updateVideoProject, data: { imageUses } } = props;
     const data = buildUpdateVideoProjectTree( filesToUpload, imageUses[0].id, projectTitle );
 
-    const res = await updateVideoProject( {
+    await updateVideoProject( {
       variables: {
         data,
         where: {
@@ -171,8 +144,6 @@ const VideoEdit = props => {
         }
       }
     } ).catch( err => console.dir( err ) );
-
-    connectUnitThumbnails( res );
   };
 
 
@@ -207,45 +178,16 @@ const VideoEdit = props => {
   };
 
 
-  const isVideo = fileType => fileType.includes( 'video' );
-  const isImage = fileType => fileType.includes( 'image' );
-
   const handleUpload = async project => {
     const { id, projectTitle } = project;
-    const { getSignedS3Url, getFileInfo, setIsUploading } = props;
+    const { uploadExecute, setIsUploading } = props;
 
-    // 1. If there are files to upload, upload them
-    //    as upload(s) complete, we update the file object as it gets passed
-    //    to the method that saves to the db
+    // If there are files to upload, upload them
     if ( filesToUpload && filesToUpload.length ) {
       setIsUploading( true );
 
-      await Promise.all( filesToUpload.map( async file => {
-        let result = await uploadToS3( id, file, getSignedS3Url, handleUploadProgress );
-        file.s3Path = result.path;
-        file.contentType = result.contentType;
-
-        // if video, upload to vimeo
-        if ( isVideo( file.contentType ) ) {
-          file.stream = {};
-          file.stream.vimeo = await uploadToVimeo( file );
-        }
-
-        // if video or image, fetch file metadata (this call takes a bit long so may need to fix)
-        if ( isVideo( file.contentType ) || isImage( file.contentType ) ) {
-          result = await getFileMetadata( getFileInfo, file.s3Path );
-          if ( result ) {
-            const {
-              duration, bitrate, width, height
-            } = result;
-            file.duration = duration;
-            file.bitrate = bitrate;
-            file.width = width;
-            file.height = height;
-          }
-        }
-      } ) );
-
+      // 1. Upload files to S3 & Vimeo and fetch file meta data
+      await uploadExecute( id, filesToUpload, handleUploadProgress );
 
       // 2. once all files have been uploaded, create and save new project (only new)
       handleSaveDraft( id, projectTitle );
@@ -458,12 +400,10 @@ VideoEdit.propTypes = {
   id: PropTypes.string,
   data: PropTypes.object,
   mutate: PropTypes.func,
-  getSignedS3Url: PropTypes.func,
-  getFileInfo: PropTypes.func,
   updateVideoProject: PropTypes.func,
-  updateVideoUnit: PropTypes.func,
   router: PropTypes.object,
   setIsUploading: PropTypes.func, // from redux
+  uploadExecute: PropTypes.func, // from redux
   uploadReset: PropTypes.func, // from redux
   uploadProgress: PropTypes.func, // from redux
   upload: PropTypes.object // from redux
@@ -473,11 +413,35 @@ const mapStateToProps = state => ( {
   upload: state.upload
 } );
 
+const connectUnitThumbnails = async ( props, result ) => {
+  const { updateVideoProject: { units, thumbnails } } = result;
+  const { updateVideoUnit } = props;
+
+  if ( units.length && thumbnails.length ) {
+    units.forEach( async unit => {
+      let thumbnail = thumbnails.find( tn => tn.language.id === unit.language.id );
+
+      // if an applicable language thumbnail doesn't exist, use english version if available
+      thumbnail = thumbnail || thumbnails.find( tn => tn.language.locale === 'en-us' );
+
+      if ( thumbnail ) {
+        updateVideoUnit( {
+          variables: {
+            data: buildThumbnailTree( thumbnail ),
+            where: {
+              id: unit.id
+            }
+          }
+        } ).catch( err => console.dir( err ) );
+      }
+    } );
+  }
+};
+
 
 const refetchVideoProject = result => {
   // This intermittently throws an error due to a null result
   // null result results in returning a null query
-  // console.dir( result );
 
   // rerun sub queries, form, units, supportfiles
   try {
@@ -500,23 +464,23 @@ const refetchVideoProject = result => {
 
 export default compose(
   withRouter,
+  withFileUpload,
   connect( mapStateToProps, actions ),
-  graphql( SIGNED_S3_URL_MUTATION, { name: 'getSignedS3Url' } ),
-  graphql( FILE_INFO_MUTATION, { name: 'getFileInfo' } ),
   graphql( IMAGE_USES_QUERY ),
-  graphql( UPDATE_VIDEO_PROJECT_MUTATION, {
-    name: 'updateVideoProject',
-    options: () => ( {
-      refetchQueries: result => refetchVideoProject( result )
-    } )
-  } ),
   graphql( DELETE_VIDEO_PROJECT_MUTATION ),
   graphql( UPDATE_VIDEO_UNIT_MUTATION, {
     name: 'updateVideoUnit',
     options: () => ( {
       refetchQueries: result => refetchVideoProject( result )
     } )
-  } )
+  } ),
+  graphql( UPDATE_VIDEO_PROJECT_MUTATION, {
+    name: 'updateVideoProject',
+    options: props => ( {
+      refetchQueries: result => refetchVideoProject( result ),
+      onCompleted: result => connectUnitThumbnails( props, result )
+    } )
+  } ),
 )( VideoEdit );
 
 

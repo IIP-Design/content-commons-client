@@ -1,5 +1,3 @@
-import { VIDEO_PROJECT_QUERY } from 'lib/graphql/queries/video';
-
 export const config = {
   supportFiles: {
     // query: VIDEO_PROJECT_QUERY,
