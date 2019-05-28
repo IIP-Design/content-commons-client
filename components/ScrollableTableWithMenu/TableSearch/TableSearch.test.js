@@ -1,8 +1,5 @@
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
-import {
-  Button, Form, Grid, Input
-} from 'semantic-ui-react';
 import TableSearch from './TableSearch';
 
 const props = { handleSearchSubmit: jest.fn() };
