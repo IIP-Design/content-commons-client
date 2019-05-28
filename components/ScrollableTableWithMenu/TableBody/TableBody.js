@@ -126,7 +126,7 @@ const TableBody = props => {
       query={ TEAM_VIDEO_PROJECTS_QUERY }
       variables={ { ...variables } }
     >
-      { ( { loading, error, data: { videoProjects } } ) => {
+      { ( { loading, error, data } ) => {
         if ( loading ) {
           return (
             <Table.Body>
@@ -152,7 +152,9 @@ const TableBody = props => {
             </Table.Body>
           );
         }
-        if ( !videoProjects ) return null;
+        if ( data && !data.videoProjects ) return null;
+
+        const { videoProjects } = data;
 
         if ( searchTerm && !videoProjects.length ) {
           return (
@@ -166,7 +168,7 @@ const TableBody = props => {
           );
         }
 
-        if ( videoProjects && !videoProjects.length ) {
+        if ( !videoProjects.length ) {
           return (
             <Table.Body>
               <Table.Row>
