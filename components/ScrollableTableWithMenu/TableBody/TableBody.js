@@ -61,15 +61,15 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
         alt
       }
       categories {
-      id
-      translations {
         id
-        name
-        language {
-          locale
+        translations {
+          id
+          name
+          language {
+            locale
+          }
         }
       }
-    }
     }
   }
 `;
