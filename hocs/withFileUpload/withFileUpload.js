@@ -22,7 +22,7 @@ const withFileUpload = WrappedComponent => {
         const isVideo = file.input.type.includes( 'video' );
         const isImage = file.input.type.includes( 'image' );
 
-        let result = await uploadToS3( projectId, file, getSignedS3Url, callback );
+        let result = await uploadToS3( projectId, file, getSignedS3Url, callback ).catch( err => { console.dir( err ); } );
 
         file.contentType = result.contentType;
         file.s3Path = result.path;
@@ -30,12 +30,12 @@ const withFileUpload = WrappedComponent => {
         // if video, upload to vimeo
         if ( isVideo ) {
           file.stream = {};
-          file.stream.vimeo = await uploadToVimeo( file );
+          file.stream.vimeo = await uploadToVimeo( file ).catch( err => { console.dir( err ); } );
         }
 
         //  if video or image, fetch file metadata (this call takes a bit long so may need to fix)
         if ( isVideo || isImage ) {
-          result = await getFileMetadata( getFileInfo, file.s3Path );
+          result = await getFileMetadata( getFileInfo, file.s3Path ).catch( err => { console.dir( err ); } );
           if ( result ) {
             const {
               duration, bitrate, width, height
