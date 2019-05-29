@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import TableMenu from './index';
+import TableHeader from './TableHeader';
 
-describe( '<TableMenu />', () => {
+describe( '<TableHeader />', () => {
   it( 'renders without crashing', () => {
-    shallow( <TableMenu /> );
+    shallow( <TableHeader /> );
   } );
 } );

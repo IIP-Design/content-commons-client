@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import {
-  Menu, Responsive, Popup, Icon
+  Menu, Popup, Icon
 } from 'semantic-ui-react';
 import UserProfileMenu from 'components/menus/UserProfile/UserProfile';
 import NotificationsMenu from 'components/menus/Notifications/Notifications';
@@ -88,9 +88,8 @@ class LoggedInNav extends Component {
 
     return (
       <span>
-        <Responsive as={ Menu } compact secondary minWidth={ 993 }>
+        <div className="ui compact secondary menu nav_loggedin_wrapper">
           {
-
             menuItems.map( item => {
               if ( item.name === 'upload' ) {
                 return (
@@ -141,69 +140,67 @@ class LoggedInNav extends Component {
           >
             Feedback
           </a>
-        </Responsive>
+        </div>
 
         {
           mobileNavVisible
           && (
-          <Responsive maxWidth={ 992 }>
-            <ul className="mobileMenu">
-              <li>
-                <Icon name="close" onClick={ toggleMobileNav } onKeyUp={ keyUp } tabIndex={ 0 } />
-              </li>
-              { menuItems.map( item => {
-                if ( item.name === 'upload' ) {
-                  return (
-                    <li key={ item.key }>
-                      <Link prefetch href="/admin/upload">
-                        <a className="item">
-                          <span onClick={ toggleMobileNav } onKeyUp={ keyUp } role="presentation">
-                            { this.getIcon( item ) }
-                          </span>
-                        </a>
-                      </Link>
-                    </li>
-                  );
-                }
+          <ul className="mobileMenu">
+            <li>
+              <Icon name="close" onClick={ toggleMobileNav } onKeyUp={ keyUp } tabIndex={ 0 } />
+            </li>
+            { menuItems.map( item => {
+              if ( item.name === 'upload' ) {
                 return (
-                  <Popup
-                    key={ item.key }
-                    id={ item.name }
-                    className="nav_submenu_popup"
-                    trigger={ (
-                      <li
-                        key={ item.key }
-                        className={
-                          item.name === 'notifications'
-                            ? `mobile_loggedin ${item.name} ${active}`
-                            : `mobile_loggedin ${item.name}`
-                        }
-                      >
-                        { this.getIcon( item ) }
-                      </li>
-                    ) }
-                    content={ this.renderMenu( item.name ) }
-                    on="click"
-                    open={ this.state[`${item.name}`] }
-                    onOpen={ this.displayPopup }
-                    onClose={ this.closePopup }
-                    position="bottom center"
-                  />
+                  <li key={ item.key }>
+                    <Link prefetch href="/admin/upload">
+                      <a className="item">
+                        <span onClick={ toggleMobileNav } onKeyUp={ keyUp } role="presentation">
+                          { this.getIcon( item ) }
+                        </span>
+                      </a>
+                    </Link>
+                  </li>
                 );
-              } ) }
-              <li>
-                <a
-                  href="https://goo.gl/forms/PyLjAiaJVt3xONsd2"
-                  target="_blank"
-                  className="item feedback"
-                  rel="noopener noreferrer"
-                  onClick={ toggleMobileNav }
-                >
-                  Feedback
-                </a>
-              </li>
-            </ul>
-          </Responsive>
+              }
+              return (
+                <Popup
+                  key={ item.key }
+                  id={ item.name }
+                  className="nav_submenu_popup"
+                  trigger={ (
+                    <li
+                      key={ item.key }
+                      className={
+                        item.name === 'notifications'
+                          ? `mobile_loggedin ${item.name} ${active}`
+                          : `mobile_loggedin ${item.name}`
+                      }
+                    >
+                      { this.getIcon( item ) }
+                    </li>
+                  ) }
+                  content={ this.renderMenu( item.name ) }
+                  on="click"
+                  open={ this.state[`${item.name}`] }
+                  onOpen={ this.displayPopup }
+                  onClose={ this.closePopup }
+                  position="bottom center"
+                />
+              );
+            } ) }
+            <li>
+              <a
+                href="https://goo.gl/forms/PyLjAiaJVt3xONsd2"
+                target="_blank"
+                className="item feedback"
+                rel="noopener noreferrer"
+                onClick={ toggleMobileNav }
+              >
+                Feedback
+              </a>
+            </li>
+          </ul>
           )
         }
       </span>

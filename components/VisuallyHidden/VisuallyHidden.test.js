@@ -9,9 +9,15 @@ describe( '<VisuallyHidden />', () => {
     expect( wrapper.exists() ).toEqual( true );
   } );
 
-  it( 'renders as a `div`', () => {
+  it( 'renders as a `div` by default', () => {
     const wrapper = shallow( Component );
     expect( wrapper.name() ).toEqual( 'div' );
+  } );
+
+  it( 'renders as a custom element', () => {
+    const wrapper = shallow( Component );
+    wrapper.setProps( { el: 'span' } );
+    expect( wrapper.name() ).toEqual( 'span' );
   } );
 
   it( 'has "hide-visually" class value', () => {

@@ -6,6 +6,14 @@ import LogoutButton from 'components/Logout/Logout';
 import '../menu.scss';
 
 class UserProfileMenu extends Component {
+  componentDidMount() {
+    window.addEventListener( 'resize', this.props.submenuClosePopup );
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener( 'resize', this.props.submenuClosePopup );
+  }
+
   handleSignoutClick = signoutMutation => {
     signoutMutation();
     const { toggleMobileNav } = this.props;

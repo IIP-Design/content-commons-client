@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import sortBy from 'lodash/sortBy';
+import gql from 'graphql-tag';
 
 import './dropdown.scss';
 
@@ -13,6 +13,7 @@ const LANGUAGES_QUERY = gql`
     languages {
       id
       displayName
+      locale
     }
   }
 `;
@@ -27,7 +28,16 @@ const LanguageDropdown = props => (
 
       let options = [];
       if ( data && data.languages ) {
-        options = sortBy( data.languages, lang => lang.displayName )
+        const getFilteredList = allLangs => (
+          allLangs.filter( lang => {
+            const { locale } = lang;
+            return props.locales.includes( locale );
+          } )
+        );
+
+        const languages = props.locales ? getFilteredList( data.languages ) : data.languages;
+
+        options = sortBy( languages, lang => lang.displayName )
           .map( lang => ( { key: lang.id, text: lang.displayName, value: lang.id } ) );
       }
 
@@ -67,7 +77,8 @@ LanguageDropdown.defaultProps = {
 
 LanguageDropdown.propTypes = {
   id: PropTypes.string,
-  label: PropTypes.string
+  label: PropTypes.string,
+  locales: PropTypes.array
 };
 
 export default React.memo( LanguageDropdown, areEqual );

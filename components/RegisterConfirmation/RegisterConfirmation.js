@@ -70,7 +70,7 @@ class ConfirmRegistration extends Component {
             loading={ isSubmitting }
             disabled={ isSubmitting }
             className="primary"
-          >Confirm Account
+          >Confirm Registration
           </Button>
         </Form>
       </div>

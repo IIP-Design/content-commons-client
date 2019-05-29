@@ -4,174 +4,26 @@
  *
  */
 import React, { Component } from 'react';
-import gql from 'graphql-tag';
 import propTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
-import {
-  Confirm, Form, Grid, Loader
-} from 'semantic-ui-react';
+import { Confirm, Form, Grid } from 'semantic-ui-react';
 
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
-import IconPopup from 'components/popups/IconPopup/IconPopup';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
+import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
+import { formatBytes, formatDate } from 'lib/utils';
 
+import { VIDEO_UNIT_QUERY } from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalSections/FileSection/FileSection';
+import {
+  VIDEO_PROJECT_QUERY, VIDEO_FILE_QUERY, VIDEO_FILE_LANG_MUTATION, VIDEO_UNIT_CONNECT_FILE_MUTATION,
+  VIDEO_UNIT_DISCONNECT_FILE_MUTATION, VIDEO_FILE_SUBTITLES_MUTATION, VIDEO_FILE_USE_MUTATION,
+  VIDEO_FILE_QUALITY_MUTATION, VIDEO_FILE_CREATE_STREAM_MUTATION, VIDEO_FILE_UPDATE_STREAM_MUTATION,
+  VIDEO_FILE_DELETE_STREAM_MUTATION, VIDEO_FILE_DELETE_MUTATION
+} from './FileDataFormQueries';
 import './FileDataForm.scss';
-
-const VIDEO_FILE_QUERY = gql`
-  query VIDEO_FILE_QUERY( $id: ID! ) {
-    file: videoFile( id: $id ) {
-      id
-      createdAt
-      duration
-      filename
-      filesize
-      quality
-      videoBurnedInStatus
-      dimensions {
-        height
-        width
-      }
-      language {
-        id
-        displayName
-      }
-      stream {
-        id
-        site
-        url
-      }
-      use {
-        id
-        name
-      }
-    }
-  }
-`;
-
-const VIDEO_FILE_LANG_MUTATION = gql`
-  mutation VIDEO_FILE_LANG_MUTATION( $id: ID!, $language: ID! ) {
-    updateVideoFile(
-      data: {
-        language: {
-          connect: { id: $language }
-        }
-      },
-      where: { id: $id }
-    ) {
-      id
-      language { id }
-    }
-  }
-`;
-
-const VIDEO_FILE_SUBTITLES_MUTATION = gql`
-  mutation VIDEO_FILE_SUBTITLES_MUTATION( $id: ID!, $videoBurnedInStatus: VideoBurnedInStatus! ) {
-    updateVideoFile(
-      data: { videoBurnedInStatus: $videoBurnedInStatus },
-      where: { id: $id }
-    ) {
-      id
-      videoBurnedInStatus
-    }
-  }
-`;
-
-const VIDEO_FILE_USE_MUTATION = gql`
-  mutation VIDEO_FILE_USE_MUTATION( $id: ID!, $use: ID! ) {
-    updateVideoFile(
-      data: {
-        use: {
-          connect: { id: $use }
-        }
-      },
-      where: { id: $id }
-    ) {
-      id
-      use { id }
-    }
-  }
-`;
-
-const VIDEO_FILE_QUALITY_MUTATION = gql`
-  mutation VIDEO_FILE_QUALITY_MUTATION( $id: ID!, $quality: VideoQuality! ) {
-    updateVideoFile(
-      data: { quality: $quality },
-      where: { id: $id }
-    ) {
-      id
-      quality
-    }
-  }
-`;
-
-const VIDEO_FILE_CREATE_STREAM_MUTATION = gql`
-  mutation VIDEO_FILE_CREATE_STREAM_MUTATION( $id: ID!, $site: String!, $url: String! ) {
-    updateVideoFile(
-      data: { 
-        stream: {
-          create: {
-            site: $site,
-            url: $url
-          }
-        }
-      },
-      where: { id: $id }
-    ) {
-      id
-      stream { id }
-    }
-  }
-`;
-
-const VIDEO_FILE_UPDATE_STREAM_MUTATION = gql`
-  mutation VIDEO_FILE_UPDATE_STREAM_MUTATION( $id: ID!, $streamId: ID! $url: String! ) {
-    updateVideoFile(
-      data: {
-        stream: {
-          update: {
-            data: {
-              url: $url
-            },
-            where: {
-              id: $streamId
-            }
-          }
-        }
-      },
-      where: { id: $id }
-    ) {
-      id
-      stream { id }
-    }
-  }
-`;
-
-const VIDEO_FILE_DELETE_STREAM_MUTATION = gql`
-  mutation VIDEO_FILE_DELETE_STREAM_MUTATION( $id: ID!, $streamId: ID! ) {
-    updateVideoFile(
-      data: {
-        stream: {
-          delete: { id: $streamId }
-        }
-      },
-      where: { id: $id }
-    ) {
-      id
-      stream { id }
-    }
-  }
-`;
-
-const VIDEO_FILE_DELETE_MUTATION = gql`
-  mutation VIDEO_FILE_DELETE_MUTATION( $id: ID! ) {
-    deleteVideoFile( id: $id ) {
-      id
-    }
-  }
-`;
 
 class FileDataForm extends Component {
   state = {
@@ -193,6 +45,20 @@ class FileDataForm extends Component {
         use
       } );
     }
+  }
+
+  // Iterates through an array of units to return an array of locales (one for each unit)
+  getLocales = arr => {
+    const locales = [];
+    if ( Array.isArray( arr ) && arr.length > 0 ) {
+      arr.forEach( unit => {
+        if ( unit.language && unit.language.locale ) {
+          locales.push( unit.language.locale );
+        }
+        return locales;
+      } );
+    }
+    return locales;
   }
 
   getStreamObjects = streamList => {
@@ -222,21 +88,41 @@ class FileDataForm extends Component {
     return streamObj;
   }
 
+  // Runs GraphQl mutation and updates the cache after a dropdown selection
   updateUnit = ( name, value ) => {
-    const { id } = this.props;
+    const { selectedFile } = this.props;
 
     this.props[`${name}VideoFileMutation`]( {
       variables: {
-        id,
+        id: selectedFile,
         [name]: value
+      },
+      update: ( cache, { data: { updateVideoFile } } ) => {
+        try {
+          const cachedData = cache.readQuery( {
+            query: VIDEO_FILE_QUERY,
+            variables: { id: selectedFile }
+          } );
+
+          if ( name === 'use' ) {
+            cachedData.file.use.id = value;
+          } else {
+            cachedData.file[name] = value;
+          }
+
+          cache.writeQuery( {
+            query: VIDEO_FILE_QUERY,
+            data: { file: cachedData.file }
+          } );
+        } catch ( error ) {
+          console.log( error );
+        }
       }
     } );
-
-    this.props.videoFileQuery.refetch();
   }
 
   updateStreams = e => {
-    const unitId = this.props.id;
+    const unitId = this.props.selectedFile;
     const { name } = e.target;
     const { streams } = this.state;
 
@@ -286,19 +172,6 @@ class FileDataForm extends Component {
     } ) );
   }
 
-  handleInputChange = e => {
-    this.setState( {
-      [e.target.name]: e.target.value
-    } );
-  }
-
-  handleInputSave = e => {
-    const { name } = e.target;
-    const value = this.state[name];
-
-    this.updateUnit( name, value );
-  }
-
   handleDropdownSave = ( e, data ) => {
     const { name, value } = data;
 
@@ -308,17 +181,105 @@ class FileDataForm extends Component {
     );
   }
 
+  handleLanguageChange = ( e, data ) => {
+    const {
+      language, languageVideoFileMutation, selectedFile, selectedUnit, updateSelectedFile,
+      updateSelectedUnit, videoProjectQuery, videoUnitConnectFileMutation, videoUnitDisconnectFileMutation
+    } = this.props;
+    const { project } = videoProjectQuery && videoProjectQuery.project ? videoProjectQuery : {};
+
+    // Get array of units and the language they are in
+    const unitsByLang = [];
+    if ( project.units ) {
+      project.units.forEach( unit => {
+        unitsByLang.push( { unitId: unit.id, langId: unit.language.id } );
+        return unitsByLang;
+      } );
+    }
+
+    const selectedLang = data.value;
+    const newUnit = unitsByLang.filter( unit => unit.langId === selectedLang );
+
+    if ( selectedLang && selectedLang !== language.id ) {
+      // Update file language
+      languageVideoFileMutation( {
+        variables: {
+          id: selectedFile,
+          language: selectedLang
+        }
+      } );
+      // Disconnect File from old language unit
+      videoUnitDisconnectFileMutation( {
+        variables: {
+          id: selectedUnit,
+          fileId: selectedFile
+        },
+        update: ( cache, { data: { updateVideoUnit } } ) => {
+          try {
+            const cachedData = cache.readQuery( {
+              query: VIDEO_UNIT_QUERY,
+              variables: { id: selectedUnit }
+            } );
+
+            const newFiles = cachedData.unit.files.filter( file => file.id !== selectedFile );
+            cachedData.unit.files = newFiles;
+
+            cache.writeQuery( {
+              query: VIDEO_UNIT_QUERY,
+              data: { unit: cachedData.unit }
+            } );
+          } catch ( error ) {
+            console.log( error );
+          }
+        }
+      } );
+      // Connect file to new unit
+      videoUnitConnectFileMutation( {
+        variables: {
+          id: newUnit[0].unitId,
+          fileId: selectedFile
+        }
+      } );
+
+      updateSelectedUnit( newUnit[0].unitId, selectedFile );
+    }
+  }
+
   displayConfirmDelete = () => {
     this.setState( { deleteConfirmOpen: true } );
   }
 
   handleDeleteConfirm = () => {
-    const { file } = this.props.videoFileQuery;
-    const { id } = file;
-    console.log( `Deleted video: ${id}` );
-    this.props.deleteVideoFileMutation( id );
-    this.props.videoFileQuery.refetch();
+    const { selectedFile, selectedUnit, updateSelectedFile } = this.props;
 
+    this.props.deleteVideoFileMutation( {
+      variables: { id: selectedFile },
+      update: ( cache, { data: { deleteVideoFile } } ) => {
+        try {
+          const cachedData = cache.readQuery( {
+            query: VIDEO_UNIT_QUERY,
+            variables: { id: selectedUnit }
+          } );
+
+          const newFiles = cachedData.unit.files.filter( file => file.id !== selectedFile );
+          cachedData.unit.files = newFiles;
+
+          cache.writeQuery( {
+            query: VIDEO_UNIT_QUERY,
+            data: { unit: cachedData.unit }
+          } );
+
+          console.log( `Deleted video: ${selectedFile}` );
+
+          const newSelectedFile = cachedData.unit.files && cachedData.unit.files[0] && cachedData.unit.files[0].id
+            ? cachedData.unit.files[0].id
+            : '';
+          updateSelectedFile( newSelectedFile );
+        } catch ( error ) {
+          console.log( error );
+        }
+      }
+    } );
     this.setState( { deleteConfirmOpen: false } );
   }
 
@@ -327,36 +288,10 @@ class FileDataForm extends Component {
   }
 
   render() {
-    const videoQuality = (
-      <label htmlFor="video-quality"> { /* eslint-disable-line */ }
-        Video Quality
-        <IconPopup
-          iconSize="small"
-          iconType="info circle"
-          id="video-quality"
-          message="Web: small - for social sharing, Broadcast: large - ambassador videos"
-          popupSize="small"
-        />
-      </label>
-    );
-
     const { file, loading } = this.props.videoFileQuery;
+    const { project } = this.props.videoProjectQuery;
 
-    if ( !file || loading ) {
-      return (
-        <div style={ {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh'
-        } }
-        >
-          <Loader active inline="centered" style={ { marginBottom: '1em' } } />
-          <p>Loading the file data...</p>
-        </div>
-      );
-    }
+    if ( !file || loading ) return <Loader height="330px" text="Loading the file data..." />;
 
     const {
       deleteConfirmOpen, language, quality, streams, use, videoBurnedInStatus
@@ -368,6 +303,8 @@ class FileDataForm extends Component {
     const youtube = streams && streams.youtube ? streams.youtube : {};
     const vimeo = streams && streams.vimeo ? streams.vimeo : {};
 
+    const units = project && project.units ? project.units : [];
+
     return (
       <Form className="edit-video__form video-file-form" style={ { overflow: 'hidden' } }>
         <Grid stackable>
@@ -378,13 +315,13 @@ class FileDataForm extends Component {
                   { file.filename }
                 </span>
                 <span className="file_meta_content file_meta_content--filesize">
-                  { `Filesize: ${file.filesize}` }
+                  { `Filesize: ${formatBytes( file.filesize || 0 )}` }
                 </span>
                 <span className="file_meta_content file_meta_content--dimensions">
                   { dimensions }
                 </span>
                 <span className="file_meta_content file_meta_content--uploaded">
-                  { `Uploaded: ${file.createdAt}` }
+                  { `Uploaded: ${formatDate( file.createdAt )}` }
                 </span>
                 <span className="file_meta_content file_meta_content--duration">
                   { `Duration: ${file.duration}` }
@@ -435,8 +372,9 @@ class FileDataForm extends Component {
             <Grid.Column mobile={ 16 } computer={ 8 }>
               <LanguageDropdown
                 id="video-language"
-                onChange={ this.handleDropdownSave }
+                locales={ this.getLocales( units ) }
                 label="Language"
+                onChange={ this.handleLanguageChange }
                 required
                 value={ language }
               />
@@ -461,9 +399,10 @@ class FileDataForm extends Component {
 
               <QualityDropdown
                 id="video-quality"
-                label={ videoQuality }
+                label="Video Quality"
                 onChange={ this.handleDropdownSave }
                 required
+                infotip="Web: small - for social sharing, Broadcast: large - ambassador videos"
                 type="video"
                 value={ quality }
               />
@@ -478,11 +417,19 @@ class FileDataForm extends Component {
 
 FileDataForm.propTypes = {
   deleteVideoFileMutation: propTypes.func,
-  id: propTypes.string,
+  language: propTypes.object,
+  languageVideoFileMutation: propTypes.func,
+  selectedFile: propTypes.string,
+  selectedUnit: propTypes.string,
   streamCreateVideoFileMutation: propTypes.func,
   streamDeleteVideoFileMutation: propTypes.func,
   streamUpdateVideoFileMutation: propTypes.func,
-  videoFileQuery: propTypes.object
+  updateSelectedFile: propTypes.func,
+  updateSelectedUnit: propTypes.func,
+  videoFileQuery: propTypes.object,
+  videoUnitConnectFileMutation: propTypes.func,
+  videoUnitDisconnectFileMutation: propTypes.func,
+  videoProjectQuery: propTypes.object
 };
 
 export default compose(
@@ -493,11 +440,19 @@ export default compose(
   graphql( VIDEO_FILE_QUALITY_MUTATION, { name: 'qualityVideoFileMutation' } ),
   graphql( VIDEO_FILE_USE_MUTATION, { name: 'useVideoFileMutation' } ),
   graphql( VIDEO_FILE_SUBTITLES_MUTATION, { name: 'videoBurnedInStatusVideoFileMutation' } ),
+  graphql( VIDEO_UNIT_DISCONNECT_FILE_MUTATION, { name: 'videoUnitDisconnectFileMutation' } ),
+  graphql( VIDEO_UNIT_CONNECT_FILE_MUTATION, { name: 'videoUnitConnectFileMutation' } ),
   graphql( VIDEO_FILE_LANG_MUTATION, { name: 'languageVideoFileMutation' } ),
   graphql( VIDEO_FILE_QUERY, {
     name: 'videoFileQuery',
     options: props => ( {
-      variables: { id: props.id },
+      variables: { id: props.selectedFile },
+    } )
+  } ),
+  graphql( VIDEO_PROJECT_QUERY, {
+    name: 'videoProjectQuery',
+    options: props => ( {
+      variables: { id: props.selectedProject },
     } )
   } )
 )( FileDataForm );

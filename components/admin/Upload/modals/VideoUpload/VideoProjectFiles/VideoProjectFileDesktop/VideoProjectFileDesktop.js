@@ -40,10 +40,10 @@ const VideoProjectFilesDesktop = () => {
             <Grid>
               <Grid.Row className="videoProjectFilesDesktop__row-header">
                 <Grid.Column width={ 6 }>Files Selected</Grid.Column>
-                <Grid.Column width={ 4 } style={ show( 1 ) }>Language</Grid.Column>
-                <Grid.Column width={ 4 } style={ show( 1 ) }>Subtitles</Grid.Column>
-                <Grid.Column width={ 4 } style={ show( 2 ) }>Type / Use</Grid.Column>
-                <Grid.Column width={ 4 } style={ show( 2 ) }>Quality</Grid.Column>
+                <Grid.Column width={ 4 } style={ show( 1 ) }>Language<span className="required">*</span></Grid.Column>
+                <Grid.Column width={ 4 } style={ show( 1 ) }>Subtitles<span className="required">*</span></Grid.Column>
+                <Grid.Column width={ 4 } style={ show( 2 ) }>Type / Use<span className="required">*</span></Grid.Column>
+                <Grid.Column width={ 4 } style={ show( 2 ) }>Quality<span className="required">*</span></Grid.Column>
                 <Grid.Column width={ 2 }></Grid.Column>
               </Grid.Row>
 

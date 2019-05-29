@@ -174,7 +174,7 @@ const VideoUpload = props => {
   /* eslint-disable react/display-name */
   const panes = [
     {
-      menuItem: 'Upload Files',
+      menuItem: 'Create a Video Project',
       render: () => (
         <Tab.Pane>
           <VideoProjectType
