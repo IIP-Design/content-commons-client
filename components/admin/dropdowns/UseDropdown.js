@@ -5,6 +5,7 @@ import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import sortBy from 'lodash/sortBy';
+import { addEmptyOption } from 'lib/utils';
 
 const VIDEO_USE_QUERY = gql`
   query VIDEO_USE_QUERY {
@@ -40,6 +41,8 @@ const UseDropdown = props => (
           options = sortBy( uses, use => use.name ).map( u => ( { key: u.id, text: u.name, value: u.id } ) );
         }
       }
+
+      addEmptyOption( options );
 
       return (
         <Fragment>
