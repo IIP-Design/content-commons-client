@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
 import { getFileExt } from 'lib/utils';
 import isEmpty from 'lodash/isEmpty';
+import sortBy from 'lodash/sortBy';
 
 import IconPopup from 'components/popups/IconPopup/IconPopup';
 import EditSupportFiles from 'components/admin/projects/ProjectEdit/EditSupportFiles/EditSupportFiles';
@@ -133,7 +134,7 @@ const SupportFileTypeList = props => {
       </h3>
       <ul>
         { supFiles.length
-          ? supFiles.map( renderSupportItem )
+          ? sortBy( supFiles, file => file.language.displayName ).map( renderSupportItem )
           : 'No files available'
         }
       </ul>
