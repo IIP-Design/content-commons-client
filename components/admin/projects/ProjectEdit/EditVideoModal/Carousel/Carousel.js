@@ -1,3 +1,8 @@
+/**
+ *
+ * Carousel
+ *
+ */
 import React, { useState } from 'react';
 import propTypes from 'prop-types';
 import { Icon } from 'semantic-ui-react';

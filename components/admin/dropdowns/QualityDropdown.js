@@ -1,9 +1,11 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+
+import IconPopup from 'components/popups/IconPopup/IconPopup';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
 const VIDEO_QUALITY_QUERY = gql`
   query VIDEO_QUALITY_QUERY {
@@ -53,6 +55,19 @@ const QualityDropdown = props => (
               </label>
             </VisuallyHidden>
           ) }
+
+          { props.infotip && (
+            <div style={ { float: 'right', marginTop: '-35px', transform: 'translateY(35px)' } }>
+              <IconPopup
+                iconSize="small"
+                iconType="info circle"
+                id="video-quality"
+                message={ props.infotip }
+                popupSize="small"
+              />
+            </div>
+          ) }
+
           <Form.Dropdown
             id={ props.id }
             name="quality"
@@ -78,7 +93,8 @@ QualityDropdown.defaultProps = {
 
 QualityDropdown.propTypes = {
   id: PropTypes.string,
-  label: PropTypes.object,
+  label: PropTypes.string,
+  infotip: PropTypes.string,
   type: PropTypes.string
 };
 
