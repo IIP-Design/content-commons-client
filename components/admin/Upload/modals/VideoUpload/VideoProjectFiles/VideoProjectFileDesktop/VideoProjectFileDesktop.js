@@ -23,20 +23,11 @@ const VideoProjectFilesDesktop = () => {
     ? { display: 'inline-block' }
     : { display: 'none' } );
 
-  /**
-   * Compares file object names for use in sorting.
-   *
-   * @param a
-   * @param b
-   * @returns {number}
-   */
-  const compareFileName = ( a, b ) => a.fileInput.name.localeCompare( b.fileInput.name );
-
   return (
     // Context API is used to avoind having to pass props down multiple levels
     <VideoUploadContext.Consumer>
       { ( {
-        files, addAssetFiles, closeModal, allFieldsSelected, handleAddFilesToUpload
+        files, addAssetFiles, closeModal, allFieldsSelected, handleAddFilesToUpload, compareFilenames
       } ) => (
         <div className="videoProjectFilesDesktop__wrapper">
           <div className="videoProjectFilesDesktop__steps">
@@ -56,7 +47,7 @@ const VideoProjectFilesDesktop = () => {
                 <Grid.Column width={ 2 }></Grid.Column>
               </Grid.Row>
 
-              { files.sort( compareFileName ).map( file => (
+              { files.sort( compareFilenames ).map( file => (
                 <VideoProjectFilesRowDesktop
                   key={ file.id }
                   file={ file }
