@@ -7,7 +7,7 @@
     "dev": "node server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
-    "test": "NODE_ENV=test jest --watch",
+    "test": "NODE_ENV=test jest",
     "deploy": "npm run build && npm run start"
   },
   "lint-staged": {

@@ -1,0 +1,19 @@
+.review-project .project-data {
+  &_meta {
+    p {
+      line-height: 1.5285em;
+    }
+  }
+
+  &_taxonomy {
+    p {
+      line-height: 1.5285em;
+    }
+  }
+
+  &_description {
+    p:first-child {
+      margin-bottom: 1em;
+    }
+  }
+}

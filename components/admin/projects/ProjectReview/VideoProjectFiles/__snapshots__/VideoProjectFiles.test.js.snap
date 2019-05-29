@@ -1,0 +1,570 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<VideoProjectFiles /> renders initial loading state without crashing 1`] = `
+<VideoProjectFiles
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": true,
+      "networkStatus": 1,
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "123",
+        "isReviewPage": true,
+      },
+    }
+  }
+  id="123"
+>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "center",
+        "minHeight": "200px",
+      }
+    }
+  >
+    <Loader
+      active={true}
+      content="Loading project file(s)..."
+      inline="centered"
+      style={
+        Object {
+          "marginBottom": "1em",
+        }
+      }
+    >
+      <div
+        className="ui active text centered inline loader"
+        style={
+          Object {
+            "marginBottom": "1em",
+          }
+        }
+      >
+        Loading project file(s)...
+      </div>
+    </Loader>
+  </div>
+</VideoProjectFiles>
+`;
+
+exports[`<VideoProjectFiles /> renders the final state 1`] = `
+<VideoProjectFiles
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": false,
+      "networkStatus": 7,
+      "project": Object {
+        "id": "123",
+        "units": Array [
+          Object {
+            "descPublic": "A public description (English)",
+            "files": Array [
+              Object {
+                "createdAt": "2019-03-20T15:09:24.975Z",
+                "dimensions": Object {
+                  "height": 1080,
+                  "width": 1920,
+                },
+                "duration": 556000,
+                "filename": "madeinamerica_english.mp4",
+                "filesize": 662595174,
+                "id": "eng183",
+                "language": Object {
+                  "displayName": "English",
+                  "textDirection": "LTR",
+                },
+                "quality": "WEB",
+                "stream": Array [
+                  Object {
+                    "site": "YouTube",
+                    "url": "https://www.youtube.com/watch?1evw4fRu3bo",
+                  },
+                  Object {
+                    "site": "Vimeo",
+                    "url": "https://vimeo.com/827301171",
+                  },
+                ],
+                "url": "https://video-download-url.com",
+                "use": Object {
+                  "name": "Full Video",
+                },
+                "videoBurnedInStatus": "CLEAN",
+              },
+            ],
+            "id": "eng931",
+            "thumbnails": Array [
+              Object {
+                "image": Object {
+                  "alt": "A man wearing a hardhat walks through an empty factory.",
+                  "url": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
+                },
+              },
+            ],
+            "title": "Made in America",
+          },
+          Object {
+            "descPublic": "A public description (French)",
+            "files": Array [
+              Object {
+                "createdAt": "2019-03-20T15:09:24.975Z",
+                "dimensions": Object {
+                  "height": 1080,
+                  "width": 1920,
+                },
+                "duration": 556000,
+                "filename": "madeinamerica_french.mp4",
+                "filesize": 662595174,
+                "id": "fr1911",
+                "language": Object {
+                  "displayName": "French",
+                  "textDirection": "LTR",
+                },
+                "quality": "WEB",
+                "stream": Array [
+                  Object {
+                    "site": "Vimeo",
+                    "url": "https://vimeo.com/827301171",
+                  },
+                ],
+                "url": "https://video-download-url.com",
+                "use": Object {
+                  "name": "Full Video",
+                },
+                "videoBurnedInStatus": "CLEAN",
+              },
+            ],
+            "id": "fr0381",
+            "thumbnails": Array [
+              Object {
+                "image": Object {
+                  "alt": "A man wearing a hardhat walks through an empty factory.",
+                  "url": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
+                },
+              },
+            ],
+            "title": "Fabriqué en Amérique",
+          },
+        ],
+      },
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "123",
+        "isReviewPage": true,
+      },
+    }
+  }
+  id="123"
+>
+  <section
+    className="section section--project_files project_files layout"
+  >
+    <h3
+      className="project_files_headline uppercase"
+    >
+      Videos in Project
+    </h3>
+    <div
+      className="project_file"
+      key="Made in America"
+    >
+      <Grid>
+        <div
+          className="ui grid"
+        >
+          <GridRow
+            className="project_file_header LTR"
+          >
+            <div
+              className="row project_file_header LTR"
+            >
+              <GridColumn
+                floated="left"
+                mobile={8}
+              >
+                <div
+                  className="left floated eight wide mobile column"
+                >
+                  <h4
+                    className="title"
+                  >
+                    Made in America
+                  </h4>
+                </div>
+              </GridColumn>
+              <GridColumn
+                className="project_file_edit"
+                floated="right"
+                mobile={8}
+              >
+                <div
+                  className="right floated eight wide mobile column project_file_edit"
+                >
+                  <Button
+                    as="button"
+                    className="project_button project_button--edit"
+                    content="Edit"
+                    onClick={[Function]}
+                  >
+                    <button
+                      className="ui button project_button project_button--edit"
+                      onClick={[Function]}
+                    >
+                      Edit
+                    </button>
+                  </Button>
+                </div>
+              </GridColumn>
+            </div>
+          </GridRow>
+          <GridRow
+            className="project_file_contents"
+          >
+            <div
+              className="row project_file_contents"
+            >
+              <GridColumn
+                className="file_meta"
+                computer={8}
+                mobile={16}
+                tablet={8}
+              >
+                <div
+                  className="eight wide computer sixteen wide mobile eight wide tablet column file_meta"
+                >
+                  <img
+                    alt="A man wearing a hardhat walks through an empty factory."
+                    src="https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg"
+                  />
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      File Name:
+                    </b>
+                     
+                    madeinamerica_english.mp4
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Filesize:
+                    </b>
+                     
+                    631.9  MB
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Dimensions:
+                    </b>
+                     
+                    1920 x 1080
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Uploaded:
+                    </b>
+                     
+                    March 20, 2019
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Duration:
+                    </b>
+                     
+                    9:16
+                  </p>
+                </div>
+              </GridColumn>
+              <GridColumn
+                className="file_info"
+                computer={8}
+                mobile={16}
+                tablet={8}
+              >
+                <div
+                  className="eight wide computer sixteen wide mobile eight wide tablet column file_info"
+                >
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Language:
+                    </b>
+                     
+                    English
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Subtitles & Captions:
+                    </b>
+                     
+                    CLEAN
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Video Type:
+                    </b>
+                     
+                    Full Video
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Quality:
+                    </b>
+                     
+                    WEB
+                  </p>
+                  <p
+                    className="public_description LTR"
+                  >
+                    <b
+                      className="label"
+                    >
+                      Public Description:
+                    </b>
+                    <span>
+                      A public description (English)
+                    </span>
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      YouTube
+                       URL:
+                    </b>
+                     
+                    https://www.youtube.com/watch?1evw4fRu3bo
+                  </p>
+                </div>
+              </GridColumn>
+            </div>
+          </GridRow>
+        </div>
+      </Grid>
+    </div>
+    <div
+      className="project_file"
+      key="Fabriqué en Amérique"
+    >
+      <Grid>
+        <div
+          className="ui grid"
+        >
+          <GridRow
+            className="project_file_header LTR"
+          >
+            <div
+              className="row project_file_header LTR"
+            >
+              <GridColumn
+                floated="left"
+                mobile={8}
+              >
+                <div
+                  className="left floated eight wide mobile column"
+                >
+                  <h4
+                    className="title"
+                  >
+                    Fabriqué en Amérique
+                  </h4>
+                </div>
+              </GridColumn>
+              <GridColumn
+                className="project_file_edit"
+                floated="right"
+                mobile={8}
+              >
+                <div
+                  className="right floated eight wide mobile column project_file_edit"
+                >
+                  <Button
+                    as="button"
+                    className="project_button project_button--edit"
+                    content="Edit"
+                    onClick={[Function]}
+                  >
+                    <button
+                      className="ui button project_button project_button--edit"
+                      onClick={[Function]}
+                    >
+                      Edit
+                    </button>
+                  </Button>
+                </div>
+              </GridColumn>
+            </div>
+          </GridRow>
+          <GridRow
+            className="project_file_contents"
+          >
+            <div
+              className="row project_file_contents"
+            >
+              <GridColumn
+                className="file_meta"
+                computer={8}
+                mobile={16}
+                tablet={8}
+              >
+                <div
+                  className="eight wide computer sixteen wide mobile eight wide tablet column file_meta"
+                >
+                  <img
+                    alt="A man wearing a hardhat walks through an empty factory."
+                    src="https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg"
+                  />
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      File Name:
+                    </b>
+                     
+                    madeinamerica_french.mp4
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Filesize:
+                    </b>
+                     
+                    631.9  MB
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Dimensions:
+                    </b>
+                     
+                    1920 x 1080
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Uploaded:
+                    </b>
+                     
+                    March 20, 2019
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Duration:
+                    </b>
+                     
+                    9:16
+                  </p>
+                </div>
+              </GridColumn>
+              <GridColumn
+                className="file_info"
+                computer={8}
+                mobile={16}
+                tablet={8}
+              >
+                <div
+                  className="eight wide computer sixteen wide mobile eight wide tablet column file_info"
+                >
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Language:
+                    </b>
+                     
+                    French
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Subtitles & Captions:
+                    </b>
+                     
+                    CLEAN
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Video Type:
+                    </b>
+                     
+                    Full Video
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Quality:
+                    </b>
+                     
+                    WEB
+                  </p>
+                  <p
+                    className="public_description LTR"
+                  >
+                    <b
+                      className="label"
+                    >
+                      Public Description:
+                    </b>
+                    <span>
+                      A public description (French)
+                    </span>
+                  </p>
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Vimeo
+                       URL:
+                    </b>
+                     
+                    https://vimeo.com/827301171
+                  </p>
+                </div>
+              </GridColumn>
+            </div>
+          </GridRow>
+        </div>
+      </Grid>
+    </div>
+  </section>
+</VideoProjectFiles>
+`;

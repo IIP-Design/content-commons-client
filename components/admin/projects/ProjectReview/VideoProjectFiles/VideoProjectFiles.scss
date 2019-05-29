@@ -1,0 +1,69 @@
+@import "../../../../../styles/colors.scss";
+
+.project_files {
+  &_headline {
+    margin-right: -1rem;
+    margin-left: -1rem;
+    padding-left: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-top: 2px solid $light-grey;
+    border-bottom: 2px solid $light-grey;
+  }
+}
+
+.review-project .project_file {
+  margin-top: 1em;
+  @media screen and (min-width: 768px) {
+    padding-bottom: 2em;
+  }
+  border-bottom: 2px solid $light-grey;
+
+  &_header {
+    padding-bottom: 0 !important;
+
+    &.RTL {
+      .title {
+        direction: rtl;
+      }
+    }
+  }
+
+  &_contents {
+    @media screen and (min-width: 768px) {
+      padding-top: 0 !important;
+    }
+  }
+
+  &_edit {
+    text-align: right;
+  }
+
+  .file_meta {
+    padding-right: 0;
+
+    img {
+      width: 100%;
+      margin-bottom: 0.5em;
+    }
+  }
+
+  .file_info {
+    .public_description,
+    .additional_keywords {
+      margin: 1em 0;
+    }
+
+    .public_description {
+      span {
+        display: block;
+      }
+
+      &.RTL {
+        span:last-child {
+          direction: rtl;
+        }
+      }
+    }
+  }
+}
