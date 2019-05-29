@@ -7,6 +7,7 @@ import sortBy from 'lodash/sortBy';
 import gql from 'graphql-tag';
 
 import './dropdown.scss';
+import { addEmptyOption } from 'lib/utils';
 
 const LANGUAGES_QUERY = gql`
   query LANGUAGES_QUERY {
@@ -38,6 +39,8 @@ const LanguageDropdown = props => (
         options = sortBy( languages, lang => lang.displayName )
           .map( lang => ( { key: lang.id, text: lang.displayName, value: lang.id } ) );
       }
+
+      addEmptyOption( options );
 
       return (
         <Fragment>
