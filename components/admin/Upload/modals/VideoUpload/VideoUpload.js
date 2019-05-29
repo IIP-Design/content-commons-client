@@ -9,6 +9,7 @@ import { Tab, Dimmer, Loader } from 'semantic-ui-react';
 import { v4 } from 'uuid';
 import VideoProjectType from './VideoProjectType/VideoProjectType';
 import VideoProjectFiles from './VideoProjectFiles/VideoProjectFiles';
+import RemoveFile from '../RemoveFile/RemoveFile';
 import './VideoUpload.scss';
 
 export const VideoUploadContext = React.createContext();
@@ -18,6 +19,7 @@ const VideoUpload = props => {
   const [loading, setLoading] = useState( false );
   const [files, setFiles] = useState( [] );
   const [allFieldsSelected, setAllFieldsSelected] = useState( false );
+  const [confirmRemove, setConfirmRemove] = useState( {} );
 
   // Store GraphQL id for each use default
   // i.e. default use for video is 'Full Video'
@@ -97,11 +99,25 @@ const VideoUpload = props => {
   };
 
   /**
+   * Prompt for removal confirmation and upon confirmation:
    * Remove file from files state array
    * @param {string} id id of file to remove
    */
   const removeAssetFile = id => {
-    setFiles( prevFiles => prevFiles.filter( file => file.id !== id ) );
+    const file = files.find( f => f.id === id );
+    if ( !file ) {
+      console.error( 'File not found for removal.' );
+      return;
+    }
+    setConfirmRemove( {
+      filename: file.fileInput.name,
+      closeModal: confirm => {
+        setConfirmRemove( {} );
+        if ( confirm ) {
+          setFiles( prevFiles => prevFiles.filter( f => f.id !== id ) );
+        }
+      }
+    } );
   };
 
   /**
@@ -221,6 +237,7 @@ const VideoUpload = props => {
         panes={ panes }
         className="videoUpload"
       />
+      <RemoveFile { ...confirmRemove } />
     </Fragment>
   );
 };
