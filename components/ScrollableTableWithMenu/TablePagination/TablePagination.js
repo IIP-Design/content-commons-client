@@ -50,12 +50,12 @@ const TablePagination = props => {
       query={ TEAM_VIDEO_PROJECTS_COUNT_QUERY }
       variables={ { ...variables } }
     >
-      { ( { loading, error, data: { videoProjects } } ) => {
+      { ( { loading, error, data } ) => {
         if ( loading ) return 'Loading....';
         if ( error ) return <ApolloError error={ error } />;
-        if ( !videoProjects ) return null;
+        if ( !data || ( data && !data.videoProjects ) ) return null;
 
-        const projectsCount = videoProjects.length;
+        const projectsCount = data.videoProjects.length;
         const totalPages = Math.ceil( projectsCount / itemsPerPage );
 
         if ( projectsCount > 0 ) {

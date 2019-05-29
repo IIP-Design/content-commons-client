@@ -8,7 +8,6 @@
  *
  */
 import React, { PureComponent } from 'react';
-import { Icon, Responsive } from 'semantic-ui-react';
 import User from 'components/User/User';
 import LoggedInNav from './LoggedInNav/LoggedInNav';
 import LoggedOutNav from './LoggedOutNav/LoggedOutNav';
@@ -63,19 +62,19 @@ class GlobalNav extends PureComponent {
   }
 
   render() {
-    const { mobileNavVisible } = this.state; // this is why the mobile nav flickers on
-
     return (
       <nav>
-        <Responsive
-          as={ Icon }
-          name="content"
-          maxWidth={ 992 }
+        <button
+          type="button"
+          className="mobileNavBurger"
           onClick={ this.handleNavClick }
           onKeyUp={ this.keyUp }
           tabIndex={ 0 }
-          // className={ mobileNavVisible ? 'mobileNav' : 'fullNav' }
-        />
+        >
+          <span className="bar" />
+          <span className="bar" />
+          <span className="bar" />
+        </button>
         <User>
           { ( { data } ) => {
             const authenticatedUser = ( data && data.authenticatedUser ) ? data.authenticatedUser : null;

@@ -5,7 +5,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import ScrollableTableWithMenu from 'components/ScrollableTableWithMenu';
+import ScrollableTableWithMenu from 'components/ScrollableTableWithMenu/ScrollableTableWithMenu';
 import './MyProjects.scss';
 
 const persistentTableHeaders = [

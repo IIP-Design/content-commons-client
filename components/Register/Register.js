@@ -35,7 +35,8 @@ class Register extends Component {
         organization: '',
         contentTypes: []
       }
-    }
+    },
+    consentChecked: false
   }
 
   emptyTeam = {
@@ -95,6 +96,8 @@ class Register extends Component {
           <ReviewSubmit
             user={ this.state.data }
             goBack={ this.goBack }
+            consentChecked={ this.state.consentChecked }
+            toggleConsentChecked={ this.toggleConsentChecked }
             handleSignUpUserSuccess={ this.handleSignUpUserSuccess }
           />
         </Tab.Pane>
@@ -109,6 +112,12 @@ class Register extends Component {
 
   updateState = data => {
     this.setState( state => ( { ...state, data: { ...state.data, ...data } } ) );
+  }
+
+  toggleConsentChecked = () => {
+    this.setState( prevState => ( {
+      consentChecked: !prevState.consentChecked
+    } ) );
   }
 
   hideTeamDetails = () => {
