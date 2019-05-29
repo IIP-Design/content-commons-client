@@ -48,6 +48,24 @@
 
         .item-text {
           flex: 2 0 auto;
+          position: relative;
+
+          &--hover {
+            display: none;  
+            position: absolute;
+            bottom: -30px;
+            padding: 5px;            
+            font-size: 11px;
+            color: $shuttle-grey;
+            background: #fff;
+            box-shadow: 1px 1px 3px $shuttle-grey;
+          }
+
+          &:hover {
+            .item-text--hover {
+              display: block;            
+            }
+          }
         }
       }
     }

@@ -51,5 +51,9 @@
     padding-bottom: 0.5em !important;
     border-bottom: 1px solid $light-grey;
     color: $blue;
+
+    .required {
+      color: $red;
+    }
   }
 }

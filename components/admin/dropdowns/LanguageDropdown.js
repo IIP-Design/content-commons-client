@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
+import sortBy from 'lodash/sortBy';
 import gql from 'graphql-tag';
 import './dropdown.scss';
 
@@ -24,6 +25,7 @@ const LanguageDropdown = props => (
       let options = [];
       if ( data && data.languages ) {
         options = data.languages.map( lang => ( { key: lang.id, text: lang.displayName, value: lang.id } ) );
+        options = sortBy( options, 'text' );
       }
 
       return (
