@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { Dropdown, Grid, Loader } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
-import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination';
+import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
 import './TableItemsDisplay.scss';
 
 const displaySizeOptions = [
@@ -35,7 +35,7 @@ const TableItemsDisplay = props => {
       query={ TEAM_VIDEO_PROJECTS_COUNT_QUERY }
       variables={ { ...variables } }
     >
-      { ( { loading, error, data: { videoProjects } } ) => {
+      { ( { loading, error, data } ) => {
         if ( loading ) {
           return (
             <Grid.Column className="items_display">
@@ -51,9 +51,9 @@ const TableItemsDisplay = props => {
             </Grid.Column>
           );
         }
-        if ( !videoProjects ) return null;
+        if ( data && !data.videoProjects ) return null;
 
-        const projectsCount = videoProjects.length;
+        const projectsCount = data.videoProjects.length;
         const firstPageItem = skip + 1;
         const range = skip + count;
         const lastPageItem = range < projectsCount ? range : projectsCount;
@@ -63,6 +63,7 @@ const TableItemsDisplay = props => {
             <span>
               Show:{ ' ' }
               <Dropdown
+                id="items-per-page"
                 inline
                 options={ displaySizeOptions }
                 value={ count }

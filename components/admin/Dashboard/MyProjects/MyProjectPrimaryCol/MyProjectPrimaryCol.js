@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import truncate from 'lodash/truncate';
 import {
-  Checkbox, Icon, Modal
+  Checkbox, Icon, Modal, Popup
 } from 'semantic-ui-react';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
@@ -77,15 +77,38 @@ const MyProjectPrimaryCol = props => {
         <img src={ d.thumbnail.url } alt={ d.thumbnail.alt } />
       </div>
       <div className="myProjects_data">
-        <Link href={ `/admin/project/video/${id}/review` }>
-          <a
-            className="myProjects_data_title"
-            title={ d[header.name] }
-          >
-            <span aria-hidden={ projectTitleLength }>{ truncate( d[header.name], { length: 35 } ) }</span>
-            { projectTitleLength && <VisuallyHidden>{ d[header.name] }</VisuallyHidden> }
-          </a>
-        </Link>
+        { /**
+           * Display tooltip for keyboard accessibility.
+           * Tradeoff? Can't use <Link> in trigger and no
+           * page transition animation, but err on side
+           * of better accessibility.
+           */ }
+        { projectTitleLength
+          ? (
+            <Popup
+              trigger={ (
+                <a
+                  href={ `/admin/project/video/${id}/review` }
+                  className="myProjects_data_title"
+                >
+                  <span aria-hidden>{ truncate( d[header.name], { length: 35 } ) }</span>
+                  <VisuallyHidden el="span">{ d[header.name] }</VisuallyHidden>
+                </a>
+              ) }
+              content={ d[header.name] }
+              hideOnScroll
+              inverted
+              on={ ['hover', 'focus'] }
+              size="mini"
+            />
+          )
+          : (
+            <Link href={ `/admin/project/video/${id}/review` }>
+              <a className="myProjects_data_title">
+                { d[header.name] }
+              </a>
+            </Link>
+          ) }
         <div className="myProjects_data_actions">
           <div className="myProjects_data_actions_wrapper">
             <DetailsPopup id={ id } />

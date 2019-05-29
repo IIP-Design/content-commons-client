@@ -7,6 +7,7 @@ import UseDropdown from 'components/admin/dropdowns/UseDropdown';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { truncateAndReplaceStr } from 'lib/utils';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import UploadCompletionTracker from '../UploadCompletionTracker';
 import { VideoUploadContext } from '../../VideoUpload';
 import './VideoProjectFilesRowDesktop.scss';
@@ -71,7 +72,11 @@ const VideoProjectFilesDesktopRow = props => {
               <div className="videoProjectFilesDesktopRow__column--filename">
                 <UploadCompletionTracker fields={ getFields( 1 ) } display={ displayTracker( 1 ) } />
                 <UploadCompletionTracker fields={ getFields( 2 ) } display={ displayTracker( 2 ) } />
-                <span className="item-text">{ filename }</span>
+                <span className="item-text" aria-hidden>
+                  { filename }
+                  <span className="item-text--hover">{ name }</span>
+                </span>
+                <VisuallyHidden el="span">{ name }</VisuallyHidden>
               </div>
             </Grid.Column>
 

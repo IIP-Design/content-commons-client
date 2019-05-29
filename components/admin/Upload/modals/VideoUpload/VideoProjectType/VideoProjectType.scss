@@ -2,6 +2,10 @@
 
   &.project-type-active {
     max-width: 430px;
+
+    .ui.form > p {
+      margin: 0 0 1em;
+    }
   }  
 }
 

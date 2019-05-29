@@ -22,12 +22,14 @@ const SIGNUP_MUTATION = gql`
 `;
 
 const ReviewSubmit = ( {
+  values: { consent },
   errors,
   handleSubmit,
   handleChange,
   isSubmitting,
   goBack,
-  user
+  user,
+  toggleConsentChecked
 } ) => {
   // Permissions data has only the value stored, i.e. EDITOR, so pull in option to
   // fetch label for display
@@ -53,7 +55,11 @@ const ReviewSubmit = ( {
         name="consent"
         className="register_review-label"
         label={ <label>I agree to the Content Commons <Link href="/about"><a target="_blank">Terms of Service</a></Link></label> }
-        onChange={ handleChange }
+        checked={ consent }
+        onChange={ e => {
+          toggleConsentChecked();
+          handleChange( e );
+        } }
         error={ !!errors.consent }
       />
       <p className="error-message">{ errors.consent }</p>
@@ -81,11 +87,13 @@ const ReviewSubmit = ( {
 };
 
 ReviewSubmit.propTypes = {
+  values: PropTypes.object,
   errors: PropTypes.object,
   handleSubmit: PropTypes.func,
   handleChange: PropTypes.func,
   isSubmitting: PropTypes.bool,
   goBack: PropTypes.func,
+  toggleConsentChecked: PropTypes.func,
   user: PropTypes.object,
 };
 
@@ -94,6 +102,7 @@ export default compose(
   graphql( SIGNUP_MUTATION, { name: 'signUp' } ),
   withFormik( {
     validationSchema,
+    mapPropsToValues: props => ( { ...props, consent: props.consentChecked } ),
     handleSubmit: async ( { user }, { props: { signUp, handleSignUpUserSuccess }, setErrors, setSubmitting } ) => {
       try {
         await signUp( {

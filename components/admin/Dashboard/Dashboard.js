@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Tab, Popup } from 'semantic-ui-react';
 import userIcon from 'static/icons/icon_user_profile_dark.svg';
-import MyProjects from './MyProjects';
+import MyProjects from './MyProjects/MyProjects';
 import './Dashboard.scss';
 
 /* eslint-disable react/prefer-stateless-function */
