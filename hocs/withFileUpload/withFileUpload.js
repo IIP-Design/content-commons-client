@@ -35,7 +35,7 @@ const withFileUpload = WrappedComponent => {
 
         //  if video or image, fetch file metadata (this call takes a bit long so may need to fix)
         if ( isVideo || isImage ) {
-          result = await getFileMetadata( getFileInfo, file.s3Path ).catch( err => { console.dir( err ); } );
+          result = await getFileMetadata( getFileInfo, encodeURI( file.s3Path ) ).catch( err => { console.dir( err ); } );
           if ( result ) {
             const {
               duration, bitrate, width, height
