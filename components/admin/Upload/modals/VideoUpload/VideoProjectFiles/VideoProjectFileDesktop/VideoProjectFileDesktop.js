@@ -27,7 +27,7 @@ const VideoProjectFilesDesktop = () => {
     // Context API is used to avoind having to pass props down multiple levels
     <VideoUploadContext.Consumer>
       { ( {
-        files, addAssetFiles, closeModal, allFieldsSelected, handleAddFilesToUpload
+        files, addAssetFiles, closeModal, allFieldsSelected, handleAddFilesToUpload, compareFilenames
       } ) => (
         <div className="videoProjectFilesDesktop__wrapper">
           <div className="videoProjectFilesDesktop__steps">
@@ -47,7 +47,7 @@ const VideoProjectFilesDesktop = () => {
                 <Grid.Column width={ 2 }></Grid.Column>
               </Grid.Row>
 
-              { files.map( file => (
+              { files.sort( compareFilenames ).map( file => (
                 <VideoProjectFilesRowDesktop
                   key={ file.id }
                   file={ file }
