@@ -6,6 +6,7 @@
 import React, { useContext } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import { getPathToS3Bucket } from 'lib/utils';
 
 import Carousel from 'components/admin/projects/ProjectEdit/EditVideoModal/Carousel/Carousel';
 import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
@@ -72,7 +73,7 @@ const VideoUnitCarousel = () => {
                       selected={ selected }
                       tabIndex="0"
                     >
-                      <img className={ `video-carousel-item-image ${selected}` } src={ image.url } alt={ image.alt } />
+                      <img className={ `video-carousel-item-image ${selected}` } src={ `${getPathToS3Bucket()}/${image.url}` } alt={ image.alt } />
                       <div className="video-carousel-item-heading">
                         { `${unit.title} | ${unit.language.displayName}` }
                       </div>

@@ -1,6 +1,6 @@
 /**
  *
- * ProjectItemsList
+ * ProjectUnits
  *
  */
 import React, { useState, useEffect } from 'react';
@@ -23,11 +23,12 @@ const ProjectUnits = props => {
     projectId,
     filesToUpload,
     heading,
-    extensions,
-    // modalContent
+    extensions
   } = props;
 
   const hasProjectUnits = () => ( !isEmpty( data ) && data.projectUnits && data.projectUnits.units );
+
+  // only allow files contiained in the extensions array
   const allowedFiles = filesToUpload.filter( file => extensions.includes( getFileExt( file.input.name ) ) );
 
   const getUnitsForNewProject = () => {
@@ -92,7 +93,6 @@ const ProjectUnits = props => {
           unit={ unit }
           projectId={ projectId }
           filesToUpload={ allowedFiles }
-         // modalContent={ modalContent }
         />
       ) ) }
     </Card.Group>
@@ -115,7 +115,6 @@ ProjectUnits.propTypes = {
   projectId: PropTypes.string,
   heading: PropTypes.string,
   extensions: PropTypes.array,
-  // modalContent: PropTypes.func,
   data: PropTypes.object,
   filesToUpload: PropTypes.array // from redux
 };

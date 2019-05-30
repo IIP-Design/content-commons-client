@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import { Loader, Table } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
-import { formatDate } from 'lib/utils';
+import { formatDate, getPathToS3Bucket } from 'lib/utils';
 import './TableBody.scss';
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
@@ -100,7 +100,7 @@ const normalizeData = videoProjects => {
       visibility: { value: videoProject.visibility },
       thumbnail: {
         value: {
-          url: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].url : '',
+          url: videoProject.thumbnails && videoProject.thumbnails.length ? `${getPathToS3Bucket()}/${videoProject.thumbnails[0].url}` : '',
           alt: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].alt : ''
         }
       },

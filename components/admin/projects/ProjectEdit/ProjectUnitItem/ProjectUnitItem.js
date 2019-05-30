@@ -1,8 +1,9 @@
 import React, {
-  useState, useEffect, useContext, Fragment
+  useState, useEffect, useContext
 } from 'react';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
-import getConfig from 'next/config';
+import { getPathToS3Bucket } from 'lib/utils';
 import truncate from 'lodash/truncate';
 import {
   Card, Modal, Image, List, Loader
@@ -11,26 +12,28 @@ import FileUploadProgressBar from 'components/admin/projects/ProjectEdit/FileUpl
 import { UploadContext } from '../VideoEdit/VideoEdit';
 import './ProjectUnitItem.scss';
 
+const EditSingleProjectItem = dynamic( () => import( '../EditSingleProjectItem/EditSingleProjectItem' ) );
+
 const ProjectUnitItem = props => {
-  const { publicRuntimeConfig } = getConfig();
   const { projectId, unit, filesToUpload } = props;
 
   // const PLACEHOLDER = '/static/images/thumbnail_video.jpg';
   const PLACEHOLDER = null;
-  const S3_PATH = `https://s3.amazonaws.com/${publicRuntimeConfig.REACT_APP_AWS_S3_PUBLISHER_UPLOAD_BUCKET}`;
 
   const [thumbnail, setThumbnail] = useState( PLACEHOLDER );
   const [title, setTitle] = useState( '' );
   const [unitUploadComplete, setUnitUploadComplete] = useState( false );
 
-  // do not put in state
+  // do not put in state as it will create a new object and will not track upload
+  // need a better solution as this is prone to errors
   const unitFileToUpload = filesToUpload.filter( file => file.language === unit.language.id );
 
   const uploadInProgress = useContext( UploadContext );
 
+  // implemment subscriptions to track thumbnail changes
   const getThumbnail = u => {
     if ( u && u.thumbnails && u.thumbnails[0] && u.thumbnails[0].image ) {
-      return `${S3_PATH}/${u.thumbnails[0].image.url}`;
+      return `${getPathToS3Bucket()}/${u.thumbnails[0].image.url}`;
     }
     // return PLACEHOLDER;
   };
@@ -52,7 +55,10 @@ const ProjectUnitItem = props => {
           ? ( <Image src={ thumbnail } fluid /> )
           : <div className="placeholder" />
         }
+        { /* Has an upload been triggered and if so, are the files applicable to this unit complete? */ }
         { uploadInProgress && !unitUploadComplete && ( <Loader active size="small" /> ) }
+
+        { /* Remove file overlay if above conditions are met */ }
         { !!unitFileToUpload.length && !unitUploadComplete && (
           <List className="file-list">
             { unitFileToUpload.map( file => <List.Item key={ file.id }>{ truncate( file.input.name, { length: 45 } ) }</List.Item> ) }
@@ -60,6 +66,8 @@ const ProjectUnitItem = props => {
         )
         }
       </div>
+
+      { /* Remove progress bar if above conditions are met */ }
       { uploadInProgress && !unitUploadComplete && !!unitFileToUpload.length && (
         <FileUploadProgressBar
           filesToUpload={ unitFileToUpload }
@@ -90,7 +98,10 @@ const ProjectUnitItem = props => {
         trigger={ renderProjectItem() }
       >
         <Modal.Content>
-          <div>Content</div>
+          <EditSingleProjectItem
+            projectId={ projectId }
+            itemId={ unit.id }
+          />
         </Modal.Content>
       </Modal>
     );

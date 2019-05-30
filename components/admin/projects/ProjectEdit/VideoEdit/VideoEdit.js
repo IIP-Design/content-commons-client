@@ -29,16 +29,14 @@ import Notification from 'components/Notification/Notification';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
-import PreviewProject from 'components/admin/ProjectPreview/ProjectPreview';
+import PreviewProject from 'components/admin/PreviewProject/PreviewProject';
 import PreviewProjectContent from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 import ProjectSupportFiles from 'components/admin/ProjectSupportFiles/ProjectSupportFiles';
 import ProjectUnits from 'components/admin/projects/ProjectEdit/ProjectUnits/ProjectUnits';
-// import EditSingleProjectItem from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import FormInstructions from 'components/admin/projects/ProjectEdit/FormInstructions/FormInstructions';
 import VideoProjectDataForm from 'components/admin/projects/ProjectEdit/VideoProjectDataForm/VideoProjectDataForm';
 import UploadSuccessMsg from 'components/admin/projects/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
 import FileUploadProgressBar from 'components/admin/projects/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
-// import VideoItem from 'components/admin/projects/ProjectEdit/VideoItem/VideoItem';
 import withFileUpload from 'hocs/withFileUpload/withFileUpload';
 
 import { config } from './config';
@@ -118,7 +116,7 @@ const VideoEdit = props => {
       pathname: '/admin/project',
       query: {
         content: 'video',
-        id: props.id
+        id: projectId
       }
     } );
   };
@@ -264,7 +262,7 @@ const VideoEdit = props => {
             confirmButton="Yes, delete forever"
           />
 
-          <PreviewProject
+          { /* <PreviewProject
             triggerProps={ {
               className: 'edit-project__btn--preview',
               content: 'Preview Project',
@@ -275,7 +273,7 @@ const VideoEdit = props => {
             modalTrigger={ Button }
             modalContent={ PreviewProjectContent }
             options={ { closeIcon: true } }
-          />
+          /> */ }
 
           { projectId
             && (

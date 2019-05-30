@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import propTypes from 'prop-types';
 import gql from 'graphql-tag';
+import { getPathToS3Bucket } from 'lib/utils';
 import { Form, Grid, TextArea } from 'semantic-ui-react';
 
 import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
@@ -224,7 +225,7 @@ class UnitDataForm extends Component {
           <Grid.Row>
             <Grid.Column mobile={ 16 } computer={ 9 }>
               <figure className="modal_thumbnail overlay">
-                <img className="overlay-image" src={ imageUrl } alt={ imageAlt } />
+                <img className="overlay-image" src={ `${getPathToS3Bucket()}/${imageUrl}` } alt={ imageAlt } />
                 { /*
                    * Removing change thumbnail hover state
                    * since this functionality not part of MVP

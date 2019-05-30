@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
-import { titleCase } from 'lib/utils';
+import { titleCase, getPathToS3Bucket } from 'lib/utils';
 import { EditSingleProjectItemContext } from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
 import Carousel from 'components/admin/projects/ProjectEdit/EditVideoModal/Carousel/Carousel';
@@ -42,7 +42,7 @@ const FileSidebar = () => {
         if ( error ) return <p>{ `Error: ${error.message}` }</p>;
 
         const thumbnail = data.videoUnit && data.videoUnit.thumbnails ? data.videoUnit.thumbnails[0] : {};
-        const image = thumbnail && thumbnail.image && thumbnail.image.url ? thumbnail.image.url : '';
+        const image = thumbnail && thumbnail.image && thumbnail.image.url ? `${getPathToS3Bucket()}/${thumbnail.image.url}` : '';
         const files = data.videoUnit && data.videoUnit.files ? data.videoUnit.files : [];
 
         return (
