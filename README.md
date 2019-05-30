@@ -20,6 +20,7 @@ Handles the public Content Commons as well as the client side adminstative inter
   - **REACT_APP_GOOGLE_CLIENT_ID** : id used for Google authentication
   - **REACT_APP_GOOGLE_API_KEY** : key to Google services, i.e. language detect
   - **REACT_APP_APOLLO_ENDPOINT** : public api to Content Commons Adminstation Server (graphql server)
+  - **REACT_APP_AWS_S3_PUBLISHER_UPLOAD_BUCKET**: S3 bucket for authoring uploads
 
 - Start dev server: `npm run dev`
 
@@ -46,4 +47,3 @@ npm run test
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/IIP-Design/content-commons-client/tags).
-
