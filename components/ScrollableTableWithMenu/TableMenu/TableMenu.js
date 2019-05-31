@@ -267,4 +267,8 @@ TableMenu.propTypes = {
   tableMenuOnChange: PropTypes.func
 };
 
+TableMenu.defaultProps = {
+  columnMenu: []
+};
+
 export default TableMenu;
