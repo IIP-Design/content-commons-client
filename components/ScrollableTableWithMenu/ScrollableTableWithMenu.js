@@ -29,7 +29,7 @@ class ScrollableTableWithMenu extends React.Component {
     windowWidth: null,
     searchTerm: '',
     activePage: 1,
-    itemsPerPage: 2, // set to low number for dev
+    itemsPerPage: 12,
     skip: 0
   };
 
