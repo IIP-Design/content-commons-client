@@ -308,3 +308,8 @@ TableActionsMenu.propTypes = {
 };
 
 export default TableActionsMenu;
+
+export {
+  DELETE_VIDEO_PROJECTS_MUTATION,
+  UNPUBLISH_VIDEO_PROJECTS_MUTATION
+};
