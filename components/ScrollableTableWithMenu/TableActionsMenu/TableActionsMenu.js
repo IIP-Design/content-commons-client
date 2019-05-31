@@ -96,7 +96,10 @@ class TableActionsMenu extends React.Component {
       },
       {
         query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
-        variables: { ...variables }
+        variables: {
+          team: variables.team,
+          searchTerm: variables.searchTerm
+        }
       }]
     } );
   }
@@ -157,7 +160,10 @@ class TableActionsMenu extends React.Component {
       <div className="actionsMenu_wrapper">
         <Query
           query={ TEAM_VIDEO_PROJECTS_COUNT_QUERY }
-          variables={ { ...variables } }
+          variables={ {
+            team: variables.team,
+            searchTerm: variables.searchTerm
+          } }
         >
           { ( { loading, error, data } ) => {
             if ( loading ) return 'Loading....';
