@@ -159,11 +159,12 @@ class TableActionsMenu extends React.Component {
           query={ TEAM_VIDEO_PROJECTS_COUNT_QUERY }
           variables={ { ...variables } }
         >
-          { ( { loading, error, data: { videoProjects } } ) => {
+          { ( { loading, error, data } ) => {
             if ( loading ) return 'Loading....';
             if ( error ) return <ApolloError error={ error } />;
-            if ( !videoProjects ) return null;
+            if ( !data || !data.videoProjects ) return null;
 
+            const { videoProjects } = data;
             const isDisabled = videoProjects && !videoProjects.length;
 
             return (
