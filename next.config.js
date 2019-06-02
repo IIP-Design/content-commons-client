@@ -1,4 +1,5 @@
 const withSass = require( '@zeit/next-sass' );
+const FilterWarningsPlugin = require( 'webpack-filter-warnings-plugin' );
 require( 'dotenv' ).config();
 
 module.exports = withSass( {
@@ -13,6 +14,11 @@ module.exports = withSass( {
   },
   serverRuntimeConfig: {},
   webpack ( config ) {
+    config.plugins.push(
+      new FilterWarningsPlugin( {
+        exclude: /mini-css-extract-plugin[^]*Conflicting order between:/,
+      } )
+    );
     config.module.rules.push(
       {
         test: /\.(png|svg|jpg|eot|otf|ttf|woff|woff2)$/,
