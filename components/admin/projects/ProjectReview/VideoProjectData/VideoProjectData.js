@@ -1,15 +1,16 @@
+import './VideoProjectData.scss';
+
+import { Icon, Loader } from 'semantic-ui-react';
+
 /**
  *
  * VideoProjectData
  *
  */
 import React from 'react';
-import { object } from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { Icon, Loader } from 'semantic-ui-react';
-
-import './VideoProjectData.scss';
+import { object } from 'prop-types';
 
 const VideoProjectData = props => {
   const { error, loading, project } = props.data;
@@ -110,18 +111,23 @@ const VIDEO_PROJECT_REVIEW_DATA_QUERY = gql`
         lastName
       }
       team {
+        id
         name
       }
       visibility
       descPublic
       descInternal
       categories {
+        id
         translations {
+          id
           name
         }
       }
       tags {
+        id
         translations {
+          id
           name
         }
       }
