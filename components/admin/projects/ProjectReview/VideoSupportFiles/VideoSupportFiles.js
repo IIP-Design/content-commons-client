@@ -1,8 +1,3 @@
-/**
- *
- * VideoSupportFiles
- *
- */
 import React, { useEffect, useState } from 'react';
 import { func, object, string } from 'prop-types';
 import gql from 'graphql-tag';
@@ -150,6 +145,7 @@ const VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY = gql`
         id
         filename
         language {
+          id
           displayName
         }
       }
@@ -161,6 +157,7 @@ const VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY = gql`
         filename
         filetype
         language {
+          id
           displayName
         }
       }

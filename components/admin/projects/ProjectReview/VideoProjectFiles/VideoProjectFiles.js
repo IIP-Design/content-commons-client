@@ -3,7 +3,6 @@
  * VideoProjectFiles
  *
  */
-
 import React from 'react';
 import { object, string } from 'prop-types';
 import Router from 'next/router';
@@ -17,12 +16,14 @@ import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/projects/ProjectEd
 import {
   formatBytes,
   formatDate,
+  getPathToS3Bucket,
   getPluralStringOrNot,
   getStreamData,
   millisToMinutesAndSeconds
 } from 'lib/utils';
 
 import './VideoProjectFiles.scss';
+
 
 const VideoProjectFiles = props => {
   const { error, loading, project } = props.data;
@@ -108,7 +109,7 @@ const VideoProjectFiles = props => {
                   { ( thumbnails && thumbnails.length )
                     ? (
                       <img
-                        src={ thumbnails[0].image.url }
+                        src={ `${getPathToS3Bucket()}/${thumbnails[0].image.url}` }
                         alt={ thumbnails[0].image.alt }
                       />
                     )

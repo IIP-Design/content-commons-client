@@ -1,8 +1,3 @@
-/**
- *
- * VideoReview
- *
- */
 import React, { useState } from 'react';
 import { func, object, string } from 'prop-types';
 import Router from 'next/router';

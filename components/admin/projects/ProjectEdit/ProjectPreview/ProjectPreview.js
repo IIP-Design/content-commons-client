@@ -232,10 +232,12 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
     project: videoProject(id: $id) {
       projectType
       thumbnails {
+        id
         alt
         url
       }
       team {
+        id
         name
       }
       units {
@@ -244,11 +246,13 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
         descPublic
         thumbnails {
           image {
+            id
             alt
             url
           }
         }
         language {
+          id
           languageCode
           displayName
           textDirection
@@ -260,10 +264,12 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
           filesize
           videoBurnedInStatus
           dimensions {
+            id
             width
             height
           }
           stream {
+            id
             site
             embedUrl
           }

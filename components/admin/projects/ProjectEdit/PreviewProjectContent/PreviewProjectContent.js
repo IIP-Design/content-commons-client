@@ -3,7 +3,6 @@
  * PreviewProjectContent
  *
  */
-
 import React from 'react';
 import { object } from 'prop-types';
 import gql from 'graphql-tag';
@@ -27,7 +26,6 @@ import PopupTabbed from 'components/popups/PopupTabbed';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import { getYouTubeId } from 'lib/utils';
-
 import './PreviewProjectContent.scss';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -230,12 +228,15 @@ PreviewProjectContent.propTypes = {
 const VIDEO_PROJECT_PREVIEW_QUERY = gql`
   query VideoProject($id: ID!) {
     project: videoProject(id: $id) {
+      id
       projectType
       thumbnails {
+        id
         alt
         url
       }
       team {
+        id
         name
       }
       units {
@@ -244,28 +245,42 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
         descPublic
         thumbnails {
           image {
+            id
             alt
             url
           }
         }
         language {
+          id
           languageCode
           displayName
           textDirection
         }
         files {
           id
+          createdAt
+          duration
           filename
           url
           filesize
           videoBurnedInStatus
+          language {
+            id
+            displayName
+          }
           dimensions {
+            id
             width
             height
           }
           stream {
+            id
             site
             embedUrl
+          }
+          use {
+            id
+            name
           }
         }
       }
