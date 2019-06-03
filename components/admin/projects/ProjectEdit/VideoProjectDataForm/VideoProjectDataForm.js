@@ -1,18 +1,19 @@
+import {
+  CREATE_VIDEO_PROJECT_MUTATION,
+  VIDEO_PROJECT_FORM_QUERY
+} from 'lib/graphql/queries/video';
+import { compose, graphql } from 'react-apollo';
+
+import { CURRENT_USER_QUERY } from 'components/User/User';
+import ProjectDataForm from 'components/admin/projects/ProjectEdit/ProjectDataForm/ProjectDataForm';
+import { buildCreateVideoProjectTree } from 'lib/graphql/builders/video';
+import { withFormik } from 'formik';
 /**
  *
  * VideoProjectDataForm
  *
  */
 import { withRouter } from 'next/router';
-import { compose, graphql } from 'react-apollo';
-import { CURRENT_USER_QUERY } from 'components/User/User';
-import ProjectDataForm from 'components/admin/projects/ProjectEdit/ProjectDataForm/ProjectDataForm';
-import { withFormik } from 'formik';
-import {
-  CREATE_VIDEO_PROJECT_MUTATION,
-  VIDEO_PROJECT_FORM_QUERY
-} from 'lib/graphql/queries/video';
-import { buildCreateVideoProjectTree } from 'lib/graphql/builders/video';
 import { validationSchema } from './validationSchema';
 
 // what happens if there is a project id but it returns an error?
@@ -42,8 +43,10 @@ export default compose(
         ? videoProject.tags.map( tag => tag.id )
         : [];
 
+      const author = videoProject.author ? videoProject.author.id : authenticatedUser.id;
+
       return {
-        author: videoProject.author || authenticatedUser.id,
+        author,
         team: videoProject.team ? videoProject.team.name : authenticatedUser.team.name,
         projectTitle: videoProject.projectTitle || '',
         visibility: videoProject.visibility || 'PUBLIC',
