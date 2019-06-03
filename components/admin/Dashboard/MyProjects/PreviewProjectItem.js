@@ -7,7 +7,7 @@ import ApolloError from 'components/errors/ApolloError';
 import { Dropdown, Embed, Loader } from 'semantic-ui-react';
 
 import downloadIcon from 'static/icons/icon_download.svg';
-import { getStreamData, getYouTubeId } from 'lib/utils';
+import { getStreamData, getVimeoId, getYouTubeId } from 'lib/utils';
 
 import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo';
 import DownloadSrt from 'components/admin/download/DownloadSrt/DownloadSrt';
@@ -289,9 +289,9 @@ class PreviewProjectItem extends React.Component {
                     source="youtube"
                   />
                 ) }
-                { !youTubeUrl && (
+                { ( !youTubeUrl && vimeoUrl ) && (
                   <Embed
-                    id={ getYouTubeId( youTubeUrl ) }
+                    id={ getVimeoId( vimeoUrl ) }
                     placeholder={ thumbnailUrl }
                     source="vimeo"
                   />

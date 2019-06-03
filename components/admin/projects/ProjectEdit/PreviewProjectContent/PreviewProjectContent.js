@@ -25,7 +25,8 @@ import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
 
 import downloadIcon from 'static/icons/icon_download.svg';
-import { getYouTubeId } from 'lib/utils';
+import { getStreamData, getVimeoId, getYouTubeId } from 'lib/utils';
+
 import './PreviewProjectContent.scss';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -97,7 +98,8 @@ class PreviewProjectContent extends React.PureComponent {
     } = selectedItem;
 
     const currentUnit = files[0];
-    const youTubeUrl = currentUnit.stream.embedUrl;
+    const youTubeUrl = getStreamData( currentUnit.stream, 'youtube', 'embedUrl' );
+    const vimeoUrl = getStreamData( currentUnit.stream, 'vimeo', 'embedUrl' );
     const { videoBurnedInStatus } = currentUnit;
 
     let thumbnailUrl = '';
@@ -199,18 +201,21 @@ class PreviewProjectContent extends React.PureComponent {
         </div>
 
         <div className="project-preview__content">
-          { /* @todo getYouTubeId may not be necessary depending
-            on how the YouTube URL is stored in data */ }
-          { youTubeUrl
-            && (
-              <Embed
-                id={ getYouTubeId( youTubeUrl ) }
-                placeholder={ thumbnailUrl }
-                source="youtube"
-              />
-            ) }
-
-          <ModalContentMeta type={ projectType } dateUpdated={ updated || uploaded } />
+          { youTubeUrl && (
+            <Embed
+              id={ getYouTubeId( youTubeUrl ) }
+              placeholder={ thumbnailUrl }
+              source="youtube"
+            />
+          ) }
+          { ( !youTubeUrl && vimeoUrl ) && (
+            <Embed
+              id={ getVimeoId( vimeoUrl ) }
+              placeholder={ thumbnailUrl }
+              source="vimeo"
+            />
+          ) }
+          <ModalContentMeta type="video" dateUpdated={ updatedAt } />
 
           <ModalDescription description={ descPublic } />
         </div>
