@@ -4,15 +4,15 @@
  *
  */
 import React from 'react';
-import { object } from 'prop-types';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Dropdown, Embed, Loader } from 'semantic-ui-react';
 
-import DownloadVideo from 'components/Video/DownloadVideo';
-import DownloadSrt from 'components/Video/DownloadSrt';
-import DownloadThumbnail from 'components/Video/DownloadThumbnail';
-import DownloadOtherFiles from 'components/Video/DownloadOtherFiles';
+import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo';
+import DownloadSrt from 'components/admin/download/DownloadSrt/DownloadSrt';
+import DownloadThumbnail from 'components/admin/download/DownloadThumbnail/DownloadThumbnail';
+import DownloadOtherFiles from 'components/admin/download/DownloadOtherFiles/DownloadOtherFiles';
 import DownloadHelp from 'components/Video/DownloadHelp';
 
 import ModalItem from 'components/modals/ModalItem/ModalItem';
@@ -71,6 +71,7 @@ class PreviewProjectContent extends React.PureComponent {
   }
 
   render() {
+    const { id } = this.props;
     const { error, loading, project } = this.props.data;
 
     if ( loading ) {
@@ -187,8 +188,8 @@ class PreviewProjectContent extends React.PureComponent {
                       title: 'SRT',
                       component: (
                         <DownloadSrt
-                          instructions="Download SRTs"
-                          units={ units }
+                          id={ id }
+                          instructions="Download SRT(s)"
                         />
                       )
                     },
@@ -196,8 +197,8 @@ class PreviewProjectContent extends React.PureComponent {
                       title: 'Thumbnail',
                       component: (
                         <DownloadThumbnail
+                          id={ id }
                           instructions="Download Thumbnail(s)"
-                          units={ units }
                         />
                       )
                     },
@@ -205,8 +206,8 @@ class PreviewProjectContent extends React.PureComponent {
                       title: 'Other',
                       component: (
                         <DownloadOtherFiles
+                          id={ id }
                           instructions="Download Other File(s)"
-                          units={ units }
                         />
                       )
                     },
@@ -245,7 +246,8 @@ class PreviewProjectContent extends React.PureComponent {
 }
 
 PreviewProjectContent.propTypes = {
-  data: object.isRequired,
+  id: PropTypes.string,
+  data: PropTypes.object.isRequired,
 };
 
 const VIDEO_PROJECT_PREVIEW_QUERY = gql`
