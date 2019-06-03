@@ -244,6 +244,7 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
         title
         descPublic
         thumbnails {
+          id
           image {
             id
             alt
@@ -261,7 +262,13 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
           createdAt
           duration
           filename
+          createdAt
+          duration
           url
+          use {
+            id
+            name
+          }
           filesize
           videoBurnedInStatus
           language {
@@ -281,6 +288,9 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
           use {
             id
             name
+          language {
+            id
+            textDirection
           }
         }
       }
