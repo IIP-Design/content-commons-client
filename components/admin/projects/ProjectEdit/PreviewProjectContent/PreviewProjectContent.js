@@ -263,6 +263,7 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
         url
       }
       team @skip(if: $isReviewPage) {
+        id
         name
       }
       units {

@@ -36,6 +36,7 @@ const VIDEO_PROJECT_UNITS_QUERY = gql`
       updatedAt
       projectType
       team {
+        id
         name
       }
       units {
