@@ -1,12 +1,14 @@
-import React from 'react';
+import './TableBody.scss';
+
+import { Loader, Table } from 'semantic-ui-react';
+import { formatDate, getPathToS3Bucket } from 'lib/utils';
+
+import ApolloError from 'components/errors/ApolloError';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
-import { Loader, Table } from 'semantic-ui-react';
-import ApolloError from 'components/errors/ApolloError';
+import React from 'react';
 import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
-import { formatDate, getPathToS3Bucket } from 'lib/utils';
-import './TableBody.scss';
+import gql from 'graphql-tag';
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
   query VideoProjectsByTeam(
@@ -46,10 +48,12 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
       createdAt
       updatedAt
       team {
+        id
         name
         organization
       }
       author {
+        id
         firstName
         lastName
       }
