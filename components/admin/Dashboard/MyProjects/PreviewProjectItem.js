@@ -45,6 +45,7 @@ const VIDEO_PROJECT_UNITS_QUERY = gql`
         thumbnails {
           id
           image {
+            id
             alt
             url
           }
