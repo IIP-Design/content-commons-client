@@ -141,6 +141,7 @@
   ***/
   &--results,
   &--video,
+  &--article,
   &--image {
     header {
       @media screen and (max-width: 767px) {
@@ -185,6 +186,7 @@
   ***/
   &--results,
   &--video,
+  &--article,
   &--image,
   &--login,
   &--register,

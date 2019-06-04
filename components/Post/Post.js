@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getItemRequest } from 'lib/elastic/api';
 import { normalizeItem } from 'lib/elastic/parser';
+import { updateUrl } from 'lib/browser';
+import { withRouter } from 'next/router';
 
 import embedIcon from 'static/icons/icon_embed.svg';
 import shareIcon from 'static/icons/icon_share.svg';
@@ -35,6 +37,22 @@ class Post extends Component {
     this.handleLanguageChange = this.handleLanguageChange.bind( this );
   }
 
+  /**
+   * Update the url location
+   */
+  componentDidMount() {
+    this.willUpdateUrl();
+  }
+
+  shouldComponentUpdate( nextProps, nextState ) {
+    if ( this.state.item !== nextState.item ) return true;
+    return false;
+  }
+
+  componentDidUpdate() {
+    this.willUpdateUrl();
+  }
+
   onFetchResult = ( response, value ) => {
     if ( response && response.hits.total > 0 ) {
       const item = normalizeItem( response.hits.hits[0] );
@@ -61,10 +79,22 @@ class Post extends Component {
     }
   }
 
+  /**
+   * Update the location url the direct link to selected article
+   */
+  willUpdateUrl() {
+    const { pathname } = this.props.router;
+    const { id, site } = this.state.item;
+    if ( id && site && pathname === '/article' ) {
+      updateUrl( `/article?id=${id}&site=${site}` );
+    }
+  }
+
   render() {
     if ( this.state && this.state.item ) {
       const { item, textDirection } = this.state;
       const embedItem = (
+        // eslint-disable-next-line max-len
         `<div id="cdp-article-embed"></div><script async id="cdpArticle" data-id="${item.id}" data-site="${item.site}" src="${process.env.REACT_APP_CDP_MODULES_URL}${process.env.REACT_APP_SINGLE_ARTICLE_MODULE}"></script>`
       );
 
@@ -141,7 +171,8 @@ class Post extends Component {
 }
 
 Post.propTypes = {
+  router: PropTypes.object,
   item: PropTypes.object
 };
 
-export default Post;
+export default withRouter( Post );
