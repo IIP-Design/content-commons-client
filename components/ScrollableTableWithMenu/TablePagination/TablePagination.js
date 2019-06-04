@@ -58,7 +58,7 @@ const TablePagination = props => {
         const projectsCount = data.videoProjects.length;
         const totalPages = Math.ceil( projectsCount / itemsPerPage );
 
-        if ( projectsCount > 0 ) {
+        if ( projectsCount > 0 && totalPages > 1 ) {
           return (
             <Pagination
               activePage={ activePage }
