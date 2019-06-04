@@ -22,6 +22,7 @@ app.prepare()
       app.render( req, res, actualPage, queryParams );
     } );
 
+    console.log( 'RETURNING DEFAULT ROUTE' );
 
     server.get( '*', ( req, res ) => handle( req, res ) );
     const port = process.env.PORT || 3000;

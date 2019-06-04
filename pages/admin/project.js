@@ -78,10 +78,10 @@ ProjectPage.getInitialProps = async ( { query, res, apolloClient } ) => {
   }
 
   // Fetch applicable query and populate project data for use in child components
-  // await apolloClient.query( {
-  //   query: getProjectQuery( query.content ),
-  //   variables: { id: query.id }
-  // } ).catch( err => console.dir( err ) );
+  await apolloClient.query( {
+    query: getProjectQuery( query.content ),
+    variables: { id: query.id }
+  } ).catch( err => console.dir( err ) );
 
   return {};
 };
