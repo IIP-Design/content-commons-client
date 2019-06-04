@@ -30,7 +30,9 @@ const getProjectQuery = content => {
 };
 
 const ProjectPage = props => {
-  // console.log( 'rendering ProjectPage' );
+  console.log( 'RENDERING  PROJECT PAGE - PROPS ARE : ' );
+  console.dir( props );
+
   // Handles client side route checking
   const isValidPath = query => query && allowedContentTypes( query.content );
 
@@ -66,26 +68,26 @@ const ProjectPage = props => {
 };
 
 // Executes before page renders
-ProjectPage.getInitialProps = async ( { query, res, apolloClient } ) => {
-  // Send to dahsboard if the query is not present or the content type is not valid
-  // Handles server side route checking
-  if ( isEmpty( query ) || !allowedContentTypes( query.content ) ) {
-    redirectTo( '/admin/dashboard', { res } );
-  }
+// ProjectPage.getInitialProps = async ( { query, res, apolloClient } ) => {
+//   // Send to dahsboard if the query is not present or the content type is not valid
+//   // Handles server side route checking
+//   if ( isEmpty( query ) || !allowedContentTypes( query.content ) ) {
+//     redirectTo( '/admin/dashboard', { res } );
+//   }
 
-  // If there is no id return empty project data object
-  if ( !query.id ) {
-    return {};
-  }
+//   // If there is no id return empty project data object
+//   if ( !query.id ) {
+//     return {};
+//   }
 
-  // Fetch applicable query and populate project data for use in child components
-  await apolloClient.query( {
-    query: getProjectQuery( query.content ),
-    variables: { id: query.id }
-  } );
+//   // Fetch applicable query and populate project data for use in child components
+//   await apolloClient.query( {
+//     query: getProjectQuery( query.content ),
+//     variables: { id: query.id }
+//   } ).catch( err => console.dir( err ) );
 
-  return {};
-};
+//   return {};
+// };
 
 
 ProjectPage.propTypes = {
