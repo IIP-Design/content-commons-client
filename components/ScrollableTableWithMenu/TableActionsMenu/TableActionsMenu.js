@@ -67,7 +67,7 @@ class TableActionsMenu extends React.Component {
         where: {
           AND: [
             { id_in: [...selectedItems.keys()] },
-            { status_not: 'DRAFT' }
+            { status: 'PUBLISHED' }
           ]
         }
       }
