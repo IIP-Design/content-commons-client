@@ -26,6 +26,7 @@ export const VIDEO_FILE_QUERY = gql`
       quality
       videoBurnedInStatus
       dimensions {
+        id
         height
         width
       }
