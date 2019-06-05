@@ -96,6 +96,7 @@ const ProjectUnitItem = props => {
       <Modal
         key={ unit.language.id }
         trigger={ renderProjectItem() }
+        closeIcon
       >
         <Modal.Content>
           <EditSingleProjectItem
