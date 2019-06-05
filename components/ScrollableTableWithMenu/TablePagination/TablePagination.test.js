@@ -135,6 +135,44 @@ describe( '<TablePagination />', () => {
     expect( pagination.html() ).toEqual( null );
   } );
 
+  it( 'renders null if there is one page and there is at least one project', async () => {
+    const newProps = { ...props, ...{ itemsPerPage: 12 } };
+    const singlePageMocks = [
+      {
+        request: {
+          query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
+          variables: { ...props.variables }
+        },
+        result: {
+          data: {
+            videoProjects: [
+              { id: '1' },
+              { id: '2' },
+              { id: '3' }
+            ]
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ singlePageMocks } addTypename={ false }>
+        <TablePagination { ...newProps } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const pagination = wrapper.find( TablePagination );
+    const { itemsPerPage } = pagination.props();
+    const projectsCount = singlePageMocks[0].result.data.videoProjects.length;
+    const totalPages = Math.ceil( projectsCount / itemsPerPage );
+
+    expect( projectsCount ).toBeGreaterThan( 0 );
+    expect( totalPages ).toEqual( 1 );
+    expect( pagination.html() ).toEqual( null );
+  } );
+
   it( 'renders the correct number of pages', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
