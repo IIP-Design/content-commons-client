@@ -18,9 +18,11 @@ const VIDEO_PROJECT_FILES_QUERY = gql`
           quality
           url
           language {
+            id
             displayName
           }
           use {
+            id
             name
           }
         }
