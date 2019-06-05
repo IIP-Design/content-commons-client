@@ -1,9 +1,3 @@
-/**
- *
- * TableActionsMenu
- *
- */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Mutation, Query } from 'react-apollo';
@@ -107,16 +101,21 @@ class TableActionsMenu extends React.Component {
   handleUnpublishCacheUpdate = cache => {
     const { variables, selectedItems } = this.props;
     const items = [...selectedItems.keys()];
-    const data = cache.readQuery( {
-      query: TEAM_VIDEO_PROJECTS_QUERY,
-      variables: { ...variables }
-    } );
 
-    // set status & visibility
-    this.setStatusVisibility( items, data.videoProjects );
+    try {
+      const data = cache.readQuery( {
+        query: TEAM_VIDEO_PROJECTS_QUERY,
+        variables: { ...variables }
+      } );
 
-    // write transformed data to cache to match server
-    cache.writeQuery( { query: TEAM_VIDEO_PROJECTS_QUERY, data } );
+      // set status & visibility
+      this.setStatusVisibility( items, data.videoProjects );
+
+      // write transformed data to cache to match server
+      cache.writeQuery( { query: TEAM_VIDEO_PROJECTS_QUERY, data } );
+    } catch ( error ) {
+      console.error( error );
+    }
   }
 
   setStatusVisibility = ( items, projects ) => {
