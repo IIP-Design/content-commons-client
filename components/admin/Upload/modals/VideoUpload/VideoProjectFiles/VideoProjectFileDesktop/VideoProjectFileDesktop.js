@@ -57,7 +57,14 @@ const VideoProjectFilesDesktop = () => {
               ) ) }
 
               <Grid.Row style={ { paddingLeft: '1rem' } }>
-                <ButtonAddFiles onChange={ e => addAssetFiles( e.target.files ) } multiple className="secondary">+ Add Files</ButtonAddFiles>
+                <ButtonAddFiles
+                  onChange={ e => addAssetFiles( e.target.files ) }
+                  multiple
+                  className="secondary"
+                  inputID="videoFileUpload"
+                >
+                  + Add Files
+                </ButtonAddFiles>
               </Grid.Row>
 
             </Grid>

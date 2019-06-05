@@ -3,7 +3,6 @@ import {
   Form,
   Button
 } from 'semantic-ui-react';
-
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import CancelUpload from '../../../CancelUpload/CancelUpload';
 import VideoProjectFilesRowMobile from './VideoProjectFilesRowMobile';
@@ -26,7 +25,14 @@ const VideoProjectFilesMobile = () => (
             />
           ) ) }
 
-          <ButtonAddFiles onChange={ e => addAssetFiles( e.target.files ) } multiple className="secondary">+ Add Files</ButtonAddFiles>
+          <ButtonAddFiles
+            onChange={ e => addAssetFiles( e.target.files ) }
+            multiple
+            className="secondary"
+            inputID="mobileVideoFileUpload"
+          >
+            + Add Files
+          </ButtonAddFiles>
 
           <Form.Field className="upload_actions">
             <CancelUpload closeModal={ closeModal } />

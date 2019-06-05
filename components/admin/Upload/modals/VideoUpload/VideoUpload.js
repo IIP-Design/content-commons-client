@@ -20,6 +20,15 @@ const VideoUpload = props => {
   const [allFieldsSelected, setAllFieldsSelected] = useState( false );
 
   useEffect( () => {
+    // Since using onchange event, need to reset value on input so user can upload same file
+    // ie: remove file then upload file again
+    const videoFileUploadInput = ( window.innerWidth > 768 )
+      ? document.getElementById( 'videoFileUpload' )
+      : document.getElementById( 'mobileVideoFileUpload' );
+    if ( videoFileUploadInput ) videoFileUploadInput.value = '';
+  }, [files] );
+
+  useEffect( () => {
     // Check to see if all required dropdowns are completed
     // when the the files state changes. All fields do not need
     // to be checked as some are pre-populated on initialization or

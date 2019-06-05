@@ -21,6 +21,7 @@ const ButtonAddFiles = props => {
       </Button>
       { /* Hidden files dialogue box */ }
       <input
+        id={ props.inputID || 'uploadFileInput' }
         ref={ fileInput }
         type="file"
         accept={ props.accept || '*' }
@@ -38,7 +39,8 @@ ButtonAddFiles.propTypes = {
   className: PropTypes.string,
   multiple: PropTypes.bool,
   accept: PropTypes.string,
-  children: PropTypes.node
+  children: PropTypes.node,
+  inputID: PropTypes.string
 };
 
 export default ButtonAddFiles;
