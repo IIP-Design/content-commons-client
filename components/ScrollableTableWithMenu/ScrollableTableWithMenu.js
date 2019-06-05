@@ -23,6 +23,7 @@ class ScrollableTableWithMenu extends React.Component {
   state = {
     tableHeaders: this.props.persistentTableHeaders,
     selectedItems: new Map(),
+    hasSelectedAllItems: false, // eslint-disable-line
     displayActionsMenu: false,
     column: null,
     direction: null,
@@ -151,22 +152,17 @@ class ScrollableTableWithMenu extends React.Component {
       .from( document.querySelectorAll( '[data-label]' ) )
       .map( item => item.dataset.label );
 
-    this.setState( () => {
+    this.setState( prevState => {
       const newSelectedItems = new Map();
 
       allItems.forEach( item => {
-        if ( this._selectAllItems ) {
-          newSelectedItems.set( item, false );
-        } else {
-          newSelectedItems.set( item, true );
-        }
+        newSelectedItems.set( item, !prevState.hasSelectedAllItems );
       } );
-
-      this._selectAllItems = !this._selectAllItems;
 
       return ( {
         selectedItems: newSelectedItems,
-        displayActionsMenu: this._selectAllItems
+        hasSelectedAllItems: !prevState.hasSelectedAllItems,
+        displayActionsMenu: !prevState.hasSelectedAllItems
       } );
     } );
   }
