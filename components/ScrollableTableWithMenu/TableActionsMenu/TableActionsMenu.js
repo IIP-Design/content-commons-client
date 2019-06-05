@@ -103,10 +103,9 @@ class TableActionsMenu extends React.Component {
     const items = [...selectedItems.keys()];
 
     try {
-      const data = cache.readQuery( {
-        query: TEAM_VIDEO_PROJECTS_QUERY,
-        variables: { ...variables }
-      } );
+      const data = this.getCachedQuery(
+        cache, TEAM_VIDEO_PROJECTS_QUERY, variables
+      );
 
       // set status & visibility
       this.setStatusVisibility( items, data.videoProjects );
@@ -117,6 +116,13 @@ class TableActionsMenu extends React.Component {
       console.error( error );
     }
   }
+
+  getCachedQuery = ( cache, query, variables ) => (
+    cache.readQuery( {
+      query,
+      variables: { ...variables }
+    } )
+  )
 
   setStatusVisibility = ( items, projects ) => {
     items.forEach( item => {
