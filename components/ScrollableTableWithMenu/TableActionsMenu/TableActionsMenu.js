@@ -134,15 +134,14 @@ class TableActionsMenu extends React.Component {
     } )
   )
 
-  setStatusVisibility = ( items, projects ) => {
-    items.forEach( item => {
-      const selections = projects.filter( project => project.id === item );
-      selections.forEach( project => {
-        project.status = 'DRAFT';
-        project.visibility = 'INTERNAL';
-      } );
-    } );
-  }
+  getDraftProjects = projects => (
+    projects.reduce( ( acc, curr ) => {
+      if ( curr.status === 'DRAFT' ) {
+        return [...acc, curr.id];
+      }
+      return [...acc];
+    }, [] )
+  )
 
   showConfirmationMsg = () => {
     this.setState( { displayConfirmationMsg: true } );
