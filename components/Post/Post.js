@@ -35,14 +35,16 @@ const Post = props => {
   const [textDirection, setTextDirection] = useState( props.item.language.text_direction );
 
   useEffect( () => {
-    const language = item.languages.find( lang => lang.language.display_name === selectedLanguage );
-    if ( language && language.post_id ) {
-      getItemRequest( item.site, language.post_id )
-        .then( response => {
-          if ( response && response.hits.total > 0 ) {
-            setItem( normalizeItem( response.hits.hits[0] ) );
-          }
-        } );
+    if ( item ) {
+      const language = item.languages.find( lang => lang.language.display_name === selectedLanguage );
+      if ( language && language.post_id ) {
+        getItemRequest( item.site, language.post_id )
+          .then( response => {
+            if ( response && response.hits.total > 0 ) {
+              setItem( normalizeItem( response.hits.hits[0] ) );
+            }
+          } );
+      }
     }
   }, [selectedLanguage] );
 
