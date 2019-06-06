@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -158,6 +158,36 @@ class TableActionsMenu extends React.Component {
     }, [] )
   )
 
+  getSelectedProjects = () => {
+    const projects = this.transformSelectedItemsMap();
+    return projects.reduce( ( acc, curr ) => {
+      if ( curr.value ) {
+        return [...acc, curr.id];
+      }
+      return [...acc];
+    }, [] );
+  }
+
+  transformSelectedItemsMap = () => {
+    const { selectedItems } = this.props;
+    const arr = [];
+    selectedItems.forEach(
+      ( value, key ) => arr.push( { id: key, value } )
+    );
+    return arr;
+  }
+
+  hasSelectedAllDrafts = () => {
+    const { draftProjects } = this.state;
+    const selections = this.getSelectedProjects();
+
+    if ( selections.length > 0 ) {
+      return selections.every(
+        project => draftProjects.includes( project )
+      );
+    }
+  }
+
   showConfirmationMsg = () => {
     this.setState( { displayConfirmationMsg: true } );
   }
@@ -293,41 +323,45 @@ class TableActionsMenu extends React.Component {
             <img src={ archiveIcon } alt="Archive Selection(s)" title="Archive Selection(s)" />
           </Button>
 
-          <span className="separator">|</span>
-
-          <Mutation
-            mutation={ UNPUBLISH_VIDEO_PROJECTS_MUTATION }
-            update={ this.handleUnpublishCacheUpdate }
-            onCompleted={ () => {
-              this.props.handleResetSelections();
-              this.showConfirmationMsg();
-            } }
-          >
-            { ( unpublish, { error } ) => {
-              if ( error ) return <ApolloError error={ error } />;
-              return (
-                <Popup
-                  trigger={ (
-                    <Button
-                      className="unpublish"
+          { !this.hasSelectedAllDrafts()
+            && (
+            <Fragment>
+              <span className="separator">|</span>
+              <Mutation
+                mutation={ UNPUBLISH_VIDEO_PROJECTS_MUTATION }
+                update={ this.handleUnpublishCacheUpdate }
+                onCompleted={ () => {
+                  this.props.handleResetSelections();
+                  this.showConfirmationMsg();
+                } }
+              >
+                { ( unpublish, { error } ) => {
+                  if ( error ) return <ApolloError error={ error } />;
+                  return (
+                    <Popup
+                      trigger={ (
+                        <Button
+                          className="unpublish"
+                          size="mini"
+                          basic
+                          onClick={
+                            () => this.handleUnpublish( unpublish )
+                          }
+                        >
+                          <span className="unpublish--text">Unpublish</span>
+                        </Button>
+                      ) }
+                      content="Unpublish Selection(s)"
+                      hideOnScroll
+                      inverted
+                      on={ ['hover', 'focus'] }
                       size="mini"
-                      basic
-                      onClick={
-                        () => this.handleUnpublish( unpublish )
-                      }
-                    >
-                      <span className="unpublish--text">Unpublish</span>
-                    </Button>
-                  ) }
-                  content="Unpublish Selection(s)"
-                  hideOnScroll
-                  inverted
-                  on={ ['hover', 'focus'] }
-                  size="mini"
-                />
-              );
-            } }
-          </Mutation>
+                    />
+                  );
+                } }
+              </Mutation>
+            </Fragment>
+            ) }
         </div>
       </div>
     );
