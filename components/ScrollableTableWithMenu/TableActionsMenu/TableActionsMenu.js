@@ -108,13 +108,23 @@ class TableActionsMenu extends React.Component {
       );
 
       // set status & visibility
-      this.setStatusVisibility( items, data.videoProjects );
+      this.handleStatusVisibility( items, data.videoProjects );
 
       // write transformed data to cache to match server
       cache.writeQuery( { query: TEAM_VIDEO_PROJECTS_QUERY, data } );
     } catch ( error ) {
       console.error( error );
     }
+  }
+
+  handleStatusVisibility = ( items, projects ) => {
+    items.forEach( item => {
+      const selections = projects.filter( project => project.id === item );
+      selections.forEach( project => {
+        project.status = 'DRAFT';
+        project.visibility = 'INTERNAL';
+      } );
+    } );
   }
 
   getCachedQuery = ( cache, query, variables ) => (
