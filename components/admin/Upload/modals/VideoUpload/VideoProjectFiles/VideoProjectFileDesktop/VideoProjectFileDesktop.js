@@ -23,6 +23,17 @@ const VideoProjectFilesDesktop = () => {
     ? { display: 'inline-block' }
     : { display: 'none' } );
 
+  const stepOneComplete = files => files.every( file => {
+    const { input: { type } } = file;
+    if ( type.includes( 'video' ) ) {
+      if ( activeStep === 1 ) {
+        return ( file.language && file.videoBurnedInStatus );
+      }
+      return ( file.quality );
+    }
+    return ( file.language );
+  } );
+
   return (
     // Context API is used to avoind having to pass props down multiple levels
     <VideoUploadContext.Consumer>
@@ -80,6 +91,7 @@ const VideoProjectFilesDesktop = () => {
               <Button
                 className="primary"
                 content="Next"
+                disabled={ !stepOneComplete( files ) }
                 style={ show( 1 ) }
                 onClick={ () => setActiveStep( 2 ) }
               />
