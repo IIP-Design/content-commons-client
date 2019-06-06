@@ -91,7 +91,7 @@ const VideoProjectFilesDesktop = () => {
               <Button
                 className="primary"
                 content="Next"
-                disabled={ !stepOneComplete( files ) }
+                disabled={ !stepOneComplete( files ) || files.length === 0 }
                 style={ show( 1 ) }
                 onClick={ () => setActiveStep( 2 ) }
               />
@@ -100,7 +100,7 @@ const VideoProjectFilesDesktop = () => {
                 className="primary"
                 type="button"
                 content="Continue"
-                disabled={ !allFieldsSelected }
+                disabled={ !allFieldsSelected || files.length === 0 }
                 style={ show( 2 ) }
                 onClick={ handleAddFilesToUpload }
               />
