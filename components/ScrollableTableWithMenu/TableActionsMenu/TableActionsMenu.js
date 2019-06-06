@@ -230,12 +230,14 @@ class TableActionsMenu extends React.Component {
 
             const { videoProjects } = data;
             const isDisabled = videoProjects && !videoProjects.length;
+            const isChecked = videoProjects && videoProjects.length === this.getSelectedProjects().length;
 
             return (
               <Checkbox
                 className={ displayActionsMenu ? 'actionsMenu_toggle actionsMenu_toggle--active' : 'actionsMenu_toggle' }
                 onChange={ toggleAllItemsSelection }
                 disabled={ isDisabled }
+                checked={ isChecked }
               />
             );
           } }
