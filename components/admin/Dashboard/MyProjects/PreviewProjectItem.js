@@ -214,6 +214,7 @@ class PreviewProjectItem extends React.Component {
             >
               <Notification
                 el="p"
+                show
                 customStyles={ previewMsgStyles }
                 msg={ `This is a preview of your ${projectType} project on Content Commons.` }
               />
