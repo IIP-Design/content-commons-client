@@ -124,6 +124,9 @@ class TableActionsMenu extends React.Component {
 
       // write transformed data to cache to match server
       cache.writeQuery( { query: TEAM_VIDEO_PROJECTS_QUERY, data } );
+
+      // keep track of draft projects
+      this.handleDrafts( data );
     } catch ( error ) {
       console.error( error );
     }
@@ -185,11 +188,10 @@ class TableActionsMenu extends React.Component {
     return (
       <div className="actionsMenu_wrapper">
         <Query
-          query={ TEAM_VIDEO_PROJECTS_COUNT_QUERY }
-          variables={ {
-            team: variables.team,
-            searchTerm: variables.searchTerm
-          } }
+          query={ TEAM_VIDEO_PROJECTS_QUERY }
+          variables={ { ...variables } }
+          onCompleted={ this.handleDrafts }
+          notifyOnNetworkStatusChange
         >
           { ( { loading, error, data } ) => {
             if ( loading ) return 'Loading....';
