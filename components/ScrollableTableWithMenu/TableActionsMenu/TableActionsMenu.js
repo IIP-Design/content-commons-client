@@ -37,7 +37,8 @@ const UNPUBLISH_VIDEO_PROJECTS_MUTATION = gql`
 class TableActionsMenu extends React.Component {
   state = {
     displayConfirmationMsg: false,
-    deleteConfirmOpen: false
+    deleteConfirmOpen: false,
+    draftProjects: []
   };
 
   _isMounted = false;
@@ -96,6 +97,17 @@ class TableActionsMenu extends React.Component {
         }
       }]
     } );
+  }
+
+  handleDrafts = cache => {
+    if ( cache ) {
+      const drafts = this.getDraftProjects( cache.videoProjects );
+      this.setState( prevState => {
+        if ( prevState.draftProjects !== drafts ) {
+          return { draftProjects: drafts };
+        }
+      } );
+    }
   }
 
   handleUnpublishCacheUpdate = cache => {
