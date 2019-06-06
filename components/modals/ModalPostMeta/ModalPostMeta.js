@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { string } from 'prop-types';
+import { contentRegExp } from 'lib/utils';
 import './ModalPostMeta.scss';
 
 const ModalPostMeta = props => {
@@ -13,8 +14,9 @@ const ModalPostMeta = props => {
     originalLink
   } = props;
 
+  const contentSite = contentRegExp( sourcelink );
   let sourceItem = <div />;
-  if ( logo && sourcelink ) {
+  if ( logo && sourcelink && !contentSite ) {
     sourceItem = (
       <a href={ sourcelink } target="_blank" rel="noopener noreferrer">
         <img src={ logo } alt={ source } className="modal_postmeta_logo" />
@@ -22,7 +24,7 @@ const ModalPostMeta = props => {
     );
   } else if ( logo ) {
     sourceItem = <img src={ logo } alt={ source } className="modal_postmeta_logo" />;
-  } else if ( sourcelink ) {
+  } else if ( sourcelink && !contentSite ) {
     sourceItem = (
       <span className="modal_postmeta_content">
         Source:
@@ -31,13 +33,9 @@ const ModalPostMeta = props => {
       </span>
     );
   } else {
-    sourceItem = source ? (
-      <span className="modal_postmeta_content">
-Source:
-        { ' ' }
-        { source }
-      </span>
-    ) : '';
+    sourceItem = ( source && !contentSite )
+      ? <span className="modal_postmeta_content">Source: { source }</span>
+      : <div />;
   }
 
   return (
@@ -53,7 +51,11 @@ Source:
       <span className="modal_postmeta_content">
         { `Date Published: ${moment( datePublished ).format( 'MMMM DD, YYYY' )}` }
       </span>
-      { originalLink && <a href={ originalLink } target="_blank" rel="noopener noreferrer">View Original</a> }
+      {
+        originalLink
+        && !contentSite
+        && <a href={ originalLink } target="_blank" rel="noopener noreferrer">View Original</a>
+      }
     </section>
   );
 };
