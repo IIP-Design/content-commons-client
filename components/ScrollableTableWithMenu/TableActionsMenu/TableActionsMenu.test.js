@@ -350,11 +350,8 @@ describe( '<TableActionsMenu />', () => {
     const nullMocks = [
       {
         request: {
-          query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
-          variables: {
-            team: props.variables.team,
-            searchTerm: props.variables.searchTerm
-          }
+          query: TEAM_VIDEO_PROJECTS_QUERY,
+          variables: { ...props.variables }
         },
         result: {
           data: { videoProjects: null }

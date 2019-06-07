@@ -148,14 +148,15 @@ class TableActionsMenu extends React.Component {
     } )
   )
 
-  getDraftProjects = projects => (
-    projects.reduce( ( acc, curr ) => {
+  getDraftProjects = projects => {
+    if ( !projects ) return [];
+    return projects.reduce( ( acc, curr ) => {
       if ( curr.status === 'DRAFT' ) {
         return [...acc, curr.id];
       }
       return [...acc];
-    }, [] )
-  )
+    }, [] );
+  }
 
   getSelectedProjects = () => {
     const projects = this.transformSelectedItemsMap();
