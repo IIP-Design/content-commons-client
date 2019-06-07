@@ -581,7 +581,7 @@ describe( '<TableActionsMenu />', () => {
     expect( unpublish ).toHaveBeenCalledWith( args );
   } );
 
-  it( 'setStatusVisibility sets status and visibility fields', async () => {
+  it( 'handleStatusVisibility sets status and visibility fields', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
@@ -594,7 +594,7 @@ describe( '<TableActionsMenu />', () => {
       { id: 'ud98', status: 'PUBLISHED', visibility: 'PUBLIC' }
     ];
 
-    inst.setStatusVisibility( items, projects );
+    inst.handleStatusVisibility( items, projects );
 
     projects.forEach( project => {
       expect( project.status ).toEqual( 'DRAFT' );
