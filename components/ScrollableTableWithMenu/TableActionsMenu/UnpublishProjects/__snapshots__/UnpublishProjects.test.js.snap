@@ -1,0 +1,233 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UnpublishProjects /> renders without crashing 1`] = `
+<UnpublishProjects
+  handleResetSelections={[MockFunction]}
+  handleUnpublish={[MockFunction]}
+  handleUnpublishCacheUpdate={[MockFunction]}
+  showConfirmationMsg={[MockFunction]}
+>
+  <Mutation
+    mutation={
+      Object {
+        "definitions": Array [
+          Object {
+            "directives": Array [],
+            "kind": "OperationDefinition",
+            "name": Object {
+              "kind": "Name",
+              "value": "UnpublishManyVideoProjects",
+            },
+            "operation": "mutation",
+            "selectionSet": Object {
+              "kind": "SelectionSet",
+              "selections": Array [
+                Object {
+                  "alias": Object {
+                    "kind": "Name",
+                    "value": "unpublish",
+                  },
+                  "arguments": Array [
+                    Object {
+                      "kind": "Argument",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "data",
+                      },
+                      "value": Object {
+                        "kind": "Variable",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "data",
+                        },
+                      },
+                    },
+                    Object {
+                      "kind": "Argument",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "where",
+                      },
+                      "value": Object {
+                        "kind": "Variable",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "where",
+                        },
+                      },
+                    },
+                  ],
+                  "directives": Array [],
+                  "kind": "Field",
+                  "name": Object {
+                    "kind": "Name",
+                    "value": "updateManyVideoProjects",
+                  },
+                  "selectionSet": Object {
+                    "kind": "SelectionSet",
+                    "selections": Array [
+                      Object {
+                        "alias": undefined,
+                        "arguments": Array [],
+                        "directives": Array [],
+                        "kind": "Field",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "count",
+                        },
+                        "selectionSet": undefined,
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+            "variableDefinitions": Array [
+              Object {
+                "defaultValue": undefined,
+                "kind": "VariableDefinition",
+                "type": Object {
+                  "kind": "NonNullType",
+                  "type": Object {
+                    "kind": "NamedType",
+                    "name": Object {
+                      "kind": "Name",
+                      "value": "VideoProjectUpdateManyMutationInput",
+                    },
+                  },
+                },
+                "variable": Object {
+                  "kind": "Variable",
+                  "name": Object {
+                    "kind": "Name",
+                    "value": "data",
+                  },
+                },
+              },
+              Object {
+                "defaultValue": undefined,
+                "kind": "VariableDefinition",
+                "type": Object {
+                  "kind": "NamedType",
+                  "name": Object {
+                    "kind": "Name",
+                    "value": "VideoProjectWhereInput",
+                  },
+                },
+                "variable": Object {
+                  "kind": "Variable",
+                  "name": Object {
+                    "kind": "Name",
+                    "value": "where",
+                  },
+                },
+              },
+            ],
+          },
+        ],
+        "kind": "Document",
+        "loc": Object {
+          "end": 218,
+          "start": 0,
+        },
+      }
+    }
+    onCompleted={[Function]}
+    update={[MockFunction]}
+  >
+    <Popup
+      content="Unpublish Selection(s)"
+      hideOnScroll={true}
+      inverted={true}
+      keepInViewPort={true}
+      on={
+        Array [
+          "hover",
+          "focus",
+        ]
+      }
+      position="top left"
+      size="mini"
+      trigger={
+        <Button
+          as="button"
+          basic={true}
+          className="unpublish"
+          onClick={[Function]}
+          size="mini"
+        >
+          <span
+            className="unpublish--text"
+          >
+            Unpublish
+          </span>
+        </Button>
+      }
+    >
+      <Portal
+        closeOnDocumentClick={true}
+        closeOnEscape={true}
+        closeOnTriggerBlur={true}
+        closeOnTriggerMouseLeave={true}
+        eventPool="default"
+        mouseEnterDelay={50}
+        mouseLeaveDelay={70}
+        onClose={[Function]}
+        onMount={[Function]}
+        onOpen={[Function]}
+        onUnmount={[Function]}
+        openOnTriggerClick={true}
+        openOnTriggerFocus={true}
+        openOnTriggerMouseEnter={true}
+        trigger={
+          <Button
+            as="button"
+            basic={true}
+            className="unpublish"
+            onClick={[Function]}
+            size="mini"
+          >
+            <span
+              className="unpublish--text"
+            >
+              Unpublish
+            </span>
+          </Button>
+        }
+        triggerRef={[Function]}
+      >
+        <Ref
+          innerRef={[Function]}
+        >
+          <Button
+            as="button"
+            basic={true}
+            className="unpublish"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+            size="mini"
+          >
+            <button
+              className="ui mini basic button unpublish"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                className="unpublish--text"
+              >
+                Unpublish
+              </span>
+            </button>
+          </Button>
+        </Ref>
+      </Portal>
+    </Popup>
+  </Mutation>
+</UnpublishProjects>
+`;
