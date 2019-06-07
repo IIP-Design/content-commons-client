@@ -89,8 +89,8 @@ class LoggedInNav extends Component {
     return (
       <span>
         <div className="ui compact secondary menu nav_loggedin_wrapper">
-          {
-            menuItems.map( item => {
+          { !mobileNavVisible
+            && menuItems.map( item => {
               if ( item.name === 'upload' ) {
                 return (
                   <Menu.Item key={ item.key } name={ item.name } className={ `nav_loggedin ${item.name}` }>
