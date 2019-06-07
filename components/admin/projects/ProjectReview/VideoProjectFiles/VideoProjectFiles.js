@@ -68,8 +68,13 @@ const VideoProjectFiles = props => {
   const handleEdit = () => {
     const { id } = props;
     Router.push( {
-      pathname: `/admin/project/video/${id}/edit`
-    } );
+      pathname: '/admin/project',
+      query: {
+        id,
+        content: 'video',
+        action: 'edit'
+      }
+    }, `/admin/project/video/${id}/edit` );
   };
 
   return (

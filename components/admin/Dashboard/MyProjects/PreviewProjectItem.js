@@ -182,7 +182,7 @@ class PreviewProjectItem extends React.Component {
           if ( !selectedItem || !Object.keys( selectedItem ).length ) {
             return (
               <p style={ { fontSize: '1rem' } }>
-                This project does not have any videos yet. <Link href={ `/admin/project/video/${id}/edit` }><a>Add videos &raquo;</a></Link>
+                This project does not have any videos yet. <Link as={ `/admin/project/video/${id}/edit` } href={ `/admin/project?content=video&id=${id}&action=edit` }><a>Add videos &raquo;</a></Link>
               </p>
             );
           }
