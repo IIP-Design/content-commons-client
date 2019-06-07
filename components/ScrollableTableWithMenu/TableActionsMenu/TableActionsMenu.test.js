@@ -119,10 +119,12 @@ const mocks = [
             createdAt: '2019-05-09T18:33:03.368Z',
             updatedAt: '2019-05-09T18:33:03.368Z',
             team: {
+              id: 't888',
               name: 'IIP Video Production',
               organization: 'Department of State'
             },
             author: {
+              id: 'a928',
               firstName: 'Jane',
               lastName: 'Doe'
             },
@@ -153,10 +155,12 @@ const mocks = [
             createdAt: '2019-05-12T18:33:03.368Z',
             updatedAt: '2019-05-12T18:33:03.368Z',
             team: {
+              id: 't888',
               name: 'IIP Video Production',
               organization: 'Department of State'
             },
             author: {
+              id: 'a287',
               firstName: 'Joe',
               lastName: 'Schmoe'
             },
@@ -187,10 +191,12 @@ const mocks = [
             createdAt: '2019-05-12T18:33:03.368Z',
             updatedAt: '2019-05-12T18:33:03.368Z',
             team: {
+              id: 't888',
               name: 'IIP Video Production',
               organization: 'Department of State'
             },
             author: {
+              id: 'a287',
               firstName: 'Joe',
               lastName: 'Schmoe'
             },
@@ -221,10 +227,12 @@ const mocks = [
             createdAt: '2019-05-12T18:33:03.368Z',
             updatedAt: '2019-05-12T18:33:03.368Z',
             team: {
+              id: 't888',
               name: 'IIP Video Production',
               organization: 'Department of State'
             },
             author: {
+              id: 'a287',
               firstName: 'Joe',
               lastName: 'Schmoe'
             },
@@ -255,10 +263,12 @@ const mocks = [
             createdAt: '2019-05-12T18:33:03.368Z',
             updatedAt: '2019-05-12T18:33:03.368Z',
             team: {
+              id: 't888',
               name: 'IIP Video Production',
               organization: 'Department of State'
             },
             author: {
+              id: 'a287',
               firstName: 'Joe',
               lastName: 'Schmoe'
             },
