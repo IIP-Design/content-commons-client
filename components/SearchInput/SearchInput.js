@@ -19,7 +19,10 @@ class Search extends Component {
       locale: search.language,
       direction: 'left'
     };
-    this.props.loadLanguages();
+  }
+
+  componentDidMount() {
+    this.maybeLoadLanguages();
   }
 
   componentDidUpdate( prevProps ) {
@@ -30,6 +33,8 @@ class Search extends Component {
   }
 
   onRouteChanged( pathname ) {
+    this.maybeLoadLanguages();
+
     if ( pathname === '/' ) {
       this.setState( { locale: 'en-us', direction: 'left' } );
       this.props.updateSearchTerm( '' );
@@ -76,6 +81,15 @@ class Search extends Component {
       query
     } );
   };
+
+  maybeLoadLanguages() {
+    const { router: { pathname }, languages: { list } } = this.props;
+
+    if ( pathname.indexOf( 'admin' ) === -1 && !list.length ) {
+      this.props.loadLanguages();
+    }
+  }
+
 
   render () {
     let inputProps = {};
