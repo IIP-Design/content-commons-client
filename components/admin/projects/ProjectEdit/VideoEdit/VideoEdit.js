@@ -118,7 +118,7 @@ const VideoEdit = props => {
         content: 'video',
         id: projectId
       }
-    } );
+    }, `/admin/project/video/${projectId}/review` );
   };
 
   const handleAddMoreFiles = () => {

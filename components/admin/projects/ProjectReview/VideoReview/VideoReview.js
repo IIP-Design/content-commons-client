@@ -68,11 +68,17 @@ const VideoReview = props => {
     Router.push( { pathname: '/admin/dashboard' } );
   };
 
-  const handleEdit = () => (
+
+  const handleEdit = () => {
     Router.push( {
-      pathname: `/admin/project/video/${id}/edit`
-    } )
-  );
+      pathname: '/admin/project',
+      query: {
+        id,
+        content: 'video',
+        action: 'edit'
+      }
+    }, `/admin/project/video/${id}/edit` );
+  };
 
   const handlePublish = () => {
     Router.push( { pathname: '/admin/dashboard' } );

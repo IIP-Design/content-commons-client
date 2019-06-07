@@ -1,19 +1,21 @@
 @import "../../../styles/colors.scss";
 
 .dashboard {
-  .userIcon {
-    height: 3em;
-    width: 3em;
+
+  &__avatar-img {
+    @media screen and (min-width: 768px) and (max-width: 851px) {
+      display: block !important;
+      margin: 0 auto !important;
+    }
   }
 
-  .currentDashboard {
-    color: $blue;
-    font-size: 1.2em;
+  &__avatar-label {
+    font-size: 16px;
     font-weight: bold;
-    margin-left: 1em;
-    text-transform: capitalize;
-    vertical-align: top;
-    line-height: 3em;
+    @media screen and (min-width: 768px) and (max-width: 851px) {
+      display: block;
+      text-align: center;
+    }
   }
 
   .filters {

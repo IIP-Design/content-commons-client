@@ -12,7 +12,6 @@ import {
 } from 'semantic-ui-react';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
-import ShareProjectItem from '../ShareProjectItem/ShareProjectItem';
 import PreviewProjectItem from '../PreviewProjectItem';
 import './MyProjectPrimaryCol.scss';
 
@@ -88,7 +87,7 @@ const MyProjectPrimaryCol = props => {
             <Popup
               trigger={ (
                 <a
-                  href={ `/admin/project/video/${id}/review` }
+                  href={ `/admin/project?conent=video&id=${id}&action=edit` }
                   className="myProjects_data_title"
                 >
                   <span aria-hidden>{ truncate( d[header.name], { length: 35 } ) }</span>
@@ -103,7 +102,7 @@ const MyProjectPrimaryCol = props => {
             />
           )
           : (
-            <Link href={ `/admin/project/video/${id}/review` }>
+            <Link as={ `/admin/project/video/${id}/edit` } href={ `/admin/project?content=video&id=${id}&action=edit` }>
               <a className="myProjects_data_title">
                 { d[header.name] }
               </a>
@@ -111,7 +110,9 @@ const MyProjectPrimaryCol = props => {
           ) }
         <div className="myProjects_data_actions">
           <div className="myProjects_data_actions_wrapper">
-            <DetailsPopup id={ id } />
+            <Link as={ `/admin/project/video/${id}/edit` } href={ `/admin/project?content=video&id=${id}&action=edit` }>
+              <a className="linkStyle myProjects_data_actions_action">Edit</a>
+            </Link>
             <span> | </span>
             <Modal
               trigger={ <button type="button" className="linkStyle myProjects_data_actions_action">Preview</button> }
@@ -122,7 +123,7 @@ const MyProjectPrimaryCol = props => {
               </Modal.Content>
             </Modal>
             <span> | </span>
-            <ShareProjectItem id={ id } />
+            <DetailsPopup id={ id } />
           </div>
           <button
             type="button"

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Tab, Popup } from 'semantic-ui-react';
+import {
+  Grid, Tab, Popup, Image
+} from 'semantic-ui-react';
 import userIcon from 'static/icons/icon_user_profile_dark.svg';
 import MyProjects from './MyProjects/MyProjects';
 import './Dashboard.scss';
@@ -79,14 +81,12 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    const { user } = this.props;
     return (
       <section className="dashboard">
         <Grid stackable>
           <Grid.Column width={ 3 }>
-            <img src={ userIcon } className="userIcon" alt="User Profile Icon" />
-            { user && <span className="currentDashboard">{ user.name }</span> }
-            <div className="filters">[ FILTERS ]</div>
+            <Image src={ userIcon } avatar className="dashboard__avatar-img" />
+            <span className="dashboard__avatar-label">Dashboard</span>
           </Grid.Column>
           <Grid.Column width={ 13 }>
             <Tab
