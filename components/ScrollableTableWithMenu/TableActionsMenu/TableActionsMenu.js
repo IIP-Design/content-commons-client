@@ -61,13 +61,12 @@ class TableActionsMenu extends React.Component {
   }
 
   handleUnpublish = unpublishFn => {
-    const { selectedItems } = this.props;
     unpublishFn( {
       variables: {
         data: { status: 'DRAFT', visibility: 'INTERNAL' },
         where: {
           AND: [
-            { id_in: [...selectedItems.keys()] },
+            { id_in: this.getSelectedProjects() },
             { status: 'PUBLISHED' }
           ]
         }
@@ -80,10 +79,10 @@ class TableActionsMenu extends React.Component {
   }
 
   handleDeleteConfirm = deleteFn => {
-    const { variables, selectedItems } = this.props;
+    const { variables } = this.props;
     deleteFn( {
       variables: {
-        where: { id_in: [...selectedItems.keys()] }
+        where: { id_in: this.getSelectedProjects() }
       },
       refetchQueries: [{
         query: TEAM_VIDEO_PROJECTS_QUERY,
@@ -111,8 +110,8 @@ class TableActionsMenu extends React.Component {
   }
 
   handleUnpublishCacheUpdate = cache => {
-    const { variables, selectedItems } = this.props;
-    const items = [...selectedItems.keys()];
+    const { variables } = this.props;
+    const items = this.getSelectedProjects();
 
     try {
       const data = this.getCachedQuery(
