@@ -2,13 +2,13 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import {
-  Button, Checkbox, Icon, Modal, Popup
+  Button, Checkbox, Icon, Modal
 } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import editIcon from 'static/images/dashboard/edit.svg';
 import createIcon from 'static/images/dashboard/create.svg';
-import deleteIcon from 'static/images/dashboard/delete.svg';
 import archiveIcon from 'static/images/dashboard/archive.svg';
+import DeleteIconButton from './DeleteIconButton/DeleteIconButton';
 import DeleteProjects from './DeleteProjects/DeleteProjects';
 import UnpublishProjects from './UnpublishProjects/UnpublishProjects';
 import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
@@ -253,21 +253,8 @@ class TableActionsMenu extends React.Component {
             <img src={ editIcon } alt="Edit Selection(s)" title="Edit Selection(s)" />
           </Button>
 
-          <Popup
-            trigger={ (
-              <Button
-                size="mini"
-                basic
-                onClick={ this.displayConfirmDelete }
-              >
-                <img src={ deleteIcon } alt="Delete Selection(s)" />
-              </Button>
-            ) }
-            content="Delete Selection(s)"
-            hideOnScroll
-            inverted
-            on={ ['hover', 'focus'] }
-            size="mini"
+          <DeleteIconButton
+            displayConfirmDelete={ this.displayConfirmDelete }
           />
 
           <DeleteProjects
