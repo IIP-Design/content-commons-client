@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Mutation, Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 import {
   Button, Checkbox, Icon, Modal, Popup
 } from 'semantic-ui-react';
@@ -11,19 +10,10 @@ import createIcon from 'static/images/dashboard/create.svg';
 import deleteIcon from 'static/images/dashboard/delete.svg';
 import archiveIcon from 'static/images/dashboard/archive.svg';
 import DeleteProjects from './DeleteProjects/DeleteProjects';
+import UnpublishProjects from './UnpublishProjects/UnpublishProjects';
 import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
 import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
 import './TableActionsMenu.scss';
-
-const UNPUBLISH_VIDEO_PROJECTS_MUTATION = gql`
-  mutation UnpublishManyVideoProjects(
-    $data: VideoProjectUpdateManyMutationInput!,
-    $where: VideoProjectWhereInput) {
-    unpublish: updateManyVideoProjects(data: $data, where: $where) {
-      count
-    }
-  }
-`;
 
 /* eslint-disable react/prefer-stateless-function */
 class TableActionsMenu extends React.Component {
@@ -299,39 +289,16 @@ class TableActionsMenu extends React.Component {
             && (
             <Fragment>
               <span className="separator">|</span>
-              <Mutation
-                mutation={ UNPUBLISH_VIDEO_PROJECTS_MUTATION }
-                update={ this.handleUnpublishCacheUpdate }
-                onCompleted={ () => {
-                  this.props.handleResetSelections();
-                  this.showConfirmationMsg();
-                } }
-              >
-                { ( unpublish, { error } ) => {
-                  if ( error ) return <ApolloError error={ error } />;
-                  return (
-                    <Popup
-                      trigger={ (
-                        <Button
-                          className="unpublish"
-                          size="mini"
-                          basic
-                          onClick={
-                            () => this.handleUnpublish( unpublish )
-                          }
-                        >
-                          <span className="unpublish--text">Unpublish</span>
-                        </Button>
-                      ) }
-                      content="Unpublish Selection(s)"
-                      hideOnScroll
-                      inverted
-                      on={ ['hover', 'focus'] }
-                      size="mini"
-                    />
-                  );
-                } }
-              </Mutation>
+              <UnpublishProjects
+                handleResetSelections={
+                  this.props.handleResetSelections
+                }
+                handleUnpublish={ this.handleUnpublish }
+                handleUnpublishCacheUpdate={
+                  this.handleUnpublishCacheUpdate
+                }
+                showConfirmationMsg={ this.showConfirmationMsg }
+              />
             </Fragment>
             ) }
         </div>
@@ -349,5 +316,3 @@ TableActionsMenu.propTypes = {
 };
 
 export default TableActionsMenu;
-
-export { UNPUBLISH_VIDEO_PROJECTS_MUTATION };

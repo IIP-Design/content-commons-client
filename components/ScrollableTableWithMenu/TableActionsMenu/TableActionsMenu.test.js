@@ -3,10 +3,11 @@ import wait from 'waait';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { Checkbox } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
+import TableActionsMenu from './TableActionsMenu';
 import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
 import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
-import TableActionsMenu, { UNPUBLISH_VIDEO_PROJECTS_MUTATION } from './TableActionsMenu';
 import { DELETE_VIDEO_PROJECTS_MUTATION } from './DeleteProjects/DeleteProjects';
+import { UNPUBLISH_VIDEO_PROJECTS_MUTATION } from './UnpublishProjects/UnpublishProjects';
 
 /**
  * Need to mock Next.js dynamic imports
