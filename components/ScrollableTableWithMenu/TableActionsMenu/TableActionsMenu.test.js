@@ -319,11 +319,8 @@ describe( '<TableActionsMenu />', () => {
     const errorMocks = [
       {
         request: {
-          query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
-          variables: {
-            team: props.variables.team,
-            searchTerm: props.variables.searchTerm
-          }
+          query: TEAM_VIDEO_PROJECTS_QUERY,
+          variables: { ...props.variables }
         },
         result: {
           errors: [{ message: 'There was an error.' }]
@@ -384,13 +381,13 @@ describe( '<TableActionsMenu />', () => {
     expect( menuWrapper.childAt( 0 ).html() ).toEqual( null );
   } );
 
-  it( 'renders a Checkbox when TEAM_VIDEO_PROJECTS_COUNT_QUERY is resolved', async () => {
+  it( 'renders a Checkbox when TEAM_VIDEO_PROJECTS_QUERY is resolved', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
     const checkbox = wrapper.find( Checkbox );
-    const projectsCount = mocks[2].result.data.videoProjects.length;
+    const projectsCount = mocks[4].result.data.videoProjects.length;
 
     expect( checkbox.exists() ).toEqual( true );
     expect( checkbox.prop( 'disabled' ) ).toEqual( projectsCount === 0 );
@@ -400,11 +397,8 @@ describe( '<TableActionsMenu />', () => {
     const emptyMocks = [
       {
         request: {
-          query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
-          variables: {
-            team: props.variables.team,
-            searchTerm: props.variables.searchTerm
-          }
+          query: TEAM_VIDEO_PROJECTS_QUERY,
+          variables: { ...props.variables }
         },
         result: {
           data: { videoProjects: [] }
