@@ -3,25 +3,17 @@ import PropTypes from 'prop-types';
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import {
-  Button, Checkbox, Confirm, Icon, Modal, Popup
+  Button, Checkbox, Icon, Modal, Popup
 } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import editIcon from 'static/images/dashboard/edit.svg';
 import createIcon from 'static/images/dashboard/create.svg';
 import deleteIcon from 'static/images/dashboard/delete.svg';
 import archiveIcon from 'static/images/dashboard/archive.svg';
-import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
+import DeleteProjects from './DeleteProjects/DeleteProjects';
 import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
 import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
 import './TableActionsMenu.scss';
-
-const DELETE_VIDEO_PROJECTS_MUTATION = gql`
-  mutation DeleteManyVideoProjects($where: VideoProjectWhereInput) {
-    deleteProjects: deleteManyVideoProjects(where: $where) {
-      count
-    }
-  }
-`;
 
 const UNPUBLISH_VIDEO_PROJECTS_MUTATION = gql`
   mutation UnpublishManyVideoProjects(
@@ -288,37 +280,13 @@ class TableActionsMenu extends React.Component {
             size="mini"
           />
 
-          <Mutation
-            mutation={ DELETE_VIDEO_PROJECTS_MUTATION }
-            onCompleted={ () => {
-              this.props.handleResetSelections();
-              this.handleDeleteCancel();
-              this.showConfirmationMsg();
-            } }
-          >
-            { ( deleteProjects, { error } ) => {
-              if ( error ) return <ApolloError error={ error } />;
-
-              return (
-                <Confirm
-                  className="delete"
-                  open={ this.state.deleteConfirmOpen }
-                  content={ (
-                    <ConfirmModalContent
-                      className="delete_confirm delete_confirm--video"
-                      headline="Are you sure you want to delete the selected video project(s)?"
-                    >
-                      <p>The selected video project(s) will be permanently removed from the Content Cloud.</p>
-                    </ConfirmModalContent>
-                  ) }
-                  onCancel={ this.handleDeleteCancel }
-                  onConfirm={ () => this.handleDeleteConfirm( deleteProjects ) }
-                  cancelButton="No, take me back"
-                  confirmButton="Yes, delete forever"
-                />
-              );
-            } }
-          </Mutation>
+          <DeleteProjects
+            deleteConfirmOpen={ this.state.deleteConfirmOpen }
+            handleDeleteCancel={ this.handleDeleteCancel }
+            handleDeleteConfirm={ this.handleDeleteConfirm }
+            handleResetSelections={ this.props.handleResetSelections }
+            showConfirmationMsg={ this.showConfirmationMsg }
+          />
 
           <Button size="mini" basic disabled>
             <img src={ createIcon } alt="Create Selection(s)" title="Create Selection(s)" />
@@ -382,7 +350,4 @@ TableActionsMenu.propTypes = {
 
 export default TableActionsMenu;
 
-export {
-  DELETE_VIDEO_PROJECTS_MUTATION,
-  UNPUBLISH_VIDEO_PROJECTS_MUTATION
-};
+export { UNPUBLISH_VIDEO_PROJECTS_MUTATION };

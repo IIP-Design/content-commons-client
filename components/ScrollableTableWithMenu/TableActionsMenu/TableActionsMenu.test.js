@@ -5,10 +5,8 @@ import { Checkbox } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
 import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
-import TableActionsMenu, {
-  DELETE_VIDEO_PROJECTS_MUTATION,
-  UNPUBLISH_VIDEO_PROJECTS_MUTATION
-} from './TableActionsMenu';
+import TableActionsMenu, { UNPUBLISH_VIDEO_PROJECTS_MUTATION } from './TableActionsMenu';
+import { DELETE_VIDEO_PROJECTS_MUTATION } from './DeleteProjects/DeleteProjects';
 
 /**
  * Need to mock Next.js dynamic imports
