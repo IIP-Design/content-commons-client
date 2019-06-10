@@ -15,6 +15,13 @@
     font-size: 0.777778em;
 
     .field {
+
+      &__helper-text {
+        margin-top: -1em;
+        font-size: 12px;
+        color: $blue;
+      }
+
       > label {
         font-weight: normal;
       }

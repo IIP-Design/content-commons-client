@@ -137,7 +137,7 @@ const ProjectDataForm = props => {
 
                 { errors.categories
                   ? <p className="error-message">{ touched.categories ? errors.categories : '' }</p>
-                  : <p>Select up to { maxCategories }.</p>
+                  : <p className="field__helper-text">Select up to { maxCategories }.</p>
               }
               </div>
 
@@ -151,7 +151,7 @@ const ProjectDataForm = props => {
                   onChange={ handleOnChange }
                   style={ { marginBottom: '1em' } }
                 />
-                <p>Enter keywords separated by commas.</p>
+                <p className="field__helper-text">Enter keywords separated by commas to search available tags.</p>
               </div>
             </Form.Group>
           </Grid.Column>
@@ -175,7 +175,7 @@ const ProjectDataForm = props => {
                 value={ values.descInternal }
                 onChange={ handleChange }
               />
-              <p>Reason for this project as it relates to Department objectives.</p>
+              <p className="field__helper-text">Reason for this project as it relates to Department objectives.</p>
             </div>
           </Grid.Column>
         </Grid.Row>
