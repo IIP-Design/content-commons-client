@@ -691,6 +691,8 @@ describe( '<TableActionsMenu />', () => {
     wrapper.update();
 
     const menu = wrapper.find( TableActionsMenu );
+    const separator = menu.find( '.separator' );
+    const unpublishProjects = menu.find( 'UnpublishProjects' );
     const inst = menu.instance();
     const hasSelectedAllDrafts = inst.hasSelectedAllDrafts();
     const selectedProjects = ['ud78', 'ud98'];
@@ -701,6 +703,8 @@ describe( '<TableActionsMenu />', () => {
         .toEqual( 'PUBLISHED' );
     } );
     expect( hasSelectedAllDrafts ).toEqual( false );
+    expect( separator.exists() ).toEqual( !hasSelectedAllDrafts );
+    expect( unpublishProjects.exists() ).toEqual( !hasSelectedAllDrafts );
   } );
 
   it( 'hasSelectedAllDrafts returns true if all selected projects have DRAFT status', async () => {
@@ -720,6 +724,8 @@ describe( '<TableActionsMenu />', () => {
     wrapper.update();
 
     const menu = wrapper.find( TableActionsMenu );
+    const separator = menu.find( '.separator' );
+    const unpublishProjects = menu.find( 'UnpublishProjects' );
     const inst = menu.instance();
     const hasSelectedAllDrafts = inst.hasSelectedAllDrafts();
     const selectedProjects = inst.state.draftProjects;
@@ -730,6 +736,8 @@ describe( '<TableActionsMenu />', () => {
         .toEqual( 'DRAFT' );
     } );
     expect( hasSelectedAllDrafts ).toEqual( true );
+    expect( separator.exists() ).toEqual( !hasSelectedAllDrafts );
+    expect( unpublishProjects.exists() ).toEqual( !hasSelectedAllDrafts );
   } );
 
   it( 'hasSelectedAllDrafts returns false if one selected project has DRAFT status', async () => {
@@ -749,6 +757,8 @@ describe( '<TableActionsMenu />', () => {
     wrapper.update();
 
     const menu = wrapper.find( TableActionsMenu );
+    const separator = menu.find( '.separator' );
+    const unpublishProjects = menu.find( 'UnpublishProjects' );
     const inst = menu.instance();
     const hasSelectedAllDrafts = inst.hasSelectedAllDrafts();
     const { videoProjects } = mocks[4].result.data;
@@ -758,6 +768,8 @@ describe( '<TableActionsMenu />', () => {
     expect( findProjectById( videoProjects, 'ud74' ).status )
       .toEqual( 'DRAFT' );
     expect( hasSelectedAllDrafts ).toEqual( false );
+    expect( separator.exists() ).toEqual( !hasSelectedAllDrafts );
+    expect( unpublishProjects.exists() ).toEqual( !hasSelectedAllDrafts );
   } );
 
   it( 'getDraftProjects returns an array of draft project ids', async () => {
