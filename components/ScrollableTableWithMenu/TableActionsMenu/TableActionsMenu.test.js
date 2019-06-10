@@ -236,7 +236,7 @@ const mocks = [
               lastName: 'Schmoe'
             },
             projectTitle: 'Test Title 2',
-            status: 'PUBLISHED',
+            status: 'DRAFT',
             visibility: 'INTERNAL',
             thumbnails: {
               url: 'https://thumbnailurl.com',
@@ -272,7 +272,7 @@ const mocks = [
               lastName: 'Schmoe'
             },
             projectTitle: 'Test Title 2',
-            status: 'PUBLISHED',
+            status: 'DRAFT',
             visibility: 'INTERNAL',
             thumbnails: {
               url: 'https://thumbnailurl.com',
@@ -303,6 +303,10 @@ const Component = (
   <MockedProvider mocks={ mocks } addTypename={ false }>
     <TableActionsMenu { ...props } />
   </MockedProvider>
+);
+
+const findProjectById = ( array, projectId ) => (
+  array.find( n => n.id === projectId )
 );
 
 describe( '<TableActionsMenu />', () => {
@@ -456,6 +460,22 @@ describe( '<TableActionsMenu />', () => {
     expect( inst._isMounted ).toEqual( false );
   } );
 
+  it( 'delayUnmount calls a function after a delay', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const menu = wrapper.find( TableActionsMenu );
+    const inst = menu.instance();
+    const fn = jest.fn();
+    const timer = inst.confirmationMsgTimer;
+    const delay = inst.CONFIRMATION_MSG_DELAY;
+
+    inst.delayUnmount( fn, timer, delay );
+    await wait( delay );
+    expect( fn ).toHaveBeenCalled();
+  } );
+
   it( 'calling showConfirmationMsg/hideConfirmationMsg sets displayConfirmationMsg to true/false in state', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
@@ -589,6 +609,163 @@ describe( '<TableActionsMenu />', () => {
     projects.forEach( project => {
       expect( project.status ).toEqual( 'DRAFT' );
       expect( project.visibility ).toEqual( 'INTERNAL' );
+    } );
+  } );
+
+  it( 'transformSelectedItemsMap returns a transformed array of selected item objects', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const menu = wrapper.find( TableActionsMenu );
+    const inst = menu.instance();
+    const transformed = inst.transformSelectedItemsMap();
+
+    expect( transformed ).toEqual(
+      [{ id: 'ud78', value: true }, { id: 'ud98', value: true }]
+    );
+  } );
+
+  it( 'getSelectedProjects returns an array of selected project ids', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const menu = wrapper.find( TableActionsMenu );
+    const inst = menu.instance();
+    const selectedProjects = inst.getSelectedProjects();
+
+    expect( selectedProjects ).toEqual( ['ud78', 'ud98'] );
+  } );
+
+  it( 'hasSelectedAllDrafts returns false if all selected projects have PUBLISHED status', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const menu = wrapper.find( TableActionsMenu );
+    const inst = menu.instance();
+    const hasSelectedAllDrafts = inst.hasSelectedAllDrafts();
+    const selectedProjects = ['ud78', 'ud98'];
+    const { videoProjects } = mocks[4].result.data;
+
+    selectedProjects.forEach( project => {
+      expect( findProjectById( videoProjects, project ).status )
+        .toEqual( 'PUBLISHED' );
+    } );
+    expect( hasSelectedAllDrafts ).toEqual( false );
+  } );
+
+  it( 'hasSelectedAllDrafts returns true if all selected projects have DRAFT status', async () => {
+    const newProps = {
+      ...props,
+      ...{
+        selectedItems: new Map( [['ud23', true], ['ud74', true]] )
+      }
+    };
+
+    const wrapper = mount(
+      <MockedProvider mocks={ mocks } addTypename={ false }>
+        <TableActionsMenu { ...newProps } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const menu = wrapper.find( TableActionsMenu );
+    const inst = menu.instance();
+    const hasSelectedAllDrafts = inst.hasSelectedAllDrafts();
+    const selectedProjects = inst.state.draftProjects;
+    const { videoProjects } = mocks[4].result.data;
+
+    selectedProjects.forEach( project => {
+      expect( findProjectById( videoProjects, project ).status )
+        .toEqual( 'DRAFT' );
+    } );
+    expect( hasSelectedAllDrafts ).toEqual( true );
+  } );
+
+  it( 'hasSelectedAllDrafts returns false if one selected project has DRAFT status', async () => {
+    const newProps = {
+      ...props,
+      ...{
+        selectedItems: new Map( [['ud78', true], ['ud74', true]] )
+      }
+    };
+
+    const wrapper = mount(
+      <MockedProvider mocks={ mocks } addTypename={ false }>
+        <TableActionsMenu { ...newProps } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const menu = wrapper.find( TableActionsMenu );
+    const inst = menu.instance();
+    const hasSelectedAllDrafts = inst.hasSelectedAllDrafts();
+    const { videoProjects } = mocks[4].result.data;
+
+    expect( findProjectById( videoProjects, 'ud78' ).status )
+      .toEqual( 'PUBLISHED' );
+    expect( findProjectById( videoProjects, 'ud74' ).status )
+      .toEqual( 'DRAFT' );
+    expect( hasSelectedAllDrafts ).toEqual( false );
+  } );
+
+  it( 'getDraftProjects returns an array of draft project ids', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const menu = wrapper.find( TableActionsMenu );
+    const inst = menu.instance();
+    const { videoProjects } = mocks[4].result.data;
+    const draftProjects = inst.getDraftProjects( videoProjects );
+
+    expect( draftProjects ).toEqual( inst.state.draftProjects );
+    draftProjects.forEach( project => {
+      expect( findProjectById( videoProjects, project ).status )
+        .toEqual( 'DRAFT' );
+    } );
+  } );
+
+  it( 'getCachedQuery calls cache.readQuery with the correct arguments', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const menu = wrapper.find( TableActionsMenu );
+    const inst = menu.instance();
+    const cache = { readQuery: jest.fn() };
+    const query = TEAM_VIDEO_PROJECTS_QUERY;
+
+    inst.getCachedQuery( cache, query, props.variables );
+    expect( cache.readQuery ).toHaveBeenCalledWith( {
+      query,
+      variables: { ...props.variables }
+    } );
+  } );
+
+  it( 'handleDrafts sets draftProjects in state', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const menu = wrapper.find( TableActionsMenu );
+    const inst = menu.instance();
+    const { videoProjects } = mocks[4].result.data;
+
+    /**
+     * This test also provides evidence that `handleDrafts`
+     * is called on completion of the `Query`. See comment
+     * in the component about React Apollo bug and
+     * `onCompleted`.
+     */
+    expect( inst.state.draftProjects ).toEqual( ['ud23', 'ud74'] );
+    inst.state.draftProjects.forEach( project => {
+      expect( findProjectById( videoProjects, project ).status )
+        .toEqual( 'DRAFT' );
     } );
   } );
 } );

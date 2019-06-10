@@ -152,6 +152,7 @@ class TableActionsMenu extends React.Component {
 
   transformSelectedItemsMap = () => {
     const { selectedItems } = this.props;
+    if ( selectedItems.size === 0 ) return [];
     const arr = [];
     selectedItems.forEach(
       ( value, key ) => arr.push( { id: key, value } )
@@ -203,6 +204,13 @@ class TableActionsMenu extends React.Component {
           query={ TEAM_VIDEO_PROJECTS_QUERY }
           variables={ { ...variables } }
           onCompleted={ this.handleDrafts }
+          /**
+           * `onCompleted doesn't get called for Query,
+           * so set `notifyOnNetworkStatusChange` to
+           * allow it to be called.
+           * @see open issue:
+           * https://github.com/apollographql/react-apollo/issues/2293#issuecomment-428938827
+           */
           notifyOnNetworkStatusChange
         >
           { ( { loading, error, data } ) => {
