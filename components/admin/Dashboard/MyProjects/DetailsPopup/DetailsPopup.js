@@ -69,6 +69,10 @@ const DetailsPopup = props => {
           if ( data.videoProject ) {
             const { __typename } = data.videoProject;
             return (
+              // 06/10/19 - Updating button text from "Details" to "Files"
+              // if DetailsPopup will contain content other than files in future,
+              // will add conditional to display "Details" text along with "Files"/"Other Content"
+              // subheaders within popup
               <Popup
                 className="detailsFiles_popup"
                 trigger={ (
@@ -77,14 +81,13 @@ const DetailsPopup = props => {
                     className="linkStyle myProjects_data_actions_action"
                     data-projectitempopup="detailsPopup"
                   >
-                    Details
+                    Files
                   </button>
                 ) }
                 content={ renderPopup( __typename, id ) }
                 on="click"
-                position="bottom right"
-                hideOnScroll
-                keepInViewPort={ false }
+                position="bottom left"
+                keepInViewPort
                 open={ detailsPopupOpen }
                 onOpen={ handleOpen }
                 onClose={ handleClose }

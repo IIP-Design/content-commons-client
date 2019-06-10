@@ -85,6 +85,10 @@
             padding: 3px !important;
           }
         }
+
+        &:focus {
+          outline: none !important;
+        }
       }
 
       &_mobileToggle {
