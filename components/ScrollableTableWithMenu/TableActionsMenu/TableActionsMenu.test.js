@@ -391,6 +391,7 @@ describe( '<TableActionsMenu />', () => {
 
     expect( checkbox.exists() ).toEqual( true );
     expect( checkbox.prop( 'disabled' ) ).toEqual( projectsCount === 0 );
+    expect( checkbox.prop( 'checked' ) ).toEqual( projectsCount === props.selectedItems.size );
   } );
 
   it( 'renders a disabled Checkbox if no videoProjects are returned', async () => {
@@ -420,6 +421,52 @@ describe( '<TableActionsMenu />', () => {
 
     expect( checkbox.exists() ).toEqual( true );
     expect( checkbox.prop( 'disabled' ) ).toEqual( projectsCount === 0 );
+  } );
+
+  it( 'renders a checked Checkbox if all projects are selected', async () => {
+    const { videoProjects } = mocks[4].result.data;
+
+    const allCheckedMocks = [
+      {
+        request: {
+          query: TEAM_VIDEO_PROJECTS_QUERY,
+          variables: { ...props.variables }
+        },
+        result: {
+          data: {
+            videoProjects: videoProjects
+              .filter( project => project.id === 'ud78' || project.id === 'ud98' )
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ allCheckedMocks } addTypename={ false }>
+        <TableActionsMenu { ...props } />
+      </MockedProvider>
+    );
+
+    await wait( 0 );
+    wrapper.update();
+
+    const checkbox = wrapper.find( Checkbox );
+    const projectsCount = allCheckedMocks[0].result.data.videoProjects.length;
+
+    expect( checkbox.prop( 'checked' ) ).toEqual( projectsCount === props.selectedItems.size );
+  } );
+
+  it( 'renders an indeterminate Checkbox if at least one but not all projects are selected', async () => {
+    const wrapper = mount( Component );
+
+    await wait( 0 );
+    wrapper.update();
+
+    const checkbox = wrapper.find( Checkbox );
+    const projectsCount = mocks[4].result.data.videoProjects.length;
+
+    expect( checkbox.prop( 'indeterminate' ) )
+      .toEqual( projectsCount > props.selectedItems.size );
   } );
 
   it( 'Checkbox change calls toggleAllItemsSelection', async () => {
