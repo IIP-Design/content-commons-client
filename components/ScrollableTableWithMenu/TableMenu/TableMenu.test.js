@@ -136,4 +136,140 @@ describe( '<TableMenu />', () => {
     expect( inst[refName].type ).toEqual( 'div' );
     expect( inst[refName].props.children ).toEqual( 'test node' );
   } );
+
+  it( 'pressing Escape/Tab calls handleKbdAccess and handleCloseMenu', () => {
+    const wrapper = shallow( Component );
+    const inst = wrapper.instance();
+    const spy = jest.spyOn( inst, 'handleCloseMenu' );
+    jest.spyOn( inst, 'handleCheckboxFocus' )
+      .mockImplementation( () => {} );
+
+    const e = {
+      key: '',
+      target: { id: '0', type: 'checkbox' },
+      preventDefault: jest.fn()
+    };
+
+    const keys = ['Escape', 'Tab'];
+
+    // first, display the dropdown menu
+    wrapper.setState( { displayTableMenu: true } );
+
+    keys.forEach( key => {
+      e.key = key;
+      inst.handleKbdAccess( e );
+      expect( spy ).toHaveBeenCalled();
+      expect( e.preventDefault ).not.toHaveBeenCalled();
+    } );
+  } );
+
+  it( 'pressing ArrowDown calls handleKbdAccess, handleCheckboxFocus, and preventDefault', () => {
+    const wrapper = shallow( Component );
+    const inst = wrapper.instance();
+    const spy = jest.spyOn( inst, 'handleCheckboxFocus' )
+      .mockImplementation( () => {} );
+
+    const e = {
+      key: 'ArrowDown',
+      target: { id: '', type: 'checkbox' },
+      preventDefault: jest.fn()
+    };
+
+    const columns = inst.getColumns();
+    const current = () => columns.indexOf( e.target.id );
+
+    // first, display the dropdown menu
+    wrapper.setState( { displayTableMenu: true } );
+
+    columns.forEach( column => {
+      e.target.id = column;
+      inst.handleKbdAccess( e );
+      expect( e.preventDefault ).toHaveBeenCalled();
+      if ( current() === columns.length - 1 ) {
+        expect( spy ).toHaveBeenCalledWith( columns, 0 );
+      } else {
+        expect( spy ).toHaveBeenCalledWith( columns, current() + 1 );
+      }
+    } );
+  } );
+
+  it( 'pressing ArrowUp calls handleKbdAccess, handleCheckboxFocus, and preventDefault', () => {
+    const wrapper = shallow( Component );
+    const inst = wrapper.instance();
+    const spy = jest.spyOn( inst, 'handleCheckboxFocus' )
+      .mockImplementation( () => {} );
+
+    const e = {
+      key: 'ArrowUp',
+      target: { id: '', type: 'checkbox' },
+      preventDefault: jest.fn()
+    };
+
+    const columns = inst.getColumns();
+    const current = () => columns.indexOf( e.target.id );
+
+    // first, display the dropdown menu
+    wrapper.setState( { displayTableMenu: true } );
+
+    columns.forEach( column => {
+      e.target.id = column;
+      inst.handleKbdAccess( e );
+      expect( e.preventDefault ).toHaveBeenCalled();
+      if ( current() === 0 ) {
+        expect( spy ).toHaveBeenCalledWith( columns, columns.length - 1 );
+      } else {
+        expect( spy ).toHaveBeenCalledWith( columns, current() - 1 );
+      }
+    } );
+  } );
+
+  it( 'pressing Home calls handleKbdAccess, handleCheckboxFocus, and preventDefault', () => {
+    const wrapper = shallow( Component );
+    const inst = wrapper.instance();
+    const spy = jest.spyOn( inst, 'handleCheckboxFocus' )
+      .mockImplementation( () => {} );
+
+    const e = {
+      key: 'Home',
+      target: { id: '', type: 'checkbox' },
+      preventDefault: jest.fn()
+    };
+
+    const columns = inst.getColumns();
+
+    // first, display the dropdown menu
+    wrapper.setState( { displayTableMenu: true } );
+
+    columns.forEach( column => {
+      e.target.id = column;
+      inst.handleKbdAccess( e );
+      expect( spy ).toHaveBeenCalledWith( columns, 0 );
+      expect( e.preventDefault ).toHaveBeenCalled();
+    } );
+  } );
+
+  it( 'pressing End calls handleKbdAccess, handleCheckboxFocus, and preventDefault', () => {
+    const wrapper = shallow( Component );
+    const inst = wrapper.instance();
+    const spy = jest.spyOn( inst, 'handleCheckboxFocus' )
+      .mockImplementation( () => {} );
+
+    const e = {
+      key: 'End',
+      target: { id: '', type: 'checkbox' },
+      preventDefault: jest.fn()
+    };
+
+    const columns = inst.getColumns();
+
+    // first, display the dropdown menu
+    wrapper.setState( { displayTableMenu: true } );
+
+    columns.forEach( column => {
+      e.target.id = column;
+      inst.handleKbdAccess( e );
+      expect( spy ).toHaveBeenCalledWith( columns, columns.length - 1 );
+      expect( e.preventDefault ).toHaveBeenCalled();
+    } );
+  } );
 } );
