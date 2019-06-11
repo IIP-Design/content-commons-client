@@ -61,6 +61,7 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
       status
       visibility
       thumbnails {
+        id
         url
         alt
       }
@@ -70,6 +71,7 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
           id
           name
           language {
+            id
             locale
           }
         }
