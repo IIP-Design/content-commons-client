@@ -55,8 +55,14 @@ class ScrollableTableWithMenu extends React.Component {
 
   handlePageChange = ( e, { activePage } ) => {
     this.setState( prevState => {
-      const skip = activePage * prevState.itemsPerPage - prevState.itemsPerPage;
-      return { activePage, skip };
+      const { itemsPerPage } = prevState;
+      const skip = ( activePage * itemsPerPage ) - itemsPerPage;
+      return {
+        selectedItems: new Map(),
+        displayActionsMenu: false,
+        activePage,
+        skip
+      };
     } );
   };
 
