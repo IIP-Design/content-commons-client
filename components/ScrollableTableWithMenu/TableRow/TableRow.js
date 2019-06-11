@@ -15,6 +15,8 @@ const TableRow = props => {
     d, selectedItems, tableHeaders, toggleItemSelection
   } = props;
 
+  if ( !d ) return null;
+
   return (
     <Table.Row
       className={ `${d.isNew ? 'myProjects_newItem' : ''} ${displayMobileData ? 'activeTableRow' : ''}` }

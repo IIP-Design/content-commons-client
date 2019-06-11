@@ -63,8 +63,8 @@ const TablePagination = props => {
             <Pagination
               activePage={ activePage }
               totalPages={ totalPages }
-              nextItem={ { content: 'Next >', disabled: activePage === totalPages } }
-              prevItem={ { content: '< Previous', disabled: activePage === 1 } }
+              nextItem={ { content: 'Next ⟩', disabled: activePage === totalPages } }
+              prevItem={ { content: '⟨ Previous', disabled: activePage === 1 } }
               siblingRange="2"
               firstItem={ null }
               lastItem={ null }
