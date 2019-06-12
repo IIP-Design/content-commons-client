@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import sortBy from 'lodash/sortBy';
 import { withFormik } from 'formik';
 import { Form, Input, Button } from 'semantic-ui-react';
 import { optionFormatter, formikHandleOnChange } from 'lib/form';
@@ -75,7 +76,7 @@ const SelectRole = ( {
                 placeholder="- Select Team"
                 search
                 selection
-                options={ optionFormatter( data.teams, 'id' ) }
+                options={ sortBy( optionFormatter( data.teams, 'id' ), 'text' ) }
                 value={ values.team }
                 onChange={ handleOnChange }
                 error={ !!errors.team }
