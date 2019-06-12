@@ -18,6 +18,7 @@ const VideoUpload = props => {
   const [loading, setLoading] = useState( false );
   const [files, setFiles] = useState( [] );
   const [allFieldsSelected, setAllFieldsSelected] = useState( false );
+  const [duplicateFiles, setDuplicateFiles] = useState( [] );
 
   useEffect( () => {
     // Since using onchange event, need to reset value on input so user can upload same file
@@ -85,7 +86,6 @@ const VideoUpload = props => {
     return '';
   };
 
-
   const goNext = () => {
     setActiveIndex( 1 );
   };
@@ -120,6 +120,9 @@ const VideoUpload = props => {
     const reduceDuplicates = ( arr, file ) => {
       if ( !arr.find( file2 => file.input.name === file2.input.name ) ) {
         arr.push( file );
+        setDuplicateFiles( [] );
+      } else {
+        setDuplicateFiles( prevDuplicateFiles => [...prevDuplicateFiles, file.input.name] );
       }
       return arr;
     };
@@ -189,7 +192,6 @@ const VideoUpload = props => {
     gotoVideoEditPage();
   };
 
-
   const { updateModalClassname, closeModal } = props;
 
   /* eslint-disable react/display-name */
@@ -219,12 +221,13 @@ const VideoUpload = props => {
             updateField,
             allFieldsSelected,
             closeModal,
-            handleAddFilesToUpload
+            handleAddFilesToUpload,
+            duplicateFiles,
+            setDuplicateFiles
           } }
           >
             <VideoProjectFiles
               closeModal={ closeModal }
-              goNext={ goNext }
               updateModalClassname={ updateModalClassname }
             />
           </VideoUploadContext.Provider>

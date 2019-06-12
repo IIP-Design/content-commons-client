@@ -13,6 +13,7 @@ import './FileRemoveReplaceMenu.scss';
 const FileRemoveReplaceMenu = props => {
   const [isOpen, setIsOpen] = useState( false );
   const { onReplace, onRemove } = props;
+  const setDuplicateFiles = props.setDuplicateFiles ? props.setDuplicateFiles : null;
 
   // add debounce is perf degrades
   const onResize = () => {
@@ -45,7 +46,10 @@ const FileRemoveReplaceMenu = props => {
       trigger={ <Button icon="ellipsis vertical" className="no-background" /> }
       content={ menu }
       open={ isOpen }
-      onOpen={ () => setIsOpen( true ) }
+      onOpen={ () => {
+        if ( setDuplicateFiles ) setDuplicateFiles( [] );
+        setIsOpen( true );
+      } }
       basic
       on="click"
       position="bottom right"
@@ -58,7 +62,8 @@ const FileRemoveReplaceMenu = props => {
 
 FileRemoveReplaceMenu.propTypes = {
   onReplace: PropTypes.func,
-  onRemove: PropTypes.func
+  onRemove: PropTypes.func,
+  setDuplicateFiles: PropTypes.array
 };
 
 export default FileRemoveReplaceMenu;

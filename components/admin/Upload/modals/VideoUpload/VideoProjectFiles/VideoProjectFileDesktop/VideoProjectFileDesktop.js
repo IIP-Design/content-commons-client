@@ -5,7 +5,6 @@ import {
   Button,
   Step
 } from 'semantic-ui-react';
-
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import CancelUpload from '../../../CancelUpload/CancelUpload';
 import VideoProjectFilesRowDesktop from './VideoProjectFilesRowDesktop';
@@ -38,7 +37,13 @@ const VideoProjectFilesDesktop = () => {
     // Context API is used to avoind having to pass props down multiple levels
     <VideoUploadContext.Consumer>
       { ( {
-        files, addAssetFiles, closeModal, allFieldsSelected, handleAddFilesToUpload, compareFilenames
+        files,
+        addAssetFiles,
+        closeModal,
+        allFieldsSelected,
+        handleAddFilesToUpload,
+        compareFilenames,
+        setDuplicateFiles
       } ) => (
         <div className="videoProjectFilesDesktop__wrapper">
           <div className="videoProjectFilesDesktop__steps">
@@ -81,21 +86,25 @@ const VideoProjectFilesDesktop = () => {
             </Grid>
             <Form.Field className="upload_actions">
               <CancelUpload closeModal={ closeModal } />
-
               <Button
                 className="secondary"
                 style={ show( 2 ) }
                 content="Previous"
-                onClick={ () => setActiveStep( 1 ) }
+                onClick={ () => {
+                  setActiveStep( 1 );
+                  setDuplicateFiles( [] );
+                } }
               />
               <Button
                 className="primary"
                 content="Next"
                 disabled={ !stepOneComplete( files ) || files.length === 0 }
                 style={ show( 1 ) }
-                onClick={ () => setActiveStep( 2 ) }
+                onClick={ () => {
+                  setActiveStep( 2 );
+                  setDuplicateFiles( [] );
+                } }
               />
-
               <Button
                 className="primary"
                 type="button"
@@ -104,7 +113,6 @@ const VideoProjectFilesDesktop = () => {
                 style={ show( 2 ) }
                 onClick={ handleAddFilesToUpload }
               />
-
             </Form.Field>
           </Form>
         </div>
