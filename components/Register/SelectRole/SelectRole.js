@@ -55,8 +55,9 @@ const SelectRole = ( {
             checked={ values.permissions === option.value }
             onChange={ handleOnChange }
             error={ !!errors.permissions }
+            disabled={ option.value !== 'EDITOR' }
           />
-          <p className="checkbox_content">{ option.content }</p>
+          <p className={ `checkbox_content ${( option.value !== 'EDITOR' ) ? 'disabled' : ''}` }>{ option.content }</p>
         </Form.Field>
       ) ) }
       <p className="error-message">{ errors.permissions }</p>
