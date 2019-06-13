@@ -69,11 +69,12 @@ Array [
               className="myProjects_data"
             >
               <Link
-                href="/admin/project/video/d137/review"
+                as="/admin/project/video/d137/edit"
+                href="/admin/project?content=video&id=d137&action=edit"
               >
                 <a
                   className="myProjects_data_title"
-                  href="/admin/project/video/d137/review"
+                  href="/admin/project/video/d137/edit"
                   onClick={[Function]}
                 >
                   Test Title 1
@@ -85,11 +86,18 @@ Array [
                 <div
                   className="myProjects_data_actions_wrapper"
                 >
-                  <Component
-                    id="d137"
+                  <Link
+                    as="/admin/project/video/d137/edit"
+                    href="/admin/project?content=video&id=d137&action=edit"
                   >
-                    DetailsPopup
-                  </Component>
+                    <a
+                      className="linkStyle myProjects_data_actions_action"
+                      href="/admin/project/video/d137/edit"
+                      onClick={[Function]}
+                    >
+                      Edit
+                    </a>
+                  </Link>
                   <span>
                      | 
                   </span>
@@ -148,75 +156,11 @@ Array [
                   <span>
                      | 
                   </span>
-                  <ShareProjectItem
+                  <Component
                     id="d137"
                   >
-                    <Popup
-                      className="shareLink_popup"
-                      content={
-                        <ClipboardCopy
-                          copyItem=""
-                          label="Direct Link"
-                        />
-                      }
-                      hideOnScroll={true}
-                      keepInViewPort={false}
-                      on="click"
-                      onClose={[Function]}
-                      onOpen={[Function]}
-                      open={false}
-                      position="bottom right"
-                      trigger={
-                        <button
-                          className="linkStyle myProjects_data_actions_action"
-                          data-projectitempopup="sharePopup"
-                          type="button"
-                        >
-                          Share
-                        </button>
-                      }
-                    >
-                      <Portal
-                        closeOnDocumentClick={true}
-                        closeOnEscape={true}
-                        closeOnTriggerClick={true}
-                        eventPool="default"
-                        onClose={[Function]}
-                        onMount={[Function]}
-                        onOpen={[Function]}
-                        onUnmount={[Function]}
-                        open={false}
-                        openOnTriggerClick={true}
-                        trigger={
-                          <button
-                            className="linkStyle myProjects_data_actions_action"
-                            data-projectitempopup="sharePopup"
-                            type="button"
-                          >
-                            Share
-                          </button>
-                        }
-                        triggerRef={[Function]}
-                      >
-                        <Ref
-                          innerRef={[Function]}
-                        >
-                          <button
-                            className="linkStyle myProjects_data_actions_action"
-                            data-projectitempopup="sharePopup"
-                            onBlur={[Function]}
-                            onClick={[Function]}
-                            onFocus={[Function]}
-                            onMouseEnter={[Function]}
-                            onMouseLeave={[Function]}
-                            type="button"
-                          >
-                            Share
-                          </button>
-                        </Ref>
-                      </Portal>
-                    </Popup>
-                  </ShareProjectItem>
+                    DetailsPopup
+                  </Component>
                 </div>
                 <button
                   className="linkStyle myProjects_data_actions_mobileToggle"
@@ -390,11 +334,12 @@ Array [
               className="myProjects_data"
             >
               <Link
-                href="/admin/project/video/z132/review"
+                as="/admin/project/video/z132/edit"
+                href="/admin/project?content=video&id=z132&action=edit"
               >
                 <a
                   className="myProjects_data_title"
-                  href="/admin/project/video/z132/review"
+                  href="/admin/project/video/z132/edit"
                   onClick={[Function]}
                 >
                   Test Title 2
@@ -406,11 +351,18 @@ Array [
                 <div
                   className="myProjects_data_actions_wrapper"
                 >
-                  <Component
-                    id="z132"
+                  <Link
+                    as="/admin/project/video/z132/edit"
+                    href="/admin/project?content=video&id=z132&action=edit"
                   >
-                    DetailsPopup
-                  </Component>
+                    <a
+                      className="linkStyle myProjects_data_actions_action"
+                      href="/admin/project/video/z132/edit"
+                      onClick={[Function]}
+                    >
+                      Edit
+                    </a>
+                  </Link>
                   <span>
                      | 
                   </span>
@@ -469,75 +421,11 @@ Array [
                   <span>
                      | 
                   </span>
-                  <ShareProjectItem
+                  <Component
                     id="z132"
                   >
-                    <Popup
-                      className="shareLink_popup"
-                      content={
-                        <ClipboardCopy
-                          copyItem=""
-                          label="Direct Link"
-                        />
-                      }
-                      hideOnScroll={true}
-                      keepInViewPort={false}
-                      on="click"
-                      onClose={[Function]}
-                      onOpen={[Function]}
-                      open={false}
-                      position="bottom right"
-                      trigger={
-                        <button
-                          className="linkStyle myProjects_data_actions_action"
-                          data-projectitempopup="sharePopup"
-                          type="button"
-                        >
-                          Share
-                        </button>
-                      }
-                    >
-                      <Portal
-                        closeOnDocumentClick={true}
-                        closeOnEscape={true}
-                        closeOnTriggerClick={true}
-                        eventPool="default"
-                        onClose={[Function]}
-                        onMount={[Function]}
-                        onOpen={[Function]}
-                        onUnmount={[Function]}
-                        open={false}
-                        openOnTriggerClick={true}
-                        trigger={
-                          <button
-                            className="linkStyle myProjects_data_actions_action"
-                            data-projectitempopup="sharePopup"
-                            type="button"
-                          >
-                            Share
-                          </button>
-                        }
-                        triggerRef={[Function]}
-                      >
-                        <Ref
-                          innerRef={[Function]}
-                        >
-                          <button
-                            className="linkStyle myProjects_data_actions_action"
-                            data-projectitempopup="sharePopup"
-                            onBlur={[Function]}
-                            onClick={[Function]}
-                            onFocus={[Function]}
-                            onMouseEnter={[Function]}
-                            onMouseLeave={[Function]}
-                            type="button"
-                          >
-                            Share
-                          </button>
-                        </Ref>
-                      </Portal>
-                    </Popup>
-                  </ShareProjectItem>
+                    DetailsPopup
+                  </Component>
                 </div>
                 <button
                   className="linkStyle myProjects_data_actions_mobileToggle"

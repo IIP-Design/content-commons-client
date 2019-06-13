@@ -61,6 +61,7 @@ const mocks = [
             status: 'PUBLISHED',
             visibility: 'INTERNAL',
             thumbnails: {
+              id: 't34',
               url: 'https://thumbnailurl.com',
               alt: 'some alt text',
             },
@@ -72,6 +73,7 @@ const mocks = [
                     id: '832',
                     name: 'about america',
                     language: {
+                      id: 'en23',
                       locale: 'en-us'
                     }
                   }
@@ -97,6 +99,7 @@ const mocks = [
             status: 'PUBLISHED',
             visibility: 'INTERNAL',
             thumbnails: {
+              id: 't34',
               url: 'https://thumbnailurl.com',
               alt: 'some alt text',
             },
@@ -108,6 +111,7 @@ const mocks = [
                     id: '832',
                     name: 'about america',
                     language: {
+                      id: 'en23',
                       locale: 'en-us'
                     }
                   }
