@@ -5,7 +5,6 @@ import { MockedProvider } from 'react-apollo/test-utils';
 import { Icon, Loader } from 'semantic-ui-react';
 import VideoSupportFiles, {
   VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
-  UPDATE_PROTECT_IMAGES_MUTATION
 } from './VideoSupportFiles';
 
 const props = { id: '123' };
@@ -26,6 +25,7 @@ const mocks = [
               id: '34is',
               filename: 'srt-1.srt',
               language: {
+                id: 'en22',
                 displayName: 'English'
               }
             },
@@ -33,6 +33,7 @@ const mocks = [
               id: '48sa',
               filename: 'srt-2.srt',
               language: {
+                id: 'fr87',
                 displayName: 'French'
               }
             }
@@ -43,6 +44,7 @@ const mocks = [
               filename: 'image-1.jpg',
               filetype: 'jpg',
               language: {
+                id: 'en22',
                 displayName: 'English'
               }
             },
@@ -51,27 +53,11 @@ const mocks = [
               filename: 'image-2.jpg',
               filetype: 'jpg',
               language: {
+                id: 'fr87',
                 displayName: 'French'
               }
             }
           ]
-        }
-      }
-    }
-  },
-  {
-    request: {
-      query: UPDATE_PROTECT_IMAGES_MUTATION,
-      variables: {
-        data: { protectImages: true },
-        where: { id: props.id }
-      }
-    },
-    result: {
-      data: {
-        updateVideoProject: {
-          id: '123',
-          protectImages: true
         }
       }
     }
@@ -190,23 +176,6 @@ describe( '<VideoSupportFiles />', () => {
             }
           }
         }
-      },
-      {
-        request: {
-          query: UPDATE_PROTECT_IMAGES_MUTATION,
-          variables: {
-            data: { protectImages: true },
-            where: { id: props.id }
-          }
-        },
-        result: {
-          data: {
-            updateVideoProject: {
-              id: '123',
-              protectImages: true
-            }
-          }
-        }
       }
     ];
 
@@ -238,23 +207,6 @@ describe( '<VideoSupportFiles />', () => {
               protectImages: null,
               srts: [],
               additionalFiles: []
-            }
-          }
-        }
-      },
-      {
-        request: {
-          query: UPDATE_PROTECT_IMAGES_MUTATION,
-          variables: {
-            data: { protectImages: true },
-            where: { id: props.id }
-          }
-        },
-        result: {
-          data: {
-            updateVideoProject: {
-              id: '123',
-              protectImages: true
             }
           }
         }
@@ -294,6 +246,7 @@ describe( '<VideoSupportFiles />', () => {
                   filename: 'image-1.jpg',
                   filetype: 'jpg',
                   language: {
+                    id: 'en22',
                     displayName: 'English'
                   }
                 },
@@ -302,27 +255,11 @@ describe( '<VideoSupportFiles />', () => {
                   filename: 'image-2.jpg',
                   filetype: 'jpg',
                   language: {
+                    id: 'fr87',
                     displayName: 'French'
                   }
                 }
               ]
-            }
-          }
-        }
-      },
-      {
-        request: {
-          query: UPDATE_PROTECT_IMAGES_MUTATION,
-          variables: {
-            data: { protectImages: true },
-            where: { id: props.id }
-          }
-        },
-        result: {
-          data: {
-            updateVideoProject: {
-              id: '123',
-              protectImages: true
             }
           }
         }
@@ -362,6 +299,7 @@ describe( '<VideoSupportFiles />', () => {
                   filename: 'image-1.jpg',
                   filetype: 'jpg',
                   language: {
+                    id: 'en22',
                     displayName: 'English'
                   }
                 },
@@ -370,27 +308,11 @@ describe( '<VideoSupportFiles />', () => {
                   filename: 'image-2.jpg',
                   filetype: 'jpg',
                   language: {
+                    id: 'fr87',
                     displayName: 'French'
                   }
                 }
               ]
-            }
-          }
-        }
-      },
-      {
-        request: {
-          query: UPDATE_PROTECT_IMAGES_MUTATION,
-          variables: {
-            data: { protectImages: true },
-            where: { id: props.id }
-          }
-        },
-        result: {
-          data: {
-            updateVideoProject: {
-              id: '123',
-              protectImages: true
             }
           }
         }
@@ -428,6 +350,7 @@ describe( '<VideoSupportFiles />', () => {
                   id: '34is',
                   filename: 'srt-1.srt',
                   language: {
+                    id: 'en22',
                     displayName: 'English'
                   }
                 },
@@ -435,28 +358,12 @@ describe( '<VideoSupportFiles />', () => {
                   id: '48sa',
                   filename: 'srt-2.srt',
                   language: {
+                    id: 'fr87',
                     displayName: 'French'
                   }
                 }
               ],
               additionalFiles: null
-            }
-          }
-        }
-      },
-      {
-        request: {
-          query: UPDATE_PROTECT_IMAGES_MUTATION,
-          variables: {
-            data: { protectImages: true },
-            where: { id: props.id }
-          }
-        },
-        result: {
-          data: {
-            updateVideoProject: {
-              id: '123',
-              protectImages: true
             }
           }
         }
@@ -494,6 +401,7 @@ describe( '<VideoSupportFiles />', () => {
                   id: '34is',
                   filename: 'srt-1.srt',
                   language: {
+                    id: 'en22',
                     displayName: 'English'
                   }
                 },
@@ -501,28 +409,12 @@ describe( '<VideoSupportFiles />', () => {
                   id: '48sa',
                   filename: 'srt-2.srt',
                   language: {
+                    id: 'fr87',
                     displayName: 'French'
                   }
                 }
               ],
               additionalFiles: []
-            }
-          }
-        }
-      },
-      {
-        request: {
-          query: UPDATE_PROTECT_IMAGES_MUTATION,
-          variables: {
-            data: { protectImages: true },
-            where: { id: props.id }
-          }
-        },
-        result: {
-          data: {
-            updateVideoProject: {
-              id: '123',
-              protectImages: true
             }
           }
         }
@@ -541,31 +433,5 @@ describe( '<VideoSupportFiles />', () => {
     const additionalFilesSection = videoSupportFiles.find( 'section.addtl_files.section' );
 
     expect( additionalFilesSection.exists() ).toEqual( false );
-  } );
-
-  /**
-   * @todo Need to revisit this test when
-   * enzyme supports hooks.
-   */
-  it.skip( 'clicking the protect images Checkbox', async () => {
-    const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
-    const videoSupportFiles = wrapper.find( 'VideoSupportFiles' );
-    const checkbox = videoSupportFiles.find( 'Checkbox' );
-    const spy = jest.spyOn( checkbox.props(), 'onClick' );
-    // const spy = jest.spyOn( videoSupportFiles().props(), 'updateProtectImages' );
-
-    checkbox.prop( 'onClick' )();
-    // checkbox.simulate( 'change' );
-
-    expect( spy ).toHaveBeenCalled();
-    // expect( spy ).toHaveBeenCalledWith( {
-    //   variables: {
-    //     data: { protectImages: true },
-    //     where: { id: props.id }
-    //   }
-    // } );
   } );
 } );

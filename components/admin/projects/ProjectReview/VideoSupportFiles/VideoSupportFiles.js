@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { func, object, string } from 'prop-types';
+import React from 'react';
+import { object, string } from 'prop-types';
 import gql from 'graphql-tag';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import orderBy from 'lodash/orderBy';
-import { Checkbox, Icon, Loader } from 'semantic-ui-react';
+import { Icon, Loader } from 'semantic-ui-react';
 
 import { getPluralStringOrNot } from 'lib/utils';
 
@@ -11,16 +11,6 @@ import './VideoSupportFiles.scss';
 
 const VideoSupportFiles = props => {
   const { error, loading, project } = props.data;
-
-  const [protectImages, setProtectImages] = useState( project ? project.protectImages : false );
-
-  const updateState = () => {
-    if ( project ) {
-      setProtectImages( project.protectImages );
-    }
-  };
-
-  useEffect( updateState );
 
   if ( loading ) {
     return (
@@ -55,16 +45,6 @@ const VideoSupportFiles = props => {
 
   if ( !project || !Object.keys( project ).length ) return null;
 
-  const handleUpdateProtectImages = () => {
-    const { id, updateProtectImages } = props;
-    updateProtectImages( {
-      variables: {
-        data: { protectImages: !protectImages },
-        where: { id }
-      }
-    } );
-  };
-
   const { srts, additionalFiles } = project;
 
   const additionalFilesSorted = ( additionalFiles && additionalFiles.length )
@@ -88,7 +68,7 @@ const VideoSupportFiles = props => {
         { getPluralStringOrNot( allFiles, 'Support File' ) }
       </h3>
 
-      { ( srts && srts.length )
+      { ( srts && srts.length > 0 )
         && (
           <section className="files section">
             <h4 id="srt-files">
@@ -104,7 +84,7 @@ const VideoSupportFiles = props => {
           </section>
         ) }
 
-      { ( additionalFiles && additionalFiles.length )
+      { ( additionalFiles && additionalFiles.length > 0 )
         && (
           <section className="addtl_files section">
             <h4 id="additional-files">
@@ -117,20 +97,13 @@ const VideoSupportFiles = props => {
             </ul>
           </section>
         ) }
-
-      <Checkbox
-        label="Disable right-click to protect your images"
-        checked={ !!protectImages }
-        onClick={ handleUpdateProtectImages }
-      />
     </section>
   );
 };
 
 VideoSupportFiles.propTypes = {
-  id: string,
-  data: object,
-  updateProtectImages: func
+  id: string, // eslint-disable-line
+  data: object
 };
 
 const VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY = gql`
@@ -165,35 +138,12 @@ const VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY = gql`
   }
 `;
 
-const UPDATE_PROTECT_IMAGES_MUTATION = gql`
-  mutation UpdateProtectImages($data: VideoProjectUpdateInput!
-  $where: VideoProjectWhereUniqueInput!) {
-    updateVideoProject(data: $data, where: $where) {
-      id
-      protectImages
-    }
-  }
-`;
-
-const supportFilesQuery = graphql( VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY, {
+export default graphql( VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY, {
   options: props => ( {
     variables: {
       id: props.id
     },
   } )
-} );
+} )( VideoSupportFiles );
 
-const updateProtectImagesMutation = graphql(
-  UPDATE_PROTECT_IMAGES_MUTATION,
-  { name: 'updateProtectImages' }
-);
-
-export default compose(
-  updateProtectImagesMutation,
-  supportFilesQuery
-)( VideoSupportFiles );
-
-export {
-  VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
-  UPDATE_PROTECT_IMAGES_MUTATION
-};
+export { VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY };
