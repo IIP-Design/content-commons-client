@@ -109,6 +109,12 @@
     }
   }
 
+  .ui.form &_option {
+    .field{
+      margin: 1.5em 0em 0.5em;
+    }
+  }
+
   // .ui.form .fields {
   //   @media screen and (min-width: 768px) {
   //     margin-bottom: 2em;
