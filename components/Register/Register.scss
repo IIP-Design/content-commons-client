@@ -44,6 +44,11 @@
     font-weight: normal;
   }
 
+  .checkbox_content.disabled {
+    pointer-events: none;
+    opacity: 0.45;
+  }
+
   .ui.pointing.secondary.menu {
     justify-content: space-between;
     margin: 0;
