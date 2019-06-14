@@ -63,7 +63,7 @@ const FileRemoveReplaceMenu = props => {
 FileRemoveReplaceMenu.propTypes = {
   onReplace: PropTypes.func,
   onRemove: PropTypes.func,
-  setDuplicateFiles: PropTypes.array
+  setDuplicateFiles: PropTypes.func
 };
 
 export default FileRemoveReplaceMenu;
