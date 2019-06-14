@@ -43,8 +43,11 @@
 
   &_table {
     position: relative;
-    max-height: 500px;
+    max-height: 1300px;
+    max-height: 100vw;
     overflow: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     border: 1px solid rgba(34, 36, 38, 0.15);
     @media screen and (max-width: 767px) {
       border: none;
@@ -54,7 +57,8 @@
 
     /* ONLY IN WORKS IN CHROME & SAFARI */
     &::-webkit-scrollbar {
-      display: none;
+      height: 0 !important;
+      width: 0 !important;
     }
 
     &_wrapper {
