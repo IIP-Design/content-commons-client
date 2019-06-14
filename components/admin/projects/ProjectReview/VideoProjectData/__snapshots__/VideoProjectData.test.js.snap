@@ -35,7 +35,7 @@ exports[`<VideoProjectData /> does not crash if author and team are \`null\` 1`]
     <b
       className="label"
     >
-      Privacy Setting:
+      Visibility Setting:
     </b>
      
     PUBLIC
@@ -157,12 +157,16 @@ exports[`<VideoProjectData /> renders the final state 1`] = `
         },
         "categories": Array [
           Object {
+            "id": "c77",
             "translations": Object {
+              "id": "ct7",
               "name": "about america",
             },
           },
           Object {
+            "id": "c88",
             "translations": Object {
+              "id": "ct8",
               "name": "Amérique",
             },
           },
@@ -173,17 +177,22 @@ exports[`<VideoProjectData /> renders the final state 1`] = `
         "projectTitle": "test title",
         "tags": Array [
           Object {
+            "id": "t44",
             "translations": Object {
+              "id": "tt4",
               "name": "american culture",
             },
           },
           Object {
+            "id": "t55",
             "translations": Object {
+              "id": "tt5",
               "name": "Culture américaine",
             },
           },
         ],
         "team": Object {
+          "id": "t11",
           "name": "IIP Video Production",
         },
         "visibility": "PUBLIC",
@@ -242,7 +251,7 @@ exports[`<VideoProjectData /> renders the final state 1`] = `
         <b
           className="label"
         >
-          Privacy Setting:
+          Visibility Setting:
         </b>
          
         PUBLIC
