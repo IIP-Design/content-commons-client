@@ -15,6 +15,7 @@ import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmMod
 import PreviewProject from 'components/admin/PreviewProject/PreviewProject';
 import PreviewProjectContent from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
+import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 
 import { DELETE_VIDEO_PROJECT_MUTATION } from 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit';
 
@@ -86,6 +87,7 @@ const VideoReview = props => {
 
   return (
     <div className="review-project">
+      <Breadcrumbs />
       <ProjectHeader icon="video camera" text="Project Details - Review">
         <Button
           content="Delete Project"

@@ -38,6 +38,7 @@ import VideoProjectDataForm from 'components/admin/projects/ProjectEdit/VideoPro
 import UploadSuccessMsg from 'components/admin/projects/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
 import FileUploadProgressBar from 'components/admin/projects/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
 import withFileUpload from 'hocs/withFileUpload/withFileUpload';
+import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 
 import { config } from './config';
 
@@ -233,6 +234,7 @@ const VideoEdit = props => {
 
   return (
     <div className="edit-project">
+      <Breadcrumbs />
       { /* action buttons at top need to be separate component */ }
       <div className="edit-project__header">
         <ProjectHeader icon="video camera" text="Project Details">
