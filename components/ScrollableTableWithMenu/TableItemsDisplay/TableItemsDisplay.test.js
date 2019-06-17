@@ -289,7 +289,7 @@ describe( '<TableItemsDisplay />', () => {
     expect( tableItemsDisplay.contains( displayMsg ) ).toEqual( true );
   } );
 
-  it.only( 'renders the Dropdown component', async () => {
+  it( 'renders the Dropdown component', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
