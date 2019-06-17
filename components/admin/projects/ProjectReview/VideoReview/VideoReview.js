@@ -16,7 +16,10 @@ import PreviewProject from 'components/admin/PreviewProject/PreviewProject';
 import PreviewProjectContent from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
 
-import { DELETE_VIDEO_PROJECT_MUTATION } from 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit';
+import { PUBLISH_VIDEO_PROJECT_MUTATION } from 'lib/graphql/queries/video';
+import {
+  DELETE_VIDEO_PROJECT_MUTATION
+} from 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit';
 
 import './VideoReview.scss';
 
@@ -80,8 +83,13 @@ const VideoReview = props => {
     }, `/admin/project/video/${id}/edit` );
   };
 
-  const handlePublish = () => {
-    Router.push( { pathname: '/admin/dashboard' } );
+  const handlePublish = async () => {
+    const { publishProject } = props;
+    const result = await publishProject( { variables: { id } } );
+    if ( result ) {
+      console.log( `Published project: ${id}` );
+      Router.push( { pathname: '/admin/dashboard' } );
+    }
   };
 
   return (
@@ -159,7 +167,8 @@ const VideoReview = props => {
 VideoReview.propTypes = {
   id: string,
   data: object,
-  deleteProject: func
+  deleteProject: func,
+  publishProject: func
 };
 
 const VIDEO_REVIEW_PROJECT_QUERY = gql`
@@ -177,6 +186,13 @@ const deleteProjectMutation = graphql( DELETE_VIDEO_PROJECT_MUTATION, {
   } )
 } );
 
+const publishProjectMutation = graphql( PUBLISH_VIDEO_PROJECT_MUTATION, {
+  name: 'publishProject',
+  options: props => ( {
+    variables: { id: props.id }
+  } )
+} );
+
 const videoReviewQuery = graphql( VIDEO_REVIEW_PROJECT_QUERY, {
   options: props => ( {
     variables: { id: props.id }
@@ -185,6 +201,7 @@ const videoReviewQuery = graphql( VIDEO_REVIEW_PROJECT_QUERY, {
 
 export default compose(
   deleteProjectMutation,
+  publishProjectMutation,
   videoReviewQuery
 )( VideoReview );
 
