@@ -17,10 +17,15 @@
     }
   }
 
+  &-item {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
   &-items {
     display: flex;
-    overflow: hidden;
     margin: 0;
+    overflow: hidden;
     padding: 0 1rem;
 
     &.vertical {
