@@ -63,7 +63,7 @@ const VideoProjectFiles = props => {
 
   const { units } = project;
 
-  if ( !units || ( units && !units.length ) ) return null;
+  if ( !units || ( units && units.length === 0 ) ) return null;
 
   const handleEdit = () => {
     const { id } = props;
@@ -111,7 +111,7 @@ const VideoProjectFiles = props => {
 
               <Grid.Row className="project_file_contents">
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_meta">
-                  { ( thumbnails && thumbnails.length )
+                  { ( thumbnails && thumbnails.length > 0 )
                     ? (
                       <img
                         src={ `${getPathToS3Bucket()}/${thumbnails[0].image.url}` }
@@ -128,7 +128,7 @@ const VideoProjectFiles = props => {
 
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_info">
                   <p><b className="label">Language:</b> { files[0].language.displayName }</p>
-                  <p><b className="label">Subtitles & Captions:</b> { files[0].videoBurnedInStatus }</p>
+                  <p><b className="label">Subtitles & Captions:</b> { `${files[0].videoBurnedInStatus}${files[0].videoBurnedInStatus === 'CLEAN' ? ' - No Captions' : ''}` }</p>
                   <p><b className="label">Video Type:</b> { files[0].use.name }</p>
                   <p><b className="label">Quality:</b> { files[0].quality }</p>
                   <p
