@@ -33,33 +33,31 @@ const mocks = [
           categories: [
             {
               id: 'c77',
-              translations: {
-                id: 'ct7',
-                name: 'about america'
-              }
-            },
-            {
-              id: 'c88',
-              translations: {
-                id: 'ct8',
-                name: 'Amérique'
-              }
+              translations: [
+                {
+                  id: 'ct7',
+                  name: 'about america'
+                },
+                {
+                  id: 'ct8',
+                  name: 'Amérique'
+                }
+              ]
             }
           ],
           tags: [
             {
               id: 't44',
-              translations: {
-                id: 'tt4',
-                name: 'american culture'
-              }
-            },
-            {
-              id: 't55',
-              translations: {
-                id: 'tt5',
-                name: 'Culture américaine'
-              }
+              translations: [
+                {
+                  id: 'tt4',
+                  name: 'american culture'
+                },
+                {
+                  id: 'tt5',
+                  name: 'Culture américaine'
+                }
+              ]
             }
           ]
         }
@@ -271,33 +269,31 @@ describe( '<VideoProjectData />', () => {
               categories: [
                 {
                   id: 'c77',
-                  translations: {
-                    id: 'ct7',
-                    name: 'about america'
-                  }
-                },
-                {
-                  id: 'c88',
-                  translations: {
-                    id: 'ct8',
-                    name: 'Amérique'
-                  }
+                  translations: [
+                    {
+                      id: 'ct7',
+                      name: 'about america'
+                    },
+                    {
+                      id: 'ct8',
+                      name: 'Amérique'
+                    }
+                  ]
                 }
               ],
               tags: [
                 {
                   id: 't44',
-                  translations: {
-                    id: 'tt4',
-                    name: 'american culture'
-                  }
-                },
-                {
-                  id: 't55',
-                  translations: {
-                    id: 'tt5',
-                    name: 'Culture américaine'
-                  }
+                  translations: [
+                    {
+                      id: 'tt4',
+                      name: 'american culture'
+                    },
+                    {
+                      id: 'tt5',
+                      name: 'Culture américaine'
+                    }
+                  ]
                 }
               ]
             }
@@ -322,6 +318,7 @@ describe( '<VideoProjectData />', () => {
   } );
 
   it( 'does not crash if author and team are `{}`', async () => {
+    // ignore console.warn about missing field
     const emptyAuthorTeamMocks = [
       {
         request: {

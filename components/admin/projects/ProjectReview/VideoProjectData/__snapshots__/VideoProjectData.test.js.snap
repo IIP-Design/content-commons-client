@@ -158,17 +158,16 @@ exports[`<VideoProjectData /> renders the final state 1`] = `
         "categories": Array [
           Object {
             "id": "c77",
-            "translations": Object {
-              "id": "ct7",
-              "name": "about america",
-            },
-          },
-          Object {
-            "id": "c88",
-            "translations": Object {
-              "id": "ct8",
-              "name": "Amérique",
-            },
+            "translations": Array [
+              Object {
+                "id": "ct7",
+                "name": "about america",
+              },
+              Object {
+                "id": "ct8",
+                "name": "Amérique",
+              },
+            ],
           },
         ],
         "descInternal": "The internal description",
@@ -178,17 +177,16 @@ exports[`<VideoProjectData /> renders the final state 1`] = `
         "tags": Array [
           Object {
             "id": "t44",
-            "translations": Object {
-              "id": "tt4",
-              "name": "american culture",
-            },
-          },
-          Object {
-            "id": "t55",
-            "translations": Object {
-              "id": "tt5",
-              "name": "Culture américaine",
-            },
+            "translations": Array [
+              Object {
+                "id": "tt4",
+                "name": "american culture",
+              },
+              Object {
+                "id": "tt5",
+                "name": "Culture américaine",
+              },
+            ],
           },
         ],
         "team": Object {
@@ -266,7 +264,7 @@ exports[`<VideoProjectData /> renders the final state 1`] = `
         >
           Categories: 
         </b>
-        about america, Amérique
+        about america
       </p>
       <p>
         <b
@@ -274,7 +272,7 @@ exports[`<VideoProjectData /> renders the final state 1`] = `
         >
           Tags: 
         </b>
-        american culture, Culture américaine
+        american culture
       </p>
     </section>
     <section
