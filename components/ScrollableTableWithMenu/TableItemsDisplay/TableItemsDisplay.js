@@ -13,7 +13,7 @@ import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePaginat
 import './TableItemsDisplay.scss';
 
 const displaySizeOptions = [
-  { key: 12, value: 12, text: '12' },
+  { key: 15, value: 15, text: '15' },
   { key: 25, value: 25, text: '25' },
   { key: 50, value: 50, text: '50' },
   { key: 75, value: 75, text: '75' },

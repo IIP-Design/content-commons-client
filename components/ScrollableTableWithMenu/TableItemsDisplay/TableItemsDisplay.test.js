@@ -22,8 +22,7 @@ const props = {
 };
 
 const options = [
-  { key: 2, value: 2, text: '2' },
-  { key: 4, value: 4, text: '4' },
+  { key: 15, value: 15, text: '15' },
   { key: 25, value: 25, text: '25' },
   { key: 50, value: 50, text: '50' },
   { key: 75, value: 75, text: '75' },
@@ -290,7 +289,7 @@ describe( '<TableItemsDisplay />', () => {
     expect( tableItemsDisplay.contains( displayMsg ) ).toEqual( true );
   } );
 
-  it( 'renders the Dropdown component', async () => {
+  it.only( 'renders the Dropdown component', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
