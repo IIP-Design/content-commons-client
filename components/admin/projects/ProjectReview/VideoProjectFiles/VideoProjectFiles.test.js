@@ -7,6 +7,8 @@ import { Icon, Loader } from 'semantic-ui-react';
 import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 import VideoProjectFiles from './VideoProjectFiles';
 
+jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_PUBLISHER_UPLOAD_BUCKET: 'amgov-publisher-dev' } } ) );
+
 const props = { id: '123' };
 
 const mocks = [
@@ -26,7 +28,9 @@ const mocks = [
               descPublic: 'A public description (English)',
               thumbnails: [
                 {
+                  id: 't289',
                   image: {
+                    id: 't768',
                     alt: 'A man wearing a hardhat walks through an empty factory.',
                     url: 'https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg'
                   }
@@ -38,6 +42,7 @@ const mocks = [
                   filename: 'madeinamerica_english.mp4',
                   url: 'https://video-download-url.com',
                   use: {
+                    id: 'u987',
                     name: 'Full Video'
                   },
                   filesize: 662595174,
@@ -47,22 +52,26 @@ const mocks = [
                   quality: 'WEB',
                   duration: 556000,
                   dimensions: {
+                    id: 'd087',
                     width: 1920,
                     height: 1080
                   },
                   stream: [
                     {
+                      id: 's872',
                       site: 'YouTube',
                       url: 'https://www.youtube.com/watch?1evw4fRu3bo',
                       embedUrl: 'https://www.youtube.com/embed/1evw4fRu3bo'
                     },
                     {
+                      id: 's674',
                       site: 'Vimeo',
                       url: 'https://vimeo.com/827301171',
                       embedUrl: 'https://player.vimeo.com/video/827301171'
                     }
                   ],
                   language: {
+                    id: 'e753',
                     displayName: 'English',
                     textDirection: 'LTR'
                   }
@@ -75,7 +84,9 @@ const mocks = [
               descPublic: 'A public description (French)',
               thumbnails: [
                 {
+                  id: 't289',
                   image: {
+                    id: 't768',
                     alt: 'A man wearing a hardhat walks through an empty factory.',
                     url: 'https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg'
                   }
@@ -87,6 +98,7 @@ const mocks = [
                   filename: 'madeinamerica_french.mp4',
                   url: 'https://video-download-url.com',
                   use: {
+                    id: 'u987',
                     name: 'Full Video'
                   },
                   filesize: 662595174,
@@ -96,17 +108,20 @@ const mocks = [
                   quality: 'WEB',
                   duration: 556000,
                   dimensions: {
+                    id: 'd087',
                     width: 1920,
                     height: 1080
                   },
                   stream: [
                     {
+                      id: 's674',
                       site: 'Vimeo',
                       url: 'https://vimeo.com/827301171',
                       embedUrl: 'https://player.vimeo.com/video/827301171'
                     }
                   ],
                   language: {
+                    id: 'f123',
                     displayName: 'French',
                     textDirection: 'LTR'
                   },
@@ -226,10 +241,16 @@ describe( '<VideoProjectFiles />', () => {
     Router.push = jest.fn();
 
     editBtns.forEach( btn => {
+      const { id } = props;
       btn.simulate( 'click' );
       expect( Router.push ).toHaveBeenCalledWith( {
-        pathname: `/admin/project/video/${props.id}/edit`
-      } );
+        pathname: '/admin/project',
+        query: {
+          id,
+          content: 'video',
+          action: 'edit'
+        }
+      }, `/admin/project/video/${id}/edit` );
     } );
   } );
 
@@ -315,7 +336,9 @@ describe( '<VideoProjectFiles />', () => {
                   descPublic: 'A public description (English)',
                   thumbnails: [
                     {
+                      id: 't289',
                       image: {
+                        id: 't768',
                         alt: 'A man wearing a hardhat walks through an empty factory.',
                         url: 'https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg'
                       }
@@ -329,7 +352,9 @@ describe( '<VideoProjectFiles />', () => {
                   descPublic: 'A public description (French)',
                   thumbnails: [
                     {
+                      id: 't289',
                       image: {
+                        id: 't768',
                         alt: 'A man wearing a hardhat walks through an empty factory.',
                         url: 'https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg'
                       }
@@ -377,7 +402,9 @@ describe( '<VideoProjectFiles />', () => {
                   descPublic: 'A public description (English)',
                   thumbnails: [
                     {
+                      id: 't289',
                       image: {
+                        id: 't768',
                         alt: 'A man wearing a hardhat walks through an empty factory.',
                         url: 'https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg'
                       }
@@ -391,7 +418,9 @@ describe( '<VideoProjectFiles />', () => {
                   descPublic: 'A public description (French)',
                   thumbnails: [
                     {
+                      id: 't289',
                       image: {
+                        id: 't768',
                         alt: 'A man wearing a hardhat walks through an empty factory.',
                         url: 'https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg'
                       }
@@ -444,6 +473,7 @@ describe( '<VideoProjectFiles />', () => {
                       filename: 'madeinamerica_english.mp4',
                       url: 'https://video-download-url.com',
                       use: {
+                        id: 'u987',
                         name: 'Full Video'
                       },
                       filesize: 662595174,
@@ -453,22 +483,26 @@ describe( '<VideoProjectFiles />', () => {
                       quality: 'WEB',
                       duration: 556000,
                       dimensions: {
+                        id: 'd087',
                         width: 1920,
                         height: 1080
                       },
                       stream: [
                         {
+                          id: 's872',
                           site: 'YouTube',
                           url: 'https://www.youtube.com/watch?1evw4fRu3bo',
                           embedUrl: 'https://www.youtube.com/embed/1evw4fRu3bo'
                         },
                         {
+                          id: 's674',
                           site: 'Vimeo',
                           url: 'https://vimeo.com/827301171',
                           embedUrl: 'https://player.vimeo.com/video/827301171'
                         }
                       ],
                       language: {
+                        id: 'e753',
                         displayName: 'English',
                         textDirection: 'LTR'
                       }
@@ -486,6 +520,7 @@ describe( '<VideoProjectFiles />', () => {
                       filename: 'madeinamerica_french.mp4',
                       url: 'https://video-download-url.com',
                       use: {
+                        id: 'u987',
                         name: 'Full Video'
                       },
                       filesize: 662595174,
@@ -495,17 +530,20 @@ describe( '<VideoProjectFiles />', () => {
                       quality: 'WEB',
                       duration: 556000,
                       dimensions: {
+                        id: 'd087',
                         width: 1920,
                         height: 1080
                       },
                       stream: [
                         {
+                          id: 's674',
                           site: 'Vimeo',
                           url: 'https://vimeo.com/827301171',
                           embedUrl: 'https://player.vimeo.com/video/827301171'
                         }
                       ],
                       language: {
+                        id: 'f123',
                         displayName: 'French',
                         textDirection: 'LTR'
                       },
@@ -558,6 +596,7 @@ describe( '<VideoProjectFiles />', () => {
                       filename: 'madeinamerica_english.mp4',
                       url: 'https://video-download-url.com',
                       use: {
+                        id: 'u987',
                         name: 'Full Video'
                       },
                       filesize: 662595174,
@@ -567,22 +606,26 @@ describe( '<VideoProjectFiles />', () => {
                       quality: 'WEB',
                       duration: 556000,
                       dimensions: {
+                        id: 'd087',
                         width: 1920,
                         height: 1080
                       },
                       stream: [
                         {
+                          id: 's872',
                           site: 'YouTube',
                           url: 'https://www.youtube.com/watch?1evw4fRu3bo',
                           embedUrl: 'https://www.youtube.com/embed/1evw4fRu3bo'
                         },
                         {
+                          id: 's674',
                           site: 'Vimeo',
                           url: 'https://vimeo.com/827301171',
                           embedUrl: 'https://player.vimeo.com/video/827301171'
                         }
                       ],
                       language: {
+                        id: 'e753',
                         displayName: 'English',
                         textDirection: 'LTR'
                       }
@@ -600,6 +643,7 @@ describe( '<VideoProjectFiles />', () => {
                       filename: 'madeinamerica_french.mp4',
                       url: 'https://video-download-url.com',
                       use: {
+                        id: 'u987',
                         name: 'Full Video'
                       },
                       filesize: 662595174,
@@ -609,17 +653,20 @@ describe( '<VideoProjectFiles />', () => {
                       quality: 'WEB',
                       duration: 556000,
                       dimensions: {
+                        id: 'd087',
                         width: 1920,
                         height: 1080
                       },
                       stream: [
                         {
+                          id: 's674',
                           site: 'Vimeo',
                           url: 'https://vimeo.com/827301171',
                           embedUrl: 'https://player.vimeo.com/video/827301171'
                         }
                       ],
                       language: {
+                        id: 'f123',
                         displayName: 'French',
                         textDirection: 'LTR'
                       },

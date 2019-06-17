@@ -75,6 +75,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                 "createdAt": "2019-03-20T15:09:24.975Z",
                 "dimensions": Object {
                   "height": 1080,
+                  "id": "d087",
                   "width": 1920,
                 },
                 "duration": 556000,
@@ -83,21 +84,25 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                 "id": "eng183",
                 "language": Object {
                   "displayName": "English",
+                  "id": "e753",
                   "textDirection": "LTR",
                 },
                 "quality": "WEB",
                 "stream": Array [
                   Object {
+                    "id": "s872",
                     "site": "YouTube",
                     "url": "https://www.youtube.com/watch?1evw4fRu3bo",
                   },
                   Object {
+                    "id": "s674",
                     "site": "Vimeo",
                     "url": "https://vimeo.com/827301171",
                   },
                 ],
                 "url": "https://video-download-url.com",
                 "use": Object {
+                  "id": "u987",
                   "name": "Full Video",
                 },
                 "videoBurnedInStatus": "CLEAN",
@@ -106,8 +111,10 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
             "id": "eng931",
             "thumbnails": Array [
               Object {
+                "id": "t289",
                 "image": Object {
                   "alt": "A man wearing a hardhat walks through an empty factory.",
+                  "id": "t768",
                   "url": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
                 },
               },
@@ -121,6 +128,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                 "createdAt": "2019-03-20T15:09:24.975Z",
                 "dimensions": Object {
                   "height": 1080,
+                  "id": "d087",
                   "width": 1920,
                 },
                 "duration": 556000,
@@ -129,17 +137,20 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                 "id": "fr1911",
                 "language": Object {
                   "displayName": "French",
+                  "id": "f123",
                   "textDirection": "LTR",
                 },
                 "quality": "WEB",
                 "stream": Array [
                   Object {
+                    "id": "s674",
                     "site": "Vimeo",
                     "url": "https://vimeo.com/827301171",
                   },
                 ],
                 "url": "https://video-download-url.com",
                 "use": Object {
+                  "id": "u987",
                   "name": "Full Video",
                 },
                 "videoBurnedInStatus": "CLEAN",
@@ -148,8 +159,10 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
             "id": "fr0381",
             "thumbnails": Array [
               Object {
+                "id": "t289",
                 "image": Object {
                   "alt": "A man wearing a hardhat walks through an empty factory.",
+                  "id": "t768",
                   "url": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
                 },
               },
@@ -249,7 +262,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                 >
                   <img
                     alt="A man wearing a hardhat walks through an empty factory."
-                    src="https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg"
+                    src="https://s3.amazonaws.com/amgov-publisher-dev/https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg"
                   />
                   <p>
                     <b
@@ -323,7 +336,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                       Subtitles & Captions:
                     </b>
                      
-                    CLEAN
+                    CLEAN - No Captions
                   </p>
                   <p>
                     <b
@@ -442,7 +455,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                 >
                   <img
                     alt="A man wearing a hardhat walks through an empty factory."
-                    src="https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg"
+                    src="https://s3.amazonaws.com/amgov-publisher-dev/https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg"
                   />
                   <p>
                     <b
@@ -516,7 +529,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                       Subtitles & Captions:
                     </b>
                      
-                    CLEAN
+                    CLEAN - No Captions
                   </p>
                   <p>
                     <b
