@@ -3,7 +3,7 @@
  * Carousel
  *
  */
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import propTypes from 'prop-types';
 import { Icon } from 'semantic-ui-react';
 
@@ -12,8 +12,9 @@ import './Carousel.scss';
 const Carousel = ( {
   callback, children, legend, selectedItem, vertical
 } ) => {
+  // Get the index of the initially selected item based on the id of the selectedItem prop
   const getSelectedIndex = elems => {
-    let initialItem;
+    let initialItem = 0;
     elems.forEach( ( elem, index ) => {
       if ( elem.props.id === selectedItem ) {
         initialItem = index;
@@ -23,38 +24,40 @@ const Carousel = ( {
   };
   const itemCount = children.length;
 
-  const [selected, setSelected] = useState( () => {
-    const selectedIndex = getSelectedIndex( children );
-    // scrollToSelected( selectedIndex );
-    return selectedIndex;
-  } );
+  // Set ref for the carousel items
+  const carouselItems = useRef( null );
 
+  // If true disables the previous button
   const [disablePrev, setDisablePrev] = useState( () => {
     const num = getSelectedIndex( children ) + 1;
     const disable = num < 4;
     return disable;
   } );
 
+  // If true disables the next button
   const [disableNext, setDisableNext] = useState( () => {
     const num = getSelectedIndex( children ) + 1;
     const disable = ( itemCount - num ) === 0;
     return disable;
   } );
 
-  const psuedoRandomId = `carousel-items-${selectedItem}`;
-
+  // Accept a target list item and the number of scrolls over
   const manipulateList = ( list, num ) => {
+    // Determine scroll amount based on child size
     const listItem = list.firstChild;
     const xOffset = listItem.clientWidth * num;
     const yOffset = listItem.clientHeight * num;
     const x = vertical ? 0 : xOffset;
     const y = vertical ? yOffset : 0;
 
+    // Scroll to correct position
     list.scrollBy( x, y );
 
+    // Calculate space left to scroll to the right and bottom
     const scrollRight = list.scrollWidth - ( list.clientWidth + list.scrollLeft );
     const scrollBottom = list.scrollHeight - ( list.clientHeight + list.scrollTop );
 
+    // Disable scroll buttons if there is no room left to scroll
     if ( !vertical ) {
       if ( list.scrollLeft === 0 ) {
         setDisablePrev( true );
@@ -84,8 +87,11 @@ const Carousel = ( {
     }
   };
 
+  // Bring item into view if selected
   const scrollToSelected = index => {
-    const list = document.getElementById( psuedoRandomId );
+    const list = carouselItems.current;
+    if ( index === undefined || !list ) { return; }
+
     const countPrev = index;
     const countNext = list.children.length - ( index + 1 );
     let num;
@@ -100,6 +106,12 @@ const Carousel = ( {
     }
   };
 
+  // Sets the selected carousel item
+  const [selected, setSelected] = useState( () => {
+    const selectedIndex = getSelectedIndex( children );
+    return selectedIndex;
+  } );
+
   const handleSelection = ( id, index ) => {
     callback( id );
     setSelected( index );
@@ -108,28 +120,7 @@ const Carousel = ( {
 
   const handleButton = e => {
     const num = parseInt( e.target.dataset.scroll, 10 );
-
-    const getList = el => {
-      const button = el.className.includes( 'angle' ) ? e.target.parentNode : e.target;
-
-      let items;
-      const classes = el.className;
-      if ( classes.includes( 'up' ) ) {
-        const sibling = button.nextSibling;
-        items = sibling.firstChild;
-      } else if ( classes.includes( 'down' ) ) {
-        const sibling = button.previousSibling;
-        items = sibling.firstChild;
-      } else {
-        const parent = button.parentNode;
-        items = parent.previousSibling;
-      }
-
-      return items;
-    };
-
-    const list = getList( e.target );
-    manipulateList( list, num );
+    manipulateList( carouselItems.current, num );
   };
 
   const isVertical = vertical ? 'vertical' : '';
@@ -156,7 +147,7 @@ const Carousel = ( {
         </div>
       ) }
       <div className={ `carousel-content ${isMobile} ${isVertical}` }>
-        <div className={ `carousel-items ${isMobile} ${isVertical} ${withLegend}` } id={ psuedoRandomId }>
+        <div className={ `carousel-items ${isMobile} ${isVertical} ${withLegend}` } ref={ carouselItems }>
           { children.map( ( child, index ) => (
             <div
               className="carousel-item"
