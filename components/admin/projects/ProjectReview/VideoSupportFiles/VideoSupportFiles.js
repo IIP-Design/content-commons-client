@@ -112,7 +112,7 @@ const VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY = gql`
       id
       protectImages
       srts: supportFiles(
-        where: {filetype: "srt"},
+        where: { filename_ends_with: "srt" },
         orderBy: filename_ASC
       ) {
         id
@@ -123,7 +123,7 @@ const VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY = gql`
         }
       }
       additionalFiles: supportFiles(
-        where: {filetype_not: "srt"},
+        where: { filename_not_ends_with: "srt" },
         orderBy: filename_ASC
       ) {
         id
