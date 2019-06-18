@@ -5,9 +5,12 @@ import gql from 'graphql-tag';
 import {
   Embed, Form, Grid, Input, Loader, TextArea
 } from 'semantic-ui-react';
+import getConfig from 'next/config';
 
 import TagTypeahead from 'components/admin/dropdowns/TagTypeahead';
 import { getStreamData, getVimeoId, getYouTubeId } from 'lib/utils';
+
+const { publicRuntimeConfig } = getConfig();
 
 const VIDEO_UNIT_QUERY = gql`
   query VIDEO_UNIT_QUERY( $id: ID! ) {
@@ -230,7 +233,7 @@ class UnitDataForm extends Component {
     let thumbnailUrl = '';
     let thumbnailAlt = '';
     if ( unit.thumbnails && unit.thumbnails.length ) {
-      thumbnailUrl = `https://staticcdp.s3.amazonaws.com/${unit.thumbnails[0].image.url}`;
+      thumbnailUrl = `https://${publicRuntimeConfig.REACT_APP_AWS_S3_PUBLISHER_UPLOAD_BUCKET}/${unit.thumbnails[0].image.url}`;
       thumbnailAlt = unit.thumbnails[0].image.alt || '';
     }
 
