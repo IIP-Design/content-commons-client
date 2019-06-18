@@ -3,7 +3,7 @@
  * Carousel
  *
  */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import propTypes from 'prop-types';
 import { Icon } from 'semantic-ui-react';
 
@@ -22,6 +22,7 @@ const Carousel = ( {
     } );
     return initialItem;
   };
+  // Get number of items in items list
   const itemCount = children.length;
 
   // Set ref for the carousel items
@@ -42,13 +43,10 @@ const Carousel = ( {
   } );
 
   // Accept a target list item and the number of scrolls over
-  const manipulateList = ( list, num ) => {
+  const manipulateList = ( list, offset ) => {
     // Determine scroll amount based on child size
-    const listItem = list.firstChild;
-    const xOffset = listItem.clientWidth * num;
-    const yOffset = listItem.clientHeight * num;
-    const x = vertical ? 0 : xOffset;
-    const y = vertical ? yOffset : 0;
+    const x = vertical ? 0 : offset;
+    const y = vertical ? offset : 0;
 
     // Scroll to correct position
     list.scrollBy( x, y );
@@ -87,13 +85,10 @@ const Carousel = ( {
     }
   };
 
-  // Bring item into view if selected
-  const scrollToSelected = index => {
-    const list = carouselItems.current;
-    if ( index === undefined || !list ) { return; }
-
+  // Calculate how many over to scroll
+  const calcScrollAmount = ( index, items ) => {
     const countPrev = index;
-    const countNext = list.children.length - ( index + 1 );
+    const countNext = items - ( index + 1 );
     let num;
     if ( countPrev > 2 ) {
       num = countPrev - 2;
@@ -101,8 +96,30 @@ const Carousel = ( {
       num = 2 - countNext;
     }
 
+    return num;
+  };
+
+  // Dynamically calculate the pixel scroll based on item width
+  const calcOffset = ( list, num ) => {
+    const listItem = list.firstChild;
+    const xOffset = listItem.clientWidth * num;
+    const yOffset = listItem.clientHeight * num;
+    const offset = vertical ? yOffset : xOffset;
+
+    return offset;
+  };
+
+  // Bring item into view if selected
+  const scrollToSelected = index => {
+    const list = carouselItems.current;
+    if ( index === undefined || !list ) { return; }
+
+    const items = list.children.length;
+    const num = calcScrollAmount( index, items );
+
     if ( num ) {
-      manipulateList( list, num );
+      const offset = calcOffset( list, num );
+      manipulateList( list, offset );
     }
   };
 
@@ -112,6 +129,11 @@ const Carousel = ( {
     return selectedIndex;
   } );
 
+  useEffect( () => {
+    const selectedIndex = getSelectedIndex( children );
+    scrollToSelected( selectedIndex );
+  }, [children] );
+
   const handleSelection = ( id, index ) => {
     callback( id );
     setSelected( index );
@@ -119,8 +141,11 @@ const Carousel = ( {
   };
 
   const handleButton = e => {
+    const list = carouselItems.current;
     const num = parseInt( e.target.dataset.scroll, 10 );
-    manipulateList( carouselItems.current, num );
+    const offset = calcOffset( list, num );
+
+    manipulateList( list, offset );
   };
 
   const isVertical = vertical ? 'vertical' : '';
@@ -131,10 +156,11 @@ const Carousel = ( {
   const isMobile = viewportWidth < 991 ? 'mobile' : '';
   const onFirst = disablePrev ? 'hidden' : '';
   const onLast = disableNext ? 'hidden' : '';
+  const showButtons = itemCount > 3;
 
   return (
     <div className={ `carousel-container ${isMobile}` }>
-      { ( vertical && itemCount > 3 ) && (
+      { ( vertical && showButtons ) && (
         <div
           className={ `scroll-button up ${isMobile} ${onFirst}` }
           data-scroll={ -1 }
@@ -146,7 +172,7 @@ const Carousel = ( {
           <i className="angle up icon scroll-icon" data-scroll={ -1 } />
         </div>
       ) }
-      <div className={ `carousel-content ${isMobile} ${isVertical}` }>
+      <div className={ `carousel-content ${isMobile} ${isVertical}` } style={ showButtons ? { margin: '0' } : { margin: '24px 0' } }>
         <div className={ `carousel-items ${isMobile} ${isVertical} ${withLegend}` } ref={ carouselItems }>
           { children.map( ( child, index ) => (
             <div
@@ -164,7 +190,7 @@ const Carousel = ( {
         </div>
         { legend && (
           <div className={ `carousel-legend ${isVertical}` }>
-            { ( !vertical && itemCount > 3 ) && (
+            { ( !vertical && showButtons ) && (
               <button
                 className="carousel-legend-button"
                 data-scroll={ -1 }
@@ -191,7 +217,7 @@ const Carousel = ( {
                 );
               } ) }
             </div>
-            { ( !vertical && itemCount > 3 ) && (
+            { ( !vertical && showButtons ) && (
               <button
                 className="carousel-legend-button"
                 data-scroll={ 1 }
@@ -205,7 +231,7 @@ const Carousel = ( {
           </div>
         ) }
       </div>
-      { ( vertical && itemCount > 3 ) && (
+      { ( vertical && showButtons ) && (
         <div
           className={ `scroll-button down ${isMobile} ${onLast}` }
           data-scroll={ 1 }
