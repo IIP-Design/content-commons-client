@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import gql from 'graphql-tag';
+import { Icon } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 
 import FileSidebar from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalSections/FileSidebar/FileSidebar';
@@ -41,9 +42,15 @@ const FileSection = () => {
         if ( lang && !language ) updateSelectedLanguage( lang );
 
         const files = unit && unit.files ? unit.files : [];
-        if ( Array.isArray( files ) && files.length === 0 ) return <Loader height="402px" text="No files in this unit..." />;
+        if ( Array.isArray( files ) && files.length === 0 ) {
+          return (
+            <div className="commons-loader-container" style={ { height: '402px' } }>
+              <Icon color="red" name="exclamation triangle" size="large" />
+              <p>No files in this unit...</p>
+            </div>
+          );
+        }
         if ( files[0] && files[0].id && !selectedFile ) updateSelectedFile( files[0].id );
-
 
         return (
           <section className="edit-file">
