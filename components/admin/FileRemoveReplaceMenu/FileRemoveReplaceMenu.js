@@ -36,7 +36,7 @@ const FileRemoveReplaceMenu = props => {
         onClick={ () => setIsOpen( false ) }
       />
       <ButtonAddFiles className="secondary" onChange={ onReplace }>Replace File</ButtonAddFiles>
-      <Button className="FileRemoveReplaceMenu__btn-delete no-background" onClick={ onRemove }>Delete File</Button>
+      <Button className="FileRemoveReplaceMenu__btn-delete no-background" onClick={ onRemove }>Remove File</Button>
     </div>
   );
 
