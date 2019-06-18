@@ -6,9 +6,9 @@ import * as actions from 'lib/redux/actions/filter';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
 import SearchTerm from 'components/SearchTerm/SearchTerm';
 import FilterMenu from 'components/FilterMenu/FilterMenu';
+import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 import ResultItem from './ResultItem/ResultItem';
 import ResultsHeader from './ResultsHeader/ResultsHeader';
-
 import NoResults from './NoResults';
 import ResultsPagination from './ResultsPagination/ResultsPagination';
 import './Results.scss';
@@ -30,6 +30,7 @@ const Results = props => {
 
   return (
     <section className="results">
+      <Breadcrumbs />
       { props.search.currentPage !== -1 && (
       <div>
         <SearchTerm />
