@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import propTypes from 'prop-types';
 import gql from 'graphql-tag';
-import {
-  Embed, Form, Grid, Input, Loader, TextArea
-} from 'semantic-ui-react';
+import { Embed, Form, Grid } from 'semantic-ui-react';
 import getConfig from 'next/config';
 
+import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
 import TagTypeahead from 'components/admin/dropdowns/TagTypeahead';
 import { getStreamData, getVimeoId, getYouTubeId } from 'lib/utils';
 
@@ -114,7 +113,7 @@ class UnitDataForm extends Component {
   componentDidUpdate = prevProps => {
     const { unit } = this.props.videoUnitQuery;
 
-    if ( unit !== prevProps.videoUnitQuery.unit ) {
+    if ( unit && unit !== prevProps.videoUnitQuery.unit ) {
       this.setState( {
         descPublic: unit.descPublic || '',
         tags: this.getTagList( unit.tags ),
@@ -135,15 +134,30 @@ class UnitDataForm extends Component {
   updateUnit = e => {
     const { unitId } = this.props;
     const { name } = e.target;
+    const value = this.state[name];
 
     this.props[`${name}VideoUnitMutation`]( {
       variables: {
         id: unitId,
-        [name]: this.state[name]
+        [name]: value
+      },
+      update: ( cache, { data: { updateVideoUnit } } ) => {
+        try {
+          const cachedData = cache.readQuery( {
+            query: VIDEO_UNIT_QUERY,
+            variables: { id: unitId }
+          } );
+
+          cachedData.unit[name] = value;
+          cache.writeQuery( {
+            query: VIDEO_UNIT_QUERY,
+            data: { unit: cachedData.unit }
+          } );
+        } catch ( error ) {
+          console.log( error );
+        }
       }
     } );
-
-    this.props.videoUnitQuery.refetch();
   }
 
   updateTags = newTags => {
@@ -158,29 +172,47 @@ class UnitDataForm extends Component {
     const removed = currentTags.filter( item => newTags.indexOf( item ) === -1 );
     const added = newTags.filter( item => currentTags.indexOf( item ) === -1 );
 
-    if ( added.length > 0 ) {
-      added.map( tag => (
-        this.props.tagsAddVideoUnitMutation( {
+    // Converts the array of tag ids into an array of tag objects as expected by apollo
+    const newTagsArr = [];
+    newTags.forEach( newTag => {
+      const obj = { id: newTag, __typename: 'Tag' };
+      newTagsArr.push( obj );
+    } );
+
+    const runTagMutation = ( arr, mutation ) => {
+      arr.map( tag => (
+        mutation( {
           variables: {
             id: unitId,
             tagId: tag
+          },
+          update: ( cache, { data: { updateVideoUnit } } ) => {
+            try {
+              const cachedData = cache.readQuery( {
+                query: VIDEO_UNIT_QUERY,
+                variables: { id: unitId }
+              } );
+
+              cachedData.unit.tags = newTagsArr;
+              cache.writeQuery( {
+                query: VIDEO_UNIT_QUERY,
+                data: { unit: cachedData.unit }
+              } );
+            } catch ( error ) {
+              console.log( error );
+            }
           }
         } )
       ) );
-    }
+    };
 
     if ( removed.length > 0 ) {
-      removed.map( tag => (
-        this.props.tagsRemoveVideoUnitMutation( {
-          variables: {
-            id: unitId,
-            tagId: tag
-          }
-        } )
-      ) );
+      runTagMutation( removed, this.props.tagsRemoveVideoUnitMutation );
     }
 
-    this.props.videoUnitQuery.refetch();
+    if ( added.length > 0 ) {
+      runTagMutation( added, this.props.tagsAddVideoUnitMutation );
+    }
   }
 
   handleInput = e => {
@@ -202,21 +234,7 @@ class UnitDataForm extends Component {
     const { loading, unit } = this.props.videoUnitQuery;
     const { file } = this.props.videoFileQuery;
 
-    if ( !unit || loading ) {
-      return (
-        <div style={ {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh'
-        } }
-        >
-          <Loader active inline="centered" style={ { marginBottom: '1em' } } />
-          <p>Loading the video data...</p>
-        </div>
-      );
-    }
+    if ( !unit || loading ) return <Loader height="340px" text="Loading the video data..." />;
 
     const lang = `in ${unit.language.displayName}` || '';
     const {
@@ -242,20 +260,20 @@ class UnitDataForm extends Component {
         <Grid stackable className="aligned">
           <Grid.Row>
             <Grid.Column mobile={ 16 } computer={ 9 }>
-              { youTubeUrl && (
-                <Embed
-                  autoplay={ false }
-                  id={ getYouTubeId( youTubeUrl ) }
-                  placeholder={ thumbnailUrl }
-                  source="youtube"
-                />
-              ) }
-              { ( !youTubeUrl && vimeoUrl ) && (
+              { ( vimeoUrl ) && (
                 <Embed
                   autoplay={ false }
                   id={ getVimeoId( vimeoUrl ) }
                   placeholder={ thumbnailUrl }
                   source="vimeo"
+                />
+              ) }
+              { !vimeoUrl && youTubeUrl && (
+                <Embed
+                  autoplay={ false }
+                  id={ getYouTubeId( youTubeUrl ) }
+                  placeholder={ thumbnailUrl }
+                  source="youtube"
                 />
               ) }
               { ( !youTubeUrl && !vimeoUrl ) && (
@@ -265,8 +283,7 @@ class UnitDataForm extends Component {
               ) }
             </Grid.Column>
             <Grid.Column mobile={ 16 } computer={ 7 }>
-              <Form.Field
-                control={ Input }
+              <Form.Input
                 id="video-title"
                 label={ `Video Title ${lang}` }
                 name="title"
@@ -275,8 +292,7 @@ class UnitDataForm extends Component {
                 value={ title }
               />
 
-              <Form.Field
-                control={ TextArea }
+              <Form.TextArea
                 id="video-description"
                 label={ `Public Description ${lang}` }
                 name="descPublic"
