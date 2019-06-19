@@ -19,7 +19,7 @@ import {
   getPathToS3Bucket,
   getPluralStringOrNot,
   getStreamData,
-  millisToMinutesAndSeconds
+  secondsToHMS
 } from 'lib/utils';
 
 import './VideoProjectFiles.scss';
@@ -123,7 +123,7 @@ const VideoProjectFiles = props => {
                   <p><b className="label">Filesize:</b> { formatBytes( files[0].filesize ) }</p>
                   <p><b className="label">Dimensions:</b> { `${files[0].dimensions.width} x ${files[0].dimensions.height}` }</p>
                   <p><b className="label">Uploaded:</b> { `${formatDate( files[0].createdAt )} at ${formatDate( files[0].createdAt, 'en-US', { hour: 'numeric', minute: 'numeric' } )}` }</p>
-                  <p><b className="label">Duration:</b> { millisToMinutesAndSeconds( files[0].duration, 0 ) }</p>
+                  <p><b className="label">Duration:</b> { secondsToHMS( files[0].duration ) }</p>
                 </Grid.Column>
 
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_info">
