@@ -1,5 +1,5 @@
 import React from 'react';
-import { object, string } from 'prop-types';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import orderBy from 'lodash/orderBy';
@@ -102,8 +102,8 @@ const VideoSupportFiles = props => {
 };
 
 VideoSupportFiles.propTypes = {
-  id: string, // eslint-disable-line
-  data: object
+  id: PropTypes.string, // eslint-disable-line
+  data: PropTypes.object
 };
 
 const VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY = gql`
