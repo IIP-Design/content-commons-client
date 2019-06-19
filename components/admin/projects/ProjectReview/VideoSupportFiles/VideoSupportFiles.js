@@ -110,7 +110,6 @@ const VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY = gql`
   query VideoProjectReviewSupportFiles($id: ID!) {
     project: videoProject(id: $id) {
       id
-      protectImages
       srts: supportFiles(
         where: { filename_ends_with: "srt" },
         orderBy: filename_ASC
