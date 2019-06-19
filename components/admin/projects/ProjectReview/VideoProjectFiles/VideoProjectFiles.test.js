@@ -50,7 +50,7 @@ const mocks = [
                   createdAt: '2019-03-20T15:09:24.975Z',
                   updatedAt: '2019-04-02T16:28:31.888Z',
                   quality: 'WEB',
-                  duration: 556000,
+                  duration: 556,
                   dimensions: {
                     id: 'd087',
                     width: 1920,
@@ -106,7 +106,7 @@ const mocks = [
                   createdAt: '2019-03-20T15:09:24.975Z',
                   updatedAt: '2019-04-02T16:28:31.888Z',
                   quality: 'WEB',
-                  duration: 556000,
+                  duration: 556,
                   dimensions: {
                     id: 'd087',
                     width: 1920,
@@ -481,7 +481,7 @@ describe( '<VideoProjectFiles />', () => {
                       createdAt: '2019-03-20T15:09:24.975Z',
                       updatedAt: '2019-04-02T16:28:31.888Z',
                       quality: 'WEB',
-                      duration: 556000,
+                      duration: 556,
                       dimensions: {
                         id: 'd087',
                         width: 1920,
@@ -528,7 +528,7 @@ describe( '<VideoProjectFiles />', () => {
                       createdAt: '2019-03-20T15:09:24.975Z',
                       updatedAt: '2019-04-02T16:28:31.888Z',
                       quality: 'WEB',
-                      duration: 556000,
+                      duration: 556,
                       dimensions: {
                         id: 'd087',
                         width: 1920,
@@ -604,7 +604,7 @@ describe( '<VideoProjectFiles />', () => {
                       createdAt: '2019-03-20T15:09:24.975Z',
                       updatedAt: '2019-04-02T16:28:31.888Z',
                       quality: 'WEB',
-                      duration: 556000,
+                      duration: 556,
                       dimensions: {
                         id: 'd087',
                         width: 1920,
@@ -651,7 +651,7 @@ describe( '<VideoProjectFiles />', () => {
                       createdAt: '2019-03-20T15:09:24.975Z',
                       updatedAt: '2019-04-02T16:28:31.888Z',
                       quality: 'WEB',
-                      duration: 556000,
+                      duration: 556,
                       dimensions: {
                         id: 'd087',
                         width: 1920,
