@@ -111,7 +111,12 @@ const VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY = gql`
     project: videoProject(id: $id) {
       id
       srts: supportFiles(
-        where: { filename_ends_with: "srt" },
+        where: {
+          OR: [
+            { filename_ends_with: "srt" },
+            { filetype_contains: "application/x-subrip" }
+          ]
+        },
         orderBy: filename_ASC
       ) {
         id
@@ -122,7 +127,12 @@ const VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY = gql`
         }
       }
       additionalFiles: supportFiles(
-        where: { filename_not_ends_with: "srt" },
+        where: {
+          OR: [
+            { filename_not_ends_with: "srt" },
+            { filetype_not_contains: "application/x-subrip" }
+          ]
+        },
         orderBy: filename_ASC
       ) {
         id
