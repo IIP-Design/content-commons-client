@@ -5,6 +5,7 @@ import { graphql } from 'react-apollo';
 import orderBy from 'lodash/orderBy';
 import { Icon, Loader } from 'semantic-ui-react';
 import { getCount } from 'lib/utils';
+import VideoSupportFilesItem from './VideoSupportFilesItem/VideoSupportFilesItem';
 
 import './VideoSupportFiles.scss';
 
@@ -60,6 +61,10 @@ const VideoSupportFiles = props => {
     ? orderBy( additionalFiles, ['filetype'] )
     : [];
 
+  const allAdditionalFiles = hasThumbnails
+    ? [...additionalFilesSorted, ...thumbnails]
+    : [...additionalFilesSorted];
+
   if ( !hasSupportFiles ) return null;
 
   return (
@@ -76,9 +81,7 @@ const VideoSupportFiles = props => {
             </h4>
             <ul aria-describedby="srt-files">
               { srts.map( srt => (
-                <li key={ srt.id } className="file">
-                  <b className="label">{ srt.language.displayName }:</b> { srt.filename }
-                </li>
+                <VideoSupportFilesItem key={ srt.id } file={ srt } />
               ) ) }
             </ul>
           </section>
@@ -91,8 +94,8 @@ const VideoSupportFiles = props => {
               { `Additional file${additionalFilesCount + thumbnailsCount > 1 ? 's' : ''}` }
             </h4>
             <ul aria-describedby="additional-files">
-              { additionalFilesSorted.map( file => (
-                <li key={ file.id }><b className="label">{ file.language.displayName }:</b> { file.filename }</li>
+              { allAdditionalFiles.map( file => (
+                <VideoSupportFilesItem key={ file.id } file={ file } />
               ) ) }
             </ul>
           </section>
