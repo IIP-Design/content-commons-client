@@ -143,6 +143,14 @@ const VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY = gql`
           displayName
         }
       }
+      thumbnails( orderBy: filename_ASC ) {
+        id
+        filename
+        language {
+          id
+          displayName
+        }
+      }
     }
   }
 `;
