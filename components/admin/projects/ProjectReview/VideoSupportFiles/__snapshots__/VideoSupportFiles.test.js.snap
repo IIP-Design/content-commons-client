@@ -67,8 +67,8 @@ exports[`<VideoSupportFiles /> renders the final state 1`] = `
       "project": Object {
         "additionalFiles": Array [
           Object {
-            "filename": "image-1.jpg",
-            "filetype": "jpg",
+            "filename": "pdf-1.pdf",
+            "filetype": "application/pdf",
             "id": "82kw",
             "language": Object {
               "displayName": "English",
@@ -76,8 +76,8 @@ exports[`<VideoSupportFiles /> renders the final state 1`] = `
             },
           },
           Object {
-            "filename": "image-2.jpg",
-            "filetype": "jpg",
+            "filename": "pdf-2.pdf",
+            "filetype": "application/pdf",
             "id": "28zi",
             "language": Object {
               "displayName": "French",
@@ -86,7 +86,6 @@ exports[`<VideoSupportFiles /> renders the final state 1`] = `
           },
         ],
         "id": "123",
-        "protectImages": null,
         "srts": Array [
           Object {
             "filename": "srt-1.srt",
@@ -99,6 +98,24 @@ exports[`<VideoSupportFiles /> renders the final state 1`] = `
           Object {
             "filename": "srt-2.srt",
             "id": "48sa",
+            "language": Object {
+              "displayName": "French",
+              "id": "fr87",
+            },
+          },
+        ],
+        "thumbnails": Array [
+          Object {
+            "filename": "thumbnail-1.jpg",
+            "id": "t372",
+            "language": Object {
+              "displayName": "English",
+              "id": "en22",
+            },
+          },
+          Object {
+            "filename": "thumbnail-2.jpg",
+            "id": "t482",
             "language": Object {
               "displayName": "French",
               "id": "fr87",
@@ -137,32 +154,54 @@ exports[`<VideoSupportFiles /> renders the final state 1`] = `
       <ul
         aria-describedby="srt-files"
       >
-        <li
-          className="file"
+        <VideoSupportFilesItem
+          file={
+            Object {
+              "filename": "srt-1.srt",
+              "id": "34is",
+              "language": Object {
+                "displayName": "English",
+                "id": "en22",
+              },
+            }
+          }
           key="34is"
         >
-          <b
-            className="label"
-          >
-            English
-            :
-          </b>
-           
-          srt-1.srt
-        </li>
-        <li
-          className="file"
+          <li>
+            <b
+              className="label"
+            >
+              English
+              :
+            </b>
+             
+            srt-1.srt
+          </li>
+        </VideoSupportFilesItem>
+        <VideoSupportFilesItem
+          file={
+            Object {
+              "filename": "srt-2.srt",
+              "id": "48sa",
+              "language": Object {
+                "displayName": "French",
+                "id": "fr87",
+              },
+            }
+          }
           key="48sa"
         >
-          <b
-            className="label"
-          >
-            French
-            :
-          </b>
-           
-          srt-2.srt
-        </li>
+          <li>
+            <b
+              className="label"
+            >
+              French
+              :
+            </b>
+             
+            srt-2.srt
+          </li>
+        </VideoSupportFilesItem>
       </ul>
     </section>
     <section
@@ -176,30 +215,104 @@ exports[`<VideoSupportFiles /> renders the final state 1`] = `
       <ul
         aria-describedby="additional-files"
       >
-        <li
+        <VideoSupportFilesItem
+          file={
+            Object {
+              "filename": "pdf-1.pdf",
+              "filetype": "application/pdf",
+              "id": "82kw",
+              "language": Object {
+                "displayName": "English",
+                "id": "en22",
+              },
+            }
+          }
           key="82kw"
         >
-          <b
-            className="label"
-          >
-            English
-            :
-          </b>
-           
-          image-1.jpg
-        </li>
-        <li
+          <li>
+            <b
+              className="label"
+            >
+              English
+              :
+            </b>
+             
+            pdf-1.pdf
+          </li>
+        </VideoSupportFilesItem>
+        <VideoSupportFilesItem
+          file={
+            Object {
+              "filename": "pdf-2.pdf",
+              "filetype": "application/pdf",
+              "id": "28zi",
+              "language": Object {
+                "displayName": "French",
+                "id": "fr87",
+              },
+            }
+          }
           key="28zi"
         >
-          <b
-            className="label"
-          >
-            French
-            :
-          </b>
-           
-          image-2.jpg
-        </li>
+          <li>
+            <b
+              className="label"
+            >
+              French
+              :
+            </b>
+             
+            pdf-2.pdf
+          </li>
+        </VideoSupportFilesItem>
+        <VideoSupportFilesItem
+          file={
+            Object {
+              "filename": "thumbnail-1.jpg",
+              "id": "t372",
+              "language": Object {
+                "displayName": "English",
+                "id": "en22",
+              },
+            }
+          }
+          key="t372"
+        >
+          <li>
+            <b
+              className="label"
+            >
+              English
+              :
+            </b>
+             
+            thumbnail-1.jpg
+          </li>
+        </VideoSupportFilesItem>
+        <VideoSupportFilesItem
+          file={
+            Object {
+              "filename": "thumbnail-2.jpg",
+              "id": "t482",
+              "language": Object {
+                "displayName": "French",
+                "id": "fr87",
+              },
+            }
+          }
+          key="t482"
+        >
+          <li>
+            <b
+              className="label"
+            >
+              French
+              :
+            </b>
+             
+            thumbnail-2.jpg
+          </li>
+        </VideoSupportFilesItem>
       </ul>
     </section>
   </section>
