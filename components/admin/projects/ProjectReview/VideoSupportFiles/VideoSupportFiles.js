@@ -4,8 +4,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import orderBy from 'lodash/orderBy';
 import { Icon, Loader } from 'semantic-ui-react';
-
-import { getPluralStringOrNot } from 'lib/utils';
+import { getCount } from 'lib/utils';
 
 import './VideoSupportFiles.scss';
 
@@ -45,34 +44,30 @@ const VideoSupportFiles = props => {
 
   if ( !project || !Object.keys( project ).length ) return null;
 
-  const { srts, additionalFiles } = project;
+  const { srts, additionalFiles, thumbnails } = project;
 
-  const additionalFilesSorted = ( additionalFiles && additionalFiles.length )
+  const srtsCount = getCount( srts );
+  const additionalFilesCount = getCount( additionalFiles );
+  const thumbnailsCount = getCount( thumbnails );
+  const totalFilesCount = srtsCount + additionalFilesCount + thumbnailsCount;
+
+  const additionalFilesSorted = ( additionalFilesCount > 0 )
     ? orderBy( additionalFiles, ['filetype'] )
     : [];
 
-  let allFiles = [];
-  if ( Array.isArray( srts ) && Array.isArray( additionalFiles ) ) {
-    allFiles = [...srts, ...additionalFiles];
-  } else if ( Array.isArray( srts ) && !Array.isArray( additionalFiles ) ) {
-    allFiles = [...srts];
-  } else if ( !Array.isArray( srts ) && Array.isArray( additionalFiles ) ) {
-    allFiles = [...additionalFiles];
-  }
-
-  if ( !allFiles.length ) return null;
+  if ( totalFilesCount === 0 ) return null;
 
   return (
     <section className="section section--project_support-files project_support-files">
       <h3 className="uppercase">
-        { getPluralStringOrNot( allFiles, 'Support File' ) }
+        { `Support File${totalFilesCount > 1 ? 's' : ''}` }
       </h3>
 
-      { ( srts && srts.length > 0 )
+      { ( srtsCount > 0 )
         && (
           <section className="files section">
             <h4 id="srt-files">
-              { getPluralStringOrNot( srts, 'SRT file' ) }
+              { `SRT file${srtsCount > 1 ? 's' : ''}` }
             </h4>
             <ul aria-describedby="srt-files">
               { srts.map( srt => (
@@ -84,11 +79,11 @@ const VideoSupportFiles = props => {
           </section>
         ) }
 
-      { ( additionalFiles && additionalFiles.length > 0 )
+      { ( additionalFilesCount > 0 || thumbnailsCount > 0 )
         && (
           <section className="addtl_files section">
             <h4 id="additional-files">
-              { `Additional file${additionalFilesSorted.length > 1 ? 's' : ''}` }
+              { `Additional file${additionalFilesCount + thumbnailsCount > 1 ? 's' : ''}` }
             </h4>
             <ul aria-describedby="additional-files">
               { additionalFilesSorted.map( file => (
