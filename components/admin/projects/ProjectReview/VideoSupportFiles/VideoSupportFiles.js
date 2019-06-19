@@ -51,11 +51,16 @@ const VideoSupportFiles = props => {
   const thumbnailsCount = getCount( thumbnails );
   const totalFilesCount = srtsCount + additionalFilesCount + thumbnailsCount;
 
-  const additionalFilesSorted = ( additionalFilesCount > 0 )
+  const hasSRTs = srtsCount > 0;
+  const hasAdditionalFiles = additionalFilesCount > 0;
+  const hasThumbnails = thumbnailsCount > 0;
+  const hasSupportFiles = totalFilesCount > 0;
+
+  const additionalFilesSorted = hasAdditionalFiles
     ? orderBy( additionalFiles, ['filetype'] )
     : [];
 
-  if ( totalFilesCount === 0 ) return null;
+  if ( !hasSupportFiles ) return null;
 
   return (
     <section className="section section--project_support-files project_support-files">
@@ -63,7 +68,7 @@ const VideoSupportFiles = props => {
         { `Support File${totalFilesCount > 1 ? 's' : ''}` }
       </h3>
 
-      { ( srtsCount > 0 )
+      { hasSRTs
         && (
           <section className="files section">
             <h4 id="srt-files">
@@ -79,7 +84,7 @@ const VideoSupportFiles = props => {
           </section>
         ) }
 
-      { ( additionalFilesCount > 0 || thumbnailsCount > 0 )
+      { ( hasAdditionalFiles || hasThumbnails )
         && (
           <section className="addtl_files section">
             <h4 id="additional-files">
