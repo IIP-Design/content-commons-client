@@ -25,7 +25,9 @@ import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
 
 import downloadIcon from 'static/icons/icon_download.svg';
-import { getStreamData, getVimeoId, getYouTubeId } from 'lib/utils';
+import {
+  getPathToS3Bucket, getStreamData, getVimeoId, getYouTubeId
+} from 'lib/utils';
 
 import './PreviewProjectContent.scss';
 
@@ -223,14 +225,14 @@ class PreviewProjectContent extends React.PureComponent {
           { youTubeUrl && (
             <Embed
               id={ getYouTubeId( youTubeUrl ) }
-              placeholder={ thumbnailUrl }
+              placeholder={ `${getPathToS3Bucket()}/${thumbnailUrl}` }
               source="youtube"
             />
           ) }
           { ( !youTubeUrl && vimeoUrl ) && (
             <Embed
               id={ getVimeoId( vimeoUrl ) }
-              placeholder={ thumbnailUrl }
+              placeholder={ `${getPathToS3Bucket()}/${thumbnailUrl}` }
               source="vimeo"
             />
           ) }
