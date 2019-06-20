@@ -74,7 +74,7 @@ const VIDEO_PROJECT_UNITS_QUERY = gql`
           stream {
             id
             site
-            embedUrl
+            url
           }
           language {
             id
@@ -197,8 +197,8 @@ class PreviewProjectItem extends React.Component {
           } = selectedItem;
 
           const currentUnit = files[0];
-          const youTubeUrl = getStreamData( currentUnit.stream, 'youtube', 'embedUrl' );
-          const vimeoUrl = getStreamData( currentUnit.stream, 'vimeo', 'embedUrl' );
+          const youTubeUrl = getStreamData( currentUnit.stream, 'youtube', 'url' );
+          const vimeoUrl = getStreamData( currentUnit.stream, 'vimeo', 'url' );
           const { videoBurnedInStatus } = currentUnit;
 
           let thumbnailUrl = '';

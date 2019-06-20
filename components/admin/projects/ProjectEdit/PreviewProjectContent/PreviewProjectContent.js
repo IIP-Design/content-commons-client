@@ -119,8 +119,8 @@ class PreviewProjectContent extends React.PureComponent {
     } = selectedItem;
 
     const currentUnit = files[0];
-    const youTubeUrl = getStreamData( currentUnit.stream, 'youtube', 'embedUrl' );
-    const vimeoUrl = getStreamData( currentUnit.stream, 'vimeo', 'embedUrl' );
+    const youTubeUrl = getStreamData( currentUnit.stream, 'youtube', 'url' );
+    const vimeoUrl = getStreamData( currentUnit.stream, 'vimeo', 'url' );
     const { videoBurnedInStatus } = currentUnit;
 
     let thumbnailUrl = '';
@@ -309,8 +309,7 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
           stream {
             id
             site
-            embedUrl @skip(if: $isReviewPage)
-            url @include(if: $isReviewPage)
+            url
           }
           language @include(if: $isReviewPage) {
             id
