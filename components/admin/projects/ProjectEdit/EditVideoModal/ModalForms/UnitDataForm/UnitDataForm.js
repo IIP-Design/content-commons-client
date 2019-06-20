@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import { compose, graphql } from 'react-apollo';
+import React from 'react';
+import getConfig from 'next/config';
 import propTypes from 'prop-types';
 import gql from 'graphql-tag';
+import { compose, graphql } from 'react-apollo';
 import { Embed, Form, Grid } from 'semantic-ui-react';
-import getConfig from 'next/config';
+import { withFormik } from 'formik';
 
 import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
 import TagTypeahead from 'components/admin/dropdowns/TagTypeahead';
@@ -107,36 +108,32 @@ const VIDEO_UNIT_REMOVE_TAG_MUTATION = gql`
   }
 `;
 
-class UnitDataForm extends Component {
-  state = {}
+const UnitDataForm = ( {
+  descPublicVideoUnitMutation,
+  setFieldValue,
+  tagsAddVideoUnitMutation,
+  tagsRemoveVideoUnitMutation,
+  titleVideoUnitMutation,
+  unitId,
+  values,
+  videoFileQuery,
+  videoUnitQuery
+} ) => {
+  const { loading, unit } = videoUnitQuery;
+  const { file } = videoFileQuery;
 
-  componentDidUpdate = prevProps => {
-    const { unit } = this.props.videoUnitQuery;
+  if ( !unit || loading ) return <Loader height="340px" text="Loading the video data..." />;
 
-    if ( unit && unit !== prevProps.videoUnitQuery.unit ) {
-      this.setState( {
-        descPublic: unit.descPublic || '',
-        tags: this.getTagList( unit.tags ),
-        title: unit.title || ''
-      } );
+  const updateUnit = e => {
+    const { name, value } = e.target;
+    let mutation;
+    if ( name === 'descPublic' ) {
+      mutation = descPublicVideoUnitMutation;
+    } else if ( name === 'title' ) {
+      mutation = titleVideoUnitMutation;
     }
-  }
 
-  getTagList = arr => {
-    const tagList = [];
-    arr.map( tag => {
-      tagList.push( tag.id );
-      return tagList;
-    } );
-    return tagList;
-  }
-
-  updateUnit = e => {
-    const { unitId } = this.props;
-    const { name } = e.target;
-    const value = this.state[name];
-
-    this.props[`${name}VideoUnitMutation`]( {
+    mutation( {
       variables: {
         id: unitId,
         [name]: value
@@ -158,11 +155,10 @@ class UnitDataForm extends Component {
         }
       }
     } );
-  }
+  };
 
-  updateTags = newTags => {
-    const { tags } = this.props.videoUnitQuery.unit;
-    const { unitId } = this.props;
+  const updateTags = newTags => {
+    const { tags } = unit;
 
     const currentTags = [];
     tags.forEach( tag => (
@@ -206,122 +202,109 @@ class UnitDataForm extends Component {
       ) );
     };
 
-    if ( removed.length > 0 ) {
-      runTagMutation( removed, this.props.tagsRemoveVideoUnitMutation );
-    }
-
     if ( added.length > 0 ) {
-      runTagMutation( added, this.props.tagsAddVideoUnitMutation );
-    }
-  }
-
-  handleInput = e => {
-    this.setState( {
-      [e.target.name]: e.target.value
-    } );
-  }
-
-  handleDropdownSelection = ( e, data ) => {
-    const { name, value } = data;
-
-    this.setState(
-      { [name]: value },
-      () => this.updateTags( value )
-    );
-  }
-
-  render() {
-    const { loading, unit } = this.props.videoUnitQuery;
-    const { file } = this.props.videoFileQuery;
-
-    if ( !unit || loading ) return <Loader height="340px" text="Loading the video data..." />;
-
-    const lang = `in ${unit.language.displayName}` || '';
-    const {
-      descPublic, tags, title
-    } = this.state;
-
-    let youTubeUrl = '';
-    let vimeoUrl = '';
-    if ( file && file.stream ) {
-      youTubeUrl = getStreamData( file.stream, 'youtube', 'url' );
-      vimeoUrl = getStreamData( file.stream, 'vimeo', 'url' );
+      runTagMutation( added, tagsAddVideoUnitMutation );
     }
 
-    let thumbnailUrl = '';
-    let thumbnailAlt = '';
-    if ( unit.thumbnails && unit.thumbnails.length ) {
-      thumbnailUrl = `https://${publicRuntimeConfig.REACT_APP_AWS_S3_PUBLISHER_UPLOAD_BUCKET}/${unit.thumbnails[0].image.url}`;
-      thumbnailAlt = unit.thumbnails[0].image.alt || '';
+    if ( removed.length > 0 ) {
+      runTagMutation( removed, tagsRemoveVideoUnitMutation );
     }
+  };
 
-    return (
-      <Form className="edit-video__form video-unit-data">
-        <Grid stackable className="aligned">
-          <Grid.Row>
-            <Grid.Column mobile={ 16 } computer={ 9 }>
-              { ( vimeoUrl ) && (
-                <Embed
-                  autoplay={ false }
-                  id={ getVimeoId( vimeoUrl ) }
-                  placeholder={ thumbnailUrl }
-                  source="vimeo"
-                />
-              ) }
-              { !vimeoUrl && youTubeUrl && (
-                <Embed
-                  autoplay={ false }
-                  id={ getYouTubeId( youTubeUrl ) }
-                  placeholder={ thumbnailUrl }
-                  source="youtube"
-                />
-              ) }
-              { ( !youTubeUrl && !vimeoUrl ) && (
-                <figure className="modal_thumbnail overlay">
-                  <img className="overlay-image" src={ thumbnailUrl } alt={ thumbnailAlt } />
-                </figure>
-              ) }
-            </Grid.Column>
-            <Grid.Column mobile={ 16 } computer={ 7 }>
-              <Form.Input
-                id="video-title"
-                label={ `Video Title ${lang}` }
-                name="title"
-                onBlur={ this.updateUnit }
-                onChange={ this.handleInput }
-                value={ title }
-              />
+  const handleInput = ( e, { name, value } ) => {
+    setFieldValue( name, value );
+  };
 
-              <Form.TextArea
-                id="video-description"
-                label={ `Public Description ${lang}` }
-                name="descPublic"
-                onBlur={ this.updateUnit }
-                onChange={ this.handleInput }
-                value={ descPublic }
-              />
+  const handleDropdownSelection = ( e, data ) => {
+    const { value } = data;
+    updateTags( value );
+  };
 
-              <TagTypeahead
-                onChange={ this.handleDropdownSelection }
-                id="video-tags"
-                label={ `Additional Keywords ${lang}` }
-                locale={ unit.language.locale }
-                value={ tags }
-              />
+  const lang = `in ${unit.language.displayName}` || '';
 
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Form>
-    );
+  let youTubeUrl = '';
+  let vimeoUrl = '';
+  if ( file && file.stream ) {
+    youTubeUrl = getStreamData( file.stream, 'youtube', 'url' );
+    vimeoUrl = getStreamData( file.stream, 'vimeo', 'url' );
   }
-}
+
+  let thumbnailUrl = '';
+  let thumbnailAlt = '';
+  if ( unit.thumbnails && unit.thumbnails.length ) {
+    thumbnailUrl = `https://${publicRuntimeConfig.REACT_APP_AWS_S3_PUBLISHER_UPLOAD_BUCKET}/${unit.thumbnails[0].image.url}`;
+    thumbnailAlt = unit.thumbnails[0].image.alt || '';
+  }
+
+  return (
+    <Form className="edit-video__form video-unit-data">
+      <Grid stackable className="aligned">
+        <Grid.Row>
+          <Grid.Column mobile={ 16 } computer={ 9 }>
+            { ( vimeoUrl ) && (
+              <Embed
+                autoplay={ false }
+                id={ getVimeoId( vimeoUrl ) }
+                placeholder={ thumbnailUrl }
+                source="vimeo"
+              />
+            ) }
+            { !vimeoUrl && youTubeUrl && (
+              <Embed
+                autoplay={ false }
+                id={ getYouTubeId( youTubeUrl ) }
+                placeholder={ thumbnailUrl }
+                source="youtube"
+              />
+            ) }
+            { ( !youTubeUrl && !vimeoUrl ) && (
+              <figure className="modal_thumbnail overlay">
+                <img className="overlay-image" src={ thumbnailUrl } alt={ thumbnailAlt } />
+              </figure>
+            ) }
+          </Grid.Column>
+          <Grid.Column mobile={ 16 } computer={ 7 }>
+            <Form.Input
+              id="video-title"
+              label={ `Video Title ${lang}` }
+              name="title"
+              onBlur={ updateUnit }
+              onChange={ handleInput }
+              value={ values.title }
+            />
+
+            <Form.TextArea
+              id="video-description"
+              label={ `Public Description ${lang}` }
+              name="descPublic"
+              onBlur={ updateUnit }
+              onChange={ handleInput }
+              value={ values.descPublic }
+            />
+
+            <TagTypeahead
+              onChange={ handleDropdownSelection }
+              id="video-tags"
+              label={ `Additional Keywords ${lang}` }
+              locale={ unit.language.locale }
+              value={ values.tags }
+            />
+
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Form>
+  );
+};
 
 UnitDataForm.propTypes = {
+  descPublicVideoUnitMutation: propTypes.func,
+  setFieldValue: propTypes.func,
   tagsAddVideoUnitMutation: propTypes.func,
   tagsRemoveVideoUnitMutation: propTypes.func,
+  titleVideoUnitMutation: propTypes.func,
   unitId: propTypes.string,
-  unit: propTypes.object,
+  values: propTypes.object,
   videoFileQuery: propTypes.object,
   videoUnitQuery: propTypes.object
 };
@@ -343,5 +326,19 @@ export default compose(
     options: props => ( {
       variables: { id: props.unitId },
     } )
+  } ),
+  withFormik( {
+    mapPropsToValues: props => {
+      const videoUnit = props.videoUnitQuery && props.videoUnitQuery.unit ? props.videoUnitQuery.unit : {};
+
+      const tags = videoUnit.tags ? videoUnit.tags.map( tag => tag.id ) : [];
+
+      return {
+        descPublic: videoUnit.descPublic || '',
+        tags,
+        title: videoUnit.title || ''
+      };
+    },
+    enableReinitialize: true
   } )
 )( UnitDataForm );
