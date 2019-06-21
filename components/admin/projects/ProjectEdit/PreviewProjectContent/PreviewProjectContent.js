@@ -5,6 +5,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Dropdown, Embed, Loader } from 'semantic-ui-react';
@@ -107,9 +108,15 @@ class PreviewProjectContent extends React.PureComponent {
     const { dropDownIsOpen, selectedLanguage } = this.state;
 
     const projectItems = this.getProjectItems( units );
-    const selectedItem = projectItems[this.state.selectedLanguage];
+    const selectedItem = projectItems[String( selectedLanguage )];
 
-    if ( !selectedItem || !Object.keys( selectedItem ).length ) return null;
+    if ( !selectedItem || !Object.keys( selectedItem ).length ) {
+      return (
+        <p style={ { fontSize: '1rem' } }>
+          This project does not have any videos yet. <Link as={ `/admin/project/video/${id}/edit` } href={ `/admin/project?content=video&id=${id}&action=edit` }><a>Add videos &raquo;</a></Link>
+        </p>
+      );
+    }
 
     const {
       title,
