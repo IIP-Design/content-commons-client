@@ -29,6 +29,7 @@ import downloadIcon from 'static/icons/icon_download.svg';
 import {
   getPathToS3Bucket, getStreamData, getVimeoId, getYouTubeId
 } from 'lib/utils';
+import { UNIT_DETAILS_FRAGMENT } from 'lib/graphql/queries/video';
 
 import './PreviewProjectContent.scss';
 
@@ -276,61 +277,14 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
         name
       }
       thumbnails {
-        id
-        alt
-        url
+        ...imageDetails
       }
       units {
-        id
-        title
-        descPublic
-        language {
-          id
-          languageCode
-          displayName
-          textDirection
-        }
-        thumbnails {
-          id
-          image {
-            id
-            alt
-            url
-          }
-        }
-        files {
-          id
-          filename
-          filesize
-          createdAt
-          updatedAt
-          duration
-          quality
-          url
-          videoBurnedInStatus
-          dimensions {
-            id
-            width
-            height
-          }
-          language {
-            id
-            displayName
-            textDirection
-          }
-          stream {
-            id
-            site
-            url
-          }
-          use {
-            id
-            name
-          }
-        }
+        ...unitDetails
       }
     }
   }
+  ${UNIT_DETAILS_FRAGMENT}
 `;
 
 export default graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
