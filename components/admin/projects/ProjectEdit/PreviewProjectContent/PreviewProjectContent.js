@@ -60,6 +60,24 @@ class PreviewProjectContent extends React.PureComponent {
     } ), {} )
   );
 
+  getContentType = typename => {
+    switch ( typename ) {
+      case 'VideoProject':
+        return 'video';
+      /**
+       * future content types would go here, e.g.,
+       * case 'ImageProject':
+       *   return 'image';
+       */
+      default:
+        return '';
+    }
+  }
+
+  getS3Url = assetPath => (
+    `${getPathToS3Bucket()}/${assetPath}`
+  )
+
   toggleArrow = () => {
     this.setState( prevState => ( {
       dropDownIsOpen: !prevState.dropDownIsOpen
@@ -118,6 +136,8 @@ class PreviewProjectContent extends React.PureComponent {
       );
     }
 
+    const contentType = this.getContentType( __typename );
+
     const {
       title, language, descPublic, files
     } = selectedUnit;
@@ -164,7 +184,7 @@ class PreviewProjectContent extends React.PureComponent {
           el="p"
           show
           customStyles={ previewMsgStyles }
-          msg="This is a preview of your project on Content Commons."
+          msg={ `This is a preview of your ${contentType} project on Content Commons.` }
         />
 
         <div className="modal_options">
@@ -182,7 +202,7 @@ class PreviewProjectContent extends React.PureComponent {
               toolTip="Download video"
               icon={ { img: downloadIcon, dim: 18 } }
               position="right"
-              show={ __typename === 'VideoProject' }
+              show={ contentType === 'video' }
               content={ (
                 <PopupTabbed
                   title="Download this video."
@@ -237,23 +257,27 @@ class PreviewProjectContent extends React.PureComponent {
           { youTubeUrl && (
             <Embed
               id={ getYouTubeId( youTubeUrl ) }
-              placeholder={ `${getPathToS3Bucket()}/${thumbnailUrl}` }
+              placeholder={ this.getS3Url( thumbnailUrl ) }
               source="youtube"
             />
           ) }
           { ( !youTubeUrl && vimeoUrl ) && (
             <Embed
               id={ getVimeoId( vimeoUrl ) }
-              placeholder={ `${getPathToS3Bucket()}/${thumbnailUrl}` }
+              placeholder={ this.getS3Url( thumbnailUrl ) }
               source="vimeo"
             />
           ) }
           { ( !youTubeUrl && !vimeoUrl ) && (
             <figure className="modal_thumbnail overlay">
-              <img className="overlay-image" src={ thumbnailUrl } alt={ thumbnailAlt } />
+              <img
+                className="overlay-image"
+                src={ this.getS3Url( thumbnailUrl ) }
+                alt={ thumbnailAlt }
+              />
             </figure>
           ) }
-          <ModalContentMeta type="video" dateUpdated={ updatedAt } />
+          <ModalContentMeta type={ contentType } dateUpdated={ updatedAt } />
           <ModalDescription description={ descPublic } />
         </div>
 
