@@ -157,9 +157,6 @@ VideoProjectFiles.propTypes = {
 
 export default graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
   options: props => ( {
-    variables: {
-      id: props.id,
-      isReviewPage: true
-    },
+    variables: { id: props.id },
   } )
 } )( VideoProjectFiles );

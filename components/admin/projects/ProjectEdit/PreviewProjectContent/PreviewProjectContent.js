@@ -102,9 +102,7 @@ class PreviewProjectContent extends React.PureComponent {
     if ( error ) return `Error! ${error.message}`;
     if ( !project || !Object.keys( project ).length ) return null;
 
-    const {
-      __typename, createdAt, updatedAt, team, units
-    } = project;
+    const { __typename, team, units } = project;
     const { dropDownIsOpen, selectedLanguage } = this.state;
 
     const projectItems = this.getProjectItems( units );
@@ -119,16 +117,17 @@ class PreviewProjectContent extends React.PureComponent {
     }
 
     const {
-      title,
-      language,
-      descPublic,
-      files
+      title, language, descPublic, files
     } = selectedItem;
 
     const currentUnit = files[0];
-    const youTubeUrl = getStreamData( currentUnit.stream, 'youtube', 'url' );
-    const vimeoUrl = getStreamData( currentUnit.stream, 'vimeo', 'url' );
-    const { videoBurnedInStatus } = currentUnit;
+
+    const {
+      createdAt, updatedAt, stream, videoBurnedInStatus
+    } = currentUnit;
+
+    const youTubeUrl = getStreamData( stream, 'youtube', 'url' );
+    const vimeoUrl = getStreamData( stream, 'vimeo', 'url' );
 
     let thumbnailUrl = '';
     let thumbnailAlt = '';
@@ -253,7 +252,6 @@ class PreviewProjectContent extends React.PureComponent {
             </figure>
           ) }
           <ModalContentMeta type="video" dateUpdated={ updatedAt } />
-
           <ModalDescription description={ descPublic } />
         </div>
 
@@ -269,25 +267,29 @@ PreviewProjectContent.propTypes = {
 };
 
 const VIDEO_PROJECT_PREVIEW_QUERY = gql`
-  query VideoProjectPreview($id: ID!, $isReviewPage: Boolean!) {
+  query VideoProjectPreview($id: ID!) {
     project: videoProject(id: $id) {
       id
-      createdAt @skip(if: $isReviewPage)
-      updatedAt @skip(if: $isReviewPage)
-      projectType @skip(if: $isReviewPage)
-      thumbnails @skip(if: $isReviewPage) {
+      projectType
+      team {
+        id
+        name
+      }
+      thumbnails {
         id
         alt
         url
-      }
-      team @skip(if: $isReviewPage) {
-        id
-        name
       }
       units {
         id
         title
         descPublic
+        language {
+          id
+          languageCode
+          displayName
+          textDirection
+        }
         thumbnails {
           id
           image {
@@ -296,41 +298,34 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
             url
           }
         }
-        language @skip(if: $isReviewPage) {
-          id
-          languageCode
-          displayName
-          textDirection
-        }
         files {
           id
-          createdAt
-          duration
           filename
-          url
-          use @include(if: $isReviewPage) {
-            id
-            name
-          }
           filesize
+          createdAt
+          updatedAt
+          duration
+          quality
+          url
           videoBurnedInStatus
-          createdAt @include(if: $isReviewPage)
-          duration @include(if: $isReviewPage)
-          quality @include(if: $isReviewPage)
           dimensions {
             id
             width
             height
+          }
+          language {
+            id
+            displayName
+            textDirection
           }
           stream {
             id
             site
             url
           }
-          language @include(if: $isReviewPage) {
+          use {
             id
-            displayName
-            textDirection
+            name
           }
         }
       }
@@ -340,10 +335,7 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
 
 export default graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
   options: props => ( {
-    variables: {
-      id: props.id,
-      isReviewPage: false
-    },
+    variables: { id: props.id },
   } )
 } )( PreviewProjectContent );
 
