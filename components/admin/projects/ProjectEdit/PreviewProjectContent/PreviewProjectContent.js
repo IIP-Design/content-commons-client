@@ -52,7 +52,7 @@ class PreviewProjectContent extends React.PureComponent {
     } ) )
   )
 
-  getProjectItems = units => (
+  getProjectUnits = units => (
     units.reduce( ( acc, unit ) => ( {
       ...acc,
       [unit.language.displayName]: unit
@@ -106,10 +106,10 @@ class PreviewProjectContent extends React.PureComponent {
     const { __typename, team, units } = project;
     const { dropDownIsOpen, selectedLanguage } = this.state;
 
-    const projectItems = this.getProjectItems( units );
-    const selectedItem = projectItems[String( selectedLanguage )];
+    const projectUnits = this.getProjectUnits( units );
+    const selectedUnit = projectUnits[String( selectedLanguage )];
 
-    if ( !selectedItem || !Object.keys( selectedItem ).length ) {
+    if ( !selectedUnit || !Object.keys( selectedUnit ).length ) {
       return (
         <p style={ { fontSize: '1rem' } }>
           This project does not have any videos yet. <Link as={ `/admin/project/video/${id}/edit` } href={ `/admin/project?content=video&id=${id}&action=edit` }><a>Add videos &raquo;</a></Link>
@@ -119,22 +119,22 @@ class PreviewProjectContent extends React.PureComponent {
 
     const {
       title, language, descPublic, files
-    } = selectedItem;
+    } = selectedUnit;
 
-    const currentUnit = files[0];
+    const currentFile = files[0];
 
     const {
       createdAt, updatedAt, stream, videoBurnedInStatus
-    } = currentUnit;
+    } = currentFile;
 
     const youTubeUrl = getStreamData( stream, 'youtube', 'url' );
     const vimeoUrl = getStreamData( stream, 'vimeo', 'url' );
 
     let thumbnailUrl = '';
     let thumbnailAlt = '';
-    if ( selectedItem.thumbnails && selectedItem.thumbnails.length ) {
-      thumbnailUrl = selectedItem.thumbnails[0].image.url;
-      thumbnailAlt = selectedItem.thumbnails[0].image.alt;
+    if ( selectedUnit.thumbnails && selectedUnit.thumbnails.length ) {
+      thumbnailUrl = selectedUnit.thumbnails[0].image.url;
+      thumbnailAlt = selectedUnit.thumbnails[0].image.alt;
     } else if ( project.thumbnails && project.thumbnails.length ) {
       thumbnailUrl = project.thumbnails[0].url;
       thumbnailAlt = project.thumbnails[0].image.alt;
@@ -190,7 +190,7 @@ class PreviewProjectContent extends React.PureComponent {
                       title: 'Video File',
                       component: (
                         <DownloadVideo
-                          selectedLanguageUnit={ selectedItem }
+                          selectedLanguageUnit={ selectedUnit }
                           instructions={ `Download the video and SRT files in ${selectedLanguage}.
                             This download option is best for uploading this video to web pages.` }
                           burnedInCaptions={ videoBurnedInStatus === 'CAPTIONED' }
