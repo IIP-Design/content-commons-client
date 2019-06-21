@@ -9,6 +9,8 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Dropdown, Embed, Loader } from 'semantic-ui-react';
 
+import ApolloError from 'components/errors/ApolloError';
+
 import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo';
 import DownloadSrt from 'components/admin/download/DownloadSrt/DownloadSrt';
 import DownloadThumbnail from 'components/admin/download/DownloadThumbnail/DownloadThumbnail';
@@ -99,7 +101,7 @@ class PreviewProjectContent extends React.PureComponent {
       );
     }
 
-    if ( error ) return `Error! ${error.message}`;
+    if ( error ) return <ApolloError error={ error } />;
     if ( !project || !Object.keys( project ).length ) return null;
 
     const { __typename, team, units } = project;
