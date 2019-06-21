@@ -124,10 +124,13 @@ class PreviewProjectContent extends React.PureComponent {
     const { videoBurnedInStatus } = currentUnit;
 
     let thumbnailUrl = '';
+    let thumbnailAlt = '';
     if ( selectedItem.thumbnails && selectedItem.thumbnails.length ) {
       thumbnailUrl = selectedItem.thumbnails[0].image.url;
+      thumbnailAlt = selectedItem.thumbnails[0].image.alt;
     } else if ( project.thumbnails && project.thumbnails.length ) {
       thumbnailUrl = project.thumbnails[0].url;
+      thumbnailAlt = project.thumbnails[0].image.alt;
     }
 
     const previewMsgStyles = {
@@ -236,6 +239,11 @@ class PreviewProjectContent extends React.PureComponent {
               placeholder={ `${getPathToS3Bucket()}/${thumbnailUrl}` }
               source="vimeo"
             />
+          ) }
+          { ( !youTubeUrl && !vimeoUrl ) && (
+            <figure className="modal_thumbnail overlay">
+              <img className="overlay-image" src={ thumbnailUrl } alt={ thumbnailAlt } />
+            </figure>
           ) }
           <ModalContentMeta type="video" dateUpdated={ updatedAt } />
 
