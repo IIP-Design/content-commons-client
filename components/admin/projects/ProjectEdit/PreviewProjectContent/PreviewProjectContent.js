@@ -5,7 +5,6 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import Link from 'next/link';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Dropdown, Embed, Loader } from 'semantic-ui-react';
@@ -112,7 +111,7 @@ class PreviewProjectContent extends React.PureComponent {
     if ( !selectedUnit || !Object.keys( selectedUnit ).length ) {
       return (
         <p style={ { fontSize: '1rem' } }>
-          This project does not have any videos yet. <Link as={ `/admin/project/video/${id}/edit` } href={ `/admin/project?content=video&id=${id}&action=edit` }><a>Add videos &raquo;</a></Link>
+          This project does not have any units to preview.
         </p>
       );
     }
