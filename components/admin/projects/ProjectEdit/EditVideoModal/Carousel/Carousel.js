@@ -189,7 +189,7 @@ const Carousel = ( {
           ) ) }
         </div>
         { legend && (
-          <div className={ `carousel-legend ${isVertical}` }>
+          <div className={ `carousel-legend ${isVertical}` } style={ showButtons ? { justifyContent: 'space-between' } : { justifyContent: 'center' } }>
             { ( !vertical && showButtons ) && (
               <button
                 className="carousel-legend-button"
