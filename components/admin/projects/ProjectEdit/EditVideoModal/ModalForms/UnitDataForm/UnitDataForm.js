@@ -165,20 +165,12 @@ const UnitDataForm = ( {
   const updateTags = newTags => {
     const { tags } = unit;
 
-    const currentTags = [];
-    tags.forEach( tag => (
-      currentTags.push( tag.id )
-    ) );
-
+    const currentTags = tags.map( tag => tag.id );
     const removed = currentTags.filter( item => newTags.indexOf( item ) === -1 );
     const added = newTags.filter( item => currentTags.indexOf( item ) === -1 );
 
-    // Converts the array of tag ids into an array of tag objects as expected by apollo
-    const newTagsArr = [];
-    newTags.forEach( newTag => {
-      const obj = { id: newTag, __typename: 'Tag' };
-      newTagsArr.push( obj );
-    } );
+    // Converts the array of tag ids into an array of tag objects as expected by Apollo
+    const newTagsArr = newTags.map( newTag => ( { id: newTag, __typename: 'Tag' } ) );
 
     const runTagMutation = ( arr, mutation ) => {
       arr.map( tag => (
@@ -216,14 +208,9 @@ const UnitDataForm = ( {
     }
   };
 
-  const handleInput = ( e, { name, value } ) => {
-    setFieldValue( name, value );
-  };
+  const handleInput = ( e, { name, value } ) => setFieldValue( name, value );
 
-  const handleDropdownSelection = ( e, data ) => {
-    const { value } = data;
-    updateTags( value );
-  };
+  const handleDropdownSelection = ( e, { value } ) => updateTags( value );
 
   const lang = `in ${unit.language.displayName}` || '';
 
