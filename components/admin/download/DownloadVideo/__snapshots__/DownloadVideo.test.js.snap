@@ -1,0 +1,349 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DownloadVideo /> renders without crashing 1`] = `
+<DownloadVideo
+  burnedInCaptions={false}
+  instructions="Download the video file in English"
+  selectedLanguageUnit={
+    Object {
+      "__typename": "VideoUnit",
+      "descPublic": "the english description",
+      "files": Array [
+        Object {
+          "__typename": "VideoFile",
+          "createdAt": "2019-03-05T20:18:54.032Z",
+          "dimensions": Object {
+            "__typename": "Dimensions",
+            "height": "1080",
+            "id": "d21",
+            "width": "1920",
+          },
+          "duration": 556,
+          "filename": "video-file-1.mp4",
+          "filesize": 662595174,
+          "filetype": "video/mp4",
+          "id": "f19",
+          "language": Object {
+            "__typename": "Language",
+            "displayName": "English",
+            "id": "en38",
+            "languageCode": "en",
+            "locale": "en-us",
+            "nativeName": "English",
+            "textDirection": "LTR",
+          },
+          "quality": "WEB",
+          "stream": Array [
+            Object {
+              "__typename": "VideoStream",
+              "id": "st93",
+              "site": "YouTube",
+              "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
+            },
+            Object {
+              "__typename": "VideoStream",
+              "id": "st35",
+              "site": "Vimeo",
+              "url": "https://vimeo.com/340239507",
+            },
+          ],
+          "updatedAt": "2019-06-19T17:38:37.502Z",
+          "url": "2019/06/123/video-file-1.mp4",
+          "use": Object {
+            "__typename": "VideoUse",
+            "id": "us31",
+            "name": "Full Video",
+          },
+          "videoBurnedInStatus": "CLEAN",
+        },
+        Object {
+          "__typename": "VideoFile",
+          "createdAt": "2019-03-05T20:18:54.032Z",
+          "dimensions": Object {
+            "__typename": "Dimensions",
+            "height": "1080",
+            "id": "d21",
+            "width": "1920",
+          },
+          "duration": 556,
+          "filename": "video-file-2.mp4",
+          "filesize": 652595174,
+          "filetype": "video/mp4",
+          "id": "f20",
+          "language": Object {
+            "__typename": "Language",
+            "displayName": "English",
+            "id": "en38",
+            "languageCode": "en",
+            "locale": "en-us",
+            "nativeName": "English",
+            "textDirection": "LTR",
+          },
+          "quality": "WEB",
+          "stream": Array [
+            Object {
+              "__typename": "VideoStream",
+              "id": "st94",
+              "site": "YouTube",
+              "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
+            },
+            Object {
+              "__typename": "VideoStream",
+              "id": "st36",
+              "site": "Vimeo",
+              "url": "https://vimeo.com/340239507",
+            },
+          ],
+          "updatedAt": "2019-06-19T17:38:37.502Z",
+          "url": "2019/06/123/video-file-2.mp4",
+          "use": Object {
+            "__typename": "VideoUse",
+            "id": "us31",
+            "name": "Full Video",
+          },
+          "videoBurnedInStatus": "CLEAN",
+        },
+      ],
+      "id": "un91",
+      "language": Object {
+        "__typename": "Language",
+        "displayName": "English",
+        "id": "en38",
+        "languageCode": "en",
+        "locale": "en-us",
+        "nativeName": "English",
+        "textDirection": "LTR",
+      },
+      "tags": Array [
+        Object {
+          "__typename": "Tag",
+          "id": "tag13",
+          "translations": Array [
+            Object {
+              "__typename": "LanguageTranslation",
+              "id": "tr999",
+              "name": "american culture",
+            },
+          ],
+        },
+      ],
+      "thumbnails": Array [
+        Object {
+          "__typename": "Thumbnail",
+          "id": "th11",
+          "image": Object {
+            "__typename": "ImageFile",
+            "alt": "the alt text",
+            "createdAt": "2019-03-06T13:11:48.043Z",
+            "filename": "image-1.jpg",
+            "filesize": 28371,
+            "filetype": "image/jpeg",
+            "id": "im28",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "English",
+              "id": "en38",
+              "languageCode": "en",
+              "locale": "en-us",
+              "nativeName": "English",
+              "textDirection": "LTR",
+            },
+            "updatedAt": "2019-06-18T14:58:10.024Z",
+            "url": "2019/06/123/image-1.jpg",
+          },
+          "size": "FULL",
+        },
+      ],
+      "title": "test project title",
+    }
+  }
+>
+  <p
+    className="form-group_instructions"
+  >
+    Download the video file in English
+  </p>
+  <div>
+    <ItemGroup
+      className="download-item"
+      key="fs_un91-f19"
+    >
+      <div
+        className="ui items download-item"
+      >
+        <Item
+          as="a"
+          download="test_project_title_1920.mp4"
+          href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/video-file-1.mp4"
+        >
+          <a
+            className="item"
+            download="test_project_title_1920.mp4"
+            href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/video-file-1.mp4"
+          >
+            <ItemImage
+              className="download-icon"
+              size="mini"
+              src="downloadIconSVG"
+            >
+              <Image
+                as="img"
+                className="download-icon"
+                size="mini"
+                src="downloadIconSVG"
+                ui={true}
+                wrapped={true}
+              >
+                <div
+                  className="ui mini image download-icon"
+                >
+                  <img
+                    src="downloadIconSVG"
+                  />
+                </div>
+              </Image>
+            </ItemImage>
+            <ItemContent>
+              <div
+                className="content"
+              >
+                <ItemHeader
+                  className="download-header"
+                >
+                  <div
+                    className="header download-header"
+                  >
+                    Download
+                     
+                    <span
+                      className="lightweight"
+                    >
+                      "test project title"
+                    </span>
+                     
+                    for
+                     
+                    web
+                  </div>
+                </ItemHeader>
+                <ItemMeta>
+                  <div
+                    className="meta"
+                  >
+                     
+                    File size: 631.9 MB
+                     
+                  </div>
+                </ItemMeta>
+                <ItemMeta>
+                  <div
+                    className="meta"
+                  >
+                     
+                    Dimensions: 1920 x 1080
+                  </div>
+                </ItemMeta>
+                <span
+                  className="item_hover"
+                >
+                  Download for web
+                </span>
+              </div>
+            </ItemContent>
+          </a>
+        </Item>
+      </div>
+    </ItemGroup>
+    <ItemGroup
+      className="download-item"
+      key="fs_un91-f20"
+    >
+      <div
+        className="ui items download-item"
+      >
+        <Item
+          as="a"
+          download="test_project_title_1920.mp4"
+          href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/video-file-2.mp4"
+        >
+          <a
+            className="item"
+            download="test_project_title_1920.mp4"
+            href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/video-file-2.mp4"
+          >
+            <ItemImage
+              className="download-icon"
+              size="mini"
+              src="downloadIconSVG"
+            >
+              <Image
+                as="img"
+                className="download-icon"
+                size="mini"
+                src="downloadIconSVG"
+                ui={true}
+                wrapped={true}
+              >
+                <div
+                  className="ui mini image download-icon"
+                >
+                  <img
+                    src="downloadIconSVG"
+                  />
+                </div>
+              </Image>
+            </ItemImage>
+            <ItemContent>
+              <div
+                className="content"
+              >
+                <ItemHeader
+                  className="download-header"
+                >
+                  <div
+                    className="header download-header"
+                  >
+                    Download
+                     
+                    <span
+                      className="lightweight"
+                    >
+                      "test project title"
+                    </span>
+                     
+                    for
+                     
+                    web
+                  </div>
+                </ItemHeader>
+                <ItemMeta>
+                  <div
+                    className="meta"
+                  >
+                     
+                    File size: 622.36 MB
+                     
+                  </div>
+                </ItemMeta>
+                <ItemMeta>
+                  <div
+                    className="meta"
+                  >
+                     
+                    Dimensions: 1920 x 1080
+                  </div>
+                </ItemMeta>
+                <span
+                  className="item_hover"
+                >
+                  Download for web
+                </span>
+              </div>
+            </ItemContent>
+          </a>
+        </Item>
+      </div>
+    </ItemGroup>
+  </div>
+</DownloadVideo>
+`;
