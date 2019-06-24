@@ -29,8 +29,6 @@ import Notification from 'components/Notification/Notification';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
-import PreviewProject from 'components/admin/PreviewProject/PreviewProject';
-import PreviewProjectContent from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 import ProjectSupportFiles from 'components/admin/ProjectSupportFiles/ProjectSupportFiles';
 import ProjectUnits from 'components/admin/projects/ProjectEdit/ProjectUnits/ProjectUnits';
 import FormInstructions from 'components/admin/projects/ProjectEdit/FormInstructions/FormInstructions';
@@ -263,19 +261,6 @@ const VideoEdit = props => {
             cancelButton="No, take me back"
             confirmButton="Yes, delete forever"
           />
-
-          { /* <PreviewProject
-            triggerProps={ {
-              className: 'edit-project__btn--preview',
-              content: 'Preview Project',
-              basic: true,
-              disabled: !projectId
-            } }
-            // contentProps={ { id } }
-            modalTrigger={ Button }
-            modalContent={ PreviewProjectContent }
-            options={ { closeIcon: true } }
-          /> */ }
 
           { projectId
             && (
