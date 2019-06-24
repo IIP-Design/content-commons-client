@@ -49,22 +49,23 @@ const TablePagination = props => {
     <Query
       query={ TEAM_VIDEO_PROJECTS_COUNT_QUERY }
       variables={ { ...variables } }
+      fetchPolicy="cache-and-network"
     >
-      { ( { loading, error, data: { videoProjects } } ) => {
+      { ( { loading, error, data } ) => {
         if ( loading ) return 'Loading....';
         if ( error ) return <ApolloError error={ error } />;
-        if ( !videoProjects ) return null;
+        if ( !data || ( data && !data.videoProjects ) ) return null;
 
-        const projectsCount = videoProjects.length;
+        const projectsCount = data.videoProjects.length;
         const totalPages = Math.ceil( projectsCount / itemsPerPage );
 
-        if ( projectsCount > 0 ) {
+        if ( projectsCount > 0 && totalPages > 1 ) {
           return (
             <Pagination
               activePage={ activePage }
               totalPages={ totalPages }
-              nextItem={ { content: 'Next >', disabled: activePage === totalPages } }
-              prevItem={ { content: '< Previous', disabled: activePage === 1 } }
+              nextItem={ { content: 'Next ⟩', disabled: activePage === totalPages } }
+              prevItem={ { content: '⟨ Previous', disabled: activePage === 1 } }
               siblingRange="2"
               firstItem={ null }
               lastItem={ null }

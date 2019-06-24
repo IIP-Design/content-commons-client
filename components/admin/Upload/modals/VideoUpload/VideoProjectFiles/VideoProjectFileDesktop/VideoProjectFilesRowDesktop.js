@@ -8,14 +8,35 @@ import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { truncateAndReplaceStr } from 'lib/utils';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import Notification from 'components/Notification/Notification';
 import UploadCompletionTracker from '../UploadCompletionTracker';
 import { VideoUploadContext } from '../../VideoUpload';
 import './VideoProjectFilesRowDesktop.scss';
 
+// Optimize re-renders as component could potentially have many rows
+const areEqual = ( prevProps, nextProps ) => {
+  // if activeStep changes, rerender the row
+  if ( prevProps.activeStep !== nextProps.activeStep ) {
+    return false;
+  }
+
+  const nextFile = nextProps.file;
+
+  // if on same step, check for prop differences
+  const entries = Object.entries( prevProps.file );
+  const same = entries.every( ( [prop, value] ) => {
+    if ( prop === 'id' || prop === 'input' ) {
+      return true;
+    }
+    return nextFile[prop] === value;
+  } );
+  return same;
+};
+
 const VideoProjectFilesDesktopRow = props => {
   const {
     show, activeStep, file: {
-      id, language, videoBurnedInStatus, use, quality, fileInput: { name, type }
+      id, language, videoBurnedInStatus, use, quality, input: { name, type }
     }
   } = props;
 
@@ -61,10 +82,15 @@ const VideoProjectFilesDesktopRow = props => {
   );
 
   return (
-    // Context API is used to avoind having to pass props down multiple levels
     <VideoUploadContext.Consumer>
       {
-        ( { replaceAssetFile, removeAssetFile, updateField } ) => (
+        ( {
+          replaceAssetFile,
+          removeAssetFile,
+          updateField,
+          duplicateFiles,
+          setDuplicateFiles
+        } ) => (
           <Grid.Row className="videoProjectFilesDesktopRow">
 
             { /* Filename */ }
@@ -77,6 +103,24 @@ const VideoProjectFilesDesktopRow = props => {
                   <span className="item-text--hover">{ name }</span>
                 </span>
                 <VisuallyHidden el="span">{ name }</VisuallyHidden>
+                { duplicateFiles.includes( name ) && (
+                  <Notification
+                    el="div"
+                    show
+                    msg="This file has already been added."
+                    customStyles={
+                      {
+                        display: 'inline-block',
+                        position: 'absolute',
+                        bottom: '-0.3em',
+                        left: '4em',
+                        padding: '0',
+                        backgroundColor: 'none',
+                        color: '#DB2828'
+                      }
+                    }
+                  />
+                ) }
               </div>
             </Grid.Column>
 
@@ -112,8 +156,14 @@ const VideoProjectFilesDesktopRow = props => {
             { /* Actions */ }
             <Grid.Column width={ 2 } only="tablet computer">
               <FileRemoveReplaceButtonGroup
-                onReplace={ e => replaceAssetFile( id, e.target.files[0] ) }
-                onRemove={ () => removeAssetFile( id ) }
+                onReplace={ e => {
+                  setDuplicateFiles( [] );
+                  replaceAssetFile( id, e.target.files[0] );
+                } }
+                onRemove={ () => {
+                  setDuplicateFiles( [] );
+                  removeAssetFile( id );
+                } }
               />
             </Grid.Column>
           </Grid.Row>
@@ -131,10 +181,11 @@ VideoProjectFilesDesktopRow.propTypes = {
     videoBurnedInStatus: PropTypes.string,
     use: PropTypes.string,
     quality: PropTypes.string,
-    fileInput: PropTypes.object
+    input: PropTypes.object
   } ),
   activeStep: PropTypes.number,
   show: PropTypes.func
 };
 
-export default VideoProjectFilesDesktopRow;
+
+export default React.memo( VideoProjectFilesDesktopRow, areEqual );

@@ -7,7 +7,7 @@ import ApolloError from 'components/errors/ApolloError';
 import { Dropdown, Embed, Loader } from 'semantic-ui-react';
 
 import downloadIcon from 'static/icons/icon_download.svg';
-import { getStreamData, getYouTubeId } from 'lib/utils';
+import { getStreamData, getVimeoId, getYouTubeId } from 'lib/utils';
 
 import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo';
 import DownloadSrt from 'components/admin/download/DownloadSrt/DownloadSrt';
@@ -36,6 +36,7 @@ const VIDEO_PROJECT_UNITS_QUERY = gql`
       updatedAt
       projectType
       team {
+        id
         name
       }
       units {
@@ -45,6 +46,7 @@ const VIDEO_PROJECT_UNITS_QUERY = gql`
         thumbnails {
           id
           image {
+            id
             alt
             url
           }
@@ -180,7 +182,7 @@ class PreviewProjectItem extends React.Component {
           if ( !selectedItem || !Object.keys( selectedItem ).length ) {
             return (
               <p style={ { fontSize: '1rem' } }>
-                This project does not have any videos yet. <Link href={ `/admin/project/video/${id}/edit` }><a>Add videos &raquo;</a></Link>
+                This project does not have any videos yet. <Link as={ `/admin/project/video/${id}/edit` } href={ `/admin/project?content=video&id=${id}&action=edit` }><a>Add videos &raquo;</a></Link>
               </p>
             );
           }
@@ -212,6 +214,7 @@ class PreviewProjectItem extends React.Component {
             >
               <Notification
                 el="p"
+                show
                 customStyles={ previewMsgStyles }
                 msg={ `This is a preview of your ${projectType} project on Content Commons.` }
               />
@@ -288,9 +291,9 @@ class PreviewProjectItem extends React.Component {
                     source="youtube"
                   />
                 ) }
-                { !youTubeUrl && (
+                { ( !youTubeUrl && vimeoUrl ) && (
                   <Embed
-                    id={ getYouTubeId( youTubeUrl ) }
+                    id={ getVimeoId( vimeoUrl ) }
                     placeholder={ thumbnailUrl }
                     source="vimeo"
                   />

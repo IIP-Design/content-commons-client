@@ -1,0 +1,302 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<VideoProjectData /> does not crash if author and team are \`{}\` 1`] = `null`;
+
+exports[`<VideoProjectData /> does not crash if author and team are \`null\` 1`] = `
+<section
+  className="project-data_meta section"
+>
+  <p>
+    <b
+      className="label"
+    >
+      Video Title:
+    </b>
+     
+    test title
+  </p>
+  <p>
+    <b
+      className="label"
+    >
+      Author:
+    </b>
+     
+  </p>
+  <p>
+    <b
+      className="label"
+    >
+      Team:
+    </b>
+     
+  </p>
+  <p>
+    <b
+      className="label"
+    >
+      Visibility Setting:
+    </b>
+     
+    PUBLIC
+  </p>
+</section>
+`;
+
+exports[`<VideoProjectData /> does not crash if categories and tags are \`[]\` 1`] = `
+<section
+  className="project-data_taxonomy section"
+>
+  <p>
+    <b
+      className="label"
+    >
+      Categories: 
+    </b>
+  </p>
+  <p>
+    <b
+      className="label"
+    >
+      Tags: 
+    </b>
+  </p>
+</section>
+`;
+
+exports[`<VideoProjectData /> does not crash if categories and tags are \`null\` 1`] = `
+<section
+  className="project-data_taxonomy section"
+>
+  <p>
+    <b
+      className="label"
+    >
+      Categories: 
+    </b>
+  </p>
+  <p>
+    <b
+      className="label"
+    >
+      Tags: 
+    </b>
+  </p>
+</section>
+`;
+
+exports[`<VideoProjectData /> renders initial loading state without crashing 1`] = `
+<VideoProjectData
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": true,
+      "networkStatus": 1,
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "123",
+      },
+    }
+  }
+  id="123"
+>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "center",
+        "minHeight": "200px",
+      }
+    }
+  >
+    <Loader
+      active={true}
+      content="Loading project data..."
+      inline="centered"
+      style={
+        Object {
+          "marginBottom": "1em",
+        }
+      }
+    >
+      <div
+        className="ui active text centered inline loader"
+        style={
+          Object {
+            "marginBottom": "1em",
+          }
+        }
+      >
+        Loading project data...
+      </div>
+    </Loader>
+  </div>
+</VideoProjectData>
+`;
+
+exports[`<VideoProjectData /> renders the final state 1`] = `
+<VideoProjectData
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": false,
+      "networkStatus": 7,
+      "project": Object {
+        "author": Object {
+          "firstName": "Jane",
+          "id": "au438",
+          "lastName": "Doe",
+        },
+        "categories": Array [
+          Object {
+            "id": "c77",
+            "translations": Array [
+              Object {
+                "id": "ct7",
+                "name": "about america",
+              },
+              Object {
+                "id": "ct8",
+                "name": "Amérique",
+              },
+            ],
+          },
+        ],
+        "descInternal": "The internal description",
+        "descPublic": "The public description",
+        "id": "123",
+        "projectTitle": "test title",
+        "tags": Array [
+          Object {
+            "id": "t44",
+            "translations": Array [
+              Object {
+                "id": "tt4",
+                "name": "american culture",
+              },
+              Object {
+                "id": "tt5",
+                "name": "Culture américaine",
+              },
+            ],
+          },
+        ],
+        "team": Object {
+          "id": "t11",
+          "name": "IIP Video Production",
+        },
+        "visibility": "PUBLIC",
+      },
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "123",
+      },
+    }
+  }
+  id="123"
+>
+  <section
+    className="section section--project_data"
+  >
+    <h3
+      className="uppercase"
+    >
+      Project Data
+    </h3>
+    <section
+      className="project-data_meta section"
+    >
+      <p>
+        <b
+          className="label"
+        >
+          Video Title:
+        </b>
+         
+        test title
+      </p>
+      <p>
+        <b
+          className="label"
+        >
+          Author:
+        </b>
+         
+        Jane Doe
+      </p>
+      <p>
+        <b
+          className="label"
+        >
+          Team:
+        </b>
+         
+        IIP Video Production
+      </p>
+      <p>
+        <b
+          className="label"
+        >
+          Visibility Setting:
+        </b>
+         
+        PUBLIC
+      </p>
+    </section>
+    <section
+      className="project-data_taxonomy section"
+    >
+      <p>
+        <b
+          className="label"
+        >
+          Categories: 
+        </b>
+        about america
+      </p>
+      <p>
+        <b
+          className="label"
+        >
+          Tags: 
+        </b>
+        american culture
+      </p>
+    </section>
+    <section
+      className="project-data_description section"
+    >
+      <p>
+        <b
+          className="label"
+        >
+          Public Description:
+        </b>
+         
+        The public description
+      </p>
+      <p>
+        <b
+          className="label"
+        >
+          Internal Description:
+        </b>
+         
+        The internal description
+      </p>
+    </section>
+  </section>
+</VideoProjectData>
+`;

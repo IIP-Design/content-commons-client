@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import sortBy from 'lodash/sortBy';
 import { withFormik } from 'formik';
 import { Form, Input, Button } from 'semantic-ui-react';
 import { optionFormatter, formikHandleOnChange } from 'lib/form';
@@ -55,8 +56,9 @@ const SelectRole = ( {
             checked={ values.permissions === option.value }
             onChange={ handleOnChange }
             error={ !!errors.permissions }
+            disabled={ !option.enabled }
           />
-          <p className="checkbox_content">{ option.content }</p>
+          <p className={ `checkbox_content ${( !option.enabled ) ? 'disabled' : ''}` }>{ option.content }</p>
         </Form.Field>
       ) ) }
       <p className="error-message">{ errors.permissions }</p>
@@ -75,7 +77,7 @@ const SelectRole = ( {
                 placeholder="- Select Team"
                 search
                 selection
-                options={ optionFormatter( data.teams, 'id' ) }
+                options={ sortBy( optionFormatter( data.teams, 'id' ), 'text' ) }
                 value={ values.team }
                 onChange={ handleOnChange }
                 error={ !!errors.team }

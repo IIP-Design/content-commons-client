@@ -5,7 +5,7 @@
  */
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import propTypes from 'prop-types';
 
 import { Loader } from 'semantic-ui-react';
@@ -24,39 +24,35 @@ const VIDEO_PROJECT_QUERY = gql`
   }
 `;
 
-const VIDEO_UNIT_QUERY = gql`
-  query VIDEO_UNIT_QUERY( $id: ID! ) {
-    unit: videoUnit( id: $id ) {
-      id
-      language {
-        id
-        displayName
-      }
-    }
-  }
-`;
-
 export const EditSingleProjectItemContext = React.createContext();
 
-const EditSingleProjectItem = ( {
-  itemId, projectId, videoProjectQuery, videoUnitQuery
-} ) => {
+const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
   const { project } = videoProjectQuery;
-  const { unit } = videoUnitQuery;
 
+  const [selectedFile, setSelectedFile] = useState( '' );
   const [selectedProject, setSelectedProject] = useState( projectId );
   const [selectedUnit, setSelectedUnit] = useState( itemId );
-  const [language, setLanguage] = useState( '' );
+  const [language, setLanguage] = useState( null );
 
-  const updateProject = id => (
+  const updateSelectedFile = id => (
+    setSelectedFile( id )
+  );
+
+  const updateSelectedLanguage = lang => {
+    setLanguage( lang );
+  };
+
+  const updateSelectedProject = id => (
     setSelectedProject( id )
   );
 
-  const updateUnit = async id => {
+  const updateSelectedUnit = ( id, file ) => {
+    setLanguage( null );
+    setSelectedFile( file || '' );
     setSelectedUnit( id );
   };
 
-  if ( !unit || !project ) {
+  if ( !project ) {
     return (
       <div style={ {
         display: 'flex',
@@ -72,24 +68,25 @@ const EditSingleProjectItem = ( {
     );
   }
 
-  const lang = unit.language && unit.language.displayName ? unit.language.displayName : '';
-
   return (
     <EditSingleProjectItemContext.Provider
       value={ {
         language,
+        selectedFile,
         selectedProject,
         selectedUnit,
-        updateProject,
-        updateUnit
+        updateSelectedFile,
+        updateSelectedLanguage,
+        updateSelectedProject,
+        updateSelectedUnit
       } }
     >
       <ModalItem
         customClassName="edit-project-item"
-        headline={ `${project.projectTitle} ${language ? `in ${language}` : ''}` }
+        headline={ `${project.projectTitle} ${language && language.displayName ? `in ${language.displayName}` : ''}` }
         textDirection="ltr"
       >
-        <EditVideoModal projectId={ selectedProject } unitId={ selectedUnit } />
+        <EditVideoModal />
       </ModalItem>
     </EditSingleProjectItemContext.Provider>
   );
@@ -98,21 +95,12 @@ const EditSingleProjectItem = ( {
 EditSingleProjectItem.propTypes = {
   itemId: propTypes.string,
   projectId: propTypes.string,
-  videoProjectQuery: propTypes.object,
-  videoUnitQuery: propTypes.object
+  videoProjectQuery: propTypes.object
 };
 
-export default compose(
-  graphql( VIDEO_PROJECT_QUERY, {
-    name: 'videoProjectQuery',
-    options: props => ( {
-      variables: { id: props.projectId },
-    } )
-  } ),
-  graphql( VIDEO_UNIT_QUERY, {
-    name: 'videoUnitQuery',
-    options: props => ( {
-      variables: { id: props.itemId },
-    } )
+export default graphql( VIDEO_PROJECT_QUERY, {
+  name: 'videoProjectQuery',
+  options: props => ( {
+    variables: { id: props.projectId },
   } )
-)( EditSingleProjectItem );
+} )( EditSingleProjectItem );

@@ -5,7 +5,6 @@ import {
   Button,
   Step
 } from 'semantic-ui-react';
-
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import CancelUpload from '../../../CancelUpload/CancelUpload';
 import VideoProjectFilesRowDesktop from './VideoProjectFilesRowDesktop';
@@ -23,11 +22,28 @@ const VideoProjectFilesDesktop = () => {
     ? { display: 'inline-block' }
     : { display: 'none' } );
 
+  const stepOneComplete = files => files.every( file => {
+    const { input: { type } } = file;
+    if ( type.includes( 'video' ) ) {
+      if ( activeStep === 1 ) {
+        return ( file.language && file.videoBurnedInStatus );
+      }
+      return ( file.quality );
+    }
+    return ( file.language );
+  } );
+
   return (
     // Context API is used to avoind having to pass props down multiple levels
     <VideoUploadContext.Consumer>
       { ( {
-        files, addAssetFiles, closeModal, allFieldsSelected, handleAddFilesToUpload
+        files,
+        addAssetFiles,
+        closeModal,
+        allFieldsSelected,
+        handleAddFilesToUpload,
+        compareFilenames,
+        setDuplicateFiles
       } ) => (
         <div className="videoProjectFilesDesktop__wrapper">
           <div className="videoProjectFilesDesktop__steps">
@@ -47,7 +63,7 @@ const VideoProjectFilesDesktop = () => {
                 <Grid.Column width={ 2 }></Grid.Column>
               </Grid.Row>
 
-              { files.map( file => (
+              { files.sort( compareFilenames ).map( file => (
                 <VideoProjectFilesRowDesktop
                   key={ file.id }
                   file={ file }
@@ -57,34 +73,46 @@ const VideoProjectFilesDesktop = () => {
               ) ) }
 
               <Grid.Row style={ { paddingLeft: '1rem' } }>
-                <ButtonAddFiles onChange={ e => addAssetFiles( e.target.files ) } multiple className="secondary">+ Add Files</ButtonAddFiles>
+                <ButtonAddFiles
+                  onChange={ e => addAssetFiles( e.target.files ) }
+                  multiple
+                  className="secondary"
+                  inputID="videoFileUpload"
+                >
+                  + Add Files
+                </ButtonAddFiles>
               </Grid.Row>
 
             </Grid>
             <Form.Field className="upload_actions">
               <CancelUpload closeModal={ closeModal } />
-
               <Button
                 className="secondary"
                 style={ show( 2 ) }
                 content="Previous"
-                onClick={ () => setActiveStep( 1 ) }
+                onClick={ () => {
+                  setActiveStep( 1 );
+                  setDuplicateFiles( [] );
+                } }
               />
               <Button
                 className="primary"
                 content="Next"
+                disabled={ !stepOneComplete( files ) || files.length === 0 }
                 style={ show( 1 ) }
-                onClick={ () => setActiveStep( 2 ) }
+                onClick={ () => {
+                  setActiveStep( 2 );
+                  setDuplicateFiles( [] );
+                } }
               />
-
               <Button
                 className="primary"
-                content="Next"
-                disabled={ !allFieldsSelected }
+                type="button"
+                content="Continue"
+                disabled={ !allFieldsSelected || files.length === 0 }
                 style={ show( 2 ) }
                 onClick={ handleAddFilesToUpload }
               />
-
             </Form.Field>
           </Form>
         </div>

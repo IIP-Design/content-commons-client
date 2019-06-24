@@ -1,0 +1,141 @@
+@import "../../../../../styles/colors.scss";
+
+.review-project {
+  :focus:not(:focus-visible) {
+    outline: none
+  }
+
+  .section--project_header {
+    display: block;
+    @media screen and (min-width: 960px) {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  @media screen and (max-width: 959px) {
+    .project_header {
+      margin-bottom: 1em;
+    }
+  }
+
+  .uppercase {
+    text-transform: uppercase;
+  }
+
+  .section {
+    margin-bottom: 1em;
+    
+    p {
+      margin-bottom: 2px;
+      font-size: 0.777778rem;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 0.777778rem;
+    }
+
+    .label {
+      font-weight: bold;
+    }
+
+    .ui.checkbox label {
+      font-size: 0.777778rem !important;
+    }
+
+    .title {
+      font-size: 1rem;
+      font-weight: normal;
+    }
+
+    &--publish {
+      padding-top: 1em;
+      text-align: center;
+
+      h3 {
+        padding-bottom: 1em;
+      }
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    .layout,
+    .ui.grid > .row.layout {
+      padding: 1.75em;
+    }
+  }
+
+  @media screen and (max-width: 550px) {
+    .project_buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 0.5fr);
+      grid-gap: 1em;
+    }
+  }
+
+  .project_button {
+    padding-top: 0.785714em;
+    padding-bottom: 0.785714em;
+    border: 2px solid $matisse-blue;
+    color: $matisse-blue;
+    font-size: 0.777778rem;
+    background-color: #fff;
+    box-shadow: none !important;
+
+    &:hover,
+    &:active,
+    &:focus {
+      color: #fff;
+      background-color: $matisse-blue;
+
+      > a {
+        color: #fff;
+      }
+    }
+
+    > a {
+      color: $matisse-blue;
+    }
+
+    &--publish {
+      border: 2px solid $green;
+      background-color: $green;
+      color: #fff;
+
+      &:hover,
+      &:active,
+      &:focus {
+        border-color: $matisse-blue;
+      }
+    }
+
+    &--delete {
+      border: 2px solid #fff;
+      @media screen and (max-width: 550px) {
+        border-color: $grey;
+      }
+      font-weight: normal;
+      color: $grey;
+
+      &:hover,
+      &:active,
+      &:focus {
+        border-color: $grey;
+        background-color: $grey;
+        color: #fff;
+      }
+    }
+  }
+
+  .ui.button {
+    &:focus,
+    &.basic.buttons .button:focus,
+    &.basic:focus {
+      outline: 2px dotted $medium-grey;
+      outline-offset: 2px;
+    }
+  }
+}

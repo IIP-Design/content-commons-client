@@ -13,8 +13,7 @@ import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePaginat
 import './TableItemsDisplay.scss';
 
 const displaySizeOptions = [
-  { key: 2, value: 2, text: '2' }, // temp value, for development
-  { key: 4, value: 4, text: '4' }, // temp value, for development
+  { key: 15, value: 15, text: '15' },
   { key: 25, value: 25, text: '25' },
   { key: 50, value: 50, text: '50' },
   { key: 75, value: 75, text: '75' },
@@ -35,7 +34,7 @@ const TableItemsDisplay = props => {
       query={ TEAM_VIDEO_PROJECTS_COUNT_QUERY }
       variables={ { ...variables } }
     >
-      { ( { loading, error, data: { videoProjects } } ) => {
+      { ( { loading, error, data } ) => {
         if ( loading ) {
           return (
             <Grid.Column className="items_display">
@@ -51,9 +50,9 @@ const TableItemsDisplay = props => {
             </Grid.Column>
           );
         }
-        if ( !videoProjects ) return null;
+        if ( data && !data.videoProjects ) return null;
 
-        const projectsCount = videoProjects.length;
+        const projectsCount = data.videoProjects.length;
         const firstPageItem = skip + 1;
         const range = skip + count;
         const lastPageItem = range < projectsCount ? range : projectsCount;

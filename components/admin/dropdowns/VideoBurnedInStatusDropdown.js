@@ -4,7 +4,7 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { titleCase } from 'lib/utils';
+import { titleCase, addEmptyOption } from 'lib/utils';
 
 const VIDEO_BURNED_IN_STATUS_QUERY = gql`
   query VIDEO_BURNED_IN_STATUS_QUERY {
@@ -16,6 +16,7 @@ const VIDEO_BURNED_IN_STATUS_QUERY = gql`
   }
  `;
 
+const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
 const VideoBurnedInStatusDropdown = props => (
   <Query query={ VIDEO_BURNED_IN_STATUS_QUERY }>
@@ -38,6 +39,8 @@ const VideoBurnedInStatusDropdown = props => (
             };
           } );
       }
+
+      addEmptyOption( options );
 
       return (
         <Fragment>
@@ -77,5 +80,5 @@ VideoBurnedInStatusDropdown.propTypes = {
   label: PropTypes.string
 };
 
-export default VideoBurnedInStatusDropdown;
+export default React.memo( VideoBurnedInStatusDropdown, areEqual );
 export { VIDEO_BURNED_IN_STATUS_QUERY };

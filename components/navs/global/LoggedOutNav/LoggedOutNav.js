@@ -37,7 +37,7 @@ const LoggedOutNav = props => {
   return (
     <span>
       <div className="ui compact secondary menu nav_loggedout_wrapper">
-        { menuItems.map( item => (
+        { !mobileNavVisible && menuItems.map( item => (
           <Menu.Item key={ item.key } name={ item.name }>
             <Link href={ item.to }><a>{ item.label }</a></Link>
           </Menu.Item>

@@ -5,12 +5,8 @@
  */
 
 import React, { Fragment } from 'react';
-import {
-  bool, func, object, string
-} from 'prop-types';
-import { Checkbox, Grid } from 'semantic-ui-react';
-
-import IconPopup from 'components/popups/IconPopup/IconPopup';
+import PropTypes from 'prop-types';
+import { Grid } from 'semantic-ui-react';
 import SupportFileTypeList from 'components/admin/projects/ProjectEdit/SupportFileTypeList/SupportFileTypeList';
 
 import './ProjectSupportFiles.scss';
@@ -19,71 +15,23 @@ const ProjectSupportFiles = props => {
   const {
     heading,
     projectId,
-    supportFiles,
-    hasSubmittedData,
-    protectImages,
-    handleChange,
-    config,
-    hasUploaded
+    config
   } = props;
 
-  if ( Object.keys( supportFiles ).length === 0 ) return null;
+  const fileTypes = Object.keys( config.types );
 
-  const fileTypes = Object.keys( config );
-  const columns = fileTypes.filter( n => supportFiles[n].length > 0 );
+  const renderFileTypes = type => (
+    <Fragment key={ `file-type-${type}` }>
+      <Grid.Column>
+        <SupportFileTypeList
+          projectId={ projectId }
+          type={ type }
+          config={ config }
+        />
 
-  const renderFileTypes = type => {
-    const {
-      headline,
-      popupMsg,
-      checkBoxLabel,
-      checkBoxName,
-      iconMsg,
-      iconSize,
-      iconType
-    } = config[type];
-
-    return (
-      <Fragment key={ `file-type-${type}` }>
-        <Grid.Column>
-          <SupportFileTypeList
-            headline={ headline }
-            projectId={ projectId }
-            fileType={ type }
-            popupMsg={ popupMsg }
-            data={ supportFiles[type] }
-            hasSubmittedData={ hasSubmittedData }
-            hasUploaded={ hasUploaded }
-          />
-
-          { ( type === 'other' && hasUploaded )
-            && (
-              <Fragment>
-                <Checkbox
-                  id="protect-images"
-                  label={ (
-                    /* eslint-disable jsx-a11y/label-has-for */
-                    <label htmlFor="protect-images">
-                      { checkBoxLabel }
-                    </label>
-                  ) }
-                  name={ checkBoxName }
-                  type="checkbox"
-                  checked={ protectImages }
-                  onChange={ handleChange }
-                />
-                <IconPopup
-                  message={ iconMsg }
-                  iconSize={ iconSize }
-                  iconType={ iconType }
-                  popupSize="mini"
-                />
-              </Fragment>
-            ) }
-        </Grid.Column>
-      </Fragment>
-    );
-  };
+      </Grid.Column>
+    </Fragment>
+  );
 
   return (
     <div className="support-files">
@@ -94,23 +42,19 @@ const ProjectSupportFiles = props => {
           </Grid.Column>
         </Grid.Row>
 
-        <Grid.Row columns={ columns.length } divided>
+        <Grid.Row columns={ fileTypes.length } divided>
           { fileTypes.map( renderFileTypes ) }
         </Grid.Row>
+
       </Grid>
     </div>
   );
 };
 
 ProjectSupportFiles.propTypes = {
-  heading: string,
-  projectId: string.isRequired,
-  supportFiles: object.isRequired,
-  hasSubmittedData: bool,
-  protectImages: bool,
-  handleChange: func.isRequired,
-  config: object.isRequired,
-  hasUploaded: bool
+  heading: PropTypes.string,
+  projectId: PropTypes.string,
+  config: PropTypes.object.isRequired,
 };
 
 export default ProjectSupportFiles;

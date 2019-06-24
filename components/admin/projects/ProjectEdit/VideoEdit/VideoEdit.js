@@ -3,373 +3,204 @@
  * VideoEdit
  *
  */
-import React, { Fragment } from 'react';
-import Router from 'next/router';
-import { func, object, string } from 'prop-types';
-import {
-  Button, Confirm, Loader, Progress
-} from 'semantic-ui-react';
-import gql from 'graphql-tag';
+import React, {
+  Fragment, useState, useEffect
+} from 'react';
+import { withRouter } from 'next/router';
+import PropTypes from 'prop-types';
+import { Button, Confirm } from 'semantic-ui-react';
+
 import { compose, graphql } from 'react-apollo';
+import { connect } from 'react-redux';
+import * as actions from 'lib/redux/actions/upload';
+
+import { buildUpdateVideoProjectTree } from 'lib/graphql/builders/video';
+import { buildThumbnailTree } from 'lib/graphql/builders/common';
+import {
+  UPDATE_VIDEO_PROJECT_MUTATION,
+  DELETE_VIDEO_PROJECT_MUTATION,
+  UPDATE_VIDEO_UNIT_MUTATION,
+  VIDEO_PROJECT_FILES_QUERY,
+  VIDEO_PROJECT_UNITS_QUERY
+} from 'lib/graphql/queries/video';
+import { IMAGE_USES_QUERY } from 'lib/graphql/queries/common';
 
 import Notification from 'components/Notification/Notification';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
-import PreviewProject from 'components/admin/PreviewProject/PreviewProject';
-import PreviewProjectContent from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 import ProjectSupportFiles from 'components/admin/ProjectSupportFiles/ProjectSupportFiles';
-import ProjectItemsList from 'components/admin/projects/ProjectEdit/ProjectItemsList/ProjectItemsList';
-
-import EditSingleProjectItem from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
+import ProjectUnits from 'components/admin/projects/ProjectEdit/ProjectUnits/ProjectUnits';
 import FormInstructions from 'components/admin/projects/ProjectEdit/FormInstructions/FormInstructions';
-import ProjectDataForm from 'components/admin/projects/ProjectEdit/ProjectDataForm/ProjectDataForm';
+import VideoProjectDataForm from 'components/admin/projects/ProjectEdit/VideoProjectDataForm/VideoProjectDataForm';
 import UploadSuccessMsg from 'components/admin/projects/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
-import VideoItem from 'components/admin/projects/ProjectEdit/VideoItem/VideoItem';
+import FileUploadProgressBar from 'components/admin/projects/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
+import withFileUpload from 'hocs/withFileUpload/withFileUpload';
+import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
+
+import { config } from './config';
 
 import './VideoEdit.scss';
 
-const categoryData = [
-  {
-    value: 'about-america',
-    text: 'About America'
-  },
-  {
-    value: 'arts-and-culture',
-    text: 'Arts & Culture'
-  },
-  {
-    value: 'democracy-and-civil-society',
-    text: 'Democracy & Civil Society'
-  },
-  {
-    value: 'economic-issues',
-    text: 'Economic Issues'
-  },
-  {
-    value: 'education',
-    text: 'Education'
-  },
-  {
-    value: 'environment',
-    text: 'Environment'
-  },
-  {
-    value: 'geography',
-    text: 'Geography'
-  },
-  {
-    value: 'global-issues',
-    text: 'Global Issues'
-  },
-  {
-    value: 'good-governance',
-    text: 'Good Governance'
-  },
-  {
-    value: 'health',
-    text: 'Health'
-  },
-  {
-    value: 'human-rights',
-    text: 'Human Rights'
-  },
-  {
-    value: 'press-and-journalism',
-    text: 'Press & Journalism'
-  },
-  {
-    value: 'religion-and-values',
-    text: 'Religion & Values'
-  },
-  {
-    value: 'science-and-technology',
-    text: 'Science & Technology'
-  },
-  {
-    value: 'sports',
-    text: 'Sports'
-  }
-];
+export const UploadContext = React.createContext( false );
 
-const supportFilesConfig = {
-  srt: {
-    headline: 'SRT Files',
-    fileType: 'srt',
-    popupMsg: 'Some info about what SRT files are.'
-  },
-  other: {
-    headline: 'Additional Files',
-    fileType: 'other',
-    popupMsg: 'Additional files that can be used with this video, e.g., audio file, pdf.',
-    checkBoxLabel: 'Disable right-click to protect your images',
-    checkBoxName: 'protectImages',
-    iconMsg: 'Checking this prevents people from downloading and using your images. Useful if your images are licensed.',
-    iconSize: 'small',
-    iconType: 'info circle'
-  }
-};
+const VideoEdit = props => {
+  const MAX_CATEGORY_COUNT = 2;
+  const SAVE_MSG_DELAY = 2000;
+  const UPLOAD_SUCCESS_MSG_DELAY = SAVE_MSG_DELAY + 1000;
 
-/* eslint-disable react/prefer-stateless-function */
-class VideoEdit extends React.PureComponent {
-  constructor( props ) {
-    super( props );
+  let addMoreInputRef = null;
+  let uploadSuccessTimer = null;
+  let saveMsgTimer = null;
 
-    this.MAX_CATEGORY_COUNT = 2;
-    this.SAVE_MSG_DELAY = 2000;
-    this.UPLOAD_SUCCESS_MSG_DELAY = this.SAVE_MSG_DELAY + 1000;
-    this._isMounted = false;
+  const [mounted, setMounted] = useState( false );
+  const [projectId, setProjectId] = useState( props.id );
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
+  const [displayTheUploadSuccessMsg, setDisplayTheUploadSuccessMsg] = useState( false );
 
-    this.state = {
-      deleteConfirmOpen: false,
-      hasRequiredData: false,
-      hasSubmittedData: false,
-      isUploadInProgress: false,
-      isUploadFinished: false,
-      hasUnsavedData: false,
-      displaySaveMsg: false,
-      displayTheUploadSuccessMsg: false,
-      hasExceededMaxCategories: false,
-      uploadedVideosCount: 0,
-      uploadedSupportFilesCount: 0,
-      filesToUploadCount: 0,
-      formData: {
-        projectTitle: '',
-        visibility: 'PUBLIC',
-        author: '',
-        team: '',
-        categories: [],
-        tags: [],
-        descPublic: '',
-        descInternal: '',
-        termsConditions: false,
-        protectImages: true
-      }
+  const [notification, setNotification] = useState( {
+    notificationMessage: '',
+    showNotification: false
+  } );
+
+  const { upload: { isUploading, filesToUpload } } = props;
+
+  useEffect( () => {
+    setMounted( true );
+    return () => {
+      setMounted( false );
+      clearTimeout( uploadSuccessTimer );
+      clearTimeout( saveMsgTimer );
+
+      props.uploadReset(); // clear files to upload store
     };
-  }
+  }, [] );
 
-  componentDidMount = () => {
-    this._isMounted = true;
-    this.setState( {
-      filesToUploadCount: this.getFilesToUploadCount()
-    } );
-  }
 
-  componentDidUpdate = ( prevProps, prevState ) => {
-    const uploadedCount = this.getUploadedFilesCount();
-
-    if ( uploadedCount === prevState.filesToUploadCount && prevState.hasSubmittedData && !prevState.isUploadFinished ) {
-      this.setState(
-        {
-          isUploadFinished: true,
-          isUploadInProgress: false,
-          displayTheUploadSuccessMsg: true,
-          displaySaveMsg: true
-        },
-        () => {
-          this.delayUnmount( this.handleDisplaySaveMsg, this.saveMsgTimer, this.SAVE_MSG_DELAY );
-          this.delayUnmount( this.handleDisplayUploadSuccessMsg, this.uploadSuccessTimer, this.UPLOAD_SUCCESS_MSG_DELAY );
-        }
-      );
-    }
-  }
-
-  componentWillUnmount = () => {
-    this._isMounted = false;
-    clearTimeout( this.uploadSuccessTimer );
-    clearTimeout( this.saveMsgTimer );
-  }
-
-  getVideosCount = () => {
-    const { project } = this.props.data;
-    if ( project ) {
-      return project.videos.length;
-    }
-  }
-
-  getSupportFilesCount = () => {
-    const { project } = this.props.data;
-    if ( project ) {
-      return project.supportFiles.length;
-    }
-  }
-
-  getFilesToUploadCount = () => (
-    this.getVideosCount() + this.getSupportFilesCount()
-  )
-
-  getUploadedFilesCount = () => {
-    const { uploadedVideosCount, uploadedSupportFilesCount } = this.state;
-    return uploadedVideosCount + uploadedSupportFilesCount;
-  }
-
-  getSRTs = () => {
-    const { supportFiles } = this.props.data.project;
-    if ( supportFiles ) {
-      return supportFiles.filter( file => file.filetype === 'srt' );
-    }
-  }
-
-  getOtherSupportFiles = () => {
-    const { supportFiles } = this.props.data.project;
-    if ( supportFiles ) {
-      return supportFiles.filter( file => file.filetype !== 'srt' );
-    }
-  }
-
-  getTags = () => {
-    const { tags } = this.state.formData;
-    const tagsArray = ( tags && tags.length > 0 && !Array.isArray( tags ) ) ? tags.split( /\s?[,;]\s?/ ) : tags;
-
-    if ( tagsArray && Array.isArray( tagsArray ) ) {
-      return tagsArray
-        .map( tag => tag.trim() )
-        .filter( tag => /\S/.test( tag ) );
-    }
-    return [];
-  }
-
-  displayConfirmDelete = () => {
-    this.setState( { deleteConfirmOpen: true } );
-  }
-
-  handleDeleteConfirm = () => {
-    const { id, mutate } = this.props;
-    console.log( `Deleted project: ${id}` );
-    mutate( { variables: { id } } );
-    Router.push( { pathname: '/admin/dashboard' } );
-  }
-
-  handleDeleteCancel = () => {
-    this.setState( { deleteConfirmOpen: false } );
-  }
-
-  handleFinalReview = () => {
-    Router.push( {
-      pathname: '/admin/project',
-      query: {
-        content: 'video',
-        id: this.props.id
-      }
-    } );
-  }
-
-  handleAddMoreFiles = () => {
-    console.log( 'Add more video files' );
-    this.addMoreInputRef.click();
-  }
-
-  handleAddMoreRef = c => {
-    this.addMoreInputRef = c;
-  }
-
-  handleSaveDraft = e => {
-    console.log( 'Draft saved' );
-    this.handleSubmit( e );
-  }
-
-  handleSaveProjectData = () => {
-    console.log( 'Save project data' );
-  }
-
-  handleUpload = () => this.setState( { isUploadInProgress: true } );
-
-  handleChange = ( e, { name, value, checked } ) => {
-    if ( typeof value === 'string' ) {
-      /* eslint-disable no-param-reassign */
-      value = value.trimStart();
-    }
-
-    this.setState( prevState => ( {
-      formData: {
-        ...prevState.formData,
-        [name]: value || checked
-      }
-    } ) );
-
-    this.setState( nextState => {
-      const {
-        categories,
-        projectTitle,
-        visibility,
-        termsConditions
-      } = nextState.formData;
-      const categoryCount = categories.length;
-
-      return ( {
-        hasUnsavedData: true,
-        hasExceededMaxCategories: categoryCount > this.MAX_CATEGORY_COUNT,
-        hasRequiredData: !!projectTitle
-          && visibility
-          && categoryCount > 0
-          && categoryCount <= this.MAX_CATEGORY_COUNT
-          && termsConditions
-      } );
+  const updateNotification = msg => {
+    setNotification( {
+      notificationMessage: msg,
+      showNotification: !!msg
     } );
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    const {
-      projectTitle,
-      author,
-      team,
-      descPublic,
-      descInternal,
-      termsConditions,
-      protectImages
-    } = this.state.formData;
 
-    this.setState(
-      prevState => ( {
-        hasSubmittedData: true,
-        hasUnsavedData: false,
-        displaySaveMsg: true,
-        formData: {
-          ...prevState.formData,
-          projectTitle: projectTitle ? projectTitle.trimEnd() : '',
-          author: author ? author.trimEnd() : '',
-          team: team ? team.trimEnd() : '',
-          descPublic: descPublic ? descPublic.trimEnd() : '',
-          descInternal: descInternal ? descInternal.trimEnd() : '',
-          tags: this.getTags(),
-          termsConditions,
-          protectImages
-        }
-      } ),
-      this.handleSaveProjectData
-    );
+  const addProjectIdToUrl = id => {
+    const { router } = props;
 
-    if ( !this.state.isUploadFinished ) {
-      this.handleUpload();
-    } else {
-      this.delayUnmount( this.handleDisplaySaveMsg, this.saveMsgTimer, this.SAVE_MSG_DELAY );
-    }
+    const path = `${router.asPath}&id=${id}`;
+    router.replace( router.asPath, path, { shallow: true } );
+  };
 
-    window.scrollTo( { top: 0, behavior: 'smooth' } );
-  }
-
-  handleDisplayUploadSuccessMsg = () => {
-    if ( this._isMounted ) {
-      this.setState( { displayTheUploadSuccessMsg: false } );
-    }
-    this.uploadSuccessTimer = null;
-  }
-
-  handleDisplaySaveMsg = () => {
-    if ( this._isMounted ) {
-      this.setState( { displaySaveMsg: false } );
-    }
-    this.saveMsgTimer = null;
-  }
-
-  delayUnmount = ( fn, timer, delay ) => {
+  const delayUnmount = ( fn, timer, delay ) => {
     if ( timer ) clearTimeout( timer );
     /* eslint-disable no-param-reassign */
     timer = setTimeout( fn, delay );
   };
 
-  renderConfirm = ( isOpen, onConfirm, onCancel ) => (
+
+  const handleDeleteConfirm = () => {
+    const { id, mutate } = props;
+    console.log( `Deleted project: ${id}` );
+    mutate( { variables: { id } } );
+    props.router.push( { pathname: '/admin/dashboard' } );
+  };
+
+  // const handleDeleteCancel = () => {
+  //   setDeleteConfirmOpen( false );
+  // };
+
+  const handleFinalReview = () => {
+    props.router.push( {
+      pathname: '/admin/project',
+      query: {
+        content: 'video',
+        id: projectId
+      }
+    }, `/admin/project/video/${projectId}/review` );
+  };
+
+  const handleAddMoreFiles = () => {
+    console.log( 'Add more video files' );
+    addMoreInputRef.click();
+  };
+
+  const handleAddMoreRef = c => {
+    addMoreInputRef = c;
+  };
+
+  const handleSaveDraft = async ( id, projectTitle ) => {
+    const { updateVideoProject, data: { imageUses } } = props;
+    const data = buildUpdateVideoProjectTree( filesToUpload, imageUses[0].id, projectTitle );
+
+    await updateVideoProject( {
+      variables: {
+        data,
+        where: {
+          id
+        }
+      }
+    } ).catch( err => console.dir( err ) );
+  };
+
+
+  const handleUploadProgress = async ( progressEvent, file ) => {
+    props.uploadProgress( file.id, progressEvent );
+  };
+
+  const handleDisplayUploadSuccessMsg = () => {
+    if ( mounted ) {
+      setDisplayTheUploadSuccessMsg( false );
+    }
+    uploadSuccessTimer = null;
+  };
+
+  const handleDisplaySaveMsg = () => {
+    if ( mounted ) {
+      updateNotification( '' );
+    }
+    saveMsgTimer = null;
+  };
+
+
+  const handleUploadComplete = () => {
+    const { setIsUploading, uploadReset } = props;
+
+    setIsUploading( false );
+    uploadReset(); // reset upload redux store
+    setDisplayTheUploadSuccessMsg( true );
+    updateNotification( 'Project saved as draft' );
+    delayUnmount( handleDisplaySaveMsg, saveMsgTimer, SAVE_MSG_DELAY );
+    delayUnmount( handleDisplayUploadSuccessMsg, uploadSuccessTimer, UPLOAD_SUCCESS_MSG_DELAY );
+  };
+
+
+  const handleUpload = async project => {
+    const { id, projectTitle } = project;
+    const { uploadExecute, setIsUploading } = props;
+
+    // If there are files to upload, upload them
+    if ( filesToUpload && filesToUpload.length ) {
+      setIsUploading( true );
+
+      // 1. Upload files to S3 & Vimeo and fetch file meta data
+      await uploadExecute( id, filesToUpload, handleUploadProgress );
+
+      // 2. once all files have been uploaded, create and save new project (only new)
+      handleSaveDraft( id, projectTitle );
+
+      // 3. clean up upload process
+      handleUploadComplete();
+
+      // 4. set project id to newly created project (what if exsiting project?)
+      setProjectId( id );
+
+      // 5. update url to reflect a new project (only new)
+      addProjectIdToUrl( id );
+    }
+  };
+
+  const renderConfirm = ( isOpen, onConfirm, onCancel ) => (
     <Fragment>
       <Confirm
         className="confirm-modal"
@@ -390,338 +221,252 @@ class VideoEdit extends React.PureComponent {
         ) }
       />
     </Fragment>
-  )
+  );
 
-  render() {
-    const {
-      id,
-      data
-    } = this.props;
-    const { error, loading } = data;
 
-    if ( error ) return `Error! ${error.message}`;
+  const contentStyle = {
+    border: `3px solid ${( projectId ) ? 'transparent' : '#02bfe7'}`
+  };
 
-    if ( loading ) {
-      return (
-        <div style={ {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh'
-        } }
-        >
-          <Loader active inline="centered" style={ { marginBottom: '1em' } } />
-          <p>Loading the project...</p>
-        </div>
-      );
-    }
+  const { showNotification, notificationMessage } = notification;
 
-    const { supportFiles } = data.project;
+  return (
+    <div className="edit-project">
+      <Breadcrumbs />
+      { /* action buttons at top need to be separate component */ }
+      <div className="edit-project__header">
+        <ProjectHeader icon="video camera" text="Project Details">
 
-    const {
-      deleteConfirmOpen,
-      hasRequiredData,
-      hasSubmittedData,
-      isUploadInProgress,
-      isUploadFinished,
-      hasUnsavedData,
-      displaySaveMsg,
-      displayTheUploadSuccessMsg,
-      hasExceededMaxCategories,
-      formData,
-      filesToUploadCount
-    } = this.state;
-
-    const {
-      projectTitle,
-      visibility,
-      author,
-      team,
-      categories,
-      tags,
-      descPublic,
-      descInternal,
-      termsConditions,
-      protectImages
-    } = formData;
-
-    const formBorderColor = `${!hasSubmittedData ? '#02bfe7' : '#cd2026'}`;
-    const contentStyle = {
-      border: `3px solid ${( hasRequiredData && hasSubmittedData ) ? 'transparent' : `${formBorderColor}`}`
-    };
-
-    let notificationMsg = 'Project saved as draft';
-    if ( hasSubmittedData && hasUnsavedData && !hasRequiredData ) {
-      notificationMsg = 'Please fill in required data';
-    } else if ( hasSubmittedData && hasUnsavedData ) {
-      notificationMsg = 'You have unsaved data';
-    } else if ( isUploadInProgress ) {
-      notificationMsg = 'Saving project...';
-    }
-
-    const hasSupportFiles = supportFiles && supportFiles.length > 0;
-
-    return (
-      <div className="edit-project">
-        <div className="edit-project__header">
-          <ProjectHeader icon="video camera" text="Project Details">
-            <Button
-              className="edit-project__btn--delete"
-              content="Delete Project"
-              basic
-              onClick={ this.displayConfirmDelete }
-              disabled={ !isUploadFinished }
-            />
-
-            <Confirm
-              className="delete"
-              open={ deleteConfirmOpen }
-              content={ (
-                <ConfirmModalContent
-                  className="delete_confirm delete_confirm--video"
-                  headline="Are you sure you want to delete this video project?"
-                >
-                  <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
-                </ConfirmModalContent>
-              ) }
-              onCancel={ this.handleDeleteCancel }
-              onConfirm={ this.handleDeleteConfirm }
-              cancelButton="No, take me back"
-              confirmButton="Yes, delete forever"
-            />
-
-            <PreviewProject
-              triggerProps={ {
-                className: 'edit-project__btn--preview',
-                content: 'Preview Project',
-                basic: true,
-                disabled: !isUploadFinished
-              } }
-              contentProps={ { id } }
-              modalTrigger={ Button }
-              modalContent={ PreviewProjectContent }
-              options={ { closeIcon: true } }
-            />
-
-            { hasSubmittedData
-              && (
-                <Button
-                  className="edit-project__btn--save-draft"
-                  content="Save Draft"
-                  basic
-                  onClick={ this.handleSaveDraft }
-                  disabled={ !isUploadFinished || !hasUnsavedData || !hasRequiredData }
-                />
-              ) }
-            <Button
-              className="edit-project__btn--final-review"
-              content="Final Review"
-              onClick={ this.handleFinalReview }
-              disabled={ !isUploadFinished }
-            />
-          </ProjectHeader>
-        </div>
-
-        <div className="edit-project__status alpha">
-          { !hasSubmittedData && <FormInstructions /> }
-          { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
-
-          { ( displaySaveMsg || ( hasUnsavedData && hasSubmittedData ) )
-            && (
-              <Notification
-                el="p"
-                customStyles={ {
-                  position: 'absolute',
-                  top: '10.75em',
-                  left: '50%',
-                  transform: 'translateX(-50%)'
-                } }
-                msg={ notificationMsg }
-              />
-            ) }
-
-          { isUploadInProgress
-            && (
-              <Progress
-                value={ this.getUploadedFilesCount() }
-                total={ filesToUploadCount }
-                color="blue"
-                size="medium"
-                active
-              >
-                <p>
-                  <b>Uploading files:</b> { this.getUploadedFilesCount() } of { filesToUploadCount }
-                  <br />
-                  Please keep this page open until upload is complete
-                </p>
-              </Progress>
-            ) }
-        </div>
-
-        <div className="edit-project__content" style={ contentStyle }>
-          <ProjectDataForm
-            handleSubmit={ this.handleSubmit }
-            handleChange={ this.handleChange }
-
-            videoTitle={ projectTitle || '' }
-            visibilityOptions={ [{
-              value: 'PUBLIC',
-              text: 'Anyone can see this project'
-            },
-            {
-              value: 'INTERNAL',
-              text: 'need text for this'
-            }] }
-            visibility={ visibility }
-
-            authorValue={ author || '' }
-            teamValue={ team || '' }
-
-            categoryLabel="Categories"
-            maxCategories={ this.MAX_CATEGORY_COUNT }
-            categoryOptions={ categoryData }
-            categoriesValue={ categories }
-            hasExceededMaxCategories={ hasExceededMaxCategories }
-            tagsValue={ tags || '' }
-
-            descPublicValue={ descPublic }
-            descInternalValue={ descInternal }
-            termsConditions={ termsConditions }
-
-            hasSubmittedData={ hasSubmittedData }
-            hasRequiredData={ hasRequiredData }
-          />
-        </div>
-
-        <div className="edit-project__status beta">
-          { !hasSubmittedData && <FormInstructions /> }
-          { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
-
-          { isUploadInProgress
-            && (
-              <Progress
-                value={ this.getUploadedFilesCount() }
-                total={ filesToUploadCount }
-                color="blue"
-                size="medium"
-                active
-              >
-                <p>
-                  <b>Uploading files:</b> { this.getUploadedFilesCount() } of { filesToUploadCount }
-                  <br />
-                  Please keep this page open until upload is complete
-                </p>
-              </Progress>
-            ) }
-        </div>
-
-        { hasSupportFiles
-          && (
-            <div className="edit-project__support-files">
-              <ProjectSupportFiles
-                heading="Support Files"
-                projectId={ this.props.id }
-                supportFiles={ {
-                  srt: this.getSRTs(),
-                  other: this.getOtherSupportFiles()
-                } }
-                hasSubmittedData={ hasSubmittedData }
-                protectImages={ protectImages }
-                handleChange={ this.handleChange }
-                config={ supportFilesConfig }
-                hasUploaded={ isUploadFinished }
-              />
-            </div>
-          )
-        }
-
-        <div className="edit-project__items">
-          <ProjectItemsList
-            listEl="ul"
-            projectId={ this.props.id }
-            headline="Videos in Project"
-            hasSubmittedData={ hasSubmittedData }
-            projectType="video"
-            displayItemInModal
-            modalTrigger={ VideoItem }
-            modalContent={ EditSingleProjectItem }
+          <Button
+            className="edit-project__btn--delete"
+            content="Delete Project"
+            basic
+            onClick={ () => setDeleteConfirmOpen( true ) }
+            disabled={ !projectId }
           />
 
-          { hasSubmittedData
-            && (
-              <div style={ { marginTop: '3rem' } }>
-                <Button
-                  className="edit-project__add-more"
-                  content="+ Add more files to this project"
-                  basic
-                  onClick={ this.handleAddMoreFiles }
-                />
-                <VisuallyHidden>
-                  { /* eslint-disable jsx-a11y/label-has-for */
-                    /* eslint-disable jsx-a11y/label-has-associated-control */ }
-                  <label htmlFor="upload-item--multiple">upload more project items</label>
-                  <input
-                    id="upload-item--multiple"
-                    ref={ this.handleAddMoreRef }
-                    type="file"
-                    accept=".mov, .mp4, .mpg, .wmv, .avi"
-                    multiple
-                    tabIndex={ -1 }
-                  />
-                </VisuallyHidden>
-              </div>
+          <Confirm
+            className="delete"
+            open={ deleteConfirmOpen }
+            content={ (
+              <ConfirmModalContent
+                className="delete_confirm delete_confirm--video"
+                headline="Are you sure you want to delete this video project?"
+              >
+                <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
+              </ConfirmModalContent>
             ) }
-        </div>
+            onCancel={ () => setDeleteConfirmOpen( false ) }
+            onConfirm={ handleDeleteConfirm }
+            cancelButton="No, take me back"
+            confirmButton="Yes, delete forever"
+          />
+
+          { projectId
+            && (
+              <Button
+                className="edit-project__btn--save-draft"
+                content="Save Draft"
+                basic
+                onClick={ handleSaveDraft }
+                disabled={ !projectId }
+              />
+            ) }
+          <Button
+            className="edit-project__btn--final-review"
+            content="Final Review"
+            onClick={ handleFinalReview }
+            disabled={ !projectId }
+          />
+        </ProjectHeader>
       </div>
-    );
-  }
-}
 
-VideoEdit.propTypes = {
-  id: string,
-  data: object.isRequired,
-  mutate: func
+      <Notification
+        el="p"
+        customStyles={ {
+          position: 'absolute',
+          top: '9em',
+          left: '50%',
+          transform: 'translateX(-50%)'
+        } }
+        show={ showNotification }
+        msg={ notificationMessage }
+      />
+
+      { /* upload progress  */ }
+      <div className="edit-project__status alpha">
+        { !projectId && !isUploading && <FormInstructions /> }
+        { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
+
+        { isUploading
+          && (
+          <FileUploadProgressBar
+            filesToUpload={ filesToUpload }
+            label="Please keep this page open until upload is complete"
+            fileProgessMessage
+          />
+          ) }
+      </div>
+
+      { /* project details form */ }
+      <div className="edit-project__content" style={ contentStyle }>
+        <VideoProjectDataForm
+          id={ projectId }
+          updateNotification={ updateNotification }
+          handleUpload={ handleUpload }
+          maxCategories={ MAX_CATEGORY_COUNT }
+        />
+      </div>
+
+      { /* upload progress */ }
+      <div className="edit-project__status beta">
+        { !projectId && !isUploading && <FormInstructions /> }
+        { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
+
+        { isUploading
+          && (
+          <FileUploadProgressBar
+            filesToUpload={ filesToUpload }
+            label="Please keep this page open until upload is complete"
+            fileProgessMessage
+          />
+          ) }
+      </div>
+
+      <UploadContext.Provider value={ isUploading }>
+        { /* support files */ }
+        <div className="edit-project__support-files">
+          <ProjectSupportFiles
+            projectId={ projectId }
+            heading="Support Files"
+            config={ config.supportFiles }
+          />
+        </div>
+
+        { /* project thumbnails */ }
+        <div className="edit-project__items">
+          <ProjectUnits
+            projectId={ projectId }
+            heading="Videos in Project"
+            extensions={ ['.mov', '.mp4'] }
+          />
+        </div>
+      </UploadContext.Provider>
+
+      { /* add more files button */ }
+      { projectId && (
+        <div style={ { marginTop: '3rem' } }>
+          <Button
+            className="edit-project__add-more"
+            content="+ Add more files to this project"
+            basic
+            onClick={ handleAddMoreFiles }
+          />
+          <VisuallyHidden>
+            <label htmlFor="upload-item--multiple">upload more project items</label>
+            <input
+              id="upload-item--multiple"
+              ref={ handleAddMoreRef }
+              type="file"
+              accept=".mov, .mp4, .mpg, .wmv, .avi"
+              multiple
+              tabIndex={ -1 }
+            />
+          </VisuallyHidden>
+        </div>
+      ) }
+
+    </div>
+  );
 };
 
-const VIDEO_PROJECT_QUERY = gql`
-  query VideoProject($id: ID!) {
-    project: videoProject(id: $id) {
-      videos: units {
-        id
-        language {
-          languageCode
-        }
-      }
-      supportFiles {
-        id
-        filetype
-      }
-    }
-  }
-`;
 
-const DELETE_VIDEO_PROJECT_MUTATION = gql`
-  mutation DeleteVideoProject($id: ID!) {
-    deleteVideoProject(id: $id) {
-      id
-    }
-  }
-`;
+VideoEdit.propTypes = {
+  id: PropTypes.string,
+  data: PropTypes.object,
+  mutate: PropTypes.func,
+  updateVideoProject: PropTypes.func,
+  router: PropTypes.object,
+  setIsUploading: PropTypes.func, // from redux
+  uploadExecute: PropTypes.func, // from redux
+  uploadReset: PropTypes.func, // from redux
+  uploadProgress: PropTypes.func, // from redux
+  upload: PropTypes.object // from redux
+};
 
-const videoProjectQuery = graphql( VIDEO_PROJECT_QUERY, {
-  options: props => ( {
-    variables: {
-      id: props.id
-    },
-  } )
+const mapStateToProps = state => ( {
+  upload: state.upload
 } );
 
-const deleteVideoProjectMutation = graphql( DELETE_VIDEO_PROJECT_MUTATION );
+const connectUnitThumbnails = async ( props, result ) => {
+  const { updateVideoProject: { units, thumbnails } } = result;
+  const { updateVideoUnit } = props;
+
+  if ( units.length && thumbnails.length ) {
+    units.forEach( async unit => {
+      let thumbnail = thumbnails.find( tn => tn.language.id === unit.language.id );
+
+      // if an applicable language thumbnail doesn't exist, use english version if available
+      thumbnail = thumbnail || thumbnails.find( tn => tn.language.locale === 'en-us' );
+
+      if ( thumbnail ) {
+        updateVideoUnit( {
+          variables: {
+            data: buildThumbnailTree( thumbnail ),
+            where: {
+              id: unit.id
+            }
+          }
+        } ).catch( err => console.dir( err ) );
+      }
+    } );
+  }
+};
+
+
+const refetchVideoProject = result => {
+  // This intermittently throws an error due to a null result
+  // null result results in returning a null query
+
+  // rerun sub queries, form, units, supportfiles
+  try {
+    const { data } = result;
+    const node = data.updateVideoProject || data.updateVideoUnit;
+
+    return ( [{
+      query: VIDEO_PROJECT_FILES_QUERY,
+      variables: { id: node.id },
+    },
+    {
+      query: VIDEO_PROJECT_UNITS_QUERY,
+      variables: { id: node.id },
+    }
+    ] );
+  } catch ( err ) {
+    console.log( err );
+  }
+};
 
 export default compose(
-  deleteVideoProjectMutation,
-  videoProjectQuery
+  withRouter,
+  withFileUpload,
+  connect( mapStateToProps, actions ),
+  graphql( IMAGE_USES_QUERY ),
+  graphql( DELETE_VIDEO_PROJECT_MUTATION ),
+  graphql( UPDATE_VIDEO_UNIT_MUTATION, {
+    name: 'updateVideoUnit',
+    options: () => ( {
+      refetchQueries: result => refetchVideoProject( result )
+    } )
+  } ),
+  graphql( UPDATE_VIDEO_PROJECT_MUTATION, {
+    name: 'updateVideoProject',
+    options: props => ( {
+      refetchQueries: result => refetchVideoProject( result ),
+      onCompleted: result => connectUnitThumbnails( props, result )
+    } )
+  } ),
 )( VideoEdit );
 
-export { DELETE_VIDEO_PROJECT_MUTATION, VIDEO_PROJECT_QUERY };
+
+export { DELETE_VIDEO_PROJECT_MUTATION };

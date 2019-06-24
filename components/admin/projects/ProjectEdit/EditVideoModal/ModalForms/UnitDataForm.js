@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import propTypes from 'prop-types';
 import gql from 'graphql-tag';
-import {
-  Form, Grid, Input, Loader, TextArea
-} from 'semantic-ui-react';
+import { getPathToS3Bucket } from 'lib/utils';
+import { Form, Grid, TextArea } from 'semantic-ui-react';
 
-import { EditSingleProjectItemContext } from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
+import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
 import TagTypeahead from 'components/admin/dropdowns/TagTypeahead';
 
 const VIDEO_UNIT_QUERY = gql`
@@ -15,11 +14,6 @@ const VIDEO_UNIT_QUERY = gql`
       id
       title
       descPublic
-      language {
-        id
-        displayName
-        locale
-      }
       tags { id }
       thumbnails {
         image {
@@ -93,12 +87,12 @@ const VIDEO_UNIT_REMOVE_TAG_MUTATION = gql`
 `;
 
 class UnitDataForm extends Component {
-  state = {}
+  state = { title: '' }
 
   componentDidUpdate = prevProps => {
     const { unit } = this.props.videoUnitQuery;
 
-    if ( unit !== prevProps.videoUnitQuery.unit ) {
+    if ( unit && unit !== prevProps.videoUnitQuery.unit ) {
       const imageUrl = unit.thumbnails
         && unit.thumbnails[0]
         && unit.thumbnails[0].image
@@ -135,15 +129,31 @@ class UnitDataForm extends Component {
   updateUnit = e => {
     const { unitId } = this.props;
     const { name } = e.target;
+    const value = this.state[name];
 
     this.props[`${name}VideoUnitMutation`]( {
       variables: {
         id: unitId,
-        [name]: this.state[name]
+        [name]: value
+      },
+      update: ( cache, { data: { updateVideoUnit } } ) => {
+        try {
+          const cachedData = cache.readQuery( {
+            query: VIDEO_UNIT_QUERY,
+            variables: { id: unitId }
+          } );
+
+          cachedData.unit[name] = value;
+
+          cache.writeQuery( {
+            query: VIDEO_UNIT_QUERY,
+            data: { unit: cachedData.unit }
+          } );
+        } catch ( error ) {
+          console.log( error );
+        }
       }
     } );
-
-    this.props.videoUnitQuery.refetch();
   }
 
   updateTags = newTags => {
@@ -200,24 +210,11 @@ class UnitDataForm extends Component {
 
   render() {
     const { loading, unit } = this.props.videoUnitQuery;
+    if ( !unit || loading ) return <Loader height="368px" text="Loading the video data..." />;
 
-    if ( !unit || loading ) {
-      return (
-        <div style={ {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh'
-        } }
-        >
-          <Loader active inline="centered" style={ { marginBottom: '1em' } } />
-          <p>Loading the video data...</p>
-        </div>
-      );
-    }
-
-    const lang = `in ${unit.language.displayName}` || '';
+    const { language } = this.props;
+    const lang = language && language.displayName ? `in ${language.displayName}` : '';
+    const locale = language && language.locale ? language.locale : '';
     const {
       descPublic, imageAlt, imageUrl, tags, title
     } = this.state;
@@ -228,7 +225,7 @@ class UnitDataForm extends Component {
           <Grid.Row>
             <Grid.Column mobile={ 16 } computer={ 9 }>
               <figure className="modal_thumbnail overlay">
-                <img className="overlay-image" src={ imageUrl } alt={ imageAlt } />
+                <img className="overlay-image" src={ `${getPathToS3Bucket()}/${imageUrl}` } alt={ imageAlt } />
                 { /*
                    * Removing change thumbnail hover state
                    * since this functionality not part of MVP
@@ -240,8 +237,7 @@ class UnitDataForm extends Component {
               </figure>
             </Grid.Column>
             <Grid.Column mobile={ 16 } computer={ 7 }>
-              <Form.Field
-                control={ Input }
+              <Form.Input
                 id="video-title"
                 label={ `Video Title ${lang}` }
                 name="title"
@@ -264,7 +260,7 @@ class UnitDataForm extends Component {
                 onChange={ this.handleDropdownSelection }
                 id="video-tags"
                 label={ `Additional Keywords ${lang}` }
-                locale={ unit.language.locale }
+                locale={ locale }
                 value={ tags }
               />
 
@@ -277,6 +273,7 @@ class UnitDataForm extends Component {
 }
 
 UnitDataForm.propTypes = {
+  language: propTypes.object,
   tagsAddVideoUnitMutation: propTypes.func,
   tagsRemoveVideoUnitMutation: propTypes.func,
   unitId: propTypes.string,

@@ -72,6 +72,7 @@
       }
 
       &_action {
+        font-family: 'Source Sans Pro';
         font-size: 11px;
         font-weight: normal;
         @media screen and (max-width: 767px) {
@@ -83,6 +84,10 @@
           &:not(:first-child) {
             padding: 3px !important;
           }
+        }
+
+        &:focus {
+          outline: none !important;
         }
       }
 

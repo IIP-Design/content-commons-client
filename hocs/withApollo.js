@@ -24,7 +24,8 @@ const createClient = ( { headers } ) => new ApolloClient( {
     } );
   },
 
-  onError: ( process.env.NODE_ENV === 'development' ) ? onErrorDev : onErrorProd
+  onError: onErrorDev
+  // onError: ( process.env.NODE_ENV === 'development' ) ? onErrorDev : onErrorProd
 } );
 
 

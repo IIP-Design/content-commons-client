@@ -18,9 +18,11 @@ const VIDEO_PROJECT_FILES_QUERY = gql`
           quality
           url
           language {
+            id
             displayName
           }
           use {
+            id
             name
           }
         }
@@ -57,8 +59,7 @@ const VideoDetailsPopup = props => (
         const videoFiles = units.map( unit => unit.files.reduce( ( acc, file ) => file, {} ) );
         if ( videoFiles.length || supportFiles.length ) {
           return (
-            <div>
-              <p>Files:</p>
+            <div className="details-files">
               <ul>
                 { videoFiles && videoFiles.map( vidFile => (
                   <li key={ vidFile.id }>

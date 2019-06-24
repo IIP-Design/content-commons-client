@@ -1,13 +1,14 @@
-import React, { Fragment } from 'react';
+import './TableBody.scss';
+
+import { Loader, Table } from 'semantic-ui-react';
+import { formatDate, getPathToS3Bucket } from 'lib/utils';
+
+import ApolloError from 'components/errors/ApolloError';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
+import React from 'react';
+import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import gql from 'graphql-tag';
-import { Loader, Table } from 'semantic-ui-react';
-import ApolloError from 'components/errors/ApolloError';
-import MyProjectPrimaryCol from 'components/admin/Dashboard/MyProjects/MyProjectPrimaryCol/MyProjectPrimaryCol';
-import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon/TableMobileDataToggleIcon';
-import { formatDate } from 'lib/utils';
-import './TableBody.scss';
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
   query VideoProjectsByTeam(
@@ -47,10 +48,12 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
       createdAt
       updatedAt
       team {
+        id
         name
         organization
       }
       author {
+        id
         firstName
         lastName
       }
@@ -58,19 +61,21 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
       status
       visibility
       thumbnails {
+        id
         url
         alt
       }
       categories {
-      id
-      translations {
         id
-        name
-        language {
-          locale
+        translations {
+          id
+          name
+          language {
+            id
+            locale
+          }
         }
       }
-    }
     }
   }
 `;
@@ -101,7 +106,7 @@ const normalizeData = videoProjects => {
       visibility: { value: videoProject.visibility },
       thumbnail: {
         value: {
-          url: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].url : '',
+          url: videoProject.thumbnails && videoProject.thumbnails.length ? `${getPathToS3Bucket()}/${videoProject.thumbnails[0].url}` : '',
           alt: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].alt : ''
         }
       },
@@ -119,16 +124,16 @@ const TableBody = props => {
     selectedItems,
     tableHeaders,
     toggleItemSelection,
-    variables,
-    windowWidth
+    variables
   } = props;
 
   return (
     <Query
       query={ TEAM_VIDEO_PROJECTS_QUERY }
       variables={ { ...variables } }
+      fetchPolicy="cache-and-network"
     >
-      { ( { loading, error, data: { videoProjects } } ) => {
+      { ( { loading, error, data } ) => {
         if ( loading ) {
           return (
             <Table.Body>
@@ -154,7 +159,9 @@ const TableBody = props => {
             </Table.Body>
           );
         }
-        if ( !videoProjects ) return null;
+        if ( data && !data.videoProjects ) return null;
+
+        const { videoProjects } = data;
 
         if ( searchTerm && !videoProjects.length ) {
           return (
@@ -168,7 +175,7 @@ const TableBody = props => {
           );
         }
 
-        if ( videoProjects && !videoProjects.length ) {
+        if ( !videoProjects.length ) {
           return (
             <Table.Body>
               <Table.Row>
@@ -183,46 +190,13 @@ const TableBody = props => {
         return (
           <Table.Body className="myProjects">
             { tableData.map( d => (
-              <Table.Row
+              <TableRow
                 key={ d.id }
-                className={ d.isNew ? 'myProjects_newItem' : '' }
-              >
-                { tableHeaders.map( ( header, i ) => (
-                  <Table.Cell
-                    data-header={ header.label }
-                    key={ `${d.id}_${header.name}` }
-                    className="items_table_item"
-                  >
-                    { i === 0
-                      ? (
-                        // Table must include .primary_col div for fixed column
-                        <Fragment>
-                          <div className="primary_col">
-                            <MyProjectPrimaryCol
-                              d={ d }
-                              header={ header }
-                              selectedItems={ selectedItems }
-                              toggleItemSelection={ toggleItemSelection }
-                            />
-                          </div>
-                          { windowWidth && <TableMobileDataToggleIcon /> }
-                        </Fragment>
-                      )
-                      : (
-                        <Fragment>
-                          <span>
-                            <div className="items_table_mobileHeader">{ header.label }</div>
-                            { d[header.name] }
-                          </span>
-                          <br />
-                          { header.label === 'MODIFIED'
-                            ? <span>{ d.status }</span>
-                            : null }
-                        </Fragment>
-                      ) }
-                  </Table.Cell>
-                ) ) }
-              </Table.Row>
+                d={ d }
+                selectedItems={ selectedItems }
+                tableHeaders={ tableHeaders }
+                toggleItemSelection={ toggleItemSelection }
+              />
             ) ) }
           </Table.Body>
         );
@@ -236,11 +210,7 @@ TableBody.propTypes = {
   selectedItems: PropTypes.object,
   tableHeaders: PropTypes.array,
   toggleItemSelection: PropTypes.func,
-  variables: PropTypes.object,
-  windowWidth: PropTypes.oneOfType( [
-    PropTypes.string,
-    PropTypes.number
-  ] )
+  variables: PropTypes.object
 };
 
 export default TableBody;

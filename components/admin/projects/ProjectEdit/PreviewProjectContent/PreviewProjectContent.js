@@ -3,17 +3,16 @@
  * PreviewProjectContent
  *
  */
-
 import React from 'react';
-import { object } from 'prop-types';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { Dropdown, Embed } from 'semantic-ui-react';
+import { Dropdown, Embed, Loader } from 'semantic-ui-react';
 
-import DownloadVideo from 'components/Video/DownloadVideo';
-import DownloadSrt from 'components/Video/DownloadSrt';
-import DownloadThumbnail from 'components/Video/DownloadThumbnail';
-import DownloadOtherFiles from 'components/Video/DownloadOtherFiles';
+import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo';
+import DownloadSrt from 'components/admin/download/DownloadSrt/DownloadSrt';
+import DownloadThumbnail from 'components/admin/download/DownloadThumbnail/DownloadThumbnail';
+import DownloadOtherFiles from 'components/admin/download/DownloadOtherFiles/DownloadOtherFiles';
 import DownloadHelp from 'components/Video/DownloadHelp';
 
 import ModalItem from 'components/modals/ModalItem/ModalItem';
@@ -26,7 +25,7 @@ import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
 
 import downloadIcon from 'static/icons/icon_download.svg';
-import { getYouTubeId } from 'lib/utils';
+import { getStreamData, getVimeoId, getYouTubeId } from 'lib/utils';
 
 import './PreviewProjectContent.scss';
 
@@ -72,16 +71,37 @@ class PreviewProjectContent extends React.PureComponent {
   }
 
   render() {
-    const {
-      error,
-      loading,
-      project
-    } = this.props.data;
+    const { id } = this.props;
+    const { error, loading, project } = this.props.data;
 
-    if ( loading ) return 'Loading the project...';
+    if ( loading ) {
+      return (
+        <div
+          className="preview-project-loader"
+          style={ {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '200px'
+          } }
+        >
+          <Loader
+            active
+            inline="centered"
+            style={ { marginBottom: '1em' } }
+          />
+          <p>Loading the project preview...</p>
+        </div>
+      );
+    }
+
     if ( error ) return `Error! ${error.message}`;
+    if ( !project || !Object.keys( project ).length ) return null;
 
-    const { projectType, team, units } = project;
+    const {
+      __typename, createdAt, updatedAt, team, units
+    } = project;
     const { dropDownIsOpen, selectedLanguage } = this.state;
 
     const projectItems = this.getProjectItems( units );
@@ -93,13 +113,12 @@ class PreviewProjectContent extends React.PureComponent {
       title,
       language,
       descPublic,
-      updated, // currently undefined, need updatedAt from Prisma
-      uploaded, // currently undefined, need createdAt from Prisma
       files
     } = selectedItem;
 
     const currentUnit = files[0];
-    const youTubeUrl = currentUnit.stream.embedUrl;
+    const youTubeUrl = getStreamData( currentUnit.stream, 'youtube', 'embedUrl' );
+    const vimeoUrl = getStreamData( currentUnit.stream, 'vimeo', 'embedUrl' );
     const { videoBurnedInStatus } = currentUnit;
 
     let thumbnailUrl = '';
@@ -131,7 +150,7 @@ class PreviewProjectContent extends React.PureComponent {
         <Notification
           el="p"
           customStyles={ previewMsgStyles }
-          msg={ `This is a preview of your ${projectType} project on Content Commons.` }
+          msg="This is a preview of your project on Content Commons."
         />
 
         <div className="modal_options">
@@ -149,7 +168,7 @@ class PreviewProjectContent extends React.PureComponent {
               toolTip="Download video"
               icon={ { img: downloadIcon, dim: 18 } }
               position="right"
-              show={ projectType === 'video' }
+              show={ __typename === 'VideoProject' }
               content={ (
                 <PopupTabbed
                   title="Download this video."
@@ -169,8 +188,8 @@ class PreviewProjectContent extends React.PureComponent {
                       title: 'SRT',
                       component: (
                         <DownloadSrt
-                          instructions="Download SRTs"
-                          units={ units }
+                          id={ id }
+                          instructions="Download SRT(s)"
                         />
                       )
                     },
@@ -178,8 +197,8 @@ class PreviewProjectContent extends React.PureComponent {
                       title: 'Thumbnail',
                       component: (
                         <DownloadThumbnail
+                          id={ id }
                           instructions="Download Thumbnail(s)"
-                          units={ units }
                         />
                       )
                     },
@@ -187,8 +206,8 @@ class PreviewProjectContent extends React.PureComponent {
                       title: 'Other',
                       component: (
                         <DownloadOtherFiles
+                          id={ id }
                           instructions="Download Other File(s)"
-                          units={ units }
                         />
                       )
                     },
@@ -201,41 +220,50 @@ class PreviewProjectContent extends React.PureComponent {
         </div>
 
         <div className="project-preview__content">
-          { /* @todo getYouTubeId may not be necessary depending
-            on how the YouTube URL is stored in data */ }
-          { youTubeUrl
-            && (
-              <Embed
-                id={ getYouTubeId( youTubeUrl ) }
-                placeholder={ thumbnailUrl }
-                source="youtube"
-              />
-            ) }
-
-          <ModalContentMeta type={ projectType } dateUpdated={ updated || uploaded } />
+          { youTubeUrl && (
+            <Embed
+              id={ getYouTubeId( youTubeUrl ) }
+              placeholder={ thumbnailUrl }
+              source="youtube"
+            />
+          ) }
+          { ( !youTubeUrl && vimeoUrl ) && (
+            <Embed
+              id={ getVimeoId( vimeoUrl ) }
+              placeholder={ thumbnailUrl }
+              source="vimeo"
+            />
+          ) }
+          <ModalContentMeta type="video" dateUpdated={ updatedAt } />
 
           <ModalDescription description={ descPublic } />
         </div>
 
-        <ModalPostMeta source={ team.name } datePublished={ uploaded } />
+        <ModalPostMeta source={ team.name } datePublished={ createdAt } />
       </ModalItem>
     );
   }
 }
 
 PreviewProjectContent.propTypes = {
-  data: object.isRequired,
+  id: PropTypes.string,
+  data: PropTypes.object.isRequired,
 };
 
 const VIDEO_PROJECT_PREVIEW_QUERY = gql`
-  query VideoProject($id: ID!) {
+  query VideoProjectPreview($id: ID!, $isReviewPage: Boolean!) {
     project: videoProject(id: $id) {
-      projectType
-      thumbnails {
+      id
+      createdAt @skip(if: $isReviewPage)
+      updatedAt @skip(if: $isReviewPage)
+      projectType @skip(if: $isReviewPage)
+      thumbnails @skip(if: $isReviewPage) {
+        id
         alt
         url
       }
-      team {
+      team @skip(if: $isReviewPage) {
+        id
         name
       }
       units {
@@ -243,29 +271,49 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
         title
         descPublic
         thumbnails {
+          id
           image {
+            id
             alt
             url
           }
         }
-        language {
+        language @skip(if: $isReviewPage) {
+          id
           languageCode
           displayName
           textDirection
         }
         files {
           id
+          createdAt
+          duration
           filename
           url
+          use @include(if: $isReviewPage) {
+            id
+            name
+          }
           filesize
           videoBurnedInStatus
+          createdAt @include(if: $isReviewPage)
+          duration @include(if: $isReviewPage)
+          quality @include(if: $isReviewPage)
           dimensions {
+            id
             width
             height
           }
           stream {
+            id
             site
-            embedUrl
+            embedUrl @skip(if: $isReviewPage)
+            url @include(if: $isReviewPage)
+          }
+          language @include(if: $isReviewPage) {
+            id
+            displayName
+            textDirection
           }
         }
       }
@@ -276,8 +324,10 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
 export default graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
   options: props => ( {
     variables: {
-      id: props.id
+      id: props.id,
+      isReviewPage: false
     },
   } )
 } )( PreviewProjectContent );
+
 export { VIDEO_PROJECT_PREVIEW_QUERY };

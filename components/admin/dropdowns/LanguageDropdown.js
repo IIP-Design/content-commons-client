@@ -5,17 +5,22 @@ import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import sortBy from 'lodash/sortBy';
 import gql from 'graphql-tag';
+
 import './dropdown.scss';
+import { addEmptyOption } from 'lib/utils';
 
 const LANGUAGES_QUERY = gql`
   query LANGUAGES_QUERY {
     languages {
       id
       displayName
+      locale
     }
   }
 `;
 
+
+const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
 const LanguageDropdown = props => (
   <Query query={ LANGUAGES_QUERY }>
@@ -24,9 +29,20 @@ const LanguageDropdown = props => (
 
       let options = [];
       if ( data && data.languages ) {
-        options = data.languages.map( lang => ( { key: lang.id, text: lang.displayName, value: lang.id } ) );
-        options = sortBy( options, 'text' );
+        const getFilteredList = allLangs => (
+          allLangs.filter( lang => {
+            const { locale } = lang;
+            return props.locales.includes( locale );
+          } )
+        );
+
+        const languages = props.locales ? getFilteredList( data.languages ) : data.languages;
+
+        options = sortBy( languages, lang => lang.displayName )
+          .map( lang => ( { key: lang.id, text: lang.displayName, value: lang.id } ) );
       }
+
+      addEmptyOption( options );
 
       return (
         <Fragment>
@@ -46,6 +62,7 @@ const LanguageDropdown = props => (
             placeholder="–"
             loading={ loading }
             fluid
+            search
             selection
             { ...props }
           />
@@ -56,15 +73,16 @@ const LanguageDropdown = props => (
   </Query>
 );
 
+
 LanguageDropdown.defaultProps = {
   id: ''
 };
 
-
 LanguageDropdown.propTypes = {
   id: PropTypes.string,
-  label: PropTypes.string
+  label: PropTypes.string,
+  locales: PropTypes.array
 };
 
-export default LanguageDropdown;
+export default React.memo( LanguageDropdown, areEqual );
 export { LANGUAGES_QUERY };

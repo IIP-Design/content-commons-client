@@ -4,6 +4,8 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import sortBy from 'lodash/sortBy';
+import { addEmptyOption } from 'lib/utils';
 
 const VIDEO_USE_QUERY = gql`
   query VIDEO_USE_QUERY {
@@ -23,6 +25,8 @@ const IMAGE_USE_QUERY = gql`
   }
 `;
 
+const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
+
 const UseDropdown = props => (
   <Query query={ props.type === 'video' ? VIDEO_USE_QUERY : IMAGE_USE_QUERY }>
     { ( { data, loading, error } ) => {
@@ -34,9 +38,11 @@ const UseDropdown = props => (
         const { videoUses, imageUses } = data;
         const uses = videoUses || imageUses;
         if ( uses ) { // checks for uses in the event we have neither video or image
-          options = uses.map( u => ( { key: u.id, text: u.name, value: u.id } ) );
+          options = sortBy( uses, use => use.name ).map( u => ( { key: u.id, text: u.name, value: u.id } ) );
         }
       }
+
+      addEmptyOption( options );
 
       return (
         <Fragment>
@@ -63,7 +69,6 @@ const UseDropdown = props => (
       );
     } }
   </Query>
-
 );
 
 UseDropdown.defaultProps = {
@@ -76,6 +81,7 @@ UseDropdown.propTypes = {
   type: PropTypes.string
 };
 
-export default UseDropdown;
+export default React.memo( UseDropdown, areEqual );
+
 export { VIDEO_USE_QUERY };
 export { IMAGE_USE_QUERY };

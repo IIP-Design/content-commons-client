@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TableMenu /> renders without crashing 1`] = `
+<div
+  className="items_menu_wrapper"
+>
+  <div
+    className="items_menu"
+  >
+    <Accordion
+      as={[Function]}
+      vertical={true}
+    >
+      <MenuItem>
+        <AccordionTitle
+          active={true}
+          aria-controls="show-more-columns"
+          aria-expanded={false}
+          aria-haspopup={true}
+          as="button"
+          data-tablemenu={true}
+          id="show-more-btn"
+        >
+          Show More 
+          <VisuallyHidden
+            el="span"
+          >
+            columns
+          </VisuallyHidden>
+          <Icon
+            as="i"
+            data-tablemenu={true}
+            name="angle down"
+          />
+        </AccordionTitle>
+      </MenuItem>
+    </Accordion>
+    <button
+      data-tablearrow="left"
+      onClick={[Function]}
+      onFocus={null}
+      type="button"
+    >
+      <VisuallyHidden
+        el="span"
+      >
+        scroll table left
+      </VisuallyHidden>
+      <Icon
+        as="i"
+        data-tablearrow="left"
+        name="angle left"
+      />
+    </button>
+    <button
+      data-tablearrow="right"
+      onClick={[Function]}
+      onFocus={null}
+      type="button"
+    >
+      <VisuallyHidden
+        el="span"
+      >
+        scroll table right
+      </VisuallyHidden>
+      <Icon
+        as="i"
+        data-tablearrow="right"
+        name="angle right"
+      />
+    </button>
+  </div>
+</div>
+`;

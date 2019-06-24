@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as actions from 'lib/redux/actions/fileUpload';
+import * as actions from 'lib/redux/actions/upload';
 import { withRouter } from 'next/router';
 import { compose, graphql } from 'react-apollo';
 import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown';
@@ -20,21 +20,23 @@ const VideoUpload = props => {
   const [files, setFiles] = useState( [] );
   const [allFieldsSelected, setAllFieldsSelected] = useState( false );
   const [confirmRemove, setConfirmRemove] = useState( {} );
-
-  // Store GraphQL id for each use default
-  // i.e. default use for video is 'Full Video'
-  // id, not name used for mutation
-  let videoUseDefaultId = '';
-  let imageUseDefaultId = '';
+  const [duplicateFiles, setDuplicateFiles] = useState( [] );
 
   useEffect( () => {
+    // Since using onchange event, need to reset value on input so user can upload same file
+    // ie: remove file then upload file again
+    const videoFileUploadInput = ( window.innerWidth > 768 )
+      ? document.getElementById( 'videoFileUpload' )
+      : document.getElementById( 'mobileVideoFileUpload' );
+    if ( videoFileUploadInput ) videoFileUploadInput.value = '';
+
     // Check to see if all required dropdowns are completed
     // when the the files state changes. All fields do not need
     // to be checked as some are pre-populated on initialization or
     // not applicable.  Submit button (Next) becomes active when all
     // complete
     const complete = files.every( file => {
-      const { fileInput: { type } } = file;
+      const { input: { type } } = file;
       if ( type.includes( 'video' ) ) {
         return ( file.language && file.videoBurnedInStatus && file.quality );
       }
@@ -44,31 +46,43 @@ const VideoUpload = props => {
     setAllFieldsSelected( complete );
   }, [files] );
 
-  /**
-   * Pre-populate applicable default.  Default id is pulled from the respective use query
-   * @param {string} type filetype
-   */
-  const getUse = type => {
-    const { videoUseData: { videoUses }, imageUseData: { imageUses } } = props;
+  // Store GraphQL id for each use default value
+  // i.e. default use for video is 'Full Video'
+  // id prop, not name used for mutation
+  const defaultUse = {
+    video: {
+      id: '',
+      name: 'Full Video',
+      uses: props.videoData.videoUses
+    },
+    image: {
+      id: '',
+      name: 'Thumbnail/Cover Image',
+      uses: props.imageData.imageUses
+    }
+  };
 
-    if ( type.includes( 'video' ) ) {
-      if ( !videoUseDefaultId ) {
-        const videoUseDefault = videoUses.find( use => use.name === 'Full Video' );
-        if ( videoUseDefault ) {
-          videoUseDefaultId = videoUseDefault.id;
-        }
-      }
-      return videoUseDefaultId;
+  /**
+ * Pre-populate applicable default.  Default id is pulled from the respective use query
+ * @param {string} type filetype
+ */
+  const getDefaultUse = type => {
+    // if there are no content uses for specifc type return
+    const defaultContentUse = defaultUse[type];
+    if ( !defaultContentUse ) {
+      return '';
     }
 
-    if ( type.includes( 'image' ) ) {
-      if ( !imageUseDefaultId ) {
-        const imageUseDefault = imageUses.find( use => use.name === 'Thumbnail/Cover Image' );
-        if ( imageUseDefault ) {
-          imageUseDefaultId = imageUseDefault.id;
-        }
-      }
-      return imageUseDefaultId;
+    // if we already have a default id, return that
+    if ( defaultContentUse.id ) {
+      return defaultContentUse.id;
+    }
+
+    // look in the use list for a matching name, if found, set id or return ''
+    const u = defaultContentUse.uses.find( use => use.name === defaultContentUse.name );
+    if ( u ) {
+      defaultContentUse.id = u.id;
+      return defaultContentUse.id;
     }
 
     return '';
@@ -77,6 +91,14 @@ const VideoUpload = props => {
   const goNext = () => {
     setActiveIndex( 1 );
   };
+
+  /**
+   * Compares file object file names for use in sorting.
+   * @param {object} a file object
+   * @param {object} b file object
+   * @returns {number}
+   */
+  const compareFilenames = ( a, b ) => a.input.name.localeCompare( b.input.name );
 
   /**
    * Add files to files state array.  For each file selected,
@@ -89,13 +111,24 @@ const VideoUpload = props => {
 
     const filesToAdd = fileList.map( file => ( {
       language: '',
-      use: getUse( file.type ),
+      use: getDefaultUse( file.type.substr( 0, file.type.indexOf( '/' ) ) ),
       quality: '',
       videoBurnedInStatus: '',
-      fileInput: file,
-      id: v4()
+      input: file,
+      id: v4(),
+      loaded: 0
     } ) );
-    setFiles( prevFiles => [...prevFiles, ...filesToAdd] );
+
+    const reduceDuplicates = ( arr, file ) => {
+      if ( !arr.find( file2 => file.input.name === file2.input.name ) ) {
+        arr.push( file );
+        setDuplicateFiles( [] );
+      } else {
+        setDuplicateFiles( prevDuplicateFiles => [...prevDuplicateFiles, file.input.name] );
+      }
+      return arr;
+    };
+    setFiles( prevFiles => [...prevFiles, ...filesToAdd].reduce( reduceDuplicates, [] ).sort( compareFilenames ) );
   };
 
   /**
@@ -130,8 +163,8 @@ const VideoUpload = props => {
       if ( file.id !== id ) {
         return file;
       }
-      return { ...file, fileInput: fileFromInputSelection };
-    } ) );
+      return { ...file, input: fileFromInputSelection };
+    } ).sort( compareFilenames ) );
   };
 
   /**
@@ -152,13 +185,13 @@ const VideoUpload = props => {
 
   // @todo complete wiring before activating router
   const gotoVideoEditPage = () => {
-    // props.router.push( {
-    //   pathname: '/admin/project',
-    //   query: {
-    //     content: 'video',
-    //     action: 'edit'
-    //   }
-    // } );
+    props.router.push( {
+      pathname: '/admin/project',
+      query: {
+        content: 'video',
+        action: 'edit'
+      }
+    } );
   };
 
   /**
@@ -171,18 +204,9 @@ const VideoUpload = props => {
    */
   const handleAddFilesToUpload = async () => {
     setLoading( true );
-    const filesToUpload = files.map( file => ( {
-      language: file.language,
-      use: file.use,
-      quality: file.quality,
-      videoBurnedInStatus: file.videoBurnedInStatus,
-      fileObject: file.fileInput
-    } ) );
-
-    await props.addFilesToUpload( filesToUpload ); // coming from redux
+    await props.uploadAddFiles( files ); // coming from redux
     gotoVideoEditPage();
   };
-
 
   const { updateModalClassname, closeModal } = props;
 
@@ -213,12 +237,13 @@ const VideoUpload = props => {
             updateField,
             allFieldsSelected,
             closeModal,
-            handleAddFilesToUpload
+            handleAddFilesToUpload,
+            duplicateFiles,
+            setDuplicateFiles
           } }
           >
             <VideoProjectFiles
               closeModal={ closeModal }
-              goNext={ goNext }
               updateModalClassname={ updateModalClassname }
             />
           </VideoUploadContext.Provider>
@@ -246,14 +271,14 @@ const VideoUpload = props => {
 VideoUpload.propTypes = {
   closeModal: PropTypes.func,
   updateModalClassname: PropTypes.func,
-  videoUseData: PropTypes.shape( {
+  videoData: PropTypes.shape( {
     videoUses: PropTypes.array
   } ),
-  imageUseData: PropTypes.shape( {
+  imageData: PropTypes.shape( {
     imageUses: PropTypes.array
   } ),
-  // router: PropTypes.object,
-  addFilesToUpload: PropTypes.func // from redux
+  router: PropTypes.object,
+  uploadAddFiles: PropTypes.func // from redux
 };
 
 // @todo - add videoUseByName, imageUseByName queries to server
@@ -261,6 +286,6 @@ VideoUpload.propTypes = {
 export default compose(
   withRouter,
   connect( null, actions ),
-  graphql( VIDEO_USE_QUERY, { name: 'videoUseData' } ),
-  graphql( IMAGE_USE_QUERY, { name: 'imageUseData' } )
+  graphql( VIDEO_USE_QUERY, { name: 'videoData' } ),
+  graphql( IMAGE_USE_QUERY, { name: 'imageData' } )
 )( VideoUpload );

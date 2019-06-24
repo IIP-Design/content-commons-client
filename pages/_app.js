@@ -22,7 +22,7 @@ class Commons extends App {
     let authenticatedUser = null;
     // If on a restricted page, check for authenticated user
     if ( isRestrictedPage( ctx.pathname ) ) {
-      authenticatedUser = await checkForAuthenticatedUser( ctx.apolloClient );
+      authenticatedUser = await checkForAuthenticatedUser( ctx.apolloClient ).catch( err => console.dir( err ) );
 
       if ( !authenticatedUser ) {
         // we don't have an authenticated user, redirect to login page

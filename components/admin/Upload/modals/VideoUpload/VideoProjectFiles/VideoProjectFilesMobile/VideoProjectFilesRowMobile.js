@@ -6,16 +6,32 @@ import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedI
 import UseDropdown from 'components/admin/dropdowns/UseDropdown';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import FileRemoveReplaceMenu from 'components/admin/FileRemoveReplaceMenu/FileRemoveReplaceMenu';
-
 import { truncateAndReplaceStr } from 'lib/utils';
+import Notification from 'components/Notification/Notification';
 import UploadCompletionTracker from '../UploadCompletionTracker';
 import { VideoUploadContext } from '../../VideoUpload';
 import './VideoProjectFilesRowMobile.scss';
 
+// Optimize re-renders as component could potentially have many rows
+const areEqual = ( prevProps, nextProps ) => {
+  const nextFile = nextProps.file;
+
+  // if on same step, check for prop differences
+  const entries = Object.entries( prevProps.file );
+  const same = entries.every( ( [prop, value] ) => {
+    if ( prop === 'id' || prop === 'input' ) {
+      return true;
+    }
+    return nextFile[prop] === value;
+  } );
+  return same;
+};
+
+
 const VideoProjectFilesRowMobile = props => {
   const {
     file: {
-      id, language, videoBurnedInStatus, use, quality, fileInput: { name, type }
+      id, language, videoBurnedInStatus, use, quality, input: { name, type }
     }
   } = props;
 
@@ -56,7 +72,13 @@ const VideoProjectFilesRowMobile = props => {
   return (
     // Context API is used to avoind having to pass props down multiple levels
     <VideoUploadContext.Consumer>
-      { ( { replaceAssetFile, removeAssetFile, updateField } ) => (
+      { ( {
+        replaceAssetFile,
+        removeAssetFile,
+        updateField,
+        duplicateFiles,
+        setDuplicateFiles
+      } ) => (
         <div className="videoProjectFilesRowMobile">
 
           { /* Filename */ }
@@ -72,12 +94,38 @@ const VideoProjectFilesRowMobile = props => {
               >
                 { filename }
               </span>
-              <Button icon="chevron down" className={ `${open} no-background` } onClick={ handleToggleDropdowns } />
+              <Button
+                icon="chevron down"
+                className={ `${open} no-background` }
+                onClick={ () => {
+                  handleToggleDropdowns();
+                  setDuplicateFiles( [] );
+                } }
+              />
               <FileRemoveReplaceMenu
                 onReplace={ e => replaceAssetFile( id, e.target.files[0] ) }
                 onRemove={ () => removeAssetFile( id ) }
+                setDuplicateFiles={ setDuplicateFiles }
               />
             </div>
+            { duplicateFiles.includes( name ) && (
+              <Notification
+                el="div"
+                show
+                msg="This file has already been added."
+                customStyles={
+                  {
+                    display: 'inline-block',
+                    position: 'absolute',
+                    bottom: '0.5em',
+                    left: '3em',
+                    padding: '0',
+                    backgroundColor: 'none',
+                    color: '#DB2828'
+                  }
+                }
+              />
+            ) }
           </div>
           <div className={ `videoProjectFilesRowMobile__dropdowns ${toggleState}` }>
             <p className="videoProjectFilesRowMobile__dropdowns--filename-full">{ name }</p>
@@ -99,16 +147,15 @@ const VideoProjectFilesRowMobile = props => {
 
             { /* Quality */ }
             { fileType === 'video' && (
-            <QualityDropdown
-              id={ id }
-              label="Quality"
-              value={ quality }
-              type={ fileType }
-              onChange={ updateField }
-              required
-            />
-            )
-            }
+              <QualityDropdown
+                id={ id }
+                label="Quality"
+                value={ quality }
+                type={ fileType }
+                onChange={ updateField }
+                required
+              />
+            ) }
           </div>
         </div>
       ) }
@@ -124,8 +171,9 @@ VideoProjectFilesRowMobile.propTypes = {
     videoBurnedInStatus: PropTypes.string,
     use: PropTypes.string,
     quality: PropTypes.string,
-    fileInput: PropTypes.object
+    input: PropTypes.object
   } )
 };
 
-export default VideoProjectFilesRowMobile;
+
+export default React.memo( VideoProjectFilesRowMobile, areEqual );

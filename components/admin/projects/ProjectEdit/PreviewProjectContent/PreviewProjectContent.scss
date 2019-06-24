@@ -1,5 +1,20 @@
+@import "../../../../../styles/colors.scss";
+
 .project-preview {
   .modal_headline {
     margin-top: 1.5em;
+  }
+
+  .modal_languages {
+    > .menu {
+      border-radius: 0;
+    }
+
+    &:hover:after {
+      content: "";
+      display: block;
+      height: 3px;
+      background-color: $light-blue;
+    }
   }
 }

@@ -1,4 +1,4 @@
-@import "../../../../../styles/colors.scss";
+@import "styles/colors.scss";
 
 .edit-project__form {
   .heading {
@@ -14,15 +14,24 @@
   &.ui.form {
     font-size: 0.777778em;
 
-    textarea {
-      font-family: "Source Sans Pro", "Helvetica Neue", Arial, Helvetica, sans-serif;
-    }
-
     .field {
+
+      &__helper-text {
+        margin-top: -1em;
+        font-size: 12px;
+        color: $blue;
+      }
+
       > label {
-        // color: $red;
-        font-size: 1em;
         font-weight: normal;
+      }
+
+      &.disabled {
+        opacity: 1;
+
+        > label {
+          opacity: 1;
+        }
       }
 
       &.error {
@@ -30,21 +39,11 @@
         .ui.dropdown,
         .ui.dropdown .text {
           background: initial;
-          // color: $red;
-          // border-color: $red;
 
           .ui.dropdown {
             background: initial;
           }
         }
-
-        // label {
-        //   color: initial;
-        // }
-
-        // .checkbox:not(.toggle):not(.slider) label {
-        //   color: initial;
-        // }
 
         input[type="text"]:focus {
           border-color: $half-baked;
