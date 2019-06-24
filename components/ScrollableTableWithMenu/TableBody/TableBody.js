@@ -131,6 +131,7 @@ const TableBody = props => {
     <Query
       query={ TEAM_VIDEO_PROJECTS_QUERY }
       variables={ { ...variables } }
+      fetchPolicy="cache-and-network"
     >
       { ( { loading, error, data } ) => {
         if ( loading ) {

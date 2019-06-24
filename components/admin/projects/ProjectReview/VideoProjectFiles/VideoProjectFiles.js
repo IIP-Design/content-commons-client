@@ -19,7 +19,7 @@ import {
   getPathToS3Bucket,
   getPluralStringOrNot,
   getStreamData,
-  millisToMinutesAndSeconds
+  secondsToHMS
 } from 'lib/utils';
 
 import './VideoProjectFiles.scss';
@@ -63,7 +63,7 @@ const VideoProjectFiles = props => {
 
   const { units } = project;
 
-  if ( !units || ( units && !units.length ) ) return null;
+  if ( !units || ( units && units.length === 0 ) ) return null;
 
   const handleEdit = () => {
     const { id } = props;
@@ -111,7 +111,7 @@ const VideoProjectFiles = props => {
 
               <Grid.Row className="project_file_contents">
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_meta">
-                  { ( thumbnails && thumbnails.length )
+                  { ( thumbnails && thumbnails.length > 0 )
                     ? (
                       <img
                         src={ `${getPathToS3Bucket()}/${thumbnails[0].image.url}` }
@@ -122,13 +122,13 @@ const VideoProjectFiles = props => {
                   <p><b className="label">File Name:</b> { files[0].filename }</p>
                   <p><b className="label">Filesize:</b> { formatBytes( files[0].filesize ) }</p>
                   <p><b className="label">Dimensions:</b> { `${files[0].dimensions.width} x ${files[0].dimensions.height}` }</p>
-                  <p><b className="label">Uploaded:</b> { formatDate( files[0].createdAt ) }</p>
-                  <p><b className="label">Duration:</b> { millisToMinutesAndSeconds( files[0].duration, 0 ) }</p>
+                  <p><b className="label">Uploaded:</b> { `${formatDate( files[0].createdAt )} at ${formatDate( files[0].createdAt, 'en-US', { hour: 'numeric', minute: 'numeric' } )}` }</p>
+                  <p><b className="label">Duration:</b> { secondsToHMS( files[0].duration ) }</p>
                 </Grid.Column>
 
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_info">
                   <p><b className="label">Language:</b> { files[0].language.displayName }</p>
-                  <p><b className="label">Subtitles & Captions:</b> { files[0].videoBurnedInStatus }</p>
+                  <p><b className="label">Subtitles & Captions:</b> { `${files[0].videoBurnedInStatus}${files[0].videoBurnedInStatus === 'CLEAN' ? ' - No Captions' : ''}` }</p>
                   <p><b className="label">Video Type:</b> { files[0].use.name }</p>
                   <p><b className="label">Quality:</b> { files[0].quality }</p>
                   <p

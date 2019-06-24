@@ -3,12 +3,73 @@ import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { Icon, Loader } from 'semantic-ui-react';
+import { getCount } from 'lib/utils';
 import VideoSupportFiles, {
   VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
-  UPDATE_PROTECT_IMAGES_MUTATION
 } from './VideoSupportFiles';
 
 const props = { id: '123' };
+
+const srts = [
+  {
+    id: '34is',
+    filename: 'srt-1.srt',
+    language: {
+      id: 'en22',
+      displayName: 'English'
+    }
+  },
+  {
+    id: '48sa',
+    filename: 'srt-2.srt',
+    language: {
+      id: 'fr87',
+      displayName: 'French'
+    }
+  }
+];
+
+const additionalFiles = [
+  {
+    id: '82kw',
+    filename: 'pdf-1.pdf',
+    filetype: 'application/pdf',
+    language: {
+      id: 'en22',
+      displayName: 'English'
+    }
+  },
+  {
+    id: '28zi',
+    filename: 'pdf-2.pdf',
+    filetype: 'application/pdf',
+    language: {
+      id: 'fr87',
+      displayName: 'French'
+    }
+  }
+];
+
+const thumbnails = [
+  {
+    id: 't372',
+    filename: 'thumbnail-1.jpg',
+    filetype: 'image/jpeg',
+    language: {
+      id: 'en22',
+      displayName: 'English'
+    }
+  },
+  {
+    id: 't482',
+    filename: 'thumbnail-2.jpg',
+    filetype: 'image/jpeg',
+    language: {
+      id: 'fr87',
+      displayName: 'French'
+    }
+  }
+];
 
 const mocks = [
   {
@@ -20,58 +81,9 @@ const mocks = [
       data: {
         project: {
           id: '123',
-          protectImages: null,
-          srts: [
-            {
-              id: '34is',
-              filename: 'srt-1.srt',
-              language: {
-                displayName: 'English'
-              }
-            },
-            {
-              id: '48sa',
-              filename: 'srt-2.srt',
-              language: {
-                displayName: 'French'
-              }
-            }
-          ],
-          additionalFiles: [
-            {
-              id: '82kw',
-              filename: 'image-1.jpg',
-              filetype: 'jpg',
-              language: {
-                displayName: 'English'
-              }
-            },
-            {
-              id: '28zi',
-              filename: 'image-2.jpg',
-              filetype: 'jpg',
-              language: {
-                displayName: 'French'
-              }
-            }
-          ]
-        }
-      }
-    }
-  },
-  {
-    request: {
-      query: UPDATE_PROTECT_IMAGES_MUTATION,
-      variables: {
-        data: { protectImages: true },
-        where: { id: props.id }
-      }
-    },
-    result: {
-      data: {
-        updateVideoProject: {
-          id: '123',
-          protectImages: true
+          srts,
+          additionalFiles,
+          thumbnails
         }
       }
     }
@@ -143,7 +155,10 @@ describe( '<VideoSupportFiles />', () => {
     wrapper.update();
 
     const videoSupportFiles = wrapper.find( 'VideoSupportFiles' );
+    const items = videoSupportFiles.find( 'VideoSupportFilesItem' );
+    const totalFilesCount = getCount( srts ) + getCount( additionalFiles ) + getCount( thumbnails );
 
+    expect( items.length ).toEqual( totalFilesCount );
     expect( toJSON( videoSupportFiles ) ).toMatchSnapshot();
   } );
 
@@ -173,8 +188,8 @@ describe( '<VideoSupportFiles />', () => {
     expect( videoSupportFiles.html() ).toEqual( null );
   } );
 
-  it( 'renders `null` if srts and additionalFiles are `null`', async () => {
-    const nullSrtsAdditionalFilesMocks = [
+  it( 'renders `null` if srts, additionalFiles, and thumbnails are `null`', async () => {
+    const nullMocks = [
       {
         request: {
           query: VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
@@ -184,26 +199,9 @@ describe( '<VideoSupportFiles />', () => {
           data: {
             project: {
               id: '123',
-              protectImages: null,
               srts: null,
-              additionalFiles: null
-            }
-          }
-        }
-      },
-      {
-        request: {
-          query: UPDATE_PROTECT_IMAGES_MUTATION,
-          variables: {
-            data: { protectImages: true },
-            where: { id: props.id }
-          }
-        },
-        result: {
-          data: {
-            updateVideoProject: {
-              id: '123',
-              protectImages: true
+              additionalFiles: null,
+              thumbnails: null
             }
           }
         }
@@ -211,7 +209,7 @@ describe( '<VideoSupportFiles />', () => {
     ];
 
     const wrapper = mount(
-      <MockedProvider mocks={ nullSrtsAdditionalFilesMocks } addTypename={ false }>
+      <MockedProvider mocks={ nullMocks } addTypename={ false }>
         <VideoSupportFiles { ...props } />
       </MockedProvider>
     );
@@ -224,8 +222,8 @@ describe( '<VideoSupportFiles />', () => {
     expect( videoSupportFiles.html() ).toEqual( null );
   } );
 
-  it( 'renders `null` if srts and additionalFiles are `[]`', async () => {
-    const nullSrtsAdditionalFilesMocks = [
+  it( 'renders `null` if srts, additionalFiles, and thumbnails are `[]`', async () => {
+    const emptyMocks = [
       {
         request: {
           query: VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
@@ -235,26 +233,9 @@ describe( '<VideoSupportFiles />', () => {
           data: {
             project: {
               id: '123',
-              protectImages: null,
               srts: [],
-              additionalFiles: []
-            }
-          }
-        }
-      },
-      {
-        request: {
-          query: UPDATE_PROTECT_IMAGES_MUTATION,
-          variables: {
-            data: { protectImages: true },
-            where: { id: props.id }
-          }
-        },
-        result: {
-          data: {
-            updateVideoProject: {
-              id: '123',
-              protectImages: true
+              additionalFiles: [],
+              thumbnails: []
             }
           }
         }
@@ -262,7 +243,7 @@ describe( '<VideoSupportFiles />', () => {
     ];
 
     const wrapper = mount(
-      <MockedProvider mocks={ nullSrtsAdditionalFilesMocks } addTypename={ false }>
+      <MockedProvider mocks={ emptyMocks } addTypename={ false }>
         <VideoSupportFiles { ...props } />
       </MockedProvider>
     );
@@ -286,43 +267,9 @@ describe( '<VideoSupportFiles />', () => {
           data: {
             project: {
               id: '123',
-              protectImages: null,
               srts: null,
-              additionalFiles: [
-                {
-                  id: '82kw',
-                  filename: 'image-1.jpg',
-                  filetype: 'jpg',
-                  language: {
-                    displayName: 'English'
-                  }
-                },
-                {
-                  id: '28zi',
-                  filename: 'image-2.jpg',
-                  filetype: 'jpg',
-                  language: {
-                    displayName: 'French'
-                  }
-                }
-              ]
-            }
-          }
-        }
-      },
-      {
-        request: {
-          query: UPDATE_PROTECT_IMAGES_MUTATION,
-          variables: {
-            data: { protectImages: true },
-            where: { id: props.id }
-          }
-        },
-        result: {
-          data: {
-            updateVideoProject: {
-              id: '123',
-              protectImages: true
+              additionalFiles,
+              thumbnails
             }
           }
         }
@@ -344,7 +291,7 @@ describe( '<VideoSupportFiles />', () => {
   } );
 
   it( 'does not render the srt section if srts is `[]`', async () => {
-    const nullSrtsMocks = [
+    const emptySrtsMocks = [
       {
         request: {
           query: VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
@@ -354,43 +301,9 @@ describe( '<VideoSupportFiles />', () => {
           data: {
             project: {
               id: '123',
-              protectImages: null,
               srts: [],
-              additionalFiles: [
-                {
-                  id: '82kw',
-                  filename: 'image-1.jpg',
-                  filetype: 'jpg',
-                  language: {
-                    displayName: 'English'
-                  }
-                },
-                {
-                  id: '28zi',
-                  filename: 'image-2.jpg',
-                  filetype: 'jpg',
-                  language: {
-                    displayName: 'French'
-                  }
-                }
-              ]
-            }
-          }
-        }
-      },
-      {
-        request: {
-          query: UPDATE_PROTECT_IMAGES_MUTATION,
-          variables: {
-            data: { protectImages: true },
-            where: { id: props.id }
-          }
-        },
-        result: {
-          data: {
-            updateVideoProject: {
-              id: '123',
-              protectImages: true
+              additionalFiles,
+              thumbnails
             }
           }
         }
@@ -398,7 +311,7 @@ describe( '<VideoSupportFiles />', () => {
     ];
 
     const wrapper = mount(
-      <MockedProvider mocks={ nullSrtsMocks } addTypename={ false }>
+      <MockedProvider mocks={ emptySrtsMocks } addTypename={ false }>
         <VideoSupportFiles { ...props } />
       </MockedProvider>
     );
@@ -411,7 +324,7 @@ describe( '<VideoSupportFiles />', () => {
     expect( srtSection.exists() ).toEqual( false );
   } );
 
-  it( 'does not render the additional files section if additionalFiles is `null`', async () => {
+  it( 'does not render the additional files section if additionalFiles and thumbnails are `null`', async () => {
     const nullAdditionalFilesMocks = [
       {
         request: {
@@ -422,41 +335,9 @@ describe( '<VideoSupportFiles />', () => {
           data: {
             project: {
               id: '123',
-              protectImages: null,
-              srts: [
-                {
-                  id: '34is',
-                  filename: 'srt-1.srt',
-                  language: {
-                    displayName: 'English'
-                  }
-                },
-                {
-                  id: '48sa',
-                  filename: 'srt-2.srt',
-                  language: {
-                    displayName: 'French'
-                  }
-                }
-              ],
-              additionalFiles: null
-            }
-          }
-        }
-      },
-      {
-        request: {
-          query: UPDATE_PROTECT_IMAGES_MUTATION,
-          variables: {
-            data: { protectImages: true },
-            where: { id: props.id }
-          }
-        },
-        result: {
-          data: {
-            updateVideoProject: {
-              id: '123',
-              protectImages: true
+              srts,
+              additionalFiles: null,
+              thumbnails: null
             }
           }
         }
@@ -477,7 +358,41 @@ describe( '<VideoSupportFiles />', () => {
     expect( additionalFilesSection.exists() ).toEqual( false );
   } );
 
-  it( 'does not render the additional files section if additionalFiles is `[]`', async () => {
+  it( 'does not render the additional files section if additionalFiles and thumbnails are `[]`', async () => {
+    const emptyAdditionalFilesMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
+          variables: { id: props.id }
+        },
+        result: {
+          data: {
+            project: {
+              id: '123',
+              srts,
+              additionalFiles: [],
+              thumbnails: []
+            }
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ emptyAdditionalFilesMocks } addTypename={ false }>
+        <VideoSupportFiles { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoSupportFiles = wrapper.find( 'VideoSupportFiles' );
+    const additionalFilesSection = videoSupportFiles.find( 'section.addtl_files.section' );
+
+    expect( additionalFilesSection.exists() ).toEqual( false );
+  } );
+
+  it( 'renders the additional files section with thumbnails only if additionalFiles is `null`', async () => {
     const nullAdditionalFilesMocks = [
       {
         request: {
@@ -488,41 +403,9 @@ describe( '<VideoSupportFiles />', () => {
           data: {
             project: {
               id: '123',
-              protectImages: null,
-              srts: [
-                {
-                  id: '34is',
-                  filename: 'srt-1.srt',
-                  language: {
-                    displayName: 'English'
-                  }
-                },
-                {
-                  id: '48sa',
-                  filename: 'srt-2.srt',
-                  language: {
-                    displayName: 'French'
-                  }
-                }
-              ],
-              additionalFiles: []
-            }
-          }
-        }
-      },
-      {
-        request: {
-          query: UPDATE_PROTECT_IMAGES_MUTATION,
-          variables: {
-            data: { protectImages: true },
-            where: { id: props.id }
-          }
-        },
-        result: {
-          data: {
-            updateVideoProject: {
-              id: '123',
-              protectImages: true
+              srts,
+              additionalFiles: null,
+              thumbnails
             }
           }
         }
@@ -539,33 +422,129 @@ describe( '<VideoSupportFiles />', () => {
 
     const videoSupportFiles = wrapper.find( 'VideoSupportFiles' );
     const additionalFilesSection = videoSupportFiles.find( 'section.addtl_files.section' );
+    const items = additionalFilesSection.find( 'VideoSupportFilesItem' );
 
-    expect( additionalFilesSection.exists() ).toEqual( false );
+    expect( items.length ).toEqual( getCount( thumbnails ) );
+    items.forEach( ( item, i ) => {
+      expect( item.contains( thumbnails[i].filename ) ).toEqual( true );
+      expect( item.contains( additionalFiles[i].filename ) ).toEqual( false );
+    } );
   } );
 
-  /**
-   * @todo Need to revisit this test when
-   * enzyme supports hooks.
-   */
-  it.skip( 'clicking the protect images Checkbox', async () => {
-    const wrapper = mount( Component );
+  it( 'renders the additional files section with thumbnails only if additionalFiles is `[]`', async () => {
+    const emptyAdditionalFilesMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
+          variables: { id: props.id }
+        },
+        result: {
+          data: {
+            project: {
+              id: '123',
+              srts,
+              additionalFiles: [],
+              thumbnails
+            }
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ emptyAdditionalFilesMocks } addTypename={ false }>
+        <VideoSupportFiles { ...props } />
+      </MockedProvider>
+    );
     await wait( 0 );
     wrapper.update();
 
     const videoSupportFiles = wrapper.find( 'VideoSupportFiles' );
-    const checkbox = videoSupportFiles.find( 'Checkbox' );
-    const spy = jest.spyOn( checkbox.props(), 'onClick' );
-    // const spy = jest.spyOn( videoSupportFiles().props(), 'updateProtectImages' );
+    const additionalFilesSection = videoSupportFiles.find( 'section.addtl_files.section' );
+    const items = additionalFilesSection.find( 'VideoSupportFilesItem' );
 
-    checkbox.prop( 'onClick' )();
-    // checkbox.simulate( 'change' );
+    expect( items.length ).toEqual( getCount( thumbnails ) );
+    items.forEach( ( item, i ) => {
+      expect( item.contains( thumbnails[i].filename ) ).toEqual( true );
+      expect( item.contains( additionalFiles[i].filename ) ).toEqual( false );
+    } );
+  } );
 
-    expect( spy ).toHaveBeenCalled();
-    // expect( spy ).toHaveBeenCalledWith( {
-    //   variables: {
-    //     data: { protectImages: true },
-    //     where: { id: props.id }
-    //   }
-    // } );
+  it( 'renders the additional files section with additionalFiles only if thumbnails is `null`', async () => {
+    const nullThumbnailsMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
+          variables: { id: props.id }
+        },
+        result: {
+          data: {
+            project: {
+              id: '123',
+              srts,
+              additionalFiles,
+              thumbnails: null
+            }
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ nullThumbnailsMocks } addTypename={ false }>
+        <VideoSupportFiles { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoSupportFiles = wrapper.find( 'VideoSupportFiles' );
+    const additionalFilesSection = videoSupportFiles.find( 'section.addtl_files.section' );
+    const items = additionalFilesSection.find( 'VideoSupportFilesItem' );
+
+    expect( items.length ).toEqual( getCount( additionalFiles ) );
+    items.forEach( ( item, i ) => {
+      expect( item.contains( thumbnails[i].filename ) ).toEqual( false );
+      expect( item.contains( additionalFiles[i].filename ) ).toEqual( true );
+    } );
+  } );
+
+  it( 'renders the additional files section with additionalFiles only if thumbnails is `[]`', async () => {
+    const emptyThumbnailsMocks = [
+      {
+        request: {
+          query: VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
+          variables: { id: props.id }
+        },
+        result: {
+          data: {
+            project: {
+              id: '123',
+              srts,
+              additionalFiles,
+              thumbnails: []
+            }
+          }
+        }
+      }
+    ];
+
+    const wrapper = mount(
+      <MockedProvider mocks={ emptyThumbnailsMocks } addTypename={ false }>
+        <VideoSupportFiles { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoSupportFiles = wrapper.find( 'VideoSupportFiles' );
+    const additionalFilesSection = videoSupportFiles.find( 'section.addtl_files.section' );
+    const items = additionalFilesSection.find( 'VideoSupportFilesItem' );
+
+    expect( items.length ).toEqual( getCount( additionalFiles ) );
+    items.forEach( ( item, i ) => {
+      expect( item.contains( thumbnails[i].filename ) ).toEqual( false );
+      expect( item.contains( additionalFiles[i].filename ) ).toEqual( true );
+    } );
   } );
 } );

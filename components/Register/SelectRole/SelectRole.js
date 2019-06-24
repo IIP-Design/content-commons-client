@@ -56,8 +56,9 @@ const SelectRole = ( {
             checked={ values.permissions === option.value }
             onChange={ handleOnChange }
             error={ !!errors.permissions }
+            disabled={ !option.enabled }
           />
-          <p className="checkbox_content">{ option.content }</p>
+          <p className={ `checkbox_content ${( !option.enabled ) ? 'disabled' : ''}` }>{ option.content }</p>
         </Form.Field>
       ) ) }
       <p className="error-message">{ errors.permissions }</p>

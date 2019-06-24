@@ -29,8 +29,6 @@ import Notification from 'components/Notification/Notification';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
-import PreviewProject from 'components/admin/PreviewProject/PreviewProject';
-import PreviewProjectContent from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 import ProjectSupportFiles from 'components/admin/ProjectSupportFiles/ProjectSupportFiles';
 import ProjectUnits from 'components/admin/projects/ProjectEdit/ProjectUnits/ProjectUnits';
 import FormInstructions from 'components/admin/projects/ProjectEdit/FormInstructions/FormInstructions';
@@ -38,6 +36,7 @@ import VideoProjectDataForm from 'components/admin/projects/ProjectEdit/VideoPro
 import UploadSuccessMsg from 'components/admin/projects/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
 import FileUploadProgressBar from 'components/admin/projects/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
 import withFileUpload from 'hocs/withFileUpload/withFileUpload';
+import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 
 import { config } from './config';
 
@@ -233,6 +232,7 @@ const VideoEdit = props => {
 
   return (
     <div className="edit-project">
+      <Breadcrumbs />
       { /* action buttons at top need to be separate component */ }
       <div className="edit-project__header">
         <ProjectHeader icon="video camera" text="Project Details">
@@ -261,19 +261,6 @@ const VideoEdit = props => {
             cancelButton="No, take me back"
             confirmButton="Yes, delete forever"
           />
-
-          { /* <PreviewProject
-            triggerProps={ {
-              className: 'edit-project__btn--preview',
-              content: 'Preview Project',
-              basic: true,
-              disabled: !projectId
-            } }
-            // contentProps={ { id } }
-            modalTrigger={ Button }
-            modalContent={ PreviewProjectContent }
-            options={ { closeIcon: true } }
-          /> */ }
 
           { projectId
             && (

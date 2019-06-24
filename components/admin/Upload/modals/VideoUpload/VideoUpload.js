@@ -9,6 +9,7 @@ import { Tab, Dimmer, Loader } from 'semantic-ui-react';
 import { v4 } from 'uuid';
 import VideoProjectType from './VideoProjectType/VideoProjectType';
 import VideoProjectFiles from './VideoProjectFiles/VideoProjectFiles';
+import RemoveFile from '../RemoveFile/RemoveFile';
 import './VideoUpload.scss';
 
 export const VideoUploadContext = React.createContext();
@@ -18,6 +19,8 @@ const VideoUpload = props => {
   const [loading, setLoading] = useState( false );
   const [files, setFiles] = useState( [] );
   const [allFieldsSelected, setAllFieldsSelected] = useState( false );
+  const [confirmRemove, setConfirmRemove] = useState( {} );
+  const [duplicateFiles, setDuplicateFiles] = useState( [] );
 
   useEffect( () => {
     // Since using onchange event, need to reset value on input so user can upload same file
@@ -85,7 +88,6 @@ const VideoUpload = props => {
     return '';
   };
 
-
   const goNext = () => {
     setActiveIndex( 1 );
   };
@@ -120,6 +122,9 @@ const VideoUpload = props => {
     const reduceDuplicates = ( arr, file ) => {
       if ( !arr.find( file2 => file.input.name === file2.input.name ) ) {
         arr.push( file );
+        setDuplicateFiles( [] );
+      } else {
+        setDuplicateFiles( prevDuplicateFiles => [...prevDuplicateFiles, file.input.name] );
       }
       return arr;
     };
@@ -127,11 +132,26 @@ const VideoUpload = props => {
   };
 
   /**
+   * Prompt for removal confirmation and upon confirmation:
    * Remove file from files state array
    * @param {string} id id of file to remove
    */
   const removeAssetFile = id => {
-    setFiles( prevFiles => prevFiles.filter( file => file.id !== id ) );
+    const file = files.find( f => f.id === id );
+    if ( !file ) {
+      console.error( 'File not found for removal.' );
+      return;
+    }
+
+    setConfirmRemove( {
+      filename: file.input.name,
+      closeModal: confirm => {
+        setConfirmRemove( {} );
+        if ( confirm ) {
+          setFiles( prevFiles => prevFiles.filter( f => f.id !== id ) );
+        }
+      }
+    } );
   };
 
   /**
@@ -189,7 +209,6 @@ const VideoUpload = props => {
     gotoVideoEditPage();
   };
 
-
   const { updateModalClassname, closeModal } = props;
 
   /* eslint-disable react/display-name */
@@ -219,12 +238,13 @@ const VideoUpload = props => {
             updateField,
             allFieldsSelected,
             closeModal,
-            handleAddFilesToUpload
+            handleAddFilesToUpload,
+            duplicateFiles,
+            setDuplicateFiles
           } }
           >
             <VideoProjectFiles
               closeModal={ closeModal }
-              goNext={ goNext }
               updateModalClassname={ updateModalClassname }
             />
           </VideoUploadContext.Provider>
@@ -243,6 +263,7 @@ const VideoUpload = props => {
         panes={ panes }
         className="videoUpload"
       />
+      <RemoveFile { ...confirmRemove } />
     </Fragment>
   );
 };

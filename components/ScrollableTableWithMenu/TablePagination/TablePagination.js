@@ -49,6 +49,7 @@ const TablePagination = props => {
     <Query
       query={ TEAM_VIDEO_PROJECTS_COUNT_QUERY }
       variables={ { ...variables } }
+      fetchPolicy="cache-and-network"
     >
       { ( { loading, error, data } ) => {
         if ( loading ) return 'Loading....';

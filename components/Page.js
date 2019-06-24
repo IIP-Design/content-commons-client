@@ -6,7 +6,6 @@ import Footer from './Footer/Footer';
 import Meta from './Meta';
 import { capitalizeFirst } from '../lib/utils';
 
-
 const Page = props => {
   const { router } = props;
   const { pathname } = router;

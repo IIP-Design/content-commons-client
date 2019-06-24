@@ -131,6 +131,7 @@ const mocks = [
             status: 'PUBLISHED',
             visibility: 'INTERNAL',
             thumbnails: {
+              id: 't34',
               url: 'https://thumbnailurl.com',
               alt: 'some alt text',
             },
@@ -142,6 +143,7 @@ const mocks = [
                     id: '832',
                     name: 'about america',
                     language: {
+                      id: 'en23',
                       locale: 'en-us'
                     }
                   }
@@ -167,6 +169,7 @@ const mocks = [
             status: 'PUBLISHED',
             visibility: 'INTERNAL',
             thumbnails: {
+              id: 't34',
               url: 'https://thumbnailurl.com',
               alt: 'some alt text',
             },
@@ -178,6 +181,7 @@ const mocks = [
                     id: '832',
                     name: 'about america',
                     language: {
+                      id: 'en23',
                       locale: 'en-us'
                     }
                   }
@@ -203,6 +207,7 @@ const mocks = [
             status: 'PUBLISHED',
             visibility: 'INTERNAL',
             thumbnails: {
+              id: 't34',
               url: 'https://thumbnailurl.com',
               alt: 'some alt text',
             },
@@ -214,6 +219,7 @@ const mocks = [
                     id: '832',
                     name: 'about america',
                     language: {
+                      id: 'en23',
                       locale: 'en-us'
                     }
                   }
@@ -239,6 +245,7 @@ const mocks = [
             status: 'DRAFT',
             visibility: 'INTERNAL',
             thumbnails: {
+              id: 't34',
               url: 'https://thumbnailurl.com',
               alt: 'some alt text',
             },
@@ -250,6 +257,7 @@ const mocks = [
                     id: '832',
                     name: 'about america',
                     language: {
+                      id: 'en23',
                       locale: 'en-us'
                     }
                   }
@@ -275,6 +283,7 @@ const mocks = [
             status: 'DRAFT',
             visibility: 'INTERNAL',
             thumbnails: {
+              id: 't34',
               url: 'https://thumbnailurl.com',
               alt: 'some alt text',
             },
@@ -286,6 +295,7 @@ const mocks = [
                     id: '832',
                     name: 'about america',
                     language: {
+                      id: 'en23',
                       locale: 'en-us'
                     }
                   }
@@ -638,7 +648,7 @@ describe( '<TableActionsMenu />', () => {
     expect( unpublish ).toHaveBeenCalledWith( args );
   } );
 
-  it( 'handleStatusVisibility sets status and visibility fields', async () => {
+  it( 'handleStatus sets status field', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
@@ -647,15 +657,14 @@ describe( '<TableActionsMenu />', () => {
     const inst = menu.instance();
     const items = [...props.selectedItems.keys()];
     const projects = [
-      { id: 'ud78', status: 'PUBLISHED', visibility: 'PUBLIC' },
-      { id: 'ud98', status: 'PUBLISHED', visibility: 'PUBLIC' }
+      { id: 'ud78', status: 'PUBLISHED' },
+      { id: 'ud98', status: 'PUBLISHED' }
     ];
 
-    inst.handleStatusVisibility( items, projects );
+    inst.handleStatus( items, projects );
 
     projects.forEach( project => {
       expect( project.status ).toEqual( 'DRAFT' );
-      expect( project.visibility ).toEqual( 'INTERNAL' );
     } );
   } );
 

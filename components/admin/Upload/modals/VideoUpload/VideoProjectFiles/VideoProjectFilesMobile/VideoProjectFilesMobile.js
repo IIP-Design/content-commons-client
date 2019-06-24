@@ -13,7 +13,12 @@ const VideoProjectFilesMobile = () => (
   // Context API is used to avoind having to pass props down multiple levels
   <VideoUploadContext.Consumer>
     { ( {
-      files, addAssetFiles, closeModal, allFieldsSelected, handleAddFilesToUpload, compareFileNames
+      files,
+      addAssetFiles,
+      closeModal,
+      allFieldsSelected,
+      handleAddFilesToUpload,
+      compareFileNames
     } ) => (
       <div className="videoProjectFilesMobile__wrapper">
         <Form>

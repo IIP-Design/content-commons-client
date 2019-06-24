@@ -8,7 +8,7 @@ import React, {
   Fragment, useState, useEffect
 } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, Button } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 
 import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
@@ -27,7 +27,7 @@ const SupportFileTypeList = props => {
   const { projectId, config: { types } } = props;
   const type = types[props.type];
   const {
-    headline, popupMsg, checkBoxLabel, checkBoxName, iconMsg, iconSize, iconType, protectImages,
+    headline, popupMsg
   } = type;
 
   const [isEditing, setIsEditing] = useState( false );
@@ -138,31 +138,6 @@ const SupportFileTypeList = props => {
           : 'No files available'
         }
       </ul>
-
-      { hasImages
-        && (
-        <Fragment>
-          <Checkbox
-            id="protect-images"
-            label={ (
-                /* eslint-disable jsx-a11y/label-has-for */
-              <label htmlFor="protect-images">
-                { checkBoxLabel }
-              </label>
-              ) }
-            name={ checkBoxName }
-            type="checkbox"
-            checked={ protectImages }
-          />
-          <IconPopup
-            message={ iconMsg }
-            iconSize={ iconSize }
-            iconType={ iconType }
-            popupSize="mini"
-          />
-        </Fragment>
-        )
-      }
     </Fragment>
   );
 };

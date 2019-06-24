@@ -1,6 +1,7 @@
-@import "../../../styles//colors.scss";
+@import "../../../styles/colors.scss";
 
 .delete,
+.remove-file,
 .confirm-modal {
   &.ui.small.modal {
     max-width: 400px;
@@ -74,6 +75,40 @@
             background-color: darken($red, 10%) !important;
           }
         }
+      }
+    }
+  }
+}
+
+.remove-file {
+  &.ui.small.modal {
+    max-width: 478px;
+    font-size: 1rem;
+    padding: 0.5rem 2rem;
+    @media screen and (max-width: 467px) {
+      padding: 0 1rem;
+    }
+
+    .actions {
+      justify-content: center;
+
+      @media screen and (max-width: 467px) {
+        flex-direction: column;
+      }
+    }
+
+    .ui.button {
+      font-size: 1rem;
+    }
+  }
+  .remove-file__content {
+    text-align: center;
+    padding: 1rem 0;
+
+    h2 {
+      padding: 0 1rem;
+      @media screen and (max-width: 378px) {
+        padding: 0 0.5rem;
       }
     }
   }
