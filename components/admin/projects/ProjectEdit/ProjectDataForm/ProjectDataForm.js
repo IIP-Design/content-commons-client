@@ -3,7 +3,7 @@
  * ProjectDataForm
  *
  */
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -17,6 +17,7 @@ import ProjectVisibilityDropdown from 'components/admin/dropdowns/ProjectVisibil
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown';
 import UserDropdown from 'components/admin/dropdowns/UserDropdown';
 import TagTypeahead from 'components/admin/dropdowns/TagTypeahead';
+import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 
 import './ProjectDataForm.scss';
 
@@ -37,7 +38,8 @@ const ProjectDataForm = props => {
     isValid,
     setFieldTouched,
     maxCategories,
-    status
+    status,
+    save
   } = props;
 
   const handleOnChange = ( e, {
@@ -52,135 +54,138 @@ const ProjectDataForm = props => {
   };
 
   return (
-    <Form className="edit-project__form project-data" onSubmit={ handleSubmit }>
-      <Grid stackable>
-        <Grid.Row>
-          <Grid.Column width="16">
-            <h2 className="heading">
-              <span className="uppercase">Project Data</span>
-              <br />
-              <small className="msg--required">Required Fields *</small>
-            </h2>
-          </Grid.Column>
-        </Grid.Row>
+    <Fragment>
+      { /* Only use autosave with exisiting project */ }
+      { props.id && <FormikAutoSave save={ save } /> }
+      <Form className="edit-project__form project-data" onSubmit={ handleSubmit }>
+        <Grid stackable>
+          <Grid.Row>
+            <Grid.Column width="16">
+              <h2 className="heading">
+                <span className="uppercase">Project Data</span>
+                <br />
+                <small className="msg--required">Required Fields *</small>
+              </h2>
+            </Grid.Column>
+          </Grid.Row>
 
-        <Grid.Row>
-          <Grid.Column mobile={ 16 } computer={ 8 }>
+          <Grid.Row>
+            <Grid.Column mobile={ 16 } computer={ 8 }>
 
-            <Form.Group widths="equal">
-              <div className="field">
-                <Form.Field
-                  id="projectTitle"
-                  name="projectTitle"
-                  control={ Input }
-                  label="Video Title"
-                  required
-                  autoFocus
-                  value={ values.projectTitle }
-                  onChange={ handleOnChange }
-                  error={ touched.projectTitle && !!errors.projectTitle }
-                />
-                <p className="error-message">{ touched.projectTitle ? errors.projectTitle : '' }</p>
-              </div>
-
-              <div className="field">
+              <Form.Group widths="equal">
                 <div className="field">
-                  <ProjectVisibilityDropdown
-                    id="visibility"
-                    name="visibility"
-                    label="Visibility Setting"
-                    value={ values.visibility }
-                    onChange={ handleOnChange }
-                    error={ touched.visibility && !!errors.visibility }
+                  <Form.Field
+                    id="projectTitle"
+                    name="projectTitle"
+                    control={ Input }
+                    label="Video Title"
                     required
+                    autoFocus
+                    value={ values.projectTitle }
+                    onChange={ handleOnChange }
+                    error={ touched.projectTitle && !!errors.projectTitle }
                   />
+                  <p className="error-message">{ touched.projectTitle ? errors.projectTitle : '' }</p>
                 </div>
-                <p className="error-message">{ touched.visibility ? errors.visibility : '' }</p>
-              </div>
-            </Form.Group>
 
-            <Form.Group widths="equal">
-              <UserDropdown
-                id="author"
-                name="author"
-                label="Author"
-                value={ values.author }
-                onChange={ handleOnChange }
-              />
+                <div className="field">
+                  <div className="field">
+                    <ProjectVisibilityDropdown
+                      id="visibility"
+                      name="visibility"
+                      label="Visibility Setting"
+                      value={ values.visibility }
+                      onChange={ handleOnChange }
+                      error={ touched.visibility && !!errors.visibility }
+                      required
+                    />
+                  </div>
+                  <p className="error-message">{ touched.visibility ? errors.visibility : '' }</p>
+                </div>
+              </Form.Group>
 
-              <Form.Field
-                id="team"
-                control={ Input }
-                label="Team"
-                placeholder=""
-                name="team"
-                value={ values.team }
-              />
-            </Form.Group>
-
-            <Form.Group widths="equal">
-              <div className="field">
-                <CategoryDropdown
-                  id="categories"
-                  name="categories"
-                  label="Categories"
-                  value={ values.categories }
+              <Form.Group widths="equal">
+                <UserDropdown
+                  id="author"
+                  name="author"
+                  label="Author"
+                  value={ values.author }
                   onChange={ handleOnChange }
-                  error={ touched.categories && !!errors.categories }
-                  multiple
-                  search
-                  closeOnBlur
-                  closeOnChange
-                  required
-                  style={ { marginBottom: '1em' } }
                 />
 
-                { errors.categories
-                  ? <p className="error-message">{ touched.categories ? errors.categories : '' }</p>
-                  : <p className="field__helper-text">Select up to { maxCategories }.</p>
+                <Form.Field
+                  id="team"
+                  control={ Input }
+                  label="Team"
+                  placeholder=""
+                  name="team"
+                  value={ values.team }
+                />
+              </Form.Group>
+
+              <Form.Group widths="equal">
+                <div className="field">
+                  <CategoryDropdown
+                    id="categories"
+                    name="categories"
+                    label="Categories"
+                    value={ values.categories }
+                    onChange={ handleOnChange }
+                    error={ touched.categories && !!errors.categories }
+                    multiple
+                    search
+                    closeOnBlur
+                    closeOnChange
+                    required
+                    style={ { marginBottom: '1em' } }
+                  />
+
+                  { errors.categories
+                    ? <p className="error-message">{ touched.categories ? errors.categories : '' }</p>
+                    : <p className="field__helper-text">Select up to { maxCategories }.</p>
               }
-              </div>
+                </div>
 
-              <div className="field">
-                <TagTypeahead
-                  id="tags"
-                  label="Tags"
-                  name="tags"
-                  locale="en-us"
-                  value={ values.tags }
-                  onChange={ handleOnChange }
-                  style={ { marginBottom: '1em' } }
-                />
-                <p className="field__helper-text">Enter keywords separated by commas to search available tags.</p>
-              </div>
-            </Form.Group>
-          </Grid.Column>
+                <div className="field">
+                  <TagTypeahead
+                    id="tags"
+                    label="Tags"
+                    name="tags"
+                    locale="en-us"
+                    value={ values.tags }
+                    onChange={ handleOnChange }
+                    style={ { marginBottom: '1em' } }
+                  />
+                  <p className="field__helper-text">Enter keywords separated by commas to search available tags.</p>
+                </div>
+              </Form.Group>
+            </Grid.Column>
 
-          <Grid.Column mobile={ 16 } computer={ 8 }>
-            <Form.Field
-              id="descPublic"
-              name="descPublic"
-              control={ TextArea }
-              label="Public Description"
-              value={ values.descPublic }
-              onChange={ handleChange }
-            />
-
-            <div className="field">
+            <Grid.Column mobile={ 16 } computer={ 8 }>
               <Form.Field
-                id="descInternal"
-                name="descInternal"
+                id="descPublic"
+                name="descPublic"
                 control={ TextArea }
-                label="Internal Description"
-                value={ values.descInternal }
+                label="Public Description"
+                value={ values.descPublic }
                 onChange={ handleChange }
               />
-              <p className="field__helper-text">Reason for this project as it relates to Department objectives.</p>
-            </div>
-          </Grid.Column>
-        </Grid.Row>
 
-        { !props.id && status !== 'CREATED'
+              <div className="field">
+                <Form.Field
+                  id="descInternal"
+                  name="descInternal"
+                  control={ TextArea }
+                  label="Internal Description"
+                  value={ values.descInternal }
+                  onChange={ handleChange }
+                />
+                <p className="field__helper-text">Reason for this project as it relates to Department objectives.</p>
+              </div>
+            </Grid.Column>
+          </Grid.Row>
+
+          { !props.id && status !== 'CREATED'
           && (
             <Grid.Row reversed="computer">
               <Grid.Column mobile={ 11 }>
@@ -209,8 +214,9 @@ const ProjectDataForm = props => {
               </Grid.Column>
             </Grid.Row>
           ) }
-      </Grid>
-    </Form>
+        </Grid>
+      </Form>
+    </Fragment>
   );
 };
 
@@ -226,9 +232,8 @@ ProjectDataForm.propTypes = {
   isSubmitting: PropTypes.bool,
   isValid: PropTypes.bool,
   setFieldTouched: PropTypes.func,
-  maxCategories: PropTypes.number
+  maxCategories: PropTypes.number,
+  save: PropTypes.func,
 };
 
-
-// what happens if there is a project id but it returns an error?
 export default ProjectDataForm;
