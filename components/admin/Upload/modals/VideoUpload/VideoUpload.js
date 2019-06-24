@@ -142,8 +142,9 @@ const VideoUpload = props => {
       console.error( 'File not found for removal.' );
       return;
     }
+
     setConfirmRemove( {
-      filename: file.fileInput.name,
+      filename: file.input.name,
       closeModal: confirm => {
         setConfirmRemove( {} );
         if ( confirm ) {
