@@ -22,9 +22,13 @@
 .ui.form input[type="text"],
 .ui.form input[type="time"],
 .ui.form input[type="url"] .ui.items > .item .meta {
-  font-size: 0.77;
+  font-size: 0.77rem;
   border-radius: 4px;
   padding: 0.5rem;
+}
+
+.ui.form textarea {
+  font-size: 0.77rem;
 }
 
 .ui.checkbox .box,
