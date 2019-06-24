@@ -28,7 +28,7 @@ import PopupTabbed from 'components/popups/PopupTabbed';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import {
-  getPathToS3Bucket, getStreamData, getVimeoId, getYouTubeId
+  getS3Url, getStreamData, getVimeoId, getYouTubeId
 } from 'lib/utils';
 import { UNIT_DETAILS_FRAGMENT } from 'lib/graphql/queries/video';
 
@@ -73,10 +73,6 @@ class PreviewProjectContent extends React.PureComponent {
         return '';
     }
   }
-
-  getS3Url = assetPath => (
-    `${getPathToS3Bucket()}/${assetPath}`
-  )
 
   toggleArrow = () => {
     this.setState( prevState => ( {
@@ -154,10 +150,10 @@ class PreviewProjectContent extends React.PureComponent {
     let thumbnailUrl = '';
     let thumbnailAlt = '';
     if ( selectedUnit.thumbnails && selectedUnit.thumbnails.length ) {
-      thumbnailUrl = selectedUnit.thumbnails[0].image.url;
+      thumbnailUrl = getS3Url( selectedUnit.thumbnails[0].image.url );
       thumbnailAlt = selectedUnit.thumbnails[0].image.alt;
     } else if ( project.thumbnails && project.thumbnails.length ) {
-      thumbnailUrl = project.thumbnails[0].url;
+      thumbnailUrl = getS3Url( project.thumbnails[0].url );
       thumbnailAlt = project.thumbnails[0].image.alt;
     }
 
@@ -257,14 +253,14 @@ class PreviewProjectContent extends React.PureComponent {
           { youTubeUrl && (
             <Embed
               id={ getYouTubeId( youTubeUrl ) }
-              placeholder={ this.getS3Url( thumbnailUrl ) }
+              placeholder={ thumbnailUrl }
               source="youtube"
             />
           ) }
           { ( !youTubeUrl && vimeoUrl ) && (
             <Embed
               id={ getVimeoId( vimeoUrl ) }
-              placeholder={ this.getS3Url( thumbnailUrl ) }
+              placeholder={ thumbnailUrl }
               source="vimeo"
             />
           ) }
@@ -272,7 +268,7 @@ class PreviewProjectContent extends React.PureComponent {
             <figure className="modal_thumbnail overlay">
               <img
                 className="overlay-image"
-                src={ this.getS3Url( thumbnailUrl ) }
+                src={ thumbnailUrl }
                 alt={ thumbnailAlt }
               />
             </figure>

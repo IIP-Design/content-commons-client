@@ -1,28 +1,172 @@
-import { shallow } from 'enzyme';
-import TestRenderer from 'react-test-renderer';
+import { mount } from 'enzyme';
+import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import { MockedProvider } from 'react-apollo/test-utils';
-import { units } from 'components/admin/projects/ProjectEdit/mockData';
+import { Loader } from 'semantic-ui-react';
 import PreviewProjectContent, { VIDEO_PROJECT_PREVIEW_QUERY } from './PreviewProjectContent';
 
-const props = { id: '123', data: units };
+jest.mock( 'lib/utils', () => ( {
+  getPathToS3Bucket: jest.fn( () => (
+    'https://s3.amazonaws.com/amgov-publisher-dev'
+  ) ),
+  getS3Url: jest.fn( () => (
+    'https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/image-1.jpg'
+  ) ),
+  getStreamData: jest.fn( () => (
+    'https://www.youtube.com/watch?v=1evw4fRu3bo'
+  ) ),
+  getVimeoId: jest.fn( () => '340239507' ),
+  getYouTubeId: jest.fn( () => '1evw4fRu3bo' ),
+  contentRegExp: jest.fn( () => false )
+} ) );
+
+const props = { id: '123' };
+
 const mocks = [
   {
     request: {
       query: VIDEO_PROJECT_PREVIEW_QUERY,
-      variables: { id: '123' }
+      variables: { id: props.id }
     },
     result: {
       data: {
-        videoProject: {
-          projectType: 'video',
+        project: {
+          __typename: 'VideoProject',
+          id: props.id,
+          projectType: 'LANGUAGE',
+          team: {
+            __typename: 'Team',
+            id: 't81',
+            name: 'the team name'
+          },
           thumbnails: [
             {
+              __typename: 'ImageFile',
+              id: 'th11',
+              createdAt: '2019-03-06T13:11:48.043Z',
+              updatedAt: '2019-06-18T14:58:10.024Z',
+              filename: 'image-1.jpg',
+              filesize: 28371,
+              filetype: 'image/jpeg',
               alt: 'the alt text',
-              url: 'https://website.com/filename.jpg'
+              url: `2019/06/${props.id}/image-1.jpg`,
+              language: {
+                __typename: 'Language',
+                id: 'en38',
+                displayName: 'English',
+                languageCode: 'en',
+                locale: 'en-us',
+                nativeName: 'English',
+                textDirection: 'LTR'
+              }
             }
           ],
-          team: { name: 'the team name' }
+          units: [
+            {
+              __typename: 'VideoUnit',
+              id: 'un91',
+              title: 'test project title',
+              descPublic: 'the english description',
+              language: {
+                __typename: 'Language',
+                id: 'en38',
+                displayName: 'English',
+                languageCode: 'en',
+                locale: 'en-us',
+                nativeName: 'English',
+                textDirection: 'LTR'
+              },
+              tags: [
+                {
+                  __typename: 'Tag',
+                  id: 'tag13',
+                  translations: [
+                    {
+                      __typename: 'LanguageTranslation',
+                      id: 'tr999',
+                      name: 'american culture'
+                    }
+                  ]
+                }
+              ],
+              thumbnails: [
+                {
+                  __typename: 'Thumbnail',
+                  id: 'th11',
+                  size: 'FULL',
+                  image: {
+                    __typename: 'ImageFile',
+                    id: 'im28',
+                    createdAt: '2019-03-06T13:11:48.043Z',
+                    updatedAt: '2019-06-18T14:58:10.024Z',
+                    filename: 'image-1.jpg',
+                    filesize: 28371,
+                    filetype: 'image/jpeg',
+                    alt: 'the alt text',
+                    url: `2019/06/${props.id}/image-1.jpg`,
+                    language: {
+                      __typename: 'Language',
+                      id: 'en38',
+                      displayName: 'English',
+                      languageCode: 'en',
+                      locale: 'en-us',
+                      nativeName: 'English',
+                      textDirection: 'LTR'
+                    }
+                  }
+                }
+              ],
+              files: [
+                {
+                  __typename: 'VideoFile',
+                  id: 'f19',
+                  createdAt: '2019-03-05T20:18:54.032Z',
+                  updatedAt: '2019-06-19T17:38:37.502Z',
+                  duration: 556,
+                  filename: 'video-file-1.mp4',
+                  filesize: 662595174,
+                  filetype: 'video/mp4',
+                  quality: 'WEB',
+                  url: `2019/06/${props.id}/video-file-1.mp4`,
+                  videoBurnedInStatus: 'CLEAN',
+                  dimensions: {
+                    __typename: 'Dimensions',
+                    id: 'd21',
+                    height: '1080',
+                    width: '1920'
+                  },
+                  language: {
+                    __typename: 'Language',
+                    id: 'en38',
+                    displayName: 'English',
+                    languageCode: 'en',
+                    locale: 'en-us',
+                    nativeName: 'English',
+                    textDirection: 'LTR'
+                  },
+                  use: {
+                    __typename: 'VideoUse',
+                    id: 'us31',
+                    name: 'Full Video'
+                  },
+                  stream: [
+                    {
+                      __typename: 'VideoStream',
+                      id: 'st93',
+                      site: 'YouTube',
+                      url: 'https://www.youtube.com/watch?v=1evw4fRu3bo'
+                    },
+                    {
+                      __typename: 'VideoStream',
+                      id: 'st35',
+                      site: 'Vimeo',
+                      url: 'https://vimeo.com/340239507'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     }
@@ -30,21 +174,27 @@ const mocks = [
 ];
 
 const Component = (
-  <MockedProvider mocks={ mocks } addTypename={ false }>
+  <MockedProvider mocks={ mocks } addTypename>
     <PreviewProjectContent { ...props } />
   </MockedProvider>
 );
 
 describe( '<PreviewProjectContent />', () => {
   it( 'renders initial loading state without crashing', () => {
-    const wrapper = TestRenderer.create( Component );
-    expect( wrapper.toJSON() ).toEqual( 'Loading the project...' );
-  } );
+    const wrapper = mount( Component );
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const loader = (
+      <Loader
+        active
+        inline="centered"
+        style={ { marginBottom: '1em' } }
+      />
+    );
+    const msg = <p>Loading the project preview...</p>;
 
-  it( 'renders final state without crashing', async () => {
-    const wrapper = TestRenderer.create( Component );
-    await wait( 0 );
-    expect( wrapper.toJSON() ).toMatchSnapshot();
+    expect( preview.exists() ).toEqual( true );
+    expect( preview.contains( loader ) ).toEqual( true );
+    expect( preview.contains( msg ) ).toEqual( true );
   } );
 
   it( 'renders error message if error is thrown', async () => {
@@ -59,40 +209,39 @@ describe( '<PreviewProjectContent />', () => {
         }
       }
     ];
-    const wrapper = TestRenderer.create(
+    const wrapper = mount(
       <MockedProvider mocks={ errorMocks } addTypename={ false }>
         <PreviewProjectContent { ...props } />
       </MockedProvider>
     );
+    // wait for the data and !loading
     await wait( 0 );
+    wrapper.update();
 
-    expect( wrapper.toJSON() ).toContain( 'Error! GraphQL error: There was an error.' );
-    expect( wrapper.toJSON() ).toMatchSnapshot();
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const errorComponent = preview.find( 'ApolloError' );
+
+    expect( errorComponent.exists() ).toEqual( true );
+    expect( errorComponent.contains( 'There was an error.') )
+      .toEqual( true );
   } );
 
-  it( '`componentDidMount` is called and selects the project item', () => {
-    jest.clearAllMocks();
-    const wrapper = shallow( Component );
-    const preview = wrapper.find( 'PreviewProjectContent' ).dive();
-    const inst = preview.instance();
-    const didMountSpy = jest.spyOn( preview.instance(), 'componentDidMount' );
-    const selectProjectItemSpy = jest.spyOn( preview.instance(), 'selectProjectItem' );
+  it( 'renders final state without crashing', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
 
-    inst.componentDidMount();
-    expect( didMountSpy ).toHaveBeenCalled();
-    expect( selectProjectItemSpy ).toHaveBeenCalled();
+    const preview = wrapper.find( 'PreviewProjectContent' );
 
-    const selectedItemObj = preview.state( 'selectedItem' );
-    const language = preview.state( 'selectedLanguage' );
-    const { data } = inst.props;
-    expect( selectedItemObj ).toEqual(
-      data.find( unit => unit.language.displayName === language )
-    );
+    expect( toJSON( preview ) ).toMatchSnapshot();
   } );
 
-  it( 'sets `dropDownIsOpen` and `selectedLanguage` in initial `state`', () => {
-    const wrapper = shallow( Component );
-    const preview = wrapper.find( 'PreviewProjectContent' ).dive();
+  it( 'sets dropDownIsOpen and selectedLanguage in initial state', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
     const inst = preview.instance();
     const { dropDownIsOpen, selectedLanguage } = inst.state;
 
@@ -100,54 +249,54 @@ describe( '<PreviewProjectContent />', () => {
     expect( selectedLanguage ).toEqual( 'English' );
   } );
 
-  it( '`getLanguages` sets `languages` in initial `state`', () => {
-    jest.clearAllMocks();
-    const wrapper = shallow( Component );
-    const preview = wrapper.find( 'PreviewProjectContent' ).dive();
+  it( 'calling getLanguages gets the unit language(s)', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
     const inst = preview.instance();
     const spy = jest.spyOn( inst, 'getLanguages' );
+    const { units } = mocks[0].result.data.project;
 
-    inst.getLanguages( inst.props.data );
+    const languages = inst.getLanguages( units );
 
     expect( spy ).toHaveBeenCalled();
-    expect( inst.state.languages ).toEqual( [
-      { key: 'en', value: 'English', text: 'English' },
-      { key: 'fr', value: 'French', text: 'French' }] );
+    expect( languages ).toEqual( [
+      { key: 'en', value: 'English', text: 'English' }
+    ] );
   } );
 
-  it( '`getProjectItems` sets `projectItems` in initial `state`', () => {
-    jest.clearAllMocks();
-    const wrapper = shallow( Component );
-    const preview = wrapper.find( 'PreviewProjectContent' ).dive();
+  it( 'calling getProjectUnits gets the projectUnits', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
     const inst = preview.instance();
-    const spy = jest.spyOn( inst, 'getProjectItems' );
-    const { data } = inst.props;
+    const spy = jest.spyOn( inst, 'getProjectUnits' );
+    const { units } = mocks[0].result.data.project;
 
-    inst.getProjectItems( data );
-
-    const { languages, projectItems } = inst.state;
-    const langKeys = Object.keys( projectItems );
+    const projectUnits = inst.getProjectUnits( units );
 
     expect( spy ).toHaveBeenCalled();
-    expect( langKeys.length ).toEqual( languages.length );
-    langKeys.forEach( key => {
-      expect( projectItems[key] ).toEqual(
-        data.find( unit => unit.language.displayName === key )
-      );
+    expect( projectUnits ).toEqual( {
+      [units[0].language.displayName]: units[0]
     } );
   } );
 
-  it( '`handleChange` updates `selectedLanguage` and `selectedItem` in `state`', () => {
-    jest.clearAllMocks();
-    const wrapper = shallow( Component );
-    const preview = wrapper.find( 'PreviewProjectContent' ).dive();
+  it( 'handleChange updates selectedLanguage and selectedItem in state', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
     const inst = preview.instance();
-    const { data } = inst.props;
+    const { units } = mocks[0].result.data.project;
 
     const handleChangeSpy = jest.spyOn( inst, 'handleChange' );
     const toggleArrowSpy = jest.spyOn( inst, 'toggleArrow' );
     const selectLanguageSpy = jest.spyOn( inst, 'selectLanguage' );
-    const selectProjectItemSpy = jest.spyOn( inst, 'selectProjectItem' );
 
     const e = {};
     const selection = { value: 'French' };
@@ -159,76 +308,88 @@ describe( '<PreviewProjectContent />', () => {
     expect( handleChangeSpy ).toHaveBeenCalledWith( e, selection );
     expect( toggleArrowSpy ).toHaveBeenCalled();
     expect( selectLanguageSpy ).toHaveBeenCalledWith( selection.value );
-    expect( selectProjectItemSpy ).toHaveBeenCalled();
 
     expect( selectedLanguage ).toEqual( selection.value );
     expect( selectedItem ).toEqual(
-      data.find( unit => unit.language.displayName === selectedLanguage )
+      units.find( unit => unit.language.displayName === selectedLanguage )
     );
   } );
 
-  it( '`toggleArrow` updates `dropDownIsOpen` in state & the dropdown icon', async () => {
-    jest.clearAllMocks();
-    const wrapper = TestRenderer.create( Component );
+  it( 'toggleArrow updates dropDownIsOpen in state & updates dropdown icon', async () => {
+    const wrapper = mount( Component );
     await wait( 0 );
-    const inst = wrapper.root;
-    const preview = inst.findByType( PreviewProjectContent ).instance;
-    const spy = jest.spyOn( preview, 'toggleArrow' );
-    const dropdownIcon = () => inst.findByProps( { className: 'modal_languages' } ).props.icon;
+    wrapper.update();
 
-    expect( preview.state.dropDownIsOpen ).toEqual( false );
+    const preview = () => wrapper.find( 'PreviewProjectContent' );
+    const dropdown = () => preview().find( 'Dropdown.modal_languages' );
+    const inst = preview().instance();
+    const spy = jest.spyOn( inst, 'toggleArrow' );
 
-    preview.toggleArrow();
+    expect( inst.state.dropDownIsOpen ).toEqual( false );
+    expect( dropdown().prop( 'icon' ) ).toEqual( 'chevron down' );
+
+    inst.toggleArrow();
     expect( spy ).toHaveBeenCalledTimes( 1 );
-    expect( preview.state.dropDownIsOpen ).toEqual( true );
-    expect( dropdownIcon() ).toEqual( 'chevron up' );
+    expect( inst.state.dropDownIsOpen ).toEqual( true );
+    wrapper.update();
+    expect( dropdown().prop( 'icon' ) ).toEqual( 'chevron up' );
 
-    preview.toggleArrow();
+    inst.toggleArrow();
     expect( spy ).toHaveBeenCalledTimes( 2 );
-    expect( preview.state.dropDownIsOpen ).toEqual( false );
-    expect( dropdownIcon() ).toEqual( 'chevron down' );
+    expect( inst.state.dropDownIsOpen ).toEqual( false );
+    wrapper.update();
+    expect( dropdown().prop( 'icon' ) ).toEqual( 'chevron down' );
   } );
 
-  it( '`selectLanguage` updates `selectedLanguage` and `selectedItem` in state', () => {
-    jest.clearAllMocks();
-    const wrapper = shallow( Component );
-    const preview = wrapper.find( 'PreviewProjectContent' ).dive();
-    const inst = preview.instance();
-    const { data } = inst.props;
-    const selectedItem = () => inst.state.selectedItem;
-    const selectedLanguage = () => inst.state.selectedLanguage;
+  it( 'selectLanguage updates selectedLanguage in state', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
 
-    const selectLanguageSpy = jest.spyOn( inst, 'selectLanguage' );
-    const selectProjectItemSpy = jest.spyOn( inst, 'selectProjectItem' );
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+    const selectedLanguage = () => inst.state.selectedLanguage;
+    const spy = jest.spyOn( inst, 'selectLanguage' );
 
     expect( selectedLanguage() ).toEqual( 'English' );
-    expect( selectedItem() )
-      .toEqual(
-        data.find( unit => (
-          unit.language.displayName === selectedLanguage()
-        ) )
-      );
 
     inst.selectLanguage( 'French' );
-    expect( selectLanguageSpy ).toHaveBeenCalledTimes( 1 );
-    expect( selectProjectItemSpy ).toHaveBeenCalledTimes( 1 );
+    expect( spy ).toHaveBeenCalledTimes( 1 );
     expect( selectedLanguage() ).toEqual( 'French' );
-    expect( selectedItem() )
-      .toEqual(
-        data.find( unit => (
-          unit.language.displayName === selectedLanguage()
-        ) )
-      );
 
     inst.selectLanguage( 'English' );
-    expect( selectLanguageSpy ).toHaveBeenCalledTimes( 2 );
-    expect( selectProjectItemSpy ).toHaveBeenCalledTimes( 2 );
+    expect( spy ).toHaveBeenCalledTimes( 2 );
     expect( selectedLanguage() ).toEqual( 'English' );
-    expect( selectedItem() )
-      .toEqual(
-        data.find( unit => (
-          unit.language.displayName === selectedLanguage()
-        ) )
-      );
+  } );
+
+  it( 'getContentType returns the correct content type', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+    const spy = jest.spyOn( inst, 'getContentType' );
+    const videoType = inst.getContentType( 'VideoProject' );
+    const noType = inst.getContentType();
+
+    expect( spy ).toHaveBeenCalled();
+    expect( videoType ).toEqual( 'video' );
+    expect( noType ).toEqual( '' );
+  } );
+
+  it( 'renders an embedded YouTube video', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const embed = preview.find( 'Embed' );
+    const assetPath = mocks[0].result.data.project.thumbnails[0].url;
+
+    expect( embed.exists() ).toEqual( true );
+    expect( embed.prop( 'id' ) ).toEqual( '1evw4fRu3bo' );
+    expect( embed.prop( 'source' ) ).toEqual( 'youtube' );
+    expect( embed.prop( 'placeholder' ) ).toEqual( `https://s3.amazonaws.com/amgov-publisher-dev/${assetPath}` );
   } );
 } );
