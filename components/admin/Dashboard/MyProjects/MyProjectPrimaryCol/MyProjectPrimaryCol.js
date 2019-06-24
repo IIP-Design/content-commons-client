@@ -87,7 +87,7 @@ const MyProjectPrimaryCol = props => {
             <Popup
               trigger={ (
                 <a
-                  href={ `/admin/project?conent=video&id=${id}&action=edit` }
+                  href={ `/admin/project/video/${id}/edit` }
                   className="myProjects_data_title"
                 >
                   <span aria-hidden>{ truncate( d[header.name], { length: 35 } ) }</span>

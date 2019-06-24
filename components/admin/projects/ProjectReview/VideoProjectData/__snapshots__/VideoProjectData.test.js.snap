@@ -35,7 +35,7 @@ exports[`<VideoProjectData /> does not crash if author and team are \`null\` 1`]
     <b
       className="label"
     >
-      Privacy Setting:
+      Visibility Setting:
     </b>
      
     PUBLIC
@@ -157,14 +157,17 @@ exports[`<VideoProjectData /> renders the final state 1`] = `
         },
         "categories": Array [
           Object {
-            "translations": Object {
-              "name": "about america",
-            },
-          },
-          Object {
-            "translations": Object {
-              "name": "Amérique",
-            },
+            "id": "c77",
+            "translations": Array [
+              Object {
+                "id": "ct7",
+                "name": "about america",
+              },
+              Object {
+                "id": "ct8",
+                "name": "Amérique",
+              },
+            ],
           },
         ],
         "descInternal": "The internal description",
@@ -173,17 +176,21 @@ exports[`<VideoProjectData /> renders the final state 1`] = `
         "projectTitle": "test title",
         "tags": Array [
           Object {
-            "translations": Object {
-              "name": "american culture",
-            },
-          },
-          Object {
-            "translations": Object {
-              "name": "Culture américaine",
-            },
+            "id": "t44",
+            "translations": Array [
+              Object {
+                "id": "tt4",
+                "name": "american culture",
+              },
+              Object {
+                "id": "tt5",
+                "name": "Culture américaine",
+              },
+            ],
           },
         ],
         "team": Object {
+          "id": "t11",
           "name": "IIP Video Production",
         },
         "visibility": "PUBLIC",
@@ -242,7 +249,7 @@ exports[`<VideoProjectData /> renders the final state 1`] = `
         <b
           className="label"
         >
-          Privacy Setting:
+          Visibility Setting:
         </b>
          
         PUBLIC
@@ -257,7 +264,7 @@ exports[`<VideoProjectData /> renders the final state 1`] = `
         >
           Categories: 
         </b>
-        about america, Amérique
+        about america
       </p>
       <p>
         <b
@@ -265,7 +272,7 @@ exports[`<VideoProjectData /> renders the final state 1`] = `
         >
           Tags: 
         </b>
-        american culture, Culture américaine
+        american culture
       </p>
     </section>
     <section

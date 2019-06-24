@@ -17,7 +17,7 @@ exports[`<MyProjectPrimaryCol /> renders a Popup with a truncated project title 
   trigger={
     <a
       className="myProjects_data_title"
-      href="/admin/project/video/111/review"
+      href="/admin/project/video/111/edit"
     >
       <span
         aria-hidden={true}
@@ -58,7 +58,8 @@ exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
     className="myProjects_data"
   >
     <Link
-      href="/admin/project/video/111/review"
+      as="/admin/project/video/111/edit"
+      href="/admin/project?content=video&id=111&action=edit"
     >
       <a
         className="myProjects_data_title"
@@ -72,9 +73,16 @@ exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
       <div
         className="myProjects_data_actions_wrapper"
       >
-        <DetailsPopup
-          id="111"
-        />
+        <Link
+          as="/admin/project/video/111/edit"
+          href="/admin/project?content=video&id=111&action=edit"
+        >
+          <a
+            className="linkStyle myProjects_data_actions_action"
+          >
+            Edit
+          </a>
+        </Link>
         <span>
            | 
         </span>
@@ -103,7 +111,7 @@ exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
         <span>
            | 
         </span>
-        <ShareProjectItem
+        <DetailsPopup
           id="111"
         />
       </div>

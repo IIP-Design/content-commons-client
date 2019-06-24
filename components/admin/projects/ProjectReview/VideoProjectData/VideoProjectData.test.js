@@ -23,17 +23,42 @@ const mocks = [
             firstName: 'Jane',
             lastName: 'Doe'
           },
-          team: { name: 'IIP Video Production' },
+          team: {
+            id: 't11',
+            name: 'IIP Video Production'
+          },
           visibility: 'PUBLIC',
           descPublic: 'The public description',
           descInternal: 'The internal description',
           categories: [
-            { translations: { name: 'about america' } },
-            { translations: { name: 'Amérique' } }
+            {
+              id: 'c77',
+              translations: [
+                {
+                  id: 'ct7',
+                  name: 'about america'
+                },
+                {
+                  id: 'ct8',
+                  name: 'Amérique'
+                }
+              ]
+            }
           ],
           tags: [
-            { translations: { name: 'american culture' } },
-            { translations: { name: 'Culture américaine' } }
+            {
+              id: 't44',
+              translations: [
+                {
+                  id: 'tt4',
+                  name: 'american culture'
+                },
+                {
+                  id: 'tt5',
+                  name: 'Culture américaine'
+                }
+              ]
+            }
           ]
         }
       }
@@ -153,7 +178,7 @@ describe( '<VideoProjectData />', () => {
                 firstName: 'Jane',
                 lastName: 'Doe'
               },
-              team: { name: 'IIP Video Production' },
+              team: { id: 't11', name: 'IIP Video Production' },
               visibility: 'PUBLIC',
               descPublic: 'The public description',
               descInternal: 'The internal description',
@@ -197,7 +222,7 @@ describe( '<VideoProjectData />', () => {
                 firstName: 'Jane',
                 lastName: 'Doe'
               },
-              team: { name: 'IIP Video Production' },
+              team: { id: 't11', name: 'IIP Video Production' },
               visibility: 'PUBLIC',
               descPublic: 'The public description',
               descInternal: 'The internal description',
@@ -242,12 +267,34 @@ describe( '<VideoProjectData />', () => {
               descPublic: 'The public description',
               descInternal: 'The internal description',
               categories: [
-                { translations: { name: 'about america' } },
-                { translations: { name: 'Amérique' } }
+                {
+                  id: 'c77',
+                  translations: [
+                    {
+                      id: 'ct7',
+                      name: 'about america'
+                    },
+                    {
+                      id: 'ct8',
+                      name: 'Amérique'
+                    }
+                  ]
+                }
               ],
               tags: [
-                { translations: { name: 'american culture' } },
-                { translations: { name: 'Culture américaine' } }
+                {
+                  id: 't44',
+                  translations: [
+                    {
+                      id: 'tt4',
+                      name: 'american culture'
+                    },
+                    {
+                      id: 'tt5',
+                      name: 'Culture américaine'
+                    }
+                  ]
+                }
               ]
             }
           }
@@ -271,6 +318,7 @@ describe( '<VideoProjectData />', () => {
   } );
 
   it( 'does not crash if author and team are `{}`', async () => {
+    // ignore console.warn about missing field
     const emptyAuthorTeamMocks = [
       {
         request: {
@@ -288,12 +336,36 @@ describe( '<VideoProjectData />', () => {
               descPublic: 'The public description',
               descInternal: 'The internal description',
               categories: [
-                { translations: { name: 'about america' } },
-                { translations: { name: 'Amérique' } }
+                {
+                  id: 'c77',
+                  translations: {
+                    id: 'ct7',
+                    name: 'about america'
+                  }
+                },
+                {
+                  id: 'c88',
+                  translations: {
+                    id: 'ct8',
+                    name: 'Amérique'
+                  }
+                }
               ],
               tags: [
-                { translations: { name: 'american culture' } },
-                { translations: { name: 'Culture américaine' } }
+                {
+                  id: 't44',
+                  translations: {
+                    id: 'tt4',
+                    name: 'american culture'
+                  }
+                },
+                {
+                  id: 't55',
+                  translations: {
+                    id: 'tt5',
+                    name: 'Culture américaine'
+                  }
+                }
               ]
             }
           }

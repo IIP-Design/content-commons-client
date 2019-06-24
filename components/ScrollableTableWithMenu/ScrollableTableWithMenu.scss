@@ -43,16 +43,13 @@
 
   &_table {
     position: relative;
-    max-height: 1300px;
-    max-height: 100vw;
-    overflow: scroll;
+    overflow: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
     border: 1px solid rgba(34, 36, 38, 0.15);
     @media screen and (max-width: 767px) {
       border: none;
       max-height: 300px;
-      overflow: auto;
     }
 
     /* ONLY IN WORKS IN CHROME & SAFARI */
