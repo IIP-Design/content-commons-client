@@ -1,0 +1,163 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DownloadThumbnail /> renders final state without crashing 1`] = `
+<DownloadThumbnail
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": false,
+      "networkStatus": 7,
+      "project": Object {
+        "id": "123",
+        "thumbnails": Array [
+          Object {
+            "id": "th765",
+            "language": Object {
+              "displayName": "English",
+              "id": "en23",
+            },
+            "url": "2019/06/123/thumbnail-1.jpg",
+          },
+        ],
+      },
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "123",
+      },
+    }
+  }
+  id="123"
+  instructions="Download Thumbnail(s)"
+>
+  <p
+    className="form-group_instructions"
+  >
+    Download Thumbnail(s)
+  </p>
+  <ItemGroup
+    className="download-item"
+    key="fs_th765"
+  >
+    <div
+      className="ui items download-item"
+    >
+      <Item
+        as="a"
+        download="English_thumbnail"
+        href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/thumbnail-1.jpg"
+      >
+        <a
+          className="item"
+          download="English_thumbnail"
+          href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/thumbnail-1.jpg"
+        >
+          <ItemImage
+            className="download-icon"
+            size="mini"
+            src="downloadIconSVG"
+          >
+            <Image
+              as="img"
+              className="download-icon"
+              size="mini"
+              src="downloadIconSVG"
+              ui={true}
+              wrapped={true}
+            >
+              <div
+                className="ui mini image download-icon"
+              >
+                <img
+                  src="downloadIconSVG"
+                />
+              </div>
+            </Image>
+          </ItemImage>
+          <ItemContent>
+            <div
+              className="content"
+            >
+              <ItemHeader
+                className="download-header"
+              >
+                <div
+                  className="header download-header"
+                >
+                  Download English Thumbnail
+                </div>
+              </ItemHeader>
+              <span
+                className="item_hover"
+              >
+                Download English Thumbnail
+              </span>
+            </div>
+          </ItemContent>
+        </a>
+      </Item>
+    </div>
+  </ItemGroup>
+</DownloadThumbnail>
+`;
+
+exports[`<DownloadThumbnail /> renders initial loading state without crashing 1`] = `
+<DownloadThumbnail
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": true,
+      "networkStatus": 1,
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "123",
+      },
+    }
+  }
+  id="123"
+  instructions="Download Thumbnail(s)"
+>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "center",
+        "minHeight": "200px",
+      }
+    }
+  >
+    <Loader
+      active={true}
+      content="Loading thumbnail(s)..."
+      inline="centered"
+      style={
+        Object {
+          "marginBottom": "1em",
+        }
+      }
+    >
+      <div
+        className="ui active text centered inline loader"
+        style={
+          Object {
+            "marginBottom": "1em",
+          }
+        }
+      >
+        Loading thumbnail(s)...
+      </div>
+    </Loader>
+  </div>
+</DownloadThumbnail>
+`;
