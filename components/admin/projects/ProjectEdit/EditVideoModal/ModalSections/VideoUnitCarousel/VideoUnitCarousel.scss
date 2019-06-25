@@ -27,6 +27,8 @@
     }
   
     &-image {
+      height: 130px;
+      object-fit: cover;
       width: 100%;
 
       &.selected {
