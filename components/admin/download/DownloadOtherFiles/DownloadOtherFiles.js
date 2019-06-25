@@ -33,13 +33,13 @@ const DownloadOtherFiles = ( { instructions, data } ) => {
 
   if ( !project || !Object.keys( project ).length ) return null;
 
-  const { units } = project;
+  const { files } = project;
 
-  const renderFormItem = unit => {
+  const renderFormItem = file => {
     const {
       id, filename, filetype, url,
       language: { displayName }
-    } = unit;
+    } = file;
 
     return (
       <Item.Group key={ `fs_${id}` } className="download-item">
@@ -59,16 +59,16 @@ const DownloadOtherFiles = ( { instructions, data } ) => {
   };
 
   const renderFormItems = () => {
-    const otherFiles = units
-      .filter( unit => unit && unit.url )
-      .map( unit => renderFormItem( unit ) );
+    const otherFiles = files
+      .filter( file => file && file.url )
+      .map( file => renderFormItem( file ) );
     return otherFiles.length ? otherFiles : 'There are no other files available for download at this time';
   };
 
   return (
     <Fragment>
       <p className="form-group_instructions">{ instructions }</p>
-      { units && renderFormItems( units ) }
+      { files && renderFormItems( files ) }
     </Fragment>
   );
 };
@@ -82,13 +82,9 @@ const VIDEO_PROJECT_PREVIEW_OTHER_FILES_QUERY = gql`
   query VideoProjectPreviewOtherfiles($id: ID!) {
     project: videoProject(id: $id) {
       id
-      units: supportFiles(
+      files: supportFiles(
         where: {
-          AND: [
-            { filetype_not: "srt" },
-            { filetype_not: "jpg" },
-            { filetype_not: "png" }
-          ]
+          filetype_not: "application/x-subrip"
         },
         orderBy: filename_ASC
       ) {
