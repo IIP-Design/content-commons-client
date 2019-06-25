@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Item, Loader } from 'semantic-ui-react';
 import { getS3Url } from 'lib/utils';
+import ApolloError from 'components/errors/ApolloError';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 
@@ -30,8 +31,7 @@ const DownloadOtherFiles = ( { instructions, data } ) => {
     );
   }
 
-  if ( error ) return `Error! ${error.message}`;
-
+  if ( error ) return <ApolloError error={ error } />;
   if ( !project || !Object.keys( project ).length ) return null;
 
   const { files } = project;
