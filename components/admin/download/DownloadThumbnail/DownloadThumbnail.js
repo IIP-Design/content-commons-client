@@ -33,10 +33,10 @@ const DownloadThumbnail = ( { instructions, data } ) => {
 
   if ( !project || !Object.keys( project ).length ) return null;
 
-  const { units } = project;
+  const { thumbnails } = project;
 
-  const renderFormItem = unit => {
-    const { id, url, language: { displayName } } = unit;
+  const renderFormItem = thumbnail => {
+    const { id, url, language: { displayName } } = thumbnail;
     return (
       <Item.Group key={ `fs_${id}` } className="download-item">
         <Item as="a" href={ url } download={ `${displayName}_thumbnail` }>
@@ -55,16 +55,16 @@ const DownloadThumbnail = ( { instructions, data } ) => {
   };
 
   const renderFormItems = () => {
-    const t = units
-      .filter( unit => unit && unit.url )
-      .map( unit => renderFormItem( unit ) );
+    const t = thumbnails
+      .filter( thumbnail => thumbnail && thumbnail.url )
+      .map( thumbnail => renderFormItem( thumbnail ) );
     return t.length ? t : 'There are no thumbnails available for download at this time';
   };
 
   return (
     <Fragment>
       <p className="form-group_instructions">{ instructions }</p>
-      { units && renderFormItems( units ) }
+      { thumbnails && renderFormItems( thumbnails ) }
     </Fragment>
   );
 };
@@ -78,12 +78,17 @@ const VIDEO_PROJECT_PREVIEW_THUMBNAILS_QUERY = gql`
   query VideoProjectPreviewThumbnails($id: ID!) {
     project: videoProject(id: $id) {
       id
-      units: supportFiles(
+      thumbnails(
         where: {
           OR: [
-            { filetype: "jpg" },
-            { filetype: "png" }
-          ]
+            { filetype: "image/jpeg" },
+            { filetype: "image/png" },
+            { filename_ends_with: "jpg" },
+            { filename_ends_with: "png" }
+          ],
+          AND: {
+            use: { name: "Thumbnail/Cover Image" }
+          }
         },
         orderBy: filename_ASC
       ) {
