@@ -4,7 +4,6 @@
  *
  */
 import React from 'react';
-import getConfig from 'next/config';
 import propTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
@@ -13,9 +12,9 @@ import { withFormik } from 'formik';
 
 import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
 import TagTypeahead from 'components/admin/dropdowns/TagTypeahead';
-import { getStreamData, getVimeoId, getYouTubeId } from 'lib/utils';
-
-const { publicRuntimeConfig } = getConfig();
+import {
+  getPathToS3Bucket, getStreamData, getVimeoId, getYouTubeId
+} from 'lib/utils';
 
 const VIDEO_UNIT_QUERY = gql`
   query VIDEO_UNIT_QUERY( $id: ID! ) {
@@ -224,7 +223,7 @@ const UnitDataForm = ( {
   let thumbnailUrl = '';
   let thumbnailAlt = '';
   if ( unit.thumbnails && unit.thumbnails.length ) {
-    thumbnailUrl = `https://${publicRuntimeConfig.REACT_APP_AWS_S3_PUBLISHER_UPLOAD_BUCKET}/${unit.thumbnails[0].image.url}`;
+    thumbnailUrl = `${getPathToS3Bucket()}/${unit.thumbnails[0].image.url}`;
     thumbnailAlt = unit.thumbnails[0].image.alt || '';
   }
 

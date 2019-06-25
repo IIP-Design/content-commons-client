@@ -1,3 +1,8 @@
+/**
+ *
+ * FileSection
+ *
+ */
 import React, { useContext } from 'react';
 import gql from 'graphql-tag';
 import { Icon } from 'semantic-ui-react';
