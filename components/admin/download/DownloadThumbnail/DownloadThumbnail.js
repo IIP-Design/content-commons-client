@@ -3,6 +3,7 @@ import { object, string } from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Item, Loader } from 'semantic-ui-react';
+import { getS3Url } from 'lib/utils';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 
@@ -39,7 +40,7 @@ const DownloadThumbnail = ( { instructions, data } ) => {
     const { id, url, language: { displayName } } = thumbnail;
     return (
       <Item.Group key={ `fs_${id}` } className="download-item">
-        <Item as="a" href={ url } download={ `${displayName}_thumbnail` }>
+        <Item as="a" href={ getS3Url( url ) } download={ `${displayName}_thumbnail` }>
           <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
           <Item.Content>
             <Item.Header className="download-header">
