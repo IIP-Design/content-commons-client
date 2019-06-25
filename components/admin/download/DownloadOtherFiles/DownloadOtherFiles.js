@@ -3,6 +3,7 @@ import { object, string } from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Item, Loader } from 'semantic-ui-react';
+import { getS3Url } from 'lib/utils';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 
@@ -43,7 +44,7 @@ const DownloadOtherFiles = ( { instructions, data } ) => {
 
     return (
       <Item.Group key={ `fs_${id}` } className="download-item">
-        <Item as="a" href={ url } download={ filename }>
+        <Item as="a" href={ getS3Url( url ) } download={ filename }>
           <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
           <Item.Content>
             <Item.Header className="download-header">
