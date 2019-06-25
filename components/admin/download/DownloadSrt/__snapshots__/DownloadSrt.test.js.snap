@@ -49,12 +49,12 @@ exports[`<DownloadSrt /> renders final state without crashing 1`] = `
       <Item
         as="a"
         download="English_SRT"
-        href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/srt-1.srt"
+        href="https://s3-url.com/2019/06/123/srt-1.srt"
       >
         <a
           className="item"
           download="English_SRT"
-          href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/srt-1.srt"
+          href="https://s3-url.com/2019/06/123/srt-1.srt"
         >
           <ItemImage
             className="download-icon"

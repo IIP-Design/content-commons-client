@@ -6,11 +6,9 @@ import { Loader } from 'semantic-ui-react';
 import DownloadSrt, { VIDEO_PROJECT_PREVIEW_SRTS_QUERY } from './DownloadSrt';
 
 jest.mock( 'lib/utils', () => ( {
-  getPathToS3Bucket: jest.fn( () => (
-    'https://s3.amazonaws.com/amgov-publisher-dev'
-  ) ),
+  getPathToS3Bucket: jest.fn( () => {} ),
   getS3Url: jest.fn( assetPath => (
-    `https://s3.amazonaws.com/amgov-publisher-dev/${assetPath}`
+    `https://s3-url.com/${assetPath}`
   ) )
 } ) );
 
@@ -196,7 +194,7 @@ describe( '<DownloadSrt />', () => {
 
     const items = wrapper.find( 'Item' );
     const { files } = mocks[0].result.data.project;
-    const s3Bucket = 'https://s3.amazonaws.com/amgov-publisher-dev';
+    const s3Bucket = 'https://s3-url.com';
 
     expect( items.length ).toEqual( files.length );
     items.forEach( ( item, i ) => {

@@ -6,11 +6,9 @@ import { Loader } from 'semantic-ui-react';
 import DownloadThumbnail, { VIDEO_PROJECT_PREVIEW_THUMBNAILS_QUERY } from './DownloadThumbnail';
 
 jest.mock( 'lib/utils', () => ( {
-  getPathToS3Bucket: jest.fn( () => (
-    'https://s3.amazonaws.com/amgov-publisher-dev'
-  ) ),
+  getPathToS3Bucket: jest.fn( () => {} ),
   getS3Url: jest.fn( assetPath => (
-    `https://s3.amazonaws.com/amgov-publisher-dev/${assetPath}`
+    `https://s3-url.com/${assetPath}`
   ) )
 } ) );
 
@@ -189,14 +187,14 @@ describe( '<DownloadThumbnail />', () => {
     expect( downloadThumb.contains( msg ) ).toEqual( true );
   } );
 
-  it.only( 'renders <a> tags with the correct href and download attribute values', async () => {
+  it( 'renders <a> tags with the correct href and download attribute values', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
     const items = wrapper.find( 'Item' );
     const { thumbnails } = mocks[0].result.data.project;
-    const s3Bucket = 'https://s3.amazonaws.com/amgov-publisher-dev';
+    const s3Bucket = 'https://s3-url.com';
 
     expect( items.length ).toEqual( thumbnails.length );
     items.forEach( ( item, i ) => {

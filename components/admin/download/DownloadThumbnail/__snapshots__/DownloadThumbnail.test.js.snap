@@ -49,12 +49,12 @@ exports[`<DownloadThumbnail /> renders final state without crashing 1`] = `
       <Item
         as="a"
         download="English_thumbnail"
-        href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/thumbnail-1.jpg"
+        href="https://s3-url.com/2019/06/123/thumbnail-1.jpg"
       >
         <a
           className="item"
           download="English_thumbnail"
-          href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/thumbnail-1.jpg"
+          href="https://s3-url.com/2019/06/123/thumbnail-1.jpg"
         >
           <ItemImage
             className="download-icon"

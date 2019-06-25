@@ -693,7 +693,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
       >
         <Embed
           id="1evw4fRu3bo"
-          placeholder="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/image-1.jpg"
+          placeholder="https://s3-url.com/2019/06/123/image-1.jpg"
           source="youtube"
         >
           <div
@@ -711,7 +711,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
             </Icon>
             <img
               className="placeholder"
-              src="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/image-1.jpg"
+              src="https://s3-url.com/2019/06/123/image-1.jpg"
             />
           </div>
         </Embed>

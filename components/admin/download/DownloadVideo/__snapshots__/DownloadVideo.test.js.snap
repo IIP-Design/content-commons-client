@@ -174,12 +174,12 @@ exports[`<DownloadVideo /> renders without crashing 1`] = `
         <Item
           as="a"
           download="test_project_title_1920.mp4"
-          href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/video-file-1.mp4"
+          href="https://s3-url.com/2019/06/123/video-file-1.mp4"
         >
           <a
             className="item"
             download="test_project_title_1920.mp4"
-            href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/video-file-1.mp4"
+            href="https://s3-url.com/2019/06/123/video-file-1.mp4"
           >
             <ItemImage
               className="download-icon"
@@ -264,12 +264,12 @@ exports[`<DownloadVideo /> renders without crashing 1`] = `
         <Item
           as="a"
           download="test_project_title_1920.mp4"
-          href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/video-file-2.mp4"
+          href="https://s3-url.com/2019/06/123/video-file-2.mp4"
         >
           <a
             className="item"
             download="test_project_title_1920.mp4"
-            href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/video-file-2.mp4"
+            href="https://s3-url.com/2019/06/123/video-file-2.mp4"
           >
             <ItemImage
               className="download-icon"

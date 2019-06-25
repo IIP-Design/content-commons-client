@@ -6,11 +6,9 @@ import { Loader } from 'semantic-ui-react';
 import PreviewProjectContent, { VIDEO_PROJECT_PREVIEW_QUERY } from './PreviewProjectContent';
 
 jest.mock( 'lib/utils', () => ( {
-  getPathToS3Bucket: jest.fn( () => (
-    'https://s3.amazonaws.com/amgov-publisher-dev'
-  ) ),
-  getS3Url: jest.fn( () => (
-    'https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/image-1.jpg'
+  getPathToS3Bucket: jest.fn( () => {} ),
+  getS3Url: jest.fn( assetPath => (
+    `https://s3-url.com/${assetPath}`
   ) ),
   getStreamData: jest.fn( () => (
     'https://www.youtube.com/watch?v=1evw4fRu3bo'
@@ -386,10 +384,11 @@ describe( '<PreviewProjectContent />', () => {
     const preview = wrapper.find( 'PreviewProjectContent' );
     const embed = preview.find( 'Embed' );
     const assetPath = mocks[0].result.data.project.thumbnails[0].url;
+    const s3Bucket = 'https://s3-url.com';
 
     expect( embed.exists() ).toEqual( true );
     expect( embed.prop( 'id' ) ).toEqual( '1evw4fRu3bo' );
     expect( embed.prop( 'source' ) ).toEqual( 'youtube' );
-    expect( embed.prop( 'placeholder' ) ).toEqual( `https://s3.amazonaws.com/amgov-publisher-dev/${assetPath}` );
+    expect( embed.prop( 'placeholder' ) ).toEqual( `${s3Bucket}/${assetPath}` );
   } );
 } );

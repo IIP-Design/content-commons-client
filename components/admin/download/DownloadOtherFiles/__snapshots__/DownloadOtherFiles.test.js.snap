@@ -51,12 +51,12 @@ exports[`<DownloadOtherFiles /> renders final state without crashing 1`] = `
       <Item
         as="a"
         download="file-1.pdf"
-        href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/file-1.pdf"
+        href="https://s3-url.com/2019/06/123/file-1.pdf"
       >
         <a
           className="item"
           download="file-1.pdf"
-          href="https://s3.amazonaws.com/amgov-publisher-dev/2019/06/123/file-1.pdf"
+          href="https://s3-url.com/2019/06/123/file-1.pdf"
         >
           <ItemImage
             className="download-icon"

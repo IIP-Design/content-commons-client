@@ -18,7 +18,7 @@ jest.mock( 'lib/utils', () => ( {
     return `${parseFloat( ( bytes / ( k ** i ) ).toFixed( dm ) )} ${sizes[i]}`;
   } ),
   getS3Url: jest.fn( assetPath => (
-    `https://s3.amazonaws.com/amgov-publisher-dev/${assetPath}`
+    `https://s3-url.com/${assetPath}`
   ) )
 } ) );
 
@@ -196,8 +196,7 @@ describe( '<DownloadVideo />', () => {
     const wrapper = mount( Component );
     const items = wrapper.find( 'a.item' );
     const { files, title } = props.selectedLanguageUnit;
-
-    const s3Bucket = 'https://s3.amazonaws.com/amgov-publisher-dev';
+    const s3Bucket = 'https://s3-url.com';
 
     expect( items.length ).toEqual( files.length );
     items.forEach( ( item, i ) => {
