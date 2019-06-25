@@ -160,7 +160,7 @@ const Carousel = ( {
 
   return (
     <div className={ `carousel-container ${isMobile}` }>
-      { ( vertical && showButtons ) && (
+      { vertical && showButtons && (
         <div
           className={ `scroll-button up ${isMobile} ${onFirst}` }
           data-scroll={ -1 }
@@ -188,9 +188,9 @@ const Carousel = ( {
             </div>
           ) ) }
         </div>
-        { legend && (
-          <div className={ `carousel-legend ${isVertical}` } style={ showButtons ? { justifyContent: 'space-between' } : { justifyContent: 'center' } }>
-            { ( !vertical && showButtons ) && (
+        { legend && showButtons && (
+          <div className={ `carousel-legend ${isVertical}` }>
+            { ( !vertical ) && (
               <button
                 className="carousel-legend-button"
                 data-scroll={ -1 }
@@ -217,7 +217,7 @@ const Carousel = ( {
                 );
               } ) }
             </div>
-            { ( !vertical && showButtons ) && (
+            { !vertical && (
               <button
                 className="carousel-legend-button"
                 data-scroll={ 1 }
@@ -231,7 +231,7 @@ const Carousel = ( {
           </div>
         ) }
       </div>
-      { ( vertical && showButtons ) && (
+      { vertical && showButtons && (
         <div
           className={ `scroll-button down ${isMobile} ${onLast}` }
           data-scroll={ 1 }
