@@ -10,9 +10,13 @@ jest.mock( 'lib/utils', () => ( {
   getS3Url: jest.fn( assetPath => (
     `https://s3-url.com/${assetPath}`
   ) ),
-  getStreamData: jest.fn( () => (
-    'https://www.youtube.com/watch?v=1evw4fRu3bo'
-  ) ),
+  getStreamData: jest.fn( ( stream, site = 'youtube', field = 'url' ) => {
+    const uri = stream.find( s => s.site.toLowerCase() === site );
+    if ( uri && Object.keys( uri ).length > 0 ) {
+      return uri[field];
+    }
+    return null;
+  } ),
   getVimeoId: jest.fn( () => '340239507' ),
   getYouTubeId: jest.fn( () => '1evw4fRu3bo' ),
   contentRegExp: jest.fn( () => false )
@@ -161,6 +165,61 @@ const mocks = [
                       url: 'https://vimeo.com/340239507'
                     }
                   ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+];
+
+const vimeoMocks = [
+  {
+    ...mocks[0],
+    result: {
+      data: {
+        project: {
+          ...mocks[0].result.data.project,
+          units: [
+            {
+              ...mocks[0].result.data.project.units[0],
+              files: [
+                {
+                  ...mocks[0].result.data.project.units[0].files[0],
+                  stream: [
+                    {
+                      __typename: 'VideoStream',
+                      id: 'st35',
+                      site: 'Vimeo',
+                      url: 'https://vimeo.com/340239507'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+];
+
+const noStreamsMocks = [
+  {
+    ...mocks[0],
+    result: {
+      data: {
+        project: {
+          ...mocks[0].result.data.project,
+          units: [
+            {
+              ...mocks[0].result.data.project.units[0],
+              files: [
+                {
+                  ...mocks[0].result.data.project.units[0].files[0],
+                  stream: []
                 }
               ]
             }
@@ -389,6 +448,51 @@ describe( '<PreviewProjectContent />', () => {
     expect( embed.exists() ).toEqual( true );
     expect( embed.prop( 'id' ) ).toEqual( '1evw4fRu3bo' );
     expect( embed.prop( 'source' ) ).toEqual( 'youtube' );
-    expect( embed.prop( 'placeholder' ) ).toEqual( `${s3Bucket}/${assetPath}` );
+    expect( embed.prop( 'placeholder' ) )
+      .toEqual( `${s3Bucket}/${assetPath}` );
+  } );
+
+  it( 'renders an embedded Vimeo video if there is no YouTube url', async () => {
+    const wrapper = mount(
+      <MockedProvider mocks={ vimeoMocks } addTypename>
+        <PreviewProjectContent { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const embed = preview.find( 'Embed' );
+    const assetPath = vimeoMocks[0].result.data.project.thumbnails[0].url;
+    const s3Bucket = 'https://s3-url.com';
+
+    expect( embed.exists() ).toEqual( true );
+    expect( embed.prop( 'id' ) ).toEqual( '340239507' );
+    expect( embed.prop( 'source' ) ).toEqual( 'vimeo' );
+    expect( embed.prop( 'placeholder' ) )
+      .toEqual( `${s3Bucket}/${assetPath}` );
+  } );
+
+  it( 'renders a project thumbnail if there are no YouTube or Vimeo urls', async () => {
+    const wrapper = mount(
+      <MockedProvider mocks={ noStreamsMocks } addTypename>
+        <PreviewProjectContent { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const embed = preview.find( 'Embed' );
+    const thumbnail = preview.find( 'figure.modal_thumbnail' );
+    const img = thumbnail.find( 'img.overlay-image' );
+    const assetPath = noStreamsMocks[0].result.data.project.thumbnails[0].url;
+    const { alt } = noStreamsMocks[0].result.data.project.thumbnails[0];
+    const s3Bucket = 'https://s3-url.com';
+
+    expect( embed.exists() ).toEqual( false );
+    expect( thumbnail.exists() ).toEqual( true );
+    expect( img.prop( 'src' ) ).toEqual( `${s3Bucket}/${assetPath}` );
+    expect( img.prop( 'alt' ) ).toEqual( alt );
   } );
 } );
