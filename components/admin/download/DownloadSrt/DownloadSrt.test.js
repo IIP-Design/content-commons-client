@@ -37,6 +37,14 @@ const mocks = [
                 id: 'en23',
                 displayName: 'English'
               }
+            },
+            {
+              id: 'srt99',
+              url: `2019/06/${props.id}/srt-2.srt`,
+              language: {
+                id: 'en23',
+                displayName: 'English'
+              }
             }
           ]
         }

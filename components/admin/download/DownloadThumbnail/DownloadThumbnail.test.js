@@ -37,6 +37,14 @@ const mocks = [
                 id: 'en23',
                 displayName: 'English'
               }
+            },
+            {
+              id: 'th865',
+              url: `2019/06/${props.id}/thumbnail-2.jpg`,
+              language: {
+                id: 'en23',
+                displayName: 'English'
+              }
             }
           ]
         }

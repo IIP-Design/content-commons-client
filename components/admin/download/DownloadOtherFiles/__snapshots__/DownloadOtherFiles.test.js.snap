@@ -20,6 +20,16 @@ exports[`<DownloadOtherFiles /> renders final state without crashing 1`] = `
             },
             "url": "2019/06/123/file-1.pdf",
           },
+          Object {
+            "filename": "audio-1.mp3",
+            "filetype": "audio/x-mpeg-3",
+            "id": "au56",
+            "language": Object {
+              "displayName": "English",
+              "id": "en23",
+            },
+            "url": "2019/06/123/audio-1.mp3",
+          },
         ],
         "id": "123",
       },
@@ -97,6 +107,69 @@ exports[`<DownloadOtherFiles /> renders final state without crashing 1`] = `
                 className="item_hover"
               >
                 Download English application/pdf file
+              </span>
+            </div>
+          </ItemContent>
+        </a>
+      </Item>
+    </div>
+  </ItemGroup>
+  <ItemGroup
+    className="download-item"
+    key="fs_au56"
+  >
+    <div
+      className="ui items download-item"
+    >
+      <Item
+        as="a"
+        download="audio-1.mp3"
+        href="https://s3-url.com/2019/06/123/audio-1.mp3"
+      >
+        <a
+          className="item"
+          download="audio-1.mp3"
+          href="https://s3-url.com/2019/06/123/audio-1.mp3"
+        >
+          <ItemImage
+            className="download-icon"
+            size="mini"
+            src="downloadIconSVG"
+          >
+            <Image
+              as="img"
+              className="download-icon"
+              size="mini"
+              src="downloadIconSVG"
+              ui={true}
+              wrapped={true}
+            >
+              <div
+                className="ui mini image download-icon"
+              >
+                <img
+                  src="downloadIconSVG"
+                />
+              </div>
+            </Image>
+          </ItemImage>
+          <ItemContent>
+            <div
+              className="content"
+            >
+              <ItemHeader
+                className="download-header"
+              >
+                <div
+                  className="header download-header"
+                >
+                  Download English audio/x-mpeg-3 file
+                </div>
+              </ItemHeader>
+              <span
+                className="item_hover"
+              >
+                Download English audio/x-mpeg-3 file
               </span>
             </div>
           </ItemContent>

@@ -18,6 +18,14 @@ exports[`<DownloadSrt /> renders final state without crashing 1`] = `
             },
             "url": "2019/06/123/srt-1.srt",
           },
+          Object {
+            "id": "srt99",
+            "language": Object {
+              "displayName": "English",
+              "id": "en23",
+            },
+            "url": "2019/06/123/srt-2.srt",
+          },
         ],
         "id": "123",
       },
@@ -55,6 +63,69 @@ exports[`<DownloadSrt /> renders final state without crashing 1`] = `
           className="item"
           download="English_SRT"
           href="https://s3-url.com/2019/06/123/srt-1.srt"
+        >
+          <ItemImage
+            className="download-icon"
+            size="mini"
+            src="downloadIconSVG"
+          >
+            <Image
+              as="img"
+              className="download-icon"
+              size="mini"
+              src="downloadIconSVG"
+              ui={true}
+              wrapped={true}
+            >
+              <div
+                className="ui mini image download-icon"
+              >
+                <img
+                  src="downloadIconSVG"
+                />
+              </div>
+            </Image>
+          </ItemImage>
+          <ItemContent>
+            <div
+              className="content"
+            >
+              <ItemHeader
+                className="download-header"
+              >
+                <div
+                  className="header download-header"
+                >
+                  Download English SRT
+                </div>
+              </ItemHeader>
+              <span
+                className="item_hover"
+              >
+                Download English SRT
+              </span>
+            </div>
+          </ItemContent>
+        </a>
+      </Item>
+    </div>
+  </ItemGroup>
+  <ItemGroup
+    className="download-item"
+    key="fs_srt99"
+  >
+    <div
+      className="ui items download-item"
+    >
+      <Item
+        as="a"
+        download="English_SRT"
+        href="https://s3-url.com/2019/06/123/srt-2.srt"
+      >
+        <a
+          className="item"
+          download="English_SRT"
+          href="https://s3-url.com/2019/06/123/srt-2.srt"
         >
           <ItemImage
             className="download-icon"

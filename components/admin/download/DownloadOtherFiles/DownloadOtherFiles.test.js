@@ -39,6 +39,16 @@ const mocks = [
                 id: 'en23',
                 displayName: 'English'
               }
+            },
+            {
+              id: 'au56',
+              filename: 'audio-1.mp3',
+              filetype: 'audio/x-mpeg-3',
+              url: `2019/06/${props.id}/audio-1.mp3`,
+              language: {
+                id: 'en23',
+                displayName: 'English'
+              }
             }
           ]
         }
