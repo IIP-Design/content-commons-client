@@ -5,7 +5,6 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import sortBy from 'lodash/sortBy';
 import debounce from 'lodash/debounce';
 import { Table, Grid } from 'semantic-ui-react';
 import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
@@ -89,27 +88,15 @@ class ScrollableTableWithMenu extends React.Component {
   }
 
   handleSort = clickedColumn => () => {
-    const {
-      column,
-      data,
-      direction,
-      displayActionsMenu
-    } = this.state;
+    const { displayActionsMenu } = this.state;
 
     if ( displayActionsMenu ) return;
 
-    if ( column !== clickedColumn ) {
-      return this.setState( {
-        column: clickedColumn,
-        data: sortBy( data, [clickedColumn] ),
-        direction: 'ascending'
-      } );
-    }
-
-    this.setState( {
-      data: data.reverse(),
-      direction: direction === 'ascending' ? 'descending' : 'ascending'
-    } );
+    // Pass column, direction to TableBody so re-rendered on TableHeader click
+    this.setState( prevState => ( {
+      column: prevState.column !== clickedColumn ? clickedColumn : prevState.column,
+      direction: prevState.direction === 'ascending' ? 'descending' : 'ascending'
+    } ) );
   };
 
   tableMenuOnChange = e => {
@@ -252,6 +239,8 @@ class ScrollableTableWithMenu extends React.Component {
                   toggleItemSelection={ this.toggleItemSelection }
                   variables={ { ...variables, ...paginationVars } }
                   windowWidth={ windowWidth }
+                  column={ column }
+                  direction={ direction }
                 />
               </Table>
             </div>

@@ -20,9 +20,9 @@ const TableHeader = props => {
   return (
     <Table.Header>
       <Table.Row>
-        { tableHeaders.map( ( header, i ) => (
+        { tableHeaders.map( header => (
           <Table.HeaderCell
-            key={ i }
+            key={ header.name }
             sorted={ column === header.name ? direction : null }
             onClick={ handleSort( header.name ) }
             className={ displayActionsMenu ? 'displayActionsMenu' : '' }
