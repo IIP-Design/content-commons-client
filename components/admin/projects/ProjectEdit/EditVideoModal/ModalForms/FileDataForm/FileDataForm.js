@@ -3,10 +3,11 @@
  * FileDataForm
  *
  */
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import propTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
 import { Confirm, Form, Grid } from 'semantic-ui-react';
+import { withFormik } from 'formik';
 
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
@@ -14,7 +15,7 @@ import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
-import { formatBytes, formatDate } from 'lib/utils';
+import { formatBytes, formatDate, secondsToHMS } from 'lib/utils';
 
 import { VIDEO_UNIT_QUERY } from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalSections/FileSection/FileSection';
 import {
@@ -25,74 +26,56 @@ import {
 } from './FileDataFormQueries';
 import './FileDataForm.scss';
 
-class FileDataForm extends Component {
-  state = {
-    deleteConfirmOpen: false
-  }
+const FileDataForm = ( {
+  deleteVideoFileMutation,
+  language,
+  languageVideoFileMutation,
+  qualityVideoFileMutation,
+  selectedFile,
+  selectedUnit,
+  setFieldValue,
+  streamCreateVideoFileMutation,
+  streamDeleteVideoFileMutation,
+  streamUpdateVideoFileMutation,
+  updateSelectedFile,
+  updateSelectedUnit,
+  useVideoFileMutation,
+  values,
+  videoBurnedInStatusVideoFileMutation,
+  videoFileQuery,
+  videoProjectQuery,
+  videoUnitConnectFileMutation,
+  videoUnitDisconnectFileMutation
+} ) => {
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
 
-  componentDidUpdate = prevProps => {
-    const { file } = this.props.videoFileQuery;
+  const { file, loading } = videoFileQuery;
+  const { project } = videoProjectQuery;
+  const units = project && project.units ? project.units : [];
 
-    if ( file && file !== prevProps.videoFileQuery.file ) {
-      const use = file.use && file.use.id ? file.use.id : '';
-      const language = file.language && file.language.id ? file.language.id : '';
-
-      this.setState( {
-        language,
-        quality: file.quality || '',
-        streams: this.getStreamObjects( file.stream ),
-        videoBurnedInStatus: file.videoBurnedInStatus || '',
-        use
-      } );
-    }
-  }
+  if ( !file || loading ) return <Loader height="330px" text="Loading the file data..." />;
 
   // Iterates through an array of units to return an array of locales (one for each unit)
-  getLocales = arr => {
-    const locales = [];
-    if ( Array.isArray( arr ) && arr.length > 0 ) {
-      arr.forEach( unit => {
-        if ( unit.language && unit.language.locale ) {
-          locales.push( unit.language.locale );
-        }
-        return locales;
-      } );
-    }
+  const getLocales = arr => {
+    const locales = Array.isArray( arr ) && arr.length > 0
+      ? arr.map( unit => unit.language.locale )
+      : [];
+
     return locales;
-  }
-
-  getStreamObjects = streamList => {
-    const streams = [];
-
-    if ( streamList && streamList.length > 0 ) {
-      streamList.forEach( stream => {
-        if ( stream.site === 'youtube' || stream.site === 'vimeo' ) {
-          const obj = {
-            [stream.site]: {
-              id: stream.id,
-              url: stream.url
-            }
-          };
-          streams.push( obj );
-          return streams;
-        }
-      } );
-    }
-
-    const streamObj = streams.reduce( ( obj, item ) => {
-      const key = Object.keys( item )[0];
-      obj[key] = item[key];
-      return obj;
-    }, {} );
-
-    return streamObj;
-  }
+  };
 
   // Runs GraphQl mutation and updates the cache after a dropdown selection
-  updateUnit = ( name, value ) => {
-    const { selectedFile } = this.props;
+  const handleDropdownSave = ( e, { name, value } ) => {
+    let mutation;
+    if ( name === 'quality' ) {
+      mutation = qualityVideoFileMutation;
+    } else if ( name === 'use' ) {
+      mutation = useVideoFileMutation;
+    } else if ( name === 'videoBurnedInStatus' ) {
+      mutation = videoBurnedInStatusVideoFileMutation;
+    }
 
-    this.props[`${name}VideoFileMutation`]( {
+    mutation( {
       variables: {
         id: selectedFile,
         [name]: value
@@ -119,93 +102,63 @@ class FileDataForm extends Component {
         }
       }
     } );
-  }
+  };
 
-  updateStreams = e => {
-    const unitId = this.props.selectedFile;
+  // Update video url form fields on change
+  const handleStreamsInputChange = ( e, { name, value } ) => setFieldValue( name, value );
+
+  // Updates file's stream object
+  // Only allows for one stream per site
+  const updateStreams = e => {
     const { name } = e.target;
-    const { streams } = this.state;
+    const url = values[name];
 
-    if ( streams[name] ) {
-      const { url } = streams[name];
-      const streamId = streams[name].id;
+    const streams = file && file.stream ? file.stream.map( item => item.site ) : [];
 
-      if ( streamId && url !== '' ) {
-        this.props.streamUpdateVideoFileMutation( {
+    if ( streams.includes( name ) ) {
+      const filtered = file.stream.filter( item => item.site === name );
+      const streamId = filtered[0].id;
+
+      if ( url === '' ) {
+        streamDeleteVideoFileMutation( {
           variables: {
-            id: unitId,
-            streamId,
-            url
-          }
-        } );
-      } else if ( streamId && url === '' ) {
-        this.props.streamDeleteVideoFileMutation( {
-          variables: {
-            id: unitId,
+            id: selectedFile,
             streamId
           }
         } );
       } else {
-        this.props.streamCreateVideoFileMutation( {
+        streamUpdateVideoFileMutation( {
           variables: {
-            id: unitId,
-            site: name,
+            id: selectedFile,
+            streamId,
             url
           }
         } );
       }
-    }
-
-    this.props.videoFileQuery.refetch();
-  }
-
-  handleStreamsInputChange = e => {
-    const { name, value } = e.target;
-    this.setState( prevState => ( {
-      streams: {
-        ...prevState.streams,
-        [name]: {
-          ...prevState.streams[name],
-          url: value
+    } else if ( url !== '' ) {
+      streamCreateVideoFileMutation( {
+        variables: {
+          id: selectedFile,
+          site: name,
+          url
         }
-      }
-    } ) );
-  }
-
-  handleDropdownSave = ( e, data ) => {
-    const { name, value } = data;
-
-    this.setState(
-      { [name]: value },
-      () => this.updateUnit( name, value )
-    );
-  }
-
-  handleLanguageChange = ( e, data ) => {
-    const {
-      language, languageVideoFileMutation, selectedFile, selectedUnit, updateSelectedFile,
-      updateSelectedUnit, videoProjectQuery, videoUnitConnectFileMutation, videoUnitDisconnectFileMutation
-    } = this.props;
-    const { project } = videoProjectQuery && videoProjectQuery.project ? videoProjectQuery : {};
-
-    // Get array of units and the language they are in
-    const unitsByLang = [];
-    if ( project.units ) {
-      project.units.forEach( unit => {
-        unitsByLang.push( { unitId: unit.id, langId: unit.language.id } );
-        return unitsByLang;
       } );
     }
 
-    const selectedLang = data.value;
-    const newUnit = unitsByLang.filter( unit => unit.langId === selectedLang );
+    videoFileQuery.refetch();
+  };
 
-    if ( selectedLang && selectedLang !== language.id ) {
+  const handleLanguageChange = ( e, { value } ) => {
+    // Get array of units and the language they are in
+    const unitsByLang = units.map( unit => ( { unitId: unit.id, langId: unit.language.id } ) );
+    const newUnit = unitsByLang.filter( unit => unit.langId === value );
+
+    if ( value && value !== language.id ) {
       // Update file language
       languageVideoFileMutation( {
         variables: {
           id: selectedFile,
-          language: selectedLang
+          language: value
         }
       } );
       // Disconnect File from old language unit
@@ -221,7 +174,7 @@ class FileDataForm extends Component {
               variables: { id: selectedUnit }
             } );
 
-            const newFiles = cachedData.unit.files.filter( file => file.id !== selectedFile );
+            const newFiles = cachedData.unit.files.filter( newFile => newFile.id !== selectedFile );
             cachedData.unit.files = newFiles;
 
             cache.writeQuery( {
@@ -243,16 +196,18 @@ class FileDataForm extends Component {
 
       updateSelectedUnit( newUnit[0].unitId, selectedFile );
     }
-  }
+  };
 
-  displayConfirmDelete = () => {
-    this.setState( { deleteConfirmOpen: true } );
-  }
+  // Show delete confirmation modal
+  const displayConfirmDelete = () => setDeleteConfirmOpen( true );
 
-  handleDeleteConfirm = () => {
-    const { selectedFile, selectedUnit, updateSelectedFile } = this.props;
+  // Close delete confirmation modal if cancel selected
+  const handleDeleteCancel = () => setDeleteConfirmOpen( false );
 
-    this.props.deleteVideoFileMutation( {
+  // Delete file if deletion is confirmed
+  // TODO: also delete out file from S3 and vimeo
+  const handleDeleteConfirm = () => {
+    deleteVideoFileMutation( {
       variables: { id: selectedFile },
       update: ( cache, { data: { deleteVideoFile } } ) => {
         try {
@@ -261,7 +216,7 @@ class FileDataForm extends Component {
             variables: { id: selectedUnit }
           } );
 
-          const newFiles = cachedData.unit.files.filter( file => file.id !== selectedFile );
+          const newFiles = cachedData.unit.files.filter( newFile => newFile.id !== selectedFile );
           cachedData.unit.files = newFiles;
 
           cache.writeQuery( {
@@ -280,152 +235,141 @@ class FileDataForm extends Component {
         }
       }
     } );
-    this.setState( { deleteConfirmOpen: false } );
-  }
+    setDeleteConfirmOpen( false );
+  };
 
-  handleDeleteCancel = () => {
-    this.setState( { deleteConfirmOpen: false } );
-  }
+  const width = file.dimensions && file.dimensions.width ? file.dimensions.width : '';
+  const height = file.dimensions && file.dimensions.height ? file.dimensions.height : '';
+  const dimensions = width && height ? `Dimensions: ${width} x ${height}` : '';
 
-  render() {
-    const { file, loading } = this.props.videoFileQuery;
-    const { project } = this.props.videoProjectQuery;
+  return (
+    <Form className="edit-video__form video-file-form" style={ { overflow: 'hidden' } }>
+      <Grid stackable>
+        <Grid.Row>
+          <Grid.Column className="video-file-form-col-1" mobile={ 16 } computer={ 8 }>
+            <div className="file_meta">
+              <span className="file_meta_content file_meta_content--filetype">
+                { file.filename }
+              </span>
+              <span className="file_meta_content file_meta_content--filesize">
+                { `Filesize: ${formatBytes( file.filesize || 0 )}` }
+              </span>
+              <span className="file_meta_content file_meta_content--dimensions">
+                { dimensions }
+              </span>
+              <span className="file_meta_content file_meta_content--uploaded">
+                { `Uploaded: ${formatDate( file.createdAt )}` }
+              </span>
+              <span className="file_meta_content file_meta_content--duration">
+                { `Duration: ${secondsToHMS( file.duration )}` }
+              </span>
+              <span className="delete-file-link" onClick={ displayConfirmDelete } onKeyUp={ displayConfirmDelete } role="button" tabIndex={ 0 }>
+                Delete file from project
+              </span>
+            </div>
 
-    if ( !file || loading ) return <Loader height="330px" text="Loading the file data..." />;
+            <Confirm
+              className="delete"
+              open={ deleteConfirmOpen }
+              content={ (
+                <ConfirmModalContent
+                  className="delete_confirm delete_confirm--video"
+                  headline="Are you sure you want to delete this video?"
+                >
+                  <p>This video will be permanently removed from the Content Commons and any other projects or collections it appears on.</p>
+                </ConfirmModalContent>
+              ) }
+              onCancel={ handleDeleteCancel }
+              onConfirm={ handleDeleteConfirm }
+              cancelButton="No, take me back"
+              confirmButton="Yes, delete forever"
+            />
 
-    const {
-      deleteConfirmOpen, language, quality, streams, use, videoBurnedInStatus
-    } = this.state;
-
-    const width = file.dimensions && file.dimensions.width ? file.dimensions.width : '';
-    const height = file.dimensions && file.dimensions.height ? file.dimensions.height : '';
-    const dimensions = width && height ? `Dimensions: ${width} x ${height}` : '';
-    const youtube = streams && streams.youtube ? streams.youtube : {};
-    const vimeo = streams && streams.vimeo ? streams.vimeo : {};
-
-    const units = project && project.units ? project.units : [];
-
-    return (
-      <Form className="edit-video__form video-file-form" style={ { overflow: 'hidden' } }>
-        <Grid stackable>
-          <Grid.Row>
-            <Grid.Column className="video-file-form-col-1" mobile={ 16 } computer={ 8 }>
-              <div className="file_meta">
-                <span className="file_meta_content file_meta_content--filetype">
-                  { file.filename }
-                </span>
-                <span className="file_meta_content file_meta_content--filesize">
-                  { `Filesize: ${formatBytes( file.filesize || 0 )}` }
-                </span>
-                <span className="file_meta_content file_meta_content--dimensions">
-                  { dimensions }
-                </span>
-                <span className="file_meta_content file_meta_content--uploaded">
-                  { `Uploaded: ${formatDate( file.createdAt )}` }
-                </span>
-                <span className="file_meta_content file_meta_content--duration">
-                  { `Duration: ${file.duration}` }
-                </span>
-                <span className="delete-file-link" onClick={ this.displayConfirmDelete } onKeyUp={ this.displayConfirmDelete } role="button" tabIndex={ 0 }>
-                  Delete file from project
-                </span>
-              </div>
-
-              <Confirm
-                className="delete"
-                open={ deleteConfirmOpen }
-                content={ (
-                  <ConfirmModalContent
-                    className="delete_confirm delete_confirm--video"
-                    headline="Are you sure you want to delete this video?"
-                  >
-                    <p>This video will be permanently removed from the Content Commons and any other projects or collections it appears on.</p>
-                  </ConfirmModalContent>
-                ) }
-                onCancel={ this.handleDeleteCancel }
-                onConfirm={ this.handleDeleteConfirm }
-                cancelButton="No, take me back"
-                confirmButton="Yes, delete forever"
+            <div className="video-links">
+              <Form.Input
+                id="video-youtube"
+                label="YouTube URL"
+                name="youtube"
+                onBlur={ updateStreams }
+                onChange={ handleStreamsInputChange }
+                value={ values.youtube }
               />
 
-              <div className="video-links">
-                <Form.Input
-                  id="video-youtube"
-                  label="YouTube URL"
-                  name="youtube"
-                  onBlur={ this.updateStreams }
-                  onChange={ this.handleStreamsInputChange }
-                  value={ youtube.url ? youtube.url : '' }
-                />
-
-                <Form.Input
-                  id="video-vimeo"
-                  label="Vimeo URL"
-                  name="vimeo"
-                  onBlur={ this.updateStreams }
-                  onChange={ this.handleStreamsInputChange }
-                  value={ vimeo.url ? vimeo.url : '' }
-                />
-              </div>
-            </Grid.Column>
-
-            <Grid.Column mobile={ 16 } computer={ 8 }>
-              <LanguageDropdown
-                id="video-language"
-                locales={ this.getLocales( units ) }
-                label="Language"
-                onChange={ this.handleLanguageChange }
-                required
-                value={ language }
+              <Form.Input
+                id="video-vimeo"
+                label="Vimeo URL"
+                name="vimeo"
+                onBlur={ updateStreams }
+                onChange={ handleStreamsInputChange }
+                value={ values.vimeo }
               />
+            </div>
+          </Grid.Column>
 
-              <VideoBurnedInStatusDropdown
-                id="video-subtitles"
-                label="Subtitles & Captions"
-                onChange={ this.handleDropdownSave }
-                required
-                type="video"
-                value={ videoBurnedInStatus }
-              />
+          <Grid.Column mobile={ 16 } computer={ 8 }>
+            <LanguageDropdown
+              id="video-language"
+              locales={ getLocales( units ) }
+              label="Language"
+              onChange={ handleLanguageChange }
+              required
+              value={ values.language }
+            />
 
-              <UseDropdown
-                id="video-use"
-                label="Video Type"
-                onChange={ this.handleDropdownSave }
-                required
-                type="video"
-                value={ use }
-              />
+            <VideoBurnedInStatusDropdown
+              id="video-subtitles"
+              label="Subtitles & Captions"
+              name="videoBurnedInStatus"
+              onChange={ handleDropdownSave }
+              required
+              type="video"
+              value={ values.videoBurnedInStatus }
+            />
 
-              <QualityDropdown
-                id="video-quality"
-                label="Video Quality"
-                onChange={ this.handleDropdownSave }
-                required
-                infotip="Web: small - for social sharing, Broadcast: large - ambassador videos"
-                type="video"
-                value={ quality }
-              />
+            <UseDropdown
+              id="video-use"
+              label="Video Type"
+              name="use"
+              onChange={ handleDropdownSave }
+              required
+              type="video"
+              value={ values.use }
+            />
 
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Form>
-    );
-  }
-}
+            <QualityDropdown
+              id="video-quality"
+              label="Video Quality"
+              name="quality"
+              onChange={ handleDropdownSave }
+              required
+              infotip="Web: small - for social sharing, Broadcast: large - ambassador videos"
+              type="video"
+              value={ values.quality }
+            />
+
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Form>
+  );
+};
 
 FileDataForm.propTypes = {
   deleteVideoFileMutation: propTypes.func,
   language: propTypes.object,
   languageVideoFileMutation: propTypes.func,
+  qualityVideoFileMutation: propTypes.func,
   selectedFile: propTypes.string,
   selectedUnit: propTypes.string,
+  setFieldValue: propTypes.func,
   streamCreateVideoFileMutation: propTypes.func,
   streamDeleteVideoFileMutation: propTypes.func,
   streamUpdateVideoFileMutation: propTypes.func,
   updateSelectedFile: propTypes.func,
   updateSelectedUnit: propTypes.func,
+  useVideoFileMutation: propTypes.func,
+  values: propTypes.object,
+  videoBurnedInStatusVideoFileMutation: propTypes.func,
   videoFileQuery: propTypes.object,
   videoUnitConnectFileMutation: propTypes.func,
   videoUnitDisconnectFileMutation: propTypes.func,
@@ -454,5 +398,35 @@ export default compose(
     options: props => ( {
       variables: { id: props.selectedProject },
     } )
+  } ),
+  withFormik( {
+    mapPropsToValues: props => {
+      const file = props.videoFileQuery && props.videoFileQuery.file ? props.videoFileQuery.file : {};
+      const use = file && file.use && file.use.id ? file.use.id : '';
+      const lang = file && file.language && file.language.id ? file.language.id : '';
+
+      // Check for and retrieve an existing stream url by site name
+      const getStreamUrl = ( streams, site ) => {
+        let link = '';
+        if ( streams && streams.length > 0 ) {
+          streams.forEach( stream => {
+            if ( stream.site === site ) {
+              link = stream.url;
+            }
+          } );
+        }
+        return link;
+      };
+
+      return {
+        language: lang,
+        quality: file.quality || '',
+        use,
+        videoBurnedInStatus: file.videoBurnedInStatus || '',
+        vimeo: getStreamUrl( file.stream, 'vimeo' ),
+        youtube: getStreamUrl( file.stream, 'youtube' )
+      };
+    },
+    enableReinitialize: true
   } )
 )( FileDataForm );

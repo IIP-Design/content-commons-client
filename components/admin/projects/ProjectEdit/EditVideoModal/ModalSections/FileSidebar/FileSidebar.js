@@ -1,8 +1,13 @@
+/**
+ *
+ * FileSidebar
+ *
+ */
 import React, { useContext } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
-import { titleCase, getPathToS3Bucket } from 'lib/utils';
+import { getPathToS3Bucket, titleCase } from 'lib/utils';
 import { EditSingleProjectItemContext } from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
 import Carousel from 'components/admin/projects/ProjectEdit/EditVideoModal/Carousel/Carousel';

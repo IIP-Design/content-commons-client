@@ -6,11 +6,11 @@
 import React, { useContext } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import { getPathToS3Bucket } from 'lib/utils';
 
 import Carousel from 'components/admin/projects/ProjectEdit/EditVideoModal/Carousel/Carousel';
 import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
 import { EditSingleProjectItemContext } from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
+import { getPathToS3Bucket } from 'lib/utils';
 
 import './VideoUnitCarousel.scss';
 

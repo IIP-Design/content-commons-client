@@ -3,7 +3,7 @@
  * Carousel
  *
  */
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import propTypes from 'prop-types';
 import { Icon } from 'semantic-ui-react';
 
@@ -12,69 +12,175 @@ import './Carousel.scss';
 const Carousel = ( {
   callback, children, legend, selectedItem, vertical
 } ) => {
-  const [selected, setSelected] = useState( () => {
-    let initialItem;
-    children.forEach( ( child, index ) => {
-      if ( child.props.id === selectedItem ) {
+  // Get the index of the initially selected item based on the id of the selectedItem prop
+  const getSelectedIndex = elems => {
+    let initialItem = 0;
+    elems.forEach( ( elem, index ) => {
+      if ( elem.props.id === selectedItem ) {
         initialItem = index;
       }
     } );
     return initialItem;
-  } );
+  };
+  // Get number of items in items list
   const itemCount = children.length;
+
+  // Set ref for the carousel items
+  const carouselItems = useRef( null );
+
+  // If true disables the previous button
+  const [disablePrev, setDisablePrev] = useState( () => {
+    const num = getSelectedIndex( children ) + 1;
+    const disable = num < 4;
+    return disable;
+  } );
+
+  // If true disables the next button
+  const [disableNext, setDisableNext] = useState( () => {
+    const num = getSelectedIndex( children ) + 1;
+    const disable = ( itemCount - num ) === 0;
+    return disable;
+  } );
+
+  // Accept a target list item and the number of scrolls over
+  const manipulateList = ( list, offset ) => {
+    // Determine scroll amount based on child size
+    const x = vertical ? 0 : offset;
+    const y = vertical ? offset : 0;
+
+    // Scroll to correct position
+    list.scrollBy( x, y );
+
+    // Calculate space left to scroll to the right and bottom
+    const scrollRight = list.scrollWidth - ( list.clientWidth + list.scrollLeft );
+    const scrollBottom = list.scrollHeight - ( list.clientHeight + list.scrollTop );
+
+    // Disable scroll buttons if there is no room left to scroll
+    if ( !vertical ) {
+      if ( list.scrollLeft === 0 ) {
+        setDisablePrev( true );
+      } else {
+        setDisablePrev( false );
+      }
+
+      if ( scrollRight === 0 ) {
+        setDisableNext( true );
+      } else {
+        setDisableNext( false );
+      }
+    }
+
+    if ( vertical ) {
+      if ( list.scrollTop === 0 ) {
+        setDisablePrev( true );
+      } else {
+        setDisablePrev( false );
+      }
+
+      if ( scrollBottom === 0 ) {
+        setDisableNext( true );
+      } else {
+        setDisableNext( false );
+      }
+    }
+  };
+
+  // Calculate how many over to scroll
+  const calcScrollAmount = ( index, items ) => {
+    const countPrev = index;
+    const countNext = items - ( index + 1 );
+    let num;
+    if ( countPrev > 2 ) {
+      num = countPrev - 2;
+    } else if ( countNext > 2 ) {
+      num = 2 - countNext;
+    }
+
+    return num;
+  };
+
+  // Dynamically calculate the pixel scroll based on item width
+  const calcOffset = ( list, num ) => {
+    const listItem = list.firstChild;
+    const xOffset = listItem.clientWidth * num;
+    const yOffset = listItem.clientHeight * num;
+    const offset = vertical ? yOffset : xOffset;
+
+    return offset;
+  };
+
+  // Bring item into view if selected
+  const scrollToSelected = index => {
+    const list = carouselItems.current;
+    if ( index === undefined || !list ) { return; }
+
+    const items = list.children.length;
+    const num = calcScrollAmount( index, items );
+
+    if ( num ) {
+      const offset = calcOffset( list, num );
+      manipulateList( list, offset );
+    }
+  };
+
+  // Sets the selected carousel item
+  const [selected, setSelected] = useState( () => {
+    const selectedIndex = getSelectedIndex( children );
+    return selectedIndex;
+  } );
+
+  useEffect( () => {
+    const selectedIndex = getSelectedIndex( children );
+    scrollToSelected( selectedIndex );
+  }, [children] );
 
   const handleSelection = ( id, index ) => {
     callback( id );
     setSelected( index );
+    scrollToSelected( index );
   };
 
-  const handleButton = num => {
-    const next = selected + num;
-    const nextValue = children[next];
+  const handleButton = e => {
+    const list = carouselItems.current;
+    const num = parseInt( e.target.dataset.scroll, 10 );
+    const offset = calcOffset( list, num );
 
-    const list = document.querySelector( '.carousel-items' );
-    const listItem = document.querySelector( '.carousel-item' );
-    const itemHeight = listItem.clientHeight;
-    const itemWidth = listItem.clientWidth;
-    const xOffset = num > 0 ? itemWidth : -itemWidth;
-    const yOffset = num > 0 ? itemHeight : -itemHeight;
-    const x = vertical ? 0 : xOffset;
-    const y = vertical ? yOffset : 0;
-
-    callback( nextValue.props.id );
-    setSelected( next );
-    list.scrollBy( x, y );
+    manipulateList( list, offset );
   };
 
   const isVertical = vertical ? 'vertical' : '';
   const withLegend = legend ? 'with-legend' : '';
+  const carouselItemStyle = vertical ? { width: '100%', height: '32%' } : { width: '32%' };
 
   const viewportWidth = window.innerWidth || 0;
   const isMobile = viewportWidth < 991 ? 'mobile' : '';
-  const onFirst = selected === 0 ? 'hidden' : '';
-  const onLast = selected === itemCount - 1 ? 'hidden' : '';
+  const onFirst = disablePrev ? 'hidden' : '';
+  const onLast = disableNext ? 'hidden' : '';
+  const showButtons = itemCount > 3;
 
   return (
     <div className={ `carousel-container ${isMobile}` }>
-      { vertical && (
+      { vertical && showButtons && (
         <div
           className={ `scroll-button up ${isMobile} ${onFirst}` }
-          onClick={ () => handleButton( -1 ) }
-          onKeyUp={ () => handleButton( -1 ) }
+          data-scroll={ -1 }
+          onClick={ handleButton }
+          onKeyUp={ handleButton }
           role="button"
           tabIndex={ 0 }
         >
-          <i className="angle up icon scroll-icon" />
+          <i className="angle up icon scroll-icon" data-scroll={ -1 } />
         </div>
       ) }
-      <div className={ `carousel-content ${isMobile} ${isVertical}` }>
-        <div className={ `carousel-items ${isMobile} ${isVertical} ${withLegend}` }>
+      <div className={ `carousel-content ${isMobile} ${isVertical}` } style={ showButtons ? { margin: '0' } : { margin: '24px 0' } }>
+        <div className={ `carousel-items ${isMobile} ${isVertical} ${withLegend}` } ref={ carouselItems }>
           { children.map( ( child, index ) => (
             <div
               className="carousel-item"
               key={ child.key }
               onClick={ () => handleSelection( child.props.id, index ) }
               onKeyUp={ () => handleSelection( child.props.id, index ) }
+              style={ carouselItemStyle }
               role="button"
               tabIndex={ 0 }
             >
@@ -82,16 +188,17 @@ const Carousel = ( {
             </div>
           ) ) }
         </div>
-        { legend && (
+        { legend && showButtons && (
           <div className={ `carousel-legend ${isVertical}` }>
-            { !vertical && (
+            { ( !vertical ) && (
               <button
                 className="carousel-legend-button"
-                disabled={ selected === 0 }
-                onClick={ () => handleButton( -1 ) }
+                data-scroll={ -1 }
+                disabled={ disablePrev }
+                onClick={ handleButton }
                 type="button"
               >
-                <Icon name="angle left" size="large" />
+                <Icon data-scroll={ -1 } name="angle left" size="large" />
               </button>
             ) }
             <div className={ `carousel-progress-bar ${isVertical}` }>
@@ -113,25 +220,27 @@ const Carousel = ( {
             { !vertical && (
               <button
                 className="carousel-legend-button"
-                disabled={ selected === itemCount - 1 }
-                onClick={ () => handleButton( 1 ) }
+                data-scroll={ 1 }
+                disabled={ disableNext }
+                onClick={ handleButton }
                 type="button"
               >
-                <Icon name="angle right" size="large" />
+                <Icon data-scroll={ 1 } name="angle right" size="large" />
               </button>
             ) }
           </div>
         ) }
       </div>
-      { vertical && (
+      { vertical && showButtons && (
         <div
           className={ `scroll-button down ${isMobile} ${onLast}` }
-          onClick={ () => handleButton( 1 ) }
-          onKeyUp={ () => handleButton( 1 ) }
+          data-scroll={ 1 }
+          onClick={ handleButton }
+          onKeyUp={ handleButton }
           role="button"
           tabIndex={ 0 }
         >
-          <i className="angle down icon scroll-icon" />
+          <i className="angle down icon scroll-icon" data-scroll={ 1 } />
         </div>
       ) }
     </div>
