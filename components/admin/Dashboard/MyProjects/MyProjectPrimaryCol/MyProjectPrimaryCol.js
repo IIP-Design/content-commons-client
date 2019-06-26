@@ -11,8 +11,8 @@ import {
   Checkbox, Icon, Modal, Popup
 } from 'semantic-ui-react';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import PreviewProjectContent from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
-import PreviewProjectItem from '../PreviewProjectItem';
 import './MyProjectPrimaryCol.scss';
 
 const handleDataActionsOffClick = e => {
@@ -119,7 +119,7 @@ const MyProjectPrimaryCol = props => {
               closeIcon
             >
               <Modal.Content>
-                <PreviewProjectItem id={ id } />
+                <PreviewProjectContent id={ id } />
               </Modal.Content>
             </Modal>
             <span> | </span>

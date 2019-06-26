@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Item } from 'semantic-ui-react';
 import { object, string, bool } from 'prop-types';
 import downloadIcon from 'static/icons/icon_download.svg';
-import { formatBytes } from 'lib/utils';
+import { formatBytes, getS3Url } from 'lib/utils';
 
 // NOTE: Using the 'download' attribute to trigger downloads
 // Need to research more robust options depending on browser supprt
@@ -39,8 +39,8 @@ const DownloadVideo = props => {
     const videoQuality = `${video.quality && video.quality === 'BROADCAST' ? 'broadcast' : 'web'}`;
 
     return (
-      <Item.Group key={ `fs_${id}` } className="download-item">
-        <Item as="a" href={ video.url } download={ fn }>
+      <Item.Group key={ `fs_${id}-${video.id}` } className="download-item">
+        <Item as="a" href={ getS3Url( video.url ) } download={ fn }>
           <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
           <Item.Content>
             <Item.Header className="download-header">

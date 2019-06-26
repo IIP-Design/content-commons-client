@@ -93,7 +93,6 @@
     "jest-transform-graphql": "^2.1.0",
     "lint-staged": "^8.1.0",
     "prettier": "^1.15.2",
-    "react-test-renderer": "^16.8.4",
     "waait": "^1.0.4",
     "webpack-filter-warnings-plugin": "^1.2.1"
   },

@@ -3,7 +3,8 @@ import { object, string } from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Item, Loader } from 'semantic-ui-react';
-
+import { getS3Url } from 'lib/utils';
+import ApolloError from 'components/errors/ApolloError';
 import downloadIcon from 'static/icons/icon_download.svg';
 
 const DownloadSrt = ( { instructions, data } ) => {
@@ -29,17 +30,16 @@ const DownloadSrt = ( { instructions, data } ) => {
     );
   }
 
-  if ( error ) return `Error! ${error.message}`;
-
+  if ( error ) return <ApolloError error={ error } />;
   if ( !project || !Object.keys( project ).length ) return null;
 
-  const { units } = project;
+  const { files } = project;
 
   const renderFormItem = unit => {
     const { id, url, language: { displayName } } = unit;
     return (
       <Item.Group key={ `fs_${id}` } className="download-item">
-        <Item as="a" href={ url } download={ `${displayName}_SRT` }>
+        <Item as="a" href={ getS3Url( url ) } download={ `${displayName}_SRT` }>
           <Item.Image
             size="mini"
             src={ downloadIcon }
@@ -59,7 +59,7 @@ const DownloadSrt = ( { instructions, data } ) => {
   };
 
   const renderFormItems = () => {
-    const srts = units
+    const srts = files
       .filter( unit => unit && unit.url )
       .map( unit => renderFormItem( unit ) );
     return srts.length ? srts : 'There are no SRTs available for download at this time';
@@ -68,7 +68,7 @@ const DownloadSrt = ( { instructions, data } ) => {
   return (
     <Fragment>
       <p className="form-group_instructions">{ instructions }</p>
-      { units && renderFormItems( units ) }
+      { files && renderFormItems( files ) }
     </Fragment>
   );
 };
@@ -82,8 +82,13 @@ const VIDEO_PROJECT_PREVIEW_SRTS_QUERY = gql`
   query VideoProjectPreviewSrts($id: ID!) {
     project: videoProject(id: $id) {
       id
-      units: supportFiles(
-        where: {filetype: "srt"},
+      files: supportFiles(
+        where: {
+          OR:[
+            { filetype: "application/x-subrip" },
+            { filename_ends_with: "srt" }
+          ]
+        },
         orderBy: filename_ASC
       ) {
         id

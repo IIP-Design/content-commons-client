@@ -3,6 +3,8 @@ import { object, string } from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Item, Loader } from 'semantic-ui-react';
+import { getS3Url } from 'lib/utils';
+import ApolloError from 'components/errors/ApolloError';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 
@@ -29,21 +31,20 @@ const DownloadOtherFiles = ( { instructions, data } ) => {
     );
   }
 
-  if ( error ) return `Error! ${error.message}`;
-
+  if ( error ) return <ApolloError error={ error } />;
   if ( !project || !Object.keys( project ).length ) return null;
 
-  const { units } = project;
+  const { files } = project;
 
-  const renderFormItem = unit => {
+  const renderFormItem = file => {
     const {
       id, filename, filetype, url,
       language: { displayName }
-    } = unit;
+    } = file;
 
     return (
       <Item.Group key={ `fs_${id}` } className="download-item">
-        <Item as="a" href={ url } download={ filename }>
+        <Item as="a" href={ getS3Url( url ) } download={ filename }>
           <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
           <Item.Content>
             <Item.Header className="download-header">
@@ -59,16 +60,16 @@ const DownloadOtherFiles = ( { instructions, data } ) => {
   };
 
   const renderFormItems = () => {
-    const otherFiles = units
-      .filter( unit => unit && unit.url )
-      .map( unit => renderFormItem( unit ) );
+    const otherFiles = files
+      .filter( file => file && file.url )
+      .map( file => renderFormItem( file ) );
     return otherFiles.length ? otherFiles : 'There are no other files available for download at this time';
   };
 
   return (
     <Fragment>
       <p className="form-group_instructions">{ instructions }</p>
-      { units && renderFormItems( units ) }
+      { files && renderFormItems( files ) }
     </Fragment>
   );
 };
@@ -82,13 +83,9 @@ const VIDEO_PROJECT_PREVIEW_OTHER_FILES_QUERY = gql`
   query VideoProjectPreviewOtherfiles($id: ID!) {
     project: videoProject(id: $id) {
       id
-      units: supportFiles(
+      files: supportFiles(
         where: {
-          AND: [
-            { filetype_not: "srt" },
-            { filetype_not: "jpg" },
-            { filetype_not: "png" }
-          ]
+          filetype_not: "application/x-subrip"
         },
         orderBy: filename_ASC
       ) {

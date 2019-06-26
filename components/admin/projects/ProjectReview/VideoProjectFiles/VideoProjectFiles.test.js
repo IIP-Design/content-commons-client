@@ -15,7 +15,7 @@ const mocks = [
   {
     request: {
       query: VIDEO_PROJECT_PREVIEW_QUERY,
-      variables: { id: props.id, isReviewPage: true }
+      variables: { id: props.id }
     },
     result: {
       data: {
@@ -164,7 +164,7 @@ describe( '<VideoProjectFiles />', () => {
       {
         request: {
           query: VIDEO_PROJECT_PREVIEW_QUERY,
-          variables: { id: props.id, isReviewPage: true }
+          variables: { id: props.id }
         },
         result: {
           errors: [{ message: 'There was an error.' }]
@@ -199,7 +199,7 @@ describe( '<VideoProjectFiles />', () => {
       {
         request: {
           query: VIDEO_PROJECT_PREVIEW_QUERY,
-          variables: { id: props.id, isReviewPage: true }
+          variables: { id: props.id }
         },
         result: {
           data: { project: null }
@@ -259,7 +259,7 @@ describe( '<VideoProjectFiles />', () => {
       {
         request: {
           query: VIDEO_PROJECT_PREVIEW_QUERY,
-          variables: { id: props.id, isReviewPage: true }
+          variables: { id: props.id }
         },
         result: {
           data: {
@@ -291,7 +291,7 @@ describe( '<VideoProjectFiles />', () => {
       {
         request: {
           query: VIDEO_PROJECT_PREVIEW_QUERY,
-          variables: { id: props.id, isReviewPage: true }
+          variables: { id: props.id }
         },
         result: {
           data: {
@@ -323,7 +323,7 @@ describe( '<VideoProjectFiles />', () => {
       {
         request: {
           query: VIDEO_PROJECT_PREVIEW_QUERY,
-          variables: { id: props.id, isReviewPage: true }
+          variables: { id: props.id }
         },
         result: {
           data: {
@@ -389,7 +389,7 @@ describe( '<VideoProjectFiles />', () => {
       {
         request: {
           query: VIDEO_PROJECT_PREVIEW_QUERY,
-          variables: { id: props.id, isReviewPage: true }
+          variables: { id: props.id }
         },
         result: {
           data: {
@@ -455,7 +455,7 @@ describe( '<VideoProjectFiles />', () => {
       {
         request: {
           query: VIDEO_PROJECT_PREVIEW_QUERY,
-          variables: { id: props.id, isReviewPage: true }
+          variables: { id: props.id }
         },
         result: {
           data: {
@@ -578,7 +578,7 @@ describe( '<VideoProjectFiles />', () => {
       {
         request: {
           query: VIDEO_PROJECT_PREVIEW_QUERY,
-          variables: { id: props.id, isReviewPage: true }
+          variables: { id: props.id }
         },
         result: {
           data: {

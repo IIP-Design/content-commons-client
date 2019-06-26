@@ -9,6 +9,8 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Dropdown, Embed, Loader } from 'semantic-ui-react';
 
+import ApolloError from 'components/errors/ApolloError';
+
 import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo';
 import DownloadSrt from 'components/admin/download/DownloadSrt/DownloadSrt';
 import DownloadThumbnail from 'components/admin/download/DownloadThumbnail/DownloadThumbnail';
@@ -25,7 +27,10 @@ import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
 
 import downloadIcon from 'static/icons/icon_download.svg';
-import { getStreamData, getVimeoId, getYouTubeId } from 'lib/utils';
+import {
+  getS3Url, getStreamData, getVimeoId, getYouTubeId
+} from 'lib/utils';
+import { UNIT_DETAILS_FRAGMENT } from 'lib/graphql/queries/video';
 
 import './PreviewProjectContent.scss';
 
@@ -48,12 +53,26 @@ class PreviewProjectContent extends React.PureComponent {
     } ) )
   )
 
-  getProjectItems = units => (
+  getProjectUnits = units => (
     units.reduce( ( acc, unit ) => ( {
       ...acc,
       [unit.language.displayName]: unit
     } ), {} )
   );
+
+  getContentType = typename => {
+    switch ( typename ) {
+      case 'VideoProject':
+        return 'video';
+      /**
+       * future content types would go here, e.g.,
+       * case 'ImageProject':
+       *   return 'image';
+       */
+      default:
+        return '';
+    }
+  }
 
   toggleArrow = () => {
     this.setState( prevState => ( {
@@ -96,36 +115,46 @@ class PreviewProjectContent extends React.PureComponent {
       );
     }
 
-    if ( error ) return `Error! ${error.message}`;
+    if ( error ) return <ApolloError error={ error } />;
     if ( !project || !Object.keys( project ).length ) return null;
 
-    const {
-      __typename, createdAt, updatedAt, team, units
-    } = project;
+    const { __typename, team, units } = project;
     const { dropDownIsOpen, selectedLanguage } = this.state;
 
-    const projectItems = this.getProjectItems( units );
-    const selectedItem = projectItems[this.state.selectedLanguage];
+    const projectUnits = this.getProjectUnits( units );
+    const selectedUnit = projectUnits[String( selectedLanguage )];
 
-    if ( !selectedItem || !Object.keys( selectedItem ).length ) return null;
+    if ( !selectedUnit || !Object.keys( selectedUnit ).length ) {
+      return (
+        <p style={ { fontSize: '1rem' } }>
+          This project does not have any units to preview.
+        </p>
+      );
+    }
+
+    const contentType = this.getContentType( __typename );
 
     const {
-      title,
-      language,
-      descPublic,
-      files
-    } = selectedItem;
+      title, language, descPublic, files
+    } = selectedUnit;
 
-    const currentUnit = files[0];
-    const youTubeUrl = getStreamData( currentUnit.stream, 'youtube', 'embedUrl' );
-    const vimeoUrl = getStreamData( currentUnit.stream, 'vimeo', 'embedUrl' );
-    const { videoBurnedInStatus } = currentUnit;
+    const currentFile = files[0];
+
+    const {
+      createdAt, updatedAt, stream, videoBurnedInStatus
+    } = currentFile;
+
+    const youTubeUrl = getStreamData( stream, 'youtube', 'url' );
+    const vimeoUrl = getStreamData( stream, 'vimeo', 'url' );
 
     let thumbnailUrl = '';
-    if ( selectedItem.thumbnails && selectedItem.thumbnails.length ) {
-      thumbnailUrl = selectedItem.thumbnails[0].image.url;
+    let thumbnailAlt = `a thumbnail image for this project in ${language.displayName}`;
+    if ( selectedUnit.thumbnails && selectedUnit.thumbnails.length ) {
+      thumbnailUrl = getS3Url( selectedUnit.thumbnails[0].image.url );
+      thumbnailAlt = selectedUnit.thumbnails[0].image.alt;
     } else if ( project.thumbnails && project.thumbnails.length ) {
-      thumbnailUrl = project.thumbnails[0].url;
+      thumbnailUrl = getS3Url( project.thumbnails[0].url );
+      thumbnailAlt = project.thumbnails[0].alt;
     }
 
     const previewMsgStyles = {
@@ -149,8 +178,9 @@ class PreviewProjectContent extends React.PureComponent {
       >
         <Notification
           el="p"
+          show
           customStyles={ previewMsgStyles }
-          msg="This is a preview of your project on Content Commons."
+          msg={ `This is a preview of your ${contentType} project on Content Commons.` }
         />
 
         <div className="modal_options">
@@ -168,7 +198,7 @@ class PreviewProjectContent extends React.PureComponent {
               toolTip="Download video"
               icon={ { img: downloadIcon, dim: 18 } }
               position="right"
-              show={ __typename === 'VideoProject' }
+              show={ contentType === 'video' }
               content={ (
                 <PopupTabbed
                   title="Download this video."
@@ -177,7 +207,7 @@ class PreviewProjectContent extends React.PureComponent {
                       title: 'Video File',
                       component: (
                         <DownloadVideo
-                          selectedLanguageUnit={ selectedItem }
+                          selectedLanguageUnit={ selectedUnit }
                           instructions={ `Download the video and SRT files in ${selectedLanguage}.
                             This download option is best for uploading this video to web pages.` }
                           burnedInCaptions={ videoBurnedInStatus === 'CAPTIONED' }
@@ -234,8 +264,16 @@ class PreviewProjectContent extends React.PureComponent {
               source="vimeo"
             />
           ) }
-          <ModalContentMeta type="video" dateUpdated={ updatedAt } />
-
+          { ( !youTubeUrl && !vimeoUrl ) && (
+            <figure className="modal_thumbnail overlay">
+              <img
+                className="overlay-image"
+                src={ thumbnailUrl }
+                alt={ thumbnailAlt }
+              />
+            </figure>
+          ) }
+          <ModalContentMeta type={ contentType } dateUpdated={ updatedAt } />
           <ModalDescription description={ descPublic } />
         </div>
 
@@ -251,82 +289,28 @@ PreviewProjectContent.propTypes = {
 };
 
 const VIDEO_PROJECT_PREVIEW_QUERY = gql`
-  query VideoProjectPreview($id: ID!, $isReviewPage: Boolean!) {
+  query VideoProjectPreview($id: ID!) {
     project: videoProject(id: $id) {
       id
-      createdAt @skip(if: $isReviewPage)
-      updatedAt @skip(if: $isReviewPage)
-      projectType @skip(if: $isReviewPage)
-      thumbnails @skip(if: $isReviewPage) {
-        id
-        alt
-        url
-      }
-      team @skip(if: $isReviewPage) {
+      projectType
+      team {
         id
         name
       }
+      thumbnails {
+        ...imageDetails
+      }
       units {
-        id
-        title
-        descPublic
-        thumbnails {
-          id
-          image {
-            id
-            alt
-            url
-          }
-        }
-        language @skip(if: $isReviewPage) {
-          id
-          languageCode
-          displayName
-          textDirection
-        }
-        files {
-          id
-          createdAt
-          duration
-          filename
-          url
-          use @include(if: $isReviewPage) {
-            id
-            name
-          }
-          filesize
-          videoBurnedInStatus
-          createdAt @include(if: $isReviewPage)
-          duration @include(if: $isReviewPage)
-          quality @include(if: $isReviewPage)
-          dimensions {
-            id
-            width
-            height
-          }
-          stream {
-            id
-            site
-            embedUrl @skip(if: $isReviewPage)
-            url @include(if: $isReviewPage)
-          }
-          language @include(if: $isReviewPage) {
-            id
-            displayName
-            textDirection
-          }
-        }
+        ...unitDetails
       }
     }
   }
+  ${UNIT_DETAILS_FRAGMENT}
 `;
 
 export default graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
   options: props => ( {
-    variables: {
-      id: props.id,
-      isReviewPage: false
-    },
+    variables: { id: props.id },
   } )
 } )( PreviewProjectContent );
 
