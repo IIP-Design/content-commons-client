@@ -138,6 +138,16 @@ class PreviewProjectContent extends React.PureComponent {
       title, language, descPublic, files
     } = selectedUnit;
 
+    const hasNoFilesInUnit = files && files.length === 0;
+
+    if ( hasNoFilesInUnit ) {
+      return (
+        <p style={ { fontSize: '1rem' } }>
+          This project does not have any files to preview.
+        </p>
+      );
+    }
+
     const currentFile = files[0];
 
     const {
@@ -273,6 +283,7 @@ class PreviewProjectContent extends React.PureComponent {
               />
             </figure>
           ) }
+
           <ModalContentMeta type={ contentType } dateUpdated={ updatedAt } />
           <ModalDescription description={ descPublic } />
         </div>

@@ -230,6 +230,25 @@ const noStreamsMocks = [
   }
 ];
 
+const noFilesMocks = [
+  {
+    ...mocks[0],
+    result: {
+      data: {
+        project: {
+          ...mocks[0].result.data.project,
+          units: [
+            {
+              ...mocks[0].result.data.project.units[0],
+              files: []
+            }
+          ]
+        }
+      }
+    }
+  }
+];
+
 const Component = (
   <MockedProvider mocks={ mocks } addTypename>
     <PreviewProjectContent { ...props } />
@@ -494,5 +513,20 @@ describe( '<PreviewProjectContent />', () => {
     expect( thumbnail.exists() ).toEqual( true );
     expect( img.prop( 'src' ) ).toEqual( `${s3Bucket}/${assetPath}` );
     expect( img.prop( 'alt' ) ).toEqual( alt );
+  } );
+
+  it( 'renders a "no files message" if there are no files in the selected unit', async () => {
+    const wrapper = mount(
+      <MockedProvider mocks={ noFilesMocks } addTypename>
+        <PreviewProjectContent { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const noFilesMsg = 'This project does not have any files to preview.';
+
+    expect( preview.contains( noFilesMsg ) ).toEqual( true );
   } );
 } );
