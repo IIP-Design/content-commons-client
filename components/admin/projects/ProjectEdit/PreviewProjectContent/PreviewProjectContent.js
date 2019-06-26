@@ -148,13 +148,13 @@ class PreviewProjectContent extends React.PureComponent {
     const vimeoUrl = getStreamData( stream, 'vimeo', 'url' );
 
     let thumbnailUrl = '';
-    let thumbnailAlt = '';
+    let thumbnailAlt = `a thumbnail image for this project in ${language.displayName}`;
     if ( selectedUnit.thumbnails && selectedUnit.thumbnails.length ) {
       thumbnailUrl = getS3Url( selectedUnit.thumbnails[0].image.url );
       thumbnailAlt = selectedUnit.thumbnails[0].image.alt;
     } else if ( project.thumbnails && project.thumbnails.length ) {
       thumbnailUrl = getS3Url( project.thumbnails[0].url );
-      thumbnailAlt = project.thumbnails[0].image.alt;
+      thumbnailAlt = project.thumbnails[0].alt;
     }
 
     const previewMsgStyles = {
