@@ -288,15 +288,10 @@ const vimeoMocks = [
           ...mocks[0].result.data.project,
           units: [
             {
-              /**
-               * use the English language unit since the
-               * test is focused on the absence of streams
-               * and not setting unit language
-               */
-              ...mocks[0].result.data.project.units[1],
+              ...mocks[0].result.data.project.units[0],
               files: [
                 {
-                  ...mocks[0].result.data.project.units[1].files[0],
+                  ...mocks[0].result.data.project.units[0].files[0],
                   stream: [
                     {
                       __typename: 'VideoStream',
@@ -324,14 +319,10 @@ const noStreamsMocks = [
           ...mocks[0].result.data.project,
           units: [
             {
-              /**
-               * see comment above about using English
-               * language object
-               */
-              ...mocks[0].result.data.project.units[1],
+              ...mocks[0].result.data.project.units[0],
               files: [
                 {
-                  ...mocks[0].result.data.project.units[1].files[0],
+                  ...mocks[0].result.data.project.units[0].files[0],
                   stream: []
                 }
               ]
@@ -352,14 +343,24 @@ const noFilesMocks = [
           ...mocks[0].result.data.project,
           units: [
             {
-              /**
-               * see comment above about using English
-               * language object
-               */
-              ...mocks[0].result.data.project.units[1],
+              ...mocks[0].result.data.project.units[0],
               files: []
             }
           ]
+        }
+      }
+    }
+  }
+];
+
+const noUnitsMocks = [
+  {
+    ...mocks[0],
+    result: {
+      data: {
+        project: {
+          ...mocks[0].result.data.project,
+          units: []
         }
       }
     }
@@ -415,7 +416,7 @@ describe( '<PreviewProjectContent />', () => {
     const errorComponent = preview.find( 'ApolloError' );
 
     expect( errorComponent.exists() ).toEqual( true );
-    expect( errorComponent.contains( 'There was an error.') )
+    expect( errorComponent.contains( 'There was an error.' ) )
       .toEqual( true );
   } );
 
@@ -437,28 +438,23 @@ describe( '<PreviewProjectContent />', () => {
     const preview = wrapper.find( 'PreviewProjectContent' );
     const inst = preview.instance();
     const { dropDownIsOpen, selectedLanguage } = inst.state;
+    const { language } = mocks[0].result.data.project.units[0];
 
     expect( dropDownIsOpen ).toEqual( false );
-    expect( selectedLanguage ).toEqual( 'English' );
+    expect( selectedLanguage ).toEqual( language.displayName );
   } );
 
-  it( 'componentDidMount sets language in state', async () => {
+  it( 'sets language in state when mounted', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
     const preview = wrapper.find( 'PreviewProjectContent' );
     const inst = preview.instance();
-    const spy = jest.spyOn( inst, 'componentDidMount' );
-    const selectedLanguage = () => inst.state.selectedLanguage;
-    const newLanguage = mocks[0].result.data.project.units[0].language.displayName;
+    const { selectedLanguage } = inst.state;
+    const { language } = mocks[0].result.data.project.units[0];
 
-    // default language in initial state
-    expect( selectedLanguage() ).toEqual( 'English' );
-
-    inst.componentDidMount();
-    expect( spy ).toHaveBeenCalled();
-    expect( selectedLanguage() ).toEqual( newLanguage );
+    expect( selectedLanguage ).toEqual( language.displayName );
   } );
 
   it( 'calling getLanguages gets the unit language(s)', async () => {
@@ -566,16 +562,18 @@ describe( '<PreviewProjectContent />', () => {
     const inst = preview.instance();
     const selectedLanguage = () => inst.state.selectedLanguage;
     const spy = jest.spyOn( inst, 'selectLanguage' );
+    const { language: initialLang } = mocks[0].result.data.project.units[0];
+    const { language: newLang } = mocks[0].result.data.project.units[1];
 
-    expect( selectedLanguage() ).toEqual( 'English' );
+    expect( selectedLanguage() ).toEqual( initialLang.displayName );
 
-    inst.selectLanguage( 'French' );
-    expect( spy ).toHaveBeenCalledTimes( 1 );
-    expect( selectedLanguage() ).toEqual( 'French' );
+    inst.selectLanguage( newLang.displayName );
+    expect( spy ).toHaveBeenCalled();
+    expect( selectedLanguage() ).toEqual( newLang.displayName );
 
-    inst.selectLanguage( 'English' );
-    expect( spy ).toHaveBeenCalledTimes( 2 );
-    expect( selectedLanguage() ).toEqual( 'English' );
+    inst.selectLanguage( initialLang.displayName );
+    expect( spy ).toHaveBeenCalled();
+    expect( selectedLanguage() ).toEqual( initialLang.displayName );
   } );
 
   it( 'getContentType returns the correct content type', async () => {
@@ -665,8 +663,23 @@ describe( '<PreviewProjectContent />', () => {
     wrapper.update();
 
     const preview = wrapper.find( 'PreviewProjectContent' );
-    const noFilesMsg = 'This unit does not have any files to preview.';
+    const noFilesMsg = 'This project unit does not have any files to preview.';
 
     expect( preview.contains( noFilesMsg ) ).toEqual( true );
+  } );
+
+  it( 'renders a "no units message" if there are no units in the project', async () => {
+    const wrapper = mount(
+      <MockedProvider mocks={ noUnitsMocks } addTypename>
+        <PreviewProjectContent { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const noUnitsMsg = 'This project does not have any units to preview.';
+
+    expect( preview.contains( noUnitsMsg ) ).toEqual( true );
   } );
 } );
