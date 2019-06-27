@@ -41,25 +41,37 @@ class PreviewProjectContent extends React.PureComponent {
 
     this.state = {
       dropDownIsOpen: false,
-      selectedLanguage: 'English'
+      selectedLanguage: ''
     };
   }
 
   componentDidMount = () => {
     if ( this.props.data.project ) {
       const { units } = this.props.data.project;
-      const { language } = units && units[0];
+      if ( !units || ( units && units.length === 0 ) ) return;
+      const { language } = units[0];
 
       if ( !language || ( language && !Object.keys( language ).length ) ) {
         return;
       }
 
       this.setState( prevState => {
-        const { displayName } = language;
-        if ( prevState.selectedLanguage !== displayName ) {
-          return { selectedLanguage: displayName };
+        if ( !prevState.selectedLanguage ) {
+          return { selectedLanguage: language.displayName };
         }
       } );
+    }
+  }
+
+  componentDidUpdate = ( _, prevState ) => {
+    if ( this.props.data.project ) {
+      const { units } = this.props.data.project;
+      if ( !units || ( units && units.length === 0 ) ) return;
+      const { language } = units[0];
+
+      if ( !prevState.selectedLanguage ) {
+        this.selectLanguage( language.displayName );
+      }
     }
   }
 
@@ -150,37 +162,32 @@ class PreviewProjectContent extends React.PureComponent {
       );
     }
 
-    const contentType = this.getContentType( __typename );
-
     const {
       title, language, descPublic, files
     } = selectedUnit;
+    const contentType = this.getContentType( __typename );
 
-    const hasNoFilesInUnit = files && files.length === 0;
-
-    if ( hasNoFilesInUnit ) {
+    if ( files && files.length === 0 ) {
       return (
         <p style={ { fontSize: '1rem' } }>
-          This unit does not have any files to preview.
+          This project unit does not have any files to preview.
         </p>
       );
     }
 
-    const currentFile = files[0];
-
     const {
       createdAt, updatedAt, stream, videoBurnedInStatus
-    } = currentFile;
+    } = files[0];
 
     const youTubeUrl = getStreamData( stream, 'youtube', 'url' );
     const vimeoUrl = getStreamData( stream, 'vimeo', 'url' );
 
     let thumbnailUrl = '';
     let thumbnailAlt = `a thumbnail image for this project in ${language.displayName}`;
-    if ( selectedUnit.thumbnails && selectedUnit.thumbnails.length ) {
+    if ( selectedUnit.thumbnails && selectedUnit.thumbnails.length > 0 ) {
       thumbnailUrl = getS3Url( selectedUnit.thumbnails[0].image.url );
       thumbnailAlt = selectedUnit.thumbnails[0].image.alt;
-    } else if ( project.thumbnails && project.thumbnails.length ) {
+    } else if ( project.thumbnails && project.thumbnails.length > 0 ) {
       thumbnailUrl = getS3Url( project.thumbnails[0].url );
       thumbnailAlt = project.thumbnails[0].alt;
     }
