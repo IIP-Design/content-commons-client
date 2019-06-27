@@ -49,7 +49,9 @@ class PreviewProjectContent extends React.PureComponent {
     if ( this.props.data.project ) {
       const { units } = this.props.data.project;
       if ( !units || ( units && units.length === 0 ) ) return;
-      const { language } = units[0];
+
+      const englishIndex = this.getEnglishIndex( units );
+      const { language } = units[englishIndex > -1 ? englishIndex : 0];
 
       if ( !language || ( language && !Object.keys( language ).length ) ) {
         return;
@@ -67,7 +69,9 @@ class PreviewProjectContent extends React.PureComponent {
     if ( this.props.data.project ) {
       const { units } = this.props.data.project;
       if ( !units || ( units && units.length === 0 ) ) return;
-      const { language } = units[0];
+
+      const englishIndex = this.getEnglishIndex( units );
+      const { language } = units[englishIndex > -1 ? englishIndex : 0];
 
       if ( !prevState.selectedLanguage ) {
         this.selectLanguage( language.displayName );
@@ -88,6 +92,10 @@ class PreviewProjectContent extends React.PureComponent {
       ...acc,
       [unit.language.displayName]: unit
     } ), {} )
+  );
+
+  getEnglishIndex = units => (
+    units.findIndex( unit => unit.language.displayName === 'English' )
   );
 
   getContentType = typename => {
