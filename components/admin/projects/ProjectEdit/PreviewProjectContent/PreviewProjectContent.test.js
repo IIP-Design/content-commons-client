@@ -438,7 +438,7 @@ describe( '<PreviewProjectContent />', () => {
     const preview = wrapper.find( 'PreviewProjectContent' );
     const inst = preview.instance();
     const { dropDownIsOpen, selectedLanguage } = inst.state;
-    const { language } = mocks[0].result.data.project.units[0];
+    const { language } = mocks[0].result.data.project.units[1];
 
     expect( dropDownIsOpen ).toEqual( false );
     expect( selectedLanguage ).toEqual( language.displayName );
@@ -452,7 +452,7 @@ describe( '<PreviewProjectContent />', () => {
     const preview = wrapper.find( 'PreviewProjectContent' );
     const inst = preview.instance();
     const { selectedLanguage } = inst.state;
-    const { language } = mocks[0].result.data.project.units[0];
+    const { language } = mocks[0].result.data.project.units[1];
 
     expect( selectedLanguage ).toEqual( language.displayName );
   } );
@@ -562,8 +562,8 @@ describe( '<PreviewProjectContent />', () => {
     const inst = preview.instance();
     const selectedLanguage = () => inst.state.selectedLanguage;
     const spy = jest.spyOn( inst, 'selectLanguage' );
-    const { language: initialLang } = mocks[0].result.data.project.units[0];
-    const { language: newLang } = mocks[0].result.data.project.units[1];
+    const { language: initialLang } = mocks[0].result.data.project.units[1];
+    const { language: newLang } = mocks[0].result.data.project.units[0];
 
     expect( selectedLanguage() ).toEqual( initialLang.displayName );
 
@@ -574,6 +574,21 @@ describe( '<PreviewProjectContent />', () => {
     inst.selectLanguage( initialLang.displayName );
     expect( spy ).toHaveBeenCalled();
     expect( selectedLanguage() ).toEqual( initialLang.displayName );
+  } );
+
+  it( 'getEnglishIndex returns the index for the English language unit', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+    const spy = jest.spyOn( inst, 'getEnglishIndex' );
+    const { units } = mocks[0].result.data.project;
+    const englishIndex = inst.getEnglishIndex( units );
+
+    expect( spy ).toHaveBeenCalled();
+    expect( englishIndex ).toEqual( units.length - 1 );
   } );
 
   it( 'getContentType returns the correct content type', async () => {
