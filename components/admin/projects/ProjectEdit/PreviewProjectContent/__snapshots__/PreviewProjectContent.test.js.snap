@@ -251,10 +251,10 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
   <ModalItem
     className="project-preview"
     headline="test project title"
-    textDirection="RTL"
+    textDirection="LTR"
   >
     <div
-      className="modal RTL project-preview"
+      className="modal LTR project-preview"
     >
       <h1
         className="modal_headline"
@@ -331,7 +331,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
           searchInput="text"
           selectOnBlur={true}
           selectOnNavigation={true}
-          value="Arabic"
+          value="English"
           wrapSelection={true}
         >
           <div
@@ -350,7 +350,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
               className="text"
               role="alert"
             >
-              Arabic
+              English
             </div>
             <Icon
               as="i"
@@ -369,10 +369,10 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                 className="menu transition"
               >
                 <DropdownItem
-                  active={true}
+                  active={false}
                   key="ar"
                   onClick={[Function]}
-                  selected={true}
+                  selected={false}
                   style={
                     Object {
                       "pointerEvents": "all",
@@ -382,9 +382,9 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                   value="Arabic"
                 >
                   <div
-                    aria-checked={true}
-                    aria-selected={true}
-                    className="active selected item"
+                    aria-checked={false}
+                    aria-selected={false}
+                    className="item"
                     onClick={[Function]}
                     role="option"
                     style={
@@ -401,10 +401,10 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                   </div>
                 </DropdownItem>
                 <DropdownItem
-                  active={false}
+                  active={true}
                   key="en"
                   onClick={[Function]}
-                  selected={false}
+                  selected={true}
                   style={
                     Object {
                       "pointerEvents": "all",
@@ -414,9 +414,9 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                   value="English"
                 >
                   <div
-                    aria-checked={false}
-                    aria-selected={false}
-                    className="item"
+                    aria-checked={true}
+                    aria-selected={true}
+                    className="active selected item"
                     onClick={[Function]}
                     role="option"
                     style={
@@ -447,12 +447,12 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                     Object {
                       "component": <DownloadVideo
                         burnedInCaptions={false}
-                        instructions="Download the video and SRT files in Arabic.
+                        instructions="Download the video and SRT files in English.
                             This download option is best for uploading this video to web pages."
                         selectedLanguageUnit={
                           Object {
                             "__typename": "VideoUnit",
-                            "descPublic": "the arabic description",
+                            "descPublic": "the english description",
                             "files": Array [
                               Object {
                                 "__typename": "VideoFile",
@@ -502,15 +502,15 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                                 "videoBurnedInStatus": "CLEAN",
                               },
                             ],
-                            "id": "un91",
+                            "id": "un95",
                             "language": Object {
                               "__typename": "Language",
-                              "displayName": "Arabic",
-                              "id": "ar22",
-                              "languageCode": "ar",
-                              "locale": "ar",
-                              "nativeName": "العربية",
-                              "textDirection": "RTL",
+                              "displayName": "English",
+                              "id": "en38",
+                              "languageCode": "en",
+                              "locale": "en-us",
+                              "nativeName": "English",
+                              "textDirection": "LTR",
                             },
                             "tags": Array [
                               Object {
@@ -607,12 +607,12 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                         Object {
                           "component": <DownloadVideo
                             burnedInCaptions={false}
-                            instructions="Download the video and SRT files in Arabic.
+                            instructions="Download the video and SRT files in English.
                             This download option is best for uploading this video to web pages."
                             selectedLanguageUnit={
                               Object {
                                 "__typename": "VideoUnit",
-                                "descPublic": "the arabic description",
+                                "descPublic": "the english description",
                                 "files": Array [
                                   Object {
                                     "__typename": "VideoFile",
@@ -662,15 +662,15 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                                     "videoBurnedInStatus": "CLEAN",
                                   },
                                 ],
-                                "id": "un91",
+                                "id": "un95",
                                 "language": Object {
                                   "__typename": "Language",
-                                  "displayName": "Arabic",
-                                  "id": "ar22",
-                                  "languageCode": "ar",
-                                  "locale": "ar",
-                                  "nativeName": "العربية",
-                                  "textDirection": "RTL",
+                                  "displayName": "English",
+                                  "id": "en38",
+                                  "languageCode": "en",
+                                  "locale": "en-us",
+                                  "nativeName": "English",
+                                  "textDirection": "LTR",
                                 },
                                 "tags": Array [
                                   Object {
@@ -881,7 +881,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
           </section>
         </ModalContentMeta>
         <ModalDescription
-          description="the arabic description"
+          description="the english description"
         >
           <section
             className="modal_section modal_section--description"
@@ -889,7 +889,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
             <p
               className="modal_description_text"
             >
-              the arabic description
+              the english description
             </p>
           </section>
         </ModalDescription>
