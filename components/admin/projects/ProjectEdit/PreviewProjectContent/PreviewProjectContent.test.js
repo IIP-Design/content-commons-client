@@ -68,6 +68,110 @@ const mocks = [
               __typename: 'VideoUnit',
               id: 'un91',
               title: 'test project title',
+              descPublic: 'the arabic description',
+              language: {
+                __typename: 'Language',
+                id: 'ar22',
+                displayName: 'Arabic',
+                languageCode: 'ar',
+                locale: 'ar',
+                nativeName: 'العربية',
+                textDirection: 'RTL'
+              },
+              tags: [
+                {
+                  __typename: 'Tag',
+                  id: 'tag13',
+                  translations: [
+                    {
+                      __typename: 'LanguageTranslation',
+                      id: 'tr555',
+                      name: 'الثقافة الأميركية'
+                    }
+                  ]
+                }
+              ],
+              thumbnails: [
+                {
+                  __typename: 'Thumbnail',
+                  id: 'th11',
+                  size: 'FULL',
+                  image: {
+                    __typename: 'ImageFile',
+                    id: 'im28',
+                    createdAt: '2019-03-06T13:11:48.043Z',
+                    updatedAt: '2019-06-18T14:58:10.024Z',
+                    filename: 'image-1.jpg',
+                    filesize: 28371,
+                    filetype: 'image/jpeg',
+                    alt: 'the alt text',
+                    url: `2019/06/${props.id}/image-1.jpg`,
+                    language: {
+                      __typename: 'Language',
+                      id: 'ar22',
+                      displayName: 'Arabic',
+                      languageCode: 'ar',
+                      locale: 'ar',
+                      nativeName: 'العربية',
+                      textDirection: 'RTL'
+                    }
+                  }
+                }
+              ],
+              files: [
+                {
+                  __typename: 'VideoFile',
+                  id: 'f19',
+                  createdAt: '2019-03-05T20:18:54.032Z',
+                  updatedAt: '2019-06-19T17:38:37.502Z',
+                  duration: 556,
+                  filename: 'video-file-1.mp4',
+                  filesize: 662595174,
+                  filetype: 'video/mp4',
+                  quality: 'WEB',
+                  url: `2019/06/${props.id}/video-file-1.mp4`,
+                  videoBurnedInStatus: 'CLEAN',
+                  dimensions: {
+                    __typename: 'Dimensions',
+                    id: 'd21',
+                    height: '1080',
+                    width: '1920'
+                  },
+                  language: {
+                    __typename: 'Language',
+                    id: 'ar22',
+                    displayName: 'Arabic',
+                    languageCode: 'ar',
+                    locale: 'ar',
+                    nativeName: 'العربية',
+                    textDirection: 'RTL'
+                  },
+                  use: {
+                    __typename: 'VideoUse',
+                    id: 'us31',
+                    name: 'Full Video'
+                  },
+                  stream: [
+                    {
+                      __typename: 'VideoStream',
+                      id: 'st93',
+                      site: 'YouTube',
+                      url: 'https://www.youtube.com/watch?v=1evw4fRu3bo'
+                    },
+                    {
+                      __typename: 'VideoStream',
+                      id: 'st35',
+                      site: 'Vimeo',
+                      url: 'https://vimeo.com/340239507'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              __typename: 'VideoUnit',
+              id: 'un95',
+              title: 'test project title',
               descPublic: 'the english description',
               language: {
                 __typename: 'Language',
@@ -184,10 +288,15 @@ const vimeoMocks = [
           ...mocks[0].result.data.project,
           units: [
             {
-              ...mocks[0].result.data.project.units[0],
+              /**
+               * use the English language unit since the
+               * test is focused on the absence of streams
+               * and not setting unit language
+               */
+              ...mocks[0].result.data.project.units[1],
               files: [
                 {
-                  ...mocks[0].result.data.project.units[0].files[0],
+                  ...mocks[0].result.data.project.units[1].files[0],
                   stream: [
                     {
                       __typename: 'VideoStream',
@@ -215,10 +324,14 @@ const noStreamsMocks = [
           ...mocks[0].result.data.project,
           units: [
             {
-              ...mocks[0].result.data.project.units[0],
+              /**
+               * see comment above about using English
+               * language object
+               */
+              ...mocks[0].result.data.project.units[1],
               files: [
                 {
-                  ...mocks[0].result.data.project.units[0].files[0],
+                  ...mocks[0].result.data.project.units[1].files[0],
                   stream: []
                 }
               ]
@@ -239,7 +352,11 @@ const noFilesMocks = [
           ...mocks[0].result.data.project,
           units: [
             {
-              ...mocks[0].result.data.project.units[0],
+              /**
+               * see comment above about using English
+               * language object
+               */
+              ...mocks[0].result.data.project.units[1],
               files: []
             }
           ]
@@ -325,6 +442,25 @@ describe( '<PreviewProjectContent />', () => {
     expect( selectedLanguage ).toEqual( 'English' );
   } );
 
+  it( 'componentDidMount sets language in state', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+    const spy = jest.spyOn( inst, 'componentDidMount' );
+    const selectedLanguage = () => inst.state.selectedLanguage;
+    const newLanguage = mocks[0].result.data.project.units[0].language.displayName;
+
+    // default language in initial state
+    expect( selectedLanguage() ).toEqual( 'English' );
+
+    inst.componentDidMount();
+    expect( spy ).toHaveBeenCalled();
+    expect( selectedLanguage() ).toEqual( newLanguage );
+  } );
+
   it( 'calling getLanguages gets the unit language(s)', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
@@ -339,6 +475,7 @@ describe( '<PreviewProjectContent />', () => {
 
     expect( spy ).toHaveBeenCalled();
     expect( languages ).toEqual( [
+      { key: 'ar', value: 'Arabic', text: 'Arabic' },
       { key: 'en', value: 'English', text: 'English' }
     ] );
   } );
@@ -356,8 +493,11 @@ describe( '<PreviewProjectContent />', () => {
     const projectUnits = inst.getProjectUnits( units );
 
     expect( spy ).toHaveBeenCalled();
-    expect( projectUnits ).toEqual( {
-      [units[0].language.displayName]: units[0]
+    expect( typeof projectUnits ).toEqual( 'object' );
+    expect( Object.keys( projectUnits ).length ).toEqual( units.length );
+    units.forEach( unit => {
+      const { language: { displayName } } = unit;
+      expect( projectUnits[displayName] ).toEqual( unit );
     } );
   } );
 
@@ -525,7 +665,7 @@ describe( '<PreviewProjectContent />', () => {
     wrapper.update();
 
     const preview = wrapper.find( 'PreviewProjectContent' );
-    const noFilesMsg = 'This project does not have any files to preview.';
+    const noFilesMsg = 'This unit does not have any files to preview.';
 
     expect( preview.contains( noFilesMsg ) ).toEqual( true );
   } );
