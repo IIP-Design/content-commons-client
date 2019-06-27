@@ -42,7 +42,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
         "units": Array [
           Object {
             "__typename": "VideoUnit",
-            "descPublic": "the english description",
+            "descPublic": "the arabic description",
             "files": Array [
               Object {
                 "__typename": "VideoFile",
@@ -60,12 +60,12 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                 "id": "f19",
                 "language": Object {
                   "__typename": "Language",
-                  "displayName": "English",
-                  "id": "en38",
-                  "languageCode": "en",
-                  "locale": "en-us",
-                  "nativeName": "English",
-                  "textDirection": "LTR",
+                  "displayName": "Arabic",
+                  "id": "ar22",
+                  "languageCode": "ar",
+                  "locale": "ar",
+                  "nativeName": "العربية",
+                  "textDirection": "RTL",
                 },
                 "quality": "WEB",
                 "stream": Array [
@@ -95,6 +95,103 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
             "id": "un91",
             "language": Object {
               "__typename": "Language",
+              "displayName": "Arabic",
+              "id": "ar22",
+              "languageCode": "ar",
+              "locale": "ar",
+              "nativeName": "العربية",
+              "textDirection": "RTL",
+            },
+            "tags": Array [
+              Object {
+                "__typename": "Tag",
+                "id": "tag13",
+              },
+            ],
+            "thumbnails": Array [
+              Object {
+                "__typename": "Thumbnail",
+                "id": "th11",
+                "image": Object {
+                  "__typename": "ImageFile",
+                  "alt": "the alt text",
+                  "createdAt": "2019-03-06T13:11:48.043Z",
+                  "filename": "image-1.jpg",
+                  "filesize": 28371,
+                  "filetype": "image/jpeg",
+                  "id": "im28",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Arabic",
+                    "id": "ar22",
+                    "languageCode": "ar",
+                    "locale": "ar",
+                    "nativeName": "العربية",
+                    "textDirection": "RTL",
+                  },
+                  "updatedAt": "2019-06-18T14:58:10.024Z",
+                  "url": "2019/06/123/image-1.jpg",
+                },
+                "size": "FULL",
+              },
+            ],
+            "title": "test project title",
+          },
+          Object {
+            "__typename": "VideoUnit",
+            "descPublic": "the english description",
+            "files": Array [
+              Object {
+                "__typename": "VideoFile",
+                "createdAt": "2019-03-05T20:18:54.032Z",
+                "dimensions": Object {
+                  "__typename": "Dimensions",
+                  "height": "1080",
+                  "id": "d21",
+                  "width": "1920",
+                },
+                "duration": 556,
+                "filename": "video-file-1.mp4",
+                "filesize": 662595174,
+                "filetype": "video/mp4",
+                "id": "f19",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "Arabic",
+                  "id": "ar22",
+                  "languageCode": "ar",
+                  "locale": "ar",
+                  "nativeName": "العربية",
+                  "textDirection": "RTL",
+                },
+                "quality": "WEB",
+                "stream": Array [
+                  Object {
+                    "__typename": "VideoStream",
+                    "id": "st93",
+                    "site": "YouTube",
+                    "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
+                  },
+                  Object {
+                    "__typename": "VideoStream",
+                    "id": "st35",
+                    "site": "Vimeo",
+                    "url": "https://vimeo.com/340239507",
+                  },
+                ],
+                "updatedAt": "2019-06-19T17:38:37.502Z",
+                "url": "2019/06/123/video-file-1.mp4",
+                "use": Object {
+                  "__typename": "VideoUse",
+                  "id": "us31",
+                  "name": "Full Video",
+                },
+                "videoBurnedInStatus": "CLEAN",
+              },
+            ],
+            "id": "un95",
+            "language": Object {
+              "__typename": "Language",
               "displayName": "English",
               "id": "en38",
               "languageCode": "en",
@@ -122,12 +219,12 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                   "id": "im28",
                   "language": Object {
                     "__typename": "Language",
-                    "displayName": "English",
-                    "id": "en38",
-                    "languageCode": "en",
-                    "locale": "en-us",
-                    "nativeName": "English",
-                    "textDirection": "LTR",
+                    "displayName": "Arabic",
+                    "id": "ar22",
+                    "languageCode": "ar",
+                    "locale": "ar",
+                    "nativeName": "العربية",
+                    "textDirection": "RTL",
                   },
                   "updatedAt": "2019-06-18T14:58:10.024Z",
                   "url": "2019/06/123/image-1.jpg",
@@ -219,6 +316,11 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
           options={
             Array [
               Object {
+                "key": "ar",
+                "text": "Arabic",
+                "value": "Arabic",
+              },
+              Object {
                 "key": "en",
                 "text": "English",
                 "value": "English",
@@ -266,6 +368,38 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
               <div
                 className="menu transition"
               >
+                <DropdownItem
+                  active={false}
+                  key="ar"
+                  onClick={[Function]}
+                  selected={false}
+                  style={
+                    Object {
+                      "pointerEvents": "all",
+                    }
+                  }
+                  text="Arabic"
+                  value="Arabic"
+                >
+                  <div
+                    aria-checked={false}
+                    aria-selected={false}
+                    className="item"
+                    onClick={[Function]}
+                    role="option"
+                    style={
+                      Object {
+                        "pointerEvents": "all",
+                      }
+                    }
+                  >
+                    <span
+                      className="text"
+                    >
+                      Arabic
+                    </span>
+                  </div>
+                </DropdownItem>
                 <DropdownItem
                   active={true}
                   key="en"
@@ -336,12 +470,12 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                                 "id": "f19",
                                 "language": Object {
                                   "__typename": "Language",
-                                  "displayName": "English",
-                                  "id": "en38",
-                                  "languageCode": "en",
-                                  "locale": "en-us",
-                                  "nativeName": "English",
-                                  "textDirection": "LTR",
+                                  "displayName": "Arabic",
+                                  "id": "ar22",
+                                  "languageCode": "ar",
+                                  "locale": "ar",
+                                  "nativeName": "العربية",
+                                  "textDirection": "RTL",
                                 },
                                 "quality": "WEB",
                                 "stream": Array [
@@ -368,7 +502,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                                 "videoBurnedInStatus": "CLEAN",
                               },
                             ],
-                            "id": "un91",
+                            "id": "un95",
                             "language": Object {
                               "__typename": "Language",
                               "displayName": "English",
@@ -398,12 +532,12 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                                   "id": "im28",
                                   "language": Object {
                                     "__typename": "Language",
-                                    "displayName": "English",
-                                    "id": "en38",
-                                    "languageCode": "en",
-                                    "locale": "en-us",
-                                    "nativeName": "English",
-                                    "textDirection": "LTR",
+                                    "displayName": "Arabic",
+                                    "id": "ar22",
+                                    "languageCode": "ar",
+                                    "locale": "ar",
+                                    "nativeName": "العربية",
+                                    "textDirection": "RTL",
                                   },
                                   "updatedAt": "2019-06-18T14:58:10.024Z",
                                   "url": "2019/06/123/image-1.jpg",
@@ -496,12 +630,12 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                                     "id": "f19",
                                     "language": Object {
                                       "__typename": "Language",
-                                      "displayName": "English",
-                                      "id": "en38",
-                                      "languageCode": "en",
-                                      "locale": "en-us",
-                                      "nativeName": "English",
-                                      "textDirection": "LTR",
+                                      "displayName": "Arabic",
+                                      "id": "ar22",
+                                      "languageCode": "ar",
+                                      "locale": "ar",
+                                      "nativeName": "العربية",
+                                      "textDirection": "RTL",
                                     },
                                     "quality": "WEB",
                                     "stream": Array [
@@ -528,7 +662,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                                     "videoBurnedInStatus": "CLEAN",
                                   },
                                 ],
-                                "id": "un91",
+                                "id": "un95",
                                 "language": Object {
                                   "__typename": "Language",
                                   "displayName": "English",
@@ -558,12 +692,12 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                                       "id": "im28",
                                       "language": Object {
                                         "__typename": "Language",
-                                        "displayName": "English",
-                                        "id": "en38",
-                                        "languageCode": "en",
-                                        "locale": "en-us",
-                                        "nativeName": "English",
-                                        "textDirection": "LTR",
+                                        "displayName": "Arabic",
+                                        "id": "ar22",
+                                        "languageCode": "ar",
+                                        "locale": "ar",
+                                        "nativeName": "العربية",
+                                        "textDirection": "RTL",
                                       },
                                       "updatedAt": "2019-06-18T14:58:10.024Z",
                                       "url": "2019/06/123/image-1.jpg",

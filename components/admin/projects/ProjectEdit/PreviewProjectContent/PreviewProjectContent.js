@@ -45,6 +45,24 @@ class PreviewProjectContent extends React.PureComponent {
     };
   }
 
+  componentDidMount = () => {
+    if ( this.props.data.project ) {
+      const { units } = this.props.data.project;
+      const { language } = units && units[0];
+
+      if ( !language || ( language && !Object.keys( language ).length ) ) {
+        return;
+      }
+
+      this.setState( prevState => {
+        const { displayName } = language;
+        if ( prevState.selectedLanguage !== displayName ) {
+          return { selectedLanguage: displayName };
+        }
+      } );
+    }
+  }
+
   getLanguages = units => (
     units.map( unit => ( {
       key: unit.language.languageCode,
@@ -143,7 +161,7 @@ class PreviewProjectContent extends React.PureComponent {
     if ( hasNoFilesInUnit ) {
       return (
         <p style={ { fontSize: '1rem' } }>
-          This project does not have any files to preview.
+          This unit does not have any files to preview.
         </p>
       );
     }
