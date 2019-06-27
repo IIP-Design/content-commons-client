@@ -55,7 +55,7 @@ const VideoUnitCarousel = () => {
           const units = project && project.units ? project.units : [];
 
           return (
-            <Carousel callback={ updateSelectedUnit } selectedItem={ selectedUnit }>
+            <Carousel selectedItem={ selectedUnit }>
               { units && (
                 units.map( unit => {
                   const image = unit.thumbnails && unit.thumbnails[0] && unit.thumbnails[0].image ? unit.thumbnails[0].image : '';

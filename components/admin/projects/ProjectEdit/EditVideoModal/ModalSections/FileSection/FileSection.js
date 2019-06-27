@@ -33,7 +33,7 @@ const VIDEO_UNIT_QUERY = gql`
 
 const FileSection = () => {
   const {
-    language, selectedFile, selectedProject, selectedUnit, updateSelectedFile, updateSelectedUnit, updateSelectedLanguage
+    language, selectedFile, selectedProject, selectedUnit, setLanguage, setSelectedFile
   } = useContext( EditSingleProjectItemContext );
 
   return (
@@ -44,7 +44,7 @@ const FileSection = () => {
 
         const { unit } = data;
         const lang = unit && unit.language ? unit.language : { id: '', displayName: '', locale: '' };
-        if ( lang && !language ) updateSelectedLanguage( lang );
+        if ( lang && !language ) setLanguage( lang );
 
         const files = unit && unit.files ? unit.files : [];
         if ( Array.isArray( files ) && files.length === 0 ) {
@@ -55,7 +55,7 @@ const FileSection = () => {
             </div>
           );
         }
-        if ( files[0] && files[0].id && !selectedFile ) updateSelectedFile( files[0].id );
+        if ( files[0] && files[0].id && !selectedFile ) setSelectedFile( files[0].id );
 
         return (
           <section className="edit-file">
@@ -66,9 +66,6 @@ const FileSection = () => {
                 language={ language }
                 selectedFile={ selectedFile }
                 selectedProject={ selectedProject }
-                selectedUnit={ selectedUnit }
-                updateSelectedUnit={ updateSelectedUnit }
-                updateSelectedFile={ updateSelectedFile }
               />
             </div>
           </section>
