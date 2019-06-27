@@ -11,14 +11,14 @@ import './MyProjects.scss';
 const persistentTableHeaders = [
   { name: 'projectTitle', label: 'PROJECT TITLE' },
   { name: 'visibility', label: 'VISIBILITY' },
-  { name: 'updatedAt', label: 'MODIFIED' },
+  { name: 'createdAt', label: 'DATE' },
   { name: 'team', label: 'TEAM' }
 ];
 
 const menuItems = [
   { name: 'author', label: 'AUTHOR' },
   { name: 'categories', label: 'CATEGORIES' },
-  { name: 'createdAt', label: 'DATE' },
+  { name: 'updatedAt', label: 'MODIFIED' },
 ];
 
 const MyProjects = props => (

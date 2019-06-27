@@ -190,8 +190,8 @@ const TableBody = props => {
         }
 
         // Sort data by clicked column & direction
-        // Default sort by createdAt & ASC
-        const direction = props.direction ? `${props.direction === 'descending' ? 'desc' : 'asc'}` : 'asc';
+        // Default sort by createdAt & DESC
+        const direction = props.direction ? `${props.direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
         const tableData = orderBy(
           normalizeData( videoProjects ),
           [`${column || 'createdAt'}`],
