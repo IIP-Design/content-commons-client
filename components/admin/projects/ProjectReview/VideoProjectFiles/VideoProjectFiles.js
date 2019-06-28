@@ -16,8 +16,8 @@ import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/projects/ProjectEd
 import {
   formatBytes,
   formatDate,
-  getPathToS3Bucket,
   getPluralStringOrNot,
+  getS3Url,
   getStreamData,
   secondsToHMS
 } from 'lib/utils';
@@ -169,7 +169,7 @@ const VideoProjectFiles = props => {
                   { ( thumbnails && thumbnails.length > 0 )
                     ? (
                       <img
-                        src={ `${getPathToS3Bucket()}/${thumbnails[0].image.url}` }
+                        src={ getS3Url( thumbnails[0].image.url ) }
                         alt={ thumbnails[0].image.alt }
                       />
                     )
