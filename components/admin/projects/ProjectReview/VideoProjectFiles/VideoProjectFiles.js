@@ -196,7 +196,7 @@ const VideoProjectFiles = props => {
                       <p><b className="label">File Name:</b> { filename }</p>
                       <p><b className="label">Filesize:</b> { formatBytes( filesize ) }</p>
                       <p><b className="label">Dimensions:</b> { `${width} x ${height}` }</p>
-                      <p><b className="label">Uploaded:</b> { `${formatDate( createdAt, language.locale )}` }
+                      <p><b className="label">Uploaded:</b> <time dateTime={ createdAt }>{ `${formatDate( createdAt, language.locale )}` }</time>
                       </p>
                       <p><b className="label">Duration:</b> { secondsToHMS( duration ) }</p>
                       <p><b className="label">Subtitles & Captions:</b> { `${videoBurnedInStatus}${videoBurnedInStatus === 'CLEAN' ? ' - No Captions' : ''}` }</p>
