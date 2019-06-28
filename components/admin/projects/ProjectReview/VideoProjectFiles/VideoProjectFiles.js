@@ -106,7 +106,7 @@ const VideoProjectFiles = props => {
             <Grid>
               <Grid.Row
                 className={
-                  `project_file_header ${files[0].language.textDirection}`
+                  `project_file_header ${unit.language.textDirection}`
                 }
               >
                 <Grid.Column floated="left" mobile={ 8 }>
@@ -123,7 +123,7 @@ const VideoProjectFiles = props => {
 
               <Grid.Row className="project_file_meta language">
                 <Grid.Column width={ 16 }>
-                  <p><b className="label">Language:</b> { files[0].language.displayName }</p>
+                  <p><b className="label">Language:</b> { unit.language.displayName }</p>
                 </Grid.Column>
               </Grid.Row>
 
