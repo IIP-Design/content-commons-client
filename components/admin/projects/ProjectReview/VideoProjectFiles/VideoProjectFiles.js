@@ -65,6 +65,18 @@ const VideoProjectFiles = props => {
 
   if ( !units || ( units && units.length === 0 ) ) return null;
 
+  const getTag = ( tag, unit ) => (
+    tag.translations.find( t => (
+      t.language.locale === unit.language.locale
+    ) ).name
+  );
+
+  const getTags = ( tags, unit ) => (
+    tags.reduce( ( acc, curr ) => (
+      `${acc ? `${acc}, ` : ''}${getTag( curr, unit )}`
+    ), '' )
+  );
+
   const handleEdit = () => {
     const { id } = props;
     Router.push( {
@@ -83,7 +95,7 @@ const VideoProjectFiles = props => {
         { `${getPluralStringOrNot( units, 'Video' )} in Project` }
       </h3>
       { units.map( unit => {
-        const { files, thumbnails } = unit;
+        const { files, tags, thumbnails } = unit;
         if ( !files || ( files && !files.length ) ) return;
 
         const youTubeUrl = getStreamData( files[0].stream, 'youtube', 'url' );
@@ -127,8 +139,12 @@ const VideoProjectFiles = props => {
               </Grid.Row>
 
               <Grid.Row className="project_file_meta tags">
-                <Grid.Column width={ 16 }>
-                  <p><b className="label">Additional Keywords:</b> tags go here, separated with dot</p>
+                <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 }>
+                  <p><b className="label">Additional Keywords:</b>
+                    { ` ${( tags && tags.length > 0 )
+                      ? getTags( tags, unit )
+                      : ''}` }
+                  </p>
                 </Grid.Column>
               </Grid.Row>
 
