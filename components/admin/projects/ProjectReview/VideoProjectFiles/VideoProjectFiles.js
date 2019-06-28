@@ -12,15 +12,8 @@ import {
 } from 'semantic-ui-react';
 
 import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
-
-import {
-  formatBytes,
-  formatDate,
-  getPluralStringOrNot,
-  getS3Url,
-  getStreamData,
-  secondsToHMS
-} from 'lib/utils';
+import { getPluralStringOrNot, } from 'lib/utils';
+import VideoProjectFile from './VideoProjectFile/VideoProjectFile';
 
 import './VideoProjectFiles.scss';
 
@@ -95,7 +88,9 @@ const VideoProjectFiles = props => {
         { `${getPluralStringOrNot( units, 'Video' )} in Project` }
       </h3>
       { units.map( unit => {
-        const { files, tags, thumbnails } = unit;
+        const {
+          files, language, tags, thumbnails
+        } = unit;
 
         return (
           <div key={ unit.id } className="project_file">
@@ -119,7 +114,7 @@ const VideoProjectFiles = props => {
 
               <Grid.Row className="project_file_meta language">
                 <Grid.Column width={ 16 }>
-                  <p><b className="label">Language:</b> { unit.language.displayName }</p>
+                  <p><b className="label">Language:</b> { language.displayName }</p>
                 </Grid.Column>
               </Grid.Row>
 
@@ -129,10 +124,10 @@ const VideoProjectFiles = props => {
                     <b className="label">Public Description:</b>
                     <span
                       className={
-                        `content ${unit.language.textDirection}`
+                        `content ${language.textDirection}`
                       }
                       style={
-                        unit.language.textDirection === 'RTL'
+                        language.textDirection === 'RTL'
                           ? { display: 'block' }
                           : {}
                       }
@@ -160,53 +155,14 @@ const VideoProjectFiles = props => {
                 </Grid.Column>
               </Grid.Row>
 
-              { files.map( file => {
-                if ( !files || ( files && !files.length ) ) return;
-
-                const {
-                  createdAt,
-                  dimensions: { height, width },
-                  duration,
-                  filename,
-                  filesize,
-                  language,
-                  quality,
-                  stream,
-                  use: { name: videoType },
-                  videoBurnedInStatus
-                } = file;
-
-                const youTubeUrl = getStreamData( stream, 'youtube', 'url' );
-                const vimeoUrl = getStreamData( stream, 'vimeo', 'url' );
-
-                return (
-                  <Grid.Row className="project_file_contents">
-                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_meta">
-                      { ( thumbnails && thumbnails.length > 0 )
-                        ? (
-                          <img
-                            src={ getS3Url( thumbnails[0].image.url ) }
-                            alt={ thumbnails[0].image.alt }
-                          />
-                        )
-                        : null }
-                    </Grid.Column>
-
-                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_info">
-                      <p><b className="label">File Name:</b> { filename }</p>
-                      <p><b className="label">Filesize:</b> { formatBytes( filesize ) }</p>
-                      <p><b className="label">Dimensions:</b> { `${width} x ${height}` }</p>
-                      <p><b className="label">Uploaded:</b> <time dateTime={ createdAt }>{ `${formatDate( createdAt, language.locale )}` }</time>
-                      </p>
-                      <p><b className="label">Duration:</b> { secondsToHMS( duration ) }</p>
-                      <p><b className="label">Subtitles & Captions:</b> { `${videoBurnedInStatus}${videoBurnedInStatus === 'CLEAN' ? ' - No Captions' : ''}` }</p>
-                      <p><b className="label">Video Type:</b> { videoType }</p>
-                      <p><b className="label">Quality:</b> { quality }</p>
-                      <p><b className="label">{ youTubeUrl ? 'YouTube' : 'Vimeo' } URL:</b> { youTubeUrl || vimeoUrl }</p>
-                    </Grid.Column>
-                  </Grid.Row>
-                );
-              } ) }
+              { files && files.length > 0 && files.map( file => (
+                <VideoProjectFile
+                  file={ file }
+                  thumbnail={
+                    thumbnails && thumbnails.length > 0 && thumbnails[0]
+                  }
+                />
+              ) ) }
             </Grid>
           </div>
         );
