@@ -239,8 +239,6 @@ class ScrollableTableWithMenu extends React.Component {
                   toggleItemSelection={ this.toggleItemSelection }
                   variables={ { ...variables, ...paginationVars } }
                   windowWidth={ windowWidth }
-                  column={ column }
-                  direction={ direction }
                 />
               </Table>
             </div>

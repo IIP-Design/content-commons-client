@@ -10,8 +10,6 @@ import React from 'react';
 import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import gql from 'graphql-tag';
 
-import orderBy from 'lodash/orderBy';
-
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
   query VideoProjectsByTeam(
     $team: String!, $first: Int, $skip: Int, $searchTerm: String
@@ -44,7 +42,8 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
         ]
       },
       first: $first,
-      skip: $skip
+      skip: $skip,
+      orderBy: createdAt_DESC
      ) {
       id
       createdAt
@@ -126,8 +125,7 @@ const TableBody = props => {
     selectedItems,
     tableHeaders,
     toggleItemSelection,
-    variables,
-    column
+    variables
   } = props;
 
   return (
@@ -189,14 +187,7 @@ const TableBody = props => {
           );
         }
 
-        // Sort data by clicked column & direction
-        // Default sort by createdAt & DESC
-        const direction = props.direction ? `${props.direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
-        const tableData = orderBy(
-          normalizeData( videoProjects ),
-          [`${column || 'createdAt'}`],
-          [direction]
-        );
+        const tableData = normalizeData( videoProjects );
 
         return (
           <Table.Body className="myProjects">
@@ -221,9 +212,7 @@ TableBody.propTypes = {
   selectedItems: PropTypes.object,
   tableHeaders: PropTypes.array,
   toggleItemSelection: PropTypes.func,
-  variables: PropTypes.object,
-  column: PropTypes.string,
-  direction: PropTypes.string
+  variables: PropTypes.object
 };
 
 export default TableBody;
