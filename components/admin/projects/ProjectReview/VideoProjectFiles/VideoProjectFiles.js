@@ -148,14 +148,15 @@ const VideoProjectFiles = props => {
                       />
                     )
                     : null }
-                  <p><b className="label">File Name:</b> { files[0].filename }</p>
-                  <p><b className="label">Filesize:</b> { formatBytes( files[0].filesize ) }</p>
-                  <p><b className="label">Dimensions:</b> { `${files[0].dimensions.width} x ${files[0].dimensions.height}` }</p>
-                  <p><b className="label">Uploaded:</b> { `${formatDate( files[0].createdAt )} at ${formatDate( files[0].createdAt, 'en-US', { hour: 'numeric', minute: 'numeric' } )}` }</p>
-                  <p><b className="label">Duration:</b> { secondsToHMS( files[0].duration ) }</p>
                 </Grid.Column>
 
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_info">
+                  <p><b className="label">File Name:</b> { files[0].filename }</p>
+                  <p><b className="label">Filesize:</b> { formatBytes( files[0].filesize ) }</p>
+                  <p><b className="label">Dimensions:</b> { `${files[0].dimensions.width} x ${files[0].dimensions.height}` }</p>
+                  <p><b className="label">Uploaded:</b> { `${formatDate( files[0].createdAt, files[0].language.locale )}` }
+                  </p>
+                  <p><b className="label">Duration:</b> { secondsToHMS( files[0].duration ) }</p>
                   <p><b className="label">Subtitles & Captions:</b> { `${files[0].videoBurnedInStatus}${files[0].videoBurnedInStatus === 'CLEAN' ? ' - No Captions' : ''}` }</p>
                   <p><b className="label">Video Type:</b> { files[0].use.name }</p>
                   <p><b className="label">Quality:</b> { files[0].quality }</p>
