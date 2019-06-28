@@ -36,6 +36,7 @@ const mocks = [
           __typename: 'VideoProject',
           id: props.id,
           projectType: 'LANGUAGE',
+          descPublic: 'the project public description',
           team: {
             __typename: 'Team',
             id: 't81',

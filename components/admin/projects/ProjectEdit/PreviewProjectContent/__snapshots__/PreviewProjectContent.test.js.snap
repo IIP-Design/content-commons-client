@@ -10,6 +10,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
       "networkStatus": 7,
       "project": Object {
         "__typename": "VideoProject",
+        "descPublic": "the project public description",
         "id": "123",
         "projectType": "LANGUAGE",
         "team": Object {

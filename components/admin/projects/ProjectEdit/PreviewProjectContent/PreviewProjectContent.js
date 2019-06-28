@@ -337,6 +337,7 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
     project: videoProject(id: $id) {
       id
       projectType
+      descPublic
       team {
         id
         name

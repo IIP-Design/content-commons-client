@@ -109,6 +109,35 @@ const VideoProjectFiles = props => {
                 </Grid.Column>
               </Grid.Row>
 
+              <Grid.Row className="project_file_meta language">
+                <Grid.Column width={ 16 }>
+                  <p><b className="label">Language:</b> { files[0].language.displayName }</p>
+                </Grid.Column>
+              </Grid.Row>
+
+              <Grid.Row className="project_file_meta description">
+                <Grid.Column computer={ 8 }>
+                  <p className="public_description">
+                    <b className="label">Public Description:</b>
+                    <span className={ `content ${files[0].language.textDirection}` }>
+                      { unit.descPublic || project.descPublic }
+                    </span>
+                  </p>
+                </Grid.Column>
+              </Grid.Row>
+
+              <Grid.Row className="project_file_meta tags">
+                <Grid.Column width={ 16 }>
+                  <p><b className="label">Additional Keywords:</b> tags go here, separated with dot</p>
+                </Grid.Column>
+              </Grid.Row>
+
+              <Grid.Row className="project_file_meta file-count">
+                <Grid.Column width={ 16 }>
+                  <p><b className="label">Files:</b> { files.length } </p>
+                </Grid.Column>
+              </Grid.Row>
+
               <Grid.Row className="project_file_contents">
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_meta">
                   { ( thumbnails && thumbnails.length > 0 )
@@ -127,18 +156,9 @@ const VideoProjectFiles = props => {
                 </Grid.Column>
 
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_info">
-                  <p><b className="label">Language:</b> { files[0].language.displayName }</p>
                   <p><b className="label">Subtitles & Captions:</b> { `${files[0].videoBurnedInStatus}${files[0].videoBurnedInStatus === 'CLEAN' ? ' - No Captions' : ''}` }</p>
                   <p><b className="label">Video Type:</b> { files[0].use.name }</p>
                   <p><b className="label">Quality:</b> { files[0].quality }</p>
-                  <p
-                    className={
-                      `public_description ${files[0].language.textDirection}`
-                    }
-                  >
-                    <b className="label">Public Description:</b>
-                    <span>{ unit.descPublic }</span>
-                  </p>
                   <p><b className="label">{ youTubeUrl ? 'YouTube' : 'Vimeo' } URL:</b> { youTubeUrl || vimeoUrl }</p>
                 </Grid.Column>
               </Grid.Row>

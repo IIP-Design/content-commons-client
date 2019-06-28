@@ -25,6 +25,21 @@
     &.RTL {
       .title {
         direction: rtl;
+        text-align: right;
+      }
+    }
+  }
+
+  &_meta {
+    padding-top: 0 !important;
+    padding-bottom: 0.625rem !important;
+
+    &.description .content {
+      display: block;
+      font-size: 0.777777778rem;
+      &.RTL {
+        direction: rtl;
+        text-align: right;
       }
     }
   }
