@@ -131,7 +131,17 @@ const VideoProjectFiles = props => {
                 <Grid.Column computer={ 8 }>
                   <p className="public_description">
                     <b className="label">Public Description:</b>
-                    <span className={ `content ${files[0].language.textDirection}` }>
+                    <span
+                      className={
+                        `content ${unit.language.textDirection}`
+                      }
+                      style={
+                        unit.language.textDirection === 'RTL'
+                          ? { display: 'block' }
+                          : {}
+                      }
+                    >
+                      { ' ' }
                       { unit.descPublic || project.descPublic }
                     </span>
                   </p>
