@@ -83,8 +83,8 @@ const VideoProjectFiles = props => {
   };
 
   return (
-    <section className="section section--project_files project_files layout">
-      <h3 className="project_files_headline uppercase">
+    <section className="section section--project_units project_units layout">
+      <h3 className="project_units_headline uppercase">
         { `${getPluralStringOrNot( units, 'Video' )} in Project` }
       </h3>
       { units.map( unit => {
@@ -93,17 +93,17 @@ const VideoProjectFiles = props => {
         } = unit;
 
         return (
-          <div key={ unit.id } className="project_file">
+          <div key={ unit.id } className="project_unit">
             <Grid>
               <Grid.Row
                 className={
-                  `project_file_header ${unit.language.textDirection}`
+                  `project_unit_header ${unit.language.textDirection}`
                 }
               >
                 <Grid.Column floated="left" mobile={ 8 }>
                   <h4 className="title">{ unit.title }</h4>
                 </Grid.Column>
-                <Grid.Column floated="right" mobile={ 8 } className="project_file_edit">
+                <Grid.Column floated="right" mobile={ 8 } className="project_unit_edit">
                   <Button
                     className="project_button project_button--edit"
                     content="Edit"
@@ -112,13 +112,13 @@ const VideoProjectFiles = props => {
                 </Grid.Column>
               </Grid.Row>
 
-              <Grid.Row className="project_file_meta language">
+              <Grid.Row className="project_unit_meta language">
                 <Grid.Column width={ 16 }>
                   <p><b className="label">Language:</b> { language.displayName }</p>
                 </Grid.Column>
               </Grid.Row>
 
-              <Grid.Row className="project_file_meta description">
+              <Grid.Row className="project_unit_meta description">
                 <Grid.Column computer={ 8 }>
                   <p className="public_description">
                     <b className="label">Public Description:</b>
@@ -139,7 +139,7 @@ const VideoProjectFiles = props => {
                 </Grid.Column>
               </Grid.Row>
 
-              <Grid.Row className="project_file_meta tags">
+              <Grid.Row className="project_unit_meta tags">
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 }>
                   <p><b className="label">Additional Keywords:</b>
                     { ` ${( tags && tags.length > 0 )
@@ -149,7 +149,7 @@ const VideoProjectFiles = props => {
                 </Grid.Column>
               </Grid.Row>
 
-              <Grid.Row className="project_file_meta file-count">
+              <Grid.Row className="project_unit_meta file-count">
                 <Grid.Column width={ 16 }>
                   <p><b className="label">Files:</b> { files.length } </p>
                 </Grid.Column>

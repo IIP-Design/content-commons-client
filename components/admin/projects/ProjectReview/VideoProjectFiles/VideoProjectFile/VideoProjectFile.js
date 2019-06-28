@@ -31,7 +31,7 @@ const VideoProjectFile = props => {
   const vimeoUrl = getStreamData( stream, 'vimeo', 'url' );
 
   return (
-    <Grid.Row className="project_file_contents">
+    <Grid.Row className="project_unit_files">
       <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_meta">
         { Object.keys( thumbnail ).length > 0
           ? (
