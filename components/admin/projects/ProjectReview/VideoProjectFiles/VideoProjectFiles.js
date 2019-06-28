@@ -90,7 +90,7 @@ const VideoProjectFiles = props => {
         const vimeoUrl = getStreamData( files[0].stream, 'vimeo', 'url' );
 
         return (
-          <div key={ unit.title } className="project_file">
+          <div key={ unit.id } className="project_file">
             <Grid>
               <Grid.Row
                 className={
