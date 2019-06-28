@@ -96,10 +96,6 @@ const VideoProjectFiles = props => {
       </h3>
       { units.map( unit => {
         const { files, tags, thumbnails } = unit;
-        if ( !files || ( files && !files.length ) ) return;
-
-        const youTubeUrl = getStreamData( files[0].stream, 'youtube', 'url' );
-        const vimeoUrl = getStreamData( files[0].stream, 'vimeo', 'url' );
 
         return (
           <div key={ unit.id } className="project_file">
@@ -164,31 +160,53 @@ const VideoProjectFiles = props => {
                 </Grid.Column>
               </Grid.Row>
 
-              <Grid.Row className="project_file_contents">
-                <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_meta">
-                  { ( thumbnails && thumbnails.length > 0 )
-                    ? (
-                      <img
-                        src={ getS3Url( thumbnails[0].image.url ) }
-                        alt={ thumbnails[0].image.alt }
-                      />
-                    )
-                    : null }
-                </Grid.Column>
+              { files.map( file => {
+                if ( !files || ( files && !files.length ) ) return;
 
-                <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_info">
-                  <p><b className="label">File Name:</b> { files[0].filename }</p>
-                  <p><b className="label">Filesize:</b> { formatBytes( files[0].filesize ) }</p>
-                  <p><b className="label">Dimensions:</b> { `${files[0].dimensions.width} x ${files[0].dimensions.height}` }</p>
-                  <p><b className="label">Uploaded:</b> { `${formatDate( files[0].createdAt, files[0].language.locale )}` }
-                  </p>
-                  <p><b className="label">Duration:</b> { secondsToHMS( files[0].duration ) }</p>
-                  <p><b className="label">Subtitles & Captions:</b> { `${files[0].videoBurnedInStatus}${files[0].videoBurnedInStatus === 'CLEAN' ? ' - No Captions' : ''}` }</p>
-                  <p><b className="label">Video Type:</b> { files[0].use.name }</p>
-                  <p><b className="label">Quality:</b> { files[0].quality }</p>
-                  <p><b className="label">{ youTubeUrl ? 'YouTube' : 'Vimeo' } URL:</b> { youTubeUrl || vimeoUrl }</p>
-                </Grid.Column>
-              </Grid.Row>
+                const {
+                  createdAt,
+                  dimensions: { height, width },
+                  duration,
+                  filename,
+                  filesize,
+                  language,
+                  quality,
+                  stream,
+                  use: { name: videoType },
+                  videoBurnedInStatus
+                } = file;
+
+                const youTubeUrl = getStreamData( stream, 'youtube', 'url' );
+                const vimeoUrl = getStreamData( stream, 'vimeo', 'url' );
+
+                return (
+                  <Grid.Row className="project_file_contents">
+                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_meta">
+                      { ( thumbnails && thumbnails.length > 0 )
+                        ? (
+                          <img
+                            src={ getS3Url( thumbnails[0].image.url ) }
+                            alt={ thumbnails[0].image.alt }
+                          />
+                        )
+                        : null }
+                    </Grid.Column>
+
+                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_info">
+                      <p><b className="label">File Name:</b> { filename }</p>
+                      <p><b className="label">Filesize:</b> { formatBytes( filesize ) }</p>
+                      <p><b className="label">Dimensions:</b> { `${width} x ${height}` }</p>
+                      <p><b className="label">Uploaded:</b> { `${formatDate( createdAt, language.locale )}` }
+                      </p>
+                      <p><b className="label">Duration:</b> { secondsToHMS( duration ) }</p>
+                      <p><b className="label">Subtitles & Captions:</b> { `${videoBurnedInStatus}${videoBurnedInStatus === 'CLEAN' ? ' - No Captions' : ''}` }</p>
+                      <p><b className="label">Video Type:</b> { videoType }</p>
+                      <p><b className="label">Quality:</b> { quality }</p>
+                      <p><b className="label">{ youTubeUrl ? 'YouTube' : 'Vimeo' } URL:</b> { youTubeUrl || vimeoUrl }</p>
+                    </Grid.Column>
+                  </Grid.Row>
+                );
+              } ) }
             </Grid>
           </div>
         );
