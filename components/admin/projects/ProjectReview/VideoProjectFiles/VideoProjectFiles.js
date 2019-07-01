@@ -145,6 +145,7 @@ const VideoProjectFiles = props => {
 
               { files && files.length > 0 && files.map( file => (
                 <VideoProjectFile
+                  key={ file.id }
                   file={ file }
                   thumbnail={
                     thumbnails && thumbnails.length > 0 && thumbnails[0]
