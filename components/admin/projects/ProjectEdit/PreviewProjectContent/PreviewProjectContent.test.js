@@ -87,7 +87,16 @@ const mocks = [
                     {
                       __typename: 'LanguageTranslation',
                       id: 'tr555',
-                      name: 'الثقافة الأميركية'
+                      name: 'الثقافة الأميركية',
+                      language: {
+                        __typename: 'Language',
+                        id: 'ar22',
+                        displayName: 'Arabic',
+                        languageCode: 'ar',
+                        locale: 'ar',
+                        nativeName: 'العربية',
+                        textDirection: 'RTL'
+                      }
                     }
                   ]
                 }
