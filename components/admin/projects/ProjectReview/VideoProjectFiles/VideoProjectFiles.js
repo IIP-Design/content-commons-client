@@ -7,10 +7,8 @@ import React from 'react';
 import { object, string } from 'prop-types';
 import Router from 'next/router';
 import { graphql } from 'react-apollo';
-import {
-  Button, Grid, Icon, Loader
-} from 'semantic-ui-react';
-
+import { Button, Grid, Loader } from 'semantic-ui-react';
+import ApolloError from 'components/errors/ApolloError';
 import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 import { getPluralStringOrNot } from 'lib/utils';
 import VideoProjectFile from './VideoProjectFile/VideoProjectFile';
@@ -41,17 +39,7 @@ const VideoProjectFiles = props => {
     );
   }
 
-  if ( error ) {
-    return (
-      <div className="video-project-files error">
-        <p>
-          <Icon color="red" name="exclamation triangle" />
-          <span>Loading error...</span>
-        </p>
-      </div>
-    );
-  }
-
+  if ( error ) return <ApolloError error={ error } />;
   if ( !project || !Object.keys( project ).length ) return null;
 
   const { units } = project;
