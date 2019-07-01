@@ -46,11 +46,15 @@ const VideoProjectFiles = props => {
 
   if ( !units || ( units && units.length === 0 ) ) return null;
 
-  const getTag = ( tag, unit ) => (
-    tag.translations.find( t => (
+  const getTag = ( tag, unit ) => {
+    const translation = tag.translations.find( t => (
       t.language.locale === unit.language.locale
-    ) ).name
-  );
+    ) );
+
+    if ( translation && translation.name ) {
+      return translation.name;
+    }
+  };
 
   const getTags = ( tags, unit ) => (
     tags.reduce( ( acc, curr ) => (
