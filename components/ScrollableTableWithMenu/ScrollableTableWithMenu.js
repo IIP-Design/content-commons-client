@@ -93,10 +93,11 @@ class ScrollableTableWithMenu extends React.Component {
     if ( displayActionsMenu ) return;
 
     // Pass column, direction to TableBody so re-rendered on TableHeader click
+    // Reset to first page of results after sort
     this.setState( prevState => ( {
       column: prevState.column !== clickedColumn ? clickedColumn : prevState.column,
       direction: prevState.direction === 'ascending' ? 'descending' : 'ascending'
-    } ) );
+    } ), this.handleResetActivePage );
   };
 
   tableMenuOnChange = e => {
@@ -239,6 +240,8 @@ class ScrollableTableWithMenu extends React.Component {
                   toggleItemSelection={ this.toggleItemSelection }
                   variables={ { ...variables, ...paginationVars } }
                   windowWidth={ windowWidth }
+                  column={ column }
+                  direction={ direction }
                 />
               </Table>
             </div>

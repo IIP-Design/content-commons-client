@@ -10,9 +10,11 @@ import React from 'react';
 import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import gql from 'graphql-tag';
 
+import orderBy from 'lodash/orderBy';
+
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
   query VideoProjectsByTeam(
-    $team: String!, $first: Int, $skip: Int, $searchTerm: String
+    $team: String!, $searchTerm: String
   ) {
     videoProjects(
       where: {
@@ -40,10 +42,7 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
             ]
           }
         ]
-      },
-      first: $first,
-      skip: $skip,
-      orderBy: createdAt_DESC
+      }
      ) {
       id
       createdAt
@@ -187,11 +186,33 @@ const TableBody = props => {
           );
         }
 
-        const tableData = normalizeData( videoProjects );
+        // Sort data by clicked column & direction
+        // Default sort by createdAt & DESC
+        const direction = props.direction ? `${props.direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
+
+        const tableData = orderBy(
+          normalizeData( videoProjects ),
+          tableDatum => {
+            let { column } = props;
+            if ( !column ) column = 'createdAt';
+            // Sort by parsed Date instead of String
+            if ( column === 'createdAt' || column === 'updatedAt' ) {
+              return Date.parse( column );
+            }
+            // Format table data for case insensitive sorting
+            const formattedTableDatum = tableDatum[column].toString().toLowerCase();
+            return formattedTableDatum;
+          },
+          [direction]
+        );
+
+        // skip & first query vars are used as start/end slice() params to paginate tableData on client
+        const { skip, first } = variables;
+        const paginatedTableData = tableData.slice( skip, skip + first );
 
         return (
           <Table.Body className="myProjects">
-            { tableData.map( d => (
+            { paginatedTableData.map( d => (
               <TableRow
                 key={ d.id }
                 d={ d }
@@ -212,7 +233,8 @@ TableBody.propTypes = {
   selectedItems: PropTypes.object,
   tableHeaders: PropTypes.array,
   toggleItemSelection: PropTypes.func,
-  variables: PropTypes.object
+  variables: PropTypes.object,
+  direction: PropTypes.string
 };
 
 export default TableBody;
