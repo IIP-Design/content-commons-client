@@ -12,7 +12,7 @@ import {
 } from 'semantic-ui-react';
 
 import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
-import { getPluralStringOrNot, } from 'lib/utils';
+import { getPluralStringOrNot } from 'lib/utils';
 import VideoProjectFile from './VideoProjectFile/VideoProjectFile';
 
 import './VideoProjectFiles.scss';
@@ -151,7 +151,7 @@ const VideoProjectFiles = props => {
 
               <Grid.Row className="project_unit_meta file-count">
                 <Grid.Column width={ 16 }>
-                  <p><b className="label">Files:</b> { files.length } </p>
+                  <p><b className="label">Files:</b> { ( files && files.length ) || 0 } </p>
                 </Grid.Column>
               </Grid.Row>
 
