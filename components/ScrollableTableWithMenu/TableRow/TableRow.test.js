@@ -30,7 +30,7 @@ const props = {
   tableHeaders: [
     { name: 'projectTitle', label: 'PROJECT TITLE' },
     { name: 'visibility', label: 'VISIBILITY' },
-    { name: 'updatedAt', label: 'MODIFIED' },
+    { name: 'updatedAt', label: 'CREATED' },
     { name: 'team', label: 'TEAM' }
   ],
   toggleItemSelection: jest.fn()
@@ -67,11 +67,11 @@ describe( '<TableRow />', () => {
     } );
   } );
 
-  it( 'renders Author, Categories, and Date columns when selected', () => {
+  it( 'renders Author, Categories, and Modified Date columns when selected', () => {
     const additionalHeaders = [
       { name: 'author', label: 'AUTHOR' },
       { name: 'categories', label: 'CATEGORIES' },
-      { name: 'createdAt', label: 'DATE' }
+      { name: 'createdAt', label: 'MODIFIED DATE' }
     ];
 
     const newProps = {
