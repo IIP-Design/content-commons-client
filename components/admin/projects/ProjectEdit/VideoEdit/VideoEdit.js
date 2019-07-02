@@ -264,7 +264,7 @@ const VideoEdit = props => {
             && (
               <Button
                 className="edit-project__btn--save-draft"
-                content="Save Draft"
+                content="Save & Exit"
                 basic
                 onClick={ handleSaveDraft }
                 disabled={ !projectId }
