@@ -1,62 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<VideoProjectFiles /> renders initial loading state without crashing 1`] = `
-<VideoProjectFiles
-  data={
-    Object {
-      "error": undefined,
-      "fetchMore": [Function],
-      "loading": true,
-      "networkStatus": 1,
-      "refetch": [Function],
-      "startPolling": [Function],
-      "stopPolling": [Function],
-      "subscribeToMore": [Function],
-      "updateQuery": [Function],
-      "variables": Object {
-        "id": "123",
-        "isReviewPage": true,
-      },
-    }
-  }
-  id="123"
->
-  <div
-    style={
-      Object {
-        "alignItems": "center",
-        "display": "flex",
-        "flexDirection": "column",
-        "justifyContent": "center",
-        "minHeight": "200px",
-      }
-    }
-  >
-    <Loader
-      active={true}
-      content="Loading project file(s)..."
-      inline="centered"
-      style={
-        Object {
-          "marginBottom": "1em",
-        }
-      }
-    >
-      <div
-        className="ui active text centered inline loader"
-        style={
-          Object {
-            "marginBottom": "1em",
-          }
-        }
-      >
-        Loading project file(s)...
-      </div>
-    </Loader>
-  </div>
-</VideoProjectFiles>
-`;
-
 exports[`<VideoProjectFiles /> renders the final state 1`] = `
 <VideoProjectFiles
   data={
@@ -66,108 +9,263 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
       "loading": false,
       "networkStatus": 7,
       "project": Object {
+        "__typename": "VideoProject",
+        "descPublic": "the project public description",
         "id": "123",
+        "projectType": "LANGUAGE",
+        "team": Object {
+          "__typename": "Team",
+          "id": "t81",
+          "name": "the team name",
+        },
+        "thumbnails": Array [
+          Object {
+            "__typename": "ImageFile",
+            "alt": "the alt text",
+            "createdAt": "2019-03-06T13:11:48.043Z",
+            "filename": "image-1.jpg",
+            "filesize": 28371,
+            "filetype": "image/jpeg",
+            "id": "th11",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "English",
+              "id": "en38",
+              "languageCode": "en",
+              "locale": "en-us",
+              "nativeName": "English",
+              "textDirection": "LTR",
+            },
+            "updatedAt": "2019-06-18T14:58:10.024Z",
+            "url": "2019/06/123/image-1.jpg",
+          },
+        ],
         "units": Array [
           Object {
-            "descPublic": "A public description (English)",
+            "__typename": "VideoUnit",
+            "descPublic": "the arabic description",
             "files": Array [
               Object {
-                "createdAt": "2019-03-20T15:09:24.975Z",
+                "__typename": "VideoFile",
+                "createdAt": "2019-03-05T20:18:54.032Z",
                 "dimensions": Object {
-                  "height": 1080,
-                  "id": "d087",
-                  "width": 1920,
+                  "__typename": "Dimensions",
+                  "height": "1080",
+                  "id": "d21",
+                  "width": "1920",
                 },
                 "duration": 556,
-                "filename": "madeinamerica_english.mp4",
+                "filename": "video-file-1.mp4",
                 "filesize": 662595174,
-                "id": "eng183",
+                "filetype": "video/mp4",
+                "id": "f19",
                 "language": Object {
-                  "displayName": "English",
-                  "id": "e753",
-                  "textDirection": "LTR",
+                  "__typename": "Language",
+                  "displayName": "Arabic",
+                  "id": "ar22",
+                  "languageCode": "ar",
+                  "locale": "ar",
+                  "nativeName": "العربية",
+                  "textDirection": "RTL",
                 },
                 "quality": "WEB",
                 "stream": Array [
                   Object {
-                    "id": "s872",
+                    "__typename": "VideoStream",
+                    "id": "st93",
                     "site": "YouTube",
-                    "url": "https://www.youtube.com/watch?1evw4fRu3bo",
+                    "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
                   },
                   Object {
-                    "id": "s674",
+                    "__typename": "VideoStream",
+                    "id": "st35",
                     "site": "Vimeo",
-                    "url": "https://vimeo.com/827301171",
+                    "url": "https://vimeo.com/340239507",
                   },
                 ],
-                "url": "https://video-download-url.com",
+                "updatedAt": "2019-06-19T17:38:37.502Z",
+                "url": "2019/06/123/video-file-1.mp4",
                 "use": Object {
-                  "id": "u987",
+                  "__typename": "VideoUse",
+                  "id": "us31",
                   "name": "Full Video",
                 },
                 "videoBurnedInStatus": "CLEAN",
               },
             ],
-            "id": "eng931",
-            "thumbnails": Array [
+            "id": "un91",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "Arabic",
+              "id": "ar22",
+              "languageCode": "ar",
+              "locale": "ar",
+              "nativeName": "العربية",
+              "textDirection": "RTL",
+            },
+            "tags": Array [
               Object {
-                "id": "t289",
-                "image": Object {
-                  "alt": "A man wearing a hardhat walks through an empty factory.",
-                  "id": "t768",
-                  "url": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
-                },
+                "__typename": "Tag",
+                "id": "tag13",
+                "translations": Array [
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr555",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "Arabic",
+                      "id": "ar22",
+                      "languageCode": "ar",
+                      "locale": "ar",
+                      "nativeName": "العربية",
+                      "textDirection": "RTL",
+                    },
+                    "name": "الثقافة الأميركية",
+                  },
+                ],
               },
             ],
-            "title": "Made in America",
+            "thumbnails": Array [
+              Object {
+                "__typename": "Thumbnail",
+                "id": "th11",
+                "image": Object {
+                  "__typename": "ImageFile",
+                  "alt": "the alt text",
+                  "createdAt": "2019-03-06T13:11:48.043Z",
+                  "filename": "image-1.jpg",
+                  "filesize": 28371,
+                  "filetype": "image/jpeg",
+                  "id": "im28",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Arabic",
+                    "id": "ar22",
+                    "languageCode": "ar",
+                    "locale": "ar",
+                    "nativeName": "العربية",
+                    "textDirection": "RTL",
+                  },
+                  "updatedAt": "2019-06-18T14:58:10.024Z",
+                  "url": "2019/06/123/image-1.jpg",
+                },
+                "size": "FULL",
+              },
+            ],
+            "title": "test project title",
           },
           Object {
-            "descPublic": "A public description (French)",
+            "__typename": "VideoUnit",
+            "descPublic": "the english description",
             "files": Array [
               Object {
-                "createdAt": "2019-03-20T15:09:24.975Z",
+                "__typename": "VideoFile",
+                "createdAt": "2019-03-05T20:18:54.032Z",
                 "dimensions": Object {
-                  "height": 1080,
-                  "id": "d087",
-                  "width": 1920,
+                  "__typename": "Dimensions",
+                  "height": "1080",
+                  "id": "d21",
+                  "width": "1920",
                 },
                 "duration": 556,
-                "filename": "madeinamerica_french.mp4",
+                "filename": "video-file-1.mp4",
                 "filesize": 662595174,
-                "id": "fr1911",
+                "filetype": "video/mp4",
+                "id": "f19",
                 "language": Object {
-                  "displayName": "French",
-                  "id": "f123",
-                  "textDirection": "LTR",
+                  "__typename": "Language",
+                  "displayName": "Arabic",
+                  "id": "ar22",
+                  "languageCode": "ar",
+                  "locale": "ar",
+                  "nativeName": "العربية",
+                  "textDirection": "RTL",
                 },
                 "quality": "WEB",
                 "stream": Array [
                   Object {
-                    "id": "s674",
+                    "__typename": "VideoStream",
+                    "id": "st93",
+                    "site": "YouTube",
+                    "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
+                  },
+                  Object {
+                    "__typename": "VideoStream",
+                    "id": "st35",
                     "site": "Vimeo",
-                    "url": "https://vimeo.com/827301171",
+                    "url": "https://vimeo.com/340239507",
                   },
                 ],
-                "url": "https://video-download-url.com",
+                "updatedAt": "2019-06-19T17:38:37.502Z",
+                "url": "2019/06/123/video-file-1.mp4",
                 "use": Object {
-                  "id": "u987",
+                  "__typename": "VideoUse",
+                  "id": "us31",
                   "name": "Full Video",
                 },
                 "videoBurnedInStatus": "CLEAN",
               },
             ],
-            "id": "fr0381",
-            "thumbnails": Array [
+            "id": "un95",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "English",
+              "id": "en38",
+              "languageCode": "en",
+              "locale": "en-us",
+              "nativeName": "English",
+              "textDirection": "LTR",
+            },
+            "tags": Array [
               Object {
-                "id": "t289",
-                "image": Object {
-                  "alt": "A man wearing a hardhat walks through an empty factory.",
-                  "id": "t768",
-                  "url": "https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg",
-                },
+                "__typename": "Tag",
+                "id": "tag13",
+                "translations": Array [
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr555",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "Arabic",
+                      "id": "ar22",
+                      "languageCode": "ar",
+                      "locale": "ar",
+                      "nativeName": "العربية",
+                      "textDirection": "RTL",
+                    },
+                    "name": "الثقافة الأميركية",
+                  },
+                ],
               },
             ],
-            "title": "Fabriqué en Amérique",
+            "thumbnails": Array [
+              Object {
+                "__typename": "Thumbnail",
+                "id": "th11",
+                "image": Object {
+                  "__typename": "ImageFile",
+                  "alt": "the alt text",
+                  "createdAt": "2019-03-06T13:11:48.043Z",
+                  "filename": "image-1.jpg",
+                  "filesize": 28371,
+                  "filetype": "image/jpeg",
+                  "id": "im28",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Arabic",
+                    "id": "ar22",
+                    "languageCode": "ar",
+                    "locale": "ar",
+                    "nativeName": "العربية",
+                    "textDirection": "RTL",
+                  },
+                  "updatedAt": "2019-06-18T14:58:10.024Z",
+                  "url": "2019/06/123/image-1.jpg",
+                },
+                "size": "FULL",
+              },
+            ],
+            "title": "test project title",
           },
         ],
       },
@@ -178,33 +276,32 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
       "updateQuery": [Function],
       "variables": Object {
         "id": "123",
-        "isReviewPage": true,
       },
     }
   }
   id="123"
 >
   <section
-    className="section section--project_files project_files layout"
+    className="section section--project_units project_units layout"
   >
     <h3
-      className="project_files_headline uppercase"
+      className="project_units_headline uppercase"
     >
       Videos in Project
     </h3>
     <div
-      className="project_file"
-      key="Made in America"
+      className="project_unit"
+      key="un91"
     >
       <Grid>
         <div
           className="ui grid"
         >
           <GridRow
-            className="project_file_header LTR"
+            className="project_unit_header RTL"
           >
             <div
-              className="row project_file_header LTR"
+              className="row project_unit_header RTL"
             >
               <GridColumn
                 floated="left"
@@ -216,17 +313,17 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                   <h4
                     className="title"
                   >
-                    Made in America
+                    test project title
                   </h4>
                 </div>
               </GridColumn>
               <GridColumn
-                className="project_file_edit"
+                className="project_unit_edit"
                 floated="right"
                 mobile={8}
               >
                 <div
-                  className="right floated eight wide mobile column project_file_edit"
+                  className="right floated eight wide mobile column project_unit_edit"
                 >
                   <Button
                     as="button"
@@ -246,79 +343,266 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
             </div>
           </GridRow>
           <GridRow
-            className="project_file_contents"
+            className="project_unit_meta language"
           >
             <div
-              className="row project_file_contents"
+              className="row project_unit_meta language"
             >
               <GridColumn
-                className="file_meta"
-                computer={8}
-                mobile={16}
-                tablet={8}
+                width={16}
               >
                 <div
-                  className="eight wide computer sixteen wide mobile eight wide tablet column file_meta"
+                  className="sixteen wide column"
                 >
-                  <img
-                    alt="A man wearing a hardhat walks through an empty factory."
-                    src="https://s3.amazonaws.com/amgov-publisher-dev/https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg"
-                  />
                   <p>
                     <b
                       className="label"
                     >
-                      File Name:
+                      Language:
                     </b>
                      
-                    madeinamerica_english.mp4
-                  </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      Filesize:
-                    </b>
-                     
-                    631.9  MB
-                  </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      Dimensions:
-                    </b>
-                     
-                    1920 x 1080
-                  </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      Uploaded:
-                    </b>
-                     
-                    March 20, 2019 at 3:09 PM
-                  </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      Duration:
-                    </b>
-                     
-                    9:16
+                    Arabic
                   </p>
                 </div>
               </GridColumn>
+            </div>
+          </GridRow>
+          <GridRow
+            className="project_unit_meta description"
+          >
+            <div
+              className="row project_unit_meta description"
+            >
               <GridColumn
-                className="file_info"
+                computer={8}
+              >
+                <div
+                  className="eight wide computer column"
+                >
+                  <p
+                    className="public_description"
+                  >
+                    <b
+                      className="label"
+                    >
+                      Public Description:
+                    </b>
+                    <span
+                      className="content RTL"
+                      style={
+                        Object {
+                          "display": "block",
+                        }
+                      }
+                    >
+                       
+                      the arabic description
+                    </span>
+                  </p>
+                </div>
+              </GridColumn>
+            </div>
+          </GridRow>
+          <GridRow
+            className="project_unit_meta tags"
+          >
+            <div
+              className="row project_unit_meta tags"
+            >
+              <GridColumn
                 computer={8}
                 mobile={16}
                 tablet={8}
               >
                 <div
-                  className="eight wide computer sixteen wide mobile eight wide tablet column file_info"
+                  className="eight wide computer sixteen wide mobile eight wide tablet column"
+                >
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Additional Keywords:
+                    </b>
+                     الثقافة الأميركية
+                  </p>
+                </div>
+              </GridColumn>
+            </div>
+          </GridRow>
+          <GridRow
+            className="project_unit_meta file-count"
+          >
+            <div
+              className="row project_unit_meta file-count"
+            >
+              <GridColumn
+                width={16}
+              >
+                <div
+                  className="sixteen wide column"
+                >
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Files:
+                    </b>
+                     
+                    1
+                     
+                  </p>
+                </div>
+              </GridColumn>
+            </div>
+          </GridRow>
+          <Component
+            file={
+              Object {
+                "__typename": "VideoFile",
+                "createdAt": "2019-03-05T20:18:54.032Z",
+                "dimensions": Object {
+                  "__typename": "Dimensions",
+                  "height": "1080",
+                  "id": "d21",
+                  "width": "1920",
+                },
+                "duration": 556,
+                "filename": "video-file-1.mp4",
+                "filesize": 662595174,
+                "filetype": "video/mp4",
+                "id": "f19",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "Arabic",
+                  "id": "ar22",
+                  "languageCode": "ar",
+                  "locale": "ar",
+                  "nativeName": "العربية",
+                  "textDirection": "RTL",
+                },
+                "quality": "WEB",
+                "stream": Array [
+                  Object {
+                    "__typename": "VideoStream",
+                    "id": "st93",
+                    "site": "YouTube",
+                    "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
+                  },
+                  Object {
+                    "__typename": "VideoStream",
+                    "id": "st35",
+                    "site": "Vimeo",
+                    "url": "https://vimeo.com/340239507",
+                  },
+                ],
+                "updatedAt": "2019-06-19T17:38:37.502Z",
+                "url": "2019/06/123/video-file-1.mp4",
+                "use": Object {
+                  "__typename": "VideoUse",
+                  "id": "us31",
+                  "name": "Full Video",
+                },
+                "videoBurnedInStatus": "CLEAN",
+              }
+            }
+            key="f19"
+            thumbnail={
+              Object {
+                "__typename": "Thumbnail",
+                "id": "th11",
+                "image": Object {
+                  "__typename": "ImageFile",
+                  "alt": "the alt text",
+                  "createdAt": "2019-03-06T13:11:48.043Z",
+                  "filename": "image-1.jpg",
+                  "filesize": 28371,
+                  "filetype": "image/jpeg",
+                  "id": "im28",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Arabic",
+                    "id": "ar22",
+                    "languageCode": "ar",
+                    "locale": "ar",
+                    "nativeName": "العربية",
+                    "textDirection": "RTL",
+                  },
+                  "updatedAt": "2019-06-18T14:58:10.024Z",
+                  "url": "2019/06/123/image-1.jpg",
+                },
+                "size": "FULL",
+              }
+            }
+          >
+            &lt;VideoProjectFile /&gt;
+          </Component>
+        </div>
+      </Grid>
+    </div>
+    <div
+      className="project_unit"
+      key="un95"
+    >
+      <Grid>
+        <div
+          className="ui grid"
+        >
+          <GridRow
+            className="project_unit_header LTR"
+          >
+            <div
+              className="row project_unit_header LTR"
+            >
+              <GridColumn
+                floated="left"
+                mobile={8}
+              >
+                <div
+                  className="left floated eight wide mobile column"
+                >
+                  <h4
+                    className="title"
+                  >
+                    test project title
+                  </h4>
+                </div>
+              </GridColumn>
+              <GridColumn
+                className="project_unit_edit"
+                floated="right"
+                mobile={8}
+              >
+                <div
+                  className="right floated eight wide mobile column project_unit_edit"
+                >
+                  <Button
+                    as="button"
+                    className="project_button project_button--edit"
+                    content="Edit"
+                    onClick={[Function]}
+                  >
+                    <button
+                      className="ui button project_button project_button--edit"
+                      onClick={[Function]}
+                    >
+                      Edit
+                    </button>
+                  </Button>
+                </div>
+              </GridColumn>
+            </div>
+          </GridRow>
+          <GridRow
+            className="project_unit_meta language"
+          >
+            <div
+              className="row project_unit_meta language"
+            >
+              <GridColumn
+                width={16}
+              >
+                <div
+                  className="sixteen wide column"
                 >
                   <p>
                     <b
@@ -329,252 +613,175 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                      
                     English
                   </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      Subtitles & Captions:
-                    </b>
-                     
-                    CLEAN - No Captions
-                  </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      Video Type:
-                    </b>
-                     
-                    Full Video
-                  </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      Quality:
-                    </b>
-                     
-                    WEB
-                  </p>
+                </div>
+              </GridColumn>
+            </div>
+          </GridRow>
+          <GridRow
+            className="project_unit_meta description"
+          >
+            <div
+              className="row project_unit_meta description"
+            >
+              <GridColumn
+                computer={8}
+              >
+                <div
+                  className="eight wide computer column"
+                >
                   <p
-                    className="public_description LTR"
+                    className="public_description"
                   >
                     <b
                       className="label"
                     >
                       Public Description:
                     </b>
-                    <span>
-                      A public description (English)
+                    <span
+                      className="content LTR"
+                      style={Object {}}
+                    >
+                       
+                      the english description
                     </span>
                   </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      YouTube
-                       URL:
-                    </b>
-                     
-                    https://www.youtube.com/watch?1evw4fRu3bo
-                  </p>
-                </div>
-              </GridColumn>
-            </div>
-          </GridRow>
-        </div>
-      </Grid>
-    </div>
-    <div
-      className="project_file"
-      key="Fabriqué en Amérique"
-    >
-      <Grid>
-        <div
-          className="ui grid"
-        >
-          <GridRow
-            className="project_file_header LTR"
-          >
-            <div
-              className="row project_file_header LTR"
-            >
-              <GridColumn
-                floated="left"
-                mobile={8}
-              >
-                <div
-                  className="left floated eight wide mobile column"
-                >
-                  <h4
-                    className="title"
-                  >
-                    Fabriqué en Amérique
-                  </h4>
-                </div>
-              </GridColumn>
-              <GridColumn
-                className="project_file_edit"
-                floated="right"
-                mobile={8}
-              >
-                <div
-                  className="right floated eight wide mobile column project_file_edit"
-                >
-                  <Button
-                    as="button"
-                    className="project_button project_button--edit"
-                    content="Edit"
-                    onClick={[Function]}
-                  >
-                    <button
-                      className="ui button project_button project_button--edit"
-                      onClick={[Function]}
-                    >
-                      Edit
-                    </button>
-                  </Button>
                 </div>
               </GridColumn>
             </div>
           </GridRow>
           <GridRow
-            className="project_file_contents"
+            className="project_unit_meta tags"
           >
             <div
-              className="row project_file_contents"
+              className="row project_unit_meta tags"
             >
               <GridColumn
-                className="file_meta"
                 computer={8}
                 mobile={16}
                 tablet={8}
               >
                 <div
-                  className="eight wide computer sixteen wide mobile eight wide tablet column file_meta"
-                >
-                  <img
-                    alt="A man wearing a hardhat walks through an empty factory."
-                    src="https://s3.amazonaws.com/amgov-publisher-dev/https://staticcdp.s3.amazonaws.com/2018/05/courses.america.gov_1481/b3b38d194ff80d06dd837f57a41fe16f.jpg"
-                  />
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      File Name:
-                    </b>
-                     
-                    madeinamerica_french.mp4
-                  </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      Filesize:
-                    </b>
-                     
-                    631.9  MB
-                  </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      Dimensions:
-                    </b>
-                     
-                    1920 x 1080
-                  </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      Uploaded:
-                    </b>
-                     
-                    March 20, 2019 at 3:09 PM
-                  </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      Duration:
-                    </b>
-                     
-                    9:16
-                  </p>
-                </div>
-              </GridColumn>
-              <GridColumn
-                className="file_info"
-                computer={8}
-                mobile={16}
-                tablet={8}
-              >
-                <div
-                  className="eight wide computer sixteen wide mobile eight wide tablet column file_info"
+                  className="eight wide computer sixteen wide mobile eight wide tablet column"
                 >
                   <p>
                     <b
                       className="label"
                     >
-                      Language:
+                      Additional Keywords:
                     </b>
-                     
-                    French
-                  </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      Subtitles & Captions:
-                    </b>
-                     
-                    CLEAN - No Captions
-                  </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      Video Type:
-                    </b>
-                     
-                    Full Video
-                  </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      Quality:
-                    </b>
-                     
-                    WEB
-                  </p>
-                  <p
-                    className="public_description LTR"
-                  >
-                    <b
-                      className="label"
-                    >
-                      Public Description:
-                    </b>
-                    <span>
-                      A public description (French)
-                    </span>
-                  </p>
-                  <p>
-                    <b
-                      className="label"
-                    >
-                      Vimeo
-                       URL:
-                    </b>
-                     
-                    https://vimeo.com/827301171
+                     undefined
                   </p>
                 </div>
               </GridColumn>
             </div>
           </GridRow>
+          <GridRow
+            className="project_unit_meta file-count"
+          >
+            <div
+              className="row project_unit_meta file-count"
+            >
+              <GridColumn
+                width={16}
+              >
+                <div
+                  className="sixteen wide column"
+                >
+                  <p>
+                    <b
+                      className="label"
+                    >
+                      Files:
+                    </b>
+                     
+                    1
+                     
+                  </p>
+                </div>
+              </GridColumn>
+            </div>
+          </GridRow>
+          <Component
+            file={
+              Object {
+                "__typename": "VideoFile",
+                "createdAt": "2019-03-05T20:18:54.032Z",
+                "dimensions": Object {
+                  "__typename": "Dimensions",
+                  "height": "1080",
+                  "id": "d21",
+                  "width": "1920",
+                },
+                "duration": 556,
+                "filename": "video-file-1.mp4",
+                "filesize": 662595174,
+                "filetype": "video/mp4",
+                "id": "f19",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "Arabic",
+                  "id": "ar22",
+                  "languageCode": "ar",
+                  "locale": "ar",
+                  "nativeName": "العربية",
+                  "textDirection": "RTL",
+                },
+                "quality": "WEB",
+                "stream": Array [
+                  Object {
+                    "__typename": "VideoStream",
+                    "id": "st93",
+                    "site": "YouTube",
+                    "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
+                  },
+                  Object {
+                    "__typename": "VideoStream",
+                    "id": "st35",
+                    "site": "Vimeo",
+                    "url": "https://vimeo.com/340239507",
+                  },
+                ],
+                "updatedAt": "2019-06-19T17:38:37.502Z",
+                "url": "2019/06/123/video-file-1.mp4",
+                "use": Object {
+                  "__typename": "VideoUse",
+                  "id": "us31",
+                  "name": "Full Video",
+                },
+                "videoBurnedInStatus": "CLEAN",
+              }
+            }
+            key="f19"
+            thumbnail={
+              Object {
+                "__typename": "Thumbnail",
+                "id": "th11",
+                "image": Object {
+                  "__typename": "ImageFile",
+                  "alt": "the alt text",
+                  "createdAt": "2019-03-06T13:11:48.043Z",
+                  "filename": "image-1.jpg",
+                  "filesize": 28371,
+                  "filetype": "image/jpeg",
+                  "id": "im28",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Arabic",
+                    "id": "ar22",
+                    "languageCode": "ar",
+                    "locale": "ar",
+                    "nativeName": "العربية",
+                    "textDirection": "RTL",
+                  },
+                  "updatedAt": "2019-06-18T14:58:10.024Z",
+                  "url": "2019/06/123/image-1.jpg",
+                },
+                "size": "FULL",
+              }
+            }
+          >
+            &lt;VideoProjectFile /&gt;
+          </Component>
         </div>
       </Grid>
     </div>

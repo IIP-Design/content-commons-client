@@ -10,6 +10,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
       "networkStatus": 7,
       "project": Object {
         "__typename": "VideoProject",
+        "descPublic": "the project public description",
         "id": "123",
         "projectType": "LANGUAGE",
         "team": Object {
@@ -106,6 +107,22 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
               Object {
                 "__typename": "Tag",
                 "id": "tag13",
+                "translations": Array [
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr555",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "Arabic",
+                      "id": "ar22",
+                      "languageCode": "ar",
+                      "locale": "ar",
+                      "nativeName": "العربية",
+                      "textDirection": "RTL",
+                    },
+                    "name": "الثقافة الأميركية",
+                  },
+                ],
               },
             ],
             "thumbnails": Array [
@@ -203,6 +220,22 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
               Object {
                 "__typename": "Tag",
                 "id": "tag13",
+                "translations": Array [
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr555",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "Arabic",
+                      "id": "ar22",
+                      "languageCode": "ar",
+                      "locale": "ar",
+                      "nativeName": "العربية",
+                      "textDirection": "RTL",
+                    },
+                    "name": "الثقافة الأميركية",
+                  },
+                ],
               },
             ],
             "thumbnails": Array [
@@ -516,6 +549,22 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                               Object {
                                 "__typename": "Tag",
                                 "id": "tag13",
+                                "translations": Array [
+                                  Object {
+                                    "__typename": "LanguageTranslation",
+                                    "id": "tr555",
+                                    "language": Object {
+                                      "__typename": "Language",
+                                      "displayName": "Arabic",
+                                      "id": "ar22",
+                                      "languageCode": "ar",
+                                      "locale": "ar",
+                                      "nativeName": "العربية",
+                                      "textDirection": "RTL",
+                                    },
+                                    "name": "الثقافة الأميركية",
+                                  },
+                                ],
                               },
                             ],
                             "thumbnails": Array [
@@ -676,6 +725,22 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                                   Object {
                                     "__typename": "Tag",
                                     "id": "tag13",
+                                    "translations": Array [
+                                      Object {
+                                        "__typename": "LanguageTranslation",
+                                        "id": "tr555",
+                                        "language": Object {
+                                          "__typename": "Language",
+                                          "displayName": "Arabic",
+                                          "id": "ar22",
+                                          "languageCode": "ar",
+                                          "locale": "ar",
+                                          "nativeName": "العربية",
+                                          "textDirection": "RTL",
+                                        },
+                                        "name": "الثقافة الأميركية",
+                                      },
+                                    ],
                                   },
                                 ],
                                 "thumbnails": Array [
