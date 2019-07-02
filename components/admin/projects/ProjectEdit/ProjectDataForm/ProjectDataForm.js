@@ -78,7 +78,7 @@ const ProjectDataForm = props => {
                     id="projectTitle"
                     name="projectTitle"
                     control={ Input }
-                    label="Video Title"
+                    label="Project Title"
                     required
                     autoFocus
                     value={ values.projectTitle }
