@@ -1,0 +1,223 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<VideoProjectFile /> renders without crashing 1`] = `
+<VideoProjectFile
+  file={
+    Object {
+      "__typename": "VideoFile",
+      "createdAt": "2019-03-05T20:18:54.032Z",
+      "dimensions": Object {
+        "__typename": "Dimensions",
+        "height": "1080",
+        "id": "d21",
+        "width": "1920",
+      },
+      "duration": 556,
+      "filename": "video-file-1.mp4",
+      "filesize": 662595174,
+      "filetype": "video/mp4",
+      "id": "f19",
+      "language": Object {
+        "__typename": "Language",
+        "displayName": "English",
+        "id": "en38",
+        "languageCode": "en",
+        "locale": "en-us",
+        "nativeName": "English",
+        "textDirection": "LTR",
+      },
+      "quality": "WEB",
+      "stream": Array [
+        Object {
+          "__typename": "VideoStream",
+          "id": "st93",
+          "site": "YouTube",
+          "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
+        },
+        Object {
+          "__typename": "VideoStream",
+          "id": "st35",
+          "site": "Vimeo",
+          "url": "https://vimeo.com/340239507",
+        },
+      ],
+      "updatedAt": "2019-06-19T17:38:37.502Z",
+      "url": "2019/06/123/video-file-1.mp4",
+      "use": Object {
+        "__typename": "VideoUse",
+        "id": "us31",
+        "name": "Full Video",
+      },
+      "videoBurnedInStatus": "CLEAN",
+    }
+  }
+  thumbnail={
+    Object {
+      "__typename": "Thumbnail",
+      "id": "th11",
+      "image": Object {
+        "__typename": "ImageFile",
+        "alt": "the alt text",
+        "createdAt": "2019-03-06T13:11:48.043Z",
+        "filename": "image-1.jpg",
+        "filesize": 28371,
+        "filetype": "image/jpeg",
+        "id": "im28",
+        "language": Object {
+          "__typename": "Language",
+          "displayName": "English",
+          "id": "en38",
+          "languageCode": "en",
+          "locale": "en-us",
+          "nativeName": "English",
+          "textDirection": "LTR",
+        },
+        "updatedAt": "2019-06-18T14:58:10.024Z",
+        "url": "2019/06/123/image-1.jpg",
+      },
+      "size": "FULL",
+    }
+  }
+>
+  <GridRow
+    className="project_unit_files"
+  >
+    <div
+      className="row project_unit_files"
+    >
+      <GridColumn
+        className="file_embed_thumbnail"
+        computer={8}
+        mobile={16}
+        tablet={8}
+      >
+        <div
+          className="eight wide computer sixteen wide mobile eight wide tablet column file_embed_thumbnail"
+        >
+          <Embed
+            id="1evw4fRu3bo"
+            placeholder="https://s3-url.com/2019/06/123/image-1.jpg"
+            source="youtube"
+          >
+            <div
+              className="ui embed"
+              onClick={[Function]}
+            >
+              <Icon
+                as="i"
+                name="video play"
+              >
+                <i
+                  aria-hidden="true"
+                  className="video play icon"
+                />
+              </Icon>
+              <img
+                className="placeholder"
+                src="https://s3-url.com/2019/06/123/image-1.jpg"
+              />
+            </div>
+          </Embed>
+        </div>
+      </GridColumn>
+      <GridColumn
+        className="file_meta"
+        computer={8}
+        mobile={16}
+        tablet={8}
+      >
+        <div
+          className="eight wide computer sixteen wide mobile eight wide tablet column file_meta"
+        >
+          <p>
+            <b
+              className="label"
+            >
+              File Name:
+            </b>
+             
+            video-file-1.mp4
+          </p>
+          <p>
+            <b
+              className="label"
+            >
+              Filesize:
+            </b>
+             
+            631.9 MB
+          </p>
+          <p>
+            <b
+              className="label"
+            >
+              Dimensions:
+            </b>
+             
+            1920 x 1080
+          </p>
+          <p>
+            <b
+              className="label"
+            >
+              Uploaded:
+            </b>
+             
+            <time
+              dateTime="2019-03-05T20:18:54.032Z"
+            >
+              May 5, 2019
+            </time>
+          </p>
+          <p>
+            <b
+              className="label"
+            >
+              Duration:
+            </b>
+             
+            9:16
+          </p>
+          <p>
+            <b
+              className="label"
+            >
+              Subtitles & Captions:
+            </b>
+             
+            CLEAN - No Captions
+          </p>
+          <p>
+            <b
+              className="label"
+            >
+              Video Type:
+            </b>
+             
+            Full Video
+          </p>
+          <p>
+            <b
+              className="label"
+            >
+              Quality:
+            </b>
+             
+            WEB
+          </p>
+          <p>
+            <b
+              className="label"
+            >
+              YouTube
+               URL:
+            </b>
+             
+            https://www.youtube.com/watch?v=1evw4fRu3bo
+          </p>
+        </div>
+      </GridColumn>
+    </div>
+  </GridRow>
+</VideoProjectFile>
+`;

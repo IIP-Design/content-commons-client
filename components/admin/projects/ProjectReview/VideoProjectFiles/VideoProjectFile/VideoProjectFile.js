@@ -14,7 +14,7 @@ import {
 const VideoProjectFile = props => {
   const { file, thumbnail } = props;
 
-  if ( Object.keys( file ).length === 0 ) return;
+  if ( !file || Object.keys( file ).length === 0 ) return null;
 
   const {
     createdAt,
@@ -34,7 +34,7 @@ const VideoProjectFile = props => {
 
   let thumbnailUrl = '';
   let thumbnailAlt = `a thumbnail image for this file in ${language.displayName}`;
-  if ( thumbnail && Object.keys( thumbnail ).length > 0 ) {
+  if ( thumbnail && thumbnail.image && thumbnail.image.url && thumbnail.image.alt ) {
     thumbnailUrl = getS3Url( thumbnail.image.url );
     thumbnailAlt = thumbnail.image.alt;
   }
@@ -56,7 +56,7 @@ const VideoProjectFile = props => {
             source="vimeo"
           />
         ) }
-        { ( !youTubeUrl && !vimeoUrl ) && (
+        { ( !youTubeUrl && !vimeoUrl && thumbnailUrl ) && (
           <figure className="thumbnail overlay">
             <img
               className="thumbnail-image"
