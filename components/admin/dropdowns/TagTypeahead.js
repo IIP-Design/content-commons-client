@@ -42,13 +42,21 @@ const TagTypeahead = props => {
         if ( data && data.tags ) {
           const tagsInLang = getTagsByLang( data.tags, props.locale );
 
-          options = tagsInLang.map( tag => ( {
-            key: tag.id,
-            text: tag.translations.length
-              ? titleCase( tag.translations[0].name )
-              : '',
-            value: tag.id
-          } ) );
+          options = tagsInLang
+            .map( tag => ( {
+              key: tag.id,
+              text: tag.translations.length
+                ? titleCase( tag.translations[0].name )
+                : '',
+              value: tag.id
+            } ) )
+            .sort( ( tagA, tagB ) => {
+              const textA = tagA.text.toLowerCase();
+              const textB = tagB.text.toLowerCase();
+              if ( textA < textB ) return -1;
+              if ( textA > textB ) return 1;
+              return 0;
+            } );
         }
 
         return (

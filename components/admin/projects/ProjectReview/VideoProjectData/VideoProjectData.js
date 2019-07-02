@@ -75,6 +75,7 @@ const VideoProjectData = props => {
           { ( categories && categories.length > 0 )
             ? categories
               .map( category => category.translations[0].name )
+              .sort()
               .join( ', ' )
             : null }
         </p>
@@ -83,6 +84,7 @@ const VideoProjectData = props => {
           { ( tags && tags.length > 0 )
             ? tags
               .map( tag => tag.translations[0].name )
+              .sort()
               .join( ', ' )
             : null }
         </p>

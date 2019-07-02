@@ -46,17 +46,20 @@ const DetailsPopup = props => {
   const handleOpen = () => {
     setDetailsPopupOpen( true );
     window.addEventListener( 'resize', handleResize );
+    window.addEventListener( 'scroll', handleTableScroll );
 
     const itemsTable = document.querySelector( '.items_table' );
     itemsTable.addEventListener( 'scroll', handleTableScroll );
   };
 
   const handleClose = () => {
-    setDetailsPopupOpen( false );
-    window.removeEventListener( 'resize', handleResize );
-
     const itemsTable = document.querySelector( '.items_table' );
-    itemsTable.removeEventListener( 'scroll', handleTableScroll );
+    if ( itemsTable ) {
+      itemsTable.removeEventListener( 'scroll', handleTableScroll );
+      setDetailsPopupOpen( false );
+    }
+    window.removeEventListener( 'resize', handleResize );
+    window.removeEventListener( 'scroll', handleTableScroll );
   };
 
   return (
