@@ -25,7 +25,7 @@ const areEqual = ( prevProps, nextProps ) => {
   // if on same step, check for prop differences
   const entries = Object.entries( prevProps.file );
   const same = entries.every( ( [prop, value] ) => {
-    if ( prop === 'id' || prop === 'input' ) {
+    if ( prop === 'id' ) {
       return true;
     }
     return nextFile[prop] === value;
