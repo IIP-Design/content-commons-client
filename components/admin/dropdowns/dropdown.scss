@@ -9,3 +9,11 @@
     padding: 10px 10px !important;
   }
 }
+
+#categories.ui.multiple.dropdown > .label,
+#tags.ui.multiple.dropdown > .label {
+  padding: 0.4em;
+  font-weight: normal;
+  color: hsla( 0, 0, 0, 0.87 );
+  background-color: #fff;
+}
