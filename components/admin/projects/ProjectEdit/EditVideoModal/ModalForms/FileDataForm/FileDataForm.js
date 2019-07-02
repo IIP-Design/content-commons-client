@@ -260,18 +260,24 @@ const FileDataForm = ( {
               <span className="file_meta_content file_meta_content--filetype">
                 { file.filename }
               </span>
-              <span className="file_meta_content file_meta_content--filesize">
-                { `Filesize: ${formatBytes( file.filesize || 0 )}` }
-              </span>
-              <span className="file_meta_content file_meta_content--dimensions">
-                { dimensions }
-              </span>
+              { file.filesize && (
+                <span className="file_meta_content file_meta_content--filesize">
+                  { `Filesize: ${formatBytes( file.filesize )}` }
+                </span>
+              ) }
+              { dimensions && (
+                <span className="file_meta_content file_meta_content--dimensions">
+                  { dimensions }
+                </span>
+              ) }
               <span className="file_meta_content file_meta_content--uploaded">
                 { `Uploaded: ${formatDate( file.createdAt )}` }
               </span>
-              <span className="file_meta_content file_meta_content--duration">
-                { `Duration: ${secondsToHMS( file.duration )}` }
-              </span>
+              { file.duration && (
+                <span className="file_meta_content file_meta_content--duration">
+                  { `Duration: ${secondsToHMS( file.duration )}` }
+                </span>
+              ) }
               <span className="delete-file-link" onClick={ displayConfirmDelete } onKeyUp={ displayConfirmDelete } role="button" tabIndex={ 0 }>
                 Delete file from project
               </span>
