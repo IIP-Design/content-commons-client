@@ -260,16 +260,14 @@ const VideoEdit = props => {
             confirmButton="Yes, delete forever"
           />
 
-          { projectId
-            && (
-              <Button
-                className="edit-project__btn--save-draft"
-                content="Save Draft"
-                basic
-                onClick={ handleSaveDraft }
-                disabled={ !projectId }
-              />
-            ) }
+          <Button
+            className="edit-project__btn--save-draft"
+            content="Save & Exit"
+            basic
+            onClick={ handleSaveDraft }
+            disabled={ !projectId }
+          />
+
           <Button
             className="edit-project__btn--final-review"
             content="Final Review"
