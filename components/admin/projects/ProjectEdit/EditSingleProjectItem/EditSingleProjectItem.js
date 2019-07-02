@@ -34,22 +34,10 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
   const [selectedUnit, setSelectedUnit] = useState( itemId );
   const [language, setLanguage] = useState( null );
 
-  const updateSelectedFile = id => (
-    setSelectedFile( id )
-  );
-
-  const updateSelectedLanguage = lang => {
-    setLanguage( lang );
-  };
-
-  const updateSelectedProject = id => (
-    setSelectedProject( id )
-  );
-
-  const updateSelectedUnit = ( id, file ) => {
+  const updateSelectedUnit = ( unit, file ) => {
     setLanguage( null );
     setSelectedFile( file || '' );
-    setSelectedUnit( id );
+    setSelectedUnit( unit );
   };
 
   if ( !project ) {
@@ -75,9 +63,10 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
         selectedFile,
         selectedProject,
         selectedUnit,
-        updateSelectedFile,
-        updateSelectedLanguage,
-        updateSelectedProject,
+        setLanguage,
+        setSelectedFile,
+        setSelectedUnit,
+        setSelectedProject,
         updateSelectedUnit
       } }
     >

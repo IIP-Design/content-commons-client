@@ -3,7 +3,7 @@
  * FileDataForm
  *
  */
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import propTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
 import { Confirm, Form, Grid } from 'semantic-ui-react';
@@ -15,6 +15,7 @@ import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
+import { EditSingleProjectItemContext } from 'components/admin/projects/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import { formatBytes, formatDate, secondsToHMS } from 'lib/utils';
 
 import { VIDEO_UNIT_QUERY } from 'components/admin/projects/ProjectEdit/EditVideoModal/ModalSections/FileSection/FileSection';
@@ -31,14 +32,10 @@ const FileDataForm = ( {
   language,
   languageVideoFileMutation,
   qualityVideoFileMutation,
-  selectedFile,
-  selectedUnit,
   setFieldValue,
   streamCreateVideoFileMutation,
   streamDeleteVideoFileMutation,
   streamUpdateVideoFileMutation,
-  updateSelectedFile,
-  updateSelectedUnit,
   useVideoFileMutation,
   values,
   videoBurnedInStatusVideoFileMutation,
@@ -47,11 +44,69 @@ const FileDataForm = ( {
   videoUnitConnectFileMutation,
   videoUnitDisconnectFileMutation
 } ) => {
-  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
+  const {
+    selectedFile, selectedUnit, setSelectedFile, updateSelectedUnit
+  } = useContext( EditSingleProjectItemContext );
 
-  const { file, loading } = videoFileQuery;
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
+  const [langId, setLangId] = useState( null );
+
   const { project } = videoProjectQuery;
   const units = project && project.units ? project.units : [];
+
+  const changeLanguage = ( value, id ) => {
+    // Get array of units and the language they are in
+    const unitsByLang = units.map( unit => ( { unitId: unit.id, langId: unit.language.id } ) );
+    const newUnit = unitsByLang.filter( unit => unit.langId === value );
+
+    if ( value && value !== language.id ) {
+      // Update file language
+      languageVideoFileMutation( {
+        variables: {
+          id,
+          language: value
+        },
+        onCompleted: videoUnitDisconnectFileMutation( { // Disconnect File from old language unit
+          variables: {
+            id: selectedUnit,
+            fileId: id
+          },
+          update: ( cache, { data: { updateVideoUnit } } ) => {
+            try {
+              const cachedData = cache.readQuery( {
+                query: VIDEO_UNIT_QUERY,
+                variables: { id: selectedUnit }
+              } );
+
+              const newFiles = cachedData.unit.files.filter( newFile => newFile.id !== id );
+              cachedData.unit.files = newFiles;
+
+              cache.writeQuery( {
+                query: VIDEO_UNIT_QUERY,
+                data: { unit: cachedData.unit }
+              } );
+            } catch ( error ) {
+              console.log( error );
+            }
+          },
+          onCompleted: videoUnitConnectFileMutation( { // Connect file to new unit
+            variables: {
+              id: newUnit[0].unitId,
+              fileId: id
+            },
+            onCompleted: updateSelectedUnit( newUnit[0].unitId, id ) // Switch view to the new unit
+          } )
+        } )
+      } );
+    }
+  };
+
+  // Runs the changeLanguage mutations whenever the language state is updated
+  useEffect( () => {
+    changeLanguage( langId, selectedFile );
+  }, [langId] );
+
+  const { file, loading } = videoFileQuery;
 
   if ( !file || loading ) return <Loader height="330px" text="Loading the file data..." />;
 
@@ -148,55 +203,9 @@ const FileDataForm = ( {
     videoFileQuery.refetch();
   };
 
-  const handleLanguageChange = ( e, { value } ) => {
-    // Get array of units and the language they are in
-    const unitsByLang = units.map( unit => ( { unitId: unit.id, langId: unit.language.id } ) );
-    const newUnit = unitsByLang.filter( unit => unit.langId === value );
-
-    if ( value && value !== language.id ) {
-      // Update file language
-      languageVideoFileMutation( {
-        variables: {
-          id: selectedFile,
-          language: value
-        }
-      } );
-      // Disconnect File from old language unit
-      videoUnitDisconnectFileMutation( {
-        variables: {
-          id: selectedUnit,
-          fileId: selectedFile
-        },
-        update: ( cache, { data: { updateVideoUnit } } ) => {
-          try {
-            const cachedData = cache.readQuery( {
-              query: VIDEO_UNIT_QUERY,
-              variables: { id: selectedUnit }
-            } );
-
-            const newFiles = cachedData.unit.files.filter( newFile => newFile.id !== selectedFile );
-            cachedData.unit.files = newFiles;
-
-            cache.writeQuery( {
-              query: VIDEO_UNIT_QUERY,
-              data: { unit: cachedData.unit }
-            } );
-          } catch ( error ) {
-            console.log( error );
-          }
-        }
-      } );
-      // Connect file to new unit
-      videoUnitConnectFileMutation( {
-        variables: {
-          id: newUnit[0].unitId,
-          fileId: selectedFile
-        }
-      } );
-
-      updateSelectedUnit( newUnit[0].unitId, selectedFile );
-    }
-  };
+  // Sets language to local state on language switch
+  // required to prevent changeLanguage() from closing over the previous selectedFile value
+  const handleLanguageChange = value => setLangId( value );
 
   // Show delete confirmation modal
   const displayConfirmDelete = () => setDeleteConfirmOpen( true );
@@ -229,7 +238,7 @@ const FileDataForm = ( {
           const newSelectedFile = cachedData.unit.files && cachedData.unit.files[0] && cachedData.unit.files[0].id
             ? cachedData.unit.files[0].id
             : '';
-          updateSelectedFile( newSelectedFile );
+          setSelectedFile( newSelectedFile );
         } catch ( error ) {
           console.log( error );
         }
@@ -311,7 +320,7 @@ const FileDataForm = ( {
               id="video-language"
               locales={ getLocales( units ) }
               label="Language"
-              onChange={ handleLanguageChange }
+              onChange={ ( e, { value } ) => handleLanguageChange( value ) }
               required
               value={ values.language }
             />
@@ -359,14 +368,10 @@ FileDataForm.propTypes = {
   language: propTypes.object,
   languageVideoFileMutation: propTypes.func,
   qualityVideoFileMutation: propTypes.func,
-  selectedFile: propTypes.string,
-  selectedUnit: propTypes.string,
   setFieldValue: propTypes.func,
   streamCreateVideoFileMutation: propTypes.func,
   streamDeleteVideoFileMutation: propTypes.func,
   streamUpdateVideoFileMutation: propTypes.func,
-  updateSelectedFile: propTypes.func,
-  updateSelectedUnit: propTypes.func,
   useVideoFileMutation: propTypes.func,
   values: propTypes.object,
   videoBurnedInStatusVideoFileMutation: propTypes.func,

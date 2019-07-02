@@ -10,7 +10,7 @@ import { Icon } from 'semantic-ui-react';
 import './Carousel.scss';
 
 const Carousel = ( {
-  callback, children, legend, selectedItem, vertical
+  children, legend, selectedItem, vertical
 } ) => {
   // Get the index of the initially selected item based on the id of the selectedItem prop
   const getSelectedIndex = elems => {
@@ -135,7 +135,6 @@ const Carousel = ( {
   }, [children] );
 
   const handleSelection = ( id, index ) => {
-    callback( id );
     setSelected( index );
     scrollToSelected( index );
   };
@@ -248,7 +247,6 @@ const Carousel = ( {
 };
 
 Carousel.propTypes = {
-  callback: propTypes.func,
   children: propTypes.array,
   legend: propTypes.bool,
   selectedItem: propTypes.string,
@@ -256,7 +254,6 @@ Carousel.propTypes = {
 };
 
 Carousel.defaultProps = {
-  callback: () => {},
   legend: true,
   vertical: false
 };

@@ -38,7 +38,7 @@ const VIDEO_UNIT_QUERY = gql`
 `;
 
 const FileSidebar = () => {
-  const { selectedFile, selectedUnit, updateSelectedFile } = useContext( EditSingleProjectItemContext );
+  const { selectedFile, selectedUnit, setSelectedFile } = useContext( EditSingleProjectItemContext );
 
   return (
     <Query query={ VIDEO_UNIT_QUERY } variables={ { id: selectedUnit } }>
@@ -52,7 +52,7 @@ const FileSidebar = () => {
 
         return (
           <div className="edit-video-sidebar">
-            <Carousel callback={ updateSelectedFile } legend={ false } selectedItem={ selectedFile } vertical>
+            <Carousel legend={ false } selectedItem={ selectedFile } vertical>
               { files && (
                 files.map( file => {
                   const fileUse = file.use && file.use.name ? file.use.name : '';
@@ -62,8 +62,8 @@ const FileSidebar = () => {
                       className="edit-video-sidebar-item"
                       id={ file.id }
                       key={ file.id }
-                      onClick={ () => updateSelectedFile( file.id ) }
-                      onKeyUp={ () => updateSelectedFile( file.id ) }
+                      onClick={ () => setSelectedFile( file.id ) }
+                      onKeyUp={ () => setSelectedFile( file.id ) }
                       role="button"
                       tabIndex="0"
                     >
