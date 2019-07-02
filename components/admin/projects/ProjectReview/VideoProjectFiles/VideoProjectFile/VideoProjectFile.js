@@ -34,7 +34,7 @@ const VideoProjectFile = props => {
 
   let thumbnailUrl = '';
   let thumbnailAlt = `a thumbnail image for this file in ${language.displayName}`;
-  if ( thumbnail && thumbnail.image && thumbnail.image.url && thumbnail.image.alt ) {
+  if ( thumbnail && thumbnail.image ) {
     thumbnailUrl = getS3Url( thumbnail.image.url );
     thumbnailAlt = thumbnail.image.alt;
   }
