@@ -52,7 +52,7 @@ const TableRow = props => {
                   { d[header.name] }
                 </span>
                 <br />
-                { header.label === 'MODIFIED'
+                { header.label === 'CREATED'
                   ? <span>{ d.status }</span>
                   : null }
               </Fragment>
