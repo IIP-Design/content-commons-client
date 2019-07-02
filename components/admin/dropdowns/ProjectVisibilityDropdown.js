@@ -27,8 +27,8 @@ const ProjectVisibilityDropdown = props => (
         options = data.__type.enumValues
           .map( enumValue => {
             const text = enumValue.name === 'PUBLIC'
-              ? 'Anyone can see this project'
-              : 'Internal use only';
+              ? 'Public (displayed on Content Commons)'
+              : 'Internal (Department of State only)';
 
             return {
               key: enumValue.name,
