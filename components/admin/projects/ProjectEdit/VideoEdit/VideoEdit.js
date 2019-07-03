@@ -24,7 +24,7 @@ import {
   VIDEO_PROJECT_UNITS_QUERY
 } from 'lib/graphql/queries/video';
 import { IMAGE_USES_QUERY } from 'lib/graphql/queries/common';
-
+import ApolloError from 'components/errors/ApolloError';
 import Notification from 'components/Notification/Notification';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
@@ -36,11 +36,11 @@ import VideoProjectDataForm from 'components/admin/projects/ProjectEdit/VideoPro
 import UploadSuccessMsg from 'components/admin/projects/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
 import FileUploadProgressBar from 'components/admin/projects/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
 import withFileUpload from 'hocs/withFileUpload/withFileUpload';
-import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 
 import { config } from './config';
 
 import './VideoEdit.scss';
+
 
 export const UploadContext = React.createContext( false );
 
@@ -54,6 +54,7 @@ const VideoEdit = props => {
   let saveMsgTimer = null;
 
   const [mounted, setMounted] = useState( false );
+  const [error, setError] = useState( {} );
   const [projectId, setProjectId] = useState( props.id );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [displayTheUploadSuccessMsg, setDisplayTheUploadSuccessMsg] = useState( false );
@@ -62,6 +63,14 @@ const VideoEdit = props => {
     notificationMessage: '',
     showNotification: false
   } );
+
+  const centeredStyles = {
+    position: 'absolute',
+    top: '9em',
+    left: '50%',
+    transform: 'translateX(-50%)'
+  };
+
 
   const { upload: { isUploading, filesToUpload } } = props;
 
@@ -99,11 +108,15 @@ const VideoEdit = props => {
   };
 
 
-  const handleDeleteConfirm = () => {
-    const { id, mutate } = props;
-    console.log( `Deleted project: ${id}` );
-    mutate( { variables: { id } } );
-    props.router.push( { pathname: '/admin/dashboard' } );
+  const handleDeleteConfirm = async() => {
+    const { deleteVideoProject } = props;
+
+    const deletedProjectId = await deleteVideoProject( { variables: { id: projectId } } )
+      .catch( err => { setError( err ); } );
+
+    if ( deletedProjectId ) {
+      props.router.push( { pathname: '/admin/dashboard' } );
+    }
   };
 
   // const handleDeleteCancel = () => {
@@ -223,7 +236,6 @@ const VideoEdit = props => {
     </Fragment>
   );
 
-
   const contentStyle = {
     border: `3px solid ${( projectId ) ? 'transparent' : '#02bfe7'}`
   };
@@ -232,8 +244,7 @@ const VideoEdit = props => {
 
   return (
     <div className="edit-project">
-      <Breadcrumbs />
-      { /* action buttons at top need to be separate component */ }
+      { /* action buttons at top NEED TO BE MOVED to separate component */ }
       <div className="edit-project__header">
         <ProjectHeader icon="video camera" text="Project Details">
 
@@ -281,14 +292,13 @@ const VideoEdit = props => {
         </ProjectHeader>
       </div>
 
+      <div style={ centeredStyles }>
+        <ApolloError error={ error } />
+      </div>
+
       <Notification
         el="p"
-        customStyles={ {
-          position: 'absolute',
-          top: '9em',
-          left: '50%',
-          transform: 'translateX(-50%)'
-        } }
+        customStyles={ centeredStyles }
         show={ showNotification }
         msg={ notificationMessage }
       />
@@ -384,8 +394,8 @@ const VideoEdit = props => {
 VideoEdit.propTypes = {
   id: PropTypes.string,
   data: PropTypes.object,
-  mutate: PropTypes.func,
   updateVideoProject: PropTypes.func,
+  deleteVideoProject: PropTypes.func,
   router: PropTypes.object,
   setIsUploading: PropTypes.func, // from redux
   uploadExecute: PropTypes.func, // from redux
@@ -452,7 +462,7 @@ export default compose(
   withFileUpload,
   connect( mapStateToProps, actions ),
   graphql( IMAGE_USES_QUERY ),
-  graphql( DELETE_VIDEO_PROJECT_MUTATION ),
+  graphql( DELETE_VIDEO_PROJECT_MUTATION, { name: 'deleteVideoProject' } ),
   graphql( UPDATE_VIDEO_UNIT_MUTATION, {
     name: 'updateVideoUnit',
     options: () => ( {
