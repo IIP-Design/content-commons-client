@@ -17,6 +17,9 @@ import DownloadThumbnail from 'components/admin/download/DownloadThumbnail/Downl
 import DownloadOtherFiles from 'components/admin/download/DownloadOtherFiles/DownloadOtherFiles';
 import DownloadHelp from 'components/Video/DownloadHelp';
 
+import EmbedVideo from 'components/Embed';
+import EmbedHelp from 'components/Video/EmbedHelp';
+
 import ModalItem from 'components/modals/ModalItem/ModalItem';
 import ModalContentMeta from 'components/modals/ModalContentMeta/ModalContentMeta';
 import ModalDescription from 'components/modals/ModalDescription/ModalDescription';
@@ -29,6 +32,7 @@ import PopupTabbed from 'components/popups/PopupTabbed';
 import Share from 'components/Share/Share';
 
 import downloadIcon from 'static/icons/icon_download.svg';
+import embedIcon from 'static/icons/icon_embed.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 import {
   getS3Url, getStreamData, getVimeoId, getYouTubeId
@@ -115,6 +119,21 @@ class PreviewProjectContent extends React.PureComponent {
     }
   }
 
+  getEmbedUrl = url => {
+    if ( !url.includes( 'youtube' ) && !url.includes( 'vimeo' ) ) {
+      return '';
+    }
+
+    let embedSrc = '';
+    if ( url.includes( 'youtube' ) ) {
+      embedSrc = `https://www.youtube.com/embed/${getYouTubeId( url )}`;
+    } else if ( url.includes( 'vimeo' ) ) {
+      embedSrc = `https://player.vimeo.com/video/${getVimeoId( url )}`;
+    }
+
+    return `<iframe src="${embedSrc}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`;
+  }
+
   toggleArrow = () => {
     this.setState( prevState => ( {
       dropDownIsOpen: !prevState.dropDownIsOpen
@@ -193,6 +212,13 @@ class PreviewProjectContent extends React.PureComponent {
     const youTubeUrl = getStreamData( stream, 'youtube', 'url' );
     const vimeoUrl = getStreamData( stream, 'vimeo', 'url' );
 
+    let embedItem = '';
+    if ( youTubeUrl ) {
+      embedItem = this.getEmbedUrl( youTubeUrl );
+    } else if ( !youTubeUrl && vimeoUrl ) {
+      embedItem = this.getEmbedUrl( vimeoUrl );
+    }
+
     let thumbnailUrl = '';
     let thumbnailAlt = `a thumbnail image for this project in ${language.displayName}`;
     if ( selectedUnit.thumbnails && selectedUnit.thumbnails.length > 0 ) {
@@ -240,6 +266,32 @@ class PreviewProjectContent extends React.PureComponent {
           />
 
           <div className="trigger-container">
+            { ( contentType === 'video' && embedItem ) && (
+              <PopupTrigger
+                toolTip="Embed video"
+                icon={ { img: embedIcon, dim: 24 } }
+                show
+                content={ (
+                  <PopupTabbed
+                    title="Embed this video on your site"
+                    panes={ [
+                      {
+                        title: 'Copy Embed Code',
+                        component: (
+                          <EmbedVideo
+                            instructions="Copy and paste the code below to embed video on your site"
+                            embedItem={ embedItem }
+                            isPreview
+                          />
+                        )
+                      },
+                      { title: 'Help', component: <EmbedHelp /> }
+                    ] }
+                  />
+                ) }
+              />
+            ) }
+
             <PopupTrigger
               icon={ { img: shareIcon, dim: 18 } }
               tooltip="Share project"
@@ -258,6 +310,7 @@ class PreviewProjectContent extends React.PureComponent {
                 </Popup>
               ) }
             />
+
             <PopupTrigger
               toolTip="Download video"
               icon={ { img: downloadIcon, dim: 18 } }
