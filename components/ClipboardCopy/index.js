@@ -47,7 +47,7 @@ class ClipboardCopy extends Component {
 
 
   render() {
-    const { copyItem, disabled, label } = this.props;
+    const { copyItem, isPreview, label } = this.props;
 
     return (
       <div className="clipboardcopy_wrapper">
@@ -64,10 +64,11 @@ class ClipboardCopy extends Component {
               readOnly
               onFocus={ this.handleFocus }
               ref={ copyInput => { this.copyInput = copyInput; } }
+              disabled={ isPreview }
             />
             <Button
               className={ this.state.cls }
-              disabled={ disabled }
+              disabled={ isPreview }
               primary
               onClick={ this.handleCopyClick }
             >
@@ -82,7 +83,7 @@ class ClipboardCopy extends Component {
 
 ClipboardCopy.propTypes = {
   copyItem: PropTypes.string,
-  disabled: PropTypes.bool,
+  isPreview: PropTypes.bool,
   label: PropTypes.string
 };
 

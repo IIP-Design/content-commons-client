@@ -5,7 +5,7 @@ import { openWindow, isMobile } from 'lib/browser';
 
 const ShareButton = props => {
   const {
-    url, icon, label, disabled
+    url, icon, isPreview, label
   } = props;
 
   /**
@@ -17,7 +17,7 @@ const ShareButton = props => {
    * @param {*} data element data attributes
    */
   const willOpenWindow = ( e, data = {} ) => {
-    if ( disabled ) {
+    if ( isPreview ) {
       e.preventDefault();
       return;
     }
@@ -36,6 +36,7 @@ const ShareButton = props => {
       target="_blank"
       onClick={ willOpenWindow }
       onKeyPress={ willOpenWindow }
+      style={ { cursor: isPreview ? 'default' : 'pointer' } }
     >
       <List.Icon name={ icon } />
       <List.Content>{ label }</List.Content>
@@ -46,8 +47,8 @@ const ShareButton = props => {
 ShareButton.propTypes = {
   url: PropTypes.string,
   icon: PropTypes.string,
-  label: PropTypes.string,
-  disabled: PropTypes.bool
+  isPreview: PropTypes.bool,
+  label: PropTypes.string
 };
 
 export default ShareButton;

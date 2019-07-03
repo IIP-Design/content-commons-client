@@ -300,7 +300,6 @@ class PreviewProjectContent extends React.PureComponent {
                 <Popup title="Share this project.">
                   <Share
                     id={ id }
-                    disabled
                     isPreview
                     language={ selectedLanguage.locale }
                     link={ youTubeUrl || vimeoUrl }

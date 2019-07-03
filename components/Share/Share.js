@@ -10,7 +10,7 @@ import './Share.scss';
 
 const Share = props => {
   const {
-    id, disabled, isPreview, site, language, title, link, type
+    id, isPreview, site, language, title, link, type
   } = props;
 
   const queryStr = ( type === 'video' )
@@ -35,20 +35,20 @@ const Share = props => {
             url={ facebookURL }
             icon="facebook f"
             label="Share on Facebook"
-            disabled={ disabled }
+            isPreview={ isPreview }
           />
           <ShareButton
             url={ tweet }
             icon="twitter"
             label="Share on Twitter"
-            disabled={ disabled }
+            isPreview={ isPreview }
           />
         </List>
       ) }
       <ClipboardCopy
         label="Direct Link"
         copyItem={ directLink }
-        disabled={ disabled }
+        isPreview={ isPreview }
       />
     </div>
   );
@@ -59,7 +59,6 @@ Share.propTypes = {
     PropTypes.number,
     PropTypes.string,
   ] ),
-  disabled: PropTypes.bool,
   isPreview: PropTypes.bool,
   site: PropTypes.string,
   language: PropTypes.string,

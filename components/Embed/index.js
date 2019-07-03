@@ -12,7 +12,7 @@ const Embed = props => {
       <ClipboardCopy
         label="Embed Code"
         copyItem={ embedItem }
-        disabled={ isPreview }
+        isPreview={ isPreview }
       />
       { children }
     </div>
