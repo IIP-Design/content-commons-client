@@ -10,7 +10,7 @@ import './Share.scss';
 
 const Share = props => {
   const {
-    id, site, language, title, link, type
+    id, disabled, site, language, title, link, type
   } = props;
 
   const queryStr = ( type === 'video' )
@@ -30,17 +30,35 @@ const Share = props => {
     <div>
       { shareLink && (
         <List className="share_list">
-          <ShareButton url={ facebookURL } icon="facebook f" label="Share on Facebook" />
-          <ShareButton url={ tweet } icon="twitter" label="Share on Twitter" />
+          <ShareButton
+            url={ facebookURL }
+            icon="facebook f"
+            label="Share on Facebook"
+            disabled={ disabled }
+          />
+          <ShareButton
+            url={ tweet }
+            icon="twitter"
+            label="Share on Twitter"
+            disabled={ disabled }
+          />
         </List>
       ) }
-      <ClipboardCopy label="Direct Link" copyItem={ directLink } />
+      <ClipboardCopy
+        label="Direct Link"
+        copyItem={ directLink }
+        disabled={ disabled }
+      />
     </div>
   );
 };
 
 Share.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.oneOfType( [
+    PropTypes.number,
+    PropTypes.string,
+  ] ),
+  disabled: PropTypes.bool,
   site: PropTypes.string,
   language: PropTypes.string,
   link: PropTypes.string,

@@ -23,10 +23,13 @@ import ModalDescription from 'components/modals/ModalDescription/ModalDescriptio
 import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
 
 import Notification from 'components/Notification/Notification';
+import Popup from 'components/popups/Popup';
 import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
+import Share from 'components/Share/Share';
 
 import downloadIcon from 'static/icons/icon_download.svg';
+import shareIcon from 'static/icons/icon_share.svg';
 import {
   getS3Url, getStreamData, getVimeoId, getYouTubeId
 } from 'lib/utils';
@@ -237,6 +240,23 @@ class PreviewProjectContent extends React.PureComponent {
           />
 
           <div className="trigger-container">
+            <PopupTrigger
+              icon={ { img: shareIcon, dim: 18 } }
+              tooltip="Share project"
+              show
+              content={ (
+                <Popup title="Share this project.">
+                  <Share
+                    id={ id }
+                    disabled
+                    language={ selectedLanguage.locale }
+                    link={ youTubeUrl || vimeoUrl }
+                    title={ title }
+                    type={ contentType }
+                  />
+                </Popup>
+              ) }
+            />
             <PopupTrigger
               toolTip="Download video"
               icon={ { img: downloadIcon, dim: 18 } }
