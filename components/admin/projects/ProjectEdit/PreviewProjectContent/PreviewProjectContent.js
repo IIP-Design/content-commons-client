@@ -249,6 +249,7 @@ class PreviewProjectContent extends React.PureComponent {
                   <Share
                     id={ id }
                     disabled
+                    isPreview
                     language={ selectedLanguage.locale }
                     link={ youTubeUrl || vimeoUrl }
                     title={ title }

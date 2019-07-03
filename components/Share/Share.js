@@ -10,7 +10,7 @@ import './Share.scss';
 
 const Share = props => {
   const {
-    id, disabled, site, language, title, link, type
+    id, disabled, isPreview, site, language, title, link, type
   } = props;
 
   const queryStr = ( type === 'video' )
@@ -18,7 +18,8 @@ const Share = props => {
     : stringifyQueryString( { id, site } );
   let directLink = link;
   let shareLink = link;
-  if ( type === 'video' ) directLink = `${window.location.protocol}//${window.location.host}/video?${queryStr}`;
+  if ( type === 'video' && isPreview ) directLink = `${window.location.protocol}//${window.location.host}/admin/project/video/${id}/edit`;
+  if ( type === 'video' && !isPreview ) directLink = `${window.location.protocol}//${window.location.host}/video?${queryStr}`;
   if ( contentRegExp( link ) && type === 'post' ) {
     directLink = `${window.location.protocol}//${window.location.host}/article?${queryStr}`;
     shareLink = directLink;
@@ -59,6 +60,7 @@ Share.propTypes = {
     PropTypes.string,
   ] ),
   disabled: PropTypes.bool,
+  isPreview: PropTypes.bool,
   site: PropTypes.string,
   language: PropTypes.string,
   link: PropTypes.string,
