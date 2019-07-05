@@ -1,0 +1,189 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Share /> renders without crashing 1`] = `
+<Share
+  id="c888"
+  isPreview={false}
+  language="en-us"
+  link="https://www.vimeo.com/23729318"
+  site=""
+  title="the title"
+  type="video"
+>
+  <div>
+    <List
+      className="share_list"
+    >
+      <div
+        className="ui list share_list"
+        role="list"
+      >
+        <ShareButton
+          icon="facebook f"
+          isPreview={false}
+          label="Share on Facebook"
+          url="https://www.facebook.com/sharer/sharer.php?u=https://www.vimeo.com/23729318"
+        >
+          <ListItem
+            as="a"
+            href="https://www.facebook.com/sharer/sharer.php?u=https://www.vimeo.com/23729318"
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            rel="noopener noreferrer"
+            style={
+              Object {
+                "cursor": "pointer",
+              }
+            }
+            target="_blank"
+          >
+            <a
+              className="item"
+              href="https://www.facebook.com/sharer/sharer.php?u=https://www.vimeo.com/23729318"
+              onClick={[Function]}
+              onKeyPress={[Function]}
+              rel="noopener noreferrer"
+              role="listitem"
+              style={
+                Object {
+                  "cursor": "pointer",
+                }
+              }
+              target="_blank"
+            >
+              <ListIcon
+                name="facebook f"
+              >
+                <Icon
+                  as="i"
+                  className=""
+                  name="facebook f"
+                >
+                  <i
+                    aria-hidden="true"
+                    className="facebook f icon"
+                  />
+                </Icon>
+              </ListIcon>
+              <ListContent>
+                <div
+                  className="content"
+                >
+                  Share on Facebook
+                </div>
+              </ListContent>
+            </a>
+          </ListItem>
+        </ShareButton>
+        <ShareButton
+          icon="twitter"
+          isPreview={false}
+          label="Share on Twitter"
+          url="https://twitter.com/home?status=the title https://www.vimeo.com/23729318"
+        >
+          <ListItem
+            as="a"
+            href="https://twitter.com/home?status=the title https://www.vimeo.com/23729318"
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            rel="noopener noreferrer"
+            style={
+              Object {
+                "cursor": "pointer",
+              }
+            }
+            target="_blank"
+          >
+            <a
+              className="item"
+              href="https://twitter.com/home?status=the title https://www.vimeo.com/23729318"
+              onClick={[Function]}
+              onKeyPress={[Function]}
+              rel="noopener noreferrer"
+              role="listitem"
+              style={
+                Object {
+                  "cursor": "pointer",
+                }
+              }
+              target="_blank"
+            >
+              <ListIcon
+                name="twitter"
+              >
+                <Icon
+                  as="i"
+                  className=""
+                  name="twitter"
+                >
+                  <i
+                    aria-hidden="true"
+                    className="twitter icon"
+                  />
+                </Icon>
+              </ListIcon>
+              <ListContent>
+                <div
+                  className="content"
+                >
+                  Share on Twitter
+                </div>
+              </ListContent>
+            </a>
+          </ListItem>
+        </ShareButton>
+      </div>
+    </List>
+    <ClipboardCopy
+      copyItem="http://localhost/video?id=c888&site=&language=en-us"
+      isPreview={false}
+      label="Direct Link"
+    >
+      <div
+        className="clipboardcopy_wrapper"
+      >
+        <div
+          className="clipboardcopy"
+        >
+          <div
+            className="clipboardcopy_label_wrapper"
+          >
+            <p
+              className="clipboardcopy_label"
+            >
+              Direct Link
+            </p>
+          </div>
+          <div
+            className="clipboardcopy_item"
+          >
+            <input
+              className="clipboardcopy_item_text"
+              defaultValue="http://localhost/video?id=c888&site=&language=en-us"
+              disabled={false}
+              onFocus={[Function]}
+              readOnly={true}
+              tabIndex="-1"
+              type="text"
+            />
+            <Button
+              as="button"
+              className=""
+              disabled={false}
+              onClick={[Function]}
+              primary={true}
+            >
+              <button
+                className="ui primary button"
+                onClick={[Function]}
+              >
+                Copy
+              </button>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </ClipboardCopy>
+  </div>
+</Share>
+`;
