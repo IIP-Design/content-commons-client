@@ -62,7 +62,11 @@ class ClipboardCopy extends Component {
               <VisuallyHidden> to this sharable item</VisuallyHidden>
             </label>
           </div>
-          <div className="clipboardcopy_item">
+          <div
+            className={
+              `clipboardcopy_item${isPreview ? ' preview' : ''}`
+            }
+          >
             <input
               id="clipboardcopy_item_text"
               type="text"

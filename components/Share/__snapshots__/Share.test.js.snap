@@ -148,11 +148,21 @@ exports[`<Share /> renders without crashing 1`] = `
           <div
             className="clipboardcopy_label_wrapper"
           >
-            <p
+            <label
               className="clipboardcopy_label"
+              htmlFor="clipboardcopy_item_text"
             >
               Direct Link
-            </p>
+              <VisuallyHidden
+                el="div"
+              >
+                <div
+                  className="hide-visually"
+                >
+                   to this sharable item
+                </div>
+              </VisuallyHidden>
+            </label>
           </div>
           <div
             className="clipboardcopy_item"
@@ -161,6 +171,7 @@ exports[`<Share /> renders without crashing 1`] = `
               className="clipboardcopy_item_text"
               defaultValue="http://localhost/video?id=c888&site=&language=en-us"
               disabled={false}
+              id="clipboardcopy_item_text"
               onFocus={[Function]}
               readOnly={true}
               tabIndex="-1"
