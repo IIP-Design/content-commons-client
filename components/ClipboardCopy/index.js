@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import './ClipboardCopy.scss';
 
 class ClipboardCopy extends Component {
@@ -53,10 +54,17 @@ class ClipboardCopy extends Component {
       <div className="clipboardcopy_wrapper">
         <div className="clipboardcopy">
           <div className="clipboardcopy_label_wrapper">
-            <p className="clipboardcopy_label">{ label }</p>
+            <label
+              className="clipboardcopy_label"
+              htmlFor="clipboardcopy_item_text"
+            >
+              { `${label}` }
+              <VisuallyHidden> to this sharable item</VisuallyHidden>
+            </label>
           </div>
           <div className="clipboardcopy_item">
             <input
+              id="clipboardcopy_item_text"
               type="text"
               defaultValue={ copyItem }
               tabIndex="-1"

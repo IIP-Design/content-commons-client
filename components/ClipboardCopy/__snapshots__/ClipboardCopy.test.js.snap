@@ -15,11 +15,21 @@ exports[`<ClipboardCopy /> renders without crashing 1`] = `
       <div
         className="clipboardcopy_label_wrapper"
       >
-        <p
+        <label
           className="clipboardcopy_label"
+          htmlFor="clipboardcopy_item_text"
         >
           Direct Link
-        </p>
+          <VisuallyHidden
+            el="div"
+          >
+            <div
+              className="hide-visually"
+            >
+               to this sharable item
+            </div>
+          </VisuallyHidden>
+        </label>
       </div>
       <div
         className="clipboardcopy_item"
@@ -28,6 +38,7 @@ exports[`<ClipboardCopy /> renders without crashing 1`] = `
           className="clipboardcopy_item_text"
           defaultValue="the item to be copied"
           disabled={false}
+          id="clipboardcopy_item_text"
           onFocus={[Function]}
           readOnly={true}
           tabIndex="-1"
