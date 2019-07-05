@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ClipboardCopy /> renders without crashing 1`] = `
+<ClipboardCopy
+  copyItem="the item to be copied"
+  isPreview={false}
+  label="Direct Link"
+>
+  <div
+    className="clipboardcopy_wrapper"
+  >
+    <div
+      className="clipboardcopy"
+    >
+      <div
+        className="clipboardcopy_label_wrapper"
+      >
+        <p
+          className="clipboardcopy_label"
+        >
+          Direct Link
+        </p>
+      </div>
+      <div
+        className="clipboardcopy_item"
+      >
+        <input
+          className="clipboardcopy_item_text"
+          defaultValue="the item to be copied"
+          disabled={false}
+          onFocus={[Function]}
+          readOnly={true}
+          tabIndex="-1"
+          type="text"
+        />
+        <Button
+          as="button"
+          className=""
+          disabled={false}
+          onClick={[Function]}
+          primary={true}
+        >
+          <button
+            className="ui primary button"
+            onClick={[Function]}
+          >
+            Copy
+          </button>
+        </Button>
+      </div>
+    </div>
+  </div>
+</ClipboardCopy>
+`;
