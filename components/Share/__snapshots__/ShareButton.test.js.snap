@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ShareButton /> renders without crashing 1`] = `
+<ShareButton
+  icon="twitter"
+  isPreview={false}
+  label="Share on Twitter"
+  url="https://the-url.com"
+>
+  <ListItem
+    as="a"
+    href="https://the-url.com"
+    onClick={[Function]}
+    onKeyPress={[Function]}
+    rel="noopener noreferrer"
+    style={
+      Object {
+        "cursor": "pointer",
+      }
+    }
+    target="_blank"
+  >
+    <a
+      className="item"
+      href="https://the-url.com"
+      onClick={[Function]}
+      onKeyPress={[Function]}
+      rel="noopener noreferrer"
+      role="listitem"
+      style={
+        Object {
+          "cursor": "pointer",
+        }
+      }
+      target="_blank"
+    >
+      <ListIcon
+        name="twitter"
+      >
+        <Icon
+          as="i"
+          className=""
+          name="twitter"
+        >
+          <i
+            aria-hidden="true"
+            className="twitter icon"
+          />
+        </Icon>
+      </ListIcon>
+      <ListContent>
+        <div
+          className="content"
+        >
+          Share on Twitter
+        </div>
+      </ListContent>
+    </a>
+  </ListItem>
+</ShareButton>
+`;
