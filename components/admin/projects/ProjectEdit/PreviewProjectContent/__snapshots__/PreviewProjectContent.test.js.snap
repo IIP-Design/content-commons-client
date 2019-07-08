@@ -874,6 +874,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                       "component": <Apollo(DownloadSrt)
                         id="123"
                         instructions="Download SRT(s)"
+                        isPreview={true}
                       />,
                       "title": "SRT",
                     },
@@ -1052,6 +1053,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                           "component": <Apollo(DownloadSrt)
                             id="123"
                             instructions="Download SRT(s)"
+                            isPreview={true}
                           />,
                           "title": "SRT",
                         },
