@@ -4,6 +4,10 @@ import { List } from 'semantic-ui-react';
 import { openWindow, isMobile } from 'lib/browser';
 
 const ShareButton = props => {
+  const {
+    url, icon, isPreview, label
+  } = props;
+
   /**
    * Opens a new window. If mobile, go a new window, else open popup window
    * Calling this function as opposed to directly calling openWindow allows
@@ -13,22 +17,29 @@ const ShareButton = props => {
    * @param {*} data element data attributes
    */
   const willOpenWindow = ( e, data = {} ) => {
+    if ( isPreview ) {
+      e.preventDefault();
+      return;
+    }
+
     if ( !isMobile() ) {
       e.preventDefault();
-      openWindow( props.url, data );
+      openWindow( url, data );
     }
   };
 
   return (
     <List.Item
       as="a"
-      href={ props.url }
+      href={ url }
+      rel="noopener noreferrer"
       target="_blank"
       onClick={ willOpenWindow }
       onKeyPress={ willOpenWindow }
+      style={ { cursor: isPreview ? 'default' : 'pointer' } }
     >
-      <List.Icon name={ props.icon } />
-      <List.Content>{ props.label }</List.Content>
+      <List.Icon name={ icon } />
+      <List.Content>{ label }</List.Content>
     </List.Item>
   );
 };
@@ -36,6 +47,7 @@ const ShareButton = props => {
 ShareButton.propTypes = {
   url: PropTypes.string,
   icon: PropTypes.string,
+  isPreview: PropTypes.bool,
   label: PropTypes.string
 };
 

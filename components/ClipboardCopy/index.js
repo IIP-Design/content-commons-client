@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import './ClipboardCopy.scss';
 
 class ClipboardCopy extends Component {
@@ -47,16 +48,27 @@ class ClipboardCopy extends Component {
 
 
   render() {
-    const { copyItem, label } = this.props;
+    const { copyItem, isPreview, label } = this.props;
 
     return (
       <div className="clipboardcopy_wrapper">
         <div className="clipboardcopy">
           <div className="clipboardcopy_label_wrapper">
-            <p className="clipboardcopy_label">{ label }</p>
+            <label
+              className="clipboardcopy_label"
+              htmlFor="clipboardcopy_item_text"
+            >
+              { `${label}` }
+              <VisuallyHidden> for this item</VisuallyHidden>
+            </label>
           </div>
-          <div className="clipboardcopy_item">
+          <div
+            className={
+              `clipboardcopy_item${isPreview ? ' preview' : ''}`
+            }
+          >
             <input
+              id="clipboardcopy_item_text"
               type="text"
               defaultValue={ copyItem }
               tabIndex="-1"
@@ -64,8 +76,16 @@ class ClipboardCopy extends Component {
               readOnly
               onFocus={ this.handleFocus }
               ref={ copyInput => { this.copyInput = copyInput; } }
+              disabled={ isPreview }
             />
-            <Button className={ this.state.cls } primary onClick={ this.handleCopyClick }>{ this.state.label }</Button>
+            <Button
+              className={ this.state.cls }
+              disabled={ isPreview }
+              primary
+              onClick={ this.handleCopyClick }
+            >
+              { this.state.label }
+            </Button>
           </div>
         </div>
       </div>
@@ -75,6 +95,7 @@ class ClipboardCopy extends Component {
 
 ClipboardCopy.propTypes = {
   copyItem: PropTypes.string,
+  isPreview: PropTypes.bool,
   label: PropTypes.string
 };
 

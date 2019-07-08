@@ -4,12 +4,17 @@ import ClipboardCopy from '../ClipboardCopy';
 import './Embed.scss';
 
 const Embed = props => {
+  const { children, instructions, isPreview } = props;
   const embedItem = props.embedItem ? props.embedItem : '';
   return (
     <div>
-      <div className="form-group_instructions">{ props.instructions }</div>
-      <ClipboardCopy label="Embed Code" copyItem={ embedItem } />
-      { props.children }
+      <div className="form-group_instructions">{ instructions }</div>
+      <ClipboardCopy
+        label="Embed Code"
+        copyItem={ embedItem }
+        isPreview={ isPreview }
+      />
+      { children }
     </div>
   );
 };
@@ -17,7 +22,8 @@ const Embed = props => {
 Embed.propTypes = {
   instructions: PropTypes.string,
   children: PropTypes.array,
-  embedItem: PropTypes.string
+  embedItem: PropTypes.string,
+  isPreview: PropTypes.bool
 };
 
 export default Embed;

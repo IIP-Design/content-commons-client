@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PopupTrigger /> renders without crashing 1`] = `
+<PopupTrigger
+  content={
+    <div>
+      content
+    </div>
+  }
+  icon={
+    Object {
+      "dim": 18,
+      "img": "shareIcon.svg",
+    }
+  }
+  show={true}
+  toolTip="Share Project"
+>
+  <span
+    style={
+      Object {
+        "display": "inline-block",
+      }
+    }
+  >
+    <Popup
+      className="popupElem_wrapper"
+      content={
+        <div>
+          content
+        </div>
+      }
+      horizontalOffset={4}
+      keepInViewPort={true}
+      on="click"
+      position="bottom right"
+      trigger={
+        <Button
+          as="button"
+          className="trigger"
+          tooltip="Share Project"
+        >
+          <img
+            alt="Share Project"
+            height={18}
+            src="shareIcon.svg"
+            width={18}
+          />
+           
+        </Button>
+      }
+    >
+      <Portal
+        closeOnDocumentClick={true}
+        closeOnEscape={true}
+        closeOnTriggerClick={true}
+        eventPool="default"
+        onClose={[Function]}
+        onMount={[Function]}
+        onOpen={[Function]}
+        onUnmount={[Function]}
+        openOnTriggerClick={true}
+        trigger={
+          <Button
+            as="button"
+            className="trigger"
+            tooltip="Share Project"
+          >
+            <img
+              alt="Share Project"
+              height={18}
+              src="shareIcon.svg"
+              width={18}
+            />
+             
+          </Button>
+        }
+        triggerRef={[Function]}
+      >
+        <Ref
+          innerRef={[Function]}
+        >
+          <Button
+            as="button"
+            className="trigger"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+            tooltip="Share Project"
+          >
+            <button
+              className="ui button trigger"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              tooltip="Share Project"
+            >
+              <img
+                alt="Share Project"
+                height={18}
+                src="shareIcon.svg"
+                width={18}
+              />
+               
+            </button>
+          </Button>
+        </Ref>
+      </Portal>
+    </Popup>
+  </span>
+</PopupTrigger>
+`;

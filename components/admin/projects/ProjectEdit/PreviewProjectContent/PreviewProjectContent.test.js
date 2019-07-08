@@ -23,6 +23,10 @@ jest.mock( 'lib/utils', () => ( {
   contentRegExp: jest.fn( () => false )
 } ) );
 
+jest.mock( 'static/icons/icon_download.svg', () => 'downloadIcon.svg' );
+jest.mock( 'static/icons/icon_embed.svg', () => 'embedIcon.svg' );
+jest.mock( 'static/icons/icon_share.svg', () => 'shareIcon.svg' );
+
 const props = { id: '123' };
 
 const mocks = getMocks( VIDEO_PROJECT_PREVIEW_QUERY, props );
@@ -353,6 +357,54 @@ describe( '<PreviewProjectContent />', () => {
     expect( spy ).toHaveBeenCalled();
     expect( videoType ).toEqual( 'video' );
     expect( noType ).toEqual( '' );
+  } );
+
+  it( 'renders the share icon and PopupTrigger', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const sharePopup = preview.find( 'PopupTrigger[tooltip="Share project"]' );
+
+    expect( sharePopup.exists() ).toEqual( true );
+  } );
+
+  it( 'renders the embed icon and PopupTrigger', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const embedPopup = preview.find( 'PopupTrigger[toolTip="Embed video"]' );
+
+    expect( embedPopup.exists() ).toEqual( true );
+  } );
+
+  it( 'does not render the embed icon and PopupTrigger if there are no YouTube and Vimeo urls', async () => {
+    const wrapper = mount(
+      <MockedProvider mocks={ noStreamsMocks } addTypename>
+        <PreviewProjectContent { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const embedPopup = preview.find( 'PopupTrigger[toolTip="Embed video"]' );
+
+    expect( embedPopup.exists() ).toEqual( false );
+  } );
+
+  it( 'renders the download icon and PopupTrigger', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const downloadPopup = preview.find( 'PopupTrigger[toolTip="Download video"]' );
+
+    expect( downloadPopup.exists() ).toEqual( true );
   } );
 
   it( 'renders an embedded YouTube video', async () => {

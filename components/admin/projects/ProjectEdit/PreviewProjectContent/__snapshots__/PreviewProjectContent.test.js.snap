@@ -478,6 +478,275 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                 panes={
                   Array [
                     Object {
+                      "component": <Embed
+                        embedItem="<iframe src=\\"https://www.youtube.com/embed/1evw4fRu3bo\\" width=\\"640\\" height=\\"360\\" frameborder=\\"0\\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>"
+                        instructions="Copy and paste the code below to embed video on your site"
+                        isPreview={true}
+                      />,
+                      "title": "Copy Embed Code",
+                    },
+                    Object {
+                      "component": <EmbedHelp />,
+                      "title": "Help",
+                    },
+                  ]
+                }
+                title="Embed this video on your site"
+              />
+            }
+            icon={
+              Object {
+                "dim": 24,
+                "img": "shareIcon.svg",
+              }
+            }
+            show={true}
+            toolTip="Embed video"
+          >
+            <span
+              style={
+                Object {
+                  "display": "inline-block",
+                }
+              }
+            >
+              <Popup
+                className="popupElem_wrapper"
+                content={
+                  <PopupTabbed
+                    panes={
+                      Array [
+                        Object {
+                          "component": <Embed
+                            embedItem="<iframe src=\\"https://www.youtube.com/embed/1evw4fRu3bo\\" width=\\"640\\" height=\\"360\\" frameborder=\\"0\\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>"
+                            instructions="Copy and paste the code below to embed video on your site"
+                            isPreview={true}
+                          />,
+                          "title": "Copy Embed Code",
+                        },
+                        Object {
+                          "component": <EmbedHelp />,
+                          "title": "Help",
+                        },
+                      ]
+                    }
+                    title="Embed this video on your site"
+                  />
+                }
+                horizontalOffset={4}
+                keepInViewPort={true}
+                on="click"
+                position="bottom right"
+                trigger={
+                  <Button
+                    as="button"
+                    className="trigger"
+                    tooltip="Embed video"
+                  >
+                    <img
+                      alt="Embed video"
+                      height={24}
+                      src="shareIcon.svg"
+                      width={24}
+                    />
+                     
+                  </Button>
+                }
+              >
+                <Portal
+                  closeOnDocumentClick={true}
+                  closeOnEscape={true}
+                  closeOnTriggerClick={true}
+                  eventPool="default"
+                  onClose={[Function]}
+                  onMount={[Function]}
+                  onOpen={[Function]}
+                  onUnmount={[Function]}
+                  openOnTriggerClick={true}
+                  trigger={
+                    <Button
+                      as="button"
+                      className="trigger"
+                      tooltip="Embed video"
+                    >
+                      <img
+                        alt="Embed video"
+                        height={24}
+                        src="shareIcon.svg"
+                        width={24}
+                      />
+                       
+                    </Button>
+                  }
+                  triggerRef={[Function]}
+                >
+                  <Ref
+                    innerRef={[Function]}
+                  >
+                    <Button
+                      as="button"
+                      className="trigger"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                      tooltip="Embed video"
+                    >
+                      <button
+                        className="ui button trigger"
+                        onBlur={[Function]}
+                        onClick={[Function]}
+                        onFocus={[Function]}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        tooltip="Embed video"
+                      >
+                        <img
+                          alt="Embed video"
+                          height={24}
+                          src="shareIcon.svg"
+                          width={24}
+                        />
+                         
+                      </button>
+                    </Button>
+                  </Ref>
+                </Portal>
+              </Popup>
+            </span>
+          </PopupTrigger>
+          <PopupTrigger
+            content={
+              <Popup
+                title="Share this project."
+              >
+                <Share
+                  id="123"
+                  isPreview={true}
+                  language="en-us"
+                  link="https://www.youtube.com/watch?v=1evw4fRu3bo"
+                  site=""
+                  title="test project title"
+                  type="video"
+                />
+              </Popup>
+            }
+            icon={
+              Object {
+                "dim": 18,
+                "img": "shareIcon.svg",
+              }
+            }
+            show={true}
+            tooltip="Share project"
+          >
+            <span
+              style={
+                Object {
+                  "display": "inline-block",
+                }
+              }
+            >
+              <Popup
+                className="popupElem_wrapper"
+                content={
+                  <Popup
+                    title="Share this project."
+                  >
+                    <Share
+                      id="123"
+                      isPreview={true}
+                      language="en-us"
+                      link="https://www.youtube.com/watch?v=1evw4fRu3bo"
+                      site=""
+                      title="test project title"
+                      type="video"
+                    />
+                  </Popup>
+                }
+                horizontalOffset={4}
+                keepInViewPort={true}
+                on="click"
+                position="bottom right"
+                trigger={
+                  <Button
+                    as="button"
+                    className="trigger"
+                  >
+                    <img
+                      height={18}
+                      src="shareIcon.svg"
+                      width={18}
+                    />
+                     
+                  </Button>
+                }
+              >
+                <Portal
+                  closeOnDocumentClick={true}
+                  closeOnEscape={true}
+                  closeOnTriggerClick={true}
+                  eventPool="default"
+                  onClose={[Function]}
+                  onMount={[Function]}
+                  onOpen={[Function]}
+                  onUnmount={[Function]}
+                  openOnTriggerClick={true}
+                  trigger={
+                    <Button
+                      as="button"
+                      className="trigger"
+                    >
+                      <img
+                        height={18}
+                        src="shareIcon.svg"
+                        width={18}
+                      />
+                       
+                    </Button>
+                  }
+                  triggerRef={[Function]}
+                >
+                  <Ref
+                    innerRef={[Function]}
+                  >
+                    <Button
+                      as="button"
+                      className="trigger"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      <button
+                        className="ui button trigger"
+                        onBlur={[Function]}
+                        onClick={[Function]}
+                        onFocus={[Function]}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                      >
+                        <img
+                          height={18}
+                          src="shareIcon.svg"
+                          width={18}
+                        />
+                         
+                      </button>
+                    </Button>
+                  </Ref>
+                </Portal>
+              </Popup>
+            </span>
+          </PopupTrigger>
+          <PopupTrigger
+            content={
+              <PopupTabbed
+                panes={
+                  Array [
+                    Object {
                       "component": <DownloadVideo
                         burnedInCaptions={false}
                         instructions="Download the video and SRT files in English.
@@ -633,7 +902,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
             icon={
               Object {
                 "dim": 18,
-                "img": Object {},
+                "img": "shareIcon.svg",
               }
             }
             position="right"
@@ -819,7 +1088,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                     <img
                       alt="Download video"
                       height={18}
-                      src={Object {}}
+                      src="shareIcon.svg"
                       width={18}
                     />
                      
@@ -845,7 +1114,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                       <img
                         alt="Download video"
                         height={18}
-                        src={Object {}}
+                        src="shareIcon.svg"
                         width={18}
                       />
                        
@@ -878,7 +1147,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                         <img
                           alt="Download video"
                           height={18}
-                          src={Object {}}
+                          src="shareIcon.svg"
                           width={18}
                         />
                          
