@@ -23,9 +23,9 @@ jest.mock( 'lib/utils', () => ( {
   contentRegExp: jest.fn( () => false )
 } ) );
 
-// jest.mock( 'static/icons/icon_download.svg', () => () => 'downloadIcon' );
-// jest.mock( 'static/icons/icon_embed.svg', () => () => 'embedIcon' );
-// jest.mock( 'static/icons/icon_share.svg', () => () => 'shareIcon' );
+jest.mock( 'static/icons/icon_download.svg', () => 'downloadIcon.svg' );
+jest.mock( 'static/icons/icon_embed.svg', () => 'embedIcon.svg' );
+jest.mock( 'static/icons/icon_share.svg', () => 'shareIcon.svg' );
 
 const props = { id: '123' };
 

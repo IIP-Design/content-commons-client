@@ -497,7 +497,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
             icon={
               Object {
                 "dim": 24,
-                "img": Object {},
+                "img": "shareIcon.svg",
               }
             }
             show={true}
@@ -546,7 +546,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                     <img
                       alt="Embed video"
                       height={24}
-                      src={Object {}}
+                      src="shareIcon.svg"
                       width={24}
                     />
                      
@@ -572,7 +572,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                       <img
                         alt="Embed video"
                         height={24}
-                        src={Object {}}
+                        src="shareIcon.svg"
                         width={24}
                       />
                        
@@ -605,7 +605,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                         <img
                           alt="Embed video"
                           height={24}
-                          src={Object {}}
+                          src="shareIcon.svg"
                           width={24}
                         />
                          
@@ -635,7 +635,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
             icon={
               Object {
                 "dim": 18,
-                "img": Object {},
+                "img": "shareIcon.svg",
               }
             }
             show={true}
@@ -676,7 +676,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                   >
                     <img
                       height={18}
-                      src={Object {}}
+                      src="shareIcon.svg"
                       width={18}
                     />
                      
@@ -700,7 +700,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                     >
                       <img
                         height={18}
-                        src={Object {}}
+                        src="shareIcon.svg"
                         width={18}
                       />
                        
@@ -730,7 +730,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                       >
                         <img
                           height={18}
-                          src={Object {}}
+                          src="shareIcon.svg"
                           width={18}
                         />
                          
@@ -902,7 +902,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
             icon={
               Object {
                 "dim": 18,
-                "img": Object {},
+                "img": "shareIcon.svg",
               }
             }
             position="right"
@@ -1088,7 +1088,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                     <img
                       alt="Download video"
                       height={18}
-                      src={Object {}}
+                      src="shareIcon.svg"
                       width={18}
                     />
                      
@@ -1114,7 +1114,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                       <img
                         alt="Download video"
                         height={18}
-                        src={Object {}}
+                        src="shareIcon.svg"
                         width={18}
                       />
                        
@@ -1147,7 +1147,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                         <img
                           alt="Download video"
                           height={18}
-                          src={Object {}}
+                          src="shareIcon.svg"
                           width={18}
                         />
                          
