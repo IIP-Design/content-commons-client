@@ -59,7 +59,7 @@ class ClipboardCopy extends Component {
               htmlFor="clipboardcopy_item_text"
             >
               { `${label}` }
-              <VisuallyHidden> to this sharable item</VisuallyHidden>
+              <VisuallyHidden> for this item</VisuallyHidden>
             </label>
           </div>
           <div

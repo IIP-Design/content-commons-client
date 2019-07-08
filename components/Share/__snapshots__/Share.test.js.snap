@@ -159,7 +159,7 @@ exports[`<Share /> renders without crashing 1`] = `
                 <div
                   className="hide-visually"
                 >
-                   to this sharable item
+                   for this item
                 </div>
               </VisuallyHidden>
             </label>
