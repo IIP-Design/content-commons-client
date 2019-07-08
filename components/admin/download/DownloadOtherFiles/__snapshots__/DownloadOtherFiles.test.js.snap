@@ -44,12 +44,13 @@ exports[`<DownloadOtherFiles /> renders final state without crashing 1`] = `
     }
   }
   id="123"
-  instructions="Download SRT(s)"
+  instructions="Download Other File(s)"
+  isPreview={false}
 >
   <p
     className="form-group_instructions"
   >
-    Download SRT(s)
+    Download Other File(s)
   </p>
   <ItemGroup
     className="download-item"
@@ -199,7 +200,8 @@ exports[`<DownloadOtherFiles /> renders initial loading state without crashing 1
     }
   }
   id="123"
-  instructions="Download SRT(s)"
+  instructions="Download Other File(s)"
+  isPreview={false}
 >
   <div
     style={

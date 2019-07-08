@@ -358,6 +358,7 @@ class PreviewProjectContent extends React.PureComponent {
                         <DownloadOtherFiles
                           id={ id }
                           instructions="Download Other File(s)"
+                          isPreview
                         />
                       )
                     },

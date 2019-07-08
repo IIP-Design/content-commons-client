@@ -890,6 +890,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                       "component": <Apollo(DownloadOtherFiles)
                         id="123"
                         instructions="Download Other File(s)"
+                        isPreview={true}
                       />,
                       "title": "Other",
                     },
@@ -1069,6 +1070,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                           "component": <Apollo(DownloadOtherFiles)
                             id="123"
                             instructions="Download Other File(s)"
+                            isPreview={true}
                           />,
                           "title": "Other",
                         },

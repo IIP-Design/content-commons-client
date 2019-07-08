@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { object, string } from 'prop-types';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Item, Loader } from 'semantic-ui-react';
@@ -8,7 +8,8 @@ import ApolloError from 'components/errors/ApolloError';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 
-const DownloadOtherFiles = ( { instructions, data } ) => {
+const DownloadOtherFiles = props => {
+  const { data, instructions, isPreview } = props;
   const { error, loading, project } = data;
 
   if ( loading ) {
@@ -43,8 +44,12 @@ const DownloadOtherFiles = ( { instructions, data } ) => {
     } = file;
 
     return (
-      <Item.Group key={ `fs_${id}` } className="download-item">
-        <Item as="a" href={ getS3Url( url ) } download={ filename }>
+      <Item.Group key={ `fs_${id}` } className={ `download-item${isPreview ? ' preview' : ''}` }>
+        <Item
+          as={ isPreview ? 'span' : 'a' }
+          href={ isPreview ? null : getS3Url( url ) }
+          download={ isPreview ? null : filename }
+        >
           <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
           <Item.Content>
             <Item.Header className="download-header">
@@ -75,8 +80,9 @@ const DownloadOtherFiles = ( { instructions, data } ) => {
 };
 
 DownloadOtherFiles.propTypes = {
-  data: object,
-  instructions: string
+  data: PropTypes.object,
+  instructions: PropTypes.string,
+  isPreview: PropTypes.bool
 };
 
 const VIDEO_PROJECT_PREVIEW_OTHER_FILES_QUERY = gql`
