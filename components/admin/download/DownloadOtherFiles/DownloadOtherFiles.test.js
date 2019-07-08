@@ -205,13 +205,14 @@ describe( '<DownloadOtherFiles />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const items = wrapper.find( 'Item' );
+    const items = wrapper.find( '.item' );
     const { files } = mocks[0].result.data.project;
     const s3Bucket = 'https://s3-url.com';
 
     expect( items.length ).toEqual( files.length );
     items.forEach( ( item, i ) => {
       const { url: assetPath, filename } = files[i];
+      expect( item.name() ).toEqual( 'a' );
       expect( item.prop( 'href' ) ).toEqual( `${s3Bucket}/${assetPath}` );
       expect( item.prop( 'download' ) ).toEqual( filename );
     } );
