@@ -328,6 +328,7 @@ class PreviewProjectContent extends React.PureComponent {
                           instructions={ `Download the video and SRT files in ${selectedLanguage}.
                             This download option is best for uploading this video to web pages.` }
                           burnedInCaptions={ videoBurnedInStatus === 'CAPTIONED' }
+                          isPreview
                         />
                       )
                     },
@@ -337,6 +338,7 @@ class PreviewProjectContent extends React.PureComponent {
                         <DownloadSrt
                           id={ id }
                           instructions="Download SRT(s)"
+                          isPreview
                         />
                       )
                     },
@@ -346,6 +348,7 @@ class PreviewProjectContent extends React.PureComponent {
                         <DownloadThumbnail
                           id={ id }
                           instructions="Download Thumbnail(s)"
+                          isPreview
                         />
                       )
                     },
@@ -355,6 +358,7 @@ class PreviewProjectContent extends React.PureComponent {
                         <DownloadOtherFiles
                           id={ id }
                           instructions="Download Other File(s)"
+                          isPreview
                         />
                       )
                     },

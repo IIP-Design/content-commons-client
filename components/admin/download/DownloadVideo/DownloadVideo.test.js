@@ -179,7 +179,8 @@ const props = {
       }
     ]
   },
-  burnedInCaptions: false
+  burnedInCaptions: false,
+  isPreview: false
 };
 
 const Component = <DownloadVideo { ...props } />;
@@ -192,9 +193,9 @@ describe( '<DownloadVideo />', () => {
     expect( toJSON( wrapper ) ).toMatchSnapshot();
   } );
 
-  it( 'renders <a> tags with the correct href and download attribute values', () => {
+  it( 'renders <a> tags with the correct href & download values if !isPreview', () => {
     const wrapper = mount( Component );
-    const items = wrapper.find( 'a.item' );
+    const items = wrapper.find( '.item' );
     const { files, title } = props.selectedLanguageUnit;
     const s3Bucket = 'https://s3-url.com';
 
@@ -202,9 +203,24 @@ describe( '<DownloadVideo />', () => {
     items.forEach( ( item, i ) => {
       const assetPath = files[i].url;
       const videoWidth = files[i].dimensions.width;
+      expect( item.name() ).toEqual( 'a' );
       expect( item.prop( 'href' ) ).toEqual( `${s3Bucket}/${assetPath}` );
       expect( item.prop( 'download' ) )
         .toEqual( `${title.replace( /\s/g, '_' )}_${videoWidth}.mp4` );
+    } );
+  } );
+
+  it( 'renders <span> tags with null href & download attributes if isPreview is true', () => {
+    const wrapper = mount( Component );
+    wrapper.setProps( { isPreview: true } );
+    const items = wrapper.find( '.item' );
+    const { files } = props.selectedLanguageUnit;
+
+    expect( items.length ).toEqual( files.length );
+    items.forEach( item => {
+      expect( item.name() ).toEqual( 'span' );
+      expect( item.prop( 'href' ) ).toEqual( null );
+      expect( item.prop( 'download' ) ).toEqual( null );
     } );
   } );
 

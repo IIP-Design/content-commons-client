@@ -41,6 +41,7 @@ exports[`<DownloadThumbnail /> renders final state without crashing 1`] = `
   }
   id="123"
   instructions="Download Thumbnail(s)"
+  isPreview={false}
 >
   <p
     className="form-group_instructions"
@@ -196,6 +197,7 @@ exports[`<DownloadThumbnail /> renders initial loading state without crashing 1`
   }
   id="123"
   instructions="Download Thumbnail(s)"
+  isPreview={false}
 >
   <div
     style={

@@ -16,7 +16,8 @@ jest.mock( 'static/icons/icon_download.svg', () => 'downloadIconSVG' );
 
 const props = {
   id: '123',
-  instructions: 'Download SRT(s)'
+  instructions: 'Download SRT(s)',
+  isPreview: false
 };
 
 const mocks = [
@@ -200,16 +201,38 @@ describe( '<DownloadSrt />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const items = wrapper.find( 'Item' );
+    const items = wrapper.find( '.item' );
     const { files } = mocks[0].result.data.project;
     const s3Bucket = 'https://s3-url.com';
 
     expect( items.length ).toEqual( files.length );
     items.forEach( ( item, i ) => {
       const assetPath = files[i].url;
+      expect( item.name() ).toEqual( 'a' );
       expect( item.prop( 'href' ) ).toEqual( `${s3Bucket}/${assetPath}` );
       expect( item.prop( 'download' ) )
         .toEqual( `${files[i].language.displayName}_SRT` );
+    } );
+  } );
+
+  it( 'renders <span> tags with null href & download attributes if isPreview is true', async () => {
+    const newProps = { ...props, isPreview: true };
+    const wrapper = mount(
+      <MockedProvider mocks={ mocks } addTypename={ false }>
+        <DownloadSrt { ...newProps } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const items = wrapper.find( '.item' );
+    const { files } = mocks[0].result.data.project;
+
+    expect( items.length ).toEqual( files.length );
+    items.forEach( item => {
+      expect( item.name() ).toEqual( 'span' );
+      expect( item.prop( 'href' ) ).toEqual( null );
+      expect( item.prop( 'download' ) ).toEqual( null );
     } );
   } );
 } );

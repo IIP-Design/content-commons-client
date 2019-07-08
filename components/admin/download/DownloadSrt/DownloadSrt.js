@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { object, string } from 'prop-types';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Item, Loader } from 'semantic-ui-react';
@@ -7,7 +7,8 @@ import { getS3Url } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import downloadIcon from 'static/icons/icon_download.svg';
 
-const DownloadSrt = ( { instructions, data } ) => {
+const DownloadSrt = props => {
+  const { data, instructions, isPreview } = props;
   const { error, loading, project } = data;
 
   if ( loading ) {
@@ -38,8 +39,12 @@ const DownloadSrt = ( { instructions, data } ) => {
   const renderFormItem = unit => {
     const { id, url, language: { displayName } } = unit;
     return (
-      <Item.Group key={ `fs_${id}` } className="download-item">
-        <Item as="a" href={ getS3Url( url ) } download={ `${displayName}_SRT` }>
+      <Item.Group key={ `fs_${id}` } className={ `download-item${isPreview ? ' preview' : ''}` }>
+        <Item
+          as={ isPreview ? 'span' : 'a' }
+          href={ isPreview ? null : getS3Url( url ) }
+          download={ isPreview ? null : `${displayName}_SRT` }
+        >
           <Item.Image
             size="mini"
             src={ downloadIcon }
@@ -74,8 +79,9 @@ const DownloadSrt = ( { instructions, data } ) => {
 };
 
 DownloadSrt.propTypes = {
-  data: object,
-  instructions: string
+  data: PropTypes.object,
+  instructions: PropTypes.string,
+  isPreview: PropTypes.bool
 };
 
 const VIDEO_PROJECT_PREVIEW_SRTS_QUERY = gql`

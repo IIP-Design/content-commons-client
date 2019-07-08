@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Item } from 'semantic-ui-react';
-import { object, string, bool } from 'prop-types';
+import PropTypes from 'prop-types';
 import downloadIcon from 'static/icons/icon_download.svg';
 import { formatBytes, getS3Url } from 'lib/utils';
 
@@ -8,7 +8,7 @@ import { formatBytes, getS3Url } from 'lib/utils';
 // Need to research more robust options depending on browser supprt
 const DownloadVideo = props => {
   const {
-    instructions, selectedLanguageUnit, burnedInCaptions
+    instructions, selectedLanguageUnit, burnedInCaptions, isPreview
   } = props;
 
   const getFnExt = url => {
@@ -39,8 +39,12 @@ const DownloadVideo = props => {
     const videoQuality = `${video.quality && video.quality === 'BROADCAST' ? 'broadcast' : 'web'}`;
 
     return (
-      <Item.Group key={ `fs_${id}-${video.id}` } className="download-item">
-        <Item as="a" href={ getS3Url( video.url ) } download={ fn }>
+      <Item.Group key={ `fs_${id}-${video.id}` } className={ `download-item${isPreview ? ' preview' : ''}` }>
+        <Item
+          as={ isPreview ? 'span' : 'a' }
+          href={ isPreview ? null : getS3Url( video.url ) }
+          download={ isPreview ? null : fn }
+        >
           <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
           <Item.Content>
             <Item.Header className="download-header">
@@ -92,9 +96,10 @@ const DownloadVideo = props => {
 };
 
 DownloadVideo.propTypes = {
-  selectedLanguageUnit: object,
-  instructions: string,
-  burnedInCaptions: bool
+  selectedLanguageUnit: PropTypes.object,
+  instructions: PropTypes.string,
+  burnedInCaptions: PropTypes.bool,
+  isPreview: PropTypes.bool
 };
 
 export default DownloadVideo;

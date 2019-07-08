@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { object, string } from 'prop-types';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Item, Loader } from 'semantic-ui-react';
@@ -8,7 +8,8 @@ import ApolloError from 'components/errors/ApolloError';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 
-const DownloadThumbnail = ( { instructions, data } ) => {
+const DownloadThumbnail = props => {
+  const { data, instructions, isPreview } = props;
   const { error, loading, project } = data;
 
   if ( loading ) {
@@ -39,8 +40,12 @@ const DownloadThumbnail = ( { instructions, data } ) => {
   const renderFormItem = thumbnail => {
     const { id, url, language: { displayName } } = thumbnail;
     return (
-      <Item.Group key={ `fs_${id}` } className="download-item">
-        <Item as="a" href={ getS3Url( url ) } download={ `${displayName}_thumbnail` }>
+      <Item.Group key={ `fs_${id}` } className={ `download-item${isPreview ? ' preview' : ''}` }>
+        <Item
+          as={ isPreview ? 'span' : 'a' }
+          href={ isPreview ? null : getS3Url( url ) }
+          download={ isPreview ? null : `${displayName}_thumbnail` }
+        >
           <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
           <Item.Content>
             <Item.Header className="download-header">
@@ -71,8 +76,9 @@ const DownloadThumbnail = ( { instructions, data } ) => {
 };
 
 DownloadThumbnail.propTypes = {
-  data: object,
-  instructions: string
+  data: PropTypes.object,
+  instructions: PropTypes.string,
+  isPreview: PropTypes.bool
 };
 
 const VIDEO_PROJECT_PREVIEW_THUMBNAILS_QUERY = gql`

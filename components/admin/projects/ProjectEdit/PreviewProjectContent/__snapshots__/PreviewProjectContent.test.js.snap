@@ -751,6 +751,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                         burnedInCaptions={false}
                         instructions="Download the video and SRT files in English.
                             This download option is best for uploading this video to web pages."
+                        isPreview={true}
                         selectedLanguageUnit={
                           Object {
                             "__typename": "VideoUnit",
@@ -873,6 +874,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                       "component": <Apollo(DownloadSrt)
                         id="123"
                         instructions="Download SRT(s)"
+                        isPreview={true}
                       />,
                       "title": "SRT",
                     },
@@ -880,6 +882,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                       "component": <Apollo(DownloadThumbnail)
                         id="123"
                         instructions="Download Thumbnail(s)"
+                        isPreview={true}
                       />,
                       "title": "Thumbnail",
                     },
@@ -887,6 +890,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                       "component": <Apollo(DownloadOtherFiles)
                         id="123"
                         instructions="Download Other File(s)"
+                        isPreview={true}
                       />,
                       "title": "Other",
                     },
@@ -927,6 +931,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                             burnedInCaptions={false}
                             instructions="Download the video and SRT files in English.
                             This download option is best for uploading this video to web pages."
+                            isPreview={true}
                             selectedLanguageUnit={
                               Object {
                                 "__typename": "VideoUnit",
@@ -1049,6 +1054,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                           "component": <Apollo(DownloadSrt)
                             id="123"
                             instructions="Download SRT(s)"
+                            isPreview={true}
                           />,
                           "title": "SRT",
                         },
@@ -1056,6 +1062,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                           "component": <Apollo(DownloadThumbnail)
                             id="123"
                             instructions="Download Thumbnail(s)"
+                            isPreview={true}
                           />,
                           "title": "Thumbnail",
                         },
@@ -1063,6 +1070,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                           "component": <Apollo(DownloadOtherFiles)
                             id="123"
                             instructions="Download Other File(s)"
+                            isPreview={true}
                           />,
                           "title": "Other",
                         },
