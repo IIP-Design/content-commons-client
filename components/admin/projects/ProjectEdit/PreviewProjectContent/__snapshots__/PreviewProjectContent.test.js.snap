@@ -624,7 +624,9 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                 <Share
                   id="123"
                   isPreview={true}
+                  language="en-us"
                   link="https://www.youtube.com/watch?v=1evw4fRu3bo"
+                  site=""
                   title="test project title"
                   type="video"
                 />
@@ -655,7 +657,9 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                     <Share
                       id="123"
                       isPreview={true}
+                      language="en-us"
                       link="https://www.youtube.com/watch?v=1evw4fRu3bo"
+                      site=""
                       title="test project title"
                       type="video"
                     />
