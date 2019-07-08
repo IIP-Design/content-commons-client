@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Item } from 'semantic-ui-react';
-import { object, string, bool } from 'prop-types';
+import PropTypes from 'prop-types';
 import downloadIcon from 'static/icons/icon_download.svg';
 import { formatBytes, getS3Url } from 'lib/utils';
 
@@ -96,10 +96,10 @@ const DownloadVideo = props => {
 };
 
 DownloadVideo.propTypes = {
-  selectedLanguageUnit: object,
-  instructions: string,
-  burnedInCaptions: bool,
-  isPreview: bool
+  selectedLanguageUnit: PropTypes.object,
+  instructions: PropTypes.string,
+  burnedInCaptions: PropTypes.bool,
+  isPreview: PropTypes.bool
 };
 
 export default DownloadVideo;
