@@ -109,4 +109,14 @@ describe( '<ClipboardCopy />', () => {
     expect( input.prop( 'disabled' ) ).toEqual( isPreview );
     expect( button.prop( 'disabled' ) ).toEqual( isPreview );
   } );
+
+  it( 'renders the correct class values if isPreview is true', () => {
+    const wrapper = mount( Component );
+    wrapper.setProps( { isPreview: true } );
+    const item = wrapper.find( 'div.clipboardcopy_item' );
+
+    expect( wrapper.prop( 'isPreview' ) ).toEqual( true );
+    expect( item.prop( 'className' ) )
+      .toEqual( 'clipboardcopy_item preview' );
+  } );
 } );
