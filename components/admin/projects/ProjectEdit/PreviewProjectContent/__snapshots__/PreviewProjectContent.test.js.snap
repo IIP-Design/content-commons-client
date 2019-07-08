@@ -881,6 +881,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                       "component": <Apollo(DownloadThumbnail)
                         id="123"
                         instructions="Download Thumbnail(s)"
+                        isPreview={true}
                       />,
                       "title": "Thumbnail",
                     },
@@ -1058,6 +1059,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                           "component": <Apollo(DownloadThumbnail)
                             id="123"
                             instructions="Download Thumbnail(s)"
+                            isPreview={true}
                           />,
                           "title": "Thumbnail",
                         },

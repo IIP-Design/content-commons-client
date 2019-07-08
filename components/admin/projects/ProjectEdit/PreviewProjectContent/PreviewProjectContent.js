@@ -347,6 +347,7 @@ class PreviewProjectContent extends React.PureComponent {
                         <DownloadThumbnail
                           id={ id }
                           instructions="Download Thumbnail(s)"
+                          isPreview
                         />
                       )
                     },
