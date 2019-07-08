@@ -328,6 +328,7 @@ class PreviewProjectContent extends React.PureComponent {
                           instructions={ `Download the video and SRT files in ${selectedLanguage}.
                             This download option is best for uploading this video to web pages.` }
                           burnedInCaptions={ videoBurnedInStatus === 'CAPTIONED' }
+                          isPreview
                         />
                       )
                     },

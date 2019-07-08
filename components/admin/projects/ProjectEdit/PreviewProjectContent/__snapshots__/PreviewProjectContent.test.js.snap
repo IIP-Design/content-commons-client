@@ -751,6 +751,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                         burnedInCaptions={false}
                         instructions="Download the video and SRT files in English.
                             This download option is best for uploading this video to web pages."
+                        isPreview={true}
                         selectedLanguageUnit={
                           Object {
                             "__typename": "VideoUnit",
@@ -927,6 +928,7 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                             burnedInCaptions={false}
                             instructions="Download the video and SRT files in English.
                             This download option is best for uploading this video to web pages."
+                            isPreview={true}
                             selectedLanguageUnit={
                               Object {
                                 "__typename": "VideoUnit",

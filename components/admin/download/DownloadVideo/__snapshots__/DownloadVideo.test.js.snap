@@ -4,6 +4,7 @@ exports[`<DownloadVideo /> renders without crashing 1`] = `
 <DownloadVideo
   burnedInCaptions={false}
   instructions="Download the video file in English"
+  isPreview={false}
   selectedLanguageUnit={
     Object {
       "__typename": "VideoUnit",
