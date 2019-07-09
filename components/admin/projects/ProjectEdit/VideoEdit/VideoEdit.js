@@ -107,15 +107,18 @@ const VideoEdit = props => {
     timer = setTimeout( fn, delay );
   };
 
+  const handleExit = () => {
+    props.router.push( { pathname: '/admin/dashboard' } );
+  };
 
-  const handleDeleteConfirm = async() => {
+  const handleDeleteConfirm = async () => {
     const { deleteVideoProject } = props;
 
     const deletedProjectId = await deleteVideoProject( { variables: { id: projectId } } )
       .catch( err => { setError( err ); } );
 
     if ( deletedProjectId ) {
-      props.router.push( { pathname: '/admin/dashboard' } );
+      handleExit();
     }
   };
 
@@ -213,28 +216,28 @@ const VideoEdit = props => {
     }
   };
 
-  const renderConfirm = ( isOpen, onConfirm, onCancel ) => (
-    <Fragment>
-      <Confirm
-        className="confirm-modal"
-        open={ isOpen }
-        onCancel={ onCancel }
-        onConfirm={ onConfirm }
-        cancelButton="No"
-        confirmButton="Yes"
-        content={ (
-          <ConfirmModalContent
-            className="content"
-            headline="Unsaved Changes!"
-          >
-            <p>You have not finished entering and uploading your project data and content.</p>
-            <p>Navigating away from this page now, your changes will not be saved and uploads for this project will be canceled.</p>
-            <p><strong>Do you want to leave this page and lose your changes and cancel your uploads?</strong></p>
-          </ConfirmModalContent>
-        ) }
-      />
-    </Fragment>
-  );
+  // const renderConfirm = ( isOpen, onConfirm, onCancel ) => (
+  //   <Fragment>
+  //     <Confirm
+  //       className="confirm-modal"
+  //       open={ isOpen }
+  //       onCancel={ onCancel }
+  //       onConfirm={ onConfirm }
+  //       cancelButton="No"
+  //       confirmButton="Yes"
+  //       content={ (
+  //         <ConfirmModalContent
+  //           className="content"
+  //           headline="Unsaved Changes!"
+  //         >
+  //           <p>You have not finished entering and uploading your project data and content.</p>
+  //           <p>Navigating away from this page now, your changes will not be saved and uploads for this project will be canceled.</p>
+  //           <p><strong>Do you want to leave this page and lose your changes and cancel your uploads?</strong></p>
+  //         </ConfirmModalContent>
+  //       ) }
+  //     />
+  //   </Fragment>
+  // );
 
   const contentStyle = {
     border: `3px solid ${( projectId ) ? 'transparent' : '#02bfe7'}`
@@ -277,7 +280,7 @@ const VideoEdit = props => {
             className="edit-project__btn--save-draft"
             content="Save & Exit"
             basic
-            onClick={ handleSaveDraft }
+            onClick={ handleExit }
             disabled={ !projectId }
           />
 
