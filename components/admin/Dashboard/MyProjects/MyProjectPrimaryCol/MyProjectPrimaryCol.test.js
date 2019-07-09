@@ -90,4 +90,27 @@ describe( '<MyProjectPrimaryCol />', () => {
     expect( popup.prop( 'content' ).length ).toBeGreaterThan( 35 );
     expect( toJSON( popup ) ).toMatchSnapshot();
   } );
+
+  it( 'renders "draft" class value for thumbnail img if status is DRAFT', () => {
+    const wrapper = shallow( Component );
+    const thumbnail = () => wrapper.find( '.myProjects_thumbnail img' );
+
+    // initial value
+    expect( thumbnail().prop( 'className' ) ).toEqual( null );
+
+    wrapper.setProps( { d: { ...props.d, status: 'DRAFT' } } );
+    expect( thumbnail().prop( 'className' ) ).toEqual( 'draft' );
+  } );
+
+  it( 'renders an overlay with "DRAFT" text for thumbnail img if status is DRAFT', () => {
+    const wrapper = shallow( Component );
+    const overlay = () => wrapper.find( '.draft-overlay' );
+
+    // does not exist if status !== DRAFT
+    expect( overlay().exists() ).toEqual( false );
+
+    wrapper.setProps( { d: { ...props.d, status: 'DRAFT' } } );
+    expect( overlay().exists() ).toEqual( true );
+    expect( overlay().contains( <span>DRAFT</span> ) ).toEqual( true );
+  } );
 } );
