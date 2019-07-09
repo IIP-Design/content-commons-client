@@ -90,4 +90,46 @@ describe( '<TeamProjectPrimaryCol />', () => {
     expect( popup.prop( 'content' ).length ).toBeGreaterThan( 35 );
     expect( toJSON( popup ) ).toMatchSnapshot();
   } );
+
+  it( 'renders "draft" class value for thumbnail img if status is DRAFT', () => {
+    const wrapper = shallow( Component );
+    const thumbnail = () => wrapper.find( '.myProjects_thumbnail img' );
+
+    // initial value
+    expect( thumbnail().prop( 'className' ) ).toEqual( null );
+
+    wrapper.setProps( { d: { ...props.d, status: 'DRAFT' } } );
+    expect( thumbnail().prop( 'className' ) ).toEqual( 'draft' );
+  } );
+
+  it( 'renders an overlay with "DRAFT" text for thumbnail img if status is DRAFT', () => {
+    const wrapper = shallow( Component );
+    const overlay = () => wrapper.find( '.draft-overlay' );
+
+    // does not exist if status !== DRAFT
+    expect( overlay().exists() ).toEqual( false );
+
+    wrapper.setProps( { d: { ...props.d, status: 'DRAFT' } } );
+    expect( overlay().exists() ).toEqual( true );
+    expect( overlay().contains( <span>DRAFT</span> ) ).toEqual( true );
+  } );
+
+  it( 'renders a placeholder if there is no thumbnail url', () => {
+    const wrapper = shallow( Component );
+    const placeholder = () => wrapper.find( '.placeholder' );
+    const innerPlaceholder = <div className="placeholder inner" />;
+
+    // does not exist if there is a thumbnail url
+    expect( placeholder().exists() ).toEqual( false );
+
+    wrapper.setProps( {
+      d: {
+        ...props.d,
+        thumbnail: { url: '', alt: '' }
+      }
+    } );
+    expect( placeholder().exists() ).toEqual( true );
+    expect( placeholder().contains( innerPlaceholder ) )
+      .toEqual( true );
+  } );
 } );
