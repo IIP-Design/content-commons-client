@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MyProjectPrimaryCol /> renders a Popup with a truncated project title if it is over 35 characters 1`] = `
+<Popup
+  content="Test Project Test Project Test Project Test Project"
+  hideOnScroll={true}
+  inverted={true}
+  keepInViewPort={true}
+  on={
+    Array [
+      "hover",
+      "focus",
+    ]
+  }
+  position="top left"
+  size="mini"
+  trigger={
+    <a
+      className="myProjects_data_title"
+      href="/admin/project/video/111/edit"
+    >
+      <span
+        aria-hidden={true}
+      >
+        Test Project Test Project Test P...
+      </span>
+      <VisuallyHidden
+        el="span"
+      >
+        Test Project Test Project Test Project Test Project
+      </VisuallyHidden>
+    </a>
+  }
+/>
+`;
+
+exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
+<Fragment>
+  <div
+    className="myProjects_actions"
+  >
+    <Checkbox
+      checked={false}
+      data-label="111"
+      onChange={[MockFunction]}
+      type="checkbox"
+    />
+  </div>
+  <div
+    className="myProjects_thumbnail"
+  >
+    <img
+      alt="the alt text"
+      src="https://website.com"
+    />
+  </div>
+  <div
+    className="myProjects_data"
+  >
+    <Link
+      as="/admin/project/video/111/edit"
+      href="/admin/project?content=video&id=111&action=edit"
+    >
+      <a
+        className="myProjects_data_title"
+      >
+        Test Project
+      </a>
+    </Link>
+    <div
+      className="myProjects_data_actions"
+    >
+      <div
+        className="myProjects_data_actions_wrapper"
+      >
+        <Link
+          as="/admin/project/video/111/edit"
+          href="/admin/project?content=video&id=111&action=edit"
+        >
+          <a
+            className="linkStyle myProjects_data_actions_action"
+          >
+            Edit
+          </a>
+        </Link>
+        <span>
+           | 
+        </span>
+        <Modal
+          centered={true}
+          closeIcon={true}
+          closeOnDimmerClick={true}
+          closeOnDocumentClick={false}
+          dimmer={true}
+          eventPool="Modal"
+          trigger={
+            <button
+              className="linkStyle myProjects_data_actions_action"
+              type="button"
+            >
+              Preview
+            </button>
+          }
+        >
+          <ModalContent>
+            <Apollo(PreviewProjectContent)
+              id="111"
+            />
+          </ModalContent>
+        </Modal>
+        <span>
+           | 
+        </span>
+        <DetailsPopup
+          id="111"
+        />
+      </div>
+      <button
+        className="linkStyle myProjects_data_actions_mobileToggle"
+        onClick={[Function]}
+        type="button"
+      >
+        <Icon
+          as="i"
+          name="ellipsis vertical"
+        />
+      </button>
+    </div>
+  </div>
+</Fragment>
+`;

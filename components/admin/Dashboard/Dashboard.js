@@ -4,7 +4,7 @@ import {
   Grid, Tab, Popup, Image
 } from 'semantic-ui-react';
 import userIcon from 'static/icons/icon_user_profile_dark.svg';
-import MyProjects from './MyProjects/MyProjects';
+import TeamProjects from './TeamProjects/TeamProjects';
 import './Dashboard.scss';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -28,28 +28,28 @@ class Dashboard extends React.Component {
       {
         menuItem: {
           key: '2',
-          name: 'My Projects'
-        },
-        render: function MyProjectsTab() {
-          return (
-            <Tab.Pane className="myProjects_scrolltable">
-              <MyProjects user={ user } />
-            </Tab.Pane>
-          );
-        }
-      },
-      {
-        menuItem: {
-          key: '3',
           content: <Popup
-            trigger={ <span>Team Projects</span> }
+            trigger={ <span>My Projects</span> }
             content="Coming Soon!"
             inverted
             position="bottom left"
           />,
           disabled: true
         },
-        render: function TeamProjectsTab() { return <Tab.Pane />; }
+        render: function MyProjectsTab() { return <Tab.Pane />; }
+      },
+      {
+        menuItem: {
+          key: '3',
+          name: 'Team Projects'
+        },
+        render: function TeamProjectsTab() {
+          return (
+            <Tab.Pane>
+              <TeamProjects user={ user } />
+            </Tab.Pane>
+          );
+        }
       },
       {
         menuItem: {
@@ -92,7 +92,7 @@ class Dashboard extends React.Component {
             <Tab
               menu={ { text: true, stackable: true } }
               panes={ this.renderPanes() }
-              defaultActiveIndex={ 1 }
+              defaultActiveIndex={ 2 }
             />
           </Grid.Column>
         </Grid>

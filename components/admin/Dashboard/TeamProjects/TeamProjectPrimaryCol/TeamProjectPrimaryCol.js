@@ -13,7 +13,7 @@ import {
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import PreviewProjectContent from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
-import './MyProjectPrimaryCol.scss';
+import './TeamProjectPrimaryCol.scss';
 
 const handleDataActionsOffClick = e => {
   // Check if click target is a data actions menu link
@@ -52,7 +52,7 @@ const toggleDataActions = e => {
   }
 };
 
-const MyProjectPrimaryCol = props => {
+const TeamProjectPrimaryCol = props => {
   const {
     d,
     d: { id },
@@ -71,7 +71,6 @@ const MyProjectPrimaryCol = props => {
           checked={ !!selectedItems.get( `${id}` ) }
           onChange={ toggleItemSelection }
         />
-        { /* <div className="myProjects_favorite"><Icon name='star' /></div> */ }
       </div>
       <div className="projects_thumbnail">
         <div className="wrapper">
@@ -160,11 +159,11 @@ const MyProjectPrimaryCol = props => {
   );
 };
 
-MyProjectPrimaryCol.propTypes = {
+TeamProjectPrimaryCol.propTypes = {
   d: PropTypes.object,
   header: PropTypes.object,
   selectedItems: PropTypes.instanceOf( Map ),
   toggleItemSelection: PropTypes.func
 };
 
-export default MyProjectPrimaryCol;
+export default TeamProjectPrimaryCol;

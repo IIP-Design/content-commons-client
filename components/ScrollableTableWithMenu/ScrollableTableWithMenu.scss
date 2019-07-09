@@ -122,6 +122,15 @@
               transition: max-height 0.3s ease, opacity 0.2s ease;
             }
           }
+
+          // Mobile - Display data actions menu
+          &.displayDataActions {
+            z-index: 3 !important;
+          
+            .projects_data_actions_wrapper {
+              display: block;
+            }
+          }
         }
 
         .primary_col {

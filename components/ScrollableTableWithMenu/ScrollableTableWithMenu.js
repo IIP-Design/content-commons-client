@@ -242,6 +242,7 @@ class ScrollableTableWithMenu extends React.Component {
                   windowWidth={ windowWidth }
                   column={ column }
                   direction={ direction }
+                  projectTab={ this.props.projectTab }
                 />
               </Table>
             </div>
@@ -265,7 +266,8 @@ class ScrollableTableWithMenu extends React.Component {
 ScrollableTableWithMenu.propTypes = {
   persistentTableHeaders: PropTypes.array,
   columnMenu: PropTypes.array,
-  team: PropTypes.string
+  team: PropTypes.string,
+  projectTab: PropTypes.string
 };
 
 export default ScrollableTableWithMenu;

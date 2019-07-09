@@ -9,28 +9,28 @@ import ScrollableTableWithMenu from 'components/ScrollableTableWithMenu/Scrollab
 
 const persistentTableHeaders = [
   { name: 'projectTitle', label: 'PROJECT TITLE' },
-  { name: 'visibility', label: 'VISIBILITY' },
   { name: 'createdAt', label: 'CREATED' },
-  { name: 'team', label: 'TEAM' }
+  { name: 'visibility', label: 'VISIBILITY' },
+  { name: 'author', label: 'AUTHOR' }
 ];
 
 const menuItems = [
-  { name: 'author', label: 'AUTHOR' },
+  { name: 'team', label: 'TEAM' },
   { name: 'categories', label: 'CATEGORIES' },
   { name: 'updatedAt', label: 'MODIFIED DATE' },
 ];
 
-const MyProjects = props => (
+const TeamProjects = props => (
   <ScrollableTableWithMenu
     columnMenu={ menuItems }
     persistentTableHeaders={ persistentTableHeaders }
     team={ props.user.team.name }
-    projectTab="myProjects"
+    projectTab="teamProjects"
   />
 );
 
-MyProjects.propTypes = {
+TeamProjects.propTypes = {
   user: PropTypes.object
 };
 
-export default MyProjects;
+export default TeamProjects;

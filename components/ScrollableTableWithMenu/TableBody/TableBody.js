@@ -1,15 +1,12 @@
 import './TableBody.scss';
-
 import { Loader, Table } from 'semantic-ui-react';
 import { formatDate, getPathToS3Bucket } from 'lib/utils';
-
 import ApolloError from 'components/errors/ApolloError';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import React from 'react';
 import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import gql from 'graphql-tag';
-
 import orderBy from 'lodash/orderBy';
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
@@ -124,7 +121,8 @@ const TableBody = props => {
     selectedItems,
     tableHeaders,
     toggleItemSelection,
-    variables
+    variables,
+    projectTab
   } = props;
 
   return (
@@ -211,7 +209,7 @@ const TableBody = props => {
         const paginatedTableData = tableData.slice( skip, skip + first );
 
         return (
-          <Table.Body className="myProjects">
+          <Table.Body className="projects">
             { paginatedTableData.map( d => (
               <TableRow
                 key={ d.id }
@@ -219,6 +217,7 @@ const TableBody = props => {
                 selectedItems={ selectedItems }
                 tableHeaders={ tableHeaders }
                 toggleItemSelection={ toggleItemSelection }
+                projectTab={ projectTab }
               />
             ) ) }
           </Table.Body>
@@ -234,7 +233,8 @@ TableBody.propTypes = {
   tableHeaders: PropTypes.array,
   toggleItemSelection: PropTypes.func,
   variables: PropTypes.object,
-  direction: PropTypes.string
+  direction: PropTypes.string,
+  projectTab: PropTypes.string
 };
 
 export default TableBody;
