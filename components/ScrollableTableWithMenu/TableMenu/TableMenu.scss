@@ -64,7 +64,7 @@
       }
     }
 
-    [data-tablearrow] {
+    button[data-tablearrow] {
       display: inline-block;
       border: 0;
       padding-left: 0.222222222rem;
@@ -72,6 +72,11 @@
       color: $blue;
       background-color: #fff;
       cursor: pointer;
+
+      &.disabled {
+        color: $focus-gray;
+        pointer-events: none;
+      }
     }
 
     [data-tablearrow]:focus {
