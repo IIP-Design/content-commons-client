@@ -75,11 +75,21 @@ const MyProjectPrimaryCol = props => {
       </div>
       <div className="myProjects_thumbnail">
         <div className="wrapper">
-          <img
-            className={ isDraft ? 'draft' : null }
-            src={ d.thumbnail.url }
-            alt={ d.thumbnail.alt }
-          />
+          { d.thumbnail.url
+            ? (
+              <img
+                className={ isDraft ? 'draft' : null }
+                src={ d.thumbnail.url }
+                alt={ d.thumbnail.alt }
+              />
+            )
+            : (
+              <div className="placeholder outer">
+                <div className="placeholder inner" />
+              </div>
+            )
+          }
+
           { isDraft && (
             <p className="draft-overlay">
               <span>{ d.status }</span>
