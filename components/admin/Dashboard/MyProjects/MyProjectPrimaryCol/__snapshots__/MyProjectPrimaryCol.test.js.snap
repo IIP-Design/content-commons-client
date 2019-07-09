@@ -49,10 +49,15 @@ exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
   <div
     className="myProjects_thumbnail"
   >
-    <img
-      alt="the alt text"
-      src="https://website.com"
-    />
+    <div
+      className="wrapper"
+    >
+      <img
+        alt="the alt text"
+        className={null}
+        src="https://website.com"
+      />
+    </div>
   </div>
   <div
     className="myProjects_data"
