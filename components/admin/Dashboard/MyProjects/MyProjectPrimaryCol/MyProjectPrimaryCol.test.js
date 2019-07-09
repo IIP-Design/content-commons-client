@@ -113,4 +113,23 @@ describe( '<MyProjectPrimaryCol />', () => {
     expect( overlay().exists() ).toEqual( true );
     expect( overlay().contains( <span>DRAFT</span> ) ).toEqual( true );
   } );
+
+  it( 'renders a placeholder if there is no thumbnail url', () => {
+    const wrapper = shallow( Component );
+    const placeholder = () => wrapper.find( '.placeholder' );
+    const innerPlaceholder = <div className="placeholder inner" />;
+
+    // does not exist if there is a thumbnail url
+    expect( placeholder().exists() ).toEqual( false );
+
+    wrapper.setProps( {
+      d: {
+        ...props.d,
+        thumbnail: { url: '', alt: '' }
+      }
+    } );
+    expect( placeholder().exists() ).toEqual( true );
+    expect( placeholder().contains( innerPlaceholder ) )
+      .toEqual( true );
+  } );
 } );
