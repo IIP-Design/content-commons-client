@@ -61,6 +61,7 @@ const MyProjectPrimaryCol = props => {
     toggleItemSelection
   } = props;
 
+  const isDraft = d.status === 'DRAFT';
   const projectTitleLength = d[header.name].length >= 35;
   return (
     <Fragment>
@@ -73,7 +74,18 @@ const MyProjectPrimaryCol = props => {
         { /* <div className="myProjects_favorite"><Icon name='star' /></div> */ }
       </div>
       <div className="myProjects_thumbnail">
-        <img src={ d.thumbnail.url } alt={ d.thumbnail.alt } />
+        <div className="wrapper">
+          <img
+            className={ isDraft ? 'draft' : null }
+            src={ d.thumbnail.url }
+            alt={ d.thumbnail.alt }
+          />
+          { isDraft && (
+            <p className="draft-overlay">
+              <span>{ d.status }</span>
+            </p>
+          ) }
+        </div>
       </div>
       <div className="myProjects_data">
         { /**
