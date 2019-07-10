@@ -28,7 +28,7 @@ const TableRow = props => {
         <Table.Cell
           data-header={ header.label }
           key={ `${d.id}_${header.name}` }
-          className="items_table_item"
+          className={ `items_table_item${d.status === 'PUBLISHING' ? ' isPublishing' : ''}` }
         >
           { i === 0
             ? (
