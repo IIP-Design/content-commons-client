@@ -67,7 +67,7 @@ describe( '<Share />', () => {
       .toEqual( `${twitterShare}${props.title} ${shareLink}` );
   } );
 
-  it( 'passes the correct link to ClipboardCopy if type is video', () => {
+  it( 'passes the correct link to ClipboardCopy if type is video & !isPreview', () => {
     jest.resetModules();
     const wrapper = mount( Component );
     const clipboardCopy = wrapper.find( 'ClipboardCopy' );
@@ -79,6 +79,18 @@ describe( '<Share />', () => {
 
     expect( clipboardCopy.prop( 'copyItem' ) )
       .toEqual( libBrowser.stringifyQueryString() );
+  } );
+
+  it( 'passes the placeholder text to ClipboardCopy if type is video & isPreview is true', () => {
+    const wrapper = mount( Component );
+    wrapper.setProps( {
+      isPreview: true,
+      link: 'The direct link to the project will appear here.'
+    } );
+    const clipboardCopy = wrapper.find( 'ClipboardCopy' );
+
+    expect( clipboardCopy.prop( 'copyItem' ) )
+      .toEqual( wrapper.prop( 'link' ) );
   } );
 
   it( 'passes the correct link to ClipboardCopy if type is post and is from content.america.gov', () => {

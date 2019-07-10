@@ -18,7 +18,10 @@ const Share = props => {
     : stringifyQueryString( { id, site } );
   let directLink = link;
   let shareLink = link;
-  if ( type === 'video' ) directLink = `${window.location.protocol}//${window.location.host}/video?${queryStr}`;
+
+  if ( type === 'video' && !isPreview ) {
+    directLink = `${window.location.protocol}//${window.location.host}/video?${queryStr}`;
+  }
   if ( contentRegExp( link ) && type === 'post' ) {
     directLink = `${window.location.protocol}//${window.location.host}/article?${queryStr}`;
     shareLink = directLink;
