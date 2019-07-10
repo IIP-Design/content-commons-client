@@ -8,7 +8,6 @@ import MyProjectPrimaryCol from './MyProjectPrimaryCol';
  * in order for this test suite to run.
  */
 jest.mock( 'next-server/dynamic', () => () => 'VideoDetailsPopup' );
-jest.mock( 'next-server/dynamic', () => () => 'ImageDetailsPopup' );
 
 const props = {
   d: {
@@ -93,7 +92,7 @@ describe( '<MyProjectPrimaryCol />', () => {
 
   it( 'renders "draft" class value for thumbnail img if status is DRAFT', () => {
     const wrapper = shallow( Component );
-    const thumbnail = () => wrapper.find( '.myProjects_thumbnail img' );
+    const thumbnail = () => wrapper.find( '.projects_thumbnail img' );
 
     // initial value
     expect( thumbnail().prop( 'className' ) ).toEqual( null );

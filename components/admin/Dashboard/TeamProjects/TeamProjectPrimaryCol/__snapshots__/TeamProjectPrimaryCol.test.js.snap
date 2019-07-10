@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<MyProjectPrimaryCol /> renders a Popup with a truncated project title if it is over 35 characters 1`] = `
+exports[`<TeamProjectPrimaryCol /> renders a Popup with a truncated project title if it is over 35 characters 1`] = `
 <Popup
   content="Test Project Test Project Test Project Test Project"
   hideOnScroll={true}
@@ -34,7 +34,7 @@ exports[`<MyProjectPrimaryCol /> renders a Popup with a truncated project title 
 />
 `;
 
-exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
+exports[`<TeamProjectPrimaryCol /> renders without crashing 1`] = `
 <Fragment>
   <div
     className="projects_actions"
