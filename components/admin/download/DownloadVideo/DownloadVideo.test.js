@@ -224,6 +224,31 @@ describe( '<DownloadVideo />', () => {
     } );
   } );
 
+  it( 'renders preview text if isPreview is true', () => {
+    const wrapper = mount( Component );
+    wrapper.setProps( { isPreview: true } );
+    const previews = wrapper.find( '.preview-text' );
+    const { files } = props.selectedLanguageUnit;
+
+    expect( previews.length ).toEqual( files.length );
+    previews.forEach( preview => {
+      expect( preview.exists() )
+        .toEqual( wrapper.prop( 'isPreview' ) );
+      expect( preview.name() ).toEqual( 'span' );
+      expect( preview.text() )
+        .toEqual( 'The link will be active after publishing.' );
+    } );
+  } );
+
+  it( 'does not render preview text if !isPreview', () => {
+    const wrapper = mount( Component );
+    const previews = wrapper.find( '.preview-text' );
+
+    expect( previews.exists() )
+      .toEqual( wrapper.prop( 'isPreview' ) );
+    expect( previews.length ).toEqual( 0 );
+  } );
+
   it( 'renders a "no video available message" if there are no video files', () => {
     const noFilesProps = {
       ...props,

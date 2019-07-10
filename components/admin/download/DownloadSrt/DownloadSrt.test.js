@@ -235,4 +235,41 @@ describe( '<DownloadSrt />', () => {
       expect( item.prop( 'download' ) ).toEqual( null );
     } );
   } );
+
+  it( 'renders preview text if isPreview is true', async () => {
+    const newProps = { ...props, isPreview: true };
+    const wrapper = mount(
+      <MockedProvider mocks={ mocks } addTypename={ false }>
+        <DownloadSrt { ...newProps } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const downloadSrt = wrapper.find( 'DownloadSrt' );
+    const previews = downloadSrt.find( '.preview-text' );
+    const { files } = mocks[0].result.data.project;
+
+    expect( previews.length ).toEqual( files.length );
+    previews.forEach( preview => {
+      expect( preview.exists() )
+        .toEqual( downloadSrt.prop( 'isPreview' ) );
+      expect( preview.name() ).toEqual( 'span' );
+      expect( preview.text() )
+        .toEqual( 'The link will be active after publishing.' );
+    } );
+  } );
+
+  it( 'does not render preview text if !isPreview', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const downloadSrt = wrapper.find( 'DownloadSrt' );
+    const previews = downloadSrt.find( '.preview-text' );
+
+    expect( previews.exists() )
+      .toEqual( downloadSrt.prop( 'isPreview' ) );
+    expect( previews.length ).toEqual( 0 );
+  } );
 } );

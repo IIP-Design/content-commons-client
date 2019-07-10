@@ -61,10 +61,19 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        width: 100%;
         color: #fff;
         font-weight: bold;
+        text-align: center;
         opacity: 0;
         transition: opacity 0.5s linear;
+
+        .preview-text {
+          display: block;
+          font-size: 0.777777778rem;
+          font-style: italic;
+          font-weight: normal
+        }
       }
 
       &:after {

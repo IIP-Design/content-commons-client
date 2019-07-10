@@ -65,7 +65,15 @@ const DownloadVideo = props => {
               { ' ' }
               { `Dimensions: ${size.label}` }
             </Item.Meta>
-            <span className="item_hover">{ `Download for ${videoQuality}` }</span>
+            <span className="item_hover">
+              { `Download for ${videoQuality}` }
+              { isPreview
+                && (
+                  <span className="preview-text">
+                    The link will be active after publishing.
+                  </span>
+                ) }
+            </span>
           </Item.Content>
         </Item>
       </Item.Group>

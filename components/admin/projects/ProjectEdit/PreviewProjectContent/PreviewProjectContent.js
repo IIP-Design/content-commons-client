@@ -280,7 +280,7 @@ class PreviewProjectContent extends React.PureComponent {
                         component: (
                           <EmbedVideo
                             instructions="Copy and paste the code below to embed video on your site"
-                            embedItem={ embedItem }
+                            embedItem="The video embed code will appear here."
                             isPreview
                           />
                         )
@@ -302,7 +302,7 @@ class PreviewProjectContent extends React.PureComponent {
                     id={ id }
                     isPreview
                     language={ selectedUnit.language.locale }
-                    link={ youTubeUrl || vimeoUrl }
+                    link="The direct link to the project will appear here."
                     site=""
                     title={ title }
                     type={ contentType }
