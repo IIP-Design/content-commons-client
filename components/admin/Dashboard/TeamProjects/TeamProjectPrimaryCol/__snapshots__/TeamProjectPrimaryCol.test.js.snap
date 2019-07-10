@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<MyProjectPrimaryCol /> renders a Popup with a truncated project title if it is over 35 characters 1`] = `
+exports[`<TeamProjectPrimaryCol /> renders a Popup with a truncated project title if it is over 35 characters 1`] = `
 <Popup
   content="Test Project Test Project Test Project Test Project"
   hideOnScroll={true}
@@ -16,7 +16,7 @@ exports[`<MyProjectPrimaryCol /> renders a Popup with a truncated project title 
   size="mini"
   trigger={
     <a
-      className="myProjects_data_title"
+      className="projects_data_title"
       href="/admin/project/video/111/edit"
     >
       <span
@@ -34,10 +34,10 @@ exports[`<MyProjectPrimaryCol /> renders a Popup with a truncated project title 
 />
 `;
 
-exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
+exports[`<TeamProjectPrimaryCol /> renders without crashing 1`] = `
 <Fragment>
   <div
-    className="myProjects_actions"
+    className="projects_actions"
   >
     <Checkbox
       checked={false}
@@ -47,38 +47,43 @@ exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
     />
   </div>
   <div
-    className="myProjects_thumbnail"
+    className="projects_thumbnail"
   >
-    <img
-      alt="the alt text"
-      src="https://website.com"
-    />
+    <div
+      className="wrapper"
+    >
+      <img
+        alt="the alt text"
+        className={null}
+        src="https://website.com"
+      />
+    </div>
   </div>
   <div
-    className="myProjects_data"
+    className="projects_data"
   >
     <Link
       as="/admin/project/video/111/edit"
       href="/admin/project?content=video&id=111&action=edit"
     >
       <a
-        className="myProjects_data_title"
+        className="projects_data_title"
       >
         Test Project
       </a>
     </Link>
     <div
-      className="myProjects_data_actions"
+      className="projects_data_actions"
     >
       <div
-        className="myProjects_data_actions_wrapper"
+        className="projects_data_actions_wrapper"
       >
         <Link
           as="/admin/project/video/111/edit"
           href="/admin/project?content=video&id=111&action=edit"
         >
           <a
-            className="linkStyle myProjects_data_actions_action"
+            className="linkStyle projects_data_actions_action"
           >
             Edit
           </a>
@@ -95,7 +100,7 @@ exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
           eventPool="Modal"
           trigger={
             <button
-              className="linkStyle myProjects_data_actions_action"
+              className="linkStyle projects_data_actions_action"
               type="button"
             >
               Preview
@@ -116,7 +121,7 @@ exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
         />
       </div>
       <button
-        className="linkStyle myProjects_data_actions_mobileToggle"
+        className="linkStyle projects_data_actions_mobileToggle"
         onClick={[Function]}
         type="button"
       >
