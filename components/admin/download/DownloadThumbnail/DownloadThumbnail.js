@@ -53,6 +53,12 @@ const DownloadThumbnail = props => {
             </Item.Header>
             <span className="item_hover">
               { `Download ${displayName} Thumbnail` }
+              { isPreview
+                && (
+                  <span className="preview-text">
+                    The link will be active after publishing.
+                  </span>
+                ) }
             </span>
           </Item.Content>
         </Item>

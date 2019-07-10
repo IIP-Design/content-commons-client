@@ -36,7 +36,7 @@ describe( '<Embed />', () => {
     expect( clipboardCopy.exists() ).toEqual( true );
   } );
 
-  it( 'renders an enabled input element with the embed code', () => {
+  it( 'renders an enabled input element with the embed code if !isPreview', () => {
     const wrapper = mount( Component );
     const input = wrapper.find( 'input[type="text"]' );
 
@@ -45,14 +45,19 @@ describe( '<Embed />', () => {
     expect( input.prop( 'disabled' ) ).toEqual( props.isPreview );
   } );
 
-  it( 'renders a disabled input element if isPreview', () => {
+  it( 'renders a disabled input element with placeholder text if isPreview', () => {
     const wrapper = mount( Component );
-    wrapper.setProps( { isPreview: true } );
+    wrapper.setProps( {
+      isPreview: true,
+      embedItem: 'The video embed code will appear here.'
+    } );
     const input = wrapper.find( 'input[type="text"]' );
 
     expect( wrapper.prop( 'isPreview' ) ).toEqual( true );
     expect( input.exists() ).toEqual( true );
     expect( input.prop( 'disabled' ) ).toEqual( wrapper.prop( 'isPreview' ) );
+    expect( input.prop( 'defaultValue' ) )
+      .toEqual( wrapper.prop( 'embedItem' ) );
   } );
 
   it( 'renders an enabled copy Button', () => {
