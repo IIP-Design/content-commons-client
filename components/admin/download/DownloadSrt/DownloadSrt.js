@@ -56,6 +56,12 @@ const DownloadSrt = props => {
             </Item.Header>
             <span className="item_hover">
               { `Download ${displayName} SRT` }
+              { isPreview
+                && (
+                  <span className="preview-text">
+                    The link will be active after publishing.
+                  </span>
+                ) }
             </span>
           </Item.Content>
         </Item>
