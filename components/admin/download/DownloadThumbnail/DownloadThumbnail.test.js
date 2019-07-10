@@ -236,4 +236,41 @@ describe( '<DownloadThumbnail />', () => {
       expect( item.prop( 'download' ) ).toEqual( null );
     } );
   } );
+
+  it( 'renders preview text if isPreview is true', async () => {
+    const newProps = { ...props, isPreview: true };
+    const wrapper = mount(
+      <MockedProvider mocks={ mocks } addTypename={ false }>
+        <DownloadThumbnail { ...newProps } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const downloadThumbnail = wrapper.find( 'DownloadThumbnail' );
+    const previews = downloadThumbnail.find( '.preview-text' );
+    const { thumbnails } = mocks[0].result.data.project;
+
+    expect( previews.length ).toEqual( thumbnails.length );
+    previews.forEach( preview => {
+      expect( preview.exists() )
+        .toEqual( downloadThumbnail.prop( 'isPreview' ) );
+      expect( preview.name() ).toEqual( 'span' );
+      expect( preview.text() )
+        .toEqual( 'The link will be active after publishing.' );
+    } );
+  } );
+
+  it( 'does not render preview text if !isPreview', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const downloadThumbnail = wrapper.find( 'DownloadThumbnail' );
+    const previews = downloadThumbnail.find( '.preview-text' );
+
+    expect( previews.exists() )
+      .toEqual( downloadThumbnail.prop( 'isPreview' ) );
+    expect( previews.length ).toEqual( 0 );
+  } );
 } );
