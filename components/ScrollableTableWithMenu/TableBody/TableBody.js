@@ -195,7 +195,7 @@ const TableBody = props => {
             if ( !column ) column = 'createdAt';
             // Sort by parsed Date instead of String
             if ( column === 'createdAt' || column === 'updatedAt' ) {
-              return Date.parse( column );
+              return Date.parse( tableDatum[column] );
             }
             // Format table data for case insensitive sorting
             const formattedTableDatum = tableDatum[column].toString().toLowerCase();
