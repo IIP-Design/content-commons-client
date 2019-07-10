@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TableRow /> renders Author, Categories, and Modified Date columns when selected 1`] = `
+exports[`<TableRow /> renders Team, Categories, and Modified Date columns when selected 1`] = `
 Array [
   <TableCell
     as="td"
@@ -11,7 +11,7 @@ Array [
     <div
       className="primary_col"
     >
-      <MyProjectPrimaryCol
+      <VideoDetailsPopup
         d={
           Object {
             "author": "Jane Doe",
@@ -47,22 +47,6 @@ Array [
   <TableCell
     as="td"
     className="items_table_item"
-    data-header="VISIBILITY"
-    key="d137_visibility"
-  >
-    <span>
-      <div
-        className="items_table_mobileHeader"
-      >
-        VISIBILITY
-      </div>
-      INTERNAL
-    </span>
-    <br />
-  </TableCell>,
-  <TableCell
-    as="td"
-    className="items_table_item"
     data-header="CREATED"
     key="d137_updatedAt"
   >
@@ -82,16 +66,16 @@ Array [
   <TableCell
     as="td"
     className="items_table_item"
-    data-header="TEAM"
-    key="d137_team"
+    data-header="VISIBILITY"
+    key="d137_visibility"
   >
     <span>
       <div
         className="items_table_mobileHeader"
       >
-        TEAM
+        VISIBILITY
       </div>
-      IIP Video Production
+      INTERNAL
     </span>
     <br />
   </TableCell>,
@@ -108,6 +92,22 @@ Array [
         AUTHOR
       </div>
       Jane Doe
+    </span>
+    <br />
+  </TableCell>,
+  <TableCell
+    as="td"
+    className="items_table_item"
+    data-header="TEAM"
+    key="d137_team"
+  >
+    <span>
+      <div
+        className="items_table_mobileHeader"
+      >
+        TEAM
+      </div>
+      IIP Video Production
     </span>
     <br />
   </TableCell>,
@@ -131,7 +131,7 @@ Array [
     as="td"
     className="items_table_item"
     data-header="MODIFIED DATE"
-    key="d137_createdAt"
+    key="d137_updatedAt"
   >
     <span>
       <div
@@ -157,7 +157,7 @@ Array [
     <div
       className="primary_col"
     >
-      <MyProjectPrimaryCol
+      <VideoDetailsPopup
         d={
           Object {
             "author": "Jane Doe",
@@ -193,6 +193,25 @@ Array [
   <TableCell
     as="td"
     className="items_table_item"
+    data-header="CREATED"
+    key="d137_updatedAt"
+  >
+    <span>
+      <div
+        className="items_table_mobileHeader"
+      >
+        CREATED
+      </div>
+      May 9, 2019
+    </span>
+    <br />
+    <span>
+      PUBLISHED
+    </span>
+  </TableCell>,
+  <TableCell
+    as="td"
+    className="items_table_item"
     data-header="VISIBILITY"
     key="d137_visibility"
   >
@@ -205,6 +224,69 @@ Array [
       INTERNAL
     </span>
     <br />
+  </TableCell>,
+  <TableCell
+    as="td"
+    className="items_table_item"
+    data-header="AUTHOR"
+    key="d137_author"
+  >
+    <span>
+      <div
+        className="items_table_mobileHeader"
+      >
+        AUTHOR
+      </div>
+      Jane Doe
+    </span>
+    <br />
+  </TableCell>,
+]
+`;
+
+exports[`<TableRow /> renders the persistent table headers if projectTab is myProjects 1`] = `
+Array [
+  <TableCell
+    as="td"
+    className="items_table_item"
+    data-header="PROJECT TITLE"
+    key="d137_projectTitle"
+  >
+    <div
+      className="primary_col"
+    >
+      <VideoDetailsPopup
+        d={
+          Object {
+            "author": "Jane Doe",
+            "categories": "about america",
+            "createdAt": "May 9, 2019",
+            "id": "d137",
+            "projectTitle": "Test Title 1",
+            "status": "PUBLISHED",
+            "team": "IIP Video Production",
+            "thumbnails": Object {
+              "alt": "some alt text",
+              "url": "https://thumbnailurl.com",
+            },
+            "updatedAt": "May 9, 2019",
+            "visibility": "INTERNAL",
+          }
+        }
+        header={
+          Object {
+            "label": "PROJECT TITLE",
+            "name": "projectTitle",
+          }
+        }
+        selectedItems={Array []}
+        toggleItemSelection={[MockFunction]}
+      />
+    </div>
+    <TableMobileDataToggleIcon
+      isOpen={false}
+      toggleDisplay={[Function]}
+    />
   </TableCell>,
   <TableCell
     as="td"
@@ -228,16 +310,130 @@ Array [
   <TableCell
     as="td"
     className="items_table_item"
-    data-header="TEAM"
-    key="d137_team"
+    data-header="VISIBILITY"
+    key="d137_visibility"
   >
     <span>
       <div
         className="items_table_mobileHeader"
       >
-        TEAM
+        VISIBILITY
       </div>
-      IIP Video Production
+      INTERNAL
+    </span>
+    <br />
+  </TableCell>,
+  <TableCell
+    as="td"
+    className="items_table_item"
+    data-header="AUTHOR"
+    key="d137_author"
+  >
+    <span>
+      <div
+        className="items_table_mobileHeader"
+      >
+        AUTHOR
+      </div>
+      Jane Doe
+    </span>
+    <br />
+  </TableCell>,
+]
+`;
+
+exports[`<TableRow /> renders the persistent table headers if projectTab is teamProjects 1`] = `
+Array [
+  <TableCell
+    as="td"
+    className="items_table_item"
+    data-header="PROJECT TITLE"
+    key="d137_projectTitle"
+  >
+    <div
+      className="primary_col"
+    >
+      <VideoDetailsPopup
+        d={
+          Object {
+            "author": "Jane Doe",
+            "categories": "about america",
+            "createdAt": "May 9, 2019",
+            "id": "d137",
+            "projectTitle": "Test Title 1",
+            "status": "PUBLISHED",
+            "team": "IIP Video Production",
+            "thumbnails": Object {
+              "alt": "some alt text",
+              "url": "https://thumbnailurl.com",
+            },
+            "updatedAt": "May 9, 2019",
+            "visibility": "INTERNAL",
+          }
+        }
+        header={
+          Object {
+            "label": "PROJECT TITLE",
+            "name": "projectTitle",
+          }
+        }
+        selectedItems={Array []}
+        toggleItemSelection={[MockFunction]}
+      />
+    </div>
+    <TableMobileDataToggleIcon
+      isOpen={false}
+      toggleDisplay={[Function]}
+    />
+  </TableCell>,
+  <TableCell
+    as="td"
+    className="items_table_item"
+    data-header="CREATED"
+    key="d137_updatedAt"
+  >
+    <span>
+      <div
+        className="items_table_mobileHeader"
+      >
+        CREATED
+      </div>
+      May 9, 2019
+    </span>
+    <br />
+    <span>
+      PUBLISHED
+    </span>
+  </TableCell>,
+  <TableCell
+    as="td"
+    className="items_table_item"
+    data-header="VISIBILITY"
+    key="d137_visibility"
+  >
+    <span>
+      <div
+        className="items_table_mobileHeader"
+      >
+        VISIBILITY
+      </div>
+      INTERNAL
+    </span>
+    <br />
+  </TableCell>,
+  <TableCell
+    as="td"
+    className="items_table_item"
+    data-header="AUTHOR"
+    key="d137_author"
+  >
+    <span>
+      <div
+        className="items_table_mobileHeader"
+      >
+        AUTHOR
+      </div>
+      Jane Doe
     </span>
     <br />
   </TableCell>,

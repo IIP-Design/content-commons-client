@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import { formatDate } from 'lib/utils';
 import TableRow from './TableRow';
@@ -8,7 +8,6 @@ import TableRow from './TableRow';
  * in order for this test suite to run.
  */
 jest.mock( 'next-server/dynamic', () => () => 'VideoDetailsPopup' );
-jest.mock( 'next-server/dynamic', () => () => 'ImageDetailsPopup' );
 
 const props = {
   d: {
@@ -29,12 +28,19 @@ const props = {
   selectedItems: new Map(),
   tableHeaders: [
     { name: 'projectTitle', label: 'PROJECT TITLE' },
-    { name: 'visibility', label: 'VISIBILITY' },
     { name: 'updatedAt', label: 'CREATED' },
-    { name: 'team', label: 'TEAM' }
+    { name: 'visibility', label: 'VISIBILITY' },
+    { name: 'author', label: 'AUTHOR' }
   ],
-  toggleItemSelection: jest.fn()
+  toggleItemSelection: jest.fn(),
+  projectTab: 'myProjects'
 };
+
+const menuItems = [
+  { name: 'team', label: 'TEAM' },
+  { name: 'categories', label: 'CATEGORIES' },
+  { name: 'updatedAt', label: 'MODIFIED DATE' }
+];
 
 const Component = <TableRow { ...props } />;
 
@@ -44,7 +50,7 @@ describe( '<TableRow />', () => {
     expect( wrapper.exists() ).toEqual( true );
   } );
 
-  it( 'renders the persistent table headers', () => {
+  it( 'renders the persistent table headers if projectTab is myProjects', () => {
     const wrapper = shallow( Component );
     const columns = wrapper.find( '.items_table_item' );
     const columnCount = columns.length;
@@ -55,34 +61,65 @@ describe( '<TableRow />', () => {
     columns.forEach( ( column, i ) => {
       const { label } = props.tableHeaders[i];
       const name = props.d[props.tableHeaders[i].name];
-      if ( i === 0 ) {
-        expect( column.find( 'MyProjectPrimaryCol' ).exists() )
-          .toEqual( true );
-        expect( column.find( 'TableMobileDataToggleIcon' ).exists() )
-          .toEqual( true );
+      const primaryCol = column.find( '.primary_col' );
+      const videoPopup = column.find( 'VideoDetailsPopup' );
+      const mobileToggle = column.find( 'TableMobileDataToggleIcon' );
+
+      expect( column.find( `[data-header="${label}"]` ).exists() )
+        .toEqual( true );
+
+      if ( i === 0 && props.projectTab === 'myProjects' ) {
+        expect( primaryCol.exists() ).toEqual( true );
+        expect( videoPopup.exists() ).toEqual( true );
+        expect( mobileToggle.exists() ).toEqual( true );
       } else {
-        expect( column.children().contains( label ) ).toEqual( true );
-        expect( column.children().contains( name ) ).toEqual( true );
+        expect( column.contains( label ) ).toEqual( true );
+        expect( column.contains( name ) ).toEqual( true );
       }
     } );
   } );
 
-  it( 'renders Author, Categories, and Modified Date columns when selected', () => {
-    const additionalHeaders = [
-      { name: 'author', label: 'AUTHOR' },
-      { name: 'categories', label: 'CATEGORIES' },
-      { name: 'createdAt', label: 'MODIFIED DATE' }
-    ];
+  it( 'renders the persistent table headers if projectTab is teamProjects', () => {
+    const wrapper = shallow( Component );
+    wrapper.setProps( { projectTab: 'teamProjects' } );
+    const columns = wrapper.find( '.items_table_item' );
+    const columnCount = columns.length;
+    const expectedColumnCount = props.tableHeaders.length;
 
+    expect( columnCount ).toEqual( expectedColumnCount );
+    expect( toJSON( columns ) ).toMatchSnapshot();
+    columns.forEach( ( column, i ) => {
+      const { label } = props.tableHeaders[i];
+      const name = props.d[props.tableHeaders[i].name];
+      const primaryCol = column.find( '.primary_col' );
+      const videoPopup = column.find( 'VideoDetailsPopup' );
+      const mobileToggle = column.find( 'TableMobileDataToggleIcon' );
+
+      expect( column.find( `[data-header="${label}"]` ).exists() )
+        .toEqual( true );
+
+      if ( i === 0 && props.projectTab === 'myProjects' ) {
+        expect( primaryCol.exists() ).toEqual( true );
+        expect( videoPopup.exists() ).toEqual( true );
+        expect( mobileToggle.exists() ).toEqual( true );
+      } else {
+        expect( column.contains( label ) ).toEqual( true );
+        expect( column.contains( name ) ).toEqual( true );
+      }
+    } );
+  } );
+
+  it( 'renders Team, Categories, and Modified Date columns when selected', () => {
     const newProps = {
       ...props,
       tableHeaders: [
         ...props.tableHeaders,
-        ...additionalHeaders
+        ...menuItems
       ]
     };
 
     const wrapper = shallow( <TableRow { ...newProps } /> );
+
     const columns = wrapper.find( '.items_table_item' );
     const columnCount = columns.length;
     const expectedColumnCount = newProps.tableHeaders.length;
@@ -92,14 +129,20 @@ describe( '<TableRow />', () => {
     columns.forEach( ( column, i ) => {
       const { label } = newProps.tableHeaders[i];
       const name = newProps.d[newProps.tableHeaders[i].name];
-      if ( i === 0 ) {
-        expect( column.find( 'MyProjectPrimaryCol' ).exists() )
-          .toEqual( true );
-        expect( column.find( 'TableMobileDataToggleIcon' ).exists() )
-          .toEqual( true );
+      const primaryCol = column.find( '.primary_col' );
+      const videoPopup = column.find( 'VideoDetailsPopup' );
+      const mobileToggle = column.find( 'TableMobileDataToggleIcon' );
+
+      expect( column.find( `[data-header="${label}"]` ).exists() )
+        .toEqual( true );
+
+      if ( i === 0 && props.projectTab === 'myProjects' ) {
+        expect( primaryCol.exists() ).toEqual( true );
+        expect( videoPopup.exists() ).toEqual( true );
+        expect( mobileToggle.exists() ).toEqual( true );
       } else {
-        expect( column.children().contains( label ) ).toEqual( true );
-        expect( column.children().contains( name ) ).toEqual( true );
+        expect( column.contains( label ) ).toEqual( true );
+        expect( column.contains( name ) ).toEqual( true );
       }
     } );
   } );
