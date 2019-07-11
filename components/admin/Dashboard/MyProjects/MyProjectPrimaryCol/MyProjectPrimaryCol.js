@@ -163,10 +163,14 @@ const MyProjectPrimaryCol = props => {
         <div className="projects_data_actions">
           <div className="projects_data_actions_wrapper">
             { isPublishing
-              ? actions.map( action => (
-                <span key={ `${action}-${id}` } className={ getActionCls() }>
-                  { action }
-                </span>
+              ? actions.map( ( action, i ) => (
+                <Fragment>
+                  <span key={ `${action}-${id}` } className={ getActionCls() }>
+                    { action }
+                  </span>
+                  { ( i < actions.length - 1 )
+                    && <span className="separator">|</span> }
+                </Fragment>
               ) )
               : (
                 <Fragment>
@@ -176,7 +180,7 @@ const MyProjectPrimaryCol = props => {
                   >
                     <a className={ getActionCls() }>Edit</a>
                   </Link>
-
+                  <span className="separator">|</span>
                   <Modal
                     trigger={ (
                       <button type="button" className={ getActionCls() }>
@@ -189,7 +193,7 @@ const MyProjectPrimaryCol = props => {
                       <PreviewProjectContent id={ id } />
                     </Modal.Content>
                   </Modal>
-
+                  <span className="separator">|</span>
                   <DetailsPopup id={ id } />
                 </Fragment>
               ) }

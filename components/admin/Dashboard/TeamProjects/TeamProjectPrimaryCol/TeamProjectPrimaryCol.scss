@@ -113,6 +113,11 @@
       }
 
       &_wrapper {
+        .separator {
+          padding-left: 0.25rem;
+          padding-right: 0.25rem;
+        }
+
         @media screen and (max-width: 767px) {
           display: none;
           position: absolute;
@@ -142,11 +147,6 @@
           &:not(:first-child) {
             padding: 3px !important;
           }
-        }
-
-        &:not(:last-child):after {
-          content: ' | ';
-          color: rgba(0, 0, 0, 0.87);
         }
       }
 

@@ -89,6 +89,11 @@ exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
             Edit
           </a>
         </Link>
+        <span
+          className="separator"
+        >
+          |
+        </span>
         <Modal
           centered={true}
           closeIcon={true}
@@ -111,6 +116,11 @@ exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
             />
           </ModalContent>
         </Modal>
+        <span
+          className="separator"
+        >
+          |
+        </span>
         <DetailsPopup
           id="111"
         />
