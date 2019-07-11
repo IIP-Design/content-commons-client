@@ -1,6 +1,10 @@
 @import "../../../../../styles/colors.scss";
 
-.projects {    
+.projects {
+
+  .isPublishing {
+    cursor: default;
+  }
   
   &_actions {
     margin-right: 15px;
@@ -43,6 +47,12 @@
       &:hover {
         color: $light-blue;
       }
+
+      &.isPublishing {
+        &:hover {
+          color: inherit;
+        }
+      }
     }
 
     &_actions {
@@ -84,10 +94,6 @@
           &:not(:first-child) {
             padding: 3px !important;
           }
-        }
-
-        &.isPublishing {
-          cursor: default;
         }
 
         &:not(:last-child):after {

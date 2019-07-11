@@ -12,7 +12,6 @@ import {
 } from 'semantic-ui-react';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import PreviewProjectContent from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
-// import DataAction from 'components/admin/Dashboard/DataAction/DataAction';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
 import './TeamProjectPrimaryCol.scss';
 
@@ -65,7 +64,28 @@ const TeamProjectPrimaryCol = props => {
   const isDraft = d.status === 'DRAFT';
   const isPublishing = d.status === 'PUBLISHING';
   const actions = ['Edit', 'Preview', 'Files'];
+  const Trigger = isPublishing ? 'span' : 'a';
+  const Title = isPublishing ? 'span' : Link;
   const projectTitleLength = d[header.name].length >= 35;
+
+  const getEditUrl = ( format = '' ) => {
+    if ( isPublishing || !format ) return null;
+    if ( format === 'pretty' ) {
+      return `/admin/project/video/${id}/edit`;
+    }
+    if ( format === 'long' ) {
+      return `/admin/project?content=video&id=${id}&action=edit`;
+    }
+  };
+
+  const getTitleCls = () => (
+    `projects_data_title${isPublishing ? ' isPublishing' : ''}`
+  );
+
+  const getActionCls = () => (
+    `linkStyle projects_data_actions_action${isPublishing ? ' isPublishing' : ''}`
+  );
+
   return (
     <Fragment>
       <div className="projects_actions">
@@ -111,13 +131,17 @@ const TeamProjectPrimaryCol = props => {
           ? (
             <Popup
               trigger={ (
-                <a
-                  href={ `/admin/project/video/${id}/edit` }
-                  className="projects_data_title"
+                <Trigger
+                  href={ getEditUrl( 'pretty' ) }
+                  className={ getTitleCls() }
                 >
-                  <span aria-hidden>{ truncate( d[header.name], { length: 35 } ) }</span>
-                  <VisuallyHidden el="span">{ d[header.name] }</VisuallyHidden>
-                </a>
+                  <span aria-hidden>
+                    { truncate( d[header.name], { length: 35 } ) }
+                  </span>
+                  <VisuallyHidden el="span">
+                    { d[header.name] }
+                  </VisuallyHidden>
+                </Trigger>
               ) }
               content={ d[header.name] }
               hideOnScroll
@@ -127,28 +151,38 @@ const TeamProjectPrimaryCol = props => {
             />
           )
           : (
-            <Link as={ `/admin/project/video/${id}/edit` } href={ `/admin/project?content=video&id=${id}&action=edit` }>
-              <a className="projects_data_title">
+            <Title
+              as={ getEditUrl( 'pretty' ) }
+              href={ getEditUrl( 'long' ) }
+            >
+              <Trigger className={ getTitleCls() }>
                 { d[header.name] }
-              </a>
-            </Link>
+              </Trigger>
+            </Title>
           ) }
         <div className="projects_data_actions">
           <div className="projects_data_actions_wrapper">
             { isPublishing
               ? actions.map( action => (
-                <span key={ `${action}-${id}` } className="linkStyle projects_data_actions_action isPublishing">
+                <span key={ `${action}-${id}` } className={ getActionCls() }>
                   { action }
                 </span>
               ) )
               : (
                 <Fragment>
-                  <Link as={ `/admin/project/video/${id}/edit` } href={ `/admin/project?content=video&id=${id}&action=edit` }>
-                    <a className="linkStyle projects_data_actions_action">Edit</a>
+                  <Link
+                    as={ getEditUrl( 'pretty' ) }
+                    href={ getEditUrl( 'long' ) }
+                  >
+                    <a className={ getActionCls() }>Edit</a>
                   </Link>
 
                   <Modal
-                    trigger={ <button type="button" className="linkStyle projects_data_actions_action">Preview</button> }
+                    trigger={ (
+                      <button type="button" className={ getActionCls() }>
+                        Preview
+                      </button>
+                    ) }
                     closeIcon
                   >
                     <Modal.Content>
