@@ -12,6 +12,7 @@ import {
 } from 'semantic-ui-react';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import PreviewProjectContent from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
+// import DataAction from 'components/admin/Dashboard/DataAction/DataAction';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
 import './TeamProjectPrimaryCol.scss';
 
@@ -62,6 +63,8 @@ const TeamProjectPrimaryCol = props => {
   } = props;
 
   const isDraft = d.status === 'DRAFT';
+  const isPublishing = d.status === 'PUBLISHING';
+  const actions = ['Edit', 'Preview', 'Files'];
   const projectTitleLength = d[header.name].length >= 35;
   return (
     <Fragment>
@@ -70,6 +73,7 @@ const TeamProjectPrimaryCol = props => {
           data-label={ id }
           checked={ !!selectedItems.get( `${id}` ) }
           onChange={ toggleItemSelection }
+          disabled={ isPublishing }
         />
       </div>
       <div className="projects_thumbnail">
@@ -131,20 +135,30 @@ const TeamProjectPrimaryCol = props => {
           ) }
         <div className="projects_data_actions">
           <div className="projects_data_actions_wrapper">
-            <Link as={ `/admin/project/video/${id}/edit` } href={ `/admin/project?content=video&id=${id}&action=edit` }>
-              <a className="linkStyle projects_data_actions_action">Edit</a>
-            </Link>
-            <span> | </span>
-            <Modal
-              trigger={ <button type="button" className="linkStyle projects_data_actions_action">Preview</button> }
-              closeIcon
-            >
-              <Modal.Content>
-                <PreviewProjectContent id={ id } />
-              </Modal.Content>
-            </Modal>
-            <span> | </span>
-            <DetailsPopup id={ id } />
+            { isPublishing
+              ? actions.map( action => (
+                <span key={ `${action}-${id}` } className="linkStyle projects_data_actions_action isPublishing">
+                  { action }
+                </span>
+              ) )
+              : (
+                <Fragment>
+                  <Link as={ `/admin/project/video/${id}/edit` } href={ `/admin/project?content=video&id=${id}&action=edit` }>
+                    <a className="linkStyle projects_data_actions_action">Edit</a>
+                  </Link>
+
+                  <Modal
+                    trigger={ <button type="button" className="linkStyle projects_data_actions_action">Preview</button> }
+                    closeIcon
+                  >
+                    <Modal.Content>
+                      <PreviewProjectContent id={ id } />
+                    </Modal.Content>
+                  </Modal>
+
+                  <DetailsPopup id={ id } />
+                </Fragment>
+              ) }
           </div>
           <button
             type="button"

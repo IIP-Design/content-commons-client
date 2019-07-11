@@ -42,6 +42,7 @@ exports[`<TeamProjectPrimaryCol /> renders without crashing 1`] = `
     <Checkbox
       checked={false}
       data-label="111"
+      disabled={false}
       onChange={[MockFunction]}
       type="checkbox"
     />
@@ -88,9 +89,6 @@ exports[`<TeamProjectPrimaryCol /> renders without crashing 1`] = `
             Edit
           </a>
         </Link>
-        <span>
-           | 
-        </span>
         <Modal
           centered={true}
           closeIcon={true}
@@ -113,9 +111,6 @@ exports[`<TeamProjectPrimaryCol /> renders without crashing 1`] = `
             />
           </ModalContent>
         </Modal>
-        <span>
-           | 
-        </span>
         <DetailsPopup
           id="111"
         />
