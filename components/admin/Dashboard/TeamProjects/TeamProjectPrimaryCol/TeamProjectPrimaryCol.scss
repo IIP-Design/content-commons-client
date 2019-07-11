@@ -1,6 +1,10 @@
 @import "../../../../../styles/colors.scss";
 
-.projects {    
+.projects {
+
+  .isPublishing {
+    cursor: default;
+  }
   
   &_actions {
     margin-right: 15px;
@@ -18,8 +22,56 @@
       max-width: 66px;
     }
 
-    img {
-      width: 100%;
+    > .wrapper {
+      position: relative;
+
+      img {
+        display: block;
+        width: 100%;
+
+        &.draft {
+          filter: blur(0.4px) grayscale(40%);
+        }
+      }
+
+      > .draft-overlay {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+
+        > span {
+          color: #fff;
+          text-shadow: 0px 0px 4px #000;
+
+          @media screen and (min-width: 768px) {
+            font-size: 1rem;
+          }
+        }
+      }
+
+      > .placeholder {
+        &.outer {
+          position: relative;
+          height: 0;
+          padding-top: 56.25%;
+          overflow: hidden;
+          background-color: $light-grey;
+        }
+
+        &.inner {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 100%;
+        }
+      }
     }
   }
 
@@ -43,6 +95,12 @@
       &:hover {
         color: $light-blue;
       }
+
+      &.isPublishing {
+        &:hover {
+          color: inherit;
+        }
+      }
     }
 
     &_actions {
@@ -55,6 +113,11 @@
       }
 
       &_wrapper {
+        .separator {
+          padding-left: 0.25rem;
+          padding-right: 0.25rem;
+        }
+
         @media screen and (max-width: 767px) {
           display: none;
           position: absolute;
@@ -84,10 +147,6 @@
           &:not(:first-child) {
             padding: 3px !important;
           }
-        }
-
-        &:focus {
-          outline: none !important;
         }
       }
 

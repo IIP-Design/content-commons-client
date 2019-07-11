@@ -81,7 +81,7 @@ const DetailsPopup = props => {
                 trigger={ (
                   <button
                     type="button"
-                    className="linkStyle myProjects_data_actions_action"
+                    className="linkStyle projects_data_actions_action"
                     data-projectitempopup="detailsPopup"
                   >
                     Files

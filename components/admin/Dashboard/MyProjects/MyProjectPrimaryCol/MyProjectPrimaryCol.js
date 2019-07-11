@@ -62,7 +62,30 @@ const MyProjectPrimaryCol = props => {
   } = props;
 
   const isDraft = d.status === 'DRAFT';
+  const isPublishing = d.status === 'PUBLISHING';
+  const actions = ['Edit', 'Preview', 'Files'];
+  const Trigger = isPublishing ? 'span' : 'a';
+  const Title = isPublishing ? 'span' : Link;
   const projectTitleLength = d[header.name].length >= 35;
+
+  const getEditUrl = ( format = '' ) => {
+    if ( isPublishing || !format ) return null;
+    if ( format === 'pretty' ) {
+      return `/admin/project/video/${id}/edit`;
+    }
+    if ( format === 'long' ) {
+      return `/admin/project?content=video&id=${id}&action=edit`;
+    }
+  };
+
+  const getTitleCls = () => (
+    `projects_data_title${isPublishing ? ' isPublishing' : ''}`
+  );
+
+  const getActionCls = () => (
+    `linkStyle projects_data_actions_action${isPublishing ? ' isPublishing' : ''}`
+  );
+
   return (
     <Fragment>
       <div className="projects_actions">
@@ -70,8 +93,8 @@ const MyProjectPrimaryCol = props => {
           data-label={ id }
           checked={ !!selectedItems.get( `${id}` ) }
           onChange={ toggleItemSelection }
+          disabled={ isPublishing }
         />
-        { /* <div className="myProjects_favorite"><Icon name='star' /></div> */ }
       </div>
       <div className="projects_thumbnail">
         <div className="wrapper">
@@ -108,13 +131,17 @@ const MyProjectPrimaryCol = props => {
           ? (
             <Popup
               trigger={ (
-                <a
-                  href={ `/admin/project/video/${id}/edit` }
-                  className="projects_data_title"
+                <Trigger
+                  href={ getEditUrl( 'pretty' ) }
+                  className={ getTitleCls() }
                 >
-                  <span aria-hidden>{ truncate( d[header.name], { length: 35 } ) }</span>
-                  <VisuallyHidden el="span">{ d[header.name] }</VisuallyHidden>
-                </a>
+                  <span aria-hidden>
+                    { truncate( d[header.name], { length: 35 } ) }
+                  </span>
+                  <VisuallyHidden el="span">
+                    { d[header.name] }
+                  </VisuallyHidden>
+                </Trigger>
               ) }
               content={ d[header.name] }
               hideOnScroll
@@ -124,28 +151,52 @@ const MyProjectPrimaryCol = props => {
             />
           )
           : (
-            <Link as={ `/admin/project/video/${id}/edit` } href={ `/admin/project?content=video&id=${id}&action=edit` }>
-              <a className="projects_data_title">
+            <Title
+              as={ getEditUrl( 'pretty' ) }
+              href={ getEditUrl( 'long' ) }
+            >
+              <Trigger className={ getTitleCls() }>
                 { d[header.name] }
-              </a>
-            </Link>
+              </Trigger>
+            </Title>
           ) }
         <div className="projects_data_actions">
           <div className="projects_data_actions_wrapper">
-            <Link as={ `/admin/project/video/${id}/edit` } href={ `/admin/project?content=video&id=${id}&action=edit` }>
-              <a className="linkStyle projects_data_actions_action">Edit</a>
-            </Link>
-            <span> | </span>
-            <Modal
-              trigger={ <button type="button" className="linkStyle projects_data_actions_action">Preview</button> }
-              closeIcon
-            >
-              <Modal.Content>
-                <PreviewProjectContent id={ id } />
-              </Modal.Content>
-            </Modal>
-            <span> | </span>
-            <DetailsPopup id={ id } />
+            { isPublishing
+              ? actions.map( ( action, i ) => (
+                <Fragment>
+                  <span key={ `${action}-${id}` } className={ getActionCls() }>
+                    { action }
+                  </span>
+                  { ( i < actions.length - 1 )
+                    && <span className="separator">|</span> }
+                </Fragment>
+              ) )
+              : (
+                <Fragment>
+                  <Link
+                    as={ getEditUrl( 'pretty' ) }
+                    href={ getEditUrl( 'long' ) }
+                  >
+                    <a className={ getActionCls() }>Edit</a>
+                  </Link>
+                  <span className="separator">|</span>
+                  <Modal
+                    trigger={ (
+                      <button type="button" className={ getActionCls() }>
+                        Preview
+                      </button>
+                    ) }
+                    closeIcon
+                  >
+                    <Modal.Content>
+                      <PreviewProjectContent id={ id } />
+                    </Modal.Content>
+                  </Modal>
+                  <span className="separator">|</span>
+                  <DetailsPopup id={ id } />
+                </Fragment>
+              ) }
           </div>
           <button
             type="button"

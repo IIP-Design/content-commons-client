@@ -42,6 +42,7 @@ exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
     <Checkbox
       checked={false}
       data-label="111"
+      disabled={false}
       onChange={[MockFunction]}
       type="checkbox"
     />
@@ -88,8 +89,10 @@ exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
             Edit
           </a>
         </Link>
-        <span>
-           | 
+        <span
+          className="separator"
+        >
+          |
         </span>
         <Modal
           centered={true}
@@ -113,8 +116,10 @@ exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
             />
           </ModalContent>
         </Modal>
-        <span>
-           | 
+        <span
+          className="separator"
+        >
+          |
         </span>
         <DetailsPopup
           id="111"
