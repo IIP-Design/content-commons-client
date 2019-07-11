@@ -131,4 +131,54 @@ describe( '<MyProjectPrimaryCol />', () => {
     expect( placeholder().contains( innerPlaceholder ) )
       .toEqual( true );
   } );
+
+  it( 'renders spans for actions if status is PUBLISHING', () => {
+    const wrapper = shallow( Component );
+    wrapper.setProps( { d: { ...props.d, status: 'PUBLISHING' } } );
+
+    const actions = ['Edit', 'Preview', 'Files'];
+    const spans = wrapper.find( '.projects_data_actions_action' );
+
+    spans.forEach( ( span, i ) => {
+      expect( span.name() ).toEqual( 'span' );
+      expect( span.hasClass( 'isPublishing' ) ).toEqual( true );
+      expect( span.text() ).toEqual( actions[i] );
+    } );
+  } );
+
+  it( 'renders a span for the project title if status is PUBLISHING', () => {
+    const wrapper = shallow( Component );
+    wrapper.setProps( { d: { ...props.d, status: 'PUBLISHING' } } );
+
+    const title = wrapper.find( '.projects_data_title' );
+
+    expect( title.name() ).toEqual( 'span' );
+    expect( title.hasClass( 'isPublishing' ) ).toEqual( true );
+  } );
+
+  it( 'renders a span for the Popup trigger if status is PUBLISHING & the project title is over 35 characters', () => {
+    const wrapper = shallow( Component );
+    wrapper.setProps( {
+      d: {
+        ...props.d,
+        projectTitle: 'Test Project Test Project Test Project Test Project',
+        status: 'PUBLISHING'
+      }
+    } );
+
+    const popup = wrapper.find( Popup );
+
+    expect( popup.prop( 'content' ).length ).toBeGreaterThan( 35 );
+    expect( popup.prop( 'trigger' ).type ).toEqual( 'span' );
+    expect( popup.prop( 'trigger' ).props.className )
+      .toEqual( 'projects_data_title isPublishing' );
+  } );
+
+  it( 'renders a disabled checkbox if status is PUBLISHING', () => {
+    const wrapper = shallow( Component );
+    wrapper.setProps( { d: { ...props.d, status: 'PUBLISHING' } } );
+    const checkbox = wrapper.find( Checkbox );
+
+    expect( checkbox.prop( 'disabled' ) ).toEqual( true );
+  } );
 } );

@@ -1,6 +1,6 @@
 /**
  *
- * MyProjectPrimaryCol
+ * TeamProjectPrimaryCol
  *
  */
 import React, { Fragment } from 'react';
