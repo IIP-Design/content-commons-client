@@ -95,6 +95,12 @@
       &:hover {
         color: $light-blue;
       }
+
+      &.isPublishing {
+        &:hover {
+          color: inherit;
+        }
+      }
     }
 
     &_actions {
