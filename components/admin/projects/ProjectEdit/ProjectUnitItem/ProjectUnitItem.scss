@@ -29,6 +29,12 @@ a.ui.card.project-unit-item:hover {
         color: $light-grey;
         background-color: rgba(0, 0, 0, 0.4);
       }
+
+      .metaicon {
+        position: absolute;
+        right: 5px;
+        bottom: 10px;
+      }
     }
 
     > :first-child {

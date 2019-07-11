@@ -8,6 +8,7 @@ import truncate from 'lodash/truncate';
 import {
   Card, Modal, Image, List, Loader
 } from 'semantic-ui-react';
+import iconVideoCamera from 'static/icons/icon_32px_videoCamera.png';
 import FileUploadProgressBar from 'components/admin/projects/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
 import { UploadContext } from '../VideoEdit/VideoEdit';
 import './ProjectUnitItem.scss';
@@ -65,6 +66,7 @@ const ProjectUnitItem = props => {
           </List>
         )
         }
+        <img className="metaicon" src={ iconVideoCamera } alt="Video Icon" />
       </div>
 
       { /* Remove progress bar if above conditions are met */ }
