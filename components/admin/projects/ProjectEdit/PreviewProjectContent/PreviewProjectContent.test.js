@@ -478,9 +478,10 @@ describe( '<PreviewProjectContent />', () => {
     wrapper.update();
 
     const preview = wrapper.find( 'PreviewProjectContent' );
-    const noFilesMsg = 'This project unit does not have any files to preview.';
+    const { displayName } = noFilesMocks[0].result.data.project.units[0].language;
+    const noFilesMsg = `This ${displayName} language unit does not have any files to preview.`;
 
-    expect( preview.contains( noFilesMsg ) ).toEqual( true );
+    expect( preview.text() ).toEqual( noFilesMsg );
   } );
 
   it( 'renders a "no units message" if there are no units in the project', async () => {

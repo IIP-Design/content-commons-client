@@ -216,7 +216,7 @@ class PreviewProjectContent extends React.PureComponent {
     if ( files && files.length === 0 ) {
       return (
         <p style={ { fontSize: '1rem' } }>
-          This project unit does not have any files to preview.
+          This { language.displayName } language unit does not have any files to preview.
         </p>
       );
     }
