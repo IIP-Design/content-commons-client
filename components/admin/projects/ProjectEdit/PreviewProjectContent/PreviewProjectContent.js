@@ -256,14 +256,23 @@ class PreviewProjectContent extends React.PureComponent {
         />
 
         <div className="modal_options">
-          <Dropdown
-            className="modal_languages"
-            value={ selectedLanguage }
-            icon={ dropDownIsOpen ? 'chevron up' : 'chevron down' }
-            options={ this.getLanguages( units ) }
-            onClick={ this.toggleArrow }
-            onChange={ this.handleChange }
-          />
+          { units && units.length === 1
+            // use units since they're defined by language
+            ? (
+              <div className="modal_languages_single">
+                { selectedLanguage }
+              </div>
+            )
+            : (
+              <Dropdown
+                className="modal_languages"
+                value={ selectedLanguage }
+                icon={ dropDownIsOpen ? 'chevron up' : 'chevron down' }
+                options={ this.getLanguages( units ) }
+                onClick={ this.toggleArrow }
+                onChange={ this.handleChange }
+              />
+            ) }
 
           <div className="trigger-container">
             { ( contentType === 'video' && embedItem ) && (
