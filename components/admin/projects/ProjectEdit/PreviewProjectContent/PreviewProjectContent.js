@@ -134,6 +134,22 @@ class PreviewProjectContent extends React.PureComponent {
     return `<iframe src="${embedSrc}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`;
   }
 
+  getTag = ( tag, unit ) => {
+    const translation = tag.translations.find( t => (
+      t.language.locale === unit.language.locale
+    ) );
+
+    if ( translation && translation.name ) {
+      return translation.name;
+    }
+  };
+
+  getTags = ( tags, unit ) => (
+    tags.reduce( ( acc, curr ) => (
+      `${acc ? `${acc} · ` : ''}${this.getTag( curr, unit )}`
+    ), '' )
+  );
+
   toggleArrow = () => {
     this.setState( prevState => ( {
       dropDownIsOpen: !prevState.dropDownIsOpen
@@ -193,7 +209,7 @@ class PreviewProjectContent extends React.PureComponent {
     }
 
     const {
-      title, language, descPublic, files
+      title, language, descPublic, files, tags
     } = selectedUnit;
     const contentType = this.getContentType( __typename );
 
@@ -409,6 +425,14 @@ class PreviewProjectContent extends React.PureComponent {
         </div>
 
         <ModalPostMeta source={ team.name } datePublished={ createdAt } />
+
+        { ( tags && tags.length > 0 )
+          && (
+            <section className="modal_section modal_section--postTags">
+              { this.getTags( tags, selectedUnit ) }
+            </section>
+          )
+           }
       </ModalItem>
     );
   }
