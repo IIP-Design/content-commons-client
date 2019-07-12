@@ -497,4 +497,24 @@ describe( '<PreviewProjectContent />', () => {
 
     expect( preview.contains( noUnitsMsg ) ).toEqual( true );
   } );
+
+  it( 'renders a single language but not a language dropdown if there is only one unit', async () => {
+    // use vimeoMocks since it has a single unit
+    const wrapper = mount(
+      <MockedProvider mocks={ vimeoMocks } addTypename>
+        <PreviewProjectContent { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const dropdown = preview.find( '.modal_languages' );
+    const singleLanguage = preview.find( '.modal_languages_single' );
+    const { units } = vimeoMocks[0].result.data.project;
+
+    expect( units.length ).toEqual( 1 );
+    expect( dropdown.exists() ).toEqual( false );
+    expect( singleLanguage.exists() ).toEqual( true );
+  } );
 } );
