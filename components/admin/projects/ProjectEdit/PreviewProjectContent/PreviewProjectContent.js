@@ -57,9 +57,7 @@ class PreviewProjectContent extends React.PureComponent {
       const { units } = this.props.data.project;
       if ( !units || ( units && units.length === 0 ) ) return;
 
-      const englishIndex = this.getEnglishIndex( units );
-      const { language } = units[englishIndex > -1 ? englishIndex : 0];
-
+      const language = this.getUnitLanguage( units );
       if ( !language || ( language && !Object.keys( language ).length ) ) {
         return;
       }
@@ -77,8 +75,10 @@ class PreviewProjectContent extends React.PureComponent {
       const { units } = this.props.data.project;
       if ( !units || ( units && units.length === 0 ) ) return;
 
-      const englishIndex = this.getEnglishIndex( units );
-      const { language } = units[englishIndex > -1 ? englishIndex : 0];
+      const language = this.getUnitLanguage( units );
+      if ( !language || ( language && !Object.keys( language ).length ) ) {
+        return;
+      }
 
       if ( !prevState.selectedLanguage ) {
         this.selectLanguage( language.displayName );
@@ -104,6 +104,28 @@ class PreviewProjectContent extends React.PureComponent {
   getEnglishIndex = units => (
     units.findIndex( unit => unit.language.displayName === 'English' )
   );
+
+  getFilesCount = ( units, i ) => {
+    if ( units[i] && units[i].files ) {
+      return units[i].files.length;
+    }
+    return 0;
+  };
+
+  getCurrUnitIndex = ( i, count = 0 ) => (
+    ( i > -1 && count > 0 ) ? i : 0
+  );
+
+  getUnitLanguage = units => {
+    /**
+     * Look for an English language unit first.
+     * Otherwise, get the first available unit.
+     */
+    const englishIndex = this.getEnglishIndex( units );
+    const englishFilesCount = this.getFilesCount( units, englishIndex );
+    const i = this.getCurrUnitIndex( englishIndex, englishFilesCount );
+    return units[i] ? units[i].language : {};
+  };
 
   getContentType = typename => {
     switch ( typename ) {

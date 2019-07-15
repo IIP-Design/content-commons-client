@@ -358,8 +358,56 @@ describe( '<PreviewProjectContent />', () => {
     const { units } = mocks[0].result.data.project;
     const englishIndex = inst.getEnglishIndex( units );
 
-    expect( spy ).toHaveBeenCalled();
+    expect( spy ).toHaveBeenCalledWith( units );
     expect( englishIndex ).toEqual( units.length - 1 );
+  } );
+
+  it( 'getFilesCount returns the correct number of unit files', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+    const spy = jest.spyOn( inst, 'getFilesCount' );
+    const { units } = mocks[0].result.data.project;
+    const currentUnitIndex = 0; // just use the first unit
+    const count = inst.getFilesCount( units, currentUnitIndex );
+
+    expect( spy ).toHaveBeenCalledWith( units, currentUnitIndex );
+    expect( count ).toEqual( units[currentUnitIndex].files.length );
+  } );
+
+  it( 'getCurrUnitIndex returns the correct index', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+
+    expect( inst.getCurrUnitIndex( 2, 2 ) ).toEqual( 2 );
+    expect( inst.getCurrUnitIndex( -1, 2 ) ).toEqual( 0 );
+    expect( inst.getCurrUnitIndex( 2, 0 ) ).toEqual( 0 );
+    expect( inst.getCurrUnitIndex( 2 ) ).toEqual( 0 );
+  } );
+
+  it( 'getUnitLanguage returns the unit language object', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+    const { units } = mocks[0].result.data.project;
+    const { units: noEnglishUnits } = vimeoMocks[0].result.data.project;
+    const nonEnglish = inst.getUnitLanguage( noEnglishUnits );
+    const english = inst.getUnitLanguage( units );
+
+    expect( typeof nonEnglish ).toEqual( 'object' );
+    expect( typeof english ).toEqual( 'object' );
+    expect( nonEnglish ).toEqual( noEnglishUnits[0].language );
+    expect( english ).toEqual( units[1].language );
   } );
 
   it( 'getContentType returns the correct content type', async () => {
