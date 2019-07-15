@@ -1358,11 +1358,39 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
           </span>
         </section>
       </ModalPostMeta>
-      <section
-        className="modal_section modal_section--postTags"
+      <ModalPostTags
+        tags={
+          Array [
+            Object {
+              "name": undefined,
+            },
+            Object {
+              "name": "english learning",
+            },
+          ]
+        }
       >
-        undefined · english learning
-      </section>
+        <section
+          className="modal_section modal_section--postTags"
+        >
+          <span
+            className="modal_postTag"
+            key="cat_0"
+          >
+             
+            undefined  · 
+             
+          </span>
+          <span
+            className="modal_postTag"
+            key="cat_1"
+          >
+             
+            english learning
+             
+          </span>
+        </section>
+      </ModalPostTags>
     </div>
   </ModalItem>
 </PreviewProjectContent>

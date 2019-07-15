@@ -618,7 +618,7 @@ describe( '<PreviewProjectContent />', () => {
     expect( tagName ).toEqual( 'american culture' );
   } );
 
-  it( 'getTags returns a string of translation tag name(s)', async () => {
+  it( 'getTags returns an array of translation tag name(s)', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
@@ -629,9 +629,13 @@ describe( '<PreviewProjectContent />', () => {
     const { tags } = mocks[0].result.data.project.units[1];
     const unit = mocks[0].result.data.project.units[1];
     const tagNames = inst.getTags( tags, unit );
+    const ret = [
+      { name: 'american culture' },
+      { name: 'english learning' }
+    ];
 
-    expect( typeof tagNames ).toEqual( 'string' );
-    expect( tagNames ).toEqual( 'american culture · english learning' );
+    expect( Array.isArray( tagNames ) ).toEqual( true );
+    expect( tagNames ).toEqual( ret );
   } );
 
   it( 'does not render a tags section if the selected unit has no tags', async () => {

@@ -173,9 +173,10 @@ class PreviewProjectContent extends React.PureComponent {
   };
 
   getTags = ( tags, unit ) => (
-    tags.reduce( ( acc, curr ) => (
-      `${acc ? `${acc} · ` : ''}${this.getTag( curr, unit )}`
-    ), '' )
+    tags.reduce( ( acc, curr ) => ( [
+      ...acc,
+      { name: this.getTag( curr, unit ) }
+    ] ), [] )
   );
 
   toggleArrow = () => {
@@ -456,9 +457,7 @@ class PreviewProjectContent extends React.PureComponent {
 
         { ( tags && tags.length > 0 )
           && (
-            <section className="modal_section modal_section--postTags">
-              { this.getTags( tags, selectedUnit ) }
-            </section>
+            <ModalPostTags tags={ this.getTags( tags, selectedUnit ) } />
           ) }
       </ModalItem>
     );
