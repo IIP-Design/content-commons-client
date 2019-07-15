@@ -105,6 +105,25 @@ const noFilesMocks = [
   }
 ];
 
+const noTagsMocks = [
+  {
+    ...mocks[0],
+    result: {
+      data: {
+        project: {
+          ...mocks[0].result.data.project,
+          units: [
+            {
+              ...mocks[0].result.data.project.units[0],
+              tags: []
+            }
+          ]
+        }
+      }
+    }
+  }
+];
+
 const noUnitsMocks = [
   {
     ...mocks[0],
@@ -228,6 +247,23 @@ describe( '<PreviewProjectContent />', () => {
     ] );
   } );
 
+  it( 'getUnitsWithFiles returns an array of units with files', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+    const units = [
+      { id: '1', files: [] },
+      { id: '2', files: [{ id: 'a', fileName: 'alpha' }] }
+    ];
+    const unitsWithFiles = inst.getUnitsWithFiles( units );
+
+    expect( Array.isArray( unitsWithFiles ) ).toEqual( true );
+    expect( unitsWithFiles[0] ).toEqual( units[1] );
+  } );
+
   it( 'calling getProjectUnits gets the projectUnits', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
@@ -339,8 +375,56 @@ describe( '<PreviewProjectContent />', () => {
     const { units } = mocks[0].result.data.project;
     const englishIndex = inst.getEnglishIndex( units );
 
-    expect( spy ).toHaveBeenCalled();
+    expect( spy ).toHaveBeenCalledWith( units );
     expect( englishIndex ).toEqual( units.length - 1 );
+  } );
+
+  it( 'getFilesCount returns the correct number of unit files', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+    const spy = jest.spyOn( inst, 'getFilesCount' );
+    const { units } = mocks[0].result.data.project;
+    const currentUnitIndex = 0; // just use the first unit
+    const count = inst.getFilesCount( units, currentUnitIndex );
+
+    expect( spy ).toHaveBeenCalledWith( units, currentUnitIndex );
+    expect( count ).toEqual( units[currentUnitIndex].files.length );
+  } );
+
+  it( 'getCurrUnitIndex returns the correct index', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+
+    expect( inst.getCurrUnitIndex( 2, 2 ) ).toEqual( 2 );
+    expect( inst.getCurrUnitIndex( -1, 2 ) ).toEqual( 0 );
+    expect( inst.getCurrUnitIndex( 2, 0 ) ).toEqual( 0 );
+    expect( inst.getCurrUnitIndex( 2 ) ).toEqual( 0 );
+  } );
+
+  it( 'getUnitLanguage returns the unit language object', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+    const { units } = mocks[0].result.data.project;
+    const { units: noEnglishUnits } = vimeoMocks[0].result.data.project;
+    const nonEnglish = inst.getUnitLanguage( noEnglishUnits );
+    const english = inst.getUnitLanguage( units );
+
+    expect( typeof nonEnglish ).toEqual( 'object' );
+    expect( typeof english ).toEqual( 'object' );
+    expect( nonEnglish ).toEqual( noEnglishUnits[0].language );
+    expect( english ).toEqual( units[1].language );
   } );
 
   it( 'getContentType returns the correct content type', async () => {
@@ -478,9 +562,10 @@ describe( '<PreviewProjectContent />', () => {
     wrapper.update();
 
     const preview = wrapper.find( 'PreviewProjectContent' );
-    const noFilesMsg = 'This project unit does not have any files to preview.';
+    const { displayName } = noFilesMocks[0].result.data.project.units[0].language;
+    const noFilesMsg = `This ${displayName} language unit does not have any files to preview.`;
 
-    expect( preview.contains( noFilesMsg ) ).toEqual( true );
+    expect( preview.text() ).toEqual( noFilesMsg );
   } );
 
   it( 'renders a "no units message" if there are no units in the project', async () => {
@@ -496,5 +581,75 @@ describe( '<PreviewProjectContent />', () => {
     const noUnitsMsg = 'This project does not have any units to preview.';
 
     expect( preview.contains( noUnitsMsg ) ).toEqual( true );
+  } );
+
+  it( 'renders a single language but not a language dropdown if there is only one unit', async () => {
+    // use vimeoMocks since it has a single unit
+    const wrapper = mount(
+      <MockedProvider mocks={ vimeoMocks } addTypename>
+        <PreviewProjectContent { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const dropdown = preview.find( '.modal_languages' );
+    const singleLanguage = preview.find( '.modal_languages_single' );
+    const { units } = vimeoMocks[0].result.data.project;
+
+    expect( units.length ).toEqual( 1 );
+    expect( dropdown.exists() ).toEqual( false );
+    expect( singleLanguage.exists() ).toEqual( true );
+  } );
+
+  it( 'getTag returns the correct translation tag name', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+    // using the English unit at index 1
+    const tag = mocks[0].result.data.project.units[1].tags[0];
+    const unit = mocks[0].result.data.project.units[1];
+    const tagName = inst.getTag( tag, unit );
+
+    expect( tagName ).toEqual( 'american culture' );
+  } );
+
+  it( 'getTags returns an array of translation tag name(s)', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+    // using the English unit at index 1
+    const { tags } = mocks[0].result.data.project.units[1];
+    const unit = mocks[0].result.data.project.units[1];
+    const tagNames = inst.getTags( tags, unit );
+    const ret = [
+      { name: 'american culture' },
+      { name: 'english learning' }
+    ];
+
+    expect( Array.isArray( tagNames ) ).toEqual( true );
+    expect( tagNames ).toEqual( ret );
+  } );
+
+  it( 'does not render a tags section if the selected unit has no tags', async () => {
+    const wrapper = mount(
+      <MockedProvider mocks={ noTagsMocks } addTypename>
+        <PreviewProjectContent { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const tagsSection = preview.find( '.modal_section--postTags' );
+
+    expect( tagsSection.exists() ).toEqual( false );
   } );
 } );

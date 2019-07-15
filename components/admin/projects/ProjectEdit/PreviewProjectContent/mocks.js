@@ -175,7 +175,64 @@ export const getMocks = ( query, variables ) => (
                       {
                         __typename: 'LanguageTranslation',
                         id: 'tr999',
-                        name: 'american culture'
+                        name: 'american culture',
+                        language: {
+                          __typename: 'Language',
+                          id: 'en38',
+                          displayName: 'English',
+                          languageCode: 'en',
+                          locale: 'en-us',
+                          nativeName: 'English',
+                          textDirection: 'LTR'
+                        }
+                      },
+                      {
+                        __typename: 'LanguageTranslation',
+                        id: 'tr019',
+                        name: 'Culture américaine',
+                        language: {
+                          __typename: 'Language',
+                          id: 'fr82',
+                          displayName: 'French',
+                          languageCode: 'fr',
+                          locale: 'fr-fr',
+                          nativeName: 'French',
+                          textDirection: 'LTR'
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    __typename: 'Tag',
+                    id: 'tag14',
+                    translations: [
+                      {
+                        __typename: 'LanguageTranslation',
+                        id: 'tr888',
+                        name: 'english learning',
+                        language: {
+                          __typename: 'Language',
+                          id: 'en38',
+                          displayName: 'English',
+                          languageCode: 'en',
+                          locale: 'en-us',
+                          nativeName: 'English',
+                          textDirection: 'LTR'
+                        }
+                      },
+                      {
+                        __typename: 'LanguageTranslation',
+                        id: 'tr777',
+                        name: 'Anglais langue étrangère',
+                        language: {
+                          __typename: 'Language',
+                          id: 'fr82',
+                          displayName: 'French',
+                          languageCode: 'fr',
+                          locale: 'fr-fr',
+                          nativeName: 'French',
+                          textDirection: 'LTR'
+                        }
                       }
                     ]
                   }

@@ -24,6 +24,7 @@ import ModalItem from 'components/modals/ModalItem/ModalItem';
 import ModalContentMeta from 'components/modals/ModalContentMeta/ModalContentMeta';
 import ModalDescription from 'components/modals/ModalDescription/ModalDescription';
 import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
+import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 
 import Notification from 'components/Notification/Notification';
 import Popup from 'components/popups/Popup';
@@ -57,9 +58,7 @@ class PreviewProjectContent extends React.PureComponent {
       const { units } = this.props.data.project;
       if ( !units || ( units && units.length === 0 ) ) return;
 
-      const englishIndex = this.getEnglishIndex( units );
-      const { language } = units[englishIndex > -1 ? englishIndex : 0];
-
+      const language = this.getUnitLanguage( units );
       if ( !language || ( language && !Object.keys( language ).length ) ) {
         return;
       }
@@ -77,8 +76,10 @@ class PreviewProjectContent extends React.PureComponent {
       const { units } = this.props.data.project;
       if ( !units || ( units && units.length === 0 ) ) return;
 
-      const englishIndex = this.getEnglishIndex( units );
-      const { language } = units[englishIndex > -1 ? englishIndex : 0];
+      const language = this.getUnitLanguage( units );
+      if ( !language || ( language && !Object.keys( language ).length ) ) {
+        return;
+      }
 
       if ( !prevState.selectedLanguage ) {
         this.selectLanguage( language.displayName );
@@ -87,12 +88,13 @@ class PreviewProjectContent extends React.PureComponent {
   }
 
   getLanguages = units => (
-    units.map( unit => ( {
-      key: unit.language.languageCode,
-      value: unit.language.displayName,
-      text: unit.language.displayName
-    } ) )
-  )
+    this.getUnitsWithFiles( units )
+      .map( unit => ( {
+        key: unit.language.languageCode,
+        value: unit.language.displayName,
+        text: unit.language.displayName
+      } ) )
+  );
 
   getProjectUnits = units => (
     units.reduce( ( acc, unit ) => ( {
@@ -101,9 +103,35 @@ class PreviewProjectContent extends React.PureComponent {
     } ), {} )
   );
 
+  getUnitsWithFiles = units => (
+    units.filter( u => u.files.length > 0 )
+  );
+
   getEnglishIndex = units => (
     units.findIndex( unit => unit.language.displayName === 'English' )
   );
+
+  getFilesCount = ( units, i ) => {
+    if ( units[i] && units[i].files ) {
+      return units[i].files.length;
+    }
+    return 0;
+  };
+
+  getCurrUnitIndex = ( i, count = 0 ) => (
+    ( i > -1 && count > 0 ) ? i : 0
+  );
+
+  getUnitLanguage = units => {
+    /**
+     * Look for an English language unit first.
+     * Otherwise, get the first available unit.
+     */
+    const englishIndex = this.getEnglishIndex( units );
+    const englishFilesCount = this.getFilesCount( units, englishIndex );
+    const i = this.getCurrUnitIndex( englishIndex, englishFilesCount );
+    return units[i] ? units[i].language : {};
+  };
 
   getContentType = typename => {
     switch ( typename ) {
@@ -133,6 +161,23 @@ class PreviewProjectContent extends React.PureComponent {
 
     return `<iframe src="${embedSrc}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`;
   }
+
+  getTag = ( tag, unit ) => {
+    const translation = tag.translations.find( t => (
+      t.language.locale === unit.language.locale
+    ) );
+
+    if ( translation && translation.name ) {
+      return translation.name;
+    }
+  };
+
+  getTags = ( tags, unit ) => (
+    tags.reduce( ( acc, curr ) => ( [
+      ...acc,
+      { name: this.getTag( curr, unit ) }
+    ] ), [] )
+  );
 
   toggleArrow = () => {
     this.setState( prevState => ( {
@@ -193,14 +238,14 @@ class PreviewProjectContent extends React.PureComponent {
     }
 
     const {
-      title, language, descPublic, files
+      title, language, descPublic, files, tags
     } = selectedUnit;
     const contentType = this.getContentType( __typename );
 
     if ( files && files.length === 0 ) {
       return (
         <p style={ { fontSize: '1rem' } }>
-          This project unit does not have any files to preview.
+          This { language.displayName } language unit does not have any files to preview.
         </p>
       );
     }
@@ -256,14 +301,23 @@ class PreviewProjectContent extends React.PureComponent {
         />
 
         <div className="modal_options">
-          <Dropdown
-            className="modal_languages"
-            value={ selectedLanguage }
-            icon={ dropDownIsOpen ? 'chevron up' : 'chevron down' }
-            options={ this.getLanguages( units ) }
-            onClick={ this.toggleArrow }
-            onChange={ this.handleChange }
-          />
+          { ( units && this.getUnitsWithFiles( units ).length === 1 )
+            // use units since they're defined by language
+            ? (
+              <div className="modal_languages_single">
+                { selectedLanguage }
+              </div>
+            )
+            : (
+              <Dropdown
+                className="modal_languages"
+                value={ selectedLanguage }
+                icon={ dropDownIsOpen ? 'chevron up' : 'chevron down' }
+                options={ this.getLanguages( units ) }
+                onClick={ this.toggleArrow }
+                onChange={ this.handleChange }
+              />
+            ) }
 
           <div className="trigger-container">
             { ( contentType === 'video' && embedItem ) && (
@@ -400,6 +454,11 @@ class PreviewProjectContent extends React.PureComponent {
         </div>
 
         <ModalPostMeta source={ team.name } datePublished={ createdAt } />
+
+        { ( tags && tags.length > 0 )
+          && (
+            <ModalPostTags tags={ this.getTags( tags, selectedUnit ) } />
+          ) }
       </ModalItem>
     );
   }
