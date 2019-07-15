@@ -24,6 +24,7 @@ import ModalItem from 'components/modals/ModalItem/ModalItem';
 import ModalContentMeta from 'components/modals/ModalContentMeta/ModalContentMeta';
 import ModalDescription from 'components/modals/ModalDescription/ModalDescription';
 import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
+import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 
 import Notification from 'components/Notification/Notification';
 import Popup from 'components/popups/Popup';
@@ -87,18 +88,23 @@ class PreviewProjectContent extends React.PureComponent {
   }
 
   getLanguages = units => (
-    units.map( unit => ( {
-      key: unit.language.languageCode,
-      value: unit.language.displayName,
-      text: unit.language.displayName
-    } ) )
-  )
+    this.getUnitsWithFiles( units )
+      .map( unit => ( {
+        key: unit.language.languageCode,
+        value: unit.language.displayName,
+        text: unit.language.displayName
+      } ) )
+  );
 
   getProjectUnits = units => (
     units.reduce( ( acc, unit ) => ( {
       ...acc,
       [unit.language.displayName]: unit
     } ), {} )
+  );
+
+  getUnitsWithFiles = units => (
+    units.filter( u => u.files.length > 0 )
   );
 
   getEnglishIndex = units => (
@@ -294,7 +300,7 @@ class PreviewProjectContent extends React.PureComponent {
         />
 
         <div className="modal_options">
-          { units && units.length === 1
+          { ( units && this.getUnitsWithFiles( units ).length === 1 )
             // use units since they're defined by language
             ? (
               <div className="modal_languages_single">
@@ -453,8 +459,7 @@ class PreviewProjectContent extends React.PureComponent {
             <section className="modal_section modal_section--postTags">
               { this.getTags( tags, selectedUnit ) }
             </section>
-          )
-           }
+          ) }
       </ModalItem>
     );
   }

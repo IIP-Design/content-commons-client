@@ -247,6 +247,23 @@ describe( '<PreviewProjectContent />', () => {
     ] );
   } );
 
+  it( 'getUnitsWithFiles returns an array of units with files', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+    const units = [
+      { id: '1', files: [] },
+      { id: '2', files: [{ id: 'a', fileName: 'alpha' }] }
+    ];
+    const unitsWithFiles = inst.getUnitsWithFiles( units );
+
+    expect( Array.isArray( unitsWithFiles ) ).toEqual( true );
+    expect( unitsWithFiles[0] ).toEqual( units[1] );
+  } );
+
   it( 'calling getProjectUnits gets the projectUnits', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
