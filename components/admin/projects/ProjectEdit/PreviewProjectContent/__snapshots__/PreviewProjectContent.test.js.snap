@@ -237,6 +237,40 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                   },
                 ],
               },
+              Object {
+                "__typename": "Tag",
+                "id": "tag14",
+                "translations": Array [
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr888",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "English",
+                      "id": "en38",
+                      "languageCode": "en",
+                      "locale": "en-us",
+                      "nativeName": "English",
+                      "textDirection": "LTR",
+                    },
+                    "name": "english learning",
+                  },
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr777",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "French",
+                      "id": "fr82",
+                      "languageCode": "fr",
+                      "locale": "fr-fr",
+                      "nativeName": "French",
+                      "textDirection": "LTR",
+                    },
+                    "name": "Anglais langue étrangère",
+                  },
+                ],
+              },
             ],
             "thumbnails": Array [
               Object {
@@ -836,6 +870,40 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                                   },
                                 ],
                               },
+                              Object {
+                                "__typename": "Tag",
+                                "id": "tag14",
+                                "translations": Array [
+                                  Object {
+                                    "__typename": "LanguageTranslation",
+                                    "id": "tr888",
+                                    "language": Object {
+                                      "__typename": "Language",
+                                      "displayName": "English",
+                                      "id": "en38",
+                                      "languageCode": "en",
+                                      "locale": "en-us",
+                                      "nativeName": "English",
+                                      "textDirection": "LTR",
+                                    },
+                                    "name": "english learning",
+                                  },
+                                  Object {
+                                    "__typename": "LanguageTranslation",
+                                    "id": "tr777",
+                                    "language": Object {
+                                      "__typename": "Language",
+                                      "displayName": "French",
+                                      "id": "fr82",
+                                      "languageCode": "fr",
+                                      "locale": "fr-fr",
+                                      "nativeName": "French",
+                                      "textDirection": "LTR",
+                                    },
+                                    "name": "Anglais langue étrangère",
+                                  },
+                                ],
+                              },
                             ],
                             "thumbnails": Array [
                               Object {
@@ -1013,6 +1081,40 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                                           "textDirection": "RTL",
                                         },
                                         "name": "الثقافة الأميركية",
+                                      },
+                                    ],
+                                  },
+                                  Object {
+                                    "__typename": "Tag",
+                                    "id": "tag14",
+                                    "translations": Array [
+                                      Object {
+                                        "__typename": "LanguageTranslation",
+                                        "id": "tr888",
+                                        "language": Object {
+                                          "__typename": "Language",
+                                          "displayName": "English",
+                                          "id": "en38",
+                                          "languageCode": "en",
+                                          "locale": "en-us",
+                                          "nativeName": "English",
+                                          "textDirection": "LTR",
+                                        },
+                                        "name": "english learning",
+                                      },
+                                      Object {
+                                        "__typename": "LanguageTranslation",
+                                        "id": "tr777",
+                                        "language": Object {
+                                          "__typename": "Language",
+                                          "displayName": "French",
+                                          "id": "fr82",
+                                          "languageCode": "fr",
+                                          "locale": "fr-fr",
+                                          "nativeName": "French",
+                                          "textDirection": "LTR",
+                                        },
+                                        "name": "Anglais langue étrangère",
                                       },
                                     ],
                                   },
@@ -1256,6 +1358,11 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
           </span>
         </section>
       </ModalPostMeta>
+      <section
+        className="modal_section modal_section--postTags"
+      >
+        undefined · english learning
+      </section>
     </div>
   </ModalItem>
 </PreviewProjectContent>

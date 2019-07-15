@@ -105,6 +105,25 @@ const noFilesMocks = [
   }
 ];
 
+const noTagsMocks = [
+  {
+    ...mocks[0],
+    result: {
+      data: {
+        project: {
+          ...mocks[0].result.data.project,
+          units: [
+            {
+              ...mocks[0].result.data.project.units[0],
+              tags: []
+            }
+          ]
+        }
+      }
+    }
+  }
+];
+
 const noUnitsMocks = [
   {
     ...mocks[0],
@@ -517,5 +536,51 @@ describe( '<PreviewProjectContent />', () => {
     expect( units.length ).toEqual( 1 );
     expect( dropdown.exists() ).toEqual( false );
     expect( singleLanguage.exists() ).toEqual( true );
+  } );
+
+  it( 'getTag returns the correct translation tag name', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+    // using the English unit at index 1
+    const tag = mocks[0].result.data.project.units[1].tags[0];
+    const unit = mocks[0].result.data.project.units[1];
+    const tagName = inst.getTag( tag, unit );
+
+    expect( tagName ).toEqual( 'american culture' );
+  } );
+
+  it( 'getTags returns a string of translation tag name(s)', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const inst = preview.instance();
+    // using the English unit at index 1
+    const { tags } = mocks[0].result.data.project.units[1];
+    const unit = mocks[0].result.data.project.units[1];
+    const tagNames = inst.getTags( tags, unit );
+
+    expect( typeof tagNames ).toEqual( 'string' );
+    expect( tagNames ).toEqual( 'american culture · english learning' );
+  } );
+
+  it( 'does not render a tags section if the selected unit has no tags', async () => {
+    const wrapper = mount(
+      <MockedProvider mocks={ noTagsMocks } addTypename>
+        <PreviewProjectContent { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const preview = wrapper.find( 'PreviewProjectContent' );
+    const tagsSection = preview.find( '.modal_section--postTags' );
+
+    expect( tagsSection.exists() ).toEqual( false );
   } );
 } );
