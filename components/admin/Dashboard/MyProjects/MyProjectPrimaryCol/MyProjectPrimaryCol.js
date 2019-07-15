@@ -164,8 +164,8 @@ const MyProjectPrimaryCol = props => {
           <div className="projects_data_actions_wrapper">
             { isPublishing
               ? actions.map( ( action, i ) => (
-                <Fragment>
-                  <span key={ `${action}-${id}` } className={ getActionCls() }>
+                <Fragment key={ `${action}-${id}` }>
+                  <span className={ getActionCls() }>
                     { action }
                   </span>
                   { ( i < actions.length - 1 )
