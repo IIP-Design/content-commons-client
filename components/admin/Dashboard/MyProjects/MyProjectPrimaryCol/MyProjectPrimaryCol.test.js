@@ -181,4 +181,13 @@ describe( '<MyProjectPrimaryCol />', () => {
 
     expect( checkbox.prop( 'disabled' ) ).toEqual( true );
   } );
+
+  it( 'does not render a data-label checkbox attribute if status is PUBLISHING', () => {
+    const wrapper = shallow( Component );
+    wrapper.setProps( { d: { ...props.d, status: 'PUBLISHING' } } );
+    const checkbox = wrapper.find( Checkbox );
+    const attrs = Object.keys( checkbox.props() );
+
+    expect( attrs.includes( 'data-label' ) ).toEqual( false );
+  } );
 } );

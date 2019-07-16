@@ -90,7 +90,7 @@ const TeamProjectPrimaryCol = props => {
     <Fragment>
       <div className="projects_actions">
         <Checkbox
-          data-label={ id }
+          { ...( isPublishing ? {} : { 'data-label': id } ) }
           checked={ !!selectedItems.get( `${id}` ) }
           onChange={ toggleItemSelection }
           disabled={ isPublishing }
