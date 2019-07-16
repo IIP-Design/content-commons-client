@@ -218,9 +218,16 @@ class TableActionsMenu extends React.Component {
             if ( !data || !data.videoProjects ) return null;
 
             const { videoProjects } = data;
+
             const isDisabled = videoProjects && !videoProjects.length;
-            const isChecked = videoProjects && videoProjects.length === this.getSelectedProjects().length;
-            const isIndeterminate = ( videoProjects && videoProjects.length > this.getSelectedProjects().length ) && this.getSelectedProjects().length > 0;
+
+            const isChecked = ( videoProjects
+              && videoProjects.length === this.getSelectedProjects().length )
+              && this.getSelectedProjects().length > 0;
+
+            const isIndeterminate = ( videoProjects
+              && videoProjects.length > this.getSelectedProjects().length )
+              && this.getSelectedProjects().length > 0;
 
             return (
               <Checkbox
