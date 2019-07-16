@@ -39,8 +39,6 @@ class TableMenu extends React.Component {
       const columns = this.getColumns();
       this.handleCheckboxFocus( columns, 0 );
     }
-
-    this.toggleTableArrowScroll();
   }
 
   componentWillUnmount = () => {
@@ -58,21 +56,6 @@ class TableMenu extends React.Component {
       [...acc, cur.label]
     ), [] )
   )
-
-  toggleTableArrowScroll = () => {
-    const { menuHeaders } = this.state;
-    const isTableScrollable = menuHeaders.length >= 2;
-    const scrollBtns = document.querySelectorAll( '[data-tablearrow]' );
-
-    scrollBtns.forEach( btn => {
-      const isBtnDisabled = btn.classList.contains( 'disabled' );
-      if ( isTableScrollable ) {
-        if ( isBtnDisabled ) btn.classList.remove( 'disabled' );
-      } else {
-        btn.classList.add( 'disabled' );
-      }
-    } );
-  }
 
   handleCheckboxFocus = ( array, i ) => {
     this[array[i]].inputRef.focus();
@@ -202,6 +185,7 @@ class TableMenu extends React.Component {
   render() {
     const { displayTableMenu, menuHeaders } = this.state;
     const { columnMenu, tableMenuOnChange } = this.props;
+    const isTableScrollable = menuHeaders.length >= 2;
 
     return (
       <div className="items_menu_wrapper">
@@ -260,7 +244,7 @@ class TableMenu extends React.Component {
             onClick={ this.handleTableScroll }
             onFocus={ displayTableMenu ? this.toggleTableMenu : null }
             type="button"
-            className="disabled"
+            disabled={ !isTableScrollable }
           >
             <VisuallyHidden el="span">scroll table left</VisuallyHidden>
             <Icon name="angle left" data-tablearrow="left" />
@@ -270,7 +254,7 @@ class TableMenu extends React.Component {
             onClick={ this.handleTableScroll }
             onFocus={ displayTableMenu ? this.toggleTableMenu : null }
             type="button"
-            className="disabled"
+            disabled={ !isTableScrollable }
           >
             <VisuallyHidden el="span">scroll table right</VisuallyHidden>
             <Icon name="angle right" data-tablearrow="right" />
