@@ -37,6 +37,7 @@ exports[`<TableMenu /> renders without crashing 1`] = `
     </Accordion>
     <button
       data-tablearrow="left"
+      disabled={true}
       onClick={[Function]}
       onFocus={null}
       type="button"
@@ -54,6 +55,7 @@ exports[`<TableMenu /> renders without crashing 1`] = `
     </button>
     <button
       data-tablearrow="right"
+      disabled={true}
       onClick={[Function]}
       onFocus={null}
       type="button"

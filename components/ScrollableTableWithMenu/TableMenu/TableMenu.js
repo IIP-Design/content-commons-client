@@ -59,9 +59,9 @@ class TableMenu extends React.Component {
 
   handleCheckboxFocus = ( array, i ) => {
     this[array[i]].inputRef.focus();
-  };
+  }
 
-  handleCloseMenu = () => this.setState( { displayTableMenu: false } );
+  handleCloseMenu = () => this.setState( { displayTableMenu: false } )
 
   handleKbdAccess = e => {
     if ( !this.state.displayTableMenu ) return;
