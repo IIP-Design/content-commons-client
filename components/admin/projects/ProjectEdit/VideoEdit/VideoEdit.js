@@ -3,9 +3,7 @@
  * VideoEdit
  *
  */
-import React, {
-  Fragment, useState, useEffect
-} from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { Button, Confirm } from 'semantic-ui-react';
@@ -64,6 +62,8 @@ const VideoEdit = props => {
     showNotification: false
   } );
 
+  const [disableBtns, setDisableBtns] = useState( false );
+
   const centeredStyles = {
     position: 'absolute',
     top: '9em',
@@ -71,6 +71,12 @@ const VideoEdit = props => {
     transform: 'translateX(-50%)'
   };
 
+  const uploadVideoFileNotificationStyles = {
+    fontSize: '1em',
+    textAlign: 'center',
+    backgroundColor: '#cd2026',
+    color: 'white'
+  };
 
   const { upload: { isUploading, filesToUpload } } = props;
 
@@ -281,14 +287,14 @@ const VideoEdit = props => {
             content="Save & Exit"
             basic
             onClick={ handleExit }
-            disabled={ !projectId }
+            disabled={ !projectId || disableBtns }
           />
 
           <Button
             className="edit-project__btn--final-review"
             content="Final Review"
             onClick={ handleFinalReview }
-            disabled={ !projectId }
+            disabled={ !projectId || disableBtns }
           />
         </ProjectHeader>
       </div>
@@ -297,11 +303,20 @@ const VideoEdit = props => {
         <ApolloError error={ error } />
       </div>
 
+      { /* Form data saved notification */ }
       <Notification
         el="p"
         customStyles={ centeredStyles }
         show={ showNotification }
         msg={ notificationMessage }
+      />
+
+      { /* Video file notification */ }
+      <Notification
+        el="p"
+        customStyles={ uploadVideoFileNotificationStyles }
+        show={ disableBtns }
+        msg="Please include a Video file to your project."
       />
 
       { /* upload progress  */ }
@@ -360,13 +375,14 @@ const VideoEdit = props => {
             projectId={ projectId }
             heading="Videos in Project"
             extensions={ ['.mov', '.mp4'] }
+            setDisableBtns={ setDisableBtns }
           />
         </div>
       </UploadContext.Provider>
 
       { /* add more files button */ }
       { projectId && (
-        <div style={ { marginTop: '3rem' } }>
+        <div className="edit-project__add-more__wrapper">
           <Button
             className="edit-project__add-more"
             content="+ Add more files to this project"

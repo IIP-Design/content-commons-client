@@ -109,6 +109,14 @@
     }
   }
 
+  &__add-more__wrapper {
+    margin-top: 3em;
+    padding-left: 1.75em;
+    @media screen and (max-width: 767px) {
+      padding-left: 1rem;
+    }
+  }
+
   &__btn--final-review,
   &__form--save {
     border: 2px solid $light-blue !important;

@@ -23,7 +23,8 @@ const ProjectUnits = props => {
     projectId,
     filesToUpload,
     heading,
-    extensions
+    extensions,
+    setDisableBtns
   } = props;
 
   const hasProjectUnits = () => ( !isEmpty( data ) && data.projectUnits && data.projectUnits.units );
@@ -81,6 +82,8 @@ const ProjectUnits = props => {
       const { projectUnits } = data;
       if ( projectUnits.units && projectUnits.units.length ) {
         setUnits( fetchUnits( data ) );
+      } else {
+        setDisableBtns( true );
       }
     }
   }, [data] );
@@ -116,7 +119,8 @@ ProjectUnits.propTypes = {
   heading: PropTypes.string,
   extensions: PropTypes.array,
   data: PropTypes.object,
-  filesToUpload: PropTypes.array // from redux
+  filesToUpload: PropTypes.array, // from redux
+  setDisableBtns: PropTypes.func
 };
 
 
