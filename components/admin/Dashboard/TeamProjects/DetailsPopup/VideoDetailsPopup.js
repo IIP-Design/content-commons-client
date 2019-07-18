@@ -50,13 +50,17 @@ const VideoDetailsPopup = props => (
       ( { loading, error, data } ) => {
         if ( loading ) return <p>Loading....</p>;
         if ( error ) return <ApolloError error={ error } />;
+        if ( !data.videoProject ) return null;
 
         const {
           units,
           supportFiles
         } = data.videoProject;
 
-        const videoFiles = units.map( unit => unit.files.reduce( ( acc, file ) => file, {} ) );
+        const videoFiles = units.reduce( ( acc, unit ) => (
+          [...acc, ...unit.files]
+        ), [] );
+
         if ( videoFiles.length || supportFiles.length ) {
           return (
             <div className="details-files">
@@ -90,3 +94,5 @@ VideoDetailsPopup.propTypes = {
 };
 
 export default VideoDetailsPopup;
+
+export { VIDEO_PROJECT_FILES_QUERY };
