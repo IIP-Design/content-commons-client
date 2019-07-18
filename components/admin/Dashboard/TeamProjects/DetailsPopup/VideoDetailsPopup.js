@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import ApolloError from 'components/errors/ApolloError';
-import { formatBytes } from 'lib/utils';
+import { formatBytes, getS3Url } from 'lib/utils';
 
 const VIDEO_PROJECT_FILES_QUERY = gql`
   query VideoProjectFiles( $id: ID! ) {
@@ -61,14 +61,20 @@ const VideoDetailsPopup = props => (
           return (
             <div className="details-files">
               <ul>
-                { videoFiles && videoFiles.map( vidFile => (
-                  <li key={ vidFile.id }>
-                    { vidFile.use.name } | <a href={ vidFile.url }>{ vidFile.quality }</a> | <a href={ vidFile.url }>{ vidFile.language.displayName } ({ formatBytes( vidFile.filesize ) })</a>
-                  </li>
-                ) ) }
-                { supportFiles && supportFiles.map( sprtFile => (
-                  <li key={ sprtFile.id }>SRT | <a href={ sprtFile.url }>{ sprtFile.language.displayName }</a> | <a href={ sprtFile.url }>{ formatBytes( sprtFile.filesize ) }</a></li>
-                ) ) }
+                { videoFiles && videoFiles.map( vidFile => {
+                  if ( Object.keys( vidFile ).length === 0 ) return null;
+                  return (
+                    <li key={ vidFile.id }>
+                      { vidFile.use.name } | <a href={ getS3Url( vidFile.url ) }>{ vidFile.quality }</a> | <a href={ getS3Url( vidFile.url ) }>{ vidFile.language.displayName } ({ formatBytes( vidFile.filesize ) })</a>
+                    </li>
+                  );
+                } ) }
+                { supportFiles && supportFiles.map( sprtFile => {
+                  if ( Object.keys( sprtFile ).length === 0 ) return null;
+                  return (
+                    <li key={ sprtFile.id }>SRT | <a href={ getS3Url( sprtFile.url ) }>{ sprtFile.language && sprtFile.language.displayName }</a> | <a href={ getS3Url( sprtFile.url ) }>{ formatBytes( sprtFile.filesize ) }</a></li>
+                  );
+                } ) }
               </ul>
             </div>
           );
