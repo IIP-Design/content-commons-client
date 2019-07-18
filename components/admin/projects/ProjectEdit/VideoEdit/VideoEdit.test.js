@@ -1,8 +1,10 @@
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
-import getConfig from 'next/config';
-import { projects, units } from 'components/admin/projects/ProjectEdit/mockData';
+import Router from 'next/router';
+import { projects } from 'components/admin/projects/ProjectEdit/mockData';
+import Notification from 'components/Notification/Notification';
 import VideoEdit from './VideoEdit';
+// import { VideoEdit } from './VideoEdit';
 
 jest.mock( 'next-server/config', () => () => (
   {
@@ -22,15 +24,35 @@ jest.mock( 'next-server/dynamic', () => () => 'EditSingleProjectItem' );
 
 const TEST_ID = '234';
 
-const Component = <VideoEdit id={ TEST_ID } project={ projects[0] } />;
+const props = {
+  id: TEST_ID,
+  data: projects[0],
+  updateVideoProject: () => {},
+  deleteVideoProject: () => {},
+  router: Router,
+  setIsUploading: () => {},
+  uploadExecute: () => {},
+  uploadReset: () => {},
+  uploadProgress: () => {},
+  upload: {}
+};
 
+// const Component = <VideoEdit id={ TEST_ID } project={ projects[0] } />;
+const Component = <VideoEdit { ...props } />;
 
 describe( '<VideoEdit />', () => {
   it( 'renders without crashing', () => {
     const wrapper = shallow( Component );
     expect( wrapper.exists() ).toEqual( true );
-    // expect( toJSON( wrapper ) ).toMatchSnapshot();
+    expect( toJSON( wrapper ) ).toMatchSnapshot();
   } );
+
+  // it( 'displays the `include Video File` notification if disableBtns is true', () => {
+  //   const wrapper = mount( Component );
+  //   expect( wrapper.find( '.addVideoFileNotification' ).length ).toBe( 0);
+  //   wrapper.setState( { disableBtns: true } );
+  //   expect( wrapper.find( '.addVideoFileNotification' ).length ).toBe( 1 );
+  // } );
 
   // it( '`componentDidMount` sets `_isMounted`', () => {
   //   const wrapper = shallow( Component );
