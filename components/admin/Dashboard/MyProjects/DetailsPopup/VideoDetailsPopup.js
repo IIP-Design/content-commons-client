@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import ApolloError from 'components/errors/ApolloError';
-import { formatBytes, getS3Url } from 'lib/utils';
+import { formatBytes, getCount, getS3Url } from 'lib/utils';
 
 const VIDEO_PROJECT_FILES_QUERY = gql`
   query VideoProjectFiles( $id: ID! ) {
@@ -44,6 +44,18 @@ const VIDEO_PROJECT_FILES_QUERY = gql`
   }
 `;
 
+const getValidFiles = files => (
+  files.filter( file => file )
+);
+
+const getVideoFiles = units => (
+  units.reduce( ( acc, unit ) => {
+    if ( !unit.files ) return;
+    const validFiles = getValidFiles( unit.files );
+    return [...acc, ...validFiles];
+  }, [] )
+);
+
 const VideoDetailsPopup = props => (
   <Query query={ VIDEO_PROJECT_FILES_QUERY } variables={ { id: props.id } }>
     {
@@ -57,24 +69,22 @@ const VideoDetailsPopup = props => (
           supportFiles
         } = data.videoProject;
 
-        const videoFiles = units.reduce( ( acc, unit ) => (
-          [...acc, ...unit.files]
-        ), [] );
+        const videoFiles = getVideoFiles( units );
 
-        if ( videoFiles.length || supportFiles.length ) {
+        if ( getCount( videoFiles ) || getCount( supportFiles ) ) {
           return (
             <div className="details-files">
               <ul>
                 { videoFiles && videoFiles.map( vidFile => {
-                  if ( Object.keys( vidFile ).length === 0 ) return null;
+                  if ( !vidFile || getCount( vidFile ) === 0 ) return null;
                   return (
                     <li key={ vidFile.id }>
-                      { vidFile.use.name } | <a href={ getS3Url( vidFile.url ) }>{ vidFile.quality }</a> | <a href={ getS3Url( vidFile.url ) }>{ vidFile.language.displayName } ({ formatBytes( vidFile.filesize ) })</a>
+                      { vidFile.use && vidFile.use.name } | <a href={ getS3Url( vidFile.url ) }>{ vidFile.quality }</a> | <a href={ getS3Url( vidFile.url ) }>{ vidFile.language && vidFile.language.displayName } ({ formatBytes( vidFile.filesize ) })</a>
                     </li>
                   );
                 } ) }
                 { supportFiles && supportFiles.map( sprtFile => {
-                  if ( Object.keys( sprtFile ).length === 0 ) return null;
+                  if ( !sprtFile || getCount( sprtFile ) === 0 ) return null;
                   return (
                     <li key={ sprtFile.id }>SRT | <a href={ getS3Url( sprtFile.url ) }>{ sprtFile.language && sprtFile.language.displayName }</a> | <a href={ getS3Url( sprtFile.url ) }>{ formatBytes( sprtFile.filesize ) }</a></li>
                   );
@@ -95,4 +105,4 @@ VideoDetailsPopup.propTypes = {
 
 export default VideoDetailsPopup;
 
-export { VIDEO_PROJECT_FILES_QUERY };
+export { getValidFiles, getVideoFiles, VIDEO_PROJECT_FILES_QUERY };

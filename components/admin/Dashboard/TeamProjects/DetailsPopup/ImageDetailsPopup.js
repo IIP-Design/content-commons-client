@@ -46,7 +46,7 @@ const ImageDetailsPopup = props => (
               <p>Files:</p>
               <ul>
                 { supportFiles.map( file => {
-                  if ( Object.keys( file ).length === 0 ) return null;
+                  if ( !file ) return null;
                   const {
                     id,
                     url,
@@ -57,7 +57,7 @@ const ImageDetailsPopup = props => (
                   } = file;
                   return (
                     <li key={ id }>
-                      { use.name } | <a href={ getS3Url( url ) }>{ filetype }</a> | <a href={ getS3Url( url ) }>{ displayName } { formatBytes( filesize ) }</a>
+                      { use && use.name } | <a href={ getS3Url( url ) }>{ filetype }</a> | <a href={ getS3Url( url ) }>{ displayName } { formatBytes( filesize ) }</a>
                     </li>
                   );
                 } ) }

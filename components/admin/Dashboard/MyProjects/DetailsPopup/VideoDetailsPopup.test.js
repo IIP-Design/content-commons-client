@@ -3,7 +3,10 @@ import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import { MockedProvider } from 'react-apollo/test-utils';
 import ApolloError from 'components/errors/ApolloError';
-import VideoDetailsPopup, { VIDEO_PROJECT_FILES_QUERY } from './VideoDetailsPopup';
+import { formatBytes, getCount } from 'lib/utils';
+import VideoDetailsPopup, {
+  getValidFiles, getVideoFiles, VIDEO_PROJECT_FILES_QUERY
+} from './VideoDetailsPopup';
 
 jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_PUBLISHER_UPLOAD_BUCKET: 's3-bucket-url' } } ) );
 
@@ -95,6 +98,66 @@ const noFilesMocks = [
             }
           ],
           supportFiles: []
+        }
+      }
+    }
+  }
+];
+
+const noUnitsMocks = [
+  {
+    ...mocks[0],
+    result: {
+      data: {
+        videoProject: {
+          ...mocks[0].result.data.videoProject,
+          units: []
+        }
+      }
+    }
+  }
+];
+
+const nullFilesMocks = [
+  {
+    ...mocks[0],
+    result: {
+      data: {
+        videoProject: {
+          ...mocks[0].result.data.videoProject,
+          units: [
+            {
+              ...mocks[0].result.data.videoProject.units[0],
+              files: null
+            }
+          ],
+          supportFiles: null
+        }
+      }
+    }
+  }
+];
+
+const nullFileMocks = [
+  {
+    ...mocks[0],
+    result: {
+      data: {
+        videoProject: {
+          ...mocks[0].result.data.videoProject,
+          units: [
+            {
+              ...mocks[0].result.data.videoProject.units[0],
+              files: [
+                ...mocks[0].result.data.videoProject.units[0].files,
+                null
+              ]
+            }
+          ],
+          supportFiles: [
+            ...mocks[0].result.data.videoProject.supportFiles,
+            null
+          ]
         }
       }
     }
@@ -200,6 +263,43 @@ describe( '<VideoDetailsPopup />', () => {
     expect( popup.contains( noFilesMsg ) ).toEqual( true );
   } );
 
+  it( 'renders a no files message if files are null', async () => {
+    const wrapper = mount(
+      <MockedProvider mocks={ nullFilesMocks } addTypename={ false }>
+        <VideoDetailsPopup { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const popup = wrapper.find( VideoDetailsPopup );
+    const noFilesMsg = <p>There are no supporting video files.</p>;
+
+    expect( popup.contains( noFilesMsg ) ).toEqual( true );
+  } );
+
+  it( 'does not render video files if there are no units', async () => {
+    const wrapper = mount(
+      <MockedProvider mocks={ noUnitsMocks } addTypename={ false }>
+        <VideoDetailsPopup { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const popup = wrapper.find( VideoDetailsPopup );
+    const files = popup.find( 'li' );
+    const { videoProject: { supportFiles } } = noUnitsMocks[0].result.data;
+    const supportFilesCount = getValidFiles( supportFiles ).length;
+
+    expect( files.length ).toEqual( supportFilesCount );
+    files.forEach( ( file, i ) => {
+      const { language: { displayName }, filesize } = supportFiles[i];
+      expect( file.text() )
+        .toEqual( `SRT | ${displayName} | ${formatBytes( filesize )}` );
+    } );
+  } );
+
   it( 'renders the correct number of files', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
@@ -207,11 +307,30 @@ describe( '<VideoDetailsPopup />', () => {
 
     const popup = wrapper.find( VideoDetailsPopup );
     const files = popup.find( 'li' );
-    const { videoProject } = mocks[0].result.data;
-    const supportFilesCount = videoProject.supportFiles.length;
-    const unitFilesCount = videoProject.units.reduce( ( acc, unit ) => (
-      [...acc, ...unit.files]
-    ), [] ).length;
+    const { videoProject: { units, supportFiles } } = mocks[0].result.data;
+    const supportFilesCount = getValidFiles( supportFiles ).length;
+    const unitFiles = getVideoFiles( units );
+    const unitFilesCount = getCount( unitFiles );
+    const totalFiles = supportFilesCount + unitFilesCount;
+
+    expect( files.length ).toEqual( totalFiles );
+  } );
+
+  it( 'does not crash and renders the correct number of files if any single file is null', async () => {
+    const wrapper = mount(
+      <MockedProvider mocks={ nullFileMocks } addTypename={ false }>
+        <VideoDetailsPopup { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const popup = wrapper.find( VideoDetailsPopup );
+    const files = popup.find( 'li' );
+    const { videoProject: { units, supportFiles } } = nullFileMocks[0].result.data;
+    const supportFilesCount = getValidFiles( supportFiles ).length;
+    const unitFiles = getVideoFiles( units );
+    const unitFilesCount = getCount( unitFiles );
     const totalFiles = supportFilesCount + unitFilesCount;
 
     expect( files.length ).toEqual( totalFiles );
