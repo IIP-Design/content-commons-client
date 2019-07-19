@@ -68,37 +68,34 @@ const DetailsPopup = props => {
         ( { loading, error, data } ) => {
           if ( loading ) return <p>Loading....</p>;
           if ( error ) return <ApolloError error={ error } />;
+          if ( !data.videoProject ) return null;
 
-          if ( data.videoProject ) {
-            const { __typename } = data.videoProject;
-            return (
-              // 06/10/19 - Updating button text from "Details" to "Files"
-              // if DetailsPopup will contain content other than files in future,
-              // will add conditional to display "Details" text along with "Files"/"Other Content"
-              // subheaders within popup
-              <Popup
-                className="detailsFiles_popup"
-                trigger={ (
-                  <button
-                    type="button"
-                    className="linkStyle projects_data_actions_action"
-                    data-projectitempopup="detailsPopup"
-                  >
-                    Files
-                  </button>
-                ) }
-                content={ renderPopup( __typename, id ) }
-                on="click"
-                position="bottom left"
-                keepInViewPort
-                open={ detailsPopupOpen }
-                onOpen={ handleOpen }
-                onClose={ handleClose }
-              />
-            );
-          }
-
-          return <p>There are no supporting files for this project.</p>;
+          const { __typename } = data.videoProject;
+          return (
+            // 06/10/19 - Updating button text from "Details" to "Files"
+            // if DetailsPopup will contain content other than files in future,
+            // will add conditional to display "Details" text along with "Files"/"Other Content"
+            // subheaders within popup
+            <Popup
+              className="detailsFiles_popup"
+              trigger={ (
+                <button
+                  type="button"
+                  className="linkStyle projects_data_actions_action"
+                  data-projectitempopup="detailsPopup"
+                >
+                  Files
+                </button>
+              ) }
+              content={ renderPopup( __typename, id ) }
+              on="click"
+              position="bottom left"
+              keepInViewPort
+              open={ detailsPopupOpen }
+              onOpen={ handleOpen }
+              onClose={ handleClose }
+            />
+          );
         }
       }
     </Query>
@@ -110,3 +107,5 @@ DetailsPopup.propTypes = {
 };
 
 export default DetailsPopup;
+
+export { CHECK_PROJECT_TYPE_QUERY };
