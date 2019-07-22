@@ -38,28 +38,17 @@ const DetailsPopup = props => {
     handleClose();
   }, 500, { leading: true, trailing: false } );
 
-  const handleTableScroll = debounce( () => {
-    /* eslint-disable no-use-before-define */
-    handleClose();
-  }, 500, { leading: true, trailing: false } );
-
   const handleOpen = () => {
     setDetailsPopupOpen( true );
     window.addEventListener( 'resize', handleResize );
-    window.addEventListener( 'scroll', handleTableScroll );
-
-    const itemsTable = document.querySelector( '.items_table' );
-    itemsTable.addEventListener( 'scroll', handleTableScroll );
   };
 
   const handleClose = () => {
     const itemsTable = document.querySelector( '.items_table' );
     if ( itemsTable ) {
-      itemsTable.removeEventListener( 'scroll', handleTableScroll );
       setDetailsPopupOpen( false );
     }
     window.removeEventListener( 'resize', handleResize );
-    window.removeEventListener( 'scroll', handleTableScroll );
   };
 
   return (
@@ -90,6 +79,7 @@ const DetailsPopup = props => {
               content={ renderPopup( __typename, id ) }
               on="click"
               position="bottom left"
+              hideOnScroll
               keepInViewPort
               open={ detailsPopupOpen }
               onOpen={ handleOpen }

@@ -102,7 +102,6 @@ describe( '<DetailsPopup />', () => {
 
     setTimeout( () => {
       expect( window.addEventListener ).toHaveBeenCalledWith( 'resize' );
-      expect( window.addEventListener ).toHaveBeenCalledWith( 'scroll' );
     }, 500 );
   } );
 
@@ -119,7 +118,6 @@ describe( '<DetailsPopup />', () => {
     setTimeout( () => {
       wrapper.unmount();
       expect( window.removeEventListener ).toHaveBeenCalledWith( 'resize' );
-      expect( window.removeEventListener ).toHaveBeenCalledWith( 'scroll' );
     }, 500 );
   } );
 
@@ -221,38 +219,6 @@ describe( '<DetailsPopup />', () => {
      */
     setTimeout( () => {
       map.resize();
-      expect( popup().prop( 'open' ) ).toEqual( false );
-    }, 500 );
-  } );
-
-  it( 'global scroll event closes the Popup', async () => {
-    const div = document.createElement( 'div' );
-    div.classList.add( 'items_table' );
-    window.domNode = div;
-    document.body.appendChild( div );
-
-    const wrapper = mount( Component, { attachTo: window.domNode } );
-    await wait( 0 );
-    wrapper.update();
-
-    const popup = () => wrapper.find( 'Popup' );
-    const btn = wrapper.find( 'button.projects_data_actions_action' );
-
-    const map = {};
-    window.addEventListener = jest.fn( ( event, cb ) => {
-      map[event] = cb;
-    } );
-
-    // popup is initially closed
-    expect( popup().prop( 'open' ) ).toEqual( false );
-
-    // open the popup
-    btn.simulate( 'click' );
-    expect( popup().prop( 'open' ) ).toEqual( true );
-
-    // close the popup
-    setTimeout( () => {
-      map.scroll();
       expect( popup().prop( 'open' ) ).toEqual( false );
     }, 500 );
   } );
