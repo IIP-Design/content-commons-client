@@ -1,6 +1,6 @@
 import './TableBody.scss';
 import { Loader, Table } from 'semantic-ui-react';
-import { formatDate, getPathToS3Bucket, maybeGetPathToS3 } from 'lib/utils';
+import { formatDate, maybeGetPathToS3 } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -236,7 +236,8 @@ TableBody.propTypes = {
     videoProjects: PropTypes.array
   } )
 };
-const updateVideoProjects = ( data, updates ) => {
+
+export const updateVideoProjects = ( data, updates ) => {
   if ( data && data.videoProjects ) {
     const { videoProjects } = data;
     updates.forEach( update => {
@@ -245,7 +246,7 @@ const updateVideoProjects = ( data, updates ) => {
         const project = videoProjects[idx];
         videoProjects[idx] = {
           ...project,
-          ...update
+          status: update.status
         };
       }
     } );
@@ -253,12 +254,11 @@ const updateVideoProjects = ( data, updates ) => {
   return data;
 };
 
-const VIDEO_STATUS_SUBSCRIPTION = gql`
-  subscription VideoStatusSubscription {
-    videoStatus {
+export const PROJECT_STATUS_SUBSCRIPTION = gql`
+  subscription ProjectStatusSubscription {
+    projectStatus {
       id
       status
-      visibility
     }
   }
 `;
@@ -270,11 +270,11 @@ export default compose(
       fetchPolicy: 'cache-and-network'
     } )
   } ),
-  graphql( VIDEO_STATUS_SUBSCRIPTION, {
+  graphql( PROJECT_STATUS_SUBSCRIPTION, {
     props: ( { data, ownProps } ) => {
       if ( !data ) return ownProps;
-      if ( ownProps.data.videoProjects && data.videoStatus ) {
-        updateVideoProjects( ownProps, [data.videoStatus] );
+      if ( ownProps.data.videoProjects && data.projectStatus ) {
+        updateVideoProjects( ownProps.data, data.projectStatus );
       }
       return ownProps;
     }

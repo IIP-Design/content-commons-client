@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import {
   Button, Checkbox, Icon, Modal
 } from 'semantic-ui-react';
@@ -11,16 +11,30 @@ import archiveIcon from 'static/images/dashboard/archive.svg';
 import DeleteIconButton from './DeleteIconButton/DeleteIconButton';
 import DeleteProjects from './DeleteProjects/DeleteProjects';
 import UnpublishProjects from './UnpublishProjects/UnpublishProjects';
-import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
+import {
+  PROJECT_STATUS_SUBSCRIPTION,
+  TEAM_VIDEO_PROJECTS_QUERY,
+  updateVideoProjects
+} from '../TableBody/TableBody';
 import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
 import './TableActionsMenu.scss';
+
+const getDraftProjects = projects => {
+  if ( !projects ) return [];
+  return projects.reduce( ( acc, curr ) => {
+    if ( curr.status === 'DRAFT' ) {
+      return [...acc, curr.id];
+    }
+    return [...acc];
+  }, [] );
+};
 
 /* eslint-disable react/prefer-stateless-function */
 class TableActionsMenu extends React.Component {
   state = {
     displayConfirmationMsg: false,
     deleteConfirmOpen: false,
-    draftProjects: []
+    draftProjects: getDraftProjects( this.props.data.videoProjects )
   };
 
   _isMounted = false;
@@ -45,7 +59,6 @@ class TableActionsMenu extends React.Component {
   handleUnpublish = unpublishFn => {
     unpublishFn( {
       variables: {
-        data: { status: 'DRAFT', visibility: 'INTERNAL' },
         where: {
           AND: [
             { id_in: this.getSelectedProjects() },
@@ -82,7 +95,7 @@ class TableActionsMenu extends React.Component {
 
   handleDrafts = cache => {
     if ( cache ) {
-      const drafts = this.getDraftProjects( cache.videoProjects );
+      const drafts = getDraftProjects( cache.videoProjects );
       this.setState( prevState => {
         if ( prevState.draftProjects !== drafts ) {
           return { draftProjects: drafts };
@@ -128,16 +141,6 @@ class TableActionsMenu extends React.Component {
       variables: { ...variables }
     } )
   )
-
-  getDraftProjects = projects => {
-    if ( !projects ) return [];
-    return projects.reduce( ( acc, curr ) => {
-      if ( curr.status === 'DRAFT' ) {
-        return [...acc, curr.id];
-      }
-      return [...acc];
-    }, [] );
-  }
 
   getSelectedProjects = () => {
     const projects = this.transformSelectedItemsMap();
@@ -197,49 +200,39 @@ class TableActionsMenu extends React.Component {
     } = this.props;
     const { displayConfirmationMsg } = this.state;
 
+    const ActionToggle = () => {
+      const { data } = this.props;
+      const { loading, error } = this.props.data;
+      if ( loading ) return 'Loading....';
+      if ( error ) return <ApolloError error={ error } />;
+      if ( !data || !data.videoProjects ) return null;
+
+      const { videoProjects } = data;
+
+      const isDisabled = videoProjects && !videoProjects.length;
+
+      const isChecked = ( videoProjects
+        && videoProjects.length === this.getSelectedProjects().length )
+        && this.getSelectedProjects().length > 0;
+
+      const isIndeterminate = ( videoProjects
+        && videoProjects.length > this.getSelectedProjects().length )
+        && this.getSelectedProjects().length > 0;
+
+      return (
+        <Checkbox
+          className={ displayActionsMenu ? 'actionsMenu_toggle actionsMenu_toggle--active' : 'actionsMenu_toggle' }
+          onChange={ toggleAllItemsSelection }
+          checked={ isChecked }
+          disabled={ isDisabled }
+          indeterminate={ isIndeterminate }
+        />
+      );
+    };
+
     return (
       <div className="actionsMenu_wrapper">
-        <Query
-          query={ TEAM_VIDEO_PROJECTS_QUERY }
-          variables={ { ...variables } }
-          onCompleted={ this.handleDrafts }
-          /**
-           * `onCompleted doesn't get called for Query,
-           * so set `notifyOnNetworkStatusChange` to
-           * allow it to be called.
-           * @see open issue:
-           * https://github.com/apollographql/react-apollo/issues/2293#issuecomment-428938827
-           */
-          notifyOnNetworkStatusChange
-        >
-          { ( { loading, error, data } ) => {
-            if ( loading ) return 'Loading....';
-            if ( error ) return <ApolloError error={ error } />;
-            if ( !data || !data.videoProjects ) return null;
-
-            const { videoProjects } = data;
-
-            const isDisabled = videoProjects && !videoProjects.length;
-
-            const isChecked = ( videoProjects
-              && videoProjects.length === this.getSelectedProjects().length )
-              && this.getSelectedProjects().length > 0;
-
-            const isIndeterminate = ( videoProjects
-              && videoProjects.length > this.getSelectedProjects().length )
-              && this.getSelectedProjects().length > 0;
-
-            return (
-              <Checkbox
-                className={ displayActionsMenu ? 'actionsMenu_toggle actionsMenu_toggle--active' : 'actionsMenu_toggle' }
-                onChange={ toggleAllItemsSelection }
-                checked={ isChecked }
-                disabled={ isDisabled }
-                indeterminate={ isIndeterminate }
-              />
-            );
-          } }
-        </Query>
+        <ActionToggle />
 
         <div className={ displayActionsMenu ? 'actionsMenu active' : 'actionsMenu' }>
 
@@ -313,7 +306,28 @@ TableActionsMenu.propTypes = {
   variables: PropTypes.object,
   selectedItems: PropTypes.object,
   handleResetSelections: PropTypes.func,
-  toggleAllItemsSelection: PropTypes.func
+  toggleAllItemsSelection: PropTypes.func,
+  data: PropTypes.shape( {
+    loading: PropTypes.bool,
+    error: PropTypes.object,
+    videoProjects: PropTypes.array
+  } )
 };
 
-export default TableActionsMenu;
+export default compose(
+  graphql( TEAM_VIDEO_PROJECTS_QUERY, {
+    options: props => ( {
+      variables: { ...props.variables },
+      fetchPolicy: 'cache-and-network'
+    } )
+  } ),
+  graphql( PROJECT_STATUS_SUBSCRIPTION, {
+    props: ( { data, ownProps } ) => {
+      if ( !data ) return ownProps;
+      if ( ownProps.data.videoProjects && data.projectStatus ) {
+        updateVideoProjects( ownProps.data, data.projectStatus );
+      }
+      return ownProps;
+    }
+  } )
+)( TableActionsMenu );

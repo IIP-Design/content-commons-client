@@ -7,9 +7,8 @@ import ApolloError from 'components/errors/ApolloError';
 
 const UNPUBLISH_VIDEO_PROJECTS_MUTATION = gql`
   mutation UnpublishManyVideoProjects(
-    $data: VideoProjectUpdateManyMutationInput!,
     $where: VideoProjectWhereInput) {
-    unpublish: updateManyVideoProjects(data: $data, where: $where) {
+    unpublish: unpublishManyVideoProjects(where: $where) {
       count
     }
   }
