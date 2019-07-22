@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import { Query } from 'react-apollo';
@@ -33,6 +33,13 @@ const DetailsPopup = props => {
   const { id } = props;
   const [detailsPopupOpen, setDetailsPopupOpen] = useState( false );
 
+  /**
+   * Handle memory leak with set state fn call
+   * (i.e., setDetailsPopupOpen) on unmounted component.
+   */
+  let isMounted = true;
+  useEffect( () => () => { isMounted = false; }, [] );
+
   const handleResize = debounce( () => {
     /* eslint-disable no-use-before-define */
     handleClose();
@@ -44,11 +51,11 @@ const DetailsPopup = props => {
   };
 
   const handleClose = () => {
+    window.removeEventListener( 'resize', handleResize );
     const itemsTable = document.querySelector( '.items_table' );
-    if ( itemsTable ) {
+    if ( itemsTable && isMounted ) {
       setDetailsPopupOpen( false );
     }
-    window.removeEventListener( 'resize', handleResize );
   };
 
   return (
