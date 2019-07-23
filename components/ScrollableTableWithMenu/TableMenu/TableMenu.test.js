@@ -1,12 +1,12 @@
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import TableMenu from './TableMenu';
 
 const props = {
   columnMenu: [
-    { name: 'author', label: 'AUTHOR' },
+    { name: 'team', label: 'TEAM' },
     { name: 'categories', label: 'CATEGORIES' },
-    { name: 'createdAt', label: 'DATE' }
+    { name: 'updatedAt', label: 'MODIFIED DATE' }
   ],
   tableMenuOnChange: jest.fn()
 };
@@ -14,6 +14,10 @@ const props = {
 const Component = <TableMenu { ...props } />;
 
 describe( '<TableMenu />', () => {
+  beforeEach( () => {
+    jest.resetAllMocks();
+  } );
+
   it( 'renders without crashing', () => {
     const wrapper = shallow( Component );
 
@@ -21,7 +25,7 @@ describe( '<TableMenu />', () => {
     expect( toJSON( wrapper ) ).toMatchSnapshot();
   } );
 
-  it( 'componentDidMount calls menuHeadersOnMobile and ', () => {
+  it( 'componentDidMount calls menuHeadersOnMobile', () => {
     const wrapper = shallow( Component );
     const inst = wrapper.instance();
     const spy = jest.spyOn( inst, 'menuHeadersOnMobile' );
@@ -128,13 +132,127 @@ describe( '<TableMenu />', () => {
     jest.spyOn( inst, 'handleCheckboxFocus' )
       .mockImplementation( () => {} );
     const node = <div>test node</div>;
-    const refName = 'AUTHOR';
+    const refName = 'TEAM';
 
     wrapper.setState( { displayTableMenu: true } );
     inst.setRef( node, refName );
 
     expect( inst[refName].type ).toEqual( 'div' );
     expect( inst[refName].props.children ).toEqual( 'test node' );
+  } );
+
+  it( 'toggleCheckbox sets menuHeaders in state', () => {
+    const wrapper = shallow( Component );
+    const inst = wrapper.instance();
+    const e = {};
+    const data = { 'data-proplabel': 'TEAM' };
+    const newData = { 'data-proplabel': 'CATEGORIES' };
+    const newestData = { 'data-proplabel': 'TEAM' };
+
+    // check the TEAM box
+    inst.toggleCheckbox( e, data );
+    expect( wrapper.state( 'menuHeaders' ).length )
+      .toEqual( Object.keys( data ).length );
+    expect( wrapper.state( 'menuHeaders' ) )
+      .toEqual( [data['data-proplabel']] );
+
+    // check the CATEGORIES box
+    inst.toggleCheckbox( e, newData );
+    expect( wrapper.state( 'menuHeaders' ).length )
+      .toEqual( Object.keys( data ).length + Object.keys( newData ).length );
+    expect( wrapper.state( 'menuHeaders' ) )
+      .toEqual( [data['data-proplabel'], newData['data-proplabel']] );
+
+    // uncheck the TEAM box
+    inst.toggleCheckbox( e, newestData );
+    expect( wrapper.state( 'menuHeaders' ).length )
+      .toEqual( Object.keys( newData ).length );
+    expect( wrapper.state( 'menuHeaders' ) )
+      .toEqual( [newData['data-proplabel']] );
+  } );
+
+  it( 'menuHeadersOnMobile sets menuHeaders in state for mobile', () => {
+    const wrapper = shallow( Component );
+    const inst = wrapper.instance();
+    const libBrowser = require( 'lib/browser' ); // eslint-disable-line
+    libBrowser.isMobile = jest.fn( () => true );
+
+    inst.menuHeadersOnMobile();
+    expect( wrapper.state( 'menuHeaders' ) )
+      .toEqual( props.columnMenu.map( m => m.label ) );
+  } );
+
+  it( 'handleTableScroll scrolls the dashboard table left and right', () => {
+    const div = document.createElement( 'div' );
+    div.classList.add( 'items_table' );
+    window.domNode = div;
+    document.body.appendChild( div );
+
+    const wrapper = mount( Component, { attachTo: window.domNode } );
+    const inst = wrapper.instance();
+    const e = { target: { dataset: { tablearrow: 'right' } } };
+
+    // initial scrollLeft value
+    expect( window.domNode.scrollLeft ).toEqual( 0 );
+
+    // scroll right once
+    inst.handleTableScroll( e );
+    expect( window.domNode.scrollLeft ).toEqual( inst._scrollPixels );
+
+    // scroll right second time
+    inst.handleTableScroll( e );
+    expect( window.domNode.scrollLeft ).toEqual( inst._scrollPixels * 2 );
+
+    // scroll left once
+    e.target.dataset.tablearrow = 'left';
+    inst.handleTableScroll( e );
+    expect( window.domNode.scrollLeft ).toEqual( inst._scrollPixels );
+
+    // scroll left second time
+    inst.handleTableScroll( e );
+    expect( window.domNode.scrollLeft ).toEqual( 0 );
+  } );
+
+  it( 'toggleTableMenu toggles displayTableMenu in state', () => {
+    const wrapper = mount( Component );
+    const inst = wrapper.instance();
+    const { displayTableMenu } = wrapper.state();
+    const e = {
+      target: {
+        id: 'show-more-columns',
+        dataset: { tablemenu: true },
+        parentNode: { dataset: { tablemenuitem: true } }
+      }
+    };
+
+    // initial displayTableMenu value
+    expect( wrapper.state( 'displayTableMenu' ) )
+      .toEqual( displayTableMenu );
+
+    // call toggleTableMenu
+    inst.toggleTableMenu( e );
+    expect( wrapper.state( 'displayTableMenu' ) )
+      .toEqual( !displayTableMenu );
+
+    // test isTableMenuItem
+    e.target.dataset.tablemenu = false;
+    inst.toggleTableMenu( e );
+    expect( wrapper.state( 'displayTableMenu' ) ).toEqual( true );
+
+    e.target.parentNode.dataset.tablemenuitem = false;
+    e.target.dataset.tablemenuitem = true;
+    inst.toggleTableMenu( e );
+    expect( wrapper.state( 'displayTableMenu' ) ).toEqual( true );
+
+    // test isShowMoreColumns
+    e.target.dataset.tablemenuitem = false;
+    inst.toggleTableMenu( e );
+    expect( wrapper.state( 'displayTableMenu' ) ).toEqual( true );
+
+    // default
+    e.target.id = 'some-other-id-value';
+    inst.toggleTableMenu( e );
+    expect( wrapper.state( 'displayTableMenu' ) ).toEqual( false );
   } );
 
   it( 'pressing Escape/Tab calls handleKbdAccess and handleCloseMenu', () => {
@@ -270,6 +388,24 @@ describe( '<TableMenu />', () => {
       inst.handleKbdAccess( e );
       expect( spy ).toHaveBeenCalledWith( columns, columns.length - 1 );
       expect( e.preventDefault ).toHaveBeenCalled();
+    } );
+  } );
+
+  it( 'disables the left and right scroll arrow buttons if the number of additional columns is less than 2', () => {
+    const wrapper = shallow( Component );
+    const arrowBtns = () => wrapper.find( 'button[data-tablearrow]' );
+    const menuHeadersCount = () => wrapper.state( 'menuHeaders' ).length;
+    const isDisabled = () => menuHeadersCount() < 2;
+
+    expect( menuHeadersCount() ).toEqual( 0 );
+    arrowBtns().forEach( btn => {
+      expect( btn.prop( 'disabled' ) ).toEqual( isDisabled() );
+    } );
+
+    wrapper.setState( { menuHeaders: ['TEAM', 'CATEGORIES'] } );
+    expect( menuHeadersCount() ).toEqual( 2 );
+    arrowBtns().forEach( btn => {
+      expect( btn.prop( 'disabled' ) ).toEqual( isDisabled() );
     } );
   } );
 } );

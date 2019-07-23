@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import ApolloError from 'components/errors/ApolloError';
-import { formatBytes } from 'lib/utils';
+import { formatBytes, getS3Url } from 'lib/utils';
 
 // TO DO: UPDATE QUERY FOR IMAGE PROJECT TYPE
 const IMAGE_PROJECT_FILES_QUERY = gql`
@@ -46,6 +46,7 @@ const ImageDetailsPopup = props => (
               <p>Files:</p>
               <ul>
                 { supportFiles.map( file => {
+                  if ( !file ) return null;
                   const {
                     id,
                     url,
@@ -56,7 +57,7 @@ const ImageDetailsPopup = props => (
                   } = file;
                   return (
                     <li key={ id }>
-                      { use.name } | <a href={ url }>{ filetype }</a> | <a href={ url }>{ displayName } { formatBytes( filesize ) }</a>
+                      { use && use.name } | <a href={ getS3Url( url ) }>{ filetype }</a> | <a href={ getS3Url( url ) }>{ displayName } { formatBytes( filesize ) }</a>
                     </li>
                   );
                 } ) }

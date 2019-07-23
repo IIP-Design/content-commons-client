@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import { Query } from 'react-apollo';
@@ -33,12 +33,14 @@ const DetailsPopup = props => {
   const { id } = props;
   const [detailsPopupOpen, setDetailsPopupOpen] = useState( false );
 
-  const handleResize = debounce( () => {
-    /* eslint-disable no-use-before-define */
-    handleClose();
-  }, 500, { leading: true, trailing: false } );
+  /**
+   * Handle memory leak with set state fn call
+   * (i.e., setDetailsPopupOpen) on unmounted component.
+   */
+  let isMounted = true;
+  useEffect( () => () => { isMounted = false; }, [] );
 
-  const handleTableScroll = debounce( () => {
+  const handleResize = debounce( () => {
     /* eslint-disable no-use-before-define */
     handleClose();
   }, 500, { leading: true, trailing: false } );
@@ -46,20 +48,14 @@ const DetailsPopup = props => {
   const handleOpen = () => {
     setDetailsPopupOpen( true );
     window.addEventListener( 'resize', handleResize );
-    window.addEventListener( 'scroll', handleTableScroll );
-
-    const itemsTable = document.querySelector( '.items_table' );
-    itemsTable.addEventListener( 'scroll', handleTableScroll );
   };
 
   const handleClose = () => {
+    window.removeEventListener( 'resize', handleResize );
     const itemsTable = document.querySelector( '.items_table' );
-    if ( itemsTable ) {
-      itemsTable.removeEventListener( 'scroll', handleTableScroll );
+    if ( itemsTable && isMounted ) {
       setDetailsPopupOpen( false );
     }
-    window.removeEventListener( 'resize', handleResize );
-    window.removeEventListener( 'scroll', handleTableScroll );
   };
 
   return (
@@ -68,37 +64,35 @@ const DetailsPopup = props => {
         ( { loading, error, data } ) => {
           if ( loading ) return <p>Loading....</p>;
           if ( error ) return <ApolloError error={ error } />;
+          if ( !data.videoProject ) return null;
 
-          if ( data.videoProject ) {
-            const { __typename } = data.videoProject;
-            return (
-              // 06/10/19 - Updating button text from "Details" to "Files"
-              // if DetailsPopup will contain content other than files in future,
-              // will add conditional to display "Details" text along with "Files"/"Other Content"
-              // subheaders within popup
-              <Popup
-                className="detailsFiles_popup"
-                trigger={ (
-                  <button
-                    type="button"
-                    className="linkStyle projects_data_actions_action"
-                    data-projectitempopup="detailsPopup"
-                  >
-                    Files
-                  </button>
-                ) }
-                content={ renderPopup( __typename, id ) }
-                on="click"
-                position="bottom left"
-                keepInViewPort
-                open={ detailsPopupOpen }
-                onOpen={ handleOpen }
-                onClose={ handleClose }
-              />
-            );
-          }
-
-          return <p>There are no supporting files for this project.</p>;
+          const { __typename } = data.videoProject;
+          return (
+            // 06/10/19 - Updating button text from "Details" to "Files"
+            // if DetailsPopup will contain content other than files in future,
+            // will add conditional to display "Details" text along with "Files"/"Other Content"
+            // subheaders within popup
+            <Popup
+              className="detailsFiles_popup"
+              trigger={ (
+                <button
+                  type="button"
+                  className="linkStyle projects_data_actions_action"
+                  data-projectitempopup="detailsPopup"
+                >
+                  Files
+                </button>
+              ) }
+              content={ renderPopup( __typename, id ) }
+              on="click"
+              position="bottom left"
+              hideOnScroll
+              keepInViewPort
+              open={ detailsPopupOpen }
+              onOpen={ handleOpen }
+              onClose={ handleClose }
+            />
+          );
         }
       }
     </Query>
@@ -110,3 +104,5 @@ DetailsPopup.propTypes = {
 };
 
 export default DetailsPopup;
+
+export { CHECK_PROJECT_TYPE_QUERY };
