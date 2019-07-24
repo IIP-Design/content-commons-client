@@ -8,6 +8,7 @@ import ApolloError from 'components/errors/ApolloError';
 import editIcon from 'static/images/dashboard/edit.svg';
 import createIcon from 'static/images/dashboard/create.svg';
 import archiveIcon from 'static/images/dashboard/archive.svg';
+import { getCount } from 'lib/utils';
 import DeleteIconButton from './DeleteIconButton/DeleteIconButton';
 import DeleteProjects from './DeleteProjects/DeleteProjects';
 import UnpublishProjects from './UnpublishProjects/UnpublishProjects';
@@ -149,6 +150,11 @@ class TableActionsMenu extends React.Component {
     }, [] );
   }
 
+  getProjectsOnPage = projects => {
+    const { first, skip } = this.props.variables;
+    return projects && projects.slice( skip, skip + first );
+  }
+
   transformSelectedItemsMap = () => {
     const { selectedItems } = this.props;
     if ( selectedItems.size === 0 ) return [];
@@ -219,14 +225,16 @@ class TableActionsMenu extends React.Component {
 
             const { videoProjects } = data;
 
+            const projectsOnPage = this.getProjectsOnPage( videoProjects );
+
+            const projectsOnPageCount = getCount( projectsOnPage );
+
             const isDisabled = videoProjects && !videoProjects.length;
 
-            const isChecked = ( videoProjects
-              && videoProjects.length === this.getSelectedProjects().length )
+            const isChecked = ( projectsOnPageCount === this.getSelectedProjects().length )
               && this.getSelectedProjects().length > 0;
 
-            const isIndeterminate = ( videoProjects
-              && videoProjects.length > this.getSelectedProjects().length )
+            const isIndeterminate = ( projectsOnPageCount > this.getSelectedProjects().length )
               && this.getSelectedProjects().length > 0;
 
             return (
