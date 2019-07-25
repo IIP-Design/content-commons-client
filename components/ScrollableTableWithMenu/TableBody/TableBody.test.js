@@ -7,14 +7,16 @@ import ApolloError from 'components/errors/ApolloError';
 import TableBody, { TEAM_VIDEO_PROJECTS_QUERY } from './TableBody';
 
 /**
- * Need to mock Next.js dynamic imports
- * in order for this test suite to run.
+ * Use custom element for VideoDetailsPopup to avoid
+ * "incorrect casing" error triggered by "opens and
+ * closes the Popup when the trigger is clicked" test
+ * @see https://jestjs.io/docs/en/tutorial-react.html#snapshot-testing-with-mocks-enzyme-and-react-16
  */
-jest.mock( 'next-server/dynamic', () => () => 'VideoDetailsPopup' );
-jest.mock( 'next-server/dynamic', () => () => 'ImageDetailsPopup' );
+// jest.mock( 'next-server/dynamic', () => () => 'VideoDetailsPopup' );
+jest.mock( 'next-server/dynamic', () => () => 'video-details-popup' );
 
 // Mock DetailsPopup component since it's tested elsewhere
-jest.mock( 'components/admin/Dashboard/MyProjects/DetailsPopup/DetailsPopup', () => () => 'DetailsPopup' );
+jest.mock( 'components/admin/Dashboard/TeamProjects/DetailsPopup/DetailsPopup', () => () => 'DetailsPopup' );
 
 const props = {
   searchTerm: '',
@@ -31,7 +33,9 @@ const props = {
     searchTerm: '',
     first: 4,
     skip: 0
-  }
+  },
+  direction: 'descending',
+  projectTab: 'teamProjects'
 };
 
 const mocks = [

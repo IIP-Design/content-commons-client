@@ -3,272 +3,7 @@
 exports[`<TableBody /> renders the correct table row(s) 1`] = `
 Array [
   <tr
-    className=" "
-  >
-    <TableCell
-      as="td"
-      className="items_table_item"
-      data-header="PROJECT TITLE"
-      key="d137_projectTitle"
-    >
-      <td
-        className="items_table_item"
-        data-header="PROJECT TITLE"
-      >
-        <div
-          className="primary_col"
-        >
-          <MyProjectPrimaryCol
-            d={Object {}}
-            header={
-              Object {
-                "label": "PROJECT TITLE",
-                "name": "projectTitle",
-              }
-            }
-            selectedItems={Array []}
-            toggleItemSelection={[MockFunction]}
-          >
-            <div
-              className="myProjects_actions"
-            >
-              <Checkbox
-                checked={false}
-                data-label="d137"
-                onChange={[MockFunction]}
-                type="checkbox"
-              >
-                <div
-                  className="ui fitted checkbox"
-                  data-label="d137"
-                  onChange={[Function]}
-                  onClick={[Function]}
-                  onMouseDown={[Function]}
-                  onMouseUp={[Function]}
-                >
-                  <input
-                    checked={false}
-                    className="hidden"
-                    readOnly={true}
-                    tabIndex={0}
-                    type="checkbox"
-                  />
-                  <label />
-                </div>
-              </Checkbox>
-            </div>
-            <div
-              className="myProjects_thumbnail"
-            >
-              <img
-                alt=""
-                src=""
-              />
-            </div>
-            <div
-              className="myProjects_data"
-            >
-              <Link
-                as="/admin/project/video/d137/edit"
-                href="/admin/project?content=video&id=d137&action=edit"
-              >
-                <a
-                  className="myProjects_data_title"
-                  href="/admin/project/video/d137/edit"
-                  onClick={[Function]}
-                >
-                  Test Title 1
-                </a>
-              </Link>
-              <div
-                className="myProjects_data_actions"
-              >
-                <div
-                  className="myProjects_data_actions_wrapper"
-                >
-                  <Link
-                    as="/admin/project/video/d137/edit"
-                    href="/admin/project?content=video&id=d137&action=edit"
-                  >
-                    <a
-                      className="linkStyle myProjects_data_actions_action"
-                      href="/admin/project/video/d137/edit"
-                      onClick={[Function]}
-                    >
-                      Edit
-                    </a>
-                  </Link>
-                  <span>
-                     | 
-                  </span>
-                  <Modal
-                    centered={true}
-                    closeIcon={true}
-                    closeOnDimmerClick={true}
-                    closeOnDocumentClick={false}
-                    dimmer={true}
-                    eventPool="Modal"
-                    trigger={
-                      <button
-                        className="linkStyle myProjects_data_actions_action"
-                        type="button"
-                      >
-                        Preview
-                      </button>
-                    }
-                  >
-                    <Portal
-                      closeOnDocumentClick={false}
-                      closeOnEscape={true}
-                      eventPool="Modal"
-                      mountNode={<body />}
-                      onClose={[Function]}
-                      onMount={[Function]}
-                      onOpen={[Function]}
-                      onUnmount={[Function]}
-                      openOnTriggerClick={true}
-                      trigger={
-                        <button
-                          className="linkStyle myProjects_data_actions_action"
-                          type="button"
-                        >
-                          Preview
-                        </button>
-                      }
-                    >
-                      <Ref
-                        innerRef={[Function]}
-                      >
-                        <button
-                          className="linkStyle myProjects_data_actions_action"
-                          onBlur={[Function]}
-                          onClick={[Function]}
-                          onFocus={[Function]}
-                          onMouseEnter={[Function]}
-                          onMouseLeave={[Function]}
-                          type="button"
-                        >
-                          Preview
-                        </button>
-                      </Ref>
-                    </Portal>
-                  </Modal>
-                  <span>
-                     | 
-                  </span>
-                  <Component
-                    id="d137"
-                  >
-                    DetailsPopup
-                  </Component>
-                </div>
-                <button
-                  className="linkStyle myProjects_data_actions_mobileToggle"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <Icon
-                    as="i"
-                    name="ellipsis vertical"
-                  >
-                    <i
-                      aria-hidden="true"
-                      className="ellipsis vertical icon"
-                    />
-                  </Icon>
-                </button>
-              </div>
-            </div>
-          </MyProjectPrimaryCol>
-        </div>
-        <TableMobileDataToggleIcon
-          isOpen={false}
-          toggleDisplay={[Function]}
-        >
-          <Icon
-            as="i"
-            className="items_table_mobileDataToggleIcon"
-            name="chevron down"
-            onClick={[Function]}
-          >
-            <i
-              aria-hidden="true"
-              className="chevron down icon items_table_mobileDataToggleIcon"
-              onClick={[Function]}
-            />
-          </Icon>
-        </TableMobileDataToggleIcon>
-      </td>
-    </TableCell>
-    <TableCell
-      as="td"
-      className="items_table_item"
-      data-header="VISIBILITY"
-      key="d137_visibility"
-    >
-      <td
-        className="items_table_item"
-        data-header="VISIBILITY"
-      >
-        <span>
-          <div
-            className="items_table_mobileHeader"
-          >
-            VISIBILITY
-          </div>
-          INTERNAL
-        </span>
-        <br />
-      </td>
-    </TableCell>
-    <TableCell
-      as="td"
-      className="items_table_item"
-      data-header="MODIFIED"
-      key="d137_updatedAt"
-    >
-      <td
-        className="items_table_item"
-        data-header="MODIFIED"
-      >
-        <span>
-          <div
-            className="items_table_mobileHeader"
-          >
-            MODIFIED
-          </div>
-          May 9, 2019
-        </span>
-        <br />
-        <span>
-          PUBLISHED
-        </span>
-      </td>
-    </TableCell>
-    <TableCell
-      as="td"
-      className="items_table_item"
-      data-header="TEAM"
-      key="d137_team"
-    >
-      <td
-        className="items_table_item"
-        data-header="TEAM"
-      >
-        <span>
-          <div
-            className="items_table_mobileHeader"
-          >
-            TEAM
-          </div>
-          IIP Video Production
-        </span>
-        <br />
-      </td>
-    </TableCell>
-  </tr>,
-  <tr
-    className=" "
+    className=""
   >
     <TableCell
       as="td"
@@ -283,7 +18,7 @@ Array [
         <div
           className="primary_col"
         >
-          <MyProjectPrimaryCol
+          <video-details-popup
             d={Object {}}
             header={
               Object {
@@ -293,158 +28,7 @@ Array [
             }
             selectedItems={Array []}
             toggleItemSelection={[MockFunction]}
-          >
-            <div
-              className="myProjects_actions"
-            >
-              <Checkbox
-                checked={false}
-                data-label="z132"
-                onChange={[MockFunction]}
-                type="checkbox"
-              >
-                <div
-                  className="ui fitted checkbox"
-                  data-label="z132"
-                  onChange={[Function]}
-                  onClick={[Function]}
-                  onMouseDown={[Function]}
-                  onMouseUp={[Function]}
-                >
-                  <input
-                    checked={false}
-                    className="hidden"
-                    readOnly={true}
-                    tabIndex={0}
-                    type="checkbox"
-                  />
-                  <label />
-                </div>
-              </Checkbox>
-            </div>
-            <div
-              className="myProjects_thumbnail"
-            >
-              <img
-                alt=""
-                src=""
-              />
-            </div>
-            <div
-              className="myProjects_data"
-            >
-              <Link
-                as="/admin/project/video/z132/edit"
-                href="/admin/project?content=video&id=z132&action=edit"
-              >
-                <a
-                  className="myProjects_data_title"
-                  href="/admin/project/video/z132/edit"
-                  onClick={[Function]}
-                >
-                  Test Title 2
-                </a>
-              </Link>
-              <div
-                className="myProjects_data_actions"
-              >
-                <div
-                  className="myProjects_data_actions_wrapper"
-                >
-                  <Link
-                    as="/admin/project/video/z132/edit"
-                    href="/admin/project?content=video&id=z132&action=edit"
-                  >
-                    <a
-                      className="linkStyle myProjects_data_actions_action"
-                      href="/admin/project/video/z132/edit"
-                      onClick={[Function]}
-                    >
-                      Edit
-                    </a>
-                  </Link>
-                  <span>
-                     | 
-                  </span>
-                  <Modal
-                    centered={true}
-                    closeIcon={true}
-                    closeOnDimmerClick={true}
-                    closeOnDocumentClick={false}
-                    dimmer={true}
-                    eventPool="Modal"
-                    trigger={
-                      <button
-                        className="linkStyle myProjects_data_actions_action"
-                        type="button"
-                      >
-                        Preview
-                      </button>
-                    }
-                  >
-                    <Portal
-                      closeOnDocumentClick={false}
-                      closeOnEscape={true}
-                      eventPool="Modal"
-                      mountNode={<body />}
-                      onClose={[Function]}
-                      onMount={[Function]}
-                      onOpen={[Function]}
-                      onUnmount={[Function]}
-                      openOnTriggerClick={true}
-                      trigger={
-                        <button
-                          className="linkStyle myProjects_data_actions_action"
-                          type="button"
-                        >
-                          Preview
-                        </button>
-                      }
-                    >
-                      <Ref
-                        innerRef={[Function]}
-                      >
-                        <button
-                          className="linkStyle myProjects_data_actions_action"
-                          onBlur={[Function]}
-                          onClick={[Function]}
-                          onFocus={[Function]}
-                          onMouseEnter={[Function]}
-                          onMouseLeave={[Function]}
-                          type="button"
-                        >
-                          Preview
-                        </button>
-                      </Ref>
-                    </Portal>
-                  </Modal>
-                  <span>
-                     | 
-                  </span>
-                  <Component
-                    id="z132"
-                  >
-                    DetailsPopup
-                  </Component>
-                </div>
-                <button
-                  className="linkStyle myProjects_data_actions_mobileToggle"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <Icon
-                    as="i"
-                    name="ellipsis vertical"
-                  >
-                    <i
-                      aria-hidden="true"
-                      className="ellipsis vertical icon"
-                    />
-                  </Icon>
-                </button>
-              </div>
-            </div>
-          </MyProjectPrimaryCol>
+          />
         </div>
         <TableMobileDataToggleIcon
           isOpen={false}
@@ -505,9 +89,6 @@ Array [
           May 12, 2019
         </span>
         <br />
-        <span>
-          PUBLISHED
-        </span>
       </td>
     </TableCell>
     <TableCell
@@ -515,6 +96,117 @@ Array [
       className="items_table_item"
       data-header="TEAM"
       key="z132_team"
+    >
+      <td
+        className="items_table_item"
+        data-header="TEAM"
+      >
+        <span>
+          <div
+            className="items_table_mobileHeader"
+          >
+            TEAM
+          </div>
+          IIP Video Production
+        </span>
+        <br />
+      </td>
+    </TableCell>
+  </tr>,
+  <tr
+    className=""
+  >
+    <TableCell
+      as="td"
+      className="items_table_item"
+      data-header="PROJECT TITLE"
+      key="d137_projectTitle"
+    >
+      <td
+        className="items_table_item"
+        data-header="PROJECT TITLE"
+      >
+        <div
+          className="primary_col"
+        >
+          <video-details-popup
+            d={Object {}}
+            header={
+              Object {
+                "label": "PROJECT TITLE",
+                "name": "projectTitle",
+              }
+            }
+            selectedItems={Array []}
+            toggleItemSelection={[MockFunction]}
+          />
+        </div>
+        <TableMobileDataToggleIcon
+          isOpen={false}
+          toggleDisplay={[Function]}
+        >
+          <Icon
+            as="i"
+            className="items_table_mobileDataToggleIcon"
+            name="chevron down"
+            onClick={[Function]}
+          >
+            <i
+              aria-hidden="true"
+              className="chevron down icon items_table_mobileDataToggleIcon"
+              onClick={[Function]}
+            />
+          </Icon>
+        </TableMobileDataToggleIcon>
+      </td>
+    </TableCell>
+    <TableCell
+      as="td"
+      className="items_table_item"
+      data-header="VISIBILITY"
+      key="d137_visibility"
+    >
+      <td
+        className="items_table_item"
+        data-header="VISIBILITY"
+      >
+        <span>
+          <div
+            className="items_table_mobileHeader"
+          >
+            VISIBILITY
+          </div>
+          INTERNAL
+        </span>
+        <br />
+      </td>
+    </TableCell>
+    <TableCell
+      as="td"
+      className="items_table_item"
+      data-header="MODIFIED"
+      key="d137_updatedAt"
+    >
+      <td
+        className="items_table_item"
+        data-header="MODIFIED"
+      >
+        <span>
+          <div
+            className="items_table_mobileHeader"
+          >
+            MODIFIED
+          </div>
+          May 9, 2019
+        </span>
+        <br />
+      </td>
+    </TableCell>
+    <TableCell
+      as="td"
+      className="items_table_item"
+      data-header="TEAM"
+      key="d137_team"
     >
       <td
         className="items_table_item"
