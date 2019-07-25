@@ -7,9 +7,7 @@ import ApolloError from 'components/errors/ApolloError';
 import TableBody, { TEAM_VIDEO_PROJECTS_QUERY } from './TableBody';
 
 /**
- * Use custom element for VideoDetailsPopup to avoid
- * "incorrect casing" error triggered by "opens and
- * closes the Popup when the trigger is clicked" test
+ * Use custom element to avoid "incorrect casing" error msg
  * @see https://jestjs.io/docs/en/tutorial-react.html#snapshot-testing-with-mocks-enzyme-and-react-16
  */
 // jest.mock( 'next-server/dynamic', () => () => 'VideoDetailsPopup' );
