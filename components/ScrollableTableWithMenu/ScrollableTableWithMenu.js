@@ -33,12 +33,15 @@ class ScrollableTableWithMenu extends React.Component {
     skip: 0
   };
 
+  TIMEOUT_DELAY = 500;
+
+  /* eslint-disable react/sort-comp */
   componentDidMount = () => {
     this.tableMenuSelectionsOnMobile();
     window.addEventListener( 'resize', this.tableMenuSelectionsOnResize );
   }
 
-  componentDidUpdate = ( prevProps, prevState ) => {
+  componentDidUpdate = ( _, prevState ) => {
     if ( prevState.itemsPerPage !== this.state.itemsPerPage ) {
       this.handleResetActivePage();
     }
@@ -55,7 +58,7 @@ class ScrollableTableWithMenu extends React.Component {
   handlePageChange = ( e, { activePage } ) => {
     this.setState( prevState => {
       const { itemsPerPage } = prevState;
-      const skip = ( activePage * itemsPerPage ) - itemsPerPage;
+      const skip = ( activePage - 1 ) * itemsPerPage;
       return {
         selectedItems: new Map(),
         displayActionsMenu: false,
@@ -116,20 +119,18 @@ class ScrollableTableWithMenu extends React.Component {
     } );
   };
 
-  tableMenuSelectionsOnResize = () => {
-    ( debounce( () => {
-      const { persistentTableHeaders, columnMenu } = this.props;
-      const windowWidth = window.innerWidth;
-      const prevWindowWidth = this.state.windowWidth;
-      if ( prevWindowWidth !== '' && prevWindowWidth <= this._breakpoint && !isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
-        return this.setState( { tableHeaders: persistentTableHeaders, windowWidth } );
-      }
-      if ( isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
-        return this.setState( { tableHeaders: [...persistentTableHeaders, ...columnMenu], windowWidth } );
-      }
-      return this.setState( { windowWidth } );
-    }, 500, { leading: false, trailing: true } ) )();
-  }
+  tableMenuSelectionsOnResize = debounce( () => {
+    const { persistentTableHeaders, columnMenu } = this.props;
+    const windowWidth = window.innerWidth;
+    const prevWindowWidth = this.state.windowWidth;
+    if ( prevWindowWidth !== '' && prevWindowWidth <= this._breakpoint && !isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
+      return this.setState( { tableHeaders: persistentTableHeaders, windowWidth } );
+    }
+    if ( isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
+      return this.setState( { tableHeaders: [...persistentTableHeaders, ...columnMenu], windowWidth } );
+    }
+    return this.setState( { windowWidth } );
+  }, this.TIMEOUT_DELAY, { leading: false, trailing: true } )
 
   tableMenuSelectionsOnMobile = () => {
     if ( isMobile() ) {
