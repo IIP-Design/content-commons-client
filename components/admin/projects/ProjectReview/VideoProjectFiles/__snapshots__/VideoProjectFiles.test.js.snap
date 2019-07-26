@@ -237,6 +237,40 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                   },
                 ],
               },
+              Object {
+                "__typename": "Tag",
+                "id": "tag14",
+                "translations": Array [
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr888",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "English",
+                      "id": "en38",
+                      "languageCode": "en",
+                      "locale": "en-us",
+                      "nativeName": "English",
+                      "textDirection": "LTR",
+                    },
+                    "name": "english learning",
+                  },
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr777",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "French",
+                      "id": "fr82",
+                      "languageCode": "fr",
+                      "locale": "fr-fr",
+                      "nativeName": "French",
+                      "textDirection": "LTR",
+                    },
+                    "name": "Anglais langue étrangère",
+                  },
+                ],
+              },
             ],
             "thumbnails": Array [
               Object {
@@ -669,7 +703,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                     >
                       Additional Keywords:
                     </b>
-                     undefined
+                     undefined, english learning
                   </p>
                 </div>
               </GridColumn>
