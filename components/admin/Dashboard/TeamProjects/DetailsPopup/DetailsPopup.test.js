@@ -1,6 +1,7 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
+import { act } from 'react-dom/test-utils';
 import { MockedProvider } from 'react-apollo/test-utils';
 import DetailsPopup, { CHECK_PROJECT_TYPE_QUERY } from './DetailsPopup';
 
@@ -90,37 +91,6 @@ describe( '<DetailsPopup />', () => {
     expect( toJSON( detailsPopup ) ).toMatchSnapshot();
   } );
 
-  it( 'adds the event listeners on mount', async () => {
-    const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
-    const map = {};
-    window.addEventListener = jest.fn( ( event, cb ) => {
-      map[event] = cb;
-    } );
-
-    setTimeout( () => {
-      expect( window.addEventListener ).toHaveBeenCalledWith( 'resize' );
-    }, 500 );
-  } );
-
-  it( 'removes the event listeners on unmount', async () => {
-    const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
-    const map = {};
-    window.removeEventListener = jest.fn( ( event, cb ) => {
-      map[event] = cb;
-    } );
-
-    setTimeout( () => {
-      wrapper.unmount();
-      expect( window.removeEventListener ).toHaveBeenCalledWith( 'resize' );
-    }, 500 );
-  } );
-
   it( 'renders <VideoDetailsPopup /> as the Popup content', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
@@ -186,6 +156,13 @@ describe( '<DetailsPopup />', () => {
     expect( popup().prop( 'open' ) ).toEqual( true );
   } );
 
+  /**
+   * For these last two tests, React 16.8 throws an `act`
+   * warning for asynchronous actions and hooks. In this
+   * component, lodash `debounce` is used. So, global events
+   * to close are wrapped in `act`.
+   * @see https://github.com/facebook/react/issues/14769
+   */
   it( 'global resize event closes the Popup', async () => {
     const div = document.createElement( 'div' );
     div.classList.add( 'items_table' );
@@ -197,10 +174,15 @@ describe( '<DetailsPopup />', () => {
     wrapper.update();
 
     const popup = () => wrapper.find( 'Popup' );
+    const inst = popup().instance();
     const btn = wrapper.find( 'button.projects_data_actions_action' );
+    const cb = jest.spyOn( inst, 'handleClose' );
+    const portalMount = jest.spyOn( inst, 'handlePortalMount' );
+    const portalUnmount = jest.spyOn( inst, 'handlePortalUnmount' );
+    const event = 'resize';
 
     const map = {};
-    window.addEventListener = jest.fn( ( event, cb ) => {
+    window.addEventListener = jest.fn( () => {
       map[event] = cb;
     } );
 
@@ -208,19 +190,15 @@ describe( '<DetailsPopup />', () => {
     expect( popup().prop( 'open' ) ).toEqual( false );
 
     // open the popup
-    btn.simulate( 'click' );
-    expect( popup().prop( 'open' ) ).toEqual( true );
+    act( () => {
+      btn.simulate( 'click' );
+    } );
+    expect( portalMount ).toHaveBeenCalled();
 
-    /**
-     * close the popup
-     * Wrap in `setTimeout` as a workaround for `act` warning
-     * bug related to `async` action and `useEffect` hook
-     * @see https://github.com/facebook/react/issues/14769#issuecomment-507198432
-     */
-    setTimeout( () => {
-      map.resize();
-      expect( popup().prop( 'open' ) ).toEqual( false );
-    }, 500 );
+    // resize window calls `handleClose` (i.e., `cb`)
+    act( () => map.resize() );
+    expect( cb ).toHaveBeenCalled();
+    expect( portalUnmount ).toHaveBeenCalled();
   } );
 
   it( 'global click event closes the Popup', async () => {
@@ -234,10 +212,15 @@ describe( '<DetailsPopup />', () => {
     wrapper.update();
 
     const popup = () => wrapper.find( 'Popup' );
+    const inst = popup().instance();
     const btn = wrapper.find( 'button.projects_data_actions_action' );
+    const cb = jest.spyOn( inst, 'handleClose' );
+    const portalMount = jest.spyOn( inst, 'handlePortalMount' );
+    const portalUnmount = jest.spyOn( inst, 'handlePortalUnmount' );
+    const event = 'click';
 
     const map = {};
-    window.addEventListener = jest.fn( ( event, cb ) => {
+    window.addEventListener = jest.fn( () => {
       map[event] = cb;
     } );
 
@@ -245,13 +228,14 @@ describe( '<DetailsPopup />', () => {
     expect( popup().prop( 'open' ) ).toEqual( false );
 
     // open the popup
-    btn.simulate( 'click' );
-    expect( popup().prop( 'open' ) ).toEqual( true );
+    act( () => {
+      btn.simulate( 'click' );
+    } );
+    expect( portalMount ).toHaveBeenCalled();
 
-    // close the popup
-    setTimeout( () => {
-      map.click();
-      expect( popup().prop( 'open' ) ).toEqual( false );
-    }, 500 );
+    // clicking in window calls `handleClose` (i.e., `cb`)
+    act( () => map.click() );
+    expect( cb ).toHaveBeenCalled();
+    expect( portalUnmount ).toHaveBeenCalled();
   } );
 } );
