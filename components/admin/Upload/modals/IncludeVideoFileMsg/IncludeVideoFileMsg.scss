@@ -1,0 +1,24 @@
+@import "styles/colors.scss";
+
+.includeVideoFileMsg.ui.modal {
+  border-radius: 0;
+
+  .content {
+    font-size: 1em;
+  }
+
+  .actions {
+    padding: 0.5em;
+    border-top: none;
+    background-color: #fff;
+
+    .ui.button {
+      background-color: $light-blue;
+      color: #fff;
+
+      &:hover {
+        background-color: $hover-blue;
+      }
+    }
+  }
+}
