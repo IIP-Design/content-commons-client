@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { func, object, string } from 'prop-types';
 import Router from 'next/router';
-import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
 import {
   Button, Confirm, Grid, Icon, Loader
@@ -15,16 +14,21 @@ import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmMod
 import PreviewProject from 'components/admin/PreviewProject/PreviewProject';
 import PreviewProjectContent from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
 import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
+import ApolloError from 'components/errors/ApolloError';
 
-import { PUBLISH_VIDEO_PROJECT_MUTATION } from 'lib/graphql/queries/video';
 import {
-  DELETE_VIDEO_PROJECT_MUTATION
-} from 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit';
+  PUBLISH_VIDEO_PROJECT_MUTATION,
+  UNPUBLISH_VIDEO_PROJECT_MUTATION,
+  DELETE_VIDEO_PROJECT_MUTATION,
+  VIDEO_PROJECT_QUERY
+} from 'lib/graphql/queries/video';
+import { findAllValuesForKey } from 'lib/utils';
 
 import './VideoReview.scss';
 
 const VideoReview = props => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
+  const [publishError, setPublishError] = useState( null );
 
   const { id, data, data: { error, loading } } = props;
 
@@ -64,13 +68,33 @@ const VideoReview = props => {
   const displayConfirmDelete = () => setDeleteConfirmOpen( true );
   const handleDeleteCancel = () => setDeleteConfirmOpen( false );
 
+  const updatesToPublish = () => {
+    const { project } = data;
+    if ( project ) {
+      // updatedAt at the project level does not account for nested updates
+      // so we need to find all updatedAt props to locate most recent update
+      const allUpdates = findAllValuesForKey( project, 'updatedAt' );
+      const mostRecentUpdate = allUpdates.reduce( ( max, p ) => ( p > max ? p : max ), allUpdates[0] );
+      const { status, publishedAt } = project;
+
+      if ( status === 'PUBLISHED' || status === 'PUBLISHED_MODIFIED' ) {
+        const lastUpdate = new Date( mostRecentUpdate ).getTime();
+        const publishDate = new Date( publishedAt ).getTime();
+
+        // At publish time, updatedAt and pubishedAt are approximately equal so
+        // we add 10 seconds so that Update does not show right after a publish
+        if ( publishedAt && ( lastUpdate > ( publishDate + 10000 ) ) ) { return true; }
+      }
+    }
+
+    return false;
+  };
+
   const handleDeleteProject = () => {
     const { deleteProject } = props;
-    console.log( `Deleted project: ${id}` );
     deleteProject( { variables: { id } } );
     Router.push( { pathname: '/admin/dashboard' } );
   };
-
 
   const handleEdit = () => {
     Router.push( {
@@ -85,21 +109,37 @@ const VideoReview = props => {
 
   const handlePublish = async () => {
     const { publishProject } = props;
-    const result = await publishProject( { variables: { id } } );
-    if ( result ) {
-      console.log( `Published project: ${id}` );
+
+    try {
+      await publishProject( { variables: { id } } );
       Router.push( { pathname: '/admin/dashboard' } );
+    } catch ( err ) {
+      setPublishError( err );
+    }
+  };
+
+  const handleUnPublish = async () => {
+    const { unPublishProject } = props;
+
+    try {
+      await unPublishProject( { variables: { id } } );
+      Router.push( { pathname: '/admin/dashboard' } );
+    } catch ( err ) {
+      setPublishError( err );
     }
   };
 
   return (
     <div className="review-project">
       <ProjectHeader icon="video camera" text="Project Details - Review">
+        { data.project.status === 'DRAFT' && (
         <Button
           content="Delete Project"
           className="project_button project_button--delete"
           onClick={ displayConfirmDelete }
         />
+        )
+        }
 
         <Confirm
           className="delete"
@@ -134,8 +174,24 @@ const VideoReview = props => {
           modalContent={ PreviewProjectContent }
           options={ { closeIcon: true } }
         />
-        <Button className="project_button project_button--publish" onClick={ handlePublish }>Publish</Button>
+
+        { data.project.status === 'DRAFT'
+          ? <Button className="project_button project_button--publish" onClick={ handlePublish }>Publish</Button>
+          : (
+            <Fragment>
+              { updatesToPublish() && (
+                <Button className="project_button project_button--publish" onClick={ handlePublish }>Update</Button>
+              )
+              }
+              <Button className="project_button project_button--publish" onClick={ handleUnPublish }>UnPublish</Button>
+            </Fragment>
+          )
+        }
       </ProjectHeader>
+
+      <div className="centered">
+        <ApolloError error={ publishError } />
+      </div>
 
       <Grid stackable>
         <Grid.Row className="layout">
@@ -168,16 +224,9 @@ VideoReview.propTypes = {
   id: string,
   data: object,
   deleteProject: func,
-  publishProject: func
+  publishProject: func,
+  unPublishProject: func
 };
-
-const VIDEO_REVIEW_PROJECT_QUERY = gql`
-  query VideoReviewProject($id: ID!) {
-    project: videoProject(id: $id) {
-      id
-    }
-  }
-`;
 
 const deleteProjectMutation = graphql( DELETE_VIDEO_PROJECT_MUTATION, {
   name: 'deleteProject',
@@ -193,7 +242,14 @@ const publishProjectMutation = graphql( PUBLISH_VIDEO_PROJECT_MUTATION, {
   } )
 } );
 
-const videoReviewQuery = graphql( VIDEO_REVIEW_PROJECT_QUERY, {
+const unPublishProjectMutation = graphql( UNPUBLISH_VIDEO_PROJECT_MUTATION, {
+  name: 'unPublishProject',
+  options: props => ( {
+    variables: { id: props.id }
+  } )
+} );
+
+const videoReviewQuery = graphql( VIDEO_PROJECT_QUERY, {
   options: props => ( {
     variables: { id: props.id }
   } )
@@ -202,7 +258,6 @@ const videoReviewQuery = graphql( VIDEO_REVIEW_PROJECT_QUERY, {
 export default compose(
   deleteProjectMutation,
   publishProjectMutation,
+  unPublishProjectMutation,
   videoReviewQuery
 )( VideoReview );
-
-export { VIDEO_REVIEW_PROJECT_QUERY };

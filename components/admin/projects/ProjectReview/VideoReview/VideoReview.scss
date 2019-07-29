@@ -2,7 +2,7 @@
 
 .review-project {
   :focus:not(:focus-visible) {
-    outline: none
+    outline: none;
   }
 
   .section--project_header {
@@ -25,7 +25,7 @@
 
   .section {
     margin-bottom: 1em;
-    
+
     p {
       margin-bottom: 2px;
       font-size: 0.777778rem;
@@ -132,5 +132,12 @@
       outline: 2px dotted $medium-grey;
       outline-offset: 2px;
     }
+  }
+
+  .centered {
+    position: absolute;
+    top: 8em;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
