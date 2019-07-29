@@ -8,22 +8,31 @@ import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
 import { DELETE_VIDEO_PROJECT_MUTATION } from 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit';
 import VideoReview, { VIDEO_REVIEW_PROJECT_QUERY } from './VideoReview';
 
+jest.mock( 'components/admin/projects/ProjectEdit/ProjectUnitItem/ProjectUnitItem', () => function ProjectUnitItem() {
+  return <div>ProjectUnitItem</div>;
+} );
+
+jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_PUBLISHER_UPLOAD_BUCKET: 's3-bucket-url' } } ) );
+
 jest.mock(
   'components/admin/projects/ProjectReview/VideoProjectData/VideoProjectData',
-  /* eslint-disable react/display-name */
-  () => () => <div>VideoProjectData</div>
+  () => function VideoProjectDatat() {
+    return <div>VideoProjectData</div>;
+  }
 );
 
 jest.mock(
   'components/admin/projects/ProjectReview/VideoSupportFiles/VideoSupportFiles',
-  /* eslint-disable react/display-name */
-  () => () => <div>VideoSupportFiles</div>
+  () => function VideoSupportFiles() {
+    return <div>VideoSupportFiles</div>;
+  }
 );
 
 jest.mock(
   'components/admin/projects/ProjectReview/VideoProjectFiles/VideoProjectFiles',
-  /* eslint-disable react/display-name */
-  () => () => <div>VideoProjectFiles</div>
+  () => function VideoProjectFiles() {
+    return <div>VideoProjectFiles</div>;
+  }
 );
 
 const props = { id: '234' };
