@@ -29,6 +29,7 @@ import './FileDataForm.scss';
 
 const FileDataForm = ( {
   deleteVideoFileMutation,
+  fileCount,
   language,
   languageVideoFileMutation,
   qualityVideoFileMutation,
@@ -278,9 +279,11 @@ const FileDataForm = ( {
                   { `Duration: ${secondsToHMS( file.duration )}` }
                 </span>
               ) }
-              <span className="delete-file-link" onClick={ displayConfirmDelete } onKeyUp={ displayConfirmDelete } role="button" tabIndex={ 0 }>
-                Delete file from project
-              </span>
+              { fileCount && fileCount > 1 && (
+                <span className="delete-file-link" onClick={ displayConfirmDelete } onKeyUp={ displayConfirmDelete } role="button" tabIndex={ 0 }>
+                  Delete file from project
+                </span>
+              ) }
             </div>
 
             <Confirm
@@ -372,6 +375,7 @@ const FileDataForm = ( {
 
 FileDataForm.propTypes = {
   deleteVideoFileMutation: propTypes.func,
+  fileCount: propTypes.number,
   language: propTypes.object,
   languageVideoFileMutation: propTypes.func,
   qualityVideoFileMutation: propTypes.func,
