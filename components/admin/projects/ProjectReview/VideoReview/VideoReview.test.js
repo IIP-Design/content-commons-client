@@ -5,6 +5,7 @@ import Router from 'next/router';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { Icon, Loader } from 'semantic-ui-react';
 import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
+import { PUBLISH_VIDEO_PROJECT_MUTATION } from 'lib/graphql/queries/video';
 import { DELETE_VIDEO_PROJECT_MUTATION } from 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit';
 import VideoReview, { VIDEO_REVIEW_PROJECT_QUERY } from './VideoReview';
 
@@ -52,6 +53,20 @@ const mocks = [
     },
     result: {
       data: { deleteVideoProject: { id: props.id } }
+    }
+  },
+  {
+    request: {
+      query: PUBLISH_VIDEO_PROJECT_MUTATION,
+      variables: { id: props.id }
+    },
+    result: {
+      data: {
+        publishVideoProject: {
+          id: props.id,
+          status: 'PUBLISHED'
+        }
+      }
     }
   }
 ];
@@ -169,28 +184,37 @@ describe( '<VideoReview />', () => {
     } );
   } );
 
-  it.skip( 'clicking a Publish button redirects to the dashboard', async () => {
+  it.skip( 'clicking a Publish button calls publishProject and redirects to the dashboard', async () => {
+    /**
+     * @todo This test does not pass, but it does log
+     * `Published project: 234`, which indicates that
+     * `props.publishProject` is called correctly. Will
+     * to revisit.
+     */
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
     const videoReview = wrapper.find( 'VideoReview' );
     const publishBtns = videoReview.find( 'Button.project_button--publish' );
+    const { id } = props;
+    const spy = jest.spyOn( videoReview.props(), 'publishProject' );
     Router.push = jest.fn();
 
     publishBtns.forEach( btn => {
       btn.simulate( 'click' );
+      expect( spy ).toHaveBeenCalledWith( { variables: { id } } );
       expect( Router.push ).toHaveBeenCalledWith( {
         pathname: `/admin/dashboard`
       } );
     } );
   } );
 
-  /**
-   * @todo Need to revisit this test when
-   * enzyme supports hooks. Why is spy not called?
-   */
   it( 'clicking Confirm in <Confirm /> redirects to the dashboard after deleting project', async () => {
+    /**
+     * @todo Need to revisit this test when
+     * enzyme supports hooks. Why is spy not called?
+     */
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
