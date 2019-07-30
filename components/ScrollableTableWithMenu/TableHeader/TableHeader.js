@@ -36,7 +36,7 @@ const TableHeader = props => {
 };
 
 TableHeader.propTypes = {
-  tableHeaders: PropTypes.array,
+  tableHeaders: PropTypes.array.isRequired,
   column: PropTypes.string,
   direction: PropTypes.string,
   handleSort: PropTypes.func,

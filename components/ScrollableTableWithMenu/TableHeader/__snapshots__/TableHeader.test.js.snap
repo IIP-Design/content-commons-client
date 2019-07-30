@@ -1,0 +1,238 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TableHeader /> renders without crashing 1`] = `
+Array [
+  <TableHeader
+    column={null}
+    direction={null}
+    displayActionsMenu={false}
+    handleSort={
+      [MockFunction] {
+        "calls": Array [
+          Array [
+            "projectTitle",
+          ],
+          Array [
+            "createdAt",
+          ],
+          Array [
+            "visibility",
+          ],
+          Array [
+            "author",
+          ],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      }
+    }
+    tableHeaders={
+      Array [
+        Object {
+          "label": "PROJECT TITLE",
+          "name": "projectTitle",
+        },
+        Object {
+          "label": "CREATED",
+          "name": "createdAt",
+        },
+        Object {
+          "label": "VISIBILITY",
+          "name": "visibility",
+        },
+        Object {
+          "label": "AUTHOR",
+          "name": "author",
+        },
+      ]
+    }
+  >
+    <TableHeader
+      as="thead"
+    >
+      <thead
+        className=""
+      >
+        <TableRow
+          as="tr"
+          cellAs="td"
+        >
+          <tr
+            className=""
+          >
+            <TableHeaderCell
+              as="th"
+              className=""
+              key="projectTitle"
+              sorted={null}
+            >
+              <TableCell
+                as="th"
+                className=""
+              >
+                <th
+                  className=""
+                >
+                  PROJECT TITLE
+                </th>
+              </TableCell>
+            </TableHeaderCell>
+            <TableHeaderCell
+              as="th"
+              className=""
+              key="createdAt"
+              sorted={null}
+            >
+              <TableCell
+                as="th"
+                className=""
+              >
+                <th
+                  className=""
+                >
+                  CREATED
+                </th>
+              </TableCell>
+            </TableHeaderCell>
+            <TableHeaderCell
+              as="th"
+              className=""
+              key="visibility"
+              sorted={null}
+            >
+              <TableCell
+                as="th"
+                className=""
+              >
+                <th
+                  className=""
+                >
+                  VISIBILITY
+                </th>
+              </TableCell>
+            </TableHeaderCell>
+            <TableHeaderCell
+              as="th"
+              className=""
+              key="author"
+              sorted={null}
+            >
+              <TableCell
+                as="th"
+                className=""
+              >
+                <th
+                  className=""
+                >
+                  AUTHOR
+                </th>
+              </TableCell>
+            </TableHeaderCell>
+          </tr>
+        </TableRow>
+      </thead>
+    </TableHeader>
+  </TableHeader>,
+  <TableHeader
+    as="thead"
+  >
+    <thead
+      className=""
+    >
+      <TableRow
+        as="tr"
+        cellAs="td"
+      >
+        <tr
+          className=""
+        >
+          <TableHeaderCell
+            as="th"
+            className=""
+            key="projectTitle"
+            sorted={null}
+          >
+            <TableCell
+              as="th"
+              className=""
+            >
+              <th
+                className=""
+              >
+                PROJECT TITLE
+              </th>
+            </TableCell>
+          </TableHeaderCell>
+          <TableHeaderCell
+            as="th"
+            className=""
+            key="createdAt"
+            sorted={null}
+          >
+            <TableCell
+              as="th"
+              className=""
+            >
+              <th
+                className=""
+              >
+                CREATED
+              </th>
+            </TableCell>
+          </TableHeaderCell>
+          <TableHeaderCell
+            as="th"
+            className=""
+            key="visibility"
+            sorted={null}
+          >
+            <TableCell
+              as="th"
+              className=""
+            >
+              <th
+                className=""
+              >
+                VISIBILITY
+              </th>
+            </TableCell>
+          </TableHeaderCell>
+          <TableHeaderCell
+            as="th"
+            className=""
+            key="author"
+            sorted={null}
+          >
+            <TableCell
+              as="th"
+              className=""
+            >
+              <th
+                className=""
+              >
+                AUTHOR
+              </th>
+            </TableCell>
+          </TableHeaderCell>
+        </tr>
+      </TableRow>
+    </thead>
+  </TableHeader>,
+]
+`;
