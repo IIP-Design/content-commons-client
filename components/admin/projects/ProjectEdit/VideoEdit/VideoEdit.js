@@ -494,5 +494,3 @@ export default compose(
     } )
   } ),
 )( VideoEdit );
-
-export { DELETE_VIDEO_PROJECT_MUTATION };
