@@ -3,7 +3,15 @@ import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { Loader } from 'semantic-ui-react';
-import DownloadThumbnail, { VIDEO_PROJECT_PREVIEW_THUMBNAILS_QUERY } from './DownloadThumbnail';
+import DownloadThumbnail from './DownloadThumbnail';
+import {
+  emptyProjectMocks,
+  errorMocks,
+  mocks,
+  noFilesMocks,
+  nullProjectMocks,
+  props
+} from './mocks';
 
 jest.mock( 'lib/utils', () => ( {
   getPathToS3Bucket: jest.fn( () => {} ),
@@ -13,46 +21,6 @@ jest.mock( 'lib/utils', () => ( {
 } ) );
 
 jest.mock( 'static/icons/icon_download.svg', () => 'downloadIconSVG' );
-
-const props = {
-  id: '123',
-  instructions: 'Download Thumbnail(s)',
-  isPreview: false
-};
-
-const mocks = [
-  {
-    request: {
-      query: VIDEO_PROJECT_PREVIEW_THUMBNAILS_QUERY,
-      variables: { id: props.id }
-    },
-    result: {
-      data: {
-        project: {
-          id: props.id,
-          thumbnails: [
-            {
-              id: 'th765',
-              url: `2019/06/${props.id}/thumbnail-1.jpg`,
-              language: {
-                id: 'en23',
-                displayName: 'English'
-              }
-            },
-            {
-              id: 'th865',
-              url: `2019/06/${props.id}/thumbnail-2.jpg`,
-              language: {
-                id: 'en23',
-                displayName: 'English'
-              }
-            }
-          ]
-        }
-      }
-    }
-  }
-];
 
 const Component = (
   <MockedProvider mocks={ mocks } addTypename={ false }>
@@ -79,17 +47,6 @@ describe( '<DownloadThumbnail />', () => {
   } );
 
   it( 'renders error message if error is thrown', async () => {
-    const errorMocks = [
-      {
-        request: {
-          query: VIDEO_PROJECT_PREVIEW_THUMBNAILS_QUERY,
-          variables: { id: props.id }
-        },
-        result: {
-          errors: [{ message: 'There was an error.' }]
-        }
-      }
-    ];
     const wrapper = mount(
       <MockedProvider mocks={ errorMocks } addTypename={ false }>
         <DownloadThumbnail { ...props } />
@@ -118,13 +75,6 @@ describe( '<DownloadThumbnail />', () => {
   } );
 
   it( 'renders null if project is null', async () => {
-    const nullProjectMocks = [
-      {
-        ...mocks[0],
-        result: { data: { project: null } }
-      }
-    ];
-
     const wrapper = mount(
       <MockedProvider mocks={ nullProjectMocks } addTypename={ false }>
         <DownloadThumbnail { ...props } />
@@ -141,12 +91,8 @@ describe( '<DownloadThumbnail />', () => {
 
   it( 'renders null if project is {}', async () => {
     // ignore console.warn about missing field `id` and `thumbnails`
-    const emptyProjectMocks = [
-      {
-        ...mocks[0],
-        result: { data: { project: {} } }
-      }
-    ];
+    const consoleWarn = console.warn;
+    console.warn = jest.fn();
 
     const wrapper = mount(
       <MockedProvider mocks={ emptyProjectMocks } addTypename={ false }>
@@ -160,23 +106,10 @@ describe( '<DownloadThumbnail />', () => {
     const downloadThumb = wrapper.find( 'DownloadThumbnail' );
 
     expect( downloadThumb.html() ).toEqual( null );
+    console.warn = consoleWarn;
   } );
 
   it( 'renders a "no thumbnails available message" if there are no thumbnail files', async () => {
-    const noFilesMocks = [
-      {
-        ...mocks[0],
-        result: {
-          data: {
-            project: {
-              ...mocks[0].result.data.project,
-              thumbnails: []
-            }
-          }
-        }
-      }
-    ];
-
     const wrapper = mount(
       <MockedProvider mocks={ noFilesMocks } addTypename={ false }>
         <DownloadThumbnail { ...props } />

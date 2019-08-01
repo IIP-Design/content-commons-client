@@ -3,7 +3,15 @@ import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { Loader } from 'semantic-ui-react';
-import DownloadSrt, { VIDEO_PROJECT_PREVIEW_SRTS_QUERY } from './DownloadSrt';
+import DownloadSrt from './DownloadSrt';
+import {
+  emptyProjectMocks,
+  errorMocks,
+  mocks,
+  noFilesMocks,
+  nullProjectMocks,
+  props
+} from './mocks';
 
 jest.mock( 'lib/utils', () => ( {
   getPathToS3Bucket: jest.fn( () => {} ),
@@ -13,46 +21,6 @@ jest.mock( 'lib/utils', () => ( {
 } ) );
 
 jest.mock( 'static/icons/icon_download.svg', () => 'downloadIconSVG' );
-
-const props = {
-  id: '123',
-  instructions: 'Download SRT(s)',
-  isPreview: false
-};
-
-const mocks = [
-  {
-    request: {
-      query: VIDEO_PROJECT_PREVIEW_SRTS_QUERY,
-      variables: { id: props.id }
-    },
-    result: {
-      data: {
-        project: {
-          id: props.id,
-          files: [
-            {
-              id: 'srt89',
-              url: `2019/06/${props.id}/srt-1.srt`,
-              language: {
-                id: 'en23',
-                displayName: 'English'
-              }
-            },
-            {
-              id: 'srt99',
-              url: `2019/06/${props.id}/srt-2.srt`,
-              language: {
-                id: 'en23',
-                displayName: 'English'
-              }
-            }
-          ]
-        }
-      }
-    }
-  }
-];
 
 const Component = (
   <MockedProvider mocks={ mocks } addTypename={ false }>
@@ -79,17 +47,6 @@ describe( '<DownloadSrt />', () => {
   } );
 
   it( 'renders error message if error is thrown', async () => {
-    const errorMocks = [
-      {
-        request: {
-          query: VIDEO_PROJECT_PREVIEW_SRTS_QUERY,
-          variables: { id: props.id }
-        },
-        result: {
-          errors: [{ message: 'There was an error.' }]
-        }
-      }
-    ];
     const wrapper = mount(
       <MockedProvider mocks={ errorMocks } addTypename={ false }>
         <DownloadSrt { ...props } />
@@ -118,13 +75,6 @@ describe( '<DownloadSrt />', () => {
   } );
 
   it( 'renders null if project is null', async () => {
-    const nullProjectMocks = [
-      {
-        ...mocks[0],
-        result: { data: { project: null } }
-      }
-    ];
-
     const wrapper = mount(
       <MockedProvider mocks={ nullProjectMocks } addTypename={ false }>
         <DownloadSrt { ...props } />
@@ -141,12 +91,8 @@ describe( '<DownloadSrt />', () => {
 
   it( 'renders null if project is {}', async () => {
     // ignore console.warn about missing field `id` and `files`
-    const emptyProjectMocks = [
-      {
-        ...mocks[0],
-        result: { data: { project: {} } }
-      }
-    ];
+    const consoleWarn = console.warn;
+    console.warn = jest.fn();
 
     const wrapper = mount(
       <MockedProvider mocks={ emptyProjectMocks } addTypename={ false }>
@@ -160,23 +106,10 @@ describe( '<DownloadSrt />', () => {
     const downloadSrt = wrapper.find( 'DownloadSrt' );
 
     expect( downloadSrt.html() ).toEqual( null );
+    console.warn = consoleWarn;
   } );
 
   it( 'renders a "no SRTs available message" if there are no SRT files', async () => {
-    const noFilesMocks = [
-      {
-        ...mocks[0],
-        result: {
-          data: {
-            project: {
-              ...mocks[0].result.data.project,
-              files: []
-            }
-          }
-        }
-      }
-    ];
-
     const wrapper = mount(
       <MockedProvider mocks={ noFilesMocks } addTypename={ false }>
         <DownloadSrt { ...props } />
