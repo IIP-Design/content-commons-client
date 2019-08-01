@@ -22,7 +22,7 @@ export const getMocks = ( query, variables ) => (
                 __typename: 'ImageFile',
                 id: 'th11',
                 createdAt: '2019-03-06T13:11:48.043Z',
-                updatedAt: '2019-06-18T14:58:10.024Z',
+                updatedAt: '2019-06-18T13:58:10.024Z',
                 filename: 'image-1.jpg',
                 filesize: 28371,
                 filetype: 'image/jpeg',
@@ -43,6 +43,7 @@ export const getMocks = ( query, variables ) => (
               {
                 __typename: 'VideoUnit',
                 id: 'un91',
+                updatedAt: '2019-06-18T14:58:10.024Z',
                 title: 'test project title',
                 descPublic: 'the arabic description',
                 language: {
@@ -156,6 +157,7 @@ export const getMocks = ( query, variables ) => (
               {
                 __typename: 'VideoUnit',
                 id: 'un95',
+                updatedAt: '2019-06-18T12:58:10.024Z',
                 title: 'test project title',
                 descPublic: 'the english description',
                 language: {
