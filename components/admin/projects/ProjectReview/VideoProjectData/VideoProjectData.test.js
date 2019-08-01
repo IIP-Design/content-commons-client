@@ -319,6 +319,9 @@ describe( '<VideoProjectData />', () => {
 
   it( 'does not crash if author and team are `{}`', async () => {
     // ignore console.warn about missing field
+    const consoleWarn = console.warn;
+    console.warn = jest.fn();
+
     const emptyAuthorTeamMocks = [
       {
         request: {
@@ -386,5 +389,6 @@ describe( '<VideoProjectData />', () => {
 
     expect( videoProjectData.exists() ).toEqual( true );
     expect( toJSON( metaSection ) ).toMatchSnapshot();
+    console.warn = consoleWarn;
   } );
 } );
