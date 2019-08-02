@@ -82,6 +82,7 @@ const ProjectUnits = props => {
       const { projectUnits } = data;
       if ( projectUnits.units && projectUnits.units.length ) {
         setUnits( fetchUnits( data ) );
+        setDisableBtns( false );
       } else {
         setDisableBtns( true );
       }

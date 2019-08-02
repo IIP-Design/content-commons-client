@@ -205,9 +205,6 @@ const VideoEdit = props => {
     if ( filesToUpload && filesToUpload.length ) {
       setIsUploading( true );
 
-      // Do not display include video file notification
-      setDisableBtns( false );
-
       // 1. Upload files to S3 & Vimeo and fetch file meta data
       await uploadExecute( id, filesToUpload, handleUploadProgress );
 
