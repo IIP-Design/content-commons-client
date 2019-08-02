@@ -1,4 +1,6 @@
 import React, { Fragment, useState } from 'react';
+import { Subscription } from 'react-apollo';
+import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import { Table } from 'semantic-ui-react';
@@ -6,6 +8,39 @@ import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableM
 
 const MyProjectPrimaryCol = dynamic( () => import( 'components/admin/Dashboard/MyProjects/MyProjectPrimaryCol/MyProjectPrimaryCol' ) );
 const TeamProjectPrimaryCol = dynamic( () => import( 'components/admin/Dashboard/TeamProjects/TeamProjectPrimaryCol/TeamProjectPrimaryCol' ) );
+
+const PROJECT_STATUS_CHANGE_SUBSCRIPTION = gql`
+  subscription PROJECT_STATUS_CHANGE_SUBSCRIPTION($id: ID!)  {
+    projectStatusChange(id: $id) {
+      id
+      status
+    }
+  }
+`;
+
+// ToDo: Move to own file
+const ProjectStatus = ( { d } ) => {
+  const { id, status } = d;
+  return (
+    <Subscription
+      subscription={ PROJECT_STATUS_CHANGE_SUBSCRIPTION }
+      variables={ { id } }
+    >
+      { ( { data } ) => {
+        if ( data && data.projectStatusChange && data.projectStatusChange.status ) {
+          return <span>{ data.projectStatusChange.status }</span>;
+        }
+        return <span>{ status }</span>;
+      }
+    }
+    </Subscription>
+  );
+};
+
+ProjectStatus.propTypes = {
+  d: PropTypes.object
+};
+
 
 const TableRow = props => {
   const [displayMobileData, setDisplayMobileData] = useState( false );
@@ -66,7 +101,7 @@ const TableRow = props => {
                 </span>
                 <br />
                 { header.label === 'CREATED'
-                  ? <span>{ d.status }</span>
+                  ? <ProjectStatus d={ d } />
                   : null }
               </Fragment>
             ) }
@@ -85,3 +120,4 @@ TableRow.propTypes = {
 };
 
 export default TableRow;
+export { PROJECT_STATUS_CHANGE_SUBSCRIPTION };
