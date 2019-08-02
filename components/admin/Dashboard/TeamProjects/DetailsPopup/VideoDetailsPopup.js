@@ -79,14 +79,14 @@ const VideoDetailsPopup = props => (
                   if ( !vidFile || getCount( vidFile ) === 0 ) return null;
                   return (
                     <li key={ vidFile.id }>
-                      { vidFile.use && vidFile.use.name } | <a href={ getS3Url( vidFile.url ) }>{ vidFile.quality }</a> | <a href={ getS3Url( vidFile.url ) }>{ vidFile.language && vidFile.language.displayName } ({ formatBytes( vidFile.filesize ) })</a>
+                      { vidFile.use && vidFile.use.name } | { vidFile.quality } | { vidFile.language && vidFile.language.displayName } ({ formatBytes( vidFile.filesize ) })
                     </li>
                   );
                 } ) }
                 { supportFiles && supportFiles.map( sprtFile => {
                   if ( !sprtFile || getCount( sprtFile ) === 0 ) return null;
                   return (
-                    <li key={ sprtFile.id }>SRT | <a href={ getS3Url( sprtFile.url ) }>{ sprtFile.language && sprtFile.language.displayName }</a> | <a href={ getS3Url( sprtFile.url ) }>{ formatBytes( sprtFile.filesize ) }</a></li>
+                    <li key={ sprtFile.id }>SRT | { sprtFile.language && sprtFile.language.displayName } | { formatBytes( sprtFile.filesize ) }</li>
                   );
                 } ) }
               </ul>

@@ -23,6 +23,10 @@ const VideoProjectType = props => {
     const includesVideoFile = fileTypes.includes('video/mp4') || fileTypes.includes('video/quicktime');
 
     if ( !includesVideoFile ) {
+      // Clear value on file input
+      const uploadFileInput = document.querySelector( '#uploadFileInput' );
+      uploadFileInput.value = '';
+      // Display include video file notification message
       return setIncludeVideoFileMsg( true );
     }
 

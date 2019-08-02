@@ -7,12 +7,14 @@ import {
 } from 'semantic-ui-react';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import CancelUpload from '../../../CancelUpload/CancelUpload';
+import IncludeVideoFileMsg from '../../../IncludeVideoFileMsg/IncludeVideoFileMsg';
 import VideoProjectFilesRowDesktop from './VideoProjectFilesRowDesktop';
 import { VideoUploadContext } from '../../VideoUpload';
 import './VideoProjectFilesDesktop.scss';
 
 const VideoProjectFilesDesktop = () => {
   const [activeStep, setActiveStep] = useState( 1 );
+  const [includeVideoFileMsg, setIncludeVideoFileMsg] = useState( false );
 
   /**
    * Toggles columns shown based on active step
@@ -31,6 +33,11 @@ const VideoProjectFilesDesktop = () => {
       return ( file.quality );
     }
     return ( file.language );
+  } );
+
+  const stepIncludesVideoFiles = files => files.some( file => {
+    const { type } = file.input;
+    return type === 'video/mp4' || type === 'video/quicktime';
   } );
 
   return (
@@ -101,6 +108,9 @@ const VideoProjectFilesDesktop = () => {
                 disabled={ !stepOneComplete( files ) || files.length === 0 }
                 style={ show( 1 ) }
                 onClick={ () => {
+                  if ( !stepIncludesVideoFiles( files ) ) {
+                    return setIncludeVideoFileMsg( true );
+                  }
                   setActiveStep( 2 );
                   setDuplicateFiles( [] );
                 } }
@@ -111,10 +121,19 @@ const VideoProjectFilesDesktop = () => {
                 content="Continue"
                 disabled={ !allFieldsSelected || files.length === 0 }
                 style={ show( 2 ) }
-                onClick={ handleAddFilesToUpload }
+                onClick={ () => {
+                  if ( !stepIncludesVideoFiles( files ) ) {
+                    return setIncludeVideoFileMsg( true );
+                  }
+                  handleAddFilesToUpload();
+                } }
               />
             </Form.Field>
           </Form>
+          <IncludeVideoFileMsg
+            includeVideoFileMsg={ includeVideoFileMsg }
+            setIncludeVideoFileMsg={ setIncludeVideoFileMsg }
+          />
         </div>
       )
       }
