@@ -14,10 +14,12 @@ class Landing extends Component {
     const postTypes = store.dispatch( loadPostTypes() );
 
     // await completion
-    await resetFilters;
-    await recentVideos;
-    await recentPosts;
-    await postTypes;
+    await Promise.all( [
+      resetFilters,
+      recentVideos,
+      recentPosts,
+      postTypes
+    ] );
 
     return {};
   }
