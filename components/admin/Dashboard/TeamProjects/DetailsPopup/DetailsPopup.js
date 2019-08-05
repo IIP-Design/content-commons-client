@@ -34,6 +34,16 @@ const DetailsPopup = props => {
   const [detailsPopupOpen, setDetailsPopupOpen] = useState( false );
 
   /**
+   * Handle popup behavior on scroll instead of native Popup component hideOnScroll prop
+   * Allows to scroll popup (Files) w/ scrollbars w/o immediately closing
+   */
+  useEffect( () => {
+    const handlePopupScroll = () => setDetailsPopupOpen( false );
+    window.addEventListener( 'scroll', handlePopupScroll );
+    return () => window.removeEventListener( 'scroll', handlePopupScroll );
+  }, [] );
+
+  /**
    * Handle memory leak with set state fn call
    * (i.e., setDetailsPopupOpen) on unmounted component.
    */
@@ -86,7 +96,6 @@ const DetailsPopup = props => {
               content={ renderPopup( __typename, id ) }
               on="click"
               position="bottom left"
-              hideOnScroll
               keepInViewPort
               open={ detailsPopupOpen }
               onOpen={ handleOpen }

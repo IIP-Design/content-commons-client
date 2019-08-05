@@ -82,11 +82,17 @@ const ProjectUnits = props => {
       const { projectUnits } = data;
       if ( projectUnits.units && projectUnits.units.length ) {
         setUnits( fetchUnits( data ) );
-      } else {
-        setDisableBtns( true );
       }
     }
   }, [data] );
+
+  useEffect( () => {
+    if ( isEmpty( units ) ) {
+      setDisableBtns( true );
+    } else {
+      setDisableBtns( false );
+    }
+  }, [units] );
 
   const renderUnits = () => (
     <Card.Group>
