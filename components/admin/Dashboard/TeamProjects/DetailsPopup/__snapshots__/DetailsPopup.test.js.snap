@@ -118,7 +118,6 @@ exports[`<DetailsPopup /> renders the final state 1`] = `
           id="123"
         />
       }
-      hideOnScroll={true}
       keepInViewPort={true}
       on="click"
       onClose={[Function]}
