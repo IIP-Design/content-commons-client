@@ -389,72 +389,40 @@ exports[`<VideoDetailsPopup /> renders the final state 1`] = `
         >
           Full Video
            | 
-          <a
-            href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/video-1.mp4"
-          >
-            BROADCAST
-          </a>
+          BROADCAST
            | 
-          <a
-            href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/video-1.mp4"
-          >
-            English
-             (
-            6.13  MB
-            )
-          </a>
+          English
+           (
+          6.13  MB
+          )
         </li>
         <li
           key="f294"
         >
           Full Video
            | 
-          <a
-            href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/video-2.mp4"
-          >
-            BROADCAST
-          </a>
+          BROADCAST
            | 
-          <a
-            href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/video-2.mp4"
-          >
-            French
-             (
-            6.13  MB
-            )
-          </a>
+          French
+           (
+          6.13  MB
+          )
         </li>
         <li
           key="v832"
         >
           SRT | 
-          <a
-            href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/srt-1.srt"
-          >
-            English
-          </a>
+          English
            | 
-          <a
-            href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/srt-1.srt"
-          >
-            6.27  KB
-          </a>
+          6.27  KB
         </li>
         <li
           key="v238"
         >
           SRT | 
-          <a
-            href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/srt-2.srt"
-          >
-            French
-          </a>
+          French
            | 
-          <a
-            href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/srt-2.srt"
-          >
-            6.27  KB
-          </a>
+          6.27  KB
         </li>
       </ul>
     </div>
