@@ -73,9 +73,10 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
     >
       <ModalItem
         customClassName="edit-project-item"
-        headline={ `${project.projectTitle} ${
-          language && language.displayName ? `in ${language.displayName}` : ''
-        }` }
+        headline={ project.projectTitle }
+        subHeadline={
+          language && language.displayName ? ` | ${language.displayName}` : ''
+        }
         textDirection="ltr"
       >
         <EditVideoModal />
