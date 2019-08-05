@@ -6,6 +6,7 @@ const ApolloError = props => {
   const buttonStyle = {
     color: 'red',
     fontSize: '14px',
+    marginTop: '.5rem',
     marginBottom: '1rem'
   };
 
@@ -14,12 +15,16 @@ const ApolloError = props => {
 
     let errs = [];
     if ( error ) {
-      const { graphQLErrors, networkError } = error;
+      const { graphQLErrors, networkError, otherError } = error;
       if ( graphQLErrors ) {
         errs = graphQLErrors.map( error => error.message );
       }
       if ( networkError ) {
         errs.push( networkError );
+      }
+
+      if ( otherError ) {
+        errs.push( otherError );
       }
     }
 
@@ -32,7 +37,9 @@ const ApolloError = props => {
 
 
   return (
-    <div style={ buttonStyle }>{ compileErrors() }</div>
+    <div style={ buttonStyle }>
+      { compileErrors() }
+    </div>
   );
 };
 
