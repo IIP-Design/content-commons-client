@@ -85,6 +85,8 @@ const VideoProjectDataForm = props => {
     } = props;
     const { setStatus, setErrors, setSubmitting } = actions;
 
+    // Do not display 'include video file' notification
+    // At some point during video file upload, notification conditional set to true
     setDisableBtns( false );
 
     // 1. let user know system is saving
