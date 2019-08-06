@@ -2,7 +2,7 @@ import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
-// import { SubscriptionClient } from 'subscriptions-transport-ws';
+import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { onError } from 'apollo-link-error';
 import { ApolloLink, Observable, split } from 'apollo-link';
 import { getMainDefinition } from 'apollo-utilities';
@@ -18,27 +18,29 @@ const request = async ( headers, operation ) => {
 };
 
 
-// const getWsLink = () => {
-//   const client = new SubscriptionClient( 'ws://localhost:4000/graphql', {
-//     reconnect: true,
-//     lazy: true
-//   } );
-
-//   const _wsLink = new WebSocketLink( client );
-
-//   // fixes the intial disconnection issue
-//   _wsLink.subscriptionClient.maxConnectTimeGenerator.duration = () => _wsLink.subscriptionClient.maxConnectTimeGenerator.max;
-//   return _wsLink;
-// };
-
-const wsLink = process.browser ? new WebSocketLink( { // if you instantiate in the server, the error will be thrown
-  uri: 'ws://localhost:4000/graphql',
-  options: {
+const getWsLink = () => {
+  const client = new SubscriptionClient( 'ws://localhost:4000/graphql', {
     reconnect: true,
     lazy: true
-  }
-} ) : null;
+  } );
 
+  const _wsLink = new WebSocketLink( client );
+
+  // fixes the intial disconnection issue
+  _wsLink.subscriptionClient.maxConnectTimeGenerator.duration = () => _wsLink.subscriptionClient.maxConnectTimeGenerator.max;
+  return _wsLink;
+};
+
+// if you instantiate in the server, the error will be thrown
+// const wsLink = process.browser ? new WebSocketLink( {
+//   uri: 'ws://localhost:4000/graphql',
+//   options: {
+//     reconnect: true,
+//     lazy: true
+//   }
+// } ) : null;
+
+const wsLink = process.browser ? getWsLink() : null;
 
 const httpLink = new HttpLink( {
   uri: publicRuntimeConfig.REACT_APP_APOLLO_ENDPOINT,
