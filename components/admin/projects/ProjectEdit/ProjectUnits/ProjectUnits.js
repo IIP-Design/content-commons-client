@@ -72,27 +72,20 @@ const ProjectUnits = props => {
 
   const [units, setUnits] = useState( [] );
 
-  useEffect( () => {
-    setUnits( fetchUnits( data ) );
-  }, [] );
-
+  // useEffect( () => {
+  //   setUnits( fetchUnits( data ) );
+  // }, [] );
 
   useEffect( () => {
     if ( hasProjectUnits() ) {
       const { projectUnits } = data;
       if ( projectUnits.units && projectUnits.units.length ) {
         setUnits( fetchUnits( data ) );
+      } else {
+        setDisableBtns( true );
       }
     }
   }, [data] );
-
-  useEffect( () => {
-    if ( isEmpty( units ) ) {
-      setDisableBtns( true );
-    } else {
-      setDisableBtns( false );
-    }
-  }, [units] );
 
   const renderUnits = () => (
     <Card.Group>
