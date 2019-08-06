@@ -72,9 +72,9 @@ const ProjectUnits = props => {
 
   const [units, setUnits] = useState( [] );
 
-  // useEffect( () => {
-  //   setUnits( fetchUnits( data ) );
-  // }, [] );
+  useEffect( () => {
+    setUnits( fetchUnits( data ) );
+  }, [] );
 
   useEffect( () => {
     if ( hasProjectUnits() ) {
