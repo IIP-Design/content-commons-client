@@ -10,6 +10,7 @@ import withApollo from 'next-with-apollo';
 import getConfig from 'next/config';
 
 const { publicRuntimeConfig } = getConfig();
+const APOLLO_SUBSCRIPTION_ENDPOINT = 'ws://localhost:4000/graphql';
 
 const request = async ( headers, operation ) => {
   operation.setContext( {
@@ -17,9 +18,8 @@ const request = async ( headers, operation ) => {
   } );
 };
 
-
 const getWsLink = () => {
-  const client = new SubscriptionClient( 'ws://localhost:4000/graphql', {
+  const client = new SubscriptionClient( APOLLO_SUBSCRIPTION_ENDPOINT, {
     reconnect: true,
     lazy: true
   } );
@@ -31,15 +31,7 @@ const getWsLink = () => {
   return _wsLink;
 };
 
-// if you instantiate in the server, the error will be thrown
-// const wsLink = process.browser ? new WebSocketLink( {
-//   uri: 'ws://localhost:4000/graphql',
-//   options: {
-//     reconnect: true,
-//     lazy: true
-//   }
-// } ) : null;
-
+// if you instantiate on the server, the error will be thrown
 const wsLink = process.browser ? getWsLink() : null;
 
 const httpLink = new HttpLink( {
@@ -47,8 +39,6 @@ const httpLink = new HttpLink( {
   credentials: 'include'
 } );
 
-// if you instantiate on the server, the error will be thrown
-// const wsLink = process.browser ? getWsLink() : null;
 
 const link = process.browser ? split( // only create the split in the browser
   // split based on operation type
