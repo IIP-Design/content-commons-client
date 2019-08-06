@@ -14,7 +14,7 @@ let APOLLO_SUBSCRIPTION_ENDPOINT = 'ws://localhost:4000/subscription/';
 const regResult = publicRuntimeConfig.REACT_APP_APOLLO_ENDPOINT.match( /https?:\/\/([^/]+)\// );
 if ( regResult ) {
   const ssl = publicRuntimeConfig.REACT_APP_APOLLO_ENDPOINT.startsWith( 'https' );
-  APOLLO_SUBSCRIPTION_ENDPOINT = `${ssl ? 'wss' : 'ws'}://${regResult[1]}/subscription`;
+  APOLLO_SUBSCRIPTION_ENDPOINT = `${ssl ? 'wss' : 'ws'}://${regResult[1]}/subscription/`;
 }
 const request = async ( headers, operation ) => {
   operation.setContext( {
