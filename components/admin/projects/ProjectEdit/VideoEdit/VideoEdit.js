@@ -72,6 +72,7 @@ const VideoEdit = props => {
   };
 
   const uploadVideoFileNotificationStyles = {
+    display: 'block',
     fontSize: '1em',
     textAlign: 'center',
     backgroundColor: '#cd2026',
@@ -312,12 +313,13 @@ const VideoEdit = props => {
       />
 
       { /* Video file notification */ }
-      <Notification
-        el="p"
-        customStyles={ uploadVideoFileNotificationStyles }
-        show={ disableBtns }
-        msg="Please include a Video file to your project."
-      />
+      { disableBtns && (
+        <Notification
+          el="p"
+          customStyles={ uploadVideoFileNotificationStyles }
+          msg="Please include a Video file to your project."
+        />
+      ) }
 
       { /* upload progress  */ }
       <div className="edit-project__status alpha">
