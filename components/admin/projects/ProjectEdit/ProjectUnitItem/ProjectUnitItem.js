@@ -13,7 +13,7 @@ import FileUploadProgressBar from 'components/admin/projects/ProjectEdit/FileUpl
 import { UploadContext } from '../VideoEdit/VideoEdit';
 import './ProjectUnitItem.scss';
 
-const EditSingleProjectItem = dynamic( () => import( '../EditSingleProjectItem/EditSingleProjectItem' ) );
+const EditSingleProjectItem = dynamic( () => import( /* webpackChunkName: "editSingleProjectItem" */ '../EditSingleProjectItem/EditSingleProjectItem' ) );
 
 const ProjectUnitItem = props => {
   const { projectId, unit, filesToUpload } = props;

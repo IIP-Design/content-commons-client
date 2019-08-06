@@ -63,6 +63,7 @@ const FileSection = () => {
             <div className="edit-file-form-container">
               <FileSidebar />
               <FileDataForm
+                fileCount={ files.length }
                 language={ language }
                 selectedFile={ selectedFile }
                 selectedProject={ selectedProject }

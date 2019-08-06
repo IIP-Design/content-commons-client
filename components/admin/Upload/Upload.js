@@ -19,7 +19,7 @@ import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 import './Upload.scss';
 
 // using dynamic import so that components load when they are needed, or rendered
-const VideoUpload = dynamic( () => import( './modals/VideoUpload/VideoUpload' ) );
+const VideoUpload = dynamic( () => import( /* webpackChunkName: "videoUpload" */ './modals/VideoUpload/VideoUpload' ) );
 
 class Upload extends Component {
   state = {
