@@ -4,20 +4,20 @@
  *
  */
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import propTypes from 'prop-types';
-
 import { Loader } from 'semantic-ui-react';
-
-import ModalItem from 'components/modals/ModalItem/ModalItem';
-import EditVideoModal from 'components/admin/projects/ProjectEdit/EditVideoModal/EditVideoModal';
 
 import './EditSingleProjectItem.scss';
 
+const EditVideoModal = dynamic( () => import( /* webpackChunkName: "editVideoModal" */ 'components/admin/projects/ProjectEdit/EditVideoModal/EditVideoModal' ) );
+const ModalItem = dynamic( () => import( /* webpackChunkName: "modalItem" */ 'components/modals/ModalItem/ModalItem' ) );
+
 const VIDEO_PROJECT_QUERY = gql`
-  query VIDEO_PROJECT_QUERY( $id: ID! ) {
-    project: videoProject( id: $id ) {
+  query VIDEO_PROJECT_QUERY($id: ID!) {
+    project: videoProject(id: $id) {
       id
       projectTitle
     }
@@ -42,13 +42,14 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
 
   if ( !project ) {
     return (
-      <div style={ {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh'
-      } }
+      <div
+        style={ {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh'
+        } }
       >
         <Loader active inline="centered" style={ { marginBottom: '1em' } } />
         <p>Loading the video...</p>
@@ -72,7 +73,10 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
     >
       <ModalItem
         customClassName="edit-project-item"
-        headline={ `${project.projectTitle} ${language && language.displayName ? `in ${language.displayName}` : ''}` }
+        headline={ project.projectTitle }
+        subHeadline={
+          language && language.displayName ? ` | ${language.displayName}` : ''
+        }
         textDirection="ltr"
       >
         <EditVideoModal />
@@ -90,6 +94,6 @@ EditSingleProjectItem.propTypes = {
 export default graphql( VIDEO_PROJECT_QUERY, {
   name: 'videoProjectQuery',
   options: props => ( {
-    variables: { id: props.projectId },
+    variables: { id: props.projectId }
   } )
 } )( EditSingleProjectItem );

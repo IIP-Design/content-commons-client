@@ -9,16 +9,16 @@ import ApolloError from 'components/errors/ApolloError';
 import './DetailsPopup.scss';
 
 const CHECK_PROJECT_TYPE_QUERY = gql`
-  query CheckProjectType( $id: ID! ) {
-    videoProject( id: $id ) {
+  query CheckProjectType($id: ID!) {
+    videoProject(id: $id) {
       id
       projectType
     }
   }
 `;
 
-const VideoDetailsPopup = dynamic( () => import( './VideoDetailsPopup' ) );
-const ImageDetailsPopup = dynamic( () => import( './ImageDetailsPopup' ) );
+const VideoDetailsPopup = dynamic( () => import( /* webpackChunkName: "videoDetailsPopup" */ './VideoDetailsPopup' ) );
+const ImageDetailsPopup = dynamic( () => import( /* webpackChunkName: "imageDetailsPopup" */ './ImageDetailsPopup' ) );
 
 const renderPopup = ( projectType, id ) => {
   if ( projectType === 'VideoProject' ) {
@@ -33,15 +33,23 @@ const DetailsPopup = props => {
   const { id } = props;
   const [detailsPopupOpen, setDetailsPopupOpen] = useState( false );
 
-  const handleResize = debounce( () => {
-    /* eslint-disable no-use-before-define */
-    handleClose();
-  }, 500, { leading: true, trailing: false } );
+  const handleResize = debounce(
+    () => {
+      /* eslint-disable no-use-before-define */
+      handleClose();
+    },
+    500,
+    { leading: true, trailing: false }
+  );
 
-  const handleTableScroll = debounce( () => {
-    /* eslint-disable no-use-before-define */
-    handleClose();
-  }, 500, { leading: true, trailing: false } );
+  const handleTableScroll = debounce(
+    () => {
+      /* eslint-disable no-use-before-define */
+      handleClose();
+    },
+    500,
+    { leading: true, trailing: false }
+  );
 
   const handleOpen = () => {
     setDetailsPopupOpen( true );
@@ -64,42 +72,41 @@ const DetailsPopup = props => {
 
   return (
     <Query query={ CHECK_PROJECT_TYPE_QUERY } variables={ { id: props.id } }>
-      {
-        ( { loading, error, data } ) => {
-          if ( loading ) return <p>Loading....</p>;
-          if ( error ) return <ApolloError error={ error } />;
+      { ( { loading, error, data } ) => {
+        if ( loading ) return <p>Loading....</p>;
+        if ( error ) return <ApolloError error={ error } />;
 
-          if ( data.videoProject ) {
-            const { __typename } = data.videoProject;
-            return (
-              // 06/10/19 - Updating button text from "Details" to "Files"
-              // if DetailsPopup will contain content other than files in future,
-              // will add conditional to display "Details" text along with "Files"/"Other Content"
-              // subheaders within popup
-              <Popup
-                className="detailsFiles_popup"
-                trigger={ (
-                  <button
-                    type="button"
-                    className="linkStyle projects_data_actions_action"
-                    data-projectitempopup="detailsPopup"
-                  >
-                    Files
-                  </button>
-                ) }
-                content={ renderPopup( __typename, id ) }
-                on="click"
-                position="bottom left"
-                keepInViewPort
-                open={ detailsPopupOpen }
-                onOpen={ handleOpen }
-                onClose={ handleClose }
-              />
-            );
-          }
-
-          return <p>There are no supporting files for this project.</p>;
+        if ( data.videoProject ) {
+          const { __typename } = data.videoProject;
+          return (
+            // 06/10/19 - Updating button text from "Details" to "Files"
+            // if DetailsPopup will contain content other than files in future,
+            // will add conditional to display "Details" text along with "Files"/"Other Content"
+            // subheaders within popup
+            <Popup
+              className="detailsFiles_popup"
+              trigger={ (
+                <button
+                  type="button"
+                  className="linkStyle projects_data_actions_action"
+                  data-projectitempopup="detailsPopup"
+                >
+                  Files
+                </button>
+) }
+              content={ renderPopup( __typename, id ) }
+              on="click"
+              position="bottom left"
+              keepInViewPort
+              open={ detailsPopupOpen }
+              onOpen={ handleOpen }
+              onClose={ handleClose }
+            />
+          );
         }
+
+        return <p>There are no supporting files for this project.</p>;
+      } }{ ' ' }
       }
     </Query>
   );

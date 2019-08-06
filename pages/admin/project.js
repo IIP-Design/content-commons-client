@@ -8,8 +8,8 @@ import isEmpty from 'lodash/isEmpty';
 import { VIDEO_PROJECT_QUERY } from 'lib/graphql/queries/video';
 
 // using dynamic import so that components load when they are needed, or rendered
-const VideoEdit = dynamic( () => import( 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit' ) );
-const VideoReview = dynamic( () => import( 'components/admin/projects/ProjectReview/VideoReview/VideoReview' ) );
+const VideoEdit = dynamic( () => import( /* webpackChunkName: "videoEdit" */ 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit' ) );
+const VideoReview = dynamic( () => import( /* webpackChunkName: "videoReview" */ 'components/admin/projects/ProjectReview/VideoReview/VideoReview' ) );
 
 const CONTENT_TYPES = ['video'];
 
@@ -35,9 +35,7 @@ const ProjectPage = props => {
 
   const loadEditComponent = () => {
     if ( props.query.content === 'video' ) {
-      return (
-        <VideoEdit id={ props.query.id } />
-      );
+      return <VideoEdit id={ props.query.id } />;
     }
   };
 
@@ -47,7 +45,6 @@ const ProjectPage = props => {
     }
   };
 
-
   if ( !isValidPath( props.query ) ) {
     props.router.push( '/admin/dashboard' );
   }
@@ -56,10 +53,7 @@ const ProjectPage = props => {
 
   return (
     <Fragment>
-      { actionQry === 'edit'
-        ? loadEditComponent()
-        : loadReviewComponent()
-      }
+      { actionQry === 'edit' ? loadEditComponent() : loadReviewComponent() }
     </Fragment>
   );
 };
@@ -78,19 +72,19 @@ ProjectPage.getInitialProps = async ( { query, res, apolloClient } ) => {
   }
 
   // Fetch applicable query and populate project data for use in child components
-  await apolloClient.query( {
-    query: getProjectQuery( query.content ),
-    variables: { id: query.id }
-  } ).catch( err => console.dir( err ) );
+  await apolloClient
+    .query( {
+      query: getProjectQuery( query.content ),
+      variables: { id: query.id }
+    } )
+    .catch( err => console.dir( err ) );
 
   return {};
 };
-
 
 ProjectPage.propTypes = {
   query: PropTypes.object,
   router: PropTypes.object
 };
-
 
 export default withRouter( ProjectPage );

@@ -2,7 +2,7 @@
 
 .ui.modal > .content {
   position: relative;
-} 
+}
 
 .modal {
   .ui.toggle.checkbox label {
@@ -77,6 +77,10 @@
     @media screen and (max-width: 767px) {
       width: 95%;
     }
+  }
+
+  &_subheadline {
+    font-weight: normal;
   }
 
   &_languages {
