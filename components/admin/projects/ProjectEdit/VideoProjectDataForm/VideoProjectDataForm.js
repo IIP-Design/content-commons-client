@@ -81,9 +81,11 @@ const VideoProjectDataForm = props => {
 
   const onHandleSubmit = async ( values, actions ) => {
     const {
-      user, createVideoProject, updateNotification, handleUpload
+      user, createVideoProject, updateNotification, handleUpload, setDisableBtns
     } = props;
     const { setStatus, setErrors, setSubmitting } = actions;
+
+    setDisableBtns( false );
 
     // 1. let user know system is saving
     updateNotification( 'Saving project...' );
@@ -147,7 +149,8 @@ VideoProjectDataForm.propTypes = {
   createVideoProject: PropTypes.func,
   updateNotification: PropTypes.func,
   handleUpload: PropTypes.func,
-  updateVideoProject: PropTypes.func
+  updateVideoProject: PropTypes.func,
+  setDisableBtns: PropTypes.func
 };
 
 export default compose(

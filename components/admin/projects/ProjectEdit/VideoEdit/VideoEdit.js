@@ -343,6 +343,7 @@ const VideoEdit = props => {
           updateNotification={ updateNotification }
           handleUpload={ handleUpload }
           maxCategories={ MAX_CATEGORY_COUNT }
+          setDisableBtns={ setDisableBtns }
         />
       </div>
 
