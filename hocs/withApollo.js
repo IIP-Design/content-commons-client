@@ -10,12 +10,7 @@ import withApollo from 'next-with-apollo';
 import getConfig from 'next/config';
 
 const { publicRuntimeConfig } = getConfig();
-let APOLLO_SUBSCRIPTION_ENDPOINT = 'ws://localhost:4000/subscription/';
-const regResult = publicRuntimeConfig.REACT_APP_APOLLO_ENDPOINT.match( /https?:\/\/([^/]+)\// );
-if ( regResult ) {
-  const ssl = publicRuntimeConfig.REACT_APP_APOLLO_ENDPOINT.startsWith( 'https' );
-  APOLLO_SUBSCRIPTION_ENDPOINT = `${ssl ? 'wss' : 'ws'}://${regResult[1]}/subscription/`;
-}
+
 const request = async ( headers, operation ) => {
   operation.setContext( {
     headers
@@ -23,7 +18,7 @@ const request = async ( headers, operation ) => {
 };
 
 const getWsLink = () => {
-  const client = new SubscriptionClient( APOLLO_SUBSCRIPTION_ENDPOINT, {
+  const client = new SubscriptionClient( publicRuntimeConfig.REACT_APP_APOLLO_SUBSCRIPTIONS_ENDPOINT, {
     reconnect: true,
     lazy: true
   } );
