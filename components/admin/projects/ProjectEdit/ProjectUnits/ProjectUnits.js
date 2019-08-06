@@ -74,9 +74,6 @@ const ProjectUnits = props => {
 
   useEffect( () => {
     setUnits( fetchUnits( data ) );
-    // if ( !isEmpty( units ) ) {
-    //   setDisableBtns( false );
-    // }
   }, [] );
 
   useEffect( () => {
