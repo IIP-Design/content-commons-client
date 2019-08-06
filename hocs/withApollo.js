@@ -10,8 +10,11 @@ import withApollo from 'next-with-apollo';
 import getConfig from 'next/config';
 
 const { publicRuntimeConfig } = getConfig();
-const APOLLO_SUBSCRIPTION_ENDPOINT = 'ws://localhost:4000/graphql';
-
+let APOLLO_SUBSCRIPTION_ENDPOINT = 'ws://localhost:4000/graphql';
+const regResult = publicRuntimeConfig.REACT_APP_APOLLO_ENDPOINT.match( /https?:\/\/([^/]+)\// );
+if ( regResult ) {
+  APOLLO_SUBSCRIPTION_ENDPOINT = `ws://${regResult[1]}/graphql`;
+}
 const request = async ( headers, operation ) => {
   operation.setContext( {
     headers
