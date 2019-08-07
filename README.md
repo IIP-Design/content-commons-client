@@ -23,7 +23,7 @@ Handles the public Content Commons as well as the client side adminstative inter
   - **REACT_APP_APOLLO_ENDPOINT** : public api to Content Commons Adminstation Server (graphql server)
   - **REACT_APP_APOLLO_SUBSCRIPTIONS_ENDPOINT** : web socket for apollo subscriptions
   - **REACT_APP_AWS_S3_PUBLISHER_BUCKET**: S3 bucket for authoring uploads
-  - **REACT_APP_AWS_S3_PRODUCTION_BUCKET**: S3 bucket for authoring uploads
+  - **REACT_APP_AWS_S3_PRODUCTION_BUCKET**: S3 bucket for storing production assets
 
 - Start dev server: `npm run dev`
 
