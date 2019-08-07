@@ -137,8 +137,10 @@ const VideoReview = props => {
     const { unPublishProject } = props;
 
     try {
+      setPublishing( true );
       await unPublishProject( { variables: { id } } );
     } catch ( err ) {
+      setPublishing( false );
       setPublishError( err );
     }
   };
