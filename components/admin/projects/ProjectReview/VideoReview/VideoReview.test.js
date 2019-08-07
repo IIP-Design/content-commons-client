@@ -7,14 +7,31 @@ import { Icon, Loader } from 'semantic-ui-react';
 import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
 import VideoReview from './VideoReview';
 import {
-  errorMocks, mocks, nullMocks, props, publishedMocks
+  draftMocks,
+  errorMocks,
+  mocks,
+  noUpdatesToPublishMocks,
+  nullMocks,
+  props,
+  publishErrorMocks,
+  unpublishErrorMocks
 } from './mocks';
 
-jest.mock( 'components/admin/projects/ProjectEdit/ProjectUnitItem/ProjectUnitItem', () => function ProjectUnitItem() {
-  return <div>ProjectUnitItem</div>;
-} );
+jest.mock(
+  'next-server/config',
+  () => ( {
+    publicRuntimeConfig: {
+      REACT_APP_AWS_S3_PUBLISHER_UPLOAD_BUCKET: 's3-bucket-url'
+    }
+  } )
+);
 
-jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_PUBLISHER_UPLOAD_BUCKET: 's3-bucket-url' } } ) );
+jest.mock(
+  'components/admin/projects/ProjectEdit/ProjectUnitItem/ProjectUnitItem',
+  () => function ProjectUnitItem() {
+    return <div>ProjectUnitItem</div>;
+  }
+);
 
 jest.mock(
   'components/admin/projects/ProjectReview/VideoProjectData/VideoProjectData',
@@ -37,8 +54,23 @@ jest.mock(
   }
 );
 
+/**
+ * Addresses `Error: No router instance found. You should only use "next/router" inside the client side of your app.`
+ * @see https://github.com/zeit/next.js/issues/1827
+ */
+const mockedRouter = { push: jest.fn() };
+Router.router = mockedRouter;
+
+// project status change to PUBLISHED from DRAFT
 const Component = (
   <MockedProvider mocks={ mocks } addTypename>
+    <VideoReview { ...props } />
+  </MockedProvider>
+);
+
+// project status change to DRAFT from PUBLISHED
+const DraftComponent = (
+  <MockedProvider mocks={ draftMocks } addTypename>
     <VideoReview { ...props } />
   </MockedProvider>
 );
@@ -51,8 +83,9 @@ describe( '<VideoReview />', () => {
    */
   const consoleError = console.error;
   beforeAll( () => {
+    const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
     jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-      if ( !args[0].includes( 'Warning: An update to %s inside a test was not wrapped in act' ) ) {
+      if ( !args[0].includes( actMsg ) ) {
         consoleError( ...args );
       }
     } );
@@ -94,7 +127,7 @@ describe( '<VideoReview />', () => {
     expect( videoReview.contains( span ) ).toEqual( true );
   } );
 
-  it( 'renders ApolloError', async () => {
+  it( 'renders ApolloError with a default `null` error prop value', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
@@ -129,6 +162,101 @@ describe( '<VideoReview />', () => {
     expect( pageNotFound.contains( dashboardLink ) ).toEqual( true );
   } );
 
+  it( 'renders the Delete button if status is DRAFT', async () => {
+    const wrapper = mount( DraftComponent );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoReview = wrapper.find( 'VideoReview' );
+    const deleteBtn = videoReview.find( 'Button.project_button--delete' );
+
+    expect( deleteBtn.exists() ).toEqual( true );
+  } );
+
+  it( 'renders the Publish button in the header if status is DRAFT', async () => {
+    const wrapper = mount( DraftComponent );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoReview = wrapper.find( 'VideoReview' );
+    const header = videoReview.find( 'ProjectHeader' );
+    const publishBtn = header.find( 'Button.project_button--publish' );
+
+    expect( publishBtn.exists() ).toEqual( true );
+    expect( publishBtn.text() ).toEqual( 'Publish' );
+  } );
+
+  it( 'renders an UnPublish button and does not render the Publish and Delete button in the header if status is not DRAFT', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoReview = wrapper.find( 'VideoReview' );
+    const deleteBtn = videoReview.find( 'Button.project_button--delete' );
+    const header = videoReview.find( 'ProjectHeader' );
+    const unPublishBtn = header.find( 'Button.project_button--publish' );
+
+    expect( deleteBtn.exists() ).toEqual( false );
+    expect( unPublishBtn.exists() ).toEqual( true );
+    expect( unPublishBtn.text() ).toEqual( 'UnPublish' );
+  } );
+
+  it( 'renders the correct headline and buttons if there are updates to publish', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoReview = wrapper.find( 'VideoReview' );
+    const headline = videoReview.find( 'h3.title' );
+    const publishBtns = videoReview.find( 'Button.project_button--publish' );
+    const editBtns = videoReview.find( 'Button.project_button--edit' );
+    const publishChangesTxt = 'Publish Changes';
+    const publishChangesBtn = publishBtns.filterWhere( btn => btn.text() === publishChangesTxt );
+    const publishBtnTxt = ['UnPublish', publishChangesTxt];
+    const editBtnTxt = ['Edit', publishChangesTxt, 'Edit'];
+    const headingTxt = 'It looks like you made changes to your project. Do you want to publish changes?';
+
+    expect( headline.text() ).toEqual( headingTxt );
+    expect( publishChangesBtn.exists() ).toEqual( true );
+    expect( publishChangesBtn.text() ).toEqual( publishChangesTxt );
+    expect( editBtns.length ).toEqual( 3 );
+    editBtns.forEach( ( btn, i ) => {
+      expect( btn.text() ).toEqual( editBtnTxt[i] );
+    } );
+    publishBtns.forEach( ( btn, i ) => {
+      expect( btn.text() ).toEqual( publishBtnTxt[i] );
+    } );
+  } );
+
+  it( 'renders the correct headline and buttons if there are no updates to publish', async () => {
+    const wrapper = mount(
+      <MockedProvider mocks={ noUpdatesToPublishMocks } addTypename>
+        <VideoReview { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoReview = wrapper.find( 'VideoReview' );
+    const headline = videoReview.find( 'h3.title' );
+    const publishBtns = videoReview.find( 'Button.project_button--publish' );
+    const editBtns = videoReview.find( 'Button.project_button--edit' );
+    const publishChangesBtn = publishBtns.filterWhere( btn => btn.text() === 'Publish Changes' );
+    const btnTxt = ['UnPublish', 'Publish'];
+    const headingTxt = 'Your project looks great! Are you ready to Publish?';
+
+    expect( headline.text() ).toEqual( headingTxt );
+    expect( publishChangesBtn.exists() ).toEqual( false );
+    expect( editBtns.length ).toEqual( 2 ); // one at top & bottom of page
+    editBtns.forEach( btn => {
+      expect( btn.text() ).toEqual( 'Edit' );
+      expect( btn.text() ).not.toEqual( 'Publish Changes' );
+    } );
+    publishBtns.forEach( ( btn, i ) => {
+      expect( btn.text() ).toEqual( btnTxt[i] );
+    } );
+  } );
+
   it( 'clicking an Edit button redirects to <VideoEdit />', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
@@ -153,60 +281,8 @@ describe( '<VideoReview />', () => {
     } );
   } );
 
-  it( 'displays the Delete button if status is DRAFT', async () => {
+  it( 'clicking the UnPublish button calls unPublishProject and redirects to dashboard', async () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
-    const videoReview = wrapper.find( 'VideoReview' );
-    const deleteBtn = videoReview.find( 'Button.project_button--delete' );
-
-    expect( deleteBtn.exists() ).toEqual( true );
-  } );
-
-  it( 'displays the Publish button in the header if status is DRAFT', async () => {
-    const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
-    const videoReview = wrapper.find( 'VideoReview' );
-    const header = videoReview.find( 'ProjectHeader' );
-    const publishBtn = header.find( 'Button.project_button--publish' );
-
-    expect( publishBtn.length ).toEqual( 1 );
-    expect( publishBtn.exists() ).toEqual( true );
-    expect( publishBtn.text() ).toEqual( 'Publish' );
-  } );
-
-  it( 'does not display the Publish and Delete button in the header if status is not DRAFT', async () => {
-    const wrapper = mount(
-      <MockedProvider mocks={ publishedMocks } addTypename>
-        <VideoReview { ...props } />
-      </MockedProvider>
-    );
-    await wait( 0 );
-    wrapper.update();
-
-    const videoReview = wrapper.find( 'VideoReview' );
-    const deleteBtn = videoReview.find( 'Button.project_button--delete' );
-    const header = videoReview.find( 'ProjectHeader' );
-    const publishBtns = header.find( 'Button.project_button--publish' );
-    const btnTxt = ['Update', 'UnPublish'];
-
-    expect( deleteBtn.exists() ).toEqual( false );
-    publishBtns.forEach( ( btn, i ) => {
-      expect( btn.exists() ).toEqual( true );
-      expect( btn.text() ).toEqual( btnTxt[i] );
-      expect( btn.text() ).not.toEqual( 'Publish' );
-    } );
-  } );
-
-  it( 'clicking the Unpublish button calls unPublishProject and redirects to dashboard', async () => {
-    const wrapper = mount(
-      <MockedProvider mocks={ publishedMocks } addTypename>
-        <VideoReview { ...props } />
-      </MockedProvider>
-    );
     await wait( 0 );
     wrapper.update();
 
@@ -215,53 +291,64 @@ describe( '<VideoReview />', () => {
     const publishBtns = header.find( 'Button.project_button--publish' );
     const unpublishBtn = publishBtns.filterWhere( btn => btn.text() === 'UnPublish' );
     const { id } = props;
-    const spy = jest.spyOn( videoReview.props(), 'unPublishProject' );
-    Router.push = jest.fn();
+    const unPublishProject = jest.spyOn( videoReview.props(), 'unPublishProject' )
+      .mockResolvedValue( {
+        data: {
+          unpublishVideoProject: {
+            __typename: 'VideoProject',
+            id
+          }
+        }
+      } );
 
     unpublishBtn.simulate( 'click' );
-    Promise.resolve()
-      .then( () => {
-        expect( spy ).toHaveBeenCalledWith( { variables: { id } } );
-        expect( Router.push ).toHaveBeenCalledWith( {
-          pathname: `/admin/dashboard`
-        } );
-      } ).catch( () => {} );
+    unPublishProject()
+      .then( data => {
+        expect( data.unpublishVideoProject.id ).toEqual( id );
+        expect( unPublishProject )
+          .toHaveBeenCalledWith( { variables: { id } } );
+        expect( Router.push ).toHaveBeenCalled();
+      } )
+      .catch( () => {} );
   } );
 
   it( 'clicking a Publish button calls publishProject and redirects to the dashboard', async () => {
-    /**
-     * @todo Test passes but would like to revisit.
-     * Not convinced this is the best approach.
-     */
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
     const videoReview = wrapper.find( 'VideoReview' );
-    const publishBtns = videoReview.find( 'Button.project_button--publish' );
+    const btns = videoReview.find( 'Button.project_button--publish' );
+    const publishBtn = btns.filterWhere(
+      btn => btn.text() === 'Publish Changes'
+    );
     const { id } = props;
-    const spy = jest.spyOn( videoReview.props(), 'publishProject' );
-    Router.push = jest.fn();
+    Router.push = jest.fn( () => ( { pathname: `/admin/dashboard` } ) );
+    const publishProject = jest.spyOn( videoReview.props(), 'publishProject' )
+      .mockResolvedValue( {
+        data: {
+          publishVideoProject: {
+            __typename: 'VideoProject',
+            id,
+            status: 'PUBLISHED'
+          }
+        }
+      } );
 
-    /**
-     * one button in header (since status is DRAFT)
-     * and one at bottom of page
-     */
-    expect( publishBtns.length ).toEqual( 2 );
-    publishBtns.forEach( btn => {
-      btn.simulate( 'click' );
-      Promise.resolve()
-        .then( () => {
-          expect( spy ).toHaveBeenCalledWith( { variables: { id } } );
-          expect( Router.push ).toHaveBeenCalledWith( {
-            pathname: `/admin/dashboard`
-          } );
-        } ).catch( () => {} );
-    } );
+    publishBtn.simulate( 'click' );
+    publishProject()
+      .then( data => {
+        expect( data.publishVideoProject.id ).toEqual( id );
+        expect( data.publishVideoProject.status ).toEqual( 'PUBLISHED' );
+        expect( publishProject )
+          .toHaveBeenCalledWith( { variables: { id } } );
+        expect( Router.push ).toHaveBeenCalled();
+      } )
+      .catch( () => {} );
   } );
 
   it( 'clicking the Delete button opens the Confirm modal', async () => {
-    const wrapper = mount( Component );
+    const wrapper = mount( DraftComponent );
     await wait( 0 );
     wrapper.update();
 
@@ -278,7 +365,7 @@ describe( '<VideoReview />', () => {
   } );
 
   it( 'clicking Cancel in <Confirm /> closes the modal', async () => {
-    const wrapper = mount( Component );
+    const wrapper = mount( DraftComponent );
     await wait( 0 );
     wrapper.update();
 
@@ -300,11 +387,7 @@ describe( '<VideoReview />', () => {
   } );
 
   it( 'clicking Confirm in <Confirm /> calls deleteProject and redirects to the dashboard', async () => {
-    /**
-     * @todo Test passes but would like to revisit.
-     * Not convinced this is the best approach.
-     */
-    const wrapper = mount( Component );
+    const wrapper = mount( DraftComponent );
     await wait( 0 );
     wrapper.update();
 
@@ -313,8 +396,15 @@ describe( '<VideoReview />', () => {
     const confirmModal = () => wrapper.find( 'Confirm' );
     const confirmBtn = () => wrapper.find( '[content="Yes, delete forever"]' );
     const { id } = props;
-    const spy = jest.spyOn( videoReview.props(), 'deleteProject' );
-    Router.push = jest.fn();
+    const deleteProject = jest.spyOn( videoReview.props(), 'deleteProject' )
+      .mockResolvedValue( {
+        data: {
+          deleteVideoProject: {
+            __typename: 'VideoProject',
+            id
+          }
+        }
+      } );
 
     // closed initially
     expect( confirmModal().prop( 'open' ) ).toEqual( false );
@@ -325,49 +415,19 @@ describe( '<VideoReview />', () => {
 
     // confirm project deletion
     confirmBtn().simulate( 'click' );
-    Promise.resolve()
-      .then( () => {
-        expect( spy ).toHaveBeenCalledWith( { variables: { id } } );
-      } ).catch( () => {} );
-    expect( Router.push ).toHaveBeenCalledWith( {
-      pathname: '/admin/dashboard'
-    } );
+    deleteProject()
+      .then( data => {
+        expect( data.deleteVideoProject.id ).toEqual( id );
+        expect( deleteProject ).toHaveBeenCalledWith( { variables: { id } } );
+        expect( Router.push )
+          .toHaveBeenCalledWith( { pathname: '/admin/dashboard' } );
+      } )
+      .catch( () => {} );
   } );
 
-  it( 'does not redirect to dashboard if publishing error', async () => {
-    /**
-     * @todo Would like to test `setPublishError`
-     * in `handlePublish` `catch` block
-     */
-    const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
-    const videoReview = wrapper.find( 'VideoReview' );
-    const publishBtns = videoReview.find( 'Button.project_button--publish' );
-    const { id } = props;
-    const err = new Error( `Error unpublishing project ${id}` );
-    const spy = jest.spyOn( videoReview.props(), 'publishProject' );
-    Router.push = jest.fn();
-
-    publishBtns.forEach( btn => {
-      btn.simulate( 'click' );
-      Promise.reject( err )
-        .then( () => {} )
-        .catch( err => {
-          expect( spy ).not.toHaveBeenCalled();
-          expect( Router.push ).not.toHaveBeenCalled();
-        } );
-    } );
-  } );
-
-  it( 'does not redirect to dashboard if unpublishing error', async () => {
-    /**
-     * @todo Would like to test `setPublishError`
-     * in `handleUnPublish` `catch` block
-     */
+  it( 'if publishing error, returns ApolloError and does not redirect to dashboard', async () => {
     const wrapper = mount(
-      <MockedProvider mocks={ publishedMocks } addTypename>
+      <MockedProvider mocks={ publishErrorMocks } addTypename>
         <VideoReview { ...props } />
       </MockedProvider>
     );
@@ -376,18 +436,73 @@ describe( '<VideoReview />', () => {
 
     const videoReview = wrapper.find( 'VideoReview' );
     const publishBtns = videoReview.find( 'Button.project_button--publish' );
-    const unpublishBtn = publishBtns.filterWhere( btn => btn.text() === 'UnPublish' );
+    const apolloError = () => wrapper.find( 'ApolloError' );
     const { id } = props;
-    const err = new Error( `Error unpublishing project ${id}` );
-    const spy = jest.spyOn( videoReview.props(), 'unPublishProject' );
     Router.push = jest.fn();
+    const publishProject = jest.spyOn( videoReview.props(), 'publishProject' )
+      .mockRejectedValue( {
+        errors: [
+          {
+            graphQLErrors: [{
+              message: 'There was a publishing error.'
+            }]
+          }
+        ]
+      } );
 
+    publishBtns.forEach( btn => {
+      btn.simulate( 'click' );
+      publishProject()
+        .then( () => {} )
+        .catch( () => {
+          expect( apolloError().prop( 'error' ) ).toEqual( {
+            otherError: 'There was a publishing error.'
+          } );
+          expect( publishProject )
+            .not.toHaveBeenCalledWith( { variables: { id } } );
+          expect( Router.push ).not.toHaveBeenCalled();
+        } );
+    } );
+  } );
+
+  it( 'if unpublishing error, returns ApolloError and does not redirect to dashboard', async done => {
+    const wrapper = mount(
+      <MockedProvider mocks={ unpublishErrorMocks } addTypename>
+        <VideoReview { ...props } />
+      </MockedProvider>
+    );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoReview = wrapper.find( 'VideoReview' );
+    const apolloError = () => wrapper.find( 'ApolloError' );
+    const btns = videoReview.find( 'Button.project_button--publish' );
+    const unpublishBtn = btns.filterWhere( btn => btn.text() === 'UnPublish' );
+    const { id } = props;
+    Router.push = jest.fn();
+    const unPublishProject = jest.spyOn( videoReview.props(), 'unPublishProject' )
+      .mockRejectedValue( {
+        errors: [
+          {
+            graphQLErrors: [{
+              message: 'There was an unpublishing error.'
+            }]
+          }
+        ]
+      } );
+
+    expect( unpublishBtn.exists() ).toEqual( true );
     unpublishBtn.simulate( 'click' );
-    Promise.reject( err )
+    unPublishProject()
       .then( () => {} )
-      .catch( err => {
-        expect( spy ).not.toHaveBeenCalled();
+      .catch( () => {
+        expect( apolloError().prop( 'error' ) ).toEqual( {
+          otherError: 'There was an unpublishing error.'
+        } );
+        expect( unPublishProject )
+          .not.toHaveBeenCalledWith( { variables: { id } } );
         expect( Router.push ).not.toHaveBeenCalled();
       } );
+    done();
   } );
 } );

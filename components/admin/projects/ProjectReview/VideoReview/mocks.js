@@ -1,12 +1,73 @@
 import {
   DELETE_VIDEO_PROJECT_MUTATION,
   PUBLISH_VIDEO_PROJECT_MUTATION,
+  UNPUBLISH_VIDEO_PROJECT_MUTATION,
   VIDEO_PROJECT_QUERY
 } from 'lib/graphql/queries/video';
+import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 
 export const props = { id: '234' };
 
 export const mocks = [
+  {
+    request: {
+      query: DELETE_VIDEO_PROJECT_MUTATION,
+      variables: { id: props.id }
+    },
+    result: {
+      data: {
+        deleteVideoProject: {
+          __typename: 'VideoProject',
+          id: props.id
+        }
+      }
+    }
+  },
+  {
+    request: {
+      query: PUBLISH_VIDEO_PROJECT_MUTATION,
+      variables: { id: props.id }
+    },
+    result: {
+      data: {
+        publishVideoProject: {
+          __typename: 'VideoProject',
+          id: props.id,
+          status: 'PUBLISHED'
+        }
+      }
+    }
+  },
+  {
+    request: {
+      query: UNPUBLISH_VIDEO_PROJECT_MUTATION,
+      variables: { id: props.id }
+    },
+    result: {
+      data: {
+        unpublishVideoProject: {
+          __typename: 'VideoProject',
+          id: props.id
+        }
+      }
+    }
+  },
+  {
+    request: {
+      query: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
+      variables: { id: props.id }
+    },
+    result: {
+      data: {
+        projectStatusChange: {
+          __typename: 'VideoProject',
+          id: props.id,
+          status: 'PUBLISHED',
+          error: null
+        }
+      }
+    }
+  },
   {
     request: {
       query: VIDEO_PROJECT_QUERY,
@@ -468,31 +529,30 @@ export const mocks = [
         }
       }
     }
-  },
+  }
+];
+
+export const draftMocks = [
+  { ...mocks[0] },
+  { ...mocks[1] },
+  { ...mocks[2] },
   {
-    request: {
-      query: DELETE_VIDEO_PROJECT_MUTATION,
-      variables: { id: props.id }
-    },
+    ...mocks[3],
     result: {
       data: {
-        deleteVideoProject: {
-          __typename: 'VideoProject',
-          id: props.id
+        projectStatusChange: {
+          ...mocks[3].result.data.projectStatusChange,
+          status: 'DRAFT'
         }
       }
     }
   },
   {
-    request: {
-      query: PUBLISH_VIDEO_PROJECT_MUTATION,
-      variables: { id: props.id }
-    },
+    ...mocks[4],
     result: {
       data: {
-        publishVideoProject: {
-          __typename: 'VideoProject',
-          id: props.id,
+        project: {
+          ...mocks[4].result.data.project,
           status: 'PUBLISHED'
         }
       }
@@ -500,14 +560,80 @@ export const mocks = [
   }
 ];
 
-export const publishedMocks = [
+export const unpublishErrorMocks = [
+  { ...mocks[0] },
+  { ...mocks[1] },
   {
-    ...mocks[0],
+    ...mocks[2],
+    result: {
+      errors: [
+        {
+          graphQLErrors: [{
+            message: 'There was an unpublishing error.'
+          }]
+        }
+      ]
+    }
+  },
+  {
+    ...mocks[3],
+    result: {
+      data: {
+        projectStatusChange: {
+          ...mocks[3].result.data.projectStatusChange,
+          status: 'PUBLISHED',
+          error: 'There was an unpublishing error.'
+        }
+      }
+    }
+  },
+  {
+    ...mocks[4],
     result: {
       data: {
         project: {
-          ...mocks[0].result.data.project,
-          status: 'PUBLISHED'
+          ...mocks[4].result.data.project,
+          status: 'DRAFT'
+        }
+      }
+    }
+  }
+];
+
+export const publishErrorMocks = [
+  { ...mocks[0] },
+  {
+    ...mocks[1],
+    result: {
+      errors: [
+        {
+          graphQLErrors: [{
+            message: 'There was a publishing error.'
+          }]
+        }
+      ]
+    }
+  },
+  { ...mocks[2] },
+  {
+    ...mocks[3],
+    result: {
+      data: {
+        projectStatusChange: {
+          ...mocks[3].result.data.projectStatusChange,
+          status: 'DRAFT',
+          error: 'There was a publishing error.'
+        }
+      }
+    }
+  },
+  {
+    ...mocks[4],
+    result: {
+      data: {
+        project: {
+          ...mocks[4].result.data.project,
+          status: 'DRAFT'
         }
       }
     }
@@ -515,8 +641,13 @@ export const publishedMocks = [
 ];
 
 export const errorMocks = [
+  { ...mocks[0] },
+  { ...mocks[1] },
+  { ...mocks[2] },
+  { ...mocks[3] },
+  { ...mocks[3] },
   {
-    ...mocks[0],
+    ...mocks[4],
     result: {
       errors: [
         {
@@ -530,8 +661,88 @@ export const errorMocks = [
 ];
 
 export const nullMocks = [
+  { ...mocks[0] },
+  { ...mocks[1] },
+  { ...mocks[2] },
+  { ...mocks[3] },
+  { ...mocks[3] },
   {
-    ...mocks[0],
+    ...mocks[4],
     result: { data: { project: null } }
+  }
+];
+
+export const noUpdatesToPublishMocks = [
+  { ...mocks[0] },
+  { ...mocks[1] },
+  { ...mocks[2] },
+  { ...mocks[3] },
+  {
+    ...mocks[4],
+    result: {
+      data: {
+        project: {
+          ...mocks[4].result.data.project,
+          thumbnails: [
+            {
+              ...mocks[4].result.data.project.thumbnails[0],
+              updatedAt: '2019-03-07T15:11:48.043Z'
+            }
+          ],
+          units: [
+            {
+              ...mocks[4].result.data.project.units[0],
+              updatedAt: '2019-03-07T15:11:48.043Z',
+              thumbnails: [
+                {
+                  ...mocks[4].result.data.project.units[0].thumbnails[0],
+                  image: {
+                    ...mocks[4].result.data.project.units[0].thumbnails[0].image,
+                    updatedAt: '2019-03-07T15:11:48.043Z',
+                  }
+                }
+              ],
+              files: [
+                {
+                  ...mocks[4].result.data.project.units[0].files[0],
+                  updatedAt: '2019-03-07T15:11:48.043Z',
+                }
+              ]
+            },
+            {
+              ...mocks[4].result.data.project.units[1],
+              updatedAt: '2019-03-07T15:11:48.043Z',
+              thumbnails: [
+                {
+                  ...mocks[4].result.data.project.units[1].thumbnails[0],
+                  image: {
+                    ...mocks[4].result.data.project.units[1].thumbnails[0].image,
+                    updatedAt: '2019-03-07T15:11:48.043Z',
+                  }
+                }
+              ],
+              files: [
+                {
+                  ...mocks[4].result.data.project.units[1].files[0],
+                  updatedAt: '2019-03-07T15:11:48.043Z',
+                }
+              ]
+            }
+          ],
+          supportFiles: [
+            {
+              ...mocks[4].result.data.project.supportFiles[0],
+              createdAt: '2019-03-07T15:11:48.043Z',
+              updatedAt: '2019-03-07T15:11:48.043Z'
+            },
+            {
+              ...mocks[4].result.data.project.supportFiles[1],
+              createdAt: '2019-03-07T15:11:48.043Z',
+              updatedAt: '2019-03-07T15:11:48.043Z'
+            }
+          ]
+        }
+      }
+    }
   }
 ];

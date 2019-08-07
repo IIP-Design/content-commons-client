@@ -228,7 +228,7 @@ const VideoReview = props => {
       <section className="section section--publish">
         <h3 className="title">{
           updatesToPublish()
-            ? 'It looks like you made changes to your project.  Do you want to publish changes?'
+            ? 'It looks like you made changes to your project. Do you want to publish changes?'
             : 'Your project looks great! Are you ready to Publish?'
         }
         </h3>
@@ -237,7 +237,7 @@ const VideoReview = props => {
           content="Edit"
           onClick={ handleEdit }
         />
-        <Button className="project_button project_button--publish" onClick={ handlePublish }>Publish { updatesToPublish() && 'Changes' }</Button>
+        <Button className="project_button project_button--publish" onClick={ handlePublish }>Publish{ updatesToPublish() && ' Changes' }</Button>
       </section>
     </div>
   );
