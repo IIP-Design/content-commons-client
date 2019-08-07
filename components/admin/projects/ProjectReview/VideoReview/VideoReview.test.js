@@ -21,7 +21,7 @@ jest.mock(
   'next-server/config',
   () => ( {
     publicRuntimeConfig: {
-      REACT_APP_AWS_S3_PUBLISHER_UPLOAD_BUCKET: 's3-bucket-url'
+      REACT_APP_AWS_S3_PUBLISHER_BUCKET: 's3-bucket-url'
     }
   } )
 );
