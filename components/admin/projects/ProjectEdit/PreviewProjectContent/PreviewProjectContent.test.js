@@ -3,8 +3,17 @@ import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { Loader } from 'semantic-ui-react';
-import PreviewProjectContent, { VIDEO_PROJECT_PREVIEW_QUERY } from './PreviewProjectContent';
-import { getMocks } from './mocks';
+import PreviewProjectContent from './PreviewProjectContent';
+import {
+  errorMocks,
+  mocks,
+  noFilesMocks,
+  noStreamsMocks,
+  noTagsMocks,
+  noUnitsMocks,
+  props,
+  vimeoMocks
+} from './mocks';
 
 jest.mock( 'lib/utils', () => ( {
   getPathToS3Bucket: jest.fn( () => {} ),
@@ -26,117 +35,6 @@ jest.mock( 'lib/utils', () => ( {
 jest.mock( 'static/icons/icon_download.svg', () => 'downloadIcon.svg' );
 jest.mock( 'static/icons/icon_embed.svg', () => 'embedIcon.svg' );
 jest.mock( 'static/icons/icon_share.svg', () => 'shareIcon.svg' );
-
-const props = { id: '123' };
-
-const mocks = getMocks( VIDEO_PROJECT_PREVIEW_QUERY, props );
-
-const vimeoMocks = [
-  {
-    ...mocks[0],
-    result: {
-      data: {
-        project: {
-          ...mocks[0].result.data.project,
-          units: [
-            {
-              ...mocks[0].result.data.project.units[0],
-              files: [
-                {
-                  ...mocks[0].result.data.project.units[0].files[0],
-                  stream: [
-                    {
-                      __typename: 'VideoStream',
-                      id: 'st35',
-                      site: 'Vimeo',
-                      url: 'https://vimeo.com/340239507'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      }
-    }
-  }
-];
-
-const noStreamsMocks = [
-  {
-    ...mocks[0],
-    result: {
-      data: {
-        project: {
-          ...mocks[0].result.data.project,
-          units: [
-            {
-              ...mocks[0].result.data.project.units[0],
-              files: [
-                {
-                  ...mocks[0].result.data.project.units[0].files[0],
-                  stream: []
-                }
-              ]
-            }
-          ]
-        }
-      }
-    }
-  }
-];
-
-const noFilesMocks = [
-  {
-    ...mocks[0],
-    result: {
-      data: {
-        project: {
-          ...mocks[0].result.data.project,
-          units: [
-            {
-              ...mocks[0].result.data.project.units[0],
-              files: []
-            }
-          ]
-        }
-      }
-    }
-  }
-];
-
-const noTagsMocks = [
-  {
-    ...mocks[0],
-    result: {
-      data: {
-        project: {
-          ...mocks[0].result.data.project,
-          units: [
-            {
-              ...mocks[0].result.data.project.units[0],
-              tags: []
-            }
-          ]
-        }
-      }
-    }
-  }
-];
-
-const noUnitsMocks = [
-  {
-    ...mocks[0],
-    result: {
-      data: {
-        project: {
-          ...mocks[0].result.data.project,
-          units: []
-        }
-      }
-    }
-  }
-];
 
 const Component = (
   <MockedProvider mocks={ mocks } addTypename>
@@ -163,17 +61,6 @@ describe( '<PreviewProjectContent />', () => {
   } );
 
   it( 'renders error message if error is thrown', async () => {
-    const errorMocks = [
-      {
-        request: {
-          query: VIDEO_PROJECT_PREVIEW_QUERY,
-          variables: { id: '123' }
-        },
-        result: {
-          errors: [{ message: 'There was an error.' }]
-        }
-      }
-    ];
     const wrapper = mount(
       <MockedProvider mocks={ errorMocks } addTypename={ false }>
         <PreviewProjectContent { ...props } />

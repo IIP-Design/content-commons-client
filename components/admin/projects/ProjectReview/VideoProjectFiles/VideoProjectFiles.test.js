@@ -4,8 +4,16 @@ import wait from 'waait';
 import Router from 'next/router';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { Loader } from 'semantic-ui-react';
-import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/projects/ProjectEdit/PreviewProjectContent/PreviewProjectContent';
-import { getMocks } from 'components/admin/projects/ProjectEdit/PreviewProjectContent/mocks';
+import {
+  errorMocks,
+  mocks,
+  noFilesMocks,
+  noUnitsMocks,
+  nullFilesMocks,
+  nullMocks,
+  nullUnitsMocks,
+  props
+} from 'components/admin/projects/ProjectEdit/PreviewProjectContent/mocks';
 import VideoProjectFiles from './VideoProjectFiles';
 
 jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_PUBLISHER_UPLOAD_BUCKET: 's3-bucket-url' } } ) );
@@ -17,88 +25,6 @@ jest.mock( 'lib/utils', () => ( {
 } ) );
 
 jest.mock( './VideoProjectFile/VideoProjectFile', () => () => '<VideoProjectFile />' );
-
-const props = { id: '123' };
-
-const mocks = getMocks( VIDEO_PROJECT_PREVIEW_QUERY, props );
-
-const nullMocks = [
-  {
-    request: {
-      query: VIDEO_PROJECT_PREVIEW_QUERY,
-      variables: { id: props.id }
-    },
-    result: {
-      data: { project: null }
-    }
-  }
-];
-
-const noUnitsMocks = [
-  {
-    ...mocks[0],
-    result: {
-      data: {
-        project: {
-          ...mocks[0].result.data.project,
-          units: []
-        }
-      }
-    }
-  }
-];
-
-const nullUnitsMocks = [
-  {
-    ...mocks[0],
-    result: {
-      data: {
-        project: {
-          ...mocks[0].result.data.project,
-          units: null
-        }
-      }
-    }
-  }
-];
-
-const nullFilesMocks = [
-  {
-    ...mocks[0],
-    result: {
-      data: {
-        project: {
-          ...mocks[0].result.data.project,
-          units: [
-            {
-              ...mocks[0].result.data.project.units[0],
-              files: null
-            }
-          ]
-        }
-      }
-    }
-  }
-];
-
-const emptyFilesMocks = [
-  {
-    ...mocks[0],
-    result: {
-      data: {
-        project: {
-          ...mocks[0].result.data.project,
-          units: [
-            {
-              ...mocks[0].result.data.project.units[0],
-              files: []
-            }
-          ]
-        }
-      }
-    }
-  }
-];
 
 const Component = (
   <MockedProvider mocks={ mocks } addTypename>
@@ -124,18 +50,6 @@ describe( '<VideoProjectFiles />', () => {
   } );
 
   it( 'renders error message if an error is thrown', async () => {
-    const errorMocks = [
-      {
-        request: {
-          query: VIDEO_PROJECT_PREVIEW_QUERY,
-          variables: { id: props.id }
-        },
-        result: {
-          errors: [{ message: 'There was an error.' }]
-        }
-      }
-    ];
-
     const wrapper = mount(
       <MockedProvider mocks={ errorMocks } addTypename>
         <VideoProjectFiles { ...props } />
@@ -249,7 +163,7 @@ describe( '<VideoProjectFiles />', () => {
 
   it( 'does not render VideoProjectFile if unit.files is `[]`', async () => {
     const wrapper = mount(
-      <MockedProvider mocks={ emptyFilesMocks }>
+      <MockedProvider mocks={ noFilesMocks }>
         <VideoProjectFiles { ...props } />
       </MockedProvider>
     );
