@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { Item } from 'semantic-ui-react';
 import { array, string } from 'prop-types';
 import downloadIcon from 'static/icons/icon_download.svg';
+import { maybeGetUrlToProdS3 } from '../../lib/utils';
 
 
 const DownloadOtherFiles = ( { instructions, units } ) => {
@@ -10,7 +11,7 @@ const DownloadOtherFiles = ( { instructions, units } ) => {
     const { language } = unit;
     return (
       <Item.Group key={ `fs_${i}` } className="download-item">
-        <Item as="a" href={ srcUrl } download={ fileName }>
+        <Item as="a" href={ maybeGetUrlToProdS3( srcUrl ) } download={ fileName }>
           <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
           <Item.Content>
             <Item.Header className="download-header">

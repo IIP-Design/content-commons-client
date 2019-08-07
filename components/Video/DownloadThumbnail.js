@@ -2,12 +2,13 @@ import React, { Fragment } from 'react';
 import { Item } from 'semantic-ui-react';
 import { array, string } from 'prop-types';
 import downloadIcon from 'static/icons/icon_download.svg';
+import { maybeGetUrlToProdS3 } from '../../lib/utils';
 
 
 const DownloadThumbnail = ( { instructions, units } ) => {
   const renderFormItem = ( unit, i ) => (
     <Item.Group key={ `fs_${i}` } className="download-item">
-      <Item as="a" href={ unit.thumbnail } download={ `${unit.language.display_name}_thumbnail` }>
+      <Item as="a" href={ maybeGetUrlToProdS3( unit.thumbnail ) } download={ `${unit.language.display_name}_thumbnail` }>
         <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
         <Item.Content>
           <Item.Header className="download-header">
