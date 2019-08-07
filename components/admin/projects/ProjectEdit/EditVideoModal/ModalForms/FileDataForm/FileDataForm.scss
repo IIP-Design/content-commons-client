@@ -3,7 +3,11 @@
 .file_meta_content {
   color: $blue;
   display: block;
-  font-size: .9rem;
+  font-size: 0.8rem;
+
+  &--filetype {
+    margin-bottom: 0.5em;
+  }
 }
 
 .video-file-form {
@@ -17,7 +21,7 @@
 }
 
 .video-links {
-  @media screen and ( max-width: 991px ) {
+  @media screen and (max-width: 991px) {
     margin: 1rem 0;
   }
 }
@@ -26,6 +30,6 @@
   color: $light-blue;
   cursor: pointer;
   display: block;
-  font-size: .8rem;
-  margin-top: .3rem;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
 }

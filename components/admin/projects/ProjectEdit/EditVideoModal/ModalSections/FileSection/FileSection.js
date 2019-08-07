@@ -59,7 +59,7 @@ const FileSection = () => {
 
         return (
           <section className="edit-file">
-            <h4>{ `File Data ${language && language.displayName ? `in ${language.displayName}` : ''}` }</h4>
+            <h4>Video Files</h4>
             <div className="edit-file-form-container">
               <FileSidebar />
               <FileDataForm
