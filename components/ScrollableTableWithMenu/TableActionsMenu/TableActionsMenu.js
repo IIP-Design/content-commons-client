@@ -65,7 +65,12 @@ class TableActionsMenu extends React.Component {
     const { variables } = this.props;
     deleteFn( {
       variables: {
-        where: { id_in: this.getSelectedProjects() }
+        where: {
+          AND: [
+            { id_in: this.getSelectedProjects() },
+            { status: 'DRAFT' }
+          ]
+        }
       },
       refetchQueries: [{
         query: TEAM_VIDEO_PROJECTS_QUERY,
