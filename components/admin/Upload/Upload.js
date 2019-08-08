@@ -15,7 +15,6 @@ import docIcon from 'static/icons/icon_150px_document_blue.png';
 import eduIcon from 'static/icons/icon_150px_edu_blue.png';
 import videoIcon from 'static/icons/icon_150px_video_blue.png';
 import audioIcon from 'static/icons/icon_150px_audio_blue.png';
-import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 import './Upload.scss';
 
 // using dynamic import so that components load when they are needed, or rendered
@@ -37,7 +36,6 @@ class Upload extends Component {
     const { modalOpen, modalClassname } = this.state;
     return (
       <div>
-        <Breadcrumbs />
         <h1>Upload Content</h1>
         <section className="upload-content">
           <div className="contentTypes">
