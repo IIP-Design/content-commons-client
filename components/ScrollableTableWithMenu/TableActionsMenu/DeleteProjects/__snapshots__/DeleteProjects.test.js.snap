@@ -6,6 +6,7 @@ exports[`<DeleteProjects /> renders without crashing 1`] = `
   handleDeleteCancel={[MockFunction]}
   handleDeleteConfirm={[MockFunction]}
   handleResetSelections={[MockFunction]}
+  hasSelectedAllDrafts={false}
   showConfirmationMsg={[MockFunction]}
 >
   <Mutation
@@ -110,9 +111,14 @@ exports[`<DeleteProjects /> renders without crashing 1`] = `
           headline="Are you sure you want to delete the selected video project(s)?"
           style={Object {}}
         >
-          <p>
-            The selected video project(s) will be permanently removed from the Content Cloud.
-          </p>
+          <React.Fragment>
+            <p>
+              Only selected DRAFT video project(s) will be permanently removed from the Content Cloud.
+            </p>
+            <p>
+              Selected Non-DRAFT projects will be not be removed.
+            </p>
+          </React.Fragment>
         </ConfirmModalContent>
       }
       onCancel={[MockFunction]}
