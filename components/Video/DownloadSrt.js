@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Item } from 'semantic-ui-react';
 import { array, string } from 'prop-types';
 import downloadIcon from 'static/icons/icon_download.svg';
+import { maybeGetUrlToProdS3 } from '../../lib/utils';
 
 class DownloadSrt extends Component {
   renderFormItems( units ) {
@@ -11,7 +12,7 @@ class DownloadSrt extends Component {
 
   renderFormItem = ( unit, i ) => (
     <Item.Group key={ `fs_${i}` } className="download-item">
-      <Item as="a" href={ unit.srt.srcUrl } download={ `${unit.language.display_name}_SRT` }>
+      <Item as="a" href={ maybeGetUrlToProdS3( unit.srt.srcUrl ) } download={ `${unit.language.display_name}_SRT` }>
         <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
         <Item.Content>
           <Item.Header className="download-header">{ `Download ${unit.language.display_name} SRT` }</Item.Header>
