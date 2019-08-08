@@ -265,12 +265,27 @@ class TableActionsMenu extends React.Component {
           >
             <Modal.Content>
               <Modal.Description>
-                <Icon color="green" name="check circle outline" size="big" />
+                <Icon
+                  color={ this.hasSelectedAllDrafts() ? 'green' : 'yellow' }
+                  name={
+                    this.hasSelectedAllDrafts()
+                      ? 'check circle outline'
+                      : 'minus circle'
+                  }
+                  size="big"
+                  style={ { float: 'left' } }
+                />
                 <span
                   className="msg"
-                  style={ { verticalAlign: 'middle', fontSize: '1rem' } }
+                  style={ {
+                    overflow: 'hidden',
+                    verticalAlign: 'middle',
+                    fontSize: '1rem'
+                  } }
                 >
-                  You&rsquo;ve updated your projects successfully.
+                  { this.hasSelectedAllDrafts()
+                    ? `You've updated your DRAFT projects successfully.`
+                    : `You've updated your DRAFT projects successfully. Non-DRAFT projects were not updated.` }
                 </span>
               </Modal.Description>
             </Modal.Content>
@@ -289,6 +304,7 @@ class TableActionsMenu extends React.Component {
             handleDeleteCancel={ this.handleDeleteCancel }
             handleDeleteConfirm={ this.handleDeleteConfirm }
             handleResetSelections={ this.props.handleResetSelections }
+            hasSelectedAllDrafts={ !!this.hasSelectedAllDrafts() }
             showConfirmationMsg={ this.showConfirmationMsg }
           />
 

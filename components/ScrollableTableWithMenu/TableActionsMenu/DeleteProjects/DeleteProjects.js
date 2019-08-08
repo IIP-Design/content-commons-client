@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -20,6 +20,7 @@ const DeleteProjects = props => {
     handleDeleteCancel,
     handleDeleteConfirm,
     handleResetSelections,
+    hasSelectedAllDrafts,
     showConfirmationMsg
   } = props;
 
@@ -44,7 +45,15 @@ const DeleteProjects = props => {
                 className="delete_confirm delete_confirm--video"
                 headline="Are you sure you want to delete the selected video project(s)?"
               >
-                <p>The selected video project(s) will be permanently removed from the Content Cloud.</p>
+                { hasSelectedAllDrafts && <p>The selected DRAFT video project(s) will be removed permanently from the Content Cloud.</p> }
+
+                { !hasSelectedAllDrafts
+                  && (
+                    <Fragment>
+                      <p>Only selected DRAFT video project(s) will be permanently removed from the Content Cloud.</p>
+                      <p>Selected Non-DRAFT projects will be not be removed.</p>
+                    </Fragment>
+                  ) }
               </ConfirmModalContent>
             ) }
             onCancel={ handleDeleteCancel }
@@ -63,6 +72,7 @@ DeleteProjects.propTypes = {
   handleDeleteCancel: PropTypes.func,
   handleDeleteConfirm: PropTypes.func,
   handleResetSelections: PropTypes.func,
+  hasSelectedAllDrafts: PropTypes.bool,
   showConfirmationMsg: PropTypes.func
 };
 
