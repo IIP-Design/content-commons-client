@@ -68,7 +68,7 @@ class TableActionsMenu extends React.Component {
         where: {
           AND: [
             { id_in: this.getSelectedProjects() },
-            { status: 'DRAFT' }
+            { status_in: ['DRAFT', 'EMBARGOED'] }
           ]
         }
       },
