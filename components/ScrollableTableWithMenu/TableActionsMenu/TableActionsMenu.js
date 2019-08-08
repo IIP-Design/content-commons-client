@@ -266,7 +266,7 @@ class TableActionsMenu extends React.Component {
             <Modal.Content>
               <Modal.Description>
                 <Icon
-                  color={ this.hasSelectedAllDrafts() ? 'green' : 'yellow' }
+                  color="green"
                   name={
                     this.hasSelectedAllDrafts()
                       ? 'check circle outline'
