@@ -96,7 +96,7 @@ class Search extends Component {
     if ( this.state.direction === 'left' ) {
       inputProps = { className: 'search_input' };
     } else {
-      inputProps = { className: 'search_input right', iconPosition: 'left', labelPosition: 'right' };
+      inputProps = { className: 'search_input right' };
     }
 
     let langOptions = this.props.languages.list.map( l => ( {
