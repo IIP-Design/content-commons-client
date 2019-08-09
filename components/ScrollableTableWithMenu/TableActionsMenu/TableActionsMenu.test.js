@@ -6,308 +6,25 @@ import ApolloError from 'components/errors/ApolloError';
 import TableActionsMenu from './TableActionsMenu';
 import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
 import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
-import { DELETE_VIDEO_PROJECTS_MUTATION } from './DeleteProjects/DeleteProjects';
-import { UNPUBLISH_VIDEO_PROJECTS_MUTATION } from './UnpublishProjects/UnpublishProjects';
+import {
+  allCheckedMocks,
+  emptyMocks,
+  errorMocks,
+  mocks,
+  nullMocks,
+  props
+} from './mocks';
 
 /**
  * Need to mock Next.js dynamic imports
  * in order for this test suite to run.
  */
-jest.mock( 'next-server/dynamic', () => () => 'VideoDetailsPopup' );
-jest.mock( 'next-server/dynamic', () => () => 'ImageDetailsPopup' );
-
-const props = {
-  displayActionsMenu: true,
-  variables: {
-    team: 'IIP Video Production',
-    searchTerm: '',
-    first: 4,
-    skip: 0
-  },
-  selectedItems: new Map( [['ud78', true], ['ud98', true]] ),
-  handleResetSelections: jest.fn(),
-  toggleAllItemsSelection: jest.fn()
-};
-
-const mocks = [
-  {
-    request: {
-      query: DELETE_VIDEO_PROJECTS_MUTATION,
-      variables: {
-        where: {
-          id_in: [...props.selectedItems.keys()]
-        }
-      }
-    },
-    result: {
-      data: {
-        deleteProjects: {
-          count: [...props.selectedItems.keys()].length
-        }
-      }
-    }
-  },
-  {
-    request: {
-      query: UNPUBLISH_VIDEO_PROJECTS_MUTATION,
-      variables: {
-        data: { status: 'DRAFT', visibility: 'INTERNAL' },
-        where: {
-          AND: [
-            { id_in: [...props.selectedItems.keys()] },
-            { status_not: 'DRAFT' }
-          ]
-        }
-      }
-    },
-    result: {
-      data: {
-        unpublish: {
-          count: [...props.selectedItems.keys()].length
-        }
-      }
-    }
-  },
-  {
-    request: {
-      query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
-      variables: {
-        team: props.variables.team,
-        searchTerm: props.variables.searchTerm
-      }
-    },
-    result: {
-      data: {
-        videoProjects: [
-          { id: 'ud78' },
-          { id: 'ud98' },
-          { id: 'ud64' },
-          { id: 'ud23' },
-          { id: 'ud74' }
-        ]
-      }
-    }
-  },
-  {
-    request: {
-      query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
-      variables: {
-        team: props.variables.team,
-        searchTerm: props.variables.searchTerm
-      }
-    },
-    result: {
-      data: {
-        videoProjects: [
-          { id: 'ud64' },
-          { id: 'ud23' }
-        ]
-      }
-    }
-  },
-  {
-    request: {
-      query: TEAM_VIDEO_PROJECTS_QUERY,
-      variables: { ...props.variables }
-    },
-    result: {
-      data: {
-        videoProjects: [
-          {
-            id: 'ud78',
-            createdAt: '2019-05-09T18:33:03.368Z',
-            updatedAt: '2019-05-09T18:33:03.368Z',
-            team: {
-              id: 't888',
-              name: 'IIP Video Production',
-              organization: 'Department of State'
-            },
-            author: {
-              id: 'a928',
-              firstName: 'Jane',
-              lastName: 'Doe'
-            },
-            projectTitle: 'Test Title 1',
-            status: 'PUBLISHED',
-            visibility: 'INTERNAL',
-            thumbnails: {
-              id: 't34',
-              url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
-            },
-            categories: [
-              {
-                id: '38s',
-                translations: [
-                  {
-                    id: '832',
-                    name: 'about america',
-                    language: {
-                      id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            id: 'ud98',
-            createdAt: '2019-05-12T18:33:03.368Z',
-            updatedAt: '2019-05-12T18:33:03.368Z',
-            team: {
-              id: 't888',
-              name: 'IIP Video Production',
-              organization: 'Department of State'
-            },
-            author: {
-              id: 'a287',
-              firstName: 'Joe',
-              lastName: 'Schmoe'
-            },
-            projectTitle: 'Test Title 2',
-            status: 'PUBLISHED',
-            visibility: 'INTERNAL',
-            thumbnails: {
-              id: 't34',
-              url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
-            },
-            categories: [
-              {
-                id: '38s',
-                translations: [
-                  {
-                    id: '832',
-                    name: 'about america',
-                    language: {
-                      id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            id: 'ud64',
-            createdAt: '2019-05-12T18:33:03.368Z',
-            updatedAt: '2019-05-12T18:33:03.368Z',
-            team: {
-              id: 't888',
-              name: 'IIP Video Production',
-              organization: 'Department of State'
-            },
-            author: {
-              id: 'a287',
-              firstName: 'Joe',
-              lastName: 'Schmoe'
-            },
-            projectTitle: 'Test Title 2',
-            status: 'PUBLISHED',
-            visibility: 'INTERNAL',
-            thumbnails: {
-              id: 't34',
-              url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
-            },
-            categories: [
-              {
-                id: '38s',
-                translations: [
-                  {
-                    id: '832',
-                    name: 'about america',
-                    language: {
-                      id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            id: 'ud23',
-            createdAt: '2019-05-12T18:33:03.368Z',
-            updatedAt: '2019-05-12T18:33:03.368Z',
-            team: {
-              id: 't888',
-              name: 'IIP Video Production',
-              organization: 'Department of State'
-            },
-            author: {
-              id: 'a287',
-              firstName: 'Joe',
-              lastName: 'Schmoe'
-            },
-            projectTitle: 'Test Title 2',
-            status: 'DRAFT',
-            visibility: 'INTERNAL',
-            thumbnails: {
-              id: 't34',
-              url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
-            },
-            categories: [
-              {
-                id: '38s',
-                translations: [
-                  {
-                    id: '832',
-                    name: 'about america',
-                    language: {
-                      id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            id: 'ud74',
-            createdAt: '2019-05-12T18:33:03.368Z',
-            updatedAt: '2019-05-12T18:33:03.368Z',
-            team: {
-              id: 't888',
-              name: 'IIP Video Production',
-              organization: 'Department of State'
-            },
-            author: {
-              id: 'a287',
-              firstName: 'Joe',
-              lastName: 'Schmoe'
-            },
-            projectTitle: 'Test Title 2',
-            status: 'DRAFT',
-            visibility: 'INTERNAL',
-            thumbnails: {
-              id: 't34',
-              url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
-            },
-            categories: [
-              {
-                id: '38s',
-                translations: [
-                  {
-                    id: '832',
-                    name: 'about america',
-                    language: {
-                      id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    }
+jest.mock(
+  'next-server/dynamic',
+  () => function VideoDetailsPopup() {
+    return <div>VideoDetailsPopup</div>;
   }
-];
+);
 
 const Component = (
   <MockedProvider mocks={ mocks } addTypename={ false }>
@@ -329,18 +46,6 @@ describe( '<TableActionsMenu />', () => {
   } );
 
   it( 'renders error message if an error is returned', async () => {
-    const errorMocks = [
-      {
-        request: {
-          query: TEAM_VIDEO_PROJECTS_QUERY,
-          variables: { ...props.variables }
-        },
-        result: {
-          errors: [{ message: 'There was an error.' }]
-        }
-      }
-    ];
-
     const wrapper = mount(
       <MockedProvider mocks={ errorMocks } addTypename={ false }>
         <TableActionsMenu { ...props } />
@@ -360,18 +65,6 @@ describe( '<TableActionsMenu />', () => {
   } );
 
   it( 'renders null if videoProjects is falsy', async () => {
-    const nullMocks = [
-      {
-        request: {
-          query: TEAM_VIDEO_PROJECTS_QUERY,
-          variables: { ...props.variables }
-        },
-        result: {
-          data: { videoProjects: null }
-        }
-      }
-    ];
-
     const wrapper = mount(
       <MockedProvider mocks={ nullMocks } addTypename={ false }>
         <TableActionsMenu { ...props } />
@@ -405,18 +98,6 @@ describe( '<TableActionsMenu />', () => {
   } );
 
   it( 'renders a disabled Checkbox if no videoProjects are returned', async () => {
-    const emptyMocks = [
-      {
-        request: {
-          query: TEAM_VIDEO_PROJECTS_QUERY,
-          variables: { ...props.variables }
-        },
-        result: {
-          data: { videoProjects: [] }
-        }
-      }
-    ];
-
     const wrapper = mount(
       <MockedProvider mocks={ emptyMocks } addTypename={ false }>
         <TableActionsMenu { ...props } />
@@ -434,23 +115,6 @@ describe( '<TableActionsMenu />', () => {
   } );
 
   it( 'renders a checked Checkbox if all projects are selected', async () => {
-    const { videoProjects } = mocks[4].result.data;
-
-    const allCheckedMocks = [
-      {
-        request: {
-          query: TEAM_VIDEO_PROJECTS_QUERY,
-          variables: { ...props.variables }
-        },
-        result: {
-          data: {
-            videoProjects: videoProjects
-              .filter( project => project.id === 'ud78' || project.id === 'ud98' )
-          }
-        }
-      }
-    ];
-
     const wrapper = mount(
       <MockedProvider mocks={ allCheckedMocks } addTypename={ false }>
         <TableActionsMenu { ...props } />
@@ -603,7 +267,12 @@ describe( '<TableActionsMenu />', () => {
     const deleteProjects = jest.fn();
     const args = {
       variables: {
-        where: { id_in: [...props.selectedItems.keys()] }
+        where: {
+          AND: [
+            { id_in: [...props.selectedItems.keys()] },
+            { status_in: ['DRAFT', 'EMBARGOED'] }
+          ]
+        }
       },
       refetchQueries: [{
         query: TEAM_VIDEO_PROJECTS_QUERY,
