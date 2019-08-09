@@ -108,9 +108,6 @@ const VideoProjectFilesDesktop = () => {
                 disabled={ !stepOneComplete( files ) || files.length === 0 }
                 style={ show( 1 ) }
                 onClick={ () => {
-                  if ( !stepIncludesVideoFiles( files ) ) {
-                    return setIncludeVideoFileMsg( true );
-                  }
                   setActiveStep( 2 );
                   setDuplicateFiles( [] );
                 } }
