@@ -270,7 +270,7 @@ describe( '<TableActionsMenu />', () => {
         where: {
           AND: [
             { id_in: [...props.selectedItems.keys()] },
-            { status_in: ['DRAFT', 'EMBARGOED'] }
+            { status_in: ['DRAFT'] }
           ]
         }
       },

@@ -21,7 +21,7 @@ const mocks = [
         where: {
           AND: [
             { id_in: ['C1', 'C2', 'C3'] },
-            { status_in: ['DRAFT', 'EMBARGOED'] }
+            { status_in: ['DRAFT'] }
           ]
         }
       }
