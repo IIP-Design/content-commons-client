@@ -16,7 +16,7 @@ import Link from 'next/link';
 import ProjectVisibilityDropdown from 'components/admin/dropdowns/ProjectVisibilityDropdown';
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown';
 import UserDropdown from 'components/admin/dropdowns/UserDropdown';
-import TagTypeahead from 'components/admin/dropdowns/TagTypeahead';
+import TagDropdown from 'components/admin/dropdowns/TagDropdown';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 
 import './ProjectDataForm.scss';
@@ -147,7 +147,7 @@ const ProjectDataForm = props => {
                 </div>
 
                 <div className="field">
-                  <TagTypeahead
+                  <TagDropdown
                     id="tags"
                     label="Tags"
                     name="tags"

@@ -23,7 +23,7 @@ const TAG_QUERY = gql`
   }
 `;
 
-const TagTypeahead = props => {
+const TagDropdown = props => {
   const getTagsByLang = ( tags, locale ) => tags.map( tag => ( {
     id: tag.id,
     translations: tag.translations.filter(
@@ -87,16 +87,16 @@ const TagTypeahead = props => {
   );
 };
 
-TagTypeahead.defaultProps = {
+TagDropdown.defaultProps = {
   id: ''
 };
 
-TagTypeahead.propTypes = {
+TagDropdown.propTypes = {
   dir: PropTypes.string,
   id: PropTypes.string,
   label: PropTypes.string,
   locale: PropTypes.string
 };
 
-export default TagTypeahead;
+export default TagDropdown;
 export { TAG_QUERY };

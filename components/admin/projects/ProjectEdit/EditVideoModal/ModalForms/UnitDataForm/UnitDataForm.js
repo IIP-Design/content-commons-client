@@ -11,7 +11,7 @@ import { Embed, Form, Grid } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 
 import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
-import TagTypeahead from 'components/admin/dropdowns/TagTypeahead';
+import TagDropdown from 'components/admin/dropdowns/TagDropdown';
 import {
   getPathToS3Bucket, getStreamData, getVimeoId, getYouTubeId
 } from 'lib/utils';
@@ -276,7 +276,7 @@ const UnitDataForm = ( {
               value={ values.descPublic }
             />
 
-            <TagTypeahead
+            <TagDropdown
               onChange={ handleDropdownSelection }
               id="video-tags"
               dir={ unit.language.textDirection }
