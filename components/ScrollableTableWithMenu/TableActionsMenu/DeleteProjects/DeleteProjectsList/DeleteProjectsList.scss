@@ -1,0 +1,14 @@
+.delete {
+  .list-container {
+    margin-bottom: 1rem;
+    text-align: left;
+  
+    > .delete-list {
+      padding-left: 1rem;
+  
+      > .delete-list-item {
+        line-height: 1.25;
+      }
+    }
+  }
+}

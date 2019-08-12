@@ -284,25 +284,17 @@ class TableActionsMenu extends React.Component {
                       <Modal.Description>
                         <Icon
                           color="green"
-                          name={
-                            this.hasSelectedAllDrafts()
-                              ? 'check circle outline'
-                              : 'minus circle'
-                          }
+                          name="check circle outline"
                           size="big"
-                          style={ { float: 'left' } }
                         />
                         <span
                           className="msg"
                           style={ {
-                            overflow: 'hidden',
                             verticalAlign: 'middle',
                             fontSize: '1rem'
                           } }
                         >
-                          { this.hasSelectedAllDrafts()
-                            ? `You've updated your DRAFT projects successfully.`
-                            : `You've updated your DRAFT projects successfully. Non-DRAFT projects were not updated.` }
+                          You&rsquo;ve updated your projects successfully.
                         </span>
                       </Modal.Description>
                     </Modal.Content>
