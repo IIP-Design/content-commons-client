@@ -75,7 +75,6 @@ const TagDropdown = props => {
               multiple
               name="tags"
               options={ options }
-              placeholder="–"
               search
               selection
               { ...props }
