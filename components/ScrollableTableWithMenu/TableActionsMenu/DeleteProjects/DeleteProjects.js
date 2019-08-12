@@ -21,6 +21,7 @@ const DeleteProjects = props => {
     handleDeleteConfirm,
     handleResetSelections,
     hasSelectedAllDrafts,
+    selections,
     showConfirmationMsg
   } = props;
 
@@ -73,6 +74,7 @@ DeleteProjects.propTypes = {
   handleDeleteConfirm: PropTypes.func,
   handleResetSelections: PropTypes.func,
   hasSelectedAllDrafts: PropTypes.bool,
+  selections: PropTypes.array,
   showConfirmationMsg: PropTypes.func
 };
 
