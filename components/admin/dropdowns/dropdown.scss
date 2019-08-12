@@ -14,6 +14,17 @@
 #tags.ui.multiple.dropdown > .label {
   padding: 0.4em;
   font-weight: normal;
-  color: hsla( 0, 0, 0, 0.87 );
+  color: hsla(0, 0, 0, 0.87);
   background-color: #fff;
+}
+
+.field.rtl > #video-tags,
+.field.rtl > #video-description,
+.field.rtl > .input > #video-title {
+  text-align: right;
+
+  & .delete.icon {
+    margin-right: 0.5em;
+    margin-left: 0em;
+  }
 }

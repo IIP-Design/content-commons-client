@@ -26,6 +26,7 @@ const VIDEO_UNIT_QUERY = gql`
         id
         displayName
         locale
+        textDirection
       }
       tags { id }
       thumbnails {
@@ -256,6 +257,7 @@ const UnitDataForm = ( {
           </Grid.Column>
           <Grid.Column mobile={ 16 } computer={ 7 }>
             <Form.Input
+              className={ unit.language.textDirection === 'RTL' ? 'rtl' : 'ltr' }
               id="video-title"
               label={ `Video Title ${lang}` }
               name="title"
@@ -265,6 +267,7 @@ const UnitDataForm = ( {
             />
 
             <Form.TextArea
+              className={ unit.language.textDirection === 'RTL' ? 'rtl' : 'ltr' }
               id="video-description"
               label={ `Public Description ${lang}` }
               name="descPublic"
@@ -276,6 +279,7 @@ const UnitDataForm = ( {
             <TagTypeahead
               onChange={ handleDropdownSelection }
               id="video-tags"
+              dir={ unit.language.textDirection }
               label={ `Additional Keywords ${lang}` }
               locale={ unit.language.locale }
               value={ values.tags }

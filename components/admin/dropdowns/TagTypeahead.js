@@ -24,13 +24,14 @@ const TAG_QUERY = gql`
 `;
 
 const TagTypeahead = props => {
-  const getTagsByLang = ( tags, locale ) => (
-    tags.map( tag => ( {
-      id: tag.id,
-      translations: tag.translations.filter( translation => translation.language.locale === locale )
-    } ) )
-  );
+  const getTagsByLang = ( tags, locale ) => tags.map( tag => ( {
+    id: tag.id,
+    translations: tag.translations.filter(
+      translation => translation.language.locale === locale
+    )
+  } ) );
 
+  console.log( props );
   return (
     <Query query={ TAG_QUERY } variables={ { langId: props.locale } }>
       { ( { data, loading, error } ) => {
@@ -41,7 +42,6 @@ const TagTypeahead = props => {
 
         if ( data && data.tags ) {
           const tagsInLang = getTagsByLang( data.tags, props.locale );
-
           options = tagsInLang
             .map( tag => ( {
               key: tag.id,
@@ -62,16 +62,13 @@ const TagTypeahead = props => {
         return (
           <Fragment>
             { !props.label && (
-
               <VisuallyHidden>
-                { /* eslint-disable jsx-a11y/label-has-for */ }
-                <label htmlFor={ props.id }>
-                  { `${props.id} tag` }
-                </label>
+                <label htmlFor={ props.id }>{ `${props.id} tag` }</label>
               </VisuallyHidden>
             ) }
 
             <Form.Dropdown
+              className={ props.dir === 'RTL' ? 'rtl' : 'ltr' }
               id={ props.id }
               fluid
               loading={ loading }
@@ -95,6 +92,7 @@ TagTypeahead.defaultProps = {
 };
 
 TagTypeahead.propTypes = {
+  dir: PropTypes.string,
   id: PropTypes.string,
   label: PropTypes.string,
   locale: PropTypes.string
