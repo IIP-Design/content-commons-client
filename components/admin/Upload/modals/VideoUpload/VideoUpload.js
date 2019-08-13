@@ -21,8 +21,6 @@ const VideoUpload = props => {
   const [files, setFiles] = useState( [] );
   const [allFieldsSelected, setAllFieldsSelected] = useState( false );
   const [confirm, setConfirm] = useState( {} );
-  const [duplicateFiles, setDuplicateFiles] = useState( [] );
-
 
   useEffect( () => {
     // Since using onchange event, need to reset value on input so user can upload same file
@@ -271,9 +269,7 @@ const VideoUpload = props => {
             updateField,
             allFieldsSelected,
             closeModal,
-            handleAddFilesToUpload,
-            duplicateFiles,
-            setDuplicateFiles
+            handleAddFilesToUpload
           } }
           >
             <VideoProjectFiles

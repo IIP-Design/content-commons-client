@@ -49,8 +49,7 @@ const VideoProjectFilesDesktop = () => {
         closeModal,
         allFieldsSelected,
         handleAddFilesToUpload,
-        compareFilenames,
-        setDuplicateFiles
+        compareFilenames
       } ) => (
         <div className="videoProjectFilesDesktop__wrapper">
           <div className="videoProjectFilesDesktop__steps">
@@ -85,8 +84,7 @@ const VideoProjectFilesDesktop = () => {
                   multiple
                   className="secondary"
                   inputID="videoFileUpload"
-                >
-                  + Add Files
+                > Add Files
                 </ButtonAddFiles>
               </Grid.Row>
 
@@ -97,20 +95,14 @@ const VideoProjectFilesDesktop = () => {
                 className="secondary"
                 style={ show( 2 ) }
                 content="Previous"
-                onClick={ () => {
-                  setActiveStep( 1 );
-                  setDuplicateFiles( [] );
-                } }
+                onClick={ () => { setActiveStep( 1 ); } }
               />
               <Button
                 className="primary"
                 content="Next"
                 disabled={ !stepOneComplete( files ) || files.length === 0 }
                 style={ show( 1 ) }
-                onClick={ () => {
-                  setActiveStep( 2 );
-                  setDuplicateFiles( [] );
-                } }
+                onClick={ () => { setActiveStep( 2 ); } }
               />
               <Button
                 className="primary"

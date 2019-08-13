@@ -7,7 +7,6 @@ import UseDropdown from 'components/admin/dropdowns/UseDropdown';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import FileRemoveReplaceMenu from 'components/admin/FileRemoveReplaceMenu/FileRemoveReplaceMenu';
 import { truncateAndReplaceStr } from 'lib/utils';
-import Notification from 'components/Notification/Notification';
 import UploadCompletionTracker from '../UploadCompletionTracker';
 import { VideoUploadContext } from '../../VideoUpload';
 import './VideoProjectFilesRowMobile.scss';
@@ -75,9 +74,7 @@ const VideoProjectFilesRowMobile = props => {
       { ( {
         replaceAssetFile,
         removeAssetFile,
-        updateField,
-        duplicateFiles,
-        setDuplicateFiles
+        updateField
       } ) => (
         <div className="videoProjectFilesRowMobile">
 
@@ -97,35 +94,13 @@ const VideoProjectFilesRowMobile = props => {
               <Button
                 icon="chevron down"
                 className={ `${open} no-background` }
-                onClick={ () => {
-                  handleToggleDropdowns();
-                  setDuplicateFiles( [] );
-                } }
+                onClick={ () => { handleToggleDropdowns(); } }
               />
               <FileRemoveReplaceMenu
                 onReplace={ e => replaceAssetFile( id, e.target.files[0] ) }
                 onRemove={ () => removeAssetFile( id ) }
-                setDuplicateFiles={ setDuplicateFiles }
               />
             </div>
-            { duplicateFiles.includes( name ) && (
-              <Notification
-                el="div"
-                show
-                msg="This file has already been added."
-                customStyles={
-                  {
-                    display: 'inline-block',
-                    position: 'absolute',
-                    bottom: '0.5em',
-                    left: '3em',
-                    padding: '0',
-                    backgroundColor: 'none',
-                    color: '#DB2828'
-                  }
-                }
-              />
-            ) }
           </div>
           <div className={ `videoProjectFilesRowMobile__dropdowns ${toggleState}` }>
             <p className="videoProjectFilesRowMobile__dropdowns--filename-full">{ name }</p>
