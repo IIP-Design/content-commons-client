@@ -13,7 +13,7 @@ const CancelUpload = props => {
       trigger={ (
         <Button
           content="Cancel"
-          className="upload_button upload_button--cancelText"
+          className="secondary alternative"
           onClick={ () => setModalOpen( true ) }
         />
   ) }
