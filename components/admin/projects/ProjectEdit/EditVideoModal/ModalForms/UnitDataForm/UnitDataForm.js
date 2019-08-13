@@ -11,7 +11,7 @@ import { Embed, Form, Grid } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 
 import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
-import TagTypeahead from 'components/admin/dropdowns/TagTypeahead';
+import TagDropdown from 'components/admin/dropdowns/TagDropdown';
 import {
   getPathToS3Bucket, getStreamData, getVimeoId, getYouTubeId
 } from 'lib/utils';
@@ -26,6 +26,7 @@ const VIDEO_UNIT_QUERY = gql`
         id
         displayName
         locale
+        textDirection
       }
       tags { id }
       thumbnails {
@@ -256,6 +257,7 @@ const UnitDataForm = ( {
           </Grid.Column>
           <Grid.Column mobile={ 16 } computer={ 7 }>
             <Form.Input
+              className={ unit.language.textDirection === 'RTL' ? 'rtl' : 'ltr' }
               id="video-title"
               label={ `Video Title ${lang}` }
               name="title"
@@ -265,6 +267,7 @@ const UnitDataForm = ( {
             />
 
             <Form.TextArea
+              className={ unit.language.textDirection === 'RTL' ? 'rtl' : 'ltr' }
               id="video-description"
               label={ `Public Description ${lang}` }
               name="descPublic"
@@ -273,9 +276,10 @@ const UnitDataForm = ( {
               value={ values.descPublic }
             />
 
-            <TagTypeahead
+            <TagDropdown
               onChange={ handleDropdownSelection }
               id="video-tags"
+              dir={ unit.language.textDirection }
               label={ `Additional Keywords ${lang}` }
               locale={ unit.language.locale }
               value={ values.tags }
