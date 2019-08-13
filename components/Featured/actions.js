@@ -30,16 +30,14 @@ export const loadFeatured = data => async ( dispatch, getState ) => {
         case 'priorities':
           return typePrioritiesRequest( props.term, props.categories, props.locale ).then( res => ( {
             component,
-            term: props.term,
-            locale: props.locale,
+            ...props,
             data: res,
             key: v4()
           } ) );
         case 'recents':
           return typeRecentsRequest( props.postType, props.locale ).then( res => ( {
             component,
-            postType: props.postType,
-            locale: props.locale,
+            ...props,
             data: res,
             key: v4()
           } ) );
