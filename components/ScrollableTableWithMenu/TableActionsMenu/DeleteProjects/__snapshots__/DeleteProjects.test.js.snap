@@ -6,6 +6,339 @@ exports[`<DeleteProjects /> renders without crashing 1`] = `
   handleDeleteCancel={[MockFunction]}
   handleDeleteConfirm={[MockFunction]}
   handleResetSelections={[MockFunction]}
+  selections={
+    Array [
+      Object {
+        "author": Object {
+          "firstName": "Edwin",
+          "id": "cjrl1omfr002o075614zs8dxz",
+          "lastName": "Mah",
+        },
+        "categories": Array [
+          Object {
+            "id": "cjubblzwq15r10756m11zntim",
+            "translations": Array [
+              Object {
+                "id": "cjubbleh10v2607568m3kisep",
+                "language": Object {
+                  "id": "cjsq439dz005607560gwe7k3m",
+                  "locale": "en-us",
+                },
+                "name": "environment",
+              },
+              Object {
+                "id": "cjubblehi0v2e0756ase6olan",
+                "language": Object {
+                  "id": "cjsuxnpv700dl0756wg4adr6k",
+                  "locale": "es-es",
+                },
+                "name": "medioambiente",
+              },
+              Object {
+                "id": "cjubblehw0v2m075606oy0x39",
+                "language": Object {
+                  "id": "cjsq4565v005c0756f0lqbfe4",
+                  "locale": "fr-fr",
+                },
+                "name": "Environnement",
+              },
+              Object {
+                "id": "cjubbleic0v2u075618dkevjf",
+                "language": Object {
+                  "id": "cjt5qc65o04020756oius55mh",
+                  "locale": "pt-br",
+                },
+                "name": "meio ambiente",
+              },
+              Object {
+                "id": "cjubbleix0v320756q1xjh9pj",
+                "language": Object {
+                  "id": "cjsq47fum005i0756qlhc0wta",
+                  "locale": "ar",
+                },
+                "name": "البيئة",
+              },
+              Object {
+                "id": "cjubblejc0v3a0756phz2der5",
+                "language": Object {
+                  "id": "cjubbldhj0uqh0756pco0zk2r",
+                  "locale": "fa-ir",
+                },
+                "name": "محیط زیست",
+              },
+              Object {
+                "id": "cjubblejq0v3i0756lfud6sqg",
+                "language": Object {
+                  "id": "cjsq4967o005o0756gvpl1f5k",
+                  "locale": "zh-cn",
+                },
+                "name": "环境",
+              },
+              Object {
+                "id": "cjubblek60v3q07566bqtlpif",
+                "language": Object {
+                  "id": "cjt06xh0e02q70756dnuo3g8e",
+                  "locale": "ru-ru",
+                },
+                "name": "Окружающая среда",
+              },
+              Object {
+                "id": "cjubblekm0v3y0756o0gk6nou",
+                "language": Object {
+                  "id": "cjt5qviod040v0756m5yhxs05",
+                  "locale": "id-id",
+                },
+                "name": "lingkungan hidup",
+              },
+              Object {
+                "id": "cjubblel30v460756humkwrmu",
+                "language": Object {
+                  "id": "cjt5qnpem040e07567msmql7j",
+                  "locale": "ur",
+                },
+                "name": "ماحول",
+              },
+            ],
+          },
+        ],
+        "createdAt": "2019-06-17T15:23:46.184Z",
+        "id": "cjx0j3ts9066y0708k1hg2g1b",
+        "projectTitle": "Philippines Village",
+        "status": "DRAFT",
+        "team": Object {
+          "id": "cjrkzhvku000f0756l44blw33",
+          "name": "IIP Video Production",
+          "organization": "Department of State",
+        },
+        "thumbnails": Array [
+          Object {
+            "alt": null,
+            "id": "cjx0j3xqz067z0708frd7sd9g",
+            "url": "2019/06/cjx0j3ts9066y0708k1hg2g1b/coverr-philippines-village-views-1559889358075.jpg",
+          },
+        ],
+        "updatedAt": "2019-06-17T15:23:46.184Z",
+        "visibility": "PUBLIC",
+      },
+      Object {
+        "author": Object {
+          "firstName": "Edwin",
+          "id": "cjrl1omfr002o075614zs8dxz",
+          "lastName": "Mah",
+        },
+        "categories": Array [
+          Object {
+            "id": "cjubblzw915qe07560zkz9xas",
+            "translations": Array [
+              Object {
+                "id": "cjubble530uxq0756q5bphm9c",
+                "language": Object {
+                  "id": "cjsq439dz005607560gwe7k3m",
+                  "locale": "en-us",
+                },
+                "name": "economic opportunity",
+              },
+              Object {
+                "id": "cjubble5n0uxy0756q8qnn3cq",
+                "language": Object {
+                  "id": "cjsuxnpv700dl0756wg4adr6k",
+                  "locale": "es-es",
+                },
+                "name": "Oportunidades económicas",
+              },
+              Object {
+                "id": "cjubble640uy607568seiatuw",
+                "language": Object {
+                  "id": "cjsq4565v005c0756f0lqbfe4",
+                  "locale": "fr-fr",
+                },
+                "name": "Opportunités économiques",
+              },
+              Object {
+                "id": "cjubble6p0uye0756h6aw02vm",
+                "language": Object {
+                  "id": "cjt5qc65o04020756oius55mh",
+                  "locale": "pt-br",
+                },
+                "name": "Oportunidade econômica",
+              },
+              Object {
+                "id": "cjubble7c0uym0756vp6lcupx",
+                "language": Object {
+                  "id": "cjsq47fum005i0756qlhc0wta",
+                  "locale": "ar",
+                },
+                "name": "فرص اقتصادية",
+              },
+              Object {
+                "id": "cjubble800uyu07563abeywer",
+                "language": Object {
+                  "id": "cjubbldhj0uqh0756pco0zk2r",
+                  "locale": "fa-ir",
+                },
+                "name": "فرصت های اقتصادی",
+              },
+              Object {
+                "id": "cjubble8k0uz20756wgu91l9d",
+                "language": Object {
+                  "id": "cjsq4967o005o0756gvpl1f5k",
+                  "locale": "zh-cn",
+                },
+                "name": "经济机会",
+              },
+              Object {
+                "id": "cjubble930uza0756rmnl6oij",
+                "language": Object {
+                  "id": "cjt06xh0e02q70756dnuo3g8e",
+                  "locale": "ru-ru",
+                },
+                "name": "Экономические возможности",
+              },
+              Object {
+                "id": "cjubblea00uzi0756ciw0vz1j",
+                "language": Object {
+                  "id": "cjt5qviod040v0756m5yhxs05",
+                  "locale": "id-id",
+                },
+                "name": "Peluang  Ekonomi",
+              },
+              Object {
+                "id": "cjubbleak0uzq0756l1x17v3p",
+                "language": Object {
+                  "id": "cjt5qnpem040e07567msmql7j",
+                  "locale": "ur",
+                },
+                "name": "اقتصادی موقع",
+              },
+            ],
+          },
+          Object {
+            "id": "cjubblzwq15r10756m11zntim",
+            "translations": Array [
+              Object {
+                "id": "cjubbleh10v2607568m3kisep",
+                "language": Object {
+                  "id": "cjsq439dz005607560gwe7k3m",
+                  "locale": "en-us",
+                },
+                "name": "environment",
+              },
+              Object {
+                "id": "cjubblehi0v2e0756ase6olan",
+                "language": Object {
+                  "id": "cjsuxnpv700dl0756wg4adr6k",
+                  "locale": "es-es",
+                },
+                "name": "medioambiente",
+              },
+              Object {
+                "id": "cjubblehw0v2m075606oy0x39",
+                "language": Object {
+                  "id": "cjsq4565v005c0756f0lqbfe4",
+                  "locale": "fr-fr",
+                },
+                "name": "Environnement",
+              },
+              Object {
+                "id": "cjubbleic0v2u075618dkevjf",
+                "language": Object {
+                  "id": "cjt5qc65o04020756oius55mh",
+                  "locale": "pt-br",
+                },
+                "name": "meio ambiente",
+              },
+              Object {
+                "id": "cjubbleix0v320756q1xjh9pj",
+                "language": Object {
+                  "id": "cjsq47fum005i0756qlhc0wta",
+                  "locale": "ar",
+                },
+                "name": "البيئة",
+              },
+              Object {
+                "id": "cjubblejc0v3a0756phz2der5",
+                "language": Object {
+                  "id": "cjubbldhj0uqh0756pco0zk2r",
+                  "locale": "fa-ir",
+                },
+                "name": "محیط زیست",
+              },
+              Object {
+                "id": "cjubblejq0v3i0756lfud6sqg",
+                "language": Object {
+                  "id": "cjsq4967o005o0756gvpl1f5k",
+                  "locale": "zh-cn",
+                },
+                "name": "环境",
+              },
+              Object {
+                "id": "cjubblek60v3q07566bqtlpif",
+                "language": Object {
+                  "id": "cjt06xh0e02q70756dnuo3g8e",
+                  "locale": "ru-ru",
+                },
+                "name": "Окружающая среда",
+              },
+              Object {
+                "id": "cjubblekm0v3y0756o0gk6nou",
+                "language": Object {
+                  "id": "cjt5qviod040v0756m5yhxs05",
+                  "locale": "id-id",
+                },
+                "name": "lingkungan hidup",
+              },
+              Object {
+                "id": "cjubblel30v460756humkwrmu",
+                "language": Object {
+                  "id": "cjt5qnpem040e07567msmql7j",
+                  "locale": "ur",
+                },
+                "name": "ماحول",
+              },
+            ],
+          },
+        ],
+        "createdAt": "2019-06-17T19:42:42.188Z",
+        "id": "cjx0sctfx06ry0708bmtuf37f",
+        "projectTitle": "Philippines Village 2",
+        "status": "DRAFT",
+        "team": Object {
+          "id": "cjrkzhvku000f0756l44blw33",
+          "name": "IIP Video Production",
+          "organization": "Department of State",
+        },
+        "thumbnails": Array [
+          Object {
+            "alt": null,
+            "id": "cjx0sd0yy06t30708by0b4suo",
+            "url": "2019/06/cjx0sctfx06ry0708bmtuf37f/coverr-philippines-village-views-1559889358075.jpg",
+          },
+        ],
+        "updatedAt": "2019-06-17T19:42:42.188Z",
+        "visibility": "PUBLIC",
+      },
+      Object {
+        "author": Object {
+          "firstName": "Jane",
+          "id": "cjuybpucc1tuk0756bpi84enp",
+          "lastName": "Doe",
+        },
+        "categories": Array [],
+        "createdAt": "2019-06-17T15:35:31.065Z",
+        "id": "cjx0jixoa06c60708z2i7t2t3",
+        "projectTitle": "Made in America 14",
+        "status": "PUBLISHED",
+        "team": Object {
+          "id": "cjrkzhvku000f0756l44blw33",
+          "name": "IIP Video Production",
+          "organization": "Department of State",
+        },
+        "thumbnails": Array [],
+        "updatedAt": "2019-06-17T15:35:31.065Z",
+        "visibility": "PUBLIC",
+      },
+    ]
+  }
   showConfirmationMsg={[MockFunction]}
 >
   <Mutation
@@ -100,51 +433,29 @@ exports[`<DeleteProjects /> renders without crashing 1`] = `
     }
     onCompleted={[Function]}
   >
-    <Confirm
-      cancelButton="No, take me back"
+    <Modal
+      centered={true}
       className="delete"
-      confirmButton="Yes, delete forever"
-      content={
-        <ConfirmModalContent
-          className="delete_confirm delete_confirm--video"
-          headline="Are you sure you want to delete the selected video project(s)?"
-          style={Object {}}
-        >
-          <p>
-            The selected video project(s) will be permanently removed from the Content Cloud.
-          </p>
-        </ConfirmModalContent>
-      }
-      onCancel={[MockFunction]}
-      onConfirm={[Function]}
+      closeOnDimmerClick={true}
+      closeOnDocumentClick={false}
+      dimmer={true}
+      eventPool="Modal"
       open={false}
       size="small"
     >
-      <Modal
-        centered={true}
-        className="delete"
-        closeOnDimmerClick={true}
+      <Portal
         closeOnDocumentClick={false}
-        dimmer={true}
+        closeOnEscape={true}
         eventPool="Modal"
+        mountNode={<body />}
         onClose={[Function]}
+        onMount={[Function]}
+        onOpen={[Function]}
+        onUnmount={[Function]}
         open={false}
-        size="small"
-      >
-        <Portal
-          closeOnDocumentClick={false}
-          closeOnEscape={true}
-          eventPool="Modal"
-          mountNode={<body />}
-          onClose={[Function]}
-          onMount={[Function]}
-          onOpen={[Function]}
-          onUnmount={[Function]}
-          open={false}
-          openOnTriggerClick={true}
-        />
-      </Modal>
-    </Confirm>
+        openOnTriggerClick={true}
+      />
+    </Modal>
   </Mutation>
 </DeleteProjects>
 `;

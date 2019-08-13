@@ -49,7 +49,7 @@ class TableActionsMenu extends React.Component {
         data: { status: 'DRAFT', visibility: 'INTERNAL' },
         where: {
           AND: [
-            { id_in: this.getSelectedProjects() },
+            { id_in: this.getSelectedProjectsIds() },
             { status: 'PUBLISHED' }
           ]
         }
@@ -65,7 +65,12 @@ class TableActionsMenu extends React.Component {
     const { variables } = this.props;
     deleteFn( {
       variables: {
-        where: { id_in: this.getSelectedProjects() }
+        where: {
+          AND: [
+            { id_in: this.getSelectedProjectsIds() },
+            { status_in: ['DRAFT'] }
+          ]
+        }
       },
       refetchQueries: [{
         query: TEAM_VIDEO_PROJECTS_QUERY,
@@ -94,7 +99,7 @@ class TableActionsMenu extends React.Component {
 
   handleUnpublishCacheUpdate = cache => {
     const { variables } = this.props;
-    const items = this.getSelectedProjects();
+    const items = this.getSelectedProjectsIds();
 
     try {
       const data = this.getCachedQuery(
@@ -140,14 +145,28 @@ class TableActionsMenu extends React.Component {
     }, [] );
   }
 
-  getSelectedProjects = () => {
-    const projects = this.transformSelectedItemsMap();
-    return projects.reduce( ( acc, curr ) => {
-      if ( curr.value ) {
-        return [...acc, curr.id];
-      }
-      return [...acc];
-    }, [] );
+  getSelectedProjectsIds = () => {
+    const projectsArr = this.transformSelectedItemsMap();
+    if ( projectsArr && projectsArr.length ) {
+      return projectsArr.reduce( ( acc, curr ) => {
+        if ( curr.value ) {
+          return [...acc, curr.id];
+        }
+        return [...acc];
+      }, [] );
+    }
+    return [];
+  };
+
+  getSelectedProjects = projects => {
+    const projectIds = this.getSelectedProjectsIds();
+    if ( projects && projects.length ) {
+      const selections = projectIds.map( s => (
+        projects.find( p => s === p.id )
+      ) );
+      return selections;
+    }
+    return [];
   }
 
   getProjectsOnPage = projects => {
@@ -167,13 +186,14 @@ class TableActionsMenu extends React.Component {
 
   hasSelectedAllDrafts = () => {
     const { draftProjects } = this.state;
-    const selections = this.getSelectedProjects();
+    const selections = this.getSelectedProjectsIds();
 
     if ( selections.length > 0 ) {
       return selections.every(
-        project => draftProjects.includes( project )
+        id => draftProjects.includes( id )
       );
     }
+    return false;
   }
 
   showConfirmationMsg = () => {
@@ -229,88 +249,102 @@ class TableActionsMenu extends React.Component {
 
             const projectsOnPageCount = getCount( projectsOnPage );
 
+            const selections = this.getSelectedProjects( videoProjects );
+
+            const selectionsCount = getCount( selections );
+
             const isDisabled = videoProjects && !videoProjects.length;
 
-            const isChecked = ( projectsOnPageCount === this.getSelectedProjects().length )
-              && this.getSelectedProjects().length > 0;
+            const isChecked = ( projectsOnPageCount === selectionsCount )
+              && selectionsCount > 0;
 
-            const isIndeterminate = ( projectsOnPageCount > this.getSelectedProjects().length )
-              && this.getSelectedProjects().length > 0;
+            const isIndeterminate = ( projectsOnPageCount > selectionsCount )
+              && selectionsCount > 0;
 
             return (
-              <Checkbox
-                className={ displayActionsMenu ? 'actionsMenu_toggle actionsMenu_toggle--active' : 'actionsMenu_toggle' }
-                onChange={ toggleAllItemsSelection }
-                checked={ isChecked }
-                disabled={ isDisabled }
-                indeterminate={ isIndeterminate }
-              />
+              <Fragment>
+                <Checkbox
+                  className={ displayActionsMenu ? 'actionsMenu_toggle actionsMenu_toggle--active' : 'actionsMenu_toggle' }
+                  onChange={ toggleAllItemsSelection }
+                  checked={ isChecked }
+                  disabled={ isDisabled }
+                  indeterminate={ isIndeterminate }
+                />
+
+                <div className={ displayActionsMenu ? 'actionsMenu active' : 'actionsMenu' }>
+
+                  <Modal
+                    className="confirmation"
+                    closeIcon
+                    onClose={ this.hideConfirmationMsg }
+                    open={ displayConfirmationMsg }
+                    size="tiny"
+                  >
+                    <Modal.Content>
+                      <Modal.Description>
+                        <Icon
+                          color="green"
+                          name="check circle outline"
+                          size="big"
+                        />
+                        <span
+                          className="msg"
+                          style={ {
+                            verticalAlign: 'middle',
+                            fontSize: '1rem'
+                          } }
+                        >
+                          You&rsquo;ve updated your projects successfully.
+                        </span>
+                      </Modal.Description>
+                    </Modal.Content>
+                  </Modal>
+
+                  <Button size="mini" basic disabled>
+                    <img src={ editIcon } alt="Edit Selection(s)" title="Edit Selection(s)" />
+                  </Button>
+
+                  <DeleteIconButton
+                    displayConfirmDelete={ this.displayConfirmDelete }
+                  />
+
+                  <DeleteProjects
+                    deleteConfirmOpen={ this.state.deleteConfirmOpen }
+                    handleDeleteCancel={ this.handleDeleteCancel }
+                    handleDeleteConfirm={ this.handleDeleteConfirm }
+                    handleResetSelections={ this.props.handleResetSelections }
+                    selections={ selections }
+                    showConfirmationMsg={ this.showConfirmationMsg }
+                  />
+
+                  <Button size="mini" basic disabled>
+                    <img src={ createIcon } alt="Create Selection(s)" title="Create Selection(s)" />
+                  </Button>
+                  <Button size="mini" basic disabled>
+                    <img src={ archiveIcon } alt="Archive Selection(s)" title="Archive Selection(s)" />
+                  </Button>
+
+                  { !this.hasSelectedAllDrafts()
+                    && (
+                    <Fragment>
+                      <span className="separator">|</span>
+                      <UnpublishProjects
+                        handleResetSelections={
+                          this.props.handleResetSelections
+                        }
+                        handleUnpublish={ this.handleUnpublish }
+                        handleUnpublishCacheUpdate={
+                          this.handleUnpublishCacheUpdate
+                        }
+                        showConfirmationMsg={ this.showConfirmationMsg }
+                      />
+                    </Fragment>
+                    ) }
+                </div>
+              </Fragment>
             );
           } }
         </Query>
-
-        <div className={ displayActionsMenu ? 'actionsMenu active' : 'actionsMenu' }>
-
-          <Modal
-            className="confirmation"
-            closeIcon
-            onClose={ this.hideConfirmationMsg }
-            open={ displayConfirmationMsg }
-            size="tiny"
-          >
-            <Modal.Content>
-              <Modal.Description>
-                <Icon color="green" name="check circle outline" size="big" />
-                <span
-                  className="msg"
-                  style={ { verticalAlign: 'middle', fontSize: '1rem' } }
-                >
-                  You&rsquo;ve updated your projects successfully.
-                </span>
-              </Modal.Description>
-            </Modal.Content>
-          </Modal>
-
-          <Button size="mini" basic disabled>
-            <img src={ editIcon } alt="Edit Selection(s)" title="Edit Selection(s)" />
-          </Button>
-
-          <DeleteIconButton
-            displayConfirmDelete={ this.displayConfirmDelete }
-          />
-
-          <DeleteProjects
-            deleteConfirmOpen={ this.state.deleteConfirmOpen }
-            handleDeleteCancel={ this.handleDeleteCancel }
-            handleDeleteConfirm={ this.handleDeleteConfirm }
-            handleResetSelections={ this.props.handleResetSelections }
-            showConfirmationMsg={ this.showConfirmationMsg }
-          />
-
-          <Button size="mini" basic disabled>
-            <img src={ createIcon } alt="Create Selection(s)" title="Create Selection(s)" />
-          </Button>
-          <Button size="mini" basic disabled>
-            <img src={ archiveIcon } alt="Archive Selection(s)" title="Archive Selection(s)" />
-          </Button>
-
-          { !this.hasSelectedAllDrafts()
-            && (
-            <Fragment>
-              <span className="separator">|</span>
-              <UnpublishProjects
-                handleResetSelections={
-                  this.props.handleResetSelections
-                }
-                handleUnpublish={ this.handleUnpublish }
-                handleUnpublishCacheUpdate={
-                  this.handleUnpublishCacheUpdate
-                }
-                showConfirmationMsg={ this.showConfirmationMsg }
-              />
-            </Fragment>
-            ) }
-        </div>
       </div>
     );
   }
