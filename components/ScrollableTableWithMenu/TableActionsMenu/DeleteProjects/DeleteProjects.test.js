@@ -2,15 +2,30 @@ import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import { Mutation } from 'react-apollo';
 import { MockedProvider } from 'react-apollo/test-utils';
+import { getPluralStringOrNot } from 'lib/utils';
 import DeleteProjects, { DELETE_VIDEO_PROJECTS_MUTATION } from './DeleteProjects';
+import { drafts, nonDrafts } from './mocks';
 
 const props = {
   deleteConfirmOpen: false,
   handleDeleteCancel: jest.fn(),
   handleDeleteConfirm: jest.fn(),
   handleResetSelections: jest.fn(),
-  hasSelectedAllDrafts: false,
+  selections: [...drafts, ...nonDrafts],
   showConfirmationMsg: jest.fn()
+};
+
+const openConfirmProps = {
+  ...props,
+  ...{ deleteConfirmOpen: true }
+};
+
+const nonDraftsProps = {
+  ...props,
+  ...{
+    deleteConfirmOpen: true,
+    selections: [...nonDrafts]
+  }
 };
 
 const mocks = [
@@ -36,6 +51,18 @@ const Component = (
   </MockedProvider>
 );
 
+const OpenConfirmComponent = (
+  <MockedProvider mocks={ mocks } addTypename={ false }>
+    <DeleteProjects { ...openConfirmProps } />
+  </MockedProvider>
+);
+
+const NonDraftsComponent = (
+  <MockedProvider mocks={ mocks } addTypename={ false }>
+    <DeleteProjects { ...nonDraftsProps } />
+  </MockedProvider>
+);
+
 describe( '<DeleteProjects />', () => {
   it( 'renders without crashing', () => {
     const wrapper = mount( Component );
@@ -48,78 +75,55 @@ describe( '<DeleteProjects />', () => {
   it( 'renders a Confirm component', () => {
     const wrapper = mount( Component );
     const deleteMutation = wrapper.find( 'DeleteProjects' );
-    const confirm = deleteMutation.find( 'Confirm' );
+    const confirm = deleteMutation.find( 'Modal.delete' );
 
     expect( confirm.exists() ).toEqual( true );
-    expect( confirm.prop( 'className' ) ).toEqual( 'delete' );
   } );
 
   it( 'deleteConfirmOpen opens the Confirm component', () => {
-    const newProps = { ...props, ...{ deleteConfirmOpen: true } };
-
-    const wrapper = mount(
-      <MockedProvider mocks={ mocks } addTypename={ false }>
-        <DeleteProjects { ...newProps } />
-      </MockedProvider>
-    );
-
+    const wrapper = mount( OpenConfirmComponent );
     const deleteMutation = wrapper.find( 'DeleteProjects' );
-    const confirm = deleteMutation.find( 'Confirm' );
+    const confirm = deleteMutation.find( 'Modal.delete' );
 
-    expect( confirm.prop( 'open' ) ).toEqual( newProps.deleteConfirmOpen );
+    expect( confirm.prop( 'open' ) )
+      .toEqual( openConfirmProps.deleteConfirmOpen );
   } );
 
-  it( 'renders the correct Confirm messages if !hasSelectedAllDrafts', () => {
-    const newProps = { ...props, ...{ deleteConfirmOpen: true } };
-    const wrapper = mount(
-      <MockedProvider mocks={ mocks } addTypename={ false }>
-        <DeleteProjects { ...newProps } />
-      </MockedProvider>
-    );
+  it( 'renders the correct Confirm message if both DRAFT(s) and non-DRAFT(s) projects are selected', () => {
+    const wrapper = mount( OpenConfirmComponent );
     const deleteMutation = wrapper.find( 'DeleteProjects' );
     const confirmModalContent = deleteMutation.find( 'ConfirmModalContent' );
-    const msg1 = <p>Only selected DRAFT video project(s) will be permanently removed from the Content Cloud.</p>;
-    const msg2 = <p>Selected Non-DRAFT projects will be not be removed.</p>;
+    const msg = `The following DRAFT video ${getPluralStringOrNot( drafts, 'project' )} will be removed permanently from the Content Cloud:`;
 
-    expect( confirmModalContent.contains( msg1 ) ).toEqual( true );
-    expect( confirmModalContent.contains( msg2 ) ).toEqual( true );
+    expect( confirmModalContent.contains( msg ) ).toEqual( true );
   } );
 
-  it( 'renders the correct Confirm message if hasSelectedAllDrafts', () => {
-    const newProps = {
-      ...props,
-      ...{
-        deleteConfirmOpen: true,
-        hasSelectedAllDrafts: true
-      }
-    };
-    const wrapper = mount(
-      <MockedProvider mocks={ mocks } addTypename={ false }>
-        <DeleteProjects { ...newProps } />
-      </MockedProvider>
-    );
+  it( 'renders the correct Confirm messages if only non-DRAFT project(s) are selected', () => {
+    const wrapper = mount( NonDraftsComponent );
     const deleteMutation = wrapper.find( 'DeleteProjects' );
     const confirmModalContent = deleteMutation.find( 'ConfirmModalContent' );
-    const msg = <p>The selected DRAFT video project(s) will be removed permanently from the Content Cloud.</p>;
+    const msg = `The following non-DRAFT video ${getPluralStringOrNot( nonDrafts, 'project' )} will NOT be removed:`;
 
     expect( confirmModalContent.contains( msg ) ).toEqual( true );
   } );
 
   it( 'clicking the cancel button calls handleDeleteCancel', () => {
-    const wrapper = mount( Component );
+    const wrapper = mount( OpenConfirmComponent );
     const deleteMutation = wrapper.find( 'DeleteProjects' );
-    const confirm = deleteMutation.find( 'Confirm' );
+    const confirm = deleteMutation.find( 'Modal.delete' );
+    const cancelBtn = confirm.find( 'Button[content="No, take me back"]' );
 
-    confirm.prop( 'onCancel' )();
+    cancelBtn.simulate( 'click' );
     expect( props.handleDeleteCancel ).toHaveBeenCalled();
   } );
 
   it( 'clicking the confirm button calls handleDeleteConfirm', () => {
-    const wrapper = mount( Component );
+    const wrapper = mount( OpenConfirmComponent );
     const deleteMutation = wrapper.find( 'DeleteProjects' );
-    const confirm = deleteMutation.find( 'Confirm' );
+    const confirm = deleteMutation.find( 'Modal.delete' );
+    const confirmBtn = confirm.find( 'Button[content="Yes, delete forever"]' );
 
-    confirm.prop( 'onConfirm' )();
+    confirmBtn.simulate( 'click' );
     expect( props.handleDeleteConfirm ).toHaveBeenCalled();
   } );
 

@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import DeleteProjectsList from './DeleteProjectsList';
-import { drafts, nonDrafts } from './mocks';
+import { drafts, nonDrafts } from '../mocks';
 
 const draftProps = {
   headline: 'the drafts list headline',
