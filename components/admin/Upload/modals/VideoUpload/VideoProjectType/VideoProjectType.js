@@ -29,7 +29,7 @@ const VideoProjectType = props => {
           className="secondary"
         >Cancel
         </Button>
-        <ButtonAddFiles onChange={ handleOnChangeFiles } multiple>+ Add Files</ButtonAddFiles>
+        <ButtonAddFiles onChange={ handleOnChangeFiles } multiple>Add Files</ButtonAddFiles>
       </div>
     </Form>
   );
