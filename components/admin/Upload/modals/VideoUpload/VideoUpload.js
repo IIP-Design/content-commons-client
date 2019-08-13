@@ -7,9 +7,10 @@ import { compose, graphql } from 'react-apollo';
 import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown';
 import { Tab, Dimmer, Loader } from 'semantic-ui-react';
 import { v4 } from 'uuid';
+import { removeDuplicatesFromArray } from 'lib/utils';
 import VideoProjectType from './VideoProjectType/VideoProjectType';
 import VideoProjectFiles from './VideoProjectFiles/VideoProjectFiles';
-import RemoveFile from '../RemoveFile/RemoveFile';
+import Confirm from '../Confirm/Confirm';
 import './VideoUpload.scss';
 
 export const VideoUploadContext = React.createContext();
@@ -19,8 +20,7 @@ const VideoUpload = props => {
   const [loading, setLoading] = useState( false );
   const [files, setFiles] = useState( [] );
   const [allFieldsSelected, setAllFieldsSelected] = useState( false );
-  const [confirmRemove, setConfirmRemove] = useState( {} );
-  const [duplicateFiles, setDuplicateFiles] = useState( [] );
+  const [confirm, setConfirm] = useState( {} );
 
   useEffect( () => {
     // Since using onchange event, need to reset value on input so user can upload same file
@@ -33,7 +33,7 @@ const VideoUpload = props => {
     // Check to see if all required dropdowns are completed
     // when the the files state changes. All fields do not need
     // to be checked as some are pre-populated on initialization or
-    // not applicable.  Submit button (Next) becomes active when all
+    // not applicable. Submit button (Next) becomes active when all
     // complete
     const complete = files.every( file => {
       const { input: { type } } = file;
@@ -100,6 +100,41 @@ const VideoUpload = props => {
    */
   const compareFilenames = ( a, b ) => a.input.name.localeCompare( b.input.name );
 
+  const closeConfirm = () => {
+    setConfirm( { open: false } );
+  };
+
+  const processDuplicates = filesToAdd => {
+    try {
+      const { duplicates, uniq } = removeDuplicatesFromArray( [...files, ...filesToAdd], 'input.name' );
+
+      // if duplicates are present, ask user if they are indeed duplicates
+      if ( duplicates ) {
+        const dups = duplicates.reduce( ( acc, cur ) => `${acc} ${cur.input.name}\n`, '' );
+        setConfirm( {
+          open: true,
+          headline: 'It appears that duplicate files are being added.',
+          content: `Do you want to add these files?\n${dups}`,
+          cancelButton: 'No, do not add files',
+          confirmButton: 'Yes, add files',
+          handleOnCancel: () => {
+            setFiles( uniq.sort( compareFilenames ) );
+            closeConfirm();
+          },
+          handleOnConfirm: () => {
+            setFiles( [...filesToAdd, ...files].sort( compareFilenames ) );
+            closeConfirm();
+          }
+        } );
+      } else {
+        setFiles( [...filesToAdd, ...files].sort( compareFilenames ) );
+      }
+    } catch ( err ) {
+      console.error( err );
+    }
+  };
+
+
   /**
    * Add files to files state array.  For each file selected,
    * create/init a file object with applicable props & add.
@@ -108,7 +143,6 @@ const VideoUpload = props => {
    */
   const addAssetFiles = filesFromInputSelection => {
     const fileList = Array.from( filesFromInputSelection );
-
     const filesToAdd = fileList.map( file => ( {
       language: '',
       use: getDefaultUse( file.type.substr( 0, file.type.indexOf( '/' ) ) ),
@@ -119,16 +153,12 @@ const VideoUpload = props => {
       loaded: 0
     } ) );
 
-    const reduceDuplicates = ( arr, file ) => {
-      if ( !arr.find( file2 => file.input.name === file2.input.name ) ) {
-        arr.push( file );
-        setDuplicateFiles( [] );
-      } else {
-        setDuplicateFiles( prevDuplicateFiles => [...prevDuplicateFiles, file.input.name] );
-      }
-      return arr;
-    };
-    setFiles( prevFiles => [...prevFiles, ...filesToAdd].reduce( reduceDuplicates, [] ).sort( compareFilenames ) );
+    // Only check for duplicates if there are current files to compare against
+    if ( files.length ) {
+      processDuplicates( filesToAdd );
+    } else {
+      setFiles( filesToAdd.sort( compareFilenames ) );
+    }
   };
 
   /**
@@ -140,16 +170,18 @@ const VideoUpload = props => {
     const file = files.find( f => f.id === id );
     if ( !file ) {
       console.error( 'File not found for removal.' );
-      return;
     }
 
-    setConfirmRemove( {
-      filename: file.input.name,
-      closeModal: confirm => {
-        setConfirmRemove( {} );
-        if ( confirm ) {
-          setFiles( prevFiles => prevFiles.filter( f => f.id !== id ) );
-        }
+    setConfirm( {
+      open: true,
+      headline: 'Are you sure you want to remove this file?',
+      content: `You are about to remove ${file.input.name}. This file will not be uploaded with this project.`,
+      cancelButton: 'No, take me back',
+      confirmButton: 'Yes, remove',
+      handleOnCancel: () => closeConfirm(),
+      handleOnConfirm: () => {
+        setFiles( prevFiles => prevFiles.filter( f => f.id !== id ) );
+        closeConfirm();
       }
     } );
   };
@@ -184,7 +216,6 @@ const VideoUpload = props => {
     } ) );
   };
 
-  // @todo complete wiring before activating router
   const gotoVideoEditPage = () => {
     props.router.push( {
       pathname: '/admin/project',
@@ -238,9 +269,7 @@ const VideoUpload = props => {
             updateField,
             allFieldsSelected,
             closeModal,
-            handleAddFilesToUpload,
-            duplicateFiles,
-            setDuplicateFiles
+            handleAddFilesToUpload
           } }
           >
             <VideoProjectFiles
@@ -258,12 +287,13 @@ const VideoUpload = props => {
       <Dimmer active={ loading } inverted>
         <Loader>Preparing files...</Loader>
       </Dimmer>
+
       <Tab
         activeIndex={ activeIndex }
         panes={ panes }
         className="videoUpload"
       />
-      <RemoveFile { ...confirmRemove } />
+      <Confirm { ...confirm } />
     </Fragment>
   );
 };

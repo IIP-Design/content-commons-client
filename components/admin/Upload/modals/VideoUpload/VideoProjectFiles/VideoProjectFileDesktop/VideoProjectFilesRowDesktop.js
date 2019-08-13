@@ -8,7 +8,6 @@ import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { truncateAndReplaceStr } from 'lib/utils';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import Notification from 'components/Notification/Notification';
 import UploadCompletionTracker from '../UploadCompletionTracker';
 import { VideoUploadContext } from '../../VideoUpload';
 import './VideoProjectFilesRowDesktop.scss';
@@ -87,9 +86,7 @@ const VideoProjectFilesDesktopRow = props => {
         ( {
           replaceAssetFile,
           removeAssetFile,
-          updateField,
-          duplicateFiles,
-          setDuplicateFiles
+          updateField
         } ) => (
           <Grid.Row className="videoProjectFilesDesktopRow">
 
@@ -103,24 +100,6 @@ const VideoProjectFilesDesktopRow = props => {
                   <span className="item-text--hover">{ name }</span>
                 </span>
                 <VisuallyHidden el="span">{ name }</VisuallyHidden>
-                { duplicateFiles.includes( name ) && (
-                  <Notification
-                    el="div"
-                    show
-                    msg="This file has already been added."
-                    customStyles={
-                      {
-                        display: 'inline-block',
-                        position: 'absolute',
-                        bottom: '-0.3em',
-                        left: '4em',
-                        padding: '0',
-                        backgroundColor: 'none',
-                        color: '#DB2828'
-                      }
-                    }
-                  />
-                ) }
               </div>
             </Grid.Column>
 
@@ -156,14 +135,8 @@ const VideoProjectFilesDesktopRow = props => {
             { /* Actions */ }
             <Grid.Column width={ 2 } only="tablet computer">
               <FileRemoveReplaceButtonGroup
-                onReplace={ e => {
-                  setDuplicateFiles( [] );
-                  replaceAssetFile( id, e.target.files[0] );
-                } }
-                onRemove={ () => {
-                  setDuplicateFiles( [] );
-                  removeAssetFile( id );
-                } }
+                onReplace={ e => { replaceAssetFile( id, e.target.files[0] ); } }
+                onRemove={ () => { removeAssetFile( id ); } }
               />
             </Grid.Column>
           </Grid.Row>
