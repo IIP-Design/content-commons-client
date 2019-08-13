@@ -26,7 +26,7 @@ const VideoProjectType = props => {
         <Button
           type="button"
           onClick={ props.closeModal }
-          className="secondary"
+          className="secondary alternative"
         >Cancel
         </Button>
         <ButtonAddFiles onChange={ handleOnChangeFiles } multiple>Add Files</ButtonAddFiles>

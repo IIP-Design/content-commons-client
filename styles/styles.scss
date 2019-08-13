@@ -111,6 +111,7 @@ h6.ui.header {
   border-radius: 4px;
   color: #ffffff;
   padding: 0.6em 1.5em;
+  font-size: 0.888rem;
 
   &:focus {
     outline: 2px dotted $focus-gray;
@@ -152,7 +153,26 @@ h6.ui.header {
     &:active {
       background-color: $blue;
     }
+
+    &.alternative {
+      color: $grey;
+      font-weight: normal;
+      background-color: transparent;
+      border: 2px solid transparent;
+
+      &:hover,
+      &:active,
+      &:focus {
+        border-color: $grey;
+        color: #fff !important;
+        background-color: $grey !important;
+      }
+    }
   }
+
+  // @media screen and (max-width: 899px) {
+  //   border-color: $grey;
+  // }
 
   &.no-background {
     border: none;
@@ -164,6 +184,10 @@ h6.ui.header {
 .ui.modal > .content {
   font-size: 0.77em;
   padding: 1.3em;
+}
+
+.ui.modal {
+  border-radius: 0;
 }
 
 .ui.embed > .icon:before {
