@@ -20,7 +20,8 @@
 
 .field.rtl > #video-tags,
 .field.rtl > #video-description,
-.field.rtl > .input > #video-title {
+.field.rtl > .input > #video-title,
+.field.rtl > #video-tags > .menu > .item {
   direction: rtl;
   text-align: right;
 
