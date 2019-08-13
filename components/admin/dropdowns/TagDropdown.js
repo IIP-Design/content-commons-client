@@ -31,7 +31,6 @@ const TagDropdown = props => {
     )
   } ) );
 
-  console.log( props );
   return (
     <Query query={ TAG_QUERY } variables={ { langId: props.locale } }>
       { ( { data, loading, error } ) => {
