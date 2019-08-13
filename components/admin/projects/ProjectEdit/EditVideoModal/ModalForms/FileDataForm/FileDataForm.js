@@ -319,7 +319,8 @@ const FileDataForm = ( {
                 name="vimeo"
                 onBlur={ updateStreams }
                 onChange={ handleStreamsInputChange }
-                disabled
+                readOnly
+                style={ { opacity: '0.45' } }
                 value={ values.vimeo }
               />
             </div>
