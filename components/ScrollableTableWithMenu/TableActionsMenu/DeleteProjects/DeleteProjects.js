@@ -7,6 +7,7 @@ import ApolloError from 'components/errors/ApolloError';
 import { getCount, getPluralStringOrNot } from 'lib/utils';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import DeleteProjectsList from './DeleteProjectsList/DeleteProjectsList';
+import './DeleteProjects.scss';
 
 const DELETE_VIDEO_PROJECTS_MUTATION = gql`
   mutation DeleteManyVideoProjects($where: VideoProjectWhereInput) {
@@ -104,7 +105,7 @@ const DeleteProjects = props => {
                 }
                 disabled={ hasNonDraftsOnly }
                 onClick={ () => handleDeleteConfirm( deleteProjects ) }
-                outline
+                basic
                 primary
               />
             </Modal.Actions>

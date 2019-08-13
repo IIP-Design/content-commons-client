@@ -1,0 +1,16 @@
+@import "../../../../styles/colors.scss";
+
+.delete {
+  .ui.primary.basic.button {
+    color: $matisse-blue !important;
+    font-weight: bold;
+    box-shadow: none !important;
+  
+    &:hover,
+    &:active,
+    &:focus {
+      color: #fff !important;
+      box-shadow: none !important;
+    }
+  }
+}
