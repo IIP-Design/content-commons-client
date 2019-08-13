@@ -1,17 +1,20 @@
-@import "../../styles/colors.scss";
+@import "styles/colors.scss";
 
 .recents {
-  margin-bottom: 4.67em;
+  padding-top: 2.3em;
+  padding-bottom: 2.3em;
   position: relative;
 
   &title {
     display: flex;
     justify-content: space-between;
+    position: relative;
 
     .browseAll {
-      position: relative;
-      top: 0;
+      position: absolute;
+      bottom: 0.5em;
       font-size: 0.8em;
+      right: 0;
     }
   }
 

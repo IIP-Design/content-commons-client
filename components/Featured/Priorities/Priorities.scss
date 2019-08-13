@@ -1,0 +1,196 @@
+@import "styles/colors.scss";
+
+.priorities {
+  margin-bottom: 2.3em;
+  @media screen and (min-width: 1340px) {
+    background: url("../../../static/images/wavy-bg.jpg") repeat;
+    padding: 4em 0;
+  }
+
+  &container {
+    max-width: 1600px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px 36px 52px;
+    border: 1px solid $light-grey;
+
+    @media screen and (max-width: 1340px) {
+      width: 100%;
+      padding: 3em 2em 0;
+      border: none;
+    }
+    @media screen and (max-width: 767px) {
+      padding-right: 1em;
+      padding-left: 1em;
+    }
+  }
+
+  &title {
+    display: flex;
+    justify-content: space-between;
+    position:relative;
+
+    h1.ui.header {
+      padding: 0.5em 1em;
+      background: $blue;
+      color: #fff;
+      position: relative;
+      left: -36px;
+      @media screen and (max-width: 1340px) {
+        left: 0;
+      }
+    }
+
+    .browseAll {
+      position: absolute;
+      bottom: 0.5em;
+      font-size: 0.8em;
+      right: 0;
+    }
+  }
+
+  &left {
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    @media screen and (max-width: 767px) {
+      height: 300px;
+    }
+  }
+
+  .ui.stackable.grid > .column.prioritiesgridleft,
+  .ui.stackable.grid > .column.prioritiesgridright {
+    @media screen and (max-width: 767px) {
+      padding-right: 0 !important;
+      padding-left: 0 !important;
+      padding-bottom: 0 !important;
+    }
+  }
+
+  &gridleft {
+    &.column {
+      padding-right: 0 !important;
+      padding-bottom: 0 !important;
+      min-height: 320px;
+    }
+  }
+
+  &gridright {
+    .ui.items {
+      height: 100%;
+
+      .item {
+        height: 50%;
+        @media screen and (max-width: 767px) {
+          height: auto;
+        }
+      }
+    }
+  }
+
+  &overlay {
+    position: absolute;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.75) 100%
+    );
+    bottom: 0;
+    width: 100%;
+    height: auto;
+    color: white;
+    font-size: 1.6em;
+    font-weight: 600;
+    padding: 2em 0 0.5em 0.5em;
+    line-height: 1.2em;
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3), 1px -1px 0 rgba(0, 0, 0, 0.3),
+      -1px 1px 0 rgba(0, 0, 0, 0.3), 1px 1px 0 rgba(0, 0, 0, 0.3);
+
+    &_title {
+      width: 80%;
+    }
+
+    &_icon {
+      position: absolute;
+      bottom: 0.5em;
+      right: 0.5em;
+    }
+  }
+
+  .ui.header:last-child {
+    margin-bottom: 0.7em;
+  }
+
+  .ui.large.header {
+    font-size: 1.33em;
+  }
+}
+
+.ui.items .item.prioritiesItem {
+  border: 1px solid $light-grey;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+
+  .prioritiesItem_img {
+    position: relative;
+    min-width: 195px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    @media screen and (max-width: 767px) {
+      min-height: 195px;
+      height: 100%;
+    }
+
+    .metaicon {
+      position: absolute;
+      right: 5px;
+      bottom: 10px;
+    }
+  }
+
+  .content {
+    padding: 0.8em 0.8em 0.5em 0.8em;
+    display: flex;
+    flex-flow: column;
+
+    .header {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      line-height: 1.2em;
+      color: $blue;
+      @media screen and (max-width: 991px) {
+        font-size: 1em;
+      }
+      @media screen and (max-width: 767px) {
+        margin-bottom: 1em;
+      }
+    }
+
+    .meta {
+      margin-top: auto;
+      //margin-bottom: 1em;
+      line-height: 1.2em;
+      font-size: 0.77rem;
+      @media screen and (max-width: 991px) {
+        position: relative;
+      }
+
+      .date {
+        display: block;
+        color: $blue;
+      }
+
+      .categories {
+        display: block;
+        color: $grey;
+        @media screen and (max-width: 991px) {
+          font-size: 0.8em;
+        }
+      }
+    }
+  }
+}

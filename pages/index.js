@@ -1,22 +1,57 @@
 import React, { Component } from 'react';
 
-import Recents from 'components/Recents/Recents';
+import Featured from 'components/Featured/Featured';
 import { clearFilters } from 'lib/redux/actions/filter';
+import { loadFeatured } from 'components/Featured/actions';
 import { loadPostTypes } from 'lib/redux/actions/postType';
-import { loadRecents } from '../components/Recents/actions';
+import { v4 } from 'uuid';
+
+const featuredData = [
+  {
+    key: v4(),
+    component: 'priorities',
+    order: 1,
+    props: {
+      term: 'iran',
+      label: 'Iran',
+      categories: [
+        { key: 'dLWWJ2MBCLPpGnLD3D-N', display_name: 'Economic Opportunity' },
+        { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' },
+        { key: 'JFqWJ2MBNxuyMP4E5Cgn', display_name: 'Global Issues' }
+      ],
+      locale: 'en-us'
+    }
+  },
+  {
+    key: v4(),
+    component: 'recents',
+    order: 2,
+    props: {
+      postType: 'video',
+      locale: 'en-us'
+    }
+  },
+  {
+    key: v4(),
+    component: 'recents',
+    order: 3,
+    props: {
+      postType: 'post',
+      locale: 'en-us'
+    }
+  }
+];
 
 class Landing extends Component {
   static async getInitialProps ( { store } ) {
     // trigger parellel loading calls
     const resetFilters = store.dispatch( clearFilters() );
-    const recentVideos = store.dispatch( loadRecents( 'video', 'en-us' ) );
-    const recentPosts = store.dispatch( loadRecents( 'post', 'en-us' ) );
+    const featured = store.dispatch( loadFeatured( featuredData ) );
     const postTypes = store.dispatch( loadPostTypes() );
 
     // await completion
     await resetFilters;
-    await recentVideos;
-    await recentPosts;
+    await featured;
     await postTypes;
 
     return {};
@@ -24,9 +59,8 @@ class Landing extends Component {
 
   render() {
     return (
-      <section className="max_width_1200">
-        <Recents postType="video" />
-        <Recents postType="post" />
+      <section>
+        <Featured data={ featuredData } />
       </section>
     );
   }
