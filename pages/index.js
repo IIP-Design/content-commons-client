@@ -52,7 +52,7 @@ class Landing extends Component {
     // await completion
     await Promise.all( [
       resetFilters,
-      featured
+      featured,
       postTypes
     ] );
 
