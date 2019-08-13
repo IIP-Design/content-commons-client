@@ -351,16 +351,33 @@ describe( '<TableActionsMenu />', () => {
     );
   } );
 
-  it( 'getSelectedProjects returns an array of selected project ids', async () => {
+  it( 'getSelectedProjectsIds returns an array of selected project ids', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
     const menu = wrapper.find( TableActionsMenu );
     const inst = menu.instance();
-    const selectedProjects = inst.getSelectedProjects();
+    const selectedProjectIds = inst.getSelectedProjectsIds();
 
-    expect( selectedProjects ).toEqual( ['ud78', 'ud98'] );
+    expect( selectedProjectIds ).toEqual( ['ud78', 'ud98'] );
+  } );
+
+  it( 'getSelectedProjects returns an array of selected video projects', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const menu = wrapper.find( TableActionsMenu );
+    const inst = menu.instance();
+    const { videoProjects } = mocks[4].result.data;
+    const selectedProjectIds = [...props.selectedItems.keys()];
+    const selectedProjects = inst.getSelectedProjects( videoProjects );
+
+    expect( selectedProjects.length ).toEqual( props.selectedItems.size );
+    selectedProjects.forEach( ( project, i ) => {
+      expect( project.id ).toEqual( selectedProjectIds[i] );
+    } );
   } );
 
   it( 'hasSelectedAllDrafts returns false if all selected projects have PUBLISHED status', async () => {
