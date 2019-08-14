@@ -278,7 +278,7 @@ class Video extends Component {
     }
 
     // fallback to Vimeo if no youtube link available
-    const vimeoProps = this.getVimeo( unit );
+    const vimeoProps = await this.getVimeo( unit );
     if ( vimeoProps && vimeoProps.videoId ) {
       return Promise.resolve( {
         props: { id: vimeoProps.videoId, source: 'vimeo' },
