@@ -89,21 +89,27 @@ describe( '<DeleteProjects />', () => {
       .toEqual( openConfirmProps.deleteConfirmOpen );
   } );
 
-  it( 'renders the correct Confirm message if both DRAFT(s) and non-DRAFT(s) projects are selected', () => {
+  it( 'renders the correct heading and Confirm messages if both DRAFT and non-DRAFT projects are selected', () => {
     const wrapper = mount( OpenConfirmComponent );
     const deleteMutation = wrapper.find( 'DeleteProjects' );
     const confirmModalContent = deleteMutation.find( 'ConfirmModalContent' );
-    const msg = `The following DRAFT video ${getPluralStringOrNot( drafts, 'project' )} will be removed permanently from the Content Cloud:`;
+    const heading = `Are you sure you want to delete the selected DRAFT video ${getPluralStringOrNot( drafts, 'project' )}?`; // eslint-disable-line
+    const msg1 = `The following DRAFT video ${getPluralStringOrNot( drafts, 'project' )} will be removed permanently from the Content Cloud:`;
+    const msg2 = `${drafts.length > 0 && nonDrafts.length > 0 ? 'Only DRAFT video projects can be deleted from the dashboard. ' : ''}The following non-DRAFT video ${getPluralStringOrNot( nonDrafts, 'project' )} will NOT be removed:`;
 
-    expect( confirmModalContent.contains( msg ) ).toEqual( true );
+    expect( confirmModalContent.contains( heading ) ).toEqual( true );
+    expect( confirmModalContent.contains( msg1 ) ).toEqual( true );
+    expect( confirmModalContent.contains( msg2 ) ).toEqual( true );
   } );
 
-  it( 'renders the correct Confirm messages if only non-DRAFT project(s) are selected', () => {
+  it( 'renders the correct heading and Confirm messages if only non-DRAFT project(s) are selected', () => {
     const wrapper = mount( NonDraftsComponent );
     const deleteMutation = wrapper.find( 'DeleteProjects' );
     const confirmModalContent = deleteMutation.find( 'ConfirmModalContent' );
+    const heading = 'Only DRAFT video projects can be deleted from the dashboard.';
     const msg = `The following non-DRAFT video ${getPluralStringOrNot( nonDrafts, 'project' )} will NOT be removed:`;
 
+    expect( confirmModalContent.contains( heading ) ).toEqual( true );
     expect( confirmModalContent.contains( msg ) ).toEqual( true );
   } );
 
