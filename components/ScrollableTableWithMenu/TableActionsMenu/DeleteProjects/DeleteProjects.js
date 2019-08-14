@@ -82,7 +82,7 @@ const DeleteProjects = props => {
               { nonDraftsCount > 0
                 && (
                   <DeleteProjectsList
-                    headline={ `The following non-DRAFT video ${getPluralStringOrNot( nonDrafts, 'project' )} will NOT be removed:` }
+                    headline={ `${draftsCount > 0 && nonDraftsCount > 0 ? 'Only DRAFT video projects can be deleted from the dashboard. ' : ''}The following non-DRAFT video ${getPluralStringOrNot( nonDrafts, 'project' )} will NOT be removed:` }
                     projects={ nonDrafts }
                   />
                 ) }
