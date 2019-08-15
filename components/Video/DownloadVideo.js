@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Item } from 'semantic-ui-react';
 import { object, string, bool } from 'prop-types';
-import { formatBytes, maybeGetUrlToProdS3 } from 'lib/utils';
+import { formatBytes, getVideoDownloadLink } from 'lib/utils';
 import downloadIcon from 'static/icons/icon_download.svg';
 
 // NOTE: Using the 'download' attribute to trigger downloads
@@ -43,10 +43,10 @@ class DownloadVideo extends Component {
     const size = this.getSizeInfo( video.size );
     const fn = `${title.replace( /\s/g, '_' )}_${video.size.width}.${this.getFnExt( video.downloadUrl )}`;
     const videoQuality = `${video.video_quality && video.video_quality === 'broadcast' ? 'broadcast' : 'web'}`;
-
+    const downloadLink = getVideoDownloadLink( video.downloadUrl, fn );
     return (
       <Item.Group key={ `fs_${index}` } className="download-item">
-        <Item as="a" href={ maybeGetUrlToProdS3( video.downloadUrl ) } download={ fn }>
+        <Item as="a" href={ downloadLink } download={ fn }>
           <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
           <Item.Content>
             <Item.Header className="download-header">
