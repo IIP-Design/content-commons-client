@@ -1,0 +1,13 @@
+.general-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  > .icon {
+      display: flex;
+
+      > img {
+        margin-right: 0.125rem !important;
+      }
+    }
+}
