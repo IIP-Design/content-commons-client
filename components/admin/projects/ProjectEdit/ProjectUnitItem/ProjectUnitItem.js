@@ -12,11 +12,11 @@ import iconVideoCamera from 'static/icons/icon_32px_videoCamera.png';
 import iconRemove from 'static/icons/icon_remove.svg';
 import iconReplace from 'static/icons/icon_replace.svg';
 import FileUploadProgressBar from 'components/admin/projects/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
-import GeneralError from 'components/errors/GeneralError/GeneralError';
 import { UploadContext } from '../VideoEdit/VideoEdit';
 import './ProjectUnitItem.scss';
 
 const EditSingleProjectItem = dynamic( () => import( /* webpackChunkName: "editSingleProjectItem" */ '../EditSingleProjectItem/EditSingleProjectItem' ) );
+const GeneralError = dynamic( () => import( /* webpackChunkName: "generalError" */ 'components/errors/GeneralError/GeneralError' ) );
 
 const ProjectUnitItem = props => {
   const { projectId, unit, filesToUpload } = props;
