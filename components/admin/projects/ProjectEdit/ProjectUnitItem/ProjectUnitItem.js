@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
-import { getPathToS3Bucket } from 'lib/utils';
+import { getCount, getPathToS3Bucket } from 'lib/utils';
 import truncate from 'lodash/truncate';
 import {
   Card, Modal, Image, List, Loader
@@ -24,6 +24,7 @@ const ProjectUnitItem = props => {
   const [thumbnail, setThumbnail] = useState( PLACEHOLDER );
   const [title, setTitle] = useState( '' );
   const [unitUploadComplete, setUnitUploadComplete] = useState( false );
+  const [error, setError] = useState( false );
 
   // do not put in state as it will create a new object and will not track upload
   // need a better solution as this is prone to errors
@@ -39,6 +40,26 @@ const ProjectUnitItem = props => {
     // return PLACEHOLDER;
   };
 
+  const getStreams = () => {
+    const filesCount = ( unit.files && unit.files.length ) || 0;
+    if ( filesCount > 0 ) {
+      return unit.files.reduce( ( acc, file ) => (
+        [...acc, ...file.stream]
+      ), [] );
+    }
+    return [];
+  };
+
+  const getStreamUrls = ( site = 'vimeo' ) => {
+    const streams = getStreams();
+    return streams.reduce( ( acc, stream ) => {
+      if ( stream.site === site && stream.url ) {
+        acc.push( stream.url );
+      }
+      return acc;
+    }, [] );
+  };
+
   const handleOnComplete = () => {
     setUnitUploadComplete( true );
   };
@@ -46,6 +67,10 @@ const ProjectUnitItem = props => {
   useEffect( () => {
     setThumbnail( getThumbnail( unit ) );
     setTitle( unit && unit.title ? unit.title : '[Title]' );
+
+    // expected uploads should equal successful uploads
+    const hasError = getCount( unit.files ) > getCount( getStreamUrls() );
+    setError( hasError );
   }, [unit] );
 
 
