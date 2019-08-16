@@ -91,7 +91,9 @@ const ProjectUnitItem = props => {
           </List>
         )
         }
-        <img className="metaicon" src={ iconVideoCamera } alt="Video Icon" />
+
+        { !error
+          && <img className="metaicon" src={ iconVideoCamera } alt="Video Icon" /> }
       </div>
 
       { /* Remove progress bar if above conditions are met */ }
