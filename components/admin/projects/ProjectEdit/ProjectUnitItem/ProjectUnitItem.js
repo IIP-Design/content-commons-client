@@ -6,10 +6,13 @@ import PropTypes from 'prop-types';
 import { getCount, getPathToS3Bucket } from 'lib/utils';
 import truncate from 'lodash/truncate';
 import {
-  Card, Modal, Image, List, Loader
+  Button, Card, Modal, Image, List, Loader, Popup
 } from 'semantic-ui-react';
 import iconVideoCamera from 'static/icons/icon_32px_videoCamera.png';
+import iconRemove from 'static/icons/icon_remove.svg';
+import iconReplace from 'static/icons/icon_replace.svg';
 import FileUploadProgressBar from 'components/admin/projects/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
+import GeneralError from 'components/errors/GeneralError/GeneralError';
 import { UploadContext } from '../VideoEdit/VideoEdit';
 import './ProjectUnitItem.scss';
 
@@ -113,10 +116,47 @@ const ProjectUnitItem = props => {
           <List>
             <List.Item>Language: { unit.language.displayName }</List.Item>
             <List.Item>Files: { getCount( getStreamUrls() ) }</List.Item>
+            { error
+              && (
+                <List.Item>
+                  <GeneralError msg="Uploading Error">
+                    <Button.Group
+                      basic
+                      className="actions"
+                      size="mini"
+                      style={ { border: 'none' } }
+                    >
+                      <Popup
+                        trigger={ (
+                          <Button className="replace" style={ { marginRight: 0, padding: '0.25rem' } }>
+                            <img src={ iconReplace } alt="replace icon" />
+                          </Button>
+                        ) }
+                        content="Replace this video unit"
+                        hideOnScroll
+                        inverted
+                        on={ ['hover', 'focus'] }
+                        size="mini"
+                      />
+                      <Popup
+                        trigger={ (
+                          <Button className="delete" style={ { border: 'none', padding: '0.25rem' } }>
+                            <img src={ iconRemove } alt="delete icon" />
+                          </Button>
+                        ) }
+                        content="Delete this video unit"
+                        hideOnScroll
+                        inverted
+                        on={ ['hover', 'focus'] }
+                        size="mini"
+                      />
+                    </Button.Group>
+                  </GeneralError>
+                </List.Item>
+              ) }
           </List>
         </Card.Meta>
       </Card.Content>
-
     </Card>
   );
 
