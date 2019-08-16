@@ -120,7 +120,7 @@ const ProjectUnitItem = props => {
     </Card>
   );
 
-  if ( projectId ) {
+  if ( projectId && !error ) {
     return (
       <Modal
         key={ unit.language.id }
