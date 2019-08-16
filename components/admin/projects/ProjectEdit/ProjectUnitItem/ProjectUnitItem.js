@@ -107,7 +107,7 @@ const ProjectUnitItem = props => {
           showPercent
         />
       ) }
-      <Card.Content>
+      <Card.Content className={ error ? 'error' : '' }>
         <Card.Header>{ title }</Card.Header>
         <Card.Meta>
           <List>
