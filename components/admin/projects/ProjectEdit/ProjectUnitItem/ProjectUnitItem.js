@@ -112,7 +112,7 @@ const ProjectUnitItem = props => {
         <Card.Meta>
           <List>
             <List.Item>Language: { unit.language.displayName }</List.Item>
-            <List.Item>Files: { unit.files.length }</List.Item>
+            <List.Item>Files: { getCount( getStreamUrls() ) }</List.Item>
           </List>
         </Card.Meta>
       </Card.Content>
