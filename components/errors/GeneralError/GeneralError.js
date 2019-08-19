@@ -22,7 +22,10 @@ const GeneralError = props => {
 GeneralError.propTypes = {
   children: PropTypes.node,
   el: PropTypes.string,
-  msg: PropTypes.string,
+  msg: PropTypes.oneOfType( [
+    PropTypes.node,
+    PropTypes.string
+  ] ),
   style: PropTypes.object
 };
 
