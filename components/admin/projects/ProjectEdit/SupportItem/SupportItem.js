@@ -7,12 +7,14 @@ import React, {
   Fragment, useState, useEffect, useRef, useContext
 } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import { compose, graphql } from 'react-apollo';
 import { Loader, Popup } from 'semantic-ui-react';
 import debounce from 'lodash/debounce';
 import Focusable from 'components/Focusable/Focusable';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
+import { getPathToS3Bucket } from 'lib/utils';
 import { UploadContext } from '../VideoEdit/VideoEdit';
 
 import './SupportItem.scss';
@@ -32,6 +34,7 @@ const SupportItem = props => {
 
   const uploadInProgress = useContext( UploadContext );
 
+  const [error, setError] = useState( false );
   const [widths, setWidths] = useState( {
     listItem: 0,
     itemName: 0,
@@ -53,9 +56,18 @@ const SupportItem = props => {
 
   const debounceResize = debounce( updateWidths, DELAY_INTERVAL );
 
+  const getFileUrlStatus = async () => {
+    const url = `${getPathToS3Bucket()}/${item.url}`;
+    const status = await axios.get( url )
+      .then( response => setError( response && response.status !== 200 ) )
+      .catch( err => setError( err && err.isAxiosError ) );
+    return status;
+  };
+
   useEffect( () => {
     window.addEventListener( 'resize', debounceResize );
     updateWidths();
+    getFileUrlStatus();
 
     return () => {
       window.removeEventListener( 'resize', debounceResize );
