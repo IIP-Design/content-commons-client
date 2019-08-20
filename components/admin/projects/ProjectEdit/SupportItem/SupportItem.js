@@ -6,11 +6,14 @@
 import React, {
   Fragment, useState, useEffect, useRef, useContext
 } from 'react';
-import PropTypes from 'prop-types';
 import axios from 'axios';
+import dynamic from 'next/dynamic';
+import PropTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
-import { Loader, Popup } from 'semantic-ui-react';
+import { Button, Loader, Popup } from 'semantic-ui-react';
 import debounce from 'lodash/debounce';
+import iconRemove from 'static/icons/icon_remove.svg';
+import iconReplace from 'static/icons/icon_replace.svg';
 import Focusable from 'components/Focusable/Focusable';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
@@ -19,6 +22,7 @@ import { UploadContext } from '../VideoEdit/VideoEdit';
 
 import './SupportItem.scss';
 
+const GeneralError = dynamic( () => import( /* webpackChunkName: "generalError" */ 'components/errors/GeneralError/GeneralError' ) );
 
 /* eslint-disable react/prefer-stateless-function */
 const SupportItem = props => {
@@ -138,73 +142,101 @@ const SupportItem = props => {
     wordBreak: 'break-word'
   };
 
+  const renderName = ( str = '', isLang = false ) => {
+    if ( isLongFileName ) {
+      return (
+        <Popup
+          content={ str }
+          size="mini"
+          inverted
+          on={ [
+            'hover',
+            'click',
+            'focus'
+          ] }
+          trigger={ (
+            <span>
+              <Focusable>
+                { isLang ? str : shortFileName }
+              </Focusable>
+            </span>
+            ) }
+          style={ popupStyle }
+        />
+      );
+    }
+    return str;
+  };
+
   return (
     <li
       key={ `${item.id}-${language.id}` }
       className={ `support-item ${( item.loaded < filesize ) ? 'new' : ''}` }
       ref={ listEl }
     >
-      <span className="item-name">
+      <span className="item-name" style={ error ? { color: '#cd2026' } : {} }>
         { isLongFileName && <VisuallyHidden>{ filename }</VisuallyHidden> }
         <span
           className={
-              `item-name-wrap${isLongFileName ? ' hasEllipsis' : ''}`
-            }
+            `item-name-wrap${isLongFileName ? ' hasEllipsis' : ''}`
+          }
           aria-hidden={ isLongFileName }
           ref={ filenameEl }
         >
-          { isLongFileName
-            ? (
-              <Popup
-                content={ filename }
-                size="mini"
-                inverted
-                on={ [
-                  'hover',
-                  'click',
-                  'focus'
-                ] }
-                trigger={ (
-                  <span>
-                    <Focusable>{ shortFileName }</Focusable>
-                  </span>
-                  ) }
-                style={ popupStyle }
-              />
-            ) : filename }
+          { error
+            ? <GeneralError msg={ renderName( filename ) } />
+            : renderName( filename ) }
         </span>
 
         <Loader active={ isUploading } inline size="mini" style={ { marginLeft: '.5rem' } } />
 
       </span>
 
-      <span className="item-lang">
-        <b
-          className={
-              `item-lang-wrap${isLongLangName ? ' hasEllipsis' : ''}`
-            }
-          ref={ languageEl }
-        >
-          { isLongLangName
-            ? (
+      <span className={ `item-lang${error ? ' error' : ''}` }>
+        { error
+          ? (
+            <Button.Group
+              basic
+              className="actions"
+              size="mini"
+              style={ { border: 'none' } }
+            >
               <Popup
                 trigger={ (
-                  <span>
-                    <Focusable>{ language.displayName }</Focusable>
-                  </span>
-                  ) }
-                content={ language.displayName }
-                on={ [
-                  'hover',
-                  'click',
-                  'focus'
-                ] }
+                  <Button className="replace" style={ { marginRight: 0, padding: '0.25rem' } }>
+                    <img src={ iconReplace } alt="replace icon" />
+                  </Button>
+                ) }
+                content="Replace this file"
+                hideOnScroll
                 inverted
+                on={ ['hover', 'focus'] }
                 size="mini"
-                style={ popupStyle }
               />
-            ) : language.displayName }
-        </b>
+              <Popup
+                trigger={ (
+                  <Button className="delete" style={ { border: 'none', padding: '0.25rem' } }>
+                    <img src={ iconRemove } alt="delete icon" />
+                  </Button>
+                ) }
+                content="Delete this file"
+                hideOnScroll
+                inverted
+                on={ ['hover', 'focus'] }
+                size="mini"
+              />
+            </Button.Group>
+          )
+          : (
+            <b
+              className={
+                `item-lang-wrap${isLongLangName ? ' hasEllipsis' : ''}`
+              }
+              ref={ languageEl }
+            >
+              { renderName( language.displayName, true ) }
+            </b>
+          ) }
       </span>
     </li>
   );

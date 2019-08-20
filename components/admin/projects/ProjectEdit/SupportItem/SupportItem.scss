@@ -29,8 +29,9 @@
     }
   }
 
-  i.red.exclamation.triangle.small.icon {
-    margin-top: auto;
-    margin-bottom: auto;
+  > .item-lang {
+      &.error {
+      overflow: visible !important;
+    }
   }
 }
