@@ -10,12 +10,11 @@ import axios from 'axios';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
-import { Button, Loader, Popup } from 'semantic-ui-react';
+import { Loader, Popup } from 'semantic-ui-react';
 import debounce from 'lodash/debounce';
-import iconRemove from 'static/icons/icon_remove.svg';
-import iconReplace from 'static/icons/icon_replace.svg';
 import Focusable from 'components/Focusable/Focusable';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
 import { getPathToS3Bucket } from 'lib/utils';
 import { UploadContext } from '../VideoEdit/VideoEdit';
@@ -195,37 +194,10 @@ const SupportItem = props => {
       <span className={ `item-lang${error ? ' error' : ''}` }>
         { error
           ? (
-            <Button.Group
-              basic
-              className="actions"
-              size="mini"
-              style={ { border: 'none' } }
-            >
-              <Popup
-                trigger={ (
-                  <Button className="replace" style={ { marginRight: 0, padding: '0.25rem' } }>
-                    <img src={ iconReplace } alt="replace icon" />
-                  </Button>
-                ) }
-                content="Replace this file"
-                hideOnScroll
-                inverted
-                on={ ['hover', 'focus'] }
-                size="mini"
-              />
-              <Popup
-                trigger={ (
-                  <Button className="delete" style={ { border: 'none', padding: '0.25rem' } }>
-                    <img src={ iconRemove } alt="delete icon" />
-                  </Button>
-                ) }
-                content="Delete this file"
-                hideOnScroll
-                inverted
-                on={ ['hover', 'focus'] }
-                size="mini"
-              />
-            </Button.Group>
+            <FileRemoveReplaceButtonGroup
+              onReplace={ () => {} }
+              onRemove={ () => console.log( 'removed' ) }
+            />
           )
           : (
             <b
