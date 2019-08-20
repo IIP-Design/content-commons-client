@@ -82,14 +82,14 @@ class Priorities extends Component {
 
   render() {
     const {
-      priorities, featured
+      priorities, featured, label
     } = this.props;
     return (
       <section className="priorities">
         <div className="prioritiescontainer">
           <div className="prioritiestitle">
             <Header as="h1" size="large">
-              { `Department Priority: ${this.props.label}` }
+              { `Department Priority: ${label}` }
             </Header>
             <a href="/results" onClick={ this.handleOnClick } className="browseAll">
               { `Browse All` }

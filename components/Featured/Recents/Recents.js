@@ -112,7 +112,7 @@ class Recents extends Component {
                     <img
                       src={ recents[0].icon }
                       className="recentsoverlay_icon"
-                      alt={ `${this.props.postType} icon` }
+                      alt={ `${postType} icon` }
                     />
                   </div>
                 </div>
