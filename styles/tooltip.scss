@@ -98,6 +98,10 @@ See src/components/Popup/Popup.scss for an example
 }
 
 [tooltip]:hover::after,
-[tooltip]:hover::before {
+[tooltip]:hover::before,
+[tooltip]:focus::after,
+[tooltip]:focus::before,
+:focus [tooltip]::after,
+:focus [tooltip]::before {
   opacity: 1;
 }
