@@ -19,8 +19,7 @@ import {
   DELETE_VIDEO_PROJECT_MUTATION,
   UPDATE_VIDEO_UNIT_MUTATION,
   VIDEO_PROJECT_FILES_QUERY,
-  VIDEO_PROJECT_UNITS_QUERY,
-  VIDEO_UNIT_ADD_TAG_MUTATION
+  VIDEO_PROJECT_UNITS_QUERY
 } from 'lib/graphql/queries/video';
 import { IMAGE_USES_QUERY } from 'lib/graphql/queries/common';
 import ApolloError from 'components/errors/ApolloError';
@@ -153,9 +152,9 @@ const VideoEdit = props => {
     addMoreInputRef = c;
   };
 
-  const handleSaveDraft = async ( id, projectTitle ) => {
+  const handleSaveDraft = async ( id, projectTitle, tags ) => {
     const { updateVideoProject, data: { imageUses } } = props;
-    const data = buildUpdateVideoProjectTree( filesToUpload, imageUses[0].id, projectTitle );
+    const data = buildUpdateVideoProjectTree( filesToUpload, imageUses[0].id, projectTitle, tags );
 
     await updateVideoProject( {
       variables: {
@@ -199,7 +198,7 @@ const VideoEdit = props => {
   };
 
 
-  const handleUpload = async project => {
+  const handleUpload = async ( project, tags ) => {
     const { id, projectTitle } = project;
     const { uploadExecute, setIsUploading } = props;
 
@@ -211,7 +210,7 @@ const VideoEdit = props => {
       await uploadExecute( id, filesToUpload, handleUploadProgress );
 
       // 2. once all files have been uploaded, create and save new project (only new)
-      handleSaveDraft( id, projectTitle );
+      handleSaveDraft( id, projectTitle, tags );
 
       // 3. clean up upload process
       handleUploadComplete();
@@ -429,7 +428,10 @@ const mapStateToProps = state => ( {
   upload: state.upload
 } );
 
-const connectUnitThumbnails = async ( units, thumbnails, updateVideoUnit ) => {
+const connectUnitThumbnails = async ( props, result ) => {
+  const { updateVideoProject: { units, thumbnails } } = result;
+  const { updateVideoUnit } = props;
+
   if ( units.length && thumbnails.length ) {
     units.forEach( async unit => {
       let thumbnail = thumbnails.find( tn => tn.language.id === unit.language.id );
@@ -449,29 +451,6 @@ const connectUnitThumbnails = async ( units, thumbnails, updateVideoUnit ) => {
       }
     } );
   }
-};
-
-const connectUnitTags = async ( units, tags, addVideoUnitTag ) => {
-  if ( units.length && tags.length ) {
-    units.forEach( async unit => {
-      tags.forEach( tag => {
-        addVideoUnitTag( {
-          variables: {
-            id: unit.id,
-            tagId: tag.id
-          }
-        } ).catch( err => console.dir( err ) );
-      } );
-    } );
-  }
-};
-
-const connectUnitData = async ( props, result ) => {
-  const { updateVideoProject: { units, tags, thumbnails } } = result;
-  const { updateVideoUnit, addVideoUnitTag } = props;
-
-  connectUnitThumbnails( units, thumbnails, updateVideoUnit );
-  connectUnitTags( units, tags, addVideoUnitTag );
 };
 
 const refetchVideoProject = result => {
@@ -503,7 +482,6 @@ export default compose(
   connect( mapStateToProps, actions ),
   graphql( IMAGE_USES_QUERY ),
   graphql( DELETE_VIDEO_PROJECT_MUTATION, { name: 'deleteVideoProject' } ),
-  graphql( VIDEO_UNIT_ADD_TAG_MUTATION, { name: 'addVideoUnitTag' } ),
   graphql( UPDATE_VIDEO_UNIT_MUTATION, {
     name: 'updateVideoUnit',
     options: () => ( {
@@ -514,7 +492,7 @@ export default compose(
     name: 'updateVideoProject',
     options: props => ( {
       refetchQueries: result => refetchVideoProject( result ),
-      onCompleted: result => connectUnitData( props, result )
+      onCompleted: result => connectUnitThumbnails( props, result )
     } )
   } ),
 )( VideoEdit );
