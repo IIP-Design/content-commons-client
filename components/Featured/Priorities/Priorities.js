@@ -84,6 +84,7 @@ class Priorities extends Component {
     const {
       priorities, featured, label
     } = this.props;
+    if ( priorities && priorities.length < 3 ) return <div />;
     return (
       <section className="priorities">
         <div className="prioritiescontainer">
