@@ -40,7 +40,7 @@ class Recents extends Component {
   }
 
   getCategories = item => {
-    const categories = item.categories.reduce( ( acc, cat, index, arr ) => {
+    const categories = item.categories.slice( 0, 3 ).reduce( ( acc, cat, index, arr ) => {
       const c = acc + cat.name.toLowerCase();
       return ( index < arr.length - 1 ) ? `${c} · ` : c;
     }, '' );
