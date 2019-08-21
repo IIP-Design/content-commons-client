@@ -25,9 +25,10 @@ const withFileUpload = WrappedComponent => {
         let result = await uploadToS3( projectId, file, getSignedS3Url, callback )
           .catch( err => {
             console.dir( err );
-            file.error = true;
+            file.error = !!err;
           } );
 
+        file.error = result.error;
         file.contentType = result.contentType;
         file.s3Path = result.path;
 
@@ -37,7 +38,7 @@ const withFileUpload = WrappedComponent => {
           file.stream.vimeo = await uploadToVimeo( file )
             .catch( err => {
               console.dir( err );
-              file.error = true;
+              file.error = !!err;
             } );
         }
 

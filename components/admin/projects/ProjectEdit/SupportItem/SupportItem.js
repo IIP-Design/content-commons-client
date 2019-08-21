@@ -59,18 +59,30 @@ const SupportItem = props => {
 
   const debounceResize = debounce( updateWidths, DELAY_INTERVAL );
 
-  const getFileUrlStatus = async () => {
-    const url = `${getPathToS3Bucket()}/${item.url}`;
-    const status = await axios.get( url )
-      .then( response => setError( response && response.status !== 200 ) )
-      .catch( err => setError( err && err.isAxiosError ) );
-    return status;
+  const checkFileUrlStatus = () => {
+    if ( item && ( item.s3Path || item.url ) ) {
+      const { s3Path, url } = item;
+      const path = s3Path || url;
+      const options = { baseURL: getPathToS3Bucket() };
+      axios.get( path, options )
+        .catch( err => {
+          console.dir( err );
+          setError( err.isAxiosError );
+        } );
+    }
+  };
+
+  const hasError = () => {
+    if ( item && typeof item.error !== 'undefined' ) {
+      setError( item.error );
+      return;
+    }
+    checkFileUrlStatus();
   };
 
   useEffect( () => {
     window.addEventListener( 'resize', debounceResize );
     updateWidths();
-    getFileUrlStatus();
 
     return () => {
       window.removeEventListener( 'resize', debounceResize );
@@ -78,6 +90,9 @@ const SupportItem = props => {
     };
   }, [] );
 
+  useEffect( () => {
+    hasError();
+  }, [item.s3Path, item.url] );
 
   /**
    * Truncates long strings with ellipsis

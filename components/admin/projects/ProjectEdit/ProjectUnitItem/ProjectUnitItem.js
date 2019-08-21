@@ -42,24 +42,24 @@ const ProjectUnitItem = props => {
     // return PLACEHOLDER;
   };
 
-  const getStreams = () => {
-    const filesCount = ( unit.files && unit.files.length ) || 0;
-    if ( filesCount > 0 ) {
-      return unit.files.reduce( ( acc, file ) => (
-        [...acc, ...file.stream]
-      ), [] );
+  const getFileStream = ( file = {}, site = 'vimeo' ) => {
+    if ( file.stream && Array.isArray( file.stream ) ) {
+      return file.stream.find( stream => stream.site === site );
     }
-    return [];
+    return {};
   };
 
-  const getStreamUrls = ( site = 'vimeo' ) => {
-    const streams = getStreams();
-    return streams.reduce( ( acc, stream ) => {
-      if ( stream.site === site && stream.url ) {
-        acc.push( stream.url );
-      }
-      return acc;
-    }, [] );
+  const hasError = () => {
+    if ( unit && Array.isArray( unit.files ) ) {
+      return unit.files.some( file => {
+        const stream = getFileStream( file );
+        if ( file.error ) {
+          return file.error;
+        }
+        return getCount( stream ) && !stream.url;
+      } );
+    }
+    return false;
   };
 
   const handleOnComplete = () => {
@@ -69,12 +69,11 @@ const ProjectUnitItem = props => {
   useEffect( () => {
     setThumbnail( getThumbnail( unit ) );
     setTitle( unit && unit.title ? unit.title : '[Title]' );
-
-    // expected uploads should equal successful uploads
-    const hasError = getCount( unit.files ) > getCount( getStreamUrls() );
-    setError( hasError );
   }, [unit] );
 
+  useEffect( () => {
+    setError( hasError() );
+  }, [projectId] );
 
   const renderProjectItem = () => (
     <Card className="project-unit-item">
