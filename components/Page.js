@@ -11,13 +11,13 @@ const Page = props => {
   const { pathname } = router;
   const path = pathname.substr( router.pathname.lastIndexOf( '/' ) + 1 );
   const title = ( path ) ? `${capitalizeFirst( path )} | Content Commons` : 'Content Commons';
-  const bodyCls = ( pathname === '/' ) ? '' : 'inside';
+  const bodyCls = ( pathname === '/' ) ? '' : 'ui container inside';
 
   return (
     <div>
       <Meta title={ title } />
       <Header />
-      <main className={ `ui container ${bodyCls}` }>
+      <main className={ bodyCls }>
         { props.children }
       </main>
       <Footer />

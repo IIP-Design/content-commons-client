@@ -7,16 +7,8 @@ import { v4 } from 'uuid';
 import {
   Grid, Header, Item, Modal, Loader, Message
 } from 'semantic-ui-react';
-import { createStructuredSelector } from 'reselect';
-import { makeSelectPostTypeLabel } from 'lib/redux/selectors/postTypes';
-import {
-  makeSelectRecentsByType,
-  makeSelectRecentsWithMeta,
-  makeSelectLoading,
-  makeSelectError
-} from './selectors';
-import Video from '../Video/Video';
-import Post from '../Post/Post';
+import Video from 'components/Video/Video';
+import Post from 'components/Post/Post';
 
 import './Recents.scss';
 
@@ -31,7 +23,7 @@ class Recents extends Component {
   }
 
   getModalContent = item => {
-    const noContent = <div>No content currently avaialble</div>;
+    const noContent = <div>No content currently available</div>;
     if ( item ) {
       switch ( item.type ) {
         case 'video':
@@ -47,8 +39,16 @@ class Recents extends Component {
     return noContent;
   }
 
+  getCategories = item => {
+    const categories = item.categories.reduce( ( acc, cat, index, arr ) => {
+      const c = acc + cat.name.toLowerCase();
+      return ( index < arr.length - 1 ) ? `${c} · ` : c;
+    }, '' );
+    return categories;
+  }
+
   renderRecentsWithMeta() {
-    return this.props.recentsWithMeta.slice( 1 ).map( recent => (
+    return this.props.recents.slice( 1 ).map( recent => (
       <Modal
         key={ v4() }
         closeIcon
@@ -64,7 +64,7 @@ class Recents extends Component {
               <Item.Header>{ recent.title }</Item.Header>
               <div className="meta">
                 <span className="date">{ moment( recent.published ).format( 'MMMM DD, YYYY' ) }</span>
-                <span className="categories">{ recent.categories }</span>
+                <span className="categories">{ this.getCategories( recent ) }</span>
               </div>
             </Item.Content>
           </Item>
@@ -79,22 +79,22 @@ class Recents extends Component {
 
   render() {
     const {
-      recents, recentsWithMeta, postTypeLabel, loading, error
+      recents, postTypeLabels, postType, featured
     } = this.props;
-
+    const postTypeLabel = postTypeLabels.find( type => type.key === postType );
     return (
-      <section className="recents">
+      <section className="ui container recents">
         <div className="recentstitle">
           <Header as="h1" size="large">
-            { `Most Recent ${this.props.postTypeLabel}s` }
+            { `Latest ${postTypeLabel.display_name}s` }
           </Header>
           <a href="/results" onClick={ this.handleOnClick } className="browseAll">
-            { `Browse All ${this.props.postTypeLabel}s` }
+            { `Browse All` }
           </a>
 
         </div>
-        <Loader active={ loading } />
-        { error && (
+        <Loader active={ featured.loading } />
+        { featured.error && (
           <Message>
             { `Oops, something went wrong.  We are unable to load the most recent ${postTypeLabel.toLowerCase()}s.` }
           </Message>
@@ -112,7 +112,7 @@ class Recents extends Component {
                     <img
                       src={ recents[0].icon }
                       className="recentsoverlay_icon"
-                      alt={ `${this.props.postType} icon` }
+                      alt={ `${postType} icon` }
                     />
                   </div>
                 </div>
@@ -126,7 +126,7 @@ class Recents extends Component {
             }
           </Grid.Column>
           <Grid.Column width={ 8 } className="recentsgridright">
-            <Item.Group>{ recentsWithMeta && this.renderRecentsWithMeta() }</Item.Group>
+            <Item.Group>{ recents && this.renderRecentsWithMeta() }</Item.Group>
           </Grid.Column>
         </Grid>
       </section>
@@ -136,22 +136,18 @@ class Recents extends Component {
 }
 
 Recents.propTypes = {
+  featured: PropTypes.object,
   recents: PropTypes.array,
-  recentsWithMeta: PropTypes.array,
   postType: PropTypes.string,
-  postTypeLabel: PropTypes.string,
   router: PropTypes.object,
-  loading: PropTypes.bool,
-  error: PropTypes.bool
+  postTypeLabels: PropTypes.array
 };
 
 
-const mapStateToProps = ( state, props ) => createStructuredSelector( {
-  postTypeLabel: makeSelectPostTypeLabel( props ),
-  recents: makeSelectRecentsByType(),
-  recentsWithMeta: makeSelectRecentsWithMeta(),
-  loading: makeSelectLoading(),
-  error: makeSelectError()
+const mapStateToProps = ( state, props ) => ( {
+  featured: state.featured,
+  recents: state.featured.recents[props.postType],
+  postTypeLabels: state.global.postTypes.list
 } );
 
 export default withRouter( connect( mapStateToProps )( Recents ) );
