@@ -1,6 +1,6 @@
 /**
  *
- * ProjectDataForm
+ * ProjectDetailsForm
  *
  */
 import React, { Fragment } from 'react';
@@ -19,14 +19,14 @@ import UserDropdown from 'components/admin/dropdowns/UserDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 
-import './ProjectDataForm.scss';
+import './ProjectDetailsForm.scss';
 
 /**
  * Form component only.  Form is wrapped in specifc content type HOC to handle
  * queries, validation, etc
  * @param {object} props
  */
-const ProjectDataForm = props => {
+const ProjectDetailsForm = props => {
   const {
     values,
     errors,
@@ -220,7 +220,7 @@ const ProjectDataForm = props => {
   );
 };
 
-ProjectDataForm.propTypes = {
+ProjectDetailsForm.propTypes = {
   id: PropTypes.string,
   status: PropTypes.string,
   handleSubmit: PropTypes.func,
@@ -236,4 +236,4 @@ ProjectDataForm.propTypes = {
   save: PropTypes.func,
 };
 
-export default ProjectDataForm;
+export default ProjectDetailsForm;

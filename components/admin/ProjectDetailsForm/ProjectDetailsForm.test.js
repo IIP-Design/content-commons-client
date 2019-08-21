@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import { categoryData, visibilityOptions } from 'components/admin/projects/ProjectEdit/mockData';
-import ProjectDataForm from './ProjectDataForm';
+import ProjectDetailsForm from './ProjectDetailsForm';
 
 const props = {
   handleSubmit: jest.fn(),
@@ -23,9 +23,9 @@ const props = {
   hasSubmittedData: false,
   hasRequiredData: false
 };
-const Component = <ProjectDataForm { ...props } />;
+const Component = <ProjectDetailsForm { ...props } />;
 
-describe( '<ProjectDataForm />', () => {
+describe( '<ProjectDetailsForm />', () => {
   it( 'renders without crashing', () => {
     const wrapper = shallow( Component );
     expect( wrapper.exists() ).toEqual( true );
@@ -72,7 +72,7 @@ describe( '<ProjectDataForm />', () => {
         && termsConditions
     };
 
-    const wrapper = shallow( <ProjectDataForm { ...{ ...newProps, ...hasRequired } } /> );
+    const wrapper = shallow( <ProjectDetailsForm { ...{ ...newProps, ...hasRequired } } /> );
 
     const submitBtn = wrapper.find( '.edit-project__form--save' );
     expect( submitBtn.prop( 'disabled' ) ).toEqual( !hasRequired.hasRequiredData );
@@ -105,7 +105,7 @@ describe( '<ProjectDataForm />', () => {
         && termsConditions
     };
 
-    const wrapper = shallow( <ProjectDataForm { ...{ ...newProps, ...hasRequired } } /> );
+    const wrapper = shallow( <ProjectDetailsForm { ...{ ...newProps, ...hasRequired } } /> );
 
     const submitBtn = wrapper.find( '.edit-project__form--save' );
     expect( submitBtn.prop( 'disabled' ) )
@@ -139,7 +139,7 @@ describe( '<ProjectDataForm />', () => {
         && termsConditions
     };
 
-    const wrapper = shallow( <ProjectDataForm { ...{ ...newProps, ...hasRequired } } /> );
+    const wrapper = shallow( <ProjectDetailsForm { ...{ ...newProps, ...hasRequired } } /> );
     const submitBtn = wrapper.find( '.edit-project__form--save' );
     expect( submitBtn.prop( 'disabled' ) )
       .toEqual( !hasRequired.hasRequiredData );
@@ -172,7 +172,7 @@ describe( '<ProjectDataForm />', () => {
         && termsConditions
     };
 
-    const wrapper = shallow( <ProjectDataForm { ...{ ...newProps, ...hasRequired } } /> );
+    const wrapper = shallow( <ProjectDetailsForm { ...{ ...newProps, ...hasRequired } } /> );
 
     const submitBtn = wrapper.find( '.edit-project__form--save' );
     expect( submitBtn.prop( 'disabled' ) ).toEqual( !hasRequired.hasRequiredData );
@@ -205,7 +205,7 @@ describe( '<ProjectDataForm />', () => {
         && termsConditions
     };
 
-    const wrapper = shallow( <ProjectDataForm { ...{ ...newProps, ...hasRequired } } /> );
+    const wrapper = shallow( <ProjectDetailsForm { ...{ ...newProps, ...hasRequired } } /> );
 
     const submitBtn = wrapper.find( '.edit-project__form--save' );
     expect( submitBtn.prop( 'disabled' ) ).toEqual( !hasRequired.hasRequiredData );
@@ -241,7 +241,7 @@ describe( '<ProjectDataForm />', () => {
         && termsConditions
     };
 
-    const wrapper = shallow( <ProjectDataForm { ...{ ...newProps, ...hasRequired } } /> );
+    const wrapper = shallow( <ProjectDetailsForm { ...{ ...newProps, ...hasRequired } } /> );
 
     const submitBtn = wrapper.find( '.edit-project__form--save' );
     expect( submitBtn.prop( 'disabled' ) ).toEqual( !hasRequired.hasRequiredData );
@@ -259,7 +259,7 @@ describe( '<ProjectDataForm />', () => {
       ...props,
       ...{ termsConditions: true }
     };
-    const wrapper = shallow( <ProjectDataForm { ...newProps } /> );
+    const wrapper = shallow( <ProjectDetailsForm { ...newProps } /> );
     const titleField = wrapper.find( '#terms-conditions' );
     expect( titleField.prop( 'error' ) )
       .toEqual( !newProps.termsConditions );
@@ -277,7 +277,7 @@ describe( '<ProjectDataForm />', () => {
       ...props,
       ...{ videoTitle: 'Test Title' }
     };
-    const wrapper = shallow( <ProjectDataForm { ...newProps } /> );
+    const wrapper = shallow( <ProjectDetailsForm { ...newProps } /> );
     const titleField = wrapper.find( '#video-title' );
     expect( titleField.prop( 'error' ) )
       .toEqual( !newProps.videoTitle );
@@ -288,7 +288,7 @@ describe( '<ProjectDataForm />', () => {
       ...props,
       ...{ visibility: '' }
     };
-    const wrapper = shallow( <ProjectDataForm { ...newProps } /> );
+    const wrapper = shallow( <ProjectDetailsForm { ...newProps } /> );
     const visibilityField = wrapper.find( '#visibility-setting' );
     expect( visibilityField.prop( 'error' ) )
       .toEqual( !newProps.visibility );
@@ -313,7 +313,7 @@ describe( '<ProjectDataForm />', () => {
       ...props,
       ...{ categoriesValue: ['about-america'] }
     };
-    const wrapper = shallow( <ProjectDataForm { ...newProps } /> );
+    const wrapper = shallow( <ProjectDetailsForm { ...newProps } /> );
     const categoryField = wrapper.find( '#video-categories' );
     expect( categoryField.prop( 'error' ) )
       .toEqual( !newProps.categoriesValue.length > 0 );
@@ -334,7 +334,7 @@ describe( '<ProjectDataForm />', () => {
     };
 
     const wrapper = shallow(
-      <ProjectDataForm { ...{ ...newProps, ...hasError } } />
+      <ProjectDetailsForm { ...{ ...newProps, ...hasError } } />
     );
     const categoryField = wrapper.find( '#video-categories' );
     expect( categoryField.prop( 'error' ) )
@@ -354,7 +354,7 @@ describe( '<ProjectDataForm />', () => {
     };
 
     const wrapper = shallow(
-      <ProjectDataForm { ...{ ...newProps, ...hasError } } />
+      <ProjectDetailsForm { ...{ ...newProps, ...hasError } } />
     );
     const categoryField = wrapper.find( '#video-categories' );
     expect( categoryField.prop( 'error' ) )

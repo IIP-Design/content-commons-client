@@ -1,6 +1,6 @@
 /**
  *
- * VideoProjectDataForm
+ * VideoProjectDetailsForm
  *
  */
 import React, { Fragment, useState } from 'react';
@@ -16,13 +16,13 @@ import { compose, graphql } from 'react-apollo';
 import { buildCreateVideoProjectTree, buildFormTree } from 'lib/graphql/builders/video';
 import { Formik } from 'formik';
 
-import ProjectDataForm from 'components/admin/projects/ProjectEdit/ProjectDataForm/ProjectDataForm';
+import ProjectDetailsForm from 'components/admin/ProjectDetailsForm/ProjectDetailsForm';
 import Notification from 'components/Notification/Notification';
 
 import useTimeout from 'lib/hooks/useTimeout';
 import { initialSchema, baseSchema } from './validationSchema';
 
-const VideoProjectDataForm = props => {
+const VideoProjectDetailsForm = props => {
   const [showNotication, setShowNotification] = useState( false );
 
   const hideNotification = () => {
@@ -129,7 +129,7 @@ const VideoProjectDataForm = props => {
             show={ showNotication }
             msg="Changes saved"
           />
-          <ProjectDataForm
+          <ProjectDetailsForm
             { ...formikProps }
             { ...props }
             save={ save }
@@ -140,7 +140,7 @@ const VideoProjectDataForm = props => {
   );
 };
 
-VideoProjectDataForm.propTypes = {
+VideoProjectDetailsForm.propTypes = {
   id: PropTypes.string,
   user: PropTypes.object,
   data: PropTypes.object,
@@ -160,4 +160,4 @@ export default compose(
     partialRefetch: true,
     skip: props => !props.id
   } )
-)( VideoProjectDataForm );
+)( VideoProjectDetailsForm );
