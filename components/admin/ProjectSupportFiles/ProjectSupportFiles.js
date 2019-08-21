@@ -7,7 +7,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
-import SupportFileTypeList from 'components/admin/projects/ProjectEdit/SupportFileTypeList/SupportFileTypeList';
+import SupportFileTypeList from './SupportFileTypeList/SupportFileTypeList';
 
 import './ProjectSupportFiles.scss';
 
@@ -15,7 +15,9 @@ const ProjectSupportFiles = props => {
   const {
     heading,
     projectId,
-    config
+    config,
+    updateDatabase,
+    removeFromDataBase
   } = props;
 
   const fileTypes = Object.keys( config.types );
@@ -27,6 +29,8 @@ const ProjectSupportFiles = props => {
           projectId={ projectId }
           type={ type }
           config={ config }
+          updateDatabase={ updateDatabase }
+          removeFromDataBase={ removeFromDataBase }
         />
 
       </Grid.Column>
@@ -54,6 +58,8 @@ const ProjectSupportFiles = props => {
 ProjectSupportFiles.propTypes = {
   heading: PropTypes.string,
   projectId: PropTypes.string,
+  updateDatabase: PropTypes.func,
+  removeFromDataBase: PropTypes.func,
   config: PropTypes.object.isRequired,
 };
 

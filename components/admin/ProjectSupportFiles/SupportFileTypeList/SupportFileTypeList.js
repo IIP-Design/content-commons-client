@@ -8,8 +8,6 @@ import React, {
   Fragment, useState, useEffect
 } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'semantic-ui-react';
-
 import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
 import { getFileExt } from 'lib/utils';
@@ -17,21 +15,22 @@ import isEmpty from 'lodash/isEmpty';
 import sortBy from 'lodash/sortBy';
 
 import IconPopup from 'components/popups/IconPopup/IconPopup';
-import EditSupportFiles from 'components/admin/projects/ProjectEdit/EditSupportFiles/EditSupportFiles';
-import EditSupportFilesContent from 'components/admin/projects/ProjectEdit/EditSupportFilesContent/EditSupportFilesContent';
-import SupportItem from 'components/admin/projects/ProjectEdit/SupportItem/SupportItem';
-
 import { VIDEO_PROJECT_FILES_QUERY } from 'lib/graphql/queries/video';
+import SupportItem from '../SupportItem/SupportItem';
+
+import EditSupportFiles from '../EditSupportFiles/EditSupportFiles';
 
 const SupportFileTypeList = props => {
-  const { projectId, config: { types } } = props;
+  const {
+    projectId, updateDatabase, removeFromDataBase, config: { types }
+  } = props;
+
   const type = types[props.type];
+
   const {
     headline, popupMsg
   } = type;
 
-  const [isEditing, setIsEditing] = useState( false );
-  const [hasImages, setHasImages] = useState( false );
 
   const getFilesForNewProject = filesToUpload => {
     const { extensions } = type;
@@ -42,6 +41,8 @@ const SupportFileTypeList = props => {
     const { extensions } = type;
     return files.filter( file => extensions.includes( getFileExt( file.filename ) ) );
   };
+
+  const getNoFilesMessage = ( hl = 'files' ) => ( projectId ? `Click the 'Edit' link to add ${hl.toLowerCase()}` : 'No file to upload' );
 
   const fetchFiles = data => {
     const { filesToUpload } = props;
@@ -61,23 +62,10 @@ const SupportFileTypeList = props => {
 
   const [supFiles, setSupFiles] = useState( [] );
 
-  const checkForImages = () => supFiles.some( file => {
-    let filetype = file.filetype || file.input.type;
-    filetype = filetype || '';
-    return filetype.includes( 'image' );
-  } );
-
   useEffect( () => {
     setSupFiles( fetchFiles( props.data ) );
-  }, [] );
+  }, [props.data] );
 
-  useEffect( () => {
-    setHasImages( checkForImages() );
-  }, [supFiles] );
-
-  const toggleEditModal = () => (
-    setIsEditing( !isEditing )
-  );
 
   const renderSupportItem = item => {
     const { fileType } = props;
@@ -90,10 +78,9 @@ const SupportFileTypeList = props => {
     );
   };
 
-
   return (
     <Fragment>
-      <h3>{ `${headline} ` }
+      <h3>{ `${headline}` }
         <IconPopup
           message={ popupMsg }
           iconSize="small"
@@ -102,40 +89,19 @@ const SupportFileTypeList = props => {
         />
         { projectId
           && (
-          <Fragment>
-            { !!supFiles.length // verify has upload completed
-              && (
-              <EditSupportFiles
-                triggerProps={ {
-                  className: 'btn--edit',
-                  content: 'Edit',
-                  size: 'small',
-                  basic: true,
-                  onClick: toggleEditModal
-                } }
-                contentProps={ {
-                  // fileType,
-                  // projectId,
-                  closeEditModal: toggleEditModal
-                } }
-                modalTrigger={ Button }
-                modalContent={ EditSupportFilesContent }
-                options={ {
-                  closeIcon: true,
-                  onClose: toggleEditModal,
-                  open: isEditing
-                } }
-              />
-              )
-            }
-          </Fragment>
+            <EditSupportFiles
+              supportFiles={ supFiles }
+              extensions={ type.extensions }
+              updateDatabase={ updateDatabase }
+              removeFromDataBase={ removeFromDataBase }
+            />
           )
         }
       </h3>
       <ul>
         { supFiles.length
           ? sortBy( supFiles, file => file.language.displayName ).map( renderSupportItem )
-          : 'No files available'
+          : ( <div style={ { fontSize: '0.875em' } }>{ getNoFilesMessage( headline ) }</div> )
         }
       </ul>
     </Fragment>
@@ -148,6 +114,8 @@ SupportFileTypeList.propTypes = {
   projectId: PropTypes.string,
   type: PropTypes.string,
   data: PropTypes.object,
+  updateDatabase: PropTypes.func,
+  removeFromDataBase: PropTypes.func,
   /* eslint-disable-next-line react/no-unused-prop-types */
   fileType: PropTypes.string,
   filesToUpload: PropTypes.array, // from redux
@@ -157,7 +125,7 @@ const mapStateToProps = state => ( {
   filesToUpload: state.upload.filesToUpload
 } );
 
-
+// todo: video specific code needs to be removed
 export default compose(
   connect( mapStateToProps, null ),
   graphql( VIDEO_PROJECT_FILES_QUERY, {

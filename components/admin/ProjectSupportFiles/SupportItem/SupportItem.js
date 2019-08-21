@@ -17,7 +17,7 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 // import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
 import { getPathToS3Bucket } from 'lib/utils';
-import { UploadContext } from '../VideoEdit/VideoEdit';
+import { UploadContext } from '../../projects/ProjectEdit/VideoEdit/VideoEdit';
 
 import './SupportItem.scss';
 

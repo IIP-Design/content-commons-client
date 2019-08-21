@@ -228,7 +228,7 @@ const VideoUpload = props => {
 
   /**
    * Called on submit. Saves applicabe file properties
-   * to redux store. Object is then accessed from ProjectDataForm
+   * to redux store. Object is then accessed from ProjectDetailsForm
    * in order to process upload
    * Note: would have preferred using Apollo cache but file object
    * would not serialize properly.

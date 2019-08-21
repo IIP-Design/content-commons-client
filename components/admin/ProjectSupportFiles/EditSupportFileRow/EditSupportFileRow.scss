@@ -1,0 +1,7 @@
+@import "styles/colors.scss";
+
+.filename {
+  [tooltip]::after {
+    min-width: 220px;
+  }
+}

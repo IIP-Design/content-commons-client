@@ -1,0 +1,50 @@
+@import "styles/colors.scss";
+
+.edit-support-files {
+  &.ui.modal.small {
+    width: 70%;
+
+    @media only screen and (min-width: 992px) {
+      width: 585px;
+    }
+
+    @media only screen and (min-width: 1200px) {
+      width: 625px;
+    }
+
+    .ui.header {
+      background: #fff;
+      border-bottom: transparent;
+      padding: 1.25rem 1.5rem 0.5em 1.5rem;
+      color: $blue;
+    }
+
+    .content {
+      .ui.grid {
+        margin-left: -0.5em;
+        margin-right: 0;
+
+        .row {
+          &:first-child {
+            border-bottom: 2px solid $alt-grey;
+            font-size: 1rem;
+          }
+          padding-bottom: 0.5rem;
+          padding-top: 0.5rem;
+          font-size: 0.888888889rem;
+        }
+      }
+    }
+
+    .actions {
+      background: #fff;
+      border-top: transparent;
+      padding-top: 2em;
+      text-align: center;
+    }
+
+    .required {
+      color: $red;
+    }
+  }
+}

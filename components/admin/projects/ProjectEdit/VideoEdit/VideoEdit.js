@@ -27,15 +27,13 @@ import Notification from 'components/Notification/Notification';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
-import ProjectSupportFiles from 'components/admin/ProjectSupportFiles/ProjectSupportFiles';
 import ProjectUnits from 'components/admin/projects/ProjectEdit/ProjectUnits/ProjectUnits';
 import FormInstructions from 'components/admin/projects/ProjectEdit/FormInstructions/FormInstructions';
-import VideoProjectDataForm from 'components/admin/projects/ProjectEdit/VideoProjectDataForm/VideoProjectDataForm';
+import VideoProjectDetailsForm from 'components/admin/ProjectDetailsForm/VideoProjectDetailsForm/VideoProjectDetailsForm';
+import VideoProjectSupportFiles from 'components/admin/ProjectSupportFiles/VideoProjectSupportFiles/VideoProjectSupportFiles';
 import UploadSuccessMsg from 'components/admin/projects/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
 import FileUploadProgressBar from 'components/admin/projects/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
 import withFileUpload from 'hocs/withFileUpload/withFileUpload';
-
-import { config } from './config';
 
 import './VideoEdit.scss';
 
@@ -344,7 +342,7 @@ const VideoEdit = props => {
 
       { /* project details form */ }
       <div className="edit-project__content" style={ contentStyle }>
-        <VideoProjectDataForm
+        <VideoProjectDetailsForm
           id={ projectId }
           updateNotification={ updateNotification }
           handleUpload={ handleUpload }
@@ -371,10 +369,9 @@ const VideoEdit = props => {
       <UploadContext.Provider value={ isUploading }>
         { /* support files */ }
         <div className="edit-project__support-files">
-          <ProjectSupportFiles
+          <VideoProjectSupportFiles
             projectId={ projectId }
             heading="Support Files"
-            config={ config.supportFiles }
           />
         </div>
 
