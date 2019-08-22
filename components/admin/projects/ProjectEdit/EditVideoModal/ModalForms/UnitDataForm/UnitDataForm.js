@@ -337,12 +337,6 @@ export default compose(
   graphql( VIDEO_UNIT_ADD_TAG_MUTATION, { name: 'tagsAddVideoUnitMutation' } ),
   graphql( VIDEO_UNIT_DESC_MUTATION, { name: 'descPublicVideoUnitMutation' } ),
   graphql( VIDEO_UNIT_TITLE_MUTATION, { name: 'titleVideoUnitMutation' } ),
-  // graphql( VIDEO_PROJECT_UNITS_QUERY, {
-  //   name: 'videoProjectQuery',
-  //   options: props => ( {
-  //     variables: { id: props.fileId },
-  //   } )
-  // } )
   graphql( VIDEO_FILE_QUERY, {
     name: 'videoFileQuery',
     options: props => ( {
