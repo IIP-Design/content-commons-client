@@ -12,7 +12,9 @@ import { EditSingleProjectItemContext } from 'components/admin/projects/ProjectE
 import './EditVideoModal.scss';
 
 const EditVideoModal = () => {
-  const { language, selectedFile, selectedUnit } = useContext(
+  const {
+    language, selectedFile, selectedProject, selectedUnit
+  } = useContext(
     EditSingleProjectItemContext
   );
 
@@ -21,6 +23,7 @@ const EditVideoModal = () => {
       <UnitDataForm
         language={ language }
         fileId={ selectedFile }
+        projectId={ selectedProject }
         unitId={ selectedUnit }
       />
       <FileSection />
