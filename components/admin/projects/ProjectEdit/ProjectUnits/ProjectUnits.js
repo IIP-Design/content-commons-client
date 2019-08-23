@@ -71,13 +71,6 @@ const ProjectUnits = props => {
     return [];
   };
 
-  // const updateIncludeVideoFileErrorMsg = () => {
-  //   if ( !isUploading ) {
-  //     return setDisableBtns( true );
-  //   }
-  //   return setDisableBtns( false );
-  // };
-
   const [units, setUnits] = useState( [] );
 
   useEffect( () => {
