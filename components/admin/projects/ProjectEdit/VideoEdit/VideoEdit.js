@@ -152,9 +152,9 @@ const VideoEdit = props => {
     addMoreInputRef = c;
   };
 
-  const handleSaveDraft = async ( id, projectTitle ) => {
+  const handleSaveDraft = async ( id, projectTitle, tags ) => {
     const { updateVideoProject, data: { imageUses } } = props;
-    const data = buildUpdateVideoProjectTree( filesToUpload, imageUses[0].id, projectTitle );
+    const data = buildUpdateVideoProjectTree( filesToUpload, imageUses[0].id, projectTitle, tags );
 
     await updateVideoProject( {
       variables: {
@@ -198,7 +198,7 @@ const VideoEdit = props => {
   };
 
 
-  const handleUpload = async project => {
+  const handleUpload = async ( project, tags ) => {
     const { id, projectTitle } = project;
     const { uploadExecute, setIsUploading } = props;
 
@@ -210,7 +210,7 @@ const VideoEdit = props => {
       await uploadExecute( id, filesToUpload, handleUploadProgress );
 
       // 2. once all files have been uploaded, create and save new project (only new)
-      handleSaveDraft( id, projectTitle );
+      handleSaveDraft( id, projectTitle, tags );
 
       // 3. clean up upload process
       handleUploadComplete();
@@ -452,7 +452,6 @@ const connectUnitThumbnails = async ( props, result ) => {
     } );
   }
 };
-
 
 const refetchVideoProject = result => {
   // This intermittently throws an error due to a null result

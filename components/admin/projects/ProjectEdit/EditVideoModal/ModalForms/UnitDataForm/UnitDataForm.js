@@ -10,6 +10,7 @@ import { compose, graphql } from 'react-apollo';
 import { Embed, Form, Grid } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 
+import { VIDEO_UNIT_ADD_TAG_MUTATION } from 'lib/graphql/queries/video';
 import Loader from 'components/admin/projects/ProjectEdit/EditVideoModal/Loader/Loader';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown';
 import {
@@ -75,24 +76,6 @@ const VIDEO_UNIT_DESC_MUTATION = gql`
     ) {
       id
       descPublic
-    }
-  }
-`;
-
-const VIDEO_UNIT_ADD_TAG_MUTATION = gql`
-  mutation VIDEO_UNIT_ADD_TAG_MUTATION( $id: ID!, $tagId: ID! ) {
-    updateVideoUnit(
-      data: {
-        tags: {
-          connect: {
-            id: $tagId
-          }
-        }
-      },
-      where: { id: $id }
-    ) {
-      id
-      tags { id }
     }
   }
 `;

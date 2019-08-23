@@ -105,7 +105,7 @@ const VideoProjectDataForm = props => {
       setStatus( 'CREATED' );
 
       // 4. Start upload of files. (if there are files to upload)
-      handleUpload( res.data.createVideoProject );
+      handleUpload( res.data.createVideoProject, values.tags );
     } catch ( err ) {
       setErrors( {
         submit: err
