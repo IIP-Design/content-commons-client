@@ -15,6 +15,7 @@ import TagDropdown from 'components/admin/dropdowns/TagDropdown';
 import {
   getPathToS3Bucket, getStreamData, getVimeoId, getYouTubeId
 } from 'lib/utils';
+import { VIDEO_PROJECT_UNITS_QUERY } from 'lib/graphql/queries/video';
 
 const VIDEO_UNIT_QUERY = gql`
   query VIDEO_UNIT_QUERY( $id: ID! ) {
@@ -30,6 +31,7 @@ const VIDEO_UNIT_QUERY = gql`
       }
       tags { id }
       thumbnails {
+        id
         image {
           id
           alt
@@ -115,6 +117,7 @@ const VIDEO_UNIT_REMOVE_TAG_MUTATION = gql`
 
 const UnitDataForm = ( {
   descPublicVideoUnitMutation,
+  projectId,
   setFieldValue,
   tagsAddVideoUnitMutation,
   tagsRemoveVideoUnitMutation,
@@ -154,6 +157,29 @@ const UnitDataForm = ( {
           cache.writeQuery( {
             query: VIDEO_UNIT_QUERY,
             data: { unit: cachedData.unit }
+          } );
+        } catch ( error ) {
+          console.log( error );
+        }
+
+        try {
+          const cachedProjectData = cache.readQuery( {
+            query: VIDEO_PROJECT_UNITS_QUERY,
+            variables: { id: projectId }
+          } );
+
+          const newUnits = cachedProjectData.projectUnits.units.map( u => {
+            if ( u.id === unitId ) {
+              u[name] = value;
+            }
+            return u;
+          } );
+
+          cachedProjectData.projectUnits.units = newUnits;
+
+          cache.writeQuery( {
+            query: VIDEO_PROJECT_UNITS_QUERY,
+            data: { projectUnits: cachedProjectData.projectUnits }
           } );
         } catch ( error ) {
           console.log( error );
@@ -294,6 +320,7 @@ const UnitDataForm = ( {
 
 UnitDataForm.propTypes = {
   descPublicVideoUnitMutation: propTypes.func,
+  projectId: propTypes.string,
   setFieldValue: propTypes.func,
   tagsAddVideoUnitMutation: propTypes.func,
   tagsRemoveVideoUnitMutation: propTypes.func,
