@@ -24,7 +24,8 @@ const ProjectUnits = props => {
     filesToUpload,
     heading,
     extensions,
-    setDisableBtns
+    setDisableBtns,
+    isUploading
   } = props;
 
   const hasProjectUnits = () => ( !isEmpty( data ) && data.projectUnits && data.projectUnits.units );
@@ -70,6 +71,13 @@ const ProjectUnits = props => {
     return [];
   };
 
+  const updateIncludeVideoFileErrorMsg = () => {
+    if ( !isUploading ) {
+      return setDisableBtns( true );
+    }
+    return setDisableBtns( false );
+  };
+
   const [units, setUnits] = useState( [] );
 
   useEffect( () => {
@@ -82,7 +90,7 @@ const ProjectUnits = props => {
       if ( projectUnits.units && projectUnits.units.length ) {
         setUnits( fetchUnits( data ) );
       } else {
-        setDisableBtns( true );
+        updateIncludeVideoFileErrorMsg();
       }
     }
   }, [data] );
@@ -119,7 +127,8 @@ ProjectUnits.propTypes = {
   extensions: PropTypes.array,
   data: PropTypes.object,
   filesToUpload: PropTypes.array, // from redux
-  setDisableBtns: PropTypes.func
+  setDisableBtns: PropTypes.func,
+  isUploading: PropTypes.bool
 };
 
 
