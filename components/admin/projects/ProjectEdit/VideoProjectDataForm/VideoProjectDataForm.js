@@ -80,37 +80,59 @@ const VideoProjectDataForm = props => {
   };
 
   const onHandleSubmit = async ( values, actions ) => {
+    const { setIsUploading } = props;
+
     const {
-      user, createVideoProject, updateNotification, handleUpload, setDisableBtns
+      user, createVideoProject, updateNotification, handleUpload
     } = props;
     const { setStatus, setErrors, setSubmitting } = actions;
 
     // Do not display 'include video file' notification
     // At some point during video file upload, notification conditional set to true
-    setDisableBtns( false );
+    // setDisableBtns( false );
 
     // 1. let user know system is saving
     updateNotification( 'Saving project...' );
 
     // 2. Do an initial save.  Upon successful save, system will return a project id
-    try {
-      const res = await createVideoProject( {
-        variables: {
-          data: buildCreateVideoProjectTree( user, values )
-        }
-      } );
+    // try {
+    //   const res = await createVideoProject( {
+    //     variables: {
+    //       data: buildCreateVideoProjectTree( user, values )
+    //     }
+    //   } );
 
-      // 3. Use formik handled to update status to hide submit button upon project creation
-      //    Button only appears for project creation
-      setStatus( 'CREATED' );
+    //   // 3. Use formik handled to update status to hide submit button upon project creation
+    //   //    Button only appears for project creation
+    //   setStatus( 'CREATED' );
 
-      // 4. Start upload of files. (if there are files to upload)
-      handleUpload( res.data.createVideoProject, values.tags );
-    } catch ( err ) {
-      setErrors( {
-        submit: err
+    //   // 4. Start upload of files. (if there are files to upload)
+    //   handleUpload( res.data.createVideoProject, values.tags );
+    // } catch ( err ) {
+    //   setErrors( {
+    //     submit: err
+    //   } );
+    // }
+
+    const res = await createVideoProject( {
+      variables: {
+        data: buildCreateVideoProjectTree( user, values )
+      }
+    } );
+
+    // 3. Start upload of files. (if there are files to upload)
+    handleUpload( res.data.createVideoProject, values.tags )
+      .then( () => {
+        // Use formik handled to update status to hide submit button upon project creation
+        // Button only appears for project creation
+        setStatus( 'CREATED' );
+      } )
+      .catch( err => {
+        setErrors( {
+          submit: err
+        } );
+        setIsUploading( false );
       } );
-    }
 
     setSubmitting( false );
   };
@@ -152,7 +174,7 @@ VideoProjectDataForm.propTypes = {
   updateNotification: PropTypes.func,
   handleUpload: PropTypes.func,
   updateVideoProject: PropTypes.func,
-  setDisableBtns: PropTypes.func
+  setIsUploading: PropTypes.func
 };
 
 export default compose(

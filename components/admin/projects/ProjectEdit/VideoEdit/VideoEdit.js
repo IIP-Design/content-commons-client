@@ -43,6 +43,8 @@ import './VideoEdit.scss';
 export const UploadContext = React.createContext( false );
 
 const VideoEdit = props => {
+  const { setIsUploading } = props;
+
   const MAX_CATEGORY_COUNT = 2;
   const SAVE_MSG_DELAY = 2000;
   const UPLOAD_SUCCESS_MSG_DELAY = SAVE_MSG_DELAY + 1000;
@@ -187,7 +189,8 @@ const VideoEdit = props => {
 
 
   const handleUploadComplete = () => {
-    const { setIsUploading, uploadReset } = props;
+    // const { setIsUploading, uploadReset } = props;
+    const { uploadReset } = props;
 
     setIsUploading( false );
     uploadReset(); // reset upload redux store
@@ -200,7 +203,8 @@ const VideoEdit = props => {
 
   const handleUpload = async ( project, tags ) => {
     const { id, projectTitle } = project;
-    const { uploadExecute, setIsUploading } = props;
+    // const { uploadExecute, setIsUploading } = props;
+    const { uploadExecute } = props;
 
     // If there are files to upload, upload them
     if ( filesToUpload && filesToUpload.length ) {
@@ -343,7 +347,8 @@ const VideoEdit = props => {
           updateNotification={ updateNotification }
           handleUpload={ handleUpload }
           maxCategories={ MAX_CATEGORY_COUNT }
-          setDisableBtns={ setDisableBtns }
+          // setDisableBtns={ setDisableBtns }
+          setIsUploading={ setIsUploading }
         />
       </div>
 
