@@ -17,6 +17,11 @@
     text-transform: uppercase;
   }
 
+  .includeVideoFileNotification {
+    opacity: 1 !important;
+    transition: opacity 0.3s ease;
+  }
+
   .ui.button {
     padding-top: 0.785714em;
     padding-bottom: 0.785714em;

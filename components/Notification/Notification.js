@@ -8,7 +8,9 @@ import React from 'react';
 import { object, string, bool } from 'prop-types';
 
 const Notification = props => {
-  const { el, msg, customStyles } = props;
+  const {
+    el, classes, msg, customStyles
+  } = props;
   const El = el;
   const defaultStyle = {
     padding: '1em 1.5em',
@@ -19,11 +21,12 @@ const Notification = props => {
 
   const style = { ...defaultStyle, ...customStyles };
 
-  return <El style={ style }>{ msg }</El>;
+  return <El className={ classes } style={ style }>{ msg }</El>;
 };
 
 Notification.propTypes = {
   el: string,
+  classes: string,
   msg: string.isRequired,
   customStyles: object,
   show: bool

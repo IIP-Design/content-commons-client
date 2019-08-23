@@ -71,12 +71,12 @@ const ProjectUnits = props => {
     return [];
   };
 
-  const updateIncludeVideoFileErrorMsg = () => {
-    if ( !isUploading ) {
-      return setDisableBtns( true );
-    }
-    return setDisableBtns( false );
-  };
+  // const updateIncludeVideoFileErrorMsg = () => {
+  //   if ( !isUploading ) {
+  //     return setDisableBtns( true );
+  //   }
+  //   return setDisableBtns( false );
+  // };
 
   const [units, setUnits] = useState( [] );
 
@@ -91,7 +91,7 @@ const ProjectUnits = props => {
         setUnits( fetchUnits( data ) );
         setDisableBtns( false );
       } else {
-        updateIncludeVideoFileErrorMsg();
+        setDisableBtns( true );
       }
     }
   }, [data] );

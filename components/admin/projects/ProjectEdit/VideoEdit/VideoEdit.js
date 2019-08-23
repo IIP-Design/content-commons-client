@@ -78,7 +78,8 @@ const VideoEdit = props => {
     fontSize: '1em',
     textAlign: 'center',
     backgroundColor: '#cd2026',
-    color: 'white'
+    color: 'white',
+    opacity: 0
   };
 
   const { upload: { isUploading, filesToUpload } } = props;
@@ -320,6 +321,7 @@ const VideoEdit = props => {
       { disableBtns && (
         <Notification
           el="p"
+          classes="includeVideoFileNotification"
           customStyles={ uploadVideoFileNotificationStyles }
           msg="Please include a Video file to your project."
         />
