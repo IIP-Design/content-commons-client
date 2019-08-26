@@ -81,7 +81,7 @@ const VideoProjectDataForm = props => {
 
   const onHandleSubmit = async ( values, actions ) => {
     const {
-      user, createVideoProject, updateNotification, handleUpload, setDisableBtns
+      user, createVideoProject, updateNotification, handleUpload
     } = props;
     const { setStatus, setErrors, setSubmitting } = actions;
 
@@ -95,9 +95,6 @@ const VideoProjectDataForm = props => {
           data: buildCreateVideoProjectTree( user, values )
         }
       } );
-
-      // Set Include Video File notification to false after project created
-      setDisableBtns( false );
 
       // 3. Use formik handled to update status to hide submit button upon project creation
       //    Button only appears for project creation

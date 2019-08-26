@@ -24,8 +24,7 @@ const ProjectUnits = props => {
     filesToUpload,
     heading,
     extensions,
-    setDisableBtns,
-    isUploading
+    setDisableBtns
   } = props;
 
   const hasProjectUnits = () => ( !isEmpty( data ) && data.projectUnits && data.projectUnits.units );
@@ -121,8 +120,7 @@ ProjectUnits.propTypes = {
   extensions: PropTypes.array,
   data: PropTypes.object,
   filesToUpload: PropTypes.array, // from redux
-  setDisableBtns: PropTypes.func,
-  isUploading: PropTypes.bool
+  setDisableBtns: PropTypes.func
 };
 
 
