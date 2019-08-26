@@ -52,7 +52,7 @@ const SupportItem = props => {
       setWidths( {
         listItem: listEl.current.offsetWidth,
         itemName: filenameEl.current.offsetWidth,
-        itemLang: languageEl.current.offsetWidth
+        itemLang: ( languageEl.current && languageEl.current.offsetWidth ) || 0
       } );
     }
   };
