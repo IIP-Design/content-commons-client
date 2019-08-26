@@ -318,7 +318,7 @@ const VideoEdit = props => {
       />
 
       { /* Video file notification */ }
-      { disableBtns && (
+      { !isUploading && disableBtns && (
         <Notification
           el="p"
           classes="includeVideoFileNotification"

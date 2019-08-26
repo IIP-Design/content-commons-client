@@ -83,10 +83,8 @@ const ProjectUnits = props => {
       if ( projectUnits.units && projectUnits.units.length ) {
         setUnits( fetchUnits( data ) );
         setDisableBtns( false );
-        console.log( `IsUploading w Units: ${isUploading}` );
       } else {
-        if ( !isUploading ) setDisableBtns( true );
-        console.log( `IsUploading NO Units: ${isUploading}` );
+        setDisableBtns( true );
       }
     }
   }, [data] );
