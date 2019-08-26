@@ -5,13 +5,13 @@ import './GeneralError.scss';
 
 const GeneralError = props => {
   const {
-    children, el: Element, msg, style
+    children, el: Element, icon, msg, style
   } = props;
 
   return (
     <Element className="general-error" style={ style }>
       <div className="icon">
-        <img src={ iconAlert } alt="alert icon" />
+        { icon && <img src={ iconAlert } alt="alert icon" /> }
         { msg }
       </div>
       { children }
@@ -22,6 +22,7 @@ const GeneralError = props => {
 GeneralError.propTypes = {
   children: PropTypes.node,
   el: PropTypes.string,
+  icon: PropTypes.bool,
   msg: PropTypes.oneOfType( [
     PropTypes.node,
     PropTypes.string
@@ -31,6 +32,7 @@ GeneralError.propTypes = {
 
 GeneralError.defaultProps = {
   el: 'div',
+  icon: true,
   msg: '',
   style: {}
 };
