@@ -9,7 +9,7 @@ import {
   Card, Modal, Image, List, Loader
 } from 'semantic-ui-react';
 import iconVideoCamera from 'static/icons/icon_32px_videoCamera.png';
-import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
+// import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import FileUploadProgressBar from 'components/admin/projects/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
 import { UploadContext } from '../VideoEdit/VideoEdit';
 import './ProjectUnitItem.scss';
@@ -118,10 +118,10 @@ const ProjectUnitItem = props => {
               && (
                 <List.Item>
                   <GeneralError msg="Uploading Error">
-                    <FileRemoveReplaceButtonGroup
+                    { /* <FileRemoveReplaceButtonGroup
                       onReplace={ () => {} }
                       onRemove={ () => console.log( 'removed' ) }
-                    />
+                    /> */ }
                   </GeneralError>
                 </List.Item>
               ) }

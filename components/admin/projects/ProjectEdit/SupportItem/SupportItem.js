@@ -14,7 +14,7 @@ import { Loader, Popup } from 'semantic-ui-react';
 import debounce from 'lodash/debounce';
 import Focusable from 'components/Focusable/Focusable';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
+// import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
 import { getPathToS3Bucket } from 'lib/utils';
 import { UploadContext } from '../VideoEdit/VideoEdit';
@@ -209,10 +209,11 @@ const SupportItem = props => {
       <span className={ `item-lang${error ? ' error' : ''}` }>
         { error
           ? (
-            <FileRemoveReplaceButtonGroup
+            null
+            /* <FileRemoveReplaceButtonGroup
               onReplace={ () => {} }
               onRemove={ () => console.log( 'removed' ) }
-            />
+            /> */
           )
           : (
             <b
