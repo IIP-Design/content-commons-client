@@ -7,12 +7,12 @@ import React, {
   Fragment, useState, useEffect, useRef, useContext
 } from 'react';
 import axios from 'axios';
-import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
 import { Loader, Popup } from 'semantic-ui-react';
 import debounce from 'lodash/debounce';
 import Focusable from 'components/Focusable/Focusable';
+import GeneralError from 'components/errors/GeneralError/GeneralError';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 // import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
@@ -20,8 +20,6 @@ import { getPathToS3Bucket } from 'lib/utils';
 import { UploadContext } from '../VideoEdit/VideoEdit';
 
 import './SupportItem.scss';
-
-const GeneralError = dynamic( () => import( /* webpackChunkName: "generalError" */ 'components/errors/GeneralError/GeneralError' ) );
 
 /* eslint-disable react/prefer-stateless-function */
 const SupportItem = props => {
