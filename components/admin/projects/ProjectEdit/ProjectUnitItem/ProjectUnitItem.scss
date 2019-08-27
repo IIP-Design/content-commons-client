@@ -54,6 +54,13 @@ a.ui.card.project-unit-item:hover {
       .meta {
         font-size: 0.777777778rem;
       }
+
+      &.error {
+        > .header,
+        > .meta > .ui.list {
+          color: $red;
+        }
+      }
     }
 
     .placeholder {

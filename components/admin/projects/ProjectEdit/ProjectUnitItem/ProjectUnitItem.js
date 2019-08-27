@@ -3,17 +3,19 @@ import React, {
 } from 'react';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
-import { getPathToS3Bucket } from 'lib/utils';
+import { getCount, getPathToS3Bucket } from 'lib/utils';
 import truncate from 'lodash/truncate';
 import {
   Card, Modal, Image, List, Loader
 } from 'semantic-ui-react';
 import iconVideoCamera from 'static/icons/icon_32px_videoCamera.png';
+// import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import FileUploadProgressBar from 'components/admin/projects/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
 import { UploadContext } from '../VideoEdit/VideoEdit';
 import './ProjectUnitItem.scss';
 
 const EditSingleProjectItem = dynamic( () => import( /* webpackChunkName: "editSingleProjectItem" */ '../EditSingleProjectItem/EditSingleProjectItem' ) );
+const GeneralError = dynamic( () => import( /* webpackChunkName: "generalError" */ 'components/errors/GeneralError/GeneralError' ) );
 
 const ProjectUnitItem = props => {
   const { projectId, unit, filesToUpload } = props;
@@ -24,6 +26,7 @@ const ProjectUnitItem = props => {
   const [thumbnail, setThumbnail] = useState( PLACEHOLDER );
   const [title, setTitle] = useState( '' );
   const [unitUploadComplete, setUnitUploadComplete] = useState( false );
+  const [error, setError] = useState( false );
 
   // do not put in state as it will create a new object and will not track upload
   // need a better solution as this is prone to errors
@@ -39,6 +42,26 @@ const ProjectUnitItem = props => {
     // return PLACEHOLDER;
   };
 
+  const getFileStream = ( file = {}, site = 'vimeo' ) => {
+    if ( file.stream && Array.isArray( file.stream ) ) {
+      return file.stream.find( stream => stream.site === site );
+    }
+    return {};
+  };
+
+  const hasError = () => {
+    if ( unit && Array.isArray( unit.files ) ) {
+      return unit.files.some( file => {
+        const stream = getFileStream( file );
+        if ( file.error ) {
+          return file.error;
+        }
+        return getCount( stream ) && !stream.url;
+      } );
+    }
+    return false;
+  };
+
   const handleOnComplete = () => {
     setUnitUploadComplete( true );
   };
@@ -48,6 +71,9 @@ const ProjectUnitItem = props => {
     setTitle( unit && unit.title ? unit.title : '[Title]' );
   }, [unit] );
 
+  useEffect( () => {
+    setError( hasError() );
+  }, [projectId] );
 
   const renderProjectItem = () => (
     <Card className="project-unit-item">
@@ -66,7 +92,9 @@ const ProjectUnitItem = props => {
           </List>
         )
         }
-        <img className="metaicon" src={ iconVideoCamera } alt="Video Icon" />
+
+        { !error
+          && <img className="metaicon" src={ iconVideoCamera } alt="Video Icon" /> }
       </div>
 
       { /* Remove progress bar if above conditions are met */ }
@@ -80,20 +108,30 @@ const ProjectUnitItem = props => {
           showPercent
         />
       ) }
-      <Card.Content>
+      <Card.Content className={ error ? 'error' : '' }>
         <Card.Header>{ title }</Card.Header>
         <Card.Meta>
           <List>
             <List.Item>Language: { unit.language.displayName }</List.Item>
             <List.Item>Files: { unit.files.length }</List.Item>
+            { error
+              && (
+                <List.Item>
+                  <GeneralError msg="Uploading Error">
+                    { /* <FileRemoveReplaceButtonGroup
+                      onReplace={ () => {} }
+                      onRemove={ () => console.log( 'removed' ) }
+                    /> */ }
+                  </GeneralError>
+                </List.Item>
+              ) }
           </List>
         </Card.Meta>
       </Card.Content>
-
     </Card>
   );
 
-  if ( projectId ) {
+  if ( projectId && !error ) {
     return (
       <Modal
         key={ unit.language.id }
