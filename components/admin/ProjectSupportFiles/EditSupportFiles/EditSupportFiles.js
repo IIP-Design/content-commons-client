@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Grid, Form, Button, Modal, Header
@@ -12,6 +12,7 @@ const EditSupportFiles = ( {
   supportFiles, extensions, save
 } ) => {
   const [open, setOpen] = useState( false );
+  const [allFieldsSelected, setAllFieldsSelected] = useState( false );
 
   const {
     state: { files, filesToRemove },
@@ -21,6 +22,21 @@ const EditSupportFiles = ( {
     removeFile,
     replaceFile
   } = useFileActions();
+
+
+  /*
+  Check to see if all required dropdowns are completed
+  when the the files state changes. All fields do not need
+  to be checked as some are pre-populated on initialization or
+  not applicable. Save button becomes active when all
+  complete
+  */
+  const isComplete = () => files.every( file => !!file.language );
+
+  useEffect( () => {
+    setAllFieldsSelected( isComplete() );
+  }, [files] );
+
 
   const allowedExtensions = extensions.join( ',' );
   const compareFilenames = ( a, b ) => {
@@ -100,6 +116,7 @@ const EditSupportFiles = ( {
           type="button"
           content="Save"
           onClick={ handleSave }
+          disabled={ !allFieldsSelected }
         />
       </Modal.Actions>
     </Modal>

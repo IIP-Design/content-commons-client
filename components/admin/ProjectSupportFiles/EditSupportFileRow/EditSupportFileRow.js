@@ -49,7 +49,6 @@ const EditSupportFileRow = props => {
 
       { /* Language */ }
       <Grid.Column width={ 6 }>
-        { /* <LanguageDropdown id={ id } value={ language } onChange={ updateField } required /> */ }
         <LanguageDropdown id={ id } value={ language } onChange={ update } required />
       </Grid.Column>
 
