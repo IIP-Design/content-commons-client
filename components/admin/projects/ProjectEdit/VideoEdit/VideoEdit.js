@@ -202,15 +202,14 @@ const VideoEdit = props => {
 
   const handleUpload = async ( project, tags ) => {
     const { id, projectTitle } = project;
-    // const { uploadExecute, setIsUploading } = props;
-    const { uploadExecute } = props;
+    const { uploadExecute, updateFile } = props;
 
     // If there are files to upload, upload them
     if ( filesToUpload && filesToUpload.length ) {
       setIsUploading( true );
 
       // 1. Upload files to S3 & Vimeo and fetch file meta data
-      await uploadExecute( id, filesToUpload, handleUploadProgress );
+      await uploadExecute( id, filesToUpload, handleUploadProgress, updateFile );
 
       // 2. once all files have been uploaded, create and save new project (only new)
       handleSaveDraft( id, projectTitle, tags );
@@ -425,6 +424,7 @@ VideoEdit.propTypes = {
   uploadExecute: PropTypes.func, // from redux
   uploadReset: PropTypes.func, // from redux
   uploadProgress: PropTypes.func, // from redux
+  updateFile: PropTypes.func,
   upload: PropTypes.object // from redux
 };
 

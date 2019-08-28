@@ -2,23 +2,20 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { uploadToS3, uploadToVimeo, getFileMetadata } from 'lib/upload';
 import { compose, graphql } from 'react-apollo';
-import { connect } from 'react-redux';
-import * as actions from 'lib/redux/actions/upload';
 import { SIGNED_S3_URL_MUTATION, FILE_INFO_MUTATION } from 'lib/graphql/queries/util';
 
 const withFileUpload = WrappedComponent => {
   class _withFileUpload extends PureComponent {
     static propTypes = {
       getSignedS3Url: PropTypes.func.isRequired,
-      getFileInfo: PropTypes.func,
-      updateFile: PropTypes.func.isRequired
+      getFileInfo: PropTypes.func
     };
 
 
-    upload = async ( projectId, files, callback ) => {
-      const { getSignedS3Url, getFileInfo, updateFile } = this.props;
+    upload = async ( projectId, files, callback, updateFn ) => {
+      const { getSignedS3Url, getFileInfo } = this.props;
 
-      await Promise.all( files.map( async file => {
+      return Promise.all( files.map( async file => {
         const isVideo = file.input.type.includes( 'video' );
         const isImage = file.input.type.includes( 'image' );
 
@@ -56,20 +53,26 @@ const withFileUpload = WrappedComponent => {
           }
         }
 
-        // update redux state with new file props
-        updateFile( file );
+        // update reducer state with new file props
+        if ( updateFn && typeof updateFn === 'function' ) { updateFn( file ); }
+
+        return file;
       } ) );
     }
 
 
     render() {
-      return <WrappedComponent { ...this.props } uploadExecute={ this.upload } />;
+      return (
+        <WrappedComponent
+          { ...this.props }
+          uploadExecute={ this.upload }
+        />
+      );
     }
   }
 
 
   return compose(
-    connect( null, actions ),
     graphql( SIGNED_S3_URL_MUTATION, { name: 'getSignedS3Url' } ),
     graphql( FILE_INFO_MUTATION, { name: 'getFileInfo' } )
   )( _withFileUpload );
