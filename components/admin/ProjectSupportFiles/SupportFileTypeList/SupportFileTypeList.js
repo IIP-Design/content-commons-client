@@ -22,7 +22,7 @@ import EditSupportFiles from '../EditSupportFiles/EditSupportFiles';
 
 const SupportFileTypeList = props => {
   const {
-    projectId, updateDatabase, removeFromDataBase, config: { types }
+    projectId, save, config: { types }
   } = props;
 
   const type = types[props.type];
@@ -31,6 +31,11 @@ const SupportFileTypeList = props => {
     headline, popupMsg
   } = type;
 
+  const handleSave = async ( files, filesToRemove ) => {
+    await save( files, filesToRemove );
+
+    return props.data.refetch();
+  };
 
   const getFilesForNewProject = filesToUpload => {
     const { extensions } = type;
@@ -92,8 +97,7 @@ const SupportFileTypeList = props => {
             <EditSupportFiles
               supportFiles={ supFiles }
               extensions={ type.extensions }
-              updateDatabase={ updateDatabase }
-              removeFromDataBase={ removeFromDataBase }
+              save={ handleSave }
             />
           )
         }
@@ -114,8 +118,7 @@ SupportFileTypeList.propTypes = {
   projectId: PropTypes.string,
   type: PropTypes.string,
   data: PropTypes.object,
-  updateDatabase: PropTypes.func,
-  removeFromDataBase: PropTypes.func,
+  save: PropTypes.func,
   /* eslint-disable-next-line react/no-unused-prop-types */
   fileType: PropTypes.string,
   filesToUpload: PropTypes.array, // from redux

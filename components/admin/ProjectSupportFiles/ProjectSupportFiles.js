@@ -16,8 +16,7 @@ const ProjectSupportFiles = props => {
     heading,
     projectId,
     config,
-    updateDatabase,
-    removeFromDataBase
+    save
   } = props;
 
   const fileTypes = Object.keys( config.types );
@@ -29,8 +28,7 @@ const ProjectSupportFiles = props => {
           projectId={ projectId }
           type={ type }
           config={ config }
-          updateDatabase={ updateDatabase }
-          removeFromDataBase={ removeFromDataBase }
+          save={ save }
         />
 
       </Grid.Column>
@@ -58,8 +56,7 @@ const ProjectSupportFiles = props => {
 ProjectSupportFiles.propTypes = {
   heading: PropTypes.string,
   projectId: PropTypes.string,
-  updateDatabase: PropTypes.func,
-  removeFromDataBase: PropTypes.func,
+  save: PropTypes.func,
   config: PropTypes.object.isRequired,
 };
 

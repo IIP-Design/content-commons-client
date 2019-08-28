@@ -12,11 +12,11 @@ import './FileRemoveReplaceButtonGroup.scss';
  * @param {object} props
  */
 const FileRemoveReplaceButtonGroup = props => {
-  const { onReplace, onRemove } = props;
+  const { onReplace, onRemove, accept } = props;
 
   return (
     <Button.Group basic className="FileRemoveReplaceButtonGroup__btn-group">
-      <ButtonAddFiles onChange={ onReplace }>
+      <ButtonAddFiles onChange={ onReplace } accept={ accept }>
         <span tooltip="Replace">
           <img src={ replaceIcon } alt="Replace Video File Button" />
         </span>
@@ -33,7 +33,8 @@ const FileRemoveReplaceButtonGroup = props => {
 
 FileRemoveReplaceButtonGroup.propTypes = {
   onReplace: PropTypes.func,
-  onRemove: PropTypes.func
+  onRemove: PropTypes.func,
+  accept: PropTypes.string
 };
 
 export default FileRemoveReplaceButtonGroup;

@@ -9,7 +9,7 @@ import EditSupportFileRow from '../EditSupportFileRow/EditSupportFileRow';
 import './EditSupportFiles.scss';
 
 const EditSupportFiles = ( {
-  supportFiles, extensions, updateDatabase, removeFromDataBase
+  supportFiles, extensions, save
 } ) => {
   const [open, setOpen] = useState( false );
 
@@ -45,20 +45,9 @@ const EditSupportFiles = ( {
     updateFileField( data );
   };
 
-  const handleSave = () => {
-    /*
-      1. loop thru files
-      2. if input prop present, upload
-      3. get file meta data back
-      4. update db
-      -----
-      1. loop thru files to remove
-      2. delete file from s3
-      3. delete from db
-    */
-
-    updateDatabase( files );
-    removeFromDataBase( filesToRemove );
+  const handleSave = async () => {
+    await save( files, filesToRemove );
+    closeModal();
   };
 
   return (
@@ -120,8 +109,7 @@ const EditSupportFiles = ( {
 EditSupportFiles.propTypes = {
   supportFiles: PropTypes.array,
   extensions: PropTypes.array,
-  updateDatabase: PropTypes.func,
-  removeFromDataBase: PropTypes.func
+  save: PropTypes.func
 };
 
 export default EditSupportFiles;
