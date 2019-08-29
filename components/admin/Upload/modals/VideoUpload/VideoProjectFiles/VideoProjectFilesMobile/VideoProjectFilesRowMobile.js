@@ -74,7 +74,8 @@ const VideoProjectFilesRowMobile = props => {
       { ( {
         replaceAssetFile,
         removeAssetFile,
-        updateField
+        updateField,
+        accept
       } ) => (
         <div className="videoProjectFilesRowMobile">
 
@@ -99,6 +100,7 @@ const VideoProjectFilesRowMobile = props => {
               <FileRemoveReplaceMenu
                 onReplace={ e => replaceAssetFile( id, e.target.files[0] ) }
                 onRemove={ () => removeAssetFile( id ) }
+                accept={ accept }
               />
             </div>
           </div>

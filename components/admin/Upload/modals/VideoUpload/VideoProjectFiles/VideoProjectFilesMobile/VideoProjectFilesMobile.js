@@ -18,7 +18,8 @@ const VideoProjectFilesMobile = () => (
       closeModal,
       allFieldsSelected,
       handleAddFilesToUpload,
-      compareFileNames
+      compareFileNames,
+      accept
     } ) => (
       <div className="videoProjectFilesMobile__wrapper">
         <Form>
@@ -34,7 +35,7 @@ const VideoProjectFilesMobile = () => (
             onChange={ e => addAssetFiles( e.target.files ) }
             multiple
             className="secondary"
-            inputID="mobileVideoFileUpload"
+            accept={ accept }
           >
             + Add Files
           </ButtonAddFiles>

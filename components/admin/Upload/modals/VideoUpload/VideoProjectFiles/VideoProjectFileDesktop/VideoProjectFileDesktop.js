@@ -83,7 +83,7 @@ const VideoProjectFilesDesktop = () => {
                   onChange={ e => addAssetFiles( e.target.files ) }
                   multiple
                   className="secondary"
-                  inputID="videoFileUpload"
+                  accept=".srt, .mov, .mp4, .jpg, .png, .jpeg"
                 > Add Files
                 </ButtonAddFiles>
               </Grid.Row>

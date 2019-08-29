@@ -86,7 +86,8 @@ const VideoProjectFilesDesktopRow = props => {
         ( {
           replaceAssetFile,
           removeAssetFile,
-          updateField
+          updateField,
+          accept
         } ) => (
           <Grid.Row className="videoProjectFilesDesktopRow">
 
@@ -137,6 +138,7 @@ const VideoProjectFilesDesktopRow = props => {
               <FileRemoveReplaceButtonGroup
                 onReplace={ e => { replaceAssetFile( id, e.target.files[0] ); } }
                 onRemove={ () => { removeAssetFile( id ); } }
+                accept={ accept }
               />
             </Grid.Column>
           </Grid.Row>

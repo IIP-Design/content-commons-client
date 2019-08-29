@@ -9,7 +9,7 @@ export const config = {
       },
       other: {
         headline: 'Additional Files',
-        extensions: ['.png', '.jpeg', '.jpg', '.svg'],
+        extensions: ['.png', '.jpeg', '.jpg'],
         popupMsg: 'Additional files that can be used with this video, e.g., audio file, pdf.',
         iconMsg: 'Checking this prevents people from downloading and using your images. Useful if your images are licensed.',
         iconSize: 'small',

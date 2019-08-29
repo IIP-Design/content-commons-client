@@ -236,6 +236,7 @@ const VideoUpload = props => {
   };
 
   const { updateModalClassname, closeModal } = props;
+  const accept = '.srt, .mov, .mp4, .jpg, .png, .jpeg';
 
   /* eslint-disable react/display-name */
   const panes = [
@@ -248,6 +249,7 @@ const VideoUpload = props => {
             goNext={ goNext }
             updateModalClassname={ updateModalClassname }
             addAssetFiles={ addAssetFiles }
+            accept={ accept }
           />
         </Tab.Pane>
       )
@@ -264,7 +266,8 @@ const VideoUpload = props => {
             updateField,
             allFieldsSelected,
             closeModal,
-            handleAddFilesToUpload
+            handleAddFilesToUpload,
+            accept
           } }
           >
             <VideoProjectFiles
