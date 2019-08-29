@@ -56,7 +56,7 @@ const EditSupportFileRow = props => {
       <Grid.Column width={ 2 } only="tablet computer" style={ { paddingLeft: 0 } }>
         <FileRemoveReplaceButtonGroup
           onReplace={ e => { replaceFile( id, e.target.files[0] ); } }
-          onRemove={ () => { removeFile( id ); } }
+          onRemove={ () => { removeFile( id, name ); } }
           accept={ accept }
         />
 

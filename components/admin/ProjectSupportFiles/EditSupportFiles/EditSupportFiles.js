@@ -4,8 +4,9 @@ import {
   Grid, Form, Button, Modal, Header, Dimmer
 } from 'semantic-ui-react';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
-import { useFileActions } from 'lib/hooks/useFileActions';
+import { useFileUploadActions } from 'lib/hooks/useFileUploadActions';
 import Notification from 'components/Notification/Notification';
+import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
 import EditSupportFileRow from '../EditSupportFileRow/EditSupportFileRow';
 import './EditSupportFiles.scss';
 
@@ -14,6 +15,7 @@ const EditSupportFiles = ( {
 } ) => {
   const [open, setOpen] = useState( false );
   const [saving, setSaving] = useState( false );
+  const [confirm, setConfirm] = useState( {} );
   const [allFieldsSelected, setAllFieldsSelected] = useState( false );
 
   const {
@@ -23,14 +25,15 @@ const EditSupportFiles = ( {
     addFiles,
     removeFile,
     replaceFile
-  } = useFileActions();
+  } = useFileUploadActions();
+
+  const allowedExtensions = extensions.join( ',' );
 
   const notificationStyles = {
     position: 'absolute',
     top: '15px',
     right: '40px'
   };
-
 
   /*
   Check to see if all required dropdowns are completed
@@ -46,12 +49,45 @@ const EditSupportFiles = ( {
   }, [files] );
 
 
-  const allowedExtensions = extensions.join( ',' );
   const compareFilenames = ( a, b ) => {
     try {
       return a.name.localeCompare( b.name );
     } catch ( err ) {
       console.log( err );
+    }
+  };
+
+  const closeConfirm = () => {
+    setConfirm( { open: false } );
+  };
+
+  const checkForDuplicates = ( currentFiles, filesToAdd ) => {
+    try {
+      const duplicates = filesToAdd.filter( file => currentFiles.includes( file.name ) );
+
+      // if duplicates are present, ask user if they are indeed duplicates
+      if ( duplicates.length ) {
+        const dups = duplicates.reduce( ( acc, cur ) => `${acc} ${cur.name}\n`, '' );
+        setConfirm( {
+          open: true,
+          headline: 'It appears that duplicate files are being added.',
+          content: `Do you want to add these files?\n${dups}`,
+          cancelButton: 'No, do not add files',
+          confirmButton: 'Yes, add files',
+          onCancel: () => {
+            addFiles( filesToAdd.filter( file => !currentFiles.includes( file.name ) ) );
+            closeConfirm();
+          },
+          onConfirm: () => {
+            addFiles( filesToAdd );
+            closeConfirm();
+          }
+        } );
+      } else {
+        addFiles( filesToAdd );
+      }
+    } catch ( err ) {
+      console.error( err );
     }
   };
 
@@ -69,6 +105,31 @@ const EditSupportFiles = ( {
     updateFileField( data );
   };
 
+  const handleRemove = ( id, name ) => {
+    setConfirm( {
+      open: true,
+      headline: 'Are you sure you want to remove this file?',
+      content: `You are about to remove ${name}`,
+      cancelButton: 'No, take me back',
+      confirmButton: 'Yes, remove',
+      onCancel: () => closeConfirm(),
+      onConfirm: () => {
+        removeFile( id );
+        closeConfirm();
+      }
+    } );
+  };
+
+  const handleAddFiles = e => {
+    const filesToAdd = Array.from( e.target.files );
+    if ( files.length ) {
+      const currentFiles = files.map( file => file.name );
+      checkForDuplicates( currentFiles, filesToAdd );
+    } else {
+      addFiles( filesToAdd );
+    }
+  };
+
   const handleSave = async () => {
     setSaving( true );
     await save( files, filesToRemove );
@@ -77,7 +138,6 @@ const EditSupportFiles = ( {
   };
 
   return (
-
     <Modal
       open={ open }
       onClose={ closeModal }
@@ -114,7 +174,7 @@ const EditSupportFiles = ( {
                   key={ file.id }
                   file={ file }
                   update={ updateField }
-                  removeFile={ removeFile }
+                  removeFile={ handleRemove }
                   replaceFile={ replaceFile }
                   accept={ allowedExtensions }
                 />
@@ -129,7 +189,7 @@ const EditSupportFiles = ( {
             onClick={ closeModal }
           />
           <ButtonAddFiles
-            onChange={ e => addFiles( e.target.files ) }
+            onChange={ handleAddFiles }
             multiple
             accept={ allowedExtensions }
             className="secondary"
@@ -146,6 +206,7 @@ const EditSupportFiles = ( {
         </Modal.Actions>
 
       </Dimmer.Dimmable>
+      <DynamicConfirm { ...confirm } />
     </Modal>
   );
 };
