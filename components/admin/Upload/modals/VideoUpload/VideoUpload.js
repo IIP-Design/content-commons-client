@@ -1,4 +1,6 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, {
+  useState, useEffect, Fragment
+} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/upload';
@@ -8,9 +10,9 @@ import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/Use
 import { Tab, Dimmer, Loader } from 'semantic-ui-react';
 import { v4 } from 'uuid';
 import { removeDuplicatesFromArray } from 'lib/utils';
+import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
 import VideoProjectType from './VideoProjectType/VideoProjectType';
 import VideoProjectFiles from './VideoProjectFiles/VideoProjectFiles';
-import Confirm from '../Confirm/Confirm';
 import './VideoUpload.scss';
 
 export const VideoUploadContext = React.createContext();
@@ -110,11 +112,11 @@ const VideoUpload = props => {
           content: `Do you want to add these files?\n${dups}`,
           cancelButton: 'No, do not add files',
           confirmButton: 'Yes, add files',
-          handleOnCancel: () => {
+          onCancel: () => {
             setFiles( uniq.sort( compareFilenames ) );
             closeConfirm();
           },
-          handleOnConfirm: () => {
+          onConfirm: () => {
             setFiles( [...filesToAdd, ...files].sort( compareFilenames ) );
             closeConfirm();
           }
@@ -171,8 +173,8 @@ const VideoUpload = props => {
       content: `You are about to remove ${file.input.name}. This file will not be uploaded with this project.`,
       cancelButton: 'No, take me back',
       confirmButton: 'Yes, remove',
-      handleOnCancel: () => closeConfirm(),
-      handleOnConfirm: () => {
+      onCancel: () => closeConfirm(),
+      onConfirm: () => {
         setFiles( prevFiles => prevFiles.filter( f => f.id !== id ) );
         closeConfirm();
       }
@@ -286,7 +288,7 @@ const VideoUpload = props => {
         panes={ panes }
         className="videoUpload"
       />
-      <Confirm { ...confirm } />
+      <DynamicConfirm { ...confirm } />
     </Fragment>
   );
 };
