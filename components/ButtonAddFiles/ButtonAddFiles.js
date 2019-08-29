@@ -13,6 +13,7 @@ const ButtonAddFiles = props => {
   return (
     <Fragment>
       <Button
+        disabled={ props.disabled }
         as="button"
         type="button"
         onClick={ handleOnClick }
@@ -34,12 +35,17 @@ const ButtonAddFiles = props => {
   );
 };
 
+ButtonAddFiles.defaultProps = {
+  disabled: false
+};
+
 ButtonAddFiles.propTypes = {
   onChange: PropTypes.func,
   className: PropTypes.string,
   multiple: PropTypes.bool,
   accept: PropTypes.string,
   children: PropTypes.node,
+  disabled: PropTypes.bool,
   inputID: PropTypes.string
 };
 
