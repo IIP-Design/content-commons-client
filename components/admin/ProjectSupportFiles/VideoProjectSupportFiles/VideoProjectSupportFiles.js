@@ -156,7 +156,7 @@ const VideoProjectSupportFiles = props => {
       if ( file.input ) {
         try {
           // 1a. Upload file
-          await uploadExecute( projectId, [file], obj => console.dir( obj.loaded ) );
+          await uploadExecute( projectId, [file] );
 
           // 1b.. Create file on the DB if upload is successful
           return createFile( file );
