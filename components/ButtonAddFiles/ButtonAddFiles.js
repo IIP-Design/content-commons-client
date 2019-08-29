@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 
 const ButtonAddFiles = props => {
+  const {
+    onChange, disabled, className, children, accept, multiple
+  } = props;
   const fileInput = React.createRef();
 
   // Trigger files dialogue on button click
@@ -10,24 +13,34 @@ const ButtonAddFiles = props => {
     fileInput.current.click();
   };
 
+  // Since using onchange event, need to reset value on input so user can upload same file
+  // ie: remove file then upload file again
+  const reset = () => {
+    fileInput.current.value = null;
+  };
+
+  const handleOnChange = e => {
+    onChange( e );
+    reset();
+  };
+
   return (
     <Fragment>
       <Button
-        disabled={ props.disabled }
+        disabled={ disabled }
         as="button"
         type="button"
         onClick={ handleOnClick }
-        className={ props.className || 'primary' }
-      >{ props.children }
+        className={ className || 'primary' }
+      >{ children }
       </Button>
       { /* Hidden files dialogue box */ }
       <input
-        id={ props.inputID || 'uploadFileInput' }
         ref={ fileInput }
         type="file"
-        accept={ props.accept || '*' }
-        multiple={ props.multiple }
-        onChange={ props.onChange }
+        accept={ accept || '*' }
+        multiple={ multiple }
+        onChange={ handleOnChange }
         className="visibly-hidden"
         tabIndex={ -1 }
       />
@@ -45,8 +58,7 @@ ButtonAddFiles.propTypes = {
   multiple: PropTypes.bool,
   accept: PropTypes.string,
   children: PropTypes.node,
-  disabled: PropTypes.bool,
-  inputID: PropTypes.string
+  disabled: PropTypes.bool
 };
 
 export default ButtonAddFiles;
