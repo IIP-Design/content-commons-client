@@ -227,6 +227,7 @@ export default compose(
   graphql( VIDEO_PROJECT_QUERY, {
     options: props => ( {
       variables: { id: props.projectId }
-    } )
+    } ),
+    skip: props => !props.projectId
   } ),
 )( VideoProjectSupportFiles );
