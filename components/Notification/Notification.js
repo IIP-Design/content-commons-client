@@ -5,11 +5,14 @@
  */
 
 import React from 'react';
-import { object, string, bool } from 'prop-types';
+import {
+  object, string, bool
+} from 'prop-types';
+import { Icon } from 'semantic-ui-react';
 
 const Notification = props => {
   const {
-    el, classes, msg, customStyles
+    el, classes, msg, customStyles, icon
   } = props;
   const El = el;
   const defaultStyle = {
@@ -21,7 +24,11 @@ const Notification = props => {
 
   const style = { ...defaultStyle, ...customStyles };
 
-  return <El className={ classes } style={ style }>{ msg }</El>;
+  return (
+    <El className={ classes } style={ style }>
+      <Icon loading name="spinner" style={ { display: icon ? 'inline-block' : 'none' } } /> { msg }
+    </El>
+  );
 };
 
 Notification.propTypes = {
@@ -29,7 +36,8 @@ Notification.propTypes = {
   classes: string,
   msg: string.isRequired,
   customStyles: object,
-  show: bool
+  show: bool,
+  icon: bool,
 };
 
 Notification.defaultProps = {
