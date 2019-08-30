@@ -42,7 +42,7 @@ class DownloadVideo extends Component {
     const { title } = this.props.selectedLanguageUnit;
     const size = this.getSizeInfo( video.size );
     const fn = `${title.replace( /\s/g, '_' )}_${video.size.width}.${this.getFnExt( video.downloadUrl )}`;
-    const videoQuality = `${video.video_quality && video.video_quality === 'broadcast' ? 'broadcast' : 'web'}`;
+    const videoQuality = `${video.video_quality && video.video_quality.toLowerCase() === 'broadcast' ? 'broadcast' : 'web'}`;
     const downloadLink = getVideoDownloadLink( video.downloadUrl, fn );
     return (
       <Item.Group key={ `fs_${index}` } className="download-item">
