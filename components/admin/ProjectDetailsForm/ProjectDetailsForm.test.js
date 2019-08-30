@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
-import { categoryData, visibilityOptions } from 'components/admin/projects/ProjectEdit/mockData';
+import { categoryData, visibilityOptions } from 'components/admin/ProjectEdit/mockData';
 import ProjectDetailsForm from './ProjectDetailsForm';
 
 const props = {

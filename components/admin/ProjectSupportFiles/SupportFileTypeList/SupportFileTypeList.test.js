@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
-import { projects, supportFilesConfig } from 'components/admin/projects/ProjectEdit/mockData';
+import { projects, supportFilesConfig } from 'components/admin/ProjectEdit/mockData';
 import SupportFileTypeList from './SupportFileTypeList';
 
 const props = {

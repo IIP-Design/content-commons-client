@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import { Icon, Loader } from 'semantic-ui-react';
-import { projects, supportFilesConfig } from 'components/admin/projects/ProjectEdit/mockData';
+import { projects, supportFilesConfig } from 'components/admin/ProjectEdit/mockData';
 import SupportItem from './SupportItem';
 
 const props = {

@@ -1,6 +1,6 @@
 import { mount, shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
-import { projects } from 'components/admin/projects/ProjectEdit/mockData';
+import { projects } from 'components/admin/ProjectEdit/mockData';
 import EditSupportFileRow from './EditSupportFileRow';
 
 const props = {
