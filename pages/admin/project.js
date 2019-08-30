@@ -8,8 +8,8 @@ import isEmpty from 'lodash/isEmpty';
 import { VIDEO_PROJECT_QUERY } from 'lib/graphql/queries/video';
 
 // using dynamic import so that components load when they are needed, or rendered
-const VideoEdit = dynamic( () => import( /* webpackChunkName: "videoEdit" */ 'components/admin/projects/ProjectEdit/VideoEdit/VideoEdit' ) );
-const VideoReview = dynamic( () => import( /* webpackChunkName: "videoReview" */ 'components/admin/projects/ProjectReview/VideoReview/VideoReview' ) );
+const VideoEdit = dynamic( () => import( /* webpackChunkName: "videoEdit" */ 'components/admin/ProjectEdit/VideoEdit/VideoEdit' ) );
+const VideoReview = dynamic( () => import( /* webpackChunkName: "videoReview" */ 'components/admin/ProjectReview/VideoReview/VideoReview' ) );
 
 const CONTENT_TYPES = ['video'];
 
