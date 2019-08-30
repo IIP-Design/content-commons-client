@@ -152,6 +152,7 @@ const EditSupportFiles = ( {
       <Notification
         el="p"
         show
+        icon
         customStyles={ notificationStyles }
         msg="Saving changes..."
       />

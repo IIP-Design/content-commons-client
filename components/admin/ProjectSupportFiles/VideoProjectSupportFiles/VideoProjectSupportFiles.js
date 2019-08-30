@@ -183,8 +183,10 @@ const VideoProjectSupportFiles = props => {
   };
 
   const handleSave = async ( files, filesToRemove ) => {
-    await updateDatabase( files );
+    // Remove files must be executed before adding in the event we are
+    // replacing/adding a file with the same filename
     await removeFromDataBase( filesToRemove );
+    await updateDatabase( files );
     return updateUnitThumbnails();
   };
 
