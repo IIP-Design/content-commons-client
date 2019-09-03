@@ -113,7 +113,7 @@ const VideoEdit = props => {
   const deleteProjectEnabled = () => {
     const { videoProjectQuery } = props;
     // disable delete project button if either there is no project id OR project has been published
-    return !projectId || ( videoProjectQuery && videoProjectQuery.project.status !== 'DRAFT' );
+    return !projectId || ( videoProjectQuery && videoProjectQuery.project && videoProjectQuery.project.status !== 'DRAFT' );
   };
 
   const delayUnmount = ( fn, timer, delay ) => {
