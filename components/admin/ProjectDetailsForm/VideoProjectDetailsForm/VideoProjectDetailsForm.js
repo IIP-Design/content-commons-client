@@ -147,8 +147,7 @@ VideoProjectDetailsForm.propTypes = {
   createVideoProject: PropTypes.func,
   updateNotification: PropTypes.func,
   handleUpload: PropTypes.func,
-  updateVideoProject: PropTypes.func,
-  setDisableBtns: PropTypes.func
+  updateVideoProject: PropTypes.func
 };
 
 export default compose(
