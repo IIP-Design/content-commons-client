@@ -24,166 +24,66 @@ exports[`<ProjectSupportFiles /> renders without crashing 1`] = `
     >
       <GridColumn>
         <SupportFileTypeList
-          data={
-            Array [
-              Object {
-                "file": "madeinamerica_arabic.srt",
-                "id": "5678",
-                "lang": "Arabic",
-                "size": Object {
-                  "filesize": 24576,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
-              },
-              Object {
-                "file": "madeinamerica_chinese_ljhlkjhl_kjhlkjh_aslkfja;lskjfweoij.srt",
-                "id": "5679",
-                "lang": "Chinese (Simplified)",
-                "size": Object {
-                  "filesize": 24576,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
-              },
-              Object {
-                "file": "madeinamerica_english.srt",
-                "id": "5680",
-                "lang": "English",
-                "size": Object {
-                  "filesize": 24576,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
-              },
-              Object {
-                "file": "madeinamerica_french.srt",
-                "id": "5681",
-                "lang": "French",
-                "size": Object {
-                  "filesize": 24576,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
-              },
-            ]
-          }
-          fileType="srt"
-          hasSubmittedData={false}
-          hasUploaded={true}
-          headline="SRT Files"
-          popupMsg="Some info about what SRT files are."
-          projectId={
+          config={
             Object {
-              "videoID": "made-in-america",
+              "types": Object {
+                "other": Object {
+                  "extensions": Array [
+                    ".png",
+                    ".jpeg",
+                    ".jpg",
+                  ],
+                  "headline": "Additional Files",
+                  "iconMsg": "Checking this prevents people from downloading and using your images. Useful if your images are licensed.",
+                  "iconSize": "small",
+                  "iconType": "info circle",
+                  "popupMsg": "Additional files that can be used with this video, e.g., audio file, pdf.",
+                },
+                "srt": Object {
+                  "extensions": Array [
+                    ".srt",
+                  ],
+                  "headline": "SRT Files",
+                  "popupMsg": "Some info about what SRT files are.",
+                },
+              },
             }
           }
+          projectId="123"
+          save={[MockFunction]}
+          type="srt"
         />
       </GridColumn>
       <GridColumn>
         <SupportFileTypeList
-          data={
-            Array [
-              Object {
-                "file": "madeinamerica_arabic.jpg",
-                "id": "5682",
-                "lang": "Arabic",
-                "size": Object {
-                  "filesize": 58368,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
-              },
-              Object {
-                "file": "madeinamerica_chinese.jpg",
-                "id": "5683",
-                "lang": "Chinese (Simplified)",
-                "size": Object {
-                  "filesize": 58368,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
-              },
-              Object {
-                "file": "madeinamerica_english.jpg",
-                "id": "5684",
-                "lang": "English",
-                "size": Object {
-                  "filesize": 58368,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
-              },
-              Object {
-                "file": "madeinamerica_french.jpg",
-                "id": "5685",
-                "lang": "French",
-                "size": Object {
-                  "filesize": 58368,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
-              },
-              Object {
-                "file": "madeinamerica_english.mp3",
-                "id": "5686",
-                "lang": "English",
-                "size": Object {
-                  "filesize": 5242880,
-                },
-                "uploadStatus": Object {
-                  "error": false,
-                  "success": false,
-                },
-              },
-            ]
-          }
-          fileType="other"
-          hasSubmittedData={false}
-          hasUploaded={true}
-          headline="Additional Files"
-          popupMsg="Additional files that can be used with this video, e.g., audio file, pdf."
-          projectId={
+          config={
             Object {
-              "videoID": "made-in-america",
+              "types": Object {
+                "other": Object {
+                  "extensions": Array [
+                    ".png",
+                    ".jpeg",
+                    ".jpg",
+                  ],
+                  "headline": "Additional Files",
+                  "iconMsg": "Checking this prevents people from downloading and using your images. Useful if your images are licensed.",
+                  "iconSize": "small",
+                  "iconType": "info circle",
+                  "popupMsg": "Additional files that can be used with this video, e.g., audio file, pdf.",
+                },
+                "srt": Object {
+                  "extensions": Array [
+                    ".srt",
+                  ],
+                  "headline": "SRT Files",
+                  "popupMsg": "Some info about what SRT files are.",
+                },
+              },
             }
           }
-        />
-        <Checkbox
-          checked={true}
-          id="protect-images"
-          label={
-            <label
-              htmlFor="protect-images"
-            >
-              Disable right-click to protect your images
-            </label>
-          }
-          name="protectImages"
-          onChange={[MockFunction]}
-          type="checkbox"
-        />
-        <IconPopup
-          iconSize="small"
-          iconType="info circle"
-          message="Checking this prevents people from downloading and using your images. Useful if your images are licensed."
-          popupSize="mini"
+          projectId="123"
+          save={[MockFunction]}
+          type="other"
         />
       </GridColumn>
     </GridRow>
