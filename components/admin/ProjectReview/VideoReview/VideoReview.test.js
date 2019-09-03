@@ -27,28 +27,28 @@ jest.mock(
 );
 
 jest.mock(
-  'components/admin/projects/ProjectEdit/ProjectUnitItem/ProjectUnitItem',
+  'components/admin/ProjectEdit/ProjectUnitItem/ProjectUnitItem',
   () => function ProjectUnitItem() {
     return <div>ProjectUnitItem</div>;
   }
 );
 
 jest.mock(
-  'components/admin/projects/ProjectReview/VideoProjectData/VideoProjectData',
+  'components/admin/ProjectReview/VideoProjectData/VideoProjectData',
   () => function VideoProjectData() {
     return <div>VideoProjectData</div>;
   }
 );
 
 jest.mock(
-  'components/admin/projects/ProjectReview/VideoSupportFiles/VideoSupportFiles',
+  'components/admin/ProjectReview/VideoSupportFiles/VideoSupportFiles',
   () => function VideoSupportFiles() {
     return <div>VideoSupportFiles</div>;
   }
 );
 
 jest.mock(
-  'components/admin/projects/ProjectReview/VideoProjectFiles/VideoProjectFiles',
+  'components/admin/ProjectReview/VideoProjectFiles/VideoProjectFiles',
   () => function VideoProjectFiles() {
     return <div>VideoProjectFiles</div>;
   }
