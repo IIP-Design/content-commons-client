@@ -12,11 +12,12 @@ import { compose, graphql } from 'react-apollo';
 import { Loader, Popup } from 'semantic-ui-react';
 import debounce from 'lodash/debounce';
 import Focusable from 'components/Focusable/Focusable';
+import ApolloError from 'components/errors/ApolloError';
 import GeneralError from 'components/errors/GeneralError/GeneralError';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 // import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
-import { getPathToS3Bucket } from 'lib/utils';
+import { getCount, getPathToS3Bucket } from 'lib/utils';
 import { UploadContext } from '../../ProjectEdit/VideoEdit/VideoEdit';
 
 import './SupportItem.scss';
@@ -48,8 +49,8 @@ const SupportItem = props => {
   const updateWidths = () => {
     if ( mounted.current ) {
       setWidths( {
-        listItem: listEl.current.offsetWidth,
-        itemName: filenameEl.current.offsetWidth,
+        listItem: ( listEl.current && listEl.current.offsetWidth ) || 0,
+        itemName: ( filenameEl.current && filenameEl.current.offsetWidth ) || 0,
         itemLang: ( languageEl.current && languageEl.current.offsetWidth ) || 0
       } );
     }
@@ -97,6 +98,10 @@ const SupportItem = props => {
   useEffect( () => {
     hasError();
   }, [item.url] );
+
+  if ( !item || !getCount( item ) ) return null;
+  if ( props.data.loading ) return 'Loading...';
+  if ( props.data.error ) return <ApolloError error={ props.data.error } />;
 
   /**
    * Truncates long strings with ellipsis
