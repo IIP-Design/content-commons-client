@@ -85,7 +85,10 @@ const VideoProjectFile = props => {
 
 VideoProjectFile.propTypes = {
   file: PropTypes.object,
-  thumbnail: PropTypes.object
+  thumbnail: PropTypes.oneOfType( [
+    PropTypes.object,
+    PropTypes.bool
+  ] )
 };
 
 VideoProjectFile.defaultProps = {
