@@ -19,7 +19,8 @@ import {
   DELETE_VIDEO_PROJECT_MUTATION,
   UPDATE_VIDEO_UNIT_MUTATION,
   VIDEO_PROJECT_FILES_QUERY,
-  VIDEO_PROJECT_UNITS_QUERY
+  VIDEO_PROJECT_UNITS_QUERY,
+  VIDEO_PROJECT_QUERY
 } from 'lib/graphql/queries/video';
 import { IMAGE_USES_QUERY } from 'lib/graphql/queries/common';
 import ApolloError from 'components/errors/ApolloError';
@@ -107,6 +108,12 @@ const VideoEdit = props => {
 
     const path = `${router.asPath}&id=${id}`;
     router.replace( router.asPath, path, { shallow: true } );
+  };
+
+  const deleteProjectEnabled = () => {
+    const { videoProjectQuery } = props;
+    // disable delete project button if either there is no project id OR project has been published
+    return !projectId || ( videoProjectQuery && videoProjectQuery.project.status !== 'DRAFT' );
   };
 
   const delayUnmount = ( fn, timer, delay ) => {
@@ -259,13 +266,12 @@ const VideoEdit = props => {
       { /* action buttons at top NEED TO BE MOVED to separate component */ }
       <div className="edit-project__header">
         <ProjectHeader icon="video camera" text="Project Details">
-
           <Button
             className="edit-project__btn--delete"
             content="Delete Project"
             basic
             onClick={ () => setDeleteConfirmOpen( true ) }
-            disabled={ !projectId }
+            disabled={ deleteProjectEnabled() }
           />
 
           <Confirm
@@ -418,6 +424,7 @@ VideoEdit.propTypes = {
   data: PropTypes.object,
   updateVideoProject: PropTypes.func,
   deleteVideoProject: PropTypes.func,
+  videoProjectQuery: PropTypes.object,
   router: PropTypes.object,
   setIsUploading: PropTypes.func, // from redux
   uploadExecute: PropTypes.func, // from redux
@@ -483,6 +490,13 @@ export default compose(
   withRouter,
   withFileUpload,
   connect( mapStateToProps, actions ),
+  graphql( VIDEO_PROJECT_QUERY, { // this is not the best way to fetch project status, update after release
+    name: 'videoProjectQuery',
+    options: props => ( {
+      variables: { id: props.id }
+    } ),
+    skip: props => !props.id
+  } ),
   graphql( IMAGE_USES_QUERY ),
   graphql( DELETE_VIDEO_PROJECT_MUTATION, { name: 'deleteVideoProject' } ),
   graphql( UPDATE_VIDEO_UNIT_MUTATION, {
