@@ -38,6 +38,11 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
             },
             "updatedAt": "2019-06-18T13:58:10.024Z",
             "url": "2019/06/123/image-1.jpg",
+            "use": Object {
+              "__typename": "ImageUse",
+              "id": "imu33",
+              "name": "Thumbnail/Cover Image",
+            },
           },
         ],
         "units": Array [
@@ -148,6 +153,11 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                   },
                   "updatedAt": "2019-06-18T14:58:10.024Z",
                   "url": "2019/06/123/image-1.jpg",
+                  "use": Object {
+                    "__typename": "ImageUse",
+                    "id": "imu33",
+                    "name": "Thumbnail/Cover Image",
+                  },
                 },
                 "size": "FULL",
               },
@@ -296,6 +306,11 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                   },
                   "updatedAt": "2019-06-18T14:58:10.024Z",
                   "url": "2019/06/123/image-1.jpg",
+                  "use": Object {
+                    "__typename": "ImageUse",
+                    "id": "imu33",
+                    "name": "Thumbnail/Cover Image",
+                  },
                 },
                 "size": "FULL",
               },
@@ -565,6 +580,11 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                   },
                   "updatedAt": "2019-06-18T14:58:10.024Z",
                   "url": "2019/06/123/image-1.jpg",
+                  "use": Object {
+                    "__typename": "ImageUse",
+                    "id": "imu33",
+                    "name": "Thumbnail/Cover Image",
+                  },
                 },
                 "size": "FULL",
               }
@@ -811,6 +831,11 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                   },
                   "updatedAt": "2019-06-18T14:58:10.024Z",
                   "url": "2019/06/123/image-1.jpg",
+                  "use": Object {
+                    "__typename": "ImageUse",
+                    "id": "imu33",
+                    "name": "Thumbnail/Cover Image",
+                  },
                 },
                 "size": "FULL",
               }

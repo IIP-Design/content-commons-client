@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
-<PreviewProjectContent
+exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
+<ProjectPreviewContent
   data={
     Object {
       "error": undefined,
@@ -38,6 +38,11 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
             },
             "updatedAt": "2019-06-18T13:58:10.024Z",
             "url": "2019/06/123/image-1.jpg",
+            "use": Object {
+              "__typename": "ImageUse",
+              "id": "imu33",
+              "name": "Thumbnail/Cover Image",
+            },
           },
         ],
         "units": Array [
@@ -148,6 +153,11 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                   },
                   "updatedAt": "2019-06-18T14:58:10.024Z",
                   "url": "2019/06/123/image-1.jpg",
+                  "use": Object {
+                    "__typename": "ImageUse",
+                    "id": "imu33",
+                    "name": "Thumbnail/Cover Image",
+                  },
                 },
                 "size": "FULL",
               },
@@ -296,6 +306,11 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                   },
                   "updatedAt": "2019-06-18T14:58:10.024Z",
                   "url": "2019/06/123/image-1.jpg",
+                  "use": Object {
+                    "__typename": "ImageUse",
+                    "id": "imu33",
+                    "name": "Thumbnail/Cover Image",
+                  },
                 },
                 "size": "FULL",
               },
@@ -364,6 +379,27 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
             }
           }
         >
+          <Icon
+            as="i"
+            loading={true}
+            name="spinner"
+            style={
+              Object {
+                "display": "none",
+              }
+            }
+          >
+            <i
+              aria-hidden="true"
+              className="spinner loading icon"
+              style={
+                Object {
+                  "display": "none",
+                }
+              }
+            />
+          </Icon>
+           
           This is a preview of your video project on Content Commons.
         </p>
       </Notification>
@@ -930,6 +966,11 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                                   },
                                   "updatedAt": "2019-06-18T14:58:10.024Z",
                                   "url": "2019/06/123/image-1.jpg",
+                                  "use": Object {
+                                    "__typename": "ImageUse",
+                                    "id": "imu33",
+                                    "name": "Thumbnail/Cover Image",
+                                  },
                                 },
                                 "size": "FULL",
                               },
@@ -1145,6 +1186,11 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
                                       },
                                       "updatedAt": "2019-06-18T14:58:10.024Z",
                                       "url": "2019/06/123/image-1.jpg",
+                                      "use": Object {
+                                        "__typename": "ImageUse",
+                                        "id": "imu33",
+                                        "name": "Thumbnail/Cover Image",
+                                      },
                                     },
                                     "size": "FULL",
                                   },
@@ -1397,5 +1443,5 @@ exports[`<PreviewProjectContent /> renders final state without crashing 1`] = `
       </ModalPostTags>
     </div>
   </ModalItem>
-</PreviewProjectContent>
+</ProjectPreviewContent>
 `;
