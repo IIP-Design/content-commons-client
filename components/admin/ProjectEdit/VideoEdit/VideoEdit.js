@@ -381,7 +381,6 @@ const VideoEdit = props => {
             heading="Videos in Project"
             extensions={ ['.mov', '.mp4'] }
             setDisableBtns={ setDisableBtns }
-            isUploading={ isUploading }
           />
         </div>
       </UploadContext.Provider>
