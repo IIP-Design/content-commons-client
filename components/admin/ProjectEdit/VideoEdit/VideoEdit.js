@@ -498,7 +498,12 @@ export default compose(
     skip: props => !props.id
   } ),
   graphql( IMAGE_USES_QUERY ),
-  graphql( VIDEO_PROJECT_UNITS_QUERY ),
+  graphql( VIDEO_PROJECT_UNITS_QUERY, {
+    options: props => ( {
+      variables: { id: props.id }
+    } ),
+    skip: props => !props.id
+  } ),
   graphql( DELETE_VIDEO_PROJECT_MUTATION, { name: 'deleteVideoProject' } ),
   graphql( UPDATE_VIDEO_UNIT_MUTATION, {
     name: 'updateVideoUnit',
