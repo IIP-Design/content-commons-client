@@ -105,7 +105,7 @@ const SupportFileTypeList = props => {
       <ul>
         { supFiles.length
           ? sortBy( supFiles, file => file.language.displayName ).map( renderSupportItem )
-          : ( <div style={ { fontSize: '0.875em' } }>{ getNoFilesMessage( headline ) }</div> )
+          : ( <li style={ { fontSize: '0.875em' } }>{ getNoFilesMessage( headline ) }</li> )
         }
       </ul>
     </Fragment>
