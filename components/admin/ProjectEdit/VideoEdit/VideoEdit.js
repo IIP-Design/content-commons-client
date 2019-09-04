@@ -40,11 +40,7 @@ import './VideoEdit.scss';
 export const UploadContext = React.createContext( false );
 
 const VideoEdit = props => {
-  // const { setIsUploading } = props;
-  const {
-    setIsUploading,
-    data: { projectUnits }
-  } = props;
+  const { setIsUploading } = props;
 
   const MAX_CATEGORY_COUNT = 2;
   const SAVE_MSG_DELAY = 2000;
@@ -67,6 +63,7 @@ const VideoEdit = props => {
 
   const [disableBtns, setDisableBtns] = useState( false );
   useEffect( () => {
+    const projectUnits = props.data;
     if ( projectUnits && projectUnits.units.length < 1 ) setDisableBtns( true );
   }, [] );
 
@@ -390,7 +387,6 @@ const VideoEdit = props => {
             projectId={ projectId }
             heading="Videos in Project"
             extensions={ ['.mov', '.mp4'] }
-            setDisableBtns={ setDisableBtns }
           />
         </div>
       </UploadContext.Provider>
