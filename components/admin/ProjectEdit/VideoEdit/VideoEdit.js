@@ -63,7 +63,7 @@ const VideoEdit = props => {
 
   const [disableBtns, setDisableBtns] = useState( false );
   useEffect( () => {
-    const projectUnits = props.data;
+    const { data: { projectUnits } } = props;
     if ( projectUnits && projectUnits.units.length < 1 ) setDisableBtns( true );
   }, [] );
 
