@@ -63,8 +63,11 @@ const VideoEdit = props => {
 
   const [disableBtns, setDisableBtns] = useState( false );
   useEffect( () => {
-    const { data: { projectUnits } } = props;
-    if ( projectUnits && projectUnits.units.length < 1 ) setDisableBtns( true );
+    const { videoProjectUnitsQuery } = props;
+    if ( videoProjectUnitsQuery ) {
+      const { projectUnits } = videoProjectUnitsQuery;
+      if ( projectUnits && projectUnits.units.length < 1 ) setDisableBtns( true );
+    }
   }, [] );
 
   const centeredStyles = {
@@ -163,7 +166,7 @@ const VideoEdit = props => {
   };
 
   const handleSaveDraft = async ( id, projectTitle, tags ) => {
-    const { updateVideoProject, data: { imageUses } } = props;
+    const { updateVideoProject, imageUsesQuery: { imageUses } } = props;
     const data = buildUpdateVideoProjectTree( filesToUpload, imageUses[0].id, projectTitle, tags );
 
     await updateVideoProject( {
@@ -421,7 +424,7 @@ const VideoEdit = props => {
 
 VideoEdit.propTypes = {
   id: PropTypes.string,
-  data: PropTypes.object,
+  imageUsesQuery: PropTypes.object,
   updateVideoProject: PropTypes.func,
   deleteVideoProject: PropTypes.func,
   videoProjectQuery: PropTypes.object,
@@ -497,8 +500,11 @@ export default compose(
     } ),
     skip: props => !props.id
   } ),
-  graphql( IMAGE_USES_QUERY ),
+  graphql( IMAGE_USES_QUERY, {
+    name: 'imageUsesQuery'
+  } ),
   graphql( VIDEO_PROJECT_UNITS_QUERY, {
+    name: 'videoProjectUnitsQuery',
     options: props => ( {
       variables: { id: props.id }
     } ),
