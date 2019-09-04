@@ -43,10 +43,8 @@ const VideoEdit = props => {
   // const { setIsUploading } = props;
   const {
     setIsUploading,
-    data: { projectUnits: { units } }
+    data: { projectUnits }
   } = props;
-
-  console.log({units});
 
   const MAX_CATEGORY_COUNT = 2;
   const SAVE_MSG_DELAY = 2000;
@@ -69,8 +67,8 @@ const VideoEdit = props => {
 
   const [disableBtns, setDisableBtns] = useState( false );
   useEffect( () => {
-    if ( units.length < 1 ) setDisableBtns( true );
-  }, [units] );
+    if ( projectUnits && projectUnits.units.length < 1 ) setDisableBtns( true );
+  }, [] );
 
   const centeredStyles = {
     position: 'absolute',
