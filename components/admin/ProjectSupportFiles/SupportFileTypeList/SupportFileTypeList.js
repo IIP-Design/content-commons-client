@@ -73,7 +73,7 @@ const SupportFileTypeList = props => {
 
 
   const renderSupportItem = item => {
-    const { fileType } = props;
+    const { type: fileType } = props;
 
     return (
       <SupportItem
@@ -119,8 +119,6 @@ SupportFileTypeList.propTypes = {
   type: PropTypes.string,
   data: PropTypes.object,
   save: PropTypes.func,
-  /* eslint-disable-next-line react/no-unused-prop-types */
-  fileType: PropTypes.string,
   filesToUpload: PropTypes.array, // from redux
 };
 
