@@ -35,14 +35,18 @@ import VideoProjectSupportFiles from 'components/admin/ProjectSupportFiles/Video
 import UploadSuccessMsg from 'components/admin/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
 import FileUploadProgressBar from 'components/admin/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
 import withFileUpload from 'hocs/withFileUpload/withFileUpload';
-
 import './VideoEdit.scss';
-
 
 export const UploadContext = React.createContext( false );
 
 const VideoEdit = props => {
-  const { setIsUploading } = props;
+  // const { setIsUploading } = props;
+  const {
+    setIsUploading,
+    data: { projectUnits: { units } }
+  } = props;
+
+  console.log({units});
 
   const MAX_CATEGORY_COUNT = 2;
   const SAVE_MSG_DELAY = 2000;
@@ -64,6 +68,9 @@ const VideoEdit = props => {
   } );
 
   const [disableBtns, setDisableBtns] = useState( false );
+  useEffect( () => {
+    if ( units.length < 1 ) setDisableBtns( true );
+  }, [units] );
 
   const centeredStyles = {
     position: 'absolute',
@@ -497,6 +504,7 @@ export default compose(
     skip: props => !props.id
   } ),
   graphql( IMAGE_USES_QUERY ),
+  graphql( VIDEO_PROJECT_UNITS_QUERY ),
   graphql( DELETE_VIDEO_PROJECT_MUTATION, { name: 'deleteVideoProject' } ),
   graphql( UPDATE_VIDEO_UNIT_MUTATION, {
     name: 'updateVideoUnit',
