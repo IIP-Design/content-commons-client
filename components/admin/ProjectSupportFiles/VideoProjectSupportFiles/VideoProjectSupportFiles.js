@@ -16,6 +16,7 @@ import {
 } from 'lib/graphql/queries/video';
 import { buildSupportFile, buildImageFile, buildThumbnailTree } from 'lib/graphql/builders/common';
 import { getFileExt } from 'lib/utils';
+import { searchTreeForS3FileDirectories } from 'lib/upload';
 import withFileUpload from 'hocs/withFileUpload/withFileUpload';
 import ProjectSupportFiles from '../ProjectSupportFiles';
 import { config } from './config';
@@ -41,6 +42,7 @@ const VideoProjectSupportFiles = props => {
     const ext = getFileExt( name );
     return srt.extensions.includes( ext );
   };
+
 
   const updateLanguage = async file => {
     const { updateSupportFile, updateImageFile } = props;
@@ -146,19 +148,28 @@ const VideoProjectSupportFiles = props => {
 
   const updateDatabase = async ( files = [] ) => {
     const { projectId, uploadExecute } = props;
+    let uploadDir = null;
 
     return Promise.all( files.map( async file => {
       if ( !hasAcceptedExtension( getFileExt( file.name ) ) ) {
         throw new Error( `File: ${file.name} does not have an accepted support extension for this project` );
       }
 
+      const { data } = props;
+      if ( data && data.project ) {
+        uploadDir = searchTreeForS3FileDirectories( data.project );
+        uploadDir = uploadDir.length ? uploadDir[0] : '';
+      }
+
+      const projectIdPath = uploadDir || projectId;
+
       // 1. Does a new file need to be upload
       if ( file.input ) {
         try {
           // 1a. Upload file
-          await uploadExecute( projectId, [file] );
+          await uploadExecute( projectIdPath, [file] );
 
-          // 1b.. Create file on the DB if upload is successful
+          // 1b. Create file on the DB if upload is successful
           return createFile( file );
         } catch ( err ) {
           console.error( err );
@@ -189,7 +200,6 @@ const VideoProjectSupportFiles = props => {
     await updateDatabase( files );
     return updateUnitThumbnails();
   };
-
 
   return (
     <ProjectSupportFiles
