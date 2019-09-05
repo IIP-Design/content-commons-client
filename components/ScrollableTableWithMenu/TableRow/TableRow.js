@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
+import { formatDate } from 'lib/utils';
 import { Table } from 'semantic-ui-react';
 import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon/TableMobileDataToggleIcon';
 
@@ -62,7 +63,11 @@ const TableRow = props => {
               <Fragment>
                 <span>
                   <div className="items_table_mobileHeader">{ header.label }</div>
-                  { d[header.name] }
+                  {
+                    header.name === 'createdAt' || header.name === 'updatedAt'
+                      ? formatDate( d[header.name] )
+                      : d[header.name]
+                  }
                 </span>
                 <br />
                 { header.label === 'CREATED'
