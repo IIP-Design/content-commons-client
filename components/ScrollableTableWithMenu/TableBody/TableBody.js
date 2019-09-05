@@ -1,6 +1,6 @@
 import './TableBody.scss';
 import { Loader, Table } from 'semantic-ui-react';
-import { formatDate, getPathToS3Bucket } from 'lib/utils';
+import { getPathToS3Bucket } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
@@ -94,8 +94,8 @@ const normalizeData = videoProjects => {
   videoProjects.forEach( videoProject => {
     const normalizedProject = Object.create( {}, {
       id: { value: videoProject.id },
-      createdAt: { value: formatDate( videoProject.createdAt ) },
-      updatedAt: { value: formatDate( videoProject.updatedAt ) },
+      createdAt: { value: videoProject.createdAt },
+      updatedAt: { value: videoProject.updatedAt },
       projectTitle: { value: videoProject.projectTitle },
       author: { value: `${videoProject.author ? videoProject.author.firstName : ''} ${videoProject.author ? videoProject.author.lastName : ''}` },
       team: { value: videoProject.team ? videoProject.team.name : '' },
@@ -193,10 +193,6 @@ const TableBody = props => {
           tableDatum => {
             let { column } = props;
             if ( !column ) column = 'createdAt';
-            // Sort by parsed Date instead of String
-            if ( column === 'createdAt' || column === 'updatedAt' ) {
-              return Date.parse( tableDatum[column] );
-            }
             // Format table data for case insensitive sorting
             const formattedTableDatum = tableDatum[column].toString().toLowerCase();
             return formattedTableDatum;
