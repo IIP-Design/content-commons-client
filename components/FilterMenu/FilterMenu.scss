@@ -1,10 +1,10 @@
-@import "../../styles/colors.scss";
+@import "styles/colors.scss";
 
 .filterMenu {
   position: relative;
-  min-width: 160px;
+  min-width: 210px;
   @media screen and (min-width: 768px) and (max-width: 992px) {
-    min-width: 150px;
+    min-width: 200px;
   }
 
   &_wrapper {
