@@ -42,7 +42,7 @@ const SupportFileTypeList = props => {
     return filesToUpload.filter( file => extensions.includes( getFileExt( file.input.name ) ) );
   };
 
-  const getFilesForExisitingProject = files => {
+  const getFilesForExistingProject = files => {
     const { extensions } = type;
     return files.filter( file => extensions.includes( getFileExt( file.filename ) ) );
   };
@@ -55,7 +55,7 @@ const SupportFileTypeList = props => {
     if ( !isEmpty( data ) && data.projectFiles ) {
       const { supportFiles, thumbnails } = data.projectFiles;
       const files = [...supportFiles, ...thumbnails];
-      return getFilesForExisitingProject( files );
+      return getFilesForExistingProject( files );
     }
 
     if ( filesToUpload ) {
@@ -139,3 +139,6 @@ export default compose(
     skip: props => !props.projectId
   } )
 )( SupportFileTypeList );
+
+// export unconnected component to test in isolation
+export { SupportFileTypeList };
