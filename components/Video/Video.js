@@ -397,14 +397,14 @@ class Video extends Component {
                           <DownloadSrt
                             selectedLanguageUnit={ unit }
                             instructions="Download SRTs"
-                            units={ this.props.item.units }
+                            item={ this.props.item }
                           />
                         )
                       },
                       {
                         title: 'Transcript',
                         component: (
-                          <DownloadTranscript units={ this.props.item.units } instructions="Download Transcripts" />
+                          <DownloadTranscript item={ this.props.item } instructions="Download Transcripts" />
                         )
                       },
                       { title: 'Help', component: <DownloadHelp /> }
