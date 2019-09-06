@@ -415,7 +415,7 @@ class Video extends Component {
             </div>
           </div>
 
-          <Embed { ...videoProps } placeholder={ this.props.item.thumbnail } />
+          <Embed { ...videoProps } placeholder={ unit.thumbnail || this.props.item.thumbnail } />
 
           <ModalContentMeta type={ type } dateUpdated={ modified } transcript={ this.getVideoTranscript() } />
           <ModalDescription description={ unit.desc } />
