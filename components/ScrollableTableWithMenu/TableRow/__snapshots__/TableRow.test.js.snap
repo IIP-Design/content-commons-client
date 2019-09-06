@@ -16,7 +16,7 @@ Array [
           Object {
             "author": "Jane Doe",
             "categories": "about america",
-            "createdAt": "May 9, 2019",
+            "createdAt": "2019-05-09T18:33:03.368Z",
             "id": "d137",
             "projectTitle": "Test Title 1",
             "status": "PUBLISHED",
@@ -25,7 +25,7 @@ Array [
               "alt": "some alt text",
               "url": "https://thumbnailurl.com",
             },
-            "updatedAt": "May 9, 2019",
+            "updatedAt": "2019-05-09T18:33:03.368Z",
             "visibility": "INTERNAL",
           }
         }
@@ -162,7 +162,7 @@ Array [
           Object {
             "author": "Jane Doe",
             "categories": "about america",
-            "createdAt": "May 9, 2019",
+            "createdAt": "2019-05-09T18:33:03.368Z",
             "id": "d137",
             "projectTitle": "Test Title 1",
             "status": "PUBLISHED",
@@ -171,7 +171,7 @@ Array [
               "alt": "some alt text",
               "url": "https://thumbnailurl.com",
             },
-            "updatedAt": "May 9, 2019",
+            "updatedAt": "2019-05-09T18:33:03.368Z",
             "visibility": "INTERNAL",
           }
         }
@@ -260,7 +260,7 @@ Array [
           Object {
             "author": "Jane Doe",
             "categories": "about america",
-            "createdAt": "May 9, 2019",
+            "createdAt": "2019-05-09T18:33:03.368Z",
             "id": "d137",
             "projectTitle": "Test Title 1",
             "status": "PUBLISHED",
@@ -269,7 +269,7 @@ Array [
               "alt": "some alt text",
               "url": "https://thumbnailurl.com",
             },
-            "updatedAt": "May 9, 2019",
+            "updatedAt": "2019-05-09T18:33:03.368Z",
             "visibility": "INTERNAL",
           }
         }
