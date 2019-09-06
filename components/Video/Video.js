@@ -404,7 +404,7 @@ class Video extends Component {
                       {
                         title: 'Transcript',
                         component: (
-                          <DownloadTranscript item={ this.props.item } />
+                          <DownloadTranscript item={ this.props.item } instructions="Download Transcripts" />
                         )
                       },
                       { title: 'Help', component: <DownloadHelp /> }
