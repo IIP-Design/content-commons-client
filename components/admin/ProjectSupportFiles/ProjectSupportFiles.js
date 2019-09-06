@@ -7,6 +7,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
+/* eslint-disable-next-line import/no-named-as-default */
 import SupportFileTypeList from './SupportFileTypeList/SupportFileTypeList';
 
 import './ProjectSupportFiles.scss';
