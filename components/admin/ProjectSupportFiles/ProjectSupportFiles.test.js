@@ -6,7 +6,7 @@ import ProjectSupportFiles from './ProjectSupportFiles';
 jest.mock(
   './SupportFileTypeList/SupportFileTypeList',
   () => function SupportFileTypeList() {
-    return '<SupportFileTypeList />';
+    return '';
   }
 );
 
