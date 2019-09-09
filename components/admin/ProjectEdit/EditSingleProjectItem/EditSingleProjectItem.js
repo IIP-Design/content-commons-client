@@ -91,7 +91,9 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
         }
         textDirection="ltr"
       >
-        <EditVideoModal />
+        <EditVideoModal
+          unitId={ selectedUnit }
+        />
       </ModalItem>
     </EditSingleProjectItemContext.Provider>
   );
