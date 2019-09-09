@@ -1,0 +1,1073 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<VideoProjectSupportFiles /> renders final state without crashing 1`] = `
+<VideoProjectSupportFiles
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": false,
+      "networkStatus": 7,
+      "project": Object {
+        "__typename": "VideoProject",
+        "author": Object {
+          "__typename": "User",
+          "firstName": "Jane",
+          "id": "cjuybpucc1tuk0756bpi84enp",
+          "lastName": "Doe",
+        },
+        "categories": Array [
+          Object {
+            "__typename": "Category",
+            "id": "cjubblzw915qe07560zkz9xas",
+            "translations": Array [
+              Object {
+                "__typename": "LanguageTranslation",
+                "id": "cjubble530uxq0756q5bphm9c",
+                "name": "economic opportunity",
+              },
+            ],
+          },
+        ],
+        "createdAt": "2019-03-02T15:11:48.043Z",
+        "descInternal": "the project internal description",
+        "descPublic": "the project public description",
+        "id": "123",
+        "projectTitle": "Test Title",
+        "publishedAt": "2019-03-09T14:11:48.043Z",
+        "status": "DRAFT",
+        "supportFiles": Array [
+          Object {
+            "__typename": "SupportFile",
+            "createdAt": "2019-06-12T14:58:10.024Z",
+            "filename": "srt-1.srt",
+            "filesize": 6424,
+            "filetype": "application/x-subrip",
+            "id": "v832",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "English",
+              "id": "cjsq439dz005607560gwe7k3m",
+              "languageCode": "en",
+              "locale": "en-us",
+              "nativeName": "English",
+              "textDirection": "LTR",
+            },
+            "updatedAt": "2019-06-19T18:48:10.024Z",
+            "url": "2019/06/123/srt-1.srt",
+            "use": null,
+          },
+          Object {
+            "__typename": "SupportFile",
+            "createdAt": "2019-06-10T14:58:10.024Z",
+            "filename": "srt-2.srt",
+            "filesize": 6424,
+            "filetype": "application/x-subrip",
+            "id": "v238",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "French",
+              "id": "cjsq4565v005c0756f0lqbfe4",
+              "languageCode": "fr",
+              "locale": "fr-fr",
+              "nativeName": "French",
+              "textDirection": "LTR",
+            },
+            "updatedAt": "2019-06-11T12:18:10.024Z",
+            "url": "2019/06/123/srt-2.srt",
+            "use": null,
+          },
+        ],
+        "tags": Array [
+          Object {
+            "__typename": "Tag",
+            "id": "cjubblzx615sd0756lgfvsdzz",
+            "translations": Array [
+              Object {
+                "__typename": "LanguageTranslation",
+                "id": "cjubblfu10voe0756r11a1j9j",
+                "name": "american culture",
+              },
+              Object {
+                "__typename": "LanguageTranslation",
+                "id": "tr019",
+                "name": "Culture américaine",
+              },
+            ],
+          },
+          Object {
+            "__typename": "Tag",
+            "id": "cjubblzx615se0756q25ul8hs",
+            "translations": Array [
+              Object {
+                "__typename": "LanguageTranslation",
+                "id": "cjubblfyl0vqm0756kuq2rv4u",
+                "name": "english learning",
+              },
+              Object {
+                "__typename": "LanguageTranslation",
+                "id": "tr777",
+                "name": "Anglais langue étrangère",
+              },
+            ],
+          },
+        ],
+        "team": Object {
+          "__typename": "Team",
+          "id": "cjrkzhvku000f0756l44blw33",
+          "name": "GPA Video Production",
+        },
+        "thumbnails": Array [
+          Object {
+            "__typename": "Thumbnail",
+            "alt": "the alt text",
+            "createdAt": "2019-03-06T13:11:48.043Z",
+            "filename": "image-1.jpg",
+            "filesize": 28371,
+            "filetype": "image/jpeg",
+            "id": "th11",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "English",
+              "id": "cjsq439dz005607560gwe7k3m",
+              "languageCode": "en",
+              "locale": "en-us",
+              "nativeName": "English",
+              "textDirection": "LTR",
+            },
+            "updatedAt": "2019-06-18T13:58:10.024Z",
+            "url": "2019/06/123/image-1.jpg",
+            "use": Object {
+              "__typename": "ImageUse",
+              "id": "imu33",
+              "name": "Thumbnail/Cover Image",
+            },
+          },
+        ],
+        "units": Array [
+          Object {
+            "__typename": "VideoUnit",
+            "descPublic": "the arabic description",
+            "files": Array [
+              Object {
+                "__typename": "VideoFile",
+                "createdAt": "2019-03-05T20:18:54.032Z",
+                "dimensions": Object {
+                  "__typename": "Dimensions",
+                  "height": "1080",
+                  "id": "d21",
+                  "width": "1920",
+                },
+                "duration": 556,
+                "filename": "video-file-1.mp4",
+                "filesize": 662595174,
+                "filetype": "video/mp4",
+                "id": "f19",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "Arabic",
+                  "id": "ar22",
+                  "languageCode": "ar",
+                  "locale": "ar",
+                  "nativeName": "العربية",
+                  "textDirection": "RTL",
+                },
+                "quality": "WEB",
+                "stream": Array [
+                  Object {
+                    "__typename": "VideoStream",
+                    "id": "st93",
+                    "site": "YouTube",
+                    "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
+                  },
+                  Object {
+                    "__typename": "VideoStream",
+                    "id": "st35",
+                    "site": "Vimeo",
+                    "url": "https://vimeo.com/340239507",
+                  },
+                ],
+                "updatedAt": "2019-06-19T17:38:37.502Z",
+                "url": "2019/06/123/video-file-1.mp4",
+                "use": Object {
+                  "__typename": "VideoUse",
+                  "id": "us31",
+                  "name": "Full Video",
+                },
+                "videoBurnedInStatus": "CLEAN",
+              },
+            ],
+            "id": "un91",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "Arabic",
+              "id": "ar22",
+              "languageCode": "ar",
+              "locale": "ar",
+              "nativeName": "العربية",
+              "textDirection": "RTL",
+            },
+            "tags": Array [
+              Object {
+                "__typename": "Tag",
+                "id": "tag13",
+                "translations": Array [
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr555",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "Arabic",
+                      "id": "ar22",
+                      "languageCode": "ar",
+                      "locale": "ar",
+                      "nativeName": "العربية",
+                      "textDirection": "RTL",
+                    },
+                    "name": "الثقافة الأميركية",
+                  },
+                ],
+              },
+            ],
+            "thumbnails": Array [
+              Object {
+                "__typename": "Thumbnail",
+                "id": "th11",
+                "image": Object {
+                  "__typename": "ImageFile",
+                  "alt": "the alt text",
+                  "createdAt": "2019-03-06T13:11:48.043Z",
+                  "filename": "image-1.jpg",
+                  "filesize": 28371,
+                  "filetype": "image/jpeg",
+                  "id": "im28",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Arabic",
+                    "id": "ar22",
+                    "languageCode": "ar",
+                    "locale": "ar",
+                    "nativeName": "العربية",
+                    "textDirection": "RTL",
+                  },
+                  "updatedAt": "2019-06-18T14:58:10.024Z",
+                  "url": "2019/06/123/image-1.jpg",
+                  "use": Object {
+                    "__typename": "ImageUse",
+                    "id": "imu33",
+                    "name": "Thumbnail/Cover Image",
+                  },
+                },
+                "size": "FULL",
+              },
+            ],
+            "title": "test project title",
+            "updatedAt": "2019-06-18T14:58:10.024Z",
+          },
+          Object {
+            "__typename": "VideoUnit",
+            "descPublic": "the english description",
+            "files": Array [
+              Object {
+                "__typename": "VideoFile",
+                "createdAt": "2019-03-05T20:18:54.032Z",
+                "dimensions": Object {
+                  "__typename": "Dimensions",
+                  "height": "1080",
+                  "id": "d21",
+                  "width": "1920",
+                },
+                "duration": 556,
+                "filename": "video-file-1.mp4",
+                "filesize": 662595174,
+                "filetype": "video/mp4",
+                "id": "f19",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "Arabic",
+                  "id": "ar22",
+                  "languageCode": "ar",
+                  "locale": "ar",
+                  "nativeName": "العربية",
+                  "textDirection": "RTL",
+                },
+                "quality": "WEB",
+                "stream": Array [
+                  Object {
+                    "__typename": "VideoStream",
+                    "id": "st93",
+                    "site": "YouTube",
+                    "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
+                  },
+                  Object {
+                    "__typename": "VideoStream",
+                    "id": "st35",
+                    "site": "Vimeo",
+                    "url": "https://vimeo.com/340239507",
+                  },
+                ],
+                "updatedAt": "2019-06-19T17:38:37.502Z",
+                "url": "2019/06/123/video-file-1.mp4",
+                "use": Object {
+                  "__typename": "VideoUse",
+                  "id": "us31",
+                  "name": "Full Video",
+                },
+                "videoBurnedInStatus": "CLEAN",
+              },
+            ],
+            "id": "un95",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "English",
+              "id": "cjsq439dz005607560gwe7k3m",
+              "languageCode": "en",
+              "locale": "en-us",
+              "nativeName": "English",
+              "textDirection": "LTR",
+            },
+            "tags": Array [
+              Object {
+                "__typename": "Tag",
+                "id": "tag13",
+                "translations": Array [
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr555",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "Arabic",
+                      "id": "ar22",
+                      "languageCode": "ar",
+                      "locale": "ar",
+                      "nativeName": "العربية",
+                      "textDirection": "RTL",
+                    },
+                    "name": "الثقافة الأميركية",
+                  },
+                ],
+              },
+              Object {
+                "__typename": "Tag",
+                "id": "tag14",
+                "translations": Array [
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr888",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "English",
+                      "id": "cjsq439dz005607560gwe7k3m",
+                      "languageCode": "en",
+                      "locale": "en-us",
+                      "nativeName": "English",
+                      "textDirection": "LTR",
+                    },
+                    "name": "english learning",
+                  },
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr777",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "French",
+                      "id": "cjsq4565v005c0756f0lqbfe4",
+                      "languageCode": "fr",
+                      "locale": "fr-fr",
+                      "nativeName": "French",
+                      "textDirection": "LTR",
+                    },
+                    "name": "Anglais langue étrangère",
+                  },
+                ],
+              },
+            ],
+            "thumbnails": Array [
+              Object {
+                "__typename": "Thumbnail",
+                "id": "th11",
+                "image": Object {
+                  "__typename": "ImageFile",
+                  "alt": "the alt text",
+                  "createdAt": "2019-03-06T13:11:48.043Z",
+                  "filename": "image-1.jpg",
+                  "filesize": 28371,
+                  "filetype": "image/jpeg",
+                  "id": "im28",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Arabic",
+                    "id": "ar22",
+                    "languageCode": "ar",
+                    "locale": "ar",
+                    "nativeName": "العربية",
+                    "textDirection": "RTL",
+                  },
+                  "updatedAt": "2019-06-18T14:58:10.024Z",
+                  "url": "2019/06/123/image-1.jpg",
+                  "use": Object {
+                    "__typename": "ImageUse",
+                    "id": "imu33",
+                    "name": "Thumbnail/Cover Image",
+                  },
+                },
+                "size": "FULL",
+              },
+            ],
+            "title": "test project title",
+            "updatedAt": "2019-06-18T12:58:10.024Z",
+          },
+        ],
+        "updatedAt": "2019-03-06T18:11:48.043Z",
+        "visibility": "PUBLIC",
+      },
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "123",
+      },
+    }
+  }
+  deleteImageFile={[Function]}
+  deleteManyThumbnails={[Function]}
+  deleteSupportFile={[Function]}
+  getFileInfo={[Function]}
+  getSignedS3Url={[Function]}
+  imagesUsesData={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "imageUses": Array [
+        Object {
+          "__typename": "ImageUse",
+          "id": "cjtkdq8kr0knf07569goo9eqe",
+          "name": "Thumbnail/Cover Image",
+        },
+      ],
+      "loading": false,
+      "networkStatus": 7,
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {},
+    }
+  }
+  projectId="123"
+  updateImageFile={[Function]}
+  updateSupportFile={[Function]}
+  updateVideoProject={[Function]}
+  updateVideoUnit={[Function]}
+  uploadExecute={[Function]}
+>
+  <ProjectSupportFiles
+    config={
+      Object {
+        "types": Object {
+          "other": Object {
+            "extensions": Array [
+              ".png",
+              ".jpeg",
+              ".jpg",
+            ],
+            "headline": "Additional Files",
+            "iconMsg": "Checking this prevents people from downloading and using your images. Useful if your images are licensed.",
+            "iconSize": "small",
+            "iconType": "info circle",
+            "popupMsg": "Additional files that can be used with this video, e.g., audio file, pdf.",
+          },
+          "srt": Object {
+            "extensions": Array [
+              ".srt",
+            ],
+            "headline": "SRT Files",
+            "popupMsg": "Some info about what SRT files are.",
+          },
+        },
+      }
+    }
+    data={
+      Object {
+        "error": undefined,
+        "fetchMore": [Function],
+        "loading": false,
+        "networkStatus": 7,
+        "project": Object {
+          "__typename": "VideoProject",
+          "author": Object {
+            "__typename": "User",
+            "firstName": "Jane",
+            "id": "cjuybpucc1tuk0756bpi84enp",
+            "lastName": "Doe",
+          },
+          "categories": Array [
+            Object {
+              "__typename": "Category",
+              "id": "cjubblzw915qe07560zkz9xas",
+              "translations": Array [
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "cjubble530uxq0756q5bphm9c",
+                  "name": "economic opportunity",
+                },
+              ],
+            },
+          ],
+          "createdAt": "2019-03-02T15:11:48.043Z",
+          "descInternal": "the project internal description",
+          "descPublic": "the project public description",
+          "id": "123",
+          "projectTitle": "Test Title",
+          "publishedAt": "2019-03-09T14:11:48.043Z",
+          "status": "DRAFT",
+          "supportFiles": Array [
+            Object {
+              "__typename": "SupportFile",
+              "createdAt": "2019-06-12T14:58:10.024Z",
+              "filename": "srt-1.srt",
+              "filesize": 6424,
+              "filetype": "application/x-subrip",
+              "id": "v832",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "English",
+                "id": "cjsq439dz005607560gwe7k3m",
+                "languageCode": "en",
+                "locale": "en-us",
+                "nativeName": "English",
+                "textDirection": "LTR",
+              },
+              "updatedAt": "2019-06-19T18:48:10.024Z",
+              "url": "2019/06/123/srt-1.srt",
+              "use": null,
+            },
+            Object {
+              "__typename": "SupportFile",
+              "createdAt": "2019-06-10T14:58:10.024Z",
+              "filename": "srt-2.srt",
+              "filesize": 6424,
+              "filetype": "application/x-subrip",
+              "id": "v238",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "French",
+                "id": "cjsq4565v005c0756f0lqbfe4",
+                "languageCode": "fr",
+                "locale": "fr-fr",
+                "nativeName": "French",
+                "textDirection": "LTR",
+              },
+              "updatedAt": "2019-06-11T12:18:10.024Z",
+              "url": "2019/06/123/srt-2.srt",
+              "use": null,
+            },
+          ],
+          "tags": Array [
+            Object {
+              "__typename": "Tag",
+              "id": "cjubblzx615sd0756lgfvsdzz",
+              "translations": Array [
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "cjubblfu10voe0756r11a1j9j",
+                  "name": "american culture",
+                },
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "tr019",
+                  "name": "Culture américaine",
+                },
+              ],
+            },
+            Object {
+              "__typename": "Tag",
+              "id": "cjubblzx615se0756q25ul8hs",
+              "translations": Array [
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "cjubblfyl0vqm0756kuq2rv4u",
+                  "name": "english learning",
+                },
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "tr777",
+                  "name": "Anglais langue étrangère",
+                },
+              ],
+            },
+          ],
+          "team": Object {
+            "__typename": "Team",
+            "id": "cjrkzhvku000f0756l44blw33",
+            "name": "GPA Video Production",
+          },
+          "thumbnails": Array [
+            Object {
+              "__typename": "Thumbnail",
+              "alt": "the alt text",
+              "createdAt": "2019-03-06T13:11:48.043Z",
+              "filename": "image-1.jpg",
+              "filesize": 28371,
+              "filetype": "image/jpeg",
+              "id": "th11",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "English",
+                "id": "cjsq439dz005607560gwe7k3m",
+                "languageCode": "en",
+                "locale": "en-us",
+                "nativeName": "English",
+                "textDirection": "LTR",
+              },
+              "updatedAt": "2019-06-18T13:58:10.024Z",
+              "url": "2019/06/123/image-1.jpg",
+              "use": Object {
+                "__typename": "ImageUse",
+                "id": "imu33",
+                "name": "Thumbnail/Cover Image",
+              },
+            },
+          ],
+          "units": Array [
+            Object {
+              "__typename": "VideoUnit",
+              "descPublic": "the arabic description",
+              "files": Array [
+                Object {
+                  "__typename": "VideoFile",
+                  "createdAt": "2019-03-05T20:18:54.032Z",
+                  "dimensions": Object {
+                    "__typename": "Dimensions",
+                    "height": "1080",
+                    "id": "d21",
+                    "width": "1920",
+                  },
+                  "duration": 556,
+                  "filename": "video-file-1.mp4",
+                  "filesize": 662595174,
+                  "filetype": "video/mp4",
+                  "id": "f19",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Arabic",
+                    "id": "ar22",
+                    "languageCode": "ar",
+                    "locale": "ar",
+                    "nativeName": "العربية",
+                    "textDirection": "RTL",
+                  },
+                  "quality": "WEB",
+                  "stream": Array [
+                    Object {
+                      "__typename": "VideoStream",
+                      "id": "st93",
+                      "site": "YouTube",
+                      "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
+                    },
+                    Object {
+                      "__typename": "VideoStream",
+                      "id": "st35",
+                      "site": "Vimeo",
+                      "url": "https://vimeo.com/340239507",
+                    },
+                  ],
+                  "updatedAt": "2019-06-19T17:38:37.502Z",
+                  "url": "2019/06/123/video-file-1.mp4",
+                  "use": Object {
+                    "__typename": "VideoUse",
+                    "id": "us31",
+                    "name": "Full Video",
+                  },
+                  "videoBurnedInStatus": "CLEAN",
+                },
+              ],
+              "id": "un91",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "Arabic",
+                "id": "ar22",
+                "languageCode": "ar",
+                "locale": "ar",
+                "nativeName": "العربية",
+                "textDirection": "RTL",
+              },
+              "tags": Array [
+                Object {
+                  "__typename": "Tag",
+                  "id": "tag13",
+                  "translations": Array [
+                    Object {
+                      "__typename": "LanguageTranslation",
+                      "id": "tr555",
+                      "language": Object {
+                        "__typename": "Language",
+                        "displayName": "Arabic",
+                        "id": "ar22",
+                        "languageCode": "ar",
+                        "locale": "ar",
+                        "nativeName": "العربية",
+                        "textDirection": "RTL",
+                      },
+                      "name": "الثقافة الأميركية",
+                    },
+                  ],
+                },
+              ],
+              "thumbnails": Array [
+                Object {
+                  "__typename": "Thumbnail",
+                  "id": "th11",
+                  "image": Object {
+                    "__typename": "ImageFile",
+                    "alt": "the alt text",
+                    "createdAt": "2019-03-06T13:11:48.043Z",
+                    "filename": "image-1.jpg",
+                    "filesize": 28371,
+                    "filetype": "image/jpeg",
+                    "id": "im28",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "Arabic",
+                      "id": "ar22",
+                      "languageCode": "ar",
+                      "locale": "ar",
+                      "nativeName": "العربية",
+                      "textDirection": "RTL",
+                    },
+                    "updatedAt": "2019-06-18T14:58:10.024Z",
+                    "url": "2019/06/123/image-1.jpg",
+                    "use": Object {
+                      "__typename": "ImageUse",
+                      "id": "imu33",
+                      "name": "Thumbnail/Cover Image",
+                    },
+                  },
+                  "size": "FULL",
+                },
+              ],
+              "title": "test project title",
+              "updatedAt": "2019-06-18T14:58:10.024Z",
+            },
+            Object {
+              "__typename": "VideoUnit",
+              "descPublic": "the english description",
+              "files": Array [
+                Object {
+                  "__typename": "VideoFile",
+                  "createdAt": "2019-03-05T20:18:54.032Z",
+                  "dimensions": Object {
+                    "__typename": "Dimensions",
+                    "height": "1080",
+                    "id": "d21",
+                    "width": "1920",
+                  },
+                  "duration": 556,
+                  "filename": "video-file-1.mp4",
+                  "filesize": 662595174,
+                  "filetype": "video/mp4",
+                  "id": "f19",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Arabic",
+                    "id": "ar22",
+                    "languageCode": "ar",
+                    "locale": "ar",
+                    "nativeName": "العربية",
+                    "textDirection": "RTL",
+                  },
+                  "quality": "WEB",
+                  "stream": Array [
+                    Object {
+                      "__typename": "VideoStream",
+                      "id": "st93",
+                      "site": "YouTube",
+                      "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
+                    },
+                    Object {
+                      "__typename": "VideoStream",
+                      "id": "st35",
+                      "site": "Vimeo",
+                      "url": "https://vimeo.com/340239507",
+                    },
+                  ],
+                  "updatedAt": "2019-06-19T17:38:37.502Z",
+                  "url": "2019/06/123/video-file-1.mp4",
+                  "use": Object {
+                    "__typename": "VideoUse",
+                    "id": "us31",
+                    "name": "Full Video",
+                  },
+                  "videoBurnedInStatus": "CLEAN",
+                },
+              ],
+              "id": "un95",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "English",
+                "id": "cjsq439dz005607560gwe7k3m",
+                "languageCode": "en",
+                "locale": "en-us",
+                "nativeName": "English",
+                "textDirection": "LTR",
+              },
+              "tags": Array [
+                Object {
+                  "__typename": "Tag",
+                  "id": "tag13",
+                  "translations": Array [
+                    Object {
+                      "__typename": "LanguageTranslation",
+                      "id": "tr555",
+                      "language": Object {
+                        "__typename": "Language",
+                        "displayName": "Arabic",
+                        "id": "ar22",
+                        "languageCode": "ar",
+                        "locale": "ar",
+                        "nativeName": "العربية",
+                        "textDirection": "RTL",
+                      },
+                      "name": "الثقافة الأميركية",
+                    },
+                  ],
+                },
+                Object {
+                  "__typename": "Tag",
+                  "id": "tag14",
+                  "translations": Array [
+                    Object {
+                      "__typename": "LanguageTranslation",
+                      "id": "tr888",
+                      "language": Object {
+                        "__typename": "Language",
+                        "displayName": "English",
+                        "id": "cjsq439dz005607560gwe7k3m",
+                        "languageCode": "en",
+                        "locale": "en-us",
+                        "nativeName": "English",
+                        "textDirection": "LTR",
+                      },
+                      "name": "english learning",
+                    },
+                    Object {
+                      "__typename": "LanguageTranslation",
+                      "id": "tr777",
+                      "language": Object {
+                        "__typename": "Language",
+                        "displayName": "French",
+                        "id": "cjsq4565v005c0756f0lqbfe4",
+                        "languageCode": "fr",
+                        "locale": "fr-fr",
+                        "nativeName": "French",
+                        "textDirection": "LTR",
+                      },
+                      "name": "Anglais langue étrangère",
+                    },
+                  ],
+                },
+              ],
+              "thumbnails": Array [
+                Object {
+                  "__typename": "Thumbnail",
+                  "id": "th11",
+                  "image": Object {
+                    "__typename": "ImageFile",
+                    "alt": "the alt text",
+                    "createdAt": "2019-03-06T13:11:48.043Z",
+                    "filename": "image-1.jpg",
+                    "filesize": 28371,
+                    "filetype": "image/jpeg",
+                    "id": "im28",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "Arabic",
+                      "id": "ar22",
+                      "languageCode": "ar",
+                      "locale": "ar",
+                      "nativeName": "العربية",
+                      "textDirection": "RTL",
+                    },
+                    "updatedAt": "2019-06-18T14:58:10.024Z",
+                    "url": "2019/06/123/image-1.jpg",
+                    "use": Object {
+                      "__typename": "ImageUse",
+                      "id": "imu33",
+                      "name": "Thumbnail/Cover Image",
+                    },
+                  },
+                  "size": "FULL",
+                },
+              ],
+              "title": "test project title",
+              "updatedAt": "2019-06-18T12:58:10.024Z",
+            },
+          ],
+          "updatedAt": "2019-03-06T18:11:48.043Z",
+          "visibility": "PUBLIC",
+        },
+        "refetch": [Function],
+        "startPolling": [Function],
+        "stopPolling": [Function],
+        "subscribeToMore": [Function],
+        "updateQuery": [Function],
+        "variables": Object {
+          "id": "123",
+        },
+      }
+    }
+    deleteImageFile={[Function]}
+    deleteManyThumbnails={[Function]}
+    deleteSupportFile={[Function]}
+    getFileInfo={[Function]}
+    getSignedS3Url={[Function]}
+    imagesUsesData={
+      Object {
+        "error": undefined,
+        "fetchMore": [Function],
+        "imageUses": Array [
+          Object {
+            "__typename": "ImageUse",
+            "id": "cjtkdq8kr0knf07569goo9eqe",
+            "name": "Thumbnail/Cover Image",
+          },
+        ],
+        "loading": false,
+        "networkStatus": 7,
+        "refetch": [Function],
+        "startPolling": [Function],
+        "stopPolling": [Function],
+        "subscribeToMore": [Function],
+        "updateQuery": [Function],
+        "variables": Object {},
+      }
+    }
+    projectId="123"
+    save={[Function]}
+    updateImageFile={[Function]}
+    updateSupportFile={[Function]}
+    updateVideoProject={[Function]}
+    updateVideoUnit={[Function]}
+    uploadExecute={[Function]}
+  />
+</VideoProjectSupportFiles>
+`;
+
+exports[`<VideoProjectSupportFiles /> renders initial loading state without crashing 1`] = `
+<VideoProjectSupportFiles
+  data={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": true,
+      "networkStatus": 1,
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "123",
+      },
+    }
+  }
+  deleteImageFile={[Function]}
+  deleteManyThumbnails={[Function]}
+  deleteSupportFile={[Function]}
+  getFileInfo={[Function]}
+  getSignedS3Url={[Function]}
+  imagesUsesData={
+    Object {
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": true,
+      "networkStatus": 1,
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {},
+    }
+  }
+  projectId="123"
+  updateImageFile={[Function]}
+  updateSupportFile={[Function]}
+  updateVideoProject={[Function]}
+  updateVideoUnit={[Function]}
+  uploadExecute={[Function]}
+>
+  <ProjectSupportFiles
+    config={
+      Object {
+        "types": Object {
+          "other": Object {
+            "extensions": Array [
+              ".png",
+              ".jpeg",
+              ".jpg",
+            ],
+            "headline": "Additional Files",
+            "iconMsg": "Checking this prevents people from downloading and using your images. Useful if your images are licensed.",
+            "iconSize": "small",
+            "iconType": "info circle",
+            "popupMsg": "Additional files that can be used with this video, e.g., audio file, pdf.",
+          },
+          "srt": Object {
+            "extensions": Array [
+              ".srt",
+            ],
+            "headline": "SRT Files",
+            "popupMsg": "Some info about what SRT files are.",
+          },
+        },
+      }
+    }
+    data={
+      Object {
+        "error": undefined,
+        "fetchMore": [Function],
+        "loading": true,
+        "networkStatus": 1,
+        "refetch": [Function],
+        "startPolling": [Function],
+        "stopPolling": [Function],
+        "subscribeToMore": [Function],
+        "updateQuery": [Function],
+        "variables": Object {
+          "id": "123",
+        },
+      }
+    }
+    deleteImageFile={[Function]}
+    deleteManyThumbnails={[Function]}
+    deleteSupportFile={[Function]}
+    getFileInfo={[Function]}
+    getSignedS3Url={[Function]}
+    imagesUsesData={
+      Object {
+        "error": undefined,
+        "fetchMore": [Function],
+        "loading": true,
+        "networkStatus": 1,
+        "refetch": [Function],
+        "startPolling": [Function],
+        "stopPolling": [Function],
+        "subscribeToMore": [Function],
+        "updateQuery": [Function],
+        "variables": Object {},
+      }
+    }
+    projectId="123"
+    save={[Function]}
+    updateImageFile={[Function]}
+    updateSupportFile={[Function]}
+    updateVideoProject={[Function]}
+    updateVideoUnit={[Function]}
+    uploadExecute={[Function]}
+  />
+</VideoProjectSupportFiles>
+`;
