@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
@@ -40,10 +40,14 @@ const EditSupportFileRow = props => {
       <Grid.Column width={ 8 } className="column">
         <div className="filename">
           { filename !== name
-            ? <span tooltip={ name }>{ filename }</span>
+            ? (
+              <Fragment>
+                <span tooltip={ name }>{ filename }</span>
+                <VisuallyHidden el="span">{ name }</VisuallyHidden>
+              </Fragment>
+            )
             : <span>{ name }</span>
           }
-          <VisuallyHidden el="span">{ name }</VisuallyHidden>
         </div>
       </Grid.Column>
 
