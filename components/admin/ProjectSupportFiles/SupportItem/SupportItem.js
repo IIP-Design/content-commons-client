@@ -58,9 +58,9 @@ const SupportItem = props => {
   const debounceResize = debounce( updateWidths, DELAY_INTERVAL );
 
   const checkFileUrlStatus = () => {
-    if ( item && ( item.s3Path || item.url ) ) {
-      const { s3Path, url } = item;
-      const path = s3Path || url;
+    if ( item && item.url ) {
+      const { url } = item;
+      const path = url;
       const options = { baseURL: getPathToS3Bucket() };
       axios.get( path, options )
         .catch( err => {
@@ -90,7 +90,7 @@ const SupportItem = props => {
 
   useEffect( () => {
     hasError();
-  }, [item.s3Path, item.url] );
+  }, [item.url] );
 
   /**
    * Truncates long strings with ellipsis
