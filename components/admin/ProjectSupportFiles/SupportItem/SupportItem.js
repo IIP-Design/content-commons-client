@@ -61,8 +61,14 @@ const SupportItem = props => {
     if ( item && item.url ) {
       const { url } = item;
       const path = url;
-      const options = { baseURL: getPathToS3Bucket() };
-      axios.get( path, options )
+      const options = {
+        baseURL: getPathToS3Bucket(),
+        headers: {
+          Pragma: 'no-cache',
+          'Cache-Control': 'no-cache'
+        }
+      };
+      axios.head( path, options )
         .catch( err => {
           console.dir( err );
           setError( err.isAxiosError );
