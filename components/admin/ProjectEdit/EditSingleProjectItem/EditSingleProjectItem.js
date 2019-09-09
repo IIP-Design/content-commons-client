@@ -10,6 +10,8 @@ import { graphql } from 'react-apollo';
 import propTypes from 'prop-types';
 import { Loader } from 'semantic-ui-react';
 
+import useTimeout from 'lib/hooks/useTimeout';
+
 import './EditSingleProjectItem.scss';
 
 const EditVideoModal = dynamic( () => import( /* webpackChunkName: "editVideoModal" */ 'components/admin/ProjectEdit/EditVideoModal/EditVideoModal' ) );
@@ -33,12 +35,19 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
   const [selectedProject, setSelectedProject] = useState( projectId );
   const [selectedUnit, setSelectedUnit] = useState( itemId );
   const [language, setLanguage] = useState( null );
+  const [showNotication, setShowNotification] = useState( false );
 
   const updateSelectedUnit = ( unit, file ) => {
     setLanguage( null );
     setSelectedFile( file || '' );
     setSelectedUnit( unit );
   };
+
+  const hideNotification = () => {
+    setShowNotification( false );
+  };
+
+  const { startTimeout } = useTimeout( hideNotification, 2000 );
 
   if ( !project ) {
     return (
@@ -68,6 +77,9 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
         setSelectedFile,
         setSelectedUnit,
         setSelectedProject,
+        setShowNotification,
+        showNotication,
+        startTimeout,
         updateSelectedUnit
       } }
     >
