@@ -163,6 +163,7 @@ export default graphql( VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY, {
     variables: {
       id: props.id
     },
+    fetchPolicy: 'no-cache'
   } )
 } )( VideoSupportFiles );
 
