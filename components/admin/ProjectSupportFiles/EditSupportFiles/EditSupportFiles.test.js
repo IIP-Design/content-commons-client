@@ -1,16 +1,13 @@
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
+import { data } from '../SupportFileTypeList/mocks';
+import { config } from '../VideoProjectSupportFiles/config';
 import EditSupportFiles from './EditSupportFiles';
 
-const Trigger = () => <div className="trigger">Trigger</div>;
-const Content = () => <div className="content">Content</div>;
 const props = {
-  modalTrigger: Trigger,
-  modalContent: Content,
-  options: {
-    one: 'option1',
-    two: 'option2'
-  }
+  supportFiles: data.projectFiles.supportFiles,
+  extensions: config.supportFiles.types.srt.extensions,
+  save: jest.fn()
 };
 
 const Component = <EditSupportFiles { ...props } />;
@@ -18,31 +15,16 @@ const Component = <EditSupportFiles { ...props } />;
 describe( '<EditSupportFiles />', () => {
   it( 'renders without crashing', () => {
     const wrapper = shallow( Component );
-    expect( wrapper.exists() ).toEqual( true );
-  } );
 
-  it( 'renders a Modal component', () => {
-    const wrapper = shallow( Component );
-    expect( wrapper.name() ).toEqual( 'Modal' );
+    expect( wrapper.exists() ).toEqual( true );
     expect( toJSON( wrapper ) ).toMatchSnapshot();
   } );
 
-  it( 'receives the Trigger component as prop', () => {
+  it( 'clicking Save Button calls props.save', () => {
     const wrapper = shallow( Component );
-    expect( wrapper.prop( 'trigger' ).type() )
-      .toEqual( <div className="trigger">Trigger</div> );
-  } );
+    const saveBtn = wrapper.find( 'Button.primary' );
 
-  it( 'receives the options as props', () => {
-    const wrapper = shallow( Component );
-    expect( wrapper.prop( 'one' ) ).toEqual( 'option1' );
-    expect( wrapper.prop( 'two' ) ).toEqual( 'option2' );
-  } );
-
-  it( 'receives the Content component as child', () => {
-    const wrapper = shallow( Component );
-    const content = wrapper.find( 'Content' );
-    expect( content.type()() )
-      .toEqual( <div className="content">Content</div> );
+    saveBtn.simulate( 'click' );
+    expect( props.save ).toHaveBeenCalled();
   } );
 } );

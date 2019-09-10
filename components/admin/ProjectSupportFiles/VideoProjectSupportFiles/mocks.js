@@ -1,96 +1,188 @@
 import {
-  DELETE_VIDEO_PROJECT_MUTATION,
-  PUBLISH_VIDEO_PROJECT_MUTATION,
-  UNPUBLISH_VIDEO_PROJECT_MUTATION,
+  IMAGE_USES_QUERY,
+  UPDATE_SUPPORT_FILE_MUTATION,
+  UPDATE_IMAGE_FILE_MUTATION,
+  DELETE_SUPPORT_FILE_MUTATION,
+  DELETE_IMAGE_FILE_MUTATION,
+  DELETE_MANY_THUMBNAILS_MUTATION
+} from 'lib/graphql/queries/common';
+import {
+  UPDATE_VIDEO_PROJECT_MUTATION,
+  UPDATE_VIDEO_UNIT_MUTATION,
   VIDEO_PROJECT_QUERY
 } from 'lib/graphql/queries/video';
-import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
+import { buildImageFile, buildThumbnailTree } from 'lib/graphql/builders/common';
 
-export const props = { id: '234' };
+const file = {
+  id: 'file123456',
+  input: {
+    name: 'file-name-2.jpg',
+    size: 'FULL'
+  },
+  use: {
+    __typename: 'ImageUse',
+    id: 'cjtkdq8kr0knf07569goo9eqe',
+    name: 'Thumbnail/Cover Image'
+  },
+  language: {
+    __typename: 'Language',
+    id: 'cjsq4565v005c0756f0lqbfe4',
+    displayName: 'French',
+    locale: 'fr-fr'
+  }
+};
+
+export const props = {
+  projectId: '123'
+};
 
 export const mocks = [
   {
     request: {
-      query: DELETE_VIDEO_PROJECT_MUTATION,
-      variables: { id: props.id }
+      query: IMAGE_USES_QUERY
     },
     result: {
       data: {
-        deleteVideoProject: {
-          __typename: 'VideoProject',
-          id: props.id
+        imageUses: [
+          {
+            __typename: 'ImageUse',
+            id: 'cjtkdq8kr0knf07569goo9eqe',
+            name: 'Thumbnail/Cover Image'
+          }
+        ]
+      }
+    }
+  },
+  {
+    request: {
+      query: UPDATE_SUPPORT_FILE_MUTATION,
+      variables: {
+        data: {
+          language: {
+            connect: {
+              id: file.language
+            }
+          }
+        },
+        where: { id: file.id }
+      }
+    },
+    result: {
+      data: {
+        updateSupportFile: {
+          id: file.id,
+          filename: 'file-name.jpg',
+          language: {
+            __typename: 'Language',
+            id: 'cjsq439dz005607560gwe7k3m',
+            displayName: 'English',
+            locale: 'en-us'
+          },
+          use: {
+            __typename: 'ImageUse',
+            id: 'cjtkdq8kr0knf07569goo9eqe',
+            name: 'Thumbnail/Cover Image'
+          }
         }
       }
     }
   },
   {
     request: {
-      query: PUBLISH_VIDEO_PROJECT_MUTATION,
-      variables: { id: props.id }
+      query: UPDATE_IMAGE_FILE_MUTATION,
+      variables: {
+        data: {
+          language: {
+            connect: {
+              id: file.language
+            }
+          }
+        },
+        where: { id: file.id }
+      }
     },
     result: {
       data: {
-        publishVideoProject: {
-          __typename: 'VideoProject',
-          id: props.id,
-          status: 'PUBLISHED'
+        updateImageFile: {
+          id: file.id,
+          filename: 'file-name.jpg',
+          language: {
+            __typename: 'Language',
+            id: 'cjsq439dz005607560gwe7k3m',
+            displayName: 'English',
+            locale: 'en-us'
+          },
+          use: {
+            __typename: 'ImageUse',
+            id: 'cjtkdq8kr0knf07569goo9eqe',
+            name: 'Thumbnail/Cover Image'
+          }
         }
       }
     }
   },
   {
     request: {
-      query: UNPUBLISH_VIDEO_PROJECT_MUTATION,
-      variables: { id: props.id }
+      query: DELETE_SUPPORT_FILE_MUTATION,
+      variables: { id: file.id }
     },
     result: {
       data: {
-        unpublishVideoProject: {
-          __typename: 'VideoProject',
-          id: props.id
-        }
+        deleteSupportFile: { id: file.id }
       }
     }
   },
   {
     request: {
-      query: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
-      variables: { id: props.id }
+      query: DELETE_IMAGE_FILE_MUTATION,
+      variables: { id: file.id }
     },
     result: {
       data: {
-        projectStatusChange: {
-          __typename: 'VideoProject',
-          id: props.id,
-          status: 'PUBLISHED',
-          error: null
-        }
+        deleteImageFile: { id: file.id }
       }
     }
   },
   {
     request: {
-      query: VIDEO_PROJECT_QUERY,
-      variables: { id: props.id }
+      query: DELETE_MANY_THUMBNAILS_MUTATION,
+      variables: {
+        where: { id_in: ['thumb-id-1', 'thumb-id-2'] }
+      }
     },
     result: {
       data: {
-        project: {
-          __typename: 'VideoProject',
-          id: props.id,
-          createdAt: '2019-03-02T15:11:48.043Z',
-          updatedAt: '2019-03-06T18:11:48.043Z',
-          publishedAt: '2019-03-09T14:11:48.043Z',
+        deleteManyThumbnails: { count: 2 }
+      }
+    }
+  },
+  {
+    request: {
+      query: UPDATE_VIDEO_PROJECT_MUTATION,
+      variables: {
+        where: { id: props.projectId },
+        data: {
+          thumbnails: {
+            create: buildImageFile( file )
+          }
+        }
+      }
+    },
+    result: {
+      data: {
+        updateVideoProject: {
+          id: props.projectId,
+          createdAt: '2019-08-30T13:29:21.115Z',
+          updatedAt: '2019-08-30T13:29:21.115Z',
+          publishedAt: null,
           author: {
-            __typename: 'User',
-            id: 'u921',
-            firstName: 'FirstName',
-            lastName: 'LastName'
+            id: 'cjuybpucc1tuk0756bpi84enp',
+            firstName: 'Jane',
+            lastName: 'Doe'
           },
           team: {
-            __typename: 'Team',
-            id: 't81',
-            name: 'the team name'
+            id: 'cjrkzhvku000f0756l44blw33',
+            name: 'GPA Video Production'
           },
           projectTitle: 'Test Title',
           descPublic: 'the project public description',
@@ -100,14 +192,131 @@ export const mocks = [
           categories: [
             {
               __typename: 'Category',
-              id: '38s',
+              id: 'cjubblzw915qe07560zkz9xas',
               translations: [
                 {
                   __typename: 'LanguageTranslation',
-                  id: '832',
-                  name: 'about america',
+                  id: 'cjubble530uxq0756q5bphm9c',
+                  name: 'economic opportunity'
+                }
+              ]
+            }
+          ],
+          tags: [
+            {
+              __typename: 'Tag',
+              id: 'cjubblzxl15tx0756ve90lln9',
+              translations: [
+                {
+                  __typename: 'LanguageTranslation',
+                  id: 'cjubbli4x0wq60756icx6211a',
+                  name: 'anti-corruption'
+                }
+              ]
+            }
+          ],
+          thumbnails: [
+            {
+              __typename: 'Thumbnail',
+              id: 'cjzy5lpzv1bef07207s354cbw',
+              language: {
+                __typename: 'Language',
+                id: 'cjsq439dz005607560gwe7k3m',
+                displayName: 'English',
+                locale: 'en-us'
+              }
+            }
+          ],
+          units: [
+            {
+              id: 'cjzy5mcr41bf10720njs7wa7m',
+              language: {
+                __typename: 'Language',
+                id: 'cjsq439dz005607560gwe7k3m',
+                displayName: 'English'
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    request: {
+      query: UPDATE_VIDEO_UNIT_MUTATION,
+      variables: {
+        data: buildThumbnailTree( {
+          id: 'cjzy5me4v1bfm0720854bc97o',
+          size: 'FULL',
+          image: {
+            id: 'cjzy5mcsu1bf60720zyt05l8l',
+            url: `2019/08/commons.america.gov_${props.projectId}/file-name.jpg`
+          }
+        } ),
+        where: { id: 'cjzy5mcr41bf10720njs7wa7m' }
+      }
+    },
+    results: {
+      data: {
+        updateVideoUnit: {
+          id: 'cjzy5mcr41bf10720njs7wa7m',
+          thumbnails: [
+            {
+              __typename: 'Thumbnail',
+              id: 'cjzy5me4v1bfm0720854bc97o',
+              size: 'FULL',
+              image: {
+                __typename: 'ImageFile',
+                id: 'cjzy5mcsu1bf60720zyt05l8l',
+                url: `2019/08/commons.america.gov_${props.projectId}/file-name.jpg`
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    request: {
+      query: VIDEO_PROJECT_QUERY,
+      variables: { id: props.projectId }
+    },
+    result: {
+      data: {
+        project: {
+          __typename: 'VideoProject',
+          id: props.projectId,
+          createdAt: '2019-03-02T15:11:48.043Z',
+          updatedAt: '2019-03-06T18:11:48.043Z',
+          publishedAt: '2019-03-09T14:11:48.043Z',
+          author: {
+            __typename: 'User',
+            id: 'cjuybpucc1tuk0756bpi84enp',
+            firstName: 'Jane',
+            lastName: 'Doe'
+          },
+          team: {
+            __typename: 'Team',
+            id: 'cjrkzhvku000f0756l44blw33',
+            name: 'GPA Video Production'
+          },
+          projectTitle: 'Test Title',
+          descPublic: 'the project public description',
+          descInternal: 'the project internal description',
+          status: 'DRAFT',
+          visibility: 'PUBLIC',
+          categories: [
+            {
+              __typename: 'Category',
+              id: 'cjubblzw915qe07560zkz9xas',
+              translations: [
+                {
+                  __typename: 'LanguageTranslation',
+                  id: 'cjubble530uxq0756q5bphm9c',
+                  name: 'economic opportunity',
                   language: {
-                    id: 'en23',
+                    __typename: 'Language',
+                    id: 'cjsq439dz005607560gwe7k3m',
                     locale: 'en-us'
                   }
                 }
@@ -117,15 +326,15 @@ export const mocks = [
           tags: [
             {
               __typename: 'Tag',
-              id: 'tag13',
+              id: 'cjubblzx615sd0756lgfvsdzz',
               translations: [
                 {
                   __typename: 'LanguageTranslation',
-                  id: 'tr999',
+                  id: 'cjubblfu10voe0756r11a1j9j',
                   name: 'american culture',
                   language: {
                     __typename: 'Language',
-                    id: 'en38',
+                    id: 'cjsq439dz005607560gwe7k3m',
                     displayName: 'English',
                     languageCode: 'en',
                     locale: 'en-us',
@@ -139,7 +348,7 @@ export const mocks = [
                   name: 'Culture américaine',
                   language: {
                     __typename: 'Language',
-                    id: 'fr82',
+                    id: 'cjsq4565v005c0756f0lqbfe4',
                     displayName: 'French',
                     languageCode: 'fr',
                     locale: 'fr-fr',
@@ -151,15 +360,15 @@ export const mocks = [
             },
             {
               __typename: 'Tag',
-              id: 'tag14',
+              id: 'cjubblzx615se0756q25ul8hs',
               translations: [
                 {
                   __typename: 'LanguageTranslation',
-                  id: 'tr888',
+                  id: 'cjubblfyl0vqm0756kuq2rv4u',
                   name: 'english learning',
                   language: {
                     __typename: 'Language',
-                    id: 'en38',
+                    id: 'cjsq439dz005607560gwe7k3m',
                     displayName: 'English',
                     languageCode: 'en',
                     locale: 'en-us',
@@ -173,7 +382,7 @@ export const mocks = [
                   name: 'Anglais langue étrangère',
                   language: {
                     __typename: 'Language',
-                    id: 'fr82',
+                    id: 'cjsq4565v005c0756f0lqbfe4',
                     displayName: 'French',
                     languageCode: 'fr',
                     locale: 'fr-fr',
@@ -186,7 +395,7 @@ export const mocks = [
           ],
           thumbnails: [
             {
-              __typename: 'ImageFile',
+              __typename: 'Thumbnail',
               id: 'th11',
               createdAt: '2019-03-06T13:11:48.043Z',
               updatedAt: '2019-06-18T13:58:10.024Z',
@@ -194,7 +403,7 @@ export const mocks = [
               filesize: 28371,
               filetype: 'image/jpeg',
               alt: 'the alt text',
-              url: `2019/06/${props.id}/image-1.jpg`,
+              url: `2019/06/${props.projectId}/image-1.jpg`,
               use: {
                 __typename: 'ImageUse',
                 id: 'imu33',
@@ -202,7 +411,7 @@ export const mocks = [
               },
               language: {
                 __typename: 'Language',
-                id: 'en38',
+                id: 'cjsq439dz005607560gwe7k3m',
                 displayName: 'English',
                 languageCode: 'en',
                 locale: 'en-us',
@@ -263,7 +472,7 @@ export const mocks = [
                     filesize: 28371,
                     filetype: 'image/jpeg',
                     alt: 'the alt text',
-                    url: `2019/06/${props.id}/image-1.jpg`,
+                    url: `2019/06/${props.projectId}/image-1.jpg`,
                     use: {
                       __typename: 'ImageUse',
                       id: 'imu33',
@@ -292,7 +501,7 @@ export const mocks = [
                   filesize: 662595174,
                   filetype: 'video/mp4',
                   quality: 'WEB',
-                  url: `2019/06/${props.id}/video-file-1.mp4`,
+                  url: `2019/06/${props.projectId}/video-file-1.mp4`,
                   videoBurnedInStatus: 'CLEAN',
                   dimensions: {
                     __typename: 'Dimensions',
@@ -339,7 +548,7 @@ export const mocks = [
               descPublic: 'the english description',
               language: {
                 __typename: 'Language',
-                id: 'en38',
+                id: 'cjsq439dz005607560gwe7k3m',
                 displayName: 'English',
                 languageCode: 'en',
                 locale: 'en-us',
@@ -357,7 +566,7 @@ export const mocks = [
                       name: 'american culture',
                       language: {
                         __typename: 'Language',
-                        id: 'en38',
+                        id: 'cjsq439dz005607560gwe7k3m',
                         displayName: 'English',
                         languageCode: 'en',
                         locale: 'en-us',
@@ -371,7 +580,7 @@ export const mocks = [
                       name: 'Culture américaine',
                       language: {
                         __typename: 'Language',
-                        id: 'fr82',
+                        id: 'cjsq4565v005c0756f0lqbfe4',
                         displayName: 'French',
                         languageCode: 'fr',
                         locale: 'fr-fr',
@@ -391,7 +600,7 @@ export const mocks = [
                       name: 'english learning',
                       language: {
                         __typename: 'Language',
-                        id: 'en38',
+                        id: 'cjsq439dz005607560gwe7k3m',
                         displayName: 'English',
                         languageCode: 'en',
                         locale: 'en-us',
@@ -405,7 +614,7 @@ export const mocks = [
                       name: 'Anglais langue étrangère',
                       language: {
                         __typename: 'Language',
-                        id: 'fr82',
+                        id: 'cjsq4565v005c0756f0lqbfe4',
                         displayName: 'French',
                         languageCode: 'fr',
                         locale: 'fr-fr',
@@ -430,7 +639,7 @@ export const mocks = [
                     filesize: 28371,
                     filetype: 'image/jpeg',
                     alt: 'the alt text',
-                    url: `2019/06/${props.id}/image-1.jpg`,
+                    url: `2019/06/${props.projectId}/image-1.jpg`,
                     use: {
                       __typename: 'ImageUse',
                       id: 'imu33',
@@ -438,7 +647,7 @@ export const mocks = [
                     },
                     language: {
                       __typename: 'Language',
-                      id: 'en38',
+                      id: 'cjsq439dz005607560gwe7k3m',
                       displayName: 'English',
                       languageCode: 'en',
                       locale: 'en-us',
@@ -459,7 +668,7 @@ export const mocks = [
                   filesize: 662595174,
                   filetype: 'video/mp4',
                   quality: 'WEB',
-                  url: `2019/06/${props.id}/video-file-1.mp4`,
+                  url: `2019/06/${props.projectId}/video-file-1.mp4`,
                   videoBurnedInStatus: 'CLEAN',
                   dimensions: {
                     __typename: 'Dimensions',
@@ -469,7 +678,7 @@ export const mocks = [
                   },
                   language: {
                     __typename: 'Language',
-                    id: 'en38',
+                    id: 'cjsq439dz005607560gwe7k3m',
                     displayName: 'English',
                     languageCode: 'en',
                     locale: 'en-us',
@@ -505,14 +714,14 @@ export const mocks = [
               id: 'v832',
               createdAt: '2019-06-12T14:58:10.024Z',
               updatedAt: '2019-06-19T18:48:10.024Z',
-              url: `2019/06/${props.id}/srt-1.srt`,
+              url: `2019/06/${props.projectId}/srt-1.srt`,
               filename: 'srt-1.srt',
               filesize: 6424,
               filetype: 'application/x-subrip',
               use: null,
               language: {
                 __typename: 'Language',
-                id: 'en33',
+                id: 'cjsq439dz005607560gwe7k3m',
                 displayName: 'English',
                 nativeName: 'English',
                 languageCode: 'en',
@@ -525,235 +734,20 @@ export const mocks = [
               id: 'v238',
               createdAt: '2019-06-10T14:58:10.024Z',
               updatedAt: '2019-06-11T12:18:10.024Z',
-              url: `2019/06/${props.id}/srt-2.srt`,
+              url: `2019/06/${props.projectId}/srt-2.srt`,
               filename: 'srt-2.srt',
               filesize: 6424,
               filetype: 'application/x-subrip',
               use: null,
               language: {
                 __typename: 'Language',
-                id: 'fr533',
+                id: 'cjsq4565v005c0756f0lqbfe4',
                 displayName: 'French',
                 nativeName: 'French',
                 languageCode: 'fr',
                 locale: 'fr-fr',
                 textDirection: 'LTR'
               }
-            }
-          ]
-        }
-      }
-    }
-  }
-];
-
-export const draftMocks = [
-  { ...mocks[0] },
-  { ...mocks[1] },
-  { ...mocks[2] },
-  {
-    ...mocks[3],
-    result: {
-      data: {
-        projectStatusChange: {
-          ...mocks[3].result.data.projectStatusChange,
-          status: 'DRAFT'
-        }
-      }
-    }
-  },
-  {
-    ...mocks[4],
-    result: {
-      data: {
-        project: {
-          ...mocks[4].result.data.project,
-          status: 'PUBLISHED'
-        }
-      }
-    }
-  }
-];
-
-export const unpublishErrorMocks = [
-  { ...mocks[0] },
-  { ...mocks[1] },
-  {
-    ...mocks[2],
-    result: {
-      errors: [
-        {
-          graphQLErrors: [{
-            message: 'There was an unpublishing error.'
-          }]
-        }
-      ]
-    }
-  },
-  {
-    ...mocks[3],
-    result: {
-      data: {
-        projectStatusChange: {
-          ...mocks[3].result.data.projectStatusChange,
-          status: 'PUBLISHED',
-          error: 'There was an unpublishing error.'
-        }
-      }
-    }
-  },
-  {
-    ...mocks[4],
-    result: {
-      data: {
-        project: {
-          ...mocks[4].result.data.project,
-          status: 'DRAFT'
-        }
-      }
-    }
-  }
-];
-
-export const publishErrorMocks = [
-  { ...mocks[0] },
-  {
-    ...mocks[1],
-    result: {
-      errors: [
-        {
-          graphQLErrors: [{
-            message: 'There was a publishing error.'
-          }]
-        }
-      ]
-    }
-  },
-  { ...mocks[2] },
-  {
-    ...mocks[3],
-    result: {
-      data: {
-        projectStatusChange: {
-          ...mocks[3].result.data.projectStatusChange,
-          status: 'DRAFT',
-          error: 'There was a publishing error.'
-        }
-      }
-    }
-  },
-  {
-    ...mocks[4],
-    result: {
-      data: {
-        project: {
-          ...mocks[4].result.data.project,
-          status: 'DRAFT'
-        }
-      }
-    }
-  }
-];
-
-export const errorMocks = [
-  { ...mocks[0] },
-  { ...mocks[1] },
-  { ...mocks[2] },
-  { ...mocks[3] },
-  { ...mocks[3] },
-  {
-    ...mocks[4],
-    result: {
-      errors: [
-        {
-          graphQLErrors: [{
-            message: 'There was an error.'
-          }]
-        }
-      ]
-    }
-  }
-];
-
-export const nullMocks = [
-  { ...mocks[0] },
-  { ...mocks[1] },
-  { ...mocks[2] },
-  { ...mocks[3] },
-  { ...mocks[3] },
-  {
-    ...mocks[4],
-    result: { data: { project: null } }
-  }
-];
-
-export const noUpdatesToPublishMocks = [
-  { ...mocks[0] },
-  { ...mocks[1] },
-  { ...mocks[2] },
-  { ...mocks[3] },
-  {
-    ...mocks[4],
-    result: {
-      data: {
-        project: {
-          ...mocks[4].result.data.project,
-          thumbnails: [
-            {
-              ...mocks[4].result.data.project.thumbnails[0],
-              updatedAt: '2019-03-07T15:11:48.043Z'
-            }
-          ],
-          units: [
-            {
-              ...mocks[4].result.data.project.units[0],
-              updatedAt: '2019-03-07T15:11:48.043Z',
-              thumbnails: [
-                {
-                  ...mocks[4].result.data.project.units[0].thumbnails[0],
-                  image: {
-                    ...mocks[4].result.data.project.units[0].thumbnails[0].image,
-                    updatedAt: '2019-03-07T15:11:48.043Z',
-                  }
-                }
-              ],
-              files: [
-                {
-                  ...mocks[4].result.data.project.units[0].files[0],
-                  updatedAt: '2019-03-07T15:11:48.043Z',
-                }
-              ]
-            },
-            {
-              ...mocks[4].result.data.project.units[1],
-              updatedAt: '2019-03-07T15:11:48.043Z',
-              thumbnails: [
-                {
-                  ...mocks[4].result.data.project.units[1].thumbnails[0],
-                  image: {
-                    ...mocks[4].result.data.project.units[1].thumbnails[0].image,
-                    updatedAt: '2019-03-07T15:11:48.043Z',
-                  }
-                }
-              ],
-              files: [
-                {
-                  ...mocks[4].result.data.project.units[1].files[0],
-                  updatedAt: '2019-03-07T15:11:48.043Z',
-                }
-              ]
-            }
-          ],
-          supportFiles: [
-            {
-              ...mocks[4].result.data.project.supportFiles[0],
-              createdAt: '2019-03-07T15:11:48.043Z',
-              updatedAt: '2019-03-07T15:11:48.043Z'
-            },
-            {
-              ...mocks[4].result.data.project.supportFiles[1],
-              createdAt: '2019-03-07T15:11:48.043Z',
-              updatedAt: '2019-03-07T15:11:48.043Z'
             }
           ]
         }

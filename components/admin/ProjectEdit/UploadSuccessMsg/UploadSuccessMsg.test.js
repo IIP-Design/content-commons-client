@@ -17,7 +17,9 @@ describe( '<UploadSuccessMsg />', () => {
 
   it( 'renders a child <Icon />', () => {
     const wrapper = shallow( Component );
-    expect( wrapper.contains( <Icon size="large" name="check circle outline" as="i" /> ) ).toEqual( true );
+    const icon = <Icon name="check circle outline" style={ { fontSize: '1.2em', fontWeight: 600 } } as="i" />;
+
+    expect( wrapper.contains( icon ) ).toEqual( true );
   } );
 
   it( 'renders a "Files uploaded successfully!"', () => {

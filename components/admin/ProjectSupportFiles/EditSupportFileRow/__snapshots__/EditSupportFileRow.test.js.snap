@@ -1,197 +1,78 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<EditSupportFileRow /> renders without crashing 1`] = `
-<TableRow
-  as="tr"
-  cellAs="td"
+<EditSupportFileRow
+  accept=".png,.jpeg,.jpg"
+  file={
+    Object {
+      "id": "123",
+      "language": "cjsq439dz005607560gwe7k3m",
+      "name": "file-name.jpg",
+    }
+  }
+  removeFile={[MockFunction]}
+  replaceFile={[MockFunction]}
+  update={[MockFunction]}
 >
-  <TableCell
-    as="td"
-  >
+  <GridRow>
     <div
-      className="file-name"
+      className="row"
     >
-      <VisuallyHidden>
-        madeinamerica_arabic.jpg
-      </VisuallyHidden>
-      <span
-        aria-hidden={true}
-        className="file-name-wrap hasEllipsis"
+      <GridColumn
+        className="column"
+        width={8}
       >
-        <Popup
-          content="madeinamerica_arabic.jpg"
-          inverted={true}
-          keepInViewPort={true}
-          on={
-            Array [
-              "hover",
-              "click",
-              "focus",
-            ]
+        <div
+          className="eight wide column column"
+        >
+          <div
+            className="filename"
+          >
+            <span>
+              file-name.jpg
+            </span>
+          </div>
+        </div>
+      </GridColumn>
+      <GridColumn
+        width={6}
+      >
+        <div
+          className="six wide column"
+        >
+          <LanguageDropdown
+            id="123"
+            onChange={[MockFunction]}
+            required={true}
+            value="cjsq439dz005607560gwe7k3m"
+          />
+        </div>
+      </GridColumn>
+      <GridColumn
+        only="tablet computer"
+        style={
+          Object {
+            "paddingLeft": 0,
           }
-          position="top left"
-          size="mini"
+        }
+        width={2}
+      >
+        <div
+          className="tablet only computer only two wide column"
           style={
             Object {
-              "msWordBreak": "break-all",
-              "overflowWrap": "break-word",
-              "wordBreak": "break-word",
-              "wordWrap": "break-word",
+              "paddingLeft": 0,
             }
           }
-          trigger={
-            <span>
-              <Focusable
-                order={0}
-              >
-                <React.Fragment>
-                  
-                  …
-                  madeinamerica_arabic.jpg
-                </React.Fragment>
-              </Focusable>
-            </span>
-          }
-        />
-      </span>
-    </div>
-  </TableCell>
-  <TableCell
-    as="td"
-  >
-    <VisuallyHidden>
-      <label
-        htmlFor="file-5682"
-      >
-        madeinamerica_arabic.jpg language
-      </label>
-    </VisuallyHidden>
-    <Dropdown
-      additionLabel="Add "
-      additionPosition="top"
-      closeOnBlur={true}
-      deburr={false}
-      error={false}
-      fluid={true}
-      icon="dropdown"
-      id="5682"
-      minCharacters={1}
-      noResultsMessage="No results found."
-      onChange={[MockFunction]}
-      openOnFocus={true}
-      options={
-        Array [
-          Object {
-            "text": "Arabic",
-            "value": "arabic",
-          },
-          Object {
-            "text": "Chinese",
-            "value": "chinese",
-          },
-          Object {
-            "text": "English",
-            "value": "english",
-          },
-          Object {
-            "text": "French",
-            "value": "french",
-          },
-          Object {
-            "text": "Portuguese",
-            "value": "portuguese",
-          },
-          Object {
-            "text": "Russian",
-            "value": "russian",
-          },
-          Object {
-            "text": "Spanish",
-            "value": "spanish",
-          },
-        ]
-      }
-      placeholder="–"
-      renderLabel={[Function]}
-      required={true}
-      searchInput="text"
-      selectOnBlur={true}
-      selectOnNavigation={true}
-      selection={true}
-      text="Arabic"
-      value="Arabic"
-      wrapSelection={true}
-    />
-  </TableCell>
-  <TableCell
-    as="td"
-  >
-    <ButtonGroup
-      basic={true}
-      size="large"
-    >
-      <Popup
-        content="Replace"
-        inverted={true}
-        keepInViewPort={true}
-        on={
-          Array [
-            "hover",
-            "click",
-            "focus",
-          ]
-        }
-        position="top left"
-        size="mini"
-        trigger={
-          <Button
-            aria-label="replace file"
-            as="button"
-            basic={true}
-            className="replace"
-            icon="refresh"
-            onClick={[Function]}
-          />
-        }
-      />
-      <VisuallyHidden>
-        <label
-          htmlFor="upload-file--single"
         >
-          upload file
-        </label>
-        <input
-          accept=""
-          id="upload-file--single"
-          tabIndex={-1}
-          type="file"
-        />
-      </VisuallyHidden>
-      <Popup
-        content="Delete"
-        inverted={true}
-        keepInViewPort={true}
-        on={
-          Array [
-            "hover",
-            "click",
-            "focus",
-          ]
-        }
-        position="top left"
-        size="mini"
-        trigger={
-          <Button
-            aria-label="delete file"
-            as="button"
-            basic={true}
-            className="delete"
-            icon="delete"
-            onClick={[Function]}
+          <FileRemoveReplaceButtonGroup
+            accept=".png,.jpeg,.jpg"
+            onRemove={[Function]}
+            onReplace={[Function]}
           />
-        }
-      />
-    </ButtonGroup>
-  </TableCell>
-</TableRow>
+        </div>
+      </GridColumn>
+    </div>
+  </GridRow>
+</EditSupportFileRow>
 `;

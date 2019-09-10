@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import ApolloError from 'components/errors/ApolloError';
-import { formatBytes, getCount, getS3Url } from 'lib/utils';
+import { formatBytes, getCount } from 'lib/utils';
 
 const VIDEO_PROJECT_FILES_QUERY = gql`
   query VideoProjectFiles( $id: ID! ) {

@@ -42,7 +42,7 @@ const SupportFileTypeList = props => {
     return filesToUpload.filter( file => extensions.includes( getFileExt( file.input.name ) ) );
   };
 
-  const getFilesForExisitingProject = files => {
+  const getFilesForExistingProject = files => {
     const { extensions } = type;
     return files.filter( file => extensions.includes( getFileExt( file.filename ) ) );
   };
@@ -55,7 +55,7 @@ const SupportFileTypeList = props => {
     if ( !isEmpty( data ) && data.projectFiles ) {
       const { supportFiles, thumbnails } = data.projectFiles;
       const files = [...supportFiles, ...thumbnails];
-      return getFilesForExisitingProject( files );
+      return getFilesForExistingProject( files );
     }
 
     if ( filesToUpload ) {
@@ -73,7 +73,7 @@ const SupportFileTypeList = props => {
 
 
   const renderSupportItem = item => {
-    const { fileType } = props;
+    const { type: fileType } = props;
 
     return (
       <SupportItem
@@ -105,7 +105,7 @@ const SupportFileTypeList = props => {
       <ul>
         { supFiles.length
           ? sortBy( supFiles, file => file.language.displayName ).map( renderSupportItem )
-          : ( <div style={ { fontSize: '0.875em' } }>{ getNoFilesMessage( headline ) }</div> )
+          : ( <li style={ { fontSize: '0.875em' } }>{ getNoFilesMessage( headline ) }</li> )
         }
       </ul>
     </Fragment>
@@ -119,8 +119,6 @@ SupportFileTypeList.propTypes = {
   type: PropTypes.string,
   data: PropTypes.object,
   save: PropTypes.func,
-  /* eslint-disable-next-line react/no-unused-prop-types */
-  fileType: PropTypes.string,
   filesToUpload: PropTypes.array, // from redux
 };
 
@@ -141,3 +139,6 @@ export default compose(
     skip: props => !props.projectId
   } )
 )( SupportFileTypeList );
+
+// export unconnected component to test in isolation
+export { SupportFileTypeList };

@@ -1,86 +1,308 @@
-import { shallow } from 'enzyme';
-import toJSON from 'enzyme-to-json';
-import { projects, supportFilesConfig } from 'components/admin/ProjectEdit/mockData';
-import SupportFileTypeList from './SupportFileTypeList';
+import { mount } from 'enzyme';
+import wait from 'waait';
+import { getFileExt } from 'lib/utils';
+import { SupportFileTypeList } from './SupportFileTypeList';
+import {
+  data, filesToUpload, srtProps, otherProps
+} from './mocks';
 
-const props = {
-  headline: supportFilesConfig.srt.headline,
-  projectId: { videoID: 'made-in-america' },
-  fileType: supportFilesConfig.srt.fileType,
-  popupMsg: supportFilesConfig.srt.popupMsg,
-  data: projects[0].supportFiles.srt,
-  hasSubmittedData: false,
-  hasUploaded: false
-};
+jest.mock(
+  'components/popups/IconPopup/IconPopup',
+  () => function IconPopup() { return ''; }
+);
 
-const Component = <SupportFileTypeList { ...props } />;
+jest.mock(
+  '../SupportItem/SupportItem',
+  () => function SupportItem() { return ''; }
+);
 
-describe( '<SupportFileTypeList />', () => {
-  it( 'renders without crashing', () => {
-    const wrapper = shallow( Component );
+jest.mock(
+  '../EditSupportFiles/EditSupportFiles',
+  () => function EditSupportFiles() { return ''; }
+);
+
+/**
+ * Use components unconnected from Redux to simplify
+ * testing and avoid setup of mock Redux `store`. Best to
+ * test Redux actions and reducers in isolation elsewhere.
+ *
+ * However, this affects the use of Apollo MockProvider
+ * since the Redux `connect` is wrapped inside the Apollo
+ * `Provider`, i.e., if no mock Redux store, then no Apollo
+ * `MockProvider`.
+ *
+ * @see https://redux.js.org/recipes/writing-tests#connected-components
+ * @see https://hackernoon.com/unit-testing-redux-connected-components-692fa3c4441c
+ */
+const SrtFilesComponent = <SupportFileTypeList { ...srtProps } />;
+const OtherFilesComponent = <SupportFileTypeList { ...otherProps } />;
+
+describe( '<SupportFileTypeList /> for a new project', () => {
+  const getFilesForNewProject = props => {
+    const { config: { types }, type } = props;
+    const { extensions } = types[type];
+    return filesToUpload.filter( file => extensions.includes( getFileExt( file.input.name ) ) );
+  };
+
+  it( 'renders for SRTs without crashing', async () => {
+    const wrapper = mount( SrtFilesComponent );
+
+    wrapper.setProps( {
+      ...srtProps,
+      ...{ data: {}, filesToUpload: [] }
+    } );
+    await wait( 0 );
+    wrapper.update();
+
     expect( wrapper.exists() ).toEqual( true );
   } );
 
-  it( 'renders initially `Placeholder` components', () => {
-    const wrapper = shallow( Component );
-    const placeholders = wrapper.find( 'Placeholder' );
-    expect( placeholders ).toHaveLength( props.data.length );
-    expect( toJSON( wrapper ) ).toMatchSnapshot();
-  } );
+  it( 'renders for Other files without crashing', async () => {
+    const wrapper = mount( OtherFilesComponent );
 
-  it( 'renders `SupportItem` components if `hasSubmittedData`', () => {
-    const wrapper = shallow( Component );
-
-    expect( wrapper.find( 'SupportItem' ) )
-      .toHaveLength( 0 );
-    wrapper.setProps( { hasSubmittedData: true } );
-    expect( wrapper.find( 'SupportItem' ) )
-      .toHaveLength( props.data.length );
-    expect( toJSON( wrapper ) ).toMatchSnapshot();
-  } );
-
-  it( 'renders `IconPopup` components if `hasSubmittedData`', () => {
-    const wrapper = shallow( Component );
-
-    expect( wrapper.find( 'IconPopup' ) )
-      .toHaveLength( 0 );
-    wrapper.setProps( { hasSubmittedData: true } );
-    expect( wrapper.find( 'IconPopup' ).exists() )
-      .toEqual( true );
-    expect( wrapper.find( 'IconPopup' ).prop( 'message' ) )
-      .toEqual( props.popupMsg );
-  } );
-
-  it( 'renders `EditSupportFiles` components if `hasUploaded`', () => {
-    const wrapper = shallow( Component );
-
-    expect( wrapper.find( 'EditSupportFiles' ) )
-      .toHaveLength( 0 );
     wrapper.setProps( {
-      hasSubmittedData: true,
-      hasUploaded: true
+      ...otherProps,
+      ...{ data: {}, filesToUpload: [] }
     } );
-    expect( wrapper.find( 'EditSupportFiles' ).exists() )
-      .toEqual( true );
+    await wait( 0 );
+    wrapper.update();
+
+    expect( wrapper.exists() ).toEqual( true );
   } );
 
-  it( '`SupportItem` components receive correct `projectId` and `itemId`', () => {
-    const wrapper = shallow( Component );
-    wrapper.setProps( { hasSubmittedData: true } );
-    const items = wrapper.find( 'SupportItem' );
+  it( 'renders IconPopup with correct SRT files message', async () => {
+    const wrapper = mount( SrtFilesComponent );
+    const iconPopup = wrapper.find( 'IconPopup' );
+    const { type } = srtProps;
+    const { popupMsg } = srtProps.config.types[type];
 
-    expect( items ).toHaveLength( props.data.length );
-    items.forEach( ( item, i ) => {
-      expect( item.prop( 'projectId' ) )
-        .toEqual( props.projectId );
-      expect( item.prop( 'itemId' ) )
-        .toEqual( props.data[i].id );
+    wrapper.setProps( {
+      ...srtProps,
+      ...{ data: {}, filesToUpload }
+    } );
+    await wait( 0 );
+    wrapper.update();
+
+    expect( iconPopup.exists() ).toEqual( true );
+    expect( iconPopup.prop( 'message' ) ).toEqual( popupMsg );
+  } );
+
+  it( 'renders IconPopup with correct Other files message', async () => {
+    const wrapper = mount( OtherFilesComponent );
+    const iconPopup = wrapper.find( 'IconPopup' );
+    const { type } = otherProps;
+    const { popupMsg } = otherProps.config.types[type];
+
+    wrapper.setProps( {
+      ...otherProps,
+      ...{ data: {}, filesToUpload }
+    } );
+    await wait( 0 );
+    wrapper.update();
+
+    expect( iconPopup.exists() ).toEqual( true );
+    expect( iconPopup.prop( 'message' ) ).toEqual( popupMsg );
+  } );
+
+  it( 'renders EditSupportFiles with correct SRT files', async () => {
+    const wrapper = mount( SrtFilesComponent );
+
+    wrapper.setProps( {
+      ...srtProps,
+      ...{ data: {}, filesToUpload }
+    } );
+    await wait( 0 );
+    wrapper.update();
+
+    const editSupportFiles = wrapper.find( 'EditSupportFiles' );
+    const srts = getFilesForNewProject( srtProps );
+
+    expect( wrapper.prop( 'projectId' ) ).toEqual( srtProps.projectId );
+    expect( editSupportFiles.exists() ).toEqual( true );
+    expect( editSupportFiles.prop( 'supportFiles' ) ).toEqual( srts );
+  } );
+
+  it( 'renders EditSupportFiles with correct Other files', async () => {
+    const wrapper = mount( OtherFilesComponent );
+
+    wrapper.setProps( {
+      ...otherProps,
+      ...{ data: {}, filesToUpload }
+    } );
+    await wait( 0 );
+    wrapper.update();
+
+    const editSupportFiles = wrapper.find( 'EditSupportFiles' );
+    const otherFiles = getFilesForNewProject( otherProps );
+
+    expect( wrapper.prop( 'projectId' ) ).toEqual( srtProps.projectId );
+    expect( editSupportFiles.exists() ).toEqual( true );
+    expect( editSupportFiles.prop( 'supportFiles' ) ).toEqual( otherFiles );
+  } );
+
+  it( 'renders the correct SupportItem components for SRTs', async () => {
+    const wrapper = mount( SrtFilesComponent );
+
+    wrapper.setProps( {
+      ...srtProps,
+      ...{ data: {}, filesToUpload }
+    } );
+    await wait( 0 );
+    wrapper.update();
+
+    const supportItems = wrapper.find( 'SupportItem' );
+    const srts = getFilesForNewProject( srtProps );
+
+    expect( supportItems.length ).toEqual( srts.length );
+    supportItems.forEach( ( supportItem, i ) => {
+      expect( supportItem.prop( 'item' ) ).toEqual( srts[i] );
     } );
   } );
 
-  it( 'returns null if an empty data array is received', () => {
-    const wrapper = shallow( Component );
-    wrapper.setProps( { data: [] } );
-    expect( wrapper.html() ).toEqual( null );
+  it( 'renders the correct SupportItem components for Other files', async () => {
+    const wrapper = mount( OtherFilesComponent );
+
+    wrapper.setProps( {
+      ...otherProps,
+      ...{ data: {}, filesToUpload }
+    } );
+    await wait( 0 );
+    wrapper.update();
+
+    const supportItems = wrapper.find( 'SupportItem' );
+    const otherFiles = getFilesForNewProject( otherProps );
+
+    expect( supportItems.length ).toEqual( otherFiles.length );
+    supportItems.forEach( ( supportItem, i ) => {
+      expect( supportItem.prop( 'item' ) ).toEqual( otherFiles[i] );
+    } );
+  } );
+} );
+
+describe( '<SupportFileTypeList /> for an existing project', () => {
+  it( 'renders for SRTs without crashing', async () => {
+    const wrapper = mount( SrtFilesComponent );
+
+    wrapper.setProps( { ...srtProps, data } );
+    await wait( 0 );
+    wrapper.update();
+
+    expect( wrapper.exists() ).toEqual( true );
+  } );
+
+  it( 'renders for Other files without crashing', async () => {
+    const wrapper = mount( OtherFilesComponent );
+
+    wrapper.setProps( { ...otherProps, data } );
+    await wait( 0 );
+    wrapper.update();
+
+    expect( wrapper.exists() ).toEqual( true );
+  } );
+
+  it( 'renders IconPopup with correct SRT files message', async () => {
+    const wrapper = mount( SrtFilesComponent );
+    const iconPopup = wrapper.find( 'IconPopup' );
+    const { type } = srtProps;
+    const { popupMsg } = srtProps.config.types[type];
+
+    wrapper.setProps( { ...srtProps, data } );
+    await wait( 0 );
+    wrapper.update();
+
+    expect( iconPopup.exists() ).toEqual( true );
+    expect( iconPopup.prop( 'message' ) ).toEqual( popupMsg );
+  } );
+
+  it( 'renders IconPopup with correct Other files message', async () => {
+    const wrapper = mount( OtherFilesComponent );
+    const iconPopup = wrapper.find( 'IconPopup' );
+    const { type } = otherProps;
+    const { popupMsg } = otherProps.config.types[type];
+
+    wrapper.setProps( { ...otherProps, data } );
+    await wait( 0 );
+    wrapper.update();
+
+    expect( iconPopup.exists() ).toEqual( true );
+    expect( iconPopup.prop( 'message' ) ).toEqual( popupMsg );
+  } );
+
+  it( 'renders EditSupportFiles with correct SRT files', async () => {
+    const wrapper = mount( SrtFilesComponent );
+    const { supportFiles } = data.projectFiles;
+
+    wrapper.setProps( { ...srtProps, data } );
+    await wait( 0 );
+    wrapper.update();
+    const editSupportFiles = wrapper.find( 'EditSupportFiles' );
+
+    expect( wrapper.prop( 'projectId' ) ).toEqual( srtProps.projectId );
+    expect( editSupportFiles.exists() ).toEqual( true );
+    expect( editSupportFiles.prop( 'supportFiles' ) ).toEqual( supportFiles );
+  } );
+
+  it( 'renders EditSupportFiles with correct Other files', async () => {
+    const wrapper = mount( OtherFilesComponent );
+    const { thumbnails } = data.projectFiles;
+
+    wrapper.setProps( { ...otherProps, data } );
+    await wait( 0 );
+    wrapper.update();
+    const editSupportFiles = wrapper.find( 'EditSupportFiles' );
+
+    expect( wrapper.prop( 'projectId' ) ).toEqual( srtProps.projectId );
+    expect( editSupportFiles.exists() ).toEqual( true );
+    expect( editSupportFiles.prop( 'supportFiles' ) ).toEqual( thumbnails );
+  } );
+
+  it( 'renders the correct SupportItem components for SRTs', async () => {
+    const wrapper = mount( SrtFilesComponent );
+    const { supportFiles } = data.projectFiles;
+
+    wrapper.setProps( { ...srtProps, data } );
+    await wait( 0 );
+    wrapper.update();
+    const supportItems = wrapper.find( 'SupportItem' );
+
+    expect( supportItems.length ).toEqual( supportFiles.length );
+    supportItems.forEach( ( supportItem, i ) => {
+      expect( supportItem.prop( 'item' ) ).toEqual( supportFiles[i] );
+    } );
+  } );
+
+  it( 'renders the correct SupportItem components for Other files', async () => {
+    const wrapper = mount( SrtFilesComponent );
+    const { thumbnails } = data.projectFiles;
+
+    wrapper.setProps( { ...otherProps, data } );
+    await wait( 0 );
+    wrapper.update();
+    const supportItems = wrapper.find( 'SupportItem' );
+
+    expect( supportItems.length ).toEqual( thumbnails.length );
+    supportItems.forEach( ( supportItem, i ) => {
+      expect( supportItem.prop( 'item' ) ).toEqual( thumbnails[i] );
+    } );
+  } );
+
+  it( 'renders no SRTs message', () => {
+    const wrapper = mount( SrtFilesComponent );
+    const supportItems = wrapper.find( 'SupportItem' );
+    const msg = `Click the 'Edit' link to add ${srtProps.type} files`;
+
+    expect( wrapper.contains( msg ) ).toEqual( true );
+    expect( supportItems.length ).toEqual( 0 );
+    expect( supportItems.exists() ).toEqual( false );
+  } );
+
+  it( 'renders no additional files message', () => {
+    const wrapper = mount( OtherFilesComponent );
+    const supportItems = wrapper.find( 'SupportItem' );
+    const msg = `Click the 'Edit' link to add additional files`;
+
+    expect( wrapper.contains( msg ) ).toEqual( true );
+    expect( supportItems.length ).toEqual( 0 );
+    expect( supportItems.exists() ).toEqual( false );
   } );
 } );

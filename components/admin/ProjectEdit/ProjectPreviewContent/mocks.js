@@ -31,6 +31,11 @@ export const mocks = [
               filetype: 'image/jpeg',
               alt: 'the alt text',
               url: `2019/06/${props.id}/image-1.jpg`,
+              use: {
+                __typename: 'ImageUse',
+                id: 'imu33',
+                name: 'Thumbnail/Cover Image'
+              },
               language: {
                 __typename: 'Language',
                 id: 'en38',
@@ -95,6 +100,11 @@ export const mocks = [
                     filetype: 'image/jpeg',
                     alt: 'the alt text',
                     url: `2019/06/${props.id}/image-1.jpg`,
+                    use: {
+                      __typename: 'ImageUse',
+                      id: 'imu33',
+                      name: 'Thumbnail/Cover Image'
+                    },
                     language: {
                       __typename: 'Language',
                       id: 'ar22',
@@ -257,6 +267,11 @@ export const mocks = [
                     filetype: 'image/jpeg',
                     alt: 'the alt text',
                     url: `2019/06/${props.id}/image-1.jpg`,
+                    use: {
+                      __typename: 'ImageUse',
+                      id: 'imu33',
+                      name: 'Thumbnail/Cover Image'
+                    },
                     language: {
                       __typename: 'Language',
                       id: 'en38',
