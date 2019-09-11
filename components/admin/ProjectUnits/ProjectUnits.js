@@ -14,7 +14,10 @@ import isEmpty from 'lodash/isEmpty';
 import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
 import { VIDEO_PROJECT_UNITS_QUERY } from 'lib/graphql/queries/video';
 
-import ProjectUnitItem from '../ProjectUnitItem/ProjectUnitItem';
+// renmae this it generic
+import EditSupportFiles from 'components/admin/ProjectSupportFiles/EditSupportFiles/EditSupportFiles';
+
+import ProjectUnitItem from './ProjectUnitItem/ProjectUnitItem';
 import './ProjectUnits.scss';
 
 const ProjectUnits = props => {
@@ -99,7 +102,19 @@ const ProjectUnits = props => {
 
   return (
     <div className="project-units">
-      <h2 className="list-heading" style={ { marginBottom: '1rem' } }>{ heading }</h2>
+      <h2 className="list-heading" style={ { marginBottom: '1rem' } }>{ heading }
+        { projectId
+          && (
+            <EditSupportFiles
+              header="Edit video files in this project"
+              supportFiles={ [] }
+              extensions={ ['.mov', '.mp4'] }
+              // save={ handleSave }
+            />
+          )
+        }
+
+      </h2>
       { units && units.length
         ? renderUnits( units )
         : 'No units available'

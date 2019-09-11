@@ -12,10 +12,10 @@ import iconVideoCamera from 'static/icons/icon_32px_videoCamera.png';
 // import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import FileUploadProgressBar from 'components/admin/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
 import GeneralError from 'components/errors/GeneralError/GeneralError';
-import { UploadContext } from '../VideoEdit/VideoEdit';
+import { UploadContext } from 'components/admin/ProjectEdit/VideoEdit/VideoEdit';
 import './ProjectUnitItem.scss';
 
-const EditSingleProjectItem = dynamic( () => import( /* webpackChunkName: "editSingleProjectItem" */ '../EditSingleProjectItem/EditSingleProjectItem' ) );
+const EditSingleProjectItem = dynamic( () => import( /* webpackChunkName: "editSingleProjectItem" */ 'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem' ) );
 
 const ProjectUnitItem = props => {
   const { projectId, unit, filesToUpload } = props;

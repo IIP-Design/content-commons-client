@@ -28,7 +28,7 @@ import Notification from 'components/Notification/Notification';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
-import ProjectUnits from 'components/admin/ProjectEdit/ProjectUnits/ProjectUnits';
+import ProjectUnits from 'components/admin/ProjectUnits/ProjectUnits';
 import FormInstructions from 'components/admin/ProjectEdit/FormInstructions/FormInstructions';
 import VideoProjectDetailsForm from 'components/admin/ProjectDetailsForm/VideoProjectDetailsForm/VideoProjectDetailsForm';
 import VideoProjectSupportFiles from 'components/admin/ProjectSupportFiles/VideoProjectSupportFiles/VideoProjectSupportFiles';
