@@ -4,7 +4,7 @@
  *
  */
 import React, {
-  Fragment, useState, useEffect, useRef, useContext
+  useState, useEffect, useRef, useContext
 } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -18,19 +18,18 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 // import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
 import { getCount, getPathToS3Bucket } from 'lib/utils';
+import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import { UploadContext } from '../../ProjectEdit/VideoEdit/VideoEdit';
 
 import './SupportItem.scss';
 
 /* eslint-disable react/prefer-stateless-function */
 const SupportItem = props => {
-  const STR_INDEX_PROPORTION = 0.04;
-  const ITEM_NAME_PROPORTION = 0.625;
+  const MAX_FILE_NAME_LENGTH = 45;
   const ITEM_LANG_PROPORTION = 0.3;
   const DELAY_INTERVAL = 1000;
 
   const listEl = useRef( null );
-  const filenameEl = useRef( null );
   const languageEl = useRef( null );
   const mounted = useRef( true );
 
@@ -39,18 +38,16 @@ const SupportItem = props => {
   const [error, setError] = useState( false );
   const [widths, setWidths] = useState( {
     listItem: 0,
-    itemName: 0,
     itemLang: 0
   } );
 
   const { item } = props;
-  const { listItem, itemName, itemLang } = widths;
+  const { listItem, itemLang } = widths;
 
   const updateWidths = () => {
     if ( mounted.current ) {
       setWidths( {
         listItem: ( listEl.current && listEl.current.offsetWidth ) || 0,
-        itemName: ( filenameEl.current && filenameEl.current.offsetWidth ) || 0,
         itemLang: ( languageEl.current && languageEl.current.offsetWidth ) || 0
       } );
     }
@@ -108,12 +105,11 @@ const SupportItem = props => {
    * @param {string} str the string
    * @param {number} start index for first cutoff point
    * @param {number} end index for ending cutoff point
+   * @param {*} replaceWith char to replace subset of string, default is ellipsis
    * @return truncated string
    */
-  const getShortFileName = ( str, index ) => (
-    <Fragment>
-      { `${str.substr( 0, index )}` }&hellip;{ `${str.substr( -index )}` }
-    </Fragment>
+  const getShortFileName = ( str, start, end, replaceWith = '...' ) => (
+    `${str.substr( 0, start )}${replaceWith}${str.substr( -end )}`
   );
 
   /**
@@ -126,8 +122,15 @@ const SupportItem = props => {
     Math.floor( reference * proportion )
   );
 
-  const isLongName = ( itemWidth, reference, proportion ) => (
-    itemWidth >= getProportionalNumber( reference, proportion )
+  const isLongName = ( name = '', maxLength = MAX_FILE_NAME_LENGTH ) => {
+    if ( name && typeof name === 'string' ) {
+      return name.length > Math.abs( maxLength );
+    }
+    return false;
+  };
+
+  const isLongLang = ( itemWidth, reference, proportion ) => (
+    reference > 0 && itemWidth >= getProportionalNumber( reference, proportion )
   );
 
 
@@ -152,10 +155,10 @@ const SupportItem = props => {
   const filename = normalizeItem( 'filename', '' );
   const filesize = normalizeItem( 'filesize', 0 );
   const language = normalizeLanguage( item.language );
-  const charIndex = getProportionalNumber( listItem, STR_INDEX_PROPORTION );
-  const shortFileName = getShortFileName( filename, charIndex );
-  const isLongFileName = isLongName( itemName, listItem, ITEM_NAME_PROPORTION );
-  const isLongLangName = isLongName( itemLang, listItem, ITEM_LANG_PROPORTION );
+  const strCutoff = isWindowWidthLessThanOrEqualTo( 900 ) ? 12 : 16;
+  const shortFileName = getShortFileName( filename, strCutoff, strCutoff );
+  const isLongFileName = isLongName( filename );
+  const isLongLangName = isLongLang( itemLang, listItem, ITEM_LANG_PROPORTION );
   const isUploading = uploadInProgress && ( item.loaded < filesize );
 
   const popupStyle = {
@@ -166,7 +169,7 @@ const SupportItem = props => {
   };
 
   const renderName = ( str = '', isLang = false ) => {
-    if ( isLongFileName ) {
+    if ( ( !isLang && isLongFileName ) || ( isLang && isLongLangName ) ) {
       return (
         <Popup
           content={ str }
@@ -174,7 +177,6 @@ const SupportItem = props => {
           inverted
           on={ [
             'hover',
-            'click',
             'focus'
           ] }
           trigger={ (
@@ -204,7 +206,6 @@ const SupportItem = props => {
             `item-name-wrap${isLongFileName ? ' hasEllipsis' : ''}`
           }
           aria-hidden={ isLongFileName }
-          ref={ filenameEl }
         >
           { error
             ? <GeneralError msg={ renderName( filename ) } />
