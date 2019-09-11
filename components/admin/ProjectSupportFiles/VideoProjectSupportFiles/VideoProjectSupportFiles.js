@@ -161,6 +161,7 @@ const VideoProjectSupportFiles = props => {
         uploadDir = uploadDir.length ? uploadDir[0] : '';
       }
 
+      // Either use a dir path for existing projects or send projectId to create new dir on S3
       const projectIdPath = uploadDir || projectId;
 
       // 1. Does a new file need to be upload
