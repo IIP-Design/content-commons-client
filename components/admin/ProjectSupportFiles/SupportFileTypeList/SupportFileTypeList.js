@@ -16,9 +16,9 @@ import sortBy from 'lodash/sortBy';
 
 import IconPopup from 'components/popups/IconPopup/IconPopup';
 import { VIDEO_PROJECT_FILES_QUERY } from 'lib/graphql/queries/video';
+import EditProjectFiles from '../../ProjectEdit/EditProjectFilesModal/EditPojectFilesModal';
 import SupportItem from '../SupportItem/SupportItem';
 
-import EditSupportFiles from '../EditSupportFiles/EditSupportFiles';
 
 const SupportFileTypeList = props => {
   const {
@@ -28,7 +28,7 @@ const SupportFileTypeList = props => {
   const type = types[props.type];
 
   const {
-    headline, popupMsg
+    headline, popupMsg, editTitle
   } = type;
 
   const handleSave = async ( files, filesToRemove ) => {
@@ -94,8 +94,10 @@ const SupportFileTypeList = props => {
         />
         { projectId
           && (
-            <EditSupportFiles
-              supportFiles={ supFiles }
+            <EditProjectFiles
+              title={ editTitle }
+              type="support"
+              filesToEdit={ supFiles }
               extensions={ type.extensions }
               save={ handleSave }
             />

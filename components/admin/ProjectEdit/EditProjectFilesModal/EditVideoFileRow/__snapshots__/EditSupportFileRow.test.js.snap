@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EditSupportFileRow /> renders without crashing 1`] = `
+<EditSupportFileRow
+  accept=".png,.jpeg,.jpg"
+  file={
+    Object {
+      "id": "123",
+      "language": "cjsq439dz005607560gwe7k3m",
+      "name": "file-name.jpg",
+    }
+  }
+  removeFile={[MockFunction]}
+  replaceFile={[MockFunction]}
+  update={[MockFunction]}
+>
+  <GridRow>
+    <div
+      className="row"
+    >
+      <GridColumn
+        className="column"
+        width={8}
+      >
+        <div
+          className="eight wide column column"
+        >
+          <div
+            className="filename"
+          >
+            <span>
+              file-name.jpg
+            </span>
+          </div>
+        </div>
+      </GridColumn>
+      <GridColumn
+        width={6}
+      >
+        <div
+          className="six wide column"
+        >
+          <LanguageDropdown
+            id="123"
+            onChange={[MockFunction]}
+            required={true}
+            value="cjsq439dz005607560gwe7k3m"
+          />
+        </div>
+      </GridColumn>
+      <GridColumn
+        only="tablet computer"
+        style={
+          Object {
+            "paddingLeft": 0,
+          }
+        }
+        width={2}
+      >
+        <div
+          className="tablet only computer only two wide column"
+          style={
+            Object {
+              "paddingLeft": 0,
+            }
+          }
+        >
+          <FileRemoveReplaceButtonGroup
+            accept=".png,.jpeg,.jpg"
+            onRemove={[Function]}
+            onReplace={[Function]}
+          />
+        </div>
+      </GridColumn>
+    </div>
+  </GridRow>
+</EditSupportFileRow>
+`;

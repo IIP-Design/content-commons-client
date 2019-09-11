@@ -31,7 +31,7 @@ const EditSupportFileRow = props => {
   // item in first index shows the first capturing group in regex
   // let fileType = /(\w+)\/(\w+)/.exec( type );
   // fileType = ( fileType ) ? fileType[1] : '';
-  const filename = ( name && name.length > 25 ) ? truncateAndReplaceStr( name, 15, 8 ) : name;
+  const filename = ( name && name.length > 25 ) ? truncateAndReplaceStr( name, 25, 8 ) : name;
 
   return (
     <Grid.Row>

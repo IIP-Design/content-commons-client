@@ -15,7 +15,7 @@ import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
 import { VIDEO_PROJECT_UNITS_QUERY } from 'lib/graphql/queries/video';
 
 // renmae this it generic
-import EditSupportFiles from 'components/admin/ProjectSupportFiles/EditSupportFiles/EditSupportFiles';
+import EditProjectFiles from '../ProjectEdit/EditProjectFilesModal/EditPojectFilesModal';
 
 import ProjectUnitItem from './ProjectUnitItem/ProjectUnitItem';
 import './ProjectUnits.scss';
@@ -29,7 +29,19 @@ const ProjectUnits = props => {
     extensions
   } = props;
 
+
   const hasProjectUnits = () => ( !isEmpty( data ) && data.projectUnits && data.projectUnits.units );
+
+  const getFilesToEdit = () => {
+    let filesToEdit = [];
+    if ( hasProjectUnits() ) {
+      data.projectUnits.units.forEach( unit => {
+        filesToEdit = [...filesToEdit, ...unit.files];
+      } );
+    }
+
+    return filesToEdit;
+  };
 
   // only allow files contiained in the extensions array
   const allowedFiles = filesToUpload.filter( file => extensions.includes( getFileExt( file.input.name ) ) );
@@ -105,9 +117,10 @@ const ProjectUnits = props => {
       <h2 className="list-heading" style={ { marginBottom: '1rem' } }>{ heading }
         { projectId
           && (
-            <EditSupportFiles
-              header="Edit video files in this project"
-              supportFiles={ [] }
+            <EditProjectFiles
+              title="Edit video files in this project"
+              type="video"
+              filesToEdit={ getFilesToEdit() }
               extensions={ ['.mov', '.mp4'] }
               // save={ handleSave }
             />
