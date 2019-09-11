@@ -1,0 +1,377 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProjectUnitItem /> renders without crashing 1`] = `
+<ProjectUnitItem
+  filesToUpload={
+    Array [
+      Object {
+        "id": "af1557de-c2ad-4107-bcd3-369f05779320",
+        "input": Object {
+          "lastModified": 1517162208000,
+          "name": "Mexico City 1.mp4",
+          "size": 15829673,
+          "type": "video/mp4",
+        },
+        "language": "cjsq439dz005607560gwe7k3m",
+        "loaded": 0,
+        "quality": "BROADCAST",
+        "use": "cjsw78q6p00lp07566znbyatd",
+        "videoBurnedInStatus": "CLEAN",
+      },
+      Object {
+        "id": "bdef2cb3-169b-4d98-8aec-f99442e6dcfa",
+        "input": Object {
+          "lastModified": 1517162208000,
+          "name": "Mexico City 2.mp4",
+          "size": 15829673,
+          "type": "video/mp4",
+        },
+        "language": "cjsq439dz005607560gwe7k3m",
+        "loaded": 0,
+        "quality": "WEB",
+        "use": "cjsw78q6p00lp07566znbyatd",
+        "videoBurnedInStatus": "CLEAN",
+      },
+    ]
+  }
+  projectId="123"
+  unit={
+    Object {
+      "__typename": "VideoUnit",
+      "descPublic": null,
+      "files": Array [
+        Object {
+          "__typename": "VideoFile",
+          "createdAt": "2019-08-30T13:29:50.596Z",
+          "dimensions": Object {
+            "__typename": "Dimensions",
+            "height": 1080,
+            "id": "cjzy5mcsg1bf40720p9jxyixl",
+            "width": 1920,
+          },
+          "duration": 14.889875,
+          "filename": "Mexico City 1.mp4",
+          "filesize": 15829673,
+          "filetype": "video/mp4",
+          "id": "cjzy5mcs01bf20720add2sklq",
+          "language": Object {
+            "__typename": "Language",
+            "displayName": "English",
+            "id": "cjsq439dz005607560gwe7k3m",
+            "languageCode": "en",
+            "locale": "en-us",
+            "nativeName": "English",
+            "textDirection": "LTR",
+          },
+          "quality": "WEB",
+          "stream": Array [
+            Object {
+              "__typename": "VideoStream",
+              "id": "cjzy5mcsj1bf50720wxk4bdsf",
+              "site": "vimeo",
+              "url": "https://vimeo.com/356893849",
+            },
+          ],
+          "updatedAt": "2019-08-30T13:29:50.596Z",
+          "url": "2019/08/commons.america.gov_cjzy5lpzv1bef07207s354cbw/mexico_city_1.mp4",
+          "use": Object {
+            "__typename": "VideoUse",
+            "id": "cjsw78q6p00lp07566znbyatd",
+            "name": "Full Video",
+          },
+          "videoBurnedInStatus": "SUBTITLED",
+        },
+      ],
+      "id": "cjzy5mcr41bf10720njs7wa7m",
+      "language": Object {
+        "__typename": "Language",
+        "displayName": "English",
+        "id": "cjsq439dz005607560gwe7k3m",
+        "languageCode": "en",
+        "locale": "en-us",
+        "nativeName": "English",
+        "textDirection": "LTR",
+      },
+      "tags": Array [],
+      "thumbnails": Array [
+        Object {
+          "__typename": "Thumbnail",
+          "id": "cjzy5me4v1bfm0720854bc97o",
+          "image": Object {
+            "__typename": "ImageFile",
+            "alt": null,
+            "createdAt": "2019-08-30T13:29:50.596Z",
+            "filename": "Mexico City 1.jpg",
+            "filesize": 1030591,
+            "filetype": "image/jpeg",
+            "id": "cjzy5mcsu1bf60720zyt05l8l",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "English",
+              "id": "cjsq439dz005607560gwe7k3m",
+              "languageCode": "en",
+              "locale": "en-us",
+              "nativeName": "English",
+              "textDirection": "LTR",
+            },
+            "updatedAt": "2019-08-30T13:29:50.596Z",
+            "url": "2019/08/commons.america.gov_cjzy5lpzv1bef07207s354cbw/mexico_city_1.jpg",
+            "use": Object {
+              "__typename": "ImageUse",
+              "id": "cjtkdq8kr0knf07569goo9eqe",
+              "name": "Thumbnail/Cover Image",
+            },
+          },
+          "size": "FULL",
+        },
+      ],
+      "title": "the project title",
+      "updatedAt": "2019-08-30T13:29:50.596Z",
+    }
+  }
+>
+  <Modal
+    centered={true}
+    closeIcon={true}
+    closeOnDimmerClick={true}
+    closeOnDocumentClick={false}
+    dimmer={true}
+    eventPool="Modal"
+    key="cjsq439dz005607560gwe7k3m"
+    trigger={
+      <Card
+        className="project-unit-item"
+      >
+        <div
+          className="image-wrapper"
+        >
+          <Image
+            as="img"
+            fluid={true}
+            src="https://s3-bucket-url.s3.amazonaws.com/2019/08/commons.america.gov_cjzy5lpzv1bef07207s354cbw/mexico_city_1.jpg"
+            ui={true}
+          />
+          <List
+            className="file-list"
+          >
+            <ListItem>
+              Mexico City 1.mp4
+            </ListItem>
+            <ListItem>
+              Mexico City 2.mp4
+            </ListItem>
+          </List>
+          <img
+            alt="Video Icon"
+            className="metaicon"
+            src={Object {}}
+          />
+        </div>
+        <CardContent
+          className=""
+        >
+          <CardHeader>
+            the project title
+          </CardHeader>
+          <CardMeta>
+            <List>
+              <ListItem>
+                Language: 
+                English
+              </ListItem>
+              <ListItem>
+                Files: 
+                1
+              </ListItem>
+            </List>
+          </CardMeta>
+        </CardContent>
+      </Card>
+    }
+  >
+    <Portal
+      closeOnDocumentClick={false}
+      closeOnEscape={true}
+      eventPool="Modal"
+      mountNode={<body />}
+      onClose={[Function]}
+      onMount={[Function]}
+      onOpen={[Function]}
+      onUnmount={[Function]}
+      openOnTriggerClick={true}
+      trigger={
+        <Card
+          className="project-unit-item"
+        >
+          <div
+            className="image-wrapper"
+          >
+            <Image
+              as="img"
+              fluid={true}
+              src="https://s3-bucket-url.s3.amazonaws.com/2019/08/commons.america.gov_cjzy5lpzv1bef07207s354cbw/mexico_city_1.jpg"
+              ui={true}
+            />
+            <List
+              className="file-list"
+            >
+              <ListItem>
+                Mexico City 1.mp4
+              </ListItem>
+              <ListItem>
+                Mexico City 2.mp4
+              </ListItem>
+            </List>
+            <img
+              alt="Video Icon"
+              className="metaicon"
+              src={Object {}}
+            />
+          </div>
+          <CardContent
+            className=""
+          >
+            <CardHeader>
+              the project title
+            </CardHeader>
+            <CardMeta>
+              <List>
+                <ListItem>
+                  Language: 
+                  English
+                </ListItem>
+                <ListItem>
+                  Files: 
+                  1
+                </ListItem>
+              </List>
+            </CardMeta>
+          </CardContent>
+        </Card>
+      }
+    >
+      <Ref
+        innerRef={[Function]}
+      >
+        <Card
+          className="project-unit-item"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          <a
+            className="ui card project-unit-item"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            <div
+              className="image-wrapper"
+            >
+              <Image
+                as="img"
+                fluid={true}
+                src="https://s3-bucket-url.s3.amazonaws.com/2019/08/commons.america.gov_cjzy5lpzv1bef07207s354cbw/mexico_city_1.jpg"
+                ui={true}
+              >
+                <img
+                  className="ui fluid image"
+                  src="https://s3-bucket-url.s3.amazonaws.com/2019/08/commons.america.gov_cjzy5lpzv1bef07207s354cbw/mexico_city_1.jpg"
+                />
+              </Image>
+              <List
+                className="file-list"
+              >
+                <div
+                  className="ui list file-list"
+                  role="list"
+                >
+                  <ListItem
+                    key="af1557de-c2ad-4107-bcd3-369f05779320"
+                  >
+                    <div
+                      className="item"
+                      onClick={[Function]}
+                      role="listitem"
+                    >
+                      Mexico City 1.mp4
+                    </div>
+                  </ListItem>
+                  <ListItem
+                    key="bdef2cb3-169b-4d98-8aec-f99442e6dcfa"
+                  >
+                    <div
+                      className="item"
+                      onClick={[Function]}
+                      role="listitem"
+                    >
+                      Mexico City 2.mp4
+                    </div>
+                  </ListItem>
+                </div>
+              </List>
+              <img
+                alt="Video Icon"
+                className="metaicon"
+                src={Object {}}
+              />
+            </div>
+            <CardContent
+              className=""
+            >
+              <div
+                className="content"
+              >
+                <CardHeader>
+                  <div
+                    className="header"
+                  >
+                    the project title
+                  </div>
+                </CardHeader>
+                <CardMeta>
+                  <div
+                    className="meta"
+                  >
+                    <List>
+                      <div
+                        className="ui list"
+                        role="list"
+                      >
+                        <ListItem>
+                          <div
+                            className="item"
+                            onClick={[Function]}
+                            role="listitem"
+                          >
+                            Language: 
+                            English
+                          </div>
+                        </ListItem>
+                        <ListItem>
+                          <div
+                            className="item"
+                            onClick={[Function]}
+                            role="listitem"
+                          >
+                            Files: 
+                            1
+                          </div>
+                        </ListItem>
+                      </div>
+                    </List>
+                  </div>
+                </CardMeta>
+              </div>
+            </CardContent>
+          </a>
+        </Card>
+      </Ref>
+    </Portal>
+  </Modal>
+</ProjectUnitItem>
+`;
