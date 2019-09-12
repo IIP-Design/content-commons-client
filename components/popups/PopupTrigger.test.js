@@ -11,12 +11,6 @@ const props = {
 
 const Component = <PopupTrigger { ...props } />;
 
-const resizeWindow = ( x, y ) => {
-  window.innerWidth = x;
-  window.innerHeight = y;
-  window.dispatchEvent( new Event( 'resize' ) );
-};
-
 describe( '<PopupTrigger />', () => {
   it( 'renders without crashing', () => {
     const wrapper = mount( Component );
