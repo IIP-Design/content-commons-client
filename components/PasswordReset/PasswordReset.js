@@ -29,7 +29,6 @@ class PasswordReset extends Component {
       isSubmitting,
     } = this.props;
 
-
     return (
       <div className="reset reset_wrapper">
         <h1 className="reset_title">Reset Password</h1>
