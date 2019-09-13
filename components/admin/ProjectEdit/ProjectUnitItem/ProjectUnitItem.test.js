@@ -1,6 +1,7 @@
 import { mount } from 'enzyme';
-import toJSON from 'enzyme-to-json';
+import { UploadContext } from '../VideoEdit/VideoEdit';
 import ProjectUnitItem from './ProjectUnitItem';
+import { filesToUpload, postUploadUnit, preUploadUnit } from './mocks';
 
 jest.mock( 'next-server/dynamic', () => () => 'Dynamic' );
 
@@ -11,139 +12,301 @@ jest.mock(
   () => function EditSingleProjectItem() { return ''; }
 );
 
-const props = {
+jest.mock(
+  'components/admin/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar',
+  () => function FileUploadProgressBar() { return ''; }
+);
+
+jest.mock(
+  'static/icons/icon_32px_videoCamera.png',
+  () => 'iconVideoCamera'
+);
+
+const uploadingProps = {
+  projectId: undefined,
+  filesToUpload,
+  unit: preUploadUnit
+};
+
+const postUploadProps = {
   projectId: '123',
-  filesToUpload: [
-    {
-      language: 'cjsq439dz005607560gwe7k3m',
-      use: 'cjsw78q6p00lp07566znbyatd',
-      quality: 'BROADCAST',
-      videoBurnedInStatus: 'CLEAN',
-      input: {
-        name: 'Mexico City 1.mp4',
-        lastModified: 1517162208000,
-        size: 15829673,
-        type: 'video/mp4'
-      },
-      id: 'af1557de-c2ad-4107-bcd3-369f05779320',
-      loaded: 0
-    },
-    {
-      language: 'cjsq439dz005607560gwe7k3m',
-      use: 'cjsw78q6p00lp07566znbyatd',
-      quality: 'WEB',
-      videoBurnedInStatus: 'CLEAN',
-      input: {
-        name: 'Mexico City 2.mp4',
-        lastModified: 1517162208000,
-        size: 15829673,
-        type: 'video/mp4'
-      },
-      id: 'bdef2cb3-169b-4d98-8aec-f99442e6dcfa',
-      loaded: 0
-    }
-  ],
+  filesToUpload: [],
+  unit: postUploadUnit
+};
+
+const updateTitleProps = {
+  ...postUploadProps,
   unit: {
-    id: 'cjzy5mcr41bf10720njs7wa7m',
-    updatedAt: '2019-08-30T13:29:50.596Z',
-    title: 'the project title',
-    descPublic: null,
+    ...postUploadUnit,
+    title: 'the project title'
+  }
+};
+
+const uploadingErrorProps = {
+  ...uploadingProps,
+  unit: {
+    ...uploadingProps.unit,
+    files: [
+      { ...uploadingProps.unit.files[0], error: true },
+    ]
+  }
+};
+
+const postUploadErrorProps = {
+  ...postUploadProps,
+  unit: {
+    ...postUploadProps.unit,
     files: [
       {
-        id: 'cjzy5mcs01bf20720add2sklq',
-        createdAt: '2019-08-30T13:29:50.596Z',
-        updatedAt: '2019-08-30T13:29:50.596Z',
-        filename: 'Mexico City 1.mp4',
-        filetype: 'video/mp4',
-        filesize: 15829673,
-        duration: 14.889875,
-        videoBurnedInStatus: 'SUBTITLED',
-        quality: 'WEB',
+        ...postUploadProps.unit.files[0],
+        duration: null,
         dimensions: {
-          id: 'cjzy5mcsg1bf40720p9jxyixl',
-          width: 1920,
-          height: 1080,
-          __typename: 'Dimensions'
-        },
-        url: '2019/08/commons.america.gov_cjzy5lpzv1bef07207s354cbw/mexico_city_1.mp4',
-        language: {
-          id: 'cjsq439dz005607560gwe7k3m',
-          locale: 'en-us',
-          languageCode: 'en',
-          displayName: 'English',
-          textDirection: 'LTR',
-          nativeName: 'English',
-          __typename: 'Language'
-        },
-        use: {
-          id: 'cjsw78q6p00lp07566znbyatd',
-          name: 'Full Video',
-          __typename: 'VideoUse'
+          ...postUploadProps.unit.files[0].dimensions,
+          width: null,
+          height: null
         },
         stream: [
           {
-            id: 'cjzy5mcsj1bf50720wxk4bdsf',
-            site: 'vimeo',
-            url: 'https://vimeo.com/356893849',
-            __typename: 'VideoStream'
+            ...postUploadProps.unit.files[0].stream[0],
+            url: null
           }
-        ],
-        __typename: 'VideoFile'
+        ]
       }
-    ],
-    language: {
-      id: 'cjsq439dz005607560gwe7k3m',
-      locale: 'en-us',
-      languageCode: 'en',
-      displayName: 'English',
-      textDirection: 'LTR',
-      nativeName: 'English',
-      __typename: 'Language'
-    },
-    thumbnails: [
-      {
-        id: 'cjzy5me4v1bfm0720854bc97o',
-        size: 'FULL',
-        image: {
-          id: 'cjzy5mcsu1bf60720zyt05l8l',
-          createdAt: '2019-08-30T13:29:50.596Z',
-          updatedAt: '2019-08-30T13:29:50.596Z',
-          filename: 'Mexico City 1.jpg',
-          filetype: 'image/jpeg',
-          filesize: 1030591,
-          url: '2019/08/commons.america.gov_cjzy5lpzv1bef07207s354cbw/mexico_city_1.jpg',
-          alt: null,
-          use: {
-            id: 'cjtkdq8kr0knf07569goo9eqe',
-            name: 'Thumbnail/Cover Image',
-            __typename: 'ImageUse'
-          },
-          language: {
-            id: 'cjsq439dz005607560gwe7k3m',
-            locale: 'en-us',
-            languageCode: 'en',
-            displayName: 'English',
-            textDirection: 'LTR',
-            nativeName: 'English',
-            __typename: 'Language'
-          },
-          __typename: 'ImageFile'
-        },
-        __typename: 'Thumbnail'
-      }
-    ],
-    tags: [],
-    __typename: 'VideoUnit'
-  },
+    ]
+  }
 };
 
-const Component = <ProjectUnitItem { ...props } />;
+const UploadingComponent = (
+  <UploadContext.Provider value>
+    <ProjectUnitItem { ...uploadingProps } />
+  </UploadContext.Provider>
+);
 
-describe( '<ProjectUnitItem />', () => {
+const UploadingErrorComponent = (
+  <UploadContext.Provider value>
+    <ProjectUnitItem { ...uploadingErrorProps } />
+  </UploadContext.Provider>
+);
+
+const PostUploadComponent = (
+  <UploadContext.Provider value={ false }>
+    <ProjectUnitItem { ...postUploadProps } />
+  </UploadContext.Provider>
+);
+
+const PostUploadErrorComponent = (
+  <UploadContext.Provider value={ false }>
+    <ProjectUnitItem { ...postUploadErrorProps } />
+  </UploadContext.Provider>
+);
+
+const UpdateTitleComponent = (
+  <UploadContext.Provider value={ false }>
+    <ProjectUnitItem { ...updateTitleProps } />
+  </UploadContext.Provider>
+);
+
+describe( '<ProjectUnitItem /> during uploading', () => {
   it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
+    const wrapper = mount( UploadingComponent );
 
     expect( wrapper.exists() ).toEqual( true );
-    expect( toJSON( wrapper ) ).toMatchSnapshot();
+  } );
+
+  it( 'renders the Loader', () => {
+    const wrapper = mount( UploadingComponent );
+    const loader = wrapper.find( 'Loader' );
+
+    expect( loader.exists() ).toEqual( true );
+    expect( loader.prop( 'active' ) ).toEqual( true );
+  } );
+
+  it( 'renders the FileUploadProgressBar', () => {
+    const wrapper = mount( UploadingComponent );
+    const progressBar = wrapper.find( 'FileUploadProgressBar' );
+    const { filesToUpload: files } = uploadingProps;
+
+    expect( progressBar.exists() ).toEqual( true );
+    expect( progressBar.prop( 'filesToUpload' ) ).toEqual( files );
+  } );
+
+  it( 'renders the list of files to upload', () => {
+    const wrapper = mount( UploadingComponent );
+    const fileList = wrapper.find( 'List.file-list' );
+    const { filesToUpload: files } = uploadingProps;
+
+    expect( fileList.exists() ).toEqual( true );
+    expect( fileList.length ).toEqual( files.length );
+    fileList.forEach( ( file, i ) => {
+      const { name } = files[i].input;
+      expect( file.contains( name ) ).toEqual( true );
+    } );
+  } );
+
+  it( 'renders a placeholder thumbnail', () => {
+    const wrapper = mount( UploadingComponent );
+    const imageWrapper = wrapper.find( '.image-wrapper' );
+    const placeholder = <div className="placeholder" />;
+
+    expect( imageWrapper.exists() ).toEqual( true );
+    expect( imageWrapper.contains( placeholder ) ).toEqual( true );
+  } );
+
+  it( 'renders the placeholder title', () => {
+    const wrapper = mount( UploadingComponent );
+    const header = wrapper.find( 'CardHeader > .header' );
+
+    expect( header.exists() ).toEqual( true );
+    expect( header.text() ).toEqual( '[Title]' );
+  } );
+
+  it( 'does not render the Modal', () => {
+    const wrapper = mount( UploadingComponent );
+    const modal = wrapper.find( 'Modal' );
+
+    expect( wrapper.prop( 'projectId' ) ).toEqual( undefined );
+    expect( modal.exists() ).toEqual( false );
+  } );
+} );
+
+describe( '<ProjectUnitItem /> during uploading error', () => {
+  it( 'renders without crashing', () => {
+    const wrapper = mount( UploadingErrorComponent );
+
+    expect( wrapper.exists() ).toEqual( true );
+  } );
+
+  it( 'does not render the video icon', () => {
+    const wrapper = mount( UploadingErrorComponent );
+    const img = wrapper.find( 'img.metaicon' );
+
+    expect( img.exists() ).toEqual( false );
+  } );
+
+  it( 'does not render the Modal', () => {
+    const wrapper = mount( UploadingErrorComponent );
+    const modal = wrapper.find( 'Modal' );
+
+    expect( modal.exists() ).toEqual( false );
+  } );
+
+  it( 'renders the GeneralError component', () => {
+    const wrapper = mount( UploadingErrorComponent );
+    const generalError = wrapper.find( 'GeneralError' );
+
+    expect( generalError.exists() ).toEqual( true );
+  } );
+
+  it( 'assigns an error class value to CardContent', () => {
+    const wrapper = mount( UploadingErrorComponent );
+    const cardContent = wrapper.find( 'CardContent' );
+
+    expect( cardContent.hasClass( 'error' ) ).toEqual( true );
+  } );
+} );
+
+describe( '<ProjectUnitItem /> after upload completion', () => {
+  it( 'renders without crashing', () => {
+    const wrapper = mount( PostUploadComponent );
+
+    expect( wrapper.exists() ).toEqual( true );
+  } );
+
+  it( 'does not render the Loader', () => {
+    const wrapper = mount( PostUploadComponent );
+    const loader = wrapper.find( 'Loader' );
+
+    expect( loader.exists() ).toEqual( false );
+  } );
+
+  it( 'does not render the FileUploadProgressBar', () => {
+    const wrapper = mount( PostUploadComponent );
+    const progressBar = wrapper.find( 'FileUploadProgressBar' );
+
+    expect( progressBar.exists() ).toEqual( false );
+  } );
+
+  it( 'does not render the list of files to upload', () => {
+    const wrapper = mount( PostUploadComponent );
+    const fileList = wrapper.find( 'List.file-list' );
+
+    expect( fileList.exists() ).toEqual( false );
+  } );
+
+  it( 'renders the thumbnail', () => {
+    const wrapper = mount( PostUploadComponent );
+    const imageWrapper = wrapper.find( '.image-wrapper' );
+    const image = wrapper.find( 'Image > img' );
+    const placeholder = <div className="placeholder" />;
+    const { url } = postUploadProps.unit.thumbnails[0].image;
+    const src = `https://s3-bucket-url.s3.amazonaws.com/${url}`;
+
+    expect( imageWrapper.exists() ).toEqual( true );
+    expect( imageWrapper.contains( placeholder ) ).toEqual( false );
+    expect( image.exists() ).toEqual( true );
+    expect( image.prop( 'src' ) ).toEqual( src );
+  } );
+
+  it( 'renders initially the placeholder title', () => {
+    const wrapper = mount( PostUploadComponent );
+    const header = wrapper.find( 'CardHeader > .header' );
+
+    expect( header.exists() ).toEqual( true );
+    expect( header.text() ).toEqual( '[Title]' );
+  } );
+
+  it( 'renders the updated project title', () => {
+    const wrapper = mount( UpdateTitleComponent );
+    const header = wrapper.find( 'CardHeader > .header' );
+    const { title } = updateTitleProps.unit;
+
+    expect( header.exists() ).toEqual( true );
+    expect( header.text() ).not.toEqual( '[Title]' );
+    expect( header.text() ).toEqual( title );
+  } );
+
+  it( 'renders the Modal', () => {
+    const wrapper = mount( PostUploadComponent );
+    const modal = wrapper.find( 'Modal' );
+    const { projectId } = postUploadProps;
+
+    expect( wrapper.prop( 'projectId' ) ).toEqual( projectId );
+    expect( modal.exists() ).toEqual( true );
+  } );
+} );
+
+describe( '<ProjectUnitItem /> after upload completion error', () => {
+  it( 'renders without crashing', () => {
+    const wrapper = mount( PostUploadErrorComponent );
+
+    expect( wrapper.exists() ).toEqual( true );
+  } );
+
+  it( 'does not render the video icon', () => {
+    const wrapper = mount( PostUploadErrorComponent );
+    const img = wrapper.find( 'img.metaicon' );
+
+    expect( img.exists() ).toEqual( false );
+  } );
+
+  it( 'does not render the Modal', () => {
+    const wrapper = mount( PostUploadErrorComponent );
+    const modal = wrapper.find( 'Modal' );
+
+    expect( modal.exists() ).toEqual( false );
+  } );
+
+  it( 'renders the GeneralError component', () => {
+    const wrapper = mount( PostUploadErrorComponent );
+    const generalError = wrapper.find( 'GeneralError' );
+
+    expect( generalError.exists() ).toEqual( true );
+  } );
+
+  it( 'assigns an error class value to CardContent', () => {
+    const wrapper = mount( PostUploadErrorComponent );
+    const cardContent = wrapper.find( 'CardContent' );
+
+    expect( cardContent.hasClass( 'error' ) ).toEqual( true );
   } );
 } );
