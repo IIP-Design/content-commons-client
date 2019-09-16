@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import {
-  Button, Checkbox, Icon, Modal
+  Button, Checkbox, Modal
 } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import editIcon from 'static/images/dashboard/edit.svg';
@@ -12,6 +12,7 @@ import { getCount } from 'lib/utils';
 import DeleteIconButton from './DeleteIconButton/DeleteIconButton';
 import DeleteProjects from './DeleteProjects/DeleteProjects';
 import UnpublishProjects from './UnpublishProjects/UnpublishProjects';
+import ActionResults from './ActionResults/ActionResults';
 import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
 import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
 import './TableActionsMenu.scss';
@@ -21,7 +22,7 @@ class TableActionsMenu extends React.Component {
   state = {
     displayConfirmationMsg: false,
     deleteConfirmOpen: false,
-    draftProjects: []
+    actionFailures: null,
   };
 
   _isMounted = false;
@@ -61,29 +62,18 @@ class TableActionsMenu extends React.Component {
     this.setState( { deleteConfirmOpen: false } );
   }
 
-  handleDeleteConfirm = deleteFn => {
-    const { variables } = this.props;
-    deleteFn( {
-      variables: {
-        where: {
-          AND: [
-            { id_in: this.getSelectedProjectsIds() },
-            { status_in: ['DRAFT'] }
-          ]
-        }
-      },
-      refetchQueries: [{
-        query: TEAM_VIDEO_PROJECTS_QUERY,
-        variables: { ...variables }
-      },
-      {
-        query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
-        variables: {
-          team: variables.team,
-          searchTerm: variables.searchTerm
-        }
-      }]
+  handleDeleteConfirm = async deleteFn => {
+    const {
+      variables, teamVideoProjects, teamVideoProjectsCount, handleResetSelections
+    } = this.props;
+    const deleteResults = await deleteFn();
+    teamVideoProjects.refetch( { ...variables } );
+    teamVideoProjectsCount.refetch( {
+      team: variables.team,
+      searchTerm: variables.searchTerm
     } );
+    handleResetSelections();
+    this.showConfirmationMsg( deleteResults );
   }
 
   handleDrafts = cache => {
@@ -185,7 +175,7 @@ class TableActionsMenu extends React.Component {
   }
 
   hasSelectedAllDrafts = () => {
-    const { draftProjects } = this.state;
+    const draftProjects = this.getDraftProjects( this.props.teamVideoProjects.videoProjects || null );
     const selections = this.getSelectedProjectsIds();
 
     if ( selections.length > 0 ) {
@@ -196,13 +186,19 @@ class TableActionsMenu extends React.Component {
     return false;
   }
 
-  showConfirmationMsg = () => {
-    this.setState( { displayConfirmationMsg: true } );
+  showConfirmationMsg = results => {
+    this.setState( {
+      actionFailures: results.filter( result => result.error ),
+      displayConfirmationMsg: true,
+    } );
   }
 
   hideConfirmationMsg = () => {
     if ( this._isMounted ) {
-      this.setState( { displayConfirmationMsg: false } );
+      this.setState( {
+        displayConfirmationMsg: false,
+        actionFailures: null
+      } );
     }
     this.confirmationMsgTimer = null;
   }
@@ -217,134 +213,110 @@ class TableActionsMenu extends React.Component {
     this.setState( { deleteConfirmOpen: true } );
   }
 
-  render() {
+  renderMenu() {
     const {
-      displayActionsMenu, toggleAllItemsSelection, variables
+      teamVideoProjects, displayActionsMenu, toggleAllItemsSelection
     } = this.props;
-    const { displayConfirmationMsg } = this.state;
+    const { displayConfirmationMsg, actionFailures } = this.state;
+    const { loading, error } = teamVideoProjects;
+
+    if ( loading ) return 'Loading....';
+    if ( error ) return <ApolloError error={ error } />;
+    if ( !teamVideoProjects || !teamVideoProjects.videoProjects ) return null;
+
+    const { videoProjects } = teamVideoProjects;
+
+    const projectsOnPage = this.getProjectsOnPage( videoProjects );
+
+    const projectsOnPageCount = getCount( projectsOnPage );
+
+    const selections = this.getSelectedProjects( videoProjects );
+
+    const selectionsCount = getCount( selections );
+
+    const isDisabled = videoProjects && !videoProjects.length;
+
+    const isChecked = ( projectsOnPageCount === selectionsCount )
+      && selectionsCount > 0;
+
+    const isIndeterminate = ( projectsOnPageCount > selectionsCount )
+      && selectionsCount > 0;
 
     return (
+      <Fragment>
+        <Checkbox
+          className={ displayActionsMenu ? 'actionsMenu_toggle actionsMenu_toggle--active' : 'actionsMenu_toggle' }
+          onChange={ toggleAllItemsSelection }
+          checked={ isChecked }
+          disabled={ isDisabled }
+          indeterminate={ isIndeterminate }
+        />
+
+        <div className={ displayActionsMenu ? 'actionsMenu active' : 'actionsMenu' }>
+
+          <Modal
+            className="confirmation"
+            closeIcon
+            onClose={ this.hideConfirmationMsg }
+            open={ displayConfirmationMsg }
+            size="tiny"
+          >
+            <Modal.Content>
+              <Modal.Description>
+                <ActionResults failures={ actionFailures } />
+              </Modal.Description>
+            </Modal.Content>
+          </Modal>
+
+          <Button size="mini" basic disabled>
+            <img src={ editIcon } alt="Edit Selection(s)" title="Edit Selection(s)" />
+          </Button>
+
+          <DeleteIconButton
+            displayConfirmDelete={ this.displayConfirmDelete }
+          />
+
+          <DeleteProjects
+            deleteConfirmOpen={ this.state.deleteConfirmOpen }
+            handleDeleteCancel={ this.handleDeleteCancel }
+            handleDeleteConfirm={ this.handleDeleteConfirm }
+            handleResetSelections={ this.props.handleResetSelections }
+            selections={ selections }
+            showConfirmationMsg={ this.showConfirmationMsg }
+          />
+
+          <Button size="mini" basic disabled>
+            <img src={ createIcon } alt="Create Selection(s)" title="Create Selection(s)" />
+          </Button>
+          <Button size="mini" basic disabled>
+            <img src={ archiveIcon } alt="Archive Selection(s)" title="Archive Selection(s)" />
+          </Button>
+
+          { !this.hasSelectedAllDrafts()
+          && (
+            <Fragment>
+              <span className="separator">|</span>
+              <UnpublishProjects
+                handleResetSelections={
+                  this.props.handleResetSelections
+                }
+                handleUnpublish={ this.handleUnpublish }
+                handleUnpublishCacheUpdate={
+                  this.handleUnpublishCacheUpdate
+                }
+                showConfirmationMsg={ this.showConfirmationMsg }
+              />
+            </Fragment>
+          ) }
+        </div>
+      </Fragment>
+    );
+  }
+
+  render() {
+    return (
       <div className="actionsMenu_wrapper">
-        <Query
-          query={ TEAM_VIDEO_PROJECTS_QUERY }
-          variables={ { ...variables } }
-          onCompleted={ this.handleDrafts }
-          /**
-           * `onCompleted doesn't get called for Query,
-           * so set `notifyOnNetworkStatusChange` to
-           * allow it to be called.
-           * @see open issue:
-           * https://github.com/apollographql/react-apollo/issues/2293#issuecomment-428938827
-           */
-          notifyOnNetworkStatusChange
-        >
-          { ( { loading, error, data } ) => {
-            if ( loading ) return 'Loading....';
-            if ( error ) return <ApolloError error={ error } />;
-            if ( !data || !data.videoProjects ) return null;
-
-            const { videoProjects } = data;
-
-            const projectsOnPage = this.getProjectsOnPage( videoProjects );
-
-            const projectsOnPageCount = getCount( projectsOnPage );
-
-            const selections = this.getSelectedProjects( videoProjects );
-
-            const selectionsCount = getCount( selections );
-
-            const isDisabled = videoProjects && !videoProjects.length;
-
-            const isChecked = ( projectsOnPageCount === selectionsCount )
-              && selectionsCount > 0;
-
-            const isIndeterminate = ( projectsOnPageCount > selectionsCount )
-              && selectionsCount > 0;
-
-            return (
-              <Fragment>
-                <Checkbox
-                  className={ displayActionsMenu ? 'actionsMenu_toggle actionsMenu_toggle--active' : 'actionsMenu_toggle' }
-                  onChange={ toggleAllItemsSelection }
-                  checked={ isChecked }
-                  disabled={ isDisabled }
-                  indeterminate={ isIndeterminate }
-                />
-
-                <div className={ displayActionsMenu ? 'actionsMenu active' : 'actionsMenu' }>
-
-                  <Modal
-                    className="confirmation"
-                    closeIcon
-                    onClose={ this.hideConfirmationMsg }
-                    open={ displayConfirmationMsg }
-                    size="tiny"
-                  >
-                    <Modal.Content>
-                      <Modal.Description>
-                        <Icon
-                          color="green"
-                          name="check circle outline"
-                          size="big"
-                        />
-                        <span
-                          className="msg"
-                          style={ {
-                            verticalAlign: 'middle',
-                            fontSize: '1rem'
-                          } }
-                        >
-                          You&rsquo;ve updated your projects successfully.
-                        </span>
-                      </Modal.Description>
-                    </Modal.Content>
-                  </Modal>
-
-                  <Button size="mini" basic disabled>
-                    <img src={ editIcon } alt="Edit Selection(s)" title="Edit Selection(s)" />
-                  </Button>
-
-                  <DeleteIconButton
-                    displayConfirmDelete={ this.displayConfirmDelete }
-                  />
-
-                  <DeleteProjects
-                    deleteConfirmOpen={ this.state.deleteConfirmOpen }
-                    handleDeleteCancel={ this.handleDeleteCancel }
-                    handleDeleteConfirm={ this.handleDeleteConfirm }
-                    handleResetSelections={ this.props.handleResetSelections }
-                    selections={ selections }
-                    showConfirmationMsg={ this.showConfirmationMsg }
-                  />
-
-                  <Button size="mini" basic disabled>
-                    <img src={ createIcon } alt="Create Selection(s)" title="Create Selection(s)" />
-                  </Button>
-                  <Button size="mini" basic disabled>
-                    <img src={ archiveIcon } alt="Archive Selection(s)" title="Archive Selection(s)" />
-                  </Button>
-
-                  { !this.hasSelectedAllDrafts()
-                    && (
-                    <Fragment>
-                      <span className="separator">|</span>
-                      <UnpublishProjects
-                        handleResetSelections={
-                          this.props.handleResetSelections
-                        }
-                        handleUnpublish={ this.handleUnpublish }
-                        handleUnpublishCacheUpdate={
-                          this.handleUnpublishCacheUpdate
-                        }
-                        showConfirmationMsg={ this.showConfirmationMsg }
-                      />
-                    </Fragment>
-                    ) }
-                </div>
-              </Fragment>
-            );
-          } }
-        </Query>
+        { this.renderMenu() }
       </div>
     );
   }
@@ -354,8 +326,27 @@ TableActionsMenu.propTypes = {
   displayActionsMenu: PropTypes.bool,
   variables: PropTypes.object,
   selectedItems: PropTypes.object,
+  teamVideoProjects: PropTypes.object,
+  teamVideoProjectsCount: PropTypes.object,
   handleResetSelections: PropTypes.func,
   toggleAllItemsSelection: PropTypes.func
 };
 
-export default TableActionsMenu;
+export default compose(
+  graphql( TEAM_VIDEO_PROJECTS_QUERY, {
+    name: 'teamVideoProjects',
+    options: props => ( {
+      variables: { ...props.variables },
+      notifyOnNetworkStatusChange: true
+    } )
+  } ),
+  graphql( TEAM_VIDEO_PROJECTS_COUNT_QUERY, {
+    name: 'teamVideoProjectsCount',
+    options: props => ( {
+      variables: {
+        team: props.variables.team,
+        searchTerm: props.variables.searchTerm
+      }
+    } )
+  } )
+)( TableActionsMenu );

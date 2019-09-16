@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getApolloErrors } from 'lib/utils';
 
 
 const ApolloError = props => {
@@ -15,17 +16,7 @@ const ApolloError = props => {
 
     let errs = [];
     if ( error ) {
-      const { graphQLErrors, networkError, otherError } = error;
-      if ( graphQLErrors ) {
-        errs = graphQLErrors.map( error => error.message );
-      }
-      if ( networkError ) {
-        errs.push( networkError );
-      }
-
-      if ( otherError ) {
-        errs.push( otherError );
-      }
+      errs = getApolloErrors( error );
     }
 
     if ( errs[0] === 'This token is either invalid or expired!' ) {
