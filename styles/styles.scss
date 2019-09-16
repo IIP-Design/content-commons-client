@@ -218,3 +218,12 @@ h6.ui.header {
   color: $light-blue;
   cursor: pointer;
 }
+
+.helperText {
+  font-size: 0.775em;
+  color: $grey;
+
+  &.italic {
+    font-style: italic;
+  }
+}

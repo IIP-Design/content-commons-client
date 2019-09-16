@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 
 export const getValidationSchema = values => Yup.object().shape( {
   password: Yup.string()
-    .min( 8, 'Password has to be longer than 8 characters!' )
+    .min( 8, 'Password must be at least 8 characters long!' )
     .matches(
       // eslint-disable-next-line no-useless-escape
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~`{}\[\]!@#\?,\.<>"'+=|\\/\$%\^&\*\(\)\_-])/,
