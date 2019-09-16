@@ -1,19 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import './DocumentationSidebar.scss';
+import Link from 'next/link';
 import { List } from 'semantic-ui-react';
 
+import './DocumentationSidebar.scss';
 
-const DocumentationSidebar = ( { setURL } ) => {
+const DocumentationSidebar = () => {
   const sidebarItems = [
     {
-      name: 'DOWNLOADINGDOC_URL',
-      to: 'downloadingcontent',
+      name: 'downloadingcontent',
+      to: '/documentation/download',
       label: 'Downloading Content'
     },
     {
-      name: 'EMBEDDINGDOC_URL',
-      to: 'embeddingcontent',
+      name: 'embeddingcontent',
+      to: '/documentation/embed',
       label: 'Embedding Content'
     },
     {
@@ -36,16 +36,13 @@ const DocumentationSidebar = ( { setURL } ) => {
     <List horizontal divided className="sidebar-nav">
       { sidebarItems.map( item => (
         <List.Item key={ item.name }>
-          { /* eslint-disable-next-line */ }
-          <p className="item" onClick={() => setURL(item)}> { item.label }</p>
+          <Link href={ item.to }>
+            <a className="footer_link"> { item.label }</a>
+          </Link>
         </List.Item>
       ) ) }
     </List>
-
   );
 };
 
-DocumentationSidebar.propTypes = {
-  setURL: PropTypes.func,
-};
 export default DocumentationSidebar;
