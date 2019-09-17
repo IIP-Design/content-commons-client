@@ -6,6 +6,7 @@ export default {
   HELP_URL: 'https://iip-static-assets.s3.amazonaws.com/Commons/HelpPage.md',
   PRIVACY_URL: 'https://iip-static-assets.s3.amazonaws.com/Commons/PrivacyPolicy.md',
   CONTACT_URL: 'https://iip-static-assets.s3.amazonaws.com/Commons/ContactUs.md',
+  DOCUMENTATION_URL: 'https://iip-static-assets.s3.amazonaws.com/Commons/Documentation.md',
   RELEASENOTES_URL: 'https://iip-static-assets.s3.amazonaws.com/Commons/ReleaseNotes.md',
   DOWNLOADINGDOC_URL: 'https://iip-static-assets.s3.amazonaws.com/Commons/DownloadingContentDoc.md',
   EMBEDDINGDOC_URL: 'https://iip-static-assets.s3.amazonaws.com/Commons/EmbeddingContentDoc.md',
