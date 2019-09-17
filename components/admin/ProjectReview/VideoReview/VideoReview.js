@@ -121,7 +121,11 @@ const VideoReview = props => {
     }, `/admin/project/video/${id}/edit` );
   };
 
-  const handlePublish = async () => {
+  const handlePublish = async e => {
+    console.log(`Publish Click: ${e.detail}`);
+    // Prevent multiple clicks - multiple clicks resulted in project going into PUBLISHING status
+    if ( !e.detail || e.detail === 1 ) e.target.disabled = true;
+
     const { publishProject } = props;
 
     try {
@@ -133,7 +137,11 @@ const VideoReview = props => {
     }
   };
 
-  const handleUnPublish = async () => {
+  const handleUnPublish = async e => {
+    console.log(`Unpublish Click: ${e.detail}`);
+    // Prevent multiple clicks - multiple clicks resulted in project going into PUBLISHING status
+    if ( !e.detail || e.detail === 1 ) e.target.disabled = true;
+
     const { unPublishProject } = props;
 
     try {

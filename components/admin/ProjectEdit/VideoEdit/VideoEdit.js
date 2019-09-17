@@ -146,7 +146,9 @@ const VideoEdit = props => {
   //   setDeleteConfirmOpen( false );
   // };
 
-  const handleFinalReview = () => {
+  const handleFinalReview = e => {
+    // Prevent multiple clicks - multiple clicks resulted in project going into PUBLISHING status
+    if ( !e.detail || e.detail === 1 ) e.target.disabled = true;
     props.router.push( {
       pathname: '/admin/project',
       query: {
