@@ -6,12 +6,12 @@ import DocumentationMenu from 'components/DocumentationMenu/DocumentationMenu';
 import MarkdownPage from 'components/MarkdownPage';
 import withCachedFetch from 'hocs/withCachedFetch/withCachedFetch';
 
-const Embed = props => {
+const UploadingVideo = props => {
   const { data, error } = props;
 
   return (
     <MarkdownPage
-      pageTitle="Content Commons Documentation"
+      pageTitle="Content Commons Download"
       pageSubTitle="Click on the links below for how-to guides on each subject. Please use Google Chrome for the best experience."
       data={ data }
       error={ error }
@@ -21,9 +21,9 @@ const Embed = props => {
   );
 };
 
-Embed.propTypes = {
+UploadingVideo.propTypes = {
   data: PropTypes.string,
   error: PropTypes.oneOfType( [PropTypes.number, PropTypes.bool] )
 };
 
-export default withCachedFetch( Embed, config.EMBEDDINGDOC_URL );
+export default withCachedFetch( UploadingVideo, config.UPLOADINGDOC_URL );

@@ -6,7 +6,7 @@ import DocumentationMenu from 'components/DocumentationMenu/DocumentationMenu';
 import MarkdownPage from 'components/MarkdownPage';
 import withCachedFetch from 'hocs/withCachedFetch/withCachedFetch';
 
-const Embed = props => {
+const Login = props => {
   const { data, error } = props;
 
   return (
@@ -21,9 +21,9 @@ const Embed = props => {
   );
 };
 
-Embed.propTypes = {
+Login.propTypes = {
   data: PropTypes.string,
   error: PropTypes.oneOfType( [PropTypes.number, PropTypes.bool] )
 };
 
-export default withCachedFetch( Embed, config.EMBEDDINGDOC_URL );
+export default withCachedFetch( Login, config.LOGINDOC_URL );
