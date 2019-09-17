@@ -122,7 +122,6 @@ const VideoReview = props => {
   };
 
   const handlePublish = async e => {
-    console.log(`Publish Click: ${e.detail}`);
     // Prevent multiple clicks - multiple clicks resulted in project going into PUBLISHING status
     if ( !e.detail || e.detail === 1 ) e.target.disabled = true;
 
@@ -138,7 +137,6 @@ const VideoReview = props => {
   };
 
   const handleUnPublish = async e => {
-    console.log(`Unpublish Click: ${e.detail}`);
     // Prevent multiple clicks - multiple clicks resulted in project going into PUBLISHING status
     if ( !e.detail || e.detail === 1 ) e.target.disabled = true;
 
@@ -209,7 +207,7 @@ const VideoReview = props => {
                 <Button className={ setButtonState( 'edit' ) } onClick={ handlePublish }>Publish Changes</Button>
               )
               }
-              <Button className="project_button project_button--publish" onClick={ handleUnPublish }>UnPublish</Button>
+              <Button className="project_button project_button--publish" onClick={ handleUnPublish }>Unpublish</Button>
             </Fragment>
           )
         }
