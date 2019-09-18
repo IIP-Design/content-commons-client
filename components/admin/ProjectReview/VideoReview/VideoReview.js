@@ -151,8 +151,6 @@ const VideoReview = props => {
     }
   };
 
-  console.log(`updatesToPublish: ${updatesToPublish()}`);
-
   // Project Status & Update States
   const publishedAndUpdated = updatesToPublish() && data.project.status === 'PUBLISHED';
   const publishedAndNotUpdated = !updatesToPublish() && data.project.status === 'PUBLISHED';
