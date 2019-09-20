@@ -1,26 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 import { Button, Modal } from 'semantic-ui-react';
-import { getApolloErrors, getCount, getPluralStringOrNot } from 'lib/utils';
+import { getCount, getPluralStringOrNot } from 'lib/utils';
 import { DELETE_VIDEO_PROJECT_MUTATION } from 'lib/graphql/queries/video';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import DeleteProjectsList from './DeleteProjectsList/DeleteProjectsList';
 
-const DELETE_VIDEO_PROJECTS_MUTATION = gql`
-  mutation DeleteManyVideoProjects($where: VideoProjectWhereInput) {
-    deleteProjects: deleteManyVideoProjects(where: $where) {
-      count
-    }
-  }
-`;
-
 const DeleteProjects = props => {
   const {
     deleteConfirmOpen,
+    handleActionResult,
     handleDeleteCancel,
     handleDeleteConfirm,
+    handleResetSelections,
     selections,
     deleteVideoProject
   } = props;
@@ -48,19 +41,20 @@ const DeleteProjects = props => {
 
   const hasNonDraftsOnly = draftsCount === 0 && nonDraftsCount > 0;
 
-  const deleteProjects = () => {
-    const promises = drafts.map( project => deleteVideoProject( { variables: { id: project.id } } )
-      .catch( error => ( {
-        error,
-        errors: getApolloErrors( error ),
-        action: 'delete',
-        id: project.id,
-        projectTitle: project.projectTitle,
-      } ) ) );
-    return Promise.all( promises ).then( results => {
-      handleDeleteCancel();
-      return results;
-    } );
+  const deleteProject = async project => {
+    const result = await deleteVideoProject( { variables: { id: project.id } } ).catch( error => ( {
+      error,
+      project,
+      action: 'delete',
+    } ) );
+    handleActionResult( result );
+  };
+
+  const handleDeleteProjects = async () => {
+    await Promise.all( drafts.map( deleteProject ) );
+    handleResetSelections();
+    handleDeleteConfirm();
+    handleDeleteCancel();
   };
 
   return (
@@ -106,7 +100,7 @@ const DeleteProjects = props => {
               : 'Yes, delete forever'
           }
           disabled={ hasNonDraftsOnly }
-          onClick={ () => handleDeleteConfirm( deleteProjects ) }
+          onClick={ handleDeleteProjects }
           primary
         />
       </Modal.Actions>
@@ -116,8 +110,10 @@ const DeleteProjects = props => {
 
 DeleteProjects.propTypes = {
   deleteConfirmOpen: PropTypes.bool,
+  handleActionResult: PropTypes.func,
   handleDeleteCancel: PropTypes.func,
   handleDeleteConfirm: PropTypes.func,
+  handleResetSelections: PropTypes.func,
   selections: PropTypes.array,
   deleteVideoProject: PropTypes.func
 };
@@ -125,5 +121,3 @@ DeleteProjects.propTypes = {
 export default graphql( DELETE_VIDEO_PROJECT_MUTATION, {
   name: 'deleteVideoProject'
 } )( DeleteProjects );
-
-export { DELETE_VIDEO_PROJECTS_MUTATION };

@@ -1,3 +1,5 @@
+import { DELETE_VIDEO_PROJECT_MUTATION } from 'lib/graphql/queries/video';
+
 export const drafts = [
   {
     id: 'cjx0j3ts9066y0708k1hg2g1b',
@@ -310,6 +312,21 @@ export const drafts = [
   }
 ];
 
+export const draftMocks = drafts.map( draft => ( {
+  request: {
+    query: DELETE_VIDEO_PROJECT_MUTATION,
+    variables: { id: draft.id }
+  },
+  result: {
+    data: {
+      deleteVideoProject: {
+        __typename: 'VideoProject',
+        id: draft.id
+      }
+    }
+  }
+} ) );
+
 export const nonDrafts = [
   {
     id: 'cjx0jixoa06c60708z2i7t2t3',
@@ -331,4 +348,21 @@ export const nonDrafts = [
     thumbnails: [],
     categories: [],
   }
+];
+
+export const nonDraftMocks = nonDrafts.map( nondraft => ( {
+  request: {
+    query: DELETE_VIDEO_PROJECT_MUTATION,
+    variables: { id: nondraft.id }
+  },
+  result: {
+    errors: [
+      { graphQLError: 'A GraphQLError1' }
+    ]
+  }
+} ) );
+
+export const mocks = [
+  ...draftMocks,
+  ...nonDraftMocks
 ];
