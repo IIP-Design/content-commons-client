@@ -1,5 +1,5 @@
 import React from 'react';
-import * as PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { List } from 'semantic-ui-react';
 
 const ActionResultsItem = ( { isError, children } ) => (
@@ -23,6 +23,10 @@ const ActionResultsItem = ( { isError, children } ) => (
 ActionResultsItem.propTypes = {
   isError: PropTypes.bool,
   children: PropTypes.oneOfType( [PropTypes.array, PropTypes.element] )
+};
+
+ActionResultsItem.defaultProps = {
+  isError: false
 };
 
 export default ActionResultsItem;

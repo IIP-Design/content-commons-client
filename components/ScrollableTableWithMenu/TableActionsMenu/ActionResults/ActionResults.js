@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'semantic-ui-react';
-import ActionResultError from './ActionResultError';
+import ActionResultsError from './ActionResultsError/ActionResultsError';
 import ActionResultsItem from './ActionResultsItem/ActionResultsItem';
 
 const ActionResults = ( { failures } ) => {
@@ -9,10 +9,10 @@ const ActionResults = ( { failures } ) => {
   return (
     <List>
       { !isError && (
-        <ActionResultsItem isError={ false } />
+        <ActionResultsItem />
       ) }
       { isError && failures.map( failure => (
-        <ActionResultError { ...failure } key={ failure.id } />
+        <ActionResultsError { ...failure } key={ failure.project.id } />
       ) ) }
     </List>
   );

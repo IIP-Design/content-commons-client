@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'semantic-ui-react';
-import { getPluralStringOrNot } from 'lib/utils';
-import ActionResultsItem from './ActionResultsItem/ActionResultsItem';
+import { getApolloErrors, getPluralStringOrNot } from 'lib/utils';
+import ActionResultsItem from '../ActionResultsItem/ActionResultsItem';
 
-const ActionResultError = ( { action, errors, projectTitle } ) => {
+const ActionResultsError = ( { action, error, project: { projectTitle } } ) => {
+  const errors = getApolloErrors( error );
   const withErrors = errors.length >= 1 ? ` with ${getPluralStringOrNot( errors, 'error' )}:` : '';
   const header = `Project '${projectTitle}' ${action} failed${withErrors}`;
   return (
@@ -19,10 +20,10 @@ const ActionResultError = ( { action, errors, projectTitle } ) => {
   );
 };
 
-ActionResultError.propTypes = {
+ActionResultsError.propTypes = {
   action: PropTypes.string,
-  errors: PropTypes.array,
-  projectTitle: PropTypes.string
+  error: PropTypes.object,
+  project: PropTypes.object
 };
 
-export default ActionResultError;
+export default ActionResultsError;
