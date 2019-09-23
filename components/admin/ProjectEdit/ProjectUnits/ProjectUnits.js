@@ -14,10 +14,14 @@ import isEmpty from 'lodash/isEmpty';
 import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
 import { VIDEO_PROJECT_UNITS_QUERY } from 'lib/graphql/queries/video';
 
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import ProjectUnitItem from '../ProjectUnitItem/ProjectUnitItem';
+import EditProjectUnits from './EditProjectUnits/EditProjectUnits';
 import './ProjectUnits.scss';
 
 const ProjectUnits = props => {
+  let addMoreInputRef = null;
+
   const {
     data,
     projectId,
@@ -84,6 +88,10 @@ const ProjectUnits = props => {
     }
   }, [data] );
 
+  const handleAddMoreRef = c => {
+    addMoreInputRef = c;
+  };
+
   const renderUnits = () => (
     <Card.Group>
       { units.map( unit => (
@@ -104,6 +112,23 @@ const ProjectUnits = props => {
         ? renderUnits( units )
         : 'No units available'
        }
+      { projectId && (
+        <div className="edit-project__add-more__wrapper">
+          <EditProjectUnits videoUnits={ units } />
+          <p className="helperText small marginTop">Edit video translations and versions to this video project</p>
+          <VisuallyHidden>
+            <label htmlFor="upload-item--multiple">Edit video files in this project</label>
+            <input
+              id="upload-item--multiple"
+              ref={ handleAddMoreRef }
+              type="file"
+              accept=".mov, .mp4, .mpg, .wmv, .avi"
+              multiple
+              tabIndex={ -1 }
+            />
+          </VisuallyHidden>
+        </div>
+      ) }
     </div>
   );
 };

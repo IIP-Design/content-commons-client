@@ -115,11 +115,7 @@
   }
 
   &__add-more__wrapper {
-    margin-top: 0;
-    padding-left: 1.75em;
-    @media screen and (max-width: 767px) {
-      padding-left: 1rem;
-    }
+    margin-top: 1em;    
   }
 
   &__btn--final-review,

@@ -1,0 +1,86 @@
+@import "styles/colors.scss";
+
+.edit-project-units {
+
+  &.ui.modal {
+    
+    .content {
+      padding: 1.25rem 1.5rem;
+    }
+
+    > .actions {
+      border-top: none;
+      background: #fff;
+    }
+  }
+
+  &.ui.modal.small {
+    width: 70%;
+
+    @media only screen and (min-width: 992px) {
+      width: 585px;
+    }
+
+    @media only screen and (min-width: 1200px) {
+      width: 625px;
+    }
+  }
+
+  .videoProjectFilesDesktop {
+    &__wrapper {
+      display: none;
+      @media screen and (min-width: 768px) {
+        display: block;
+      }
+    }
+  
+    &__steps {
+      text-align: center;
+      padding-bottom: 1em;
+  
+      .ui.steps {
+        border: none;
+  
+        .step {
+          background: transparent;
+          border: transparent;
+          color: $alt-grey;
+  
+          &::after {
+            background: transparent;
+            width: 0.4em;
+            height: 0.4em;
+            border-color: $blue;
+            border-width: 0px 2px 2px 0px;
+          }
+  
+          &.active .title {
+            position: relative;
+            color: $blue;
+  
+            &:after {
+              content: '';
+              position: absolute;
+              left: 0;
+              bottom: -7px;
+              width: 120%;
+              height: 4px;
+              margin-left: -10%;
+              background-color: $light-blue;
+            }
+          }
+        }
+      }
+    }
+  
+    &__row-header {
+      padding-bottom: 0.5em !important;
+      border-bottom: 1px solid $light-grey;
+      color: $blue;
+  
+      .required {
+        color: $red;
+      }
+    }
+  }
+}

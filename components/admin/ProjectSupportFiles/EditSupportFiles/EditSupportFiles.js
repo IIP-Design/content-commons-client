@@ -5,6 +5,7 @@ import {
 } from 'semantic-ui-react';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import { useFileUploadActions } from 'lib/hooks/useFileUploadActions';
+import { compareFilenames } from 'lib/utils';
 import Notification from 'components/Notification/Notification';
 import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
 import EditSupportFileRow from '../EditSupportFileRow/EditSupportFileRow';
@@ -47,15 +48,6 @@ const EditSupportFiles = ( {
   useEffect( () => {
     setAllFieldsSelected( isComplete() );
   }, [files] );
-
-
-  const compareFilenames = ( a, b ) => {
-    try {
-      return a.name.localeCompare( b.name );
-    } catch ( err ) {
-      console.log( err );
-    }
-  };
 
   const closeConfirm = () => {
     setConfirm( { open: false } );

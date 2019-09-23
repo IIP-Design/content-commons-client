@@ -226,4 +226,12 @@ h6.ui.header {
   &.italic {
     font-style: italic;
   }
+
+  &.small {
+    font-size: 12px;
+  }
+
+  &.marginTop {
+    margin-top: 5px;
+  }
 }
