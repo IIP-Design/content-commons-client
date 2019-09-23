@@ -21,13 +21,14 @@ describe( '<ActionResultsError />', () => {
   it( 'renders the project title', () => {
     const wrapper = mount( component );
     const item = wrapper.find( ActionResultsError );
-    expect( item.text() ).toEqual( expect.stringContaining( failure.project.projectTitle ) );
+    const msg = `Project '${failure.project.projectTitle}' ${failure.action} failed with errors:`;
+    expect( item.find( '.header' ).text() ).toEqual( msg );
   } );
 
   it( 'renders a list with the expected error strings', () => {
     const wrapper = mount( component );
     const item = wrapper.find( ActionResultsError );
     const list = item.find( List );
-    expect( list.props() ).toHaveProperty( 'items', errorStrings );
+    expect( list.prop( 'items' ) ).toEqual( errorStrings );
   } );
 } );

@@ -58,22 +58,26 @@ class TableActionsMenu extends React.Component {
     } );
   }
 
+  handleActionResult = result => {
+    if ( result.error ) {
+      this.setState( ( { actionFailures } ) => ( { actionFailures: [...actionFailures, result] } ) );
+    }
+  }
+
   handleDeleteCancel = () => {
     this.setState( { deleteConfirmOpen: false } );
   }
 
-  handleDeleteConfirm = async deleteFn => {
+  handleDeleteConfirm = () => {
     const {
-      variables, teamVideoProjects, teamVideoProjectsCount, handleResetSelections
+      variables, teamVideoProjects, teamVideoProjectsCount
     } = this.props;
-    const deleteResults = await deleteFn();
     teamVideoProjects.refetch( { ...variables } );
     teamVideoProjectsCount.refetch( {
       team: variables.team,
       searchTerm: variables.searchTerm
     } );
-    handleResetSelections();
-    this.showConfirmationMsg( deleteResults );
+    this.showConfirmationMsg();
   }
 
   handleDrafts = cache => {
@@ -186,9 +190,8 @@ class TableActionsMenu extends React.Component {
     return false;
   }
 
-  showConfirmationMsg = results => {
+  showConfirmationMsg = () => {
     this.setState( {
-      actionFailures: results.filter( result => result.error ),
       displayConfirmationMsg: true,
     } );
   }
@@ -210,7 +213,10 @@ class TableActionsMenu extends React.Component {
   }
 
   displayConfirmDelete = () => {
-    this.setState( { deleteConfirmOpen: true } );
+    this.setState( {
+      deleteConfirmOpen: true,
+      actionFailures: []
+    } );
   }
 
   renderMenu() {
@@ -280,6 +286,7 @@ class TableActionsMenu extends React.Component {
             deleteConfirmOpen={ this.state.deleteConfirmOpen }
             handleDeleteCancel={ this.handleDeleteCancel }
             handleDeleteConfirm={ this.handleDeleteConfirm }
+            handleActionResult={ this.handleActionResult }
             handleResetSelections={ this.props.handleResetSelections }
             selections={ selections }
             showConfirmationMsg={ this.showConfirmationMsg }
@@ -348,5 +355,5 @@ export default compose(
         searchTerm: props.variables.searchTerm
       }
     } )
-  } )
+  } ),
 )( TableActionsMenu );

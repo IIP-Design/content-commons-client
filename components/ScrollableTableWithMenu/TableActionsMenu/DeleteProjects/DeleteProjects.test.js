@@ -122,7 +122,9 @@ describe( '<DeleteProjects />', () => {
 
     expect( props.handleActionResult ).toHaveBeenCalledTimes( drafts.length );
     const mockResults = draftMocks.map( mock => [mock.result] );
-    expect( props.handleActionResult.mock.calls ).toEqual( expect.arrayContaining( mockResults ) );
+    mockResults.forEach( result => {
+      expect( props.handleActionResult ).toHaveBeenCalledWith( result[0] );
+    } );
   } );
 
   it( 'clicking the confirm button calls handleDeleteConfirm and handleDeleteCancel when completed', async () => {

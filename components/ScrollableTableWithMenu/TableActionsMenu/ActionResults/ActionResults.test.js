@@ -28,14 +28,13 @@ describe( '<ActionResults />', () => {
     expect( error.exists() ).toEqual( false );
   } );
 
-  it( 'renders ActionResultsError when errors provided', () => {
+  it( 'renders ActionResultsError with props when errors provided', () => {
     const wrapper = mount( ComponentError );
 
     const error = wrapper.find( ActionResultsError );
+    expect( error.props() ).toEqual( failure );
+
     expect( error.exists() ).toEqual( true );
     expect( error.length ).toEqual( 1 );
-
-    const item = wrapper.find( ActionResultsItem );
-    expect( item.exists() ).toEqual( true );
   } );
 } );
