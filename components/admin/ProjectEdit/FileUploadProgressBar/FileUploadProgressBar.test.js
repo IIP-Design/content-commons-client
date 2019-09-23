@@ -69,8 +69,6 @@ const completedUploadProps = {
   ]
 };
 
-// console.log( partialUploadProps );
-
 const StartUploadComponent = <FileUploadProgressBar { ...startUploadProps } />;
 const PartialUploadComponent = <FileUploadProgressBar { ...partialUploadProps } />;
 const CompletedUploadComponent = <FileUploadProgressBar { ...completedUploadProps } />;
