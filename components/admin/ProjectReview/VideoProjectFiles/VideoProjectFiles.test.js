@@ -34,7 +34,10 @@ jest.mock( 'lib/utils', () => ( {
   } )
 } ) );
 
-jest.mock( './VideoProjectFile/VideoProjectFile', () => () => '<VideoProjectFile />' );
+jest.mock(
+  './VideoProjectFile/VideoProjectFile',
+  () => function VideoProjectFile() { return ''; }
+);
 
 const Component = (
   <MockedProvider mocks={ mocks } addTypename>
