@@ -21,7 +21,17 @@ jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_AP
 jest.mock( 'lib/utils', () => ( {
   getPluralStringOrNot: jest.fn( ( array, string ) => (
     `${string}${array && array.length > 1 ? 's' : ''}`
-  ) )
+  ) ),
+  getApolloErrors: jest.fn( error => {
+    let errs = [];
+    const { graphQLErrors, networkError, otherError } = error;
+    if ( graphQLErrors ) {
+      errs = graphQLErrors.map( error => error.message );
+    }
+    if ( networkError ) errs.push( networkError );
+    if ( otherError ) errs.push( otherError );
+    return errs;
+  } )
 } ) );
 
 jest.mock( './VideoProjectFile/VideoProjectFile', () => () => '<VideoProjectFile />' );
