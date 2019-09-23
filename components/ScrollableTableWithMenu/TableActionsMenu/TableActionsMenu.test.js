@@ -1,12 +1,10 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from 'react-apollo/test-utils';
-import { Checkbox } from 'semantic-ui-react';
-import ApolloError from 'components/errors/ApolloError';
 import TableActionsMenu from './TableActionsMenu';
 import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
-import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
 import {
+  actionResult,
   allCheckedMocks,
   emptyMocks,
   errorMocks,
@@ -21,9 +19,22 @@ import {
  */
 jest.mock(
   'next-server/dynamic',
-  () => function VideoDetailsPopup() {
-    return <div>VideoDetailsPopup</div>;
-  }
+  () => function VideoDetailsPopup() { return ''; }
+);
+
+jest.mock(
+  './DeleteIconButton/DeleteIconButton',
+  () => function DeleteIconButton() { return ''; }
+);
+
+jest.mock(
+  './DeleteProjects/DeleteProjects',
+  () => function DeleteProjects() { return ''; }
+);
+
+jest.mock(
+  './UnpublishProjects/UnpublishProjects',
+  () => function UnpublishProjects() { return ''; }
 );
 
 const Component = (
@@ -39,7 +50,7 @@ const findProjectById = ( array, projectId ) => (
 describe( '<TableActionsMenu />', () => {
   it( 'renders initial loading state without crashing', () => {
     const wrapper = mount( Component );
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
 
     expect( menu.exists() ).toEqual( true );
     expect( menu.contains( 'Loading....' ) ).toEqual( true );
@@ -56,15 +67,15 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
-    const errorComponent = menu.find( ApolloError );
+    const menu = wrapper.find( 'TableActionsMenu' );
+    const errorComponent = menu.find( 'ApolloError' );
 
     expect( errorComponent.exists() ).toEqual( true );
     expect( errorComponent.contains( 'There was an error.' ) )
       .toEqual( true );
   } );
 
-  it( 'renders null if videoProjects is falsy', async () => {
+  it( 'renders empty if videoProjects is falsy', async () => {
     const wrapper = mount(
       <MockedProvider mocks={ nullMocks } addTypename={ false }>
         <TableActionsMenu { ...props } />
@@ -73,15 +84,9 @@ describe( '<TableActionsMenu />', () => {
 
     await wait( 0 );
     wrapper.update();
-
     const menuWrapper = wrapper.find( '.actionsMenu_wrapper' );
 
-    /**
-     *  the Query (i.e., `childAt( 0 )` ) returns
-     *  `null` but will continue to render the
-     *  remainder of the menu (e.g., Modal, Popup, etc.)
-     */
-    expect( menuWrapper.childAt( 0 ).html() ).toEqual( null );
+    expect( menuWrapper.children().length ).toEqual( 0 );
   } );
 
   it( 'renders a Checkbox when TEAM_VIDEO_PROJECTS_QUERY is resolved', async () => {
@@ -89,8 +94,8 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const checkbox = wrapper.find( Checkbox );
-    const projectsCount = mocks[4].result.data.videoProjects.length;
+    const checkbox = wrapper.find( 'Checkbox' );
+    const projectsCount = mocks[2].result.data.videoProjects.length;
 
     expect( checkbox.exists() ).toEqual( true );
     expect( checkbox.prop( 'disabled' ) ).toEqual( projectsCount === 0 );
@@ -107,7 +112,7 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const checkbox = wrapper.find( Checkbox );
+    const checkbox = wrapper.find( 'Checkbox' );
     const projectsCount = emptyMocks[0].result.data.videoProjects.length;
 
     expect( checkbox.exists() ).toEqual( true );
@@ -124,7 +129,7 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const checkbox = wrapper.find( Checkbox );
+    const checkbox = wrapper.find( 'Checkbox' );
     const projectsCount = allCheckedMocks[0].result.data.videoProjects.length;
 
     expect( checkbox.prop( 'checked' ) ).toEqual( projectsCount === props.selectedItems.size );
@@ -136,8 +141,8 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const checkbox = wrapper.find( Checkbox );
-    const projectsCount = mocks[4].result.data.videoProjects.length;
+    const checkbox = wrapper.find( 'Checkbox' );
+    const projectsCount = mocks[2].result.data.videoProjects.length;
 
     expect( checkbox.prop( 'indeterminate' ) )
       .toEqual( projectsCount > props.selectedItems.size );
@@ -148,10 +153,9 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const checkbox = wrapper.find( Checkbox );
+    const checkbox = wrapper.find( 'Checkbox' );
 
     checkbox.simulate( 'change' );
-
     expect( props.toggleAllItemsSelection ).toHaveBeenCalled();
   } );
 
@@ -160,11 +164,10 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
     const inst = menu.instance();
 
     inst.componentDidMount();
-
     expect( inst._isMounted ).toEqual( true );
   } );
 
@@ -173,11 +176,10 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
     const inst = menu.instance();
 
     inst.componentWillUnmount();
-
     expect( inst._isMounted ).toEqual( false );
   } );
 
@@ -186,7 +188,7 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
     const inst = menu.instance();
     const fn = jest.fn();
     const timer = inst.confirmationMsgTimer;
@@ -202,18 +204,21 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
     const inst = menu.instance();
+    const results = [{ id: 'ud23' }, { id: 'ud74' }];
 
     // initial state
     expect( inst.state.displayConfirmationMsg ).toEqual( false );
 
-    inst.showConfirmationMsg();
+    inst.showConfirmationMsg( results );
     if ( inst._isMounted ) {
+      expect( inst.state.actionFailures ).toEqual( null );
       expect( inst.state.displayConfirmationMsg ).toEqual( true );
     }
 
     inst.hideConfirmationMsg();
+    expect( inst.state.actionFailures ).toEqual( null );
     expect( inst.state.displayConfirmationMsg ).toEqual( false );
     expect( inst.confirmationMsgTimer ).toEqual( null );
   } );
@@ -223,7 +228,7 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
     const inst = menu.instance();
 
     // initial state
@@ -241,14 +246,16 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = () => wrapper.find( TableActionsMenu );
+    const menu = () => wrapper.find( 'TableActionsMenu' );
     const inst = () => menu().instance();
     const confirmModal = () => menu().find( 'Modal.confirmation' );
     const spy = jest.spyOn( inst(), 'hideConfirmationMsg' );
+    const results = [{ id: 'ud23' }, { id: 'ud74' }];
 
     // must open the modal before closing it
-    inst().showConfirmationMsg();
+    inst().showConfirmationMsg( results );
     wrapper.update();
+    expect( inst().state.actionFailures ).toEqual( null );
     expect( inst().state.displayConfirmationMsg ).toEqual( true );
     expect( confirmModal().prop( 'open' ) ).toEqual( true );
 
@@ -257,39 +264,41 @@ describe( '<TableActionsMenu />', () => {
     expect( spy ).toHaveBeenCalled();
   } );
 
-  it( 'handleDeleteConfirm calls deleteProjects mutate function', async () => {
+  it( 'handleActionResult adds result to actionFailures if it has an error', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = () => wrapper.find( 'TableActionsMenu' );
+    const inst = () => menu().instance();
+    // must open the modal before adding action results
+    inst().displayConfirmDelete();
+    wrapper.update();
+    inst().handleActionResult( actionResult );
+    wrapper.update();
+    expect( inst().state.actionFailures ).toEqual( expect.arrayContaining( [actionResult] ) );
+  } );
+
+  it( 'handleDeleteConfirm refetches teamVideProjects, teamVideoProjectsCount, and calls showConfirmationMsg', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const menu = wrapper.find( 'TableActionsMenu' );
     const inst = menu.instance();
-    const deleteProjects = jest.fn();
-    const args = {
-      variables: {
-        where: {
-          AND: [
-            { id_in: [...props.selectedItems.keys()] },
-            { status_in: ['DRAFT'] }
-          ]
-        }
-      },
-      refetchQueries: [{
-        query: TEAM_VIDEO_PROJECTS_QUERY,
-        variables: { ...props.variables }
-      },
-      {
-        query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
-        variables: {
-          team: props.variables.team,
-          searchTerm: props.variables.searchTerm
-        }
-      }]
-    };
 
-    inst.handleDeleteConfirm( deleteProjects );
+    const teamVideoProjectsRefetch = jest.spyOn( menu.prop( 'teamVideoProjects' ), 'refetch' );
+    const teamVideoProjectsCountRefetch = jest.spyOn( menu.prop( 'teamVideoProjectsCount' ), 'refetch' );
+    const showConfirmationMsg = jest.spyOn( inst, 'showConfirmationMsg' );
 
-    expect( deleteProjects ).toHaveBeenCalledWith( args );
+    inst.handleDeleteConfirm();
+
+    expect( teamVideoProjectsRefetch ).toHaveBeenCalledWith( props.variables );
+    expect( teamVideoProjectsCountRefetch ).toHaveBeenCalledWith( {
+      team: props.variables.team,
+      searchTerm: props.variables.searchTerm
+    } );
+    expect( showConfirmationMsg ).toHaveBeenCalled();
   } );
 
   it( 'handleUnpublish calls unpublish mutate function', async () => {
@@ -297,7 +306,7 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
     const inst = menu.instance();
     const unpublish = jest.fn();
     const args = {
@@ -313,7 +322,6 @@ describe( '<TableActionsMenu />', () => {
     };
 
     inst.handleUnpublish( unpublish );
-
     expect( unpublish ).toHaveBeenCalledWith( args );
   } );
 
@@ -322,7 +330,7 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
     const inst = menu.instance();
     const items = [...props.selectedItems.keys()];
     const projects = [
@@ -331,7 +339,6 @@ describe( '<TableActionsMenu />', () => {
     ];
 
     inst.handleStatus( items, projects );
-
     projects.forEach( project => {
       expect( project.status ).toEqual( 'DRAFT' );
     } );
@@ -342,7 +349,7 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
     const inst = menu.instance();
     const transformed = inst.transformSelectedItemsMap();
 
@@ -356,7 +363,7 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
     const inst = menu.instance();
     const selectedProjectIds = inst.getSelectedProjectsIds();
 
@@ -368,9 +375,9 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
     const inst = menu.instance();
-    const { videoProjects } = mocks[4].result.data;
+    const { videoProjects } = mocks[2].result.data;
     const selectedProjectIds = [...props.selectedItems.keys()];
     const selectedProjects = inst.getSelectedProjects( videoProjects );
 
@@ -385,13 +392,13 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
     const separator = menu.find( '.separator' );
     const unpublishProjects = menu.find( 'UnpublishProjects' );
     const inst = menu.instance();
     const hasSelectedAllDrafts = inst.hasSelectedAllDrafts();
     const selectedProjects = ['ud78', 'ud98'];
-    const { videoProjects } = mocks[4].result.data;
+    const { videoProjects } = mocks[2].result.data;
 
     selectedProjects.forEach( project => {
       expect( findProjectById( videoProjects, project ).status )
@@ -418,13 +425,13 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
     const separator = menu.find( '.separator' );
     const unpublishProjects = menu.find( 'UnpublishProjects' );
     const inst = menu.instance();
     const hasSelectedAllDrafts = inst.hasSelectedAllDrafts();
-    const selectedProjects = inst.state.draftProjects;
-    const { videoProjects } = mocks[4].result.data;
+    const selectedProjects = ['ud23', 'ud74'];
+    const { videoProjects } = mocks[2].result.data;
 
     selectedProjects.forEach( project => {
       expect( findProjectById( videoProjects, project ).status )
@@ -451,12 +458,12 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
     const separator = menu.find( '.separator' );
     const unpublishProjects = menu.find( 'UnpublishProjects' );
     const inst = menu.instance();
     const hasSelectedAllDrafts = inst.hasSelectedAllDrafts();
-    const { videoProjects } = mocks[4].result.data;
+    const { videoProjects } = mocks[2].result.data;
 
     expect( findProjectById( videoProjects, 'ud78' ).status )
       .toEqual( 'PUBLISHED' );
@@ -472,12 +479,12 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
     const inst = menu.instance();
-    const { videoProjects } = mocks[4].result.data;
+    const { videoProjects } = mocks[2].result.data;
     const draftProjects = inst.getDraftProjects( videoProjects );
 
-    expect( draftProjects ).toEqual( inst.state.draftProjects );
+    expect( draftProjects ).toEqual( ['ud23', 'ud74'] );
     draftProjects.forEach( project => {
       expect( findProjectById( videoProjects, project ).status )
         .toEqual( 'DRAFT' );
@@ -489,7 +496,7 @@ describe( '<TableActionsMenu />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const menu = wrapper.find( TableActionsMenu );
+    const menu = wrapper.find( 'TableActionsMenu' );
     const inst = menu.instance();
     const cache = { readQuery: jest.fn() };
     const query = TEAM_VIDEO_PROJECTS_QUERY;
@@ -498,28 +505,6 @@ describe( '<TableActionsMenu />', () => {
     expect( cache.readQuery ).toHaveBeenCalledWith( {
       query,
       variables: { ...props.variables }
-    } );
-  } );
-
-  it( 'handleDrafts sets draftProjects in state', async () => {
-    const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
-    const menu = wrapper.find( TableActionsMenu );
-    const inst = menu.instance();
-    const { videoProjects } = mocks[4].result.data;
-
-    /**
-     * This test also provides evidence that `handleDrafts`
-     * is called on completion of the `Query`. See comment
-     * in the component about React Apollo bug and
-     * `onCompleted`.
-     */
-    expect( inst.state.draftProjects ).toEqual( ['ud23', 'ud74'] );
-    inst.state.draftProjects.forEach( project => {
-      expect( findProjectById( videoProjects, project ).status )
-        .toEqual( 'DRAFT' );
     } );
   } );
 } );
