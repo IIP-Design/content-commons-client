@@ -169,8 +169,24 @@ describe( '<VideoReview />', () => {
 
     const videoReview = wrapper.find( 'VideoReview' );
     const deleteBtn = videoReview.find( 'Button.project_button--delete' );
+    const { project } = videoReview.prop( 'data' );
 
+    expect( project.status ).toEqual( 'DRAFT' );
     expect( deleteBtn.exists() ).toEqual( true );
+  } );
+
+  it( 'renders the correct headline if status is DRAFT', async () => {
+    const wrapper = mount( DraftComponent );
+    await wait( 0 );
+    wrapper.update();
+
+    const videoReview = wrapper.find( 'VideoReview' );
+    const headline = videoReview.find( 'h3.title' );
+    const headingTxt = 'Your project looks great! Are you ready to Publish?';
+    const { project } = videoReview.prop( 'data' );
+
+    expect( project.status ).toEqual( 'DRAFT' );
+    expect( headline.text() ).toEqual( headingTxt );
   } );
 
   it( 'renders the Publish button in the header if status is DRAFT', async () => {
@@ -181,12 +197,14 @@ describe( '<VideoReview />', () => {
     const videoReview = wrapper.find( 'VideoReview' );
     const header = videoReview.find( 'ProjectHeader' );
     const publishBtn = header.find( 'Button.project_button--publish' );
+    const { project } = videoReview.prop( 'data' );
 
+    expect( project.status ).toEqual( 'DRAFT' );
     expect( publishBtn.exists() ).toEqual( true );
     expect( publishBtn.text() ).toEqual( 'Publish' );
   } );
 
-  it( 'renders an UnPublish button and does not render the Publish and Delete button in the header if status is not DRAFT', async () => {
+  it( 'renders an Unpublish button and does not render the Publish and Delete button in the header if status is not DRAFT', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
@@ -195,10 +213,12 @@ describe( '<VideoReview />', () => {
     const deleteBtn = videoReview.find( 'Button.project_button--delete' );
     const header = videoReview.find( 'ProjectHeader' );
     const unPublishBtn = header.find( 'Button.project_button--publish' );
+    const { project } = videoReview.prop( 'data' );
 
+    expect( project.status ).toEqual( 'PUBLISHED' );
     expect( deleteBtn.exists() ).toEqual( false );
     expect( unPublishBtn.exists() ).toEqual( true );
-    expect( unPublishBtn.text() ).toEqual( 'UnPublish' );
+    expect( unPublishBtn.text() ).toEqual( 'Unpublish' );
   } );
 
   it( 'renders the correct headline and buttons if there are updates to publish', async () => {
@@ -208,24 +228,22 @@ describe( '<VideoReview />', () => {
 
     const videoReview = wrapper.find( 'VideoReview' );
     const headline = videoReview.find( 'h3.title' );
-    const publishBtns = videoReview.find( 'Button.project_button--publish' );
-    const editBtns = videoReview.find( 'Button.project_button--edit' );
-    const publishChangesTxt = 'Publish Changes';
-    const publishChangesBtn = publishBtns.filterWhere( btn => btn.text() === publishChangesTxt );
-    const publishBtnTxt = ['UnPublish', publishChangesTxt];
-    const editBtnTxt = ['Edit', publishChangesTxt, 'Edit'];
+    const btns = videoReview.find( 'Button' );
+    const deleteBtn = btns.find( 'Button.project_button--delete' );
+    const previewBtn = btns.find( 'Button.project_button--preview' );
+    const editBtns = btns.filterWhere( btn => btn.text() === 'Edit' );
+    const publishChangesBtns = btns.filterWhere( btn => btn.text() === 'Publish Changes' );
+    const publishBtns = btns.filterWhere( btn => btn.text() === 'Unpublish' );
     const headingTxt = 'It looks like you made changes to your project. Do you want to publish changes?';
+    const { project } = videoReview.prop( 'data' );
 
+    expect( project.status ).toEqual( 'PUBLISHED' );
+    expect( deleteBtn.exists() ).toEqual( false );
+    expect( previewBtn.exists() ).toEqual( true );
     expect( headline.text() ).toEqual( headingTxt );
-    expect( publishChangesBtn.exists() ).toEqual( true );
-    expect( publishChangesBtn.text() ).toEqual( publishChangesTxt );
-    expect( editBtns.length ).toEqual( 3 );
-    editBtns.forEach( ( btn, i ) => {
-      expect( btn.text() ).toEqual( editBtnTxt[i] );
-    } );
-    publishBtns.forEach( ( btn, i ) => {
-      expect( btn.text() ).toEqual( publishBtnTxt[i] );
-    } );
+    expect( editBtns.length ).toEqual( 2 ); // 1 at top & bottom
+    expect( publishChangesBtns.length ).toEqual( 2 ); // 1 at top & bottom
+    expect( publishBtns.length ).toEqual( 2 ); // 1 at top & bottom
   } );
 
   it( 'renders the correct headline and buttons if there are no updates to publish', async () => {
@@ -239,22 +257,22 @@ describe( '<VideoReview />', () => {
 
     const videoReview = wrapper.find( 'VideoReview' );
     const headline = videoReview.find( 'h3.title' );
-    const publishBtns = videoReview.find( 'Button.project_button--publish' );
-    const editBtns = videoReview.find( 'Button.project_button--edit' );
-    const publishChangesBtn = publishBtns.filterWhere( btn => btn.text() === 'Publish Changes' );
-    const btnTxt = ['UnPublish', 'Publish'];
-    const headingTxt = 'Your project looks great! Are you ready to Publish?';
+    const btns = wrapper.find( 'Button' );
+    const deleteBtn = btns.find( 'Button.project_button--delete' );
+    const previewBtn = btns.find( 'Button.project_button--preview' );
+    const editBtns = btns.filterWhere( btn => btn.text() === 'Edit' );
+    const publishChangesBtns = btns.filterWhere( btn => btn.text() === 'Publish Changes' );
+    const publishBtns = btns.filterWhere( btn => btn.text() === 'Unpublish' );
+    const headingTxt = 'Not ready to share with the world yet?';
+    const { project } = videoReview.prop( 'data' );
 
+    expect( project.status ).toEqual( 'PUBLISHED' );
+    expect( deleteBtn.exists() ).toEqual( false );
+    expect( previewBtn.exists() ).toEqual( true );
     expect( headline.text() ).toEqual( headingTxt );
-    expect( publishChangesBtn.exists() ).toEqual( false );
-    expect( editBtns.length ).toEqual( 2 ); // one at top & bottom of page
-    editBtns.forEach( btn => {
-      expect( btn.text() ).toEqual( 'Edit' );
-      expect( btn.text() ).not.toEqual( 'Publish Changes' );
-    } );
-    publishBtns.forEach( ( btn, i ) => {
-      expect( btn.text() ).toEqual( btnTxt[i] );
-    } );
+    expect( publishChangesBtns.exists() ).toEqual( false );
+    expect( editBtns.length ).toEqual( 2 ); // 1 at top & bottom of page
+    expect( publishBtns.length ).toEqual( 2 ); // 1 at top & bottom of page
   } );
 
   it( 'clicking an Edit button redirects to <VideoEdit />', async () => {
@@ -281,7 +299,7 @@ describe( '<VideoReview />', () => {
     } );
   } );
 
-  it( 'clicking the UnPublish button calls unPublishProject and redirects to dashboard', async () => {
+  it( 'clicking the Unpublish button calls unPublishProject and redirects to dashboard', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
@@ -289,7 +307,7 @@ describe( '<VideoReview />', () => {
     const videoReview = wrapper.find( 'VideoReview' );
     const header = videoReview.find( 'ProjectHeader' );
     const publishBtns = header.find( 'Button.project_button--publish' );
-    const unpublishBtn = publishBtns.filterWhere( btn => btn.text() === 'UnPublish' );
+    const unpublishBtn = publishBtns.filterWhere( btn => btn.text() === 'Unpublish' );
     const { id } = props;
     const unPublishProject = jest.spyOn( videoReview.props(), 'unPublishProject' )
       .mockResolvedValue( {
@@ -318,8 +336,8 @@ describe( '<VideoReview />', () => {
     wrapper.update();
 
     const videoReview = wrapper.find( 'VideoReview' );
-    const btns = videoReview.find( 'Button.project_button--publish' );
-    const publishBtn = btns.filterWhere(
+    const btns = videoReview.find( 'Button' );
+    const publishBtns = btns.filterWhere(
       btn => btn.text() === 'Publish Changes'
     );
     const { id } = props;
@@ -335,16 +353,18 @@ describe( '<VideoReview />', () => {
         }
       } );
 
-    publishBtn.simulate( 'click' );
-    publishProject()
-      .then( data => {
-        expect( data.publishVideoProject.id ).toEqual( id );
-        expect( data.publishVideoProject.status ).toEqual( 'PUBLISHED' );
-        expect( publishProject )
-          .toHaveBeenCalledWith( { variables: { id } } );
-        expect( Router.push ).toHaveBeenCalled();
-      } )
-      .catch( () => {} );
+    publishBtns.forEach( btn => {
+      btn.simulate( 'click' );
+      publishProject()
+        .then( data => {
+          expect( data.publishVideoProject.id ).toEqual( id );
+          expect( data.publishVideoProject.status ).toEqual( 'PUBLISHED' );
+          expect( publishProject )
+            .toHaveBeenCalledWith( { variables: { id } } );
+          expect( Router.push ).toHaveBeenCalled();
+        } )
+        .catch( () => {} );
+    } );
   } );
 
   it( 'clicking the Delete button opens the Confirm modal', async () => {
@@ -477,7 +497,7 @@ describe( '<VideoReview />', () => {
     const videoReview = wrapper.find( 'VideoReview' );
     const apolloError = () => wrapper.find( 'ApolloError' );
     const btns = videoReview.find( 'Button.project_button--publish' );
-    const unpublishBtn = btns.filterWhere( btn => btn.text() === 'UnPublish' );
+    const unpublishBtns = btns.filterWhere( btn => btn.text() === 'Unpublish' );
     const { id } = props;
     Router.push = jest.fn();
     const unPublishProject = jest.spyOn( videoReview.props(), 'unPublishProject' )
@@ -491,18 +511,20 @@ describe( '<VideoReview />', () => {
         ]
       } );
 
-    expect( unpublishBtn.exists() ).toEqual( true );
-    unpublishBtn.simulate( 'click' );
-    unPublishProject()
-      .then( () => {} )
-      .catch( () => {
-        expect( apolloError().prop( 'error' ) ).toEqual( {
-          otherError: 'There was an unpublishing error.'
+    expect( unpublishBtns.exists() ).toEqual( true );
+    unpublishBtns.forEach( btn => {
+      btn.simulate( 'click' );
+      unPublishProject()
+        .then( () => {} )
+        .catch( () => {
+          expect( apolloError().prop( 'error' ) ).toEqual( {
+            otherError: 'There was an unpublishing error.'
+          } );
+          expect( unPublishProject )
+            .not.toHaveBeenCalledWith( { variables: { id } } );
+          expect( Router.push ).not.toHaveBeenCalled();
         } );
-        expect( unPublishProject )
-          .not.toHaveBeenCalledWith( { variables: { id } } );
-        expect( Router.push ).not.toHaveBeenCalled();
-      } );
-    done();
+      done();
+    } );
   } );
 } );
