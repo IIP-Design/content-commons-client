@@ -47,7 +47,7 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
     setShowNotification( false );
   };
 
-  const { startTimeout } = useTimeout( hideNotification, 2000 );
+  const { startTimeout } = useTimeout( hideNotification, 300 );
 
   if ( !project ) {
     return (
@@ -91,9 +91,7 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
         }
         textDirection="ltr"
       >
-        <EditVideoModal
-          unitId={ selectedUnit }
-        />
+        <EditVideoModal unitId={ selectedUnit } />
       </ModalItem>
     </EditSingleProjectItemContext.Provider>
   );

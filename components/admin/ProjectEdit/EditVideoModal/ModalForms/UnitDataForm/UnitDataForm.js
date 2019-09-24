@@ -47,8 +47,6 @@ const UnitDataForm = ( {
     setFocusedField( name );
   };
 
-  const { file } = videoFileQuery;
-
   const updateUnit = async updatedValues => {
     let mutation;
     if ( focusedField === 'descPublic' ) {
@@ -162,18 +160,13 @@ const UnitDataForm = ( {
     startTimeout();
   };
 
-  const handleOnChange = ( e, {
-    name, value, type, checked
-  } ) => {
-    if ( type === 'checkbox' ) {
-      setFieldValue( name, checked );
-    } else {
-      setFieldValue( name, value );
-    }
+  const handleOnChange = ( e, { name, value } ) => {
+    setFieldValue( name, value );
   };
 
   const lang = `in ${unit.language.displayName}` || '';
 
+  const { file } = videoFileQuery;
   let youTubeUrl = '';
   let vimeoUrl = '';
   if ( file && file.stream ) {
@@ -190,7 +183,7 @@ const UnitDataForm = ( {
 
   return (
     <Fragment>
-      <FormikAutoSave save={ save } />
+      <FormikAutoSave debounceMs={ 250 } save={ save } />
       <Form className="edit-video__form video-unit-data">
         <Grid stackable className="aligned">
           <Grid.Row>
@@ -245,7 +238,6 @@ const UnitDataForm = ( {
                 label={ `Additional Keywords ${lang}` }
                 locale={ unit.language.locale }
                 name="tags"
-                onFocus={ setFocus }
                 value={ values.tags }
               />
 

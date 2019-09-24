@@ -18,7 +18,7 @@ import { VIDEO_UNIT_QUERY } from 'components/admin/ProjectEdit/EditVideoModal/Mo
 import './EditVideoModal.scss';
 import { Formik } from 'formik';
 
-const EditVideoModal = ( { data } ) => {
+const EditVideoModal = ( { videoUnitQuery } ) => {
   const {
     language, selectedFile, selectedProject, selectedUnit, showNotication
   } = useContext(
@@ -26,7 +26,7 @@ const EditVideoModal = ( { data } ) => {
   );
 
   const getInitialValues = () => {
-    const videoUnit = data && data.unit ? data.unit : {};
+    const videoUnit = videoUnitQuery && videoUnitQuery.unit ? videoUnitQuery.unit : {};
     const tags = videoUnit.tags ? videoUnit.tags.map( tag => tag.id ) : [];
 
     const initialValues = {
@@ -37,24 +37,6 @@ const EditVideoModal = ( { data } ) => {
 
     return initialValues;
   };
-
-  const unitSection = !data.unit || data.loading
-    ? <Loader height="340px" text="Loading the video data..." />
-    : (
-      <Formik
-        initialValues={ getInitialValues() }
-        render={ formikProps => (
-          <UnitDataForm
-            language={ language }
-            fileId={ selectedFile }
-            projectId={ selectedProject }
-            unitId={ selectedUnit }
-            unit={ data.unit }
-            { ...formikProps }
-          />
-        ) }
-      />
-    );
 
   return (
     <div className="edit-video-modal">
@@ -70,19 +52,38 @@ const EditVideoModal = ( { data } ) => {
         msg="Saving changes"
         show={ showNotication }
       />
-      { unitSection }
+      { ( !videoUnitQuery.unit || videoUnitQuery.loading ) && (
+        <Loader height="340px" text="Loading the video data..." />
+      ) }
+      { videoUnitQuery.unit && (
+        <Formik
+          initialValues={ getInitialValues() }
+          render={ formikProps => (
+            <UnitDataForm
+              language={ language }
+              fileId={ selectedFile }
+              projectId={ selectedProject }
+              unitId={ selectedUnit }
+              unit={ videoUnitQuery.unit }
+              { ...formikProps }
+            />
+          ) }
+        />
+      ) }
       <FileSection />
     </div>
   );
 };
 
 EditVideoModal.propTypes = {
-  data: propTypes.object
+  videoUnitQuery: propTypes.object
 };
 
 export default compose(
   graphql( VIDEO_UNIT_QUERY, {
-    partialRefetch: true,
-    skip: props => !props.unitId
+    name: 'videoUnitQuery',
+    options: props => ( {
+      variables: { unitId: props.unitId }
+    } )
   } ),
 )( EditVideoModal );
