@@ -435,7 +435,8 @@ exports[`<VideoProjectSupportFiles /> renders final state without crashing 1`] =
   deleteManyThumbnails={[Function]}
   deleteSupportFile={[Function]}
   getFileInfo={[Function]}
-  getSignedS3Url={[Function]}
+  getSignedS3UrlGet={[Function]}
+  getSignedS3UrlPut={[Function]}
   imagesUsesData={
     Object {
       "error": undefined,
@@ -923,7 +924,8 @@ exports[`<VideoProjectSupportFiles /> renders final state without crashing 1`] =
     deleteManyThumbnails={[Function]}
     deleteSupportFile={[Function]}
     getFileInfo={[Function]}
-    getSignedS3Url={[Function]}
+    getSignedS3UrlGet={[Function]}
+    getSignedS3UrlPut={[Function]}
     imagesUsesData={
       Object {
         "error": undefined,
@@ -978,7 +980,8 @@ exports[`<VideoProjectSupportFiles /> renders initial loading state without cras
   deleteManyThumbnails={[Function]}
   deleteSupportFile={[Function]}
   getFileInfo={[Function]}
-  getSignedS3Url={[Function]}
+  getSignedS3UrlGet={[Function]}
+  getSignedS3UrlPut={[Function]}
   imagesUsesData={
     Object {
       "error": undefined,
@@ -1046,7 +1049,8 @@ exports[`<VideoProjectSupportFiles /> renders initial loading state without cras
     deleteManyThumbnails={[Function]}
     deleteSupportFile={[Function]}
     getFileInfo={[Function]}
-    getSignedS3Url={[Function]}
+    getSignedS3UrlGet={[Function]}
+    getSignedS3UrlPut={[Function]}
     imagesUsesData={
       Object {
         "error": undefined,
