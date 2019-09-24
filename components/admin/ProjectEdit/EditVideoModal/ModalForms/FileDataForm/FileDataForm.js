@@ -261,7 +261,7 @@ const FileDataForm = ( {
   const dimensions = width && height ? `Dimensions: ${width} x ${height}` : '';
 
   return (
-    <Form className="edit-video__form video-file-form" style={ { overflow: 'hidden' } }>
+    <Form className="edit-video__form video-file-form">
       <Grid stackable>
         <Grid.Row>
           <Grid.Column className="video-file-form-col-1" mobile={ 16 } computer={ 8 }>
