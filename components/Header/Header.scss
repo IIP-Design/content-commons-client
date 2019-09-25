@@ -117,9 +117,11 @@
     About, Help, Privacy, Contact - no searchbar, white bG  
   ***/
   &--about,
+  &--contact,
+  &--documentation,
   &--help,
   &--privacy,
-  &--contact {
+  &--releasenotes {
     position: fixed;
     top: 0;
     width: 100%;
