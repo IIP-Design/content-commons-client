@@ -20,17 +20,17 @@ const Footer = () => {
     // },
     {
       name: 'privacy',
-      to: 'privacy',
+      to: '/privacy',
       label: 'Privacy Policy'
     },
     {
       name: 'releasenotes',
-      to: 'releasenotes',
+      to: '/releasenotes',
       label: 'Release Notes'
     },
     {
       name: 'documentation',
-      to: 'documentation',
+      to: '/documentation',
       label: 'Documentation'
     }
     // {
