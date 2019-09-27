@@ -114,10 +114,10 @@ const ProjectUnits = props => {
        }
       { projectId && (
         <div className="edit-project__add-more__wrapper">
-          <EditProjectUnits videoUnits={ units } />
-          <p className="helperText small marginTop">Edit video translations and versions to this video project</p>
+          <EditProjectUnits projectId={ projectId } videoUnits={ units } />
+          <p className="helperText small marginTop">Add video translations and versions to this video project</p>
           <VisuallyHidden>
-            <label htmlFor="upload-item--multiple">Edit video files in this project</label>
+            <label htmlFor="upload-item--multiple">Add video files in this project</label>
             <input
               id="upload-item--multiple"
               ref={ handleAddMoreRef }

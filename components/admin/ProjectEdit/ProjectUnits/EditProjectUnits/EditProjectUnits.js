@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { compose, graphql } from 'react-apollo';
+import { useFileUploadActions } from 'lib/hooks/useFileUploadActions';
+import { compareFilenames } from 'lib/utils';
+import { searchTreeForS3FileDirectories } from 'lib/upload';
+import { buildCreateUnitFilesTree, buildUpdateUnitFilesTree } from 'lib/graphql/builders/video';
+import { VIDEO_PROJECT_QUERY, UPDATE_VIDEO_PROJECT_UNIT_FILES } from 'lib/graphql/queries/video';
+import withFileUpload from 'hocs/withFileUpload/withFileUpload';
 import {
   Grid, Form, Button, Modal, Dimmer, Step
 } from 'semantic-ui-react';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
-import { useFileUploadActions } from 'lib/hooks/useFileUploadActions';
-import { compareFilenames } from 'lib/utils';
 import Notification from 'components/Notification/Notification';
 import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
 import EditProjectUnitsRow from '../EditProjectUnitsRow/EditProjectUnitsRow';
-
 import './EditProjectUnits.scss';
 
 const EditProjectUnits = props => {
-  const { videoUnits } = props;
   const [open, setOpen] = useState( false );
   const [confirm, setConfirm] = useState( {} );
   const [activeStep, setActiveStep] = useState( 1 );
@@ -21,7 +24,7 @@ const EditProjectUnits = props => {
   const [saving, setSaving] = useState( false );
 
   const {
-    state: { files, filesToRemove },
+    state: { files },
     reset,
     updateFileField,
     addFiles,
@@ -55,8 +58,6 @@ const EditProjectUnits = props => {
   };
 
   const openModal = () => {
-    const vidUnits = videoUnits.map( unit => unit.files );
-    addFiles( ...vidUnits );
     setOpen( true );
   };
 
@@ -119,6 +120,53 @@ const EditProjectUnits = props => {
     } );
   };
 
+  const handleSave = () => {
+    setSaving( true );
+
+    const {
+      projectId,
+      videoUnits,
+      updateVideoProject,
+      data: { project: { projectTitle } },
+      uploadExecute
+    } = props;
+
+    let uploadDir = null;
+    const { data } = props;
+    if ( data && data.project ) {
+      uploadDir = searchTreeForS3FileDirectories( data.project );
+      uploadDir = uploadDir.length ? uploadDir[0] : '';
+    }
+    // Either use a dir path for existing projects or send projectId to create new dir on S3
+    const projectIdPath = uploadDir || projectId;
+
+    files.forEach( async file => {
+      // Add file to Video Unit w/ same language if exists
+      // otherwise create a new Video Unit with new file as property
+      const fileLangId = file.language;
+      const findUnitLangMatch = videoUnits.find( unit => unit.language.id === fileLangId ) || false;
+
+      try {
+        // Upload file
+        await uploadExecute( projectIdPath, [file] );
+
+        // Create file on the DB if upload is successful
+        return updateVideoProject( {
+          variables: {
+            where: { id: projectId },
+            data: findUnitLangMatch
+              ? buildUpdateUnitFilesTree( findUnitLangMatch.id, file )
+              : buildCreateUnitFilesTree( projectTitle, file )
+          }
+        } );
+      } catch ( err ) {
+        console.error( err );
+      }
+    } );
+    setSaving( false );
+    closeModal();
+  };
+
   const updateField = ( e, data ) => {
     updateFileField( data );
   };
@@ -139,13 +187,13 @@ const EditProjectUnits = props => {
       trigger={ (
         <Button
           className="edit-project__add-more"
-          content="+ Edit video files for this project"
+          content="+ Add video files for this project"
           basic
           onClick={ openModal }
         />
       ) }
     >
-      <Modal.Header>Edit video files in this project</Modal.Header>
+      <Modal.Header>Add video files in this project</Modal.Header>
       { saving && (
         <Notification
           el="p"
@@ -227,7 +275,7 @@ const EditProjectUnits = props => {
           style={ show( 2 ) }
           content="Save"
           disabled={ !allFieldsSelected }
-          // onClick={ handleSave }
+          onClick={ handleSave }
         />
       </Modal.Actions>
 
@@ -238,7 +286,19 @@ const EditProjectUnits = props => {
 };
 
 EditProjectUnits.propTypes = {
-  videoUnits: PropTypes.array
+  videoUnits: PropTypes.array,
+  projectId: PropTypes.string,
+  updateVideoProject: PropTypes.func,
+  data: PropTypes.object,
+  uploadExecute: PropTypes.func,
 };
 
-export default EditProjectUnits;
+export default compose(
+  withFileUpload,
+  graphql( UPDATE_VIDEO_PROJECT_UNIT_FILES, { name: 'updateVideoProject' } ),
+  graphql( VIDEO_PROJECT_QUERY, {
+    options: props => ( {
+      variables: { id: props.projectId }
+    } )
+  } )
+)(EditProjectUnits);

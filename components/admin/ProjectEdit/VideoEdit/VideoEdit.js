@@ -389,7 +389,7 @@ const VideoEdit = props => {
           <ProjectUnits
             projectId={ projectId }
             heading="Videos in Project"
-            extensions={ ['.mov', '.mp4'] }
+            extensions={ ['.mov', '.mp4', '.avi'] }
           />
         </div>
       </UploadContext.Provider>

@@ -236,7 +236,7 @@ const VideoUpload = props => {
   };
 
   const { updateModalClassname, closeModal } = props;
-  const accept = '.srt, .mov, .mp4, .jpg, .png, .jpeg';
+  const accept = '.srt, .mov, .mp4, .avi, .jpg, .png, .jpeg';
 
   /* eslint-disable react/display-name */
   const panes = [
