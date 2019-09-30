@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import { UploadContext } from '../VideoEdit/VideoEdit';
+import { UploadContext } from '../../ProjectEdit/VideoEdit/VideoEdit';
 import ProjectUnitItem from './ProjectUnitItem';
 import { filesToUpload, postUploadUnit, preUploadUnit } from './mocks';
 
