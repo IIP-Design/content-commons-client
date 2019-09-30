@@ -74,7 +74,6 @@ const EditProjectFilesModal = ( {
 
   const toggleStep = () => {
     setStep( s => ( s === 1 ? 2 : 1 ) );
-    console.log( `step ${step}` );
   };
 
   const closeConfirm = () => {
@@ -113,6 +112,7 @@ const EditProjectFilesModal = ( {
 
   const closeModal = () => {
     setOpen( false );
+    setStep( 1 );
     reset();
   };
 
@@ -183,7 +183,6 @@ const EditProjectFilesModal = ( {
       />
     );
   };
-
 
   return (
     <Modal

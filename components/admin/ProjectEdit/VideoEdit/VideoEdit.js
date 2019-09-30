@@ -25,7 +25,6 @@ import {
 import { IMAGE_USES_QUERY } from 'lib/graphql/queries/common';
 import ApolloError from 'components/errors/ApolloError';
 import Notification from 'components/Notification/Notification';
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import ProjectUnits from 'components/admin/ProjectUnits/ProjectUnits';
@@ -46,7 +45,6 @@ const VideoEdit = props => {
   const SAVE_MSG_DELAY = 2000;
   const UPLOAD_SUCCESS_MSG_DELAY = SAVE_MSG_DELAY + 1000;
 
-  let addMoreInputRef = null;
   let uploadSuccessTimer = null;
   let saveMsgTimer = null;
 
@@ -154,15 +152,6 @@ const VideoEdit = props => {
         id: projectId
       }
     }, `/admin/project/video/${projectId}/review` );
-  };
-
-  const handleAddMoreFiles = () => {
-    console.log( 'Add more video files' );
-    addMoreInputRef.click();
-  };
-
-  const handleAddMoreRef = c => {
-    addMoreInputRef = c;
   };
 
   const handleSaveDraft = async ( id, projectTitle, tags ) => {
@@ -393,30 +382,6 @@ const VideoEdit = props => {
           />
         </div>
       </UploadContext.Provider>
-
-      { /* add more files button */ }
-      { projectId && (
-        <div className="edit-project__add-more__wrapper">
-          <Button
-            className="edit-project__add-more"
-            content="+ Add more files to this project"
-            basic
-            onClick={ handleAddMoreFiles }
-          />
-          <VisuallyHidden>
-            <label htmlFor="upload-item--multiple">upload more project items</label>
-            <input
-              id="upload-item--multiple"
-              ref={ handleAddMoreRef }
-              type="file"
-              accept=".mov, .mp4, .mpg, .wmv, .avi"
-              multiple
-              tabIndex={ -1 }
-            />
-          </VisuallyHidden>
-        </div>
-      ) }
-
     </div>
   );
 };
