@@ -5,6 +5,9 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withApollo } from 'react-apollo';
+import gql from 'graphql-tag';
 import { Tab } from 'semantic-ui-react';
 import SelectRole from './SelectRole/SelectRole';
 import UserDetails from './UserDetails/UserDetails';
@@ -13,6 +16,11 @@ import ReviewSubmit from './ReviewSubmit/ReviewSubmit';
 // import RegisterPending from './RegisterPending/RegisterPending';
 import './Register.scss';
 
+const WHITELIST_QUERY = gql`
+  query WHITELIST_QUERY($email: String!) {
+    isWhitelisted(email: $email)
+  }
+`;
 
 /* eslint-disable react/prefer-stateless-function */
 class Register extends Component {
@@ -85,6 +93,7 @@ class Register extends Component {
             updateState={ this.updateState }
             goBack={ this.goBack }
             goNext={ this.goNext }
+            isWhitelisted={ this.isWhitelisted }
           />
         </Tab.Pane>
       )
@@ -161,6 +170,19 @@ class Register extends Component {
     } );
   }
 
+  isWhitelisted = async email => {
+    const { client } = this.props;
+    try {
+      const result = await client.query( {
+        query: WHITELIST_QUERY,
+        variables: { email }
+      } );
+      return result.data.isWhitelisted;
+    } catch ( err ) {
+      return false;
+    }
+  };
+
   render() {
     const { activeIndex, view } = this.state;
 
@@ -189,4 +211,8 @@ class Register extends Component {
   }
 }
 
-export default Register;
+Register.propTypes = {
+  client: PropTypes.object
+};
+
+export default withApollo( Register );

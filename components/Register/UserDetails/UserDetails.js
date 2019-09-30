@@ -4,7 +4,7 @@ import { withFormik } from 'formik';
 import { Form, Button } from 'semantic-ui-react';
 import { optionFormatter } from 'lib/form';
 import countries from 'static/data/countries.json';
-import { validationSchema } from './validationSchema';
+import { getValidationSchema } from './validationSchema';
 
 const countryOptions = optionFormatter( countries, 'code' );
 
@@ -165,7 +165,7 @@ export default withFormik( {
     } );
   },
 
-  validationSchema,
+  validationSchema: getValidationSchema,
   validateOnBlur: false,
   validateOnChange: false,
 
@@ -174,5 +174,4 @@ export default withFormik( {
     props.goNext();
     setSubmitting( false );
   }
-
 } )( UserDetails );
