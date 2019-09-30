@@ -57,6 +57,24 @@ export const postUploadProps = {
   }
 };
 
+export const longFileNameProps = {
+  item: {
+    ...props.item,
+    filename: 'image-image-image-image-image-image-image-1.png',
+    url: '2019/08/cjzts3ele1ahx0720t7u9hf9i/image-image-image-image-image-image-image-1.png'
+  }
+};
+
+export const longLangNameProps = {
+  item: {
+    ...props.item,
+    language: {
+      ...props.item.language,
+      displayName: 'English-English-English-English-English-English'
+    }
+  }
+};
+
 export const emptyItemProps = {
   item: {}
 };

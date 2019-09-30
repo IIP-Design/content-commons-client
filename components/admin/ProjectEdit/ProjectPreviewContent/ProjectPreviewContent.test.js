@@ -29,7 +29,17 @@ jest.mock( 'lib/utils', () => ( {
   } ),
   getVimeoId: jest.fn( () => '340239507' ),
   getYouTubeId: jest.fn( () => '1evw4fRu3bo' ),
-  contentRegExp: jest.fn( () => false )
+  contentRegExp: jest.fn( () => false ),
+  getApolloErrors: jest.fn( error => {
+    let errs = [];
+    const { graphQLErrors, networkError, otherError } = error;
+    if ( graphQLErrors ) {
+      errs = graphQLErrors.map( error => error.message );
+    }
+    if ( networkError ) errs.push( networkError );
+    if ( otherError ) errs.push( otherError );
+    return errs;
+  } )
 } ) );
 
 jest.mock( 'static/icons/icon_download.svg', () => 'downloadIcon.svg' );

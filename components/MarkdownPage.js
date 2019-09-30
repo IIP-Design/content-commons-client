@@ -6,7 +6,7 @@ import 'styles/static-page.scss';
 
 const MarkdownPage = props => {
   const {
-    data, error, pageTitle, pageSubTitle
+    data, error, pageTitle, pageSubTitle, children
   } = props;
 
   if ( error ) {
@@ -18,7 +18,7 @@ const MarkdownPage = props => {
       <h1>{ pageTitle }
         { pageSubTitle && <div className="sub header">{ pageSubTitle }</div> }
       </h1>
-
+      { children }
       <ReactMarkdown source={ data } />
     </div>
   );
@@ -27,6 +27,7 @@ const MarkdownPage = props => {
 MarkdownPage.propTypes = {
   pageTitle: PropTypes.string,
   pageSubTitle: PropTypes.string,
+  children: PropTypes.element,
   data: PropTypes.string,
   error: PropTypes.oneOfType( [PropTypes.number, PropTypes.bool] )
 };

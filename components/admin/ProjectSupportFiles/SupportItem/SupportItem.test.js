@@ -2,11 +2,13 @@ import { mount } from 'enzyme';
 import mockAxios from 'axios';
 import wait from 'waait';
 import { MockedProvider } from 'react-apollo/test-utils';
+import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import { UploadContext } from '../../ProjectEdit/VideoEdit/VideoEdit';
 import {
   emptyItemProps,
   emptyMocks,
   errorMocks,
+  longFileNameProps,
   mocks,
   nullItemProps,
   nullMocks,
@@ -32,6 +34,14 @@ const PreUploadComponent = (
   <MockedProvider mocks={ mocks } addTypename={ false }>
     <UploadContext.Provider value>
       <SupportItem { ...preUploadProps } />
+    </UploadContext.Provider>
+  </MockedProvider>
+);
+
+const LongFileNameComponent = (
+  <MockedProvider mocks={ mocks } addTypename={ false }>
+    <UploadContext.Provider value>
+      <SupportItem { ...longFileNameProps } />
     </UploadContext.Provider>
   </MockedProvider>
 );
@@ -93,6 +103,9 @@ const NullItemComponent = (
 );
 
 describe( '<SupportItem />', () => {
+  // store console.dir & mock its call in axios.catch
+  const consoleDir = console.dir;
+
   /**
    * @todo Suppress React 16.8 `act()` warnings globally.
    * The React team's fix won't be out of alpha until 16.9.0.
@@ -110,10 +123,14 @@ describe( '<SupportItem />', () => {
     const resp = { status: 200 };
     mockAxios.head = jest.fn();
     mockAxios.head.mockResolvedValue( resp );
+
+    console.dir = jest.fn();
   } );
 
   afterAll( () => {
+    // restore console.error and console.dir
     console.error = consoleError;
+    console.dir = consoleDir;
   } );
 
   it( 'renders initial loading state without crashing', () => {
@@ -220,10 +237,6 @@ describe( '<SupportItem />', () => {
   } );
 
   it( 'renders GeneralError and no language if an axios error occurs (post-upload)', async () => {
-    // store console.dir & mock its call in axios.catch
-    const consoleDir = console.dir;
-    console.dir = jest.fn();
-
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
@@ -243,8 +256,37 @@ describe( '<SupportItem />', () => {
     expect( icon.exists() ).toEqual( true );
     expect( langEl.exists() ).toEqual( true );
     expect( langEl.children().length ).toEqual( 0 );
+  } );
 
-    // restore console.dir
-    console.dir = consoleDir;
+  it( 'renders a truncated file name if filename is over 45 characters', async () => {
+    const wrapper = mount( LongFileNameComponent );
+    await wait( 0 );
+    wrapper.update();
+
+    const visuallyHidden = wrapper.find( 'VisuallyHidden' );
+    const itemNameWrap = wrapper.find( 'span.item-name-wrap' );
+    const popup = itemNameWrap.find( 'Popup' );
+    const focusable = popup.find( 'Focusable' );
+    const { filename } = longFileNameProps.item;
+
+    expect( visuallyHidden.exists() ).toEqual( true );
+    expect( visuallyHidden.contains( filename ) ).toEqual( true );
+    expect( popup.exists() ).toEqual( true );
+    expect( popup.prop( 'content' ) ).toEqual( filename );
+    expect( focusable.exists() ).toEqual( true );
+
+    // larger screens
+    window.outerWidth = 1000;
+    const shortname = isWindowWidthLessThanOrEqualTo( 900 )
+      ? 'image-image-...-image-1.png'
+      : 'image-image-imag...mage-image-1.png';
+
+    expect( window.outerWidth ).toEqual( 1000 );
+    expect( focusable.contains( shortname ) ).toEqual( true );
+
+    // smaller screens
+    window.outerWidth = 800;
+    expect( window.outerWidth ).toEqual( 800 );
+    expect( focusable.contains( shortname ) ).toEqual( true );
   } );
 } );

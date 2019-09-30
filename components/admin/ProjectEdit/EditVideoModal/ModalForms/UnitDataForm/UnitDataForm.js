@@ -3,100 +3,26 @@
  * UnitDataForm
  *
  */
-import React from 'react';
+import React, { useContext } from 'react';
 import propTypes from 'prop-types';
-import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
 import { Embed, Form, Grid } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 
-import { VIDEO_UNIT_ADD_TAG_MUTATION, VIDEO_PROJECT_UNITS_QUERY } from 'lib/graphql/queries/video';
-import Loader from 'components/admin/ProjectEdit/EditVideoModal/Loader/Loader';
-import TagDropdown from 'components/admin/dropdowns/TagDropdown';
+import { EditSingleProjectItemContext } from 'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import {
   getPathToS3Bucket, getStreamData, getVimeoId, getYouTubeId
 } from 'lib/utils';
-
-
-const VIDEO_UNIT_QUERY = gql`
-  query VIDEO_UNIT_QUERY( $id: ID! ) {
-    unit: videoUnit( id: $id ) {
-      id
-      title
-      descPublic
-      language {
-        id
-        displayName
-        locale
-        textDirection
-      }
-      tags { id }
-      thumbnails {
-        id
-        image {
-          id
-          alt
-          url
-        }
-      }
-    }
-  } 
-`;
-
-const VIDEO_FILE_QUERY = gql`
-  query VIDEO_FILE_QUERY( $id: ID! ) {
-    file: videoFile( id: $id ) {
-      id
-      stream {
-        id
-        site
-        url
-      }
-    }
-  }
-`;
-
-const VIDEO_UNIT_TITLE_MUTATION = gql`
-  mutation VIDEO_UNIT_TITLE_MUTATION( $id: ID!, $title: String ) {
-    updateVideoUnit(
-      data: { title: $title },
-      where: { id: $id }
-    ) {
-      id
-      title
-    }
-  }
-`;
-
-const VIDEO_UNIT_DESC_MUTATION = gql`
-  mutation VIDEO_UNIT_DESC_MUTATION( $id: ID!, $descPublic: String ) {
-    updateVideoUnit(
-      data: { descPublic: $descPublic },
-      where: { id: $id }
-    ) {
-      id
-      descPublic
-    }
-  }
-`;
-
-const VIDEO_UNIT_REMOVE_TAG_MUTATION = gql`
-  mutation VIDEO_UNIT_REMOVE_TAG_MUTATION( $id: ID!, $tagId: ID! ) {
-    updateVideoUnit(
-      data: {
-        tags: {
-          disconnect: {
-            id: $tagId
-          }
-        }
-      },
-      where: { id: $id }
-    ) {
-      id
-      tags { id }
-    }
-  }
-`;
+import Loader from 'components/admin/ProjectEdit/EditVideoModal/Loader/Loader';
+import TagDropdown from 'components/admin/dropdowns/TagDropdown';
+import { VIDEO_UNIT_ADD_TAG_MUTATION, VIDEO_PROJECT_UNITS_QUERY } from 'lib/graphql/queries/video';
+import {
+  VIDEO_UNIT_QUERY,
+  VIDEO_FILE_QUERY,
+  VIDEO_UNIT_TITLE_MUTATION,
+  VIDEO_UNIT_DESC_MUTATION,
+  VIDEO_UNIT_REMOVE_TAG_MUTATION
+} from './UnitDataFormQueries';
 
 const UnitDataForm = ( {
   descPublicVideoUnitMutation,
@@ -112,6 +38,11 @@ const UnitDataForm = ( {
 } ) => {
   const { loading, unit } = videoUnitQuery;
   const { file } = videoFileQuery;
+  const {
+    setShowNotification, startTimeout
+  } = useContext(
+    EditSingleProjectItemContext
+  );
 
   if ( !unit || loading ) return <Loader height="340px" text="Loading the video data..." />;
 
@@ -169,6 +100,9 @@ const UnitDataForm = ( {
         }
       }
     } );
+
+    setShowNotification( true );
+    startTimeout();
   };
 
   const updateTags = newTags => {
@@ -215,9 +149,14 @@ const UnitDataForm = ( {
     if ( removed.length > 0 ) {
       runTagMutation( removed, tagsRemoveVideoUnitMutation );
     }
+
+    setShowNotification( true );
+    startTimeout();
   };
 
-  const handleInput = ( e, { name, value } ) => setFieldValue( name, value );
+  const handleOnChange = ( e, { name, value } ) => {
+    setFieldValue( name, value );
+  };
 
   const handleDropdownSelection = ( e, { value } ) => updateTags( value );
 
@@ -271,7 +210,7 @@ const UnitDataForm = ( {
               label={ `Video Title ${lang}` }
               name="title"
               onBlur={ updateUnit }
-              onChange={ handleInput }
+              onChange={ handleOnChange }
               value={ values.title }
             />
 
@@ -281,7 +220,7 @@ const UnitDataForm = ( {
               label={ `Public Description ${lang}` }
               name="descPublic"
               onBlur={ updateUnit }
-              onChange={ handleInput }
+              onChange={ handleOnChange }
               value={ values.descPublic }
             />
 
@@ -291,6 +230,7 @@ const UnitDataForm = ( {
               dir={ unit.language.textDirection }
               label={ `Additional Keywords ${lang}` }
               locale={ unit.language.locale }
+              name="tags"
               value={ values.tags }
             />
 
@@ -311,7 +251,7 @@ UnitDataForm.propTypes = {
   unitId: propTypes.string,
   values: propTypes.object,
   videoFileQuery: propTypes.object,
-  videoUnitQuery: propTypes.object
+  videoUnitQuery: propTypes.object,
 };
 
 
@@ -329,7 +269,7 @@ export default compose(
   graphql( VIDEO_UNIT_QUERY, {
     name: 'videoUnitQuery',
     options: props => ( {
-      variables: { id: props.unitId },
+      variables: { unitId: props.unitId },
     } )
   } ),
   withFormik( {

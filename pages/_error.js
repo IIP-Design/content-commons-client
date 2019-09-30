@@ -14,7 +14,7 @@ class Error extends React.Component {
     if ( statusCode === 404 ) {
       return <NotFound404 />;
     }
-    return <p>{ `An error ${statusCode} occured on the server` }</p>;
+    return <p>{ `An error ${statusCode} occurred on the server` }</p>;
   }
 
   renderClientError = () => <p> An error occurred on client</p>

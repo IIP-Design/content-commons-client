@@ -506,7 +506,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
               </GridColumn>
             </div>
           </GridRow>
-          <Component
+          <VideoProjectFile
             file={
               Object {
                 "__typename": "VideoFile",
@@ -589,9 +589,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                 "size": "FULL",
               }
             }
-          >
-            &lt;VideoProjectFile /&gt;
-          </Component>
+          />
         </div>
       </Grid>
     </div>
@@ -757,7 +755,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
               </GridColumn>
             </div>
           </GridRow>
-          <Component
+          <VideoProjectFile
             file={
               Object {
                 "__typename": "VideoFile",
@@ -840,9 +838,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                 "size": "FULL",
               }
             }
-          >
-            &lt;VideoProjectFile /&gt;
-          </Component>
+          />
         </div>
       </Grid>
     </div>

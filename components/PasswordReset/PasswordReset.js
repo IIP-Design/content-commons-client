@@ -29,11 +29,11 @@ class PasswordReset extends Component {
       isSubmitting,
     } = this.props;
 
-
     return (
       <div className="reset reset_wrapper">
         <h1 className="reset_title">Reset Password</h1>
         <p className="reset_subtext">Update your password.</p>
+        <p className="helperText">Passwords must be a minimum of 8 characters long and contain at least one uppercase letter (A-Z), one lowercase letter (a-z), one number (0-9), and one special character (`~!@#$%^&amp;*.\&lt;&gt;"/\',()_-+=[]|\\).</p>
         <Error error={ errors.submit } />
         <Form
           noValidate

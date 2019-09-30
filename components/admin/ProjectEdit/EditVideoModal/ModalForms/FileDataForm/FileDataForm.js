@@ -46,7 +46,7 @@ const FileDataForm = ( {
   videoUnitDisconnectFileMutation
 } ) => {
   const {
-    selectedFile, selectedUnit, setSelectedFile, updateSelectedUnit
+    selectedFile, selectedUnit, setSelectedFile, setShowNotification, startTimeout, updateSelectedUnit
   } = useContext( EditSingleProjectItemContext );
 
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
@@ -54,6 +54,11 @@ const FileDataForm = ( {
 
   const { project } = videoProjectQuery;
   const units = project && project.units ? project.units : [];
+
+  const growl = () => {
+    setShowNotification( true );
+    startTimeout();
+  };
 
   const changeLanguage = ( value, id ) => {
     // Get array of units and the language they are in
@@ -99,6 +104,7 @@ const FileDataForm = ( {
           } )
         } )
       } );
+      growl();
     }
   };
 
@@ -158,6 +164,7 @@ const FileDataForm = ( {
         }
       }
     } );
+    growl();
   };
 
   // Update video url form fields on change
@@ -201,6 +208,7 @@ const FileDataForm = ( {
       } );
     }
 
+    growl();
     videoFileQuery.refetch();
   };
 
@@ -253,7 +261,7 @@ const FileDataForm = ( {
   const dimensions = width && height ? `Dimensions: ${width} x ${height}` : '';
 
   return (
-    <Form className="edit-video__form video-file-form" style={ { overflow: 'hidden' } }>
+    <Form className="edit-video__form video-file-form">
       <Grid stackable>
         <Grid.Row>
           <Grid.Column className="video-file-form-col-1" mobile={ 16 } computer={ 8 }>

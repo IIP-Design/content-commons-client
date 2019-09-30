@@ -6,7 +6,7 @@ const PasswordResetRequest = () => {
     subject: 'Reset Your Password',
     body: 'Reset your password by using the following link:',
     link: 'Reset your Password',
-    reply: 'A reset link has been sent to your enail',
+    reply: 'A reset link has been sent to your email',
     page: 'passwordreset'
   };
 

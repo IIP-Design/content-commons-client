@@ -34,6 +34,7 @@ class ConfirmRegistration extends Component {
       <div className="confirm confirm_wrapper">
         <h1 className="confirm_title">Confirm Registration</h1>
         <p className="confirm_subtext">Create a password to complete your registration.</p>
+        <p className="helperText">Passwords must be a minimum of 8 characters long and contain at least one uppercase letter (A-Z), one lowercase letter (a-z), one number (0-9), and one special character (`~!@#$%^&amp;*.\&lt;&gt;"/\',()_-+=[]|\\).</p>
         <Error error={ errors.submit } />
         <Form
           noValidate

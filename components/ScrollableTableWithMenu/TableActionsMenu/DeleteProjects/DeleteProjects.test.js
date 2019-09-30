@@ -1,16 +1,20 @@
 import { mount } from 'enzyme';
+import wait from 'waait';
 import toJSON from 'enzyme-to-json';
-import { Mutation } from 'react-apollo';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { getPluralStringOrNot } from 'lib/utils';
-import DeleteProjects, { DELETE_VIDEO_PROJECTS_MUTATION } from './DeleteProjects';
-import { drafts, nonDrafts } from './mocks';
+import DeleteProjects from './DeleteProjects';
+import {
+  mocks, drafts, nonDrafts, draftMocks
+} from './mocks';
 
 const props = {
   deleteConfirmOpen: false,
+  handleActionResult: jest.fn(),
   handleDeleteCancel: jest.fn(),
   handleDeleteConfirm: jest.fn(),
   handleResetSelections: jest.fn(),
+  deleteVideoProject: jest.fn(),
   selections: [...drafts, ...nonDrafts],
   showConfirmationMsg: jest.fn()
 };
@@ -27,23 +31,6 @@ const nonDraftsProps = {
     selections: [...nonDrafts]
   }
 };
-
-const mocks = [
-  {
-    request: {
-      query: DELETE_VIDEO_PROJECTS_MUTATION,
-      variables: {
-        where: {
-          AND: [
-            { id_in: ['C1', 'C2', 'C3'] },
-            { status_in: ['DRAFT'] }
-          ]
-        }
-      }
-    },
-    result: { data: { deleteProjects: 3 } }
-  }
-];
 
 const Component = (
   <MockedProvider mocks={ mocks } addTypename={ false }>
@@ -123,24 +110,34 @@ describe( '<DeleteProjects />', () => {
     expect( props.handleDeleteCancel ).toHaveBeenCalled();
   } );
 
-  it( 'clicking the confirm button calls handleDeleteConfirm', () => {
+  it( 'clicking the confirm button calls handleActionResult with the apporpriate results', async () => {
     const wrapper = mount( OpenConfirmComponent );
-    const deleteMutation = wrapper.find( 'DeleteProjects' );
-    const confirm = deleteMutation.find( 'Modal.delete' );
+    const deleteProjects = wrapper.find( 'DeleteProjects' );
+    const confirm = deleteProjects.find( 'Modal.delete' );
     const confirmBtn = confirm.find( 'Button[content="Yes, delete forever"]' );
 
     confirmBtn.simulate( 'click' );
-    expect( props.handleDeleteConfirm ).toHaveBeenCalled();
+    await wait( 10 );
+    wrapper.update();
+
+    expect( props.handleActionResult ).toHaveBeenCalledTimes( drafts.length );
+    const mockResults = draftMocks.map( mock => [mock.result] );
+    mockResults.forEach( result => {
+      expect( props.handleActionResult ).toHaveBeenCalledWith( result[0] );
+    } );
   } );
 
-  it( 'mutation calls handleResetSelections, handleDeleteCancel, showConfirmationMsg on completion', () => {
-    const wrapper = mount( Component );
-    const deleteMutation = wrapper.find( 'DeleteProjects' );
-    const mutation = deleteMutation.find( Mutation );
+  it( 'clicking the confirm button calls handleDeleteConfirm and handleDeleteCancel when completed', async () => {
+    const wrapper = mount( OpenConfirmComponent );
+    const deleteProjects = wrapper.find( 'DeleteProjects' );
+    const confirm = deleteProjects.find( 'Modal.delete' );
+    const confirmBtn = confirm.find( 'Button[content="Yes, delete forever"]' );
 
-    mutation.prop( 'onCompleted' )();
-    expect( props.handleResetSelections ).toHaveBeenCalled();
+    confirmBtn.simulate( 'click' );
+    await wait( 10 );
+    wrapper.update();
+
+    expect( props.handleDeleteConfirm ).toHaveBeenCalled();
     expect( props.handleDeleteCancel ).toHaveBeenCalled();
-    expect( props.showConfirmationMsg ).toHaveBeenCalled();
   } );
 } );

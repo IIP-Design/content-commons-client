@@ -1,0 +1,37 @@
+@import "../../styles/colors.scss";
+
+.ui.divided.horizontal.list {
+  margin-left: 0em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  >.item {
+    border-left-color: #112e51;
+    font-weight: bold;
+
+    @media screen and (max-width: 460px) {
+      display: block;
+      border-left: none;
+      line-height: initial;
+    }
+  }
+
+  >.item:not(:last-child) {
+    padding-right: 0.8em;
+
+    @media screen and (max-width: 460px) {
+      padding-right: 0;
+      margin-bottom: 1em;
+    }
+  }
+
+  >.item:not(:first-child) {
+    padding-left: 0.8em;
+
+    @media screen and (max-width: 460px) {
+      padding-left: 0;
+    }
+  }
+}

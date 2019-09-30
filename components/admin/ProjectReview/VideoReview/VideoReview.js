@@ -121,7 +121,10 @@ const VideoReview = props => {
     }, `/admin/project/video/${id}/edit` );
   };
 
-  const handlePublish = async () => {
+  const handlePublish = async e => {
+    // Prevent multiple clicks - multiple clicks resulted in project going into PUBLISHING status
+    if ( !e.detail || e.detail === 1 ) e.target.disabled = true;
+
     const { publishProject } = props;
 
     try {
@@ -133,7 +136,10 @@ const VideoReview = props => {
     }
   };
 
-  const handleUnPublish = async () => {
+  const handleUnPublish = async e => {
+    // Prevent multiple clicks - multiple clicks resulted in project going into PUBLISHING status
+    if ( !e.detail || e.detail === 1 ) e.target.disabled = true;
+
     const { unPublishProject } = props;
 
     try {
@@ -145,6 +151,10 @@ const VideoReview = props => {
     }
   };
 
+  // Project Status & Update States
+  const publishedAndUpdated = updatesToPublish() && data.project.status === 'PUBLISHED';
+  const publishedAndNotUpdated = !updatesToPublish() && data.project.status === 'PUBLISHED';
+  const notPublished = data.project.status !== 'PUBLISHED';
 
   return (
     <div className="review-project">
@@ -201,7 +211,7 @@ const VideoReview = props => {
                 <Button className={ setButtonState( 'edit' ) } onClick={ handlePublish }>Publish Changes</Button>
               )
               }
-              <Button className="project_button project_button--publish" onClick={ handleUnPublish }>UnPublish</Button>
+              <Button className="project_button project_button--publish" onClick={ handleUnPublish }>Unpublish</Button>
             </Fragment>
           )
         }
@@ -226,18 +236,18 @@ const VideoReview = props => {
       <VideoProjectFiles id={ id } />
 
       <section className="section section--publish">
-        <h3 className="title">{
-          updatesToPublish()
-            ? 'It looks like you made changes to your project. Do you want to publish changes?'
-            : 'Your project looks great! Are you ready to Publish?'
-        }
+        <h3 className="title">
+          { publishedAndUpdated && 'It looks like you made changes to your project. Do you want to publish changes?' }
+          { notPublished && 'Your project looks great! Are you ready to Publish?' }
+          { publishedAndNotUpdated && 'Not ready to share with the world yet?' }
         </h3>
         <Button
           className="project_button project_button--edit"
           content="Edit"
           onClick={ handleEdit }
         />
-        <Button className="project_button project_button--publish" onClick={ handlePublish }>Publish{ updatesToPublish() && ' Changes' }</Button>
+        { !publishedAndNotUpdated && <Button className={ `project_button project_button--${updatesToPublish() ? 'edit' : 'publish'}` } onClick={ handlePublish }>Publish{ updatesToPublish() && ' Changes' }</Button> }
+        { data.project.status !== 'DRAFT' && <Button className="project_button project_button--publish" onClick={ handleUnPublish }>Unpublish</Button> }
       </section>
     </div>
   );

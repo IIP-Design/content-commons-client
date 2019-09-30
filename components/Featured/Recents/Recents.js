@@ -86,7 +86,7 @@ class Recents extends Component {
       <section className="ui container recents">
         <div className="recentstitle">
           <Header as="h1" size="large">
-            { `Latest ${postTypeLabel.display_name}s` }
+            { postTypeLabel && `Latest ${postTypeLabel.display_name}s` }
           </Header>
           <a href="/results" onClick={ this.handleOnClick } className="browseAll">
             { `Browse All` }
