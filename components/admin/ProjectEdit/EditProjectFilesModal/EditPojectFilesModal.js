@@ -8,6 +8,8 @@ import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import { useFileUploadActions } from 'lib/hooks/useFileUploadActions';
 import Notification from 'components/Notification/Notification';
 import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
+import { compose, graphql } from 'react-apollo';
+import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown';
 
 import './EditProjectFilesModal.scss';
 
@@ -15,7 +17,8 @@ const EditSupportFilesGrid = dynamic( () => import( /* webpackChunkName: "editSu
 const EditVideoFilesGrid = dynamic( () => import( /* webpackChunkName: "editVideoFilesGrid" */ './EditVideoFilesGrid/EditVideoFilesGrid' ) );
 
 const EditProjectFilesModal = ( {
-  title, type, filesToEdit, extensions, save
+  title, type, filesToEdit, extensions,
+  save, videoUses: { videoUses }
 } ) => {
   const [open, setOpen] = useState( false );
   const [saving, setSaving] = useState( false );
@@ -63,6 +66,14 @@ const EditProjectFilesModal = ( {
     setAllFieldsSelected( isComplete() );
   }, [files] );
 
+  const _addFiles = filesToAdd => {
+    let defaultUse = '';
+    if ( type === 'video' ) {
+      defaultUse = videoUses.find( u => u.name === 'Full Video' );
+    }
+
+    addFiles( filesToAdd, defaultUse.id );
+  };
 
   const compareFilenames = ( a, b ) => {
     try {
@@ -94,16 +105,16 @@ const EditProjectFilesModal = ( {
           cancelButton: 'No, do not add files',
           confirmButton: 'Yes, add files',
           onCancel: () => {
-            addFiles( filesToAdd.filter( file => !currentFiles.includes( file.name ) ) );
+            _addFiles( filesToAdd.filter( file => !currentFiles.includes( file.name ) ) );
             closeConfirm();
           },
           onConfirm: () => {
-            addFiles( filesToAdd );
+            _addFiles( filesToAdd );
             closeConfirm();
           }
         } );
       } else {
-        addFiles( filesToAdd );
+        _addFiles( filesToAdd );
       }
     } catch ( err ) {
       console.error( err );
@@ -117,7 +128,7 @@ const EditProjectFilesModal = ( {
   };
 
   const openModal = () => {
-    addFiles( filesToEdit );
+    _addFiles( filesToEdit );
     setOpen( true );
   };
 
@@ -146,7 +157,7 @@ const EditProjectFilesModal = ( {
       const currentFiles = files.map( file => file.name );
       checkForDuplicates( currentFiles, filesToAdd );
     } else {
-      addFiles( filesToAdd );
+      _addFiles( filesToAdd );
     }
   };
 
@@ -256,7 +267,12 @@ EditProjectFilesModal.propTypes = {
   type: PropTypes.string,
   filesToEdit: PropTypes.array,
   extensions: PropTypes.array,
+  videoUses: PropTypes.object,
+  imageUses: PropTypes.object,
   save: PropTypes.func
 };
 
-export default EditProjectFilesModal;
+export default compose(
+  graphql( VIDEO_USE_QUERY, { name: 'videoUses' } ),
+  graphql( IMAGE_USE_QUERY, { name: 'imageUses' } )
+)( EditProjectFilesModal );

@@ -259,7 +259,6 @@ const ProjectUnits = props => {
         } );
         return res;
       } catch ( err ) {
-        console.log( 'Throw an error executing deleteManyVideoUnits ' );
         console.log( err );
       }
     }
