@@ -9,7 +9,6 @@ import {
   Card, Modal, Image, List, Loader
 } from 'semantic-ui-react';
 import iconVideoCamera from 'static/icons/icon_32px_videoCamera.png';
-// import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import FileUploadProgressBar from 'components/admin/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
 import GeneralError from 'components/errors/GeneralError/GeneralError';
 import { UploadContext } from 'components/admin/ProjectEdit/VideoEdit/VideoEdit';
@@ -19,10 +18,7 @@ const EditSingleProjectItem = dynamic( () => import( /* webpackChunkName: "editS
 
 const ProjectUnitItem = props => {
   const { projectId, unit, filesToUpload } = props;
-
-  // const PLACEHOLDER = '/static/images/thumbnail_video.jpg';
   const PLACEHOLDER = null;
-
   const [thumbnail, setThumbnail] = useState( PLACEHOLDER );
   const [title, setTitle] = useState( '' );
   const [unitUploadComplete, setUnitUploadComplete] = useState( false );
@@ -117,12 +113,7 @@ const ProjectUnitItem = props => {
             { error
               && (
                 <List.Item>
-                  <GeneralError msg="Uploading Error">
-                    { /* <FileRemoveReplaceButtonGroup
-                      onReplace={ () => {} }
-                      onRemove={ () => console.log( 'removed' ) }
-                    /> */ }
-                  </GeneralError>
+                  <GeneralError msg="Uploading Error" />
                 </List.Item>
               ) }
           </List>
