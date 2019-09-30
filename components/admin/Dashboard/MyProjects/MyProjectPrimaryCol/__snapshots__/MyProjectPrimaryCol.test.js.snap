@@ -111,7 +111,7 @@ exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
           }
         >
           <ModalContent>
-            <Apollo(PreviewProjectContent)
+            <Apollo(ProjectPreviewContent)
               id="111"
             />
           </ModalContent>
