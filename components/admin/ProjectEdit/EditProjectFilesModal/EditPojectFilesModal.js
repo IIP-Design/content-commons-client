@@ -150,8 +150,8 @@ const EditProjectFilesModal = ( {
     if ( !matches ) {
       setConfirm( {
         open: true,
-        headline: `File ${name} will be removed when saved.`,
-        content: 'Is this ok?',
+        headline: 'The following file will be removed upon SAVE. Ok?',
+        content: name,
         cancelButton: 'No, take me back',
         confirmButton: 'Yes, remove',
         onCancel: () => closeConfirm(),
