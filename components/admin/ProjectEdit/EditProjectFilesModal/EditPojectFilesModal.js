@@ -136,19 +136,33 @@ const EditProjectFilesModal = ( {
     updateFileField( data );
   };
 
+  /**
+   * Puts file in queue to remove
+   * Only show confirm dialgue for files that have already been saved to db
+   * For new files, the id is generated using uuid and therefore will
+   * have the '-' character in it. Ff '-' exists, assume new file and do not show dialgue
+   *
+   * @param {string} id id of fiile
+   * @param {string} name name of file
+   */
   const handleRemove = ( id, name ) => {
-    setConfirm( {
-      open: true,
-      headline: 'Are you sure you want to remove this file?',
-      content: `You are about to remove ${name}`,
-      cancelButton: 'No, take me back',
-      confirmButton: 'Yes, remove',
-      onCancel: () => closeConfirm(),
-      onConfirm: () => {
-        removeFile( id );
-        closeConfirm();
-      }
-    } );
+    const matches = id.match( /-/gi );
+    if ( !matches ) {
+      setConfirm( {
+        open: true,
+        headline: `File ${name} will be removed when saved.`,
+        content: 'Is this ok?',
+        cancelButton: 'No, take me back',
+        confirmButton: 'Yes, remove',
+        onCancel: () => closeConfirm(),
+        onConfirm: () => {
+          removeFile( id );
+          closeConfirm();
+        }
+      } );
+    } else {
+      removeFile( id );
+    }
   };
 
   const handleAddFiles = e => {
