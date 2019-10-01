@@ -153,6 +153,7 @@ const ProjectUnits = props => {
     return thumbnails.find( tn => tn.language.id === language );
   };
 
+  const getTagIds = ( tags = [] ) => tags.map( tag => tag.id );
 
   /**
    * If file language has changed, disconnect from current language
@@ -183,7 +184,7 @@ const ProjectUnits = props => {
 
     return updateVideoProject( getQuery( projectId, {
       units: {
-        create: buildUnit( projectTitle, language, tags, null, thumbnail )
+        create: buildUnit( projectTitle, language, getTagIds( tags ), null, thumbnail )
       }
     } ) );
   };
@@ -332,29 +333,22 @@ const ProjectUnits = props => {
    * @param {array} filesToRemove
    */
   const handleSave = async ( files, filesToRemove ) => {
-    console.log( 'handleSave' );
-
     try {
       // remove files
-      console.log( 'removeFiles' );
       await removeFiles( filesToRemove );
 
       // upload files
-      console.log( 'uploadFiles' );
       const toUpload = files.filter( file => ( file.input ) );
       await uploadFiles( toUpload ).catch( err => console.log( err ) );
 
       // create new files
-      console.log( 'createFile' );
       await Promise.all( toUpload.map( async file => createFile( file ) ) );
 
       // update existing files
-      console.log( 'updateFile' );
       const toUpdate = files.filter( file => ( !file.input ) );
       await Promise.all( toUpdate.map( file => updateFile( file ) ) );
 
       // update connect/disconnect files from units
-      console.log( 'updateUnit' );
       await Promise.all( toUpdate.map( file => updateUnit( file ) ) );
 
       // remove units
@@ -368,7 +362,6 @@ const ProjectUnits = props => {
         }
       } );
 
-      console.log( 'removeUnits' );
       await removeUnits( unitsToRemove );
     } catch ( err ) {
       console.dir( err );
