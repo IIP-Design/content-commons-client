@@ -3,7 +3,7 @@
  * ProjectUnits
  *
  */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
@@ -80,7 +80,7 @@ const ProjectUnits = props => {
   };
 
   /**
-   * Separates files into units and nromalizes data structure
+   * Separates files into units and normalizes data structure
    * for consistent renderinig
    */
   const getUnitsForNewProject = () => {
@@ -128,6 +128,11 @@ const ProjectUnits = props => {
     }
   };
 
+  /**
+   * Convenience function to define query structure
+   * @param {string} id project id
+   * @param {object} updatedData updates to save
+   */
   const getQuery = ( id, updatedData ) => ( {
     variables: {
       data: updatedData,
@@ -139,22 +144,32 @@ const ProjectUnits = props => {
 
   /**
   * We are assumng a single thumbnail per language although the data
-  * model can support multple thumbnails per language (in diff sizes)
-  * todo: refactor to tsupport multple humbnails per language
+  * model can support multiple thumbnails per language (in diff sizes)
+  * todo: refactor to to support multiple thumbnails per language
   * @param {*} language language d of file
   */
-  const getLangugeThumbnail = language => {
+  const getLanguageThumbnail = language => {
     const { project: { thumbnails } } = videoProject;
     return thumbnails.find( tn => tn.language.id === language );
   };
 
 
+  /**
+   * If file language has changed, disconnect from current language
+   * @param {object} unit unit file currently belongs to
+   * @param {object} file
+   */
   const disconnectFileFromUnit = async ( unit, file ) => updateVideoUnit( getQuery( unit.id, {
     files: {
       disconnect: { id: file.id }
     }
   } ) );
 
+  /**
+   * If file language has changed, connect to new language
+   * @param {object} unit unit to connect file to
+   * @param {object} file
+   */
   const connectFileToUnit = async ( unit, file ) => updateVideoUnit( getQuery( unit.id, {
     files: {
       connect: { id: file.id }
@@ -164,7 +179,7 @@ const ProjectUnits = props => {
 
   const createUnit = async language => {
     const { project: { projectTitle, tags } } = videoProject;
-    const thumbnail = getLangugeThumbnail( language );
+    const thumbnail = getLanguageThumbnail( language );
 
     return updateVideoProject( getQuery( projectId, {
       units: {
@@ -173,7 +188,11 @@ const ProjectUnits = props => {
     } ) );
   };
 
-  const _updateFile = async file => updateVideoFile( getQuery( file.id, {
+  /**
+   * Updates file properties
+   * @param {*} file
+   */
+  const updateFile = async file => updateVideoFile( getQuery( file.id, {
     language: {
       connect: {
         id: file.language
@@ -189,7 +208,9 @@ const ProjectUnits = props => {
   } ) );
 
   /**
-   * Update file props in the db
+   * Updates applicable units. If an existing file's language changes, diconnect that file
+   * from its existing unit and connect to new unit. Create unit if a unit in the
+   * file's new language does not yet exist
    * @param {object} file file to update
    */
   const updateUnit = async file => {
@@ -224,6 +245,11 @@ const ProjectUnits = props => {
     return createVideoFile( { variables: { data: buildVideoFile( file ) } } );
   };
 
+  /**
+   * Create a new file in db and connect to applicable unit. Create unit if it
+   * does not already exist
+   * @param {object} file
+   */
   const createFile = async file => {
     // 1. create the file
     const { data } = await _createFile( file );
@@ -231,7 +257,7 @@ const ProjectUnits = props => {
     // 2. does language unit exist for the language of the file?
     let unitOfLanguage = videoProject.project.units.find( u => u.language.id === file.language );
 
-    // a. yes, unit exists, connect file to it using the result of createFile as it contanis the DB id
+    // a. yes, unit exists, connect file to it using the result of createFile as it contains the DB id
     if ( unitOfLanguage ) {
       return connectFileToUnit( unitOfLanguage, data.createVideoFile );
     }
@@ -244,7 +270,10 @@ const ProjectUnits = props => {
     return connectFileToUnit( unitOfLanguage, data.createVideoFile );
   };
 
-
+  /**
+   * Removes any unit that does not have files
+   * @param {array} unitsToRemove
+   */
   const removeUnits = async unitsToRemove => {
     if ( unitsToRemove.length ) {
       const unitIds = unitsToRemove.map( u => u.id );
@@ -297,7 +326,11 @@ const ProjectUnits = props => {
     return Promise.all( files.map( async file => deleteVideoFile( { variables: { id: file.id } } ) ) );
   };
 
-
+  /**
+   * Main save function
+   * @param {array} files
+   * @param {array} filesToRemove
+   */
   const handleSave = async ( files, filesToRemove ) => {
     // remove files
     await removeFiles( filesToRemove );
@@ -311,7 +344,7 @@ const ProjectUnits = props => {
 
     // update existing files
     const toUpdate = files.filter( file => ( !file.input ) );
-    await Promise.all( toUpdate.map( file => _updateFile( file ) ) );
+    await Promise.all( toUpdate.map( file => updateFile( file ) ) );
 
     // update connect/disconnect files from units
     await Promise.all( toUpdate.map( file => updateUnit( file ) ) );
@@ -332,22 +365,46 @@ const ProjectUnits = props => {
     return props.videoProject.refetch();
   };
 
-  /**
-   * Renders a unit
-   * @param {object} unit unit to render
-   * @param {array} acceptedFiles Array of files to upload that have allowed extension for a content type,
-   * i.e. video type allows .mov and .mp4 file exrension
-   */
-  const renderUnit = ( unit, acceptedFiles = [] ) => (
-    <ProjectUnitItem
-      key={ unit.language.id }
-      unit={ unit }
-      projectId={ projectId }
-      filesToUpload={ acceptedFiles }
-    />
-  );
+  const fetchUnits = () => {
+    if ( hasProjectUnits() ) {
+      return videoProject.project.units;
+    }
 
-  const renderUnits = units => units.filter( u => u.files.length ).map( u => renderUnit( u ) );
+    if ( hasFilesToUpload() ) {
+      return getUnitsForNewProject();
+    }
+
+    return [];
+  };
+
+  const [units, setUnits] = useState( [] );
+
+  useEffect( () => {
+    setUnits( fetchUnits( videoProject ) );
+  }, [] );
+
+  useEffect( () => {
+    if ( hasProjectUnits() ) {
+      const { project } = videoProject;
+      if ( project && project.units && project.units.length ) {
+        setUnits( fetchUnits( videoProject ) );
+      }
+    }
+  }, [videoProject] );
+
+
+  const renderUnits = () => (
+    <Card.Group>
+      { units.map( unit => (
+        <ProjectUnitItem
+          key={ unit.language.id }
+          unit={ unit }
+          projectId={ projectId }
+          filesToUpload={ getAllowedExtensions( filesToUpload ) }
+        />
+      ) ) }
+    </Card.Group>
+  );
 
   return (
     <div className="project-units">
@@ -364,14 +421,10 @@ const ProjectUnits = props => {
           )
         }
       </h2>
-      <Card.Group>
-        { !!hasProjectUnits() && renderUnits( videoProject.project.units ) }
-        {
-          !!hasFilesToUpload()
-          && getUnitsForNewProject().map( u => renderUnit( u, getAllowedExtensions( filesToUpload ) ) )
-        }
-      </Card.Group>
-
+      { units && units.length
+        ? renderUnits( units )
+        : 'No units available'
+       }
     </div>
   );
 };

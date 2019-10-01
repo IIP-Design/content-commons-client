@@ -199,7 +199,9 @@ const VideoProjectSupportFiles = props => {
     // replacing/adding a file with the same filename
     await removeFromDataBase( filesToRemove );
     await updateDatabase( files );
-    return updateUnitThumbnails();
+    await updateUnitThumbnails();
+
+    return props.data.refetch();
   };
 
   return (
