@@ -16,7 +16,7 @@ import {
 } from 'components/admin/ProjectEdit/ProjectPreviewContent/mocks';
 import VideoProjectFiles from './VideoProjectFiles';
 
-jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_PUBLISHER_BUCKET: 's3-bucket-url' } } ) );
+jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
 jest.mock( 'lib/utils', () => ( {
   getPluralStringOrNot: jest.fn( ( array, string ) => (

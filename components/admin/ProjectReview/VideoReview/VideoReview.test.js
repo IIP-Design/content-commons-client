@@ -21,13 +21,13 @@ jest.mock(
   'next-server/config',
   () => ( {
     publicRuntimeConfig: {
-      REACT_APP_AWS_S3_PUBLISHER_BUCKET: 's3-bucket-url'
+      REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url'
     }
   } )
 );
 
 jest.mock(
-  'components/admin/ProjectEdit/ProjectUnitItem/ProjectUnitItem',
+  'components/admin/ProjectUnits/ProjectUnitItem/ProjectUnitItem',
   () => function ProjectUnitItem() {
     return <div>ProjectUnitItem</div>;
   }

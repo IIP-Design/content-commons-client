@@ -20,7 +20,7 @@ import {
 import SupportItem from './SupportItem';
 
 jest.mock( 'next-server/dynamic', () => () => 'Dynamic' );
-jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_PUBLISHER_BUCKET: 's3-bucket-url' } } ) );
+jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
 const Component = (
   <MockedProvider mocks={ mocks } addTypename={ false }>

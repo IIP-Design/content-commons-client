@@ -5,7 +5,7 @@ import { MockedProvider } from 'react-apollo/test-utils';
 import { mocks, props } from './mocks';
 import VideoProjectSupportFiles from './VideoProjectSupportFiles';
 
-jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_PUBLISHER_BUCKET: 's3-bucket-url' } } ) );
+jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
 jest.mock(
   '../ProjectSupportFiles',
@@ -13,7 +13,7 @@ jest.mock(
 );
 
 jest.mock(
-  'components/admin/ProjectEdit/ProjectUnitItem/ProjectUnitItem',
+  'components/admin/ProjectUnits/ProjectUnitItem/ProjectUnitItem',
   () => function ProjectUnitItem() { return ''; }
 );
 

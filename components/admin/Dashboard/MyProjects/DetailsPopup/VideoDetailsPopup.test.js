@@ -8,7 +8,7 @@ import VideoDetailsPopup, {
   getValidFiles, getVideoFiles, VIDEO_PROJECT_FILES_QUERY
 } from './VideoDetailsPopup';
 
-jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_PUBLISHER_BUCKET: 's3-bucket-url' } } ) );
+jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
 const props = { id: '123' };
 
