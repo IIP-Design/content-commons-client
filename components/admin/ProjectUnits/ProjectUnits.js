@@ -332,35 +332,47 @@ const ProjectUnits = props => {
    * @param {array} filesToRemove
    */
   const handleSave = async ( files, filesToRemove ) => {
-    // remove files
-    await removeFiles( filesToRemove );
+    console.log( 'handleSave' );
 
-    // upload files
-    const toUpload = files.filter( file => ( file.input ) );
-    await uploadFiles( toUpload ).catch( err => console.log( err ) );
+    try {
+      // remove files
+      console.log( 'removeFiles' );
+      await removeFiles( filesToRemove );
 
-    // create new files
-    await Promise.all( toUpload.map( async file => createFile( file ) ) );
+      // upload files
+      console.log( 'uploadFiles' );
+      const toUpload = files.filter( file => ( file.input ) );
+      await uploadFiles( toUpload ).catch( err => console.log( err ) );
 
-    // update existing files
-    const toUpdate = files.filter( file => ( !file.input ) );
-    await Promise.all( toUpdate.map( file => updateFile( file ) ) );
+      // create new files
+      console.log( 'createFile' );
+      await Promise.all( toUpload.map( async file => createFile( file ) ) );
 
-    // update connect/disconnect files from units
-    await Promise.all( toUpdate.map( file => updateUnit( file ) ) );
+      // update existing files
+      console.log( 'updateFile' );
+      const toUpdate = files.filter( file => ( !file.input ) );
+      await Promise.all( toUpdate.map( file => updateFile( file ) ) );
 
-    // remove units
-    const unitsToRemove = [];
-    videoProject.project.units.forEach( u => {
-      if ( u.files.length === 1 ) {
-        const fil = files.filter( f => f.language === u.language.id );
-        if ( !fil.length ) {
-          unitsToRemove.push( u );
+      // update connect/disconnect files from units
+      console.log( 'updateUnit' );
+      await Promise.all( toUpdate.map( file => updateUnit( file ) ) );
+
+      // remove units
+      const unitsToRemove = [];
+      videoProject.project.units.forEach( u => {
+        if ( u.files.length === 1 ) {
+          const fil = files.filter( f => f.language === u.language.id );
+          if ( !fil.length ) {
+            unitsToRemove.push( u );
+          }
         }
-      }
-    } );
+      } );
 
-    await removeUnits( unitsToRemove );
+      console.log( 'removeUnits' );
+      await removeUnits( unitsToRemove );
+    } catch ( err ) {
+      console.dir( err );
+    }
 
     return props.videoProject.refetch();
   };
