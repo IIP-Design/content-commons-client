@@ -215,6 +215,7 @@ const EditProjectFilesModal = ( {
       onClose={ closeModal }
       className="edit-support-files"
       size="small"
+      closeOnDimmerClick={ !saving }
       trigger={ <Button className="btn--edit" onClick={ openModal } size="small" basic>Edit</Button> }
     >
       <Header content={ title } />
