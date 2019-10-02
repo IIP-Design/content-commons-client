@@ -45,9 +45,8 @@ class ResultItem extends Component {
       );
     }
     const dosOwners = [
-      'IIP Video',
-      'IIP Interactive',
-      'Public Affairs'
+      'GPA Video',
+      'GPA Media Strategy'
     ];
     if ( !source && item.type === 'video' && dosOwners.includes( item.owner ) ) {
       source = (
