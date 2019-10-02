@@ -36,7 +36,8 @@ class ResultItem extends Component {
         <div
           style={ {
             background: `url( ${item.logo} ) no-repeat ${textDir}`,
-            height: '16px',
+            backgroundSize: 'contain',
+            height: '20px',
             margin: '6px 0 0',
             marginLeft: '-1px'
           } }
