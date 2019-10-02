@@ -12,7 +12,7 @@ import { getFileExt } from 'lib/utils';
 import isEmpty from 'lodash/isEmpty';
 import withFileUpload from 'hocs/withFileUpload/withFileUpload';
 import { searchTreeForS3FileDirectories } from 'lib/upload';
-import { buildVideoFile, buildUnit } from 'lib/graphql/builders/video';
+import { buildUnit, buildVideoFileTree } from 'lib/graphql/builders/video';
 import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
 import {
   VIDEO_PROJECT_QUERY,
@@ -20,8 +20,7 @@ import {
   UPDATE_VIDEO_FILE_MUTATION,
   UPDATE_VIDEO_UNIT_MUTATION,
   DELETE_MANY_VIDEO_UNITS_MUTATION,
-  UPDATE_VIDEO_PROJECT_MUTATION,
-  CREATE_VIDEO_FILE_MUTATION
+  UPDATE_VIDEO_PROJECT_MUTATION
 } from 'lib/graphql/queries/video';
 
 // renmae this it generic
@@ -46,6 +45,18 @@ const ProjectUnits = props => {
 
   const hasProjectUnits = () => ( !isEmpty( videoProject ) && videoProject.project && videoProject.project.units );
   const hasFilesToUpload = () => ( filesToUpload && filesToUpload.length );
+
+  const separateFilesByLanguage = files => {
+    const languages = {};
+    files.forEach( file => {
+      if ( !languages[file.language] ) {
+        languages[file.language] = [];
+      }
+      languages[file.language].push( file );
+    } );
+
+    return languages;
+  };
 
   /**
    * Checks file changes against stored file to see if language has changed
@@ -80,8 +91,29 @@ const ProjectUnits = props => {
   };
 
   /**
+   * Compare files scheduled to be removed against current files in unit.
+   * and if there will be no files left after removal add to removal array
+   * @param {array} filesToRemove
+   */
+  const getUnitsToRemove = filesToRemove => {
+    const unitsToRemove = [];
+    const languages = separateFilesByLanguage( filesToRemove );
+
+    videoProject.project.units.forEach( u => {
+      if ( languages[u.language.id] ) {
+        if ( !( u.files.length - languages[u.language.id].length ) ) {
+          unitsToRemove.push( u );
+        }
+      }
+    } );
+
+    return unitsToRemove;
+  };
+
+  /**
    * Separates files into units and normalizes data structure
-   * for consistent renderinig
+   * for consistent rendering. New files have an 'input' prop
+   * of type File. These come in via redux.
    */
   const getUnitsForNewProject = () => {
     // add this to unit state so titles update on upload
@@ -178,16 +210,22 @@ const ProjectUnits = props => {
   } ) );
 
 
-  const createUnit = async language => {
+  const createUnit = async ( language, filesToAdd ) => {
     const { project: { projectTitle, tags } } = videoProject;
     const thumbnail = getLanguageThumbnail( language );
 
     return updateVideoProject( getQuery( projectId, {
       units: {
-        create: buildUnit( projectTitle, language, getTagIds( tags ), null, thumbnail )
+        create: buildUnit( projectTitle, language, getTagIds( tags ), filesToAdd, thumbnail )
       }
     } ) );
   };
+
+  const createUnitAndAddFiles = async ( language, filesToAdd ) => updateVideoUnit( getQuery( language, {
+    files: {
+      create: buildVideoFileTree( filesToAdd )
+    }
+  } ) );
 
   /**
    * Updates file properties
@@ -241,34 +279,28 @@ const ProjectUnits = props => {
     }
   };
 
-  const _createFile = async file => {
-    const { createVideoFile } = props;
-    return createVideoFile( { variables: { data: buildVideoFile( file ) } } );
-  };
-
   /**
-   * Create a new file in db and connect to applicable unit. Create unit if it
-   * does not already exist
-   * @param {object} file
+   * Creates new files in project. Either adds files to existing language unit
+   * or creates a unit if one in file language does not exist
+   * @param {*} files Files to add to the project
    */
-  const createFile = async file => {
-    // 1. create the file
-    const { data } = await _createFile( file );
+  const createFiles = files => {
+    // 1. separate files by language
+    const languages = separateFilesByLanguage( files );
 
-    // 2. does language unit exist for the language of the file?
-    let unitOfLanguage = videoProject.project.units.find( u => u.language.id === file.language );
+    const entries = Object.entries( languages );
+    const promises = entries.map( entry => {
+      const [language, filesToAdd] = entry;
+      const unitOfLanguage = videoProject.project.units.find( u => u.language.id === language );
+      // 2. add files to exisiting unit
+      if ( unitOfLanguage ) {
+        return createUnitAndAddFiles( language, filesToAdd );
+      }
+      // 3. create new unit and add files
+      return createUnit( language, filesToAdd );
+    } );
 
-    // a. yes, unit exists, connect file to it using the result of createFile as it contains the DB id
-    if ( unitOfLanguage ) {
-      return connectFileToUnit( unitOfLanguage, data.createVideoFile );
-    }
-
-    // a. no, unit does not exist, creat unit then connect file to it using the result of
-    // createFile as it contanis the DB id
-    const result = await createUnit( file.language );
-    unitOfLanguage = result.data.updateVideoProject.units.find( u => u.language.id === file.language );
-
-    return connectFileToUnit( unitOfLanguage, data.createVideoFile );
+    return Promise.all( promises );
   };
 
   /**
@@ -337,37 +369,29 @@ const ProjectUnits = props => {
       // remove files
       await removeFiles( filesToRemove );
 
-      // upload files
+      // // upload files
       const toUpload = files.filter( file => ( file.input ) );
       await uploadFiles( toUpload ).catch( err => console.log( err ) );
 
       // create new files
-      await Promise.all( toUpload.map( async file => createFile( file ) ) );
+      await createFiles( toUpload );
 
       // update existing files
       const toUpdate = files.filter( file => ( !file.input ) );
       await Promise.all( toUpdate.map( file => updateFile( file ) ) );
 
-      // update connect/disconnect files from units
+      // update connect/disconnect existing files from units
       await Promise.all( toUpdate.map( file => updateUnit( file ) ) );
 
       // remove units
-      const unitsToRemove = [];
-      videoProject.project.units.forEach( u => {
-        if ( u.files.length === 1 ) {
-          const fil = files.filter( f => f.language === u.language.id );
-          if ( !fil.length ) {
-            unitsToRemove.push( u );
-          }
-        }
-      } );
-
+      const unitsToRemove = getUnitsToRemove( filesToRemove );
       await removeUnits( unitsToRemove );
+
+      // update cache
+      props.videoProject.refetch();
     } catch ( err ) {
       console.dir( err );
     }
-
-    return props.videoProject.refetch();
   };
 
   const fetchUnits = () => {
@@ -383,9 +407,13 @@ const ProjectUnits = props => {
   };
 
   const [units, setUnits] = useState( [] );
+  const [projectFiles, setProjectFiles] = useState( [] );
+  const [allowedFilesToUpload, setAllowedFilesToUpload] = useState( [] );
 
   useEffect( () => {
     setUnits( fetchUnits( videoProject ) );
+    setProjectFiles( getFilesToEdit() );
+    setAllowedFilesToUpload( getAllowedExtensions( filesToUpload ) );
   }, [] );
 
   useEffect( () => {
@@ -393,6 +421,7 @@ const ProjectUnits = props => {
       const { project } = videoProject;
       if ( project && project.units && project.units.length ) {
         setUnits( fetchUnits( videoProject ) );
+        setProjectFiles( getFilesToEdit() );
       }
     }
   }, [videoProject] );
@@ -405,7 +434,7 @@ const ProjectUnits = props => {
           key={ unit.language.id }
           unit={ unit }
           projectId={ projectId }
-          filesToUpload={ getAllowedExtensions( filesToUpload ) }
+          filesToUpload={ allowedFilesToUpload }
         />
       ) ) }
     </Card.Group>
@@ -419,7 +448,7 @@ const ProjectUnits = props => {
             <EditProjectFiles
               title="Edit video files in this project"
               type="video"
-              filesToEdit={ getFilesToEdit() }
+              filesToEdit={ projectFiles }
               extensions={ ['.mov', '.mp4'] }
               save={ handleSave }
             />
@@ -446,7 +475,6 @@ ProjectUnits.propTypes = {
   updateVideoUnit: PropTypes.func,
   updateVideoProject: PropTypes.func,
   updateVideoFile: PropTypes.func,
-  createVideoFile: PropTypes.func,
   deleteManyVideoUnits: PropTypes.func,
   uploadExecute: PropTypes.func
 };
@@ -475,6 +503,5 @@ export default compose(
   graphql( UPDATE_VIDEO_UNIT_MUTATION, { name: 'updateVideoUnit' } ),
   graphql( DELETE_MANY_VIDEO_UNITS_MUTATION, { name: 'deleteManyVideoUnits' } ),
   graphql( DELETE_VIDEO_FILE_MUTATION, { name: 'deleteVideoFile' } ),
-  graphql( UPDATE_VIDEO_FILE_MUTATION, { name: 'updateVideoFile' } ),
-  graphql( CREATE_VIDEO_FILE_MUTATION, { name: 'createVideoFile' } )
+  graphql( UPDATE_VIDEO_FILE_MUTATION, { name: 'updateVideoFile' } )
 )( ProjectUnits );
