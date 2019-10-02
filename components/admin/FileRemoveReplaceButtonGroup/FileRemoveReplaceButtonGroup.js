@@ -12,17 +12,19 @@ import './FileRemoveReplaceButtonGroup.scss';
  * @param {object} props
  */
 const FileRemoveReplaceButtonGroup = props => {
-  const { onReplace, onRemove, accept } = props;
+  const {
+    onReplace, onRemove, accept, disableReplace, disableRemove
+  } = props;
 
   return (
     <Button.Group basic className="FileRemoveReplaceButtonGroup__btn-group">
-      <ButtonAddFiles onChange={ onReplace } accept={ accept }>
+      <ButtonAddFiles onChange={ onReplace } accept={ accept } disabled={ disableReplace }>
         <span tooltip="Replace">
           <img src={ replaceIcon } alt="Replace Video File Button" />
         </span>
       </ButtonAddFiles>
 
-      <Button onClick={ onRemove }>
+      <Button onClick={ onRemove } disabled={ disableRemove }>
         <span tooltip="Remove">
           <img src={ removeIcon } alt="Remove Video File Button" />
         </span>
@@ -31,10 +33,17 @@ const FileRemoveReplaceButtonGroup = props => {
   );
 };
 
+FileRemoveReplaceButtonGroup.defaultProps = {
+  disableReplace: false,
+  disableRemove: false
+};
+
 FileRemoveReplaceButtonGroup.propTypes = {
   onReplace: PropTypes.func,
   onRemove: PropTypes.func,
-  accept: PropTypes.string
+  accept: PropTypes.string,
+  disableReplace: PropTypes.bool,
+  disableRemove: PropTypes.bool
 };
 
 export default FileRemoveReplaceButtonGroup;

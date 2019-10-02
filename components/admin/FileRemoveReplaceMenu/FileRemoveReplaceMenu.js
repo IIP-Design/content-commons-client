@@ -11,6 +11,7 @@ import './FileRemoveReplaceMenu.scss';
  * @param {object} props
  */
 const FileRemoveReplaceMenu = props => {
+  const { disableReplace, disableRemove } = props;
   const [isOpen, setIsOpen] = useState( false );
   const { onReplace, onRemove } = props;
   const setDuplicateFiles = props.setDuplicateFiles ? props.setDuplicateFiles : null;
@@ -35,8 +36,19 @@ const FileRemoveReplaceMenu = props => {
         icon="close"
         onClick={ () => setIsOpen( false ) }
       />
-      <ButtonAddFiles className="secondary" onChange={ onReplace }>Replace File</ButtonAddFiles>
-      <Button className="FileRemoveReplaceMenu__btn-delete no-background" onClick={ onRemove }>Remove File</Button>
+      <ButtonAddFiles
+        className="secondary"
+        onChange={ onReplace }
+        disabled={ disableReplace }
+      >Replace File
+      </ButtonAddFiles>
+
+      <Button
+        className="FileRemoveReplaceMenu__btn-delete no-background"
+        onClick={ onRemove }
+        disabled={ disableRemove }
+      >Remove File
+      </Button>
     </div>
   );
 
@@ -60,10 +72,17 @@ const FileRemoveReplaceMenu = props => {
   );
 };
 
+FileRemoveReplaceMenu.defaultProps = {
+  disableReplace: false,
+  disableRemove: false
+};
+
 FileRemoveReplaceMenu.propTypes = {
   onReplace: PropTypes.func,
   onRemove: PropTypes.func,
-  setDuplicateFiles: PropTypes.func
+  setDuplicateFiles: PropTypes.func,
+  disableReplace: PropTypes.bool,
+  disableRemove: PropTypes.bool
 };
 
 export default FileRemoveReplaceMenu;
