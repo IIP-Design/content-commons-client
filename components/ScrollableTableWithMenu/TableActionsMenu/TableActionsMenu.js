@@ -34,7 +34,8 @@ class TableActionsMenu extends React.Component {
   }
 
   componentDidUpdate = () => {
-    if ( this.state.displayConfirmationMsg ) {
+    const { actionFailures } = this.state;
+    if ( this.state.displayConfirmationMsg && ( !actionFailures || !actionFailures.length ) ) {
       this.delayUnmount( this.hideConfirmationMsg, this.confirmationMsgTimer, this.CONFIRMATION_MSG_DELAY );
     }
   }
