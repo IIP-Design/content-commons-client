@@ -16,6 +16,8 @@ import './EditProjectFilesModal.scss';
 const EditSupportFilesGrid = dynamic( () => import( /* webpackChunkName: "editSupportFilesGrid" */ './EditSupportFilesGrid/EditSupportFilesGrid' ) );
 const EditVideoFilesGrid = dynamic( () => import( /* webpackChunkName: "editVideoFilesGrid" */ './EditVideoFilesGrid/EditVideoFilesGrid' ) );
 
+export const FilesContext = React.createContext();
+
 const EditProjectFilesModal = ( {
   title, type, filesToEdit, extensions,
   save, videoUses: { videoUses }
@@ -235,7 +237,9 @@ const EditProjectFilesModal = ( {
         <Dimmer inverted simple />
 
         <Modal.Content>
-          <Form> { renderGrid() } </Form>
+          <FilesContext.Provider value={ files }>
+            <Form> { renderGrid() } </Form>
+          </FilesContext.Provider>
         </Modal.Content>
         <Modal.Actions>
           <Button

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
@@ -8,6 +8,7 @@ import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { truncateAndReplaceStr } from 'lib/utils';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import { FilesContext } from '../EditPojectFilesModal';
 import './EditVideoFileRow.scss';
 
 // Optimize re-renders as component could potentially have many rows
@@ -31,6 +32,8 @@ const EditVideoFileRow = props => {
       id, name, language, use, quality, videoBurnedInStatus
     }, update, removeFile, replaceFile, accept, step
   } = props;
+
+  const files = useContext( FilesContext );
 
   // extract file type, i.e. get 'image' from the incoming type 'image/*' for example
   // item in first index shows the first capturing group in regex
@@ -92,6 +95,7 @@ const EditVideoFileRow = props => {
         <FileRemoveReplaceButtonGroup
           onReplace={ e => { replaceFile( id, e.target.files[0] ); } }
           onRemove={ () => { removeFile( id, name ); } }
+          disableRemove={ ( files.length === 1 ) }
           accept={ accept }
         />
 
