@@ -95,14 +95,21 @@ const ProjectUnits = props => {
    * and if there will be no files left after removal add to removal array
    * @param {array} filesToRemove
    */
-  const getUnitsToRemove = filesToRemove => {
+  const getUnitsToRemove = ( files, filesToRemove ) => {
     const unitsToRemove = [];
     const languages = separateFilesByLanguage( filesToRemove );
 
     videoProject.project.units.forEach( u => {
       if ( languages[u.language.id] ) {
+        // After files are removed, does current unit have any files?
         if ( !( u.files.length - languages[u.language.id].length ) ) {
-          unitsToRemove.push( u );
+          // will a new file be added to same unit?
+          const fileToAdd = files.find( fn => fn.language === u.language.id );
+
+          // remove is there is no new files being added to language unit
+          if ( !fileToAdd ) {
+            unitsToRemove.push( u );
+          }
         }
       }
     } );
@@ -230,7 +237,7 @@ const ProjectUnits = props => {
    * @param {*} language language unit to add files
    * @param {*} filesToAdd files to add to unit
    */
-  const addFilesToUnit = async ( language, filesToAdd ) => updateVideoUnit( getQuery( language, {
+  const addFilesToUnit = async ( unitId, filesToAdd ) => updateVideoUnit( getQuery( unitId, {
     files: {
       create: buildVideoFileTree( filesToAdd )
     }
@@ -303,7 +310,7 @@ const ProjectUnits = props => {
       const unitOfLanguage = videoProject.project.units.find( u => u.language.id === language );
       // 2. add files to exisiting unit
       if ( unitOfLanguage ) {
-        return addFilesToUnit( language, filesToAdd );
+        return addFilesToUnit( unitOfLanguage.id, filesToAdd );
       }
       // 3. create new unit and add files
       return createUnit( language, filesToAdd );
@@ -393,7 +400,7 @@ const ProjectUnits = props => {
       await Promise.all( toUpdate.map( file => updateUnit( file ) ) );
 
       // remove units
-      const unitsToRemove = getUnitsToRemove( filesToRemove );
+      const unitsToRemove = getUnitsToRemove( files, filesToRemove );
       await removeUnits( unitsToRemove );
 
       // update cache
