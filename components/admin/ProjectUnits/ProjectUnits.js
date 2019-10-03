@@ -209,7 +209,11 @@ const ProjectUnits = props => {
     }
   } ) );
 
-
+  /**
+   * Creates anew uniit and add files to it
+   * @param {*} language language to create unit in
+   * @param {*} filesToAdd files to add to new unit
+   */
   const createUnit = async ( language, filesToAdd ) => {
     const { project: { projectTitle, tags } } = videoProject;
     const thumbnail = getLanguageThumbnail( language );
@@ -221,14 +225,19 @@ const ProjectUnits = props => {
     } ) );
   };
 
-  const createUnitAndAddFiles = async ( language, filesToAdd ) => updateVideoUnit( getQuery( language, {
+  /**
+   * Adds files to existing unit
+   * @param {*} language language unit to add files
+   * @param {*} filesToAdd files to add to unit
+   */
+  const addFilesToUnit = async ( language, filesToAdd ) => updateVideoUnit( getQuery( language, {
     files: {
       create: buildVideoFileTree( filesToAdd )
     }
   } ) );
 
   /**
-   * Updates file properties
+   * Updates file properties of existing file
    * @param {*} file
    */
   const updateFile = async file => updateVideoFile( getQuery( file.id, {
@@ -294,7 +303,7 @@ const ProjectUnits = props => {
       const unitOfLanguage = videoProject.project.units.find( u => u.language.id === language );
       // 2. add files to exisiting unit
       if ( unitOfLanguage ) {
-        return createUnitAndAddFiles( language, filesToAdd );
+        return addFilesToUnit( language, filesToAdd );
       }
       // 3. create new unit and add files
       return createUnit( language, filesToAdd );
