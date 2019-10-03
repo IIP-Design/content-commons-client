@@ -8,15 +8,14 @@
   }
 
   &container {
-    max-width: 1600px;
+    max-width: 1340px;
     margin: 0 auto;
     background: white;
-    padding: 30px 36px 52px;
+    padding: 30px 70px 64px;
     border: 1px solid $light-grey;
 
     @media screen and (max-width: 1340px) {
-      width: 100%;
-      padding: 3em 2em 0;
+      padding: 60px 2em 0;
       border: none;
     }
     @media screen and (max-width: 767px) {
@@ -35,7 +34,7 @@
       background: $blue;
       color: #fff;
       position: relative;
-      left: -36px;
+      left: -70px;
       @media screen and (max-width: 1340px) {
         left: 0;
       }

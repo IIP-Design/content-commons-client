@@ -84,51 +84,53 @@ class Recents extends Component {
     const postTypeLabel = postTypeLabels.find( type => type.key === postType );
     return (
       <section className="ui container recents">
-        <div className="recentstitle">
-          <Header as="h1" size="large">
-            { postTypeLabel && `Latest ${postTypeLabel.display_name}s` }
-          </Header>
-          <a href="/results" onClick={ this.handleOnClick } className="browseAll">
-            { `Browse All` }
-          </a>
+        <div className="recentswrapper">
+          <div className="recentstitle">
+            <Header as="h1" size="large">
+              { postTypeLabel && `Latest ${postTypeLabel.display_name}s` }
+            </Header>
+            <a href="/results" onClick={ this.handleOnClick } className="browseAll">
+              { `Browse All` }
+            </a>
 
-        </div>
-        <Loader active={ featured.loading } />
-        { featured.error && (
-          <Message>
-            { `Oops, something went wrong.  We are unable to load the most recent ${postTypeLabel.toLowerCase()}s.` }
-          </Message>
-        ) }
-        <Grid columns="equal" stackable stretched>
-          <Grid.Column width={ 8 } className="recentsgridleft">
-            { recents && recents[0]
-            && (
-            <Modal
-              closeIcon
-              trigger={ (
-                <div className="recentsleft" style={ { backgroundImage: `url( ${recents[0].thumbnail} )` } }>
-                  <div className="recentsoverlay">
-                    <div className="recentsoverlay_title">{ recents[0].title }</div>
-                    <img
-                      src={ recents[0].icon }
-                      className="recentsoverlay_icon"
-                      alt={ `${postType} icon` }
-                    />
+          </div>
+          <Loader active={ featured.loading } />
+          { featured.error && (
+            <Message>
+              { `Oops, something went wrong.  We are unable to load the most recent ${postTypeLabel.toLowerCase()}s.` }
+            </Message>
+          ) }
+          <Grid columns="equal" stackable stretched>
+            <Grid.Column width={ 8 } className="recentsgridleft">
+              { recents && recents[0]
+              && (
+              <Modal
+                closeIcon
+                trigger={ (
+                  <div className="recentsleft" style={ { backgroundImage: `url( ${recents[0].thumbnail} )` } }>
+                    <div className="recentsoverlay">
+                      <div className="recentsoverlay_title">{ recents[0].title }</div>
+                      <img
+                        src={ recents[0].icon }
+                        className="recentsoverlay_icon"
+                        alt={ `${postType} icon` }
+                      />
+                    </div>
                   </div>
-                </div>
-) }
-            >
-              <Modal.Content>
-                { this.getModalContent( recents[0] ) }
-              </Modal.Content>
-            </Modal>
-            )
-            }
-          </Grid.Column>
-          <Grid.Column width={ 8 } className="recentsgridright">
-            <Item.Group>{ recents && this.renderRecentsWithMeta() }</Item.Group>
-          </Grid.Column>
-        </Grid>
+  ) }
+              >
+                <Modal.Content>
+                  { this.getModalContent( recents[0] ) }
+                </Modal.Content>
+              </Modal>
+              )
+              }
+            </Grid.Column>
+            <Grid.Column width={ 8 } className="recentsgridright">
+              <Item.Group>{ recents && this.renderRecentsWithMeta() }</Item.Group>
+            </Grid.Column>
+          </Grid>
+        </div>
       </section>
 
     );

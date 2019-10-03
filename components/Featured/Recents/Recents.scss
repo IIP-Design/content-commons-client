@@ -1,11 +1,22 @@
 @import "styles/colors.scss";
 
+.featured section.recents {
+
+}
+
 .recents {
   padding-top: 2.3em;
   padding-bottom: 2.3em;
+  padding-left: 0;
+  padding-right: 0;
   position: relative;
 
-  &title {
+  &wrapper {    
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  &title {    
     display: flex;
     justify-content: space-between;
     position: relative;
