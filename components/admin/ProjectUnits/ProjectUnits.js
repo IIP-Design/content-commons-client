@@ -189,7 +189,13 @@ const ProjectUnits = props => {
   */
   const getLanguageThumbnail = language => {
     const { project: { thumbnails } } = videoProject;
-    return thumbnails.find( tn => tn.language.id === language );
+    const thumbnail = thumbnails.find( tn => tn.language.id === language );
+    if ( thumbnail ) {
+      return thumbnail;
+    }
+
+    // if thumbnail does not exist iin language, return english
+    return thumbnails.find( tn => tn.language.displayName === 'English' );
   };
 
   const getTagIds = ( tags = [] ) => tags.map( tag => tag.id );
