@@ -95,22 +95,14 @@ const ProjectUnits = props => {
    * and if there will be no files left after removal add to removal array
    * @param {array} filesToRemove
    */
-  const getUnitsToRemove = ( files, filesToRemove ) => {
+  const getUnitsToRemove = files => {
     const unitsToRemove = [];
-    const languages = separateFilesByLanguage( filesToRemove );
 
     videoProject.project.units.forEach( u => {
-      if ( languages[u.language.id] ) {
-        // After files are removed, does current unit have any files?
-        if ( !( u.files.length - languages[u.language.id].length ) ) {
-          // will a new file be added to same unit?
-          const fileToAdd = files.find( fn => fn.language === u.language.id );
-
-          // remove is there is no new files being added to language unit
-          if ( !fileToAdd ) {
-            unitsToRemove.push( u );
-          }
-        }
+      // if a unit does not have any files then remove
+      const found = files.find( file => file.language === u.language.id );
+      if ( !found ) {
+        unitsToRemove.push( u );
       }
     } );
 
