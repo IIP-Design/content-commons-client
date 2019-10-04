@@ -25,11 +25,6 @@ const DocumentationSidebar = () => {
       name: 'uploadingvideo',
       to: '/documentation/uploadingvideo',
       label: 'Uploading a Video'
-    },
-    {
-      name: 'signingup',
-      to: '/documentation/login',
-      label: 'Signing Up and Logging In'
     }
   ];
   return (
