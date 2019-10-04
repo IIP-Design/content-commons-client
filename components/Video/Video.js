@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Embed, Checkbox } from 'semantic-ui-react';
 import axios from 'axios';
 import config from 'config';
+import getConfig from 'next/config';
 import { withRouter } from 'next/router';
 
 import { getYouTubeId } from 'lib/utils';
@@ -33,6 +34,8 @@ import EmbedVideo from '../Embed';
 import EmbedHelp from './EmbedHelp';
 
 import './Video.scss';
+
+const { publicRuntimeConfig } = getConfig();
 
 class Video extends Component {
   constructor( props ) {
@@ -189,12 +192,12 @@ class Video extends Component {
   /**
    * Executes youtube API call to verify reachable, valid youtube url
    *
-   * @param {string} youitube id
+   * @param {string} id youtube id
    * @return Promise
    */
   checkForValidYouTube = async id => {
-    if ( config.YOUTUBE_API_URL && process.env.REACT_APP_YOUTUBE_API_KEY ) {
-      const url = `${config.YOUTUBE_API_URL}?part=id&id=${id}&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`;
+    if ( config.YOUTUBE_API_URL && publicRuntimeConfig.REACT_APP_YOUTUBE_API_KEY ) {
+      const url = `${config.YOUTUBE_API_URL}?part=id&id=${id}&key=${publicRuntimeConfig.REACT_APP_YOUTUBE_API_KEY}`;
       try {
         const res = await axios.get( url );
         if ( res.data && res.data.pageInfo && res.data.pageInfo.totalResults > 0 ) return res;
