@@ -29,6 +29,7 @@ import EditProjectFiles from '../ProjectEdit/EditProjectFilesModal/EditPojectFil
 import ProjectUnitItem from './ProjectUnitItem/ProjectUnitItem';
 import './ProjectUnits.scss';
 
+
 const ProjectUnits = props => {
   const {
     projectId,
@@ -59,15 +60,31 @@ const ProjectUnits = props => {
   };
 
   /**
-   * Checks file changes against stored file to see if language has changed
-   * @param {object} unit unit that file belongs to
-   * @param {object} file possible changed file
+   * Check to see if the file has changed by comparing file props
+   * @param {*} unit unit containing files
+   * @param {*} file file to checl
    */
-  const hasFileLanguageChanged = ( unit, file ) => {
+  const hasFileChanged = ( unit, file ) => {
+    const propChanges = [];
     const found = unit.files.find( f => f.id === file.id );
     if ( found ) {
-      return file.language !== found.language.id;
+      if ( file.language !== found.language.id ) {
+        propChanges.push( 'language' );
+      }
+
+      if ( file.quality !== found.quality ) {
+        propChanges.push( 'quality' );
+      }
+
+      if ( file.use !== found.use.id ) {
+        propChanges.push( 'use' );
+      }
+
+      if ( file.videoBurnedInStatus !== found.videoBurnedInStatus ) {
+        propChanges.push( 'videoBurnedInStatus' );
+      }
     }
+    return propChanges;
   };
 
   /**
@@ -83,7 +100,8 @@ const ProjectUnits = props => {
     let filesToEdit = [];
     if ( hasProjectUnits() ) {
       videoProject.project.units.forEach( unit => {
-        filesToEdit = [...filesToEdit, ...unit.files];
+        const unitFiles = ( unit && unit.files ) ? unit.files : [];
+        filesToEdit = [...filesToEdit, ...unitFiles];
       } );
     }
 
@@ -204,44 +222,6 @@ const ProjectUnits = props => {
   } ) );
 
   /**
-   * If file language has changed, connect to new language
-   * @param {object} unit unit to connect file to
-   * @param {object} file
-   */
-  const connectFileToUnit = async ( unit, file ) => updateVideoUnit( getQuery( unit.id, {
-    files: {
-      connect: { id: file.id }
-    }
-  } ) );
-
-  /**
-   * Creates anew uniit and add files to it
-   * @param {*} language language to create unit in
-   * @param {*} filesToAdd files to add to new unit
-   */
-  const createUnit = async ( language, filesToAdd ) => {
-    const { project: { projectTitle, tags } } = videoProject;
-    const thumbnail = getLanguageThumbnail( language );
-
-    return updateVideoProject( getQuery( projectId, {
-      units: {
-        create: buildUnit( projectTitle, language, getTagIds( tags ), filesToAdd, thumbnail )
-      }
-    } ) );
-  };
-
-  /**
-   * Adds files to existing unit
-   * @param {*} language language unit to add files
-   * @param {*} filesToAdd files to add to unit
-   */
-  const addFilesToUnit = async ( unitId, filesToAdd ) => updateVideoUnit( getQuery( unitId, {
-    files: {
-      create: buildVideoFileTree( filesToAdd )
-    }
-  } ) );
-
-  /**
    * Updates file properties of existing file
    * @param {*} file
    */
@@ -260,62 +240,6 @@ const ProjectUnits = props => {
     }
   } ) );
 
-  /**
-   * Updates applicable units. If an existing file's language changes, diconnect that file
-   * from its existing unit and connect to new unit. Create unit if a unit in the
-   * file's new language does not yet exist
-   * @param {object} file file to update
-   */
-  const updateUnit = async file => {
-    const unitFileBelongsTo = getFileUnit( file );
-
-    // 1. stored changed status before updating
-    const fileLanguageChanged = hasFileLanguageChanged( unitFileBelongsTo, file );
-
-    // 2. if changed, remove from current unit and add to new unit
-    if ( fileLanguageChanged ) {
-      // a. disconnect from current unit
-      await disconnectFileFromUnit( unitFileBelongsTo, file );
-
-      // b. does unit exist for new language?
-      let unitOfLanguage = videoProject.project.units.find( u => u.language.id === file.language );
-
-      // i. yes, unit exists, connect file to it
-      if ( unitOfLanguage ) {
-        return connectFileToUnit( unitOfLanguage, file );
-      }
-
-      // ii. no, unit does not exist, create unit and connect file to new unit
-      const result = await createUnit( file.language );
-      unitOfLanguage = result.data.updateVideoProject.units.find( u => u.language.id === file.language );
-
-      return connectFileToUnit( unitOfLanguage, file );
-    }
-  };
-
-  /**
-   * Creates new files in project. Either adds files to existing language unit
-   * or creates a unit if one in file language does not exist
-   * @param {*} files Files to add to the project
-   */
-  const createFiles = files => {
-    // 1. separate files by language
-    const languages = separateFilesByLanguage( files );
-
-    const entries = Object.entries( languages );
-    const promises = entries.map( entry => {
-      const [language, filesToAdd] = entry;
-      const unitOfLanguage = videoProject.project.units.find( u => u.language.id === language );
-      // 2. add files to exisiting unit
-      if ( unitOfLanguage ) {
-        return addFilesToUnit( unitOfLanguage.id, filesToAdd );
-      }
-      // 3. create new unit and add files
-      return createUnit( language, filesToAdd );
-    } );
-
-    return Promise.all( promises );
-  };
 
   /**
    * Removes any unit that does not have files
@@ -374,6 +298,91 @@ const ProjectUnits = props => {
   };
 
   /**
+   * Executes the following tasks
+   * 1. Separate files into language units
+   * 2. Determine if unit exists or needs to be created
+   * 3. Adds files to either be created or connected to applicable lang unit
+   * @param {array} files files array containing all changes
+   */
+  const getCreateConnectUnits = files => {
+    const { project } = videoProject;
+    const filesByLanguage = separateFilesByLanguage( files );
+    const entries = Object.entries( filesByLanguage );
+    const unitCreate = {};
+    const unitUpdate = {};
+
+    entries.forEach( entry => {
+      const [language, _files] = entry;
+      const unitExistsinLanguage = project.units.find( unit => unit.language.id === language );
+
+      const create = [];
+      const update = [];
+
+      _files.forEach( async file => {
+        if ( file.input ) {
+          create.push( file );
+        } else {
+          const unitFileBelongsTo = getFileUnit( file );
+          const fileChanged = hasFileChanged( unitFileBelongsTo, file );
+          if ( fileChanged.length ) {
+            update.push( file );
+            await updateFile( file );
+
+            if ( fileChanged.includes( 'language' ) ) {
+              await disconnectFileFromUnit( unitFileBelongsTo, file );
+            }
+          }
+        }
+      } );
+
+      if ( unitExistsinLanguage ) {
+        unitUpdate[unitExistsinLanguage.id] = { create, update }; // unit exists, create and update (upsert)
+      } else {
+        unitCreate[language] = { create, update }; // create unit and create and connect
+      }
+    } );
+
+    return { unitUpdate, unitCreate };
+  };
+
+  /**
+   * Adds or connects files to applicable unit
+   * @param {array} unitsToUpdate unit array to add or connect files
+   */
+  const updateUnits = async unitsToUpdate => Promise.all( unitsToUpdate.map( async entry => {
+    const [unitId, operations] = entry;
+    const { create, update } = operations;
+    const _files = {};
+    if ( create.length ) {
+      _files.create = buildVideoFileTree( create );
+    }
+    if ( update.length ) {
+      _files.connect = update.map( file => ( { id: file.id } ) );
+    }
+    if ( !isEmpty( _files ) ) {
+      await updateVideoUnit( getQuery( unitId, { files: _files } ) );
+    }
+  } ) );
+
+  /**
+   * Creates unit and creates/connects files
+   * @param {array} unitsToCreate unit to create
+   */
+  const createUnits = async unitsToCreate => Promise.all( unitsToCreate.map( async entry => {
+    const [language, operations] = entry;
+    const { create, update } = operations;
+
+    const { project: { projectTitle, tags } } = videoProject;
+    const thumbnail = getLanguageThumbnail( language );
+
+    return updateVideoProject( getQuery( projectId, {
+      units: {
+        create: buildUnit( projectTitle, language, getTagIds( tags ), thumbnail, create, update )
+      }
+    } ) );
+  } ) );
+
+  /**
    * Main save function
    * @param {array} files
    * @param {array} filesToRemove
@@ -383,25 +392,21 @@ const ProjectUnits = props => {
       // remove files
       await removeFiles( filesToRemove );
 
-      // // upload files
+      // upload files
       const toUpload = files.filter( file => ( file.input ) );
       await uploadFiles( toUpload ).catch( err => console.log( err ) );
 
-      // create new files
-      await createFiles( toUpload );
+      const { unitUpdate, unitCreate } = getCreateConnectUnits( files );
 
-      // update existing files
-      const toUpdate = files.filter( file => ( !file.input ) );
-      await Promise.all( toUpdate.map( file => updateFile( file ) ) );
+      const unitsToUpdate = Object.entries( unitUpdate );
+      const unitsToCreate = Object.entries( unitCreate );
 
-      // update connect/disconnect existing files from units
-      await Promise.all( toUpdate.map( file => updateUnit( file ) ) );
+      await updateUnits( unitsToUpdate );
+      await createUnits( unitsToCreate );
 
-      // remove units
-      const unitsToRemove = getUnitsToRemove( files, filesToRemove );
+      const unitsToRemove = getUnitsToRemove( files );
       await removeUnits( unitsToRemove );
 
-      // update cache
       props.videoProject.refetch();
     } catch ( err ) {
       console.dir( err );
