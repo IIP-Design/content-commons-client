@@ -16,6 +16,7 @@ module.exports = withSass( {
     REACT_APP_AWS_S3_PRODUCTION_BUCKET: process.env.REACT_APP_AWS_S3_PRODUCTION_BUCKET
   },
   serverRuntimeConfig: {},
+  poweredByHeader: false,
   webpack ( config ) {
     config.plugins.push(
       new FilterWarningsPlugin( {
