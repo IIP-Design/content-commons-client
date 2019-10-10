@@ -8,16 +8,16 @@ import gql from 'graphql-tag';
 import './dropdown.scss';
 
 const CATEGORIES_QUERY = gql`
-  query CATEGORIES_QUERY {
+  query CATEGORIES_QUERY( $locale: String!) {
     categories {
     id
-    translations {
+    translations( where: {
+      language: {
+        locale: $locale
+      }
+    } ) {
       id
       name
-      language {
-        id
-        locale
-      }
     }
   }
   }
@@ -27,63 +27,49 @@ const CATEGORIES_QUERY = gql`
  *
  * @todo Update to display rtl categories correctly
  */
-const CategoryDropdown = props => {
-  /**
-   *
-   * @param {array} categories categories returned from graphql query
-   * @param {string} locale  language in which to return categories
-   */
-  const getCategoriesByLocale = ( categories, locale = props.locale ) => categories.map( category => ( {
-    id: category.id,
-    translations: category.translations.filter( translation => translation.language.locale === locale )
-  } ) );
+const CategoryDropdown = props => (
+  <Query query={ CATEGORIES_QUERY } variables={ { locale: 'en-us' } }>
+    { ( { data, loading, error } ) => {
+      if ( error ) return `Error! ${error.message}`;
 
-  return (
-    <Query query={ CATEGORIES_QUERY } variables={ { locale: 'en-us' } }>
-      { ( { data, loading, error } ) => {
-        if ( error ) return `Error! ${error.message}`;
+      let options = [];
 
-        let options = [];
-        if ( data && data.categories ) {
-          const categoriesByLocale = getCategoriesByLocale( data.categories, props.locale );
+      if ( data && data.categories ) {
+        options = data.categories.map( category => ( {
+          key: category.id,
+          value: category.id,
+          text: category.translations.length
+            ? titleCase( category.translations[0].name )
+            : ''
+        } ) );
+      }
 
-          options = categoriesByLocale.map( category => ( {
-            key: category.id,
-            value: category.id,
-            text: category.translations.length
-              ? titleCase( category.translations[0].name )
-              : ''
-          } ) );
-        }
-
-        return (
-          <Fragment>
-            { !props.label && (
-
+      return (
+        <Fragment>
+          { !props.label && (
             <VisuallyHidden>
               <label htmlFor={ props.id }>
                 { `${props.id} categories` }
               </label>
             </VisuallyHidden>
-            ) }
+          ) }
 
-            <Form.Dropdown
-              id={ props.id }
-              name="categories"
-              options={ options }
-              placeholder="–"
-              loading={ loading }
-              fluid
-              selection
-              { ...props }
-            />
-          </Fragment>
-        );
-      } }
+          <Form.Dropdown
+            id={ props.id }
+            name="categories"
+            options={ options }
+            placeholder="–"
+            loading={ loading }
+            fluid
+            selection
+            { ...props }
+          />
+        </Fragment>
+      );
+    } }
 
-    </Query>
-  );
-};
+  </Query>
+);
 
 CategoryDropdown.defaultProps = {
   id: '',
