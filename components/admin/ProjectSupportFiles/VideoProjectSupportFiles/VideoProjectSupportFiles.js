@@ -124,7 +124,8 @@ const VideoProjectSupportFiles = props => {
         }
       } ) );
     }
-    const englishThumbnail = thumbnails.find( tn => tn.language.id === 'en-us' );
+
+    const englishThumbnail = thumbnails.find( tn => tn.language.locale === 'en-us' );
     if ( englishThumbnail ) {
       return updateVideoUnit( {
         variables: {
