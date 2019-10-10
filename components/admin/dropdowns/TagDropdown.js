@@ -32,15 +32,13 @@ const TagDropdown = props => (
       let options = [];
 
       if ( data && data.tags ) {
-        const tagsInLang = data.tags;
-        options = tagsInLang
-          .map( tag => ( {
-            key: tag.id,
-            text: tag.translations.length
-              ? titleCase( tag.translations[0].name )
-              : '',
-            value: tag.id
-          } ) )
+        options = data.tags.map( tag => ( {
+          key: tag.id,
+          text: tag.translations.length
+            ? titleCase( tag.translations[0].name )
+            : '',
+          value: tag.id
+        } ) )
           .sort( ( tagA, tagB ) => {
             const textA = tagA.text.toLowerCase();
             const textB = tagB.text.toLowerCase();
