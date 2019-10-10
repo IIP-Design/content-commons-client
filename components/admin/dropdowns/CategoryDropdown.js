@@ -43,7 +43,6 @@ const CategoryDropdown = props => (
         } ) );
       }
 
-      console.log( getDirection( props.locale ) );
       return (
         <Fragment>
           { !props.label && (
