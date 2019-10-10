@@ -75,7 +75,8 @@ const TagDropdown = props => (
 );
 
 TagDropdown.defaultProps = {
-  id: ''
+  id: '',
+  locale: 'en-us'
 };
 
 TagDropdown.propTypes = {
