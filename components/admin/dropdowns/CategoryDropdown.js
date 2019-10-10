@@ -1,10 +1,13 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import { titleCase } from 'lib/utils';
+import gql from 'graphql-tag';
 import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import { getDirection } from 'lib/language';
+import { titleCase } from 'lib/utils';
+
 import './dropdown.scss';
 
 const CATEGORIES_QUERY = gql`
@@ -23,10 +26,6 @@ const CATEGORIES_QUERY = gql`
   }
 `;
 
-/**
- *
- * @todo Update to display rtl categories correctly
- */
 const CategoryDropdown = props => (
   <Query query={ CATEGORIES_QUERY } variables={ { locale: props.locale } }>
     { ( { data, loading, error } ) => {
@@ -44,6 +43,7 @@ const CategoryDropdown = props => (
         } ) );
       }
 
+      console.log( getDirection( props.locale ) );
       return (
         <Fragment>
           { !props.label && (
@@ -55,6 +55,7 @@ const CategoryDropdown = props => (
           ) }
 
           <Form.Dropdown
+            className={ getDirection( props.locale ) === 'right' ? 'rtl' : 'ltr' }
             id={ props.id }
             name="categories"
             options={ options }

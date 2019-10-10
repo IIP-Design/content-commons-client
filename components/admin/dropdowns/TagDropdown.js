@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import gql from 'graphql-tag';
 import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import { getDirection } from 'lib/language';
 import { titleCase } from 'lib/utils';
 
 const TAG_QUERY = gql`
@@ -57,7 +58,7 @@ const TagDropdown = props => (
           ) }
 
           <Form.Dropdown
-            className={ props.dir === 'RTL' ? 'rtl' : 'ltr' }
+            className={ getDirection( props.locale ) === 'right' ? 'rtl' : 'ltr' }
             id={ props.id }
             fluid
             loading={ loading }
@@ -80,7 +81,6 @@ TagDropdown.defaultProps = {
 };
 
 TagDropdown.propTypes = {
-  dir: PropTypes.string,
   id: PropTypes.string,
   label: PropTypes.string,
   locale: PropTypes.string
