@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
 import {
@@ -24,6 +24,8 @@ import { config } from './config';
 const VideoProjectSupportFiles = props => {
   const { supportFiles: { types: { srt, other } } } = config;
 
+  const [progress, setProgress] = useState( 0 );
+
   const getQuery = ( id, data ) => ( {
     variables: {
       data,
@@ -41,6 +43,11 @@ const VideoProjectSupportFiles = props => {
   const isSupportFile = name => {
     const ext = getFileExt( name );
     return srt.extensions.includes( ext );
+  };
+
+  const handleUploadProgress = ( progressEvent, file ) => {
+    file.loaded = progressEvent.loaded;
+    setProgress( progressEvent.loaded );
   };
 
 
@@ -168,7 +175,7 @@ const VideoProjectSupportFiles = props => {
       if ( file.input ) {
         try {
           // 1a. Upload file
-          await uploadExecute( projectIdPath, [file] );
+          await uploadExecute( projectIdPath, [file], handleUploadProgress );
 
           // 1b. Create file on the DB if upload is successful
           return createFile( file );
@@ -209,6 +216,7 @@ const VideoProjectSupportFiles = props => {
       { ...props }
       save={ handleSave }
       config={ config.supportFiles }
+      progress={ progress } // use here to re-render modal
     />
   );
 };
