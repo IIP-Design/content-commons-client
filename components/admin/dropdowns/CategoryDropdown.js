@@ -28,7 +28,7 @@ const CATEGORIES_QUERY = gql`
  * @todo Update to display rtl categories correctly
  */
 const CategoryDropdown = props => (
-  <Query query={ CATEGORIES_QUERY } variables={ { locale: 'en-us' } }>
+  <Query query={ CATEGORIES_QUERY } variables={ { locale: props.locale } }>
     { ( { data, loading, error } ) => {
       if ( error ) return `Error! ${error.message}`;
 
