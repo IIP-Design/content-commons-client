@@ -9,7 +9,7 @@ import './FileUploadProgressBar.scss';
  */
 const FileUploadProgressBar = props => {
   const {
-    filesToUpload, fileProgessMessage, onComplete, label, labelAlign, showPercent, barSize
+    filesToUpload, fileProgessMessage, onComplete, label, labelAlign, showPercent, barSize, customStyles
   } = props;
 
 
@@ -24,7 +24,6 @@ const FileUploadProgressBar = props => {
   useEffect( () => {
     const loaded = filesToUpload.reduce( ( acc, curr ) => acc + curr.loaded, 0 );
     const completed = filesToUpload.filter( file => file.loaded === file.input.size );
-
     setUploadCompleted( loaded );
     setNumCompleted( completed.length );
   }, [filesToUpload] );
@@ -42,31 +41,27 @@ const FileUploadProgressBar = props => {
     if ( numCompleted === uploadCount ) {
       return <b>Saving file metadata</b>;
     }
-    return <div><b>Uploading files:</b> { numCompleted + 1 } of { uploadCount }</div>;
+    return <div style={ { marginTop: '2px' } }><b>Uploading files:</b> { numCompleted + 1 } of { uploadCount }</div>;
   };
 
-  const renderLabel = () => {
-    if ( !fileProgessMessage ) {
-      return label;
-    }
-    return (
-      <Fragment>
-        { renderFileOnProgress() }
-        <div>{ label }</div>
-      </Fragment>
+  const renderLabel = () => (
+    <Fragment>
+      { fileProgessMessage && renderFileOnProgress() }
+      <div style={ { marginTop: '5px' } }>{ label }</div>
+    </Fragment>
 
-    );
-  };
+  );
 
   return (
-    <div className="file-progress--wrapper">
+    <div className="file-progress--wrapper" style={ customStyles }>
       <Progress
         value={ uploadCompleted }
         total={ size }
         color="blue"
         size={ barSize }
         active
-      ><div className={ `file-progress--label ${labelAlign}` }>{ label && renderLabel() }</div>
+      >
+        <div className={ `file-progress--label ${labelAlign}` }>{ renderLabel() }</div>
       </Progress>
       { showPercent && (
       <span>{ percentComplete() }</span>
@@ -79,7 +74,8 @@ const FileUploadProgressBar = props => {
 FileUploadProgressBar.defaultProps = {
   barSize: 'medium',
   showPercent: false,
-  labelAlign: 'center'
+  labelAlign: 'center',
+  fileProgessMessage: false
 };
 
 FileUploadProgressBar.propTypes = {
@@ -90,6 +86,7 @@ FileUploadProgressBar.propTypes = {
   labelAlign: PropTypes.string,
   barSize: PropTypes.string,
   onComplete: PropTypes.func,
+  customStyles: PropTypes.object
 };
 
 export default FileUploadProgressBar;

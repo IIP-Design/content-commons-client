@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import {
@@ -10,6 +10,7 @@ import Notification from 'components/Notification/Notification';
 import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
 import { compose, graphql } from 'react-apollo';
 import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown';
+import FileUploadProgressBar from '../FileUploadProgressBar/FileUploadProgressBar';
 
 import './EditProjectFilesModal.scss';
 
@@ -24,6 +25,7 @@ const EditProjectFilesModal = ( {
 } ) => {
   const [open, setOpen] = useState( false );
   const [saving, setSaving] = useState( false );
+  const [upload, setUpload] = useState( false );
   const [confirm, setConfirm] = useState( {} );
   const [allFieldsSelected, setAllFieldsSelected] = useState( false );
   const [step, setStep] = useState( 1 );
@@ -43,6 +45,10 @@ const EditProjectFilesModal = ( {
     position: 'absolute',
     top: '15px',
     right: '40px'
+  };
+
+  const uploadProgessStyles = {
+    margin: '-10px 15px 15px 15px'
   };
 
   /*
@@ -179,6 +185,10 @@ const EditProjectFilesModal = ( {
 
   const handleSave = async () => {
     setSaving( true );
+
+    // if there are files to upload, show progress bar
+    setUpload( files.filter( file => ( file.input ) ).length );
+
     await save( files, filesToRemove );
     setSaving( false );
     closeModal();
@@ -223,16 +233,30 @@ const EditProjectFilesModal = ( {
       <Header content={ title } />
 
       { saving
-      && (
-      <Notification
-        el="p"
-        show
-        icon
-        customStyles={ notificationStyles }
-        msg="Saving changes..."
-      />
-      )
-    }
+        && (
+          <Fragment>
+            <Notification
+              el="p"
+              show
+              icon
+              customStyles={ notificationStyles }
+              msg="Saving changes..."
+            />
+
+            { !!upload
+            && (
+            <FileUploadProgressBar
+              filesToUpload={ files.filter( file => ( file.input ) ) }
+              fileProgessMessage
+              barSize="small"
+              customStyles={ uploadProgessStyles }
+            />
+            )
+            }
+          </Fragment>
+        )
+      }
+
       <Dimmer.Dimmable dimmed={ saving }>
         <Dimmer inverted simple />
 

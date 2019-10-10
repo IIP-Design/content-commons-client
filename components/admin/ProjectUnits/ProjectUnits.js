@@ -23,7 +23,7 @@ import {
   UPDATE_VIDEO_PROJECT_MUTATION
 } from 'lib/graphql/queries/video';
 
-// renmae this it generic
+
 import EditProjectFiles from '../ProjectEdit/EditProjectFilesModal/EditPojectFilesModal';
 
 import ProjectUnitItem from './ProjectUnitItem/ProjectUnitItem';
@@ -43,6 +43,8 @@ const ProjectUnits = props => {
     heading,
     extensions
   } = props;
+
+  const [progress, setProgress] = useState( 0 );
 
   const hasProjectUnits = () => ( !isEmpty( videoProject ) && videoProject.project && videoProject.project.units );
   const hasFilesToUpload = () => ( filesToUpload && filesToUpload.length );
@@ -210,6 +212,11 @@ const ProjectUnits = props => {
 
   const getTagIds = ( tags = [] ) => tags.map( tag => tag.id );
 
+  const handleUploadProgress = ( progressEvent, file ) => {
+    file.loaded = progressEvent.loaded;
+    setProgress( progressEvent.loaded );
+  };
+
   /**
    * If file language has changed, disconnect from current language
    * @param {object} unit unit file currently belongs to
@@ -284,7 +291,7 @@ const ProjectUnits = props => {
         const projectIdPath = uploadDir || projectId;
 
         // 3. Upload file
-        return uploadExecute( projectIdPath, [file] );
+        return uploadExecute( projectIdPath, [file], handleUploadProgress );
       } catch ( err ) {
         file.error = !!err;
         console.error( err );
@@ -396,17 +403,22 @@ const ProjectUnits = props => {
       const toUpload = files.filter( file => ( file.input ) );
       await uploadFiles( toUpload ).catch( err => console.log( err ) );
 
+      // separate into units that need o be created and units that need to be updated
       const { unitUpdate, unitCreate } = getCreateConnectUnits( files );
 
+      // update unit and create or connect files
       const unitsToUpdate = Object.entries( unitUpdate );
-      const unitsToCreate = Object.entries( unitCreate );
-
       await updateUnits( unitsToUpdate );
+
+      // create unit and create or connect files
+      const unitsToCreate = Object.entries( unitCreate );
       await createUnits( unitsToCreate );
 
+      // remove units that have no connected files
       const unitsToRemove = getUnitsToRemove( files );
       await removeUnits( unitsToRemove );
 
+      // refresh cache
       props.videoProject.refetch();
     } catch ( err ) {
       console.dir( err );
@@ -470,6 +482,7 @@ const ProjectUnits = props => {
               filesToEdit={ projectFiles }
               extensions={ ['.mov', '.mp4'] }
               save={ handleSave }
+              progress={ progress } // use here to re-render modal
             />
           )
         }

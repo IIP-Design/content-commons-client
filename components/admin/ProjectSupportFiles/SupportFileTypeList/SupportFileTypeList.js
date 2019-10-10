@@ -47,7 +47,7 @@ const SupportFileTypeList = props => {
     return files.filter( file => extensions.includes( getFileExt( file.filename ) ) );
   };
 
-  const getNoFilesMessage = ( hl = 'files' ) => ( projectId ? `Click the 'Edit' link to add ${hl.toLowerCase()}` : 'No file to upload' );
+  const getNoFilesMessage = ( hl = 'files' ) => ( projectId ? `Click the 'Edit' link to add ${hl.toLowerCase()}` : 'No files to upload' );
 
   const fetchFiles = data => {
     const { filesToUpload } = props;
