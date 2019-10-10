@@ -227,7 +227,6 @@ const UnitDataForm = ( {
             <TagDropdown
               onChange={ handleDropdownSelection }
               id="video-tags"
-              dir={ unit.language.textDirection }
               label={ `Additional Keywords ${lang}` }
               locale={ unit.language.locale }
               name="tags"
