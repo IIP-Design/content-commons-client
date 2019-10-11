@@ -144,6 +144,27 @@ const EditProjectFilesModal = ( {
     updateFileField( data );
   };
 
+  const showFileErrors = uploadedFileErrors => {
+    const errors = uploadedFileErrors.reduce( ( acc, cur ) => `${acc} ${cur.name}\n`, '' );
+    const multiple = ( uploadedFileErrors.length > 1 );
+    setConfirm( {
+      open: true,
+      headline: `There was an error processing the following file ${multiple ? 's' : ''}`,
+      content: errors,
+      cancelButton: 'Close',
+      confirmButton: 'OK',
+      onCancel: () => {
+        closeConfirm();
+        closeModal();
+      },
+      onConfirm: () => {
+        closeConfirm();
+        closeModal();
+      }
+    } );
+  };
+
+
   /**
    * Puts file in queue to remove
    * Only show confirm dialgue for files that have already been saved to db
@@ -186,12 +207,20 @@ const EditProjectFilesModal = ( {
   const handleSave = async () => {
     setSaving( true );
 
+    const uploadedFiles = files.filter( file => ( file.input ) );
+
     // if there are files to upload, show progress bar
-    setUpload( files.filter( file => ( file.input ) ).length );
+    setUpload( uploadedFiles.length );
 
     await save( files, filesToRemove );
     setSaving( false );
-    closeModal();
+
+    const uploadedFileErrors = uploadedFiles.filter( file => file.error );
+    if ( uploadedFileErrors.length ) {
+      showFileErrors( uploadedFileErrors );
+    } else {
+      closeModal();
+    }
   };
 
   const renderGrid = () => {

@@ -318,6 +318,7 @@ const ProjectUnits = props => {
     const unitCreate = {};
     const unitUpdate = {};
 
+
     entries.forEach( entry => {
       const [language, _files] = entry;
       const unitExistsinLanguage = project.units.find( unit => unit.language.id === language );
@@ -326,17 +327,20 @@ const ProjectUnits = props => {
       const update = [];
 
       _files.forEach( async file => {
-        if ( file.input ) {
+        if ( file.input ) { // only add if file was uploaded successfully
           create.push( file );
         } else {
           const unitFileBelongsTo = getFileUnit( file );
-          const fileChanged = hasFileChanged( unitFileBelongsTo, file );
-          if ( fileChanged.length ) {
-            update.push( file );
-            await updateFile( file );
 
-            if ( fileChanged.includes( 'language' ) ) {
-              await disconnectFileFromUnit( unitFileBelongsTo, file );
+          if ( unitFileBelongsTo ) {
+            const fileChanged = hasFileChanged( unitFileBelongsTo, file );
+            if ( fileChanged.length ) {
+              update.push( file );
+              await updateFile( file );
+
+              if ( fileChanged.includes( 'language' ) ) {
+                await disconnectFileFromUnit( unitFileBelongsTo, file );
+              }
             }
           }
         }
@@ -403,8 +407,10 @@ const ProjectUnits = props => {
       const toUpload = files.filter( file => ( file.input ) );
       await uploadFiles( toUpload ).catch( err => console.log( err ) );
 
+      const filesUploadSuccess = files.filter( file => !file.error );
+
       // separate into units that need o be created and units that need to be updated
-      const { unitUpdate, unitCreate } = getCreateConnectUnits( files );
+      const { unitUpdate, unitCreate } = getCreateConnectUnits( filesUploadSuccess );
 
       // update unit and create or connect files
       const unitsToUpdate = Object.entries( unitUpdate );
@@ -415,7 +421,7 @@ const ProjectUnits = props => {
       await createUnits( unitsToCreate );
 
       // remove units that have no connected files
-      const unitsToRemove = getUnitsToRemove( files );
+      const unitsToRemove = getUnitsToRemove( filesUploadSuccess );
       await removeUnits( unitsToRemove );
 
       // refresh cache
