@@ -22,7 +22,7 @@ class TableActionsMenu extends React.Component {
   state = {
     displayConfirmationMsg: false,
     deleteConfirmOpen: false,
-    actionFailures: null,
+    actionFailures: [],
   };
 
   _isMounted = false;
@@ -35,7 +35,7 @@ class TableActionsMenu extends React.Component {
 
   componentDidUpdate = () => {
     const { actionFailures } = this.state;
-    if ( this.state.displayConfirmationMsg && ( !actionFailures || !actionFailures.length ) ) {
+    if ( this.state.displayConfirmationMsg && !actionFailures.length ) {
       this.delayUnmount( this.hideConfirmationMsg, this.confirmationMsgTimer, this.CONFIRMATION_MSG_DELAY );
     }
   }
@@ -43,20 +43,6 @@ class TableActionsMenu extends React.Component {
   componentWillUnmount = () => {
     this._isMounted = false;
     clearTimeout( this.confirmationMsgTimer );
-  }
-
-  handleUnpublish = unpublishFn => {
-    unpublishFn( {
-      variables: {
-        data: { status: 'DRAFT', visibility: 'INTERNAL' },
-        where: {
-          AND: [
-            { id_in: this.getSelectedProjectsIds() },
-            { status: 'PUBLISHED' }
-          ]
-        }
-      }
-    } );
   }
 
   handleActionResult = result => {
@@ -69,7 +55,7 @@ class TableActionsMenu extends React.Component {
     this.setState( { deleteConfirmOpen: false } );
   }
 
-  handleDeleteConfirm = () => {
+  handleActionCompleted = () => {
     const {
       variables, teamVideoProjects, teamVideoProjectsCount
     } = this.props;
@@ -81,39 +67,6 @@ class TableActionsMenu extends React.Component {
     this.showConfirmationMsg();
   }
 
-  handleDrafts = cache => {
-    if ( cache ) {
-      const drafts = this.getDraftProjects( cache.videoProjects );
-      this.setState( prevState => {
-        if ( prevState.draftProjects !== drafts ) {
-          return { draftProjects: drafts };
-        }
-      } );
-    }
-  }
-
-  handleUnpublishCacheUpdate = cache => {
-    const { variables } = this.props;
-    const items = this.getSelectedProjectsIds();
-
-    try {
-      const data = this.getCachedQuery(
-        cache, TEAM_VIDEO_PROJECTS_QUERY, variables
-      );
-
-      // set status
-      this.handleStatus( items, data.videoProjects );
-
-      // write transformed data to cache to match server
-      cache.writeQuery( { query: TEAM_VIDEO_PROJECTS_QUERY, data } );
-
-      // keep track of draft projects
-      this.handleDrafts( data );
-    } catch ( error ) {
-      console.error( error );
-    }
-  }
-
   handleStatus = ( items, projects ) => {
     items.forEach( item => {
       const selections = projects.filter( project => project.id === item );
@@ -122,13 +75,6 @@ class TableActionsMenu extends React.Component {
       } );
     } );
   }
-
-  getCachedQuery = ( cache, query, variables ) => (
-    cache.readQuery( {
-      query,
-      variables: { ...variables }
-    } )
-  )
 
   getDraftProjects = projects => {
     if ( !projects ) return [];
@@ -201,7 +147,7 @@ class TableActionsMenu extends React.Component {
     if ( this._isMounted ) {
       this.setState( {
         displayConfirmationMsg: false,
-        actionFailures: null
+        actionFailures: []
       } );
     }
     this.confirmationMsgTimer = null;
@@ -286,7 +232,7 @@ class TableActionsMenu extends React.Component {
           <DeleteProjects
             deleteConfirmOpen={ this.state.deleteConfirmOpen }
             handleDeleteCancel={ this.handleDeleteCancel }
-            handleDeleteConfirm={ this.handleDeleteConfirm }
+            handleDeleteConfirm={ this.handleActionCompleted }
             handleActionResult={ this.handleActionResult }
             handleResetSelections={ this.props.handleResetSelections }
             selections={ selections }
@@ -300,19 +246,16 @@ class TableActionsMenu extends React.Component {
             <img src={ archiveIcon } alt="Archive Selection(s)" title="Archive Selection(s)" />
           </Button>
 
-          { !this.hasSelectedAllDrafts()
-          && (
+          { !this.hasSelectedAllDrafts() && (
             <Fragment>
               <span className="separator">|</span>
               <UnpublishProjects
                 handleResetSelections={
                   this.props.handleResetSelections
                 }
-                handleUnpublish={ this.handleUnpublish }
-                handleUnpublishCacheUpdate={
-                  this.handleUnpublishCacheUpdate
-                }
+                handleActionResult={ this.handleActionResult }
                 showConfirmationMsg={ this.showConfirmationMsg }
+                selections={ selections }
               />
             </Fragment>
           ) }

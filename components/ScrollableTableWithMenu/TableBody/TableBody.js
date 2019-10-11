@@ -3,11 +3,14 @@ import { Loader, Table } from 'semantic-ui-react';
 import { getPathToS3Bucket } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
+import {
+  graphql, compose
+} from 'react-apollo';
 import React from 'react';
 import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import gql from 'graphql-tag';
 import orderBy from 'lodash/orderBy';
+import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
   query VideoProjectsByTeam(
@@ -122,108 +125,99 @@ const TableBody = props => {
     tableHeaders,
     toggleItemSelection,
     variables,
-    projectTab
+    projectTab,
+    teamVideoProjects: {
+      loading, error, videoProjects
+    }
   } = props;
 
+  if ( loading ) {
+    return (
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>
+            <Loader active inline size="small" />
+            <span style={ { marginLeft: '0.5em', fontSize: '1.5em' } }>
+              Loading...
+            </span>
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    );
+  }
+  if ( error ) {
+    return (
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>
+            <ApolloError error={ error } />
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    );
+  }
+
+  if ( !videoProjects ) return null;
+
+  if ( searchTerm && !videoProjects.length ) {
+    return (
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>
+            No results for &ldquo;{ searchTerm }&rdquo;
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    );
+  }
+
+  if ( !videoProjects.length ) {
+    return (
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>No projects</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    );
+  }
+
+  // Sort data by clicked column & direction
+  // Default sort by createdAt & DESC
+  const direction = props.direction ? `${props.direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
+
+  const tableData = orderBy(
+    normalizeData( videoProjects ),
+    tableDatum => {
+      let { column } = props;
+      if ( !column ) column = 'createdAt';
+      // Format table data for case insensitive sorting
+      const formattedTableDatum = tableDatum[column].toString().toLowerCase();
+      return formattedTableDatum;
+    },
+    [direction]
+  );
+
+  // skip & first query vars are used as start/end slice() params to paginate tableData on client
+  const { skip, first } = variables;
+  const paginatedTableData = tableData.slice( skip, skip + first );
   return (
-    <Query
-      query={ TEAM_VIDEO_PROJECTS_QUERY }
-      variables={ { ...variables } }
-      fetchPolicy="cache-and-network"
-    >
-      { ( { loading, error, data } ) => {
-        if ( loading ) {
-          return (
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>
-                  <Loader active inline size="small" />
-                  <span style={ { marginLeft: '0.5em', fontSize: '1.5em' } }>
-                    Loading...
-                  </span>
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          );
-        }
-        if ( error ) {
-          return (
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>
-                  <ApolloError error={ error } />
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          );
-        }
-
-        if ( data && !data.videoProjects ) return null;
-
-        const { videoProjects } = data;
-
-        if ( searchTerm && !videoProjects.length ) {
-          return (
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>
-                  No results for &ldquo;{ searchTerm }&rdquo;
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          );
-        }
-
-        if ( !videoProjects.length ) {
-          return (
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>No projects</Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          );
-        }
-
-        // Sort data by clicked column & direction
-        // Default sort by createdAt & DESC
-        const direction = props.direction ? `${props.direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
-
-        const tableData = orderBy(
-          normalizeData( videoProjects ),
-          tableDatum => {
-            let { column } = props;
-            if ( !column ) column = 'createdAt';
-            // Format table data for case insensitive sorting
-            const formattedTableDatum = tableDatum[column].toString().toLowerCase();
-            return formattedTableDatum;
-          },
-          [direction]
-        );
-
-        // skip & first query vars are used as start/end slice() params to paginate tableData on client
-        const { skip, first } = variables;
-        const paginatedTableData = tableData.slice( skip, skip + first );
-
-        return (
-          <Table.Body className="projects">
-            { paginatedTableData.map( d => (
-              <TableRow
-                key={ d.id }
-                d={ d }
-                selectedItems={ selectedItems }
-                tableHeaders={ tableHeaders }
-                toggleItemSelection={ toggleItemSelection }
-                projectTab={ projectTab }
-              />
-            ) ) }
-          </Table.Body>
-        );
-      } }
-    </Query>
+    <Table.Body className="projects">
+      { paginatedTableData.map( d => (
+        <TableRow
+          key={ d.id }
+          d={ d }
+          selectedItems={ selectedItems }
+          tableHeaders={ tableHeaders }
+          toggleItemSelection={ toggleItemSelection }
+          projectTab={ projectTab }
+        />
+      ) ) }
+    </Table.Body>
   );
 };
 
 TableBody.propTypes = {
+  teamVideoProjects: PropTypes.object,
   searchTerm: PropTypes.string,
   selectedItems: PropTypes.object,
   tableHeaders: PropTypes.array,
@@ -233,5 +227,47 @@ TableBody.propTypes = {
   projectTab: PropTypes.string
 };
 
-export default TableBody;
+const statusChangeSubscription = graphql( PROJECT_STATUS_CHANGE_SUBSCRIPTION, {
+  options: props => {
+    const { teamVideoProjects } = props;
+    let ids = [];
+    if ( teamVideoProjects && teamVideoProjects.videoProjects ) {
+      ids = teamVideoProjects.videoProjects.map( p => p.id );
+    }
+    return {
+      variables: { ids },
+      onSubscriptionData: ( { client, subscriptionData } ) => {
+        if ( !subscriptionData.data ) return;
+        const { projectStatusChange } = subscriptionData.data;
+        const { videoProjects } = client.readQuery( {
+          query: TEAM_VIDEO_PROJECTS_QUERY,
+          variables: { ...props.variables },
+        } );
+        const project = videoProjects.find( p => p.id === projectStatusChange.id );
+        if ( project ) {
+          project.status = projectStatusChange.status;
+          client.writeQuery( {
+            query: TEAM_VIDEO_PROJECTS_QUERY,
+            variables: { ...props.variables },
+            data: { videoProjects: [...videoProjects] }
+          } );
+        }
+      }
+    };
+  }
+} );
+
+const teamProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
+  name: 'teamVideoProjects',
+  options: props => ( {
+    variables: { ...props.variables },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network'
+  } )
+} );
+
+export default compose(
+  teamProjectsQuery,
+  statusChangeSubscription
+)( TableBody );
 export { TEAM_VIDEO_PROJECTS_QUERY };
