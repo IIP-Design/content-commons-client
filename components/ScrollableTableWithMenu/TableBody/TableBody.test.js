@@ -96,6 +96,8 @@ const videoProjects = [
   }
 ];
 
+const videoProjectIds = videoProjects.map( p => p.id );
+
 const props = {
   searchTerm: '',
   selectedItems: new Map(),
@@ -114,10 +116,7 @@ const props = {
   },
   direction: 'descending',
   projectTab: 'teamProjects',
-  teamVideoProjects: {
-    videoProjects,
-    loading: false,
-  }
+  videoProjectIds
 };
 
 const mocks = [
@@ -133,10 +132,16 @@ const mocks = [
   {
     request: {
       query: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
-      variables: { ids: videoProjects.map( p => p.id ) }
+      variables: { ids: videoProjectIds }
     },
     result: {
-      data: {}
+      data: {
+        projectStatusChange: {
+          id: 'd137',
+          status: 'DRAFT',
+          error: null
+        }
+      }
     }
   }
 ];
@@ -313,5 +318,14 @@ describe( '<TableBody />', () => {
 
     expect( rowCount ).toEqual( expectedRowCount );
     expect( toJSON( tableRows ) ).toMatchSnapshot();
+  } );
+
+  it( 'subscribes to status updates', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+    // const tableBody = wrapper.find( 'TableBody' );
+    const tableBody = wrapper.findWhere( c => c.props().subscribeToStatuses !== undefined );
+    // TODO: Find a way to test this function added by graphql HOC props option
   } );
 } );

@@ -3,10 +3,10 @@ import { Loader, Table } from 'semantic-ui-react';
 import { getPathToS3Bucket } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import PropTypes from 'prop-types';
-import {
-  graphql, compose
-} from 'react-apollo';
-import React from 'react';
+import { graphql } from 'react-apollo';
+import React, { useEffect, useState } from 'react';
+import update from 'immutability-helper';
+import isEqual from 'lodash/isEqual';
 import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import gql from 'graphql-tag';
 import orderBy from 'lodash/orderBy';
@@ -128,8 +128,34 @@ const TableBody = props => {
     projectTab,
     teamVideoProjects: {
       loading, error, videoProjects
-    }
+    },
+    videoProjectIds,
+    subscribeToStatuses
   } = props;
+
+  const [statusSubscription, setStatusSubscription] = useState();
+
+  useEffect( () => {
+    if ( statusSubscription ) {
+      // Do not resubscribe if the IDs did not change
+      if ( isEqual( statusSubscription.ids, videoProjectIds ) ) {
+        return;
+      }
+      statusSubscription.unsub();
+    }
+    if ( videoProjectIds.length < 1 ) {
+      setStatusSubscription( null );
+      return;
+    }
+    const subscription = {
+      ids: videoProjectIds,
+      unsub: subscribeToStatuses()
+    };
+    setStatusSubscription( subscription );
+    return () => {
+      subscription.unsub();
+    };
+  }, [videoProjectIds.join( ',' )] );
 
   if ( loading ) {
     return (
@@ -224,41 +250,36 @@ TableBody.propTypes = {
   toggleItemSelection: PropTypes.func,
   variables: PropTypes.object,
   direction: PropTypes.string,
-  projectTab: PropTypes.string
+  projectTab: PropTypes.string,
+  videoProjectIds: PropTypes.array,
+  subscribeToStatuses: PropTypes.func
 };
-
-const statusChangeSubscription = graphql( PROJECT_STATUS_CHANGE_SUBSCRIPTION, {
-  options: props => {
-    const { teamVideoProjects } = props;
-    let ids = [];
-    if ( teamVideoProjects && teamVideoProjects.videoProjects ) {
-      ids = teamVideoProjects.videoProjects.map( p => p.id );
-    }
-    return {
-      variables: { ids },
-      onSubscriptionData: ( { client, subscriptionData } ) => {
-        if ( !subscriptionData.data ) return;
-        const { projectStatusChange } = subscriptionData.data;
-        const { videoProjects } = client.readQuery( {
-          query: TEAM_VIDEO_PROJECTS_QUERY,
-          variables: { ...props.variables },
-        } );
-        const project = videoProjects.find( p => p.id === projectStatusChange.id );
-        if ( project ) {
-          project.status = projectStatusChange.status;
-          client.writeQuery( {
-            query: TEAM_VIDEO_PROJECTS_QUERY,
-            variables: { ...props.variables },
-            data: { videoProjects: [...videoProjects] }
-          } );
-        }
-      }
-    };
-  }
-} );
 
 const teamProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
   name: 'teamVideoProjects',
+  props: ( { teamVideoProjects } ) => {
+    const { videoProjects, subscribeToMore } = teamVideoProjects;
+    const videoProjectIds = videoProjects ? videoProjects.map( p => p.id ) : [];
+    return {
+      teamVideoProjects,
+      videoProjectIds,
+      subscribeToStatuses: () => subscribeToMore( {
+        document: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
+        variables: { ids: videoProjectIds },
+        updateQuery: ( prev, { subscriptionData: { data: { projectStatusChange } } } ) => {
+          if ( !projectStatusChange ) {
+            return prev;
+          }
+          const projectIndex = prev.videoProjects.findIndex( p => p.id === projectStatusChange.id );
+          if ( projectIndex === -1 ) {
+            return prev;
+          }
+          // Using immutability helper in order to ensure that React will rerender after the status change
+          return update( prev, { videoProjects: { [projectIndex]: { status: { $set: projectStatusChange.status } } } } );
+        }
+      } )
+    };
+  },
   options: props => ( {
     variables: { ...props.variables },
     notifyOnNetworkStatusChange: true,
@@ -266,8 +287,5 @@ const teamProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
   } )
 } );
 
-export default compose(
-  teamProjectsQuery,
-  statusChangeSubscription
-)( TableBody );
+export default teamProjectsQuery( TableBody );
 export { TEAM_VIDEO_PROJECTS_QUERY };
