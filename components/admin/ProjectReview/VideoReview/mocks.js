@@ -215,6 +215,7 @@ export const mocks = [
             {
               __typename: 'VideoUnit',
               id: 'un91',
+              createdAt: '2019-06-18T14:58:10.024Z',
               updatedAt: '2019-06-18T14:58:10.024Z',
               title: 'test project title',
               descPublic: 'the arabic description',
@@ -334,6 +335,7 @@ export const mocks = [
             {
               __typename: 'VideoUnit',
               id: 'un95',
+              createdAt: '2019-06-18T12:58:10.024Z',
               updatedAt: '2019-06-18T12:58:10.024Z',
               title: 'test project title',
               descPublic: 'the english description',
