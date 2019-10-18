@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import * as actions from 'lib/redux/actions/projectUpdate';
 import { compose, graphql } from 'react-apollo';
 import { Card } from 'semantic-ui-react';
 import { getFileExt } from 'lib/utils';
@@ -45,6 +46,18 @@ const ProjectUnits = props => {
   } = props;
 
   const [progress, setProgress] = useState( 0 );
+
+  // Notify redux state that Project updated indexed by project id
+  // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
+  // Reset component state on unmount
+  const [videoUnitsUpdated, setVideoUnitsUpdated] = useState( false );
+  useEffect( () => {
+    if ( videoUnitsUpdated ) {
+      props.projectUpdated( projectId, true );
+    }
+
+    return () => setVideoUnitsUpdated( false );
+  }, [videoUnitsUpdated] );
 
   const hasProjectUnits = () => ( !isEmpty( videoProject ) && videoProject.project && videoProject.project.units );
   const hasFilesToUpload = () => ( filesToUpload && filesToUpload.length );
@@ -424,6 +437,9 @@ const ProjectUnits = props => {
       const unitsToRemove = getUnitsToRemove( filesUploadSuccess );
       await removeUnits( unitsToRemove );
 
+      // Update component update state
+      setVideoUnitsUpdated( true );
+
       // refresh cache
       props.videoProject.refetch();
     } catch ( err ) {
@@ -514,7 +530,8 @@ ProjectUnits.propTypes = {
   updateVideoProject: PropTypes.func,
   updateVideoFile: PropTypes.func,
   deleteManyVideoUnits: PropTypes.func,
-  uploadExecute: PropTypes.func
+  uploadExecute: PropTypes.func,
+  projectUpdated: PropTypes.func
 };
 
 
@@ -525,7 +542,7 @@ const mapStateToProps = state => ( {
 
 export default compose(
   withFileUpload,
-  connect( mapStateToProps ),
+  connect( mapStateToProps, actions ),
   graphql( LANGUAGES_QUERY, { name: 'languageList' } ),
   graphql( VIDEO_PROJECT_QUERY, {
     name: 'videoProject',

@@ -1,6 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import { func, object, string } from 'prop-types';
 import Router from 'next/router';
+import { connect } from 'react-redux';
+import * as actions from 'lib/redux/actions/projectUpdate';
 import { compose, graphql } from 'react-apollo';
 import {
   Button, Confirm, Grid, Icon, Loader
@@ -130,6 +132,9 @@ const VideoReview = props => {
     try {
       setPublishing( true );
       await publishProject( { variables: { id } } );
+
+      // Remove updated project from redux projectUpdate state
+      props.projectUpdated( id, false );
     } catch ( err ) {
       setPublishing( false );
       setPublishError( err );
@@ -145,6 +150,9 @@ const VideoReview = props => {
     try {
       setPublishing( true );
       await unPublishProject( { variables: { id } } );
+
+      // Remove updated project from redux projectUpdate state
+      props.projectUpdated( id, false );
     } catch ( err ) {
       setPublishing( false );
       setPublishError( err );
@@ -152,8 +160,9 @@ const VideoReview = props => {
   };
 
   // Project Status & Update States
-  const publishedAndUpdated = updatesToPublish() && data.project.status === 'PUBLISHED';
-  const publishedAndNotUpdated = !updatesToPublish() && data.project.status === 'PUBLISHED';
+  const { projectUpdate } = props; // redux
+  const publishedAndUpdated = projectUpdate[id] && data.project.status === 'PUBLISHED';
+  const publishedAndNotUpdated = ( projectUpdate[id] === undefined ) && data.project.status === 'PUBLISHED';
   const notPublished = data.project.status !== 'PUBLISHED';
 
   return (
@@ -207,7 +216,7 @@ const VideoReview = props => {
           ? <Button className={ setButtonState( 'publish' ) } onClick={ handlePublish }>Publish</Button>
           : (
             <Fragment>
-              { updatesToPublish() && (
+              { publishedAndUpdated && (
                 <Button className={ setButtonState( 'edit' ) } onClick={ handlePublish }>Publish Changes</Button>
               )
               }
@@ -246,7 +255,14 @@ const VideoReview = props => {
           content="Edit"
           onClick={ handleEdit }
         />
-        { !publishedAndNotUpdated && <Button className={ `project_button project_button--${updatesToPublish() ? 'edit' : 'publish'}` } onClick={ handlePublish }>Publish{ updatesToPublish() && ' Changes' }</Button> }
+        { !publishedAndNotUpdated && (
+          <Button
+            className={ `project_button project_button--${publishedAndUpdated ? 'edit' : 'publish'}` }
+            onClick={ handlePublish }
+          >
+            Publish{ publishedAndUpdated && ' Changes' }
+          </Button>
+        ) }
         { data.project.status !== 'DRAFT' && <Button className="project_button project_button--publish" onClick={ handleUnPublish }>Unpublish</Button> }
       </section>
     </div>
@@ -259,8 +275,14 @@ VideoReview.propTypes = {
   statusChange: object,
   deleteProject: func,
   publishProject: func,
-  unPublishProject: func
+  unPublishProject: func,
+  projectUpdate: object,
+  projectUpdated: func
 };
+
+const mapStateToProps = state => ( {
+  projectUpdate: state.projectUpdate
+} );
 
 const deleteProjectMutation = graphql( DELETE_VIDEO_PROJECT_MUTATION, {
   name: 'deleteProject',
@@ -303,6 +325,7 @@ const videoReviewQuery = graphql( VIDEO_PROJECT_QUERY, {
 } );
 
 export default compose(
+  connect( mapStateToProps, actions ),
   deleteProjectMutation,
   publishProjectMutation,
   unPublishProjectMutation,
