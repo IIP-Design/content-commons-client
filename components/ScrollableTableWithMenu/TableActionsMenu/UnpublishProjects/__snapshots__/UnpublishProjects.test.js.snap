@@ -4,7 +4,62 @@ exports[`<UnpublishProjects /> renders without crashing 1`] = `
 <Apollo(UnpublishProjects)
   handleActionResult={[MockFunction]}
   handleResetSelections={[MockFunction]}
-  selections={Array []}
+  selections={
+    Array [
+      Object {
+        "author": Object {
+          "firstName": "Edwin",
+          "id": "cjrl1omfr002o075614zs8dxz",
+          "lastName": "Mah",
+        },
+        "categories": Array [],
+        "createdAt": "2019-06-17T15:23:46.184Z",
+        "id": "cjx0j3ts9066y0708k1hg2g1b",
+        "projectTitle": "Philippines Village",
+        "status": "PUBLISHED",
+        "team": Object {
+          "id": "cjrkzhvku000f0756l44blw33",
+          "name": "IIP Video Production",
+          "organization": "Department of State",
+        },
+        "thumbnails": Array [
+          Object {
+            "alt": null,
+            "id": "cjx0j3xqz067z0708frd7sd9g",
+            "url": "2019/06/cjx0j3ts9066y0708k1hg2g1b/coverr-philippines-village-views-1559889358075.jpg",
+          },
+        ],
+        "updatedAt": "2019-06-17T15:23:46.184Z",
+        "visibility": "PUBLIC",
+      },
+      Object {
+        "author": Object {
+          "firstName": "Edwin",
+          "id": "cjrl1omfr002o075614zs8dxz",
+          "lastName": "Mah",
+        },
+        "categories": Array [],
+        "createdAt": "2019-06-17T19:42:42.188Z",
+        "id": "cjx0sctfx06ry0708bmtuf37f",
+        "projectTitle": "Philippines Village 2",
+        "status": "PUBLISHED",
+        "team": Object {
+          "id": "cjrkzhvku000f0756l44blw33",
+          "name": "IIP Video Production",
+          "organization": "Department of State",
+        },
+        "thumbnails": Array [
+          Object {
+            "alt": null,
+            "id": "cjx0sd0yy06t30708by0b4suo",
+            "url": "2019/06/cjx0sctfx06ry0708bmtuf37f/coverr-philippines-village-views-1559889358075.jpg",
+          },
+        ],
+        "updatedAt": "2019-06-17T19:42:42.188Z",
+        "visibility": "PUBLIC",
+      },
+    ]
+  }
   showConfirmationMsg={[MockFunction]}
   unpublishVideoProject={[MockFunction]}
 >
@@ -104,7 +159,62 @@ exports[`<UnpublishProjects /> renders without crashing 1`] = `
     <UnpublishProjects
       handleActionResult={[MockFunction]}
       handleResetSelections={[MockFunction]}
-      selections={Array []}
+      selections={
+        Array [
+          Object {
+            "author": Object {
+              "firstName": "Edwin",
+              "id": "cjrl1omfr002o075614zs8dxz",
+              "lastName": "Mah",
+            },
+            "categories": Array [],
+            "createdAt": "2019-06-17T15:23:46.184Z",
+            "id": "cjx0j3ts9066y0708k1hg2g1b",
+            "projectTitle": "Philippines Village",
+            "status": "PUBLISHED",
+            "team": Object {
+              "id": "cjrkzhvku000f0756l44blw33",
+              "name": "IIP Video Production",
+              "organization": "Department of State",
+            },
+            "thumbnails": Array [
+              Object {
+                "alt": null,
+                "id": "cjx0j3xqz067z0708frd7sd9g",
+                "url": "2019/06/cjx0j3ts9066y0708k1hg2g1b/coverr-philippines-village-views-1559889358075.jpg",
+              },
+            ],
+            "updatedAt": "2019-06-17T15:23:46.184Z",
+            "visibility": "PUBLIC",
+          },
+          Object {
+            "author": Object {
+              "firstName": "Edwin",
+              "id": "cjrl1omfr002o075614zs8dxz",
+              "lastName": "Mah",
+            },
+            "categories": Array [],
+            "createdAt": "2019-06-17T19:42:42.188Z",
+            "id": "cjx0sctfx06ry0708bmtuf37f",
+            "projectTitle": "Philippines Village 2",
+            "status": "PUBLISHED",
+            "team": Object {
+              "id": "cjrkzhvku000f0756l44blw33",
+              "name": "IIP Video Production",
+              "organization": "Department of State",
+            },
+            "thumbnails": Array [
+              Object {
+                "alt": null,
+                "id": "cjx0sd0yy06t30708by0b4suo",
+                "url": "2019/06/cjx0sctfx06ry0708bmtuf37f/coverr-philippines-village-views-1559889358075.jpg",
+              },
+            ],
+            "updatedAt": "2019-06-17T19:42:42.188Z",
+            "visibility": "PUBLIC",
+          },
+        ]
+      }
       showConfirmationMsg={[MockFunction]}
       unpublishVideoProject={[Function]}
     >
