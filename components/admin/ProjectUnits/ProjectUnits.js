@@ -47,7 +47,7 @@ const ProjectUnits = props => {
 
   const [progress, setProgress] = useState( 0 );
 
-  // Notify redux state that Project updated indexed by project id
+  // Notify redux state that Project updated, indexed by project id
   // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
   // Reset component state on unmount
   const [videoUnitsUpdated, setVideoUnitsUpdated] = useState( false );
