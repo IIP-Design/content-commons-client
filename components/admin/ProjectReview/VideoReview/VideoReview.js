@@ -162,7 +162,7 @@ const VideoReview = props => {
   // Project Status & Update States
   const { projectUpdate } = props; // redux
   const publishedAndUpdated = projectUpdate[id] && data.project.status === 'PUBLISHED';
-  const publishedAndNotUpdated = ( projectUpdate[id] === undefined ) && data.project.status === 'PUBLISHED';
+  const publishedAndNotUpdated = !projectUpdate[id] && data.project.status === 'PUBLISHED';
   const notPublished = data.project.status !== 'PUBLISHED';
 
   return (
