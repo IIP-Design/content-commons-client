@@ -13,7 +13,7 @@ import {
   TextArea
 } from 'semantic-ui-react';
 import Link from 'next/link';
-import ProjectVisibilityDropdown from 'components/admin/dropdowns/ProjectVisibilityDropdown';
+import ProjectVisibilityDropdown from 'components/admin/dropdowns/ProjectVisibilityDropdown/ProjectVisibilityDropdown';
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import UserDropdown from 'components/admin/dropdowns/UserDropdown/UserDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
