@@ -5,7 +5,7 @@ import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import sortBy from 'lodash/sortBy';
-import './dropdown.scss';
+import '../dropdown.scss';
 
 const USERS_QUERY = gql`
   query USERS_QUERY {
