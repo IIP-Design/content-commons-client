@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
-import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
+import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown/VideoBurnedInStatusDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
 import FileRemoveReplaceMenu from 'components/admin/FileRemoveReplaceMenu/FileRemoveReplaceMenu';
