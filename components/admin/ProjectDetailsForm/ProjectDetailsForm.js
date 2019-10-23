@@ -14,7 +14,7 @@ import {
 } from 'semantic-ui-react';
 import Link from 'next/link';
 import ProjectVisibilityDropdown from 'components/admin/dropdowns/ProjectVisibilityDropdown';
-import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown';
+import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import UserDropdown from 'components/admin/dropdowns/UserDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
