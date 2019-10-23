@@ -6,7 +6,7 @@ import VideoBurnedInStatusDropdown, { VIDEO_BURNED_IN_STATUS_QUERY } from './Vid
 
 const props = {
   id: '',
-  label: 'Users'
+  label: 'Subtitles'
 };
 
 const mocks = [
