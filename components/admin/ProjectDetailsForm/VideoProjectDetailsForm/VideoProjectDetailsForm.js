@@ -3,9 +3,11 @@
  * VideoProjectDetailsForm
  *
  */
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
+import { connect } from 'react-redux';
+import * as reduxActions from 'lib/redux/actions/projectUpdate';
 import {
   CREATE_VIDEO_PROJECT_MUTATION,
   UPDATE_VIDEO_PROJECT_MUTATION,
@@ -24,6 +26,19 @@ import { initialSchema, baseSchema } from './validationSchema';
 
 const VideoProjectDetailsForm = props => {
   const [showNotication, setShowNotification] = useState( false );
+
+  // Notify redux state that Project updated, indexed by project id
+  // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
+  // Reset component state on unmount
+  const [detailsFormUpdated, setDetailsFormUpdated] = useState( false );
+  useEffect( () => {
+    if ( detailsFormUpdated ) {
+      const { id } = props;
+      props.projectUpdated( id, true );
+    }
+
+    return () => setDetailsFormUpdated( false );
+  }, [detailsFormUpdated] );
 
   const hideNotification = () => {
     setShowNotification( false );
@@ -46,6 +61,10 @@ const VideoProjectDetailsForm = props => {
   const save = async ( values, prevValues ) => {
     await update( values, prevValues );
     setShowNotification( true );
+
+    // Update component update state
+    setDetailsFormUpdated( true );
+
     startTimeout();
   };
 
@@ -147,11 +166,13 @@ VideoProjectDetailsForm.propTypes = {
   createVideoProject: PropTypes.func,
   updateNotification: PropTypes.func,
   handleUpload: PropTypes.func,
-  updateVideoProject: PropTypes.func
+  updateVideoProject: PropTypes.func,
+  projectUpdated: PropTypes.func
 };
 
 export default compose(
   withRouter,
+  connect( null, reduxActions ),
   graphql( CURRENT_USER_QUERY, { name: 'user' } ), // only run on create
   graphql( CREATE_VIDEO_PROJECT_MUTATION, { name: 'createVideoProject' } ),
   graphql( UPDATE_VIDEO_PROJECT_MUTATION, { name: 'updateVideoProject' } ),

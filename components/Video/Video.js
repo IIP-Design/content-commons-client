@@ -145,6 +145,16 @@ class Video extends Component {
     const { captions } = this.state;
     if ( unit && Array.isArray( unit.source ) ) {
       const source = unit.source.find( caption => ( caption.burnedInCaptions === 'true' ) === captions );
+      if ( source && source.streamUrl ) {
+        const streamObj = source.streamUrl.find( stream => stream.site === 'vimeo' );
+
+        if ( streamObj && streamObj.site === 'vimeo' && streamObj.url ) {
+          return {
+            videoId: streamObj.uid,
+            shareLink: streamObj.url
+          };
+        }
+      }
       if ( source && source.stream && source.stream.site === 'vimeo' && source.stream.url ) {
         return {
           videoId: source.stream.uid,
