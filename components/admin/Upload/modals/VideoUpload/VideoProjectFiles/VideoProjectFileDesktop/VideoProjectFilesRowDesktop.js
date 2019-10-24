@@ -84,7 +84,6 @@ const VideoProjectFilesDesktopRow = props => {
     <VideoUploadContext.Consumer>
       {
         ( {
-          replaceAssetFile,
           removeAssetFile,
           updateField,
           accept
@@ -136,7 +135,6 @@ const VideoProjectFilesDesktopRow = props => {
             { /* Actions */ }
             <Grid.Column width={ 2 } only="tablet computer">
               <FileRemoveReplaceButtonGroup
-                onReplace={ e => { replaceAssetFile( id, e.target.files[0] ); } }
                 onRemove={ () => { removeAssetFile( id ); } }
                 accept={ accept }
               />

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Popup, Button } from 'semantic-ui-react';
-import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 
 import 'styles/tooltip.scss'; // importing here so a rule can be overridden
 import './FileRemoveReplaceMenu.scss';
@@ -11,9 +10,9 @@ import './FileRemoveReplaceMenu.scss';
  * @param {object} props
  */
 const FileRemoveReplaceMenu = props => {
-  const { disableReplace, disableRemove } = props;
+  const { disableRemove } = props;
   const [isOpen, setIsOpen] = useState( false );
-  const { onReplace, onRemove } = props;
+  const { onRemove } = props;
   const setDuplicateFiles = props.setDuplicateFiles ? props.setDuplicateFiles : null;
 
   // add debounce is perf degrades
@@ -36,12 +35,6 @@ const FileRemoveReplaceMenu = props => {
         icon="close"
         onClick={ () => setIsOpen( false ) }
       />
-      <ButtonAddFiles
-        className="secondary"
-        onChange={ onReplace }
-        disabled={ disableReplace }
-      >Replace File
-      </ButtonAddFiles>
 
       <Button
         className="FileRemoveReplaceMenu__btn-delete no-background"
@@ -73,15 +66,12 @@ const FileRemoveReplaceMenu = props => {
 };
 
 FileRemoveReplaceMenu.defaultProps = {
-  disableReplace: false,
   disableRemove: false
 };
 
 FileRemoveReplaceMenu.propTypes = {
-  onReplace: PropTypes.func,
   onRemove: PropTypes.func,
   setDuplicateFiles: PropTypes.func,
-  disableReplace: PropTypes.bool,
   disableRemove: PropTypes.bool
 };
 

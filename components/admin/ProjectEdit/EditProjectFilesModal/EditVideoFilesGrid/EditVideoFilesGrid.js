@@ -4,7 +4,7 @@ import { Grid } from 'semantic-ui-react';
 import EditVideoFileRow from '../EditVideoFileRow/EditVideoFileRow';
 
 const EditVideoFilesGrid = ( {
-  files, update, removeFile, replaceFile, accept, step
+  files, update, removeFile, accept, step
 } ) => (
   <Grid>
     <Grid.Row>
@@ -34,7 +34,6 @@ const EditVideoFilesGrid = ( {
         file={ file }
         update={ update }
         removeFile={ removeFile }
-        replaceFile={ replaceFile }
         accept={ accept }
         step={ step }
       />
@@ -47,7 +46,6 @@ EditVideoFilesGrid.propTypes = {
   files: PropTypes.array,
   update: PropTypes.func,
   removeFile: PropTypes.func,
-  replaceFile: PropTypes.func,
   accept: PropTypes.string,
   step: PropTypes.number
 };

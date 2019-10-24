@@ -30,7 +30,7 @@ const EditVideoFileRow = props => {
   const {
     file: {
       id, name, language, use, quality, videoBurnedInStatus
-    }, update, removeFile, replaceFile, accept, step
+    }, update, removeFile, accept, step
   } = props;
 
   const files = useContext( FilesContext );
@@ -91,9 +91,8 @@ const EditVideoFileRow = props => {
 
 
       { /* Actions */ }
-      <Grid.Column width={ 2 } only="tablet computer" style={ { paddingLeft: 0 } }>
+      <Grid.Column width={ 2 } style={ { paddingLeft: 0 } }>
         <FileRemoveReplaceButtonGroup
-          onReplace={ e => { replaceFile( id, e.target.files[0] ); } }
           onRemove={ () => { removeFile( id, name ); } }
           disableRemove={ ( files.length === 1 ) }
           accept={ accept }
@@ -114,7 +113,6 @@ EditVideoFileRow.propTypes = {
   accept: PropTypes.string,
   step: PropTypes.number,
   update: PropTypes.func,
-  replaceFile: PropTypes.func,
   removeFile: PropTypes.func
 };
 

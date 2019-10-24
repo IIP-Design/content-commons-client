@@ -35,8 +35,7 @@ const EditProjectFilesModal = ( {
     reset,
     updateFileField,
     addFiles,
-    removeFile,
-    replaceFile
+    removeFile
   } = useFileUploadActions();
 
   const allowedExtensions = extensions.join( ',' );
@@ -232,7 +231,6 @@ const EditProjectFilesModal = ( {
           files={ sortedFiles }
           update={ updateField }
           removeFile={ handleRemove }
-          replaceFile={ replaceFile }
           accept={ allowedExtensions }
         />
       );
@@ -243,7 +241,6 @@ const EditProjectFilesModal = ( {
         files={ sortedFiles }
         update={ updateField }
         removeFile={ handleRemove }
-        replaceFile={ replaceFile }
         accept={ allowedExtensions }
         step={ step }
       />

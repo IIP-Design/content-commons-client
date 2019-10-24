@@ -72,7 +72,6 @@ const VideoProjectFilesRowMobile = props => {
     // Context API is used to avoind having to pass props down multiple levels
     <VideoUploadContext.Consumer>
       { ( {
-        replaceAssetFile,
         removeAssetFile,
         updateField,
         accept
@@ -98,7 +97,6 @@ const VideoProjectFilesRowMobile = props => {
                 onClick={ () => { handleToggleDropdowns(); } }
               />
               <FileRemoveReplaceMenu
-                onReplace={ e => replaceAssetFile( id, e.target.files[0] ) }
                 onRemove={ () => removeAssetFile( id ) }
                 accept={ accept }
               />
