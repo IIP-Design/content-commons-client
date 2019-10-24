@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/upload';
 import { withRouter } from 'next/router';
 import { compose, graphql } from 'react-apollo';
-import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown';
+import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import { Tab, Dimmer, Loader } from 'semantic-ui-react';
 import { v4 } from 'uuid';
 import { removeDuplicatesFromArray } from 'lib/utils';

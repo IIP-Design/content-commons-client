@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown/VideoBurnedInStatusDropdown';
-import UseDropdown from 'components/admin/dropdowns/UseDropdown';
+import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown/QualityDropdown';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { truncateAndReplaceStr } from 'lib/utils';

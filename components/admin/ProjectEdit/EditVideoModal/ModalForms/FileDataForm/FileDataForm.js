@@ -13,7 +13,7 @@ import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmMod
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
 import Loader from 'components/admin/ProjectEdit/EditVideoModal/Loader/Loader';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown/QualityDropdown';
-import UseDropdown from 'components/admin/dropdowns/UseDropdown';
+import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown/VideoBurnedInStatusDropdown';
 import { EditSingleProjectItemContext } from 'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import { formatBytes, formatDate, secondsToHMS } from 'lib/utils';
