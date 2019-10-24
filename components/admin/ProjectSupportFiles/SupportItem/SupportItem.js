@@ -17,8 +17,9 @@ import GeneralError from 'components/errors/GeneralError/GeneralError';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 // import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
-import { getCount, getPathToS3Bucket } from 'lib/utils';
+import { getCount } from 'lib/utils';
 import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
+import withSignedUrl from 'hocs/withSignedUrl/withSignedUrl';
 import { UploadContext } from '../../ProjectEdit/VideoEdit/VideoEdit';
 
 import './SupportItem.scss';
@@ -55,22 +56,32 @@ const SupportItem = props => {
 
   const debounceResize = debounce( updateWidths, DELAY_INTERVAL );
 
-  const checkFileUrlStatus = () => {
+  const checkFileUrlStatus = async () => {
     if ( item && item.url ) {
-      const { url } = item;
-      const path = url;
-      const options = {
-        baseURL: getPathToS3Bucket(),
-        headers: {
-          Pragma: 'no-cache',
-          'Cache-Control': 'no-cache'
-        }
-      };
-      axios.head( path, options )
-        .catch( err => {
-          console.dir( err );
-          setError( err.isAxiosError );
-        } );
+      const { getSignedUrlGet } = props;
+
+      try {
+        const path = await getSignedUrlGet( item.url );
+
+        const options = {
+          headers: {
+            Pragma: 'no-cache',
+            'Cache-Control': 'no-cache',
+            Range: 'bytes=0-0'
+          }
+        };
+
+        // the head req was not working with the signed url so using get and
+        // simulating a head req but only returning 1 byte (see Range header above).
+        // Rather hacky so should research a better way
+        axios.get( path, options )
+          .catch( err => {
+            console.dir( err );
+            setError( err.isAxiosError );
+          } );
+      } catch ( err ) {
+        console.log( '' );
+      }
     }
   };
 
@@ -243,9 +254,11 @@ const SupportItem = props => {
 
 SupportItem.propTypes = {
   item: PropTypes.object,
-  data: PropTypes.object
+  data: PropTypes.object,
+  getSignedUrlGet: PropTypes.func
 };
 
 export default compose(
+  withSignedUrl,
   graphql( LANGUAGES_QUERY )
 )( SupportItem );
