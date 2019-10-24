@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
-import NotFound404 from 'components/errors/NotFound404';
+import NotFound404 from 'components/errors/NotFound404/NotFound404';
 
 class Error extends React.Component {
   static getInitialProps( { res, err } ) {
