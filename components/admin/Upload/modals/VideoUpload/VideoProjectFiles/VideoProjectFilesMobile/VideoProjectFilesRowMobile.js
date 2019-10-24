@@ -4,7 +4,7 @@ import { Button } from 'semantic-ui-react';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown/VideoBurnedInStatusDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown';
-import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
+import QualityDropdown from 'components/admin/dropdowns/QualityDropdown/QualityDropdown';
 import FileRemoveReplaceMenu from 'components/admin/FileRemoveReplaceMenu/FileRemoveReplaceMenu';
 import { truncateAndReplaceStr } from 'lib/utils';
 import UploadCompletionTracker from '../UploadCompletionTracker';
