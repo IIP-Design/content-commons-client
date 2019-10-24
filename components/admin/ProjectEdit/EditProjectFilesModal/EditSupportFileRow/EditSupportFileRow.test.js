@@ -4,7 +4,7 @@ import { truncateAndReplaceStr } from 'lib/utils';
 import EditSupportFileRow from './EditSupportFileRow';
 
 jest.mock(
-  'components/admin/dropdowns/LanguageDropdown',
+  'components/admin/dropdowns/LanguageDropdown/LanguageDropdown',
   () => function LanguageDropdown() { return ''; }
 );
 
