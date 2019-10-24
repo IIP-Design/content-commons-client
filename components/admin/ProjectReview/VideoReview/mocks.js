@@ -6,7 +6,13 @@ import {
 } from 'lib/graphql/queries/video';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 
-export const props = { id: '234' };
+const id = '234';
+export const props = {
+  id,
+  projectUpdate: {
+    [id]: true
+  }
+};
 
 export const mocks = [
   {
@@ -215,6 +221,7 @@ export const mocks = [
             {
               __typename: 'VideoUnit',
               id: 'un91',
+              createdAt: '2019-05-20T14:58:10.024Z',
               updatedAt: '2019-06-18T14:58:10.024Z',
               title: 'test project title',
               descPublic: 'the arabic description',
@@ -334,6 +341,7 @@ export const mocks = [
             {
               __typename: 'VideoUnit',
               id: 'un95',
+              createdAt: '2019-05-20T14:58:10.024Z',
               updatedAt: '2019-06-18T12:58:10.024Z',
               title: 'test project title',
               descPublic: 'the english description',
