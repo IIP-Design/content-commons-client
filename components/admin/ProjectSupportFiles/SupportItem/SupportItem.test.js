@@ -276,6 +276,7 @@ describe( '<SupportItem />', () => {
     expect( focusable.exists() ).toEqual( true );
 
     // larger screens
+    const windowOuterWidth = window.outerWidth;
     window.outerWidth = 1000;
     const shortname = isWindowWidthLessThanOrEqualTo( 900 )
       ? 'image-image-...-image-1.png'
@@ -288,5 +289,8 @@ describe( '<SupportItem />', () => {
     window.outerWidth = 800;
     expect( window.outerWidth ).toEqual( 800 );
     expect( focusable.contains( shortname ) ).toEqual( true );
+
+    // restore default
+    window.outWidth = windowOuterWidth;
   } );
 } );
