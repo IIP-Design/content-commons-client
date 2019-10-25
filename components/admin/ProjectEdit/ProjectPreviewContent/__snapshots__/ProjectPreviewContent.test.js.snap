@@ -37,7 +37,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
               "textDirection": "LTR",
             },
             "updatedAt": "2019-06-18T13:58:10.024Z",
-            "url": "2019/06/123/image-1.jpg",
+            "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
             "use": Object {
               "__typename": "ImageUse",
               "id": "imu33",
@@ -48,6 +48,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
         "units": Array [
           Object {
             "__typename": "VideoUnit",
+            "createdAt": "2019-06-18T14:58:10.024Z",
             "descPublic": "the arabic description",
             "files": Array [
               Object {
@@ -152,7 +153,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                     "textDirection": "RTL",
                   },
                   "updatedAt": "2019-06-18T14:58:10.024Z",
-                  "url": "2019/06/123/image-1.jpg",
+                  "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
                   "use": Object {
                     "__typename": "ImageUse",
                     "id": "imu33",
@@ -167,6 +168,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
           },
           Object {
             "__typename": "VideoUnit",
+            "createdAt": "2019-06-18T12:58:10.024Z",
             "descPublic": "the english description",
             "files": Array [
               Object {
@@ -305,7 +307,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                     "textDirection": "RTL",
                   },
                   "updatedAt": "2019-06-18T14:58:10.024Z",
-                  "url": "2019/06/123/image-1.jpg",
+                  "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
                   "use": Object {
                     "__typename": "ImageUse",
                     "id": "imu33",
@@ -827,6 +829,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                         selectedLanguageUnit={
                           Object {
                             "__typename": "VideoUnit",
+                            "createdAt": "2019-06-18T12:58:10.024Z",
                             "descPublic": "the english description",
                             "files": Array [
                               Object {
@@ -965,7 +968,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                                     "textDirection": "RTL",
                                   },
                                   "updatedAt": "2019-06-18T14:58:10.024Z",
-                                  "url": "2019/06/123/image-1.jpg",
+                                  "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
                                   "use": Object {
                                     "__typename": "ImageUse",
                                     "id": "imu33",
@@ -1047,6 +1050,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                             selectedLanguageUnit={
                               Object {
                                 "__typename": "VideoUnit",
+                                "createdAt": "2019-06-18T12:58:10.024Z",
                                 "descPublic": "the english description",
                                 "files": Array [
                                   Object {
@@ -1185,7 +1189,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                                         "textDirection": "RTL",
                                       },
                                       "updatedAt": "2019-06-18T14:58:10.024Z",
-                                      "url": "2019/06/123/image-1.jpg",
+                                      "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
                                       "use": Object {
                                         "__typename": "ImageUse",
                                         "id": "imu33",
@@ -1325,7 +1329,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
       >
         <Embed
           id="1evw4fRu3bo"
-          placeholder="https://s3-url.com/2019/06/123/image-1.jpg"
+          placeholder="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE"
           source="youtube"
         >
           <div
@@ -1343,7 +1347,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
             </Icon>
             <img
               className="placeholder"
-              src="https://s3-url.com/2019/06/123/image-1.jpg"
+              src="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE"
             />
           </div>
         </Embed>
