@@ -5,10 +5,6 @@ import VideoProjectFile from './VideoProjectFile';
 jest.mock( 'lib/utils', () => ( {
   formatBytes: jest.fn( () => '631.9 MB' ),
   formatDate: jest.fn( () => 'May 5, 2019' ),
-  getPathToS3Bucket: jest.fn( () => {} ),
-  getS3Url: jest.fn( assetPath => (
-    `https://s3-url.com/${assetPath}`
-  ) ),
   getStreamData: jest.fn( ( stream, site = 'youtube', field = 'url' ) => {
     const uri = stream.find( s => s.site.toLowerCase() === site );
     if ( uri && Object.keys( uri ).length > 0 ) {
