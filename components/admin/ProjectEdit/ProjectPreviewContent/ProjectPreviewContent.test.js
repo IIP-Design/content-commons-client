@@ -16,7 +16,6 @@ import {
 } from './mocks';
 
 jest.mock( 'lib/utils', () => ( {
-  getPathToS3Bucket: jest.fn( () => {} ),
   getS3Url: jest.fn( assetPath => (
     `https://s3-url.com/${assetPath}`
   ) ),
