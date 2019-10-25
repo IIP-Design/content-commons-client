@@ -16,9 +16,6 @@ import {
 } from './mocks';
 
 jest.mock( 'lib/utils', () => ( {
-  getS3Url: jest.fn( assetPath => (
-    `https://s3-url.com/${assetPath}`
-  ) ),
   getStreamData: jest.fn( ( stream, site = 'youtube', field = 'url' ) => {
     const uri = stream.find( s => s.site.toLowerCase() === site );
     if ( uri && Object.keys( uri ).length > 0 ) {
