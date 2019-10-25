@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
+import './TableBody.scss';
 import { Loader, Table } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
+import PropTypes from 'prop-types';
+import { Query } from 'react-apollo';
+import React from 'react';
 import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import gql from 'graphql-tag';
 import orderBy from 'lodash/orderBy';
-import withSignedUrl from 'hocs/withSignedUrl/withSignedUrl';
-import './TableBody.scss';
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
   query VideoProjectsByTeam(
@@ -77,11 +76,46 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
   }
 `;
 
+const getLangTaxonomies = ( array, locale = 'en-us' ) => {
+  if ( !Array.isArray( array ) || !array.length ) return '';
+  return (
+    array.map( tax => (
+      tax.translations
+        .find( translation => translation.language.locale === locale )
+        .name
+    ) ).join( ', ' )
+  );
+};
+
+const normalizeData = videoProjects => {
+  const normalizedVideoProjects = [];
+
+  videoProjects.forEach( videoProject => {
+    const normalizedProject = Object.create( {}, {
+      id: { value: videoProject.id },
+      createdAt: { value: videoProject.createdAt },
+      updatedAt: { value: videoProject.updatedAt },
+      projectTitle: { value: videoProject.projectTitle },
+      author: { value: `${videoProject.author ? videoProject.author.firstName : ''} ${videoProject.author ? videoProject.author.lastName : ''}` },
+      team: { value: videoProject.team ? videoProject.team.name : '' },
+      status: { value: videoProject.status },
+      visibility: { value: videoProject.visibility },
+      thumbnail: {
+        value: {
+          url: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].url : '',
+          alt: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].alt : ''
+        }
+      },
+      categories: { value: getLangTaxonomies( videoProject.categories ) }
+    } );
+    normalizedVideoProjects.push( normalizedProject );
+  } );
+
+  return normalizedVideoProjects;
+};
+
 const TableBody = props => {
   const {
-    data,
-    getSignedUrlGet,
-    direction,
     searchTerm,
     selectedItems,
     tableHeaders,
@@ -90,160 +124,103 @@ const TableBody = props => {
     projectTab
   } = props;
 
-  const { skip, first } = variables;
-
-  const [tableData, setTableData] = useState( [] );
-
-  const getLangTaxonomies = ( array, locale = 'en-us' ) => {
-    if ( !Array.isArray( array ) || !array.length ) return '';
-    return (
-      array.map( tax => (
-        tax.translations
-          .find( translation => translation.language.locale === locale )
-          .name
-      ) ).join( ', ' )
-    );
-  };
-
-  const getSignedThumbnailUrl = async videoProject => {
-    // need to store url as this re fetchs every time, .ie. between renders
-    if ( videoProject.thumbnails && videoProject.thumbnails.length ) {
-      const signedUrl = await getSignedUrlGet( videoProject.thumbnails[0].url );
-
-      return {
-        url: signedUrl,
-        alt: videoProject.thumbnails[0].alt || ''
-      };
-    }
-    return { url: '', alt: '' };
-  };
-
-  const getDirection = dir => ( dir === 'ascending' ? 'asc' : 'desc' );
-
-
-  const normalizeData = async projects => {
-    const normalizedVideoProjects = await Promise.all( projects.map( async videoProject => {
-      const tn = await getSignedThumbnailUrl( videoProject );
-
-      const _data = {
-        id: videoProject.id,
-        createdAt: videoProject.createdAt,
-        updatedAt: videoProject.updatedAt,
-        projectTitle: videoProject.projectTitle,
-        author: `${videoProject.author ? videoProject.author.firstName : ''} ${videoProject.author ? videoProject.author.lastName : ''}`,
-        team: videoProject.team ? videoProject.team.name : '',
-        status: videoProject.status,
-        visibility: videoProject.visibility,
-        thumbnail: tn,
-        categories: getLangTaxonomies( videoProject.categories )
-      };
-
-      return Promise.resolve( _data );
-    } ) );
-
-    setTableData( normalizedVideoProjects );
-  };
-
-
-  const sort = ( _tableData, dir ) => {
-    // Sort data by clicked column & direction
-    // Default sort by createdAt & DESC
-    const sorted = orderBy(
-      _tableData,
-      tableDatum => {
-        let { column } = props;
-        if ( !column ) column = 'createdAt';
-        // Format table data for case insensitive sorting
-        const formattedTableDatum = tableDatum[column].toString().toLowerCase();
-        return formattedTableDatum;
-      },
-      [dir]
-    );
-
-    return sorted;
-  };
-
-
-  useEffect( () => {
-    if ( data.videoProjects && data.videoProjects.length ) {
-      normalizeData( data.videoProjects );
-    }
-  }, [data.videoProjects] );
-
-
-  const renderRow = d => (
-    <TableRow
-      key={ d.id }
-      d={ d }
-      selectedItems={ selectedItems }
-      tableHeaders={ tableHeaders }
-      toggleItemSelection={ toggleItemSelection }
-      projectTab={ projectTab }
-    />
-  );
-
-
-  if ( data.loading ) {
-    return (
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>
-            <Loader active inline size="small" />
-            <span style={ { marginLeft: '0.5em', fontSize: '1.5em' } }>
-              Loading...
-            </span>
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    );
-  }
-
-  if ( data.error ) {
-    return (
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>
-            <ApolloError error={ data.error } />
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    );
-  }
-
-  if ( data && !data.videoProjects ) return null;
-
-
-  if ( searchTerm && !data.videoProjects.length ) {
-    return (
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>
-            No results for &ldquo;{ searchTerm }&rdquo;
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    );
-  }
-
-  if ( !data.videoProjects.length ) {
-    return (
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>No projects</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    );
-  }
-
   return (
-    <Table.Body className="projects">
-      {
-        sort( tableData, getDirection( direction || 'desc' ) ).slice( skip, skip + first ).map( d => renderRow( d ) )
-      }
-    </Table.Body>
+    <Query
+      query={ TEAM_VIDEO_PROJECTS_QUERY }
+      variables={ { ...variables } }
+      fetchPolicy="cache-and-network"
+    >
+      { ( { loading, error, data } ) => {
+        if ( loading ) {
+          return (
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell>
+                  <Loader active inline size="small" />
+                  <span style={ { marginLeft: '0.5em', fontSize: '1.5em' } }>
+                    Loading...
+                  </span>
+                </Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          );
+        }
+        if ( error ) {
+          return (
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell>
+                  <ApolloError error={ error } />
+                </Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          );
+        }
+
+        if ( data && !data.videoProjects ) return null;
+
+        const { videoProjects } = data;
+
+        if ( searchTerm && !videoProjects.length ) {
+          return (
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell>
+                  No results for &ldquo;{ searchTerm }&rdquo;
+                </Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          );
+        }
+
+        if ( !videoProjects.length ) {
+          return (
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell>No projects</Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          );
+        }
+
+        // Sort data by clicked column & direction
+        // Default sort by createdAt & DESC
+        const direction = props.direction ? `${props.direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
+
+        const tableData = orderBy(
+          normalizeData( videoProjects ),
+          tableDatum => {
+            let { column } = props;
+            if ( !column ) column = 'createdAt';
+            // Format table data for case insensitive sorting
+            const formattedTableDatum = tableDatum[column].toString().toLowerCase();
+            return formattedTableDatum;
+          },
+          [direction]
+        );
+
+        // skip & first query vars are used as start/end slice() params to paginate tableData on client
+        const { skip, first } = variables;
+        const paginatedTableData = tableData.slice( skip, skip + first );
+
+        return (
+          <Table.Body className="projects">
+            { paginatedTableData.map( d => (
+              <TableRow
+                key={ d.id }
+                d={ d }
+                selectedItems={ selectedItems }
+                tableHeaders={ tableHeaders }
+                toggleItemSelection={ toggleItemSelection }
+                projectTab={ projectTab }
+              />
+            ) ) }
+          </Table.Body>
+        );
+      } }
+    </Query>
   );
 };
-
 
 TableBody.propTypes = {
   searchTerm: PropTypes.string,
@@ -252,19 +229,8 @@ TableBody.propTypes = {
   toggleItemSelection: PropTypes.func,
   variables: PropTypes.object,
   direction: PropTypes.string,
-  projectTab: PropTypes.string,
-  getSignedUrlGet: PropTypes.func,
-  data: PropTypes.object
+  projectTab: PropTypes.string
 };
 
-export default compose(
-  withSignedUrl,
-  graphql( TEAM_VIDEO_PROJECTS_QUERY, {
-    options: props => ( {
-      variables: { ...props.variables }
-    } ),
-    fetchPolicy: 'cache-and-network'
-  } ),
-)( TableBody );
-
+export default TableBody;
 export { TEAM_VIDEO_PROJECTS_QUERY };

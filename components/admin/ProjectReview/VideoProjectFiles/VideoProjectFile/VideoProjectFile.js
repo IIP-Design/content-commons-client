@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { compose } from 'react-apollo';
 import { Embed, Grid } from 'semantic-ui-react';
 import moment from 'moment'; // already benig used so import here
 import {
@@ -10,27 +9,17 @@ import {
   getVimeoId,
   secondsToHMS
 } from 'lib/utils';
-import withSignedUrl from 'hocs/withSignedUrl/withSignedUrl';
-
 
 const VideoProjectFile = props => {
-  const { file, thumbnail, getSignedUrlGet } = props;
+  const { file, thumbnail } = props;
 
   const [thumbnailProps, setThumbnailProps] = useState( { url: '', alt: '' } );
 
-  const getSignedThumbnail = async tn => {
-    try {
-      const signedUrl = await getSignedUrlGet( tn.image.url );
-      const alt = ( file && file.language ) ? `a thumbnail image for this file in ${file.language.displayName}` : '';
-      setThumbnailProps( { url: signedUrl, alt } );
-    } catch ( err ) {
-      console.log( 'Unable to fetch signed url for thumbnail' );
-    }
-  };
-
   useEffect( () => {
     if ( thumbnail && thumbnail.image ) {
-      getSignedThumbnail( thumbnail );
+      const { url } = thumbnail.image;
+      const alt = ( file && file.language ) ? `a thumbnail image for this file in ${file.language.displayName}` : '';
+      setThumbnailProps( { url, alt } );
     }
   }, [] );
 
@@ -101,8 +90,7 @@ VideoProjectFile.propTypes = {
   thumbnail: PropTypes.oneOfType( [
     PropTypes.object,
     PropTypes.bool,
-  ] ),
-  getSignedUrlGet: PropTypes.func
+  ] )
 };
 
 VideoProjectFile.defaultProps = {
@@ -110,4 +98,4 @@ VideoProjectFile.defaultProps = {
   thumbnail: {}
 };
 
-export default compose( withSignedUrl )( VideoProjectFile );
+export default VideoProjectFile;

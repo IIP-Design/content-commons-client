@@ -19,7 +19,6 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
 import { getCount } from 'lib/utils';
 import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
-import withSignedUrl from 'hocs/withSignedUrl/withSignedUrl';
 import { UploadContext } from '../../ProjectEdit/VideoEdit/VideoEdit';
 
 import './SupportItem.scss';
@@ -58,11 +57,7 @@ const SupportItem = props => {
 
   const checkFileUrlStatus = async () => {
     if ( item && item.url ) {
-      const { getSignedUrlGet } = props;
-
       try {
-        const path = await getSignedUrlGet( item.url );
-
         const options = {
           headers: {
             Pragma: 'no-cache',
@@ -74,7 +69,7 @@ const SupportItem = props => {
         // the head req was not working with the signed url so using get and
         // simulating a head req but only returning 1 byte (see Range header above).
         // Rather hacky so should research a better way
-        axios.get( path, options )
+        axios.get( item.url, options )
           .catch( err => {
             console.dir( err );
             setError( err.isAxiosError );
@@ -232,7 +227,6 @@ const SupportItem = props => {
           ? (
             null
             /* <FileRemoveReplaceButtonGroup
-              onReplace={ () => {} }
               onRemove={ () => console.log( 'removed' ) }
             /> */
           )
@@ -254,11 +248,9 @@ const SupportItem = props => {
 
 SupportItem.propTypes = {
   item: PropTypes.object,
-  data: PropTypes.object,
-  getSignedUrlGet: PropTypes.func
+  data: PropTypes.object
 };
 
 export default compose(
-  withSignedUrl,
   graphql( LANGUAGES_QUERY )
 )( SupportItem );
