@@ -83,8 +83,8 @@ const props = {
       filename: 'image-1.jpg',
       filesize: 28371,
       filetype: 'image/jpeg',
-      alt: 'the alt text',
-      url: `2019/06/${id}/image-1.jpg`,
+      alt: null,
+      url: `https://s3-bucket-url.s3.amazonaws.com/2019/06/${id}/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE`,
       language: {
         __typename: 'Language',
         id: 'en38',
