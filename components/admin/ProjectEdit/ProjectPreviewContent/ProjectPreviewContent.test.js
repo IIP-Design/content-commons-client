@@ -16,10 +16,6 @@ import {
 } from './mocks';
 
 jest.mock( 'lib/utils', () => ( {
-  getPathToS3Bucket: jest.fn( () => {} ),
-  getS3Url: jest.fn( assetPath => (
-    `https://s3-url.com/${assetPath}`
-  ) ),
   getStreamData: jest.fn( ( stream, site = 'youtube', field = 'url' ) => {
     const uri = stream.find( s => s.site.toLowerCase() === site );
     if ( uri && Object.keys( uri ).length > 0 ) {
@@ -395,14 +391,12 @@ describe( '<ProjectPreviewContent />', () => {
 
     const preview = wrapper.find( 'ProjectPreviewContent' );
     const embed = preview.find( 'Embed' );
-    const assetPath = mocks[0].result.data.project.thumbnails[0].url;
-    const s3Bucket = 'https://s3-url.com';
+    const { url } = mocks[0].result.data.project.thumbnails[0];
 
     expect( embed.exists() ).toEqual( true );
     expect( embed.prop( 'id' ) ).toEqual( '1evw4fRu3bo' );
     expect( embed.prop( 'source' ) ).toEqual( 'youtube' );
-    expect( embed.prop( 'placeholder' ) )
-      .toEqual( `${s3Bucket}/${assetPath}` );
+    expect( embed.prop( 'placeholder' ) ).toEqual( url );
   } );
 
   it( 'renders an embedded Vimeo video if there is no YouTube url', async () => {
@@ -416,14 +410,12 @@ describe( '<ProjectPreviewContent />', () => {
 
     const preview = wrapper.find( 'ProjectPreviewContent' );
     const embed = preview.find( 'Embed' );
-    const assetPath = vimeoMocks[0].result.data.project.thumbnails[0].url;
-    const s3Bucket = 'https://s3-url.com';
+    const { url } = vimeoMocks[0].result.data.project.thumbnails[0];
 
     expect( embed.exists() ).toEqual( true );
     expect( embed.prop( 'id' ) ).toEqual( '340239507' );
     expect( embed.prop( 'source' ) ).toEqual( 'vimeo' );
-    expect( embed.prop( 'placeholder' ) )
-      .toEqual( `${s3Bucket}/${assetPath}` );
+    expect( embed.prop( 'placeholder' ) ).toEqual( url );
   } );
 
   it( 'renders a project thumbnail if there are no YouTube or Vimeo urls', async () => {
@@ -439,13 +431,11 @@ describe( '<ProjectPreviewContent />', () => {
     const embed = preview.find( 'Embed' );
     const thumbnail = preview.find( 'figure.modal_thumbnail' );
     const img = thumbnail.find( 'img.overlay-image' );
-    const assetPath = noStreamsMocks[0].result.data.project.thumbnails[0].url;
-    const { alt } = noStreamsMocks[0].result.data.project.thumbnails[0];
-    const s3Bucket = 'https://s3-url.com';
+    const { alt, url } = noStreamsMocks[0].result.data.project.thumbnails[0];
 
     expect( embed.exists() ).toEqual( false );
     expect( thumbnail.exists() ).toEqual( true );
-    expect( img.prop( 'src' ) ).toEqual( `${s3Bucket}/${assetPath}` );
+    expect( img.prop( 'src' ) ).toEqual( url );
     expect( img.prop( 'alt' ) ).toEqual( alt );
   } );
 

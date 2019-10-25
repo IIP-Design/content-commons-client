@@ -5,10 +5,6 @@ import VideoProjectFile from './VideoProjectFile';
 jest.mock( 'lib/utils', () => ( {
   formatBytes: jest.fn( () => '631.9 MB' ),
   formatDate: jest.fn( () => 'May 5, 2019' ),
-  getPathToS3Bucket: jest.fn( () => {} ),
-  getS3Url: jest.fn( assetPath => (
-    `https://s3-url.com/${assetPath}`
-  ) ),
   getStreamData: jest.fn( ( stream, site = 'youtube', field = 'url' ) => {
     const uri = stream.find( s => s.site.toLowerCase() === site );
     if ( uri && Object.keys( uri ).length > 0 ) {
@@ -83,8 +79,8 @@ const props = {
       filename: 'image-1.jpg',
       filesize: 28371,
       filetype: 'image/jpeg',
-      alt: 'the alt text',
-      url: `2019/06/${id}/image-1.jpg`,
+      alt: null,
+      url: `https://s3-bucket-url.s3.amazonaws.com/2019/06/${id}/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE`,
       language: {
         __typename: 'Language',
         id: 'en38',
@@ -126,8 +122,7 @@ describe( '<VideoProjectFile />', () => {
     const wrapper = mount( Component );
     const embed = wrapper.find( 'Embed' );
     const thumbnail = wrapper.find( 'figure.thumbnail' );
-    const assetPath = props.thumbnail.image.url;
-    const s3Bucket = 'https://s3-url.com';
+    const { url } = props.thumbnail.image;
     const youTubeEl = (
       <p><b className="label">YouTube URL:</b> https://www.youtube.com/watch?v=1evw4fRu3bo</p>
     );
@@ -139,8 +134,7 @@ describe( '<VideoProjectFile />', () => {
     expect( embed.length ).toEqual( 1 );
     expect( embed.prop( 'id' ) ).toEqual( '1evw4fRu3bo' );
     expect( embed.prop( 'source' ) ).toEqual( 'youtube' );
-    expect( embed.prop( 'placeholder' ) )
-      .toEqual( `${s3Bucket}/${assetPath}` );
+    expect( embed.prop( 'placeholder' ) ).toEqual( url );
     expect( wrapper.contains( youTubeEl ) ).toEqual( true );
     expect( wrapper.contains( vimeoEl ) ).toEqual( false );
     expect( wrapper.contains( thumbnail ) ).toEqual( false );
@@ -163,9 +157,8 @@ describe( '<VideoProjectFile />', () => {
     };
     const wrapper = mount( <VideoProjectFile { ...vimeoProps } /> );
     const embed = wrapper.find( 'Embed' );
-    const assetPath = vimeoProps.thumbnail.image.url;
+    const { url } = vimeoProps.thumbnail.image;
     const thumbnail = wrapper.find( 'figure.thumbnail' );
-    const s3Bucket = 'https://s3-url.com';
     const youTubeEl = (
       <p><b className="label">YouTube URL:</b> https://www.youtube.com/watch?v=1evw4fRu3bo</p>
     );
@@ -177,8 +170,7 @@ describe( '<VideoProjectFile />', () => {
     expect( embed.length ).toEqual( 1 );
     expect( embed.prop( 'id' ) ).toEqual( '340239507' );
     expect( embed.prop( 'source' ) ).toEqual( 'vimeo' );
-    expect( embed.prop( 'placeholder' ) )
-      .toEqual( `${s3Bucket}/${assetPath}` );
+    expect( embed.prop( 'placeholder' ) ).toEqual( url );
     expect( wrapper.contains( youTubeEl ) ).toEqual( false );
     expect( wrapper.contains( vimeoEl ) ).toEqual( true );
     expect( wrapper.contains( thumbnail ) ).toEqual( false );
@@ -196,9 +188,8 @@ describe( '<VideoProjectFile />', () => {
     const embed = wrapper.find( 'Embed' );
     const thumbnail = wrapper.find( 'figure.thumbnail' );
     const img = thumbnail.find( 'img.thumbnail-image' );
-    const assetPath = noStreamsProps.thumbnail.image.url;
-    const { alt } = noStreamsProps.thumbnail.image;
-    const s3Bucket = 'https://s3-url.com';
+    const { url } = noStreamsProps.thumbnail.image;
+    const alt = `a thumbnail image for this file in ${noStreamsProps.file.language.displayName}`;
     const youTubeEl = (
       <p><b className="label">YouTube URL:</b> https://www.youtube.com/watch?v=1evw4fRu3bo</p>
     );
@@ -209,7 +200,7 @@ describe( '<VideoProjectFile />', () => {
     expect( embed.exists() ).toEqual( false );
     expect( thumbnail.exists() ).toEqual( true );
     expect( thumbnail.length ).toEqual( 1 );
-    expect( img.prop( 'src' ) ).toEqual( `${s3Bucket}/${assetPath}` );
+    expect( img.prop( 'src' ) ).toEqual( url );
     expect( img.prop( 'alt' ) ).toEqual( alt );
     expect( wrapper.contains( youTubeEl ) ).toEqual( false );
     expect( wrapper.contains( vimeoEl ) ).toEqual( false );
@@ -221,6 +212,13 @@ describe( '<VideoProjectFile />', () => {
       file: {
         ...props.file,
         stream: []
+      },
+      thumbnail: {
+        ...props.thumbnail,
+        image: {
+          ...props.thumbnail.image,
+          url: ''
+        }
       }
     };
     const wrapper = mount( <VideoProjectFile { ...noStreamsProps } /> );
