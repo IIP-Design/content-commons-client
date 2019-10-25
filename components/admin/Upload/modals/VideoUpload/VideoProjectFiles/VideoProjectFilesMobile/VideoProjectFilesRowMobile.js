@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
-import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
-import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
-import UseDropdown from 'components/admin/dropdowns/UseDropdown';
-import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
+import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
+import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown/VideoBurnedInStatusDropdown';
+import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
+import QualityDropdown from 'components/admin/dropdowns/QualityDropdown/QualityDropdown';
 import FileRemoveReplaceMenu from 'components/admin/FileRemoveReplaceMenu/FileRemoveReplaceMenu';
 import { truncateAndReplaceStr } from 'lib/utils';
 import UploadCompletionTracker from '../UploadCompletionTracker';

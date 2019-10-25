@@ -16,7 +16,7 @@ import ApolloError from 'components/errors/ApolloError';
 import GeneralError from 'components/errors/GeneralError/GeneralError';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 // import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
-import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
+import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import { getCount } from 'lib/utils';
 import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import withSignedUrl from 'hocs/withSignedUrl/withSignedUrl';

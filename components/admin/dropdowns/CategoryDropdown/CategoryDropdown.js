@@ -8,21 +8,21 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { getDirection } from 'lib/language';
 import { titleCase } from 'lib/utils';
 
-import './dropdown.scss';
+import '../dropdown.scss';
 
 const CATEGORIES_QUERY = gql`
   query CATEGORIES_QUERY( $locale: String!) {
     categories {
-    id
-    translations( where: {
-      language: {
-        locale: $locale
-      }
-    } ) {
       id
-      name
+      translations( where: {
+        language: {
+          locale: $locale
+        }
+      } ) {
+        id
+        name
+      }
     }
-  }
   }
 `;
 

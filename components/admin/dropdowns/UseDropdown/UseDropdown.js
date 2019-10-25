@@ -28,7 +28,7 @@ const IMAGE_USE_QUERY = gql`
 const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
 const UseDropdown = props => (
-  <Query query={ props.type === 'video' ? VIDEO_USE_QUERY : IMAGE_USE_QUERY }>
+  <Query query={ props.type.toLowerCase() === 'video' ? VIDEO_USE_QUERY : IMAGE_USE_QUERY }>
     { ( { data, loading, error } ) => {
       if ( error ) return `Error! ${error.message}`;
 

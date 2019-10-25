@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
-import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
+import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { truncateAndReplaceStr } from 'lib/utils';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
