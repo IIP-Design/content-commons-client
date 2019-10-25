@@ -3,7 +3,6 @@ import React, {
 } from 'react';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
-import { compose } from 'react-apollo';
 import { getCount } from 'lib/utils';
 import truncate from 'lodash/truncate';
 import {
@@ -13,14 +12,13 @@ import iconVideoCamera from 'static/icons/icon_32px_videoCamera.png';
 import FileUploadProgressBar from 'components/admin/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
 import GeneralError from 'components/errors/GeneralError/GeneralError';
 import { UploadContext } from 'components/admin/ProjectEdit/VideoEdit/VideoEdit';
-import withSignedUrl from 'hocs/withSignedUrl/withSignedUrl';
 import './ProjectUnitItem.scss';
 
 const EditSingleProjectItem = dynamic( () => import( /* webpackChunkName: "editSingleProjectItem" */ 'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem' ) );
 
 const ProjectUnitItem = props => {
   const {
-    projectId, unit, filesToUpload, getSignedUrlGet
+    projectId, unit, filesToUpload,
   } = props;
   const PLACEHOLDER = null;
   const [thumbnail, setThumbnail] = useState( PLACEHOLDER );
@@ -35,12 +33,9 @@ const ProjectUnitItem = props => {
   const uploadInProgress = useContext( UploadContext );
 
   // implement subscriptions to track thumbnail changes
-  const getThumbnail = async u => {
+  const getThumbnail = u => {
     if ( u && u.thumbnails && u.thumbnails[0] && u.thumbnails[0].image ) {
-      const url = await getSignedUrlGet( u.thumbnails[0].image.url );
-      if ( url ) {
-        setThumbnail( url );
-      }
+      setThumbnail( u.thumbnails[0].image.url );
     }
   };
 
@@ -152,9 +147,7 @@ const ProjectUnitItem = props => {
 ProjectUnitItem.propTypes = {
   unit: PropTypes.object,
   filesToUpload: PropTypes.array,
-  projectId: PropTypes.string,
-  getSignedUrlGet: PropTypes.func
+  projectId: PropTypes.string
 };
 
-
-export default compose( withSignedUrl )( ProjectUnitItem );
+export default ProjectUnitItem;
