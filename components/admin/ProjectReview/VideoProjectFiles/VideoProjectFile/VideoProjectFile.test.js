@@ -217,6 +217,13 @@ describe( '<VideoProjectFile />', () => {
       file: {
         ...props.file,
         stream: []
+      },
+      thumbnail: {
+        ...props.thumbnail,
+        image: {
+          ...props.thumbnail.image,
+          url: ''
+        }
       }
     };
     const wrapper = mount( <VideoProjectFile { ...noStreamsProps } /> );
