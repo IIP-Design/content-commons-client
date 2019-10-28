@@ -21,7 +21,7 @@ const VIDEO_UNIT_QUERY = gql`
       thumbnails {
         image {
           id
-          url
+          signedUrl
         }
       }
       files {
@@ -47,7 +47,7 @@ const FileSidebar = () => {
         if ( error ) return <p>{ `Error: ${error.message}` }</p>;
 
         const thumbnail = data.videoUnit && data.videoUnit.thumbnails ? data.videoUnit.thumbnails[0] : {};
-        const image = thumbnail && thumbnail.image && thumbnail.image.url ? thumbnail.image.url : '';
+        const image = thumbnail && thumbnail.image && thumbnail.image.signedUrl ? thumbnail.image.signedUrl : '';
         const files = data.videoUnit && data.videoUnit.files ? data.videoUnit.files : [];
 
         return (

@@ -56,7 +56,7 @@ const SupportItem = props => {
   const debounceResize = debounce( updateWidths, DELAY_INTERVAL );
 
   const checkFileUrlStatus = async () => {
-    if ( item && item.url ) {
+    if ( item && item.signedUrl ) {
       try {
         const options = {
           headers: {
@@ -69,7 +69,7 @@ const SupportItem = props => {
         // the head req was not working with the signed url so using get and
         // simulating a head req but only returning 1 byte (see Range header above).
         // Rather hacky so should research a better way
-        axios.get( item.url, options )
+        axios.get( item.signedUrl, options )
           .catch( err => {
             console.dir( err );
             setError( err.isAxiosError );
@@ -100,7 +100,7 @@ const SupportItem = props => {
 
   useEffect( () => {
     hasError();
-  }, [item.url] );
+  }, [item.signedUrl] );
 
   if ( !item || !getCount( item ) ) return null;
   if ( props.data.loading ) return 'Loading...';

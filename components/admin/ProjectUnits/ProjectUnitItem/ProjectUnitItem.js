@@ -35,7 +35,7 @@ const ProjectUnitItem = props => {
   // implement subscriptions to track thumbnail changes
   const getThumbnail = u => {
     if ( u && u.thumbnails && u.thumbnails[0] && u.thumbnails[0].image ) {
-      setThumbnail( u.thumbnails[0].image.url );
+      setThumbnail( u.thumbnails[0].image.signedUrl );
     }
   };
 

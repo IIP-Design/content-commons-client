@@ -131,6 +131,7 @@ const VideoReview = props => {
 
     try {
       setPublishing( true );
+      console.log( 'Publishing to queue...' );
       await publishProject( { variables: { id } } );
 
       // Remove updated project from redux projectUpdate state
@@ -310,7 +311,9 @@ const projectStatusChangeSubscription = graphql( PROJECT_STATUS_CHANGE_SUBSCRIPT
   options: props => ( {
     variables: { id: props.id },
     onSubscriptionData: ( { subscriptionData } ) => {
+      console.log( 'Subscription data received...' );
       const { data: { projectStatusChange } } = subscriptionData;
+      console.dir( projectStatusChange );
       if ( projectStatusChange.status === 'PUBLISHED' || projectStatusChange.status === 'DRAFT' ) {
         Router.push( { pathname: '/admin/dashboard' } );
       }

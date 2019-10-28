@@ -13,13 +13,13 @@ import {
 const VideoProjectFile = props => {
   const { file, thumbnail } = props;
 
-  const [thumbnailProps, setThumbnailProps] = useState( { url: '', alt: '' } );
+  const [thumbnailProps, setThumbnailProps] = useState( { signedUrl: '', alt: '' } );
 
   useEffect( () => {
     if ( thumbnail && thumbnail.image ) {
-      const { url } = thumbnail.image;
+      const { signedUrl } = thumbnail.image;
       const alt = ( file && file.language ) ? `a thumbnail image for this file in ${file.language.displayName}` : '';
-      setThumbnailProps( { url, alt } );
+      setThumbnailProps( { signedUrl, alt } );
     }
   }, [] );
 
@@ -47,22 +47,22 @@ const VideoProjectFile = props => {
         { youTubeUrl && (
           <Embed
             id={ getYouTubeId( youTubeUrl ) }
-            placeholder={ thumbnailProps.url }
+            placeholder={ thumbnailProps.signedUrl }
             source="youtube"
           />
         ) }
         { ( !youTubeUrl && vimeoUrl ) && (
           <Embed
             id={ getVimeoId( vimeoUrl ) }
-            placeholder={ thumbnailProps.url }
+            placeholder={ thumbnailProps.signedUrl }
             source="vimeo"
           />
         ) }
-        { ( !youTubeUrl && !vimeoUrl && thumbnailProps.url ) && (
+        { ( !youTubeUrl && !vimeoUrl && thumbnailProps.signedUrl ) && (
           <figure className="thumbnail overlay">
             <img
               className="thumbnail-image"
-              src={ thumbnailProps.url }
+              src={ thumbnailProps.signedUrl }
               alt={ thumbnailProps.alt }
             />
           </figure>

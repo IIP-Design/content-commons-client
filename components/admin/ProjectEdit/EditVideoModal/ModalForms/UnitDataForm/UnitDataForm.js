@@ -172,7 +172,7 @@ const UnitDataForm = ( {
   let thumbnailUrl = '';
   let thumbnailAlt = '';
   if ( unit.thumbnails && unit.thumbnails.length ) {
-    thumbnailUrl = unit.thumbnails[0].image.url;
+    thumbnailUrl = unit.thumbnails[0].image.signedUrl;
     thumbnailAlt = unit.thumbnails[0].image.alt || '';
   }
 

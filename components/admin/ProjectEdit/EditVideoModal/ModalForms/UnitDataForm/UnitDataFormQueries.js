@@ -21,6 +21,7 @@ export const VIDEO_UNIT_QUERY = gql`
           id
           alt
           url
+          signedUrl
         }
       }
     }
