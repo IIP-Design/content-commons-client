@@ -37,7 +37,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
               "textDirection": "LTR",
             },
             "updatedAt": "2019-06-18T13:58:10.024Z",
-            "url": "2019/06/123/image-1.jpg",
+            "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
             "use": Object {
               "__typename": "ImageUse",
               "id": "imu33",
@@ -48,6 +48,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
         "units": Array [
           Object {
             "__typename": "VideoUnit",
+            "createdAt": "2019-06-18T14:58:10.024Z",
             "descPublic": "the arabic description",
             "files": Array [
               Object {
@@ -152,7 +153,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                     "textDirection": "RTL",
                   },
                   "updatedAt": "2019-06-18T14:58:10.024Z",
-                  "url": "2019/06/123/image-1.jpg",
+                  "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
                   "use": Object {
                     "__typename": "ImageUse",
                     "id": "imu33",
@@ -167,6 +168,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
           },
           Object {
             "__typename": "VideoUnit",
+            "createdAt": "2019-06-18T12:58:10.024Z",
             "descPublic": "the english description",
             "files": Array [
               Object {
@@ -305,7 +307,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                     "textDirection": "RTL",
                   },
                   "updatedAt": "2019-06-18T14:58:10.024Z",
-                  "url": "2019/06/123/image-1.jpg",
+                  "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
                   "use": Object {
                     "__typename": "ImageUse",
                     "id": "imu33",
@@ -579,7 +581,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                     "textDirection": "RTL",
                   },
                   "updatedAt": "2019-06-18T14:58:10.024Z",
-                  "url": "2019/06/123/image-1.jpg",
+                  "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
                   "use": Object {
                     "__typename": "ImageUse",
                     "id": "imu33",
@@ -828,7 +830,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                     "textDirection": "RTL",
                   },
                   "updatedAt": "2019-06-18T14:58:10.024Z",
-                  "url": "2019/06/123/image-1.jpg",
+                  "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
                   "use": Object {
                     "__typename": "ImageUse",
                     "id": "imu33",

@@ -25,7 +25,7 @@ import {
 } from 'lib/graphql/queries/video';
 
 
-import EditProjectFiles from '../ProjectEdit/EditProjectFilesModal/EditPojectFilesModal';
+import EditProjectFiles from '../ProjectEdit/EditProjectFilesModal/EditProjectFilesModal';
 
 import ProjectUnitItem from './ProjectUnitItem/ProjectUnitItem';
 import './ProjectUnits.scss';

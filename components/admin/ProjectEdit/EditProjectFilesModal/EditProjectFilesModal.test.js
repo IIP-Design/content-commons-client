@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import { data } from '../../ProjectSupportFiles/SupportFileTypeList/mocks';
 import { config } from '../../ProjectSupportFiles/VideoProjectSupportFiles/config';
-import EditPojectFilesModal from './EditPojectFilesModal';
+import EditProjectFilesModal from './EditProjectFilesModal';
 
 const props = {
   supportFiles: data.projectFiles.supportFiles,
@@ -10,7 +10,7 @@ const props = {
   save: jest.fn()
 };
 
-const Component = <EditPojectFilesModal { ...props } />;
+const Component = <EditProjectFilesModal { ...props } />;
 
 describe( '<EditSupportFiles />', () => {
   it( 'renders without crashing', () => {
