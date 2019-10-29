@@ -8,7 +8,7 @@ import QualityDropdown from 'components/admin/dropdowns/QualityDropdown/QualityD
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { truncateAndReplaceStr } from 'lib/utils';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import { FilesContext } from '../EditPojectFilesModal';
+import { FilesContext } from '../EditProjectFilesModal';
 import './EditVideoFileRow.scss';
 
 // Optimize re-renders as component could potentially have many rows
