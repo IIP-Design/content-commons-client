@@ -9,9 +9,7 @@ import { Icon } from 'semantic-ui-react';
 
 import './Carousel.scss';
 
-const Carousel = ( {
-  children, legend, selectedItem, vertical
-} ) => {
+const Carousel = ( { children, legend, selectedItem, vertical } ) => {
   // Get the index of the initially selected item based on the id of the selectedItem prop
   const getSelectedIndex = elems => {
     let initialItem = 0;
@@ -22,8 +20,9 @@ const Carousel = ( {
     } );
     return initialItem;
   };
+
   // Get number of items in items list
-  const itemCount = children.length;
+  const itemCount = children ? children.length : 0;
 
   // Set ref for the carousel items
   const carouselItems = useRef( null );
@@ -38,7 +37,7 @@ const Carousel = ( {
   // If true disables the next button
   const [disableNext, setDisableNext] = useState( () => {
     const num = getSelectedIndex( children ) + 1;
-    const disable = ( itemCount - num ) === 0;
+    const disable = itemCount - num === 0;
     return disable;
   } );
 
@@ -53,7 +52,8 @@ const Carousel = ( {
 
     // Calculate space left to scroll to the right and bottom
     const scrollRight = list.scrollWidth - ( list.clientWidth + list.scrollLeft );
-    const scrollBottom = list.scrollHeight - ( list.clientHeight + list.scrollTop );
+    const scrollBottom =
+      list.scrollHeight - ( list.clientHeight + list.scrollTop );
 
     // Disable scroll buttons if there is no room left to scroll
     if ( !vertical ) {
@@ -112,7 +112,9 @@ const Carousel = ( {
   // Bring item into view if selected
   const scrollToSelected = index => {
     const list = carouselItems.current;
-    if ( index === undefined || !list ) { return; }
+    if ( index === undefined || !list ) {
+      return;
+    }
 
     const items = list.children.length;
     const num = calcScrollAmount( index, items );
@@ -129,10 +131,13 @@ const Carousel = ( {
     return selectedIndex;
   } );
 
-  useEffect( () => {
-    const selectedIndex = getSelectedIndex( children );
-    scrollToSelected( selectedIndex );
-  }, [children] );
+  useEffect(
+    () => {
+      const selectedIndex = getSelectedIndex( children );
+      scrollToSelected( selectedIndex );
+    },
+    [children]
+  );
 
   const handleSelection = ( id, index ) => {
     setSelected( index );
@@ -149,7 +154,9 @@ const Carousel = ( {
 
   const isVertical = vertical ? 'vertical' : '';
   const withLegend = legend ? 'with-legend' : '';
-  const carouselItemStyle = vertical ? { width: '100%', height: '32%' } : { width: '32%' };
+  const carouselItemStyle = vertical
+    ? { width: '100%', height: '32%' }
+    : { width: '32%' };
 
   const viewportWidth = window.innerWidth || 0;
   const isMobile = viewportWidth < 991 ? 'mobile' : '';
@@ -171,8 +178,14 @@ const Carousel = ( {
           <i className="angle up icon scroll-icon" data-scroll={ -1 } />
         </div>
       ) }
-      <div className={ `carousel-content ${isMobile} ${isVertical}` } style={ showButtons ? { margin: '0' } : { margin: '24px 0' } }>
-        <div className={ `carousel-items ${isMobile} ${isVertical} ${withLegend}` } ref={ carouselItems }>
+      <div
+        className={ `carousel-content ${isMobile} ${isVertical}` }
+        style={ showButtons ? { margin: '0' } : { margin: '24px 0' } }
+      >
+        <div
+          className={ `carousel-items ${isMobile} ${isVertical} ${withLegend}` }
+          ref={ carouselItems }
+        >
           { children.map( ( child, index ) => (
             <div
               className="carousel-item"
@@ -189,7 +202,7 @@ const Carousel = ( {
         </div>
         { legend && showButtons && (
           <div className={ `carousel-legend ${isVertical}` }>
-            { ( !vertical ) && (
+            { !vertical && (
               <button
                 className="carousel-legend-button"
                 data-scroll={ -1 }
@@ -202,7 +215,7 @@ const Carousel = ( {
             ) }
             <div className={ `carousel-progress-bar ${isVertical}` }>
               { children.map( ( child, index ) => {
-                const isSelected = ( index === selected ) ? 'selected' : '';
+                const isSelected = index === selected ? 'selected' : '';
 
                 return (
                   <div
