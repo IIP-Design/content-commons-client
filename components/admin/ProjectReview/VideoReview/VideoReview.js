@@ -25,7 +25,7 @@ import {
   VIDEO_PROJECT_QUERY
 } from 'lib/graphql/queries/video';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
-import { findAllValuesForKey } from 'lib/utils';
+// import { findAllValuesForKey } from 'lib/utils';
 
 import './VideoReview.scss';
 
@@ -84,27 +84,27 @@ const VideoReview = props => {
 
   const setButtonState = btn => `project_button project_button--${btn} ${publishing ? 'loading' : ''}`;
 
-  const updatesToPublish = () => {
-    const { project } = data;
-    if ( project ) {
-      // updatedAt at the project level does not account for nested updates
-      // so we need to find all updatedAt props to locate most recent update
-      const allUpdates = findAllValuesForKey( project, 'updatedAt' );
-      const mostRecentUpdate = allUpdates.reduce( ( max, p ) => ( p > max ? p : max ), allUpdates[0] );
-      const { status, publishedAt } = project;
+  // const updatesToPublish = () => {
+  //   const { project } = data;
+  //   if ( project ) {
+  //     // updatedAt at the project level does not account for nested updates
+  //     // so we need to find all updatedAt props to locate most recent update
+  //     const allUpdates = findAllValuesForKey( project, 'updatedAt' );
+  //     const mostRecentUpdate = allUpdates.reduce( ( max, p ) => ( p > max ? p : max ), allUpdates[0] );
+  //     const { status, publishedAt } = project;
 
-      if ( status === 'PUBLISHED' ) {
-        const lastUpdate = new Date( mostRecentUpdate ).getTime();
-        const publishDate = new Date( publishedAt ).getTime();
+  //     if ( status === 'PUBLISHED' ) {
+  //       const lastUpdate = new Date( mostRecentUpdate ).getTime();
+  //       const publishDate = new Date( publishedAt ).getTime();
 
-        // At publish time, updatedAt and pubishedAt are approximately equal so
-        // we add 10 seconds so that Update does not show right after a publish
-        if ( publishedAt && ( lastUpdate > ( publishDate + 10000 ) ) ) { return true; }
-      }
-    }
+  //       // At publish time, updatedAt and pubishedAt are approximately equal so
+  //       // we add 10 seconds so that Update does not show right after a publish
+  //       if ( publishedAt && ( lastUpdate > ( publishDate + 10000 ) ) ) { return true; }
+  //     }
+  //   }
 
-    return false;
-  };
+  //   return false;
+  // };
 
   const handleDeleteProject = () => {
     const { deleteProject } = props;
