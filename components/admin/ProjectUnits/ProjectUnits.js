@@ -14,7 +14,7 @@ import isEmpty from 'lodash/isEmpty';
 import withFileUpload from 'hocs/withFileUpload/withFileUpload';
 import { searchTreeForS3FileDirectories } from 'lib/upload';
 import { buildUnit, buildVideoFileTree } from 'lib/graphql/builders/video';
-import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
+import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import {
   VIDEO_PROJECT_QUERY,
   DELETE_VIDEO_FILE_MUTATION,
@@ -25,7 +25,7 @@ import {
 } from 'lib/graphql/queries/video';
 
 
-import EditProjectFiles from '../ProjectEdit/EditProjectFilesModal/EditPojectFilesModal';
+import EditProjectFiles from '../ProjectEdit/EditProjectFilesModal/EditProjectFilesModal';
 
 import ProjectUnitItem from './ProjectUnitItem/ProjectUnitItem';
 import './ProjectUnits.scss';

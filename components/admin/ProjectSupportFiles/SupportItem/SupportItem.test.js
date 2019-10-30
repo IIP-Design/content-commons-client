@@ -121,8 +121,8 @@ describe( '<SupportItem />', () => {
     } );
 
     const resp = { status: 200 };
-    mockAxios.head = jest.fn();
-    mockAxios.head.mockResolvedValue( resp );
+    mockAxios.get = jest.fn();
+    mockAxios.get.mockResolvedValue( resp );
 
     console.dir = jest.fn();
   } );
@@ -227,7 +227,7 @@ describe( '<SupportItem />', () => {
     const { name: filename } = uploadErrorProps.item.input;
 
     const err = { isAxiosError: true };
-    mockAxios.head.mockRejectedValue( err );
+    mockAxios.get.mockRejectedValue( err );
 
     expect( generalError.exists() ).toEqual( true );
     expect( generalError.contains( filename ) ).toEqual( true );
@@ -248,7 +248,7 @@ describe( '<SupportItem />', () => {
 
     // mock axios rejected value to enter .catch block
     const err = { isAxiosError: true };
-    mockAxios.head.mockRejectedValue( err );
+    mockAxios.get.mockRejectedValue( err );
 
     expect( console.dir ).toHaveBeenCalledWith( err );
     expect( generalError.exists() ).toEqual( true );
@@ -276,6 +276,7 @@ describe( '<SupportItem />', () => {
     expect( focusable.exists() ).toEqual( true );
 
     // larger screens
+    const windowOuterWidth = window.outerWidth;
     window.outerWidth = 1000;
     const shortname = isWindowWidthLessThanOrEqualTo( 900 )
       ? 'image-image-...-image-1.png'
@@ -288,5 +289,8 @@ describe( '<SupportItem />', () => {
     window.outerWidth = 800;
     expect( window.outerWidth ).toEqual( 800 );
     expect( focusable.contains( shortname ) ).toEqual( true );
+
+    // restore default
+    window.outWidth = windowOuterWidth;
   } );
 } );

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
-import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
+import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { truncateAndReplaceStr } from 'lib/utils';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
@@ -24,7 +24,7 @@ const areEqual = ( prevProps, nextProps ) => {
 
 const EditSupportFileRow = props => {
   const {
-    file: { id, name, language }, update, removeFile, replaceFile, accept
+    file: { id, name, language }, update, removeFile, accept
   } = props;
 
   // extract file type, i.e. get 'image' from the incoming type 'image/*' for example
@@ -57,9 +57,8 @@ const EditSupportFileRow = props => {
       </Grid.Column>
 
       { /* Actions */ }
-      <Grid.Column width={ 2 } only="tablet computer" style={ { paddingLeft: 0 } }>
+      <Grid.Column width={ 2 } style={ { paddingLeft: 0 } }>
         <FileRemoveReplaceButtonGroup
-          onReplace={ e => { replaceFile( id, e.target.files[0] ); } }
           onRemove={ () => { removeFile( id, name ); } }
           accept={ accept }
         />
@@ -78,7 +77,6 @@ EditSupportFileRow.propTypes = {
   } ),
   accept: PropTypes.string,
   update: PropTypes.func,
-  replaceFile: PropTypes.func,
   removeFile: PropTypes.func
 };
 

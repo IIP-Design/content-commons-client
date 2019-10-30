@@ -1,14 +1,14 @@
 import React, { Fragment, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
-import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
-import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
-import UseDropdown from 'components/admin/dropdowns/UseDropdown';
-import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
+import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
+import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown/VideoBurnedInStatusDropdown';
+import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
+import QualityDropdown from 'components/admin/dropdowns/QualityDropdown/QualityDropdown';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { truncateAndReplaceStr } from 'lib/utils';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import { FilesContext } from '../EditPojectFilesModal';
+import { FilesContext } from '../EditProjectFilesModal';
 import './EditVideoFileRow.scss';
 
 // Optimize re-renders as component could potentially have many rows
@@ -30,7 +30,7 @@ const EditVideoFileRow = props => {
   const {
     file: {
       id, name, language, use, quality, videoBurnedInStatus
-    }, update, removeFile, replaceFile, accept, step
+    }, update, removeFile, accept, step
   } = props;
 
   const files = useContext( FilesContext );
@@ -91,9 +91,8 @@ const EditVideoFileRow = props => {
 
 
       { /* Actions */ }
-      <Grid.Column width={ 2 } only="tablet computer" style={ { paddingLeft: 0 } }>
+      <Grid.Column width={ 2 } style={ { paddingLeft: 0 } }>
         <FileRemoveReplaceButtonGroup
-          onReplace={ e => { replaceFile( id, e.target.files[0] ); } }
           onRemove={ () => { removeFile( id, name ); } }
           disableRemove={ ( files.length === 1 ) }
           accept={ accept }
@@ -114,7 +113,6 @@ EditVideoFileRow.propTypes = {
   accept: PropTypes.string,
   step: PropTypes.number,
   update: PropTypes.func,
-  replaceFile: PropTypes.func,
   removeFile: PropTypes.func
 };
 

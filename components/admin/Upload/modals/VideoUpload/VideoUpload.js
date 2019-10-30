@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/upload';
 import { withRouter } from 'next/router';
 import { compose, graphql } from 'react-apollo';
-import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown';
+import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import { Tab, Dimmer, Loader } from 'semantic-ui-react';
 import { v4 } from 'uuid';
 import { removeDuplicatesFromArray } from 'lib/utils';
@@ -182,20 +182,6 @@ const VideoUpload = props => {
   };
 
   /**
-   * Replace file from files state array
-   * @param {string} id id of file to replace
-   * @param {array-like} fileFromInputSelection selected file from file selection dialogue
-   */
-  const replaceAssetFile = ( id, fileFromInputSelection ) => {
-    setFiles( prevFiles => prevFiles.map( file => {
-      if ( file.id !== id ) {
-        return file;
-      }
-      return { ...file, input: fileFromInputSelection };
-    } ).sort( compareFilenames ) );
-  };
-
-  /**
    * Update the files state with the selected value of an applicable file
    * updateField is called when a selection is made from a dropdown
    * Note: the name of field passed as param must match the state prop name
@@ -262,7 +248,6 @@ const VideoUpload = props => {
             files,
             addAssetFiles,
             removeAssetFile,
-            replaceAssetFile,
             updateField,
             allFieldsSelected,
             closeModal,

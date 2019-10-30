@@ -35,9 +35,7 @@ import Share from 'components/Share/Share';
 import downloadIcon from 'static/icons/icon_download.svg';
 import embedIcon from 'static/icons/icon_embed.svg';
 import shareIcon from 'static/icons/icon_share.svg';
-import {
-  getS3Url, getStreamData, getVimeoId, getYouTubeId
-} from 'lib/utils';
+import { getStreamData, getVimeoId, getYouTubeId } from 'lib/utils';
 import { UNIT_DETAILS_FRAGMENT } from 'lib/graphql/queries/video';
 
 import './ProjectPreviewContent.scss';
@@ -267,10 +265,10 @@ class ProjectPreviewContent extends React.PureComponent {
     let thumbnailUrl = '';
     let thumbnailAlt = `a thumbnail image for this project in ${language.displayName}`;
     if ( selectedUnit.thumbnails && selectedUnit.thumbnails.length > 0 ) {
-      thumbnailUrl = getS3Url( selectedUnit.thumbnails[0].image.url );
+      thumbnailUrl = selectedUnit.thumbnails[0].image.url;
       thumbnailAlt = selectedUnit.thumbnails[0].image.alt;
     } else if ( project.thumbnails && project.thumbnails.length > 0 ) {
-      thumbnailUrl = getS3Url( project.thumbnails[0].url );
+      thumbnailUrl = project.thumbnails[0].url;
       thumbnailAlt = project.thumbnails[0].alt;
     }
 

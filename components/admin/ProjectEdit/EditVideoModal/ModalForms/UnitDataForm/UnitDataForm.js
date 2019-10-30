@@ -11,10 +11,10 @@ import { withFormik } from 'formik';
 
 import { EditSingleProjectItemContext } from 'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import {
-  getPathToS3Bucket, getStreamData, getVimeoId, getYouTubeId
+  getStreamData, getVimeoId, getYouTubeId
 } from 'lib/utils';
 import Loader from 'components/admin/ProjectEdit/EditVideoModal/Loader/Loader';
-import TagDropdown from 'components/admin/dropdowns/TagDropdown';
+import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
 import { VIDEO_UNIT_ADD_TAG_MUTATION, VIDEO_PROJECT_UNITS_QUERY } from 'lib/graphql/queries/video';
 import {
   VIDEO_UNIT_QUERY,
@@ -172,7 +172,7 @@ const UnitDataForm = ( {
   let thumbnailUrl = '';
   let thumbnailAlt = '';
   if ( unit.thumbnails && unit.thumbnails.length ) {
-    thumbnailUrl = `${getPathToS3Bucket()}/${unit.thumbnails[0].image.url}`;
+    thumbnailUrl = unit.thumbnails[0].image.url;
     thumbnailAlt = unit.thumbnails[0].image.alt || '';
   }
 

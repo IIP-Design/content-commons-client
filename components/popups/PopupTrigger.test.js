@@ -42,9 +42,15 @@ describe( '<PopupTrigger />', () => {
     // initial state
     expect( inst.state.isMobile ).toEqual( false );
 
+    const windowOuterWidth = window.outerWidth;
     window.outerWidth = 500;
     inst.isMobile();
+    expect( window.outerWidth ).toEqual( 500 );
     expect( inst.state.isMobile ).toEqual( true );
+
+    // restore default 1024 to avoid affecting next test
+    window.outerWidth = windowOuterWidth;
+    expect( window.outerWidth ).toEqual( 1024 );
   } );
 
   it( 'isMobile does not set isMobile to true in state if window.outerWidth is > 600', () => {
@@ -52,11 +58,10 @@ describe( '<PopupTrigger />', () => {
     const inst = wrapper.instance();
 
     // initial state
-    wrapper.setState( { isMobile: false } );
     expect( inst.state.isMobile ).toEqual( false );
 
-    window.outerWidth = 900;
     inst.isMobile();
+    expect( window.outerWidth ).toEqual( 1024 );
     expect( inst.state.isMobile ).toEqual( false );
   } );
 

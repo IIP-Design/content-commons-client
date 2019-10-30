@@ -1,6 +1,5 @@
 import './TableBody.scss';
 import { Loader, Table } from 'semantic-ui-react';
-import { getPathToS3Bucket } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
@@ -103,7 +102,7 @@ const normalizeData = videoProjects => {
       visibility: { value: videoProject.visibility },
       thumbnail: {
         value: {
-          url: videoProject.thumbnails && videoProject.thumbnails.length ? `${getPathToS3Bucket()}/${videoProject.thumbnails[0].url}` : '',
+          url: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].url : '',
           alt: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].alt : ''
         }
       },

@@ -1,4 +1,4 @@
-import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
+import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 
 export const props = {
   item: {

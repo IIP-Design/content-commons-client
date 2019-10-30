@@ -9,7 +9,7 @@ import { useFileUploadActions } from 'lib/hooks/useFileUploadActions';
 import Notification from 'components/Notification/Notification';
 import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
 import { compose, graphql } from 'react-apollo';
-import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown';
+import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import FileUploadProgressBar from '../FileUploadProgressBar/FileUploadProgressBar';
 
 import './EditProjectFilesModal.scss';
@@ -35,8 +35,7 @@ const EditProjectFilesModal = ( {
     reset,
     updateFileField,
     addFiles,
-    removeFile,
-    replaceFile
+    removeFile
   } = useFileUploadActions();
 
   const allowedExtensions = extensions.join( ',' );
@@ -232,7 +231,6 @@ const EditProjectFilesModal = ( {
           files={ sortedFiles }
           update={ updateField }
           removeFile={ handleRemove }
-          replaceFile={ replaceFile }
           accept={ allowedExtensions }
         />
       );
@@ -243,7 +241,6 @@ const EditProjectFilesModal = ( {
         files={ sortedFiles }
         update={ updateField }
         removeFile={ handleRemove }
-        replaceFile={ replaceFile }
         accept={ allowedExtensions }
         step={ step }
       />

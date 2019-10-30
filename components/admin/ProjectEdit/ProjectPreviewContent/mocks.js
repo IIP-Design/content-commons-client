@@ -30,7 +30,7 @@ export const mocks = [
               filesize: 28371,
               filetype: 'image/jpeg',
               alt: 'the alt text',
-              url: `2019/06/${props.id}/image-1.jpg`,
+              url: `https://s3-bucket-url.s3.amazonaws.com/2019/06/${props.id}/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE`,
               use: {
                 __typename: 'ImageUse',
                 id: 'imu33',
@@ -51,6 +51,7 @@ export const mocks = [
             {
               __typename: 'VideoUnit',
               id: 'un91',
+              createdAt: '2019-06-18T14:58:10.024Z',
               updatedAt: '2019-06-18T14:58:10.024Z',
               title: 'test project title',
               descPublic: 'the arabic description',
@@ -99,7 +100,7 @@ export const mocks = [
                     filesize: 28371,
                     filetype: 'image/jpeg',
                     alt: 'the alt text',
-                    url: `2019/06/${props.id}/image-1.jpg`,
+                    url: `https://s3-bucket-url.s3.amazonaws.com/2019/06/${props.id}/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE`,
                     use: {
                       __typename: 'ImageUse',
                       id: 'imu33',
@@ -170,6 +171,7 @@ export const mocks = [
             {
               __typename: 'VideoUnit',
               id: 'un95',
+              createdAt: '2019-06-18T12:58:10.024Z',
               updatedAt: '2019-06-18T12:58:10.024Z',
               title: 'test project title',
               descPublic: 'the english description',
@@ -266,7 +268,7 @@ export const mocks = [
                     filesize: 28371,
                     filetype: 'image/jpeg',
                     alt: 'the alt text',
-                    url: `2019/06/${props.id}/image-1.jpg`,
+                    url: `https://s3-bucket-url.s3.amazonaws.com/2019/06/${props.id}/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE`,
                     use: {
                       __typename: 'ImageUse',
                       id: 'imu33',

@@ -14,10 +14,24 @@ import {
 } from './mocks';
 
 jest.mock( 'lib/utils', () => ( {
-  getPathToS3Bucket: jest.fn( () => {} ),
   getS3Url: jest.fn( assetPath => (
     `https://s3-url.com/${assetPath}`
-  ) )
+  ) ),
+  getApolloErrors: error => {
+    let errs = [];
+    const { graphQLErrors, networkError, otherError } = error;
+    if ( graphQLErrors ) {
+      errs = graphQLErrors.map( error => error.message );
+    }
+    if ( networkError ) {
+      errs.push( networkError );
+    }
+
+    if ( otherError ) {
+      errs.push( otherError );
+    }
+    return errs;
+  }
 } ) );
 
 jest.mock( 'static/icons/icon_download.svg', () => 'downloadIconSVG' );
