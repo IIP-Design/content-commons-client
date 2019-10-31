@@ -85,10 +85,16 @@ describe( '<FileUploadProgressBar /> at upload start', () => {
     const progressLabel = wrapper.find( '.file-progress--label' );
     const { filesToUpload, label } = startUploadProps;
     const completed = filesToUpload.filter( file => file.loaded === file.input.size ).length;
-    const progressMsg = <div><b>Uploading files:</b> { completed + 1 } of { filesToUpload.length }</div>;
+    const values = [
+      label,
+      'Uploading files:',
+      String( completed + 1 ),
+      String( filesToUpload.length )
+    ];
 
-    expect( progressLabel.contains( label ) ).toEqual( true );
-    expect( progressLabel.contains( progressMsg ) ).toEqual( true );
+    values.forEach( val => {
+      expect( progressLabel.contains( val ) ).toEqual( true );
+    } );
   } );
 
   it( 'renders with the correct total file size', () => {
@@ -153,10 +159,16 @@ describe( '<FileUploadProgressBar /> during upload', () => {
     const progressLabel = wrapper.find( '.file-progress--label' );
     const { filesToUpload, label } = partialUploadProps;
     const completed = filesToUpload.filter( file => file.loaded === file.input.size ).length;
-    const progressMsg = <div><b>Uploading files:</b> { completed + 1 } of { filesToUpload.length }</div>;
+    const values = [
+      label,
+      'Uploading files:',
+      String( completed + 1 ),
+      String( filesToUpload.length )
+    ];
 
-    expect( progressLabel.contains( label ) ).toEqual( true );
-    expect( progressLabel.contains( progressMsg ) ).toEqual( true );
+    values.forEach( val => {
+      expect( progressLabel.contains( val ) ).toEqual( true );
+    } );
   } );
 
   it( 'renders with the correct total file size', () => {
