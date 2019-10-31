@@ -98,11 +98,11 @@ const TeamProjectPrimaryCol = props => {
       </div>
       <div className="projects_thumbnail">
         <div className="wrapper">
-          { d.thumbnail.url
+          { d.thumbnail.signedUrl
             ? (
               <img
                 className={ isDraft ? 'draft' : null }
-                src={ d.thumbnail.url }
+                src={ d.thumbnail.signedUrl }
                 alt={ d.thumbnail.alt }
               />
             )

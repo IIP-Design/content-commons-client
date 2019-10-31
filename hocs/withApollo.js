@@ -61,7 +61,8 @@ const createClient = ( { headers } ) => new ApolloClient( {
         }
         if ( networkError ) {
           // take another action if we have a network error?
-          console.log( `[Network error]: ${networkError}` );
+          console.log( '[Network error]' );
+          console.dir( networkError );
         }
       }
     } ),

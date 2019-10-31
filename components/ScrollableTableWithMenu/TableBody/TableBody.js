@@ -59,6 +59,7 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
       thumbnails {
         id
         url
+        signedUrl
         alt
       }
       categories {
@@ -102,7 +103,7 @@ const normalizeData = videoProjects => {
       visibility: { value: videoProject.visibility },
       thumbnail: {
         value: {
-          url: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].url : '',
+          signedUrl: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].signedUrl : '',
           alt: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].alt : ''
         }
       },
