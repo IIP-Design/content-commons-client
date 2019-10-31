@@ -130,13 +130,13 @@ const EditProjectFilesModal = ( {
 
   const closeModal = () => {
     setOpen( false );
-    setStep( 1 );
-    reset();
   };
 
   const openModal = () => {
+    reset();
     _addFiles( filesToEdit );
     setOpen( true );
+    setStep( 1 );
   };
 
   const updateField = ( e, data ) => {
@@ -212,6 +212,7 @@ const EditProjectFilesModal = ( {
     setUpload( uploadedFiles.length );
 
     await save( files, filesToRemove );
+
     setSaving( false );
 
     const uploadedFileErrors = uploadedFiles.filter( file => file.error );

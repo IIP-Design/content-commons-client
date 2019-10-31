@@ -3,7 +3,7 @@
  * ProjectUnits
  *
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/projectUpdate';
@@ -41,23 +41,12 @@ const ProjectUnits = props => {
     deleteManyVideoUnits,
     updateVideoProject,
     updateVideoFile,
+    projectUpdated,
     heading,
     extensions
   } = props;
 
   const [progress, setProgress] = useState( 0 );
-
-  // Notify redux state that Project updated, indexed by project id
-  // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
-  // Reset component state on unmount
-  const [videoUnitsUpdated, setVideoUnitsUpdated] = useState( false );
-  useEffect( () => {
-    if ( videoUnitsUpdated ) {
-      props.projectUpdated( projectId, true );
-    }
-
-    return () => setVideoUnitsUpdated( false );
-  }, [videoUnitsUpdated] );
 
   const hasProjectUnits = () => ( !isEmpty( videoProject ) && videoProject.project && videoProject.project.units );
   const hasFilesToUpload = () => ( filesToUpload && filesToUpload.length );
@@ -437,11 +426,12 @@ const ProjectUnits = props => {
       const unitsToRemove = getUnitsToRemove( filesUploadSuccess );
       await removeUnits( unitsToRemove );
 
-      // Update component update state
-      setVideoUnitsUpdated( true );
+      // Notify redux state that Project updated, indexed by project id
+      // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
+      projectUpdated( projectId, true );
 
-      // refresh cache
-      props.videoProject.refetch();
+      // refresh cache to update component with new data
+      return videoProject.refetch();
     } catch ( err ) {
       console.dir( err );
     }
@@ -459,39 +449,9 @@ const ProjectUnits = props => {
     return [];
   };
 
-  const [units, setUnits] = useState( [] );
-  const [projectFiles, setProjectFiles] = useState( [] );
-  const [allowedFilesToUpload, setAllowedFilesToUpload] = useState( [] );
-
-  useEffect( () => {
-    setUnits( fetchUnits( videoProject ) );
-    setProjectFiles( getFilesToEdit() );
-    setAllowedFilesToUpload( getAllowedExtensions( filesToUpload ) );
-  }, [] );
-
-  useEffect( () => {
-    if ( hasProjectUnits() ) {
-      const { project } = videoProject;
-      if ( project && project.units && project.units.length ) {
-        setUnits( fetchUnits( videoProject ) );
-        setProjectFiles( getFilesToEdit() );
-      }
-    }
-  }, [videoProject] );
-
-
-  const renderUnits = () => (
-    <Card.Group>
-      { units.map( unit => (
-        <ProjectUnitItem
-          key={ unit.language.id }
-          unit={ unit }
-          projectId={ projectId }
-          filesToUpload={ allowedFilesToUpload }
-        />
-      ) ) }
-    </Card.Group>
-  );
+  const units = fetchUnits();
+  const projectFiles = getFilesToEdit();
+  const allowedFilesToUpload = getAllowedExtensions( filesToUpload );
 
   return (
     <div className="project-units">
@@ -509,10 +469,16 @@ const ProjectUnits = props => {
           )
         }
       </h2>
-      { units && units.length
-        ? renderUnits( units )
-        : 'No units available'
-       }
+      <Card.Group>
+        { units.map( unit => (
+          <ProjectUnitItem
+            key={ unit.language.id }
+            unit={ unit }
+            projectId={ projectId }
+            filesToUpload={ allowedFilesToUpload }
+          />
+        ) ) }
+      </Card.Group>
     </div>
   );
 };
@@ -525,13 +491,13 @@ ProjectUnits.propTypes = {
   extensions: PropTypes.array,
   videoProject: PropTypes.object,
   filesToUpload: PropTypes.array, // from redux
+  projectUpdated: PropTypes.func, // from redux
   deleteVideoFile: PropTypes.func,
   updateVideoUnit: PropTypes.func,
   updateVideoProject: PropTypes.func,
   updateVideoFile: PropTypes.func,
   deleteManyVideoUnits: PropTypes.func,
-  uploadExecute: PropTypes.func,
-  projectUpdated: PropTypes.func
+  uploadExecute: PropTypes.func
 };
 
 
