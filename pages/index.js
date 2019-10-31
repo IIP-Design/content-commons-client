@@ -12,13 +12,9 @@ const featuredData = [
     component: 'priorities',
     order: 1,
     props: {
-      term: 'iran',
-      label: 'Iran',
-      categories: [
-        { key: 'dLWWJ2MBCLPpGnLD3D-N', display_name: 'Economic Opportunity' },
-        { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' },
-        { key: 'JFqWJ2MBNxuyMP4E5Cgn', display_name: 'Global Issues' }
-      ],
+      term: '5G',
+      label: '5G',
+      categories: [],
       locale: 'en-us'
     }
   },
@@ -27,9 +23,13 @@ const featuredData = [
     component: 'priorities',
     order: 2,
     props: {
-      term: '5G',
-      label: '5G',
-      categories: [],
+      term: 'iran',
+      label: 'Iran',
+      categories: [
+        { key: 'dLWWJ2MBCLPpGnLD3D-N', display_name: 'Economic Opportunity' },
+        { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' },
+        { key: 'JFqWJ2MBNxuyMP4E5Cgn', display_name: 'Global Issues' }
+      ],
       locale: 'en-us'
     }
   },
