@@ -24,7 +24,13 @@ import Notification from 'components/Notification/Notification';
 import useTimeout from 'lib/hooks/useTimeout';
 import { initialSchema, baseSchema } from './validationSchema';
 
+// import { withApollo } from 'react-apollo';
+// import { useApolloClient } from 'react-apollo-hooks';
+
 const VideoProjectDetailsForm = props => {
+  // const client = useApolloClient();
+  // console.log( client )
+
   const [showNotication, setShowNotification] = useState( false );
 
   const hideNotification = () => {
