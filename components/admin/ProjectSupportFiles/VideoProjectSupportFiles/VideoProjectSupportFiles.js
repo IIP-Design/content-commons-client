@@ -8,8 +8,7 @@ import {
   UPDATE_SUPPORT_FILE_MUTATION,
   UPDATE_IMAGE_FILE_MUTATION,
   DELETE_SUPPORT_FILE_MUTATION,
-  DELETE_IMAGE_FILE_MUTATION,
-  DELETE_MANY_THUMBNAILS_MUTATION
+  DELETE_IMAGE_FILE_MUTATION
 } from 'lib/graphql/queries/common';
 import {
   UPDATE_VIDEO_PROJECT_MUTATION,
@@ -107,16 +106,24 @@ const VideoProjectSupportFiles = props => {
   };
 
   const clearUnitThumbnails = async unit => {
-    const { deleteManyThumbnails } = props;
-    const ids = ( unit.thumbnails.map( tn => tn.id ) );
+    const { updateVideoUnit } = props;
+    const { thumbnails } = unit;
 
-    if ( ids.length ) {
-      return deleteManyThumbnails( {
+    if ( thumbnails && thumbnails.length ) {
+      const ids = thumbnails.map( thumbnail => ( { id: thumbnail.id } ) );
+
+      return updateVideoUnit( {
         variables: {
+          data: {
+            thumbnails: {
+              delete: ids,
+            }
+          },
           where: {
-            id_in: ids
+            id: unit.id
           }
         }
+
       } );
     }
   };
@@ -154,20 +161,17 @@ const VideoProjectSupportFiles = props => {
   };
 
   const updateUnitThumbnails = async () => {
-    const { data: { project: { units } } } = props;
-    const result = await props.data.refetch();
-    const { data: { project: { thumbnails } } } = result;
+    // get the updated thumbnails as cache is outdated
+    const updated = await props.data.refetch();
+    const { data: { project: { units, thumbnails } } } = updated;
 
-    if ( units.length && thumbnails.length ) {
-      await Promise.all( units.map( async unit => {
+    if ( units.length ) {
+      return Promise.all( units.map( async unit => {
         await clearUnitThumbnails( unit );
         return addUnitThumbnails( unit, thumbnails );
       } ) );
-
-      return props.data.refetch();
     }
   };
-
 
   const updateDatabase = async ( files = [] ) => {
     const { projectId, uploadExecute } = props;
@@ -230,6 +234,7 @@ const VideoProjectSupportFiles = props => {
     return props.data.refetch();
   };
 
+
   return (
     <ProjectSupportFiles
       { ...props }
@@ -261,7 +266,6 @@ export default compose(
   withFileUpload,
   connect( null, actions ),
   graphql( IMAGE_USES_QUERY, { name: 'imagesUsesData' } ),
-  graphql( DELETE_MANY_THUMBNAILS_MUTATION, { name: 'deleteManyThumbnails' } ),
   graphql( UPDATE_VIDEO_UNIT_MUTATION, { name: 'updateVideoUnit' } ),
   graphql( UPDATE_SUPPORT_FILE_MUTATION, { name: 'updateSupportFile' } ),
   graphql( DELETE_SUPPORT_FILE_MUTATION, { name: 'deleteSupportFile' } ),
