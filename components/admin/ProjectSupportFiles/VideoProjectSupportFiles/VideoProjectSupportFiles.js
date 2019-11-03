@@ -159,10 +159,10 @@ const VideoProjectSupportFiles = props => {
     const { data: { project: { thumbnails } } } = result;
 
     if ( units.length && thumbnails.length ) {
-      units.forEach( async unit => {
+      await Promise.all( units.map( async unit => {
         await clearUnitThumbnails( unit );
-        await addUnitThumbnails( unit, thumbnails );
-      } );
+        return addUnitThumbnails( unit, thumbnails );
+      } ) );
 
       return props.data.refetch();
     }
