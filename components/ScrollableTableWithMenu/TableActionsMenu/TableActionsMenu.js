@@ -179,17 +179,23 @@ class TableActionsMenu extends React.Component {
     return arr;
   }
 
-  hasSelectedAllDrafts = () => {
-    const draftProjects = this.getDraftProjects( this.props.teamVideoProjects.videoProjects || null );
-    const selections = this.getSelectedProjectsIds();
+  // return true to suppress unpublish all feature for initial beta release
+  hasSelectedAllDrafts = () => true;
 
-    if ( selections.length > 0 ) {
-      return selections.every(
-        id => draftProjects.includes( id )
-      );
-    }
-    return false;
-  }
+  // hasSelectedAllDrafts = () => {
+  //   // return true to suppress unpublish all feature for initial beta release
+  //   return true;
+
+  //   const draftProjects = this.getDraftProjects( this.props.teamVideoProjects.videoProjects || null );
+  //   const selections = this.getSelectedProjectsIds();
+
+  //   if ( selections.length > 0 ) {
+  //     return selections.every(
+  //       id => draftProjects.includes( id )
+  //     );
+  //   }
+  //   return false;
+  // }
 
   showConfirmationMsg = () => {
     this.setState( {
