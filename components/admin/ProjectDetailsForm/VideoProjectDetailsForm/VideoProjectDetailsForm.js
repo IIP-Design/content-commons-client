@@ -3,7 +3,7 @@
  * VideoProjectDetailsForm
  *
  */
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
@@ -27,19 +27,6 @@ import { initialSchema, baseSchema } from './validationSchema';
 const VideoProjectDetailsForm = props => {
   const [showNotication, setShowNotification] = useState( false );
 
-  // Notify redux state that Project updated, indexed by project id
-  // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
-  // Reset component state on unmount
-  const [detailsFormUpdated, setDetailsFormUpdated] = useState( false );
-  useEffect( () => {
-    if ( detailsFormUpdated ) {
-      const { id } = props;
-      props.projectUpdated( id, true );
-    }
-
-    return () => setDetailsFormUpdated( false );
-  }, [detailsFormUpdated] );
-
   const hideNotification = () => {
     setShowNotification( false );
   };
@@ -62,8 +49,10 @@ const VideoProjectDetailsForm = props => {
     await update( values, prevValues );
     setShowNotification( true );
 
-    // Update component update state
-    setDetailsFormUpdated( true );
+    // Notify redux state that Project updated, indexed by project id
+    // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
+    const { id, projectUpdated } = props;
+    projectUpdated( id, true );
 
     startTimeout();
   };

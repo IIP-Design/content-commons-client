@@ -87,6 +87,8 @@ const VideoUpload = props => {
     setActiveIndex( 1 );
   };
 
+  const setDefaultQuality = file => ( file.type === 'video/mp4' ? 'WEB' : '' );
+
   /**
    * Compares file object file names for use in sorting.
    * @param {object} a file object
@@ -141,7 +143,7 @@ const VideoUpload = props => {
     const filesToAdd = fileList.map( file => ( {
       language: '',
       use: getDefaultUse( file.type.substr( 0, file.type.indexOf( '/' ) ) ),
-      quality: '',
+      quality: setDefaultQuality( file ),
       videoBurnedInStatus: '',
       input: file,
       id: v4(),

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
@@ -26,19 +26,6 @@ const VideoProjectSupportFiles = props => {
   const { supportFiles: { types: { srt, other } } } = config;
 
   const [progress, setProgress] = useState( 0 );
-
-  // Notify redux state that Project updated, indexed by project id
-  // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
-  // Reset component state on unmount
-  const [supportFilesUpdated, setSupportFilesUpdated] = useState( false );
-  useEffect( () => {
-    if ( supportFilesUpdated ) {
-      const { projectId } = props;
-      props.projectUpdated( projectId, true );
-    }
-
-    return () => setSupportFilesUpdated( false );
-  }, [supportFilesUpdated] );
 
   const getQuery = ( id, data ) => ( {
     variables: {
@@ -228,8 +215,10 @@ const VideoProjectSupportFiles = props => {
     await updateDatabase( files );
     await updateUnitThumbnails();
 
-    // Update component update state
-    setSupportFilesUpdated( true );
+    // Notify redux state that Project updated, indexed by project id
+    // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
+    const { projectId, projectUpdated } = props;
+    projectUpdated( projectId, true );
 
     return props.data.refetch();
   };
