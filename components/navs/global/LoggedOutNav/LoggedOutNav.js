@@ -30,10 +30,10 @@ const menuItems = [
     label: 'Documentation',
   },
   {
-    key: 4,
-    name: 'login',
-    to: '/login',
-    label: 'Login'
+    // key: 4,
+    // name: 'login',
+    // to: '/login',
+    // label: 'Login'
   }
 ];
 
