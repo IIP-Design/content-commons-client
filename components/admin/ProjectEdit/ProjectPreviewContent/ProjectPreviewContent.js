@@ -146,12 +146,12 @@ class ProjectPreviewContent extends React.PureComponent {
   }
 
   getEmbedUrl = url => {
-    if ( !url.includes( 'youtube' ) && !url.includes( 'vimeo' ) ) {
+    if ( !url.includes( 'youtu' ) && !url.includes( 'vimeo' ) ) {
       return '';
     }
 
     let embedSrc = '';
-    if ( url.includes( 'youtube' ) ) {
+    if ( url.includes( 'youtu' ) ) {
       embedSrc = `https://www.youtube.com/embed/${getYouTubeId( url )}`;
     } else if ( url.includes( 'vimeo' ) ) {
       embedSrc = `https://player.vimeo.com/video/${getVimeoId( url )}`;
