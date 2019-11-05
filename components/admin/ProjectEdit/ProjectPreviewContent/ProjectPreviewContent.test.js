@@ -391,12 +391,12 @@ describe( '<ProjectPreviewContent />', () => {
 
     const preview = wrapper.find( 'ProjectPreviewContent' );
     const embed = preview.find( 'Embed' );
-    const { url } = mocks[0].result.data.project.thumbnails[0];
+    const { signedUrl } = mocks[0].result.data.project.thumbnails[0];
 
     expect( embed.exists() ).toEqual( true );
     expect( embed.prop( 'id' ) ).toEqual( '1evw4fRu3bo' );
     expect( embed.prop( 'source' ) ).toEqual( 'youtube' );
-    expect( embed.prop( 'placeholder' ) ).toEqual( url );
+    expect( embed.prop( 'placeholder' ) ).toEqual( signedUrl );
   } );
 
   it( 'renders an embedded Vimeo video if there is no YouTube url', async () => {
@@ -410,12 +410,12 @@ describe( '<ProjectPreviewContent />', () => {
 
     const preview = wrapper.find( 'ProjectPreviewContent' );
     const embed = preview.find( 'Embed' );
-    const { url } = vimeoMocks[0].result.data.project.thumbnails[0];
+    const { signedUrl } = vimeoMocks[0].result.data.project.thumbnails[0];
 
     expect( embed.exists() ).toEqual( true );
     expect( embed.prop( 'id' ) ).toEqual( '340239507' );
     expect( embed.prop( 'source' ) ).toEqual( 'vimeo' );
-    expect( embed.prop( 'placeholder' ) ).toEqual( url );
+    expect( embed.prop( 'placeholder' ) ).toEqual( signedUrl );
   } );
 
   it( 'renders a project thumbnail if there are no YouTube or Vimeo urls', async () => {
@@ -431,11 +431,11 @@ describe( '<ProjectPreviewContent />', () => {
     const embed = preview.find( 'Embed' );
     const thumbnail = preview.find( 'figure.modal_thumbnail' );
     const img = thumbnail.find( 'img.overlay-image' );
-    const { alt, url } = noStreamsMocks[0].result.data.project.thumbnails[0];
+    const { alt, signedUrl } = noStreamsMocks[0].result.data.project.thumbnails[0];
 
     expect( embed.exists() ).toEqual( false );
     expect( thumbnail.exists() ).toEqual( true );
-    expect( img.prop( 'src' ) ).toEqual( url );
+    expect( img.prop( 'src' ) ).toEqual( signedUrl );
     expect( img.prop( 'alt' ) ).toEqual( alt );
   } );
 
