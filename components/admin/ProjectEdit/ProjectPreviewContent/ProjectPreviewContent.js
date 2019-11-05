@@ -265,10 +265,10 @@ class ProjectPreviewContent extends React.PureComponent {
     let thumbnailUrl = '';
     let thumbnailAlt = `a thumbnail image for this project in ${language.displayName}`;
     if ( selectedUnit.thumbnails && selectedUnit.thumbnails.length > 0 ) {
-      thumbnailUrl = selectedUnit.thumbnails[0].image.url;
+      thumbnailUrl = selectedUnit.thumbnails[0].image.signedUrl;
       thumbnailAlt = selectedUnit.thumbnails[0].image.alt;
     } else if ( project.thumbnails && project.thumbnails.length > 0 ) {
-      thumbnailUrl = project.thumbnails[0].url;
+      thumbnailUrl = project.thumbnails[0].signedUrl;
       thumbnailAlt = project.thumbnails[0].alt;
     }
 
