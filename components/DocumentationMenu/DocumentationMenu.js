@@ -20,11 +20,6 @@ const DocumentationSidebar = () => {
       name: 'searchingcontent',
       to: '/documentation/search',
       label: 'Searching for Content'
-    },
-    {
-      name: 'uploadingvideo',
-      to: '/documentation/uploadingvideo',
-      label: 'Uploading a Video'
     }
   ];
   return (
