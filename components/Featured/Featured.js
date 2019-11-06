@@ -53,4 +53,5 @@ const mapStateToProps = () => createStructuredSelector( {
   error: makeFeaturedError()
 } );
 
+export { Featured }; // For test purposes
 export default connect( mapStateToProps )( Featured );
