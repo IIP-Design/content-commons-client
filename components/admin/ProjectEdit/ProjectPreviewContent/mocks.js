@@ -30,7 +30,8 @@ export const mocks = [
               filesize: 28371,
               filetype: 'image/jpeg',
               alt: 'the alt text',
-              url: `https://s3-bucket-url.s3.amazonaws.com/2019/06/${props.id}/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE`,
+              signedUrl: `https://s3-bucket-url.s3.amazonaws.com/2019/06/${props.id}/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE`,
+              url: `2019/06/${props.id}/image-1.jpg`,
               use: {
                 __typename: 'ImageUse',
                 id: 'imu33',
@@ -100,7 +101,8 @@ export const mocks = [
                     filesize: 28371,
                     filetype: 'image/jpeg',
                     alt: 'the alt text',
-                    url: `https://s3-bucket-url.s3.amazonaws.com/2019/06/${props.id}/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE`,
+                    signedUrl: `https://s3-bucket-url.s3.amazonaws.com/2019/06/${props.id}/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE`,
+                    url: `2019/06/${props.id}/image-1.jpg`,
                     use: {
                       __typename: 'ImageUse',
                       id: 'imu33',
@@ -129,6 +131,7 @@ export const mocks = [
                   filesize: 662595174,
                   filetype: 'video/mp4',
                   quality: 'WEB',
+                  signedUrl: null,
                   url: `2019/06/${props.id}/video-file-1.mp4`,
                   videoBurnedInStatus: 'CLEAN',
                   dimensions: {
@@ -268,7 +271,8 @@ export const mocks = [
                     filesize: 28371,
                     filetype: 'image/jpeg',
                     alt: 'the alt text',
-                    url: `https://s3-bucket-url.s3.amazonaws.com/2019/06/${props.id}/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE`,
+                    signedUrl: `https://s3-bucket-url.s3.amazonaws.com/2019/06/${props.id}/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE`,
+                    url: `2019/06/${props.id}/image-1.jpg`,
                     use: {
                       __typename: 'ImageUse',
                       id: 'imu33',
@@ -297,6 +301,7 @@ export const mocks = [
                   filesize: 662595174,
                   filetype: 'video/mp4',
                   quality: 'WEB',
+                  signedUrl: null,
                   url: `2019/06/${props.id}/video-file-1.mp4`,
                   videoBurnedInStatus: 'CLEAN',
                   dimensions: {

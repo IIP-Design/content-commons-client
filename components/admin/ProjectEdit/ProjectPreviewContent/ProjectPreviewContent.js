@@ -146,12 +146,13 @@ class ProjectPreviewContent extends React.PureComponent {
   }
 
   getEmbedUrl = url => {
-    if ( !url.includes( 'youtube' ) && !url.includes( 'vimeo' ) ) {
+    if ( !url.includes( 'youtu' ) && !url.includes( 'vimeo' ) ) {
       return '';
     }
 
     let embedSrc = '';
-    if ( url.includes( 'youtube' ) ) {
+
+    if ( url.includes( 'youtu' ) ) {
       embedSrc = `https://www.youtube.com/embed/${getYouTubeId( url )}`;
     } else if ( url.includes( 'vimeo' ) ) {
       embedSrc = `https://player.vimeo.com/video/${getVimeoId( url )}`;
@@ -265,10 +266,10 @@ class ProjectPreviewContent extends React.PureComponent {
     let thumbnailUrl = '';
     let thumbnailAlt = `a thumbnail image for this project in ${language.displayName}`;
     if ( selectedUnit.thumbnails && selectedUnit.thumbnails.length > 0 ) {
-      thumbnailUrl = selectedUnit.thumbnails[0].image.url;
+      thumbnailUrl = selectedUnit.thumbnails[0].image.signedUrl;
       thumbnailAlt = selectedUnit.thumbnails[0].image.alt;
     } else if ( project.thumbnails && project.thumbnails.length > 0 ) {
-      thumbnailUrl = project.thumbnails[0].url;
+      thumbnailUrl = project.thumbnails[0].signedUrl;
       thumbnailAlt = project.thumbnails[0].alt;
     }
 
