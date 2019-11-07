@@ -13,7 +13,7 @@ import {
   TextArea
 } from 'semantic-ui-react';
 import Link from 'next/link';
-import ProjectVisibilityDropdown from 'components/admin/dropdowns/ProjectVisibilityDropdown/ProjectVisibilityDropdown';
+import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import UserDropdown from 'components/admin/dropdowns/UserDropdown/UserDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
@@ -90,7 +90,7 @@ const ProjectDetailsForm = props => {
 
                 <div className="field">
                   <div className="field">
-                    <ProjectVisibilityDropdown
+                    <VisibilityDropdown
                       id="visibility"
                       name="visibility"
                       label="Visibility Setting"

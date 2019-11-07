@@ -5,9 +5,9 @@ import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-const PROJECT_VISIBILITY_QUERY = gql`
-  query PROJECT_VISIBILITY_QUERY {
-    __type(name: "ProjectVisibility"){
+const VISIBILITY_QUERY = gql`
+  query VISIBILITY_QUERY {
+    __type(name: "Visibility"){
      enumValues {
        name
      }
@@ -16,8 +16,8 @@ const PROJECT_VISIBILITY_QUERY = gql`
  `;
 
 
-const ProjectVisibilityDropdown = props => (
-  <Query query={ PROJECT_VISIBILITY_QUERY }>
+const VisibilityDropdown = props => (
+  <Query query={ VISIBILITY_QUERY }>
     { ( { data, loading, error } ) => {
       if ( error ) return `Error! ${error.message}`;
 
@@ -44,14 +44,14 @@ const ProjectVisibilityDropdown = props => (
 
             <VisuallyHidden>
               <label htmlFor={ props.id }>
-                { `${props.id} project visibilty` }
+                { `${props.id} visibilty` }
               </label>
             </VisuallyHidden>
           ) }
 
           <Form.Dropdown
             id={ props.id }
-            name="projectVisibility"
+            name="visibility"
             options={ options }
             placeholder="–"
             loading={ loading }
@@ -66,14 +66,14 @@ const ProjectVisibilityDropdown = props => (
 
 );
 
-ProjectVisibilityDropdown.defaultProps = {
+VisibilityDropdown.defaultProps = {
   id: ''
 };
 
-ProjectVisibilityDropdown.propTypes = {
+VisibilityDropdown.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string
 };
 
-export default ProjectVisibilityDropdown;
-export { PROJECT_VISIBILITY_QUERY };
+export default VisibilityDropdown;
+export { VISIBILITY_QUERY };

@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from 'react-apollo/test-utils';
-import ProjectVisibilityDropdown, { PROJECT_VISIBILITY_QUERY } from './ProjectVisibilityDropdown';
+import VisibilityDropdown, { VISIBILITY_QUERY } from './VisibilityDropdown';
 
 const props = {
   id: '',
@@ -11,7 +11,7 @@ const props = {
 const mocks = [
   {
     request: {
-      query: PROJECT_VISIBILITY_QUERY
+      query: VISIBILITY_QUERY
     },
     result: {
       data: {
@@ -59,32 +59,32 @@ const emptyMocks = [
 
 const Component = (
   <MockedProvider mocks={ mocks } addTypename={ false }>
-    <ProjectVisibilityDropdown { ...props } />
+    <VisibilityDropdown { ...props } />
   </MockedProvider>
 );
 
 const ErrorComponent = (
   <MockedProvider mocks={ errorMocks } addTypename={ false }>
-    <ProjectVisibilityDropdown { ...props } />
+    <VisibilityDropdown { ...props } />
   </MockedProvider>
 );
 
 const NullComponent = (
   <MockedProvider mocks={ nullMocks } addTypename={ false }>
-    <ProjectVisibilityDropdown { ...props } />
+    <VisibilityDropdown { ...props } />
   </MockedProvider>
 );
 
 const EmptyComponent = (
   <MockedProvider mocks={ emptyMocks } addTypename={ false }>
-    <ProjectVisibilityDropdown { ...props } />
+    <VisibilityDropdown { ...props } />
   </MockedProvider>
 );
 
-describe( '<ProjectVisibilityDropdown />', () => {
+describe( '<VisibilityDropdown />', () => {
   it( 'renders loading state without crashing', () => {
     const wrapper = mount( Component );
-    const dropdown = wrapper.find( 'ProjectVisibilityDropdown' );
+    const dropdown = wrapper.find( 'VisibilityDropdown' );
     const formDropdown = wrapper.find( 'FormDropdown' );
 
     expect( dropdown.exists() ).toEqual( true );
@@ -95,7 +95,7 @@ describe( '<ProjectVisibilityDropdown />', () => {
     const wrapper = mount( ErrorComponent );
     await wait( 0 );
     wrapper.update();
-    const dropdown = wrapper.find( 'ProjectVisibilityDropdown' );
+    const dropdown = wrapper.find( 'VisibilityDropdown' );
     const error = errorMocks[0].result.errors[0];
     const errorMsg = `Error! GraphQL error: ${error.message}`;
 
