@@ -77,6 +77,8 @@ const PackageDetailsForm = props => {
                 label="Package Type"
                 value={ values.packageType }
                 onChange={ handleChange }
+                readOnly
+                tabIndex={ -1 }
               />
             </Grid.Column>
           </Grid.Row>
