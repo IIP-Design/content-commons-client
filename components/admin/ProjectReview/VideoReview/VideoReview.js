@@ -1,9 +1,7 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { func, object, string } from 'prop-types';
 import Router from 'next/router';
-import { connect } from 'react-redux';
-import * as actions from 'lib/redux/actions/projectUpdate';
-import { compose, graphql } from 'react-apollo';
+import { compose, graphql, withApollo } from 'react-apollo';
 import {
   Button, Confirm, Grid, Icon, Loader
 } from 'semantic-ui-react';
@@ -19,6 +17,10 @@ import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
 import ApolloError from 'components/errors/ApolloError';
 
 import {
+  UPDATED_PROJECTS_CACHE_QUERY,
+  REMOVE_UPDATED_PROJECTS_CACHE_MUTATION
+} from 'lib/graphql/queries/client';
+import {
   PUBLISH_VIDEO_PROJECT_MUTATION,
   UNPUBLISH_VIDEO_PROJECT_MUTATION,
   DELETE_VIDEO_PROJECT_MUTATION,
@@ -29,15 +31,23 @@ import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 
 import './VideoReview.scss';
 
-
 const VideoReview = props => {
+  const {
+    client, id, data, data: { error, loading }, statusChange
+  } = props;
+
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [publishError, setPublishError] = useState( null );
   const [publishing, setPublishing] = useState( false );
 
-  const {
-    id, data, data: { error, loading }, statusChange
-  } = props;
+  // Check if project has been updated, project id will be in Apollo Client Cache
+  const [isProjectInCache, setIsProjectInCache] = useState( false );
+  useEffect( () => {
+    const { updatedProjects } = client.readQuery( { query: UPDATED_PROJECTS_CACHE_QUERY } );
+    if ( updatedProjects.includes( id ) ) {
+      setIsProjectInCache( true );
+    }
+  }, [isProjectInCache] );
 
   if ( loading ) {
     return (
@@ -127,15 +137,19 @@ const VideoReview = props => {
     // Prevent multiple clicks - multiple clicks resulted in project going into PUBLISHING status
     if ( !e.detail || e.detail === 1 ) e.target.disabled = true;
 
-    const { publishProject } = props;
+    const { publishProject, removeUpdatedProjectFromCache } = props;
 
     try {
       setPublishing( true );
       console.log( 'Publishing to queue...' );
       await publishProject( { variables: { id } } );
 
-      // Remove updated project from redux projectUpdate state
-      props.projectUpdated( id, false );
+      // UPDATE APOLLO CLIENT CACHE
+      // Apollo Client cache mutation does not re-render component, setting component state to trigger render
+      removeUpdatedProjectFromCache( {
+        variables: { id },
+        update: () => setIsProjectInCache( false )
+      } );
     } catch ( err ) {
       setPublishing( false );
       setPublishError( err );
@@ -146,14 +160,18 @@ const VideoReview = props => {
     // Prevent multiple clicks - multiple clicks resulted in project going into PUBLISHING status
     if ( !e.detail || e.detail === 1 ) e.target.disabled = true;
 
-    const { unPublishProject } = props;
+    const { unPublishProject, removeUpdatedProjectFromCache } = props;
 
     try {
       setPublishing( true );
       await unPublishProject( { variables: { id } } );
 
-      // Remove updated project from redux projectUpdate state
-      props.projectUpdated( id, false );
+      // APOLLO CLIENT CACHE
+      // Apollo Client cache mutation does not re-render component, setting component state to trigger render
+      removeUpdatedProjectFromCache( {
+        variables: { id },
+        update: () => setIsProjectInCache( false )
+      } );
     } catch ( err ) {
       setPublishing( false );
       setPublishError( err );
@@ -161,10 +179,15 @@ const VideoReview = props => {
   };
 
   // Project Status & Update States
-  const { projectUpdate } = props; // redux
-  const publishedAndUpdated = projectUpdate[id] && data.project.status === 'PUBLISHED';
-  const publishedAndNotUpdated = !projectUpdate[id] && data.project.status === 'PUBLISHED';
+  const publishedAndUpdated = isProjectInCache && data.project.status === 'PUBLISHED';
+  const publishedAndNotUpdated = !isProjectInCache && data.project.status === 'PUBLISHED';
   const notPublished = data.project.status !== 'PUBLISHED';
+
+  console.table({
+    publishedAndUpdated,
+    publishedAndNotUpdated,
+    notPublished
+  });
 
   return (
     <div className="review-project">
@@ -273,17 +296,13 @@ const VideoReview = props => {
 VideoReview.propTypes = {
   id: string,
   data: object,
+  client: object,
   statusChange: object,
   deleteProject: func,
   publishProject: func,
   unPublishProject: func,
-  projectUpdate: object,
-  projectUpdated: func
+  removeUpdatedProjectFromCache: func,
 };
-
-const mapStateToProps = state => ( {
-  projectUpdate: state.projectUpdate
-} );
 
 const deleteProjectMutation = graphql( DELETE_VIDEO_PROJECT_MUTATION, {
   name: 'deleteProject',
@@ -327,11 +346,16 @@ const videoReviewQuery = graphql( VIDEO_PROJECT_QUERY, {
   } )
 } );
 
+const removeUpdatedProjectsCacheMutation = graphql( REMOVE_UPDATED_PROJECTS_CACHE_MUTATION, {
+  name: 'removeUpdatedProjectFromCache',
+} );
+
 export default compose(
-  connect( mapStateToProps, actions ),
+  withApollo,
   deleteProjectMutation,
   publishProjectMutation,
   unPublishProjectMutation,
   projectStatusChangeSubscription,
-  videoReviewQuery
+  videoReviewQuery,
+  removeUpdatedProjectsCacheMutation,
 )( VideoReview );

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
-import { connect } from 'react-redux';
-import * as actions from 'lib/redux/actions/projectUpdate';
+import { compose, graphql, withApollo } from 'react-apollo';
+import { ADD_UPDATED_PROJECTS_CACHE_MUTATION } from 'lib/graphql/queries/client';
 import {
   IMAGE_USES_QUERY,
   UPDATE_SUPPORT_FILE_MUTATION,
@@ -215,10 +214,10 @@ const VideoProjectSupportFiles = props => {
     await updateDatabase( files );
     await updateUnitThumbnails();
 
-    // Notify redux state that Project updated, indexed by project id
+    // Update Apollo Local Cache
     // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
-    const { projectId, projectUpdated } = props;
-    projectUpdated( projectId, true );
+    const { projectId, addUpdatedProjectToCache } = props;
+    addUpdatedProjectToCache( { variables: { id: projectId } } );
 
     return props.data.refetch();
   };
@@ -247,13 +246,13 @@ VideoProjectSupportFiles.propTypes = {
   uploadExecute: PropTypes.func,
   imagesUsesData: PropTypes.object,
   data: PropTypes.object,
-  projectUpdated: PropTypes.func
+  addUpdatedProjectToCache: PropTypes.func
 };
 
 
 export default compose(
   withFileUpload,
-  connect( null, actions ),
+  withApollo,
   graphql( IMAGE_USES_QUERY, { name: 'imagesUsesData' } ),
   graphql( UPDATE_VIDEO_UNIT_MUTATION, { name: 'updateVideoUnit' } ),
   graphql( UPDATE_SUPPORT_FILE_MUTATION, { name: 'updateSupportFile' } ),
@@ -267,4 +266,5 @@ export default compose(
     } ),
     skip: props => !props.projectId
   } ),
+  graphql( ADD_UPDATED_PROJECTS_CACHE_MUTATION, { name: 'addUpdatedProjectToCache' } ),
 )( VideoProjectSupportFiles );

@@ -5,9 +5,7 @@
  */
 import React, { useContext } from 'react';
 import propTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
-import { connect } from 'react-redux';
-import * as actions from 'lib/redux/actions/projectUpdate';
+import { compose, graphql, withApollo } from 'react-apollo';
 import { Embed, Form, Grid } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 
@@ -17,6 +15,7 @@ import {
 } from 'lib/utils';
 import Loader from 'components/admin/ProjectEdit/EditVideoModal/Loader/Loader';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
+import { ADD_UPDATED_PROJECTS_CACHE_MUTATION } from 'lib/graphql/queries/client';
 import { VIDEO_UNIT_ADD_TAG_MUTATION, VIDEO_PROJECT_UNITS_QUERY } from 'lib/graphql/queries/video';
 import {
   VIDEO_UNIT_QUERY,
@@ -37,7 +36,7 @@ const UnitDataForm = ( {
   values,
   videoFileQuery,
   videoUnitQuery,
-  projectUpdated,
+  addUpdatedProjectToCache,
 } ) => {
   const { loading, unit } = videoUnitQuery;
   const { file } = videoFileQuery;
@@ -104,8 +103,9 @@ const UnitDataForm = ( {
       }
     } );
 
-    // Update projectUpdate Redux state
-    projectUpdated( projectId, true );
+    // Update Apollo Local Cache
+    // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
+    addUpdatedProjectToCache( { variables: { id: projectId } } );
 
     setShowNotification( true );
     startTimeout();
@@ -156,8 +156,9 @@ const UnitDataForm = ( {
       runTagMutation( removed, tagsRemoveVideoUnitMutation );
     }
 
-    // Update projectUpdate Redux state
-    projectUpdated( projectId, true );
+    // Update Apollo Local Cache
+    // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
+    addUpdatedProjectToCache( { variables: { id: projectId } } );
 
     setShowNotification( true );
     startTimeout();
@@ -260,12 +261,12 @@ UnitDataForm.propTypes = {
   values: propTypes.object,
   videoFileQuery: propTypes.object,
   videoUnitQuery: propTypes.object,
-  projectUpdated: propTypes.func, // redux
+  addUpdatedProjectToCache: propTypes.func,
 };
 
 
 export default compose(
-  connect( null, actions ),
+  withApollo,
   graphql( VIDEO_UNIT_REMOVE_TAG_MUTATION, { name: 'tagsRemoveVideoUnitMutation' } ),
   graphql( VIDEO_UNIT_ADD_TAG_MUTATION, { name: 'tagsAddVideoUnitMutation' } ),
   graphql( VIDEO_UNIT_DESC_MUTATION, { name: 'descPublicVideoUnitMutation' } ),
@@ -282,6 +283,7 @@ export default compose(
       variables: { unitId: props.unitId },
     } )
   } ),
+  graphql( ADD_UPDATED_PROJECTS_CACHE_MUTATION, { name: 'addUpdatedProjectToCache' } ),
   withFormik( {
     mapPropsToValues: props => {
       const videoUnit = props.videoUnitQuery && props.videoUnitQuery.unit ? props.videoUnitQuery.unit : {};

@@ -6,8 +6,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as actions from 'lib/redux/actions/projectUpdate';
-import { compose, graphql } from 'react-apollo';
+import { compose, graphql, withApollo } from 'react-apollo';
 import { Card } from 'semantic-ui-react';
 import { getFileExt } from 'lib/utils';
 import isEmpty from 'lodash/isEmpty';
@@ -23,7 +22,7 @@ import {
   DELETE_MANY_VIDEO_UNITS_MUTATION,
   UPDATE_VIDEO_PROJECT_MUTATION
 } from 'lib/graphql/queries/video';
-
+import { ADD_UPDATED_PROJECTS_CACHE_MUTATION } from 'lib/graphql/queries/client';
 
 import EditProjectFiles from '../ProjectEdit/EditProjectFilesModal/EditProjectFilesModal';
 
@@ -41,7 +40,7 @@ const ProjectUnits = props => {
     deleteManyVideoUnits,
     updateVideoProject,
     updateVideoFile,
-    projectUpdated,
+    addUpdatedProjectToCache,
     heading,
     extensions
   } = props;
@@ -426,9 +425,9 @@ const ProjectUnits = props => {
       const unitsToRemove = getUnitsToRemove( filesUploadSuccess );
       await removeUnits( unitsToRemove );
 
-      // Notify redux state that Project updated, indexed by project id
+      // Update Apollo Local Cache
       // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
-      projectUpdated( projectId, true );
+      addUpdatedProjectToCache( { variables: { id: projectId } } );
 
       // refresh cache to update component with new data
       return videoProject.refetch();
@@ -491,13 +490,13 @@ ProjectUnits.propTypes = {
   extensions: PropTypes.array,
   videoProject: PropTypes.object,
   filesToUpload: PropTypes.array, // from redux
-  projectUpdated: PropTypes.func, // from redux
   deleteVideoFile: PropTypes.func,
   updateVideoUnit: PropTypes.func,
   updateVideoProject: PropTypes.func,
   updateVideoFile: PropTypes.func,
   deleteManyVideoUnits: PropTypes.func,
-  uploadExecute: PropTypes.func
+  uploadExecute: PropTypes.func,
+  addUpdatedProjectToCache: PropTypes.func,
 };
 
 
@@ -508,7 +507,8 @@ const mapStateToProps = state => ( {
 
 export default compose(
   withFileUpload,
-  connect( mapStateToProps, actions ),
+  withApollo,
+  connect( mapStateToProps ),
   graphql( LANGUAGES_QUERY, { name: 'languageList' } ),
   graphql( VIDEO_PROJECT_QUERY, {
     name: 'videoProject',
@@ -524,5 +524,6 @@ export default compose(
   graphql( UPDATE_VIDEO_UNIT_MUTATION, { name: 'updateVideoUnit' } ),
   graphql( DELETE_MANY_VIDEO_UNITS_MUTATION, { name: 'deleteManyVideoUnits' } ),
   graphql( DELETE_VIDEO_FILE_MUTATION, { name: 'deleteVideoFile' } ),
-  graphql( UPDATE_VIDEO_FILE_MUTATION, { name: 'updateVideoFile' } )
+  graphql( UPDATE_VIDEO_FILE_MUTATION, { name: 'updateVideoFile' } ),
+  graphql( ADD_UPDATED_PROJECTS_CACHE_MUTATION, { name: 'addUpdatedProjectToCache' } ),
 )( ProjectUnits );

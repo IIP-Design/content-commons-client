@@ -5,9 +5,7 @@
  */
 import React, { useContext, useState, useEffect } from 'react';
 import propTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
-import { connect } from 'react-redux';
-import * as actions from 'lib/redux/actions/projectUpdate';
+import { compose, graphql, withApollo } from 'react-apollo';
 import { Confirm, Form, Grid } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 
@@ -20,6 +18,7 @@ import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedI
 import { EditSingleProjectItemContext } from 'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import { formatBytes, formatDate, secondsToHMS } from 'lib/utils';
 
+import { ADD_UPDATED_PROJECTS_CACHE_MUTATION } from 'lib/graphql/queries/client';
 import { VIDEO_UNIT_QUERY } from 'components/admin/ProjectEdit/EditVideoModal/ModalSections/FileSection/FileSection';
 import {
   VIDEO_PROJECT_QUERY, VIDEO_FILE_QUERY, VIDEO_FILE_LANG_MUTATION, VIDEO_UNIT_CONNECT_FILE_MUTATION,
@@ -47,7 +46,7 @@ const FileDataForm = ( {
   videoUnitConnectFileMutation,
   videoUnitDisconnectFileMutation,
   selectedProject,
-  projectUpdated,
+  addUpdatedProjectToCache,
 } ) => {
   const {
     selectedFile, selectedUnit, setSelectedFile, setShowNotification, startTimeout, updateSelectedUnit
@@ -60,8 +59,9 @@ const FileDataForm = ( {
   const units = project && project.units ? project.units : [];
 
   const growl = () => {
-    // Update projectUpdate Redux state
-    projectUpdated( selectedProject, true );
+    // Update Apollo Local Cache
+    // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
+    addUpdatedProjectToCache( { variables: { id: selectedProject } } );
 
     setShowNotification( true );
     startTimeout();
@@ -407,11 +407,11 @@ FileDataForm.propTypes = {
   videoUnitDisconnectFileMutation: propTypes.func,
   videoProjectQuery: propTypes.object,
   selectedProject: propTypes.string,
-  projectUpdated: propTypes.func,
+  addUpdatedProjectToCache: propTypes.func,
 };
 
 export default compose(
-  connect( null, actions ),
+  withApollo,
   graphql( VIDEO_FILE_DELETE_MUTATION, { name: 'deleteVideoFileMutation' } ),
   graphql( VIDEO_FILE_DELETE_STREAM_MUTATION, { name: 'streamDeleteVideoFileMutation' } ),
   graphql( VIDEO_FILE_UPDATE_STREAM_MUTATION, { name: 'streamUpdateVideoFileMutation' } ),
@@ -434,6 +434,7 @@ export default compose(
       variables: { id: props.selectedProject },
     } )
   } ),
+  graphql( ADD_UPDATED_PROJECTS_CACHE_MUTATION, { name: 'addUpdatedProjectToCache' } ),
   withFormik( {
     mapPropsToValues: props => {
       const file = props.videoFileQuery && props.videoFileQuery.file ? props.videoFileQuery.file : {};

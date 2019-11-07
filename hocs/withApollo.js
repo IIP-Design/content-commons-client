@@ -9,6 +9,8 @@ import { getMainDefinition } from 'apollo-utilities';
 import withApollo from 'next-with-apollo';
 import getConfig from 'next/config';
 
+import { UPDATED_PROJECTS_CACHE_QUERY } from 'lib/graphql/queries/client';
+
 const { publicRuntimeConfig } = getConfig();
 
 const request = async ( headers, operation ) => {
@@ -49,6 +51,8 @@ const link = process.browser ? split( // only create the split in the browser
   httpLink,
 ) : httpLink;
 
+const cache = new InMemoryCache();
+
 const createClient = ( { headers } ) => new ApolloClient( {
   link: ApolloLink.from( [
     onError( ( { graphQLErrors, networkError } ) => {
@@ -88,7 +92,42 @@ const createClient = ( { headers } ) => new ApolloClient( {
     link
   ] ),
 
-  cache: new InMemoryCache()
+  cache,
+
+  resolvers: {
+    Mutation: {
+      addUpdatedProject: ( _, { id }, { client } ) => {
+        const previous = client.readQuery( { query: UPDATED_PROJECTS_CACHE_QUERY } );
+        if ( !previous.updatedProjects.includes( id ) ) {
+          client.writeQuery( {
+            query: UPDATED_PROJECTS_CACHE_QUERY,
+            data: {
+              updatedProjects: [...previous.updatedProjects, id]
+            }
+          } );
+        }
+        return null;
+      },
+      removeUpdatedProject: ( _, { id }, { client } ) => {
+        const previous = client.readQuery( { query: UPDATED_PROJECTS_CACHE_QUERY } );
+        const removeUpdatedProjectFromCache = previous.updatedProjects.filter( projectID => projectID !== id );
+        client.writeQuery( {
+          query: UPDATED_PROJECTS_CACHE_QUERY,
+          data: {
+            updatedProjects: [...removeUpdatedProjectFromCache]
+          }
+        } );
+        return null;
+      }
+    }
+  },
+
+} );
+
+cache.writeData( {
+  data: {
+    updatedProjects: [],
+  }
 } );
 
 // Second argument: { getDataFromTree: 'ssr' } : should the apollo store be hydrated before the first render ?,

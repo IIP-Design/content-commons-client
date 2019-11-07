@@ -6,15 +6,14 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
-import { connect } from 'react-redux';
-import * as reduxActions from 'lib/redux/actions/projectUpdate';
+import { ADD_UPDATED_PROJECTS_CACHE_MUTATION } from 'lib/graphql/queries/client';
 import {
   CREATE_VIDEO_PROJECT_MUTATION,
   UPDATE_VIDEO_PROJECT_MUTATION,
   VIDEO_PROJECT_FORM_QUERY
 } from 'lib/graphql/queries/video';
 import { CURRENT_USER_QUERY } from 'components/User/User';
-import { compose, graphql } from 'react-apollo';
+import { compose, graphql, withApollo } from 'react-apollo';
 import { buildCreateVideoProjectTree, buildFormTree } from 'lib/graphql/builders/video';
 import { Formik } from 'formik';
 
@@ -24,13 +23,8 @@ import Notification from 'components/Notification/Notification';
 import useTimeout from 'lib/hooks/useTimeout';
 import { initialSchema, baseSchema } from './validationSchema';
 
-// import { withApollo } from 'react-apollo';
-// import { useApolloClient } from 'react-apollo-hooks';
 
 const VideoProjectDetailsForm = props => {
-  // const client = useApolloClient();
-  // console.log( client )
-
   const [showNotication, setShowNotification] = useState( false );
 
   const hideNotification = () => {
@@ -55,10 +49,10 @@ const VideoProjectDetailsForm = props => {
     await update( values, prevValues );
     setShowNotification( true );
 
-    // Notify redux state that Project updated, indexed by project id
+    // Update Apollo Local Cache
     // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
-    const { id, projectUpdated } = props;
-    projectUpdated( id, true );
+    const { id, addUpdatedProjectToCache } = props;
+    addUpdatedProjectToCache( { variables: { id } } );
 
     startTimeout();
   };
@@ -162,17 +156,18 @@ VideoProjectDetailsForm.propTypes = {
   updateNotification: PropTypes.func,
   handleUpload: PropTypes.func,
   updateVideoProject: PropTypes.func,
-  projectUpdated: PropTypes.func
+  addUpdatedProjectToCache: PropTypes.func,
 };
 
 export default compose(
   withRouter,
-  connect( null, reduxActions ),
+  withApollo,
   graphql( CURRENT_USER_QUERY, { name: 'user' } ), // only run on create
   graphql( CREATE_VIDEO_PROJECT_MUTATION, { name: 'createVideoProject' } ),
   graphql( UPDATE_VIDEO_PROJECT_MUTATION, { name: 'updateVideoProject' } ),
   graphql( VIDEO_PROJECT_FORM_QUERY, {
     partialRefetch: true,
     skip: props => !props.id
-  } )
+  } ),
+  graphql( ADD_UPDATED_PROJECTS_CACHE_MUTATION, { name: 'addUpdatedProjectToCache' } ),
 )( VideoProjectDetailsForm );
