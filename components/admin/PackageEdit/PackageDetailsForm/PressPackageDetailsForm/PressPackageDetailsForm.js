@@ -49,7 +49,7 @@ const PressPackageDetailsForm = props => {
 
   const getInitialValues = () => {
     const { data } = props;
-    const pressPackage = ( data && data.packageForm ) ? data.packageForm : {};
+    const pressPackage = ( data && data.package ) ? data.package : {};
 
     const initialValues = {
       packageTitle: pressPackage.packageTitle || '',

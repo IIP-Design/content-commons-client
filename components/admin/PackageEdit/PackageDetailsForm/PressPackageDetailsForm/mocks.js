@@ -12,7 +12,7 @@ export const mocks = [
     },
     result: {
       data: {
-        packageForm: {
+        package: {
           id: props.id,
           packageTitle: 'Final Guidance mm-dd-yy',
           packageType: 'Press Guidance'

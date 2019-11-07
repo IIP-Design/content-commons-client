@@ -29,7 +29,7 @@ describe( '<PackageEdit />', () => {
     const wrapper = mount( Component );
     const titleLabel = wrapper.find( 'label[htmlFor="packageTitle"]' );
     const titleInput = wrapper.find( 'input#packageTitle' );
-    const { packageTitle } = mocks[0].result.data.packageForm;
+    const { packageTitle } = mocks[0].result.data.package;
 
     expect( titleLabel.text() ).toEqual( 'Title' );
     expect( titleInput.prop( 'value' ) ).toEqual( packageTitle );
@@ -39,7 +39,7 @@ describe( '<PackageEdit />', () => {
     const wrapper = mount( Component );
     const typeLabel = wrapper.find( 'label[htmlFor="packageType"]' );
     const typeInput = wrapper.find( 'input#packageType' );
-    const { packageType } = mocks[0].result.data.packageForm;
+    const { packageType } = mocks[0].result.data.package;
 
     expect( typeLabel.text() ).toEqual( 'Package Type' );
     expect( typeInput.prop( 'value' ) ).toEqual( packageType );
