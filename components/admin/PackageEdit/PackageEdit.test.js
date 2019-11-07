@@ -44,4 +44,17 @@ describe( '<PackageEdit />', () => {
     expect( typeLabel.text() ).toEqual( 'Package Type' );
     expect( typeInput.prop( 'value' ) ).toEqual( packageType );
   } );
+
+  it( 'clicking the Delete All button opens the Confirm modal', () => {
+    const wrapper = mount( Component );
+    const deleteBtn = wrapper.find( 'Button.edit-package__btn--delete' );
+    const confirmModal = () => wrapper.find( 'Confirm' );
+
+    // closed initially
+    expect( confirmModal().prop( 'open' ) ).toEqual( false );
+
+    // open the modal
+    deleteBtn.simulate( 'click' );
+    expect( confirmModal().prop( 'open' ) ).toEqual( true );
+  } );
 } );
