@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Confirm } from 'semantic-ui-react';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
@@ -6,13 +6,10 @@ import PressPackageDetailsForm from './PackageDetailsForm/PressPackageDetailsFor
 import { props as testProps, mocks } from './PackageDetailsForm/PressPackageDetailsForm/mocks';
 
 const PackageEdit = () => {
-  const handleDelete = () => {
-    console.log( 'Delete All' );
-  };
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
 
-  const handleDeleteCancel = () => {
-    console.log( 'Cancel Delete' );
-  };
+  const displayConfirmDelete = () => setDeleteConfirmOpen( true );
+  const handleDeleteCancel = () => setDeleteConfirmOpen( false );
 
   const handleDeleteConfirm = () => {
     console.log( 'Confirm Delete' );
@@ -34,13 +31,13 @@ const PackageEdit = () => {
             className="edit-package__btn--delete"
             content="Delete All"
             basic
-            onClick={ handleDelete }
+            onClick={ displayConfirmDelete }
             disabled={ false }
           />
 
           <Confirm
             className="delete"
-            open={ false }
+            open={ deleteConfirmOpen }
             content={ (
               <ConfirmModalContent
                 className="delete_confirm delete_confirm--package"
