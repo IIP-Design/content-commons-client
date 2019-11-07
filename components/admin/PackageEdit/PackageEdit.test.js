@@ -57,4 +57,22 @@ describe( '<PackageEdit />', () => {
     deleteBtn.simulate( 'click' );
     expect( confirmModal().prop( 'open' ) ).toEqual( true );
   } );
+
+  it( 'clicking Cancel in <Confirm /> closes the modal', () => {
+    const wrapper = mount( Component );
+    const deleteBtn = wrapper.find( 'Button.edit-package__btn--delete' );
+    const confirmModal = () => wrapper.find( 'Confirm' );
+    const cancelBtn = () => wrapper.find( '[content="No, take me back"]' );
+
+    // closed initially
+    expect( confirmModal().prop( 'open' ) ).toEqual( false );
+
+    // open the modal
+    deleteBtn.simulate( 'click' );
+    expect( confirmModal().prop( 'open' ) ).toEqual( true );
+
+    // close the modal
+    cancelBtn().simulate( 'click' );
+    expect( confirmModal().prop( 'open' ) ).toEqual( false );
+  } );
 } );
