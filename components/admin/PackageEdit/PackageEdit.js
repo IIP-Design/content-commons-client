@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Confirm } from 'semantic-ui-react';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
+import PressPackageDetailsForm from './PackageDetailsForm/PressPackageDetailsForm/PressPackageDetailsForm';
 
 const PackageEdit = () => {
   const handleDelete = () => {
@@ -67,6 +68,14 @@ const PackageEdit = () => {
             onClick={ handlePublish }
           />
         </ProjectHeader>
+      </div>
+
+      <div className="edit-package__content">
+        <PressPackageDetailsForm
+          id="test-123"
+          updateNotification={ () => {} }
+          handleUpload={ () => {} }
+        />
       </div>
     </div>
   );
