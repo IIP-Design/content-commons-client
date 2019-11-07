@@ -68,7 +68,7 @@ const PackageEdit = () => {
         </ProjectHeader>
       </div>
 
-      <div className="edit-package__content">
+      <div className="edit-package__form">
         <PressPackageDetailsForm
           id={ testProps.id }
           // send mock data here for UI dev, remove after GraphQL
