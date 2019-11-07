@@ -7,7 +7,7 @@ export const props = { id: 'test-123' };
 export const mocks = [
   {
     request: {
-      query: 'PRESS_PACKAGE_FORM_QUERY',
+      query: 'PRESS_PACKAGE_QUERY',
       variables: { id: props.id }
     },
     result: {
