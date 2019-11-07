@@ -183,12 +183,6 @@ const VideoReview = props => {
   const publishedAndNotUpdated = !isProjectInCache && data.project.status === 'PUBLISHED';
   const notPublished = data.project.status !== 'PUBLISHED';
 
-  console.table({
-    publishedAndUpdated,
-    publishedAndNotUpdated,
-    notPublished
-  });
-
   return (
     <div className="review-project">
 
