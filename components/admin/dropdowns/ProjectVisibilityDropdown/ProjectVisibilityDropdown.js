@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 
 const PROJECT_VISIBILITY_QUERY = gql`
   query PROJECT_VISIBILITY_QUERY {
-    __type(name: "ProjectVisibility"){
+    __type(name: "Visibility"){
      enumValues {
        name
      }
