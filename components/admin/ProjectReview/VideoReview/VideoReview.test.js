@@ -129,6 +129,10 @@ describe( '<VideoReview />', () => {
     expect( videoReview.contains( span ) ).toEqual( true );
   } );
 
+
+  const getBtn = ( buttons, str ) => buttons.filterWhere( btn => btn.text() === str );
+  const publishingButtons = ['Delete Project', 'Edit', 'Preview Project', 'Publish Changes', 'Publish', 'Unpublish'];
+
   // notPublished = data.project.status !== 'PUBLISHED';
   it( 'renders the correct bottom CTA headline and buttons if status is DRAFT', async () => {
     const wrapper = mount( DraftComponent );
@@ -138,24 +142,38 @@ describe( '<VideoReview />', () => {
 
     const VideoReview = wrapper.find( 'VideoReview' );
 
+    // Buttons
+    const btns = VideoReview.find( 'Button' );
+
+    publishingButtons.forEach( txt => {
+      switch ( txt ) {
+        case 'Delete Project':
+          expect( getBtn( btns, txt ).exists() ).toEqual( true );
+          break;
+        case 'Edit':
+          expect( getBtn( btns, txt ).length ).toEqual( 2 );
+          break;
+        case 'Preview Project':
+          expect( getBtn( btns, txt ).exists() ).toEqual( true );
+          break;
+        case 'Publish Changes':
+          expect( getBtn( btns, txt ).exists() ).toEqual( false );
+          break;
+        case 'Publish':
+          expect( getBtn( btns, txt ).length ).toEqual( 2 );
+          break;
+        case 'Unpublish':
+          expect( getBtn( btns, txt ).exists() ).toEqual( false );
+          break;
+        default:
+          break;
+      }
+    } );
+
     // Bottom Headline
     const ctaHeadline = VideoReview.find( '.section--publish > h3.title' );
     const headingTxt = 'Your project looks great! Are you ready to Publish?';
     expect( ctaHeadline.text() ).toEqual( headingTxt );
-
-    // Buttons
-    const btns = VideoReview.find( 'Button' );
-    const editBtns = btns.filterWhere( btn => btn.text() === 'Edit' );
-    const publishBtns = btns.filterWhere( btn => btn.text() === 'Publish' );
-    const unpublishBtns = btns.filterWhere( btn => btn.text() === 'Unpublish' );
-    const publishChangesBtns = btns.filterWhere( btn => btn.text() === 'Publish Changes' );
-    const previewBtn = btns.filterWhere( btn => btn.text() === 'Preview Project' );
-
-    expect( editBtns.length ).toEqual( 2 );
-    expect( publishBtns.length ).toEqual( 2 );
-    expect( previewBtn.exists() ).toEqual( true );
-    expect( unpublishBtns.exists() ).toEqual( false );
-    expect( publishChangesBtns.exists() ).toEqual( false );
   } );
 
   // publishedAndUpdated = projectUpdate[id] && data.project.status === 'PUBLISHED';
@@ -166,33 +184,37 @@ describe( '<VideoReview />', () => {
     wrapper.update();
 
     const VideoReview = wrapper.find( 'VideoReview' );
+    const btns = VideoReview.find( 'Button' );
+
+    publishingButtons.forEach( txt => {
+      switch ( txt ) {
+        case 'Delete Project':
+          expect( getBtn( btns, txt ).exists() ).toEqual( false );
+          break;
+        case 'Edit':
+          expect( getBtn( btns, txt ).length ).toEqual( 2 );
+          break;
+        case 'Preview Project':
+          expect( getBtn( btns, txt ).exists() ).toEqual( true );
+          break;
+        case 'Publish Changes':
+          expect( getBtn( btns, txt ).length ).toEqual( 2 );
+          break;
+        case 'Publish':
+          expect( getBtn( btns, txt ).exists() ).toEqual( false );
+          break;
+        case 'Unpublish':
+          expect( getBtn( btns, txt ).length ).toEqual( 2 );
+          break;
+        default:
+          break;
+      }
+    } );
 
     // Bottom CTA Headline
     const ctaHeadline = VideoReview.find( '.section--publish > h3.title' );
     const headingTxt = 'It looks like you made changes to your project. Do you want to publish changes?';
     expect( ctaHeadline.text() ).toEqual( headingTxt );
-
-    // Top publishing buttons
-    const headerButtons = VideoReview.find( '.section--project_header > .project_buttons' ).find( 'Button' );
-    const editHeaderButton = headerButtons.filterWhere( btn => btn.text() === 'Edit' );
-    const previewHeaderButton = headerButtons.filterWhere( btn => btn.text() === 'Preview Project' );
-    const publishHeaderButton = headerButtons.filterWhere( btn => btn.text() === 'Publish Changes' );
-    const unpublishHeaderButton = headerButtons.filterWhere( btn => btn.text() === 'Unpublish' );
-
-    expect( editHeaderButton.exists() ).toEqual( true );
-    expect( previewHeaderButton.exists() ).toEqual( true );
-    expect( publishHeaderButton.exists() ).toEqual( true );
-    expect( unpublishHeaderButton.exists() ).toEqual( true );
-
-    // Bottom publishing buttons
-    const bottomButtons = VideoReview.find( '.section--publish' ).find( 'Button' );
-    const editBottomButton = bottomButtons.filterWhere( btn => btn.text() === 'Edit' );
-    const publishBottomButton = bottomButtons.filterWhere( btn => btn.text() === 'Publish Changes' );
-    const unpublishBottomButton = bottomButtons.filterWhere( btn => btn.text() === 'Unpublish' );
-
-    expect( editBottomButton.exists() ).toEqual( true );
-    expect( publishBottomButton.exists() ).toEqual( true );
-    expect( unpublishBottomButton.exists() ).toEqual( true );
   } );
 
   // publishedAndNotUpdated = !projectUpdate[id] && data.project.status === 'PUBLISHED';
@@ -213,24 +235,37 @@ describe( '<VideoReview />', () => {
 
     const videoReview = wrapper.find( 'VideoReview' );
 
-    const CTAheadline = videoReview.find( 'h3.title' );
-    const headingTxt = 'Not ready to share with the world yet?';
+    const { project } = videoReview.prop( 'data' );
+    expect( project.status ).toEqual( 'PUBLISHED' );
 
     const btns = wrapper.find( 'Button' );
-    const deleteBtn = btns.find( 'Button.project_button--delete' );
-    const previewBtn = btns.find( 'Button.project_button--preview' );
-    const editBtns = btns.filterWhere( btn => btn.text() === 'Edit' );
-    const publishChangesBtns = btns.filterWhere( btn => btn.text() === 'Publish Changes' );
-    const publishBtns = btns.filterWhere( btn => btn.text() === 'Unpublish' );
+    publishingButtons.forEach( txt => {
+      switch ( txt ) {
+        case 'Delete Project':
+          expect( getBtn( btns, txt ).exists() ).toEqual( false );
+          break;
+        case 'Edit':
+          expect( getBtn( btns, txt ).length ).toEqual( 2 );
+          break;
+        case 'Preview Project':
+          expect( getBtn( btns, txt ).exists() ).toEqual( true );
+          break;
+        case 'Publish Changes':
+          expect( getBtn( btns, txt ).exists() ).toEqual( false );
+          break;
+        case 'Publish':
+          expect( getBtn( btns, txt ).exists() ).toEqual( false );
+          break;
+        case 'Unpublish':
+          expect( getBtn( btns, txt ).length ).toEqual( 2 );
+          break;
+        default:
+          break;
+      }
+    } );
 
-    const { project } = videoReview.prop( 'data' );
-
-    expect( project.status ).toEqual( 'PUBLISHED' );
-    expect( deleteBtn.exists() ).toEqual( false );
-    expect( previewBtn.exists() ).toEqual( true );
-    expect( publishChangesBtns.exists() ).toEqual( false );
-    expect( editBtns.length ).toEqual( 2 ); // 1 at top & bottom of page
-    expect( publishBtns.length ).toEqual( 2 ); // 1 at top & bottom of page
+    const CTAheadline = videoReview.find( 'h3.title' );
+    const headingTxt = 'Not ready to share with the world yet?';
     expect( CTAheadline.text() ).toEqual( headingTxt );
   } );
 
