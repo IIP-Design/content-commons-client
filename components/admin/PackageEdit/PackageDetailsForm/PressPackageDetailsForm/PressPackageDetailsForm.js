@@ -48,18 +48,13 @@ const PressPackageDetailsForm = props => {
   };
 
   const getInitialValues = () => {
-    // const { data } = props;
-    // const pressPackage = ( data && data.packageForm ) ? data.packageForm : {};
+    const { data } = props;
+    const pressPackage = ( data && data.packageForm ) ? data.packageForm : {};
 
-    // use for UI dev
     const initialValues = {
-      packageTitle: 'Final Guidance mm-dd-yy',
-      packageType: 'Press Guidance'
+      packageTitle: pressPackage.packageTitle || '',
+      packageType: pressPackage.packageType || 'PUBLIC',
     };
-    // const initialValues = {
-    //   projectTitle: pressPackage.packageTitle || '',
-    //   visibility: pressPackage.packageType || 'PUBLIC',
-    // };
 
     return initialValues;
   };

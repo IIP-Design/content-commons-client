@@ -3,6 +3,7 @@ import { Button, Confirm } from 'semantic-ui-react';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import PressPackageDetailsForm from './PackageDetailsForm/PressPackageDetailsForm/PressPackageDetailsForm';
+import { props as testProps, mocks } from './PackageDetailsForm/PressPackageDetailsForm/mocks';
 
 const PackageEdit = () => {
   const handleDelete = () => {
@@ -72,9 +73,11 @@ const PackageEdit = () => {
 
       <div className="edit-package__content">
         <PressPackageDetailsForm
-          id="test-123"
-          updateNotification={ () => {} }
+          id={ testProps.id }
+          // send mock data here for UI dev, remove after GraphQL
+          data={ mocks[0].result.data }
           handleUpload={ () => {} }
+          updateNotification={ () => {} }
         />
       </div>
     </div>
