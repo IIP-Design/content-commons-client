@@ -1,6 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import { func, object, string } from 'prop-types';
 import Router from 'next/router';
+import { connect } from 'react-redux';
+import * as actions from 'lib/redux/actions/projectUpdate';
 import { compose, graphql } from 'react-apollo';
 import {
   Button, Confirm, Grid, Icon, Loader
@@ -23,7 +25,7 @@ import {
   VIDEO_PROJECT_QUERY
 } from 'lib/graphql/queries/video';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
-import { findAllValuesForKey } from 'lib/utils';
+// import { findAllValuesForKey } from 'lib/utils';
 
 import './VideoReview.scss';
 
@@ -82,27 +84,27 @@ const VideoReview = props => {
 
   const setButtonState = btn => `project_button project_button--${btn} ${publishing ? 'loading' : ''}`;
 
-  const updatesToPublish = () => {
-    const { project } = data;
-    if ( project ) {
-      // updatedAt at the project level does not account for nested updates
-      // so we need to find all updatedAt props to locate most recent update
-      const allUpdates = findAllValuesForKey( project, 'updatedAt' );
-      const mostRecentUpdate = allUpdates.reduce( ( max, p ) => ( p > max ? p : max ), allUpdates[0] );
-      const { status, publishedAt } = project;
+  // const updatesToPublish = () => {
+  //   const { project } = data;
+  //   if ( project ) {
+  //     // updatedAt at the project level does not account for nested updates
+  //     // so we need to find all updatedAt props to locate most recent update
+  //     const allUpdates = findAllValuesForKey( project, 'updatedAt' );
+  //     const mostRecentUpdate = allUpdates.reduce( ( max, p ) => ( p > max ? p : max ), allUpdates[0] );
+  //     const { status, publishedAt } = project;
 
-      if ( status === 'PUBLISHED' ) {
-        const lastUpdate = new Date( mostRecentUpdate ).getTime();
-        const publishDate = new Date( publishedAt ).getTime();
+  //     if ( status === 'PUBLISHED' ) {
+  //       const lastUpdate = new Date( mostRecentUpdate ).getTime();
+  //       const publishDate = new Date( publishedAt ).getTime();
 
-        // At publish time, updatedAt and pubishedAt are approximately equal so
-        // we add 10 seconds so that Update does not show right after a publish
-        if ( publishedAt && ( lastUpdate > ( publishDate + 10000 ) ) ) { return true; }
-      }
-    }
+  //       // At publish time, updatedAt and pubishedAt are approximately equal so
+  //       // we add 10 seconds so that Update does not show right after a publish
+  //       if ( publishedAt && ( lastUpdate > ( publishDate + 10000 ) ) ) { return true; }
+  //     }
+  //   }
 
-    return false;
-  };
+  //   return false;
+  // };
 
   const handleDeleteProject = () => {
     const { deleteProject } = props;
@@ -129,7 +131,11 @@ const VideoReview = props => {
 
     try {
       setPublishing( true );
+      console.log( 'Publishing to queue...' );
       await publishProject( { variables: { id } } );
+
+      // Remove updated project from redux projectUpdate state
+      props.projectUpdated( id, false );
     } catch ( err ) {
       setPublishing( false );
       setPublishError( err );
@@ -145,6 +151,9 @@ const VideoReview = props => {
     try {
       setPublishing( true );
       await unPublishProject( { variables: { id } } );
+
+      // Remove updated project from redux projectUpdate state
+      props.projectUpdated( id, false );
     } catch ( err ) {
       setPublishing( false );
       setPublishError( err );
@@ -152,8 +161,9 @@ const VideoReview = props => {
   };
 
   // Project Status & Update States
-  const publishedAndUpdated = updatesToPublish() && data.project.status === 'PUBLISHED';
-  const publishedAndNotUpdated = !updatesToPublish() && data.project.status === 'PUBLISHED';
+  const { projectUpdate } = props; // redux
+  const publishedAndUpdated = projectUpdate[id] && data.project.status === 'PUBLISHED';
+  const publishedAndNotUpdated = !projectUpdate[id] && data.project.status === 'PUBLISHED';
   const notPublished = data.project.status !== 'PUBLISHED';
 
   return (
@@ -207,7 +217,7 @@ const VideoReview = props => {
           ? <Button className={ setButtonState( 'publish' ) } onClick={ handlePublish }>Publish</Button>
           : (
             <Fragment>
-              { updatesToPublish() && (
+              { publishedAndUpdated && (
                 <Button className={ setButtonState( 'edit' ) } onClick={ handlePublish }>Publish Changes</Button>
               )
               }
@@ -246,7 +256,14 @@ const VideoReview = props => {
           content="Edit"
           onClick={ handleEdit }
         />
-        { !publishedAndNotUpdated && <Button className={ `project_button project_button--${updatesToPublish() ? 'edit' : 'publish'}` } onClick={ handlePublish }>Publish{ updatesToPublish() && ' Changes' }</Button> }
+        { !publishedAndNotUpdated && (
+          <Button
+            className={ `project_button project_button--${publishedAndUpdated ? 'edit' : 'publish'}` }
+            onClick={ handlePublish }
+          >
+            Publish{ publishedAndUpdated && ' Changes' }
+          </Button>
+        ) }
         { data.project.status !== 'DRAFT' && <Button className="project_button project_button--publish" onClick={ handleUnPublish }>Unpublish</Button> }
       </section>
     </div>
@@ -259,8 +276,14 @@ VideoReview.propTypes = {
   statusChange: object,
   deleteProject: func,
   publishProject: func,
-  unPublishProject: func
+  unPublishProject: func,
+  projectUpdate: object,
+  projectUpdated: func
 };
+
+const mapStateToProps = state => ( {
+  projectUpdate: state.projectUpdate
+} );
 
 const deleteProjectMutation = graphql( DELETE_VIDEO_PROJECT_MUTATION, {
   name: 'deleteProject',
@@ -288,7 +311,9 @@ const projectStatusChangeSubscription = graphql( PROJECT_STATUS_CHANGE_SUBSCRIPT
   options: props => ( {
     variables: { id: props.id },
     onSubscriptionData: ( { subscriptionData } ) => {
+      console.log( 'Subscription data received...' );
       const { data: { projectStatusChange } } = subscriptionData;
+      console.dir( projectStatusChange );
       if ( projectStatusChange.status === 'PUBLISHED' || projectStatusChange.status === 'DRAFT' ) {
         Router.push( { pathname: '/admin/dashboard' } );
       }
@@ -303,6 +328,7 @@ const videoReviewQuery = graphql( VIDEO_PROJECT_QUERY, {
 } );
 
 export default compose(
+  connect( mapStateToProps, actions ),
   deleteProjectMutation,
   publishProjectMutation,
   unPublishProjectMutation,

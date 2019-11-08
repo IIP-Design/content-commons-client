@@ -12,6 +12,17 @@ const featuredData = [
     component: 'priorities',
     order: 1,
     props: {
+      term: '5G',
+      label: '5G',
+      categories: [],
+      locale: 'en-us'
+    }
+  },
+  {
+    key: v4(),
+    component: 'priorities',
+    order: 2,
+    props: {
       term: 'iran',
       label: 'Iran',
       categories: [
@@ -25,7 +36,7 @@ const featuredData = [
   {
     key: v4(),
     component: 'recents',
-    order: 2,
+    order: 3,
     props: {
       postType: 'video',
       locale: 'en-us'
@@ -34,7 +45,7 @@ const featuredData = [
   {
     key: v4(),
     component: 'recents',
-    order: 3,
+    order: 4,
     props: {
       postType: 'post',
       locale: 'en-us'

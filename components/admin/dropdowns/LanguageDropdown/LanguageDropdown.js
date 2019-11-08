@@ -6,7 +6,7 @@ import { Query } from 'react-apollo';
 import sortBy from 'lodash/sortBy';
 import gql from 'graphql-tag';
 
-import './dropdown.scss';
+import '../dropdown.scss';
 import { addEmptyOption } from 'lib/utils';
 
 const LANGUAGES_QUERY = gql`

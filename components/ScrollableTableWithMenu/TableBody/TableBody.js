@@ -1,6 +1,5 @@
 import './TableBody.scss';
 import { Loader, Table } from 'semantic-ui-react';
-import { getPathToS3Bucket } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
@@ -63,6 +62,7 @@ const TEAM_VIDEO_PROJECTS_QUERY = gql`
       thumbnails {
         id
         url
+        signedUrl
         alt
       }
       categories {
@@ -106,7 +106,7 @@ const normalizeData = videoProjects => {
       visibility: { value: videoProject.visibility },
       thumbnail: {
         value: {
-          url: videoProject.thumbnails && videoProject.thumbnails.length ? `${getPathToS3Bucket()}/${videoProject.thumbnails[0].url}` : '',
+          signedUrl: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].signedUrl : '',
           alt: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].alt : ''
         }
       },

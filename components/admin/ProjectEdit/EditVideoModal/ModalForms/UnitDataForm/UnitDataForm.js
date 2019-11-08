@@ -6,15 +6,17 @@
 import React, { useContext } from 'react';
 import propTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
+import { connect } from 'react-redux';
+import * as actions from 'lib/redux/actions/projectUpdate';
 import { Embed, Form, Grid } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 
 import { EditSingleProjectItemContext } from 'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import {
-  getPathToS3Bucket, getStreamData, getVimeoId, getYouTubeId
+  getStreamData, getVimeoId, getYouTubeId
 } from 'lib/utils';
 import Loader from 'components/admin/ProjectEdit/EditVideoModal/Loader/Loader';
-import TagDropdown from 'components/admin/dropdowns/TagDropdown';
+import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
 import { VIDEO_UNIT_ADD_TAG_MUTATION, VIDEO_PROJECT_UNITS_QUERY } from 'lib/graphql/queries/video';
 import {
   VIDEO_UNIT_QUERY,
@@ -34,7 +36,8 @@ const UnitDataForm = ( {
   unitId,
   values,
   videoFileQuery,
-  videoUnitQuery
+  videoUnitQuery,
+  projectUpdated,
 } ) => {
   const { loading, unit } = videoUnitQuery;
   const { file } = videoFileQuery;
@@ -101,6 +104,9 @@ const UnitDataForm = ( {
       }
     } );
 
+    // Update projectUpdate Redux state
+    projectUpdated( projectId, true );
+
     setShowNotification( true );
     startTimeout();
   };
@@ -150,6 +156,9 @@ const UnitDataForm = ( {
       runTagMutation( removed, tagsRemoveVideoUnitMutation );
     }
 
+    // Update projectUpdate Redux state
+    projectUpdated( projectId, true );
+
     setShowNotification( true );
     startTimeout();
   };
@@ -172,7 +181,7 @@ const UnitDataForm = ( {
   let thumbnailUrl = '';
   let thumbnailAlt = '';
   if ( unit.thumbnails && unit.thumbnails.length ) {
-    thumbnailUrl = `${getPathToS3Bucket()}/${unit.thumbnails[0].image.url}`;
+    thumbnailUrl = unit.thumbnails[0].image.signedUrl;
     thumbnailAlt = unit.thumbnails[0].image.alt || '';
   }
 
@@ -251,10 +260,12 @@ UnitDataForm.propTypes = {
   values: propTypes.object,
   videoFileQuery: propTypes.object,
   videoUnitQuery: propTypes.object,
+  projectUpdated: propTypes.func, // redux
 };
 
 
 export default compose(
+  connect( null, actions ),
   graphql( VIDEO_UNIT_REMOVE_TAG_MUTATION, { name: 'tagsRemoveVideoUnitMutation' } ),
   graphql( VIDEO_UNIT_ADD_TAG_MUTATION, { name: 'tagsAddVideoUnitMutation' } ),
   graphql( VIDEO_UNIT_DESC_MUTATION, { name: 'descPublicVideoUnitMutation' } ),

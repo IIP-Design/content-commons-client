@@ -9,7 +9,7 @@ import { useFileUploadActions } from 'lib/hooks/useFileUploadActions';
 import Notification from 'components/Notification/Notification';
 import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
 import { compose, graphql } from 'react-apollo';
-import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown';
+import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import FileUploadProgressBar from '../FileUploadProgressBar/FileUploadProgressBar';
 
 import './EditProjectFilesModal.scss';
@@ -35,8 +35,7 @@ const EditProjectFilesModal = ( {
     reset,
     updateFileField,
     addFiles,
-    removeFile,
-    replaceFile
+    removeFile
   } = useFileUploadActions();
 
   const allowedExtensions = extensions.join( ',' );
@@ -131,18 +130,39 @@ const EditProjectFilesModal = ( {
 
   const closeModal = () => {
     setOpen( false );
-    setStep( 1 );
-    reset();
   };
 
   const openModal = () => {
+    reset();
     _addFiles( filesToEdit );
     setOpen( true );
+    setStep( 1 );
   };
 
   const updateField = ( e, data ) => {
     updateFileField( data );
   };
+
+  const showFileErrors = uploadedFileErrors => {
+    const errors = uploadedFileErrors.reduce( ( acc, cur ) => `${acc} ${cur.name}\n`, '' );
+    const multiple = ( uploadedFileErrors.length > 1 );
+    setConfirm( {
+      open: true,
+      headline: `There was an error processing the following file ${multiple ? 's' : ''}`,
+      content: errors,
+      cancelButton: 'Close',
+      confirmButton: 'OK',
+      onCancel: () => {
+        closeConfirm();
+        closeModal();
+      },
+      onConfirm: () => {
+        closeConfirm();
+        closeModal();
+      }
+    } );
+  };
+
 
   /**
    * Puts file in queue to remove
@@ -186,12 +206,21 @@ const EditProjectFilesModal = ( {
   const handleSave = async () => {
     setSaving( true );
 
+    const uploadedFiles = files.filter( file => ( file.input ) );
+
     // if there are files to upload, show progress bar
-    setUpload( files.filter( file => ( file.input ) ).length );
+    setUpload( uploadedFiles.length );
 
     await save( files, filesToRemove );
+
     setSaving( false );
-    closeModal();
+
+    const uploadedFileErrors = uploadedFiles.filter( file => file.error );
+    if ( uploadedFileErrors.length ) {
+      showFileErrors( uploadedFileErrors );
+    } else {
+      closeModal();
+    }
   };
 
   const renderGrid = () => {
@@ -203,7 +232,6 @@ const EditProjectFilesModal = ( {
           files={ sortedFiles }
           update={ updateField }
           removeFile={ handleRemove }
-          replaceFile={ replaceFile }
           accept={ allowedExtensions }
         />
       );
@@ -214,7 +242,6 @@ const EditProjectFilesModal = ( {
         files={ sortedFiles }
         update={ updateField }
         removeFile={ handleRemove }
-        replaceFile={ replaceFile }
         accept={ allowedExtensions }
         step={ step }
       />

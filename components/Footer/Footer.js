@@ -72,7 +72,7 @@ const Footer = () => {
             { ' ' }
             <img src={ slackLogo } alt="Slack" className="footer_img footer_img--slack" />
             { ' ' }
-#cdp-general
+#content-commons
           </Header.Subheader>
         </Header>
         <List horizontal divided className="footer-nav">

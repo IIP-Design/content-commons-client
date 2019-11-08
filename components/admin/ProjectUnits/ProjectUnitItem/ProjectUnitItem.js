@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
-import { getCount, getPathToS3Bucket } from 'lib/utils';
+import { getCount } from 'lib/utils';
 import truncate from 'lodash/truncate';
 import {
   Card, Modal, Image, List, Loader
@@ -17,10 +17,9 @@ import './ProjectUnitItem.scss';
 const EditSingleProjectItem = dynamic( () => import( /* webpackChunkName: "editSingleProjectItem" */ 'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem' ) );
 
 const ProjectUnitItem = props => {
-  const { projectId, unit, filesToUpload } = props;
-  const PLACEHOLDER = null;
-  const [thumbnail, setThumbnail] = useState( PLACEHOLDER );
-  const [title, setTitle] = useState( '' );
+  const {
+    projectId, unit, filesToUpload,
+  } = props;
   const [unitUploadComplete, setUnitUploadComplete] = useState( false );
   const [error, setError] = useState( false );
 
@@ -29,14 +28,6 @@ const ProjectUnitItem = props => {
   const unitFileToUpload = filesToUpload.filter( file => file.language === unit.language.id );
 
   const uploadInProgress = useContext( UploadContext );
-
-  // implement subscriptions to track thumbnail changes
-  const getThumbnail = u => {
-    if ( u && u.thumbnails && u.thumbnails[0] && u.thumbnails[0].image ) {
-      return `${getPathToS3Bucket()}/${u.thumbnails[0].image.url}`;
-    }
-    // return PLACEHOLDER;
-  };
 
   const getFileStream = ( file = {}, site = 'vimeo' ) => {
     if ( file.stream && Array.isArray( file.stream ) ) {
@@ -62,22 +53,29 @@ const ProjectUnitItem = props => {
     setUnitUploadComplete( true );
   };
 
-  useEffect( () => {
-    setThumbnail( getThumbnail( unit ) );
-    setTitle( unit && unit.title ? unit.title : '[Title]' );
-  }, [unit] );
 
   useEffect( () => {
     setError( hasError() );
   }, [projectId] );
 
+
+  const renderThumbnail = () => {
+    if ( unit ) {
+      const { thumbnails } = unit;
+      if ( thumbnails && thumbnails[0] && thumbnails[0].image ) {
+        return (
+          <Image src={ thumbnails[0].image.signedUrl } fluid />
+        );
+      }
+    }
+    return <div className="placeholder" />;
+  };
+
   const renderProjectItem = () => (
     <Card className="project-unit-item">
       <div className="image-wrapper">
-        { thumbnail
-          ? ( <Image src={ thumbnail } fluid /> )
-          : <div className="placeholder" />
-        }
+        { renderThumbnail() }
+
         { /* Has an upload been triggered and if so, are the files applicable to this unit complete? */ }
         { uploadInProgress && !unitUploadComplete && ( <Loader active size="small" /> ) }
 
@@ -105,7 +103,7 @@ const ProjectUnitItem = props => {
         />
       ) }
       <Card.Content className={ error ? 'error' : '' }>
-        <Card.Header>{ title }</Card.Header>
+        <Card.Header>{ unit && unit.title ? unit.title : '[Title]' }</Card.Header>
         <Card.Meta>
           <List>
             <List.Item>Language: { unit.language.displayName }</List.Item>
@@ -148,6 +146,5 @@ ProjectUnitItem.propTypes = {
   filesToUpload: PropTypes.array,
   projectId: PropTypes.string
 };
-
 
 export default ProjectUnitItem;

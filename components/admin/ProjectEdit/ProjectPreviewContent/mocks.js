@@ -30,6 +30,7 @@ export const mocks = [
               filesize: 28371,
               filetype: 'image/jpeg',
               alt: 'the alt text',
+              signedUrl: `https://s3-bucket-url.s3.amazonaws.com/2019/06/${props.id}/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE`,
               url: `2019/06/${props.id}/image-1.jpg`,
               use: {
                 __typename: 'ImageUse',
@@ -51,6 +52,7 @@ export const mocks = [
             {
               __typename: 'VideoUnit',
               id: 'un91',
+              createdAt: '2019-06-18T14:58:10.024Z',
               updatedAt: '2019-06-18T14:58:10.024Z',
               title: 'test project title',
               descPublic: 'the arabic description',
@@ -99,6 +101,7 @@ export const mocks = [
                     filesize: 28371,
                     filetype: 'image/jpeg',
                     alt: 'the alt text',
+                    signedUrl: `https://s3-bucket-url.s3.amazonaws.com/2019/06/${props.id}/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE`,
                     url: `2019/06/${props.id}/image-1.jpg`,
                     use: {
                       __typename: 'ImageUse',
@@ -128,6 +131,7 @@ export const mocks = [
                   filesize: 662595174,
                   filetype: 'video/mp4',
                   quality: 'WEB',
+                  signedUrl: null,
                   url: `2019/06/${props.id}/video-file-1.mp4`,
                   videoBurnedInStatus: 'CLEAN',
                   dimensions: {
@@ -170,6 +174,7 @@ export const mocks = [
             {
               __typename: 'VideoUnit',
               id: 'un95',
+              createdAt: '2019-06-18T12:58:10.024Z',
               updatedAt: '2019-06-18T12:58:10.024Z',
               title: 'test project title',
               descPublic: 'the english description',
@@ -266,6 +271,7 @@ export const mocks = [
                     filesize: 28371,
                     filetype: 'image/jpeg',
                     alt: 'the alt text',
+                    signedUrl: `https://s3-bucket-url.s3.amazonaws.com/2019/06/${props.id}/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE`,
                     url: `2019/06/${props.id}/image-1.jpg`,
                     use: {
                       __typename: 'ImageUse',
@@ -295,6 +301,7 @@ export const mocks = [
                   filesize: 662595174,
                   filetype: 'video/mp4',
                   quality: 'WEB',
+                  signedUrl: null,
                   url: `2019/06/${props.id}/video-file-1.mp4`,
                   videoBurnedInStatus: 'CLEAN',
                   dimensions: {

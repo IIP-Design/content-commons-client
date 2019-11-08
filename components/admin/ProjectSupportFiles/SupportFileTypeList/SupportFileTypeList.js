@@ -16,7 +16,7 @@ import sortBy from 'lodash/sortBy';
 
 import IconPopup from 'components/popups/IconPopup/IconPopup';
 import { VIDEO_PROJECT_FILES_QUERY } from 'lib/graphql/queries/video';
-import EditProjectFiles from '../../ProjectEdit/EditProjectFilesModal/EditPojectFilesModal';
+import EditProjectFiles from '../../ProjectEdit/EditProjectFilesModal/EditProjectFilesModal';
 import SupportItem from '../SupportItem/SupportItem';
 
 

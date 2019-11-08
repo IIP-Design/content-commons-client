@@ -8,7 +8,7 @@ jest.mock( 'next-server/dynamic', () => () => 'Dynamic' );
 jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
 jest.mock(
-  '../EditSingleProjectItem/EditSingleProjectItem',
+  'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem',
   () => function EditSingleProjectItem() { return ''; }
 );
 
@@ -239,12 +239,11 @@ describe( '<ProjectUnitItem /> after upload completion', () => {
     const image = wrapper.find( 'Image > img' );
     const placeholder = <div className="placeholder" />;
     const { url } = postUploadProps.unit.thumbnails[0].image;
-    const src = `https://s3-bucket-url.s3.amazonaws.com/${url}`;
 
     expect( imageWrapper.exists() ).toEqual( true );
     expect( imageWrapper.contains( placeholder ) ).toEqual( false );
     expect( image.exists() ).toEqual( true );
-    expect( image.prop( 'src' ) ).toEqual( src );
+    expect( image.prop( 'src' ) ).toEqual( url );
   } );
 
   it( 'renders initially the placeholder title', () => {

@@ -26,41 +26,46 @@ const withFileUpload = WrappedComponent => {
 
         let result = await uploadToS3( projectId, file, getSignedS3UrlPut, callback )
           .catch( err => {
-            console.dir( err );
             file.error = !!err;
           } );
 
-
         file.error = result.error;
-        file.contentType = result.contentType;
-        file.s3Path = result.path;
 
-        if ( isVideo ) {
-          file.stream = {};
-          file.stream.vimeo = await uploadToVimeo( file, getSignedS3UrlGet )
-            .catch( err => {
-              console.dir( err );
-              file.error = !!err;
-            } );
-        }
+        // if successful upload to s3
+        if ( !file.error ) {
+          file.contentType = result.contentType;
+          file.s3Path = result.path;
 
-        //  if video or image, fetch file metadata (this call takes a bit long so may need to fix)
-        if ( isVideo || isImage ) {
-          result = await getFileMetadata( getFileInfo, encodeURI( file.s3Path ) ).catch( err => { console.dir( err ); } );
-          if ( result ) {
-            const {
-              duration, bitrate, width, height
-            } = result;
-            file.duration = duration;
-            file.bitrate = bitrate;
-            file.width = width;
-            file.height = height;
+          if ( isVideo ) {
+            file.stream = {};
+            file.stream.vimeo = await uploadToVimeo( file, getSignedS3UrlGet )
+              .catch( err => {
+                console.dir( err );
+                file.error = !!err;
+              } );
           }
-        }
 
-        // update reducer state with new file props
-        if ( updateFn && typeof updateFn === 'function' ) {
-          updateFn( file );
+          //  if video or image, fetch file metadata (this call takes a bit long so may need to fix)
+          if ( isVideo || isImage ) {
+            result = await getFileMetadata( getFileInfo, encodeURI( file.s3Path ) ).catch( err => {
+              console.dir( err );
+            } );
+
+            if ( result ) {
+              const {
+                duration, bitrate, width, height
+              } = result;
+              file.duration = duration;
+              file.bitrate = bitrate;
+              file.width = width;
+              file.height = height;
+            }
+          }
+
+          // update reducer state with new file props
+          if ( updateFn && typeof updateFn === 'function' ) {
+            updateFn( file );
+          }
         }
 
         return file;

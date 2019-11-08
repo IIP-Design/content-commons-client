@@ -16,8 +16,8 @@ import ApolloError from 'components/errors/ApolloError';
 import GeneralError from 'components/errors/GeneralError/GeneralError';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 // import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
-import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
-import { getCount, getPathToS3Bucket } from 'lib/utils';
+import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
+import { getCount } from 'lib/utils';
 import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import { UploadContext } from '../../ProjectEdit/VideoEdit/VideoEdit';
 
@@ -55,22 +55,28 @@ const SupportItem = props => {
 
   const debounceResize = debounce( updateWidths, DELAY_INTERVAL );
 
-  const checkFileUrlStatus = () => {
-    if ( item && item.url ) {
-      const { url } = item;
-      const path = url;
-      const options = {
-        baseURL: getPathToS3Bucket(),
-        headers: {
-          Pragma: 'no-cache',
-          'Cache-Control': 'no-cache'
-        }
-      };
-      axios.head( path, options )
-        .catch( err => {
-          console.dir( err );
-          setError( err.isAxiosError );
-        } );
+  const checkFileUrlStatus = async () => {
+    if ( item && item.signedUrl ) {
+      try {
+        const options = {
+          headers: {
+            Pragma: 'no-cache',
+            'Cache-Control': 'no-cache',
+            Range: 'bytes=0-0'
+          }
+        };
+
+        // the head req was not working with the signed url so using get and
+        // simulating a head req but only returning 1 byte (see Range header above).
+        // Rather hacky so should research a better way
+        axios.get( item.signedUrl, options )
+          .catch( err => {
+            console.dir( err );
+            setError( err.isAxiosError );
+          } );
+      } catch ( err ) {
+        console.log( '' );
+      }
     }
   };
 
@@ -94,7 +100,7 @@ const SupportItem = props => {
 
   useEffect( () => {
     hasError();
-  }, [item.url] );
+  }, [item.signedUrl] );
 
   if ( !item || !getCount( item ) ) return null;
   if ( props.data.loading ) return 'Loading...';
@@ -221,7 +227,6 @@ const SupportItem = props => {
           ? (
             null
             /* <FileRemoveReplaceButtonGroup
-              onReplace={ () => {} }
               onRemove={ () => console.log( 'removed' ) }
             /> */
           )

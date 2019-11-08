@@ -6,15 +6,17 @@
 import React, { useContext, useState, useEffect } from 'react';
 import propTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo';
+import { connect } from 'react-redux';
+import * as actions from 'lib/redux/actions/projectUpdate';
 import { Confirm, Form, Grid } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
-import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown';
+import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import Loader from 'components/admin/ProjectEdit/EditVideoModal/Loader/Loader';
-import QualityDropdown from 'components/admin/dropdowns/QualityDropdown';
-import UseDropdown from 'components/admin/dropdowns/UseDropdown';
-import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown';
+import QualityDropdown from 'components/admin/dropdowns/QualityDropdown/QualityDropdown';
+import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
+import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown/VideoBurnedInStatusDropdown';
 import { EditSingleProjectItemContext } from 'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import { formatBytes, formatDate, secondsToHMS } from 'lib/utils';
 
@@ -43,7 +45,9 @@ const FileDataForm = ( {
   videoFileQuery,
   videoProjectQuery,
   videoUnitConnectFileMutation,
-  videoUnitDisconnectFileMutation
+  videoUnitDisconnectFileMutation,
+  selectedProject,
+  projectUpdated,
 } ) => {
   const {
     selectedFile, selectedUnit, setSelectedFile, setShowNotification, startTimeout, updateSelectedUnit
@@ -56,6 +60,9 @@ const FileDataForm = ( {
   const units = project && project.units ? project.units : [];
 
   const growl = () => {
+    // Update projectUpdate Redux state
+    projectUpdated( selectedProject, true );
+
     setShowNotification( true );
     startTimeout();
   };
@@ -398,10 +405,13 @@ FileDataForm.propTypes = {
   videoFileQuery: propTypes.object,
   videoUnitConnectFileMutation: propTypes.func,
   videoUnitDisconnectFileMutation: propTypes.func,
-  videoProjectQuery: propTypes.object
+  videoProjectQuery: propTypes.object,
+  selectedProject: propTypes.string,
+  projectUpdated: propTypes.func,
 };
 
 export default compose(
+  connect( null, actions ),
   graphql( VIDEO_FILE_DELETE_MUTATION, { name: 'deleteVideoFileMutation' } ),
   graphql( VIDEO_FILE_DELETE_STREAM_MUTATION, { name: 'streamDeleteVideoFileMutation' } ),
   graphql( VIDEO_FILE_UPDATE_STREAM_MUTATION, { name: 'streamUpdateVideoFileMutation' } ),

@@ -3,9 +3,10 @@
  * ProjectUnits
  *
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import * as actions from 'lib/redux/actions/projectUpdate';
 import { compose, graphql } from 'react-apollo';
 import { Card } from 'semantic-ui-react';
 import { getFileExt } from 'lib/utils';
@@ -13,7 +14,7 @@ import isEmpty from 'lodash/isEmpty';
 import withFileUpload from 'hocs/withFileUpload/withFileUpload';
 import { searchTreeForS3FileDirectories } from 'lib/upload';
 import { buildUnit, buildVideoFileTree } from 'lib/graphql/builders/video';
-import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown';
+import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import {
   VIDEO_PROJECT_QUERY,
   DELETE_VIDEO_FILE_MUTATION,
@@ -24,7 +25,7 @@ import {
 } from 'lib/graphql/queries/video';
 
 
-import EditProjectFiles from '../ProjectEdit/EditProjectFilesModal/EditPojectFilesModal';
+import EditProjectFiles from '../ProjectEdit/EditProjectFilesModal/EditProjectFilesModal';
 
 import ProjectUnitItem from './ProjectUnitItem/ProjectUnitItem';
 import './ProjectUnits.scss';
@@ -40,6 +41,7 @@ const ProjectUnits = props => {
     deleteManyVideoUnits,
     updateVideoProject,
     updateVideoFile,
+    projectUpdated,
     heading,
     extensions
   } = props;
@@ -318,6 +320,7 @@ const ProjectUnits = props => {
     const unitCreate = {};
     const unitUpdate = {};
 
+
     entries.forEach( entry => {
       const [language, _files] = entry;
       const unitExistsinLanguage = project.units.find( unit => unit.language.id === language );
@@ -326,17 +329,20 @@ const ProjectUnits = props => {
       const update = [];
 
       _files.forEach( async file => {
-        if ( file.input ) {
+        if ( file.input ) { // only add if file was uploaded successfully
           create.push( file );
         } else {
           const unitFileBelongsTo = getFileUnit( file );
-          const fileChanged = hasFileChanged( unitFileBelongsTo, file );
-          if ( fileChanged.length ) {
-            update.push( file );
-            await updateFile( file );
 
-            if ( fileChanged.includes( 'language' ) ) {
-              await disconnectFileFromUnit( unitFileBelongsTo, file );
+          if ( unitFileBelongsTo ) {
+            const fileChanged = hasFileChanged( unitFileBelongsTo, file );
+            if ( fileChanged.length ) {
+              update.push( file );
+              await updateFile( file );
+
+              if ( fileChanged.includes( 'language' ) ) {
+                await disconnectFileFromUnit( unitFileBelongsTo, file );
+              }
             }
           }
         }
@@ -403,8 +409,10 @@ const ProjectUnits = props => {
       const toUpload = files.filter( file => ( file.input ) );
       await uploadFiles( toUpload ).catch( err => console.log( err ) );
 
+      const filesUploadSuccess = files.filter( file => !file.error );
+
       // separate into units that need o be created and units that need to be updated
-      const { unitUpdate, unitCreate } = getCreateConnectUnits( files );
+      const { unitUpdate, unitCreate } = getCreateConnectUnits( filesUploadSuccess );
 
       // update unit and create or connect files
       const unitsToUpdate = Object.entries( unitUpdate );
@@ -415,11 +423,15 @@ const ProjectUnits = props => {
       await createUnits( unitsToCreate );
 
       // remove units that have no connected files
-      const unitsToRemove = getUnitsToRemove( files );
+      const unitsToRemove = getUnitsToRemove( filesUploadSuccess );
       await removeUnits( unitsToRemove );
 
-      // refresh cache
-      props.videoProject.refetch();
+      // Notify redux state that Project updated, indexed by project id
+      // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
+      projectUpdated( projectId, true );
+
+      // refresh cache to update component with new data
+      return videoProject.refetch();
     } catch ( err ) {
       console.dir( err );
     }
@@ -437,39 +449,9 @@ const ProjectUnits = props => {
     return [];
   };
 
-  const [units, setUnits] = useState( [] );
-  const [projectFiles, setProjectFiles] = useState( [] );
-  const [allowedFilesToUpload, setAllowedFilesToUpload] = useState( [] );
-
-  useEffect( () => {
-    setUnits( fetchUnits( videoProject ) );
-    setProjectFiles( getFilesToEdit() );
-    setAllowedFilesToUpload( getAllowedExtensions( filesToUpload ) );
-  }, [] );
-
-  useEffect( () => {
-    if ( hasProjectUnits() ) {
-      const { project } = videoProject;
-      if ( project && project.units && project.units.length ) {
-        setUnits( fetchUnits( videoProject ) );
-        setProjectFiles( getFilesToEdit() );
-      }
-    }
-  }, [videoProject] );
-
-
-  const renderUnits = () => (
-    <Card.Group>
-      { units.map( unit => (
-        <ProjectUnitItem
-          key={ unit.language.id }
-          unit={ unit }
-          projectId={ projectId }
-          filesToUpload={ allowedFilesToUpload }
-        />
-      ) ) }
-    </Card.Group>
-  );
+  const units = fetchUnits();
+  const projectFiles = getFilesToEdit();
+  const allowedFilesToUpload = getAllowedExtensions( filesToUpload );
 
   return (
     <div className="project-units">
@@ -487,10 +469,16 @@ const ProjectUnits = props => {
           )
         }
       </h2>
-      { units && units.length
-        ? renderUnits( units )
-        : 'No units available'
-       }
+      <Card.Group>
+        { units.map( unit => (
+          <ProjectUnitItem
+            key={ unit.language.id }
+            unit={ unit }
+            projectId={ projectId }
+            filesToUpload={ allowedFilesToUpload }
+          />
+        ) ) }
+      </Card.Group>
     </div>
   );
 };
@@ -503,6 +491,7 @@ ProjectUnits.propTypes = {
   extensions: PropTypes.array,
   videoProject: PropTypes.object,
   filesToUpload: PropTypes.array, // from redux
+  projectUpdated: PropTypes.func, // from redux
   deleteVideoFile: PropTypes.func,
   updateVideoUnit: PropTypes.func,
   updateVideoProject: PropTypes.func,
@@ -519,7 +508,7 @@ const mapStateToProps = state => ( {
 
 export default compose(
   withFileUpload,
-  connect( mapStateToProps ),
+  connect( mapStateToProps, actions ),
   graphql( LANGUAGES_QUERY, { name: 'languageList' } ),
   graphql( VIDEO_PROJECT_QUERY, {
     name: 'videoProject',

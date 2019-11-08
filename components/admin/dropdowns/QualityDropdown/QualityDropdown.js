@@ -31,7 +31,7 @@ query IMAGE_QUALITY_QUERY {
 const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
 const QualityDropdown = props => (
-  <Query query={ props.type === 'video' ? VIDEO_QUALITY_QUERY : IMAGE_QUALITY_QUERY }>
+  <Query query={ props.type.toLowerCase() === 'video' ? VIDEO_QUALITY_QUERY : IMAGE_QUALITY_QUERY }>
     { ( { data, loading, error } ) => {
       if ( error ) return `Error! ${error.message}`;
 

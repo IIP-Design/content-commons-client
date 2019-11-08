@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/upload';
 import { withRouter } from 'next/router';
 import { compose, graphql } from 'react-apollo';
-import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown';
+import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import { Tab, Dimmer, Loader } from 'semantic-ui-react';
 import { v4 } from 'uuid';
 import { removeDuplicatesFromArray } from 'lib/utils';
@@ -87,6 +87,8 @@ const VideoUpload = props => {
     setActiveIndex( 1 );
   };
 
+  const setDefaultQuality = file => ( file.type === 'video/mp4' ? 'WEB' : '' );
+
   /**
    * Compares file object file names for use in sorting.
    * @param {object} a file object
@@ -141,7 +143,7 @@ const VideoUpload = props => {
     const filesToAdd = fileList.map( file => ( {
       language: '',
       use: getDefaultUse( file.type.substr( 0, file.type.indexOf( '/' ) ) ),
-      quality: '',
+      quality: setDefaultQuality( file ),
       videoBurnedInStatus: '',
       input: file,
       id: v4(),
@@ -179,20 +181,6 @@ const VideoUpload = props => {
         closeConfirm();
       }
     } );
-  };
-
-  /**
-   * Replace file from files state array
-   * @param {string} id id of file to replace
-   * @param {array-like} fileFromInputSelection selected file from file selection dialogue
-   */
-  const replaceAssetFile = ( id, fileFromInputSelection ) => {
-    setFiles( prevFiles => prevFiles.map( file => {
-      if ( file.id !== id ) {
-        return file;
-      }
-      return { ...file, input: fileFromInputSelection };
-    } ).sort( compareFilenames ) );
   };
 
   /**
@@ -262,7 +250,6 @@ const VideoUpload = props => {
             files,
             addAssetFiles,
             removeAssetFile,
-            replaceAssetFile,
             updateField,
             allFieldsSelected,
             closeModal,

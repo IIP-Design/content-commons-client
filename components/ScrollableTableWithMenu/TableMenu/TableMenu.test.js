@@ -70,20 +70,16 @@ describe( '<TableMenu />', () => {
       .mockImplementation( () => {} );
     const resizeSpy = jest.spyOn( inst, 'menuHeadersOnResize' )
       .mockImplementation( () => {} );
+    const evts = ['click', 'keydown', 'resize'];
+    const spies = [clickSpy, keydownSpy, resizeSpy];
 
-    const map = {};
-    window.removeEventListener = jest.fn( ( event, cb ) => {
-      map[event] = cb;
+    window.removeEventListener = jest.fn();
+    inst.componentWillUnmount();
+
+    expect( window.removeEventListener ).toHaveBeenCalledTimes( evts.length );
+    evts.forEach( ( e, i ) => {
+      expect( window.removeEventListener ).toHaveBeenCalledWith( e, spies[i] );
     } );
-
-    Promise.resolve()
-      .then( () => {
-        inst.componentWillUnmount();
-        expect( clickSpy ).toHaveBeenCalled();
-        expect( keydownSpy ).toHaveBeenCalled();
-        expect( resizeSpy ).toHaveBeenCalled();
-      } )
-      .catch( () => {} );
   } );
 
   it( 'getColumns returns an array of columnMenu labels', () => {
@@ -407,5 +403,27 @@ describe( '<TableMenu />', () => {
     arrowBtns().forEach( btn => {
       expect( btn.prop( 'disabled' ) ).toEqual( isDisabled() );
     } );
+  } );
+
+  it( 'global click event calls toggleTableMenu', () => {
+    const wrapper = shallow( Component );
+    const inst = wrapper.instance();
+    const cb = jest.spyOn( inst, 'toggleTableMenu' )
+      .mockImplementation( () => {} );
+    inst.handleCheckboxFocus = jest.fn( () => {} );
+
+    const map = {};
+    window.addEventListener = jest.fn( () => {
+      map.click = cb;
+    } );
+
+    // open the menu
+    wrapper.setState( { displayTableMenu: true } );
+    expect( inst.state.displayTableMenu ).toEqual( true );
+
+    // close menu with global click
+    inst.componentDidMount();
+    map.click();
+    expect( cb ).toHaveBeenCalled();
   } );
 } );
