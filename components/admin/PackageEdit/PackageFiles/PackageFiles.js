@@ -47,7 +47,7 @@ const PackageFiles = props => {
           <div key={ id } className="package-file">
             <Grid>
               <Grid.Row>
-                <Grid.Column mobile={ 4 }>
+                <Grid.Column mobile={ 4 } className="thumbnail">
                   { getCount( thumbnails ) && thumbnails[0].url
                     ? (
                       <img
@@ -71,9 +71,9 @@ const PackageFiles = props => {
                     )
                   }
                 </Grid.Column>
-                <Grid.Column mobile={ 12 }>
-                  <p><b>File Name:</b> { fileName }</p>
-                  <p><b>Release Type:</b> { releaseType }</p>
+                <Grid.Column mobile={ 12 } className="meta">
+                  <p><b className="label">File Name:</b> { fileName }</p>
+                  <p><b className="label">Release Type:</b> { releaseType }</p>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
