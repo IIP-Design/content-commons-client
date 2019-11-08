@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid } from 'semantic-ui-react';
+import { Form, Grid } from 'semantic-ui-react';
 import { getCount } from 'lib/utils';
+import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
+import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
+import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
 
 const PressPackageFile = props => {
   const {
@@ -39,6 +42,55 @@ const PressPackageFile = props => {
           <Grid.Column mobile={ 12 } className="meta">
             <p><b className="label">File Name:</b> { fileName }</p>
             <p><b className="label">Release Type:</b> { releaseType }</p>
+            <Form>
+              <Form.Group>
+                <Form.Field width={ 8 }>
+                  <VisibilityDropdown
+                    id="visibility"
+                    name="visibility"
+                    label="Visibility Setting"
+                    value="INTERNAL"
+                    onChange={ () => {} }
+                    // error={ touched.visibility && !!errors.visibility }
+                  />
+                </Form.Field>
+
+                <Form.Field width={ 8 }>
+                  <CategoryDropdown
+                    id="categories"
+                    name="categories"
+                    label="Categories"
+                    // value={ values.categories }
+                    onChange={ () => {} }
+                    // error={ touched.categories && !!errors.categories }
+                    multiple
+                    search
+                    closeOnBlur
+                    closeOnChange
+                    required
+                    style={ { marginBottom: '1em' } }
+                  />
+                  <p className="field__helper-text">Select up to 2.</p>
+                </Form.Field>
+              </Form.Group>
+
+              <Form.Group>
+                <Form.Field width={ 8 }>
+                  <p>Author Bureaus/Offices (to be added)</p>
+                </Form.Field>
+
+                <Form.Field width={ 8 }>
+                  <TagDropdown
+                    id="tags"
+                    label="Tags"
+                    name="tags"
+                    // value={ values.tags }
+                    onChange={ () => {} }
+                    style={ { marginBottom: '1em' } }
+                  />
+                </Form.Field>
+              </Form.Group>
+            </Form>
           </Grid.Column>
         </Grid.Row>
       </Grid>
