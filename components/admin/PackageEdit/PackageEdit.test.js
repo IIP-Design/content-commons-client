@@ -2,6 +2,19 @@ import { mount } from 'enzyme';
 import PackageEdit from './PackageEdit';
 import { mocks } from './PackageDetailsForm/PressPackageDetailsForm/mocks';
 
+jest.mock(
+  'components/admin/dropdowns/CategoryDropdown/CategoryDropdown',
+  () => function CategoryDropdown() { return ''; }
+);
+jest.mock(
+  'components/admin/dropdowns/TagDropdown/TagDropdown',
+  () => function TagDropdown() { return ''; }
+);
+jest.mock(
+  'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown',
+  () => function VisibilityDropdown() { return ''; }
+);
+
 const Component = <PackageEdit />;
 
 describe( '<PackageEdit />', () => {
