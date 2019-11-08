@@ -92,6 +92,9 @@ describe( '<VideoReview />', () => {
     } );
   } );
 
+  const getBtn = ( buttons, str ) => buttons.filterWhere( btn => btn.text() === str );
+  const publishingButtons = ['Delete Project', 'Edit', 'Preview Project', 'Publish Changes', 'Publish', 'Unpublish'];
+
   it( 'renders initial loading state without crashing', () => {
     const wrapper = mount( Component );
     const videoReview = wrapper.find( 'VideoReview' );
@@ -128,10 +131,6 @@ describe( '<VideoReview />', () => {
     expect( videoReview.contains( icon ) ).toEqual( true );
     expect( videoReview.contains( span ) ).toEqual( true );
   } );
-
-
-  const getBtn = ( buttons, str ) => buttons.filterWhere( btn => btn.text() === str );
-  const publishingButtons = ['Delete Project', 'Edit', 'Preview Project', 'Publish Changes', 'Publish', 'Unpublish'];
 
   // notPublished = data.project.status !== 'PUBLISHED';
   it( 'renders the correct bottom CTA headline and buttons if status is DRAFT', async () => {
