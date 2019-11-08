@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Confirm } from 'semantic-ui-react';
+import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import PressPackageDetailsForm from './PackageDetailsForm/PressPackageDetailsForm/PressPackageDetailsForm';
@@ -85,6 +86,24 @@ const PackageEdit = () => {
           // send mock data here for UI dev, remove after GraphQL
           data={ mocks[0].result.data }
         />
+      </div>
+
+      <div className="section section--publish">
+        <h2 className="title">
+          { /* publishedAndUpdated */ false && 'It looks like you made changes to your package. Do you want to publish changes?' }
+          { /* notPublished */ true && 'Your package looks great! Are you ready to Publish?' }
+          { /* publishedAndNotUpdated */ false && 'Not ready to share with the world yet?' }
+        </h2>
+
+        <ButtonAddFiles accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
+        { /* !publishedAndNotUpdated */ true && (
+          <Button
+            className={ `package-button package-button--${/* publishedAndUpdated */ false ? 'edit' : 'publish'}` }
+            onClick={ /* handlePublish */ () => {} }
+          >
+            Publish{ /* publishedAndUpdated */ false && ' Changes' }
+          </Button>
+        ) }
       </div>
     </div>
   );
