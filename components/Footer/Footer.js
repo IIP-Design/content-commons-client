@@ -104,7 +104,7 @@ within
             <a href="https://state.gov">U.S. Department of State</a>
 .
             External links to other Internet sites should not be construed as an endorsement of the views or privacy
-            policies contained therein. GPA © 2018.
+            policies contained therein. GPA © { new Date().getFullYear() }.
           </Header.Subheader>
         </Header>
         <img src={ flagImage } alt="United States Flag" className="footer_img footer_img--usflag" />
