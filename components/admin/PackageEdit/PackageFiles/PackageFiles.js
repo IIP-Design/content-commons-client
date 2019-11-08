@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Button, Loader } from 'semantic-ui-react';
 import { getCount, getPluralStringOrNot } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
+import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import PressPackageFile from './PressPackageFile/PressPackageFile';
 
 const PackageFiles = props => {
@@ -46,6 +47,7 @@ const PackageFiles = props => {
              */ }
           <Button className="btn--edit" onClick={ () => { console.log( 'edit pressed' ); } } size="small" basic>Edit</Button>
         </h2>
+        <ButtonAddFiles accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
       </div>
 
       <div className="files">
