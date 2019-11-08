@@ -4,6 +4,7 @@ import wait from 'waait';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { Loader, Table } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
+import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 import TableBody, { TEAM_VIDEO_PROJECTS_QUERY } from './TableBody';
 
 /**
@@ -15,6 +16,87 @@ jest.mock( 'next-server/dynamic', () => () => 'video-details-popup' );
 
 // Mock DetailsPopup component since it's tested elsewhere
 jest.mock( 'components/admin/Dashboard/TeamProjects/DetailsPopup/DetailsPopup', () => () => 'DetailsPopup' );
+
+const videoProjects = [
+  {
+    id: 'd137',
+    createdAt: '2019-05-09T18:33:03.368Z',
+    updatedAt: '2019-05-09T18:33:03.368Z',
+    team: {
+      id: 't888',
+      name: 'IIP Video Production',
+      organization: 'Department of State'
+    },
+    author: {
+      id: 'a928',
+      firstName: 'Jane',
+      lastName: 'Doe'
+    },
+    projectTitle: 'Test Title 1',
+    status: 'PUBLISHED',
+    visibility: 'INTERNAL',
+    thumbnails: {
+      id: 't34',
+      url: 'https://thumbnailurl.com',
+      alt: 'some alt text',
+    },
+    categories: [
+      {
+        id: '38s',
+        translations: [
+          {
+            id: '832',
+            name: 'about america',
+            language: {
+              id: 'en23',
+              locale: 'en-us'
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'z132',
+    createdAt: '2019-05-12T18:33:03.368Z',
+    updatedAt: '2019-05-12T18:33:03.368Z',
+    team: {
+      id: 't888',
+      name: 'IIP Video Production',
+      organization: 'Department of State'
+    },
+    author: {
+      id: 'a287',
+      firstName: 'Joe',
+      lastName: 'Schmoe'
+    },
+    projectTitle: 'Test Title 2',
+    status: 'PUBLISHED',
+    visibility: 'INTERNAL',
+    thumbnails: {
+      id: 't34',
+      url: 'https://thumbnailurl.com',
+      alt: 'some alt text',
+    },
+    categories: [
+      {
+        id: '38s',
+        translations: [
+          {
+            id: '832',
+            name: 'about america',
+            language: {
+              id: 'en23',
+              locale: 'en-us'
+            }
+          }
+        ]
+      }
+    ]
+  }
+];
+
+const videoProjectIds = videoProjects.map( p => p.id );
 
 const props = {
   searchTerm: '',
@@ -33,7 +115,8 @@ const props = {
     skip: 0
   },
   direction: 'descending',
-  projectTab: 'teamProjects'
+  projectTab: 'teamProjects',
+  videoProjectIds
 };
 
 const mocks = [
@@ -43,85 +126,21 @@ const mocks = [
       variables: { ...props.variables }
     },
     result: {
+      data: { videoProjects }
+    }
+  },
+  {
+    request: {
+      query: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
+      variables: { ids: videoProjectIds }
+    },
+    result: {
       data: {
-        videoProjects: [
-          {
-            id: 'd137',
-            createdAt: '2019-05-09T18:33:03.368Z',
-            updatedAt: '2019-05-09T18:33:03.368Z',
-            team: {
-              id: 't888',
-              name: 'IIP Video Production',
-              organization: 'Department of State'
-            },
-            author: {
-              id: 'a928',
-              firstName: 'Jane',
-              lastName: 'Doe'
-            },
-            projectTitle: 'Test Title 1',
-            status: 'PUBLISHED',
-            visibility: 'INTERNAL',
-            thumbnails: {
-              id: 't34',
-              url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
-            },
-            categories: [
-              {
-                id: '38s',
-                translations: [
-                  {
-                    id: '832',
-                    name: 'about america',
-                    language: {
-                      id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            id: 'z132',
-            createdAt: '2019-05-12T18:33:03.368Z',
-            updatedAt: '2019-05-12T18:33:03.368Z',
-            team: {
-              id: 't888',
-              name: 'IIP Video Production',
-              organization: 'Department of State'
-            },
-            author: {
-              id: 'a287',
-              firstName: 'Joe',
-              lastName: 'Schmoe'
-            },
-            projectTitle: 'Test Title 2',
-            status: 'PUBLISHED',
-            visibility: 'INTERNAL',
-            thumbnails: {
-              id: 't34',
-              url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
-            },
-            categories: [
-              {
-                id: '38s',
-                translations: [
-                  {
-                    id: '832',
-                    name: 'about america',
-                    language: {
-                      id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+        projectStatusChange: {
+          id: 'd137',
+          status: 'DRAFT',
+          error: null
+        }
       }
     }
   }
@@ -299,5 +318,14 @@ describe( '<TableBody />', () => {
 
     expect( rowCount ).toEqual( expectedRowCount );
     expect( toJSON( tableRows ) ).toMatchSnapshot();
+  } );
+
+  it( 'subscribes to status updates', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+    // const tableBody = wrapper.find( 'TableBody' );
+    const tableBody = wrapper.findWhere( c => c.props().subscribeToStatuses !== undefined );
+    // TODO: Find a way to test this function added by graphql HOC props option
   } );
 } );

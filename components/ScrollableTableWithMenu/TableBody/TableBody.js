@@ -2,11 +2,14 @@ import './TableBody.scss';
 import { Loader, Table } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
-import React from 'react';
+import { graphql } from 'react-apollo';
+import React, { useEffect, useState } from 'react';
+import update from 'immutability-helper';
+import isEqual from 'lodash/isEqual';
 import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import gql from 'graphql-tag';
 import orderBy from 'lodash/orderBy';
+import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
   query VideoProjectsByTeam(
@@ -122,116 +125,167 @@ const TableBody = props => {
     tableHeaders,
     toggleItemSelection,
     variables,
-    projectTab
+    projectTab,
+    teamVideoProjects: {
+      loading, error, videoProjects
+    },
+    videoProjectIds,
+    subscribeToStatuses
   } = props;
 
+  const [statusSubscription, setStatusSubscription] = useState();
+
+  useEffect( () => {
+    if ( statusSubscription ) {
+      // Do not resubscribe if the IDs did not change
+      if ( isEqual( statusSubscription.ids, videoProjectIds ) ) {
+        return;
+      }
+      statusSubscription.unsub();
+    }
+    if ( videoProjectIds.length < 1 ) {
+      setStatusSubscription( null );
+      return;
+    }
+    const subscription = {
+      ids: videoProjectIds,
+      unsub: subscribeToStatuses()
+    };
+    setStatusSubscription( subscription );
+    return () => {
+      subscription.unsub();
+    };
+  }, [videoProjectIds.join( ',' )] );
+
+  if ( loading ) {
+    return (
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>
+            <Loader active inline size="small" />
+            <span style={ { marginLeft: '0.5em', fontSize: '1.5em' } }>
+              Loading...
+            </span>
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    );
+  }
+  if ( error ) {
+    return (
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>
+            <ApolloError error={ error } />
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    );
+  }
+
+  if ( !videoProjects ) return null;
+
+  if ( searchTerm && !videoProjects.length ) {
+    return (
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>
+            No results for &ldquo;{ searchTerm }&rdquo;
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    );
+  }
+
+  if ( !videoProjects.length ) {
+    return (
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>No projects</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    );
+  }
+
+  // Sort data by clicked column & direction
+  // Default sort by createdAt & DESC
+  const direction = props.direction ? `${props.direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
+
+  const tableData = orderBy(
+    normalizeData( videoProjects ),
+    tableDatum => {
+      let { column } = props;
+      if ( !column ) column = 'createdAt';
+      // Format table data for case insensitive sorting
+      const formattedTableDatum = tableDatum[column].toString().toLowerCase();
+      return formattedTableDatum;
+    },
+    [direction]
+  );
+
+  // skip & first query vars are used as start/end slice() params to paginate tableData on client
+  const { skip, first } = variables;
+  const paginatedTableData = tableData.slice( skip, skip + first );
   return (
-    <Query
-      query={ TEAM_VIDEO_PROJECTS_QUERY }
-      variables={ { ...variables } }
-      fetchPolicy="cache-and-network"
-    >
-      { ( { loading, error, data } ) => {
-        if ( loading ) {
-          return (
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>
-                  <Loader active inline size="small" />
-                  <span style={ { marginLeft: '0.5em', fontSize: '1.5em' } }>
-                    Loading...
-                  </span>
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          );
-        }
-        if ( error ) {
-          return (
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>
-                  <ApolloError error={ error } />
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          );
-        }
-
-        if ( data && !data.videoProjects ) return null;
-
-        const { videoProjects } = data;
-
-        if ( searchTerm && !videoProjects.length ) {
-          return (
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>
-                  No results for &ldquo;{ searchTerm }&rdquo;
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          );
-        }
-
-        if ( !videoProjects.length ) {
-          return (
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>No projects</Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          );
-        }
-
-        // Sort data by clicked column & direction
-        // Default sort by createdAt & DESC
-        const direction = props.direction ? `${props.direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
-
-        const tableData = orderBy(
-          normalizeData( videoProjects ),
-          tableDatum => {
-            let { column } = props;
-            if ( !column ) column = 'createdAt';
-            // Format table data for case insensitive sorting
-            const formattedTableDatum = tableDatum[column].toString().toLowerCase();
-            return formattedTableDatum;
-          },
-          [direction]
-        );
-
-        // skip & first query vars are used as start/end slice() params to paginate tableData on client
-        const { skip, first } = variables;
-        const paginatedTableData = tableData.slice( skip, skip + first );
-
-        return (
-          <Table.Body className="projects">
-            { paginatedTableData.map( d => (
-              <TableRow
-                key={ d.id }
-                d={ d }
-                selectedItems={ selectedItems }
-                tableHeaders={ tableHeaders }
-                toggleItemSelection={ toggleItemSelection }
-                projectTab={ projectTab }
-              />
-            ) ) }
-          </Table.Body>
-        );
-      } }
-    </Query>
+    <Table.Body className="projects">
+      { paginatedTableData.map( d => (
+        <TableRow
+          key={ d.id }
+          d={ d }
+          selectedItems={ selectedItems }
+          tableHeaders={ tableHeaders }
+          toggleItemSelection={ toggleItemSelection }
+          projectTab={ projectTab }
+        />
+      ) ) }
+    </Table.Body>
   );
 };
 
 TableBody.propTypes = {
+  teamVideoProjects: PropTypes.object,
   searchTerm: PropTypes.string,
   selectedItems: PropTypes.object,
   tableHeaders: PropTypes.array,
   toggleItemSelection: PropTypes.func,
   variables: PropTypes.object,
   direction: PropTypes.string,
-  projectTab: PropTypes.string
+  projectTab: PropTypes.string,
+  videoProjectIds: PropTypes.array,
+  subscribeToStatuses: PropTypes.func
 };
 
-export default TableBody;
+const teamProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
+  name: 'teamVideoProjects',
+  props: ( { teamVideoProjects } ) => {
+    const { videoProjects, subscribeToMore } = teamVideoProjects;
+    const videoProjectIds = videoProjects ? videoProjects.map( p => p.id ) : [];
+    return {
+      teamVideoProjects,
+      videoProjectIds,
+      subscribeToStatuses: () => subscribeToMore( {
+        document: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
+        variables: { ids: videoProjectIds },
+        updateQuery: ( prev, { subscriptionData: { data: { projectStatusChange } } } ) => {
+          if ( !projectStatusChange ) {
+            return prev;
+          }
+          const projectIndex = prev.videoProjects.findIndex( p => p.id === projectStatusChange.id );
+          if ( projectIndex === -1 ) {
+            return prev;
+          }
+          // Using immutability helper in order to ensure that React will rerender after the status change
+          return update( prev, { videoProjects: { [projectIndex]: { status: { $set: projectStatusChange.status } } } } );
+        }
+      } )
+    };
+  },
+  options: props => ( {
+    variables: { ...props.variables },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network'
+  } )
+} );
+
+export default teamProjectsQuery( TableBody );
 export { TEAM_VIDEO_PROJECTS_QUERY };

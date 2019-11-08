@@ -1,19 +1,22 @@
 import { mount } from 'enzyme';
+import wait from 'waait';
 import toJSON from 'enzyme-to-json';
 import { Mutation } from 'react-apollo';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { Button, Popup } from 'semantic-ui-react';
 import UnpublishProjects from './UnpublishProjects';
+import { mocks, unpublishMocks } from './mocks';
 
 const props = {
+  handleActionResult: jest.fn(),
+  unpublishVideoProject: jest.fn(),
   handleResetSelections: jest.fn(),
-  handleUnpublish: jest.fn(),
-  handleUnpublishCacheUpdate: jest.fn(),
-  showConfirmationMsg: jest.fn()
+  showConfirmationMsg: jest.fn(),
+  selections: mocks
 };
 
 const Component = (
-  <MockedProvider mocks={ [] } addTypename={ false }>
+  <MockedProvider mocks={ unpublishMocks } addTypename={ false }>
     <UnpublishProjects { ...props } />
   </MockedProvider>
 );
@@ -21,16 +24,16 @@ const Component = (
 describe( '<UnpublishProjects />', () => {
   it( 'renders without crashing', () => {
     const wrapper = mount( Component );
-    const unpublishMutation = wrapper.find( UnpublishProjects );
+    const unpublishProjects = wrapper.find( UnpublishProjects );
 
-    expect( unpublishMutation.exists() ).toEqual( true );
-    expect( toJSON( unpublishMutation ) ).toMatchSnapshot();
+    expect( unpublishProjects.exists() ).toEqual( true );
+    expect( toJSON( unpublishProjects ) ).toMatchSnapshot();
   } );
 
   it( 'renders a Popup component', () => {
     const wrapper = mount( Component );
-    const unpublishMutation = wrapper.find( UnpublishProjects );
-    const popup = unpublishMutation.find( Popup );
+    const unpublishProjects = wrapper.find( UnpublishProjects );
+    const popup = unpublishProjects.find( Popup );
 
     expect( popup.exists() ).toEqual( true );
     expect( popup.prop( 'content' ) ).toEqual( 'Unpublish Selection(s)' );
@@ -46,28 +49,27 @@ describe( '<UnpublishProjects />', () => {
     expect( button.contains( btnTxt ) ).toEqual( true );
   } );
 
-  it( 'clicking the Button calls handleUnpublish', () => {
+  it( 'clicking the Button calls handleActionResult with the apporpriate results', async () => {
     const wrapper = mount( Component );
     const button = wrapper.find( Button );
 
     button.simulate( 'click' );
-    expect( props.handleUnpublish ).toHaveBeenCalled();
+    await wait( 10 );
+    wrapper.update();
+
+    expect( props.handleActionResult ).toHaveBeenCalledTimes( mocks.length );
+    const mockResults = unpublishMocks.map( mock => [mock.result] );
+    mockResults.forEach( result => {
+      expect( props.handleActionResult ).toHaveBeenCalledWith( result[0] );
+    } );
   } );
 
-  it( 'mutation calls handleResetSelections and showConfirmationMsg on completion', async () => {
+  it( 'clicking the Button calls handleResetSelections and showConfirmationMsg on completion', () => {
     const wrapper = mount( Component );
-    const mutation = wrapper.find( Mutation );
+    const button = wrapper.find( Button );
 
-    mutation.prop( 'onCompleted' )();
+    button.simulate( 'click' );
     expect( props.handleResetSelections ).toHaveBeenCalled();
     expect( props.showConfirmationMsg ).toHaveBeenCalled();
-  } );
-
-  it( 'mutation calls handleUnpublishCacheUpdate on update', async () => {
-    const wrapper = mount( Component );
-    const mutation = wrapper.find( Mutation );
-
-    mutation.prop( 'update' )();
-    expect( props.handleUnpublishCacheUpdate ).toHaveBeenCalled();
   } );
 } );
