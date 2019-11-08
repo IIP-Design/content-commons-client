@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // import { graphql } from 'react-apollo';
-import { Loader } from 'semantic-ui-react';
+import { Button, Loader } from 'semantic-ui-react';
 import { getCount, getPluralStringOrNot } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import PressPackageFile from './PressPackageFile/PressPackageFile';
@@ -37,12 +37,22 @@ const PackageFiles = props => {
 
   return (
     <section className="section section--package-files package-files layout">
-      <h2 className="headline uppercase">
-        { `Uploaded ${getPluralStringOrNot( units, 'File' )}` }
-      </h2>
-      { units.map( unit => (
-        <PressPackageFile key={ unit.id } unit={ unit } />
-      ) ) }
+      <div className="heading">
+        <h2 className="headline uppercase">
+          { `Uploaded ${getPluralStringOrNot( units, 'File' )}` }
+          { /**
+             * This edit button will be the trigger
+             * for the edit files modal.
+             */ }
+          <Button className="btn--edit" onClick={ () => { console.log( 'edit pressed' ); } } size="small" basic>Edit</Button>
+        </h2>
+      </div>
+
+      <div className="files">
+        { units.map( unit => (
+          <PressPackageFile key={ unit.id } unit={ unit } />
+        ) ) }
+      </div>
     </section>
   );
 };
