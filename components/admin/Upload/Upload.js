@@ -15,25 +15,49 @@ import docIcon from 'static/icons/icon_150px_document_blue.png';
 import eduIcon from 'static/icons/icon_150px_edu_blue.png';
 import videoIcon from 'static/icons/icon_150px_video_blue.png';
 import audioIcon from 'static/icons/icon_150px_audio_blue.png';
+import plusSign from 'static/images/plus_sign.svg';
 import './Upload.scss';
 
 // using dynamic import so that components load when they are needed, or rendered
 const VideoUpload = dynamic( () => import( /* webpackChunkName: "videoUpload" */ './modals/VideoUpload/VideoUpload' ) );
+const PackageUpload = dynamic( () => import( /* webpackChunkName: "packageUpload" */ './modals/PackageUpload/PackageUpload' ) );
 
 class Upload extends Component {
   state = {
-    modalOpen: false,
-    modalClassname: 'upload_modal'
+    modalClassname: 'upload_modal',
+    openModals: {
+      video: false,
+      package: false,
+    }
   }
 
-  handleModalOpen = () => this.setState( { modalOpen: true } );
+  handleModalOpen = ( e, data ) => {
+    const { modal } = data;
 
-  handleModalClose = () => this.setState( { modalOpen: false } );
+    const updatedOpenModals = this.state.openModals;
+    updatedOpenModals[modal] = true;
+
+    this.setState( prevState => ( {
+      ...prevState,
+      ...updatedOpenModals
+    } ) );
+  }
+
+  handleModalClose = modal => {
+    const updatedOpenModals = this.state.openModals;
+    updatedOpenModals[modal] = false;
+
+    this.setState( prevState => ( {
+      ...prevState,
+      ...updatedOpenModals
+    } ) );
+  }
 
   handleModalClassname = updatedModalClassname => this.setState( { modalClassname: updatedModalClassname } );
 
   render() {
-    const { modalOpen, modalClassname } = this.state;
+    const { modalClassname, openModals } = this.state;
+
     return (
       <div>
         <h1>Upload Content</h1>
@@ -45,16 +69,21 @@ class Upload extends Component {
             </Button>
             <Modal
               className={ modalClassname }
-              open={ modalOpen }
+              open={ openModals.video }
               trigger={ (
-                <Button className="type" aria-label="Upload Video Content" onClick={ this.handleModalOpen }>
+                <Button
+                  className="type"
+                  aria-label="Upload Video Content"
+                  modal="video"
+                  onClick={ this.handleModalOpen }
+                >
                   <img src={ videoIcon } alt="Upload video content" />
                   <span>Videos</span>
                 </Button>
               ) }
               content={ (
                 <VideoUpload
-                  closeModal={ this.handleModalClose }
+                  closeModal={ () => this.handleModalClose( 'video' ) }
                   updateModalClassname={ this.handleModalClassname }
                 />
               ) }
@@ -72,7 +101,32 @@ class Upload extends Component {
               <span>Teaching Materials</span>
             </Button>
           </div>
-        </section>
+
+          <div className="pressPackage">
+            <p className="conjunction">- OR -</p>
+            <Modal
+              className={ modalClassname }
+              open={ openModals.package }
+              trigger={ (
+                <Button
+                  className="pressPackage_createBtn"
+                  aria-label="Create a New Press Package"
+                  modal="package"
+                  onClick={ this.handleModalOpen }
+                >
+                  <img src={ plusSign } alt="Create a New Press Package" />
+                  <span>Create New Package</span>
+                </Button>
+              ) }
+              content={ (
+                <PackageUpload
+                  closeModal={ () => this.handleModalClose( 'package' ) }
+                  updateModalClassname={ this.handleModalClassname }
+                />
+              ) }
+            />
+          </div>
+        </section>{ /* .upload-content */ }
 
         <section className="upload_information">
           <div className="upload_information_advisory">

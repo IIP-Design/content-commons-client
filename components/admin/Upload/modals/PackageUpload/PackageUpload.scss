@@ -1,0 +1,17 @@
+@import "styles/colors.scss";
+
+.packageUpload {
+
+  .ui.attached.tabular.menu {
+    
+    .active.item {
+      justify-content: center;
+      width: 100%;
+      font-size: 24px;
+      color: $blue;
+      @media screen and (max-width: 640px) {
+        font-size: 18px;
+      }
+    }
+  }
+}
