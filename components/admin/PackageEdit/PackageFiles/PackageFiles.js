@@ -7,7 +7,7 @@ import { getCount, getPluralStringOrNot } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 
-const PressPackageFile = dynamic( () => import( /* webpackChunkName: "pressPackageFile" */ './PressPackageFile/PressPackageFile' ) );
+const PressPackageFile = dynamic( () => import( /* webpackChunkName: "pressPackageFile" */ 'components/admin/PackageEdit/PackageFiles/PressPackageFile/PressPackageFile' ) );
 
 const PackageFiles = props => {
   const { error, loading } = props.data;
