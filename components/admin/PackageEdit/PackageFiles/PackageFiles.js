@@ -10,7 +10,8 @@ import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 const PressPackageFile = dynamic( () => import( /* webpackChunkName: "pressPackageFile" */ './PressPackageFile/PressPackageFile' ) );
 
 const PackageFiles = props => {
-  const { error, loading, package: pkg } = props.data;
+  const { error, loading } = props.data;
+  const pkg = props.data.package || {};
 
   if ( loading ) {
     return (
