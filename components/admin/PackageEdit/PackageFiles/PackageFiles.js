@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import { graphql } from 'react-apollo';
 import dynamic from 'next/dynamic';
-import { Button, Loader } from 'semantic-ui-react';
+import { Loader } from 'semantic-ui-react';
 import { getCount, getPluralStringOrNot } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
+import EditPackageFiles from 'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal';
 
 const PressPackageFile = dynamic( () => import( /* webpackChunkName: "pressPackageFile" */ 'components/admin/PackageEdit/PackageFiles/PressPackageFile/PressPackageFile' ) );
 
@@ -42,15 +43,15 @@ const PackageFiles = props => {
   return (
     <section className="section section--package-files package-files layout">
       <div className="heading">
-        <h2 className="headline uppercase">
-          { `Uploaded ${getPluralStringOrNot( units, 'File' )}` }
-          { /**
-             * This edit button will be the trigger
-             * for the edit files modal.
-             */ }
-          <Button className="btn--edit" onClick={ () => { console.log( 'edit pressed' ); } } size="small" basic>Edit</Button>
-        </h2>
-        <ButtonAddFiles accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
+        <div className="heading-group">
+          <h2 className="headline uppercase">
+            { `Uploaded ${getPluralStringOrNot( units, 'File' )}` }
+          </h2>
+          <EditPackageFiles />
+        </div>
+        <ButtonAddFiles accept=".doc, .docx" onChange={ () => {} } multiple>
+          + Add Files
+        </ButtonAddFiles>
       </div>
 
       <div className="files">
