@@ -54,28 +54,28 @@ const PackageDetailsForm = props => {
               <Form.Group widths="equal">
                 <div className="field">
                   <Form.Field
-                    id="packageTitle"
-                    name="packageTitle"
+                    id="title"
+                    name="title"
                     control={ Input }
                     label="Title"
                     required
                     autoFocus
-                    value={ values.packageTitle }
+                    value={ values.title }
                     onChange={ handleOnChange }
-                    error={ touched && touched.packageTitle && !!errors.packageTitle }
+                    error={ touched && touched.title && !!errors.title }
                   />
-                  <p className="error-message">{ touched.packageTitle ? errors.packageTitle : '' }</p>
+                  <p className="error-message">{ touched.title ? errors.title : '' }</p>
                 </div>
               </Form.Group>
             </Grid.Column>
 
             <Grid.Column mobile={ 16 } computer={ 4 }>
               <Form.Field
-                id="packageType"
-                name="packageType"
+                id="type"
+                name="type"
                 control={ Input }
                 label="Package Type"
-                value={ values.packageType }
+                value={ values.type }
                 onChange={ handleChange }
                 readOnly
                 tabIndex={ -1 }

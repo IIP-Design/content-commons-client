@@ -40,22 +40,22 @@ describe( '<PackageEdit />', () => {
 
   it( 'renders the package title field', () => {
     const wrapper = mount( Component );
-    const titleLabel = wrapper.find( 'label[htmlFor="packageTitle"]' );
-    const titleInput = wrapper.find( 'input#packageTitle' );
-    const { packageTitle } = mocks[0].result.data.package;
+    const titleLabel = wrapper.find( 'label[htmlFor="title"]' );
+    const titleInput = wrapper.find( 'input#title' );
+    const { title } = mocks[0].result.data.package;
 
     expect( titleLabel.text() ).toEqual( 'Title' );
-    expect( titleInput.prop( 'value' ) ).toEqual( packageTitle );
+    expect( titleInput.prop( 'value' ) ).toEqual( title );
   } );
 
   it( 'renders the package type field', () => {
     const wrapper = mount( Component );
-    const typeLabel = wrapper.find( 'label[htmlFor="packageType"]' );
-    const typeInput = wrapper.find( 'input#packageType' );
-    const { packageType } = mocks[0].result.data.package;
+    const typeLabel = wrapper.find( 'label[htmlFor="type"]' );
+    const typeInput = wrapper.find( 'input#type' );
+    const { type } = mocks[0].result.data.package;
 
     expect( typeLabel.text() ).toEqual( 'Package Type' );
-    expect( typeInput.prop( 'value' ) ).toEqual( packageType );
+    expect( typeInput.prop( 'value' ) ).toEqual( type );
   } );
 
   it( 'clicking the Delete All button opens the Confirm modal', () => {

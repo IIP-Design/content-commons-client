@@ -52,8 +52,8 @@ const PressPackageDetailsForm = props => {
     const pressPackage = ( data && data.package ) ? data.package : {};
 
     const initialValues = {
-      packageTitle: pressPackage.packageTitle || '',
-      packageType: pressPackage.packageType || 'PUBLIC',
+      title: pressPackage.title || '',
+      type: pressPackage.type || 'DAILY_GUIDANCE',
     };
 
     return initialValues;

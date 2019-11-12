@@ -8,7 +8,7 @@ import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/Vi
 
 const PressPackageFile = props => {
   const {
-    id, fileName, releaseType, alt, thumbnails
+    id, filename, filetype, image
   } = props.unit;
 
   return (
@@ -16,11 +16,11 @@ const PressPackageFile = props => {
       <Grid>
         <Grid.Row>
           <Grid.Column mobile={ 4 } className="thumbnail">
-            { getCount( thumbnails ) && thumbnails[0].url
+            { getCount( image ) && image[0].signedUrl
               ? (
                 <img
-                  src={ thumbnails[0].url }
-                  alt={ alt }
+                  src={ image[0].signedUrl }
+                  alt={ image[0].alt }
                   style={ {
                     height: 'auto',
                     width: '100%',
@@ -40,8 +40,8 @@ const PressPackageFile = props => {
             }
           </Grid.Column>
           <Grid.Column mobile={ 12 } className="meta">
-            <p><b className="label">File Name:</b> { fileName }</p>
-            <p><b className="label">Release Type:</b> { releaseType }</p>
+            <p><b className="label">File Name:</b> { filename }</p>
+            <p><b className="label">Release Type:</b> { filetype }</p>
             <Form>
               <Form.Group>
                 <Form.Field width={ 8 }>
