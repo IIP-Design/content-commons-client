@@ -1,5 +1,6 @@
 const AWS_URL = 'https://s3-bucket-url.s3.amazonaws.com';
 const AWS_SIGNED_URL_QUERY_STRING = '?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE';
+
 const language = {
   __typename: 'Language',
   id: 'ck2lzfx710hkq07206thus6pt',
@@ -9,6 +10,7 @@ const language = {
   displayName: 'English',
   nativeName: 'English'
 };
+
 const image = {
   __typename: 'ImageFile',
   createdAt: '2019-11-12T13:01:01.906Z',
@@ -33,28 +35,70 @@ const image = {
   md5: 'gggg7777',
   alt: 'thumbnail of guidance document',
 };
-const documentUses = {
-  factSheet: {
-    __typename: 'DocumentUse',
-    id: 'du978',
+
+const documentUses = [
+  {
+    id: 'ck2wbvj5h10kq0720hr0nkfgz',
+    name: 'Background Briefing'
+  },
+  {
+    id: 'ck2wbvj6010kz0720c358mbrt',
+    name: 'Department Press Briefing'
+  },
+  {
+    id: 'ck2wbvj6w10l80720gzhwlr9s',
     name: 'Fact Sheet'
   },
-  mediaNote: {
-    __typename: 'DocumentUse',
-    id: 'du988',
+  {
+    id: 'ck2wbvj7b10lg0720htdvmgru',
+    name: 'Interview'
+  },
+  {
+    id: 'ck2wbvj7u10lo07207aa55qmz',
     name: 'Media Note'
   },
-  pressGuidance: {
-    __typename: 'DocumentUse',
-    id: 'du968',
+  {
+    id: 'ck2wbvj8810lx0720ruj5eylz',
+    name: 'Notice to the Press'
+  },
+  {
+    id: 'ck2wbvj8n10m50720eu2ob3pq',
+    name: 'On-the-record Briefing'
+  },
+  {
+    id: 'ck2wbvj8y10md0720vsuqxq87',
     name: 'Press Guidance'
   },
-  statement: {
-    __typename: 'DocumentUse',
-    id: 'du998',
+  {
+    id: 'ck2wbvj9b10ml0720245vk3uy',
+    name: 'Remarks'
+  },
+  {
+    id: 'ck2wbvj9v10mt0720hwq7013q',
+    name: 'Speeches'
+  },
+  {
+    id: 'ck2wbvjaa10n20720fg5ayhn9',
     name: 'Statement'
+  },
+  {
+    id: 'ck2wbvjao10na0720ncwefnm6',
+    name: 'Taken Questions'
+  },
+  {
+    id: 'ck2wbvjb210nj07205m16k3xx',
+    name: 'Travel Alert'
+  },
+  {
+    id: 'ck2wbvjbf10nr0720o6zpopyt',
+    name: 'Readout'
+  },
+  {
+    id: 'ck2wbvjbu10nz072060p67wk5',
+    name: 'Travel Warning'
   }
-};
+];
+
 const bureaus = [
   {
     __typename: 'Bureau',
@@ -77,6 +121,7 @@ const bureaus = [
     ]
   }
 ];
+
 const globalIssues = {
   id: 'ck2lzgu1e0rea0720a0drvwkp',
   translations: [
@@ -111,6 +156,7 @@ const globalIssues = {
     }
   ]
 };
+
 const pressJournalism = {
   id: 'ck2lzgu1e0red072066m25ldt',
   translations: [
@@ -145,6 +191,7 @@ const pressJournalism = {
     }
   ]
 };
+
 const humanRights = {
   id: 'ck2lzgu1e0rec0720oq0g4liq',
   translations: [
@@ -179,6 +226,7 @@ const humanRights = {
     }
   ]
 };
+
 const tag1 = {
   id: 'ck38ks92kd',
   translations: [
@@ -189,6 +237,7 @@ const tag1 = {
     }
   ]
 };
+
 const tag2 = {
   id: 'cksdfi218d',
   translations: [
@@ -199,6 +248,10 @@ const tag2 = {
     }
   ]
 };
+
+const getDocumentUseObj = ( val, property = 'name' ) => (
+  documentUses.find( u => u[property] === val )
+);
 
 /**
  * mock data for UI development
@@ -250,7 +303,7 @@ export const mocks = [
                   signedUrl: `${AWS_URL}/2019/11/${props.id}/lesotho_national_day.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
-              use: documentUses.statement,
+              use: getDocumentUseObj( 'Statement' ),
               bureaus,
               categories: [globalIssues],
               tags: [tag1]
@@ -278,7 +331,7 @@ export const mocks = [
                   signedUrl: `${AWS_URL}/2019/11/${props.id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
-              use: documentUses.mediaNote,
+              use: getDocumentUseObj( 'Media Note' ),
               bureaus,
               categories: [globalIssues, humanRights],
               tags: []
@@ -306,7 +359,7 @@ export const mocks = [
                   signedUrl: `${AWS_URL}/2019/11/${props.id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
-              use: documentUses.mediaNote,
+              use: getDocumentUseObj( 'Media Note' ),
               bureaus,
               categories: [globalIssues],
               tags: [tag2]
@@ -334,7 +387,7 @@ export const mocks = [
                   signedUrl: `${AWS_URL}/2019/11/${props.id}/first_meeting_of_the_us_canada_critical_minerals_working_group.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
-              use: documentUses.mediaNote,
+              use: getDocumentUseObj( 'Media Note' ),
               bureaus,
               categories: [],
               tags: [tag2]
@@ -362,7 +415,7 @@ export const mocks = [
                   signedUrl: `${AWS_URL}/2019/11/${props.id}/united_states_and_india_launch_flexible_resources_initiative_growth_through_clean_energy.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
-              use: documentUses.mediaNote,
+              use: getDocumentUseObj( 'Media Note' ),
               bureaus,
               categories: [globalIssues],
               tags: [tag1, tag2]
@@ -390,7 +443,7 @@ export const mocks = [
                   signedUrl: `${AWS_URL}/2019/11/${props.id}/united_states_announces_25_million_to_support_emergency_cash_transfer_program_in_yemen.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
-              use: documentUses.mediaNote,
+              use: getDocumentUseObj( 'Media Note' ),
               bureaus,
               categories: [globalIssues],
               tags: [tag1]
@@ -418,7 +471,7 @@ export const mocks = [
                   signedUrl: `${AWS_URL}/2019/11/${props.id}/ambassador_nathan_a_sales_travels_to_kazakhstan_to_discuss_counterterrorism_and_repatriation.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
-              use: documentUses.mediaNote,
+              use: getDocumentUseObj( 'Media Note' ),
               bureaus,
               categories: [globalIssues],
               tags: []
@@ -446,7 +499,7 @@ export const mocks = [
                   signedUrl: `${AWS_URL}/2019/11/${props.id}/secretary_pomeo_travels_to_greece_to_deepen_our_historic_alliance.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
-              use: documentUses.factSheet,
+              use: getDocumentUseObj( 'Fact Sheet' ),
               bureaus,
               categories: [globalIssues],
               tags: [tag1]
@@ -474,7 +527,7 @@ export const mocks = [
                   signedUrl: `${AWS_URL}/2019/11/${props.id}/strengthening_our_alliance_with_montenegro.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
-              use: documentUses.factSheet,
+              use: getDocumentUseObj( 'Fact Sheet' ),
               bureaus,
               categories: [globalIssues],
               tags: []
@@ -502,7 +555,7 @@ export const mocks = [
                   signedUrl: `${AWS_URL}/2019/11/${props.id}/reestablishment_of_us_embassy_mogadishu.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
-              use: documentUses.pressGuidance,
+              use: getDocumentUseObj( 'Press Guidance' ),
               bureaus,
               categories: [globalIssues],
               tags: [tag1, tag2]
@@ -530,7 +583,7 @@ export const mocks = [
                   signedUrl: `${AWS_URL}/2019/11/${props.id}/iraq_protests.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
-              use: documentUses.pressGuidance,
+              use: getDocumentUseObj( 'Press Guidance' ),
               bureaus,
               categories: [globalIssues],
               tags: [tag2]
@@ -558,7 +611,7 @@ export const mocks = [
                   signedUrl: `${AWS_URL}/2019/11/${props.id}/ecuador_national_demonstrations_and_state_of_exception.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
-              use: documentUses.pressGuidance,
+              use: getDocumentUseObj( 'Press Guidance' ),
               bureaus,
               categories: [globalIssues],
               tags: []
