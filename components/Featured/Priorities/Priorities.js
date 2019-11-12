@@ -151,4 +151,5 @@ const mapStateToProps = ( state, props ) => ( {
   priorities: state.featured.priorities[props.term]
 } );
 
-export default connect( mapStateToProps )( Priorities );
+export { Priorities };
+export default withRouter( connect( mapStateToProps )( Priorities ) );
