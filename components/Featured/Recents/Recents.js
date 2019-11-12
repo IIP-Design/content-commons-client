@@ -68,7 +68,7 @@ class Recents extends Component {
               </div>
             </Item.Content>
           </Item>
-) }
+        ) }
       >
         <Modal.Content>
           { this.getModalContent( recent ) }
@@ -82,6 +82,7 @@ class Recents extends Component {
       recents, postTypeLabels, postType, featured
     } = this.props;
     const postTypeLabel = postTypeLabels.find( type => type.key === postType );
+    if ( recents && recents.length < 3 ) return <div />;
     return (
       <section className="ui container recents">
         <div className="recentswrapper">
@@ -152,4 +153,5 @@ const mapStateToProps = ( state, props ) => ( {
   postTypeLabels: state.global.postTypes.list
 } );
 
+export { Recents };
 export default withRouter( connect( mapStateToProps )( Recents ) );
