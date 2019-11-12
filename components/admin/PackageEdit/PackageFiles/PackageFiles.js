@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // import { graphql } from 'react-apollo';
+import dynamic from 'next/dynamic';
 import { Button, Loader } from 'semantic-ui-react';
 import { getCount, getPluralStringOrNot } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
-import PressPackageFile from './PressPackageFile/PressPackageFile';
+
+const PressPackageFile = dynamic( () => import( /* webpackChunkName: "pressPackageFile" */ './PressPackageFile/PressPackageFile' ) );
 
 const PackageFiles = props => {
   const { error, loading, package: pkg } = props.data;
@@ -51,9 +53,18 @@ const PackageFiles = props => {
       </div>
 
       <div className="files">
-        { units.map( unit => (
-          <PressPackageFile key={ unit.id } unit={ unit } />
-        ) ) }
+        { units.map( unit => {
+          /**
+           * Future: conditionally render `<PressPackageFile />`
+           * or some other type of package file, e.g.,
+           * `<FrontOfficePackageFile />`
+           */
+          if ( pkg.type === 'DAILY_GUIDANCE' ) {
+            return <PressPackageFile key={ unit.id } unit={ unit } />;
+          }
+          return null;
+          // return <SomeOtherPackageFile key={ unit.id } unit={ unit } />;
+        } ) }
       </div>
     </section>
   );
