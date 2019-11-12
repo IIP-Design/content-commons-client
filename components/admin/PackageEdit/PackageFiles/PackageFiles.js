@@ -35,7 +35,7 @@ const PackageFiles = props => {
   if ( error ) return <ApolloError error={ error } />;
   if ( !pkg || !getCount( pkg ) ) return null;
 
-  const { documents: units } = pkg;
+  const units = pkg.documents || [];
   if ( !units || getCount( units ) === 0 ) return null;
 
   return (
