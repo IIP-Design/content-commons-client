@@ -12,4 +12,10 @@
     font-size: 0.5em;
     font-weight: normal;
   }
+
+  input#type[value="DAILY_GUIDANCE"] {
+    border: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
