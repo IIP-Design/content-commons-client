@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { Button, Modal } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import { Button, Form, Modal } from 'semantic-ui-react';
+import { getFileExt } from 'lib/utils';
+import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 
-const EditPackageFilesModal = () => {
+const EditPackageFilesModal = props => {
+  const { files } = props;
   const [open, setOpen] = useState( false );
 
   const closeModal = () => {
@@ -22,10 +26,26 @@ const EditPackageFilesModal = () => {
       trigger={ <Button className="btn--edit" onClick={ openModal } size="small" basic>Edit</Button> }
     >
       <Modal.Content>
-        <p>some modal content</p>
+        { /* temporary */ }
+        { files.map( file => {
+          const { filename, id, use } = file;
+          const fileExtension = getFileExt( filename );
+          const fileNameNoExt = ( filename && filename.replace( fileExtension, '' ) ) || '';
+          return (
+            <div key={ id }>
+              <p>{ filename }</p>
+              <Form.Input label="Title" onChange={ () => {} } value={ fileNameNoExt || filename } fluid />
+              <UseDropdown id={ id } label="Release Type" onChange={ () => {} } type="document" value={ use.id } required />
+            </div>
+          );
+        } ) }
       </Modal.Content>
     </Modal>
   );
+};
+
+EditPackageFilesModal.propTypes = {
+  files: PropTypes.array
 };
 
 export default EditPackageFilesModal;

@@ -47,7 +47,7 @@ const PackageFiles = props => {
           <h2 className="headline uppercase">
             { `Uploaded ${getPluralStringOrNot( units, 'File' )}` }
           </h2>
-          <EditPackageFiles />
+          <EditPackageFiles files={ units } />
         </div>
         <ButtonAddFiles accept=".doc, .docx" onChange={ () => {} } multiple>
           + Add Files
