@@ -7,6 +7,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Grid, Input } from 'semantic-ui-react';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
+import './PackageDetailsForm.scss';
 
 /**
 * Form component only.  Form is wrapped in specifc content type HOC to handle
@@ -37,7 +38,7 @@ const PackageDetailsForm = props => {
     <Fragment>
       { /* Only use autosave with exisiting project */ }
       { props.id && <FormikAutoSave save={ save } /> }
-      <Form className="edit-package__form package-data" onSubmit={ handleSubmit }>
+      <Form className="package-data" onSubmit={ handleSubmit }>
         <Grid stackable>
           <Grid.Row>
             <Grid.Column width="16">
