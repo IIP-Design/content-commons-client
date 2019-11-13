@@ -5,6 +5,7 @@ import { getCount, getFileExt } from 'lib/utils';
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
+import './PressPackageFile.scss';
 
 const PressPackageFile = props => {
   const {

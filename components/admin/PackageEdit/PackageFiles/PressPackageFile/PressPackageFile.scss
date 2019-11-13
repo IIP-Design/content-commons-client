@@ -1,0 +1,10 @@
+@import "styles/colors.scss";
+
+.package-file {
+  &:not(:last-child) {
+    border-bottom: 1px solid $light-grey;
+  }
+
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
