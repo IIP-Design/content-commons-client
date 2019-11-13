@@ -7,6 +7,7 @@ import { getCount, getPluralStringOrNot } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import EditPackageFiles from 'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal';
+import './PackageFiles.scss';
 
 const PressPackageFile = dynamic( () => import( /* webpackChunkName: "pressPackageFile" */ 'components/admin/PackageEdit/PackageFiles/PressPackageFile/PressPackageFile' ) );
 

@@ -1,0 +1,38 @@
+@import "styles/colors.scss";
+
+.package-files {
+  font-size: 0.777778rem;
+
+  .uppercase {
+    text-transform: uppercase;
+  }
+
+  .heading,
+  .heading-group {
+    display: flex;
+  }
+  
+  .heading {
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .heading-group {
+    > .headline {
+      margin-bottom: 0;
+    }
+  }
+
+  .ui.button {
+    &.basic.btn--edit {
+      color: $light-blue !important;
+
+      &:active,
+      &:hover,
+      &:focus {
+        color: $matisse-blue !important;
+        box-shadow: none;
+      }
+    }
+  }
+}
