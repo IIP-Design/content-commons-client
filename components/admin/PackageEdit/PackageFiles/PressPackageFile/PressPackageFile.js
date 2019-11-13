@@ -19,7 +19,7 @@ const PressPackageFile = props => {
     <div id={ id } className="package-file">
       <Grid>
         <Grid.Row>
-          <Grid.Column mobile={ 4 } className="thumbnail">
+          <Grid.Column mobile={ 16 } tablet={ 4 } computer={ 4 } className="thumbnail">
             { getCount( image ) && image[0].signedUrl
               ? (
                 <img
@@ -43,7 +43,7 @@ const PressPackageFile = props => {
               )
             }
           </Grid.Column>
-          <Grid.Column mobile={ 12 } className="meta">
+          <Grid.Column mobile={ 16 } tablet={ 12 } computer={ 12 } className="meta">
             <p><b className="label">File Name:</b> { fileNameNoExt || filename }</p>
             <p><b className="label">Release Type:</b> { filetype }</p>
             <Form>

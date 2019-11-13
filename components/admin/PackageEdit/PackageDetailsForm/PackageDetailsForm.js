@@ -10,7 +10,7 @@ import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 import './PackageDetailsForm.scss';
 
 /**
-* Form component only.  Form is wrapped in specifc content type HOC to handle
+* Form component only. Form is wrapped in specific content type HOC to handle
 * queries, validation, etc
 * @param {object} props
 */
@@ -51,7 +51,7 @@ const PackageDetailsForm = props => {
           </Grid.Row>
 
           <Grid.Row>
-            <Grid.Column mobile={ 16 } computer={ 4 }>
+            <Grid.Column mobile={ 16 } tablet={ 4 } computer={ 4 }>
               <Form.Group widths="equal">
                 <div className="field">
                   <Form.Field
@@ -70,7 +70,7 @@ const PackageDetailsForm = props => {
               </Form.Group>
             </Grid.Column>
 
-            <Grid.Column mobile={ 16 } computer={ 4 }>
+            <Grid.Column mobile={ 16 } tablet={ 4 } computer={ 4 }>
               <Form.Field
                 id="type"
                 name="type"

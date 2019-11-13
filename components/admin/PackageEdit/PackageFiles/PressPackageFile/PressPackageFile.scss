@@ -1,12 +1,19 @@
 @import "styles/colors.scss";
 
 .package-file {
+  padding-top: 2em;
+  padding-bottom: 2em;
+
   &:not(:last-child) {
     border-bottom: 1px solid $light-grey;
   }
 
-  padding-top: 2em;
-  padding-bottom: 2em;
+  @media screen and (max-width: 767px) {
+    .ui.form .fields:not(:last-child),
+    .ui.form .fields .field:not(:last-child) {
+      margin-bottom: 1em;
+    }
+  }
 
   .field__helper-text {
     margin-top: -1em;

@@ -2,6 +2,15 @@
 
 .edit-package {
   // same as VideoEdit
+  @media screen and (max-width: 550px) {
+    .project_buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 0.5fr);
+      grid-gap: 1em;
+    }
+  }
+
+  // same as VideoEdit
   .ui.button {
     padding-top: 0.785714em;
     padding-bottom: 0.785714em;
@@ -94,11 +103,22 @@
       }
     }
   }
-  
-  &__form,
+
+  &__form {
+    padding: 1.75em 0;
+  }
+    
   &__files,
   &__actions {
-    padding: 1.75em;
+    padding: 1.75em 1em;
+  }
+
+  @media screen and (min-width: 768px) {
+    &__form,
+    &__files,
+    &__actions {
+      padding: 1.75em;
+    }
   }
   
   &__form,
@@ -108,9 +128,5 @@
 
   &__actions {
     text-align: center;
-
-    > .headline {
-      font-size: 1.33rem;
-    }
   }
 }
