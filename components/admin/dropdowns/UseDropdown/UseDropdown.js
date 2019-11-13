@@ -25,51 +25,75 @@ const IMAGE_USE_QUERY = gql`
   }
 `;
 
+const DOCUMENT_USE_QUERY = gql`
+  query DocumentUses {
+    documentUses {
+      id
+      name
+    }
+  }
+`;
+
 const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
-const UseDropdown = props => (
-  <Query query={ props.type.toLowerCase() === 'video' ? VIDEO_USE_QUERY : IMAGE_USE_QUERY }>
-    { ( { data, loading, error } ) => {
-      if ( error ) return `Error! ${error.message}`;
+const UseDropdown = props => {
+  let query;
+  switch ( props.type.toLowerCase() ) {
+    case 'video':
+      query = VIDEO_USE_QUERY;
+      break;
+    case 'document':
+      query = DOCUMENT_USE_QUERY;
+      break;
+    default:
+      query = IMAGE_USE_QUERY;
+      break;
+  }
 
-      let options = [];
+  return (
+    <Query query={ query }>
+      { ( { data, loading, error } ) => {
+        if ( error ) return `Error! ${error.message}`;
 
-      if ( data ) {
-        const { videoUses, imageUses } = data;
-        const uses = videoUses || imageUses;
-        if ( uses ) { // checks for uses in the event we have neither video or image
-          options = sortBy( uses, use => use.name ).map( u => ( { key: u.id, text: u.name, value: u.id } ) );
+        let options = [];
+
+        if ( data ) {
+          const { videoUses, imageUses, documentUses } = data;
+          const uses = videoUses || imageUses || documentUses;
+          if ( uses ) { // checks for uses in the event we have neither video or image
+            options = sortBy( uses, use => use.name ).map( u => ( { key: u.id, text: u.name, value: u.id } ) );
+          }
         }
-      }
 
-      addEmptyOption( options );
+        addEmptyOption( options );
 
-      return (
-        <Fragment>
-          { !props.label && (
+        return (
+          <Fragment>
+            { !props.label && (
 
-            <VisuallyHidden>
-              <label htmlFor={ props.id }>
-                { `${props.id} use` }
-              </label>
-            </VisuallyHidden>
-          ) }
+              <VisuallyHidden>
+                <label htmlFor={ props.id }>
+                  { `${props.id} use` }
+                </label>
+              </VisuallyHidden>
+            ) }
 
-          <Form.Dropdown
-            id={ props.id }
-            name="use"
-            options={ options }
-            placeholder="–"
-            loading={ loading }
-            fluid
-            selection
-            { ...props }
-          />
-        </Fragment>
-      );
-    } }
-  </Query>
-);
+            <Form.Dropdown
+              id={ props.id }
+              name="use"
+              options={ options }
+              placeholder="–"
+              loading={ loading }
+              fluid
+              selection
+              { ...props }
+            />
+          </Fragment>
+        );
+      } }
+    </Query>
+  );
+};
 
 UseDropdown.defaultProps = {
   id: ''
@@ -85,3 +109,4 @@ export default React.memo( UseDropdown, areEqual );
 
 export { VIDEO_USE_QUERY };
 export { IMAGE_USE_QUERY };
+export { DOCUMENT_USE_QUERY };
