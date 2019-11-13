@@ -6,6 +6,7 @@ import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import PressPackageDetailsForm from './PackageDetailsForm/PressPackageDetailsForm/PressPackageDetailsForm';
 import PackageFiles from './PackageFiles/PackageFiles';
 import { props as testProps, mocks } from './PackageDetailsForm/PressPackageDetailsForm/mocks';
+import './PackageEdit.scss';
 
 const PackageEdit = () => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
@@ -55,7 +56,7 @@ const PackageEdit = () => {
           />
 
           <Button
-            className="edit-package__btn--save-exit"
+            className="edit-package__btn--save-draft"
             content="Save & Exit"
             basic
             onClick={ handleSaveExit }
@@ -98,7 +99,7 @@ const PackageEdit = () => {
         <ButtonAddFiles accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
         { /* !publishedAndNotUpdated */ true && (
           <Button
-            className={ `package-button package-button--${/* publishedAndUpdated */ false ? 'edit' : 'publish'}` }
+            className={ `package-button edit-package__btn--${/* publishedAndUpdated */ false ? 'edit' : 'publish'}` }
             onClick={ /* handlePublish */ () => {} }
           >
             Publish{ /* publishedAndUpdated */ false && ' Changes' }
