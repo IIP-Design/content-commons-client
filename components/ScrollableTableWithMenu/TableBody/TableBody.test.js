@@ -4,8 +4,10 @@ import wait from 'waait';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { Loader, Table } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
-import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
-import TableBody, { TEAM_VIDEO_PROJECTS_QUERY } from './TableBody';
+import TableBody, {
+  TEAM_VIDEO_PROJECTS_QUERY, updateProjectStatus, teamProjectsQuery, TableBodyRaw
+} from './TableBody';
+import { videoProjects, mocks } from './mocks';
 
 /**
  * Use custom element to avoid "incorrect casing" error msg
@@ -16,85 +18,6 @@ jest.mock( 'next-server/dynamic', () => () => 'video-details-popup' );
 
 // Mock DetailsPopup component since it's tested elsewhere
 jest.mock( 'components/admin/Dashboard/TeamProjects/DetailsPopup/DetailsPopup', () => () => 'DetailsPopup' );
-
-const videoProjects = [
-  {
-    id: 'd137',
-    createdAt: '2019-05-09T18:33:03.368Z',
-    updatedAt: '2019-05-09T18:33:03.368Z',
-    team: {
-      id: 't888',
-      name: 'IIP Video Production',
-      organization: 'Department of State'
-    },
-    author: {
-      id: 'a928',
-      firstName: 'Jane',
-      lastName: 'Doe'
-    },
-    projectTitle: 'Test Title 1',
-    status: 'PUBLISHED',
-    visibility: 'INTERNAL',
-    thumbnails: {
-      id: 't34',
-      url: 'https://thumbnailurl.com',
-      alt: 'some alt text',
-    },
-    categories: [
-      {
-        id: '38s',
-        translations: [
-          {
-            id: '832',
-            name: 'about america',
-            language: {
-              id: 'en23',
-              locale: 'en-us'
-            }
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'z132',
-    createdAt: '2019-05-12T18:33:03.368Z',
-    updatedAt: '2019-05-12T18:33:03.368Z',
-    team: {
-      id: 't888',
-      name: 'IIP Video Production',
-      organization: 'Department of State'
-    },
-    author: {
-      id: 'a287',
-      firstName: 'Joe',
-      lastName: 'Schmoe'
-    },
-    projectTitle: 'Test Title 2',
-    status: 'PUBLISHED',
-    visibility: 'INTERNAL',
-    thumbnails: {
-      id: 't34',
-      url: 'https://thumbnailurl.com',
-      alt: 'some alt text',
-    },
-    categories: [
-      {
-        id: '38s',
-        translations: [
-          {
-            id: '832',
-            name: 'about america',
-            language: {
-              id: 'en23',
-              locale: 'en-us'
-            }
-          }
-        ]
-      }
-    ]
-  }
-];
 
 const videoProjectIds = videoProjects.map( p => p.id );
 
@@ -118,33 +41,6 @@ const props = {
   projectTab: 'teamProjects',
   videoProjectIds
 };
-
-const mocks = [
-  {
-    request: {
-      query: TEAM_VIDEO_PROJECTS_QUERY,
-      variables: { ...props.variables }
-    },
-    result: {
-      data: { videoProjects }
-    }
-  },
-  {
-    request: {
-      query: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
-      variables: { ids: videoProjectIds }
-    },
-    result: {
-      data: {
-        projectStatusChange: {
-          id: 'd137',
-          status: 'DRAFT',
-          error: null
-        }
-      }
-    }
-  }
-];
 
 const Component = (
   <MockedProvider mocks={ mocks } addTypename={ false }>
@@ -321,11 +217,44 @@ describe( '<TableBody />', () => {
   } );
 
   it( 'subscribes to status updates', async () => {
-    const wrapper = mount( Component );
+    const spy = jest.fn();
+    const TableBodyMock = teamProjectsQuery( wrapProps => (
+      <TableBodyRaw { ...wrapProps } subscribeToStatuses={ spy } />
+    ) );
+    const Comp = (
+      <MockedProvider mocks={ mocks } addTypename={ false }>
+        <Table>
+          <TableBodyMock { ...props } />
+        </Table>
+      </MockedProvider>
+    );
+    const wrapper = mount( Comp );
     await wait( 0 );
     wrapper.update();
-    // const tableBody = wrapper.find( 'TableBody' );
-    const tableBody = wrapper.findWhere( c => c.props().subscribeToStatuses !== undefined );
-    // TODO: Find a way to test this function added by graphql HOC props option
+    expect( spy ).toHaveBeenCalled();
+  } );
+
+  describe( 'updateProjectStatus', () => {
+    it( 'updates the correct project', () => {
+      const subscriptionData = { ...mocks[1].result };
+      const result = updateProjectStatus( { videoProjects }, { subscriptionData } );
+      const expected = { videoProjects: [{ ...videoProjects[0], status: 'DRAFT' }, { ...videoProjects[1] }] };
+      expect( result ).toEqual( expected );
+    } );
+
+    it( 'does not update anything for null data', () => {
+      const subscriptionData = { data: { projectStatusChange: null } };
+      const result = updateProjectStatus( { videoProjects }, { subscriptionData } );
+      const expected = { videoProjects };
+      expect( result ).toEqual( expected );
+    } );
+
+    it( 'does not update anything for a non existent project ID', () => {
+      const subscriptionData = { ...mocks[1].result };
+      subscriptionData.data.projectStatusChange.id = 'xxxx';
+      const result = updateProjectStatus( { videoProjects }, { subscriptionData } );
+      const expected = { videoProjects };
+      expect( result ).toEqual( expected );
+    } );
   } );
 } );
