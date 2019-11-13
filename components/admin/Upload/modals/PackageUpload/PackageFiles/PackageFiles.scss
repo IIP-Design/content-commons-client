@@ -1,0 +1,21 @@
+@import "styles/colors.scss";
+
+.packageFiles {
+
+  h5 {
+    margin-top: -45px;
+  }
+
+  &.form {
+
+    .field {
+      text-align: center;
+    }
+  }
+
+  &_tableHeaders {
+    padding-bottom: 0.5em !important;
+    border-bottom: 1px solid $light-grey;
+    color: $blue;
+  }
+}

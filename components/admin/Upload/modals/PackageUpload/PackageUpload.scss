@@ -1,17 +1,26 @@
 @import "styles/colors.scss";
 
+.package-type-active {
+  max-width: 430px;
+}
+
 .packageUpload {
 
-  .ui.attached.tabular.menu {
-    
-    .active.item {
+  .ui.tabular.menu .item {
+    display: none;
+
+    &.active {      
       justify-content: center;
+      display: block;
       width: 100%;
       font-size: 24px;
       color: $blue;
+      cursor: default;
       @media screen and (max-width: 640px) {
         font-size: 18px;
       }
     }
   }
+
+  
 }
