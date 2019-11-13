@@ -45,9 +45,9 @@ const PackageFiles = props => {
     <section className="section section--package-files package-files layout">
       <div className="heading">
         <div className="heading-group">
-          <h2 className="headline uppercase">
+          <h3 className="headline uppercase">
             { `Uploaded ${getPluralStringOrNot( units, 'File' )}` }
-          </h2>
+          </h3>
           <EditPackageFiles files={ units } />
         </div>
         <ButtonAddFiles className="basic edit-package__btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>

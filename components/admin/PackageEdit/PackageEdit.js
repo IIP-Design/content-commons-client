@@ -90,11 +90,11 @@ const PackageEdit = () => {
       </div>
 
       <div className="edit-package__actions">
-        <h2 className="headline">
+        <h3 className="headline">
           { /* publishedAndUpdated */ false && 'It looks like you made changes to your package. Do you want to publish changes?' }
           { /* notPublished */ true && 'Your package looks great! Are you ready to Publish?' }
           { /* publishedAndNotUpdated */ false && 'Not ready to share with the world yet?' }
-        </h2>
+        </h3>
 
         <ButtonAddFiles className="basic edit-package__btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
         { /* !publishedAndNotUpdated */ true && (
