@@ -1,7 +1,6 @@
 @import "styles/colors.scss";
 
 .edit-package {
-
   // same as VideoEdit
   .ui.button {
     padding-top: 0.785714em;
@@ -93,5 +92,20 @@
         background-color: $matisse-blue; // only difference with VideoReview
       }
     }
+  }
+  
+  &__form,
+  &__files,
+  &__actions {
+    padding: 1.75em;
+  }
+  
+  &__form,
+  &__files {
+    border-bottom: 1px solid $light-grey;
+  }
+
+  &__actions {
+    text-align: center;
   }
 }

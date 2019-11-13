@@ -89,7 +89,7 @@ const PackageEdit = () => {
         />
       </div>
 
-      <div className="edit-package__publish">
+      <div className="edit-package__actions">
         <h2 className="title">
           { /* publishedAndUpdated */ false && 'It looks like you made changes to your package. Do you want to publish changes?' }
           { /* notPublished */ true && 'Your package looks great! Are you ready to Publish?' }
