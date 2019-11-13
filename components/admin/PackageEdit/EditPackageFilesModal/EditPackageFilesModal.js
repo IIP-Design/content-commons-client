@@ -20,7 +20,7 @@ const EditPackageFilesModal = props => {
     <Modal
       open={ open }
       onClose={ closeModal }
-      className="edit-support-files"
+      className="edit-package-files"
       size="small"
       // closeOnDimmerClick={ !saving }
       trigger={ <Button className="btn--edit" onClick={ openModal } size="small" basic>Edit</Button> }
