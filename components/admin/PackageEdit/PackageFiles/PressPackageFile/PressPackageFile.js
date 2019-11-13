@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Grid } from 'semantic-ui-react';
-import { getCount } from 'lib/utils';
+import { getCount, getFileExt } from 'lib/utils';
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
@@ -11,8 +11,11 @@ const PressPackageFile = props => {
     id, filename, filetype, image
   } = props.unit;
 
+  const fileExtension = getFileExt( filename );
+  const fileNameNoExt = ( filename && filename.replace( fileExtension, '' ) ) || '';
+
   return (
-    <div key={ id } className="package-file">
+    <div id={ id } className="package-file">
       <Grid>
         <Grid.Row>
           <Grid.Column mobile={ 4 } className="thumbnail">
@@ -40,7 +43,7 @@ const PressPackageFile = props => {
             }
           </Grid.Column>
           <Grid.Column mobile={ 12 } className="meta">
-            <p><b className="label">File Name:</b> { filename }</p>
+            <p><b className="label">File Name:</b> { fileNameNoExt || filename }</p>
             <p><b className="label">Release Type:</b> { filetype }</p>
             <Form>
               <Form.Group>
