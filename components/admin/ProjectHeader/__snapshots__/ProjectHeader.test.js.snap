@@ -7,7 +7,9 @@ exports[`<ProjectHeader /> renders without crashing 1`] = `
   <div
     className="project_header"
   >
-    <h2>
+    <h2
+      className="headline"
+    >
       <Icon
         as="i"
         circular={true}

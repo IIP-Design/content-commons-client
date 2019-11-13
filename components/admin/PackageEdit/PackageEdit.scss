@@ -108,5 +108,9 @@
 
   &__actions {
     text-align: center;
+
+    > .headline {
+      font-size: 1.33rem;
+    }
   }
 }

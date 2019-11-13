@@ -42,7 +42,7 @@ const PackageDetailsForm = props => {
         <Grid stackable>
           <Grid.Row>
             <Grid.Column width="16">
-              <h2 className="heading">
+              <h2 className="headline">
                 <span className="uppercase">Description</span>
                 <br />
                 <small className="msg--required">Required Fields *</small>
