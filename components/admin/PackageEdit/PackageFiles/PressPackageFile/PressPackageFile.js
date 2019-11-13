@@ -81,6 +81,7 @@ const PressPackageFile = props => {
               <Form.Group>
                 <Form.Field width={ 8 }>
                   <p>Author Bureaus/Offices (to be added)</p>
+                  <p className="field__helper-text">Enter keywords separated by commas.</p>
                 </Form.Field>
 
                 <Form.Field width={ 8 }>
@@ -92,6 +93,7 @@ const PressPackageFile = props => {
                     onChange={ () => {} }
                     style={ { marginBottom: '1em' } }
                   />
+                  <p className="field__helper-text">Enter keywords separated by commas.</p>
                 </Form.Field>
               </Form.Group>
             </Form>

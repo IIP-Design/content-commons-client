@@ -7,4 +7,10 @@
 
   padding-top: 2em;
   padding-bottom: 2em;
+
+  .field__helper-text {
+    margin-top: -1em;
+    color: $blue;
+    font-size: 0.666666667rem;
+  }
 }
