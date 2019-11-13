@@ -89,17 +89,17 @@ const PackageEdit = () => {
         />
       </div>
 
-      <div className="section section--publish">
+      <div className="edit-package__publish">
         <h2 className="title">
           { /* publishedAndUpdated */ false && 'It looks like you made changes to your package. Do you want to publish changes?' }
           { /* notPublished */ true && 'Your package looks great! Are you ready to Publish?' }
           { /* publishedAndNotUpdated */ false && 'Not ready to share with the world yet?' }
         </h2>
 
-        <ButtonAddFiles accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
+        <ButtonAddFiles className="basic edit-package__btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
         { /* !publishedAndNotUpdated */ true && (
           <Button
-            className={ `package-button edit-package__btn--${/* publishedAndUpdated */ false ? 'edit' : 'publish'}` }
+            className={ `edit-package__btn--${/* publishedAndUpdated */false ? 'edit' : 'publish'}` }
             onClick={ /* handlePublish */ () => {} }
           >
             Publish{ /* publishedAndUpdated */ false && ' Changes' }
