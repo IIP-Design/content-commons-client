@@ -1,11 +1,14 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { v4 } from 'uuid';
 import { Tab } from 'semantic-ui-react';
+import { removeDuplicatesFromArray } from 'lib/utils';
 import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
 import PackageType from './PackageType/PackageType';
 import PackageFiles from './PackageFiles/PackageFiles';
 import './PackageUpload.scss';
+
+export const PackageUploadContext = React.createContext();
 
 const PackageUpload = props => {
   const { closeModal, updateModalClassname } = props;
@@ -13,6 +16,12 @@ const PackageUpload = props => {
   const [activeIndex, setActiveIndex] = useState( 0 );
   const [files, setFiles] = useState( [] );
   const [confirm, setConfirm] = useState( {} );
+  const [allFieldsSelected, setAllFieldsSelected] = useState( false );
+
+  useEffect( () => {
+    const complete = files.every( file => file.use );
+    setAllFieldsSelected( complete );
+  }, [files] );
 
   const goNext = () => {
     setActiveIndex( 1 );
@@ -20,6 +29,38 @@ const PackageUpload = props => {
 
   const closeConfirm = () => {
     setConfirm( { open: false } );
+  };
+
+  const compareFilenames = ( a, b ) => a.input.name.localeCompare( b.input.name );
+
+  const processDuplicates = filesToAdd => {
+    try {
+      const { duplicates, uniq } = removeDuplicatesFromArray( [...files, ...filesToAdd], 'input.name' );
+
+      // if duplicates are present, ask user if they are indeed duplicates
+      if ( duplicates ) {
+        const dups = duplicates.reduce( ( acc, cur ) => `${acc} ${cur.input.name}\n`, '' );
+        setConfirm( {
+          open: true,
+          headline: 'It appears that duplicate files are being added.',
+          content: `Do you want to add these files?\n${dups}`,
+          cancelButton: 'No, do not add files',
+          confirmButton: 'Yes, add files',
+          onCancel: () => {
+            setFiles( uniq.sort( compareFilenames ) );
+            closeConfirm();
+          },
+          onConfirm: () => {
+            setFiles( [...filesToAdd, ...files].sort( compareFilenames ) );
+            closeConfirm();
+          }
+        } );
+      } else {
+        setFiles( [...filesToAdd, ...files].sort( compareFilenames ) );
+      }
+    } catch ( err ) {
+      console.error( err );
+    }
   };
 
   const addPackageFiles = filesFromInputSelection => {
@@ -30,7 +71,12 @@ const PackageUpload = props => {
       text: file.name,
       use: '',
     } ) );
-    setFiles( [...filesToAdd] );
+    // Only check for duplicates if there are current files to compare against
+    if ( files.length ) {
+      processDuplicates( filesToAdd );
+    } else {
+      setFiles( filesToAdd.sort( compareFilenames ) );
+    }
   };
 
   const removePackageFile = id => {
@@ -42,7 +88,7 @@ const PackageUpload = props => {
     setConfirm( {
       open: true,
       headline: 'Are you sure you want to remove this file?',
-      content: `You are about to remove ${file.input.name}. This file will not be uploaded with this project.`,
+      content: `You are about to remove ${file.input.name}. This file will not be uploaded with this package.`,
       cancelButton: 'No, take me back',
       confirmButton: 'Yes, remove',
       onCancel: () => closeConfirm(),
@@ -83,15 +129,19 @@ const PackageUpload = props => {
       menuItem: '',
       render: () => (
         <Tab.Pane>
-          <PackageFiles
-            closeModal={ closeModal }
-            updateModalClassname={ updateModalClassname }
-            accept={ accept }
-            files={ files }
-            addPackageFiles={ addPackageFiles }
-            removePackageFile={ removePackageFile }
-            updateField={ updateField }
-          />
+          <PackageUploadContext.Provider value={ {
+            files,
+            addPackageFiles,
+            removePackageFile,
+            accept,
+            updateField,
+            closeModal,
+            updateModalClassname,
+            allFieldsSelected,
+          } }
+          >
+            <PackageFiles />
+          </PackageUploadContext.Provider>
         </Tab.Pane>
       )
     }

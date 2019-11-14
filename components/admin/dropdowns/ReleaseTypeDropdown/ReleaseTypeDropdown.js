@@ -13,7 +13,7 @@ const ReleaseTypeDropdown = props => {
   return (
     <Fragment>
       <VisuallyHidden>
-        <label htmlFor={ id }>Select Release Type For Document</label>
+        <label htmlFor={ id }>Select Release Type For Document File</label>
       </VisuallyHidden>
       <Form.Dropdown
         id={ id }

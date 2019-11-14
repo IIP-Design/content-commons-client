@@ -1,7 +1,8 @@
 @import "styles/colors.scss";
 
 .form.packageFiles {
-  
+  margin-bottom: 1em;
+
   h5 {
     margin-top: -45px;
   }
@@ -107,6 +108,22 @@
               display: block;            
             }
           }
+        }
+      }
+
+      &_releaseRemoveWrapper {
+        display: flex;
+
+        > .field {
+          flex: 1 0 0;
+          margin-right: 10px;
+          margin-bottom: 0;
+
+          .ui.fluid.selection.dropdown {
+            padding-top: 0.75775em;
+            padding-bottom: 0.75775em;
+            min-height: auto;
+          }          
         }
       }
     }
