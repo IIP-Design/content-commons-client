@@ -1,0 +1,10 @@
+.buttonAddFiles {
+
+  &_iconText {
+
+    > i {
+      transform: translateY(-25%);
+      opacity: 1 !important;
+    }
+  }
+}

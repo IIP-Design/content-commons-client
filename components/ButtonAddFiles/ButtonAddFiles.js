@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
+import './ButtonAddFiles.scss';
 
 const ButtonAddFiles = props => {
   const {
@@ -31,7 +32,8 @@ const ButtonAddFiles = props => {
         as="button"
         type="button"
         onClick={ handleOnClick }
-        className={ className || 'primary' }
+        // className={ className || 'primary' }
+        className={ className ? `${className} buttonAddFiles` : 'primary buttonAddFiles' }
       >{ children }
       </Button>
       { /* Hidden files dialogue box */ }

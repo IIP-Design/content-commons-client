@@ -1,21 +1,114 @@
 @import "styles/colors.scss";
 
-.packageFiles {
-
+.form.packageFiles {
+  
   h5 {
     margin-top: -45px;
   }
 
-  &.form {
-
-    .field {
-      text-align: center;
-    }
-  }
-
-  &_tableHeaders {
-    padding-bottom: 0.5em !important;
-    border-bottom: 1px solid $light-grey;
-    color: $blue;
+  .field {
+    text-align: center;
   }
 }
+
+.ui.grid.packageFiles_grid {
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  padding: 0 2em;
+
+  .packageFiles {
+
+    &_tableHeaders {
+      border-bottom: 1px solid $light-grey;
+      color: $blue;
+
+      &.row {
+        padding-top: 2em;
+        padding-bottom: 0.5em !important;
+
+        > .column {
+          
+          &:first-child {
+            padding-left: 0;
+          }
+          
+          &:last-child {
+            padding-right: 0;
+          }
+        }
+      }
+
+      .required {
+        color: $red;
+      }
+    }
+
+    &_file {
+      font-size: 16px;
+
+      &.row {
+        padding: 7px 0;
+        
+        > .column {
+          
+          &:first-child {
+            padding-left: 0;
+          }
+          
+          &:last-child {
+            padding-right: 0;
+          }
+        }
+      }
+
+      &_filename {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 0.5rem;
+        padding-bottom: 0;
+  
+        .item-complete {
+          position: absolute;
+          left: -0.8em;
+          transform: translateX(-100%);
+          flex: 0 1 30px;
+  
+          .ui.mini.label {
+            font-size: 0.57rem;
+          }
+  
+          i.inverted.circular.green.icon {
+            margin: 0;
+            font-size: 0.57rem;
+            background-color: #2e8540 !important;              
+          }
+        }
+  
+        .item-text {
+          flex: 2 0 auto;
+          position: relative;
+  
+          &--hover {
+            display: none;  
+            position: absolute;
+            bottom: -30px;
+            padding: 5px;            
+            font-size: 11px;
+            color: $shuttle-grey;
+            background: #fff;
+            box-shadow: 1px 1px 3px $shuttle-grey;
+          }
+  
+          &:hover {
+            .item-text--hover {
+              display: block;            
+            }
+          }
+        }
+      }
+    }
+  }
+} 
