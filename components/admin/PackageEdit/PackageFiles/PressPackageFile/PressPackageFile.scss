@@ -39,11 +39,17 @@
 
       dl {
         margin-top: 0;
-
         > div {
           > dt,
           > dd {
             display: inline;
+          }
+
+          dt {
+            font-weight: bold;
+            &::after {
+              content: ': '
+            }
           }
 
           > dd {

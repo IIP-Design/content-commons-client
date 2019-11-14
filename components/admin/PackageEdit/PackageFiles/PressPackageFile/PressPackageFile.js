@@ -28,21 +28,21 @@ const PressPackageFile = props => {
             <div className="data">
               <dl>
                 <div>
-                  <dt id="file-name"><b className="label">File Name:</b></dt>
+                  <dt id="file-name">File Name</dt>
                   <dd role="definition" aria-labelledby="file-name">
                     { fileNameNoExt || filename }
                   </dd>
                 </div>
 
                 <div>
-                  <dt id="release-type"><b className="label">Release Type:</b></dt>
+                  <dt id="release-type">Release Type</dt>
                   <dd role="definition" aria-labelledby="release-type">
                     { filetype }
                   </dd>
                 </div>
 
                 <div>
-                  <dt id="page-count"><b className="label">Pages:</b></dt>
+                  <dt id="page-count">Pages</dt>
                   <dd role="definition" aria-labelledby="page-count">TBD</dd>
                 </div>
               </dl>
