@@ -21,27 +21,8 @@ const PressPackageFile = props => {
         <Grid.Row>
           <Grid.Column mobile={ 16 } tablet={ 4 } computer={ 4 } className="thumbnail">
             { getCount( image ) && image[0].signedUrl
-              ? (
-                <img
-                  src={ image[0].signedUrl }
-                  alt={ image[0].alt }
-                  style={ {
-                    height: 'auto',
-                    width: '100%',
-                    maxWidth: '100%'
-                  } }
-                />
-              )
-              : (
-                <div style={ {
-                  height: 290,
-                  width: '100%',
-                  maxWidth: '100%',
-                  backgroundColor: '#e1e1e1'
-                } }
-                />
-              )
-            }
+              ? <img src={ image[0].signedUrl } alt={ image[0].alt } />
+              : <div className="placeholder" /> }
           </Grid.Column>
           <Grid.Column mobile={ 16 } tablet={ 12 } computer={ 12 } className="meta">
             <div className="data">

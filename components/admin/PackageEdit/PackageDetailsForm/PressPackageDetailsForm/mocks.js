@@ -1,3 +1,5 @@
+import testImage from './test-img-for-dev.png';
+
 const AWS_URL = 'https://s3-bucket-url.s3.amazonaws.com';
 const AWS_SIGNED_URL_QUERY_STRING = '?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE';
 
@@ -300,7 +302,8 @@ export const mocks = [
                   id: 'th1',
                   filename: 'lesotho_national_day.png',
                   url: `2019/11/${props.id}/lesotho_national_day.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${props.id}/lesotho_national_day.png${AWS_SIGNED_URL_QUERY_STRING}`
+                  signedUrl: testImage
+                  // signedUrl: `${AWS_URL}/2019/11/${props.id}/lesotho_national_day.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
               use: getDocumentUseObj( 'Statement' ),
@@ -328,7 +331,8 @@ export const mocks = [
                   id: 'th2',
                   filename: 'us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png',
                   url: `2019/11/${props.id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${props.id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png${AWS_SIGNED_URL_QUERY_STRING}`
+                  signedUrl: testImage
+                  // signedUrl: `${AWS_URL}/2019/11/${props.id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
               use: getDocumentUseObj( 'Media Note' ),
@@ -356,7 +360,8 @@ export const mocks = [
                   id: 'th3',
                   filename: 'rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png',
                   url: `2019/11/${props.id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${props.id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png${AWS_SIGNED_URL_QUERY_STRING}`
+                  signedUrl: testImage
+                  // signedUrl: `${AWS_URL}/2019/11/${props.id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
               use: getDocumentUseObj( 'Media Note' ),
@@ -384,7 +389,8 @@ export const mocks = [
                   id: 'th4',
                   filename: 'first_meeting_of_the_us_canada_critical_minerals_working_group.png',
                   url: `2019/11/${props.id}/first_meeting_of_the_us_canada_critical_minerals_working_group.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${props.id}/first_meeting_of_the_us_canada_critical_minerals_working_group.png${AWS_SIGNED_URL_QUERY_STRING}`
+                  signedUrl: testImage
+                  // signedUrl: `${AWS_URL}/2019/11/${props.id}/first_meeting_of_the_us_canada_critical_minerals_working_group.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
               use: getDocumentUseObj( 'Media Note' ),
@@ -412,7 +418,8 @@ export const mocks = [
                   id: 'th5',
                   filename: 'united_states_and_india_launch_flexible_resources_initiative_growth_through_clean_energy.png',
                   url: `2019/11/${props.id}/united_states_and_india_launch_flexible_resources_initiative_growth_through_clean_energy.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${props.id}/united_states_and_india_launch_flexible_resources_initiative_growth_through_clean_energy.png${AWS_SIGNED_URL_QUERY_STRING}`
+                  signedUrl: testImage
+                  // signedUrl: `${AWS_URL}/2019/11/${props.id}/united_states_and_india_launch_flexible_resources_initiative_growth_through_clean_energy.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
               use: getDocumentUseObj( 'Media Note' ),
@@ -440,7 +447,8 @@ export const mocks = [
                   id: 'th6',
                   filename: 'united_states_announces_25_million_to_support_emergency_cash_transfer_program_in_yemen.png',
                   url: `2019/11/${props.id}/united_states_announces_25_million_to_support_emergency_cash_transfer_program_in_yemen.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${props.id}/united_states_announces_25_million_to_support_emergency_cash_transfer_program_in_yemen.png${AWS_SIGNED_URL_QUERY_STRING}`
+                  signedUrl: testImage
+                  // signedUrl: `${AWS_URL}/2019/11/${props.id}/united_states_announces_25_million_to_support_emergency_cash_transfer_program_in_yemen.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
               use: getDocumentUseObj( 'Media Note' ),
@@ -468,7 +476,8 @@ export const mocks = [
                   id: 'th7',
                   filename: 'ambassador_nathan_a_sales_travels_to_kazakhstan_to_discuss_counterterrorism_and_repatriation.png',
                   url: `2019/11/${props.id}/ambassador_nathan_a_sales_travels_to_kazakhstan_to_discuss_counterterrorism_and_repatriation.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${props.id}/ambassador_nathan_a_sales_travels_to_kazakhstan_to_discuss_counterterrorism_and_repatriation.png${AWS_SIGNED_URL_QUERY_STRING}`
+                  signedUrl: testImage
+                  // signedUrl: `${AWS_URL}/2019/11/${props.id}/ambassador_nathan_a_sales_travels_to_kazakhstan_to_discuss_counterterrorism_and_repatriation.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
               use: getDocumentUseObj( 'Media Note' ),
@@ -496,7 +505,8 @@ export const mocks = [
                   id: 'th8',
                   filename: 'secretary_pomeo_travels_to_greece_to_deepen_our_historic_alliance.png',
                   url: `2019/11/${props.id}/secretary_pomeo_travels_to_greece_to_deepen_our_historic_alliance.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${props.id}/secretary_pomeo_travels_to_greece_to_deepen_our_historic_alliance.png${AWS_SIGNED_URL_QUERY_STRING}`
+                  signedUrl: testImage
+                  // signedUrl: `${AWS_URL}/2019/11/${props.id}/secretary_pomeo_travels_to_greece_to_deepen_our_historic_alliance.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
               use: getDocumentUseObj( 'Fact Sheet' ),
@@ -524,7 +534,8 @@ export const mocks = [
                   id: 'th9',
                   filename: 'strengthening_our_alliance_with_montenegro.png',
                   url: `2019/11/${props.id}/strengthening_our_alliance_with_montenegro.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${props.id}/strengthening_our_alliance_with_montenegro.png${AWS_SIGNED_URL_QUERY_STRING}`
+                  signedUrl: testImage
+                  // signedUrl: `${AWS_URL}/2019/11/${props.id}/strengthening_our_alliance_with_montenegro.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
               use: getDocumentUseObj( 'Fact Sheet' ),
@@ -552,7 +563,8 @@ export const mocks = [
                   id: 'th10',
                   filename: 'reestablishment_of_us_embassy_mogadishu.png',
                   url: `2019/11/${props.id}/reestablishment_of_us_embassy_mogadishu.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${props.id}/reestablishment_of_us_embassy_mogadishu.png${AWS_SIGNED_URL_QUERY_STRING}`
+                  signedUrl: testImage
+                  // signedUrl: `${AWS_URL}/2019/11/${props.id}/reestablishment_of_us_embassy_mogadishu.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
               use: getDocumentUseObj( 'Press Guidance' ),
@@ -580,7 +592,8 @@ export const mocks = [
                   id: 'th11',
                   filename: 'iraq_protests.png',
                   url: `2019/11/${props.id}/iraq_protests.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${props.id}/iraq_protests.png${AWS_SIGNED_URL_QUERY_STRING}`
+                  signedUrl: testImage
+                  // signedUrl: `${AWS_URL}/2019/11/${props.id}/iraq_protests.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
               use: getDocumentUseObj( 'Press Guidance' ),
@@ -608,7 +621,8 @@ export const mocks = [
                   id: 'th12',
                   filename: 'ecuador_national_demonstrations_and_state_of_exception.png',
                   url: `2019/11/${props.id}/ecuador_national_demonstrations_and_state_of_exception.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${props.id}/ecuador_national_demonstrations_and_state_of_exception.png${AWS_SIGNED_URL_QUERY_STRING}`
+                  signedUrl: testImage
+                  // signedUrl: `${AWS_URL}/2019/11/${props.id}/ecuador_national_demonstrations_and_state_of_exception.png${AWS_SIGNED_URL_QUERY_STRING}`
                 }
               ],
               use: getDocumentUseObj( 'Press Guidance' ),
