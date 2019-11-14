@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Modal } from 'semantic-ui-react';
-import { getFileExt } from 'lib/utils';
+import { getFileNameNoExt } from 'lib/utils';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 
 const EditPackageFilesModal = props => {
@@ -29,8 +29,7 @@ const EditPackageFilesModal = props => {
         { /* temporary */ }
         { files.map( file => {
           const { filename, id, use } = file;
-          const fileExtension = getFileExt( filename );
-          const fileNameNoExt = ( filename && filename.replace( fileExtension, '' ) ) || '';
+          const fileNameNoExt = getFileNameNoExt( filename );
           return (
             <div key={ id }>
               <p>{ filename }</p>

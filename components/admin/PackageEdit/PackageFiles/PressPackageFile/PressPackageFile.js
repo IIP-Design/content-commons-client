@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Grid } from 'semantic-ui-react';
-import { getCount, getFileExt } from 'lib/utils';
+import { getCount, getFileNameNoExt } from 'lib/utils';
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
@@ -12,8 +12,7 @@ const PressPackageFile = props => {
     id, filename, filetype, image
   } = props.unit;
 
-  const fileExtension = getFileExt( filename );
-  const fileNameNoExt = ( filename && filename.replace( fileExtension, '' ) ) || '';
+  const fileNameNoExt = getFileNameNoExt( filename );
 
   return (
     <div id={ id } className="package-file">
