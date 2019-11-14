@@ -4,12 +4,9 @@ import { Form, Grid } from 'semantic-ui-react';
 import { truncateAndReplaceStr } from 'lib/utils';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
-import ReleaseTypeDropdown from 'components/admin/dropdowns/ReleaseTypeDropdown/ReleaseTypeDropdown';
+import DocumentUseDropdown from 'components/admin/dropdowns/DocumentUseDropdown/DocumentUseDropdown';
 import UploadCompletionTracker from '../../VideoUpload/VideoProjectFiles/UploadCompletionTracker';
 import { PackageUploadContext } from '../PackageUpload';
-
-import tmpReleaseTypes from './tempReleaseTypes';
-
 
 const PackageFilesRow = props => {
   const {
@@ -37,9 +34,15 @@ const PackageFilesRow = props => {
                 <VisuallyHidden el="span">{ name }</VisuallyHidden>
               </div>
             </Grid.Column>
-            <Grid.Column width={ 6 }><Form.Input value={ text } /></Grid.Column>
+            <Grid.Column width={ 6 }>
+              <Form.Input id={ id } value={ text } name="text" onChange={ updateField } />
+            </Grid.Column>
             <Grid.Column width={ 4 } className="packageFiles_file_releaseRemoveWrapper">
-              <ReleaseTypeDropdown id={ id } value={ use } releaseTypes={ tmpReleaseTypes } onChange={ updateField } />
+              <DocumentUseDropdown
+                id={ id }
+                value={ use }
+                onChange={ updateField }
+              />
               <FileRemoveReplaceButtonGroup onRemove={ () => removePackageFile( id ) } />
             </Grid.Column>
           </Grid.Row>

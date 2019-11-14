@@ -16,6 +16,7 @@ const PackageFiles = () => (
         closeModal,
         addPackageFiles,
         allFieldsSelected,
+        handlefileUploads,
       } ) => (
         <Form className="packageFiles">
           <h5 className="packageFiles_headline">{ `Preparing ${files.length} files for upload...` }</h5>
@@ -56,7 +57,7 @@ const PackageFiles = () => (
               type="button"
               className="primary"
               content="Save & Continue"
-              onClick={ () => console.log( 'SAVE & CONTINUE' ) }
+              onClick={ () => handlefileUploads() }
             />
           </Form.Field>
         </Form>

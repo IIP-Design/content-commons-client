@@ -1,6 +1,8 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { v4 } from 'uuid';
+import { connect } from 'react-redux';
+import * as actions from 'lib/redux/actions/upload';
 import { Tab } from 'semantic-ui-react';
 import { removeDuplicatesFromArray } from 'lib/utils';
 import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
@@ -16,6 +18,7 @@ const PackageUpload = props => {
   const [activeIndex, setActiveIndex] = useState( 0 );
   const [files, setFiles] = useState( [] );
   const [confirm, setConfirm] = useState( {} );
+  const [loading, setLoading] = useState( false );
   const [allFieldsSelected, setAllFieldsSelected] = useState( false );
 
   useEffect( () => {
@@ -63,12 +66,15 @@ const PackageUpload = props => {
     }
   };
 
+  // Set default document title, removing extension
+  const setDefaultTitleText = file => file.name.substring( 0, file.name.lastIndexOf( '.' ) );
+
   const addPackageFiles = filesFromInputSelection => {
     const fileList = Array.from( filesFromInputSelection );
     const filesToAdd = fileList.map( file => ( {
       id: v4(),
       input: file,
-      text: file.name,
+      text: setDefaultTitleText( file ),
       use: '',
     } ) );
     // Only check for duplicates if there are current files to compare against
@@ -104,8 +110,18 @@ const PackageUpload = props => {
       if ( file.id !== data.id ) {
         return file;
       }
-      return { ...file, use: data.value };
+      return { ...file, [data.name]: data.value };
     } ) );
+  };
+
+  const gotoPackageDetailsPage = () => {
+    console.log( 'GO TO PACKAGE DETAILS PAGE' );
+  };
+
+  const handlefileUploads = async () => {
+    setLoading( true );
+    await props.uploadAddFiles( files ); // coming from redux
+    gotoPackageDetailsPage();
   };
 
   const accept = '.doc, .docx, .docm, .docb, .dotx, .dotm, .pdf';
@@ -138,6 +154,7 @@ const PackageUpload = props => {
             closeModal,
             updateModalClassname,
             allFieldsSelected,
+            handlefileUploads,
           } }
           >
             <PackageFiles />
@@ -161,7 +178,8 @@ const PackageUpload = props => {
 
 PackageUpload.propTypes = {
   closeModal: PropTypes.func,
-  updateModalClassname: PropTypes.func
+  updateModalClassname: PropTypes.func,
+  uploadAddFiles: PropTypes.func,
 };
 
-export default PackageUpload;
+export default connect( null, actions )( PackageUpload );
