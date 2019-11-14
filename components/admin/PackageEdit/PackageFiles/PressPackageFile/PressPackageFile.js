@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Grid } from 'semantic-ui-react';
+// remove sortBy after GraphQL is implemented
+import sortBy from 'lodash/sortBy';
 import { getCount, getFileNameNoExt } from 'lib/utils';
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
+// import test data for UI dev; remove after GraphQL is implemented
+import { bureaus } from 'components/admin/dropdowns/BureauOfficesDropdown/mocks';
 import './PressPackageFile.scss';
 
 const PressPackageFile = props => {
@@ -13,6 +17,13 @@ const PressPackageFile = props => {
   } = props.unit;
 
   const fileNameNoExt = getFileNameNoExt( filename );
+
+  // for UI dev; remove after GraphQL is implemented
+  let options = [];
+  if ( bureaus ) {
+    options = sortBy( bureaus, bureau => bureau.name )
+      .map( bureau => ( { key: bureau.id, text: bureau.name, value: bureau.id } ) );
+  }
 
   return (
     <div id={ id } className="package-file">
@@ -81,7 +92,22 @@ const PressPackageFile = props => {
 
               <Form.Group>
                 <Form.Field width={ 8 }>
-                  <p>Author Bureaus/Offices (to be added)</p>
+                  { /**
+                     * for UI dev;
+                     * replace with <BureauOfficesDropdown />
+                     * after GraphQL is implemented
+                     */ }
+                  <Form.Dropdown
+                    id="bureaus"
+                    label="Author Bureaus/Offices"
+                    name="bureaus"
+                    options={ options }
+                    placeholder="–"
+                    fluid
+                    selection
+                    required
+                    style={ { marginBottom: '1em' } }
+                  />
                   <p className="field__helper-text">Enter keywords separated by commas.</p>
                 </Form.Field>
 
