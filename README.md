@@ -16,6 +16,7 @@ Handles the public Content Commons as well as the client side adminstative inter
   - **REACT_APP_WEBSITE_NAME**=Content Commons
   - **REACT_APP_PUBLIC_API** : elasticsearch public api endpoint
   - **REACT_APP_CDP_MODULES_URL** : url to content commons modules
+  - **REACT_APP_SINGLE_ARTICLE_MODULE** : url to content commons single article module
   - **REACT_APP_YOUTUBE_API_KEY** : key for YouTube services
   - **REACT_APP_VIMEO_TOKEN** : token for Vimeo services
   - **REACT_APP_GOOGLE_CLIENT_ID** : id used for Google authentication
