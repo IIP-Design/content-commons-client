@@ -16,5 +16,13 @@
     }
   }
 
+  .meta > .data {
+    margin-bottom: 1.5em;
+
+    > p {
+      margin-bottom: 0.5em;
+    }
+  }
+
   @include field-helper-text;
 }

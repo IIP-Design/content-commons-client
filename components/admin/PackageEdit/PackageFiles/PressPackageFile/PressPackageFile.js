@@ -44,8 +44,12 @@ const PressPackageFile = props => {
             }
           </Grid.Column>
           <Grid.Column mobile={ 16 } tablet={ 12 } computer={ 12 } className="meta">
-            <p><b className="label">File Name:</b> { fileNameNoExt || filename }</p>
-            <p><b className="label">Release Type:</b> { filetype }</p>
+            <div className="data">
+              <p><b className="label">File Name:</b> { fileNameNoExt || filename }</p>
+              <p><b className="label">Release Type:</b> { filetype }</p>
+              <p><b className="label">Pages:</b> TBD</p>
+            </div>
+
             <Form>
               <Form.Group>
                 <Form.Field width={ 8 }>
