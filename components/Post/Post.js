@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import getConfig from 'next/config';
 import { getItemRequest } from 'lib/elastic/api';
 import { normalizeItem } from 'lib/elastic/parser';
 import { updateUrl } from 'lib/browser';
@@ -26,6 +27,7 @@ import EmbedPost from './EmbedPost';
 import EmbedHelp from './EmbedHelp';
 
 const Post = props => {
+  const { publicRuntimeConfig } = getConfig();
   const [item, setItem] = useState( props.item );
   const [selectedLanguage, setSelectedLanguage] = useState( () => {
     const { language } = props.item;
@@ -59,7 +61,7 @@ const Post = props => {
 
   const embedItem = (
     // eslint-disable-next-line max-len
-    `<div id="cdp-article-embed"></div><script async id="cdpArticle" data-id="${item.id}" data-site="${item.site}" src="${process.env.REACT_APP_CDP_MODULES_URL}${process.env.REACT_APP_SINGLE_ARTICLE_MODULE}"></script>`
+    `<div id="cdp-article-embed"></div><script async id="cdpArticle" data-id="${item.id}" data-site="${item.site}" src="${publicRuntimeConfig.REACT_APP_CDP_MODULES_URL}${publicRuntimeConfig.REACT_APP_SINGLE_ARTICLE_MODULE}"></script>`
   );
 
   if ( item ) {
