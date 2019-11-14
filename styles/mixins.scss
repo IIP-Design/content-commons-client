@@ -1,0 +1,129 @@
+@import "styles/colors.scss";
+
+// base button styles to override Semantic
+@mixin base-button {
+  padding-top: 0.785714em;
+  padding-bottom: 0.785714em;
+  font-size: 0.777778rem;
+  box-shadow: none !important;
+
+  &:focus,
+  &.basic.buttons .button:focus,
+  &.basic:focus {
+    outline: 2px dotted $medium-grey;
+    outline-offset: 2px;
+  }
+
+  &.disabled,
+  &:disabled {
+    cursor: not-allowed;
+    pointer-events: auto !important;
+  }
+}
+
+// buttons with white background, blue borders and text, e.g.,
+// `Save & Exit` and `Edit` buttons on details pages
+@mixin ghost-button {
+  border: 2px solid $matisse-blue;
+  color: $matisse-blue !important;
+  font-weight: bold;
+  background-color: #fff;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: #fff !important;
+    background-color: $matisse-blue !important;
+  }
+
+  &.disabled:hover,
+  &.disabled:active,
+  &.disabled:focus {
+    color: $matisse-blue !important;
+    background-color: transparent !important;
+  }
+}
+
+// buttons with transparent borders, e.g., `Delete Project`
+// and `Delete All` buttons on details pages
+@mixin transparent-button {
+  border: 2px solid transparent;
+  @media screen and (max-width: 899px) {
+    border-color: $grey;
+  }
+  color: $grey !important;
+  font-weight: normal;
+
+  &:hover,
+  &:active,
+  &:focus {
+    border-color: $grey;
+    color: #fff !important;
+    background-color: $grey !important;
+  }
+
+  &.disabled:hover,
+  &.disabled:active,
+  &.disabled:focus {
+    border-color: transparent !important;
+    @media screen and (max-width: 899px) {
+      border-color: $grey !important;
+    }
+    color: $grey !important;
+    background-color: transparent !important;
+  }
+}
+
+// green buttons (can't think of another name
+// that's not tied to the button action, so "go"), e.g.,
+// `Publish`, `Publish Changes`
+@mixin go-button {
+  border: 2px solid $green;
+  color: #fff;
+  background-color: $green;
+
+  &:hover,
+  &:active,
+  &:focus {
+    border-color: $matisse-blue;
+  }
+}
+
+// creates a 2 column grid
+@mixin two-column-layout {
+  display: grid;
+  grid-template-columns: repeat(2, 0.5fr);
+  grid-gap: 1em;
+}
+
+// Remove outline for non-keyboard :focus
+@mixin kbd-only-focus-ring {
+  *:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+// used for "Required Fields *"
+@mixin required-text {
+  .msg--required {
+    color: $red;
+    font-size: 0.5em;
+    font-weight: normal;
+  }
+}
+
+// used for helper text under a form input, e.g.,
+// ProjectDetailsForm, PressPackageFile
+@mixin field-helper-text {
+  .field__helper-text {
+    margin-top: -1em;
+    color: $blue;
+    font-size: 0.666666667rem;
+  }
+}
+
+@mixin uppercase {
+  .uppercase {
+    text-transform: uppercase;
+  }
+}

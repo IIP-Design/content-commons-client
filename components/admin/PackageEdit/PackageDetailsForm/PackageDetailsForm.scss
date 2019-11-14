@@ -1,17 +1,9 @@
 @import "styles/colors.scss";
+@import "styles/mixins.scss";
 
 .edit-package__form {
-  // same as VideoEdit
-  .uppercase {
-    text-transform: uppercase;
-  }
-
-  // same as ProjectDetailsForm
-  .msg--required {
-    color: $red;
-    font-size: 0.5em;
-    font-weight: normal;
-  }
+  @include uppercase;
+  @include required-text;
 
   input#type[value="DAILY_GUIDANCE"] {
     border: 0;

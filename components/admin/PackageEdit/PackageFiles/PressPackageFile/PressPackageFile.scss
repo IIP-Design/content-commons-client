@@ -1,4 +1,5 @@
 @import "styles/colors.scss";
+@import "styles/mixins.scss";
 
 .package-file {
   padding-top: 2em;
@@ -15,9 +16,5 @@
     }
   }
 
-  .field__helper-text {
-    margin-top: -1em;
-    color: $blue;
-    font-size: 0.666666667rem;
-  }
+  @include field-helper-text;
 }

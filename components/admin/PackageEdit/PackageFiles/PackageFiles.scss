@@ -1,11 +1,9 @@
 @import "styles/colors.scss";
+@import "styles/mixins.scss";
 
 .package-files {
+  @include uppercase;
   font-size: 0.777778rem;
-
-  .uppercase {
-    text-transform: uppercase;
-  }
 
   .heading,
   .heading-group {

@@ -1,20 +1,14 @@
 @import "styles/colors.scss";
+@import "styles/mixins.scss";
 
 .edit-project {
-  :focus:not(:focus-visible) {
-    outline: none;
-  }
+  @include kbd-only-focus-ring;
+  @include uppercase;
 
   @media screen and (max-width: 550px) {
     .project_buttons {
-      display: grid;
-      grid-template-columns: repeat(2, 0.5fr);
-      grid-gap: 1em;
+      @include two-column-layout;
     }
-  }
-
-  .uppercase {
-    text-transform: uppercase;
   }
 
   .includeVideoFileNotification {
@@ -23,23 +17,7 @@
   }
 
   .ui.button {
-    padding-top: 0.785714em;
-    padding-bottom: 0.785714em;
-    font-size: 0.777778rem;
-    box-shadow: none !important;
-
-    &:focus,
-    &.basic.buttons .button:focus,
-    &.basic:focus {
-      outline: 2px dotted $medium-grey;
-      outline-offset: 2px;
-    }
-
-    &.disabled,
-    &:disabled {
-      cursor: not-allowed;
-      pointer-events: auto !important;
-    }
+    @include base-button;
 
     &.basic.btn--edit {
       color: $light-blue !important;
@@ -55,31 +33,7 @@
 
   &__btn--delete {
     &.ui.basic.button {
-      border: 2px solid transparent;
-      @media screen and (max-width: 899px) {
-        border-color: $grey;
-      }
-      color: $grey !important;
-      font-weight: normal;
-
-      &:hover,
-      &:active,
-      &:focus {
-        border-color: $grey;
-        color: #fff !important;
-        background-color: $grey !important;
-      }
-
-      &.disabled:hover,
-      &.disabled:active,
-      &.disabled:focus {
-        border-color: transparent !important;
-        @media screen and (max-width: 899px) {
-          border-color: $grey !important;
-        }
-        color: $grey !important;
-        background-color: transparent !important;
-      }
+      @include transparent-button;
     }
   }
 
@@ -93,24 +47,7 @@
   &__btn--save-draft,
   &__add-more {
     &.ui.basic.button {
-      border: 2px solid $matisse-blue;
-      color: $matisse-blue !important;
-      font-weight: bold;
-      background-color: #fff;
-
-      &:hover,
-      &:active,
-      &:focus {
-        color: #fff !important;
-        background-color: $matisse-blue !important;
-      }
-
-      &.disabled:hover,
-      &.disabled:active,
-      &.disabled:focus {
-        color: $matisse-blue !important;
-        background-color: transparent !important;
-      }
+      @include ghost-button;
     }
   }
 
