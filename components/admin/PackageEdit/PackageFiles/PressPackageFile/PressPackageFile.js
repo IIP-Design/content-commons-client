@@ -51,8 +51,8 @@ const PressPackageFile = props => {
             </div>
 
             <Form>
-              <Form.Group>
-                <Form.Field width={ 8 }>
+              <Form.Group widths="equal">
+                <Form.Field>
                   <VisibilityDropdown
                     id="visibility"
                     name="visibility"
@@ -63,7 +63,7 @@ const PressPackageFile = props => {
                   />
                 </Form.Field>
 
-                <Form.Field width={ 8 }>
+                <Form.Field>
                   <CategoryDropdown
                     id="categories"
                     name="categories"
