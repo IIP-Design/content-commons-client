@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 
 const _baseSchema = {
-  projectTitle: Yup.string()
+  title: Yup.string()
     .required( 'A package title is required.' )
 };
 
