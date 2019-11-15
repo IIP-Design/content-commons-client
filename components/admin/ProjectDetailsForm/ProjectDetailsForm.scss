@@ -18,6 +18,12 @@
         font-weight: normal;
       }
 
+      &.with-helper-text {
+        > textarea {
+          margin-bottom: -1em;
+        }
+      }
+
       &.disabled {
         opacity: 1;
 

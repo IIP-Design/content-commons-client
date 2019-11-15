@@ -137,7 +137,6 @@ const ProjectDetailsForm = props => {
                     closeOnBlur
                     closeOnChange
                     required
-                    style={ { marginBottom: '1em' } }
                   />
 
                   { errors.categories
@@ -154,7 +153,6 @@ const ProjectDetailsForm = props => {
                     locale="en-us"
                     value={ values.tags }
                     onChange={ handleOnChange }
-                    style={ { marginBottom: '1em' } }
                   />
                   <p className="field__helper-text">Enter keywords separated by commas to search available tags.</p>
                 </div>
@@ -173,6 +171,7 @@ const ProjectDetailsForm = props => {
 
               <div className="field">
                 <Form.Field
+                  className="with-helper-text"
                   id="descInternal"
                   name="descInternal"
                   control={ TextArea }

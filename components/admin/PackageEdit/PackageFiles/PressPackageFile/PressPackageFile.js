@@ -84,7 +84,6 @@ const PressPackageFile = props => {
                     closeOnBlur
                     closeOnChange
                     required
-                    style={ { marginBottom: '1em' } }
                   />
                   <p className="field__helper-text">Select up to 2.</p>
                 </Form.Field>
@@ -106,7 +105,6 @@ const PressPackageFile = props => {
                     fluid
                     selection
                     required
-                    style={ { marginBottom: '1em' } }
                   />
                   <p className="field__helper-text">Enter keywords separated by commas.</p>
                 </Form.Field>
@@ -118,7 +116,6 @@ const PressPackageFile = props => {
                     name="tags"
                     // value={ values.tags }
                     onChange={ () => {} }
-                    style={ { marginBottom: '1em' } }
                   />
                   <p className="field__helper-text">Enter keywords separated by commas.</p>
                 </Form.Field>
