@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'next/router';
+import { compose /* , graphql */ } from 'react-apollo';
 import { Button, Confirm } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
@@ -14,8 +17,8 @@ import PackageFiles from './PackageFiles/PackageFiles';
 import { props as testProps, mocks } from './PackageDetailsForm/PressPackageDetailsForm/mocks';
 import './PackageEdit.scss';
 
-const PackageEdit = () => {
-  const [projectId, setProjectId] = useState( /* props.id */ '' );
+const PackageEdit = props => {
+  const [packageId, setPackageId] = useState( /* props.id */ '' );
   const [error, setError] = useState( {} );
   const [displayTheUploadSuccessMsg, setDisplayTheUploadSuccessMsg] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
@@ -25,17 +28,27 @@ const PackageEdit = () => {
     showNotification: false
   } );
 
-  const handleDeleteConfirm = () => {
+  const handleExit = () => {
+    props.router.push( { pathname: '/admin/dashboard' } );
+  };
+
+  const handleDeleteConfirm = async () => {
     console.log( 'Confirm Delete' );
+    // const { deletePackage } = props;
+
+    // const deletedPackageId = await deletePackage( {
+    //   variables: { id: packageId }
+    // } ).catch( err => { setError( err ); } );
+
+    // if ( deletedPackageId ) {
+    //   handleExit();
+    // }
   };
 
   const handlePublish = () => {
     console.log( 'Publish' );
   };
 
-  const handleExit = () => {
-    console.log( 'Save & Exit' );
-  };
 
   const handleUpload = () => {
     console.log( 'Upload' );
@@ -120,7 +133,7 @@ const PackageEdit = () => {
 
       { /* upload progress */ }
       <div className="edit-package__status">
-        { !projectId && !isUploading && <FormInstructions type="package" /> }
+        { !packageId && !isUploading && <FormInstructions type="package" /> }
         { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
 
         { isUploading
@@ -172,4 +185,13 @@ const PackageEdit = () => {
   );
 };
 
-export default PackageEdit;
+PackageEdit.propTypes = {
+  // id: PropTypes.string,
+  // deletePackage: PropTypes.func,
+  router: PropTypes.object,
+};
+
+export default compose(
+  withRouter,
+  // graphql( DELETE_PACKAGE_MUTATION, { name: 'deletePackage' } ),
+)( PackageEdit );
