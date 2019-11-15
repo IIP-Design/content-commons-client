@@ -6,11 +6,11 @@ import { Button, Confirm } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
-import FileUploadProgressBar from 'components/admin/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
-import FormInstructions from 'components/admin/ProjectEdit/FormInstructions/FormInstructions';
+import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
+import FormInstructions from 'components/admin/FormInstructions/FormInstructions';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
-import UploadSuccessMsg from 'components/admin/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
+import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg';
 import PressPackageDetailsForm from './PackageDetailsForm/PressPackageDetailsForm/PressPackageDetailsForm';
 import PackageFiles from './PackageFiles/PackageFiles';
 // remove mocks import after GraphQL

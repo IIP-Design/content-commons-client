@@ -10,7 +10,7 @@ import Notification from 'components/Notification/Notification';
 import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
 import { compose, graphql } from 'react-apollo';
 import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown/UseDropdown';
-import FileUploadProgressBar from '../FileUploadProgressBar/FileUploadProgressBar';
+import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
 
 import './EditProjectFilesModal.scss';
 

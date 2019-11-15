@@ -28,11 +28,11 @@ import Notification from 'components/Notification/Notification';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import ProjectUnits from 'components/admin/ProjectUnits/ProjectUnits';
-import FormInstructions from 'components/admin/ProjectEdit/FormInstructions/FormInstructions';
+import FormInstructions from 'components/admin/FormInstructions/FormInstructions';
 import VideoProjectDetailsForm from 'components/admin/ProjectDetailsForm/VideoProjectDetailsForm/VideoProjectDetailsForm';
 import VideoProjectSupportFiles from 'components/admin/ProjectSupportFiles/VideoProjectSupportFiles/VideoProjectSupportFiles';
-import UploadSuccessMsg from 'components/admin/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
-import FileUploadProgressBar from 'components/admin/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
+import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg';
+import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
 import withFileUpload from 'hocs/withFileUpload/withFileUpload';
 import './VideoEdit.scss';
 

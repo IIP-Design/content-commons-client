@@ -9,7 +9,7 @@ import {
   Card, Modal, Image, List, Loader
 } from 'semantic-ui-react';
 import iconVideoCamera from 'static/icons/icon_32px_videoCamera.png';
-import FileUploadProgressBar from 'components/admin/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
+import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
 import GeneralError from 'components/errors/GeneralError/GeneralError';
 import { UploadContext } from 'components/admin/ProjectEdit/VideoEdit/VideoEdit';
 import './ProjectUnitItem.scss';
