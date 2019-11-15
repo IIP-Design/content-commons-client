@@ -201,6 +201,7 @@ export const mocks = [
               filetype: 'image/jpeg',
               alt: 'the alt text',
               url: `2019/06/${props.id}/image-1.jpg`,
+              signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
               use: {
                 __typename: 'ImageUse',
                 id: 'imu33',
@@ -271,6 +272,7 @@ export const mocks = [
                     filetype: 'image/jpeg',
                     alt: 'the alt text',
                     url: `2019/06/${props.id}/image-1.jpg`,
+                    signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
                     use: {
                       __typename: 'ImageUse',
                       id: 'imu33',
@@ -300,6 +302,7 @@ export const mocks = [
                   filetype: 'video/mp4',
                   quality: 'WEB',
                   url: `2019/06/${props.id}/video-file-1.mp4`,
+                  signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
                   videoBurnedInStatus: 'CLEAN',
                   dimensions: {
                     __typename: 'Dimensions',
@@ -439,6 +442,7 @@ export const mocks = [
                     filetype: 'image/jpeg',
                     alt: 'the alt text',
                     url: `2019/06/${props.id}/image-1.jpg`,
+                    signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
                     use: {
                       __typename: 'ImageUse',
                       id: 'imu33',
@@ -469,6 +473,7 @@ export const mocks = [
                   quality: 'WEB',
                   url: `2019/06/${props.id}/video-file-1.mp4`,
                   videoBurnedInStatus: 'CLEAN',
+                  signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
                   dimensions: {
                     __typename: 'Dimensions',
                     id: 'd21',
@@ -518,6 +523,7 @@ export const mocks = [
               filesize: 6424,
               filetype: 'application/x-subrip',
               use: null,
+              signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
               language: {
                 __typename: 'Language',
                 id: 'en33',
@@ -538,6 +544,7 @@ export const mocks = [
               filesize: 6424,
               filetype: 'application/x-subrip',
               use: null,
+              signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
               language: {
                 __typename: 'Language',
                 id: 'fr533',
