@@ -180,7 +180,10 @@ const ProjectDetailsForm = props => {
                   value={ values.descInternal }
                   onChange={ handleChange }
                 />
-                <p className="field__helper-text">Reason for this project as it relates to Department objectives.</p>
+                <p className="field__helper-text">
+                  Share with DoS colleagues reasons for this project as it relates to Department objectives,
+                  best practices for using the project, or any other notes you would like to keep internal.
+                </p>
               </div>
             </Grid.Column>
           </Grid.Row>
