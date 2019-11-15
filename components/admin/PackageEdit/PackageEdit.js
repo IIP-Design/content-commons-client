@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Confirm } from 'semantic-ui-react';
+import ApolloError from 'components/errors/ApolloError';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import FileUploadProgressBar from 'components/admin/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
@@ -15,6 +16,7 @@ import './PackageEdit.scss';
 
 const PackageEdit = () => {
   const [projectId, setProjectId] = useState( /* props.id */ '' );
+  const [error, setError] = useState( {} );
   const [displayTheUploadSuccessMsg, setDisplayTheUploadSuccessMsg] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
 
@@ -102,6 +104,10 @@ const PackageEdit = () => {
             onClick={ handlePublish }
           />
         </ProjectHeader>
+      </div>
+
+      <div style={ centeredStyles }>
+        <ApolloError error={ error } />
       </div>
 
       { /* Form data saved notification */ }
