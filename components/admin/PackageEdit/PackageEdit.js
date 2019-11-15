@@ -2,13 +2,19 @@ import React, { useState } from 'react';
 import { Button, Confirm } from 'semantic-ui-react';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
+import FileUploadProgressBar from 'components/admin/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar';
+import FormInstructions from 'components/admin/ProjectEdit/FormInstructions/FormInstructions';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
+import UploadSuccessMsg from 'components/admin/ProjectEdit/UploadSuccessMsg/UploadSuccessMsg';
 import PressPackageDetailsForm from './PackageDetailsForm/PressPackageDetailsForm/PressPackageDetailsForm';
 import PackageFiles from './PackageFiles/PackageFiles';
+// remove mocks import after GraphQL
 import { props as testProps, mocks } from './PackageDetailsForm/PressPackageDetailsForm/mocks';
 import './PackageEdit.scss';
 
 const PackageEdit = () => {
+  const [projectId, setProjectId] = useState( /* props.id */ '' );
+  const [displayTheUploadSuccessMsg, setDisplayTheUploadSuccessMsg] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
 
   const displayConfirmDelete = () => setDeleteConfirmOpen( true );
@@ -25,6 +31,10 @@ const PackageEdit = () => {
   const handleSaveExit = () => {
     console.log( 'Save & Exit' );
   };
+
+  // for UI dev, remove afterwards
+  const isUploading = false;
+  const filesToUpload = [];
 
   return (
     <div className="edit-package">
@@ -69,6 +79,21 @@ const PackageEdit = () => {
             onClick={ handlePublish }
           />
         </ProjectHeader>
+      </div>
+
+      { /* upload progress */ }
+      <div className="edit-package__status">
+        { !projectId && !isUploading && <FormInstructions type="package" /> }
+        { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
+
+        { isUploading
+          && (
+          <FileUploadProgressBar
+            filesToUpload={ filesToUpload }
+            label="Please keep this page open until upload is complete"
+            fileProgessMessage
+          />
+          ) }
       </div>
 
       <div className="edit-package__form">
