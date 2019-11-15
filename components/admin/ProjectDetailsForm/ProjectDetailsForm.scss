@@ -13,6 +13,10 @@
 
     @include field-helper-text;
 
+    textarea {
+      font-family: inherit;
+    }
+
     .field {
       > label {
         font-weight: normal;
