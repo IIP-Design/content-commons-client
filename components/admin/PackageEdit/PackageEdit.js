@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import { compose /* , graphql */ } from 'react-apollo';
@@ -18,7 +18,14 @@ import { props as testProps, mocks } from './PackageDetailsForm/PressPackageDeta
 import './PackageEdit.scss';
 
 const PackageEdit = props => {
+  const SAVE_MSG_DELAY = 2000;
+  const UPLOAD_SUCCESS_MSG_DELAY = SAVE_MSG_DELAY + 1000;
+
+  let uploadSuccessTimer = null;
+  let saveMsgTimer = null;
+
   const [packageId, setPackageId] = useState( /* props.id */ '' );
+  const [mounted, setMounted] = useState( false );
   const [error, setError] = useState( {} );
   const [displayTheUploadSuccessMsg, setDisplayTheUploadSuccessMsg] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
@@ -28,11 +35,60 @@ const PackageEdit = props => {
     showNotification: false
   } );
 
+  useEffect( () => {
+    setMounted( true );
+    return () => {
+      setMounted( false );
+      clearTimeout( uploadSuccessTimer );
+      clearTimeout( saveMsgTimer );
+
+      // props.uploadReset(); // clear files to upload store
+    };
+  }, [] );
+
+  const updateNotification = msg => {
+    setNotification( {
+      notificationMessage: msg,
+      showNotification: !!msg
+    } );
+  };
+
+  const addPackageIdToUrl = id => {
+    const { router } = props;
+
+    const path = `${router.asPath}&id=${id}`;
+    router.replace( router.asPath, path, { shallow: true } );
+  };
+
+  const delayUnmount = ( fn, timer, delay ) => {
+    if ( timer ) clearTimeout( timer );
+    /* eslint-disable no-param-reassign */
+    timer = setTimeout( fn, delay );
+  };
+
+  const handleDisplayUploadSuccessMsg = () => {
+    if ( mounted ) {
+      setDisplayTheUploadSuccessMsg( false );
+    }
+    uploadSuccessTimer = null;
+  };
+
+  const handleDisplaySaveMsg = () => {
+    if ( mounted ) {
+      updateNotification( '' );
+    }
+    saveMsgTimer = null;
+  };
+
   const handleExit = () => {
     props.router.push( { pathname: '/admin/dashboard' } );
   };
 
-  const handleDeleteConfirm = async () => {
+  const handleUploadProgress = () => {
+    console.log( 'Handle Upload Progress' );
+  };
+
+  const handleDeleteConfirm = () => {
     console.log( 'Confirm Delete' );
     // const { deletePackage } = props;
 
@@ -45,20 +101,47 @@ const PackageEdit = props => {
     // }
   };
 
-  const handlePublish = () => {
-    console.log( 'Publish' );
+  const handleSaveDraft = () => {
+    console.log( 'Save Draft' );
   };
 
+  const handleUploadComplete = () => {
+    console.log( 'Upload Complete' );
+    // setDisplayTheUploadSuccessMsg( true );
+    // updateNotification( 'Project saved as draft' );
+    // delayUnmount( handleDisplaySaveMsg, saveMsgTimer, SAVE_MSG_DELAY );
+    // delayUnmount( handleDisplayUploadSuccessMsg, uploadSuccessTimer, UPLOAD_SUCCESS_MSG_DELAY );
+  };
+
+  const handlePublish = () => {
+    console.log( 'Publish' );
+
+    // const { id, title } = pkg;
+    // const { /* uploadExecute, */ updateFile } = props;
+
+    // // If there are files to upload, upload them
+    // if ( filesToUpload && filesToUpload.length ) {
+    //   setIsUploading( true );
+
+    //   // 1. Upload files to S3 and fetch file meta data
+    //   await uploadExecute( id, filesToUpload, handleUploadProgress, updateFile );
+
+    //   // 2. once all files have been uploaded, create and save new project (only new)
+    //   handleSaveDraft( id, title, tags );
+
+    //   // 3. clean up upload process
+    //   handleUploadComplete();
+
+    //   // 4. set package id to newly created package (what if existing package?)
+    //   setPackageId( id );
+
+    //   // 5. update url to reflect a new package (only new)
+    //   addPackageIdToUrl( id );
+    // }
+  };
 
   const handleUpload = () => {
     console.log( 'Upload' );
-  };
-
-  const updateNotification = msg => {
-    setNotification( {
-      notificationMessage: msg,
-      showNotification: !!msg
-    } );
   };
 
   const centeredStyles = {
@@ -188,10 +271,30 @@ const PackageEdit = props => {
 PackageEdit.propTypes = {
   // id: PropTypes.string,
   // deletePackage: PropTypes.func,
+  // packageQuery: PropTypes.object,
+  // updatePackage: PropTypes.func,
+  // updateFile: PropTypes.func,
   router: PropTypes.object,
 };
 
 export default compose(
   withRouter,
+  // graphql( PACKAGE_QUERY, {
+  //   name: 'packageQuery',
+  //   options: props => ( {
+  //     variables: { id: props.id }
+  //   } ),
+  //   skip: props => !props.id
+  // } ),
   // graphql( DELETE_PACKAGE_MUTATION, { name: 'deletePackage' } ),
+  // graphql( UPDATE_PACKAGE_MUTATION, {
+  //   name: 'updatePackage',
+  //   options: props => ( {
+  //     refetchQueries: [{
+  //       query: PACKAGE_QUERY,
+  //       variables: { id: props.id },
+  //     }],
+  //     onCompleted: () => {}
+  //   } )
+  // } )
 )( PackageEdit );
