@@ -23,9 +23,6 @@ const PackageEdit = () => {
     showNotification: false
   } );
 
-  const displayConfirmDelete = () => setDeleteConfirmOpen( true );
-  const handleDeleteCancel = () => setDeleteConfirmOpen( false );
-
   const handleDeleteConfirm = () => {
     console.log( 'Confirm Delete' );
   };
@@ -34,8 +31,12 @@ const PackageEdit = () => {
     console.log( 'Publish' );
   };
 
-  const handleSaveExit = () => {
+  const handleExit = () => {
     console.log( 'Save & Exit' );
+  };
+
+  const handleUpload = () => {
+    console.log( 'Upload' );
   };
 
   const updateNotification = msg => {
@@ -66,7 +67,7 @@ const PackageEdit = () => {
             className="edit-package__btn--delete"
             content="Delete All"
             basic
-            onClick={ displayConfirmDelete }
+            onClick={ () => setDeleteConfirmOpen( true ) }
             disabled={ false }
           />
 
@@ -81,7 +82,7 @@ const PackageEdit = () => {
                 <p>This package will be permanently removed from the Content Cloud. Any files that you uploaded here will not be uploaded.</p>
               </ConfirmModalContent>
             ) }
-            onCancel={ handleDeleteCancel }
+            onCancel={ () => setDeleteConfirmOpen( false ) }
             onConfirm={ handleDeleteConfirm }
             cancelButton="No, take me back"
             confirmButton="Yes, delete forever"
@@ -91,7 +92,7 @@ const PackageEdit = () => {
             className="edit-package__btn--save-draft"
             content="Save & Exit"
             basic
-            onClick={ handleSaveExit }
+            onClick={ handleExit }
             disabled={ false }
           />
 
@@ -128,8 +129,8 @@ const PackageEdit = () => {
 
       <div className="edit-package__form">
         <PressPackageDetailsForm
-          id={ testProps.id }
-          handleUpload={ () => {} }
+          id={ /* props.id */ testProps.id }
+          handleUpload={ handleUpload }
           updateNotification={ updateNotification }
           // send mock data here for UI dev, remove after GraphQL
           data={ mocks[0].result.data }
@@ -138,7 +139,7 @@ const PackageEdit = () => {
 
       <div className="edit-package__files">
         <PackageFiles
-          id={ testProps.id }
+          id={ /* props.id */ testProps.id }
           // send mock data here for UI dev, remove after GraphQL
           data={ mocks[0].result.data }
         />
@@ -155,7 +156,7 @@ const PackageEdit = () => {
         { /* !publishedAndNotUpdated */ true && (
           <Button
             className={ `edit-package__btn--${/* publishedAndUpdated */false ? 'edit' : 'publish'}` }
-            onClick={ /* handlePublish */ () => {} }
+            onClick={ handlePublish }
           >
             Publish{ /* publishedAndUpdated */ false && ' Changes' }
           </Button>
