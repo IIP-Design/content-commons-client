@@ -5,9 +5,9 @@
  */
 
 import React, { Fragment } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
-const FormInstructions = () => {
+const FormInstructions = props => {
   const baseStyles = {
     margin: '0',
     padding: '0.625em 1.75em',
@@ -24,14 +24,20 @@ const FormInstructions = () => {
   return (
     <Fragment>
       <p style={ baseStyles }>
-        <strong>Fill out the required fields to finish setting up this project.</strong>
+        <strong>Fill out the required fields to finish setting up this { props.type }.</strong>
       </p>
-      <p style={ draftMsgStyles }>Your files will not be uploaded until the project is saved as a draft.
+      <p style={ draftMsgStyles }>Your files will not be uploaded until the { props.type } is saved as a draft.
       </p>
     </Fragment>
   );
 };
 
-FormInstructions.propTypes = {};
+FormInstructions.defaultProps = {
+  type: 'project'
+};
+
+FormInstructions.propTypes = {
+  type: PropTypes.string
+};
 
 export default FormInstructions;

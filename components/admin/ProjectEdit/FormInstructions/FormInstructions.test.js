@@ -34,6 +34,13 @@ describe( '<FormInstructions />', () => {
     expect( baseMsg.text() ).toEqual( 'Fill out the required fields to finish setting up this project.' );
   } );
 
+  it( 'renders instructions to complete the form if props.type is passed', () => {
+    const wrapper = shallow( Component );
+    wrapper.setProps( { type: 'package' } );
+    const baseMsg = wrapper.childAt( 0 );
+    expect( baseMsg.text() ).toEqual( 'Fill out the required fields to finish setting up this package.' );
+  } );
+
   it( 'renders draft message styles', () => {
     const wrapper = shallow( Component );
     const draftMsg = wrapper.childAt( 1 );
@@ -49,5 +56,12 @@ describe( '<FormInstructions />', () => {
     const wrapper = shallow( Component );
     const draftMsg = wrapper.childAt( 1 );
     expect( draftMsg.text() ).toEqual( 'Your files will not be uploaded until the project is saved as a draft.' );
+  } );
+
+  it( 'renders a draft message if props.type is passed', () => {
+    const wrapper = shallow( Component );
+    wrapper.setProps( { type: 'package' } );
+    const draftMsg = wrapper.childAt( 1 );
+    expect( draftMsg.text() ).toEqual( 'Your files will not be uploaded until the package is saved as a draft.' );
   } );
 } );
