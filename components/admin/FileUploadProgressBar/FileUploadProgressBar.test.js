@@ -46,7 +46,7 @@ const startUploadProps = {
       loaded: 0
     }
   ],
-  fileProgessMessage: true,
+  fileProgressMessage: true,
   label: 'just another label',
   onComplete: jest.fn()
 };

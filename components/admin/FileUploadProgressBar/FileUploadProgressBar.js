@@ -9,7 +9,7 @@ import './FileUploadProgressBar.scss';
  */
 const FileUploadProgressBar = props => {
   const {
-    filesToUpload, fileProgessMessage, onComplete, label, labelAlign, showPercent, barSize, customStyles
+    filesToUpload, fileProgressMessage, onComplete, label, labelAlign, showPercent, barSize, customStyles
   } = props;
 
 
@@ -46,7 +46,7 @@ const FileUploadProgressBar = props => {
 
   const renderLabel = () => (
     <Fragment>
-      { fileProgessMessage && renderFileOnProgress() }
+      { fileProgressMessage && renderFileOnProgress() }
       <div style={ { marginTop: '5px' } }>{ label }</div>
     </Fragment>
 
@@ -75,12 +75,12 @@ FileUploadProgressBar.defaultProps = {
   barSize: 'medium',
   showPercent: false,
   labelAlign: 'center',
-  fileProgessMessage: false
+  fileProgressMessage: false
 };
 
 FileUploadProgressBar.propTypes = {
   filesToUpload: PropTypes.array,
-  fileProgessMessage: PropTypes.bool,
+  fileProgressMessage: PropTypes.bool,
   showPercent: PropTypes.bool,
   label: PropTypes.string,
   labelAlign: PropTypes.string,

@@ -274,7 +274,7 @@ const EditProjectFilesModal = ( {
             && (
             <FileUploadProgressBar
               filesToUpload={ files.filter( file => ( file.input ) ) }
-              fileProgessMessage
+              fileProgressMessage
               barSize="small"
               customStyles={ uploadProgessStyles }
             />

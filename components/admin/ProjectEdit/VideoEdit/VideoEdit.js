@@ -336,7 +336,7 @@ const VideoEdit = props => {
           <FileUploadProgressBar
             filesToUpload={ filesToUpload }
             label="Please keep this page open until upload is complete"
-            fileProgessMessage
+            fileProgressMessage
           />
           ) }
       </div>
@@ -361,7 +361,7 @@ const VideoEdit = props => {
           <FileUploadProgressBar
             filesToUpload={ filesToUpload }
             label="Please keep this page open until upload is complete"
-            fileProgessMessage
+            fileProgressMessage
           />
           ) }
       </div>

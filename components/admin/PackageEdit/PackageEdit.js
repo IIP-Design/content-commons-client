@@ -224,7 +224,7 @@ const PackageEdit = props => {
           <FileUploadProgressBar
             filesToUpload={ filesToUpload }
             label="Please keep this page open until upload is complete"
-            fileProgessMessage
+            fileProgressMessage
           />
           ) }
       </div>
