@@ -3,7 +3,7 @@ import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { Loader } from 'semantic-ui-react';
-import DownloadSrt from './DownloadSrt';
+import DownloadCaption from './DownloadCaption';
 import {
   emptyProjectMocks,
   errorMocks,
@@ -38,40 +38,40 @@ jest.mock( 'static/icons/icon_download.svg', () => 'downloadIconSVG' );
 
 const Component = (
   <MockedProvider mocks={ mocks } addTypename={ false }>
-    <DownloadSrt { ...props } />
+    <DownloadCaption { ...props } />
   </MockedProvider>
 );
 
-describe( '<DownloadSrt />', () => {
+describe( '<DownloadCaption />', () => {
   it( 'renders initial loading state without crashing', () => {
     const wrapper = mount( Component );
-    const downloadSrt = wrapper.find( 'DownloadSrt' );
+    const downloadCaption = wrapper.find( 'DownloadCaption' );
     const loader = (
       <Loader
         active
         inline="centered"
         style={ { marginBottom: '1em' } }
-        content="Loading SRT(s)..."
+        content="Loading Caption file(s)..."
       />
     );
 
-    expect( downloadSrt.exists() ).toEqual( true );
-    expect( downloadSrt.contains( loader ) ).toEqual( true );
-    expect( toJSON( downloadSrt ) ).toMatchSnapshot();
+    expect( downloadCaption.exists() ).toEqual( true );
+    expect( downloadCaption.contains( loader ) ).toEqual( true );
+    expect( toJSON( downloadCaption ) ).toMatchSnapshot();
   } );
 
   it( 'renders error message if error is thrown', async () => {
     const wrapper = mount(
       <MockedProvider mocks={ errorMocks } addTypename={ false }>
-        <DownloadSrt { ...props } />
+        <DownloadCaption { ...props } />
       </MockedProvider>
     );
     // wait for the data and !loading
     await wait( 0 );
     wrapper.update();
 
-    const downloadSrt = wrapper.find( 'DownloadSrt' );
-    const errorComponent = downloadSrt.find( 'ApolloError' );
+    const downloadCaption = wrapper.find( 'DownloadCaption' );
+    const errorComponent = downloadCaption.find( 'ApolloError' );
 
     expect( errorComponent.exists() ).toEqual( true );
     expect( errorComponent.contains( 'There was an error.' ) )
@@ -83,24 +83,24 @@ describe( '<DownloadSrt />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const downloadSrt = wrapper.find( 'DownloadSrt' );
+    const downloadCaption = wrapper.find( 'DownloadCaption' );
 
-    expect( toJSON( downloadSrt ) ).toMatchSnapshot();
+    expect( toJSON( downloadCaption ) ).toMatchSnapshot();
   } );
 
   it( 'renders null if project is null', async () => {
     const wrapper = mount(
       <MockedProvider mocks={ nullProjectMocks } addTypename={ false }>
-        <DownloadSrt { ...props } />
+        <DownloadCaption { ...props } />
       </MockedProvider>
     );
 
     await wait( 0 );
     wrapper.update();
 
-    const downloadSrt = wrapper.find( 'DownloadSrt' );
+    const downloadCaption = wrapper.find( 'DownloadCaption' );
 
-    expect( downloadSrt.html() ).toEqual( null );
+    expect( downloadCaption.html() ).toEqual( null );
   } );
 
   it( 'renders null if project is {}', async () => {
@@ -110,37 +110,37 @@ describe( '<DownloadSrt />', () => {
 
     const wrapper = mount(
       <MockedProvider mocks={ emptyProjectMocks } addTypename={ false }>
-        <DownloadSrt { ...props } />
+        <DownloadCaption { ...props } />
       </MockedProvider>
     );
 
     await wait( 0 );
     wrapper.update();
 
-    const downloadSrt = wrapper.find( 'DownloadSrt' );
+    const downloadCaption = wrapper.find( 'DownloadCaption' );
 
-    expect( downloadSrt.html() ).toEqual( null );
+    expect( downloadCaption.html() ).toEqual( null );
     console.warn = consoleWarn;
   } );
 
-  it( 'renders a "no SRTs available message" if there are no SRT files', async () => {
+  it( 'renders a "no caption files available message" if there are no caption files', async () => {
     const wrapper = mount(
       <MockedProvider mocks={ noFilesMocks } addTypename={ false }>
-        <DownloadSrt { ...props } />
+        <DownloadCaption { ...props } />
       </MockedProvider>
     );
 
     await wait( 0 );
     wrapper.update();
 
-    const downloadSrt = wrapper.find( 'DownloadSrt' );
-    const items = downloadSrt.find( 'Item' );
+    const downloadCaption = wrapper.find( 'DownloadCaption' );
+    const items = downloadCaption.find( 'Item' );
     const { files } = noFilesMocks[0].result.data.project;
-    const msg = 'There are no SRTs available for download at this time';
+    const msg = 'There are no caption files available for download at this time';
 
-    expect( downloadSrt.exists() ).toEqual( true );
+    expect( downloadCaption.exists() ).toEqual( true );
     expect( items.length ).toEqual( files.length );
-    expect( downloadSrt.contains( msg ) ).toEqual( true );
+    expect( downloadCaption.contains( msg ) ).toEqual( true );
   } );
 
   it( 'renders <a> tags with the correct href and download attribute values', async () => {
@@ -166,7 +166,7 @@ describe( '<DownloadSrt />', () => {
     const newProps = { ...props, isPreview: true };
     const wrapper = mount(
       <MockedProvider mocks={ mocks } addTypename={ false }>
-        <DownloadSrt { ...newProps } />
+        <DownloadCaption { ...newProps } />
       </MockedProvider>
     );
     await wait( 0 );
@@ -187,20 +187,20 @@ describe( '<DownloadSrt />', () => {
     const newProps = { ...props, isPreview: true };
     const wrapper = mount(
       <MockedProvider mocks={ mocks } addTypename={ false }>
-        <DownloadSrt { ...newProps } />
+        <DownloadCaption { ...newProps } />
       </MockedProvider>
     );
     await wait( 0 );
     wrapper.update();
 
-    const downloadSrt = wrapper.find( 'DownloadSrt' );
-    const previews = downloadSrt.find( '.preview-text' );
+    const downloadCaption = wrapper.find( 'DownloadCaption' );
+    const previews = downloadCaption.find( '.preview-text' );
     const { files } = mocks[0].result.data.project;
 
     expect( previews.length ).toEqual( files.length );
     previews.forEach( preview => {
       expect( preview.exists() )
-        .toEqual( downloadSrt.prop( 'isPreview' ) );
+        .toEqual( downloadCaption.prop( 'isPreview' ) );
       expect( preview.name() ).toEqual( 'span' );
       expect( preview.text() )
         .toEqual( 'The link will be active after publishing.' );
@@ -212,11 +212,11 @@ describe( '<DownloadSrt />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const downloadSrt = wrapper.find( 'DownloadSrt' );
-    const previews = downloadSrt.find( '.preview-text' );
+    const downloadCaption = wrapper.find( 'DownloadCaption' );
+    const previews = downloadCaption.find( '.preview-text' );
 
     expect( previews.exists() )
-      .toEqual( downloadSrt.prop( 'isPreview' ) );
+      .toEqual( downloadCaption.prop( 'isPreview' ) );
     expect( previews.length ).toEqual( 0 );
   } );
 } );
