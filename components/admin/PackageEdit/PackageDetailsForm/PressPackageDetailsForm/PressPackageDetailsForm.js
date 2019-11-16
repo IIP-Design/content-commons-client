@@ -112,7 +112,7 @@ export default PressPackageDetailsForm;
 //   connect( null, reduxActions ),
 //   graphql( CREATE_PRESS_PACKAGE_MUTATION, { name: 'createPressPackage' } ),
 //   graphql( UPDATE_PRESS_PACKAGE_MUTATION, { name: 'updatePressPackage' } ),
-//   graphql( PRESS_PACKAGE_QUERY, {
+//   graphql( PACKAGE_QUERY, {
 //     partialRefetch: true,
 //     skip: props => !props.id
 //   } )
