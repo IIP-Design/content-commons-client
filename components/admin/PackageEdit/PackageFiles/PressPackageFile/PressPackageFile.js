@@ -34,6 +34,7 @@ const PressPackageFile = props => {
               ? <img src={ image[0].signedUrl } alt={ image[0].alt } />
               : <div className="placeholder" /> }
           </Grid.Column>
+
           <Grid.Column mobile={ 16 } tablet={ 12 } computer={ 12 } className="meta">
             <div className="data">
               <dl>
@@ -58,7 +59,7 @@ const PressPackageFile = props => {
               </dl>
             </div>
 
-            <Form>
+            <div className="form-fields">
               <Form.Group widths="equal">
                 <Form.Field>
                   <VisibilityDropdown
@@ -89,8 +90,8 @@ const PressPackageFile = props => {
                 </Form.Field>
               </Form.Group>
 
-              <Form.Group>
-                <Form.Field width={ 8 }>
+              <Form.Group widths="equal">
+                <Form.Field>
                   { /**
                      * for UI dev;
                      * replace with <BureauOfficesDropdown />
@@ -109,7 +110,7 @@ const PressPackageFile = props => {
                   <p className="field__helper-text">Enter keywords separated by commas.</p>
                 </Form.Field>
 
-                <Form.Field width={ 8 }>
+                <Form.Field>
                   <TagDropdown
                     id="tags"
                     label="Tags"
@@ -120,7 +121,7 @@ const PressPackageFile = props => {
                   <p className="field__helper-text">Enter keywords separated by commas.</p>
                 </Form.Field>
               </Form.Group>
-            </Form>
+            </div>
           </Grid.Column>
         </Grid.Row>
       </Grid>

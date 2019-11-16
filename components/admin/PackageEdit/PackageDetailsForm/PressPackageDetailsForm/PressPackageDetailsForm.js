@@ -69,7 +69,7 @@ const PressPackageDetailsForm = props => {
       validationSchema={ props.id ? baseSchema : initialSchema }
       onSubmit={ onHandleSubmit }
       render={ formikProps => (
-        <Fragment>
+        <div className="edit-package__form">
           <Notification
             el="p"
             customStyles={ {
@@ -85,8 +85,10 @@ const PressPackageDetailsForm = props => {
             { ...formikProps }
             { ...props }
             save={ save }
-          />
-        </Fragment>
+          >
+            { props.children }
+          </PackageDetailsForm>
+        </div>
       ) }
     />
   );
@@ -95,6 +97,7 @@ const PressPackageDetailsForm = props => {
 PressPackageDetailsForm.propTypes = {
   id: PropTypes.string,
   data: PropTypes.object,
+  children: PropTypes.node,
   createPressPackage: PropTypes.func,
   updateNotification: PropTypes.func,
   handleUpload: PropTypes.func,

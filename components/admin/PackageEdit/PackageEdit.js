@@ -229,41 +229,39 @@ const PackageEdit = props => {
           ) }
       </div>
 
-      <div className="edit-package__form">
-        <PressPackageDetailsForm
-          id={ /* props.id */ testProps.id }
-          handleUpload={ handleUpload }
-          updateNotification={ updateNotification }
-          // send mock data here for UI dev, remove after GraphQL
-          data={ mocks[0].result.data }
-        />
-      </div>
+      <PressPackageDetailsForm
+        id={ /* props.id */ testProps.id }
+        handleUpload={ handleUpload }
+        updateNotification={ updateNotification }
+        // send mock data here for UI dev, remove after GraphQL
+        data={ mocks[0].result.data }
+      >
+        <div className="edit-package__files">
+          <PackageFiles
+            id={ /* props.id */ testProps.id }
+            // send mock data here for UI dev, remove after GraphQL
+            data={ mocks[0].result.data }
+          />
+        </div>
 
-      <div className="edit-package__files">
-        <PackageFiles
-          id={ /* props.id */ testProps.id }
-          // send mock data here for UI dev, remove after GraphQL
-          data={ mocks[0].result.data }
-        />
-      </div>
+        <div className="edit-package__actions">
+          <h3 className="headline">
+            { /* publishedAndUpdated */ false && 'It looks like you made changes to your package. Do you want to publish changes?' }
+            { /* notPublished */ true && 'Your package looks great! Are you ready to Publish?' }
+            { /* publishedAndNotUpdated */ false && 'Not ready to share with the world yet?' }
+          </h3>
 
-      <div className="edit-package__actions">
-        <h3 className="headline">
-          { /* publishedAndUpdated */ false && 'It looks like you made changes to your package. Do you want to publish changes?' }
-          { /* notPublished */ true && 'Your package looks great! Are you ready to Publish?' }
-          { /* publishedAndNotUpdated */ false && 'Not ready to share with the world yet?' }
-        </h3>
-
-        <ButtonAddFiles className="basic edit-package__btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
-        { /* !publishedAndNotUpdated */ true && (
-          <Button
-            className={ `edit-package__btn--${/* publishedAndUpdated */false ? 'edit' : 'publish'}` }
-            onClick={ handlePublish }
-          >
-            Publish{ /* publishedAndUpdated */ false && ' Changes' }
-          </Button>
-        ) }
-      </div>
+          <ButtonAddFiles className="basic edit-package__btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
+          { /* !publishedAndNotUpdated */ true && (
+            <Button
+              className={ `edit-package__btn--${/* publishedAndUpdated */false ? 'edit' : 'publish'}` }
+              onClick={ handlePublish }
+            >
+              Publish{ /* publishedAndUpdated */ false && ' Changes' }
+            </Button>
+          ) }
+        </div>
+      </PressPackageDetailsForm>
     </div>
   );
 };

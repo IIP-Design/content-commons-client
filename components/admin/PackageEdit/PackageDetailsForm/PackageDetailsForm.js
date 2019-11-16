@@ -16,6 +16,7 @@ import './PackageDetailsForm.scss';
 */
 const PackageDetailsForm = props => {
   const {
+    children,
     values,
     errors,
     touched,
@@ -48,10 +49,8 @@ const PackageDetailsForm = props => {
                 <small className="msg--required">Required Fields *</small>
               </h3>
             </Grid.Column>
-          </Grid.Row>
 
-          <Grid.Row>
-            <Grid.Column mobile={ 16 } tablet={ 4 } computer={ 4 }>
+            <Grid.Column mobile={ 16 } tablet={ 5 } computer={ 5 }>
               <Form.Group widths="equal">
                 <div className="field">
                   <Form.Field
@@ -83,6 +82,12 @@ const PackageDetailsForm = props => {
               />
             </Grid.Column>
           </Grid.Row>
+
+          <Grid.Row>
+            <Grid.Column width="16">
+              { children }
+            </Grid.Column>
+          </Grid.Row>
         </Grid>
       </Form>
     </Fragment>
@@ -91,6 +96,7 @@ const PackageDetailsForm = props => {
 
 PackageDetailsForm.propTypes = {
   id: PropTypes.string,
+  children: PropTypes.node,
   status: PropTypes.string,
   handleSubmit: PropTypes.func,
   handleChange: PropTypes.func,
