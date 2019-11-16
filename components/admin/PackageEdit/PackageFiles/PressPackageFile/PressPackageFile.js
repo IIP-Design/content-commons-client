@@ -39,22 +39,24 @@ const PressPackageFile = props => {
             <div className="data">
               <dl>
                 <div>
-                  <dt id="file-name">File Name</dt>
-                  <dd role="definition" aria-labelledby="file-name">
+                  <dt id={ `file-name-${id}` }>File Name</dt>
+                  <dd role="definition" aria-labelledby={ `file-name-${id}` }>
                     { fileNameNoExt || filename }
                   </dd>
                 </div>
 
                 <div>
-                  <dt id="release-type">Release Type</dt>
-                  <dd role="definition" aria-labelledby="release-type">
+                  <dt id={ `release-type-${id}` }>Release Type</dt>
+                  <dd role="definition" aria-labelledby={ `release-type-${id}` }>
                     { filetype }
                   </dd>
                 </div>
 
                 <div>
-                  <dt id="page-count">Pages</dt>
-                  <dd role="definition" aria-labelledby="page-count">TBD</dd>
+                  <dt id={ `page-count-${id}` }>Pages</dt>
+                  <dd role="definition" aria-labelledby={ `page-count-${id}` }>
+                    TBD
+                  </dd>
                 </div>
               </dl>
             </div>
@@ -63,8 +65,8 @@ const PressPackageFile = props => {
               <Form.Group widths="equal">
                 <Form.Field>
                   <VisibilityDropdown
-                    id="visibility"
-                    name="visibility"
+                    id={ `visibility-${id}` }
+                    name={ `visibility-${id}` }
                     label="Visibility Setting"
                     value="INTERNAL"
                     onChange={ () => {} }
@@ -74,8 +76,8 @@ const PressPackageFile = props => {
 
                 <Form.Field>
                   <CategoryDropdown
-                    id="categories"
-                    name="categories"
+                    id={ `categories-${id}` }
+                    name={ `categories-${id}` }
                     label="Categories"
                     // value={ values.categories }
                     onChange={ () => {} }
@@ -98,9 +100,9 @@ const PressPackageFile = props => {
                      * after GraphQL is implemented
                      */ }
                   <Form.Dropdown
-                    id="bureaus"
+                    id={ `bureaus-${id}` }
+                    name={ `bureaus-${id}` }
                     label="Author Bureaus/Offices"
-                    name="bureaus"
                     options={ options }
                     placeholder="–"
                     fluid
@@ -112,9 +114,9 @@ const PressPackageFile = props => {
 
                 <Form.Field>
                   <TagDropdown
-                    id="tags"
+                    id={ `tags-${id}` }
+                    name={ `tags-${id}` }
                     label="Tags"
-                    name="tags"
                     // value={ values.tags }
                     onChange={ () => {} }
                   />
