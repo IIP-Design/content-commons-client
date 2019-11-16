@@ -4,7 +4,6 @@ import { withRouter } from 'next/router';
 import { compose /* , graphql */ } from 'react-apollo';
 import { Button, Confirm } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
-import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
 import FormInstructions from 'components/admin/FormInstructions/FormInstructions';
@@ -12,6 +11,7 @@ import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg';
 import PressPackageDetailsForm from './PackageDetailsForm/PressPackageDetailsForm/PressPackageDetailsForm';
+import PackageActions from './PackageActions/PackageActions';
 import PackageFiles from './PackageFiles/PackageFiles';
 // remove mocks import after GraphQL
 import { props as testProps, mocks } from './PackageDetailsForm/PressPackageDetailsForm/mocks';
@@ -242,23 +242,7 @@ const PackageEdit = props => {
           data={ mocks[0].result.data }
         />
 
-        <div className="edit-package__actions">
-          <h3 className="headline">
-            { /* publishedAndUpdated */ false && 'It looks like you made changes to your package. Do you want to publish changes?' }
-            { /* notPublished */ true && 'Your package looks great! Are you ready to Publish?' }
-            { /* publishedAndNotUpdated */ false && 'Not ready to share with the world yet?' }
-          </h3>
-
-          <ButtonAddFiles className="basic edit-package__btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
-          { /* !publishedAndNotUpdated */ true && (
-            <Button
-              className={ `edit-package__btn--${/* publishedAndUpdated */false ? 'edit' : 'publish'}` }
-              onClick={ handlePublish }
-            >
-              Publish{ /* publishedAndUpdated */ false && ' Changes' }
-            </Button>
-          ) }
-        </div>
+        <PackageActions handlePublish={ handlePublish } />
       </PressPackageDetailsForm>
     </div>
   );
