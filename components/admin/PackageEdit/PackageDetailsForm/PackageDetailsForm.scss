@@ -2,6 +2,11 @@
 @import "styles/mixins.scss";
 
 .edit-package__form {
+  padding: 1.75em 0;
+  @media screen and (min-width: 768px) {
+    padding: 1.75em;
+  }
+
   @include uppercase;
   @include required-text;
 
