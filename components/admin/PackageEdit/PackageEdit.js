@@ -236,13 +236,11 @@ const PackageEdit = props => {
         // send mock data here for UI dev, remove after GraphQL
         data={ mocks[0].result.data }
       >
-        <div className="edit-package__files">
-          <PackageFiles
-            id={ /* props.id */ testProps.id }
-            // send mock data here for UI dev, remove after GraphQL
-            data={ mocks[0].result.data }
-          />
-        </div>
+        <PackageFiles
+          id={ /* props.id */ testProps.id }
+          // send mock data here for UI dev, remove after GraphQL
+          data={ mocks[0].result.data }
+        />
 
         <div className="edit-package__actions">
           <h3 className="headline">

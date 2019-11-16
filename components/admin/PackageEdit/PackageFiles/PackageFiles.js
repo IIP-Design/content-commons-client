@@ -42,7 +42,7 @@ const PackageFiles = props => {
   if ( !units || getCount( units ) === 0 ) return null;
 
   return (
-    <section className="section section--package-files package-files layout">
+    <section className="edit-package__files package-files">
       <div className="heading">
         <div className="heading-group">
           <h3 className="headline uppercase">
