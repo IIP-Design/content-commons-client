@@ -5,6 +5,14 @@
   @include uppercase;
   @include required-text;
 
+  .headline {
+    margin-bottom: 1rem;
+  }
+
+  .row:first-child {
+    padding-bottom: 0;
+  }
+
   input#type[value="DAILY_GUIDANCE"] {
     border: 0;
     padding-left: 0;

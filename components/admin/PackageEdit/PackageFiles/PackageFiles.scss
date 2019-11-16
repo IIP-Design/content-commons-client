@@ -2,8 +2,12 @@
 @import "styles/mixins.scss";
 
 .package-files {
-  @include uppercase;
+  border-top: 1px solid $light-grey;
+  border-bottom: 1px solid $light-grey;
+  padding-top: 2em;
   font-size: 0.777778rem;
+
+  @include uppercase;
 
   .heading,
   .heading-group {
