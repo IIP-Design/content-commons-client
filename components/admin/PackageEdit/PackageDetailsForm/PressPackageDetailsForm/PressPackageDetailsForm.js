@@ -3,7 +3,7 @@
  * PressPackageDetailsForm
  *
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // import { withRouter } from 'next/router';
 // import { compose, graphql } from 'react-apollo';
@@ -63,13 +63,17 @@ const PressPackageDetailsForm = props => {
     console.log( values, actions );
   };
 
+  const contentStyle = {
+    border: `3px solid ${( props.id ) ? 'transparent' : '#02bfe7'}`
+  };
+
   return (
     <Formik
       initialValues={ getInitialValues() }
       validationSchema={ props.id ? baseSchema : initialSchema }
       onSubmit={ onHandleSubmit }
       render={ formikProps => (
-        <div className="edit-package__form">
+        <div className="edit-package__form" style={ contentStyle }>
           <Notification
             el="p"
             customStyles={ {

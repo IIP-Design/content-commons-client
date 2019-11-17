@@ -230,14 +230,14 @@ const PackageEdit = props => {
       </div>
 
       <PressPackageDetailsForm
-        id={ /* props.id */ testProps.id }
+        id={ packageId }
         handleUpload={ handleUpload }
         updateNotification={ updateNotification }
         // send mock data here for UI dev, remove after GraphQL
         data={ mocks[0].result.data }
       >
         <PackageFiles
-          id={ /* props.id */ testProps.id }
+          id={ packageId }
           // send mock data here for UI dev, remove after GraphQL
           data={ mocks[0].result.data }
         />
