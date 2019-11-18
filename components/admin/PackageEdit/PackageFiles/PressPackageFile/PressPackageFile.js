@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect, getIn } from 'formik';
+import { connect } from 'formik';
 import { Form, Grid } from 'semantic-ui-react';
 // remove sortBy after GraphQL is implemented
 import sortBy from 'lodash/sortBy';
 import { getCount, getFileNameNoExt } from 'lib/utils';
+import MetaTerm from 'components/admin/PackageEdit/PackageFiles/PressPackageFile/MetaTerm/MetaTerm';
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
@@ -20,6 +21,24 @@ const PressPackageFile = props => {
 
   const fileNameNoExt = getFileNameNoExt( filename );
   const unitValues = values.documents.find( val => val.id === id );
+
+  const metaData = [
+    {
+      name: 'file-name',
+      displayName: 'File Name',
+      definition: fileNameNoExt || filename
+    },
+    {
+      name: 'release-type',
+      displayName: 'Release Type',
+      definition: filetype
+    },
+    {
+      name: 'pages',
+      displayName: 'Pages',
+      definition: 'TBD'
+    }
+  ];
 
   // for UI dev; remove after GraphQL is implemented
   let options = [];
@@ -41,26 +60,14 @@ const PressPackageFile = props => {
           <Grid.Column mobile={ 16 } tablet={ 12 } computer={ 12 } className="meta">
             <div className="data">
               <dl>
-                <div>
-                  <dt id={ `file-name-${id}` }>File Name</dt>
-                  <dd role="definition" aria-labelledby={ `file-name-${id}` }>
-                    { fileNameNoExt || filename }
-                  </dd>
-                </div>
-
-                <div>
-                  <dt id={ `release-type-${id}` }>Release Type</dt>
-                  <dd role="definition" aria-labelledby={ `release-type-${id}` }>
-                    { filetype }
-                  </dd>
-                </div>
-
-                <div>
-                  <dt id={ `page-count-${id}` }>Pages</dt>
-                  <dd role="definition" aria-labelledby={ `page-count-${id}` }>
-                    TBD
-                  </dd>
-                </div>
+                { metaData.map( term => (
+                  <MetaTerm
+                    key={ `${term.name}-${id}` }
+                    test={ `${term.name}-${id}` }
+                    unitId={ id }
+                    term={ term }
+                  />
+                ) ) }
               </dl>
             </div>
 
