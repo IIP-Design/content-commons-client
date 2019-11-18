@@ -10,11 +10,11 @@ import FormInstructions from 'components/admin/FormInstructions/FormInstructions
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg';
-import PressPackageDetailsForm from './PackageDetailsForm/PressPackageDetailsForm/PressPackageDetailsForm';
+import PackageDetailsFormContainer from './PackageDetailsForm/PackageDetailsFormContainer/PackageDetailsFormContainer';
 import PackageActions from './PackageActions/PackageActions';
 import PackageFiles from './PackageFiles/PackageFiles';
 // remove mocks import after GraphQL
-import { props as testProps, mocks } from './PackageDetailsForm/PressPackageDetailsForm/mocks';
+import { mocks } from './PackageDetailsForm/PackageDetailsFormContainer/mocks';
 import './PackageEdit.scss';
 
 const PackageEdit = props => {
@@ -229,7 +229,7 @@ const PackageEdit = props => {
           ) }
       </div>
 
-      <PressPackageDetailsForm
+      <PackageDetailsFormContainer
         id={ packageId }
         handleUpload={ handleUpload }
         updateNotification={ updateNotification }
@@ -243,7 +243,7 @@ const PackageEdit = props => {
         />
 
         <PackageActions handlePublish={ handlePublish } />
-      </PressPackageDetailsForm>
+      </PackageDetailsFormContainer>
     </div>
   );
 };

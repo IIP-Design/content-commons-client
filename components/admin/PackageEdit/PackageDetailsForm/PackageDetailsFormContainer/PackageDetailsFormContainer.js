@@ -1,6 +1,6 @@
 /**
  *
- * PressPackageDetailsForm
+ * PackageDetailsFormContainer
  *
  */
 import React, { useState } from 'react';
@@ -15,7 +15,7 @@ import Notification from 'components/Notification/Notification';
 import useTimeout from 'lib/hooks/useTimeout';
 import { initialSchema, baseSchema } from './validationSchema';
 
-const PressPackageDetailsForm = props => {
+const PackageDetailsFormContainer = props => {
   const { children } = props;
 
   const [showNotication, setShowNotification] = useState( false );
@@ -122,7 +122,7 @@ const PressPackageDetailsForm = props => {
   );
 };
 
-PressPackageDetailsForm.propTypes = {
+PackageDetailsFormContainer.propTypes = {
   id: PropTypes.string,
   data: PropTypes.object,
   children: PropTypes.node,
@@ -133,7 +133,7 @@ PressPackageDetailsForm.propTypes = {
   packageUpdated: PropTypes.func
 };
 
-export default PressPackageDetailsForm;
+export default PackageDetailsFormContainer;
 
 // export default compose(
 //   withRouter,
@@ -144,4 +144,4 @@ export default PressPackageDetailsForm;
 //     partialRefetch: true,
 //     skip: props => !props.id
 //   } )
-// )( PressPackageDetailsForm );
+// )( PackageDetailsFormContainer );

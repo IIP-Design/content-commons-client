@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import PackageEdit from './PackageEdit';
-import { mocks } from './PackageDetailsForm/PressPackageDetailsForm/mocks';
+import { mocks } from './PackageDetailsForm/PackageDetailsFormContainer/mocks';
 
 // name with hyphens to address "incorrect casing" warning
 jest.mock( 'next-server/dynamic', () => () => 'Press-Package-File' );
