@@ -27,9 +27,9 @@ const PressPackageDetailsForm = props => {
   const { startTimeout } = useTimeout( hideNotification, 2000 );
 
   const update = async ( values, prevValues ) => {
-    const { id, updatePressPackage } = props;
+    const { id, updatePackage } = props;
     if ( id ) { // ensure we have a package
-      await updatePressPackage( {
+      await updatePackage( {
         variables: {
           data: {},
           where: { id }
@@ -126,10 +126,10 @@ PressPackageDetailsForm.propTypes = {
   id: PropTypes.string,
   data: PropTypes.object,
   children: PropTypes.node,
-  // createPressPackage: PropTypes.func,
+  // createPackage: PropTypes.func,
   // updateNotification: PropTypes.func,
   // handleUpload: PropTypes.func,
-  updatePressPackage: PropTypes.func,
+  updatePackage: PropTypes.func,
   packageUpdated: PropTypes.func
 };
 
@@ -138,8 +138,8 @@ export default PressPackageDetailsForm;
 // export default compose(
 //   withRouter,
 //   connect( null, reduxActions ),
-//   graphql( CREATE_PRESS_PACKAGE_MUTATION, { name: 'createPressPackage' } ),
-//   graphql( UPDATE_PRESS_PACKAGE_MUTATION, { name: 'updatePressPackage' } ),
+//   graphql( CREATE_PACKAGE_MUTATION, { name: 'createPackage' } ),
+//   graphql( UPDATE_PACKAGE_MUTATION, { name: 'updatePackage' } ),
 //   graphql( PACKAGE_QUERY, {
 //     partialRefetch: true,
 //     skip: props => !props.id
