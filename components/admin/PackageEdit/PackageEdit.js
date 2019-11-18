@@ -14,6 +14,7 @@ import PackageDetailsFormContainer from './PackageDetailsFormContainer/PackageDe
 import PackageActions from './PackageActions/PackageActions';
 import PackageFiles from './PackageFiles/PackageFiles';
 // remove mocks import after GraphQL
+import { mocks as pkgPublishedQuery } from './mocks';
 import { mocks } from './PackageDetailsFormContainer/mocks';
 import './PackageEdit.scss';
 
@@ -64,6 +65,19 @@ const PackageEdit = props => {
     if ( timer ) clearTimeout( timer );
     /* eslint-disable no-param-reassign */
     timer = setTimeout( fn, delay );
+  };
+
+  const deletePackageEnabled = () => {
+    // for UI dev, remove after GraphQL
+    const { publishedAt } = pkgPublishedQuery[0].result.data.package;
+    return !packageId || publishedAt;
+
+    // const { pkgPublishedQuery } = props;
+    // /**
+    //  * disable delete package button if either there
+    //  * is no package id OR package has been published
+    //  */
+    // return !packageId || ( pkgPublishedQuery && pkgPublishedQuery.package && pkgPublishedQuery.package.publishedAt );
   };
 
   const handleDisplayUploadSuccessMsg = () => {
@@ -166,7 +180,7 @@ const PackageEdit = props => {
             content="Delete All"
             basic
             onClick={ () => setDeleteConfirmOpen( true ) }
-            disabled={ false }
+            disabled={ deletePackageEnabled() }
           />
 
           <Confirm
@@ -191,13 +205,14 @@ const PackageEdit = props => {
             content="Save & Exit"
             basic
             onClick={ handleExit }
-            disabled={ false }
+            disabled={ !packageId }
           />
 
           <Button
             className="edit-package__btn--publish"
             content="Publish"
             onClick={ handlePublish }
+            disabled={ !packageId }
           />
         </ProjectHeader>
       </div>
@@ -251,7 +266,7 @@ const PackageEdit = props => {
 PackageEdit.propTypes = {
   // id: PropTypes.string,
   // deletePackage: PropTypes.func,
-  // packageQuery: PropTypes.object,
+  // pkgPublishedQuery: PropTypes.object,
   // updatePackage: PropTypes.func,
   // updateFile: PropTypes.func,
   router: PropTypes.object,
@@ -259,8 +274,8 @@ PackageEdit.propTypes = {
 
 export default compose(
   withRouter,
-  // graphql( PACKAGE_QUERY, {
-  //   name: 'packageQuery',
+  // graphql( PACKAGE_PUBLISHED_QUERY, {
+  //   name: 'pkgPublishedQuery',
   //   options: props => ( {
   //     variables: { id: props.id }
   //   } ),
@@ -271,8 +286,8 @@ export default compose(
   //   name: 'updatePackage',
   //   options: props => ( {
   //     refetchQueries: [{
-  //       query: PACKAGE_QUERY,
-  //       variables: { id: props.id },
+  //       query: PACKAGE_PUBLISHED_QUERY,
+  //       variables: { id: props.id }
   //     }],
   //     onCompleted: () => {}
   //   } )
