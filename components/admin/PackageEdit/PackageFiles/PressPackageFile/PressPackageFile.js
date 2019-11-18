@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect, getIn } from 'formik';
 import { Form, Grid } from 'semantic-ui-react';
 // remove sortBy after GraphQL is implemented
 import sortBy from 'lodash/sortBy';
@@ -15,8 +16,10 @@ const PressPackageFile = props => {
   const {
     id, filename, filetype, image
   } = props.unit;
+  const { values } = props.formik;
 
   const fileNameNoExt = getFileNameNoExt( filename );
+  const unitValues = values.documents.find( val => val.id === id );
 
   // for UI dev; remove after GraphQL is implemented
   let options = [];
@@ -68,7 +71,7 @@ const PressPackageFile = props => {
                     id={ `visibility-${id}` }
                     name={ `visibility-${id}` }
                     label="Visibility Setting"
-                    value="INTERNAL"
+                    value={ unitValues.visibility }
                     onChange={ () => {} }
                     // error={ touched.visibility && !!errors.visibility }
                   />
@@ -79,7 +82,7 @@ const PressPackageFile = props => {
                     id={ `categories-${id}` }
                     name={ `categories-${id}` }
                     label="Categories"
-                    // value={ values.categories }
+                    value={ unitValues.categories }
                     onChange={ () => {} }
                     // error={ touched.categories && !!errors.categories }
                     multiple
@@ -105,6 +108,7 @@ const PressPackageFile = props => {
                     label="Author Bureaus/Offices"
                     options={ options }
                     placeholder="–"
+                    value={ unitValues.bureaus }
                     multiple
                     search
                     fluid
@@ -119,7 +123,7 @@ const PressPackageFile = props => {
                     id={ `tags-${id}` }
                     name={ `tags-${id}` }
                     label="Tags"
-                    // value={ values.tags }
+                    value={ unitValues.tags }
                     onChange={ () => {} }
                   />
                   <p className="field__helper-text">Enter keywords separated by commas.</p>
@@ -134,7 +138,8 @@ const PressPackageFile = props => {
 };
 
 PressPackageFile.propTypes = {
+  formik: PropTypes.object,
   unit: PropTypes.object
 };
 
-export default PressPackageFile;
+export default connect( PressPackageFile );

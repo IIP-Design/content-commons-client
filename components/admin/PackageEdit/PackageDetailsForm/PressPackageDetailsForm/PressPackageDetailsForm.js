@@ -63,10 +63,11 @@ const PressPackageDetailsForm = props => {
       type: pressPackage.type || 'DAILY_GUIDANCE',
       documents: documents.map( doc => {
         const {
-          bureaus, categories, tags, visibility
+          id, bureaus, categories, tags, visibility
         } = doc;
 
         return {
+          id,
           bureaus: getDropdownIds( bureaus ),
           categories: getDropdownIds( categories ),
           tags: getDropdownIds( tags ),
