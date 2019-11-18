@@ -1,13 +1,13 @@
 export const bureaus = [
   {
     id: 'sdfq',
-    name: 'Bureau 1',
-    abbr: 'B1',
+    name: 'Bureau of Global Public Affairs',
+    abbr: 'GPA',
     offices: [
       {
         id: 'kglf',
-        name: 'Office 1',
-        abbr: 'O1'
+        name: 'Press Office',
+        abbr: 'PO',
       },
       {
         id: 'eiwo',

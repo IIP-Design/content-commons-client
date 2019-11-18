@@ -104,18 +104,18 @@ const documentUses = [
 const bureaus = [
   {
     __typename: 'Bureau',
-    id: 'b999',
+    id: 'sdfq',
     name: 'Bureau of Global Public Affairs',
     abbr: 'GPA',
     offices: [
       {
         __typename: 'Office',
-        id: 'o888',
+        id: 'kglf',
         name: 'Press Office',
         abbr: 'PO',
         bureau: {
           __typename: 'Bureau',
-          id: 'b999',
+          id: 'sdfq',
           name: 'Bureau of Global Public Affairs',
           abbr: 'GPA'
         }
@@ -230,22 +230,22 @@ const humanRights = {
 };
 
 const tag1 = {
-  id: 'ck38ks92kd',
+  id: 'ck2lzgu1i0rei07206gvy1ygg',
   translations: [
     {
-      id: 'ck38s20s9',
-      name: 'tag 1',
+      id: 'ck2lzfzwr0iey0720hrigffxo',
+      name: 'american culture',
       language
     }
   ]
 };
 
 const tag2 = {
-  id: 'cksdfi218d',
+  id: 'ck2lzgu2s0rer07208jc6y6ww',
   translations: [
     {
-      id: 'ck38s81s9',
-      name: 'tag 2',
+      id: 'ck2lzg1900iui0720q28le4rs',
+      name: 'leadership',
       language
     }
   ]
