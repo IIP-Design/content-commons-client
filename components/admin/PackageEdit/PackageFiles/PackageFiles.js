@@ -46,7 +46,7 @@ const PackageFiles = props => {
       <div className="heading">
         <div className="heading-group">
           <h3 className="headline uppercase">
-            { `Uploaded ${getPluralStringOrNot( units, 'File' )}` }
+            { `Package ${getPluralStringOrNot( units, 'File' )}` }
           </h3>
           <EditPackageFiles files={ units } />
         </div>
