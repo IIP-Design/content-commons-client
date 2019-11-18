@@ -55,13 +55,13 @@ const PressPackageDetailsForm = props => {
 
   const getInitialValues = () => {
     const { data } = props;
-    const pressPackage = ( data && data.package ) ? data.package : {};
-    const documents = pressPackage.documents || [];
+    const pkg = ( data && data.package ) ? data.package : {};
+    const files = pkg.documents || [];
 
     const initialValues = {
-      title: pressPackage.title || '',
-      type: pressPackage.type || 'DAILY_GUIDANCE',
-      documents: documents.map( doc => {
+      title: pkg.title || '',
+      type: pkg.type || '',
+      files: files.map( doc => {
         const {
           id, bureaus, categories, tags, visibility
         } = doc;

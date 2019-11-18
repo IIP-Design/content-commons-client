@@ -20,7 +20,7 @@ const PressPackageFile = props => {
   const { errors, touched, values } = props.formik;
 
   const fileNameNoExt = getFileNameNoExt( filename );
-  const unitValues = values.documents.find( val => val.id === id );
+  const unitValues = values.files.find( val => val.id === id );
 
   const metaData = [
     {
