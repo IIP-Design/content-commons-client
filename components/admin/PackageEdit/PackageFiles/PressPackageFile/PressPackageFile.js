@@ -105,6 +105,8 @@ const PressPackageFile = props => {
                     label="Author Bureaus/Offices"
                     options={ options }
                     placeholder="–"
+                    multiple
+                    search
                     fluid
                     selection
                     required
