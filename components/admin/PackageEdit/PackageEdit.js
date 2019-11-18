@@ -256,9 +256,9 @@ const PackageEdit = props => {
           // send mock data here for UI dev, remove after GraphQL
           data={ mocks[0].result.data }
         />
-
-        <PackageActions handlePublish={ handlePublish } />
       </PackageDetailsFormContainer>
+
+      <PackageActions handlePublish={ handlePublish } />
     </div>
   );
 };
