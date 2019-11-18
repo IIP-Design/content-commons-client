@@ -224,20 +224,20 @@ const getDocumentUseObj = ( val, property = 'name' ) => (
  * mock data for UI development
  * eventually use for unit testing
  */
-export const props = { id: 'test-123', type: 'DAILY_GUIDANCE' };
+export const props = { id: 'test-123' };
 
 export const mocks = [
   {
     request: {
       query: 'PACKAGE_FILES_QUERY',
-      variables: { id: props.id, type: props.type }
+      variables: { id: props.id }
     },
     result: {
       data: {
         package: {
           __typename: 'Package',
           id: props.id,
-          type: props.type,
+          type: 'DAILY_GUIDANCE',
           documents: [
             {
               __typename: 'DocumentFile',

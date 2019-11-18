@@ -73,13 +73,13 @@ const tag2 = {
  * mock data for UI development
  * eventually use for unit testing
  */
-export const props = { id: 'test-123', type: 'DAILY_GUIDANCE' };
+export const props = { id: 'test-123' };
 
 export const mocks = [
   {
     request: {
       query: 'PACKAGE_QUERY',
-      variables: { id: props.id, type: props.type }
+      variables: { id: props.id }
     },
     result: {
       data: {
@@ -89,7 +89,7 @@ export const mocks = [
           createdAt: '2019-11-12T13:07:49.364Z',
           updatedAt: '2019-11-12T13:08:28.830Z',
           publishedAt: '',
-          type: props.type,
+          type: 'DAILY_GUIDANCE',
           title: 'Final Guidance mm-dd-yy',
           desc: '',
           visibility: 'INTERNAL',
