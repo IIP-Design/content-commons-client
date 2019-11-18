@@ -117,6 +117,15 @@ const PackageEdit = props => {
 
   const handleSaveDraft = () => {
     console.log( 'Save Draft' );
+    // const { updatePackage } = props;
+    // const data = buildUpdatePackageTree( filesToUpload, title, visibility, bureaus, categories, tags );
+
+    // await updatePackage( {
+    //   variables: {
+    //     data,
+    //     where: { id: packageId }
+    //   }
+    // } ).catch( err => console.dir( err ) );
   };
 
   const handleUploadComplete = () => {
@@ -129,7 +138,45 @@ const PackageEdit = props => {
 
   const handlePublish = () => {
     console.log( 'Publish' );
+    // Prevent multiple clicks - multiple clicks resulted in Package going into PUBLISHING status
+    // if ( !e.detail || e.detail === 1 ) e.target.disabled = true;
 
+    // const { publishPackage } = props;
+
+    // try {
+    //   setPublishing( true );
+    //   console.log( 'Publishing to queue...' );
+    //   await publishPackage( { variables: { id } } );
+
+    //   // Remove updated package from redux packageUpdate state
+    //   props.packageUpdated( id, false );
+    // } catch ( err ) {
+    //   setPublishing( false );
+    //   setPublishError( err );
+    // }
+  };
+
+  const handleUnPublish = () => {
+    console.log( 'Unpublish' );
+    // Prevent multiple clicks - multiple clicks resulted in package going into PUBLISHING status
+    // if ( !e.detail || e.detail === 1 ) e.target.disabled = true;
+
+    // const { unPublishPackage } = props;
+
+    // try {
+    //   setPublishing( true );
+    //   await unPublishPackage( { variables: { id } } );
+
+    //   // Remove updated package from redux packageUpdate state
+    //   props.packageUpdated( id, false );
+    // } catch ( err ) {
+    //   setPublishing( false );
+    //   setPublishError( err );
+    // }
+  };
+
+  const handleUpload = () => {
+    console.log( 'Upload' );
     // const { id, title } = pkg;
     // const { /* uploadExecute, */ updateFile } = props;
 
@@ -152,10 +199,6 @@ const PackageEdit = props => {
     //   // 5. update url to reflect a new package (only new)
     //   addPackageIdToUrl( id );
     // }
-  };
-
-  const handleUpload = () => {
-    console.log( 'Upload' );
   };
 
   const centeredStyles = {
@@ -258,7 +301,10 @@ const PackageEdit = props => {
         />
       </PackageDetailsFormContainer>
 
-      <PackageActions handlePublish={ handlePublish } />
+      <PackageActions
+        handlePublish={ handlePublish }
+        handleUnPublish={ handleUnPublish }
+      />
     </div>
   );
 };
