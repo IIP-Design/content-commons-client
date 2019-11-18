@@ -8,11 +8,9 @@ import PropTypes from 'prop-types';
 // import { withRouter } from 'next/router';
 // import { compose, graphql } from 'react-apollo';
 import { Formik } from 'formik';
-
-import PackageDetailsForm from 'components/admin/PackageEdit/PackageDetailsForm/PackageDetailsForm';
-import Notification from 'components/Notification/Notification';
-
 import useTimeout from 'lib/hooks/useTimeout';
+import Notification from 'components/Notification/Notification';
+import PackageDetailsForm from './PackageDetailsForm/PackageDetailsForm';
 import { initialSchema, baseSchema } from './validationSchema';
 
 const PackageDetailsFormContainer = props => {

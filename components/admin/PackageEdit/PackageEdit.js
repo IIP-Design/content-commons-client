@@ -10,11 +10,11 @@ import FormInstructions from 'components/admin/FormInstructions/FormInstructions
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg';
-import PackageDetailsFormContainer from './PackageDetailsForm/PackageDetailsFormContainer/PackageDetailsFormContainer';
+import PackageDetailsFormContainer from './PackageDetailsFormContainer/PackageDetailsFormContainer';
 import PackageActions from './PackageActions/PackageActions';
 import PackageFiles from './PackageFiles/PackageFiles';
 // remove mocks import after GraphQL
-import { mocks } from './PackageDetailsForm/PackageDetailsFormContainer/mocks';
+import { mocks } from './PackageDetailsFormContainer/mocks';
 import './PackageEdit.scss';
 
 const PackageEdit = props => {
