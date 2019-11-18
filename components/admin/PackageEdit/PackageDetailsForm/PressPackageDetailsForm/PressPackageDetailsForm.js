@@ -3,7 +3,7 @@
  * PressPackageDetailsForm
  *
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // import { withRouter } from 'next/router';
 // import { compose, graphql } from 'react-apollo';
@@ -16,6 +16,8 @@ import useTimeout from 'lib/hooks/useTimeout';
 import { initialSchema, baseSchema } from './validationSchema';
 
 const PressPackageDetailsForm = props => {
+  const { children } = props;
+
   const [showNotication, setShowNotification] = useState( false );
 
   const hideNotification = () => {
@@ -80,8 +82,33 @@ const PressPackageDetailsForm = props => {
     console.log( values, actions );
   };
 
-  const contentStyle = {
-    border: `3px solid ${( props.id ) ? 'transparent' : '#02bfe7'}`
+  const renderContent = formikProps => {
+    const contentStyle = {
+      border: `3px solid ${( props.id ) ? 'transparent' : '#02bfe7'}`
+    };
+
+    return (
+      <div className="edit-package__form" style={ contentStyle }>
+        <Notification
+          el="p"
+          customStyles={ {
+            position: 'absolute',
+            top: '9em',
+            left: '50%',
+            transform: 'translateX(-50%)'
+          } }
+          show={ showNotication }
+          msg="Changes saved"
+        />
+        <PackageDetailsForm
+          { ...formikProps }
+          { ...props }
+          save={ save }
+        >
+          { children }
+        </PackageDetailsForm>
+      </div>
+    );
   };
 
   return (
@@ -89,28 +116,7 @@ const PressPackageDetailsForm = props => {
       initialValues={ getInitialValues() }
       validationSchema={ props.id ? baseSchema : initialSchema }
       onSubmit={ onHandleSubmit }
-      render={ formikProps => (
-        <div className="edit-package__form" style={ contentStyle }>
-          <Notification
-            el="p"
-            customStyles={ {
-              position: 'absolute',
-              top: '9em',
-              left: '50%',
-              transform: 'translateX(-50%)'
-            } }
-            show={ showNotication }
-            msg="Changes saved"
-          />
-          <PackageDetailsForm
-            { ...formikProps }
-            { ...props }
-            save={ save }
-          >
-            { props.children }
-          </PackageDetailsForm>
-        </div>
-      ) }
+      render={ renderContent }
     />
   );
 };
@@ -119,9 +125,9 @@ PressPackageDetailsForm.propTypes = {
   id: PropTypes.string,
   data: PropTypes.object,
   children: PropTypes.node,
-  createPressPackage: PropTypes.func,
-  updateNotification: PropTypes.func,
-  handleUpload: PropTypes.func,
+  // createPressPackage: PropTypes.func,
+  // updateNotification: PropTypes.func,
+  // handleUpload: PropTypes.func,
   updatePressPackage: PropTypes.func,
   packageUpdated: PropTypes.func
 };
