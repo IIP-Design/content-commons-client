@@ -16,7 +16,7 @@ const PressPackageFile = props => {
   const {
     id, filename, filetype, image
   } = props.unit;
-  const { values } = props.formik;
+  const { errors, touched, values } = props.formik;
 
   const fileNameNoExt = getFileNameNoExt( filename );
   const unitValues = values.documents.find( val => val.id === id );
@@ -73,7 +73,7 @@ const PressPackageFile = props => {
                     label="Visibility Setting"
                     value={ unitValues.visibility }
                     onChange={ () => {} }
-                    // error={ touched.visibility && !!errors.visibility }
+                    error={ touched.visibility && !!errors.visibility }
                   />
                 </Form.Field>
 
@@ -84,7 +84,7 @@ const PressPackageFile = props => {
                     label="Categories"
                     value={ unitValues.categories }
                     onChange={ () => {} }
-                    // error={ touched.categories && !!errors.categories }
+                    error={ touched.categories && !!errors.categories }
                     multiple
                     search
                     closeOnBlur
@@ -109,6 +109,7 @@ const PressPackageFile = props => {
                     options={ options }
                     placeholder="–"
                     value={ unitValues.bureaus }
+                    error={ touched.bureaus && !!errors.bureaus }
                     multiple
                     search
                     fluid
@@ -124,6 +125,7 @@ const PressPackageFile = props => {
                     name={ `tags-${id}` }
                     label="Tags"
                     value={ unitValues.tags }
+                    error={ touched.tags && !!errors.tags }
                     onChange={ () => {} }
                   />
                   <p className="field__helper-text">Enter keywords separated by commas.</p>
