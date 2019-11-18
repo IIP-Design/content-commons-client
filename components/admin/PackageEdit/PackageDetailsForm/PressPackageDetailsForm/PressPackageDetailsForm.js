@@ -47,13 +47,30 @@ const PressPackageDetailsForm = props => {
     startTimeout();
   };
 
+  const getDropdownIds = property => (
+    property.map( p => p.id )
+  );
+
   const getInitialValues = () => {
     const { data } = props;
     const pressPackage = ( data && data.package ) ? data.package : {};
+    const documents = pressPackage.documents || [];
 
     const initialValues = {
       title: pressPackage.title || '',
       type: pressPackage.type || 'DAILY_GUIDANCE',
+      documents: documents.map( doc => {
+        const {
+          bureaus, categories, tags, visibility
+        } = doc;
+
+        return {
+          bureaus: getDropdownIds( bureaus ),
+          categories: getDropdownIds( categories ),
+          tags: getDropdownIds( tags ),
+          visibility
+        };
+      } )
     };
 
     return initialValues;
