@@ -140,6 +140,9 @@ export default PackageDetailsFormContainer;
 //   graphql( UPDATE_PACKAGE_MUTATION, { name: 'updatePackage' } ),
 //   graphql( PACKAGE_QUERY, {
 //     partialRefetch: true,
+//     options: props => ( {
+//       variables: { id: props.id }
+//     } ),
 //     skip: props => !props.id
 //   } )
 // )( PackageDetailsFormContainer );

@@ -99,5 +99,37 @@ export const mocks = [
         }
       }
     }
+  },
+  {
+    request: {
+      query: 'CREATE_PACKAGE_MUTATION',
+      variables: {
+        data: {
+          __typename: 'Package',
+          createdAt: '2019-11-15T13:07:49.364Z',
+          updatedAt: '2019-11-15T13:32:28.830Z',
+          type: 'DAILY_GUIDANCE',
+          title: 'Just a new press package'
+        }
+      }
+    }
+  },
+  {
+    request: {
+      query: 'UPDATE_PACKAGE_MUTATION',
+      variables: {
+        data: { title: 'New Title' },
+        where: { id: props.id }
+      }
+    },
+    result: {
+      data: {
+        updatePackage: {
+          __typename: 'Package',
+          id: props.id,
+          title: 'New Title'
+        }
+      }
+    }
   }
 ];
