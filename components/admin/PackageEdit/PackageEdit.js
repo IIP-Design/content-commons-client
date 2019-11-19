@@ -218,6 +218,11 @@ const PackageEdit = props => {
     <div className="edit-package">
       <div className="edit-package__header">
         <ProjectHeader icon="file" text="Package Details">
+          { /**
+             * can move buttons to separate, shared component
+             * since they're almost the same as VideoEdit
+             * and VideoReview
+             */ }
           <Button
             className="edit-package__btn--delete"
             content="Delete All"
@@ -301,6 +306,10 @@ const PackageEdit = props => {
         />
       </PackageDetailsFormContainer>
 
+      { /**
+         * can possibly be shared with VideoReview
+         * with a little modification
+         */ }
       <PackageActions
         handlePublish={ handlePublish }
         handleUnPublish={ handleUnPublish }
