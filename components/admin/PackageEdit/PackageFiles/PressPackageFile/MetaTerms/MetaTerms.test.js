@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import MetaTerm from './MetaTerm';
+import MetaTerms from './MetaTerms';
 
 const props = {
   unitId: 'c7203k1',
@@ -17,9 +17,9 @@ const props = {
   ]
 };
 
-const Component = <MetaTerm { ...props } />;
+const Component = <MetaTerms { ...props } />;
 
-describe( '<MetaTerm />', () => {
+describe( '<MetaTerms />', () => {
   it( 'renders without crashing', () => {
     const wrapper = mount( Component );
 

@@ -5,7 +5,7 @@ import { Form, Grid } from 'semantic-ui-react';
 // remove sortBy after GraphQL is implemented
 import sortBy from 'lodash/sortBy';
 import { getCount, getFileNameNoExt } from 'lib/utils';
-import MetaTerm from 'components/admin/PackageEdit/PackageFiles/PressPackageFile/MetaTerm/MetaTerm';
+import MetaTerms from 'components/admin/PackageEdit/PackageFiles/PressPackageFile/MetaTerms/MetaTerms';
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
@@ -59,7 +59,7 @@ const PressPackageFile = props => {
 
           <Grid.Column mobile={ 16 } tablet={ 12 } computer={ 12 } className="meta">
             <div className="data">
-              <MetaTerm unitId={ id } terms={ metaData } />
+              <MetaTerms unitId={ id } terms={ metaData } />
             </div>
 
             <div className="form-fields">

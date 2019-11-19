@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const MetaTerm = props => {
+const MetaTerms = props => {
   const { className, terms, unitId } = props;
 
   return (
@@ -21,14 +21,14 @@ const MetaTerm = props => {
   );
 };
 
-MetaTerm.defaultProps = {
+MetaTerms.defaultProps = {
   className: ''
 };
 
-MetaTerm.propTypes = {
+MetaTerms.propTypes = {
   className: PropTypes.string,
   terms: PropTypes.array,
   unitId: PropTypes.string
 };
 
-export default MetaTerm;
+export default MetaTerms;
