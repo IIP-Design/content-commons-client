@@ -3,14 +3,21 @@ import MetaTerm from './MetaTerm';
 
 const props = {
   unitId: 'c7203k1',
-  term: {
-    definition: 'xyz-file',
-    displayName: 'File Name',
-    name: 'file-name'
-  }
+  terms: [
+    {
+      definition: 'xyz-file',
+      displayName: 'File Name',
+      name: 'file-name'
+    },
+    {
+      definition: 'abc-file',
+      displayName: 'Release Type',
+      name: 'release-type'
+    }
+  ]
 };
 
-const Component = <dl><MetaTerm { ...props } /></dl>;
+const Component = <MetaTerm { ...props } />;
 
 describe( '<MetaTerm />', () => {
   it( 'renders without crashing', () => {
@@ -23,31 +30,52 @@ describe( '<MetaTerm />', () => {
     const wrapper = mount( Component );
     const dt = wrapper.find( 'dt' );
     const { unitId } = props;
-    const { name } = props.term;
 
-    expect( dt.prop( 'id' ) ).toEqual( `${name}-${unitId}` );
+    dt.forEach( ( el, i ) => {
+      const { name } = props.terms[i];
+      expect( el.prop( 'id' ) ).toEqual( `${name}-${unitId}` );
+    } );
   } );
 
   it( 'renders the correct aria-labelledby attribute value', () => {
     const wrapper = mount( Component );
     const dd = wrapper.find( 'dd' );
     const { unitId } = props;
-    const { name } = props.term;
 
-    expect( dd.prop( 'aria-labelledby' ) ).toEqual( `${name}-${unitId}` );
+    dd.forEach( ( el, i ) => {
+      const { name } = props.terms[i];
+      expect( el.prop( 'aria-labelledby' ) ).toEqual( `${name}-${unitId}` );
+    } );
   } );
 
   it( 'renders the correct dt term', () => {
     const wrapper = mount( Component );
     const dt = wrapper.find( 'dt' );
 
-    expect( dt.text() ).toEqual( props.term.displayName );
+    dt.forEach( ( el, i ) => {
+      const { displayName } = props.terms[i];
+      expect( el.text() ).toEqual( displayName );
+    } );
   } );
 
   it( 'renders the correct dd definition', () => {
     const wrapper = mount( Component );
     const dd = wrapper.find( 'dd' );
 
-    expect( dd.text() ).toEqual( props.term.definition );
+    dd.forEach( ( el, i ) => {
+      const { definition } = props.terms[i];
+      expect( el.text() ).toEqual( definition );
+    } );
+  } );
+
+  it( 'renders a custom className value', () => {
+    const wrapper = mount( Component );
+    const className = 'some custom class';
+
+    // default
+    expect( wrapper.prop( 'className' ) ).toEqual( '' );
+
+    wrapper.setProps( { className } );
+    expect( wrapper.prop( 'className' ) ).toEqual( className );
   } );
 } );

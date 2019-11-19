@@ -2,25 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const MetaTerm = props => {
-  const { unitId } = props;
-  const { definition, displayName, name } = props.term;
+  const { className, terms, unitId } = props;
+
   return (
-    <div>
-      <dt id={ `${name}-${unitId}` }>{ displayName }</dt>
-      <dd role="definition" aria-labelledby={ `${name}-${unitId}` }>
-        { definition }
-      </dd>
-    </div>
+    <dl className={ className }>
+      { terms.map( term => {
+        const { definition, displayName, name } = term;
+        return (
+          <div key={ `${name}-${unitId}` }>
+            <dt id={ `${name}-${unitId}` }>{ displayName }</dt>
+            <dd role="definition" aria-labelledby={ `${name}-${unitId}` }>
+              { definition }
+            </dd>
+          </div>
+        );
+      } ) }
+    </dl>
   );
 };
 
+MetaTerm.defaultProps = {
+  className: ''
+};
+
 MetaTerm.propTypes = {
-  unitId: PropTypes.string,
-  term: PropTypes.shape( {
-    definition: PropTypes.string,
-    displayName: PropTypes.string,
-    name: PropTypes.string,
-  } )
+  className: PropTypes.string,
+  terms: PropTypes.array,
+  unitId: PropTypes.string
 };
 
 export default MetaTerm;

@@ -59,16 +59,7 @@ const PressPackageFile = props => {
 
           <Grid.Column mobile={ 16 } tablet={ 12 } computer={ 12 } className="meta">
             <div className="data">
-              <dl>
-                { metaData.map( term => (
-                  <MetaTerm
-                    key={ `${term.name}-${id}` }
-                    test={ `${term.name}-${id}` }
-                    unitId={ id }
-                    term={ term }
-                  />
-                ) ) }
-              </dl>
+              <MetaTerm unitId={ id } terms={ metaData } />
             </div>
 
             <div className="form-fields">
