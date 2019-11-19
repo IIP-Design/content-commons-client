@@ -70,12 +70,14 @@ describe( '<MetaTerms />', () => {
 
   it( 'renders a custom className value', () => {
     const wrapper = mount( Component );
-    const className = 'some custom class';
+    const dl = () => wrapper.find( 'dl' );
+    const className = 'some-custom-class';
 
     // default
-    expect( wrapper.prop( 'className' ) ).toEqual( '' );
+    expect( dl().hasClass( 'terms' ) ).toEqual( true );
 
+    // set custom className
     wrapper.setProps( { className } );
-    expect( wrapper.prop( 'className' ) ).toEqual( className );
+    expect( dl().hasClass( `terms ${className}` ) ).toEqual( true );
   } );
 } );

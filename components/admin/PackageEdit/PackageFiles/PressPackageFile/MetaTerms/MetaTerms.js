@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './MetaTerms.scss';
 
 const MetaTerms = props => {
   const { className, terms, unitId } = props;
 
   return (
-    <dl className={ className }>
+    <dl className={ `terms ${className}` }>
       { terms.map( term => {
         const { definition, displayName, name } = term;
         return (
