@@ -23,9 +23,9 @@
 
 // buttons with white background, blue borders and text, e.g.,
 // `Save & Exit` and `Edit` buttons on details pages
-@mixin ghost-button {
-  border: 2px solid $matisse-blue;
-  color: $matisse-blue !important;
+@mixin ghost-button($color: $matisse-blue) {
+  border: 2px solid $color;
+  color: $color !important;
   font-weight: bold;
   background-color: #fff;
 
@@ -33,33 +33,33 @@
   &:active,
   &:focus {
     color: #fff !important;
-    background-color: $matisse-blue !important;
+    background-color: $color !important;
   }
 
   &.disabled:hover,
   &.disabled:active,
   &.disabled:focus {
-    color: $matisse-blue !important;
+    color: $color !important;
     background-color: transparent !important;
   }
 }
 
 // buttons with transparent borders, e.g., `Delete Project`
 // and `Delete All` buttons on details pages
-@mixin transparent-button {
+@mixin transparent-button($color: $grey) {
   border: 2px solid transparent;
   @media screen and (max-width: 899px) {
-    border-color: $grey;
+    border-color: $color;
   }
-  color: $grey !important;
+  color: $color !important;
   font-weight: normal;
 
   &:hover,
   &:active,
   &:focus {
-    border-color: $grey;
+    border-color: $color;
     color: #fff !important;
-    background-color: $grey !important;
+    background-color: $color !important;
   }
 
   &.disabled:hover,
@@ -67,9 +67,9 @@
   &.disabled:focus {
     border-color: transparent !important;
     @media screen and (max-width: 899px) {
-      border-color: $grey !important;
+      border-color: $color !important;
     }
-    color: $grey !important;
+    color: $color !important;
     background-color: transparent !important;
   }
 }
@@ -77,15 +77,15 @@
 // green buttons (can't think of another name
 // that's not tied to the button action, so "go"), e.g.,
 // `Publish`, `Publish Changes`
-@mixin go-button {
-  border: 2px solid $green;
+@mixin go-button($primary-color: $green, $secondary-color: $matisse-blue) {
+  border: 2px solid $primary-color;
   color: #fff;
-  background-color: $green;
+  background-color: $primary-color;
 
   &:hover,
   &:active,
   &:focus {
-    border-color: $matisse-blue;
+    border-color: $secondary-color;
   }
 }
 
@@ -104,9 +104,9 @@
 }
 
 // used for "Required Fields *"
-@mixin required-text {
+@mixin required-text($color: $red) {
   .msg--required {
-    color: $red;
+    color: $color;
     font-size: 0.5em;
     font-weight: normal;
   }
@@ -114,9 +114,9 @@
 
 // used for helper text under a form input, e.g.,
 // ProjectDetailsForm, PressPackageFile
-@mixin field-helper-text {
+@mixin field-helper-text($color: $blue) {
   .field__helper-text {
-    color: $blue;
+    color: $color;
     font-size: 0.666666667rem;
   }
 }
