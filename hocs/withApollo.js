@@ -9,6 +9,9 @@ import { getMainDefinition } from 'apollo-utilities';
 import withApollo from 'next-with-apollo';
 import getConfig from 'next/config';
 
+// Links are designed to be composed together to form control flow chains
+// to manage a GraphQL operation request.
+
 const { publicRuntimeConfig } = getConfig();
 
 const request = async ( headers, operation ) => {
@@ -38,6 +41,22 @@ const httpLink = new HttpLink( {
   credentials: 'include'
 } );
 
+const errorLink = onError( ( { graphQLErrors, networkError } ) => {
+  if ( process.env.NODE_ENV === 'development' ) {
+    if ( graphQLErrors ) {
+      // sendToLoggingService( graphQLErrors );
+      graphQLErrors.map( ( { message, locations, path } ) => console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+      ), );
+    }
+    if ( networkError ) {
+      // take another action if we have a network error?
+      console.log( '[Network error]' );
+      console.dir( networkError );
+    }
+  }
+} );
+
 
 const link = process.browser ? split( // only create the split in the browser
   // split based on operation type
@@ -49,23 +68,9 @@ const link = process.browser ? split( // only create the split in the browser
   httpLink,
 ) : httpLink;
 
-const createClient = ( { headers } ) => new ApolloClient( {
+const createClient = ( { headers, initialState } ) => new ApolloClient( {
   link: ApolloLink.from( [
-    onError( ( { graphQLErrors, networkError } ) => {
-      if ( process.env.NODE_ENV === 'development' ) {
-        if ( graphQLErrors ) {
-          // sendToLoggingService( graphQLErrors );
-          graphQLErrors.map( ( { message, locations, path } ) => console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-          ), );
-        }
-        if ( networkError ) {
-          // take another action if we have a network error?
-          console.log( '[Network error]' );
-          console.dir( networkError );
-        }
-      }
-    } ),
+    errorLink,
 
     new ApolloLink( ( operation, forward ) => new Observable( observer => {
       let handle;
@@ -88,7 +93,7 @@ const createClient = ( { headers } ) => new ApolloClient( {
     link
   ] ),
 
-  cache: new InMemoryCache()
+  cache: new InMemoryCache().restore( initialState || {} )
 } );
 
 // Second argument: { getDataFromTree: 'ssr' } : should the apollo store be hydrated before the first render ?,

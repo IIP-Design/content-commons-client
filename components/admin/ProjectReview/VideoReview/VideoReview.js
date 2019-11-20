@@ -3,7 +3,8 @@ import { func, object, string } from 'prop-types';
 import Router from 'next/router';
 import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/projectUpdate';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
 import {
   Button, Confirm, Grid, Icon, Loader
 } from 'semantic-ui-react';
@@ -176,8 +177,7 @@ const VideoReview = props => {
           className="project_button project_button--delete"
           onClick={ displayConfirmDelete }
         />
-        )
-        }
+        ) }
 
         <Confirm
           className="delete"
@@ -219,12 +219,10 @@ const VideoReview = props => {
             <Fragment>
               { publishedAndUpdated && (
                 <Button className={ setButtonState( 'edit' ) } onClick={ handlePublish }>Publish Changes</Button>
-              )
-              }
+              ) }
               <Button className="project_button project_button--publish" onClick={ handleUnPublish }>Unpublish</Button>
             </Fragment>
-          )
-        }
+          ) }
       </ProjectHeader>
 
       <div className="centered">
@@ -311,9 +309,7 @@ const projectStatusChangeSubscription = graphql( PROJECT_STATUS_CHANGE_SUBSCRIPT
   options: props => ( {
     variables: { id: props.id },
     onSubscriptionData: ( { subscriptionData } ) => {
-      console.log( 'Subscription data received...' );
       const { data: { projectStatusChange } } = subscriptionData;
-      console.dir( projectStatusChange );
       if ( projectStatusChange.status === 'PUBLISHED' || projectStatusChange.status === 'DRAFT' ) {
         Router.push( { pathname: '/admin/dashboard' } );
       }

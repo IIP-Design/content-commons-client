@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
 import gql from 'graphql-tag';
 import { withFormik } from 'formik';
 import { Form, Button } from 'semantic-ui-react';

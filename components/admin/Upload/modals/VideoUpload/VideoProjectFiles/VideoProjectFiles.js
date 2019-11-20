@@ -2,7 +2,7 @@ import React, { useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import VideoProjectFilesDesktop from './VideoProjectFileDesktop/VideoProjectFileDesktop';
 import VideoProjectFilesMobile from './VideoProjectFilesMobile/VideoProjectFilesMobile';
-import { VideoUploadContext } from '../VideoUpload';
+import { VideoUploadContext } from '../VideoUploadContext';
 import './VideoProjectFiles.scss';
 
 const VideoProjectFiles = props => {

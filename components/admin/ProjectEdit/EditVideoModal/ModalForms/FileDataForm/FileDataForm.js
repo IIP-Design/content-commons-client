@@ -5,7 +5,8 @@
  */
 import React, { useContext, useState, useEffect } from 'react';
 import propTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
 import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/projectUpdate';
 import { Confirm, Form, Grid } from 'semantic-ui-react';
@@ -20,6 +21,7 @@ import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedI
 import { EditSingleProjectItemContext } from 'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import { formatBytes, formatDate, secondsToHMS } from 'lib/utils';
 
+// eslint-disable-next-line import/no-cycle
 import { VIDEO_UNIT_QUERY } from 'components/admin/ProjectEdit/EditVideoModal/ModalSections/FileSection/FileSection';
 import {
   VIDEO_PROJECT_QUERY, VIDEO_FILE_QUERY, VIDEO_FILE_LANG_MUTATION, VIDEO_UNIT_CONNECT_FILE_MUTATION,
@@ -84,7 +86,7 @@ const FileDataForm = ( {
             id: selectedUnit,
             fileId: id
           },
-          update: ( cache, { data: { updateVideoUnit } } ) => {
+          update: cache => {
             try {
               const cachedData = cache.readQuery( {
                 query: VIDEO_UNIT_QUERY,
@@ -149,7 +151,7 @@ const FileDataForm = ( {
         id: selectedFile,
         [name]: value
       },
-      update: ( cache, { data: { updateVideoFile } } ) => {
+      update: cache => {
         try {
           const cachedData = cache.readQuery( {
             query: VIDEO_FILE_QUERY,
@@ -234,7 +236,7 @@ const FileDataForm = ( {
   const handleDeleteConfirm = () => {
     deleteVideoFileMutation( {
       variables: { id: selectedFile },
-      update: ( cache, { data: { deleteVideoFile } } ) => {
+      update: cache => {
         try {
           const cachedData = cache.readQuery( {
             query: VIDEO_UNIT_QUERY,

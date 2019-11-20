@@ -7,7 +7,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/projectUpdate';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
 import { Card } from 'semantic-ui-react';
 import { getFileExt } from 'lib/utils';
 import isEmpty from 'lodash/isEmpty';
@@ -466,8 +467,7 @@ const ProjectUnits = props => {
               save={ handleSave }
               progress={ progress } // use here to re-render modal
             />
-          )
-        }
+          ) }
       </h2>
       <Card.Group>
         { units.map( unit => (

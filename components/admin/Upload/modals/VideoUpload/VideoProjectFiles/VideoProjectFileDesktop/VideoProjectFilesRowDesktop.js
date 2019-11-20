@@ -9,7 +9,7 @@ import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButt
 import { truncateAndReplaceStr } from 'lib/utils';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import UploadCompletionTracker from '../UploadCompletionTracker';
-import { VideoUploadContext } from '../../VideoUpload';
+import { VideoUploadContext } from '../../VideoUploadContext';
 import './VideoProjectFilesRowDesktop.scss';
 
 // Optimize re-renders as component could potentially have many rows
@@ -112,24 +112,21 @@ const VideoProjectFilesDesktopRow = props => {
             <Grid.Column width={ 4 } style={ show( 1 ) }>
               { fileType === 'video'
                 ? <VideoBurnedInStatusDropdown id={ id } value={ videoBurnedInStatus } onChange={ updateField } required />
-                : renderNotApplicable()
-              }
+                : renderNotApplicable() }
             </Grid.Column>
 
             { /* Type/Use */ }
             <Grid.Column width={ 4 } style={ show( 2 ) }>
               { ( fileType === 'video' || fileType === 'image' )
                 ? <UseDropdown id={ id } value={ use } type={ fileType } onChange={ updateField } />
-                : renderNotApplicable()
-              }
+                : renderNotApplicable() }
             </Grid.Column>
 
             { /* Quality */ }
             <Grid.Column width={ 4 } style={ show( 2 ) }>
               { fileType === 'video'
                 ? <QualityDropdown id={ id } type={ fileType } value={ quality } onChange={ updateField } />
-                : renderNotApplicable()
-              }
+                : renderNotApplicable() }
             </Grid.Column>
 
             { /* Actions */ }

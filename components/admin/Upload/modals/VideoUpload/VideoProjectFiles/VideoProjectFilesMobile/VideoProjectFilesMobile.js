@@ -6,7 +6,7 @@ import {
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import CancelUpload from '../../../CancelUpload/CancelUpload';
 import VideoProjectFilesRowMobile from './VideoProjectFilesRowMobile';
-import { VideoUploadContext } from '../../VideoUpload';
+import { VideoUploadContext } from '../../VideoUploadContext';
 import './VideoProjectFilesMobile.scss';
 
 const VideoProjectFilesMobile = () => (
@@ -53,8 +53,7 @@ const VideoProjectFilesMobile = () => (
           </Form.Field>
         </Form>
       </div>
-    )
-      }
+    ) }
   </VideoUploadContext.Consumer>
 );
 
