@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { v4 } from 'uuid';
 import {
-  Grid, Header, Item, Modal, Loader, Message
+  Grid, Header, Item, Modal, Message
 } from 'semantic-ui-react';
 import Video from 'components/Video/Video';
 import Post from 'components/Post/Post';
@@ -93,12 +93,10 @@ class Recents extends Component {
             <a href="/results" onClick={ this.handleOnClick } className="browseAll">
               { `Browse All` }
             </a>
-
           </div>
-          <Loader active={ featured.loading } />
           { featured.error && (
             <Message>
-              { `Oops, something went wrong.  We are unable to load the most recent ${postTypeLabel.toLowerCase()}s.` }
+              { `Oops, something went wrong.  We are unable to load the most recent ${postTypeLabel.display_name.toLowerCase()}s.` }
             </Message>
           ) }
           <Grid columns="equal" stackable stretched>
