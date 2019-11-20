@@ -227,8 +227,15 @@ propsArray.forEach( props => {
       } );
       it( 'renders the correct postType component', () => {
         const wrapper = shallow( Component );
+        const modalContent = wrapper.find( 'ModalContent' );
 
-        expect( wrapper.hasClass( 'recents' ) ).toEqual( true );
+        modalContent.forEach( mc => {
+          const component = mc.find( props.postType.charAt(0).toUpperCase() + props.postType.slice( 1 ) );
+
+          expect( mc.exists() ).toEqual( true );
+          expect( component.exists() ).toEqual( true );
+          expect( mc.childAt(0) ).toEqual( component );
+        } );
       } );
     }
   } );
