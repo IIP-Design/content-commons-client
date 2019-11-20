@@ -399,6 +399,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
             <i
               aria-hidden="true"
               className="spinner loading icon"
+              onClick={[Function]}
               style={
                 Object {
                   "display": "none",
@@ -418,6 +419,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
           additionPosition="top"
           className="modal_languages"
           closeOnBlur={true}
+          closeOnEscape={true}
           deburr={false}
           icon="chevron down"
           minCharacters={1}
@@ -446,107 +448,220 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
           value="English"
           wrapSelection={true}
         >
-          <div
-            aria-expanded={false}
-            className="ui dropdown modal_languages"
-            onBlur={[Function]}
-            onChange={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onMouseDown={[Function]}
-            role="listbox"
-            tabIndex={0}
-          >
-            <div
-              aria-live="polite"
-              className="text"
-              role="alert"
-            >
-              English
-            </div>
-            <Icon
-              as="i"
-              className=""
-              name="chevron down"
-              onClick={[Function]}
-            >
-              <i
-                aria-hidden="true"
-                className="chevron down icon"
-                onClick={[Function]}
-              />
-            </Icon>
-            <DropdownMenu>
-              <div
-                className="menu transition"
-              >
-                <DropdownItem
-                  active={false}
-                  key="ar"
-                  onClick={[Function]}
-                  selected={false}
-                  style={
-                    Object {
-                      "pointerEvents": "all",
-                    }
-                  }
-                  text="Arabic"
-                  value="Arabic"
+          <Ref
+            innerRef={
+              Object {
+                "current": <div
+                  aria-expanded="false"
+                  class="ui dropdown modal_languages"
+                  role="listbox"
+                  tabindex="0"
                 >
                   <div
-                    aria-checked={false}
-                    aria-selected={false}
-                    className="item"
-                    onClick={[Function]}
-                    role="option"
-                    style={
-                      Object {
-                        "pointerEvents": "all",
-                      }
-                    }
+                    aria-atomic="true"
+                    aria-live="polite"
+                    class="text"
+                    role="alert"
                   >
-                    <span
-                      className="text"
-                    >
-                      Arabic
-                    </span>
+                    English
                   </div>
-                </DropdownItem>
-                <DropdownItem
-                  active={true}
-                  key="en"
-                  onClick={[Function]}
-                  selected={true}
-                  style={
-                    Object {
-                      "pointerEvents": "all",
-                    }
-                  }
-                  text="English"
-                  value="English"
-                >
+                  <i
+                    aria-hidden="true"
+                    class="chevron down icon"
+                  />
                   <div
-                    aria-checked={true}
-                    aria-selected={true}
-                    className="active selected item"
-                    onClick={[Function]}
-                    role="option"
-                    style={
-                      Object {
-                        "pointerEvents": "all",
-                      }
-                    }
+                    class="menu transition"
                   >
-                    <span
-                      className="text"
+                    <div
+                      aria-checked="false"
+                      aria-selected="false"
+                      class="item"
+                      role="option"
+                      style="pointer-events: all;"
+                    >
+                      <span
+                        class="text"
+                      >
+                        Arabic
+                      </span>
+                    </div>
+                    <div
+                      aria-checked="true"
+                      aria-selected="true"
+                      class="active selected item"
+                      role="option"
+                      style="pointer-events: all;"
+                    >
+                      <span
+                        class="text"
+                      >
+                        English
+                      </span>
+                    </div>
+                  </div>
+                </div>,
+              }
+            }
+          >
+            <RefFindNode
+              innerRef={
+                Object {
+                  "current": <div
+                    aria-expanded="false"
+                    class="ui dropdown modal_languages"
+                    role="listbox"
+                    tabindex="0"
+                  >
+                    <div
+                      aria-atomic="true"
+                      aria-live="polite"
+                      class="text"
+                      role="alert"
                     >
                       English
-                    </span>
+                    </div>
+                    <i
+                      aria-hidden="true"
+                      class="chevron down icon"
+                    />
+                    <div
+                      class="menu transition"
+                    >
+                      <div
+                        aria-checked="false"
+                        aria-selected="false"
+                        class="item"
+                        role="option"
+                        style="pointer-events: all;"
+                      >
+                        <span
+                          class="text"
+                        >
+                          Arabic
+                        </span>
+                      </div>
+                      <div
+                        aria-checked="true"
+                        aria-selected="true"
+                        class="active selected item"
+                        role="option"
+                        style="pointer-events: all;"
+                      >
+                        <span
+                          class="text"
+                        >
+                          English
+                        </span>
+                      </div>
+                    </div>
+                  </div>,
+                }
+              }
+            >
+              <div
+                aria-expanded={false}
+                className="ui dropdown modal_languages"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onMouseDown={[Function]}
+                role="listbox"
+                tabIndex={0}
+              >
+                <div
+                  aria-atomic={true}
+                  aria-live="polite"
+                  className="text"
+                  role="alert"
+                >
+                  English
+                </div>
+                <Icon
+                  as="i"
+                  className=""
+                  name="chevron down"
+                  onClick={[Function]}
+                >
+                  <i
+                    aria-hidden="true"
+                    className="chevron down icon"
+                    onClick={[Function]}
+                  />
+                </Icon>
+                <DropdownMenu>
+                  <div
+                    className="menu transition"
+                  >
+                    <DropdownItem
+                      active={false}
+                      key="ar"
+                      onClick={[Function]}
+                      selected={false}
+                      style={
+                        Object {
+                          "pointerEvents": "all",
+                        }
+                      }
+                      text="Arabic"
+                      value="Arabic"
+                    >
+                      <div
+                        aria-checked={false}
+                        aria-selected={false}
+                        className="item"
+                        onClick={[Function]}
+                        role="option"
+                        style={
+                          Object {
+                            "pointerEvents": "all",
+                          }
+                        }
+                      >
+                        <span
+                          className="text"
+                        >
+                          Arabic
+                        </span>
+                      </div>
+                    </DropdownItem>
+                    <DropdownItem
+                      active={true}
+                      key="en"
+                      onClick={[Function]}
+                      selected={true}
+                      style={
+                        Object {
+                          "pointerEvents": "all",
+                        }
+                      }
+                      text="English"
+                      value="English"
+                    >
+                      <div
+                        aria-checked={true}
+                        aria-selected={true}
+                        className="active selected item"
+                        onClick={[Function]}
+                        role="option"
+                        style={
+                          Object {
+                            "pointerEvents": "all",
+                          }
+                        }
+                      >
+                        <span
+                          className="text"
+                        >
+                          English
+                        </span>
+                      </div>
+                    </DropdownItem>
                   </div>
-                </DropdownItem>
+                </DropdownMenu>
               </div>
-            </DropdownMenu>
-          </div>
+            </RefFindNode>
+          </Ref>
         </Dropdown>
         <div
           className="trigger-container"
@@ -612,9 +727,12 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                     title="Embed this video on your site"
                   />
                 }
+                disabled={false}
+                eventsEnabled={true}
                 horizontalOffset={4}
-                keepInViewPort={true}
+                offset={0}
                 on="click"
+                pinned={false}
                 position="bottom right"
                 trigger={
                   <Button
@@ -657,23 +775,32 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                        
                     </Button>
                   }
-                  triggerRef={[Function]}
+                  triggerRef={
+                    Object {
+                      "current": <button
+                        class="ui button trigger"
+                        tooltip="Embed video"
+                      >
+                        <img
+                          alt="Embed video"
+                          height="24"
+                          src="shareIcon.svg"
+                          width="24"
+                        />
+                         
+                      </button>,
+                    }
+                  }
                 >
                   <Ref
                     innerRef={[Function]}
                   >
-                    <Button
-                      as="button"
-                      className="trigger"
-                      onBlur={[Function]}
-                      onClick={[Function]}
-                      onFocus={[Function]}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      tooltip="Embed video"
+                    <RefFindNode
+                      innerRef={[Function]}
                     >
-                      <button
-                        className="ui button trigger"
+                      <Button
+                        as="button"
+                        className="trigger"
                         onBlur={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -681,15 +808,63 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                         onMouseLeave={[Function]}
                         tooltip="Embed video"
                       >
-                        <img
-                          alt="Embed video"
-                          height={24}
-                          src="shareIcon.svg"
-                          width={24}
-                        />
-                         
-                      </button>
-                    </Button>
+                        <Ref
+                          innerRef={
+                            Object {
+                              "current": <button
+                                class="ui button trigger"
+                                tooltip="Embed video"
+                              >
+                                <img
+                                  alt="Embed video"
+                                  height="24"
+                                  src="shareIcon.svg"
+                                  width="24"
+                                />
+                                 
+                              </button>,
+                            }
+                          }
+                        >
+                          <RefFindNode
+                            innerRef={
+                              Object {
+                                "current": <button
+                                  class="ui button trigger"
+                                  tooltip="Embed video"
+                                >
+                                  <img
+                                    alt="Embed video"
+                                    height="24"
+                                    src="shareIcon.svg"
+                                    width="24"
+                                  />
+                                   
+                                </button>,
+                              }
+                            }
+                          >
+                            <button
+                              className="ui button trigger"
+                              onBlur={[Function]}
+                              onClick={[Function]}
+                              onFocus={[Function]}
+                              onMouseEnter={[Function]}
+                              onMouseLeave={[Function]}
+                              tooltip="Embed video"
+                            >
+                              <img
+                                alt="Embed video"
+                                height={24}
+                                src="shareIcon.svg"
+                                width={24}
+                              />
+                               
+                            </button>
+                          </RefFindNode>
+                        </Ref>
+                      </Button>
+                    </RefFindNode>
                   </Ref>
                 </Portal>
               </Popup>
@@ -744,9 +919,12 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                     />
                   </Popup>
                 }
+                disabled={false}
+                eventsEnabled={true}
                 horizontalOffset={4}
-                keepInViewPort={true}
+                offset={0}
                 on="click"
+                pinned={false}
                 position="bottom right"
                 trigger={
                   <Button
@@ -785,36 +963,87 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                        
                     </Button>
                   }
-                  triggerRef={[Function]}
+                  triggerRef={
+                    Object {
+                      "current": <button
+                        class="ui button trigger"
+                      >
+                        <img
+                          height="18"
+                          src="shareIcon.svg"
+                          width="18"
+                        />
+                         
+                      </button>,
+                    }
+                  }
                 >
                   <Ref
                     innerRef={[Function]}
                   >
-                    <Button
-                      as="button"
-                      className="trigger"
-                      onBlur={[Function]}
-                      onClick={[Function]}
-                      onFocus={[Function]}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
+                    <RefFindNode
+                      innerRef={[Function]}
                     >
-                      <button
-                        className="ui button trigger"
+                      <Button
+                        as="button"
+                        className="trigger"
                         onBlur={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
                         onMouseEnter={[Function]}
                         onMouseLeave={[Function]}
                       >
-                        <img
-                          height={18}
-                          src="shareIcon.svg"
-                          width={18}
-                        />
-                         
-                      </button>
-                    </Button>
+                        <Ref
+                          innerRef={
+                            Object {
+                              "current": <button
+                                class="ui button trigger"
+                              >
+                                <img
+                                  height="18"
+                                  src="shareIcon.svg"
+                                  width="18"
+                                />
+                                 
+                              </button>,
+                            }
+                          }
+                        >
+                          <RefFindNode
+                            innerRef={
+                              Object {
+                                "current": <button
+                                  class="ui button trigger"
+                                >
+                                  <img
+                                    height="18"
+                                    src="shareIcon.svg"
+                                    width="18"
+                                  />
+                                   
+                                </button>,
+                              }
+                            }
+                          >
+                            <button
+                              className="ui button trigger"
+                              onBlur={[Function]}
+                              onClick={[Function]}
+                              onFocus={[Function]}
+                              onMouseEnter={[Function]}
+                              onMouseLeave={[Function]}
+                            >
+                              <img
+                                height={18}
+                                src="shareIcon.svg"
+                                width={18}
+                              />
+                               
+                            </button>
+                          </RefFindNode>
+                        </Ref>
+                      </Button>
+                    </RefFindNode>
                   </Ref>
                 </Portal>
               </Popup>
@@ -1248,9 +1477,12 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                     title="Download this video."
                   />
                 }
+                disabled={false}
+                eventsEnabled={true}
                 horizontalOffset={4}
-                keepInViewPort={true}
+                offset={0}
                 on="click"
+                pinned={false}
                 position="bottom right"
                 trigger={
                   <Button
@@ -1293,23 +1525,32 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                        
                     </Button>
                   }
-                  triggerRef={[Function]}
+                  triggerRef={
+                    Object {
+                      "current": <button
+                        class="ui button trigger"
+                        tooltip="Download video"
+                      >
+                        <img
+                          alt="Download video"
+                          height="18"
+                          src="shareIcon.svg"
+                          width="18"
+                        />
+                         
+                      </button>,
+                    }
+                  }
                 >
                   <Ref
                     innerRef={[Function]}
                   >
-                    <Button
-                      as="button"
-                      className="trigger"
-                      onBlur={[Function]}
-                      onClick={[Function]}
-                      onFocus={[Function]}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                      tooltip="Download video"
+                    <RefFindNode
+                      innerRef={[Function]}
                     >
-                      <button
-                        className="ui button trigger"
+                      <Button
+                        as="button"
+                        className="trigger"
                         onBlur={[Function]}
                         onClick={[Function]}
                         onFocus={[Function]}
@@ -1317,15 +1558,63 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                         onMouseLeave={[Function]}
                         tooltip="Download video"
                       >
-                        <img
-                          alt="Download video"
-                          height={18}
-                          src="shareIcon.svg"
-                          width={18}
-                        />
-                         
-                      </button>
-                    </Button>
+                        <Ref
+                          innerRef={
+                            Object {
+                              "current": <button
+                                class="ui button trigger"
+                                tooltip="Download video"
+                              >
+                                <img
+                                  alt="Download video"
+                                  height="18"
+                                  src="shareIcon.svg"
+                                  width="18"
+                                />
+                                 
+                              </button>,
+                            }
+                          }
+                        >
+                          <RefFindNode
+                            innerRef={
+                              Object {
+                                "current": <button
+                                  class="ui button trigger"
+                                  tooltip="Download video"
+                                >
+                                  <img
+                                    alt="Download video"
+                                    height="18"
+                                    src="shareIcon.svg"
+                                    width="18"
+                                  />
+                                   
+                                </button>,
+                              }
+                            }
+                          >
+                            <button
+                              className="ui button trigger"
+                              onBlur={[Function]}
+                              onClick={[Function]}
+                              onFocus={[Function]}
+                              onMouseEnter={[Function]}
+                              onMouseLeave={[Function]}
+                              tooltip="Download video"
+                            >
+                              <img
+                                alt="Download video"
+                                height={18}
+                                src="shareIcon.svg"
+                                width={18}
+                              />
+                               
+                            </button>
+                          </RefFindNode>
+                        </Ref>
+                      </Button>
+                    </RefFindNode>
                   </Ref>
                 </Portal>
               </Popup>
@@ -1352,6 +1641,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
               <i
                 aria-hidden="true"
                 className="video play icon"
+                onClick={[Function]}
               />
             </Icon>
             <img
