@@ -15,6 +15,9 @@ import ProjectPreviewContent from 'components/admin/ProjectEdit/ProjectPreviewCo
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
 import './TeamProjectPrimaryCol.scss';
 
+// TEMP
+import PackageDetailsPopup from '../DetailsPopup/PackageDetailsPopup';
+
 const handleDataActionsOffClick = e => {
   // Check if click target is a data actions menu link
   const isDataActionsMenuLink = e.target.classList.contains( 'projects_data_actions_action' );
@@ -70,6 +73,11 @@ const TeamProjectPrimaryCol = props => {
 
   const getEditUrl = ( format = '' ) => {
     if ( isPublishing || !format ) return null;
+
+    // TEMP PACKAGE
+    if ( d.__typename ) return `/admin/package/${id}`;
+    //
+
     if ( format === 'pretty' ) {
       return `/admin/project/video/${id}/edit`;
     }
@@ -98,7 +106,7 @@ const TeamProjectPrimaryCol = props => {
       </div>
       <div className="projects_thumbnail">
         <div className="wrapper">
-          { d.thumbnail.signedUrl
+          { d.thumbnail && d.thumbnail.signedUrl
             ? (
               <img
                 className={ isDraft ? 'draft' : null }
@@ -112,6 +120,20 @@ const TeamProjectPrimaryCol = props => {
               </div>
             )
           }
+          { /* { d.thumbnail.signedUrl
+            ? (
+              <img
+                className={ isDraft ? 'draft' : null }
+                src={ d.thumbnail.signedUrl }
+                alt={ d.thumbnail.alt }
+              />
+            )
+            : (
+              <div className="placeholder outer">
+                <div className="placeholder inner" />
+              </div>
+            )
+          } */ }
 
           { isDraft && (
             <p className="draft-overlay">
@@ -194,7 +216,25 @@ const TeamProjectPrimaryCol = props => {
                     </Modal.Content>
                   </Modal>
                   <span className="separator">|</span>
-                  <DetailsPopup id={ id } />
+
+                  { !d.__typename && <DetailsPopup id={ id } /> }
+                  { d.__typename && (
+                    <Popup
+                      className="detailsFiles_popup"
+                      trigger={ (
+                        <button
+                          type="button"
+                          className="linkStyle projects_data_actions_action"
+                          data-projectitempopup="detailsPopup"
+                        >
+                          Files
+                        </button>
+                      ) }
+                      content={ <PackageDetailsPopup /> }
+                      on="click"
+                      position="bottom left"
+                    />
+                  ) }
                 </Fragment>
               ) }
           </div>

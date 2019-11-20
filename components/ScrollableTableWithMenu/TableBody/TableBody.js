@@ -2,7 +2,7 @@ import './TableBody.scss';
 import { Loader, Table } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import React, { useEffect, useState } from 'react';
 import update from 'immutability-helper';
 import isEqual from 'lodash/isEqual';
@@ -10,6 +10,11 @@ import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import gql from 'graphql-tag';
 import orderBy from 'lodash/orderBy';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
+
+// TEMP
+import { mocks } from './mocks';
+
+const teamPackages = mocks[0].result.data;
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
   query VideoProjectsByTeam(
@@ -91,31 +96,84 @@ const getLangTaxonomies = ( array, locale = 'en-us' ) => {
   );
 };
 
-const normalizeData = videoProjects => {
-  const normalizedVideoProjects = [];
+// const normalizeData = videoProjects => {
+//   const normalizedVideoProjects = [];
 
-  videoProjects.forEach( videoProject => {
-    const normalizedProject = Object.create( {}, {
-      id: { value: videoProject.id },
-      createdAt: { value: videoProject.createdAt },
-      updatedAt: { value: videoProject.updatedAt },
-      projectTitle: { value: videoProject.projectTitle },
-      author: { value: `${videoProject.author ? videoProject.author.firstName : ''} ${videoProject.author ? videoProject.author.lastName : ''}` },
-      team: { value: videoProject.team ? videoProject.team.name : '' },
-      status: { value: videoProject.status },
-      visibility: { value: videoProject.visibility },
-      thumbnail: {
-        value: {
-          signedUrl: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].signedUrl : '',
-          alt: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].alt : ''
-        }
-      },
-      categories: { value: getLangTaxonomies( videoProject.categories ) }
-    } );
-    normalizedVideoProjects.push( normalizedProject );
+//   videoProjects.forEach( videoProject => {
+//     const normalizedProject = Object.create( {}, {
+//       id: { value: videoProject.id },
+//       createdAt: { value: videoProject.createdAt },
+//       updatedAt: { value: videoProject.updatedAt },
+//       projectTitle: { value: videoProject.projectTitle },
+//       author: { value: `${videoProject.author ? videoProject.author.firstName : ''} ${videoProject.author ? videoProject.author.lastName : ''}` },
+//       team: { value: videoProject.team ? videoProject.team.name : '' },
+//       status: { value: videoProject.status },
+//       visibility: { value: videoProject.visibility },
+//       thumbnail: {
+//         value: {
+//           signedUrl: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].signedUrl : '',
+//           alt: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].alt : ''
+//         }
+//       },
+//       categories: { value: getLangTaxonomies( videoProject.categories ) }
+//     } );
+//     normalizedVideoProjects.push( normalizedProject );
+//   } );
+
+//   return normalizedVideoProjects;
+// };
+
+const normalizeVideoProject = videoProject => {
+  const normalizedVideoProject = Object.create( {}, {
+    id: { value: videoProject.id },
+    createdAt: { value: videoProject.createdAt },
+    updatedAt: { value: videoProject.updatedAt },
+    projectTitle: { value: videoProject.projectTitle },
+    author: { value: `${videoProject.author ? videoProject.author.firstName : ''} ${videoProject.author ? videoProject.author.lastName : ''}` },
+    team: { value: videoProject.team ? videoProject.team.name : '' },
+    status: { value: videoProject.status },
+    visibility: { value: videoProject.visibility },
+    thumbnail: {
+      value: {
+        signedUrl: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].signedUrl : '',
+        alt: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].alt : ''
+      }
+    },
+    categories: { value: getLangTaxonomies( videoProject.categories ) }
   } );
+  return normalizedVideoProject;
+};
 
-  return normalizedVideoProjects;
+const normalizePackage = pkg => {
+  const normalizedPackage = Object.create( {}, {
+    __typename: { value: pkg.__typename },
+    id: { value: pkg.id },
+    createdAt: { value: pkg.createdAt },
+    updatedAt: { value: pkg.updatedAt },
+    projectTitle: { value: pkg.title },
+    author: { value: `${pkg.author ? pkg.author.firstName : ''} ${pkg.author ? pkg.author.lastName : ''}` },
+    team: { value: pkg.team ? pkg.team.name : '' },
+    status: { value: pkg.status || '' },
+    visibility: { value: pkg.visibility },
+    thumbnail: {},
+    categories: { value: getLangTaxonomies( pkg.categories ) }
+  } );
+  return normalizedPackage;
+};
+
+const normalizeProjectData = projects => {
+  const { videoProjects, packages } = projects;
+  const normalizedProjects = [];
+
+  if ( videoProjects.length > 0 ) {
+    videoProjects.forEach( videoProject => normalizedProjects.push( normalizeVideoProject( videoProject ) ) );
+  }
+
+  if ( packages.length > 0 ) {
+    packages.forEach( pkg => normalizedProjects.push( normalizePackage( pkg ) ) );
+  }
+
+  return normalizedProjects;
 };
 
 const TableBody = props => {
@@ -211,8 +269,15 @@ const TableBody = props => {
   // Default sort by createdAt & DESC
   const direction = props.direction ? `${props.direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
 
+  // TEMP
+  const propsWithPackages = { ...props, teamPackages };
+
   const tableData = orderBy(
-    normalizeData( videoProjects ),
+    // normalizeData( videoProjects ),
+    normalizeProjectData( {
+      videoProjects: propsWithPackages.teamVideoProjects.videoProjects,
+      packages: propsWithPackages.teamPackages,
+    } ),
     tableDatum => {
       let { column } = props;
       if ( !column ) column = 'createdAt';
@@ -226,6 +291,7 @@ const TableBody = props => {
   // skip & first query vars are used as start/end slice() params to paginate tableData on client
   const { skip, first } = variables;
   const paginatedTableData = tableData.slice( skip, skip + first );
+
   return (
     <Table.Body className="projects">
       { paginatedTableData.map( d => (
@@ -255,7 +321,7 @@ TableBody.propTypes = {
   subscribeToStatuses: PropTypes.func
 };
 
-const teamProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
+const teamVideoProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
   name: 'teamVideoProjects',
   props: ( { teamVideoProjects } ) => {
     const { videoProjects, subscribeToMore } = teamVideoProjects;
@@ -287,5 +353,16 @@ const teamProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
   } )
 } );
 
-export default teamProjectsQuery( TableBody );
+// const teamPackagesQuery = graphql( PACKAGE_QUERY, {
+//   name: 'teamPackages',
+//   options: {
+//     variables: { id: props.id },
+//   },
+// } );
+
+// export default teamProjectsQuery( TableBody );
+export default compose(
+  teamVideoProjectsQuery,
+  // teamPackagesQuery,
+)( TableBody );
 export { TEAM_VIDEO_PROJECTS_QUERY };
