@@ -148,4 +148,4 @@ const mapStateToProps = ( state, props ) => ( {
 } );
 
 export { Recents };
-export default withRouter( connect( mapStateToProps )( Recents ) );
+export default connect( mapStateToProps )( Recents );

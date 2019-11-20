@@ -152,4 +152,4 @@ const mapStateToProps = ( state, props ) => ( {
 } );
 
 export { Priorities };
-export default withRouter( connect( mapStateToProps )( Priorities ) );
+export default connect( mapStateToProps )( Priorities );
