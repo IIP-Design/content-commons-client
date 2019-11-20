@@ -5,7 +5,8 @@ import Router from 'next/router';
 import { MockedProvider } from 'react-apollo/test-utils';
 import { Icon, Loader } from 'semantic-ui-react';
 import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
-import VideoReview from './VideoReview';
+import { VideoReviewUnitTest } from './VideoReview';
+
 import {
   draftMocks,
   errorMocks,
@@ -64,14 +65,14 @@ Router.router = mockedRouter;
 // project status change to PUBLISHED from DRAFT
 const Component = (
   <MockedProvider mocks={ mocks } addTypename>
-    <VideoReview { ...props } />
+    <VideoReviewUnitTest { ...props } />
   </MockedProvider>
 );
 
 // project status change to DRAFT from PUBLISHED
 const DraftComponent = (
   <MockedProvider mocks={ draftMocks } addTypename>
-    <VideoReview { ...props } />
+    <VideoReviewUnitTest { ...props } />
   </MockedProvider>
 );
 
@@ -90,6 +91,9 @@ describe( '<VideoReview />', () => {
       }
     } );
   } );
+
+  const getBtn = ( buttons, str ) => buttons.filterWhere( btn => btn.text() === str );
+  const publishingButtons = ['Delete Project', 'Edit', 'Preview Project', 'Publish Changes', 'Publish', 'Unpublish'];
 
   it( 'renders initial loading state without crashing', () => {
     const wrapper = mount( Component );
@@ -110,9 +114,10 @@ describe( '<VideoReview />', () => {
   it( 'renders error message & icon if error is thrown', async () => {
     const wrapper = mount(
       <MockedProvider mocks={ errorMocks } addTypename>
-        <VideoReview { ...props } />
+        <VideoReviewUnitTest { ...props } />
       </MockedProvider>
     );
+
     // wait for the data and !loading
     await wait( 0 );
     wrapper.update();
@@ -125,6 +130,142 @@ describe( '<VideoReview />', () => {
     expect( div.exists() ).toEqual( true );
     expect( videoReview.contains( icon ) ).toEqual( true );
     expect( videoReview.contains( span ) ).toEqual( true );
+  } );
+
+  // notPublished = data.project.status !== 'PUBLISHED';
+  it( 'renders the correct bottom CTA headline and buttons if status is DRAFT', async () => {
+    const wrapper = mount( DraftComponent );
+
+    await wait( 0 );
+    wrapper.update();
+
+    const VideoReview = wrapper.find( 'VideoReview' );
+
+    // Buttons
+    const btns = VideoReview.find( 'Button' );
+
+    publishingButtons.forEach( txt => {
+      switch ( txt ) {
+        case 'Delete Project':
+          expect( getBtn( btns, txt ).exists() ).toEqual( true );
+          break;
+        case 'Edit':
+          expect( getBtn( btns, txt ).length ).toEqual( 2 );
+          break;
+        case 'Preview Project':
+          expect( getBtn( btns, txt ).exists() ).toEqual( true );
+          break;
+        case 'Publish Changes':
+          expect( getBtn( btns, txt ).exists() ).toEqual( false );
+          break;
+        case 'Publish':
+          expect( getBtn( btns, txt ).length ).toEqual( 2 );
+          break;
+        case 'Unpublish':
+          expect( getBtn( btns, txt ).exists() ).toEqual( false );
+          break;
+        default:
+          break;
+      }
+    } );
+
+    // Bottom Headline
+    const ctaHeadline = VideoReview.find( '.section--publish > h3.title' );
+    const headingTxt = 'Your project looks great! Are you ready to Publish?';
+    expect( ctaHeadline.text() ).toEqual( headingTxt );
+  } );
+
+  // publishedAndUpdated = projectUpdate[id] && data.project.status === 'PUBLISHED';
+  it( 'renders the correct bottom CTA headline and buttons if there are updates to publish', async () => {
+    const wrapper = mount( Component );
+
+    await wait( 0 );
+    wrapper.update();
+
+    const VideoReview = wrapper.find( 'VideoReview' );
+    const btns = VideoReview.find( 'Button' );
+
+    publishingButtons.forEach( txt => {
+      switch ( txt ) {
+        case 'Delete Project':
+          expect( getBtn( btns, txt ).exists() ).toEqual( false );
+          break;
+        case 'Edit':
+          expect( getBtn( btns, txt ).length ).toEqual( 2 );
+          break;
+        case 'Preview Project':
+          expect( getBtn( btns, txt ).exists() ).toEqual( true );
+          break;
+        case 'Publish Changes':
+          expect( getBtn( btns, txt ).length ).toEqual( 2 );
+          break;
+        case 'Publish':
+          expect( getBtn( btns, txt ).exists() ).toEqual( false );
+          break;
+        case 'Unpublish':
+          expect( getBtn( btns, txt ).length ).toEqual( 2 );
+          break;
+        default:
+          break;
+      }
+    } );
+
+    // Bottom CTA Headline
+    const ctaHeadline = VideoReview.find( '.section--publish > h3.title' );
+    const headingTxt = 'It looks like you made changes to your project. Do you want to publish changes?';
+    expect( ctaHeadline.text() ).toEqual( headingTxt );
+  } );
+
+  // publishedAndNotUpdated = !projectUpdate[id] && data.project.status === 'PUBLISHED';
+  it( 'renders the correct bottom CTA headline and buttons if there are no updates to publish', async () => {
+    const propsNoUpdate = {
+      ...props,
+      projectUpdate: {}
+    };
+
+    const wrapper = mount(
+      <MockedProvider mocks={ noUpdatesToPublishMocks } addTypename>
+        <VideoReviewUnitTest { ...propsNoUpdate } />
+      </MockedProvider>
+    );
+
+    await wait( 0 );
+    wrapper.update();
+
+    const videoReview = wrapper.find( 'VideoReview' );
+
+    const { project } = videoReview.prop( 'data' );
+    expect( project.status ).toEqual( 'PUBLISHED' );
+
+    const btns = wrapper.find( 'Button' );
+    publishingButtons.forEach( txt => {
+      switch ( txt ) {
+        case 'Delete Project':
+          expect( getBtn( btns, txt ).exists() ).toEqual( false );
+          break;
+        case 'Edit':
+          expect( getBtn( btns, txt ).length ).toEqual( 2 );
+          break;
+        case 'Preview Project':
+          expect( getBtn( btns, txt ).exists() ).toEqual( true );
+          break;
+        case 'Publish Changes':
+          expect( getBtn( btns, txt ).exists() ).toEqual( false );
+          break;
+        case 'Publish':
+          expect( getBtn( btns, txt ).exists() ).toEqual( false );
+          break;
+        case 'Unpublish':
+          expect( getBtn( btns, txt ).length ).toEqual( 2 );
+          break;
+        default:
+          break;
+      }
+    } );
+
+    const CTAheadline = videoReview.find( 'h3.title' );
+    const headingTxt = 'Not ready to share with the world yet?';
+    expect( CTAheadline.text() ).toEqual( headingTxt );
   } );
 
   it( 'renders ApolloError with a default `null` error prop value', async () => {
@@ -141,7 +282,7 @@ describe( '<VideoReview />', () => {
   it( 'redirects to <ProjectNotFound /> if project is `null`', async () => {
     const wrapper = mount(
       <MockedProvider mocks={ nullMocks } addTypename>
-        <VideoReview { ...props } />
+        <VideoReviewUnitTest { ...props } />
       </MockedProvider>
     );
 
@@ -219,60 +360,6 @@ describe( '<VideoReview />', () => {
     expect( deleteBtn.exists() ).toEqual( false );
     expect( unPublishBtn.exists() ).toEqual( true );
     expect( unPublishBtn.text() ).toEqual( 'Unpublish' );
-  } );
-
-  it( 'renders the correct headline and buttons if there are updates to publish', async () => {
-    const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
-    const videoReview = wrapper.find( 'VideoReview' );
-    const headline = videoReview.find( 'h3.title' );
-    const btns = videoReview.find( 'Button' );
-    const deleteBtn = btns.find( 'Button.project_button--delete' );
-    const previewBtn = btns.find( 'Button.project_button--preview' );
-    const editBtns = btns.filterWhere( btn => btn.text() === 'Edit' );
-    const publishChangesBtns = btns.filterWhere( btn => btn.text() === 'Publish Changes' );
-    const publishBtns = btns.filterWhere( btn => btn.text() === 'Unpublish' );
-    const headingTxt = 'It looks like you made changes to your project. Do you want to publish changes?';
-    const { project } = videoReview.prop( 'data' );
-
-    expect( project.status ).toEqual( 'PUBLISHED' );
-    expect( deleteBtn.exists() ).toEqual( false );
-    expect( previewBtn.exists() ).toEqual( true );
-    expect( headline.text() ).toEqual( headingTxt );
-    expect( editBtns.length ).toEqual( 2 ); // 1 at top & bottom
-    expect( publishChangesBtns.length ).toEqual( 2 ); // 1 at top & bottom
-    expect( publishBtns.length ).toEqual( 2 ); // 1 at top & bottom
-  } );
-
-  it( 'renders the correct headline and buttons if there are no updates to publish', async () => {
-    const wrapper = mount(
-      <MockedProvider mocks={ noUpdatesToPublishMocks } addTypename>
-        <VideoReview { ...props } />
-      </MockedProvider>
-    );
-    await wait( 0 );
-    wrapper.update();
-
-    const videoReview = wrapper.find( 'VideoReview' );
-    const headline = videoReview.find( 'h3.title' );
-    const btns = wrapper.find( 'Button' );
-    const deleteBtn = btns.find( 'Button.project_button--delete' );
-    const previewBtn = btns.find( 'Button.project_button--preview' );
-    const editBtns = btns.filterWhere( btn => btn.text() === 'Edit' );
-    const publishChangesBtns = btns.filterWhere( btn => btn.text() === 'Publish Changes' );
-    const publishBtns = btns.filterWhere( btn => btn.text() === 'Unpublish' );
-    const headingTxt = 'Not ready to share with the world yet?';
-    const { project } = videoReview.prop( 'data' );
-
-    expect( project.status ).toEqual( 'PUBLISHED' );
-    expect( deleteBtn.exists() ).toEqual( false );
-    expect( previewBtn.exists() ).toEqual( true );
-    expect( headline.text() ).toEqual( headingTxt );
-    expect( publishChangesBtns.exists() ).toEqual( false );
-    expect( editBtns.length ).toEqual( 2 ); // 1 at top & bottom of page
-    expect( publishBtns.length ).toEqual( 2 ); // 1 at top & bottom of page
   } );
 
   it( 'clicking an Edit button redirects to <VideoEdit />', async () => {
@@ -448,7 +535,7 @@ describe( '<VideoReview />', () => {
   it( 'if publishing error, returns ApolloError and does not redirect to dashboard', async () => {
     const wrapper = mount(
       <MockedProvider mocks={ publishErrorMocks } addTypename>
-        <VideoReview { ...props } />
+        <VideoReviewUnitTest { ...props } />
       </MockedProvider>
     );
     await wait( 0 );
@@ -488,7 +575,7 @@ describe( '<VideoReview />', () => {
   it( 'if unpublishing error, returns ApolloError and does not redirect to dashboard', async done => {
     const wrapper = mount(
       <MockedProvider mocks={ unpublishErrorMocks } addTypename>
-        <VideoReview { ...props } />
+        <VideoReviewUnitTest { ...props } />
       </MockedProvider>
     );
     await wait( 0 );

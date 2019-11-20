@@ -331,3 +331,11 @@ export default compose(
   projectStatusChangeSubscription,
   videoReviewQuery
 )( VideoReview );
+
+export const VideoReviewUnitTest = compose(
+  deleteProjectMutation,
+  publishProjectMutation,
+  unPublishProjectMutation,
+  projectStatusChangeSubscription,
+  videoReviewQuery
+)( VideoReview );
