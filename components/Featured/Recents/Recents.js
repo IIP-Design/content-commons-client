@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'next/router';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { v4 } from 'uuid';
@@ -14,14 +14,6 @@ import './Recents.scss';
 
 
 class Recents extends Component {
-  handleOnClick = e => {
-    e.preventDefault();
-    this.props.router.push( {
-      pathname: '/results',
-      query: { language: 'en-us', sortBy: 'published', postTypes: [this.props.postType] }
-    } );
-  }
-
   getModalContent = item => {
     const noContent = <div>No content currently available</div>;
     if ( item ) {
@@ -89,10 +81,14 @@ class Recents extends Component {
             <Header as="h1" size="large">
               { postTypeLabel && `Latest ${postTypeLabel.display_name}s` }
             </Header>
-            <a href="/results" onClick={ this.handleOnClick } className="browseAll">
-              { `Browse All` }
-            </a>
-
+            <Link
+              href={ {
+                pathname: '/results',
+                query: { language: 'en-us', sortBy: 'published', postTypes: [this.props.postType] }
+              } }
+            >
+              <a className="browseAll">Browse All</a>
+            </Link>
           </div>
           <Loader active={ featured.loading } />
           { featured.error && (
@@ -123,8 +119,7 @@ class Recents extends Component {
                   { this.getModalContent( recents[0] ) }
                 </Modal.Content>
               </Modal>
-              )
-              }
+              ) }
             </Grid.Column>
             <Grid.Column width={ 8 } className="recentsgridright">
               <Item.Group>{ recents && this.renderRecentsWithMeta() }</Item.Group>
@@ -141,7 +136,6 @@ Recents.propTypes = {
   featured: PropTypes.object,
   recents: PropTypes.array,
   postType: PropTypes.string,
-  router: PropTypes.object,
   postTypeLabels: PropTypes.array
 };
 
@@ -152,4 +146,4 @@ const mapStateToProps = ( state, props ) => ( {
   postTypeLabels: state.global.postTypes.list
 } );
 
-export default withRouter( connect( mapStateToProps )( Recents ) );
+export default connect( mapStateToProps )( Recents );

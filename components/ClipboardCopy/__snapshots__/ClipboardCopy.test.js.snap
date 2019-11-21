@@ -51,12 +51,36 @@ exports[`<ClipboardCopy /> renders without crashing 1`] = `
           onClick={[Function]}
           primary={true}
         >
-          <button
-            className="ui primary button"
-            onClick={[Function]}
+          <Ref
+            innerRef={
+              Object {
+                "current": <button
+                  class="ui primary button"
+                >
+                  Copy
+                </button>,
+              }
+            }
           >
-            Copy
-          </button>
+            <RefFindNode
+              innerRef={
+                Object {
+                  "current": <button
+                    class="ui primary button"
+                  >
+                    Copy
+                  </button>,
+                }
+              }
+            >
+              <button
+                className="ui primary button"
+                onClick={[Function]}
+              >
+                Copy
+              </button>
+            </RefFindNode>
+          </Ref>
         </Button>
       </div>
     </div>

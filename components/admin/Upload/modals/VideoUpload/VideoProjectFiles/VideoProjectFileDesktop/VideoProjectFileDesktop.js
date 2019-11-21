@@ -9,7 +9,7 @@ import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import CancelUpload from '../../../CancelUpload/CancelUpload';
 import IncludeVideoFileMsg from '../../../IncludeVideoFileMsg/IncludeVideoFileMsg';
 import VideoProjectFilesRowDesktop from './VideoProjectFilesRowDesktop';
-import { VideoUploadContext } from '../../VideoUpload';
+import { VideoUploadContext } from '../../VideoUploadContext';
 import './VideoProjectFilesDesktop.scss';
 
 const VideoProjectFilesDesktop = () => {
@@ -124,8 +124,7 @@ const VideoProjectFilesDesktop = () => {
             setIncludeVideoFileMsg={ setIncludeVideoFileMsg }
           />
         </div>
-      )
-      }
+      ) }
     </VideoUploadContext.Consumer>
   );
 };

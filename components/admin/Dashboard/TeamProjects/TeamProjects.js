@@ -17,17 +17,21 @@ const persistentTableHeaders = [
 const menuItems = [
   { name: 'team', label: 'TEAM' },
   { name: 'categories', label: 'CATEGORIES' },
-  { name: 'updatedAt', label: 'MODIFIED DATE' },
+  { name: 'updatedAt', label: 'MODIFIED DATE' }
 ];
 
-const TeamProjects = props => (
-  <ScrollableTableWithMenu
-    columnMenu={ menuItems }
-    persistentTableHeaders={ persistentTableHeaders }
-    team={ props.user.team.name }
-    projectTab="teamProjects"
-  />
-);
+const TeamProjects = props => {
+  const { user } = props;
+  const team = user && user.team ? user.team.name : '';
+  return (
+    <ScrollableTableWithMenu
+      columnMenu={ menuItems }
+      persistentTableHeaders={ persistentTableHeaders }
+      team={ team }
+      projectTab="teamProjects"
+    />
+  );
+};
 
 TeamProjects.propTypes = {
   user: PropTypes.object

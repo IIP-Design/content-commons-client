@@ -1,9 +1,10 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prefer-stateless-function */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
-import {
-  Button, Checkbox, Modal
-} from 'semantic-ui-react';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
+import { Button, Checkbox, Modal } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import editIcon from 'static/images/dashboard/edit.svg';
 import createIcon from 'static/images/dashboard/create.svg';
@@ -17,12 +18,11 @@ import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
 import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
 import './TableActionsMenu.scss';
 
-/* eslint-disable react/prefer-stateless-function */
 class TableActionsMenu extends React.Component {
   state = {
     displayConfirmationMsg: false,
     deleteConfirmOpen: false,
-    actionFailures: [],
+    actionFailures: []
   };
 
   _isMounted = false;
@@ -31,41 +31,45 @@ class TableActionsMenu extends React.Component {
 
   componentDidMount = () => {
     this._isMounted = true;
-  }
+  };
 
   componentDidUpdate = () => {
     const { actionFailures } = this.state;
     if ( this.state.displayConfirmationMsg && !actionFailures.length ) {
-      this.delayUnmount( this.hideConfirmationMsg, this.confirmationMsgTimer, this.CONFIRMATION_MSG_DELAY );
+      this.delayUnmount(
+        this.hideConfirmationMsg,
+        this.confirmationMsgTimer,
+        this.CONFIRMATION_MSG_DELAY
+      );
     }
-  }
+  };
 
   componentWillUnmount = () => {
     this._isMounted = false;
     clearTimeout( this.confirmationMsgTimer );
-  }
+  };
 
   handleActionResult = result => {
     if ( result.error ) {
-      this.setState( ( { actionFailures } ) => ( { actionFailures: [...actionFailures, result] } ) );
+      this.setState( ( { actionFailures } ) => ( {
+        actionFailures: [...actionFailures, result]
+      } ) );
     }
-  }
+  };
 
   handleDeleteCancel = () => {
     this.setState( { deleteConfirmOpen: false } );
-  }
+  };
 
   handleActionCompleted = () => {
-    const {
-      variables, teamVideoProjects, teamVideoProjectsCount
-    } = this.props;
+    const { variables, teamVideoProjects, teamVideoProjectsCount } = this.props;
     teamVideoProjects.refetch( { ...variables } );
     teamVideoProjectsCount.refetch( {
       team: variables.team,
       searchTerm: variables.searchTerm
     } );
     this.showConfirmationMsg();
-  }
+  };
 
   handleStatus = ( items, projects ) => {
     items.forEach( item => {
@@ -74,7 +78,7 @@ class TableActionsMenu extends React.Component {
         project.status = 'DRAFT';
       } );
     } );
-  }
+  };
 
   getDraftProjects = projects => {
     if ( !projects ) return [];
@@ -84,7 +88,7 @@ class TableActionsMenu extends React.Component {
       }
       return [...acc];
     }, [] );
-  }
+  };
 
   getSelectedProjectsIds = () => {
     const projectsArr = this.transformSelectedItemsMap();
@@ -102,46 +106,40 @@ class TableActionsMenu extends React.Component {
   getSelectedProjects = projects => {
     const projectIds = this.getSelectedProjectsIds();
     if ( projects && projects.length ) {
-      const selections = projectIds.map( s => (
-        projects.find( p => s === p.id )
-      ) );
+      const selections = projectIds.map( s => projects.find( p => s === p.id ) );
       return selections;
     }
     return [];
-  }
+  };
 
   getProjectsOnPage = projects => {
     const { first, skip } = this.props.variables;
     return projects && projects.slice( skip, skip + first );
-  }
+  };
 
   transformSelectedItemsMap = () => {
     const { selectedItems } = this.props;
     if ( selectedItems.size === 0 ) return [];
     const arr = [];
-    selectedItems.forEach(
-      ( value, key ) => arr.push( { id: key, value } )
-    );
+    selectedItems.forEach( ( value, key ) => arr.push( { id: key, value } ) );
     return arr;
-  }
+  };
 
   hasSelectedAllDrafts = () => {
     const draftProjects = this.getDraftProjects( this.props.teamVideoProjects.videoProjects || null );
     const selections = this.getSelectedProjectsIds();
 
     if ( selections.length > 0 ) {
-      return selections.every(
-        id => draftProjects.includes( id )
-      );
+      return selections.every( id => draftProjects.includes( id ) );
     }
     return false;
-  }
+  };
 
   showConfirmationMsg = () => {
     this.setState( {
-      displayConfirmationMsg: true,
+      displayConfirmationMsg: true
     } );
-  }
+  };
 
   hideConfirmationMsg = () => {
     if ( this._isMounted ) {
@@ -151,25 +149,23 @@ class TableActionsMenu extends React.Component {
       } );
     }
     this.confirmationMsgTimer = null;
-  }
+  };
 
   delayUnmount = ( fn, timer, delay ) => {
     if ( timer ) clearTimeout( timer );
     /* eslint-disable no-param-reassign */
     timer = setTimeout( fn, delay );
-  }
+  };
 
   displayConfirmDelete = () => {
     this.setState( {
       deleteConfirmOpen: true,
       actionFailures: []
     } );
-  }
+  };
 
   renderMenu() {
-    const {
-      teamVideoProjects, displayActionsMenu, toggleAllItemsSelection
-    } = this.props;
+    const { teamVideoProjects, displayActionsMenu, toggleAllItemsSelection } = this.props;
     const { displayConfirmationMsg, actionFailures } = this.state;
     const { loading, error } = teamVideoProjects;
 
@@ -189,16 +185,18 @@ class TableActionsMenu extends React.Component {
 
     const isDisabled = videoProjects && !videoProjects.length;
 
-    const isChecked = ( projectsOnPageCount === selectionsCount )
-      && selectionsCount > 0;
+    const isChecked = projectsOnPageCount === selectionsCount && selectionsCount > 0;
 
-    const isIndeterminate = ( projectsOnPageCount > selectionsCount )
-      && selectionsCount > 0;
+    const isIndeterminate = projectsOnPageCount > selectionsCount && selectionsCount > 0;
 
     return (
       <Fragment>
         <Checkbox
-          className={ displayActionsMenu ? 'actionsMenu_toggle actionsMenu_toggle--active' : 'actionsMenu_toggle' }
+          className={
+            displayActionsMenu
+              ? 'actionsMenu_toggle actionsMenu_toggle--active'
+              : 'actionsMenu_toggle'
+          }
           onChange={ toggleAllItemsSelection }
           checked={ isChecked }
           disabled={ isDisabled }
@@ -206,7 +204,6 @@ class TableActionsMenu extends React.Component {
         />
 
         <div className={ displayActionsMenu ? 'actionsMenu active' : 'actionsMenu' }>
-
           <Modal
             className="confirmation"
             closeIcon
@@ -225,9 +222,7 @@ class TableActionsMenu extends React.Component {
             <img src={ editIcon } alt="Edit Selection(s)" title="Edit Selection(s)" />
           </Button>
 
-          <DeleteIconButton
-            displayConfirmDelete={ this.displayConfirmDelete }
-          />
+          <DeleteIconButton displayConfirmDelete={ this.displayConfirmDelete } />
 
           <DeleteProjects
             deleteConfirmOpen={ this.state.deleteConfirmOpen }
@@ -247,17 +242,15 @@ class TableActionsMenu extends React.Component {
           </Button>
 
           { !this.hasSelectedAllDrafts() && (
-            <Fragment>
+            <>
               <span className="separator">|</span>
               <UnpublishProjects
-                handleResetSelections={
-                  this.props.handleResetSelections
-                }
+                handleResetSelections={ this.props.handleResetSelections }
                 handleActionResult={ this.handleActionResult }
                 showConfirmationMsg={ this.showConfirmationMsg }
                 selections={ selections }
               />
-            </Fragment>
+            </>
           ) }
         </div>
       </Fragment>
@@ -265,11 +258,7 @@ class TableActionsMenu extends React.Component {
   }
 
   render() {
-    return (
-      <div className="actionsMenu_wrapper">
-        { this.renderMenu() }
-      </div>
-    );
+    return <div className="actionsMenu_wrapper">{ this.renderMenu() }</div>;
   }
 }
 
@@ -299,5 +288,5 @@ export default compose(
         searchTerm: props.variables.searchTerm
       }
     } )
-  } ),
+  } )
 )( TableActionsMenu );

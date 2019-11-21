@@ -22,16 +22,16 @@ exports[`withModal() renders without crashing 1`] = `
     className="ui page modals dimmer transition visible active"
   >
     <Ref
-      innerRef={[Function]}
+      innerRef={
+        Object {
+          "current": null,
+        }
+      }
     >
       <div
         className="ui modal transition visible active"
         one="option1"
-        style={
-          Object {
-            "marginTop": undefined,
-          }
-        }
+        style={Object {}}
         two="option2"
       >
         <MountNode />

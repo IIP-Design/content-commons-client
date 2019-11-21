@@ -1,9 +1,9 @@
 import { mount } from 'enzyme';
 import mockAxios from 'axios';
 import wait from 'waait';
-import { MockedProvider } from 'react-apollo/test-utils';
+import { MockedProvider } from '@apollo/react-testing';
 import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
-import { UploadContext } from '../../ProjectEdit/VideoEdit/VideoEdit';
+import { UploadContext } from '../../ProjectEdit/VideoEdit/UploadContext';
 import {
   emptyItemProps,
   emptyMocks,

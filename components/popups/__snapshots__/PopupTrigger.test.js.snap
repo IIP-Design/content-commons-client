@@ -30,9 +30,12 @@ exports[`<PopupTrigger /> renders without crashing 1`] = `
           content
         </div>
       }
+      disabled={false}
+      eventsEnabled={true}
       horizontalOffset={4}
-      keepInViewPort={true}
+      offset={0}
       on="click"
+      pinned={false}
       position="bottom right"
       trigger={
         <Button
@@ -75,23 +78,32 @@ exports[`<PopupTrigger /> renders without crashing 1`] = `
              
           </Button>
         }
-        triggerRef={[Function]}
+        triggerRef={
+          Object {
+            "current": <button
+              class="ui button trigger"
+              tooltip="Share Project"
+            >
+              <img
+                alt="Share Project"
+                height="18"
+                src="shareIcon.svg"
+                width="18"
+              />
+               
+            </button>,
+          }
+        }
       >
         <Ref
           innerRef={[Function]}
         >
-          <Button
-            as="button"
-            className="trigger"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            tooltip="Share Project"
+          <RefFindNode
+            innerRef={[Function]}
           >
-            <button
-              className="ui button trigger"
+            <Button
+              as="button"
+              className="trigger"
               onBlur={[Function]}
               onClick={[Function]}
               onFocus={[Function]}
@@ -99,15 +111,63 @@ exports[`<PopupTrigger /> renders without crashing 1`] = `
               onMouseLeave={[Function]}
               tooltip="Share Project"
             >
-              <img
-                alt="Share Project"
-                height={18}
-                src="shareIcon.svg"
-                width={18}
-              />
-               
-            </button>
-          </Button>
+              <Ref
+                innerRef={
+                  Object {
+                    "current": <button
+                      class="ui button trigger"
+                      tooltip="Share Project"
+                    >
+                      <img
+                        alt="Share Project"
+                        height="18"
+                        src="shareIcon.svg"
+                        width="18"
+                      />
+                       
+                    </button>,
+                  }
+                }
+              >
+                <RefFindNode
+                  innerRef={
+                    Object {
+                      "current": <button
+                        class="ui button trigger"
+                        tooltip="Share Project"
+                      >
+                        <img
+                          alt="Share Project"
+                          height="18"
+                          src="shareIcon.svg"
+                          width="18"
+                        />
+                         
+                      </button>,
+                    }
+                  }
+                >
+                  <button
+                    className="ui button trigger"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                    tooltip="Share Project"
+                  >
+                    <img
+                      alt="Share Project"
+                      height={18}
+                      src="shareIcon.svg"
+                      width={18}
+                    />
+                     
+                  </button>
+                </RefFindNode>
+              </Ref>
+            </Button>
+          </RefFindNode>
         </Ref>
       </Portal>
     </Popup>

@@ -125,6 +125,7 @@ exports[`<UnpublishProjects /> renders without crashing 1`] = `
             "variableDefinitions": Array [
               Object {
                 "defaultValue": undefined,
+                "directives": Array [],
                 "kind": "VariableDefinition",
                 "type": Object {
                   "kind": "NonNullType",
@@ -220,15 +221,18 @@ exports[`<UnpublishProjects /> renders without crashing 1`] = `
     >
       <Popup
         content="Unpublish Selection(s)"
+        disabled={false}
+        eventsEnabled={true}
         hideOnScroll={true}
         inverted={true}
-        keepInViewPort={true}
+        offset={0}
         on={
           Array [
             "hover",
             "focus",
           ]
         }
+        pinned={false}
         position="top left"
         size="mini"
         trigger={
@@ -251,6 +255,7 @@ exports[`<UnpublishProjects /> renders without crashing 1`] = `
           closeOnDocumentClick={true}
           closeOnEscape={true}
           closeOnTriggerBlur={true}
+          closeOnTriggerClick={false}
           closeOnTriggerMouseLeave={true}
           eventPool="default"
           mouseEnterDelay={50}
@@ -259,7 +264,7 @@ exports[`<UnpublishProjects /> renders without crashing 1`] = `
           onMount={[Function]}
           onOpen={[Function]}
           onUnmount={[Function]}
-          openOnTriggerClick={true}
+          openOnTriggerClick={false}
           openOnTriggerFocus={true}
           openOnTriggerMouseEnter={true}
           trigger={
@@ -277,37 +282,85 @@ exports[`<UnpublishProjects /> renders without crashing 1`] = `
               </span>
             </Button>
           }
-          triggerRef={[Function]}
+          triggerRef={
+            Object {
+              "current": <button
+                class="ui mini basic button unpublish"
+              >
+                <span
+                  class="unpublish--text"
+                >
+                  Unpublish
+                </span>
+              </button>,
+            }
+          }
         >
           <Ref
             innerRef={[Function]}
           >
-            <Button
-              as="button"
-              basic={true}
-              className="unpublish"
-              onBlur={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              size="mini"
+            <RefFindNode
+              innerRef={[Function]}
             >
-              <button
-                className="ui mini basic button unpublish"
+              <Button
+                as="button"
+                basic={true}
+                className="unpublish"
                 onBlur={[Function]}
                 onClick={[Function]}
                 onFocus={[Function]}
                 onMouseEnter={[Function]}
                 onMouseLeave={[Function]}
+                size="mini"
               >
-                <span
-                  className="unpublish--text"
+                <Ref
+                  innerRef={
+                    Object {
+                      "current": <button
+                        class="ui mini basic button unpublish"
+                      >
+                        <span
+                          class="unpublish--text"
+                        >
+                          Unpublish
+                        </span>
+                      </button>,
+                    }
+                  }
                 >
-                  Unpublish
-                </span>
-              </button>
-            </Button>
+                  <RefFindNode
+                    innerRef={
+                      Object {
+                        "current": <button
+                          class="ui mini basic button unpublish"
+                        >
+                          <span
+                            class="unpublish--text"
+                          >
+                            Unpublish
+                          </span>
+                        </button>,
+                      }
+                    }
+                  >
+                    <button
+                      className="ui mini basic button unpublish"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      <span
+                        className="unpublish--text"
+                      >
+                        Unpublish
+                      </span>
+                    </button>
+                  </RefFindNode>
+                </Ref>
+              </Button>
+            </RefFindNode>
           </Ref>
         </Portal>
       </Popup>

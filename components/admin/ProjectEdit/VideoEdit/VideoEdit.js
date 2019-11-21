@@ -8,7 +8,8 @@ import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { Button, Confirm } from 'semantic-ui-react';
 
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
 import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/upload';
 
@@ -34,9 +35,8 @@ import VideoProjectSupportFiles from 'components/admin/ProjectSupportFiles/Video
 import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg';
 import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
 import withFileUpload from 'hocs/withFileUpload/withFileUpload';
+import { UploadContext } from './UploadContext';
 import './VideoEdit.scss';
-
-export const UploadContext = React.createContext( false );
 
 const VideoEdit = props => {
   const { setIsUploading } = props;
@@ -50,6 +50,7 @@ const VideoEdit = props => {
 
   const [mounted, setMounted] = useState( false );
   const [error, setError] = useState( {} );
+  // eslint-disable-next-line react/destructuring-assignment
   const [projectId, setProjectId] = useState( props.id );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [displayTheUploadSuccessMsg, setDisplayTheUploadSuccessMsg] = useState( false );
@@ -395,6 +396,7 @@ VideoEdit.propTypes = {
   updateVideoProject: PropTypes.func,
   deleteVideoProject: PropTypes.func,
   videoProjectQuery: PropTypes.object,
+  videoProjectUnitsQuery: PropTypes.object,
   router: PropTypes.object,
   setIsUploading: PropTypes.func, // from redux
   uploadExecute: PropTypes.func, // from redux

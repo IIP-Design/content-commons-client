@@ -23,6 +23,7 @@ const USERS_QUERY = gql`
   }
 `;
 
+const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
 const UserDropdown = props => (
   <Query query={ USERS_QUERY }>
@@ -73,5 +74,5 @@ UserDropdown.propTypes = {
   label: PropTypes.string
 };
 
-export default UserDropdown;
+export default React.memo( UserDropdown, areEqual );
 export { USERS_QUERY };

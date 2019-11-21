@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'next/router';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { v4 } from 'uuid';
@@ -14,17 +14,6 @@ import './Priorities.scss';
 
 
 class Priorities extends Component {
-  handleOnClick = e => {
-    e.preventDefault();
-    const categoryIds = this.props.categories.map( cat => cat.key );
-    this.props.router.push( {
-      pathname: '/results',
-      query: {
-        language: 'en-us', term: [this.props.term], categories: categoryIds, sortBy: 'relevance'
-      }
-    } );
-  }
-
   getModalContent = item => {
     const noContent = <div>No content currently available</div>;
     if ( item ) {
@@ -85,6 +74,7 @@ class Priorities extends Component {
       priorities, featured, label
     } = this.props;
     if ( priorities && priorities.length < 3 ) return <div />;
+    const categoryIds = this.props.categories.map( cat => cat.key );
     return (
       <section className="priorities">
         <div className="prioritiescontainer">
@@ -92,15 +82,22 @@ class Priorities extends Component {
             <Header as="h1" size="large">
               { `Department Priority: ${label}` }
             </Header>
-            <a href="/results" onClick={ this.handleOnClick } className="browseAll">
-              { `Browse All` }
-            </a>
+            <Link
+              href={ {
+                pathname: '/results',
+                query: {
+                  language: 'en-us', term: [this.props.term], categories: categoryIds, sortBy: 'relevance'
+                }
+              } }
+            >
+              <a className="browseAll">Browse All</a>
+            </Link>
 
           </div>
           <Loader active={ featured.loading } />
           { featured.error && (
             <Message>
-              { `Oops, something went wrong.  We are unable to load the department priority section.` }
+              Oops, something went wrong.  We are unable to load the department priority section.
             </Message>
           ) }
           <Grid columns="equal" stackable stretched>
@@ -126,8 +123,7 @@ class Priorities extends Component {
                   { this.getModalContent( priorities[0] ) }
                 </Modal.Content>
               </Modal>
-              )
-              }
+              ) }
             </Grid.Column>
             <Grid.Column width={ 8 } className="prioritiesgridright">
               <Item.Group>{ priorities && this.renderPrioritiesWithMeta() }</Item.Group>
@@ -145,8 +141,7 @@ Priorities.propTypes = {
   priorities: PropTypes.array,
   term: PropTypes.string,
   label: PropTypes.string,
-  categories: PropTypes.array,
-  router: PropTypes.object
+  categories: PropTypes.array
 };
 
 
@@ -155,4 +150,4 @@ const mapStateToProps = ( state, props ) => ( {
   priorities: state.featured.priorities[props.term]
 } );
 
-export default withRouter( connect( mapStateToProps )( Priorities ) );
+export default connect( mapStateToProps )( Priorities );

@@ -15,6 +15,7 @@ const VISIBILITY_QUERY = gql`
   }
  `;
 
+const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
 const VisibilityDropdown = props => (
   <Query query={ VISIBILITY_QUERY }>
@@ -75,5 +76,5 @@ VisibilityDropdown.propTypes = {
   label: PropTypes.string
 };
 
-export default VisibilityDropdown;
+export default React.memo( VisibilityDropdown, areEqual );
 export { VISIBILITY_QUERY };

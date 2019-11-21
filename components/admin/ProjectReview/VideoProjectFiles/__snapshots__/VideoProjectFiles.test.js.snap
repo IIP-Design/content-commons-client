@@ -36,8 +36,9 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
               "nativeName": "English",
               "textDirection": "LTR",
             },
+            "signedUrl": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
             "updatedAt": "2019-06-18T13:58:10.024Z",
-            "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
+            "url": "2019/06/123/image-1.jpg",
             "use": Object {
               "__typename": "ImageUse",
               "id": "imu33",
@@ -75,6 +76,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                   "textDirection": "RTL",
                 },
                 "quality": "WEB",
+                "signedUrl": null,
                 "stream": Array [
                   Object {
                     "__typename": "VideoStream",
@@ -152,8 +154,9 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                     "nativeName": "العربية",
                     "textDirection": "RTL",
                   },
+                  "signedUrl": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
                   "updatedAt": "2019-06-18T14:58:10.024Z",
-                  "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
+                  "url": "2019/06/123/image-1.jpg",
                   "use": Object {
                     "__typename": "ImageUse",
                     "id": "imu33",
@@ -195,6 +198,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                   "textDirection": "RTL",
                 },
                 "quality": "WEB",
+                "signedUrl": null,
                 "stream": Array [
                   Object {
                     "__typename": "VideoStream",
@@ -306,8 +310,9 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                     "nativeName": "العربية",
                     "textDirection": "RTL",
                   },
+                  "signedUrl": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
                   "updatedAt": "2019-06-18T14:58:10.024Z",
-                  "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
+                  "url": "2019/06/123/image-1.jpg",
                   "use": Object {
                     "__typename": "ImageUse",
                     "id": "imu33",
@@ -384,12 +389,36 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                     content="Edit"
                     onClick={[Function]}
                   >
-                    <button
-                      className="ui button project_button project_button--edit"
-                      onClick={[Function]}
+                    <Ref
+                      innerRef={
+                        Object {
+                          "current": <button
+                            class="ui button project_button project_button--edit"
+                          >
+                            Edit
+                          </button>,
+                        }
+                      }
                     >
-                      Edit
-                    </button>
+                      <RefFindNode
+                        innerRef={
+                          Object {
+                            "current": <button
+                              class="ui button project_button project_button--edit"
+                            >
+                              Edit
+                            </button>,
+                          }
+                        }
+                      >
+                        <button
+                          className="ui button project_button project_button--edit"
+                          onClick={[Function]}
+                        >
+                          Edit
+                        </button>
+                      </RefFindNode>
+                    </Ref>
                   </Button>
                 </div>
               </GridColumn>
@@ -534,6 +563,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                   "textDirection": "RTL",
                 },
                 "quality": "WEB",
+                "signedUrl": null,
                 "stream": Array [
                   Object {
                     "__typename": "VideoStream",
@@ -580,8 +610,9 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                     "nativeName": "العربية",
                     "textDirection": "RTL",
                   },
+                  "signedUrl": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
                   "updatedAt": "2019-06-18T14:58:10.024Z",
-                  "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
+                  "url": "2019/06/123/image-1.jpg",
                   "use": Object {
                     "__typename": "ImageUse",
                     "id": "imu33",
@@ -637,12 +668,36 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                     content="Edit"
                     onClick={[Function]}
                   >
-                    <button
-                      className="ui button project_button project_button--edit"
-                      onClick={[Function]}
+                    <Ref
+                      innerRef={
+                        Object {
+                          "current": <button
+                            class="ui button project_button project_button--edit"
+                          >
+                            Edit
+                          </button>,
+                        }
+                      }
                     >
-                      Edit
-                    </button>
+                      <RefFindNode
+                        innerRef={
+                          Object {
+                            "current": <button
+                              class="ui button project_button project_button--edit"
+                            >
+                              Edit
+                            </button>,
+                          }
+                        }
+                      >
+                        <button
+                          className="ui button project_button project_button--edit"
+                          onClick={[Function]}
+                        >
+                          Edit
+                        </button>
+                      </RefFindNode>
+                    </Ref>
                   </Button>
                 </div>
               </GridColumn>
@@ -783,6 +838,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                   "textDirection": "RTL",
                 },
                 "quality": "WEB",
+                "signedUrl": null,
                 "stream": Array [
                   Object {
                     "__typename": "VideoStream",
@@ -829,8 +885,9 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
                     "nativeName": "العربية",
                     "textDirection": "RTL",
                   },
+                  "signedUrl": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
                   "updatedAt": "2019-06-18T14:58:10.024Z",
-                  "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
+                  "url": "2019/06/123/image-1.jpg",
                   "use": Object {
                     "__typename": "ImageUse",
                     "id": "imu33",

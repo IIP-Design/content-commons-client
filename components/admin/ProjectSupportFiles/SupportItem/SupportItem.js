@@ -8,7 +8,8 @@ import React, {
 } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
 import { Loader, Popup } from 'semantic-ui-react';
 import debounce from 'lodash/debounce';
 import Focusable from 'components/Focusable/Focusable';
@@ -19,7 +20,8 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import { getCount } from 'lib/utils';
 import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
-import { UploadContext } from '../../ProjectEdit/VideoEdit/VideoEdit';
+import { UploadContext } from '../../ProjectEdit/VideoEdit/UploadContext';
+
 
 import './SupportItem.scss';
 
@@ -102,9 +104,12 @@ const SupportItem = props => {
     hasError();
   }, [item.signedUrl] );
 
+
   if ( !item || !getCount( item ) ) return null;
+  /* eslint-disable react/destructuring-assignment */
   if ( props.data.loading ) return 'Loading...';
   if ( props.data.error ) return <ApolloError error={ props.data.error } />;
+  /* eslint-enable react/destructuring-assignment */
 
   /**
    * Truncates long strings with ellipsis

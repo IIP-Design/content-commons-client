@@ -9,7 +9,8 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
 import { getFileExt } from 'lib/utils';
 import isEmpty from 'lodash/isEmpty';
 import sortBy from 'lodash/sortBy';
@@ -25,6 +26,7 @@ const SupportFileTypeList = props => {
     projectId, save, config: { types }
   } = props;
 
+  // eslint-disable-next-line react/destructuring-assignment
   const type = types[props.type];
 
   const {
@@ -69,6 +71,7 @@ const SupportFileTypeList = props => {
 
   useEffect( () => {
     setSupFiles( fetchFiles( props.data ) );
+  // eslint-disable-next-line react/destructuring-assignment
   }, [props.data] );
 
 
@@ -101,14 +104,12 @@ const SupportFileTypeList = props => {
               extensions={ type.extensions }
               save={ handleSave }
             />
-          )
-        }
+          ) }
       </h3>
       <ul>
         { supFiles.length
           ? sortBy( supFiles, file => file.language.displayName ).map( renderSupportItem )
-          : ( <li style={ { fontSize: '0.875em' } }>{ getNoFilesMessage( headline ) }</li> )
-        }
+          : ( <li style={ { fontSize: '0.875em' } }>{ getNoFilesMessage( headline ) }</li> ) }
       </ul>
     </Fragment>
   );
