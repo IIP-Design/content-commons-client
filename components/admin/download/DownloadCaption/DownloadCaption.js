@@ -7,7 +7,7 @@ import { getS3Url } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import downloadIcon from 'static/icons/icon_download.svg';
 
-const DownloadSrt = props => {
+const DownloadCaption = props => {
   const { data, instructions, isPreview } = props;
   const { error, loading, project } = data;
 
@@ -25,7 +25,7 @@ const DownloadSrt = props => {
           active
           inline="centered"
           style={ { marginBottom: '1em' } }
-          content="Loading SRT(s)..."
+          content="Loading Caption file(s)..."
         />
       </div>
     );
@@ -52,10 +52,12 @@ const DownloadSrt = props => {
           />
           <Item.Content>
             <Item.Header className="download-header">
-              { `Download ${displayName} SRT` }
+              { url.includes( '.srt' ) && `Download ${displayName} SRT` }
+              { url.includes( '.vtt' ) && `Download ${displayName} VTT` }
             </Item.Header>
             <span className="item_hover">
-              { `Download ${displayName} SRT` }
+              { url.includes( '.srt' ) && `Download ${displayName} SRT` }
+              { url.includes( '.vtt' ) && `Download ${displayName} VTT` }
               { isPreview
                 && (
                   <span className="preview-text">
@@ -70,10 +72,10 @@ const DownloadSrt = props => {
   };
 
   const renderFormItems = () => {
-    const srts = files
+    const captions = files
       .filter( unit => unit && unit.url )
       .map( unit => renderFormItem( unit ) );
-    return srts.length ? srts : 'There are no SRTs available for download at this time';
+    return captions.length ? captions : 'There are no caption files available for download at this time';
   };
 
   return (
@@ -84,21 +86,22 @@ const DownloadSrt = props => {
   );
 };
 
-DownloadSrt.propTypes = {
+DownloadCaption.propTypes = {
   data: PropTypes.object,
   instructions: PropTypes.string,
   isPreview: PropTypes.bool
 };
 
-const VIDEO_PROJECT_PREVIEW_SRTS_QUERY = gql`
-  query VideoProjectPreviewSrts($id: ID!) {
+const VIDEO_PROJECT_PREVIEW_CAPTIONS_QUERY = gql`
+  query VideoProjectPreviewCaptions($id: ID!) {
     project: videoProject(id: $id) {
       id
       files: supportFiles(
         where: {
           OR:[
             { filetype: "application/x-subrip" },
-            { filename_ends_with: "srt" }
+            { filename_ends_with: "srt" },
+            { filename_ends_with: "vtt" },
           ]
         },
         orderBy: filename_ASC
@@ -114,12 +117,12 @@ const VIDEO_PROJECT_PREVIEW_SRTS_QUERY = gql`
   }
 `;
 
-export default graphql( VIDEO_PROJECT_PREVIEW_SRTS_QUERY, {
+export default graphql( VIDEO_PROJECT_PREVIEW_CAPTIONS_QUERY, {
   options: props => ( {
     variables: {
       id: props.id
     },
   } )
-} )( DownloadSrt );
+} )( DownloadCaption );
 
-export { VIDEO_PROJECT_PREVIEW_SRTS_QUERY };
+export { VIDEO_PROJECT_PREVIEW_CAPTIONS_QUERY };
