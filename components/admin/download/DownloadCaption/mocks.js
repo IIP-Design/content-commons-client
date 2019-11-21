@@ -1,4 +1,4 @@
-import { VIDEO_PROJECT_PREVIEW_SRTS_QUERY } from './DownloadSrt';
+import { VIDEO_PROJECT_PREVIEW_CAPTIONS_QUERY } from './DownloadCaption';
 
 export const props = {
   id: '123',
@@ -9,7 +9,7 @@ export const props = {
 export const mocks = [
   {
     request: {
-      query: VIDEO_PROJECT_PREVIEW_SRTS_QUERY,
+      query: VIDEO_PROJECT_PREVIEW_CAPTIONS_QUERY,
       variables: { id: props.id }
     },
     result: {
