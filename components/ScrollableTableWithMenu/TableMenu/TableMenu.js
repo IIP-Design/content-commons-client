@@ -58,7 +58,7 @@ class TableMenu extends React.Component {
   )
 
   handleCheckboxFocus = ( array, i ) => {
-    this[array[i]].inputRef.focus();
+    this[array[i]].inputRef.current.focus();
   }
 
   handleCloseMenu = () => this.setState( { displayTableMenu: false } )

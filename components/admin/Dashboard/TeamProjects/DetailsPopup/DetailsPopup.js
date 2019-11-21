@@ -96,7 +96,6 @@ const DetailsPopup = props => {
               content={ renderPopup( __typename, id ) }
               on="click"
               position="bottom left"
-              keepInViewPort
               open={ detailsPopupOpen }
               onOpen={ handleOpen }
               onClose={ handleClose }

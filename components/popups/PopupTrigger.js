@@ -44,7 +44,7 @@ class PopupTrigger extends Component {
           onClose={ this.handleOnClose }
           className={ !this.state.isMobile ? 'popupElem_wrapper' : 'popupElem_wrapper popupElem_wrapper--mobile' }
           content={ this.props.content }
-          horizontalOffset={ 4 }
+          offset={ 4 }
           position={ this.state.isMobile ? 'bottom center' : 'bottom right' }
         />
       </span>
