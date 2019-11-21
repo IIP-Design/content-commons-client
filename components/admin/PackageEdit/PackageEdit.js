@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
-import { compose /* , graphql */ } from 'react-apollo';
+// import { compose /* , graphql */ } from 'react-apollo';
+import compose from 'lodash.flowright';
 import { Button, Confirm } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
