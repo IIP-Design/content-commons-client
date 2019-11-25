@@ -109,10 +109,8 @@ const normalizeTypesData = type => {
   const thumbnail = () => {
     if ( !type.thumbnail ) return {};
     return ( {
-      value: {
-        signedUrl: type.thumbnails && type.thumbnails.length ? type.thumbnails[0].signedUrl : '',
-        alt: type.thumbnails && type.thumbnails.length ? type.thumbnails[0].alt : ''
-      }
+      signedUrl: type.thumbnails && type.thumbnails.length ? type.thumbnails[0].signedUrl : '',
+      alt: type.thumbnails && type.thumbnails.length ? type.thumbnails[0].alt : ''
     } );
   };
 
@@ -126,7 +124,7 @@ const normalizeTypesData = type => {
     team: { value: type.team ? type.team.name : '' },
     status: { value: type.status || '' },
     visibility: { value: type.visibility },
-    thumbnail: thumbnail(),
+    thumbnail: { value: thumbnail() },
     categories: { value: getLangTaxonomies( type.categories ) }
   } );
 
