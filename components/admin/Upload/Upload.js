@@ -5,10 +5,7 @@
  */
 import React, { Component } from 'react';
 import Link from 'next/link';
-import {
-  Button,
-  Modal,
-} from 'semantic-ui-react';
+import { Button, Modal, Icon } from 'semantic-ui-react';
 import dynamic from 'next/dynamic';
 import imageIcon from 'static/icons/icon_150px_images_blue.png';
 import docIcon from 'static/icons/icon_150px_document_blue.png';
@@ -47,7 +44,11 @@ class Upload extends Component {
               className={ modalClassname }
               open={ modalOpen }
               trigger={ (
-                <Button className="type" aria-label="Upload Video Content" onClick={ this.handleModalOpen }>
+                <Button
+                  className="type"
+                  aria-label="Upload Video Content"
+                  onClick={ this.handleModalOpen }
+                >
                   <img src={ videoIcon } alt="Upload video content" />
                   <span>Videos</span>
                 </Button>
@@ -72,6 +73,18 @@ class Upload extends Component {
               <span>Teaching Materials</span>
             </Button>
           </div>
+
+          <div className="upload-content_package">
+            <p className="conjunction">- OR -</p>
+            <Button
+              className="btn primary"
+              aria-label="Create New Package"
+              onClick={ this.handleModalOpen }
+            >
+              <Icon name="plus circle" style={ { opacity: 1 } } />
+              Create New Package
+            </Button>
+          </div>
         </section>
 
         <section className="upload_information">
@@ -81,12 +94,28 @@ class Upload extends Component {
               <li>You have the right to upload.</li>
               <li>Are allowed on the CDP servers.</li>
             </ol>
-            <p>By uploading content you agree to our <Link href="/about"><a>Terms of Use</a></Link>.</p>
-            <p>Still have questions? Read our <Link href="/about"><a>FAQs</a></Link> about uploading content.</p>
+            <p>
+              By uploading content you agree to our{ ' ' }
+              <Link href="/about">
+                <a>Terms of Use</a>
+              </Link>
+              .
+            </p>
+            <p>
+              Still have questions? Read our{ ' ' }
+              <Link href="/about">
+                <a>FAQs</a>
+              </Link>{ ' ' }
+              about uploading content.
+            </p>
           </div>
           <div className="upload_information_bestResults">
             <h3>For best results:</h3>
-            <p>We recommend naming files descriptively using keywords or languages, ex: "<i>project-tile_arabic.jpg</i>", to help pre-populate metadata fields and save you time when uploading content!</p>
+            <p>
+              We recommend naming files descriptively using keywords or languages, ex: "
+              <i>project-tile_arabic.jpg</i>", to help pre-populate metadata fields and save you
+              time when uploading content!
+            </p>
           </div>
         </section>
       </div>
