@@ -38,7 +38,7 @@ const wsLink = process.browser ? getWsLink() : null;
 
 const httpLink = new HttpLink( {
   uri: publicRuntimeConfig.REACT_APP_APOLLO_ENDPOINT,
-  credentials: 'include'
+  credentials: 'include' // send any logged in browser cookies w/each request
 } );
 
 const errorLink = onError( ( { graphQLErrors, networkError } ) => {
