@@ -3,89 +3,19 @@ import { Loader, Table } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
-import compose from 'lodash.flowright';
 import React, { useEffect, useState } from 'react';
 import update from 'immutability-helper';
 import isEqual from 'lodash/isEqual';
 import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
-import gql from 'graphql-tag';
 import orderBy from 'lodash/orderBy';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
+import { TEAM_VIDEO_PROJECTS_QUERY } from 'lib/graphql/queries/dashboard';
 
 // TEMP
 import { packageMocks, documentFileMocks } from './mocks';
 
 const teamPackages = packageMocks[0].result.data;
 const teamDocumentFiles = documentFileMocks[0].result.data;
-
-const TEAM_VIDEO_PROJECTS_QUERY = gql`
-  query VideoProjectsByTeam(
-    $team: String!, $searchTerm: String
-  ) {
-    videoProjects(
-      where: {
-        AND: [
-          { team: { name: $team } },
-          {
-            OR: [
-              { projectTitle_contains: $searchTerm },
-              { descPublic_contains: $searchTerm },
-              { descInternal_contains: $searchTerm },
-              {
-                categories_some: {
-                  translations_some: { name_contains: $searchTerm }
-                }
-              },
-              {
-                author: {
-                  OR: [
-                    { firstName_contains: $searchTerm },
-                    { lastName_contains: $searchTerm },
-                    { email_contains: $searchTerm }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
-      }
-     ) {
-      id
-      createdAt
-      updatedAt
-      team {
-        id
-        name
-        organization
-      }
-      author {
-        id
-        firstName
-        lastName
-      }
-      projectTitle
-      status
-      visibility
-      thumbnails {
-        id
-        url
-        signedUrl
-        alt
-      }
-      categories {
-        id
-        translations {
-          id
-          name
-          language {
-            id
-            locale
-          }
-        }
-      }
-    }
-  }
-`;
 
 const getLangTaxonomies = ( array, locale = 'en-us' ) => {
   if ( !Array.isArray( array ) || !array.length ) return '';
@@ -245,7 +175,6 @@ const TableBody = props => {
   ] );
 
   const tableData = orderBy(
-    // normalizeData( videoProjects ),
     normalizeDashboardData( typesData ),
     tableDatum => {
       let { column } = props;
@@ -291,7 +220,7 @@ TableBody.propTypes = {
   subscribeToStatuses: PropTypes.func
 };
 
-const teamVideoProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
+const teamProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
   name: 'teamVideoProjects',
   props: ( { teamVideoProjects } ) => {
     const { videoProjects, subscribeToMore } = teamVideoProjects;
@@ -323,16 +252,6 @@ const teamVideoProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
   } )
 } );
 
-// const teamPackagesQuery = graphql( PACKAGE_QUERY, {
-//   name: 'teamPackages',
-//   options: {
-//     variables: { id: props.id },
-//   },
-// } );
+export default teamProjectsQuery( TableBody );
 
-// export default teamProjectsQuery( TableBody );
-export default compose(
-  teamVideoProjectsQuery,
-  // teamPackagesQuery,
-)( TableBody );
 export { TEAM_VIDEO_PROJECTS_QUERY };
