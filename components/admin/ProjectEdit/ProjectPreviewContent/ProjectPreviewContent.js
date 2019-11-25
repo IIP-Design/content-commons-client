@@ -12,7 +12,8 @@ import { Dropdown, Embed, Loader } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 
 import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo';
-import DownloadSrt from 'components/admin/download/DownloadSrt/DownloadSrt';
+// import DownloadSrt from 'components/admin/download/DownloadSrt/DownloadSrt';
+import DownloadCaption from 'components/admin/download/DownloadCaption/DownloadCaption';
 import DownloadThumbnail from 'components/admin/download/DownloadThumbnail/DownloadThumbnail';
 import DownloadOtherFiles from 'components/admin/download/DownloadOtherFiles/DownloadOtherFiles';
 import DownloadHelp from 'components/Video/DownloadHelp';
@@ -377,7 +378,7 @@ class ProjectPreviewContent extends React.PureComponent {
                       component: (
                         <DownloadVideo
                           selectedLanguageUnit={ selectedUnit }
-                          instructions={ `Download the video and SRT files in ${selectedLanguage}.
+                          instructions={ `Download the video and caption files in ${selectedLanguage}.
                             This download option is best for uploading this video to web pages.` }
                           burnedInCaptions={ videoBurnedInStatus === 'CAPTIONED' }
                           isPreview
@@ -385,11 +386,11 @@ class ProjectPreviewContent extends React.PureComponent {
                       )
                     },
                     {
-                      title: 'SRT',
+                      title: 'Caption File',
                       component: (
-                        <DownloadSrt
+                        <DownloadCaption
                           id={ id }
-                          instructions="Download SRT(s)"
+                          instructions="Download caption file(s) for this video."
                           isPreview
                         />
                       )
