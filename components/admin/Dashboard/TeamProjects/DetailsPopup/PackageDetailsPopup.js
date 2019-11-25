@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import ApolloError from 'components/errors/ApolloError';
-import { formatBytes, getCount } from 'lib/utils';
 
 import { packageDocsMock } from './packageDocsMock';
 
@@ -19,25 +18,27 @@ const PACKAGE_DOCUMENTS_QUERY = gql`
   }
 `;
 
-// const PackageDetailsPopup = props => (
-//   <Query query={ PACKAGE_DOCUMENTS_QUERY } variables={ { id: props.id } }>
-//     {
-//       ( { loading, error, data } ) => {
-//         if ( loading ) return <p>Loading....</p>;
-//         if ( error ) return <ApolloError error={ error } />;
-//         if ( !data.package ) return null;
+// const PackageDetailsPopup = props => {
+//   const { loading, error, data } = useQuery( PACKAGE_DOCUMENTS_QUERY, {
+//     variables: { id: props.id }
+//   } );
 
-//         const { documents } = data.package;
+//   if ( loading ) return <p>Loading....</p>;
+//   if ( error ) return <ApolloError error={ error } />;
 
-//         return (
-//           <ul>
-//             { documents.map( doc => <li>{ doc.filename }</li> ) }
-//           </ul>
-//         );
-//       }
-//     }
-//   </Query>
-// );
+//   const { documents } = data.package;
+//   if ( !documents.length ) return null;
+
+//   return (
+//     <div className="details-files">
+//       <ul>
+//         { documents.map( doc => (
+//           <li key={ doc.id }>{ doc.filename }</li>
+//         ) ) }
+//       </ul>
+//     </div>
+//   );
+// };
 
 const PackageDetailsPopup = props => {
   const documents = packageDocsMock.result.data;

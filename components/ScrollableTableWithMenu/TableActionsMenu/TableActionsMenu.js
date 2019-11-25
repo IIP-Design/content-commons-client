@@ -18,6 +18,9 @@ import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
 import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
 import './TableActionsMenu.scss';
 
+// TEMP
+import { packageMocks, documentFileMocks } from '../TableBody/mocks';
+
 class TableActionsMenu extends React.Component {
   state = {
     displayConfirmationMsg: false,
@@ -126,7 +129,13 @@ class TableActionsMenu extends React.Component {
   };
 
   hasSelectedAllDrafts = () => {
-    const draftProjects = this.getDraftProjects( this.props.teamVideoProjects.videoProjects || null );
+    // const draftProjects = this.getDraftProjects( this.props.teamVideoProjects.videoProjects || null );
+    const teamPackages = packageMocks[0].result.data;
+    const teamDocumentFiles = documentFileMocks[0].result.data;
+    const { videoProjects } = this.props.teamVideoProjects;
+    const projectsWithPackages = [...teamPackages, ...teamDocumentFiles, ...videoProjects];
+    const draftProjects = this.getDraftProjects( projectsWithPackages || null );
+
     const selections = this.getSelectedProjectsIds();
 
     if ( selections.length > 0 ) {
@@ -174,12 +183,18 @@ class TableActionsMenu extends React.Component {
     if ( !teamVideoProjects || !teamVideoProjects.videoProjects ) return null;
 
     const { videoProjects } = teamVideoProjects;
+    // TEMP
+    const teamPackages = packageMocks[0].result.data;
+    const teamDocumentFiles = documentFileMocks[0].result.data;
+    const projectsWithPackages = [...teamPackages, ...teamDocumentFiles, ...videoProjects];
 
-    const projectsOnPage = this.getProjectsOnPage( videoProjects );
+    // const projectsOnPage = this.getProjectsOnPage( videoProjects );
+    const projectsOnPage = this.getProjectsOnPage( projectsWithPackages );
 
     const projectsOnPageCount = getCount( projectsOnPage );
 
-    const selections = this.getSelectedProjects( videoProjects );
+    // const selections = this.getSelectedProjects( videoProjects );
+    const selections = this.getSelectedProjects( projectsWithPackages );
 
     const selectionsCount = getCount( selections );
 

@@ -2,7 +2,8 @@ import './TableBody.scss';
 import { Loader, Table } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import PropTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
 import React, { useEffect, useState } from 'react';
 import update from 'immutability-helper';
 import isEqual from 'lodash/isEqual';
@@ -12,9 +13,10 @@ import orderBy from 'lodash/orderBy';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 
 // TEMP
-import { mocks } from './mocks';
+import { packageMocks, documentFileMocks } from './mocks';
 
-const teamPackages = mocks[0].result.data;
+const teamPackages = packageMocks[0].result.data;
+const teamDocumentFiles = documentFileMocks[0].result.data;
 
 const TEAM_VIDEO_PROJECTS_QUERY = gql`
   query VideoProjectsByTeam(
@@ -96,84 +98,52 @@ const getLangTaxonomies = ( array, locale = 'en-us' ) => {
   );
 };
 
-// const normalizeData = videoProjects => {
-//   const normalizedVideoProjects = [];
+const normalizeTypesData = type => {
+  const projectTitle = () => {
+    if ( type.__typename === 'VideoProject' ) return type.projectTitle;
+    if ( type.__typename === 'Package' ) return type.title;
+    if ( type.__typename === 'DocumentFile' ) return type.filename;
+    return '';
+  };
 
-//   videoProjects.forEach( videoProject => {
-//     const normalizedProject = Object.create( {}, {
-//       id: { value: videoProject.id },
-//       createdAt: { value: videoProject.createdAt },
-//       updatedAt: { value: videoProject.updatedAt },
-//       projectTitle: { value: videoProject.projectTitle },
-//       author: { value: `${videoProject.author ? videoProject.author.firstName : ''} ${videoProject.author ? videoProject.author.lastName : ''}` },
-//       team: { value: videoProject.team ? videoProject.team.name : '' },
-//       status: { value: videoProject.status },
-//       visibility: { value: videoProject.visibility },
-//       thumbnail: {
-//         value: {
-//           signedUrl: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].signedUrl : '',
-//           alt: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].alt : ''
-//         }
-//       },
-//       categories: { value: getLangTaxonomies( videoProject.categories ) }
-//     } );
-//     normalizedVideoProjects.push( normalizedProject );
-//   } );
-
-//   return normalizedVideoProjects;
-// };
-
-const normalizeVideoProject = videoProject => {
-  const normalizedVideoProject = Object.create( {}, {
-    id: { value: videoProject.id },
-    createdAt: { value: videoProject.createdAt },
-    updatedAt: { value: videoProject.updatedAt },
-    projectTitle: { value: videoProject.projectTitle },
-    author: { value: `${videoProject.author ? videoProject.author.firstName : ''} ${videoProject.author ? videoProject.author.lastName : ''}` },
-    team: { value: videoProject.team ? videoProject.team.name : '' },
-    status: { value: videoProject.status },
-    visibility: { value: videoProject.visibility },
-    thumbnail: {
+  const thumbnail = () => {
+    if ( !type.thumbnail ) return {};
+    return ( {
       value: {
-        signedUrl: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].signedUrl : '',
-        alt: videoProject.thumbnails && videoProject.thumbnails.length ? videoProject.thumbnails[0].alt : ''
+        signedUrl: type.thumbnails && type.thumbnails.length ? type.thumbnails[0].signedUrl : '',
+        alt: type.thumbnails && type.thumbnails.length ? type.thumbnails[0].alt : ''
       }
-    },
-    categories: { value: getLangTaxonomies( videoProject.categories ) }
+    } );
+  };
+
+  const normalizedTypeData = Object.create( {}, {
+    __typename: { value: type.__typename },
+    id: { value: type.id },
+    createdAt: { value: type.createdAt },
+    updatedAt: { value: type.updatedAt },
+    projectTitle: { value: projectTitle() },
+    author: { value: `${type.author ? type.author.firstName : ''} ${type.author ? type.author.lastName : ''}` },
+    team: { value: type.team ? type.team.name : '' },
+    status: { value: type.status || '' },
+    visibility: { value: type.visibility },
+    thumbnail: thumbnail(),
+    categories: { value: getLangTaxonomies( type.categories ) }
   } );
-  return normalizedVideoProject;
+
+  return normalizedTypeData;
 };
 
-const normalizePackage = pkg => {
-  const normalizedPackage = Object.create( {}, {
-    __typename: { value: pkg.__typename },
-    id: { value: pkg.id },
-    createdAt: { value: pkg.createdAt },
-    updatedAt: { value: pkg.updatedAt },
-    projectTitle: { value: pkg.title },
-    author: { value: `${pkg.author ? pkg.author.firstName : ''} ${pkg.author ? pkg.author.lastName : ''}` },
-    team: { value: pkg.team ? pkg.team.name : '' },
-    status: { value: pkg.status || '' },
-    visibility: { value: pkg.visibility },
-    thumbnail: {},
-    categories: { value: getLangTaxonomies( pkg.categories ) }
-  } );
-  return normalizedPackage;
-};
-
-const normalizeProjectData = projects => {
-  const { videoProjects, packages } = projects;
+const normalizeDashboardData = types => {
   const normalizedProjects = [];
-
-  if ( videoProjects.length > 0 ) {
-    videoProjects.forEach( videoProject => normalizedProjects.push( normalizeVideoProject( videoProject ) ) );
-  }
-
-  if ( packages.length > 0 ) {
-    packages.forEach( pkg => normalizedProjects.push( normalizePackage( pkg ) ) );
-  }
-
+  types.forEach( type => normalizedProjects.push( normalizeTypesData( type ) ) );
   return normalizedProjects;
+};
+
+const getTypesData = types => {
+  let typesData = [];
+  const filterTypesData = types.filter( type => type !== null );
+  typesData = typesData.concat( ...filterTypesData );
+  return typesData;
 };
 
 const TableBody = props => {
@@ -269,15 +239,16 @@ const TableBody = props => {
   // Default sort by createdAt & DESC
   const direction = props.direction ? `${props.direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
 
-  // TEMP
-  const propsWithPackages = { ...props, teamPackages };
+  // TEMP DASHBOARD DATA
+  const typesData = getTypesData( [
+    props.teamVideoProjects.videoProjects,
+    teamPackages,
+    teamDocumentFiles
+  ] );
 
   const tableData = orderBy(
     // normalizeData( videoProjects ),
-    normalizeProjectData( {
-      videoProjects: propsWithPackages.teamVideoProjects.videoProjects,
-      packages: propsWithPackages.teamPackages,
-    } ),
+    normalizeDashboardData( typesData ),
     tableDatum => {
       let { column } = props;
       if ( !column ) column = 'createdAt';
@@ -309,6 +280,7 @@ const TableBody = props => {
 };
 
 TableBody.propTypes = {
+  column: PropTypes.string,
   teamVideoProjects: PropTypes.object,
   searchTerm: PropTypes.string,
   selectedItems: PropTypes.object,

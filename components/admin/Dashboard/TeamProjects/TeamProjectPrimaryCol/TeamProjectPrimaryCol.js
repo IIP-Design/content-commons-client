@@ -13,10 +13,8 @@ import {
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import ProjectPreviewContent from 'components/admin/ProjectEdit/ProjectPreviewContent/ProjectPreviewContent';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
+import DetailsPopupHOOK from '../DetailsPopup/DetailsPopupHOOK';
 import './TeamProjectPrimaryCol.scss';
-
-// TEMP
-import PackageDetailsPopup from '../DetailsPopup/PackageDetailsPopup';
 
 const handleDataActionsOffClick = e => {
   // Check if click target is a data actions menu link
@@ -74,9 +72,9 @@ const TeamProjectPrimaryCol = props => {
   const getEditUrl = ( format = '' ) => {
     if ( isPublishing || !format ) return null;
 
-    // TEMP PACKAGE
-    if ( d.__typename ) return `/admin/package/${id}`;
-    //
+    // TEMP Package || DocumentFile url
+    if ( d.__typename === 'Package' ) return `/admin/package/${id}`;
+    if ( d.__typename === 'DocumentFile' ) return `/admin/document/${id}`;
 
     if ( format === 'pretty' ) {
       return `/admin/project/video/${id}/edit`;
@@ -118,23 +116,7 @@ const TeamProjectPrimaryCol = props => {
               <div className="placeholder outer">
                 <div className="placeholder inner" />
               </div>
-            )
-          }
-          { /* { d.thumbnail.signedUrl
-            ? (
-              <img
-                className={ isDraft ? 'draft' : null }
-                src={ d.thumbnail.signedUrl }
-                alt={ d.thumbnail.alt }
-              />
-            )
-            : (
-              <div className="placeholder outer">
-                <div className="placeholder inner" />
-              </div>
-            )
-          } */ }
-
+            ) }
           { isDraft && (
             <p className="draft-overlay">
               <span>{ d.status }</span>
@@ -215,25 +197,11 @@ const TeamProjectPrimaryCol = props => {
                       <ProjectPreviewContent id={ id } />
                     </Modal.Content>
                   </Modal>
-                  <span className="separator">|</span>
-
-                  { !d.__typename && <DetailsPopup id={ id } /> }
-                  { d.__typename && (
-                    <Popup
-                      className="detailsFiles_popup"
-                      trigger={ (
-                        <button
-                          type="button"
-                          className="linkStyle projects_data_actions_action"
-                          data-projectitempopup="detailsPopup"
-                        >
-                          Files
-                        </button>
-                      ) }
-                      content={ <PackageDetailsPopup /> }
-                      on="click"
-                      position="bottom left"
-                    />
+                  { d.__typename !== 'DocumentFile' && (
+                    <Fragment>
+                      <span className="separator">|</span>
+                      <DetailsPopupHOOK id={ id } />
+                    </Fragment>
                   ) }
                 </Fragment>
               ) }
