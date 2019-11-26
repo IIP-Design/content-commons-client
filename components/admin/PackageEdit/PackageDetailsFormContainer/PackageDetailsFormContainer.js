@@ -59,6 +59,7 @@ const PackageDetailsFormContainer = props => {
     const initialValues = {
       title: pkg.title || '',
       type: pkg.type || '',
+      termsConditions: false,
       files: files.map( doc => {
         const {
           id, bureaus, categories, tags, visibility
