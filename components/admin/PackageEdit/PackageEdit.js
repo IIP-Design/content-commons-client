@@ -6,11 +6,8 @@ import compose from 'lodash.flowright';
 import { Button, Confirm } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
-import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
-import FormInstructions from 'components/admin/FormInstructions/FormInstructions';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
-import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg';
 import PackageDetailsFormContainer from './PackageDetailsFormContainer/PackageDetailsFormContainer';
 import PackageActions from './PackageActions/PackageActions';
 import PackageFiles from './PackageFiles/PackageFiles';
@@ -21,15 +18,11 @@ import './PackageEdit.scss';
 
 const PackageEdit = props => {
   const SAVE_MSG_DELAY = 2000;
-  const UPLOAD_SUCCESS_MSG_DELAY = SAVE_MSG_DELAY + 1000;
-
-  let uploadSuccessTimer = null;
   let saveMsgTimer = null;
 
   const [packageId, setPackageId] = useState( /* props.id */ '' );
   const [mounted, setMounted] = useState( false );
   const [error, setError] = useState( {} );
-  const [displayTheUploadSuccessMsg, setDisplayTheUploadSuccessMsg] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
 
   const [notification, setNotification] = useState( {
@@ -41,7 +34,6 @@ const PackageEdit = props => {
     setMounted( true );
     return () => {
       setMounted( false );
-      clearTimeout( uploadSuccessTimer );
       clearTimeout( saveMsgTimer );
 
       // props.uploadReset(); // clear files to upload store
@@ -79,13 +71,6 @@ const PackageEdit = props => {
     //  * is no package id OR package has been published
     //  */
     // return !packageId || ( pkgPublishedQuery && pkgPublishedQuery.package && pkgPublishedQuery.package.publishedAt );
-  };
-
-  const handleDisplayUploadSuccessMsg = () => {
-    if ( mounted ) {
-      setDisplayTheUploadSuccessMsg( false );
-    }
-    uploadSuccessTimer = null;
   };
 
   const handleDisplaySaveMsg = () => {
@@ -131,10 +116,8 @@ const PackageEdit = props => {
 
   const handleUploadComplete = () => {
     console.log( 'Upload Complete' );
-    // setDisplayTheUploadSuccessMsg( true );
     // updateNotification( 'Project saved as draft' );
     // delayUnmount( handleDisplaySaveMsg, saveMsgTimer, SAVE_MSG_DELAY );
-    // delayUnmount( handleDisplayUploadSuccessMsg, uploadSuccessTimer, UPLOAD_SUCCESS_MSG_DELAY );
   };
 
   const handlePublish = () => {
@@ -277,21 +260,6 @@ const PackageEdit = props => {
         show={ showNotification }
         msg={ notificationMessage }
       />
-
-      { /* upload progress */ }
-      <div className="edit-package__status">
-        { !packageId && !isUploading && <FormInstructions type="package" /> }
-        { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
-
-        { isUploading
-          && (
-          <FileUploadProgressBar
-            filesToUpload={ filesToUpload }
-            label="Please keep this page open until upload is complete"
-            fileProgressMessage
-          />
-          ) }
-      </div>
 
       <PackageDetailsFormContainer
         id={ packageId }
