@@ -35,8 +35,6 @@ const PackageEdit = props => {
     return () => {
       setMounted( false );
       clearTimeout( saveMsgTimer );
-
-      // props.uploadReset(); // clear files to upload store
     };
   }, [] );
 
@@ -84,10 +82,6 @@ const PackageEdit = props => {
     props.router.push( { pathname: '/admin/dashboard' } );
   };
 
-  const handleUploadProgress = () => {
-    console.log( 'Handle Upload Progress' );
-  };
-
   const handleDeleteConfirm = () => {
     console.log( 'Confirm Delete' );
     // const { deletePackage } = props;
@@ -99,25 +93,6 @@ const PackageEdit = props => {
     // if ( deletedPackageId ) {
     //   handleExit();
     // }
-  };
-
-  const handleSaveDraft = () => {
-    console.log( 'Save Draft' );
-    // const { updatePackage } = props;
-    // const data = buildUpdatePackageTree( filesToUpload, title, visibility, bureaus, categories, tags );
-
-    // await updatePackage( {
-    //   variables: {
-    //     data,
-    //     where: { id: packageId }
-    //   }
-    // } ).catch( err => console.dir( err ) );
-  };
-
-  const handleUploadComplete = () => {
-    console.log( 'Upload Complete' );
-    // updateNotification( 'Project saved as draft' );
-    // delayUnmount( handleDisplaySaveMsg, saveMsgTimer, SAVE_MSG_DELAY );
   };
 
   const handlePublish = () => {
@@ -159,32 +134,6 @@ const PackageEdit = props => {
     // }
   };
 
-  const handleUpload = () => {
-    console.log( 'Upload' );
-    // const { id, title } = pkg;
-    // const { /* uploadExecute, */ updateFile } = props;
-
-    // // If there are files to upload, upload them
-    // if ( filesToUpload && filesToUpload.length ) {
-    //   setIsUploading( true );
-
-    //   // 1. Upload files to S3 and fetch file meta data
-    //   await uploadExecute( id, filesToUpload, handleUploadProgress, updateFile );
-
-    //   // 2. once all files have been uploaded, create and save new project (only new)
-    //   handleSaveDraft( id, title, tags );
-
-    //   // 3. clean up upload process
-    //   handleUploadComplete();
-
-    //   // 4. set package id to newly created package (what if existing package?)
-    //   setPackageId( id );
-
-    //   // 5. update url to reflect a new package (only new)
-    //   addPackageIdToUrl( id );
-    // }
-  };
-
   const centeredStyles = {
     position: 'absolute',
     top: '9em',
@@ -193,10 +142,6 @@ const PackageEdit = props => {
   };
 
   const { showNotification, notificationMessage } = notification;
-
-  // for UI dev, remove afterwards
-  const isUploading = false;
-  const filesToUpload = [];
 
   return (
     <div className="edit-package">
@@ -263,7 +208,6 @@ const PackageEdit = props => {
 
       <PackageDetailsFormContainer
         id={ packageId }
-        handleUpload={ handleUpload }
         updateNotification={ updateNotification }
         // send mock data here for UI dev, remove after GraphQL
         data={ mocks[0].result.data }
