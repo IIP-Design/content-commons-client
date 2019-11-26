@@ -4,7 +4,7 @@ import { connect } from 'formik';
 import { Form, Grid } from 'semantic-ui-react';
 // remove sortBy after GraphQL is implemented
 import sortBy from 'lodash/sortBy';
-import { getCount, getFileNameNoExt } from 'lib/utils';
+import { getCount } from 'lib/utils';
 import MetaTerms from 'components/admin/PackageEdit/PackageFiles/PressPackageFile/MetaTerms/MetaTerms';
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
@@ -14,24 +14,15 @@ import { bureaus } from 'components/admin/dropdowns/BureauOfficesDropdown/mocks'
 import './PressPackageFile.scss';
 
 const PressPackageFile = props => {
-  const {
-    id, filename, filetype, image
-  } = props.unit;
+  const { id, filename, image } = props.unit;
   const { errors, touched, values } = props.formik;
-
-  const fileNameNoExt = getFileNameNoExt( filename );
   const unitValues = values.files.find( val => val.id === id );
 
   const metaData = [
     {
       name: 'file-name',
       displayName: 'File Name',
-      definition: fileNameNoExt || filename
-    },
-    {
-      name: 'release-type',
-      displayName: 'Release Type',
-      definition: filetype
+      definition: filename || ''
     },
     {
       name: 'pages',
