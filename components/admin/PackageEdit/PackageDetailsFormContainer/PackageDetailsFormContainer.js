@@ -115,8 +115,9 @@ const PackageDetailsFormContainer = props => {
       initialValues={ getInitialValues() }
       validationSchema={ props.id ? baseSchema : initialSchema }
       onSubmit={ onHandleSubmit }
-      render={ renderContent }
-    />
+    >
+      { renderContent }
+    </Formik>
   );
 };
 
