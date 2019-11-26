@@ -230,11 +230,57 @@ propsArray.forEach( props => {
         const modalContent = wrapper.find( 'ModalContent' );
 
         modalContent.forEach( mc => {
-          const component = mc.find( props.postType.charAt(0).toUpperCase() + props.postType.slice( 1 ) );
+          const component = mc.find( props.postType.charAt( 0 ).toUpperCase() + props.postType.slice( 1 ) );
 
           expect( mc.exists() ).toEqual( true );
           expect( component.exists() ).toEqual( true );
-          expect( mc.childAt(0) ).toEqual( component );
+          expect( mc.childAt( 0 ) ).toEqual( component );
+        } );
+      } );
+      it( 'renders the correct header', () => {
+        const wrapper = shallow( Component );
+        const header = wrapper.find( 'Header' );
+        const postTypeLabel = props.postTypeLabels.find( type => type.key === props.postType );
+
+        expect( header.exists() ).toEqual( true );
+        expect( header.childAt( 0 ).text() ).toBe( `Latest ${postTypeLabel.display_name}s` );
+      } );
+      it( 'renders two items on the right starting at index 1', () => {
+        const wrapper = shallow( Component );
+        const items = wrapper.find( 'ItemGroup Modal' );
+
+        expect( items.exists() ).toEqual( true );
+        expect( items.length ).toEqual( 2 );
+        items.forEach( ( item, i ) => {
+          const trigger = item.prop( 'trigger' );
+          if ( i === 0 ) {
+            expect( shallow( trigger ).contains( 'The Second Title' ) ).toEqual( true );
+          } else {
+            expect( shallow( trigger ).contains( 'The Third Title' ) ).toEqual( true );
+          }
+        } );
+      } );
+      it( 'renders no more than 3 categories', () => {
+        const wrapper = shallow( Component );
+        const items = wrapper.find( 'ItemGroup Modal' );
+
+        expect( items.exists() ).toEqual( true );
+        items.forEach( item => {
+          const trigger = item.prop( 'trigger' );
+          expect( shallow( trigger ).find( 'span.categories' ).exists() ).toEqual( true );
+          expect( shallow( trigger ).find( 'span.categories' ).text().split( ' · ' ).length ).toBeLessThanOrEqual( 3 );
+        } );
+      } );
+      it( 'renders the Browse All link and the correct href', () => {
+        const wrapper = shallow( Component );
+        const link = wrapper.find( 'Link' );
+
+        expect( link.exists() ).toEqual( true );
+        expect( link.find( 'a' ).text() ).toBe( 'Browse All' );
+        expect( link.find( 'a' ).hasClass( 'browseAll' ) ).toEqual( true );
+        expect( link.prop( 'href' ).pathname ).toBe( '/results' );
+        link.prop( 'href' ).query.postTypes.forEach( postType => {
+          expect( postType ).toBe( props.postType );
         } );
       } );
     }
