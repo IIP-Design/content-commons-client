@@ -7,6 +7,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Grid, Input } from 'semantic-ui-react';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
+import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import TermsConditions from 'components/admin/TermsConditions/TermsConditions';
 import './PackageDetailsForm.scss';
 
@@ -90,6 +91,16 @@ const PackageDetailsForm = props => {
                 handleOnChange={ () => {} }
                 error={ touched.termsConditions && !!errors.termsConditions }
               />
+            </Grid.Column>
+            <Grid.Column mobile={ 16 } computer={ 5 }>
+              <ButtonAddFiles
+                accept=".doc, .docx"
+                onChange={ () => {} }
+                fluid
+                multiple
+              >
+                + Add Files
+              </ButtonAddFiles>
             </Grid.Column>
           </Grid.Row>
 
