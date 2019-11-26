@@ -255,6 +255,18 @@ TableBody.propTypes = {
   subscribeToStatuses: PropTypes.func
 };
 
+const updateProjectStatus = ( prev, { subscriptionData: { data: { projectStatusChange } } } ) => {
+  if ( !projectStatusChange ) {
+    return prev;
+  }
+  const projectIndex = prev.videoProjects.findIndex( p => p.id === projectStatusChange.id );
+  if ( projectIndex === -1 ) {
+    return prev;
+  }
+  // Using immutability helper in order to ensure that React will rerender after the status change
+  return update( prev, { videoProjects: { [projectIndex]: { status: { $set: projectStatusChange.status } } } } );
+};
+
 const teamProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
   name: 'teamVideoProjects',
   props: ( { teamVideoProjects } ) => {
@@ -266,17 +278,7 @@ const teamProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
       subscribeToStatuses: () => subscribeToMore( {
         document: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
         variables: { ids: videoProjectIds },
-        updateQuery: ( prev, { subscriptionData: { data: { projectStatusChange } } } ) => {
-          if ( !projectStatusChange ) {
-            return prev;
-          }
-          const projectIndex = prev.videoProjects.findIndex( p => p.id === projectStatusChange.id );
-          if ( projectIndex === -1 ) {
-            return prev;
-          }
-          // Using immutability helper in order to ensure that React will rerender after the status change
-          return update( prev, { videoProjects: { [projectIndex]: { status: { $set: projectStatusChange.status } } } } );
-        }
+        updateQuery: updateProjectStatus
       } )
     };
   },
@@ -288,4 +290,7 @@ const teamProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
 } );
 
 export default teamProjectsQuery( TableBody );
-export { TEAM_VIDEO_PROJECTS_QUERY };
+const TableBodyRaw = TableBody;
+export {
+  TEAM_VIDEO_PROJECTS_QUERY, updateProjectStatus, teamProjectsQuery, TableBodyRaw
+};
