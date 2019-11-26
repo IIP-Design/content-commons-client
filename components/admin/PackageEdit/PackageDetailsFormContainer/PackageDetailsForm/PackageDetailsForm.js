@@ -7,6 +7,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Grid, Input } from 'semantic-ui-react';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
+import TermsConditions from 'components/admin/TermsConditions/TermsConditions';
 import './PackageDetailsForm.scss';
 
 /**
@@ -79,6 +80,15 @@ const PackageDetailsForm = props => {
                 onChange={ handleChange }
                 readOnly
                 tabIndex={ -1 }
+              />
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row reversed="computer">
+            <Grid.Column mobile={ 11 }>
+              <TermsConditions
+                handleOnChange={ () => {} }
+                error={ touched.termsConditions && !!errors.termsConditions }
               />
             </Grid.Column>
           </Grid.Row>
