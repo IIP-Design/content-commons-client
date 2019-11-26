@@ -1,4 +1,4 @@
-@import "styles/colors.scss";
+@import 'styles/colors.scss';
 
 .upload-content {
   display: inline-block;
@@ -11,9 +11,11 @@
   .contentTypes {
     display: flex;
     justify-content: center;
+    padding-bottom: 3.5rem;
     text-align: center;
     @media screen and (max-width: 640px) {
       flex-wrap: wrap;
+      padding-bottom: 1rem;
     }
 
     .type.ui.button {
@@ -62,6 +64,29 @@
         img {
           transform: scale(1.1);
         }
+      }
+    }
+  }
+
+  &_package {
+    text-align: center;
+    margin-bottom: 1.2rem;
+
+    @media screen and (min-width: 640px) {
+      margin-bottom: 0;
+    }
+
+    .conjunction {
+      font-weight: bold;
+      font-size: 22px;
+    }
+
+    .ui.button.primary {
+      background-color: $hover-blue;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      &:hover {
+        background-color: $blue;
       }
     }
   }
