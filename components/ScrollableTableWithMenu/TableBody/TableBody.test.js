@@ -238,23 +238,24 @@ describe( '<TableBody />', () => {
     it( 'updates the correct project', () => {
       const subscriptionData = { ...mocks[1].result };
       const result = updateProjectStatus( { videoProjects }, { subscriptionData } );
-      const expected = { videoProjects: [{ ...videoProjects[0], status: 'DRAFT' }, { ...videoProjects[1] }] };
-      expect( result ).toEqual( expected );
+      expect( videoProjects[0].status ).toEqual( 'PUBLISHED' );
+      expect( result.videoProjects[0].status ).toEqual( 'DRAFT' );
+      expect( videoProjects[0].id ).toEqual( result.videoProjects[0].id );
     } );
 
     it( 'does not update anything for null data', () => {
       const subscriptionData = { data: { projectStatusChange: null } };
-      const result = updateProjectStatus( { videoProjects }, { subscriptionData } );
-      const expected = { videoProjects };
-      expect( result ).toEqual( expected );
+      const prev = { videoProjects };
+      const result = updateProjectStatus( prev, { subscriptionData } );
+      expect( result ).toEqual( prev );
     } );
 
     it( 'does not update anything for a non existent project ID', () => {
       const subscriptionData = { ...mocks[1].result };
       subscriptionData.data.projectStatusChange.id = 'xxxx';
-      const result = updateProjectStatus( { videoProjects }, { subscriptionData } );
-      const expected = { videoProjects };
-      expect( result ).toEqual( expected );
+      const prev = { videoProjects };
+      const result = updateProjectStatus( prev, { subscriptionData } );
+      expect( result ).toEqual( prev );
     } );
   } );
 } );
