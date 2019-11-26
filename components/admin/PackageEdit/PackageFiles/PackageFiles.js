@@ -50,9 +50,6 @@ const PackageFiles = props => {
           </h3>
           <EditPackageFiles files={ units } />
         </div>
-        <ButtonAddFiles className="basic edit-package__btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>
-          + Add Files
-        </ButtonAddFiles>
       </div>
 
       <div className="files">
