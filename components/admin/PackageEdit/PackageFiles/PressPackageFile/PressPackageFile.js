@@ -94,7 +94,7 @@ const PressPackageFile = props => {
                   <Form.Dropdown
                     id={ `bureaus-${id}` }
                     name={ `bureaus-${id}` }
-                    label="Author Bureaus/Offices"
+                    label="Lead Bureau(s)"
                     options={ options }
                     placeholder="–"
                     value={ unitValues.bureaus }
