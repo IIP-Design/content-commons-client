@@ -4,7 +4,7 @@ import { Button } from 'semantic-ui-react';
 
 const ButtonAddFiles = props => {
   const {
-    onChange, disabled, className, children, accept, multiple
+    onChange, disabled, className, children, accept, multiple, fluid
   } = props;
   const fileInput = React.createRef();
 
@@ -32,6 +32,7 @@ const ButtonAddFiles = props => {
         type="button"
         onClick={ handleOnClick }
         className={ className || 'primary' }
+        fluid={ fluid }
       >{ children }
       </Button>
       { /* Hidden files dialogue box */ }
@@ -49,7 +50,8 @@ const ButtonAddFiles = props => {
 };
 
 ButtonAddFiles.defaultProps = {
-  disabled: false
+  disabled: false,
+  fluid: false
 };
 
 ButtonAddFiles.propTypes = {
@@ -58,7 +60,8 @@ ButtonAddFiles.propTypes = {
   multiple: PropTypes.bool,
   accept: PropTypes.string,
   children: PropTypes.node,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  fluid: PropTypes.bool
 };
 
 export default ButtonAddFiles;
