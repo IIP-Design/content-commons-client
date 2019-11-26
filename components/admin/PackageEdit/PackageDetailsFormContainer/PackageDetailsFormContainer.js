@@ -81,34 +81,28 @@ const PackageDetailsFormContainer = props => {
     console.log( values, actions );
   };
 
-  const renderContent = formikProps => {
-    const contentStyle = {
-      border: `3px solid ${( props.id ) ? 'transparent' : '#02bfe7'}`
-    };
-
-    return (
-      <div className="edit-package__form" style={ contentStyle }>
-        <Notification
-          el="p"
-          customStyles={ {
-            position: 'absolute',
-            top: '9em',
-            left: '50%',
-            transform: 'translateX(-50%)'
-          } }
-          show={ showNotification }
-          msg="Changes saved"
-        />
-        <PackageDetailsForm
-          { ...formikProps }
-          { ...props }
-          save={ save }
-        >
-          { children }
-        </PackageDetailsForm>
-      </div>
-    );
-  };
+  const renderContent = formikProps => (
+    <div className="edit-package__form">
+      <Notification
+        el="p"
+        customStyles={ {
+          position: 'absolute',
+          top: '9em',
+          left: '50%',
+          transform: 'translateX(-50%)'
+        } }
+        show={ showNotification }
+        msg="Changes saved"
+      />
+      <PackageDetailsForm
+        { ...formikProps }
+        { ...props }
+        save={ save }
+      >
+        { children }
+      </PackageDetailsForm>
+    </div>
+  );
 
   return (
     <Formik
