@@ -63,7 +63,7 @@ const PackageDetailsFormContainer = props => {
       termsConditions: false,
       files: files.map( doc => {
         const {
-          id, bureaus, filename, tags, visibility
+          id, bureaus, filename, tags, use, visibility
         } = doc;
 
         return {
@@ -71,6 +71,7 @@ const PackageDetailsFormContainer = props => {
           title: getFileNameNoExt( filename ) || filename,
           bureaus: getDropdownIds( bureaus ),
           tags: getDropdownIds( tags ),
+          use: use.id,
           visibility
         };
       } )

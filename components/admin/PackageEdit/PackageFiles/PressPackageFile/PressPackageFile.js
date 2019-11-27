@@ -26,7 +26,7 @@ const PressPackageFile = props => {
   } = props.formik;
 
   const unitValues = values.files.find( val => val.id === id );
-
+// console.log( values[`title-${id}`] );
   const metaData = [
     {
       name: 'file-name',
@@ -68,6 +68,7 @@ const PressPackageFile = props => {
                     label="Title"
                     required
                     autoFocus
+                    // value={ values[`title-${id}`] }
                     value={ unitValues.title }
                     onChange={ handleChange }
                     error={ touched && touched.title && !!errors.title }
@@ -88,6 +89,7 @@ const PressPackageFile = props => {
                     options={ options }
                     placeholder="–"
                     onChange={ handleOnChange }
+                    // value={ values[`bureaus-${id}`] }
                     value={ unitValues.bureaus }
                     error={ touched.bureaus && !!errors.bureaus }
                     multiple
@@ -106,9 +108,10 @@ const PressPackageFile = props => {
                     id={ `use-${id}` }
                     name={ `use-${id}` }
                     label="Release Type"
-                    onChange={ handleChange }
+                    // onChange={ () => handleChange( `use-${id}` ) }
+                    onChange={ handleOnChange }
                     type="document"
-                    value={ use.id }
+                    value={ unitValues.use }
                     required
                   />
                 </Form.Field>
@@ -118,6 +121,7 @@ const PressPackageFile = props => {
                     id={ `visibility-${id}` }
                     name={ `visibility-${id}` }
                     label="Visibility Setting"
+                    // value={ values[`visibility-${id}`] }
                     value={ unitValues.visibility }
                     onChange={ handleOnChange }
                     error={ touched.visibility && !!errors.visibility }
@@ -137,6 +141,7 @@ const PressPackageFile = props => {
                     id={ `tags-${id}` }
                     name={ `tags-${id}` }
                     label="Tags"
+                    // value={ values[`tags-${id}`] }
                     value={ unitValues.tags }
                     error={ touched.tags && !!errors.tags }
                     onChange={ handleOnChange }
