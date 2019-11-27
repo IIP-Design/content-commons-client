@@ -1,20 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'formik';
-import { Form, Grid } from 'semantic-ui-react';
+import { Form, Grid, Input } from 'semantic-ui-react';
 // remove sortBy after GraphQL is implemented
 import sortBy from 'lodash/sortBy';
 import { getCount } from 'lib/utils';
 import MetaTerms from 'components/admin/PackageEdit/PackageFiles/PressPackageFile/MetaTerms/MetaTerms';
-import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
+import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
 // import test data for UI dev; remove after GraphQL is implemented
 import { bureaus } from 'components/admin/dropdowns/BureauOfficesDropdown/mocks';
 import './PressPackageFile.scss';
 
 const PressPackageFile = props => {
-  const { id, filename, image } = props.unit;
+  const {
+    id, filename, image, use
+  } = props.unit;
   const { errors, touched, values } = props.formik;
   const unitValues = values.files.find( val => val.id === id );
 
@@ -48,43 +50,24 @@ const PressPackageFile = props => {
               : <div className="placeholder" /> }
           </Grid.Column>
 
-          <Grid.Column mobile={ 16 } tablet={ 12 } computer={ 12 } className="meta">
-            <div className="data">
-              <MetaTerms unitId={ id } terms={ metaData } />
-            </div>
-
+          <Grid.Column mobile={ 16 } tablet={ 12 } computer={ 12 }>
             <div className="form-fields">
               <Form.Group widths="equal">
-                <Form.Field>
-                  <VisibilityDropdown
-                    id={ `visibility-${id}` }
-                    name={ `visibility-${id}` }
-                    label="Visibility Setting"
-                    value={ unitValues.visibility }
-                    onChange={ () => {} }
-                    error={ touched.visibility && !!errors.visibility }
-                  />
-                </Form.Field>
-
-                <Form.Field>
-                  <CategoryDropdown
-                    id={ `categories-${id}` }
-                    name={ `categories-${id}` }
-                    label="Categories"
-                    value={ unitValues.categories }
-                    onChange={ () => {} }
-                    error={ touched.categories && !!errors.categories }
-                    multiple
-                    search
-                    closeOnBlur
-                    closeOnChange
+                <div className="field">
+                  <Form.Field
+                    id={ `title-${id}` }
+                    name={ `title-${id}` }
+                    control={ Input }
+                    label="Title"
                     required
+                    autoFocus
+                    value={ unitValues.title }
+                    onChange={ () => {} }
+                    error={ touched && touched.title && !!errors.title }
                   />
-                  <p className="field__helper-text">Select up to 2.</p>
-                </Form.Field>
-              </Form.Group>
+                  <p className="error-message">{ touched.title ? errors.title : '' }</p>
+                </div>
 
-              <Form.Group widths="equal">
                 <Form.Field>
                   { /**
                      * for UI dev;
@@ -106,6 +89,38 @@ const PressPackageFile = props => {
                     required
                   />
                   <p className="field__helper-text">Enter keywords separated by commas.</p>
+                </Form.Field>
+              </Form.Group>
+
+              <Form.Group widths="equal">
+                <Form.Field>
+                  <UseDropdown
+                    id={ id }
+                    label="Release Type"
+                    onChange={ () => {} }
+                    type="document"
+                    value={ use.id }
+                    required
+                  />
+                </Form.Field>
+
+                <Form.Field>
+                  <VisibilityDropdown
+                    id={ `visibility-${id}` }
+                    name={ `visibility-${id}` }
+                    label="Visibility Setting"
+                    value={ unitValues.visibility }
+                    onChange={ () => {} }
+                    error={ touched.visibility && !!errors.visibility }
+                  />
+                </Form.Field>
+              </Form.Group>
+
+              <Form.Group widths="equal">
+                <Form.Field>
+                  <div className="data">
+                    <MetaTerms unitId={ id } terms={ metaData } />
+                  </div>
                 </Form.Field>
 
                 <Form.Field>

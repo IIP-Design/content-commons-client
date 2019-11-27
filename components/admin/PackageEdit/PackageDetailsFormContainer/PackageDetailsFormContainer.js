@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import useTimeout from 'lib/hooks/useTimeout';
 import Notification from 'components/Notification/Notification';
+import { getFileNameNoExt } from 'lib/utils';
 import PackageDetailsForm from './PackageDetailsForm/PackageDetailsForm';
 import { initialSchema, baseSchema } from './validationSchema';
 
@@ -62,11 +63,12 @@ const PackageDetailsFormContainer = props => {
       termsConditions: false,
       files: files.map( doc => {
         const {
-          id, bureaus, categories, tags, visibility
+          id, bureaus, categories, filename, tags, visibility
         } = doc;
 
         return {
           id,
+          title: getFileNameNoExt( filename ) || filename,
           bureaus: getDropdownIds( bureaus ),
           categories: getDropdownIds( categories ),
           tags: getDropdownIds( tags ),
