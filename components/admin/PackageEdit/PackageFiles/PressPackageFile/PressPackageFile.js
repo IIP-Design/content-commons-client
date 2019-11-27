@@ -95,7 +95,7 @@ const PressPackageFile = props => {
               <Form.Group widths="equal">
                 <Form.Field>
                   <UseDropdown
-                    id={ id }
+                    id={ `use-${id}` }
                     name={ `use-${id}` }
                     label="Release Type"
                     onChange={ () => {} }
