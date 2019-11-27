@@ -13,7 +13,6 @@ import {
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import ProjectPreviewContent from 'components/admin/ProjectEdit/ProjectPreviewContent/ProjectPreviewContent';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
-import DetailsPopupHOOK from '../DetailsPopup/DetailsPopupHOOK';
 import './TeamProjectPrimaryCol.scss';
 
 const handleDataActionsOffClick = e => {
@@ -200,7 +199,7 @@ const TeamProjectPrimaryCol = props => {
                   { d.__typename !== 'DocumentFile' && (
                     <Fragment>
                       <span className="separator">|</span>
-                      <DetailsPopupHOOK id={ id } />
+                      <DetailsPopup id={ id } />
                     </Fragment>
                   ) }
                 </Fragment>

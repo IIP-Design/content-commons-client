@@ -14,7 +14,6 @@ import TableItemsDisplay from './TableItemsDisplay/TableItemsDisplay';
 import TableSearch from './TableSearch/TableSearch';
 import TableMenu from './TableMenu/TableMenu';
 import TableActionsMenu from './TableActionsMenu/TableActionsMenu';
-import TableActionsMenuHOOK from './TableActionsMenu/TableActionsMenuHOOK';
 import TablePagination from './TablePagination/TablePagination';
 import './ScrollableTableWithMenu.scss';
 
@@ -202,14 +201,7 @@ class ScrollableTableWithMenu extends React.Component {
         </Grid.Row>
         <Grid.Row className="items_tableMenus_wrapper">
           <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
-            { /* <TableActionsMenu
-              displayActionsMenu={ displayActionsMenu }
-              variables={ { ...variables, ...paginationVars } }
-              selectedItems={ selectedItems }
-              handleResetSelections={ this.handleResetSelections }
-              toggleAllItemsSelection={ this.toggleAllItemsSelection }
-            /> */ }
-            <TableActionsMenuHOOK
+            <TableActionsMenu
               displayActionsMenu={ displayActionsMenu }
               variables={ { ...variables, ...paginationVars } }
               selectedItems={ selectedItems }
