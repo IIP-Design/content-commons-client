@@ -5,9 +5,8 @@ const _baseSchema = {
     .required( 'A package title is required.' ),
   bureaus: Yup.array()
     .required( 'At least 1 bureau is required.' ),
-  categories: Yup.array()
-    .max( 2, 'Maximum of 2 categories can be selected' )
-    .required( 'At least 1 category is required.' ),
+  type: Yup.array()
+    .required( 'A release type is required.' ),
   visibility: Yup.string()
     .required( 'A visibility setting is required.' )
 };

@@ -63,14 +63,13 @@ const PackageDetailsFormContainer = props => {
       termsConditions: false,
       files: files.map( doc => {
         const {
-          id, bureaus, categories, filename, tags, visibility
+          id, bureaus, filename, tags, visibility
         } = doc;
 
         return {
           id,
           title: getFileNameNoExt( filename ) || filename,
           bureaus: getDropdownIds( bureaus ),
-          categories: getDropdownIds( categories ),
           tags: getDropdownIds( tags ),
           visibility
         };
