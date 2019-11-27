@@ -32,14 +32,20 @@ const PackageDetailsForm = props => {
     save
   } = props;
 
-  const handleOnChange = ( e, { name, value } ) => {
-    setFieldValue( name, value );
+  const handleOnChange = ( e, {
+    name, value, type, checked
+  } ) => {
+    if ( type === 'checkbox' ) {
+      setFieldValue( name, checked );
+    } else {
+      setFieldValue( name, value );
+    }
     setFieldTouched( name, true, false );
   };
 
   return (
     <Fragment>
-      { /* Only use autosave with exisiting project */ }
+      { /* Only use autosave with existing project */ }
       { props.id && <FormikAutoSave save={ save } /> }
       <Form className="package-data" onSubmit={ handleSubmit }>
         <Grid stackable>
@@ -88,7 +94,7 @@ const PackageDetailsForm = props => {
           <Grid.Row reversed="computer">
             <Grid.Column mobile={ 11 }>
               <TermsConditions
-                handleOnChange={ () => {} }
+                handleOnChange={ handleOnChange }
                 error={ touched.termsConditions && !!errors.termsConditions }
               />
             </Grid.Column>
