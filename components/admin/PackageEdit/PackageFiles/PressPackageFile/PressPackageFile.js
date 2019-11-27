@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'formik';
 import { Form, Grid, Input } from 'semantic-ui-react';
@@ -11,13 +11,20 @@ import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
 // import test data for UI dev; remove after GraphQL is implemented
 import { bureaus } from 'components/admin/dropdowns/BureauOfficesDropdown/mocks';
+import { HandleOnChangeContext } from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsForm/PackageDetailsForm';
 import './PressPackageFile.scss';
 
 const PressPackageFile = props => {
+  const handleOnChange = useContext( HandleOnChangeContext );
+
   const {
     id, filename, image, use
   } = props.unit;
-  const { errors, touched, values } = props.formik;
+
+  const {
+    handleChange, errors, touched, values
+  } = props.formik;
+
   const unitValues = values.files.find( val => val.id === id );
 
   const metaData = [
@@ -62,7 +69,7 @@ const PressPackageFile = props => {
                     required
                     autoFocus
                     value={ unitValues.title }
-                    onChange={ () => {} }
+                    onChange={ handleChange }
                     error={ touched && touched.title && !!errors.title }
                   />
                   <p className="error-message">{ touched.title ? errors.title : '' }</p>
@@ -80,6 +87,7 @@ const PressPackageFile = props => {
                     label="Lead Bureau(s)"
                     options={ options }
                     placeholder="–"
+                    onChange={ handleOnChange }
                     value={ unitValues.bureaus }
                     error={ touched.bureaus && !!errors.bureaus }
                     multiple
@@ -98,7 +106,7 @@ const PressPackageFile = props => {
                     id={ `use-${id}` }
                     name={ `use-${id}` }
                     label="Release Type"
-                    onChange={ () => {} }
+                    onChange={ handleChange }
                     type="document"
                     value={ use.id }
                     required
@@ -111,7 +119,7 @@ const PressPackageFile = props => {
                     name={ `visibility-${id}` }
                     label="Visibility Setting"
                     value={ unitValues.visibility }
-                    onChange={ () => {} }
+                    onChange={ handleOnChange }
                     error={ touched.visibility && !!errors.visibility }
                   />
                 </Form.Field>
@@ -131,7 +139,7 @@ const PressPackageFile = props => {
                     label="Tags"
                     value={ unitValues.tags }
                     error={ touched.tags && !!errors.tags }
-                    onChange={ () => {} }
+                    onChange={ handleOnChange }
                   />
                   <p className="field__helper-text">Enter keywords separated by commas.</p>
                 </Form.Field>

@@ -3,13 +3,15 @@
  * PackageDetailsForm
  *
  */
-import React, { Fragment } from 'react';
+import React, { createContext, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Grid, Input } from 'semantic-ui-react';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import TermsConditions from 'components/admin/TermsConditions/TermsConditions';
 import './PackageDetailsForm.scss';
+
+export const HandleOnChangeContext = createContext();
 
 /**
 * Form component only. Form is wrapped in specific content type HOC to handle
@@ -25,10 +27,10 @@ const PackageDetailsForm = props => {
     handleSubmit,
     handleChange,
     setFieldValue,
-    isSubmitting,
-    isValid,
+    // isSubmitting,
+    // isValid,
     setFieldTouched,
-    status,
+    // status,
     save
   } = props;
 
@@ -112,7 +114,9 @@ const PackageDetailsForm = props => {
 
           <Grid.Row>
             <Grid.Column width="16">
-              { children }
+              <HandleOnChangeContext.Provider value={ handleOnChange }>
+                { children }
+              </HandleOnChangeContext.Provider>
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -124,17 +128,17 @@ const PackageDetailsForm = props => {
 PackageDetailsForm.propTypes = {
   id: PropTypes.string,
   children: PropTypes.node,
-  status: PropTypes.string,
+  // status: PropTypes.string,
   handleSubmit: PropTypes.func,
   handleChange: PropTypes.func,
   values: PropTypes.object,
   errors: PropTypes.object,
   touched: PropTypes.object,
   setFieldValue: PropTypes.func,
-  isSubmitting: PropTypes.bool,
-  isValid: PropTypes.bool,
+  // isSubmitting: PropTypes.bool,
+  // isValid: PropTypes.bool,
   setFieldTouched: PropTypes.func,
-  save: PropTypes.func,
+  save: PropTypes.func
 };
 
 export default PackageDetailsForm;
