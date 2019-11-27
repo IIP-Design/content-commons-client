@@ -20,17 +20,17 @@ const CHECK_PROJECT_TYPE_QUERY = gql`
   }
 `;
 
-const CHECK_TYPE_QUERY = gql`
-  query CheckTypeQuery( $id: ID! ) {
-    videoProject( id: $id ) {
-      id
-      projectType
-    }
-    package( id: $id ) {
-      id
-    }
-  }
-`;
+// const CHECK_TYPE_QUERY = gql`
+//   query CheckTypeQuery( $id: ID! ) {
+//     videoProject( id: $id ) {
+//       id
+//       projectType
+//     }
+//     package( id: $id ) {
+//       id
+//     }
+//   }
+// `;
 
 const renderPopup = ( projectType, id ) => {
   if ( projectType === 'VideoProject' ) {

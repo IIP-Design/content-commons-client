@@ -9,7 +9,10 @@ import isEqual from 'lodash/isEqual';
 import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import orderBy from 'lodash/orderBy';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
-import { TEAM_VIDEO_PROJECTS_QUERY } from 'lib/graphql/queries/dashboard';
+import {
+  TEAM_VIDEO_PROJECTS_QUERY,
+  // DASHBOARD_PROJECTS_QUERY - queries videoProjects, packages, documentFiles
+} from 'lib/graphql/queries/dashboard';
 
 // TEMP
 import { packageMocks, documentFileMocks } from './mocks';
@@ -89,6 +92,13 @@ const TableBody = props => {
     subscribeToStatuses
   } = props;
 
+  // TEMP - add mock data w/ videoProjects query result
+  const allProjectTypesData = getTypesData( [
+    videoProjects,
+    teamDocumentFiles,
+    teamPackages
+  ] );
+
   const [statusSubscription, setStatusSubscription] = useState();
 
   useEffect( () => {
@@ -139,9 +149,11 @@ const TableBody = props => {
     );
   }
 
-  if ( !videoProjects ) return null;
+  // if ( !videoProjects ) return null;
+  if ( !allProjectTypesData ) return null;
 
-  if ( searchTerm && !videoProjects.length ) {
+  // if ( searchTerm && !videoProjects.length ) {
+  if ( searchTerm && !allProjectTypesData.length ) {
     return (
       <Table.Body>
         <Table.Row>
@@ -153,7 +165,8 @@ const TableBody = props => {
     );
   }
 
-  if ( !videoProjects.length ) {
+  // if ( !videoProjects.length ) {
+  if ( !allProjectTypesData.length ) {
     return (
       <Table.Body>
         <Table.Row>
@@ -167,15 +180,8 @@ const TableBody = props => {
   // Default sort by createdAt & DESC
   const direction = props.direction ? `${props.direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
 
-  // TEMP DASHBOARD DATA
-  const typesData = getTypesData( [
-    props.teamVideoProjects.videoProjects,
-    teamPackages,
-    teamDocumentFiles
-  ] );
-
   const tableData = orderBy(
-    normalizeDashboardData( typesData ),
+    normalizeDashboardData( allProjectTypesData ),
     tableDatum => {
       let { column } = props;
       if ( !column ) column = 'createdAt';
@@ -251,6 +257,43 @@ const teamProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
     fetchPolicy: 'cache-and-network'
   } )
 } );
+
+// const dashboardProjectsQuery = graphql( DASHBOARD_PROJECTS_QUERY, {
+//   name: 'dashboardProjects',
+//   props: ( { dashboardProjects } ) => {
+//     const {
+//       subscribeToMore,
+//       documentFiles,
+//       packages,
+//       videoProjects
+//     } = dashboardProjects;
+//     const allDashboardProjects = getTypesData( [ documentFiles, packages, videoProjects ] );
+//     const dashboardProjectIDs = allDashboardProjects ? allDashboardProjects.map( p => p.id ) : [];
+//     return {
+//       dashboardProjects,
+//       dashboardProjectIDs,
+//       subscribeToStatuses: () => subscribeToMore( {
+//         document: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
+//         variables: { ids: dashboardProjectIDs },
+//         updateQuery: ( prev, { subscriptionData: { data: { projectStatusChange } } } ) => {
+//           if ( !projectStatusChange ) {
+//             return prev;
+//           }
+//           const projectIndex = prev.dashboardProjects.findIndex( p => p.id === projectStatusChange.id );
+//           if ( projectIndex === -1 ) {
+//             return prev;
+//           }
+//           return update( prev, { dashboardProjects: { [projectIndex]: { status: { $set: projectStatusChange.status } } } } );
+//         }
+//       } )
+//     };
+//   },
+//   options: props => ( {
+//     variables: { ...props.variables },
+//     notifyOnNetworkStatusChange: true,
+//     fetchPolicy: 'cache-and-network'
+//   } )
+// } );
 
 export default teamProjectsQuery( TableBody );
 
