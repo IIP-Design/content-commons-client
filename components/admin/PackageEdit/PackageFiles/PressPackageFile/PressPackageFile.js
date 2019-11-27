@@ -17,16 +17,11 @@ import './PressPackageFile.scss';
 const PressPackageFile = props => {
   const handleOnChange = useContext( HandleOnChangeContext );
 
-  const {
-    id, filename, image, use
-  } = props.unit;
-
+  const { id, filename, image } = props.unit;
   const {
     handleChange, errors, touched, values
   } = props.formik;
 
-  const unitValues = values.files.find( val => val.id === id );
-// console.log( values[`title-${id}`] );
   const metaData = [
     {
       name: 'file-name',
@@ -63,13 +58,12 @@ const PressPackageFile = props => {
                 <div className="field">
                   <Form.Field
                     id={ `title-${id}` }
-                    name={ `title-${id}` }
+                    name={ `files.${id}.title` }
                     control={ Input }
                     label="Title"
                     required
                     autoFocus
-                    // value={ values[`title-${id}`] }
-                    value={ unitValues.title }
+                    value={ values.files[id].title }
                     onChange={ handleChange }
                     error={ touched && touched.title && !!errors.title }
                   />
@@ -84,13 +78,12 @@ const PressPackageFile = props => {
                      */ }
                   <Form.Dropdown
                     id={ `bureaus-${id}` }
-                    name={ `bureaus-${id}` }
+                    name={ `files.${id}.bureaus` }
                     label="Lead Bureau(s)"
                     options={ options }
                     placeholder="–"
                     onChange={ handleOnChange }
-                    // value={ values[`bureaus-${id}`] }
-                    value={ unitValues.bureaus }
+                    value={ values.files[id].bureaus }
                     error={ touched.bureaus && !!errors.bureaus }
                     multiple
                     search
@@ -106,12 +99,11 @@ const PressPackageFile = props => {
                 <Form.Field>
                   <UseDropdown
                     id={ `use-${id}` }
-                    name={ `use-${id}` }
+                    name={ `files.${id}.use` }
                     label="Release Type"
-                    // onChange={ () => handleChange( `use-${id}` ) }
                     onChange={ handleOnChange }
                     type="document"
-                    value={ unitValues.use }
+                    value={ values.files[id].use }
                     required
                   />
                 </Form.Field>
@@ -119,10 +111,9 @@ const PressPackageFile = props => {
                 <Form.Field>
                   <VisibilityDropdown
                     id={ `visibility-${id}` }
-                    name={ `visibility-${id}` }
+                    name={ `files.${id}.visibility` }
                     label="Visibility Setting"
-                    // value={ values[`visibility-${id}`] }
-                    value={ unitValues.visibility }
+                    value={ values.files[id].visibility }
                     onChange={ handleOnChange }
                     error={ touched.visibility && !!errors.visibility }
                   />
@@ -139,10 +130,9 @@ const PressPackageFile = props => {
                 <Form.Field>
                   <TagDropdown
                     id={ `tags-${id}` }
-                    name={ `tags-${id}` }
+                    name={ `files.${id}.tags` }
                     label="Tags"
-                    // value={ values[`tags-${id}`] }
-                    value={ unitValues.tags }
+                    value={ values.files[id].tags }
                     error={ touched.tags && !!errors.tags }
                     onChange={ handleOnChange }
                   />

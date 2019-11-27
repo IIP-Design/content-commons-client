@@ -9,8 +9,8 @@ import PropTypes from 'prop-types';
 // import { compose, graphql } from 'react-apollo';
 import { Formik } from 'formik';
 import useTimeout from 'lib/hooks/useTimeout';
-import Notification from 'components/Notification/Notification';
 import { getFileNameNoExt } from 'lib/utils';
+import Notification from 'components/Notification/Notification';
 import PackageDetailsForm from './PackageDetailsForm/PackageDetailsForm';
 import { initialSchema, baseSchema } from './validationSchema';
 
@@ -52,6 +52,24 @@ const PackageDetailsFormContainer = props => {
     property.map( p => p.id )
   );
 
+  const getFileValues = array => (
+    array.reduce( ( acc, doc ) => {
+      const {
+        id, bureaus, filename, tags, use, visibility
+      } = doc;
+      return {
+        ...acc,
+        [id]: {
+          title: getFileNameNoExt( filename ) || filename,
+          bureaus: getDropdownIds( bureaus ),
+          tags: getDropdownIds( tags ),
+          use: use.id,
+          visibility
+        }
+      };
+    }, {} )
+  );
+
   const getInitialValues = () => {
     const { data } = props;
     const pkg = ( data && data.package ) ? data.package : {};
@@ -61,20 +79,7 @@ const PackageDetailsFormContainer = props => {
       title: pkg.title || '',
       type: pkg.type || '',
       termsConditions: false,
-      files: files.map( doc => {
-        const {
-          id, bureaus, filename, tags, use, visibility
-        } = doc;
-
-        return {
-          id,
-          title: getFileNameNoExt( filename ) || filename,
-          bureaus: getDropdownIds( bureaus ),
-          tags: getDropdownIds( tags ),
-          use: use.id,
-          visibility
-        };
-      } )
+      files: getFileValues( files )
     };
 
     return initialValues;
