@@ -241,7 +241,7 @@ export const mocks = [
           documents: [
             {
               __typename: 'DocumentFile',
-              id: '1',
+              id: '1asd',
               createdAt: '2019-11-12T13:07:49.364Z',
               updatedAt: '2019-11-12T13:08:28.830Z',
               publishedAt: '',
@@ -270,7 +270,7 @@ export const mocks = [
             },
             {
               __typename: 'DocumentFile',
-              id: '2',
+              id: '2sdf',
               createdAt: '2019-11-12T13:07:49.364Z',
               updatedAt: '2019-11-12T13:08:28.830Z',
               publishedAt: '',
@@ -299,7 +299,7 @@ export const mocks = [
             },
             {
               __typename: 'DocumentFile',
-              id: '3',
+              id: '3dxsd',
               createdAt: '2019-11-12T13:07:49.364Z',
               updatedAt: '2019-11-12T13:08:28.830Z',
               publishedAt: '',
@@ -328,7 +328,7 @@ export const mocks = [
             },
             {
               __typename: 'DocumentFile',
-              id: '4',
+              id: '4ert',
               createdAt: '2019-11-12T13:07:49.364Z',
               updatedAt: '2019-11-12T13:08:28.830Z',
               publishedAt: '',
@@ -357,7 +357,7 @@ export const mocks = [
             },
             {
               __typename: 'DocumentFile',
-              id: '5',
+              id: '5cvb',
               createdAt: '2019-11-12T13:07:49.364Z',
               updatedAt: '2019-11-12T13:08:28.830Z',
               publishedAt: '',
@@ -386,7 +386,7 @@ export const mocks = [
             },
             {
               __typename: 'DocumentFile',
-              id: '6',
+              id: '6olk',
               createdAt: '2019-11-12T13:07:49.364Z',
               updatedAt: '2019-11-12T13:08:28.830Z',
               publishedAt: '',
@@ -415,7 +415,7 @@ export const mocks = [
             },
             {
               __typename: 'DocumentFile',
-              id: '7',
+              id: '7fgh',
               createdAt: '2019-11-12T13:07:49.364Z',
               updatedAt: '2019-11-12T13:08:28.830Z',
               publishedAt: '',
@@ -444,7 +444,7 @@ export const mocks = [
             },
             {
               __typename: 'DocumentFile',
-              id: '8',
+              id: '8zxc',
               createdAt: '2019-11-12T13:07:49.364Z',
               updatedAt: '2019-11-12T13:08:28.830Z',
               publishedAt: '',
@@ -473,7 +473,7 @@ export const mocks = [
             },
             {
               __typename: 'DocumentFile',
-              id: '9',
+              id: '9poi',
               createdAt: '2019-11-12T13:07:49.364Z',
               updatedAt: '2019-11-12T13:08:28.830Z',
               publishedAt: '',
@@ -502,7 +502,7 @@ export const mocks = [
             },
             {
               __typename: 'DocumentFile',
-              id: '10',
+              id: '10cvc',
               createdAt: '2019-11-12T13:07:49.364Z',
               updatedAt: '2019-11-12T13:08:28.830Z',
               publishedAt: '',
@@ -531,7 +531,7 @@ export const mocks = [
             },
             {
               __typename: 'DocumentFile',
-              id: '11',
+              id: '11wer',
               createdAt: '2019-11-12T13:07:49.364Z',
               updatedAt: '2019-11-12T13:08:28.830Z',
               publishedAt: '',
@@ -560,7 +560,7 @@ export const mocks = [
             },
             {
               __typename: 'DocumentFile',
-              id: '12',
+              id: '12tyu',
               createdAt: '2019-11-12T13:07:49.364Z',
               updatedAt: '2019-11-12T13:08:28.830Z',
               publishedAt: '',
