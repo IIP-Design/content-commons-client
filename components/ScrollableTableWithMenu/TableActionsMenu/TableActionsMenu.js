@@ -16,7 +16,7 @@ import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
 import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
 import './TableActionsMenu.scss';
 // TEMP
-import { packageMocks, documentFileMocks } from '../TableBody/mocks';
+import { packageMocks, documentFileMocks } from '../TableBody/pressMocks';
 
 const CONFIRMATION_MSG_DELAY = 3000;
 
