@@ -5,7 +5,7 @@ import { Form, Grid, Input } from 'semantic-ui-react';
 // remove sortBy after GraphQL is implemented
 import sortBy from 'lodash/sortBy';
 import { getCount } from 'lib/utils';
-import MetaTerms from 'components/admin/PackageEdit/PackageFiles/PressPackageFile/MetaTerms/MetaTerms';
+import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
