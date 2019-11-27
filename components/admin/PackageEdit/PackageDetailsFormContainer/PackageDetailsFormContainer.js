@@ -60,7 +60,7 @@ const PackageDetailsFormContainer = props => {
       return {
         ...acc,
         [id]: {
-          title: getFileNameNoExt( filename ) || filename,
+          fileTitle: getFileNameNoExt( filename ) || filename,
           bureaus: getDropdownIds( bureaus ),
           tags: getDropdownIds( tags ),
           use: use.id,
