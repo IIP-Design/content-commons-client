@@ -1,100 +1,23 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
-import { MockedProvider } from 'react-apollo/test-utils';
+import { MockedProvider } from '@apollo/react-testing';
 import { Loader, Table } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
-import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
-import TableBody, { TEAM_VIDEO_PROJECTS_QUERY } from './TableBody';
+import TableBody, {
+  TEAM_VIDEO_PROJECTS_QUERY, updateProjectStatus, teamProjectsQuery, TableBodyRaw
+} from './TableBody';
+import { videoProjects, mocks } from './mocks';
 
 /**
  * Use custom element to avoid "incorrect casing" error msg
  * @see https://jestjs.io/docs/en/tutorial-react.html#snapshot-testing-with-mocks-enzyme-and-react-16
  */
-// jest.mock( 'next-server/dynamic', () => () => 'VideoDetailsPopup' );
-jest.mock( 'next-server/dynamic', () => () => 'video-details-popup' );
+// jest.mock( 'next/dynamic', () => () => 'VideoDetailsPopup' );
+jest.mock( 'next/dynamic', () => () => 'video-details-popup' );
 
 // Mock DetailsPopup component since it's tested elsewhere
 jest.mock( 'components/admin/Dashboard/TeamProjects/DetailsPopup/DetailsPopup', () => () => 'DetailsPopup' );
-
-const videoProjects = [
-  {
-    id: 'd137',
-    createdAt: '2019-05-09T18:33:03.368Z',
-    updatedAt: '2019-05-09T18:33:03.368Z',
-    team: {
-      id: 't888',
-      name: 'IIP Video Production',
-      organization: 'Department of State'
-    },
-    author: {
-      id: 'a928',
-      firstName: 'Jane',
-      lastName: 'Doe'
-    },
-    projectTitle: 'Test Title 1',
-    status: 'PUBLISHED',
-    visibility: 'INTERNAL',
-    thumbnails: {
-      id: 't34',
-      url: 'https://thumbnailurl.com',
-      alt: 'some alt text',
-    },
-    categories: [
-      {
-        id: '38s',
-        translations: [
-          {
-            id: '832',
-            name: 'about america',
-            language: {
-              id: 'en23',
-              locale: 'en-us'
-            }
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'z132',
-    createdAt: '2019-05-12T18:33:03.368Z',
-    updatedAt: '2019-05-12T18:33:03.368Z',
-    team: {
-      id: 't888',
-      name: 'IIP Video Production',
-      organization: 'Department of State'
-    },
-    author: {
-      id: 'a287',
-      firstName: 'Joe',
-      lastName: 'Schmoe'
-    },
-    projectTitle: 'Test Title 2',
-    status: 'PUBLISHED',
-    visibility: 'INTERNAL',
-    thumbnails: {
-      id: 't34',
-      url: 'https://thumbnailurl.com',
-      alt: 'some alt text',
-    },
-    categories: [
-      {
-        id: '38s',
-        translations: [
-          {
-            id: '832',
-            name: 'about america',
-            language: {
-              id: 'en23',
-              locale: 'en-us'
-            }
-          }
-        ]
-      }
-    ]
-  }
-];
 
 const videoProjectIds = videoProjects.map( p => p.id );
 
@@ -119,33 +42,6 @@ const props = {
   videoProjectIds
 };
 
-const mocks = [
-  {
-    request: {
-      query: TEAM_VIDEO_PROJECTS_QUERY,
-      variables: { ...props.variables }
-    },
-    result: {
-      data: { videoProjects }
-    }
-  },
-  {
-    request: {
-      query: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
-      variables: { ids: videoProjectIds }
-    },
-    result: {
-      data: {
-        projectStatusChange: {
-          id: 'd137',
-          status: 'DRAFT',
-          error: null
-        }
-      }
-    }
-  }
-];
-
 const Component = (
   <MockedProvider mocks={ mocks } addTypename={ false }>
     <Table>
@@ -155,6 +51,26 @@ const Component = (
 );
 
 describe( '<TableBody />', () => {
+  /**
+   * @todo Suppress React 16.8 `act()` warnings globally.
+   * The React team's fix won't be out of alpha until 16.9.0.
+   * @see https://github.com/facebook/react/issues/14769
+   */
+  const consoleError = console.error;
+  beforeAll( () => {
+    const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+    jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
+      if ( !args[0].includes( actMsg ) ) {
+        consoleError( ...args );
+      }
+    } );
+  } );
+
+  afterAll( () => {
+    // restore console.error
+    console.error = consoleError;
+  } );
+
   it( 'renders initial loading state without crashing', () => {
     const wrapper = mount( Component );
     const tableBody = wrapper.find( TableBody );
@@ -225,7 +141,7 @@ describe( '<TableBody />', () => {
 
     const tableBody = wrapper.find( TableBody );
 
-    expect( tableBody.html() ).toEqual( null );
+    expect( tableBody.html() ).toEqual( '' );
   } );
 
   it( 'renders a "No projects" message if there are no video projects', async () => {
@@ -321,11 +237,45 @@ describe( '<TableBody />', () => {
   } );
 
   it( 'subscribes to status updates', async () => {
-    const wrapper = mount( Component );
+    const spy = jest.fn();
+    const TableBodyMock = teamProjectsQuery( wrapProps => (
+      <TableBodyRaw { ...wrapProps } subscribeToStatuses={ spy } />
+    ) );
+    const Comp = (
+      <MockedProvider mocks={ mocks } addTypename={ false }>
+        <Table>
+          <TableBodyMock { ...props } />
+        </Table>
+      </MockedProvider>
+    );
+    const wrapper = mount( Comp );
     await wait( 0 );
     wrapper.update();
-    // const tableBody = wrapper.find( 'TableBody' );
-    const tableBody = wrapper.findWhere( c => c.props().subscribeToStatuses !== undefined );
-    // TODO: Find a way to test this function added by graphql HOC props option
+    expect( spy ).toHaveBeenCalled();
+  } );
+
+  describe( 'updateProjectStatus', () => {
+    it( 'updates the correct project', () => {
+      const subscriptionData = { ...mocks[1].result };
+      const result = updateProjectStatus( { videoProjects }, { subscriptionData } );
+      expect( videoProjects[0].status ).toEqual( 'PUBLISHED' );
+      expect( result.videoProjects[0].status ).toEqual( 'DRAFT' );
+      expect( videoProjects[0].id ).toEqual( result.videoProjects[0].id );
+    } );
+
+    it( 'does not update anything for null data', () => {
+      const subscriptionData = { data: { projectStatusChange: null } };
+      const prev = { videoProjects };
+      const result = updateProjectStatus( prev, { subscriptionData } );
+      expect( result ).toEqual( prev );
+    } );
+
+    it( 'does not update anything for a non existent project ID', () => {
+      const subscriptionData = { ...mocks[1].result };
+      subscriptionData.data.projectStatusChange.id = 'xxxx';
+      const prev = { videoProjects };
+      const result = updateProjectStatus( prev, { subscriptionData } );
+      expect( result ).toEqual( prev );
+    } );
   } );
 } );

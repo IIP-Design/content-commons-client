@@ -310,8 +310,10 @@ const projectStatusChangeSubscription = graphql( PROJECT_STATUS_CHANGE_SUBSCRIPT
     variables: { id: props.id },
     onSubscriptionData: ( { subscriptionData } ) => {
       const { data: { projectStatusChange } } = subscriptionData;
-      if ( projectStatusChange.status === 'PUBLISHED' || projectStatusChange.status === 'DRAFT' ) {
-        Router.push( { pathname: '/admin/dashboard' } );
+      if ( projectStatusChange ) {
+        if ( projectStatusChange.status === 'PUBLISHED' || projectStatusChange.status === 'DRAFT' ) {
+          Router.push( { pathname: '/admin/dashboard' } );
+        }
       }
     }
   } )
