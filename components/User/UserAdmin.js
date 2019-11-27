@@ -43,6 +43,8 @@ const UPDATE_USER_MUTATION = gql`
 
 const UserAdmin = () => {
   const [open, setOpen] = useState( false );
+  const [successMessage, setSuccessMessage] = useState( '' );
+  const [errorMessage, setErrorMessage] = useState( '' );
   const [teams, setTeams] = useState( [] );
   const [users, setUsers] = useState( [] );
   const [permissions, setPermissions] = useState( [] );
@@ -99,27 +101,10 @@ const UserAdmin = () => {
 
   useEffect( () => {
     if ( loggedInUserData ) {
-      console.dir( loggedInUserData );
       setLoggedInUser( loggedInUserData.authenticatedUser );
     }
   }, [loggedInUserData] );
 
-
-  // if ( teamLoading ) return 'Loading...';
-  // if ( teamError ) return `Error! ${error.message}`;
-
-
-  // const changeTeam = () => {
-  //   const { authenticatedUser } = userData;
-  //   if ( authenticatedUser ) {
-  //     changeUserTeam( {
-  //       variables: {
-  //         userId: authenticatedUser.id,
-  //         teamId: values.userTeam
-  //       }
-  //     } ).catch( err => '' );
-  //   }
-  // };
 
   const handleSave = async () => {
     await updateUser( {
@@ -137,6 +122,8 @@ const UserAdmin = () => {
         }
       }
     } ).catch( err => console.dir( err ) );
+
+    setSuccessMessage( 'User updated' );
   };
 
   const handleChangeUser = ( e, { value } ) => {
@@ -157,14 +144,17 @@ const UserAdmin = () => {
         <Button color="black" icon="user" onClick={ () => setOpen( true ) } />
       ) }
       <Modal
-        closeIcon
         style={ { width: '520px', height: '300px' } }
         open={ open }
-        onClose={ () => setOpen( false ) }
+        onClose={ () => {
+          setOpen( false );
+          setSuccessMessage( '' );
+          setErrorMessage( '' );
+        } }
       >
         <Modal.Content>
-          <p style={ { color: 'red', marginBottom: '15px' } }>{ error && error.message }</p>
-          <p style={ { color: '#2e8540', marginBottom: '15px' } }>{ data && 'User updated' }</p>
+          <p style={ { color: 'red', marginBottom: '15px' } }>{ errorMessage }</p>
+          <p style={ { color: '#2e8540', marginBottom: '15px' } }>{ successMessage }</p>
 
           <Form>
             <Form.Field>
