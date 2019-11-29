@@ -52,6 +52,18 @@ const PackageDetailsFormContainer = props => {
     property.map( p => p.id )
   );
 
+  const getPackage = () => {
+    const { data } = props;
+    return ( data && data.package ) ? data.package : {};
+  };
+
+  const getFiles = pkg => {
+    if ( pkg ) {
+      return pkg.documents || [];
+    }
+    return {};
+  };
+
   const getFileValues = array => (
     array.reduce( ( acc, doc ) => {
       const {
@@ -71,9 +83,8 @@ const PackageDetailsFormContainer = props => {
   );
 
   const getInitialValues = () => {
-    const { data } = props;
-    const pkg = ( data && data.package ) ? data.package : {};
-    const files = pkg.documents || [];
+    const pkg = getPackage();
+    const files = getFiles( pkg );
 
     const initialValues = {
       title: pkg.title || '',
