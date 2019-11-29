@@ -35,6 +35,10 @@ const PressPackageFile = props => {
     }
   ];
 
+  const showErrorMsg = field => (
+    touched && touched.files && touched.files[id] && touched.files[id][field] ? errors && errors.files && errors.files[id] && errors.files[id][field] : ''
+  );
+
   // for UI dev; remove after GraphQL is implemented
   let options = [];
   if ( bureaus ) {
@@ -67,7 +71,7 @@ const PressPackageFile = props => {
                     onChange={ handleChange }
                     error={ touched && touched.title && !!errors.title }
                   />
-                  <p className="error-message">{ touched.title ? errors.title : '' }</p>
+                  <p className="error-message">{ showErrorMsg( 'fileTitle' ) }</p>
                 </div>
 
                 <Form.Field>
@@ -92,6 +96,7 @@ const PressPackageFile = props => {
                     required
                   />
                   <p className="field__helper-text">Enter keywords separated by commas.</p>
+                  <p className="error-message">{ showErrorMsg( 'bureaus' ) }</p>
                 </Form.Field>
               </Form.Group>
 
@@ -106,6 +111,7 @@ const PressPackageFile = props => {
                     value={ values.files[id].use }
                     required
                   />
+                  <p className="error-message">{ showErrorMsg( 'use' ) }</p>
                 </Form.Field>
 
                 <Form.Field>
