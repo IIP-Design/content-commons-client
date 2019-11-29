@@ -35,8 +35,16 @@ const PressPackageFile = props => {
     }
   ];
 
+  const isTouched = field => (
+    touched && touched.files && touched.files[id] && touched.files[id][field]
+  );
+
+  const hasError = field => (
+    errors.files && errors.files[id] && !!errors.files[id][field]
+  );
+
   const showErrorMsg = field => (
-    touched && touched.files && touched.files[id] && touched.files[id][field] ? errors && errors.files && errors.files[id] && errors.files[id][field] : ''
+    isTouched( field ) ? errors.files && errors.files[id] && errors.files[id][field] : ''
   );
 
   // for UI dev; remove after GraphQL is implemented
@@ -68,8 +76,8 @@ const PressPackageFile = props => {
                     required
                     autoFocus
                     value={ values.files[id].fileTitle }
-                    onChange={ handleChange }
-                    error={ touched && touched.title && !!errors.title }
+                    onChange={ handleOnChange }
+                    error={ isTouched( 'fileTitle' ) && hasError( 'fileTitle' ) }
                   />
                   <p className="error-message">{ showErrorMsg( 'fileTitle' ) }</p>
                 </div>
@@ -88,7 +96,7 @@ const PressPackageFile = props => {
                     placeholder="–"
                     onChange={ handleOnChange }
                     value={ values.files[id].bureaus }
-                    error={ touched.bureaus && !!errors.bureaus }
+                    error={ isTouched( 'bureaus' ) && hasError( 'bureaus' ) }
                     multiple
                     search
                     fluid
@@ -109,6 +117,7 @@ const PressPackageFile = props => {
                     onChange={ handleOnChange }
                     type="document"
                     value={ values.files[id].use }
+                    error={ isTouched( 'use' ) && errors.files && errors.files[id] && !errors.files[id].use }
                     required
                   />
                   <p className="error-message">{ showErrorMsg( 'use' ) }</p>
@@ -121,9 +130,10 @@ const PressPackageFile = props => {
                     label="Visibility Setting"
                     value={ values.files[id].visibility }
                     onChange={ handleOnChange }
-                    error={ touched.visibility && !!errors.visibility }
+                    error={ isTouched( 'visibility' ) && hasError( 'visibility' ) }
                     required
                   />
+                  <p className="error-message">{ showErrorMsg( 'visibility' ) }</p>
                 </Form.Field>
               </Form.Group>
 
