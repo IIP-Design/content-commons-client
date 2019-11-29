@@ -122,6 +122,7 @@ const PressPackageFile = props => {
                     value={ values.files[id].visibility }
                     onChange={ handleOnChange }
                     error={ touched.visibility && !!errors.visibility }
+                    required
                   />
                 </Form.Field>
               </Form.Group>
