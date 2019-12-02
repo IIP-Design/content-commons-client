@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { v4 } from 'uuid';
 import {
-  Grid, Header, Item, Modal, Loader, Message
+  Grid, Header, Item, Modal, Message
 } from 'semantic-ui-react';
 import Video from 'components/Video/Video';
 import Post from 'components/Post/Post';
@@ -60,7 +60,7 @@ class Recents extends Component {
               </div>
             </Item.Content>
           </Item>
-) }
+        ) }
       >
         <Modal.Content>
           { this.getModalContent( recent ) }
@@ -74,6 +74,7 @@ class Recents extends Component {
       recents, postTypeLabels, postType, featured
     } = this.props;
     const postTypeLabel = postTypeLabels.find( type => type.key === postType );
+    if ( recents && recents.length < 3 ) return <div />;
     return (
       <section className="ui container recents">
         <div className="recentswrapper">
@@ -90,10 +91,9 @@ class Recents extends Component {
               <a className="browseAll">Browse All</a>
             </Link>
           </div>
-          <Loader active={ featured.loading } />
           { featured.error && (
             <Message>
-              { `Oops, something went wrong.  We are unable to load the most recent ${postTypeLabel.toLowerCase()}s.` }
+              { `Oops, something went wrong.  We are unable to load the most recent ${postTypeLabel.display_name.toLowerCase()}s.` }
             </Message>
           ) }
           <Grid columns="equal" stackable stretched>
@@ -146,4 +146,5 @@ const mapStateToProps = ( state, props ) => ( {
   postTypeLabels: state.global.postTypes.list
 } );
 
+export { Recents };
 export default connect( mapStateToProps )( Recents );

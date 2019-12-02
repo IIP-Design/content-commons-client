@@ -150,4 +150,5 @@ const mapStateToProps = ( state, props ) => ( {
   priorities: state.featured.priorities[props.term]
 } );
 
+export { Priorities };
 export default connect( mapStateToProps )( Priorities );
