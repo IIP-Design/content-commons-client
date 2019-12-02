@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 import { Loader } from 'semantic-ui-react';
 import { getCount, getPluralStringOrNot } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
-import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import EditPackageFiles from 'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal';
 import './PackageFiles.scss';
 
