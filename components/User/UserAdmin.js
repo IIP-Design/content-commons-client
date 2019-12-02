@@ -32,10 +32,11 @@ const PERMISSION_QUERY = gql`
 const UPDATE_USER_MUTATION = gql`
   mutation UPDATE_USER_MUTATION($data: UserUpdateInput!, $where: UserWhereUniqueInput!) {
     updateUser(data: $data, where: $where) {
-      id
+      id 
       team {
         id
         name
+        contentTypes
       }
     }
   }
@@ -54,8 +55,7 @@ const UserAdmin = () => {
   const { data: usersData } = useQuery( USERS_QUERY );
   const { data: permissionData } = useQuery( PERMISSION_QUERY );
   const { data: loggedInUserData } = useQuery( CURRENT_USER_QUERY );
-  const [updateUser, { error, data }] = useMutation( UPDATE_USER_MUTATION );
-
+  const [updateUser] = useMutation( UPDATE_USER_MUTATION );
 
   const [values, setValues] = useState( {
     user: '',
