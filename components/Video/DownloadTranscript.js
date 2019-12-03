@@ -6,7 +6,6 @@ import { maybeGetUrlToProdS3 } from '../../lib/utils';
 
 class DownloadTranscript extends Component {
   renderFormItems( item ) {
-    console.log( item );
     const files = item.supportFiles.filter( f => f.supportFileType === 'transcript' );
     item.units.forEach( unit => {
       if ( !unit.transcript || !unit.transcript.srcUrl ) return;
