@@ -45,13 +45,6 @@ const PackageEdit = props => {
     } );
   };
 
-  const addPackageIdToUrl = id => {
-    const { router } = props;
-
-    const path = `${router.asPath}&id=${id}`;
-    router.replace( router.asPath, path, { shallow: true } );
-  };
-
   const delayUnmount = ( fn, timer, delay ) => {
     if ( timer ) clearTimeout( timer );
     /* eslint-disable no-param-reassign */
