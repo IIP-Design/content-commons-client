@@ -13,7 +13,7 @@ const TermsConditions = props => {
       name="termsConditions"
       label={ (
         <label htmlFor="termsConditions">
-          By uploading these files I agree to the Content Commons <Link href="/privacy"><a>Terms of Use</a></Link> and licensing agreements. I understand that my content will be available to the public for general use.
+          By uploading these files I agree to the Content Commons <Link href="/privacy"><a>Terms of Use</a></Link> and licensing agreements. By selecting Public visibility, I understand that my content will be available to the public for general use.
         </label>
       ) }
       type="checkbox"

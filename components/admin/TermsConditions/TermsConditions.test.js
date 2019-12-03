@@ -28,7 +28,7 @@ describe( '<TermsConditions />', () => {
   it( 'renders the correct label message', () => {
     const wrapper = mount( Component );
     const label = wrapper.find( 'label' );
-    const msg = 'By uploading these files I agree to the Content Commons Terms of Use and licensing agreements. I understand that my content will be available to the public for general use.';
+    const msg = 'By uploading these files I agree to the Content Commons Terms of Use and licensing agreements. By selecting Public visibility, I understand that my content will be available to the public for general use.';
 
     expect( label.text() ).toEqual( msg );
   } );
