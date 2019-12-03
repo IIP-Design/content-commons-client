@@ -56,17 +56,17 @@ describe( '<TableBody />', () => {
    * The React team's fix won't be out of alpha until 16.9.0.
    * @see https://github.com/facebook/react/issues/14769
    */
-   const consoleError = console.error;
-   beforeAll( () => {
-     const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-     jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-       if ( !args[0].includes( actMsg ) ) {
-         consoleError( ...args );
-       }
-     } );
-   } );
-  
-   afterAll( () => {
+  const consoleError = console.error;
+  beforeAll( () => {
+    const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+    jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
+      if ( !args[0].includes( actMsg ) ) {
+        consoleError( ...args );
+      }
+    } );
+  } );
+
+  afterAll( () => {
     // restore console.error
     console.error = consoleError;
   } );

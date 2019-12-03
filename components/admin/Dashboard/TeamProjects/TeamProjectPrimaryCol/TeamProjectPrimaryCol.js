@@ -70,6 +70,11 @@ const TeamProjectPrimaryCol = props => {
 
   const getEditUrl = ( format = '' ) => {
     if ( isPublishing || !format ) return null;
+
+    // TEMP Package || DocumentFile url
+    if ( d.__typename === 'Package' ) return `/admin/package/${id}`;
+    if ( d.__typename === 'DocumentFile' ) return `/admin/document/${id}`;
+
     if ( format === 'pretty' ) {
       return `/admin/project/video/${id}/edit`;
     }
@@ -98,7 +103,7 @@ const TeamProjectPrimaryCol = props => {
       </div>
       <div className="projects_thumbnail">
         <div className="wrapper">
-          { d.thumbnail.signedUrl
+          { d.thumbnail && d.thumbnail.signedUrl
             ? (
               <img
                 className={ isDraft ? 'draft' : null }
@@ -110,9 +115,7 @@ const TeamProjectPrimaryCol = props => {
               <div className="placeholder outer">
                 <div className="placeholder inner" />
               </div>
-            )
-          }
-
+            ) }
           { isDraft && (
             <p className="draft-overlay">
               <span>{ d.status }</span>
@@ -193,8 +196,12 @@ const TeamProjectPrimaryCol = props => {
                       <ProjectPreviewContent id={ id } />
                     </Modal.Content>
                   </Modal>
-                  <span className="separator">|</span>
-                  <DetailsPopup id={ id } />
+                  { d.__typename !== 'DocumentFile' && (
+                    <Fragment>
+                      <span className="separator">|</span>
+                      <DetailsPopup id={ id } />
+                    </Fragment>
+                  ) }
                 </Fragment>
               ) }
           </div>
