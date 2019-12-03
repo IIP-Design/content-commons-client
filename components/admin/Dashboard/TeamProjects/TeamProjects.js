@@ -4,7 +4,8 @@
  *
  */
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useQuery } from '@apollo/react-hooks';
+import { CURRENT_USER_QUERY } from 'components/User/User';
 import ScrollableTableWithMenu from 'components/ScrollableTableWithMenu/ScrollableTableWithMenu';
 
 const persistentTableHeaders = [
@@ -20,21 +21,22 @@ const menuItems = [
   { name: 'updatedAt', label: 'MODIFIED DATE' }
 ];
 
-const TeamProjects = props => {
-  const { user } = props;
-  const team = user && user.team ? user.team.name : '';
+const TeamProjects = () => {
+  const { loading, error, data } = useQuery( CURRENT_USER_QUERY );
+
+  if ( loading ) return 'Loading...';
+  if ( error ) return `Error! ${error.message}`;
+
+  const { authenticatedUser: { team } } = data;
+
   return (
     <ScrollableTableWithMenu
       columnMenu={ menuItems }
       persistentTableHeaders={ persistentTableHeaders }
-      team={ team }
+      team={ team.name }
       projectTab="teamProjects"
     />
   );
-};
-
-TeamProjects.propTypes = {
-  user: PropTypes.object
 };
 
 export default TeamProjects;
