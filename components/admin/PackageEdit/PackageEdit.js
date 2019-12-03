@@ -170,9 +170,9 @@ const PackageEdit = props => {
             content={ (
               <ConfirmModalContent
                 className="delete_confirm delete_confirm--package"
-                headline="Are you sure you want to delete this package?"
+                headline="Are you sure you want to delete this package and its files?"
               >
-                <p>This package will be permanently removed from the Content Cloud. Any files that you uploaded here will not be uploaded.</p>
+                <p>This package will be removed permanently from the Content Cloud. Any files uploaded in this package will also be removed permanently.</p>
               </ConfirmModalContent>
             ) }
             onCancel={ () => setDeleteConfirmOpen( false ) }
