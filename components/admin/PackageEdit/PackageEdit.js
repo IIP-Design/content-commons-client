@@ -21,7 +21,7 @@ const PackageEdit = props => {
   const SAVE_MSG_DELAY = 2000;
   let saveMsgTimer = null;
 
-  const [packageId, setPackageId] = useState( /* props.id */ '' );
+  const [packageId, setPackageId] = useState( '' );
   const [mounted, setMounted] = useState( false );
   const [error, setError] = useState( {} );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
@@ -33,6 +33,16 @@ const PackageEdit = props => {
 
   useEffect( () => {
     setMounted( true );
+    if ( props.router && props.router.query && props.router.query.id ) {
+      setPackageId( props.router.query.id );
+    } else {
+      /**
+       * What to do if no `id` in the `query`?
+       * Some type of error handling? Send to dashboard?
+       * Do nothing?
+       */
+    }
+
     return () => {
       setMounted( false );
       clearTimeout( saveMsgTimer );
