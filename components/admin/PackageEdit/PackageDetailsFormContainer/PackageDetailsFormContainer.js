@@ -5,11 +5,12 @@
  */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-// import { withRouter } from 'next/router';
-// import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
 import { Formik } from 'formik';
 import useTimeout from 'lib/hooks/useTimeout';
 import { getFileNameNoExt } from 'lib/utils';
+import { PACKAGE_FILES_QUERY } from 'lib/graphql/queries/package';
 import Notification from 'components/Notification/Notification';
 import PackageDetailsForm from './PackageDetailsForm/PackageDetailsForm';
 import { initialSchema, baseSchema } from './validationSchema';
@@ -54,14 +55,14 @@ const PackageDetailsFormContainer = props => {
 
   const getPackage = () => {
     const { data } = props;
-    return ( data && data.package ) ? data.package : {};
+    return ( data && data.pkg ) ? data.pkg : {};
   };
 
   const getFiles = pkg => {
     if ( pkg ) {
       return pkg.documents || [];
     }
-    return {};
+    return [];
   };
 
   const getFileValues = array => (
@@ -145,18 +146,14 @@ PackageDetailsFormContainer.propTypes = {
   packageUpdated: PropTypes.func
 };
 
-export default PackageDetailsFormContainer;
-
-// export default compose(
-//   withRouter,
-//   connect( null, reduxActions ),
-//   graphql( CREATE_PACKAGE_MUTATION, { name: 'createPackage' } ),
-//   graphql( UPDATE_PACKAGE_MUTATION, { name: 'updatePackage' } ),
-//   graphql( PACKAGE_QUERY, {
-//     partialRefetch: true,
-//     options: props => ( {
-//       variables: { id: props.id }
-//     } ),
-//     skip: props => !props.id
-//   } )
-// )( PackageDetailsFormContainer );
+export default compose(
+  // graphql( CREATE_PACKAGE_MUTATION, { name: 'createPackage' } ),
+  // graphql( UPDATE_PACKAGE_MUTATION, { name: 'updatePackage' } ),
+  graphql( PACKAGE_FILES_QUERY, {
+    partialRefetch: true,
+    options: props => ( {
+      variables: { id: props.id }
+    } ),
+    skip: props => !props.id
+  } )
+)( PackageDetailsFormContainer );

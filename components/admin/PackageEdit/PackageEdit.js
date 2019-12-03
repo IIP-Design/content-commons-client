@@ -13,7 +13,6 @@ import PackageDetailsFormContainer from './PackageDetailsFormContainer/PackageDe
 import PackageActions from './PackageActions/PackageActions';
 import PackageFiles from './PackageFiles/PackageFiles';
 // remove mocks import after GraphQL
-import { mocks as pkgPublishedQuery } from './mocks';
 import { mocks } from './PackageDetailsFormContainer/mocks';
 import './PackageEdit.scss';
 
@@ -209,8 +208,6 @@ const PackageEdit = props => {
       <PackageDetailsFormContainer
         id={ packageId }
         updateNotification={ updateNotification }
-        // send mock data here for UI dev, remove after GraphQL
-        // data={ mocks[0].result.data }
       >
         <PackageFiles
           id={ packageId }
