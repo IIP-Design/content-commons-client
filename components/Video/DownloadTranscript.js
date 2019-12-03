@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import downloadIcon from 'static/icons/icon_download.svg';
 import { maybeGetUrlToProdS3 } from '../../lib/utils';
 
-class DownloadTranscript extends Component {
+class DownloadTranscript extends Component {  
   renderFormItems( item ) {
+    console.log(item)
     const files = item.supportFiles.filter( f => f.supportFileType === 'transcript' );
     item.units.forEach( unit => {
       if ( !unit.transcript || !unit.transcript.srcUrl ) return;
