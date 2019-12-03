@@ -63,16 +63,12 @@ const PackageEdit = props => {
   };
 
   const deletePackageEnabled = () => {
-    // for UI dev, remove after GraphQL
-    const { publishedAt } = pkgPublishedQuery[0].result.data.package;
-    return !packageId || publishedAt;
-
-    // const { pkgPublishedQuery } = props;
-    // /**
-    //  * disable delete package button if either there
-    //  * is no package id OR package has been published
-    //  */
-    // return !packageId || ( pkgPublishedQuery && pkgPublishedQuery.package && pkgPublishedQuery.package.publishedAt );
+    const { pkgDetailsQuery } = props;
+    /**
+     * disable delete package button if either there
+     * is no package id OR package has been published
+     */
+    return !packageId || ( pkgDetailsQuery && pkgDetailsQuery.pkg && pkgDetailsQuery.pkg.publishedAt );
   };
 
   const handleDisplaySaveMsg = () => {
@@ -214,7 +210,7 @@ const PackageEdit = props => {
         id={ packageId }
         updateNotification={ updateNotification }
         // send mock data here for UI dev, remove after GraphQL
-        data={ mocks[0].result.data }
+        // data={ mocks[0].result.data }
       >
         <PackageFiles
           id={ packageId }
@@ -236,9 +232,8 @@ const PackageEdit = props => {
 };
 
 PackageEdit.propTypes = {
-  // id: PropTypes.string,
   // deletePackage: PropTypes.func,
-  // pkgPublishedQuery: PropTypes.object,
+  pkgDetailsQuery: PropTypes.object,
   // updatePackage: PropTypes.func,
   // updateFile: PropTypes.func,
   router: PropTypes.object,
