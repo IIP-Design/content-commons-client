@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
-// import { compose /* , graphql */ } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import compose from 'lodash.flowright';
 import { Button, Confirm } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
+import { PACKAGE_DETAILS_QUERY } from 'lib/graphql/queries/package';
 import PackageDetailsFormContainer from './PackageDetailsFormContainer/PackageDetailsFormContainer';
 import PackageActions from './PackageActions/PackageActions';
 import PackageFiles from './PackageFiles/PackageFiles';
@@ -235,13 +236,13 @@ PackageEdit.propTypes = {
 
 export default compose(
   withRouter,
-  // graphql( PACKAGE_PUBLISHED_QUERY, {
-  //   name: 'pkgPublishedQuery',
-  //   options: props => ( {
-  //     variables: { id: props.id }
-  //   } ),
-  //   skip: props => !props.id
-  // } ),
+  graphql( PACKAGE_DETAILS_QUERY, {
+    name: 'pkgDetailsQuery',
+    options: props => ( {
+      variables: { id: props.router.query.id }
+    } ),
+    skip: props => !props.router.query.id
+  } ),
   // graphql( DELETE_PACKAGE_MUTATION, { name: 'deletePackage' } ),
   // graphql( UPDATE_PACKAGE_MUTATION, {
   //   name: 'updatePackage',
