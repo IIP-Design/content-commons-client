@@ -61,10 +61,10 @@ const PackageDetailsFormContainer = props => {
   };
 
   const getFileValues = array => (
-    array.reduce( ( acc, doc ) => {
+    array.reduce( ( acc, file ) => {
       const {
         id, bureaus, filename, tags, use, visibility
-      } = doc;
+      } = file;
       return {
         ...acc,
         [id]: {
