@@ -4,6 +4,7 @@ import { withRouter } from 'next/router';
 import { graphql } from 'react-apollo';
 import compose from 'lodash.flowright';
 import { Button, Confirm } from 'semantic-ui-react';
+import { getCount } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import Notification from 'components/Notification/Notification';
@@ -22,6 +23,7 @@ const PackageEdit = props => {
   const [mounted, setMounted] = useState( false );
   const [error, setError] = useState( {} );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
+  const [displayFiles, setDisplayFiles] = useState( false );
 
   const [notification, setNotification] = useState( {
     notificationMessage: '',
@@ -45,6 +47,22 @@ const PackageEdit = props => {
       clearTimeout( saveMsgTimer );
     };
   }, [] );
+
+  useEffect( () => {
+    const { pkgQuery } = props;
+    if ( pkgQuery && pkgQuery.pkg && pkgQuery.pkg.documents ) {
+      const { documents } = pkgQuery.pkg;
+      /**
+       * Display files after upload finishes and upload modal
+       * closes. For now, use documents count for UI dev. Perhaps,
+       * it'd be better display files after all thumbnails have
+       * resolved.
+       */
+      if ( documents ) {
+        setDisplayFiles( Boolean( getCount( documents ) ) );
+      }
+    }
+  }, [props.pkgQuery] );
 
   const updateNotification = msg => {
     setNotification( {
@@ -207,17 +225,14 @@ const PackageEdit = props => {
         id={ packageId }
         updateNotification={ updateNotification }
       >
-        <PackageFiles id={ packageId } />
+        { displayFiles && <PackageFiles id={ packageId } /> }
       </PackageDetailsFormContainer>
 
       { /**
          * can possibly be shared with VideoReview
          * with a little modification
          */ }
-      <PackageActions
-        handlePublish={ handlePublish }
-        handleUnPublish={ handleUnPublish }
-      />
+      { displayFiles && <PackageActions handlePublish={ handlePublish } handleUnPublish={ handleUnPublish } /> }
     </div>
   );
 };
