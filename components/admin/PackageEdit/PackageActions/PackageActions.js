@@ -14,10 +14,10 @@ const PackageActions = props => {
         { /* publishedAndNotUpdated */ false && 'Not ready to share with the world yet?' }
       </h3>
 
-      <ButtonAddFiles className="basic edit-package__btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
+      <ButtonAddFiles className="basic action-btn btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
       { /* !publishedAndNotUpdated */ true && (
         <Button
-          className={ `edit-package__btn--${/* publishedAndUpdated */false ? 'edit' : 'publish'}` }
+          className={ `action-btn btn--${/* publishedAndUpdated */false ? 'edit' : 'publish'}` }
           onClick={ handlePublish }
         >
           Publish{ /* publishedAndUpdated */ false && ' Changes' }

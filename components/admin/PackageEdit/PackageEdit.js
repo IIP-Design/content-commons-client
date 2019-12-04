@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import { graphql } from 'react-apollo';
 import compose from 'lodash.flowright';
-import { Button, Confirm } from 'semantic-ui-react';
 import { getCount } from 'lib/utils';
+import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import ApolloError from 'components/errors/ApolloError';
-import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
@@ -162,49 +161,25 @@ const PackageEdit = props => {
     <div className="edit-package">
       <div className="edit-package__header">
         <ProjectHeader icon="file" text="Package Details">
-          { /**
-             * can move buttons to separate, shared component
-             * since they're almost the same as VideoEdit
-             * and VideoReview
-             */ }
-          <Button
-            className="edit-package__btn--delete"
-            content="Delete All"
-            basic
-            onClick={ () => setDeleteConfirmOpen( true ) }
-            disabled={ deletePackageEnabled() }
-          />
-
-          <Confirm
-            className="delete"
-            open={ deleteConfirmOpen }
-            content={ (
-              <ConfirmModalContent
-                className="delete_confirm delete_confirm--package"
-                headline="Are you sure you want to delete this package and its files?"
-              >
-                <p>This package will be removed permanently from the Content Cloud. Any files uploaded in this package will also be removed permanently.</p>
-              </ConfirmModalContent>
-            ) }
-            onCancel={ () => setDeleteConfirmOpen( false ) }
-            onConfirm={ handleDeleteConfirm }
-            cancelButton="No, take me back"
-            confirmButton="Yes, delete forever"
-          />
-
-          <Button
-            className="edit-package__btn--save-draft"
-            content="Save & Exit"
-            basic
-            onClick={ handleExit }
-            disabled={ !packageId }
-          />
-
-          <Button
-            className="edit-package__btn--publish"
-            content="Publish"
-            onClick={ handlePublish }
-            disabled={ !packageId }
+          <ActionButtons
+            type="package"
+            deleteConfirmOpen={ deleteConfirmOpen }
+            setDeleteConfirmOpen={ setDeleteConfirmOpen }
+            disabled={ {
+              delete: deletePackageEnabled(),
+              save: !packageId,
+              publish: !packageId
+            } }
+            handle={ {
+              deleteConfirm: handleDeleteConfirm,
+              save: handleExit,
+              publish: handlePublish
+            } }
+            show={ {
+              delete: displayFiles,
+              save: displayFiles,
+              publish: displayFiles
+            } }
           />
         </ProjectHeader>
       </div>
