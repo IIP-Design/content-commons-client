@@ -16,7 +16,7 @@ const PackageFiles = props => {
   if ( !props.data ) return null;
   const { error, loading } = props.data;
 
-  if ( !props.data || loading ) {
+  if ( loading ) {
     return (
       <div style={ {
         display: 'flex',
