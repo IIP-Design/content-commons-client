@@ -209,11 +209,7 @@ const PackageEdit = props => {
         id={ packageId }
         updateNotification={ updateNotification }
       >
-        <PackageFiles
-          id={ packageId }
-          // send mock data here for UI dev, remove after GraphQL
-          data={ mocks[0].result.data }
-        />
+        <PackageFiles id={ packageId } />
       </PackageDetailsFormContainer>
 
       { /**
