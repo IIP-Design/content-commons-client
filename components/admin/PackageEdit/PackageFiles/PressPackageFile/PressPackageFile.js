@@ -1,10 +1,16 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'formik';
-import { Form, Grid, Input } from 'semantic-ui-react';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
+import { useFormikContext } from 'formik';
+import {
+  Form, Grid, Input, Loader
+} from 'semantic-ui-react';
 // remove sortBy after GraphQL is implemented
 import sortBy from 'lodash/sortBy';
 import { getCount } from 'lib/utils';
+import { DOCUMENT_FILE_QUERY } from 'lib/graphql/queries/document';
+import ApolloError from 'components/errors/ApolloError';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
@@ -16,11 +22,34 @@ import './PressPackageFile.scss';
 
 const PressPackageFile = props => {
   const handleOnChange = useContext( HandleOnChangeContext );
+  const { errors, touched, values } = useFormikContext();
 
-  const { id, filename, image } = props.unit;
-  const {
-    handleChange, errors, touched, values
-  } = props.formik;
+  if ( !props.data ) return null;
+  const { error, loading } = props.data;
+
+  if ( loading ) {
+    return (
+      <div style={ {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '200px'
+      } }
+      >
+        <Loader
+          active
+          inline="centered"
+          style={ { marginBottom: '1em' } }
+          content="Loading package file(s)..."
+        />
+      </div>
+    );
+  }
+
+  if ( error ) return <ApolloError error={ error } />;
+
+  const { id, filename, image } = props.data.documentFile;
 
   const metaData = [
     {
@@ -165,8 +194,16 @@ const PressPackageFile = props => {
 };
 
 PressPackageFile.propTypes = {
-  formik: PropTypes.object,
-  unit: PropTypes.object
+  id: PropTypes.string,
+  data: PropTypes.object
 };
 
-export default connect( PressPackageFile );
+export default compose(
+  graphql( DOCUMENT_FILE_QUERY, {
+    partialRefetch: true,
+    options: props => ( {
+      variables: { id: props.id }
+    } ),
+    skip: props => !props.id
+  } )
+)( PressPackageFile );

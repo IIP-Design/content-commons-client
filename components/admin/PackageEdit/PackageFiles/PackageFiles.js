@@ -63,10 +63,10 @@ const PackageFiles = props => {
            * `<FrontOfficePackageFile />`
            */
           if ( pkg.type === 'DAILY_GUIDANCE' ) {
-            return <PressPackageFile key={ unit.id } unit={ unit } />;
+            return <PressPackageFile key={ unit.id } id={ unit.id } />;
           }
           return null;
-          // return <SomeOtherPackageFile key={ unit.id } unit={ unit } />;
+          // return <SomeOtherPackageFile key={ unit.id } id={ unit.id } />;
         } ) }
       </div>
     </section>
@@ -74,7 +74,6 @@ const PackageFiles = props => {
 };
 
 PackageFiles.propTypes = {
-  // id: PropTypes.string,
   data: PropTypes.object
 };
 
