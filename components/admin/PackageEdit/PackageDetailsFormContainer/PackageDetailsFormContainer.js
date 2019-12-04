@@ -8,23 +8,48 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import compose from 'lodash.flowright';
 import { Formik } from 'formik';
+import { Loader } from 'semantic-ui-react';
 import useTimeout from 'lib/hooks/useTimeout';
 import { getFileNameNoExt } from 'lib/utils';
 import { PACKAGE_FILES_QUERY, UPDATE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
+import ApolloError from 'components/errors/ApolloError';
 import Notification from 'components/Notification/Notification';
 import PackageDetailsForm from './PackageDetailsForm/PackageDetailsForm';
 import { initialSchema, baseSchema } from './validationSchema';
 
 const PackageDetailsFormContainer = props => {
-  const { children } = props;
-
   const [showNotification, setShowNotification] = useState( false );
 
   const hideNotification = () => {
     setShowNotification( false );
   };
-
   const { startTimeout } = useTimeout( hideNotification, 2000 );
+
+  const { children } = props;
+  if ( !props.data ) return null;
+  const { error, loading } = props.data;
+
+  if ( loading ) {
+    return (
+      <div style={ {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '200px'
+      } }
+      >
+        <Loader
+          active
+          inline="centered"
+          style={ { marginBottom: '1em' } }
+          content="Loading package details form..."
+        />
+      </div>
+    );
+  }
+
+  if ( error ) return <ApolloError error={ error } />;
 
   const update = async ( values, prevValues ) => {
     const { id, updatePackage } = props;
