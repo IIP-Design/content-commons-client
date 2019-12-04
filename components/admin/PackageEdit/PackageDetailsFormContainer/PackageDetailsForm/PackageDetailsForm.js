@@ -45,6 +45,20 @@ const PackageDetailsForm = props => {
     setFieldTouched( name, true, false );
   };
 
+  const getFormattedTypeName = type => {
+    if ( type ) {
+      switch ( type ) {
+        case 'DAILY_GUIDANCE':
+          return 'Guidance';
+        // case 'SOME_FUTURE_TYPE':
+        //   return 'Some Future Type';
+        default:
+          return type;
+      }
+    }
+    return '';
+  };
+
   return (
     <Fragment>
       { /* Only use autosave with existing project */ }
@@ -85,7 +99,7 @@ const PackageDetailsForm = props => {
                 name="type"
                 control={ Input }
                 label="Package Type"
-                value={ values.type }
+                value={ getFormattedTypeName( values.type ) }
                 onChange={ handleChange }
                 readOnly
                 tabIndex={ -1 }
