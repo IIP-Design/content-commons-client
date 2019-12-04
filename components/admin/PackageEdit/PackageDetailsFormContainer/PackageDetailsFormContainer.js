@@ -10,7 +10,7 @@ import compose from 'lodash.flowright';
 import { Formik } from 'formik';
 import useTimeout from 'lib/hooks/useTimeout';
 import { getFileNameNoExt } from 'lib/utils';
-import { PACKAGE_FILES_QUERY } from 'lib/graphql/queries/package';
+import { PACKAGE_FILES_QUERY, UPDATE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 import Notification from 'components/Notification/Notification';
 import PackageDetailsForm from './PackageDetailsForm/PackageDetailsForm';
 import { initialSchema, baseSchema } from './validationSchema';
@@ -41,11 +41,6 @@ const PackageDetailsFormContainer = props => {
   const save = async ( values, prevValues ) => {
     await update( values, prevValues );
     setShowNotification( true );
-
-    // Notify redux state that Package updated, indexed by package id
-    const { id, packageUpdated } = props;
-    packageUpdated( id, true );
-
     startTimeout();
   };
 
@@ -139,16 +134,12 @@ PackageDetailsFormContainer.propTypes = {
   id: PropTypes.string,
   data: PropTypes.object,
   children: PropTypes.node,
-  // createPackage: PropTypes.func,
   // updateNotification: PropTypes.func,
-  // handleUpload: PropTypes.func,
-  updatePackage: PropTypes.func,
-  packageUpdated: PropTypes.func
+  updatePackage: PropTypes.func
 };
 
 export default compose(
-  // graphql( CREATE_PACKAGE_MUTATION, { name: 'createPackage' } ),
-  // graphql( UPDATE_PACKAGE_MUTATION, { name: 'updatePackage' } ),
+  graphql( UPDATE_PACKAGE_MUTATION, { name: 'updatePackage' } ),
   graphql( PACKAGE_FILES_QUERY, {
     partialRefetch: true,
     options: props => ( {
