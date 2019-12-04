@@ -8,16 +8,14 @@ import ApolloError from 'components/errors/ApolloError';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
-import { PACKAGE_DETAILS_QUERY } from 'lib/graphql/queries/package';
+import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
 import PackageDetailsFormContainer from './PackageDetailsFormContainer/PackageDetailsFormContainer';
 import PackageActions from './PackageActions/PackageActions';
 import PackageFiles from './PackageFiles/PackageFiles';
-// remove mocks import after GraphQL
-import { mocks } from './PackageDetailsFormContainer/mocks';
 import './PackageEdit.scss';
 
 const PackageEdit = props => {
-  const SAVE_MSG_DELAY = 2000;
+  // const SAVE_MSG_DELAY = 2000;
   let saveMsgTimer = null;
 
   const [packageId, setPackageId] = useState( '' );
@@ -62,12 +60,12 @@ const PackageEdit = props => {
   };
 
   const deletePackageEnabled = () => {
-    const { pkgDetailsQuery } = props;
+    const { pkgQuery } = props;
     /**
      * disable delete package button if either there
      * is no package id OR package has been published
      */
-    return !packageId || ( pkgDetailsQuery && pkgDetailsQuery.pkg && pkgDetailsQuery.pkg.publishedAt );
+    return !packageId || ( pkgQuery && pkgQuery.pkg && pkgQuery.pkg.publishedAt );
   };
 
   const handleDisplaySaveMsg = () => {
@@ -226,7 +224,7 @@ const PackageEdit = props => {
 
 PackageEdit.propTypes = {
   // deletePackage: PropTypes.func,
-  pkgDetailsQuery: PropTypes.object,
+  pkgQuery: PropTypes.object,
   // updatePackage: PropTypes.func,
   // updateFile: PropTypes.func,
   router: PropTypes.object,
@@ -234,8 +232,8 @@ PackageEdit.propTypes = {
 
 export default compose(
   withRouter,
-  graphql( PACKAGE_DETAILS_QUERY, {
-    name: 'pkgDetailsQuery',
+  graphql( PACKAGE_QUERY, {
+    name: 'pkgQuery',
     options: props => ( {
       variables: { id: props.router.query.id }
     } ),
