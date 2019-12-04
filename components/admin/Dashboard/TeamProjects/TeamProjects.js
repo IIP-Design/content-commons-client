@@ -33,7 +33,7 @@ const TeamProjects = () => {
     <ScrollableTableWithMenu
       columnMenu={ menuItems }
       persistentTableHeaders={ persistentTableHeaders }
-      team={ team.name }
+      team={ team }
       projectTab="teamProjects"
     />
   );

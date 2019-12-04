@@ -9,7 +9,8 @@ import debounce from 'lodash/debounce';
 import { Table, Grid } from 'semantic-ui-react';
 import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import TableHeader from './TableHeader/TableHeader';
-import TableBody from './TableBody/TableBody';
+// import TableBody from './TableBody/TableBody';
+import TableBodyHOOK from './TableBody/TableBodyHOOK';
 import TableItemsDisplay from './TableItemsDisplay/TableItemsDisplay';
 import TableSearch from './TableSearch/TableSearch';
 import TableMenu from './TableMenu/TableMenu';
@@ -190,7 +191,7 @@ class ScrollableTableWithMenu extends React.Component {
 
     const { columnMenu, team } = this.props;
 
-    const variables = { team, searchTerm };
+    const variables = { team: team.name, searchTerm };
 
     const paginationVars = { first: itemsPerPage, skip };
 
@@ -234,11 +235,12 @@ class ScrollableTableWithMenu extends React.Component {
                   toggleAllItemsSelection={ this.toggleAllItemsSelection }
                   displayActionsMenu={ displayActionsMenu }
                 />
-                <TableBody
+                <TableBodyHOOK
                   searchTerm={ searchTerm }
                   selectedItems={ selectedItems }
                   tableHeaders={ tableHeaders }
                   toggleItemSelection={ this.toggleItemSelection }
+                  team={ team }
                   variables={ { ...variables, ...paginationVars } }
                   windowWidth={ windowWidth }
                   column={ column }
@@ -267,7 +269,8 @@ class ScrollableTableWithMenu extends React.Component {
 ScrollableTableWithMenu.propTypes = {
   persistentTableHeaders: PropTypes.array,
   columnMenu: PropTypes.array,
-  team: PropTypes.string,
+  // team: PropTypes.string,
+  team: PropTypes.object,
   projectTab: PropTypes.string
 };
 

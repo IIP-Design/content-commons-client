@@ -3,6 +3,7 @@ import { Loader, Table } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import React, { useEffect, useState } from 'react';
 import update from 'immutability-helper';
 import isEqual from 'lodash/isEqual';
@@ -13,12 +14,15 @@ import {
   TEAM_VIDEO_PROJECTS_QUERY,
   TEAM_PACKAGES_QUERY
 } from 'lib/graphql/queries/dashboard';
+import TableBodyLoading from './TableBodyLoading';
+import TableBodyError from './TableBodyError';
+import TableBodyNoResults from './TableBodyNoResults';
+import TableBodyNoProjects from './TableBodyNoProjects';
 
 // TEMP
-import { packageMocks, documentFileMocks } from './pressMocks';
-
-const teamPackages = packageMocks[0].result.data;
-const teamDocumentFiles = documentFileMocks[0].result.data;
+// import { packageMocks, documentFileMocks } from './pressMocks';
+// const teamPackages = packageMocks[0].result.data;
+// const teamDocumentFiles = documentFileMocks[0].result.data;
 
 const getLangTaxonomies = ( array, locale = 'en-us' ) => {
   if ( !Array.isArray( array ) || !array.length ) return '';
@@ -40,7 +44,7 @@ const normalizeTypesData = type => {
   };
 
   const thumbnail = () => {
-    if ( !type.thumbnails ) return {};
+    if ( !type.thumbnail ) return {};
     return ( {
       signedUrl: type.thumbnails && type.thumbnails.length ? type.thumbnails[0].signedUrl : '',
       alt: type.thumbnails && type.thumbnails.length ? type.thumbnails[0].alt : ''
@@ -70,14 +74,33 @@ const normalizeDashboardData = types => {
   return normalizedProjects;
 };
 
-const getTypesData = types => {
-  let typesData = [];
-  const filterTypesData = types.filter( type => type !== null );
-  typesData = typesData.concat( ...filterTypesData );
-  return typesData;
+const updateProjectStatus = ( prev, { subscriptionData: { data: { projectStatusChange } } } ) => {
+  if ( !projectStatusChange ) {
+    return prev;
+  }
+
+  let projectIndex;
+  if ( prev.videoProjects ) {
+    projectIndex = prev.videoProjects.findIndex( p => p.id === projectStatusChange.id );
+  }
+  if ( prev.packages ) {
+    projectIndex = prev.packages.findIndex( p => p.id === projectStatusChange.id );
+  }
+  if ( projectIndex === -1 ) {
+    return prev;
+  }
+
+  // Using immutability helper in order to ensure that React will rerender after the status change
+  if ( prev.videoProjects ) {
+    return update( prev, { videoProjects: { [projectIndex]: { status: { $set: projectStatusChange.status } } } } );
+  }
+  if ( prev.packages ) {
+    return update( prev, { packages: { [projectIndex]: { status: { $set: projectStatusChange.status } } } } );
+  }
 };
 
-const TableBody = props => {
+
+const TableBodyHOOK = props => {
   const {
     searchTerm,
     selectedItems,
@@ -85,103 +108,89 @@ const TableBody = props => {
     toggleItemSelection,
     variables,
     projectTab,
-    teamVideoProjects: {
-      loading, error, videoProjects
-    },
-    videoProjectIds,
-    subscribeToStatuses
+    team
   } = props;
 
-  // TEMP - add mock data w/ videoProjects query result
-  const allProjectTypesData = getTypesData( [
-    videoProjects,
-    teamDocumentFiles,
-    teamPackages
-  ] );
+  // Get TEAM, run QUERY
+  const setGraphQuery = () => {
+    let query;
+    const { contentTypes } = team;
+    if ( contentTypes.includes( 'VIDEO' ) ) query = TEAM_VIDEO_PROJECTS_QUERY;
+    if ( contentTypes.includes( 'PACKAGE' ) ) query = TEAM_PACKAGES_QUERY;
+    return query;
+  };
+  const graphQuery = setGraphQuery();
+
+  const {
+    loading, error, data, subscribeToMore
+  } = useQuery( graphQuery, {
+    variables: { ...variables },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network'
+  } );
 
   const [statusSubscription, setStatusSubscription] = useState();
+  let statusProjectIds = [];
 
   useEffect( () => {
+    const subscribeToStatuses = () => subscribeToMore( {
+      document: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
+      variables: { ids: statusProjectIds },
+      updateQuery: updateProjectStatus
+    } );
+
     if ( statusSubscription ) {
       // Do not resubscribe if the IDs did not change
-      if ( isEqual( statusSubscription.ids, videoProjectIds ) ) {
+      if ( isEqual( statusSubscription.ids, statusProjectIds ) ) {
         return;
       }
       statusSubscription.unsub();
     }
-    if ( videoProjectIds.length < 1 ) {
+    if ( statusProjectIds.length < 1 ) {
       setStatusSubscription( null );
       return;
     }
     const subscription = {
-      ids: videoProjectIds,
+      ids: statusProjectIds,
       unsub: subscribeToStatuses()
     };
     setStatusSubscription( subscription );
     return () => {
       subscription.unsub();
     };
-  }, [videoProjectIds.join( ',' )] );
+  }, [] );
 
-  if ( loading ) {
-    return (
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>
-            <Loader active inline size="small" />
-            <span style={ { marginLeft: '0.5em', fontSize: '1.5em' } }>
-              Loading...
-            </span>
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    );
-  }
-  if ( error ) {
-    return (
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>
-            <ApolloError error={ error } />
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    );
-  }
+  if ( loading ) return <TableBodyLoading />;
+  if ( error ) return <TableBodyError error={ error } />;
 
-  // if ( !videoProjects ) return null;
-  if ( !allProjectTypesData ) return null;
+  const getProjectType = () => {
+    let projectsType;
+    const { contentTypes } = team;
+    if ( contentTypes.includes( 'VIDEO' ) ) projectsType = 'VideoProject';
+    if ( contentTypes.includes( 'PACKAGE' ) ) projectsType = 'Package';
+    return projectsType;
+  };
+  const projectType = getProjectType();
 
-  // if ( searchTerm && !videoProjects.length ) {
-  if ( searchTerm && !allProjectTypesData.length ) {
-    return (
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>
-            No results for &ldquo;{ searchTerm }&rdquo;
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    );
-  }
+  const setProjectData = () => {
+    let projectsData;
+    if ( projectType === 'VideoProject' ) projectsData = data.videoProjects;
+    if ( projectType === 'Package' ) projectsData = data.packages;
+    return projectsData || null;
+  };
+  const dashboardProjects = setProjectData();
+  statusProjectIds = dashboardProjects ? dashboardProjects.map( p => p.id ) : [];
 
-  // if ( !videoProjects.length ) {
-  if ( !allProjectTypesData.length ) {
-    return (
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>No projects</Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    );
-  }
+  if ( !dashboardProjects ) return null;
+  if ( searchTerm && !dashboardProjects.length ) return <TableBodyNoResults searchTerm={ searchTerm } />;
+  if ( !dashboardProjects.length ) return <TableBodyNoProjects />;
 
   // Sort data by clicked column & direction
   // Default sort by createdAt & DESC
   const direction = props.direction ? `${props.direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
 
   const tableData = orderBy(
-    normalizeDashboardData( allProjectTypesData ),
+    normalizeDashboardData( dashboardProjects ),
     tableDatum => {
       let { column } = props;
       if ( !column ) column = 'createdAt';
@@ -212,9 +221,9 @@ const TableBody = props => {
   );
 };
 
-TableBody.propTypes = {
+TableBodyHOOK.propTypes = {
   column: PropTypes.string,
-  teamVideoProjects: PropTypes.object,
+  // teamVideoProjects: PropTypes.object,
   searchTerm: PropTypes.string,
   selectedItems: PropTypes.object,
   tableHeaders: PropTypes.array,
@@ -222,48 +231,9 @@ TableBody.propTypes = {
   variables: PropTypes.object,
   direction: PropTypes.string,
   projectTab: PropTypes.string,
-  videoProjectIds: PropTypes.array,
-  subscribeToStatuses: PropTypes.func
+  // videoProjectIds: PropTypes.array,
+  // subscribeToStatuses: PropTypes.func,
+  team: PropTypes.object,
 };
 
-const updateProjectStatus = ( prev, { subscriptionData: { data: { projectStatusChange } } } ) => {
-  if ( !projectStatusChange ) {
-    return prev;
-  }
-  const projectIndex = prev.videoProjects.findIndex( p => p.id === projectStatusChange.id );
-  if ( projectIndex === -1 ) {
-    return prev;
-  }
-  // Using immutability helper in order to ensure that React will rerender after the status change
-  return update( prev, { videoProjects: { [projectIndex]: { status: { $set: projectStatusChange.status } } } } );
-};
-
-const teamProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
-  name: 'teamVideoProjects',
-  props: ( { teamVideoProjects } ) => {
-    const { videoProjects, subscribeToMore } = teamVideoProjects;
-    const videoProjectIds = videoProjects ? videoProjects.map( p => p.id ) : [];
-    return {
-      teamVideoProjects,
-      videoProjectIds,
-      subscribeToStatuses: () => subscribeToMore( {
-        document: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
-        variables: { ids: videoProjectIds },
-        updateQuery: updateProjectStatus
-      } )
-    };
-  },
-  options: props => ( {
-    variables: { ...props.variables },
-    notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'cache-and-network'
-  } )
-} );
-
-export default teamProjectsQuery( TableBody );
-// export default TableBody;
-
-const TableBodyRaw = TableBody;
-export {
-  TEAM_VIDEO_PROJECTS_QUERY, updateProjectStatus, teamProjectsQuery, TableBodyRaw
-};
+export default TableBodyHOOK;
