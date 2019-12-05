@@ -7,15 +7,15 @@ import orderBy from 'lodash/orderBy';
 import { getLangTaxonomies } from 'lib/utils';
 import { Table } from 'semantic-ui-react';
 import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
-import TableBodyLoading from './TableBodyLoading';
-import TableBodyError from './TableBodyError';
-import TableBodyNoResults from './TableBodyNoResults';
-import TableBodyNoProjects from './TableBodyNoProjects';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 import {
   TEAM_VIDEO_PROJECTS_QUERY,
   TEAM_PACKAGES_QUERY
 } from 'lib/graphql/queries/dashboard';
+import TableBodyLoading from './TableBodyLoading';
+import TableBodyError from './TableBodyError';
+import TableBodyNoResults from './TableBodyNoResults';
+import TableBodyNoProjects from './TableBodyNoProjects';
 import './TableBody.scss';
 
 const normalizeTypesData = type => {
@@ -100,11 +100,13 @@ const TableBodyHOOK = props => {
   const graphQuery = setGraphQuery();
 
   // Run Query
-  const { loading, error, data, subscribeToMore } = useQuery( graphQuery, {
+  const {
+    loading, error, data, subscribeToMore
+  } = useQuery( graphQuery, {
     variables: { ...variables },
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network'
-  } );  
+  } );
 
   const [statusSubscription, setStatusSubscription] = useState();
   let statusProjectIds = [];
