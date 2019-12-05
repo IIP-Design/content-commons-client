@@ -38,6 +38,10 @@
         padding-top: calc(11/8.5 * 100%);
         overflow: hidden;
         background-color: $light-grey;
+
+        > .loader {
+          z-index: 15;
+        }
       }
 
       &.inner {

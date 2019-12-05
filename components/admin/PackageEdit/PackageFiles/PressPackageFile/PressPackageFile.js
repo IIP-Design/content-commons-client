@@ -93,6 +93,7 @@ const PressPackageFile = props => {
               : (
                 <div className="placeholder outer">
                   <div className="placeholder inner" />
+                  <Loader active size="small" />
                 </div>
               ) }
           </Grid.Column>
