@@ -123,10 +123,11 @@ const PackageDetailsForm = props => {
               <ButtonAddFiles
                 accept=".doc, .docx"
                 onChange={ () => {} }
+                disabled={ !values.termsConditions }
                 fluid
                 multiple
               >
-                + Add Files
+                Save draft & upload files
               </ButtonAddFiles>
             </Grid.Column>
           </Grid.Row>
