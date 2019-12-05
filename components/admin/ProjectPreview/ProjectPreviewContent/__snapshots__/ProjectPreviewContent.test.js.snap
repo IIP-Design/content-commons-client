@@ -4,6 +4,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
 <ProjectPreviewContent
   data={
     Object {
+      "called": true,
       "error": undefined,
       "fetchMore": [Function],
       "loading": false,
@@ -729,8 +730,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                 }
                 disabled={false}
                 eventsEnabled={true}
-                horizontalOffset={4}
-                offset={0}
+                offset={4}
                 on="click"
                 pinned={false}
                 position="bottom right"
@@ -921,8 +921,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                 }
                 disabled={false}
                 eventsEnabled={true}
-                horizontalOffset={4}
-                offset={0}
+                offset={4}
                 on="click"
                 pinned={false}
                 position="bottom right"
@@ -1057,7 +1056,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                     Object {
                       "component": <DownloadVideo
                         burnedInCaptions={false}
-                        instructions="Download the video and SRT files in English.
+                        instructions="Download the video and caption files in English.
                             This download option is best for uploading this video to web pages."
                         isPreview={true}
                         selectedLanguageUnit={
@@ -1222,12 +1221,12 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                       "title": "Video File",
                     },
                     Object {
-                      "component": <Apollo(DownloadSrt)
+                      "component": <Apollo(DownloadCaption)
                         id="123"
-                        instructions="Download SRT(s)"
+                        instructions="Download caption file(s) for this video."
                         isPreview={true}
                       />,
-                      "title": "SRT",
+                      "title": "Caption File",
                     },
                     Object {
                       "component": <Apollo(DownloadThumbnail)
@@ -1280,7 +1279,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                         Object {
                           "component": <DownloadVideo
                             burnedInCaptions={false}
-                            instructions="Download the video and SRT files in English.
+                            instructions="Download the video and caption files in English.
                             This download option is best for uploading this video to web pages."
                             isPreview={true}
                             selectedLanguageUnit={
@@ -1445,12 +1444,12 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                           "title": "Video File",
                         },
                         Object {
-                          "component": <Apollo(DownloadSrt)
+                          "component": <Apollo(DownloadCaption)
                             id="123"
-                            instructions="Download SRT(s)"
+                            instructions="Download caption file(s) for this video."
                             isPreview={true}
                           />,
-                          "title": "SRT",
+                          "title": "Caption File",
                         },
                         Object {
                           "component": <Apollo(DownloadThumbnail)
@@ -1479,8 +1478,7 @@ exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
                 }
                 disabled={false}
                 eventsEnabled={true}
-                horizontalOffset={4}
-                offset={0}
+                offset={4}
                 on="click"
                 pinned={false}
                 position="bottom right"

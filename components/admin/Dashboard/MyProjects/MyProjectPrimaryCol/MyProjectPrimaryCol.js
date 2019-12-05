@@ -11,7 +11,7 @@ import {
   Checkbox, Icon, Modal, Popup
 } from 'semantic-ui-react';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import ProjectPreviewContent from 'components/admin/ProjectEdit/ProjectPreviewContent/ProjectPreviewContent';
+import ProjectPreviewContent from 'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
 import './MyProjectPrimaryCol.scss';
 
@@ -110,8 +110,7 @@ const MyProjectPrimaryCol = props => {
               <div className="placeholder outer">
                 <div className="placeholder inner" />
               </div>
-            )
-          }
+            ) }
 
           { isDraft && (
             <p className="draft-overlay">

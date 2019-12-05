@@ -9,7 +9,7 @@ import Router from 'next/router';
 import { graphql } from 'react-apollo';
 import { Button, Grid, Loader } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
-import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/ProjectEdit/ProjectPreviewContent/ProjectPreviewContent';
+import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
 import { getPluralStringOrNot } from 'lib/utils';
 import VideoProjectFile from './VideoProjectFile/VideoProjectFile';
 

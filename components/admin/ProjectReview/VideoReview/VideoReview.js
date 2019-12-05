@@ -15,7 +15,7 @@ import VideoSupportFiles from 'components/admin/ProjectReview/VideoSupportFiles/
 import VideoProjectFiles from 'components/admin/ProjectReview/VideoProjectFiles/VideoProjectFiles';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import ProjectPreview from 'components/admin/ProjectPreview/ProjectPreview';
-import PreviewProjectContent from 'components/admin/ProjectEdit/ProjectPreviewContent/ProjectPreviewContent';
+import ProjectPreviewContent from 'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
 import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
 import ApolloError from 'components/errors/ApolloError';
 
@@ -209,7 +209,7 @@ const VideoReview = props => {
           } }
           contentProps={ { id } }
           modalTrigger={ Button }
-          modalContent={ PreviewProjectContent }
+          modalContent={ ProjectPreviewContent }
           options={ { closeIcon: true } }
         />
 

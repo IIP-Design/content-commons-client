@@ -32,8 +32,7 @@ exports[`<PopupTrigger /> renders without crashing 1`] = `
       }
       disabled={false}
       eventsEnabled={true}
-      horizontalOffset={4}
-      offset={0}
+      offset={4}
       on="click"
       pinned={false}
       position="bottom right"

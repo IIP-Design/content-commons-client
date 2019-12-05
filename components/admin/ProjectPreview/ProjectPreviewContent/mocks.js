@@ -1,4 +1,4 @@
-import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/ProjectEdit/ProjectPreviewContent/ProjectPreviewContent';
+import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
 
 export const props = { id: '123' };
 
