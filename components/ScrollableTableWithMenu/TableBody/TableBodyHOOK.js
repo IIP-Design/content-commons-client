@@ -5,13 +5,13 @@ import update from 'immutability-helper';
 import isEqual from 'lodash/isEqual';
 import orderBy from 'lodash/orderBy';
 import { getLangTaxonomies } from 'lib/utils';
-import { Table } from 'semantic-ui-react';
-import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 import {
   TEAM_VIDEO_PROJECTS_QUERY,
   TEAM_PACKAGES_QUERY
 } from 'lib/graphql/queries/dashboard';
+import { Table } from 'semantic-ui-react';
+import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import TableBodyLoading from './TableBodyLoading';
 import TableBodyError from './TableBodyError';
 import TableBodyNoResults from './TableBodyNoResults';
@@ -27,7 +27,7 @@ const normalizeTypesData = type => {
   };
 
   const thumbnail = () => {
-    if ( !type.thumbnail ) return {};
+    if ( !type.thumbnails ) return {};
     return ( {
       signedUrl: type.thumbnails && type.thumbnails.length ? type.thumbnails[0].signedUrl : '',
       alt: type.thumbnails && type.thumbnails.length ? type.thumbnails[0].alt : ''
@@ -204,3 +204,5 @@ TableBodyHOOK.propTypes = {
 };
 
 export default TableBodyHOOK;
+
+export { TEAM_VIDEO_PROJECTS_QUERY, updateProjectStatus };

@@ -10,8 +10,7 @@ import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import orderBy from 'lodash/orderBy';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 import {
-  TEAM_VIDEO_PROJECTS_QUERY,
-  TEAM_PACKAGES_QUERY
+  TEAM_VIDEO_PROJECTS_QUERY
 } from 'lib/graphql/queries/dashboard';
 
 // TEMP
@@ -261,7 +260,6 @@ const teamProjectsQuery = graphql( TEAM_VIDEO_PROJECTS_QUERY, {
 } );
 
 export default teamProjectsQuery( TableBody );
-// export default TableBody;
 
 const TableBodyRaw = TableBody;
 export {

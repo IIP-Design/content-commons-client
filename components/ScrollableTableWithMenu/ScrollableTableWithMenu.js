@@ -203,6 +203,7 @@ class ScrollableTableWithMenu extends React.Component {
         <Grid.Row className="items_tableMenus_wrapper">
           <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
             <TableActionsMenu
+              team={ team }
               displayActionsMenu={ displayActionsMenu }
               variables={ { ...variables, ...paginationVars } }
               selectedItems={ selectedItems }
@@ -258,6 +259,7 @@ class ScrollableTableWithMenu extends React.Component {
               handlePageChange={ this.handlePageChange }
               itemsPerPage={ itemsPerPage }
               variables={ variables }
+              team={ team }
             />
           </Grid.Column>
         </Grid.Row>

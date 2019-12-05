@@ -8,15 +8,17 @@ import editIcon from 'static/images/dashboard/edit.svg';
 import createIcon from 'static/images/dashboard/create.svg';
 import archiveIcon from 'static/images/dashboard/archive.svg';
 import { getCount } from 'lib/utils';
+import {
+  TEAM_VIDEO_PROJECTS_QUERY,
+  TEAM_VIDEO_PROJECTS_COUNT_QUERY,
+  TEAM_PACKAGES_QUERY,
+  TEAM_PACKAGES_COUNT_QUERY,
+} from 'lib/graphql/queries/dashboard';
 import DeleteIconButton from './DeleteIconButton/DeleteIconButton';
 import DeleteProjects from './DeleteProjects/DeleteProjects';
 import UnpublishProjects from './UnpublishProjects/UnpublishProjects';
 import ActionResults from './ActionResults/ActionResults';
-import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
-import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
 import './TableActionsMenu.scss';
-// TEMP
-import { packageMocks, documentFileMocks } from '../TableBody/pressMocks';
 
 const CONFIRMATION_MSG_DELAY = 3000;
 
@@ -36,31 +38,55 @@ const delayUnmount = ( fn, timer, delay ) => {
   timer = setTimeout( fn, delay );
 };
 
-
 const TableActionsMenu = props => {
+  const { team } = props;
+
+  // Determine type of dashboard projects
+  const getDashboardProjectsType = () => {
+    let projectsType;
+    const { contentTypes } = team;
+    if ( contentTypes.includes( 'VIDEO' ) ) projectsType = 'videoProjects';
+    if ( contentTypes.includes( 'PACKAGE' ) ) projectsType = 'packages';
+    return projectsType || null;
+  };
+  const dashboardProjectsType = getDashboardProjectsType();
+
+  // Determine which queries to run
+  const setGraphQueries = () => {
+    let queries = {};
+    const { contentTypes } = team;
+    if ( contentTypes.includes( 'VIDEO' ) ) {
+      queries = { projectsQuery: TEAM_VIDEO_PROJECTS_QUERY, projectsCount: TEAM_VIDEO_PROJECTS_COUNT_QUERY };
+    }
+    if ( contentTypes.includes( 'PACKAGE' ) ) {
+      queries = { projectsQuery: TEAM_PACKAGES_QUERY, projectsCount: TEAM_PACKAGES_COUNT_QUERY };
+    }
+    return queries;
+  };
+  const graphQueries = setGraphQueries();
+
+  // Run queries
   const {
     loading,
     error,
-    data: teamVideoProjects,
-    refetch: videoProjectsRefetch
-  } = useQuery( TEAM_VIDEO_PROJECTS_QUERY, {
+    data: dashboardProjects,
+    refetch: dashboardProjectsRefetch
+  } = useQuery( graphQueries.projectsQuery, {
     variables: { ...props.variables },
     notifyOnNetworkStatusChange: true
   } );
 
   const {
-    loading: projectCountLoading,
-    error: projectCountError,
-    data: teamVideoProjectsCount,
-    refetch: videoProjectsCountRefetch
-  } = useQuery(
-    TEAM_VIDEO_PROJECTS_COUNT_QUERY, {
-      variables: {
-        team: props.variables.team,
-        searchTerm: props.variables.searchTerm
-      }
+    loading: projectsCountLoading,
+    error: projectsCountError,
+    data: dashboardProjectsCount,
+    refetch: dashboardProjectsCountRefetch
+  } = useQuery( graphQueries.projectsCount, {
+    variables: {
+      team: props.variables.team,
+      searchTerm: props.variables.searchTerm
     }
-  );
+  } );
 
   const [displayConfirmationMsg, setDisplayConfirmationMsg] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
@@ -83,6 +109,12 @@ const TableActionsMenu = props => {
       );
     }
   } );
+
+  if ( loading ) return 'Loading....';
+  if ( error ) return <ApolloError error={ error } />;
+
+  // Dashboard Projects Data
+  const dashboardData = dashboardProjects[dashboardProjectsType];
 
   const showConfirmationMsg = () => {
     setDisplayConfirmationMsg( true );
@@ -108,8 +140,8 @@ const TableActionsMenu = props => {
 
   const handleActionCompleted = () => {
     const { variables } = props;
-    videoProjectsRefetch( { ...variables } );
-    videoProjectsCountRefetch( {
+    dashboardProjectsRefetch( { ...variables } );
+    dashboardProjectsCountRefetch( {
       team: variables.team,
       searchTerm: variables.searchTerm
     } );
@@ -147,13 +179,7 @@ const TableActionsMenu = props => {
   };
 
   const hasSelectedAllDrafts = () => {
-    // const draftProjects = this.getDraftProjects( this.props.teamVideoProjects.videoProjects || null );
-    const teamPackages = packageMocks[0].result.data;
-    const teamDocumentFiles = documentFileMocks[0].result.data;
-    const { videoProjects } = teamVideoProjects;
-    const projectsWithPackages = [...teamPackages, ...teamDocumentFiles, ...videoProjects];
-    const draftProjects = getDraftProjects( projectsWithPackages || null );
-
+    const draftProjects = getDraftProjects( dashboardData || null );
     const selections = getSelectedProjectsIds();
 
     if ( selections.length > 0 ) {
@@ -179,31 +205,14 @@ const TableActionsMenu = props => {
   } = props;
 
   const renderMenu = () => {
-    if ( loading ) return 'Loading....';
-    if ( error ) return <ApolloError error={ error } />;
-    if ( !teamVideoProjects || !teamVideoProjects.videoProjects ) return null;
+    if ( !dashboardData ) return null;
 
-    const { videoProjects } = teamVideoProjects;
-    // TEMP
-    const teamPackages = packageMocks[0].result.data;
-    const teamDocumentFiles = documentFileMocks[0].result.data;
-    const allProjectTypes = [...teamPackages, ...teamDocumentFiles, ...videoProjects];
-
-    // const projectsOnPage = this.getProjectsOnPage( videoProjects );
-    const projectsOnPage = getProjectsOnPage( allProjectTypes );
-
+    const projectsOnPage = getProjectsOnPage( dashboardData );
     const projectsOnPageCount = getCount( projectsOnPage );
-
-    // const selections = this.getSelectedProjects( videoProjects );
-    const selections = getSelectedProjects( allProjectTypes );
-
+    const selections = getSelectedProjects( dashboardData );
     const selectionsCount = getCount( selections );
-
-    // const isDisabled = videoProjects && !videoProjects.length;
-    const isDisabled = allProjectTypes && !allProjectTypes.length;
-
+    const isDisabled = dashboardData && !dashboardData.length;
     const isChecked = projectsOnPageCount === selectionsCount && selectionsCount > 0;
-
     const isIndeterminate = projectsOnPageCount > selectionsCount && selectionsCount > 0;
 
     return (
@@ -278,6 +287,7 @@ const TableActionsMenu = props => {
 };
 
 TableActionsMenu.propTypes = {
+  team: PropTypes.object,
   displayActionsMenu: PropTypes.bool,
   variables: PropTypes.object,
   selectedItems: PropTypes.object,
