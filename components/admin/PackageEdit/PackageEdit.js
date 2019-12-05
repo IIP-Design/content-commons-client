@@ -22,7 +22,7 @@ const PackageEdit = props => {
   const [mounted, setMounted] = useState( false );
   const [error, setError] = useState( {} );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
-  const [displayFiles, setDisplayFiles] = useState( false );
+  const [hasUploadCompleted, setHasUploadCompleted] = useState( false );
 
   const [notification, setNotification] = useState( {
     notificationMessage: '',
@@ -58,7 +58,7 @@ const PackageEdit = props => {
        * resolved.
        */
       if ( documents ) {
-        setDisplayFiles( Boolean( getCount( documents ) ) );
+        setHasUploadCompleted( Boolean( getCount( documents ) ) );
       }
     }
   }, [props.pkgQuery] );
@@ -176,9 +176,9 @@ const PackageEdit = props => {
               publish: handlePublish
             } }
             show={ {
-              delete: displayFiles,
-              save: displayFiles,
-              publish: displayFiles
+              delete: hasUploadCompleted,
+              save: hasUploadCompleted,
+              publish: hasUploadCompleted
             } }
           />
         </ProjectHeader>
@@ -200,14 +200,14 @@ const PackageEdit = props => {
         id={ packageId }
         updateNotification={ updateNotification }
       >
-        { displayFiles && <PackageFiles id={ packageId } /> }
+        { hasUploadCompleted && <PackageFiles id={ packageId } /> }
       </PackageDetailsFormContainer>
 
       { /**
          * can possibly be shared with VideoReview
          * with a little modification
          */ }
-      { displayFiles && <PackageActions handlePublish={ handlePublish } handleUnPublish={ handleUnPublish } /> }
+      { hasUploadCompleted && <PackageActions handlePublish={ handlePublish } handleUnPublish={ handleUnPublish } /> }
     </div>
   );
 };
