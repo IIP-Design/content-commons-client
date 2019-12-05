@@ -40,7 +40,7 @@ const normalizeTypesData = type => {
   };
 
   const thumbnail = () => {
-    if ( !type.thumbnail ) return {};
+    if ( !type.thumbnails ) return {};
     return ( {
       signedUrl: type.thumbnails && type.thumbnails.length ? type.thumbnails[0].signedUrl : '',
       alt: type.thumbnails && type.thumbnails.length ? type.thumbnails[0].alt : ''
