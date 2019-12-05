@@ -1,39 +1,22 @@
-import './TableBody.scss';
-import { Loader, Table } from 'semantic-ui-react';
-import ApolloError from 'components/errors/ApolloError';
-import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
-import { useQuery } from '@apollo/react-hooks';
 import React, { useEffect, useState } from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 import isEqual from 'lodash/isEqual';
-import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import orderBy from 'lodash/orderBy';
+import { getLangTaxonomies } from 'lib/utils';
+import { Table } from 'semantic-ui-react';
+import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
+import TableBodyLoading from './TableBodyLoading';
+import TableBodyError from './TableBodyError';
+import TableBodyNoResults from './TableBodyNoResults';
+import TableBodyNoProjects from './TableBodyNoProjects';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 import {
   TEAM_VIDEO_PROJECTS_QUERY,
   TEAM_PACKAGES_QUERY
 } from 'lib/graphql/queries/dashboard';
-import TableBodyLoading from './TableBodyLoading';
-import TableBodyError from './TableBodyError';
-import TableBodyNoResults from './TableBodyNoResults';
-import TableBodyNoProjects from './TableBodyNoProjects';
-
-// TEMP
-// import { packageMocks, documentFileMocks } from './pressMocks';
-// const teamPackages = packageMocks[0].result.data;
-// const teamDocumentFiles = documentFileMocks[0].result.data;
-
-const getLangTaxonomies = ( array, locale = 'en-us' ) => {
-  if ( !Array.isArray( array ) || !array.length ) return '';
-  return (
-    array.map( tax => (
-      tax.translations
-        .find( translation => translation.language.locale === locale )
-        .name
-    ) ).join( ', ' )
-  );
-};
+import './TableBody.scss';
 
 const normalizeTypesData = type => {
   const projectTitle = () => {
@@ -64,7 +47,6 @@ const normalizeTypesData = type => {
     thumbnail: { value: thumbnail() },
     categories: { value: getLangTaxonomies( type.categories ) }
   } );
-
   return normalizedTypeData;
 };
 
@@ -74,31 +56,17 @@ const normalizeDashboardData = types => {
   return normalizedProjects;
 };
 
-const updateProjectStatus = ( prev, { subscriptionData: { data: { projectStatusChange } } } ) => {
+const updateProjectStatus = dashboardProjectsType => ( prev, { subscriptionData: { data: { projectStatusChange } } } ) => {
   if ( !projectStatusChange ) {
     return prev;
   }
-
-  let projectIndex;
-  if ( prev.videoProjects ) {
-    projectIndex = prev.videoProjects.findIndex( p => p.id === projectStatusChange.id );
-  }
-  if ( prev.packages ) {
-    projectIndex = prev.packages.findIndex( p => p.id === projectStatusChange.id );
-  }
+  const projectIndex = prev[dashboardProjectsType].findIndex( p => p.id === projectStatusChange.id );
   if ( projectIndex === -1 ) {
     return prev;
   }
-
   // Using immutability helper in order to ensure that React will rerender after the status change
-  if ( prev.videoProjects ) {
-    return update( prev, { videoProjects: { [projectIndex]: { status: { $set: projectStatusChange.status } } } } );
-  }
-  if ( prev.packages ) {
-    return update( prev, { packages: { [projectIndex]: { status: { $set: projectStatusChange.status } } } } );
-  }
+  return update( prev, { [dashboardProjectsType]: { [projectIndex]: { status: { $set: projectStatusChange.status } } } } );
 };
-
 
 const TableBodyHOOK = props => {
   const {
@@ -111,7 +79,17 @@ const TableBodyHOOK = props => {
     team
   } = props;
 
-  // Get TEAM, run QUERY
+  // Determine type of dashboard projects
+  const getDashboardProjectsType = () => {
+    let projectsType;
+    const { contentTypes } = team;
+    if ( contentTypes.includes( 'VIDEO' ) ) projectsType = 'videoProjects';
+    if ( contentTypes.includes( 'PACKAGE' ) ) projectsType = 'packages';
+    return projectsType || null;
+  };
+  const dashboardProjectsType = getDashboardProjectsType();
+
+  // Determine which Query to run
   const setGraphQuery = () => {
     let query;
     const { contentTypes } = team;
@@ -121,13 +99,12 @@ const TableBodyHOOK = props => {
   };
   const graphQuery = setGraphQuery();
 
-  const {
-    loading, error, data, subscribeToMore
-  } = useQuery( graphQuery, {
+  // Run Query
+  const { loading, error, data, subscribeToMore } = useQuery( graphQuery, {
     variables: { ...variables },
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network'
-  } );
+  } );  
 
   const [statusSubscription, setStatusSubscription] = useState();
   let statusProjectIds = [];
@@ -136,7 +113,7 @@ const TableBodyHOOK = props => {
     const subscribeToStatuses = () => subscribeToMore( {
       document: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
       variables: { ids: statusProjectIds },
-      updateQuery: updateProjectStatus
+      updateQuery: updateProjectStatus( dashboardProjectsType )
     } );
 
     if ( statusSubscription ) {
@@ -158,30 +135,21 @@ const TableBodyHOOK = props => {
     return () => {
       subscription.unsub();
     };
-  }, [] );
+  }, [statusProjectIds] );
 
   if ( loading ) return <TableBodyLoading />;
   if ( error ) return <TableBodyError error={ error } />;
 
-  const getProjectType = () => {
-    let projectsType;
-    const { contentTypes } = team;
-    if ( contentTypes.includes( 'VIDEO' ) ) projectsType = 'VideoProject';
-    if ( contentTypes.includes( 'PACKAGE' ) ) projectsType = 'Package';
-    return projectsType;
-  };
-  const projectType = getProjectType();
-
-  const setProjectData = () => {
+  // Set dashboard projects data & ID's for status subscription
+  const setDashboardProjectsData = () => {
     let projectsData;
-    if ( projectType === 'VideoProject' ) projectsData = data.videoProjects;
-    if ( projectType === 'Package' ) projectsData = data.packages;
+    if ( dashboardProjectsType === 'videoProjects' ) projectsData = data.videoProjects;
+    if ( dashboardProjectsType === 'packages' ) projectsData = data.packages;
     return projectsData || null;
   };
-  const dashboardProjects = setProjectData();
+  const dashboardProjects = setDashboardProjectsData();
   statusProjectIds = dashboardProjects ? dashboardProjects.map( p => p.id ) : [];
 
-  if ( !dashboardProjects ) return null;
   if ( searchTerm && !dashboardProjects.length ) return <TableBodyNoResults searchTerm={ searchTerm } />;
   if ( !dashboardProjects.length ) return <TableBodyNoProjects />;
 
@@ -223,7 +191,6 @@ const TableBodyHOOK = props => {
 
 TableBodyHOOK.propTypes = {
   column: PropTypes.string,
-  // teamVideoProjects: PropTypes.object,
   searchTerm: PropTypes.string,
   selectedItems: PropTypes.object,
   tableHeaders: PropTypes.array,
@@ -231,8 +198,6 @@ TableBodyHOOK.propTypes = {
   variables: PropTypes.object,
   direction: PropTypes.string,
   projectTab: PropTypes.string,
-  // videoProjectIds: PropTypes.array,
-  // subscribeToStatuses: PropTypes.func,
   team: PropTypes.object,
 };
 
