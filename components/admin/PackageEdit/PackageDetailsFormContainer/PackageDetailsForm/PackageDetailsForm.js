@@ -5,6 +5,7 @@
  */
 import React, { createContext, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'next/router';
 import { Form, Grid, Input } from 'semantic-ui-react';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
@@ -31,7 +32,8 @@ const PackageDetailsForm = props => {
     // isValid,
     setFieldTouched,
     // status,
-    save
+    save,
+    router
   } = props;
 
   const handleOnChange = ( e, {
@@ -109,10 +111,13 @@ const PackageDetailsForm = props => {
 
           <Grid.Row reversed="computer">
             <Grid.Column mobile={ 11 }>
-              <TermsConditions
-                handleOnChange={ handleOnChange }
-                error={ touched.termsConditions && !!errors.termsConditions }
-              />
+              { router.query.action === 'create'
+                && (
+                  <TermsConditions
+                    handleOnChange={ handleOnChange }
+                    error={ touched.termsConditions && !!errors.termsConditions }
+                  />
+                ) }
             </Grid.Column>
             <Grid.Column mobile={ 16 } computer={ 5 }>
               <ButtonAddFiles
@@ -152,7 +157,8 @@ PackageDetailsForm.propTypes = {
   // isSubmitting: PropTypes.bool,
   // isValid: PropTypes.bool,
   setFieldTouched: PropTypes.func,
-  save: PropTypes.func
+  save: PropTypes.func,
+  router: PropTypes.object
 };
 
-export default PackageDetailsForm;
+export default withRouter( PackageDetailsForm );
