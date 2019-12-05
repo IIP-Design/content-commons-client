@@ -32,10 +32,21 @@
     }
 
     > .placeholder {
-      height: 290;
-      width: 100%;
-      max-width: 100%;
-      background-color: $medium-grey;
+      &.outer {
+        position: relative;
+        height: 0;
+        padding-top: calc(11/8.5 * 100%);
+        overflow: hidden;
+        background-color: $light-grey;
+      }
+
+      &.inner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+      }
     }
   }
 
