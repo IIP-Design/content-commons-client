@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { Pagination } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
-import {
-  TEAM_VIDEO_PROJECTS_COUNT_QUERY,
-  TEAM_PACKAGES_COUNT_QUERY
-} from 'lib/graphql/queries/dashboard';
+import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/video';
+import { TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
 import './TablePagination.scss';
 
 const TablePagination = props => {

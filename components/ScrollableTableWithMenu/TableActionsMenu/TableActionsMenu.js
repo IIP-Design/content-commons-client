@@ -8,12 +8,8 @@ import editIcon from 'static/images/dashboard/edit.svg';
 import createIcon from 'static/images/dashboard/create.svg';
 import archiveIcon from 'static/images/dashboard/archive.svg';
 import { getCount } from 'lib/utils';
-import {
-  TEAM_VIDEO_PROJECTS_QUERY,
-  TEAM_VIDEO_PROJECTS_COUNT_QUERY,
-  TEAM_PACKAGES_QUERY,
-  TEAM_PACKAGES_COUNT_QUERY,
-} from 'lib/graphql/queries/dashboard';
+import { TEAM_VIDEO_PROJECTS_QUERY, TEAM_VIDEO_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/video';
+import { TEAM_PACKAGES_QUERY, TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
 import DeleteIconButton from './DeleteIconButton/DeleteIconButton';
 import DeleteProjects from './DeleteProjects/DeleteProjects';
 import UnpublishProjects from './UnpublishProjects/UnpublishProjects';
@@ -251,6 +247,7 @@ const TableActionsMenu = props => {
           <DeleteIconButton displayConfirmDelete={ displayConfirmDelete } />
 
           <DeleteProjects
+            team={ team }
             deleteConfirmOpen={ deleteConfirmOpen }
             handleDeleteCancel={ handleDeleteCancel }
             handleDeleteConfirm={ handleActionCompleted }
@@ -271,6 +268,7 @@ const TableActionsMenu = props => {
             <>
               <span className="separator">|</span>
               <UnpublishProjects
+                team={ team }
                 handleResetSelections={ handleResetSelections }
                 handleActionResult={ handleActionResult }
                 showConfirmationMsg={ showConfirmationMsg }

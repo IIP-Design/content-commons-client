@@ -1,22 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 import { Button, Modal } from 'semantic-ui-react';
 import { getCount, getPluralStringOrNot } from 'lib/utils';
 import { DELETE_VIDEO_PROJECT_MUTATION } from 'lib/graphql/queries/video';
+import { DELETE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import DeleteProjectsList from './DeleteProjectsList/DeleteProjectsList';
 
 const DeleteProjects = props => {
   const {
+    team,
     deleteConfirmOpen,
     handleActionResult,
     handleDeleteCancel,
     handleDeleteConfirm,
     handleResetSelections,
     selections,
-    deleteVideoProject
   } = props;
+
+  // Determine which Query to run
+  const setGraphQuery = () => {
+    let query;
+    const { contentTypes } = team;
+    if ( contentTypes.includes( 'VIDEO' ) ) query = DELETE_VIDEO_PROJECT_MUTATION;
+    if ( contentTypes.includes( 'PACKAGE' ) ) query = DELETE_PACKAGE_MUTATION;
+    return query;
+  };
+  const graphQuery = setGraphQuery();
+
+  const [deleteDashboardProject, { loading, error }] = useMutation( graphQuery );
 
   const getDrafts = () => {
     if ( selections && selections.length ) {
@@ -42,7 +55,7 @@ const DeleteProjects = props => {
   const hasNonDraftsOnly = draftsCount === 0 && nonDraftsCount > 0;
 
   const deleteProject = async project => {
-    const result = await deleteVideoProject( { variables: { id: project.id } } ).catch( error => ( {
+    const result = await deleteDashboardProject( { variables: { id: project.id } } ).catch( error => ( {
       error,
       project,
       action: 'delete',
@@ -109,15 +122,13 @@ const DeleteProjects = props => {
 };
 
 DeleteProjects.propTypes = {
+  team: PropTypes.object,
   deleteConfirmOpen: PropTypes.bool,
   handleActionResult: PropTypes.func,
   handleDeleteCancel: PropTypes.func,
   handleDeleteConfirm: PropTypes.func,
   handleResetSelections: PropTypes.func,
   selections: PropTypes.array,
-  deleteVideoProject: PropTypes.func
 };
 
-export default graphql( DELETE_VIDEO_PROJECT_MUTATION, {
-  name: 'deleteVideoProject'
-} )( DeleteProjects );
+export default DeleteProjects;

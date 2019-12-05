@@ -271,7 +271,6 @@ class ScrollableTableWithMenu extends React.Component {
 ScrollableTableWithMenu.propTypes = {
   persistentTableHeaders: PropTypes.array,
   columnMenu: PropTypes.array,
-  // team: PropTypes.string,
   team: PropTypes.object,
   projectTab: PropTypes.string
 };

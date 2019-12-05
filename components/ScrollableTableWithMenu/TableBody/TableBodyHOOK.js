@@ -6,10 +6,8 @@ import isEqual from 'lodash/isEqual';
 import orderBy from 'lodash/orderBy';
 import { getLangTaxonomies } from 'lib/utils';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
-import {
-  TEAM_VIDEO_PROJECTS_QUERY,
-  TEAM_PACKAGES_QUERY
-} from 'lib/graphql/queries/dashboard';
+import { TEAM_VIDEO_PROJECTS_QUERY } from 'lib/graphql/queries/video';
+import { TEAM_PACKAGES_QUERY } from 'lib/graphql/queries/package';
 import { Table } from 'semantic-ui-react';
 import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
 import TableBodyLoading from './TableBodyLoading';
