@@ -56,7 +56,7 @@ const Upload = () => {
       } );
 
       const { id } = res.data.createPackage;
-      Router.push( `/admin/package/${id}` );
+      Router.push( `/admin/package/${id}?action=create` );
     } catch ( err ) { // apollo populates createPackageError }
     }
   };
