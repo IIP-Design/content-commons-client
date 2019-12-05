@@ -7,7 +7,7 @@ const displayProjectTitle = project => {
   if ( project.__typename === 'VideoProject' ) title = project.projectTitle;
   if ( project.__typename === 'Package' ) title = project.title;
   return title;
-}
+};
 
 const DeleteProjectsList = props => {
   const { headline, isDrafts, projects } = props;

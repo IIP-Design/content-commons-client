@@ -9,8 +9,7 @@ import debounce from 'lodash/debounce';
 import { Table, Grid } from 'semantic-ui-react';
 import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import TableHeader from './TableHeader/TableHeader';
-// import TableBody from './TableBody/TableBody';
-import TableBodyHOOK from './TableBody/TableBodyHOOK';
+import TableBody from './TableBody/TableBody';
 import TableItemsDisplay from './TableItemsDisplay/TableItemsDisplay';
 import TableSearch from './TableSearch/TableSearch';
 import TableMenu from './TableMenu/TableMenu';
@@ -236,7 +235,7 @@ class ScrollableTableWithMenu extends React.Component {
                   toggleAllItemsSelection={ this.toggleAllItemsSelection }
                   displayActionsMenu={ displayActionsMenu }
                 />
-                <TableBodyHOOK
+                <TableBody
                   searchTerm={ searchTerm }
                   selectedItems={ selectedItems }
                   tableHeaders={ tableHeaders }
