@@ -4,6 +4,7 @@ import { withRouter } from 'next/router';
 import { graphql } from 'react-apollo';
 import compose from 'lodash.flowright';
 import { getCount } from 'lib/utils';
+import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import ApolloError from 'components/errors/ApolloError';
 import Notification from 'components/Notification/Notification';
@@ -155,6 +156,37 @@ const PackageEdit = props => {
   };
 
   const { showNotification, notificationMessage } = notification;
+
+  if ( !props.pkgQuery ) return null;
+  const { error: queryError, loading } = props.pkgQuery;
+
+  if ( loading ) {
+    return (
+      <div style={ {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '200px'
+      } }
+      >
+        <Loader
+          active
+          inline="centered"
+          style={ { marginBottom: '1em' } }
+          content="Loading package details page..."
+        />
+      </div>
+    );
+  }
+
+  if ( queryError ) {
+    return (
+      <div style={ centeredStyles }>
+        <ApolloError error={ queryError } />
+      </div>
+    );
+  }
 
   return (
     <div className="edit-package">
