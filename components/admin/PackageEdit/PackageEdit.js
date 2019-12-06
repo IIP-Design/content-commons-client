@@ -8,7 +8,7 @@ import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import ApolloError from 'components/errors/ApolloError';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
-import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
+import { PACKAGE_QUERY, DELETE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 import PackageDetailsFormContainer from './PackageDetailsFormContainer/PackageDetailsFormContainer';
 import PackageActions from './PackageActions/PackageActions';
 import PackageFiles from './PackageFiles/PackageFiles';
@@ -96,17 +96,16 @@ const PackageEdit = props => {
     props.router.push( { pathname: '/admin/dashboard' } );
   };
 
-  const handleDeleteConfirm = () => {
-    console.log( 'Confirm Delete' );
-    // const { deletePackage } = props;
+  const handleDeleteConfirm = async () => {
+    const { deletePackage } = props;
 
-    // const deletedPackageId = await deletePackage( {
-    //   variables: { id: packageId }
-    // } ).catch( err => { setError( err ); } );
+    const deletedPackageId = await deletePackage( {
+      variables: { id: packageId }
+    } ).catch( err => { setError( err ); } );
 
-    // if ( deletedPackageId ) {
-    //   handleExit();
-    // }
+    if ( deletedPackageId ) {
+      handleExit();
+    }
   };
 
   const handlePublish = () => {
@@ -213,7 +212,7 @@ const PackageEdit = props => {
 };
 
 PackageEdit.propTypes = {
-  // deletePackage: PropTypes.func,
+  deletePackage: PropTypes.func,
   pkgQuery: PropTypes.object,
   // updatePackage: PropTypes.func,
   // updateFile: PropTypes.func,
@@ -229,7 +228,7 @@ export default compose(
     } ),
     skip: props => !props.router.query.id
   } ),
-  // graphql( DELETE_PACKAGE_MUTATION, { name: 'deletePackage' } ),
+  graphql( DELETE_PACKAGE_MUTATION, { name: 'deletePackage' } ),
   // graphql( UPDATE_PACKAGE_MUTATION, {
   //   name: 'updatePackage',
   //   options: props => ( {
