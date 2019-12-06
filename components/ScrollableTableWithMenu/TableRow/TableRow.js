@@ -16,7 +16,7 @@ const TableRow = props => {
   };
 
   const {
-    d, selectedItems, tableHeaders, toggleItemSelection, projectTab
+    d, selectedItems, tableHeaders, toggleItemSelection, projectTab, team
   } = props;
 
   if ( !d ) return null;
@@ -48,6 +48,7 @@ const TableRow = props => {
                     <TeamProjectPrimaryCol
                       d={ d }
                       header={ header }
+                      team={ team }
                       selectedItems={ selectedItems }
                       toggleItemSelection={ toggleItemSelection }
                     />
@@ -86,7 +87,8 @@ TableRow.propTypes = {
   selectedItems: PropTypes.object,
   tableHeaders: PropTypes.array,
   toggleItemSelection: PropTypes.func,
-  projectTab: PropTypes.string
+  projectTab: PropTypes.string,
+  team: PropTypes.object,
 };
 
 export default TableRow;

@@ -183,6 +183,7 @@ const TableBody = props => {
           tableHeaders={ tableHeaders }
           toggleItemSelection={ toggleItemSelection }
           projectTab={ projectTab }
+          team={ team }
         />
       ) ) }
     </Table.Body>
