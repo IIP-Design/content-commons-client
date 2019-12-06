@@ -83,7 +83,9 @@ const PackageEdit = props => {
      * disable delete package button if either there
      * is no package id OR package has been published
      */
-    return !packageId || ( pkgQuery && pkgQuery.pkg && pkgQuery.pkg.publishedAt );
+    return (
+      !packageId || ( pkgQuery && pkgQuery.pkg && !!pkgQuery.pkg.publishedAt )
+    );
   };
 
   const handleDisplaySaveMsg = () => {
