@@ -25,7 +25,7 @@ export const mocks = [
   },
   {
     request: {
-      query: 'DELETE_PACKAGE_MUTATION',
+      query: DELETE_PACKAGE_MUTATION,
       variables: { id: props.id }
     },
     result: {
@@ -37,24 +37,24 @@ export const mocks = [
       }
     }
   },
-  {
-    request: {
-      query: 'UPDATE_PACKAGE_MUTATION',
-      variables: {
-        data: { title: 'New Title' },
-        where: { id: props.id }
-      }
-    },
-    result: {
-      data: {
-        updatePackage: {
-          __typename: 'Package',
-          id: props.id,
-          title: 'New Title'
-        }
-      }
-    }
-  }
+  // {
+  //   request: {
+  //     query: 'UPDATE_PACKAGE_MUTATION',
+  //     variables: {
+  //       data: { title: 'New Title' },
+  //       where: { id: props.id }
+  //     }
+  //   },
+  //   result: {
+  //     data: {
+  //       updatePackage: {
+  //         __typename: 'Package',
+  //         id: props.id,
+  //         title: 'New Title'
+  //       }
+  //     }
+  //   }
+  // }
 ];
 
 export const publishedMocks = [
