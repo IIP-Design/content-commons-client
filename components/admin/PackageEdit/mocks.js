@@ -1,13 +1,14 @@
-/**
- * mock data for UI development
- * eventually use for unit testing
- */
-export const props = { id: 'test-123' };
+import { PACKAGE_QUERY, DELETE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
+
+export const props = {
+  id: 'test-123',
+  router: { query: { id: 'test-123' } }
+};
 
 export const mocks = [
   {
     request: {
-      query: 'PACKAGE_PUBLISHED_QUERY',
+      query: PACKAGE_QUERY,
       variables: { id: props.id }
     },
     result: {

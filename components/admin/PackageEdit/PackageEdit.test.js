@@ -1,23 +1,20 @@
 import { mount } from 'enzyme';
+import { MockedProvider } from '@apollo/react-testing';
 import PackageEdit from './PackageEdit';
-import { mocks } from './mocks';
+import { mocks, props } from './mocks';
 
 // name with hyphens to address "incorrect casing" warning
 jest.mock( 'next/dynamic', () => () => 'Press-Package-File' );
 jest.mock(
-  'components/admin/dropdowns/CategoryDropdown/CategoryDropdown',
-  () => function CategoryDropdown() { return ''; }
-);
-jest.mock(
-  'components/admin/dropdowns/TagDropdown/TagDropdown',
-  () => function TagDropdown() { return ''; }
-);
-jest.mock(
-  'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown',
-  () => function VisibilityDropdown() { return ''; }
+  'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsFormContainer',
+  () => function PackageDetailsFormContainer() { return ''; }
 );
 
-const Component = <PackageEdit />;
+const Component = (
+  <MockedProvider mocks={ mocks }>
+    <PackageEdit { ...props } />
+  </MockedProvider>
+);
 
 describe( '<PackageEdit />', () => {
   const getBtn = ( str, buttons ) => (
