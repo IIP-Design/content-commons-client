@@ -3,7 +3,7 @@ import PackageEdit from './PackageEdit';
 import { mocks } from './mocks';
 
 // name with hyphens to address "incorrect casing" warning
-jest.mock( 'next-server/dynamic', () => () => 'Press-Package-File' );
+jest.mock( 'next/dynamic', () => () => 'Press-Package-File' );
 jest.mock(
   'components/admin/dropdowns/CategoryDropdown/CategoryDropdown',
   () => function CategoryDropdown() { return ''; }
