@@ -1,9 +1,9 @@
 @import "styles/colors.scss";
+@import "styles/mixins.scss";
 
 .review-project {
-  :focus:not(:focus-visible) {
-    outline: none;
-  }
+  @include kbd-only-focus-ring;
+  @include uppercase;
 
   .section--project_header {
     display: block;
@@ -17,10 +17,6 @@
     .project_header {
       margin-bottom: 1em;
     }
-  }
-
-  .uppercase {
-    text-transform: uppercase;
   }
 
   .section {
@@ -49,10 +45,6 @@
     &--publish {
       padding-top: 1em;
       text-align: center;
-
-      h3 {
-        padding-bottom: 1em;
-      }
     }
   }
 
@@ -65,20 +57,15 @@
 
   @media screen and (max-width: 550px) {
     .project_buttons {
-      display: grid;
-      grid-template-columns: repeat(2, 0.5fr);
-      grid-gap: 1em;
+      @include two-column-layout;
     }
   }
 
   .project_button {
-    padding-top: 0.785714em;
-    padding-bottom: 0.785714em;
+    @include base-button;
     border: 2px solid $matisse-blue;
     color: $matisse-blue;
-    font-size: 0.777778rem;
     background-color: #fff;
-    box-shadow: none !important;
 
     &:hover,
     &:active,
@@ -96,41 +83,11 @@
     }
 
     &--publish {
-      border: 2px solid $green;
-      background-color: $green;
-      color: #fff;
-
-      &:hover,
-      &:active,
-      &:focus {
-        border-color: $matisse-blue;
-      }
+      @include go-button;
     }
 
     &--delete {
-      border: 2px solid #fff;
-      @media screen and (max-width: 550px) {
-        border-color: $grey;
-      }
-      font-weight: normal;
-      color: $grey;
-
-      &:hover,
-      &:active,
-      &:focus {
-        border-color: $grey;
-        background-color: $grey;
-        color: #fff;
-      }
-    }
-  }
-
-  .ui.button {
-    &:focus,
-    &.basic.buttons .button:focus,
-    &.basic:focus {
-      outline: 2px dotted $medium-grey;
-      outline-offset: 2px;
+      @include transparent-button;
     }
   }
 

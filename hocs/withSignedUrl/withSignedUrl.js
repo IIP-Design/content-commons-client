@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
 import {
   SIGNED_S3_URL_PUT_MUTATION,
   SIGNED_S3_URL_GET_MUTATION
@@ -8,6 +9,7 @@ import {
 
 const withSignedUrl = WrappedComponent => {
   class _withSignedUrl extends PureComponent {
+    // eslint-disable-next-line react/static-property-placement
     static propTypes = {
       getSignedS3UrlGet: PropTypes.func.isRequired,
       getSignedS3UrlPut: PropTypes.func.isRequired

@@ -1,13 +1,70 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<UnpublishProjects /> renders without crashing 1`] = `
-<UnpublishProjects
+<Apollo(UnpublishProjects)
+  handleActionResult={[MockFunction]}
   handleResetSelections={[MockFunction]}
-  handleUnpublish={[MockFunction]}
-  handleUnpublishCacheUpdate={[MockFunction]}
+  selections={
+    Array [
+      Object {
+        "author": Object {
+          "firstName": "Edwin",
+          "id": "cjrl1omfr002o075614zs8dxz",
+          "lastName": "Mah",
+        },
+        "categories": Array [],
+        "createdAt": "2019-06-17T15:23:46.184Z",
+        "id": "cjx0j3ts9066y0708k1hg2g1b",
+        "projectTitle": "Philippines Village",
+        "status": "PUBLISHED",
+        "team": Object {
+          "id": "cjrkzhvku000f0756l44blw33",
+          "name": "IIP Video Production",
+          "organization": "Department of State",
+        },
+        "thumbnails": Array [
+          Object {
+            "alt": null,
+            "id": "cjx0j3xqz067z0708frd7sd9g",
+            "url": "2019/06/cjx0j3ts9066y0708k1hg2g1b/coverr-philippines-village-views-1559889358075.jpg",
+          },
+        ],
+        "updatedAt": "2019-06-17T15:23:46.184Z",
+        "visibility": "PUBLIC",
+      },
+      Object {
+        "author": Object {
+          "firstName": "Edwin",
+          "id": "cjrl1omfr002o075614zs8dxz",
+          "lastName": "Mah",
+        },
+        "categories": Array [],
+        "createdAt": "2019-06-17T19:42:42.188Z",
+        "id": "cjx0sctfx06ry0708bmtuf37f",
+        "projectTitle": "Philippines Village 2",
+        "status": "PUBLISHED",
+        "team": Object {
+          "id": "cjrkzhvku000f0756l44blw33",
+          "name": "IIP Video Production",
+          "organization": "Department of State",
+        },
+        "thumbnails": Array [
+          Object {
+            "alt": null,
+            "id": "cjx0sd0yy06t30708by0b4suo",
+            "url": "2019/06/cjx0sctfx06ry0708bmtuf37f/coverr-philippines-village-views-1559889358075.jpg",
+          },
+        ],
+        "updatedAt": "2019-06-17T19:42:42.188Z",
+        "visibility": "PUBLIC",
+      },
+    ]
+  }
   showConfirmationMsg={[MockFunction]}
+  unpublishVideoProject={[MockFunction]}
 >
   <Mutation
+    ignoreResults={true}
     mutation={
       Object {
         "definitions": Array [
@@ -16,43 +73,26 @@ exports[`<UnpublishProjects /> renders without crashing 1`] = `
             "kind": "OperationDefinition",
             "name": Object {
               "kind": "Name",
-              "value": "UnpublishManyVideoProjects",
+              "value": "UNPUBLISH_VIDEO_PROJECT_MUTATION",
             },
             "operation": "mutation",
             "selectionSet": Object {
               "kind": "SelectionSet",
               "selections": Array [
                 Object {
-                  "alias": Object {
-                    "kind": "Name",
-                    "value": "unpublish",
-                  },
+                  "alias": undefined,
                   "arguments": Array [
                     Object {
                       "kind": "Argument",
                       "name": Object {
                         "kind": "Name",
-                        "value": "data",
+                        "value": "id",
                       },
                       "value": Object {
                         "kind": "Variable",
                         "name": Object {
                           "kind": "Name",
-                          "value": "data",
-                        },
-                      },
-                    },
-                    Object {
-                      "kind": "Argument",
-                      "name": Object {
-                        "kind": "Name",
-                        "value": "where",
-                      },
-                      "value": Object {
-                        "kind": "Variable",
-                        "name": Object {
-                          "kind": "Name",
-                          "value": "where",
+                          "value": "id",
                         },
                       },
                     },
@@ -61,7 +101,7 @@ exports[`<UnpublishProjects /> renders without crashing 1`] = `
                   "kind": "Field",
                   "name": Object {
                     "kind": "Name",
-                    "value": "updateManyVideoProjects",
+                    "value": "unpublishVideoProject",
                   },
                   "selectionSet": Object {
                     "kind": "SelectionSet",
@@ -73,7 +113,7 @@ exports[`<UnpublishProjects /> renders without crashing 1`] = `
                         "kind": "Field",
                         "name": Object {
                           "kind": "Name",
-                          "value": "count",
+                          "value": "id",
                         },
                         "selectionSet": undefined,
                       },
@@ -85,6 +125,7 @@ exports[`<UnpublishProjects /> renders without crashing 1`] = `
             "variableDefinitions": Array [
               Object {
                 "defaultValue": undefined,
+                "directives": Array [],
                 "kind": "VariableDefinition",
                 "type": Object {
                   "kind": "NonNullType",
@@ -92,7 +133,7 @@ exports[`<UnpublishProjects /> renders without crashing 1`] = `
                     "kind": "NamedType",
                     "name": Object {
                       "kind": "Name",
-                      "value": "VideoProjectUpdateManyMutationInput",
+                      "value": "ID",
                     },
                   },
                 },
@@ -100,25 +141,7 @@ exports[`<UnpublishProjects /> renders without crashing 1`] = `
                   "kind": "Variable",
                   "name": Object {
                     "kind": "Name",
-                    "value": "data",
-                  },
-                },
-              },
-              Object {
-                "defaultValue": undefined,
-                "kind": "VariableDefinition",
-                "type": Object {
-                  "kind": "NamedType",
-                  "name": Object {
-                    "kind": "Name",
-                    "value": "VideoProjectWhereInput",
-                  },
-                },
-                "variable": Object {
-                  "kind": "Variable",
-                  "name": Object {
-                    "kind": "Name",
-                    "value": "where",
+                    "value": "id",
                   },
                 },
               },
@@ -127,58 +150,91 @@ exports[`<UnpublishProjects /> renders without crashing 1`] = `
         ],
         "kind": "Document",
         "loc": Object {
-          "end": 218,
+          "end": 113,
           "start": 0,
         },
       }
     }
-    onCompleted={[Function]}
-    update={[MockFunction]}
+    variables={Object {}}
   >
-    <Popup
-      content="Unpublish Selection(s)"
-      hideOnScroll={true}
-      inverted={true}
-      keepInViewPort={true}
-      on={
+    <UnpublishProjects
+      handleActionResult={[MockFunction]}
+      handleResetSelections={[MockFunction]}
+      selections={
         Array [
-          "hover",
-          "focus",
+          Object {
+            "author": Object {
+              "firstName": "Edwin",
+              "id": "cjrl1omfr002o075614zs8dxz",
+              "lastName": "Mah",
+            },
+            "categories": Array [],
+            "createdAt": "2019-06-17T15:23:46.184Z",
+            "id": "cjx0j3ts9066y0708k1hg2g1b",
+            "projectTitle": "Philippines Village",
+            "status": "PUBLISHED",
+            "team": Object {
+              "id": "cjrkzhvku000f0756l44blw33",
+              "name": "IIP Video Production",
+              "organization": "Department of State",
+            },
+            "thumbnails": Array [
+              Object {
+                "alt": null,
+                "id": "cjx0j3xqz067z0708frd7sd9g",
+                "url": "2019/06/cjx0j3ts9066y0708k1hg2g1b/coverr-philippines-village-views-1559889358075.jpg",
+              },
+            ],
+            "updatedAt": "2019-06-17T15:23:46.184Z",
+            "visibility": "PUBLIC",
+          },
+          Object {
+            "author": Object {
+              "firstName": "Edwin",
+              "id": "cjrl1omfr002o075614zs8dxz",
+              "lastName": "Mah",
+            },
+            "categories": Array [],
+            "createdAt": "2019-06-17T19:42:42.188Z",
+            "id": "cjx0sctfx06ry0708bmtuf37f",
+            "projectTitle": "Philippines Village 2",
+            "status": "PUBLISHED",
+            "team": Object {
+              "id": "cjrkzhvku000f0756l44blw33",
+              "name": "IIP Video Production",
+              "organization": "Department of State",
+            },
+            "thumbnails": Array [
+              Object {
+                "alt": null,
+                "id": "cjx0sd0yy06t30708by0b4suo",
+                "url": "2019/06/cjx0sctfx06ry0708bmtuf37f/coverr-philippines-village-views-1559889358075.jpg",
+              },
+            ],
+            "updatedAt": "2019-06-17T19:42:42.188Z",
+            "visibility": "PUBLIC",
+          },
         ]
       }
-      position="top left"
-      size="mini"
-      trigger={
-        <Button
-          as="button"
-          basic={true}
-          className="unpublish"
-          onClick={[Function]}
-          size="mini"
-        >
-          <span
-            className="unpublish--text"
-          >
-            Unpublish
-          </span>
-        </Button>
-      }
+      showConfirmationMsg={[MockFunction]}
+      unpublishVideoProject={[Function]}
     >
-      <Portal
-        closeOnDocumentClick={true}
-        closeOnEscape={true}
-        closeOnTriggerBlur={true}
-        closeOnTriggerMouseLeave={true}
-        eventPool="default"
-        mouseEnterDelay={50}
-        mouseLeaveDelay={70}
-        onClose={[Function]}
-        onMount={[Function]}
-        onOpen={[Function]}
-        onUnmount={[Function]}
-        openOnTriggerClick={true}
-        openOnTriggerFocus={true}
-        openOnTriggerMouseEnter={true}
+      <Popup
+        content="Unpublish Selection(s)"
+        disabled={false}
+        eventsEnabled={true}
+        hideOnScroll={true}
+        inverted={true}
+        offset={0}
+        on={
+          Array [
+            "hover",
+            "focus",
+          ]
+        }
+        pinned={false}
+        position="top left"
+        size="mini"
         trigger={
           <Button
             as="button"
@@ -194,40 +250,121 @@ exports[`<UnpublishProjects /> renders without crashing 1`] = `
             </span>
           </Button>
         }
-        triggerRef={[Function]}
       >
-        <Ref
-          innerRef={[Function]}
-        >
-          <Button
-            as="button"
-            basic={true}
-            className="unpublish"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            size="mini"
-          >
-            <button
-              className="ui mini basic button unpublish"
-              onBlur={[Function]}
+        <Portal
+          closeOnDocumentClick={true}
+          closeOnEscape={true}
+          closeOnTriggerBlur={true}
+          closeOnTriggerClick={false}
+          closeOnTriggerMouseLeave={true}
+          eventPool="default"
+          mouseEnterDelay={50}
+          mouseLeaveDelay={70}
+          onClose={[Function]}
+          onMount={[Function]}
+          onOpen={[Function]}
+          onUnmount={[Function]}
+          openOnTriggerClick={false}
+          openOnTriggerFocus={true}
+          openOnTriggerMouseEnter={true}
+          trigger={
+            <Button
+              as="button"
+              basic={true}
+              className="unpublish"
               onClick={[Function]}
-              onFocus={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
+              size="mini"
             >
               <span
                 className="unpublish--text"
               >
                 Unpublish
               </span>
-            </button>
-          </Button>
-        </Ref>
-      </Portal>
-    </Popup>
+            </Button>
+          }
+          triggerRef={
+            Object {
+              "current": <button
+                class="ui mini basic button unpublish"
+              >
+                <span
+                  class="unpublish--text"
+                >
+                  Unpublish
+                </span>
+              </button>,
+            }
+          }
+        >
+          <Ref
+            innerRef={[Function]}
+          >
+            <RefFindNode
+              innerRef={[Function]}
+            >
+              <Button
+                as="button"
+                basic={true}
+                className="unpublish"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                size="mini"
+              >
+                <Ref
+                  innerRef={
+                    Object {
+                      "current": <button
+                        class="ui mini basic button unpublish"
+                      >
+                        <span
+                          class="unpublish--text"
+                        >
+                          Unpublish
+                        </span>
+                      </button>,
+                    }
+                  }
+                >
+                  <RefFindNode
+                    innerRef={
+                      Object {
+                        "current": <button
+                          class="ui mini basic button unpublish"
+                        >
+                          <span
+                            class="unpublish--text"
+                          >
+                            Unpublish
+                          </span>
+                        </button>,
+                      }
+                    }
+                  >
+                    <button
+                      className="ui mini basic button unpublish"
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      <span
+                        className="unpublish--text"
+                      >
+                        Unpublish
+                      </span>
+                    </button>
+                  </RefFindNode>
+                </Ref>
+              </Button>
+            </RefFindNode>
+          </Ref>
+        </Portal>
+      </Popup>
+    </UnpublishProjects>
   </Mutation>
-</UnpublishProjects>
+</Apollo(UnpublishProjects)>
 `;

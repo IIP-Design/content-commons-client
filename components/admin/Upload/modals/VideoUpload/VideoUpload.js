@@ -1,21 +1,23 @@
-import React, {
-  useState, useEffect, Fragment
-} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/upload';
 import { withRouter } from 'next/router';
-import { compose, graphql } from 'react-apollo';
-import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown/UseDropdown';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
+import {
+  VIDEO_USE_QUERY,
+  IMAGE_USE_QUERY
+} from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import { Tab, Dimmer, Loader } from 'semantic-ui-react';
 import { v4 } from 'uuid';
 import { removeDuplicatesFromArray } from 'lib/utils';
 import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
 import VideoProjectType from './VideoProjectType/VideoProjectType';
 import VideoProjectFiles from './VideoProjectFiles/VideoProjectFiles';
+import { VideoUploadContext } from './VideoUploadContext';
 import './VideoUpload.scss';
 
-export const VideoUploadContext = React.createContext();
 
 const VideoUpload = props => {
   const [activeIndex, setActiveIndex] = useState( 0 );
@@ -31,11 +33,13 @@ const VideoUpload = props => {
     // not applicable. Submit button (Next) becomes active when all
     // complete
     const complete = files.every( file => {
-      const { input: { type } } = file;
+      const {
+        input: { type }
+      } = file;
       if ( type.includes( 'video' ) ) {
-        return ( file.language && file.videoBurnedInStatus && file.quality );
+        return file.language && file.videoBurnedInStatus && file.quality;
       }
-      return ( file.language );
+      return file.language;
     } );
 
     setAllFieldsSelected( complete );
@@ -44,23 +48,24 @@ const VideoUpload = props => {
   // Store GraphQL id for each use default value
   // i.e. default use for video is 'Full Video'
   // id prop, not name used for mutation
+  const { videoData, imageData } = props;
   const defaultUse = {
     video: {
       id: '',
       name: 'Full Video',
-      uses: props.videoData.videoUses
+      uses: videoData.videoUses
     },
     image: {
       id: '',
       name: 'Thumbnail/Cover Image',
-      uses: props.imageData.imageUses
+      uses: imageData.imageUses
     }
   };
 
   /**
- * Pre-populate applicable default.  Default id is pulled from the respective use query
- * @param {string} type filetype
- */
+   * Pre-populate applicable default.  Default id is pulled from the respective use query
+   * @param {string} type filetype
+   */
   const getDefaultUse = type => {
     // if there are no content uses for specifc type return
     const defaultContentUse = defaultUse[type];
@@ -74,7 +79,9 @@ const VideoUpload = props => {
     }
 
     // look in the use list for a matching name, if found, set id or return ''
-    const u = defaultContentUse.uses.find( use => use.name === defaultContentUse.name );
+    const u = defaultContentUse.uses.find(
+      use => use.name === defaultContentUse.name
+    );
     if ( u ) {
       defaultContentUse.id = u.id;
       return defaultContentUse.id;
@@ -103,11 +110,17 @@ const VideoUpload = props => {
 
   const processDuplicates = filesToAdd => {
     try {
-      const { duplicates, uniq } = removeDuplicatesFromArray( [...files, ...filesToAdd], 'input.name' );
+      const { duplicates, uniq } = removeDuplicatesFromArray(
+        [...files, ...filesToAdd],
+        'input.name'
+      );
 
       // if duplicates are present, ask user if they are indeed duplicates
       if ( duplicates ) {
-        const dups = duplicates.reduce( ( acc, cur ) => `${acc} ${cur.input.name}\n`, '' );
+        const dups = duplicates.reduce(
+          ( acc, cur ) => `${acc} ${cur.input.name}\n`,
+          ''
+        );
         setConfirm( {
           open: true,
           headline: 'It appears that duplicate files are being added.',
@@ -130,7 +143,6 @@ const VideoUpload = props => {
       console.error( err );
     }
   };
-
 
   /**
    * Add files to files state array.  For each file selected,
@@ -246,16 +258,17 @@ const VideoUpload = props => {
       menuItem: '',
       render: () => (
         <Tab.Pane>
-          <VideoUploadContext.Provider value={ {
-            files,
-            addAssetFiles,
-            removeAssetFile,
-            updateField,
-            allFieldsSelected,
-            closeModal,
-            handleAddFilesToUpload,
-            accept
-          } }
+          <VideoUploadContext.Provider
+            value={ {
+              files,
+              addAssetFiles,
+              removeAssetFile,
+              updateField,
+              allFieldsSelected,
+              closeModal,
+              handleAddFilesToUpload,
+              accept
+            } }
           >
             <VideoProjectFiles
               closeModal={ closeModal }
@@ -268,21 +281,16 @@ const VideoUpload = props => {
   ];
 
   return (
-    <Fragment>
+    <>
       <Dimmer active={ loading } inverted>
         <Loader>Preparing files...</Loader>
       </Dimmer>
 
-      <Tab
-        activeIndex={ activeIndex }
-        panes={ panes }
-        className="videoUpload"
-      />
+      <Tab activeIndex={ activeIndex } panes={ panes } className="videoUpload" />
       <DynamicConfirm { ...confirm } />
-    </Fragment>
+    </>
   );
 };
-
 
 VideoUpload.propTypes = {
   closeModal: PropTypes.func,

@@ -26,6 +26,8 @@ const CATEGORIES_QUERY = gql`
   }
 `;
 
+const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
+
 const CategoryDropdown = props => (
   <Query query={ CATEGORIES_QUERY } variables={ { locale: props.locale } }>
     { ( { data, loading, error } ) => {
@@ -83,5 +85,6 @@ CategoryDropdown.propTypes = {
   locale: PropTypes.string
 };
 
-export default CategoryDropdown;
+
+export default React.memo( CategoryDropdown, areEqual );
 export { CATEGORIES_QUERY };

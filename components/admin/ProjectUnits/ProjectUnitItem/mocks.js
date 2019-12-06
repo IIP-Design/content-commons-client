@@ -85,7 +85,8 @@ export const postUploadUnit = {
         filename: 'Mexico City 1.jpg',
         filetype: 'image/jpeg',
         filesize: 1030591,
-        url: 'https://s3-bucket-url.s3.amazonaws.com/2019/08/commons.america.gov_cjzy5lpzv1bef07207s354cbw/mexico_city_1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
+        signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/2019/08/commons.america.gov_cjzy5lpzv1bef07207s354cbw/mexico_city_1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
+        url: '2019/08/commons.america.gov_cjzy5lpzv1bef07207s354cbw/mexico_city_1.jpg',
         alt: null,
         use: {
           id: 'cjtkdq8kr0knf07569goo9eqe',

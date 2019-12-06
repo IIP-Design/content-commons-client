@@ -1,0 +1,1748 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProjectPreviewContent /> renders final state without crashing 1`] = `
+<ProjectPreviewContent
+  data={
+    Object {
+      "called": true,
+      "error": undefined,
+      "fetchMore": [Function],
+      "loading": false,
+      "networkStatus": 7,
+      "project": Object {
+        "__typename": "VideoProject",
+        "descPublic": "the project public description",
+        "id": "123",
+        "projectType": "LANGUAGE",
+        "team": Object {
+          "__typename": "Team",
+          "id": "t81",
+          "name": "the team name",
+        },
+        "thumbnails": Array [
+          Object {
+            "__typename": "ImageFile",
+            "alt": "the alt text",
+            "createdAt": "2019-03-06T13:11:48.043Z",
+            "filename": "image-1.jpg",
+            "filesize": 28371,
+            "filetype": "image/jpeg",
+            "id": "th11",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "English",
+              "id": "en38",
+              "languageCode": "en",
+              "locale": "en-us",
+              "nativeName": "English",
+              "textDirection": "LTR",
+            },
+            "signedUrl": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
+            "updatedAt": "2019-06-18T13:58:10.024Z",
+            "url": "2019/06/123/image-1.jpg",
+            "use": Object {
+              "__typename": "ImageUse",
+              "id": "imu33",
+              "name": "Thumbnail/Cover Image",
+            },
+          },
+        ],
+        "units": Array [
+          Object {
+            "__typename": "VideoUnit",
+            "createdAt": "2019-06-18T14:58:10.024Z",
+            "descPublic": "the arabic description",
+            "files": Array [
+              Object {
+                "__typename": "VideoFile",
+                "createdAt": "2019-03-05T20:18:54.032Z",
+                "dimensions": Object {
+                  "__typename": "Dimensions",
+                  "height": "1080",
+                  "id": "d21",
+                  "width": "1920",
+                },
+                "duration": 556,
+                "filename": "video-file-1.mp4",
+                "filesize": 662595174,
+                "filetype": "video/mp4",
+                "id": "f19",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "Arabic",
+                  "id": "ar22",
+                  "languageCode": "ar",
+                  "locale": "ar",
+                  "nativeName": "العربية",
+                  "textDirection": "RTL",
+                },
+                "quality": "WEB",
+                "signedUrl": null,
+                "stream": Array [
+                  Object {
+                    "__typename": "VideoStream",
+                    "id": "st93",
+                    "site": "YouTube",
+                    "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
+                  },
+                  Object {
+                    "__typename": "VideoStream",
+                    "id": "st35",
+                    "site": "Vimeo",
+                    "url": "https://vimeo.com/340239507",
+                  },
+                ],
+                "updatedAt": "2019-06-19T17:38:37.502Z",
+                "url": "2019/06/123/video-file-1.mp4",
+                "use": Object {
+                  "__typename": "VideoUse",
+                  "id": "us31",
+                  "name": "Full Video",
+                },
+                "videoBurnedInStatus": "CLEAN",
+              },
+            ],
+            "id": "un91",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "Arabic",
+              "id": "ar22",
+              "languageCode": "ar",
+              "locale": "ar",
+              "nativeName": "العربية",
+              "textDirection": "RTL",
+            },
+            "tags": Array [
+              Object {
+                "__typename": "Tag",
+                "id": "tag13",
+                "translations": Array [
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr555",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "Arabic",
+                      "id": "ar22",
+                      "languageCode": "ar",
+                      "locale": "ar",
+                      "nativeName": "العربية",
+                      "textDirection": "RTL",
+                    },
+                    "name": "الثقافة الأميركية",
+                  },
+                ],
+              },
+            ],
+            "thumbnails": Array [
+              Object {
+                "__typename": "Thumbnail",
+                "id": "th11",
+                "image": Object {
+                  "__typename": "ImageFile",
+                  "alt": "the alt text",
+                  "createdAt": "2019-03-06T13:11:48.043Z",
+                  "filename": "image-1.jpg",
+                  "filesize": 28371,
+                  "filetype": "image/jpeg",
+                  "id": "im28",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Arabic",
+                    "id": "ar22",
+                    "languageCode": "ar",
+                    "locale": "ar",
+                    "nativeName": "العربية",
+                    "textDirection": "RTL",
+                  },
+                  "signedUrl": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
+                  "updatedAt": "2019-06-18T14:58:10.024Z",
+                  "url": "2019/06/123/image-1.jpg",
+                  "use": Object {
+                    "__typename": "ImageUse",
+                    "id": "imu33",
+                    "name": "Thumbnail/Cover Image",
+                  },
+                },
+                "size": "FULL",
+              },
+            ],
+            "title": "test project title",
+            "updatedAt": "2019-06-18T14:58:10.024Z",
+          },
+          Object {
+            "__typename": "VideoUnit",
+            "createdAt": "2019-06-18T12:58:10.024Z",
+            "descPublic": "the english description",
+            "files": Array [
+              Object {
+                "__typename": "VideoFile",
+                "createdAt": "2019-03-05T20:18:54.032Z",
+                "dimensions": Object {
+                  "__typename": "Dimensions",
+                  "height": "1080",
+                  "id": "d21",
+                  "width": "1920",
+                },
+                "duration": 556,
+                "filename": "video-file-1.mp4",
+                "filesize": 662595174,
+                "filetype": "video/mp4",
+                "id": "f19",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "Arabic",
+                  "id": "ar22",
+                  "languageCode": "ar",
+                  "locale": "ar",
+                  "nativeName": "العربية",
+                  "textDirection": "RTL",
+                },
+                "quality": "WEB",
+                "signedUrl": null,
+                "stream": Array [
+                  Object {
+                    "__typename": "VideoStream",
+                    "id": "st93",
+                    "site": "YouTube",
+                    "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
+                  },
+                  Object {
+                    "__typename": "VideoStream",
+                    "id": "st35",
+                    "site": "Vimeo",
+                    "url": "https://vimeo.com/340239507",
+                  },
+                ],
+                "updatedAt": "2019-06-19T17:38:37.502Z",
+                "url": "2019/06/123/video-file-1.mp4",
+                "use": Object {
+                  "__typename": "VideoUse",
+                  "id": "us31",
+                  "name": "Full Video",
+                },
+                "videoBurnedInStatus": "CLEAN",
+              },
+            ],
+            "id": "un95",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "English",
+              "id": "en38",
+              "languageCode": "en",
+              "locale": "en-us",
+              "nativeName": "English",
+              "textDirection": "LTR",
+            },
+            "tags": Array [
+              Object {
+                "__typename": "Tag",
+                "id": "tag13",
+                "translations": Array [
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr555",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "Arabic",
+                      "id": "ar22",
+                      "languageCode": "ar",
+                      "locale": "ar",
+                      "nativeName": "العربية",
+                      "textDirection": "RTL",
+                    },
+                    "name": "الثقافة الأميركية",
+                  },
+                ],
+              },
+              Object {
+                "__typename": "Tag",
+                "id": "tag14",
+                "translations": Array [
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr888",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "English",
+                      "id": "en38",
+                      "languageCode": "en",
+                      "locale": "en-us",
+                      "nativeName": "English",
+                      "textDirection": "LTR",
+                    },
+                    "name": "english learning",
+                  },
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "tr777",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "French",
+                      "id": "fr82",
+                      "languageCode": "fr",
+                      "locale": "fr-fr",
+                      "nativeName": "French",
+                      "textDirection": "LTR",
+                    },
+                    "name": "Anglais langue étrangère",
+                  },
+                ],
+              },
+            ],
+            "thumbnails": Array [
+              Object {
+                "__typename": "Thumbnail",
+                "id": "th11",
+                "image": Object {
+                  "__typename": "ImageFile",
+                  "alt": "the alt text",
+                  "createdAt": "2019-03-06T13:11:48.043Z",
+                  "filename": "image-1.jpg",
+                  "filesize": 28371,
+                  "filetype": "image/jpeg",
+                  "id": "im28",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Arabic",
+                    "id": "ar22",
+                    "languageCode": "ar",
+                    "locale": "ar",
+                    "nativeName": "العربية",
+                    "textDirection": "RTL",
+                  },
+                  "signedUrl": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
+                  "updatedAt": "2019-06-18T14:58:10.024Z",
+                  "url": "2019/06/123/image-1.jpg",
+                  "use": Object {
+                    "__typename": "ImageUse",
+                    "id": "imu33",
+                    "name": "Thumbnail/Cover Image",
+                  },
+                },
+                "size": "FULL",
+              },
+            ],
+            "title": "test project title",
+            "updatedAt": "2019-06-18T12:58:10.024Z",
+          },
+        ],
+      },
+      "refetch": [Function],
+      "startPolling": [Function],
+      "stopPolling": [Function],
+      "subscribeToMore": [Function],
+      "updateQuery": [Function],
+      "variables": Object {
+        "id": "123",
+      },
+    }
+  }
+  id="123"
+>
+  <ModalItem
+    className="project-preview"
+    headline="test project title"
+    textDirection="LTR"
+  >
+    <div
+      className="modal LTR project-preview"
+    >
+      <h1
+        className="modal_headline"
+      >
+        test project title
+      </h1>
+      <Notification
+        customStyles={
+          Object {
+            "backgroundColor": "#fdb81e",
+            "borderTopLeftRadius": "0.28571429rem",
+            "borderTopRightRadius": "0.28571429rem",
+            "fontSize": "1em",
+            "left": "0",
+            "padding": "1em 1.5em",
+            "position": "absolute",
+            "right": "0",
+            "top": "0",
+          }
+        }
+        el="p"
+        msg="This is a preview of your video project on Content Commons."
+        show={true}
+      >
+        <p
+          style={
+            Object {
+              "backgroundColor": "#fdb81e",
+              "borderTopLeftRadius": "0.28571429rem",
+              "borderTopRightRadius": "0.28571429rem",
+              "display": "block",
+              "fontSize": "1em",
+              "left": "0",
+              "padding": "1em 1.5em",
+              "position": "absolute",
+              "right": "0",
+              "top": "0",
+            }
+          }
+        >
+          <Icon
+            as="i"
+            loading={true}
+            name="spinner"
+            style={
+              Object {
+                "display": "none",
+              }
+            }
+          >
+            <i
+              aria-hidden="true"
+              className="spinner loading icon"
+              onClick={[Function]}
+              style={
+                Object {
+                  "display": "none",
+                }
+              }
+            />
+          </Icon>
+           
+          This is a preview of your video project on Content Commons.
+        </p>
+      </Notification>
+      <div
+        className="modal_options"
+      >
+        <Dropdown
+          additionLabel="Add "
+          additionPosition="top"
+          className="modal_languages"
+          closeOnBlur={true}
+          closeOnEscape={true}
+          deburr={false}
+          icon="chevron down"
+          minCharacters={1}
+          noResultsMessage="No results found."
+          onChange={[Function]}
+          onClick={[Function]}
+          openOnFocus={true}
+          options={
+            Array [
+              Object {
+                "key": "ar",
+                "text": "Arabic",
+                "value": "Arabic",
+              },
+              Object {
+                "key": "en",
+                "text": "English",
+                "value": "English",
+              },
+            ]
+          }
+          renderLabel={[Function]}
+          searchInput="text"
+          selectOnBlur={true}
+          selectOnNavigation={true}
+          value="English"
+          wrapSelection={true}
+        >
+          <Ref
+            innerRef={
+              Object {
+                "current": <div
+                  aria-expanded="false"
+                  class="ui dropdown modal_languages"
+                  role="listbox"
+                  tabindex="0"
+                >
+                  <div
+                    aria-atomic="true"
+                    aria-live="polite"
+                    class="text"
+                    role="alert"
+                  >
+                    English
+                  </div>
+                  <i
+                    aria-hidden="true"
+                    class="chevron down icon"
+                  />
+                  <div
+                    class="menu transition"
+                  >
+                    <div
+                      aria-checked="false"
+                      aria-selected="false"
+                      class="item"
+                      role="option"
+                      style="pointer-events: all;"
+                    >
+                      <span
+                        class="text"
+                      >
+                        Arabic
+                      </span>
+                    </div>
+                    <div
+                      aria-checked="true"
+                      aria-selected="true"
+                      class="active selected item"
+                      role="option"
+                      style="pointer-events: all;"
+                    >
+                      <span
+                        class="text"
+                      >
+                        English
+                      </span>
+                    </div>
+                  </div>
+                </div>,
+              }
+            }
+          >
+            <RefFindNode
+              innerRef={
+                Object {
+                  "current": <div
+                    aria-expanded="false"
+                    class="ui dropdown modal_languages"
+                    role="listbox"
+                    tabindex="0"
+                  >
+                    <div
+                      aria-atomic="true"
+                      aria-live="polite"
+                      class="text"
+                      role="alert"
+                    >
+                      English
+                    </div>
+                    <i
+                      aria-hidden="true"
+                      class="chevron down icon"
+                    />
+                    <div
+                      class="menu transition"
+                    >
+                      <div
+                        aria-checked="false"
+                        aria-selected="false"
+                        class="item"
+                        role="option"
+                        style="pointer-events: all;"
+                      >
+                        <span
+                          class="text"
+                        >
+                          Arabic
+                        </span>
+                      </div>
+                      <div
+                        aria-checked="true"
+                        aria-selected="true"
+                        class="active selected item"
+                        role="option"
+                        style="pointer-events: all;"
+                      >
+                        <span
+                          class="text"
+                        >
+                          English
+                        </span>
+                      </div>
+                    </div>
+                  </div>,
+                }
+              }
+            >
+              <div
+                aria-expanded={false}
+                className="ui dropdown modal_languages"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onMouseDown={[Function]}
+                role="listbox"
+                tabIndex={0}
+              >
+                <div
+                  aria-atomic={true}
+                  aria-live="polite"
+                  className="text"
+                  role="alert"
+                >
+                  English
+                </div>
+                <Icon
+                  as="i"
+                  className=""
+                  name="chevron down"
+                  onClick={[Function]}
+                >
+                  <i
+                    aria-hidden="true"
+                    className="chevron down icon"
+                    onClick={[Function]}
+                  />
+                </Icon>
+                <DropdownMenu>
+                  <div
+                    className="menu transition"
+                  >
+                    <DropdownItem
+                      active={false}
+                      key="ar"
+                      onClick={[Function]}
+                      selected={false}
+                      style={
+                        Object {
+                          "pointerEvents": "all",
+                        }
+                      }
+                      text="Arabic"
+                      value="Arabic"
+                    >
+                      <div
+                        aria-checked={false}
+                        aria-selected={false}
+                        className="item"
+                        onClick={[Function]}
+                        role="option"
+                        style={
+                          Object {
+                            "pointerEvents": "all",
+                          }
+                        }
+                      >
+                        <span
+                          className="text"
+                        >
+                          Arabic
+                        </span>
+                      </div>
+                    </DropdownItem>
+                    <DropdownItem
+                      active={true}
+                      key="en"
+                      onClick={[Function]}
+                      selected={true}
+                      style={
+                        Object {
+                          "pointerEvents": "all",
+                        }
+                      }
+                      text="English"
+                      value="English"
+                    >
+                      <div
+                        aria-checked={true}
+                        aria-selected={true}
+                        className="active selected item"
+                        onClick={[Function]}
+                        role="option"
+                        style={
+                          Object {
+                            "pointerEvents": "all",
+                          }
+                        }
+                      >
+                        <span
+                          className="text"
+                        >
+                          English
+                        </span>
+                      </div>
+                    </DropdownItem>
+                  </div>
+                </DropdownMenu>
+              </div>
+            </RefFindNode>
+          </Ref>
+        </Dropdown>
+        <div
+          className="trigger-container"
+        >
+          <PopupTrigger
+            content={
+              <PopupTabbed
+                panes={
+                  Array [
+                    Object {
+                      "component": <Embed
+                        embedItem="The video embed code will appear here."
+                        instructions="Copy and paste the code below to embed video on your site"
+                        isPreview={true}
+                      />,
+                      "title": "Copy Embed Code",
+                    },
+                    Object {
+                      "component": <EmbedHelp />,
+                      "title": "Help",
+                    },
+                  ]
+                }
+                title="Embed this video on your site"
+              />
+            }
+            icon={
+              Object {
+                "dim": 24,
+                "img": "shareIcon.svg",
+              }
+            }
+            show={true}
+            toolTip="Embed video"
+          >
+            <span
+              style={
+                Object {
+                  "display": "inline-block",
+                }
+              }
+            >
+              <Popup
+                className="popupElem_wrapper"
+                content={
+                  <PopupTabbed
+                    panes={
+                      Array [
+                        Object {
+                          "component": <Embed
+                            embedItem="The video embed code will appear here."
+                            instructions="Copy and paste the code below to embed video on your site"
+                            isPreview={true}
+                          />,
+                          "title": "Copy Embed Code",
+                        },
+                        Object {
+                          "component": <EmbedHelp />,
+                          "title": "Help",
+                        },
+                      ]
+                    }
+                    title="Embed this video on your site"
+                  />
+                }
+                disabled={false}
+                eventsEnabled={true}
+                offset={4}
+                on="click"
+                pinned={false}
+                position="bottom right"
+                trigger={
+                  <Button
+                    as="button"
+                    className="trigger"
+                    tooltip="Embed video"
+                  >
+                    <img
+                      alt="Embed video"
+                      height={24}
+                      src="shareIcon.svg"
+                      width={24}
+                    />
+                     
+                  </Button>
+                }
+              >
+                <Portal
+                  closeOnDocumentClick={true}
+                  closeOnEscape={true}
+                  closeOnTriggerClick={true}
+                  eventPool="default"
+                  onClose={[Function]}
+                  onMount={[Function]}
+                  onOpen={[Function]}
+                  onUnmount={[Function]}
+                  openOnTriggerClick={true}
+                  trigger={
+                    <Button
+                      as="button"
+                      className="trigger"
+                      tooltip="Embed video"
+                    >
+                      <img
+                        alt="Embed video"
+                        height={24}
+                        src="shareIcon.svg"
+                        width={24}
+                      />
+                       
+                    </Button>
+                  }
+                  triggerRef={
+                    Object {
+                      "current": <button
+                        class="ui button trigger"
+                        tooltip="Embed video"
+                      >
+                        <img
+                          alt="Embed video"
+                          height="24"
+                          src="shareIcon.svg"
+                          width="24"
+                        />
+                         
+                      </button>,
+                    }
+                  }
+                >
+                  <Ref
+                    innerRef={[Function]}
+                  >
+                    <RefFindNode
+                      innerRef={[Function]}
+                    >
+                      <Button
+                        as="button"
+                        className="trigger"
+                        onBlur={[Function]}
+                        onClick={[Function]}
+                        onFocus={[Function]}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        tooltip="Embed video"
+                      >
+                        <Ref
+                          innerRef={
+                            Object {
+                              "current": <button
+                                class="ui button trigger"
+                                tooltip="Embed video"
+                              >
+                                <img
+                                  alt="Embed video"
+                                  height="24"
+                                  src="shareIcon.svg"
+                                  width="24"
+                                />
+                                 
+                              </button>,
+                            }
+                          }
+                        >
+                          <RefFindNode
+                            innerRef={
+                              Object {
+                                "current": <button
+                                  class="ui button trigger"
+                                  tooltip="Embed video"
+                                >
+                                  <img
+                                    alt="Embed video"
+                                    height="24"
+                                    src="shareIcon.svg"
+                                    width="24"
+                                  />
+                                   
+                                </button>,
+                              }
+                            }
+                          >
+                            <button
+                              className="ui button trigger"
+                              onBlur={[Function]}
+                              onClick={[Function]}
+                              onFocus={[Function]}
+                              onMouseEnter={[Function]}
+                              onMouseLeave={[Function]}
+                              tooltip="Embed video"
+                            >
+                              <img
+                                alt="Embed video"
+                                height={24}
+                                src="shareIcon.svg"
+                                width={24}
+                              />
+                               
+                            </button>
+                          </RefFindNode>
+                        </Ref>
+                      </Button>
+                    </RefFindNode>
+                  </Ref>
+                </Portal>
+              </Popup>
+            </span>
+          </PopupTrigger>
+          <PopupTrigger
+            content={
+              <Popup
+                title="Share this project."
+              >
+                <Share
+                  id="123"
+                  isPreview={true}
+                  language="en-us"
+                  link="The direct link to the project will appear here."
+                  site=""
+                  title="test project title"
+                  type="video"
+                />
+              </Popup>
+            }
+            icon={
+              Object {
+                "dim": 18,
+                "img": "shareIcon.svg",
+              }
+            }
+            show={true}
+            tooltip="Share project"
+          >
+            <span
+              style={
+                Object {
+                  "display": "inline-block",
+                }
+              }
+            >
+              <Popup
+                className="popupElem_wrapper"
+                content={
+                  <Popup
+                    title="Share this project."
+                  >
+                    <Share
+                      id="123"
+                      isPreview={true}
+                      language="en-us"
+                      link="The direct link to the project will appear here."
+                      site=""
+                      title="test project title"
+                      type="video"
+                    />
+                  </Popup>
+                }
+                disabled={false}
+                eventsEnabled={true}
+                offset={4}
+                on="click"
+                pinned={false}
+                position="bottom right"
+                trigger={
+                  <Button
+                    as="button"
+                    className="trigger"
+                  >
+                    <img
+                      height={18}
+                      src="shareIcon.svg"
+                      width={18}
+                    />
+                     
+                  </Button>
+                }
+              >
+                <Portal
+                  closeOnDocumentClick={true}
+                  closeOnEscape={true}
+                  closeOnTriggerClick={true}
+                  eventPool="default"
+                  onClose={[Function]}
+                  onMount={[Function]}
+                  onOpen={[Function]}
+                  onUnmount={[Function]}
+                  openOnTriggerClick={true}
+                  trigger={
+                    <Button
+                      as="button"
+                      className="trigger"
+                    >
+                      <img
+                        height={18}
+                        src="shareIcon.svg"
+                        width={18}
+                      />
+                       
+                    </Button>
+                  }
+                  triggerRef={
+                    Object {
+                      "current": <button
+                        class="ui button trigger"
+                      >
+                        <img
+                          height="18"
+                          src="shareIcon.svg"
+                          width="18"
+                        />
+                         
+                      </button>,
+                    }
+                  }
+                >
+                  <Ref
+                    innerRef={[Function]}
+                  >
+                    <RefFindNode
+                      innerRef={[Function]}
+                    >
+                      <Button
+                        as="button"
+                        className="trigger"
+                        onBlur={[Function]}
+                        onClick={[Function]}
+                        onFocus={[Function]}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                      >
+                        <Ref
+                          innerRef={
+                            Object {
+                              "current": <button
+                                class="ui button trigger"
+                              >
+                                <img
+                                  height="18"
+                                  src="shareIcon.svg"
+                                  width="18"
+                                />
+                                 
+                              </button>,
+                            }
+                          }
+                        >
+                          <RefFindNode
+                            innerRef={
+                              Object {
+                                "current": <button
+                                  class="ui button trigger"
+                                >
+                                  <img
+                                    height="18"
+                                    src="shareIcon.svg"
+                                    width="18"
+                                  />
+                                   
+                                </button>,
+                              }
+                            }
+                          >
+                            <button
+                              className="ui button trigger"
+                              onBlur={[Function]}
+                              onClick={[Function]}
+                              onFocus={[Function]}
+                              onMouseEnter={[Function]}
+                              onMouseLeave={[Function]}
+                            >
+                              <img
+                                height={18}
+                                src="shareIcon.svg"
+                                width={18}
+                              />
+                               
+                            </button>
+                          </RefFindNode>
+                        </Ref>
+                      </Button>
+                    </RefFindNode>
+                  </Ref>
+                </Portal>
+              </Popup>
+            </span>
+          </PopupTrigger>
+          <PopupTrigger
+            content={
+              <PopupTabbed
+                panes={
+                  Array [
+                    Object {
+                      "component": <DownloadVideo
+                        burnedInCaptions={false}
+                        instructions="Download the video and caption files in English.
+                            This download option is best for uploading this video to web pages."
+                        isPreview={true}
+                        selectedLanguageUnit={
+                          Object {
+                            "__typename": "VideoUnit",
+                            "createdAt": "2019-06-18T12:58:10.024Z",
+                            "descPublic": "the english description",
+                            "files": Array [
+                              Object {
+                                "__typename": "VideoFile",
+                                "createdAt": "2019-03-05T20:18:54.032Z",
+                                "dimensions": Object {
+                                  "__typename": "Dimensions",
+                                  "height": "1080",
+                                  "id": "d21",
+                                  "width": "1920",
+                                },
+                                "duration": 556,
+                                "filename": "video-file-1.mp4",
+                                "filesize": 662595174,
+                                "filetype": "video/mp4",
+                                "id": "f19",
+                                "language": Object {
+                                  "__typename": "Language",
+                                  "displayName": "Arabic",
+                                  "id": "ar22",
+                                  "languageCode": "ar",
+                                  "locale": "ar",
+                                  "nativeName": "العربية",
+                                  "textDirection": "RTL",
+                                },
+                                "quality": "WEB",
+                                "signedUrl": null,
+                                "stream": Array [
+                                  Object {
+                                    "__typename": "VideoStream",
+                                    "id": "st93",
+                                    "site": "YouTube",
+                                    "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
+                                  },
+                                  Object {
+                                    "__typename": "VideoStream",
+                                    "id": "st35",
+                                    "site": "Vimeo",
+                                    "url": "https://vimeo.com/340239507",
+                                  },
+                                ],
+                                "updatedAt": "2019-06-19T17:38:37.502Z",
+                                "url": "2019/06/123/video-file-1.mp4",
+                                "use": Object {
+                                  "__typename": "VideoUse",
+                                  "id": "us31",
+                                  "name": "Full Video",
+                                },
+                                "videoBurnedInStatus": "CLEAN",
+                              },
+                            ],
+                            "id": "un95",
+                            "language": Object {
+                              "__typename": "Language",
+                              "displayName": "English",
+                              "id": "en38",
+                              "languageCode": "en",
+                              "locale": "en-us",
+                              "nativeName": "English",
+                              "textDirection": "LTR",
+                            },
+                            "tags": Array [
+                              Object {
+                                "__typename": "Tag",
+                                "id": "tag13",
+                                "translations": Array [
+                                  Object {
+                                    "__typename": "LanguageTranslation",
+                                    "id": "tr555",
+                                    "language": Object {
+                                      "__typename": "Language",
+                                      "displayName": "Arabic",
+                                      "id": "ar22",
+                                      "languageCode": "ar",
+                                      "locale": "ar",
+                                      "nativeName": "العربية",
+                                      "textDirection": "RTL",
+                                    },
+                                    "name": "الثقافة الأميركية",
+                                  },
+                                ],
+                              },
+                              Object {
+                                "__typename": "Tag",
+                                "id": "tag14",
+                                "translations": Array [
+                                  Object {
+                                    "__typename": "LanguageTranslation",
+                                    "id": "tr888",
+                                    "language": Object {
+                                      "__typename": "Language",
+                                      "displayName": "English",
+                                      "id": "en38",
+                                      "languageCode": "en",
+                                      "locale": "en-us",
+                                      "nativeName": "English",
+                                      "textDirection": "LTR",
+                                    },
+                                    "name": "english learning",
+                                  },
+                                  Object {
+                                    "__typename": "LanguageTranslation",
+                                    "id": "tr777",
+                                    "language": Object {
+                                      "__typename": "Language",
+                                      "displayName": "French",
+                                      "id": "fr82",
+                                      "languageCode": "fr",
+                                      "locale": "fr-fr",
+                                      "nativeName": "French",
+                                      "textDirection": "LTR",
+                                    },
+                                    "name": "Anglais langue étrangère",
+                                  },
+                                ],
+                              },
+                            ],
+                            "thumbnails": Array [
+                              Object {
+                                "__typename": "Thumbnail",
+                                "id": "th11",
+                                "image": Object {
+                                  "__typename": "ImageFile",
+                                  "alt": "the alt text",
+                                  "createdAt": "2019-03-06T13:11:48.043Z",
+                                  "filename": "image-1.jpg",
+                                  "filesize": 28371,
+                                  "filetype": "image/jpeg",
+                                  "id": "im28",
+                                  "language": Object {
+                                    "__typename": "Language",
+                                    "displayName": "Arabic",
+                                    "id": "ar22",
+                                    "languageCode": "ar",
+                                    "locale": "ar",
+                                    "nativeName": "العربية",
+                                    "textDirection": "RTL",
+                                  },
+                                  "signedUrl": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
+                                  "updatedAt": "2019-06-18T14:58:10.024Z",
+                                  "url": "2019/06/123/image-1.jpg",
+                                  "use": Object {
+                                    "__typename": "ImageUse",
+                                    "id": "imu33",
+                                    "name": "Thumbnail/Cover Image",
+                                  },
+                                },
+                                "size": "FULL",
+                              },
+                            ],
+                            "title": "test project title",
+                            "updatedAt": "2019-06-18T12:58:10.024Z",
+                          }
+                        }
+                      />,
+                      "title": "Video File",
+                    },
+                    Object {
+                      "component": <Apollo(DownloadCaption)
+                        id="123"
+                        instructions="Download caption file(s) for this video."
+                        isPreview={true}
+                      />,
+                      "title": "Caption File",
+                    },
+                    Object {
+                      "component": <Apollo(DownloadThumbnail)
+                        id="123"
+                        instructions="Download Thumbnail(s)"
+                        isPreview={true}
+                      />,
+                      "title": "Thumbnail",
+                    },
+                    Object {
+                      "component": <Apollo(DownloadOtherFiles)
+                        id="123"
+                        instructions="Download Other File(s)"
+                        isPreview={true}
+                      />,
+                      "title": "Other",
+                    },
+                    Object {
+                      "component": <DownloadHelp />,
+                      "title": "Help",
+                    },
+                  ]
+                }
+                title="Download this video."
+              />
+            }
+            icon={
+              Object {
+                "dim": 18,
+                "img": "shareIcon.svg",
+              }
+            }
+            position="right"
+            show={true}
+            toolTip="Download video"
+          >
+            <span
+              style={
+                Object {
+                  "display": "inline-block",
+                }
+              }
+            >
+              <Popup
+                className="popupElem_wrapper"
+                content={
+                  <PopupTabbed
+                    panes={
+                      Array [
+                        Object {
+                          "component": <DownloadVideo
+                            burnedInCaptions={false}
+                            instructions="Download the video and caption files in English.
+                            This download option is best for uploading this video to web pages."
+                            isPreview={true}
+                            selectedLanguageUnit={
+                              Object {
+                                "__typename": "VideoUnit",
+                                "createdAt": "2019-06-18T12:58:10.024Z",
+                                "descPublic": "the english description",
+                                "files": Array [
+                                  Object {
+                                    "__typename": "VideoFile",
+                                    "createdAt": "2019-03-05T20:18:54.032Z",
+                                    "dimensions": Object {
+                                      "__typename": "Dimensions",
+                                      "height": "1080",
+                                      "id": "d21",
+                                      "width": "1920",
+                                    },
+                                    "duration": 556,
+                                    "filename": "video-file-1.mp4",
+                                    "filesize": 662595174,
+                                    "filetype": "video/mp4",
+                                    "id": "f19",
+                                    "language": Object {
+                                      "__typename": "Language",
+                                      "displayName": "Arabic",
+                                      "id": "ar22",
+                                      "languageCode": "ar",
+                                      "locale": "ar",
+                                      "nativeName": "العربية",
+                                      "textDirection": "RTL",
+                                    },
+                                    "quality": "WEB",
+                                    "signedUrl": null,
+                                    "stream": Array [
+                                      Object {
+                                        "__typename": "VideoStream",
+                                        "id": "st93",
+                                        "site": "YouTube",
+                                        "url": "https://www.youtube.com/watch?v=1evw4fRu3bo",
+                                      },
+                                      Object {
+                                        "__typename": "VideoStream",
+                                        "id": "st35",
+                                        "site": "Vimeo",
+                                        "url": "https://vimeo.com/340239507",
+                                      },
+                                    ],
+                                    "updatedAt": "2019-06-19T17:38:37.502Z",
+                                    "url": "2019/06/123/video-file-1.mp4",
+                                    "use": Object {
+                                      "__typename": "VideoUse",
+                                      "id": "us31",
+                                      "name": "Full Video",
+                                    },
+                                    "videoBurnedInStatus": "CLEAN",
+                                  },
+                                ],
+                                "id": "un95",
+                                "language": Object {
+                                  "__typename": "Language",
+                                  "displayName": "English",
+                                  "id": "en38",
+                                  "languageCode": "en",
+                                  "locale": "en-us",
+                                  "nativeName": "English",
+                                  "textDirection": "LTR",
+                                },
+                                "tags": Array [
+                                  Object {
+                                    "__typename": "Tag",
+                                    "id": "tag13",
+                                    "translations": Array [
+                                      Object {
+                                        "__typename": "LanguageTranslation",
+                                        "id": "tr555",
+                                        "language": Object {
+                                          "__typename": "Language",
+                                          "displayName": "Arabic",
+                                          "id": "ar22",
+                                          "languageCode": "ar",
+                                          "locale": "ar",
+                                          "nativeName": "العربية",
+                                          "textDirection": "RTL",
+                                        },
+                                        "name": "الثقافة الأميركية",
+                                      },
+                                    ],
+                                  },
+                                  Object {
+                                    "__typename": "Tag",
+                                    "id": "tag14",
+                                    "translations": Array [
+                                      Object {
+                                        "__typename": "LanguageTranslation",
+                                        "id": "tr888",
+                                        "language": Object {
+                                          "__typename": "Language",
+                                          "displayName": "English",
+                                          "id": "en38",
+                                          "languageCode": "en",
+                                          "locale": "en-us",
+                                          "nativeName": "English",
+                                          "textDirection": "LTR",
+                                        },
+                                        "name": "english learning",
+                                      },
+                                      Object {
+                                        "__typename": "LanguageTranslation",
+                                        "id": "tr777",
+                                        "language": Object {
+                                          "__typename": "Language",
+                                          "displayName": "French",
+                                          "id": "fr82",
+                                          "languageCode": "fr",
+                                          "locale": "fr-fr",
+                                          "nativeName": "French",
+                                          "textDirection": "LTR",
+                                        },
+                                        "name": "Anglais langue étrangère",
+                                      },
+                                    ],
+                                  },
+                                ],
+                                "thumbnails": Array [
+                                  Object {
+                                    "__typename": "Thumbnail",
+                                    "id": "th11",
+                                    "image": Object {
+                                      "__typename": "ImageFile",
+                                      "alt": "the alt text",
+                                      "createdAt": "2019-03-06T13:11:48.043Z",
+                                      "filename": "image-1.jpg",
+                                      "filesize": 28371,
+                                      "filetype": "image/jpeg",
+                                      "id": "im28",
+                                      "language": Object {
+                                        "__typename": "Language",
+                                        "displayName": "Arabic",
+                                        "id": "ar22",
+                                        "languageCode": "ar",
+                                        "locale": "ar",
+                                        "nativeName": "العربية",
+                                        "textDirection": "RTL",
+                                      },
+                                      "signedUrl": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
+                                      "updatedAt": "2019-06-18T14:58:10.024Z",
+                                      "url": "2019/06/123/image-1.jpg",
+                                      "use": Object {
+                                        "__typename": "ImageUse",
+                                        "id": "imu33",
+                                        "name": "Thumbnail/Cover Image",
+                                      },
+                                    },
+                                    "size": "FULL",
+                                  },
+                                ],
+                                "title": "test project title",
+                                "updatedAt": "2019-06-18T12:58:10.024Z",
+                              }
+                            }
+                          />,
+                          "title": "Video File",
+                        },
+                        Object {
+                          "component": <Apollo(DownloadCaption)
+                            id="123"
+                            instructions="Download caption file(s) for this video."
+                            isPreview={true}
+                          />,
+                          "title": "Caption File",
+                        },
+                        Object {
+                          "component": <Apollo(DownloadThumbnail)
+                            id="123"
+                            instructions="Download Thumbnail(s)"
+                            isPreview={true}
+                          />,
+                          "title": "Thumbnail",
+                        },
+                        Object {
+                          "component": <Apollo(DownloadOtherFiles)
+                            id="123"
+                            instructions="Download Other File(s)"
+                            isPreview={true}
+                          />,
+                          "title": "Other",
+                        },
+                        Object {
+                          "component": <DownloadHelp />,
+                          "title": "Help",
+                        },
+                      ]
+                    }
+                    title="Download this video."
+                  />
+                }
+                disabled={false}
+                eventsEnabled={true}
+                offset={4}
+                on="click"
+                pinned={false}
+                position="bottom right"
+                trigger={
+                  <Button
+                    as="button"
+                    className="trigger"
+                    tooltip="Download video"
+                  >
+                    <img
+                      alt="Download video"
+                      height={18}
+                      src="shareIcon.svg"
+                      width={18}
+                    />
+                     
+                  </Button>
+                }
+              >
+                <Portal
+                  closeOnDocumentClick={true}
+                  closeOnEscape={true}
+                  closeOnTriggerClick={true}
+                  eventPool="default"
+                  onClose={[Function]}
+                  onMount={[Function]}
+                  onOpen={[Function]}
+                  onUnmount={[Function]}
+                  openOnTriggerClick={true}
+                  trigger={
+                    <Button
+                      as="button"
+                      className="trigger"
+                      tooltip="Download video"
+                    >
+                      <img
+                        alt="Download video"
+                        height={18}
+                        src="shareIcon.svg"
+                        width={18}
+                      />
+                       
+                    </Button>
+                  }
+                  triggerRef={
+                    Object {
+                      "current": <button
+                        class="ui button trigger"
+                        tooltip="Download video"
+                      >
+                        <img
+                          alt="Download video"
+                          height="18"
+                          src="shareIcon.svg"
+                          width="18"
+                        />
+                         
+                      </button>,
+                    }
+                  }
+                >
+                  <Ref
+                    innerRef={[Function]}
+                  >
+                    <RefFindNode
+                      innerRef={[Function]}
+                    >
+                      <Button
+                        as="button"
+                        className="trigger"
+                        onBlur={[Function]}
+                        onClick={[Function]}
+                        onFocus={[Function]}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
+                        tooltip="Download video"
+                      >
+                        <Ref
+                          innerRef={
+                            Object {
+                              "current": <button
+                                class="ui button trigger"
+                                tooltip="Download video"
+                              >
+                                <img
+                                  alt="Download video"
+                                  height="18"
+                                  src="shareIcon.svg"
+                                  width="18"
+                                />
+                                 
+                              </button>,
+                            }
+                          }
+                        >
+                          <RefFindNode
+                            innerRef={
+                              Object {
+                                "current": <button
+                                  class="ui button trigger"
+                                  tooltip="Download video"
+                                >
+                                  <img
+                                    alt="Download video"
+                                    height="18"
+                                    src="shareIcon.svg"
+                                    width="18"
+                                  />
+                                   
+                                </button>,
+                              }
+                            }
+                          >
+                            <button
+                              className="ui button trigger"
+                              onBlur={[Function]}
+                              onClick={[Function]}
+                              onFocus={[Function]}
+                              onMouseEnter={[Function]}
+                              onMouseLeave={[Function]}
+                              tooltip="Download video"
+                            >
+                              <img
+                                alt="Download video"
+                                height={18}
+                                src="shareIcon.svg"
+                                width={18}
+                              />
+                               
+                            </button>
+                          </RefFindNode>
+                        </Ref>
+                      </Button>
+                    </RefFindNode>
+                  </Ref>
+                </Portal>
+              </Popup>
+            </span>
+          </PopupTrigger>
+        </div>
+      </div>
+      <div
+        className="project-preview__content"
+      >
+        <Embed
+          id="1evw4fRu3bo"
+          placeholder="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE"
+          source="youtube"
+        >
+          <div
+            className="ui embed"
+            onClick={[Function]}
+          >
+            <Icon
+              as="i"
+              name="video play"
+            >
+              <i
+                aria-hidden="true"
+                className="video play icon"
+                onClick={[Function]}
+              />
+            </Icon>
+            <img
+              className="placeholder"
+              src="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE"
+            />
+          </div>
+        </Embed>
+        <ModalContentMeta
+          dateUpdated="2019-06-19T17:38:37.502Z"
+          type="video"
+        >
+          <section
+            className="modal_section modal_section--metaContent"
+          >
+            <div
+              className="modal_meta_wrapper"
+            >
+              <div
+                className="modal_meta"
+              >
+                <span
+                  className="modal_meta_content modal_meta_content--filetype"
+                >
+                  File Type: video
+                </span>
+                <span
+                  className="modal_meta_content modal_meta_content--date"
+                >
+                  Updated: June 19, 2019
+                </span>
+              </div>
+            </div>
+          </section>
+        </ModalContentMeta>
+        <ModalDescription
+          description="the english description"
+        >
+          <section
+            className="modal_section modal_section--description"
+          >
+            <p
+              className="modal_description_text"
+            >
+              the english description
+            </p>
+          </section>
+        </ModalDescription>
+      </div>
+      <ModalPostMeta
+        datePublished="2019-03-05T20:18:54.032Z"
+        source="the team name"
+      >
+        <section
+          className="modal_section modal_section--postMeta"
+        >
+          <span
+            className="modal_postmeta_content"
+          >
+            Source: 
+            the team name
+          </span>
+          <span
+            className="modal_postmeta_content"
+          >
+            Date Published: March 05, 2019
+          </span>
+        </section>
+      </ModalPostMeta>
+      <ModalPostTags
+        tags={
+          Array [
+            Object {
+              "name": undefined,
+            },
+            Object {
+              "name": "english learning",
+            },
+          ]
+        }
+      >
+        <section
+          className="modal_section modal_section--postTags"
+        >
+          <span
+            className="modal_postTag"
+            key="cat_0"
+          >
+             
+            undefined  · 
+             
+          </span>
+          <span
+            className="modal_postTag"
+            key="cat_1"
+          >
+             
+            english learning
+             
+          </span>
+        </section>
+      </ModalPostTags>
+    </div>
+  </ModalItem>
+</ProjectPreviewContent>
+`;

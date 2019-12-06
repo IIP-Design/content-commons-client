@@ -9,8 +9,15 @@ import { capitalizeFirst } from '../lib/utils';
 const Page = props => {
   const { router } = props;
   const { pathname } = router;
-  const path = pathname.substr( router.pathname.lastIndexOf( '/' ) + 1 );
-  const title = ( path ) ? `${capitalizeFirst( path )} | Content Commons` : 'Content Commons';
+
+  let path = pathname.substr( router.pathname.lastIndexOf( '/' ) + 1 );
+  // if on a dynamic page, i.e. admin/package/[id] then get the page title
+  // from one level up, 'package'
+  if ( path.indexOf( '[' ) !== -1 ) {
+    const parts = pathname.split( '/' );
+    path = parts[parts.length - 2];
+  }
+  const title = path ? `${capitalizeFirst( path )} | Content Commons` : 'Content Commons';
   const bodyCls = ( pathname === '/' ) ? '' : 'ui container inside';
 
   return (

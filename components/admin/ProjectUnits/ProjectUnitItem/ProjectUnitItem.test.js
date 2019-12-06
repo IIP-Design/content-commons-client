@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import { UploadContext } from '../../ProjectEdit/VideoEdit/VideoEdit';
+import { UploadContext } from '../../ProjectEdit/VideoEdit/UploadContext';
 import ProjectUnitItem from './ProjectUnitItem';
 import { filesToUpload, postUploadUnit, preUploadUnit } from './mocks';
 
@@ -13,7 +13,7 @@ jest.mock(
 );
 
 jest.mock(
-  'components/admin/ProjectEdit/FileUploadProgressBar/FileUploadProgressBar',
+  'components/admin/FileUploadProgressBar/FileUploadProgressBar',
   () => function FileUploadProgressBar() { return ''; }
 );
 
@@ -238,12 +238,12 @@ describe( '<ProjectUnitItem /> after upload completion', () => {
     const imageWrapper = wrapper.find( '.image-wrapper' );
     const image = wrapper.find( 'Image > img' );
     const placeholder = <div className="placeholder" />;
-    const { url } = postUploadProps.unit.thumbnails[0].image;
+    const { signedUrl } = postUploadProps.unit.thumbnails[0].image;
 
     expect( imageWrapper.exists() ).toEqual( true );
     expect( imageWrapper.contains( placeholder ) ).toEqual( false );
     expect( image.exists() ).toEqual( true );
-    expect( image.prop( 'src' ) ).toEqual( url );
+    expect( image.prop( 'src' ) ).toEqual( signedUrl );
   } );
 
   it( 'renders initially the placeholder title', () => {

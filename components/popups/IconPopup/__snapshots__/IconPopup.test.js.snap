@@ -3,8 +3,10 @@
 exports[`<IconPopup /> renders without crashing 1`] = `
 <Popup
   content="A test message"
+  disabled={false}
+  eventsEnabled={true}
   inverted={true}
-  keepInViewPort={true}
+  offset={0}
   on={
     Array [
       "hover",
@@ -12,6 +14,7 @@ exports[`<IconPopup /> renders without crashing 1`] = `
       "focus",
     ]
   }
+  pinned={false}
   position="top left"
   size="mini"
   trigger={

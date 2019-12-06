@@ -58,11 +58,7 @@
     "no-underscore-dangle": 0,
     "consistent-return": 0,
     "object-curly-spacing": 1,
-    "react/destructuring-assignment": [
-      3,
-      "always",
-      { "ignoreClassFields": true }
-    ],
+    "react/destructuring-assignment": [0, "always", { "ignoreClassFields": true }],
     "react/display-name": 1,
     "react-hooks/rules-of-hooks": "error",
     "react/jsx-curly-spacing": [
@@ -72,6 +68,9 @@
         "children": true
       }
     ],
+    "react/jsx-fragments": 0,
+    "react/state-in-constructor": 0,
+    "react/jsx-props-no-spreading": 0,
     "react/jsx-one-expression-per-line": 0,
     "react/no-array-index-key": 0,
     "react/react-in-jsx-scope": 0,

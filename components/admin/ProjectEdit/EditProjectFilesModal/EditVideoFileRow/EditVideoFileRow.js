@@ -8,7 +8,7 @@ import QualityDropdown from 'components/admin/dropdowns/QualityDropdown/QualityD
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { truncateAndReplaceStr } from 'lib/utils';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import { FilesContext } from '../EditProjectFilesModal';
+import { FilesContext } from '../FilesContext';
 import './EditVideoFileRow.scss';
 
 // Optimize re-renders as component could potentially have many rows
@@ -54,8 +54,7 @@ const EditVideoFileRow = props => {
                 <VisuallyHidden el="span">{ name }</VisuallyHidden>
               </Fragment>
             )
-            : <span>{ name }</span>
-          }
+            : <span>{ name }</span> }
         </div>
       </Grid.Column>
 
@@ -71,8 +70,7 @@ const EditVideoFileRow = props => {
           <VideoBurnedInStatusDropdown id={ id } value={ videoBurnedInStatus } onChange={ update } required />
         </Grid.Column>
       </Fragment>
-      )
-      }
+      ) }
 
       { step === 2 && (
         <Fragment>
@@ -86,8 +84,7 @@ const EditVideoFileRow = props => {
             <QualityDropdown id={ id } type="video" value={ quality } onChange={ update } required />
           </Grid.Column>
         </Fragment>
-      )
-      }
+      ) }
 
 
       { /* Actions */ }
@@ -109,6 +106,9 @@ EditVideoFileRow.propTypes = {
     id: PropTypes.string,
     name: PropTypes.string,
     language: PropTypes.string,
+    use: PropTypes.string,
+    quality: PropTypes.string,
+    videoBurnedInStatus: PropTypes.string
   } ),
   accept: PropTypes.string,
   step: PropTypes.number,

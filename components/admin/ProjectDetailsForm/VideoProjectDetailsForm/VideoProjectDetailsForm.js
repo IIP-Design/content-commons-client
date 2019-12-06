@@ -1,9 +1,10 @@
+/* eslint-disable react/destructuring-assignment */
 /**
  *
  * VideoProjectDetailsForm
  *
  */
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
@@ -14,8 +15,12 @@ import {
   VIDEO_PROJECT_FORM_QUERY
 } from 'lib/graphql/queries/video';
 import { CURRENT_USER_QUERY } from 'components/User/User';
-import { compose, graphql } from 'react-apollo';
-import { buildCreateVideoProjectTree, buildFormTree } from 'lib/graphql/builders/video';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
+import {
+  buildCreateVideoProjectTree,
+  buildFormTree
+} from 'lib/graphql/builders/video';
 import { Formik } from 'formik';
 
 import ProjectDetailsForm from 'components/admin/ProjectDetailsForm/ProjectDetailsForm';
@@ -35,12 +40,13 @@ const VideoProjectDetailsForm = props => {
 
   const update = async ( values, prevValues ) => {
     const { id, updateVideoProject } = props;
-    if ( id ) { // ensure we have a project
+    if ( id ) {
+      // ensure we have a project
       await updateVideoProject( {
         variables: {
           data: buildFormTree( values, prevValues ),
           where: { id }
-        },
+        }
       } ).catch( err => console.dir( err ) );
     }
   };
@@ -58,23 +64,28 @@ const VideoProjectDetailsForm = props => {
   };
 
   const getInitialValues = () => {
-    const { user: { authenticatedUser }, data } = props;
+    const {
+      user: { authenticatedUser },
+      data
+    } = props;
 
-    const videoProject = ( data && data.projectForm ) ? data.projectForm : {};
+    const videoProject = data && data.projectForm ? data.projectForm : {};
 
     const categories = videoProject.categories
       ? videoProject.categories.map( category => category.id )
       : [];
 
-    const tags = videoProject.tags
-      ? videoProject.tags.map( tag => tag.id )
-      : [];
+    const tags = videoProject.tags ? videoProject.tags.map( tag => tag.id ) : [];
 
-    const author = videoProject.author ? videoProject.author.id : authenticatedUser.id;
+    const author = videoProject.author
+      ? videoProject.author.id
+      : authenticatedUser.id;
 
     const initialValues = {
       author,
-      team: videoProject.team ? videoProject.team.name : authenticatedUser.team.name,
+      team: videoProject.team
+        ? videoProject.team.name
+        : authenticatedUser.team.name,
       projectTitle: videoProject.projectTitle || '',
       visibility: videoProject.visibility || 'PUBLIC',
       categories,
@@ -89,7 +100,10 @@ const VideoProjectDetailsForm = props => {
 
   const onHandleSubmit = async ( values, actions ) => {
     const {
-      user, createVideoProject, updateNotification, handleUpload
+      user,
+      createVideoProject,
+      updateNotification,
+      handleUpload
     } = props;
     const { setStatus, setErrors, setSubmitting } = actions;
 
@@ -119,13 +133,16 @@ const VideoProjectDetailsForm = props => {
     setSubmitting( false );
   };
 
+  if ( props.user.loading ) return <p>Loading....</p>;
+
   return (
     <Formik
       initialValues={ getInitialValues() }
       validationSchema={ props.id ? baseSchema : initialSchema }
       onSubmit={ onHandleSubmit }
-      render={ formikProps => (
-        <Fragment>
+    >
+      { formikProps => (
+        <>
           <Notification
             el="p"
             customStyles={ {
@@ -137,14 +154,10 @@ const VideoProjectDetailsForm = props => {
             show={ showNotication }
             msg="Changes saved"
           />
-          <ProjectDetailsForm
-            { ...formikProps }
-            { ...props }
-            save={ save }
-          />
-        </Fragment>
+          <ProjectDetailsForm { ...formikProps } { ...props } save={ save } />
+        </>
       ) }
-    />
+    </Formik>
   );
 };
 

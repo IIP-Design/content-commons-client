@@ -1,0 +1,20 @@
+dl.terms {
+  margin-top: 0;
+  > div {
+    > dt,
+    > dd {
+      display: inline;
+    }
+
+    > dt {
+      font-weight: bold;
+      &::after {
+        content: ': '
+      }
+    }
+
+    > dd {
+      margin-left: 0.25em;
+    }
+  }
+}

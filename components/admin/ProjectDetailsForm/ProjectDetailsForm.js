@@ -13,7 +13,7 @@ import {
   TextArea
 } from 'semantic-ui-react';
 import Link from 'next/link';
-import ProjectVisibilityDropdown from 'components/admin/dropdowns/ProjectVisibilityDropdown/ProjectVisibilityDropdown';
+import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import UserDropdown from 'components/admin/dropdowns/UserDropdown/UserDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
@@ -90,7 +90,7 @@ const ProjectDetailsForm = props => {
 
                 <div className="field">
                   <div className="field">
-                    <ProjectVisibilityDropdown
+                    <VisibilityDropdown
                       id="visibility"
                       name="visibility"
                       label="Visibility Setting"
@@ -137,13 +137,11 @@ const ProjectDetailsForm = props => {
                     closeOnBlur
                     closeOnChange
                     required
-                    style={ { marginBottom: '1em' } }
                   />
 
                   { errors.categories
                     ? <p className="error-message">{ touched.categories ? errors.categories : '' }</p>
-                    : <p className="field__helper-text">Select up to { maxCategories }.</p>
-              }
+                    : <p className="field__helper-text">Select up to { maxCategories }.</p> }
                 </div>
 
                 <div className="field">
@@ -154,7 +152,6 @@ const ProjectDetailsForm = props => {
                     locale="en-us"
                     value={ values.tags }
                     onChange={ handleOnChange }
-                    style={ { marginBottom: '1em' } }
                   />
                   <p className="field__helper-text">Enter keywords separated by commas to search available tags.</p>
                 </div>
@@ -173,6 +170,7 @@ const ProjectDetailsForm = props => {
 
               <div className="field">
                 <Form.Field
+                  className="with-helper-text"
                   id="descInternal"
                   name="descInternal"
                   control={ TextArea }
@@ -180,7 +178,10 @@ const ProjectDetailsForm = props => {
                   value={ values.descInternal }
                   onChange={ handleChange }
                 />
-                <p className="field__helper-text">Reason for this project as it relates to Department objectives.</p>
+                <p className="field__helper-text">
+                  Share with DoS colleagues reasons for this project as it relates to Department objectives,
+                  best practices for using the project, or any other notes you would like to keep internal.
+                </p>
               </div>
             </Grid.Column>
           </Grid.Row>

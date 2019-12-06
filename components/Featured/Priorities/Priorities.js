@@ -97,7 +97,7 @@ class Priorities extends Component {
           <Loader active={ featured.loading } />
           { featured.error && (
             <Message>
-              { `Oops, something went wrong.  We are unable to load the department priority section.` }
+              Oops, something went wrong.  We are unable to load the department priority section.
             </Message>
           ) }
           <Grid columns="equal" stackable stretched>
@@ -123,8 +123,7 @@ class Priorities extends Component {
                   { this.getModalContent( priorities[0] ) }
                 </Modal.Content>
               </Modal>
-              )
-              }
+              ) }
             </Grid.Column>
             <Grid.Column width={ 8 } className="prioritiesgridright">
               <Item.Group>{ priorities && this.renderPrioritiesWithMeta() }</Item.Group>
@@ -151,4 +150,5 @@ const mapStateToProps = ( state, props ) => ( {
   priorities: state.featured.priorities[props.term]
 } );
 
+export { Priorities };
 export default connect( mapStateToProps )( Priorities );

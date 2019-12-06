@@ -97,7 +97,10 @@ const VIDEO_PROJECT_PREVIEW_OTHER_FILES_QUERY = gql`
       id
       files: supportFiles(
         where: {
-          filetype_not: "application/x-subrip"
+          AND: [
+            { filetype_not: "application/x-subrip" },
+            { filename_not_ends_with: "vtt" }
+          ]
         },
         orderBy: filename_ASC
       ) {

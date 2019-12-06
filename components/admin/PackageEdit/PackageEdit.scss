@@ -1,0 +1,46 @@
+@import "styles/colors.scss";
+@import "styles/mixins.scss";
+
+.edit-package {
+  @media screen and (max-width: 550px) {
+    .project_buttons {
+      @include two-column-layout;
+    }
+  }
+
+  &__status {
+    font-size: 0.875em;
+  }
+
+  .ui.button {
+    @include base-button;
+  }
+
+  &__btn--delete {
+    &.ui.basic.button {
+      @include transparent-button;
+    }
+  }
+
+  &__btn--add-more,
+  &__btn--edit,
+  &__btn--save-draft {
+    &.ui.basic.button {
+      @include ghost-button;
+    }
+  }
+
+  &__btn--publish {
+    &.ui.button {
+      @include go-button;
+
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: $matisse-blue; // only difference with VideoReview
+      }
+    }
+  }
+
+  @include kbd-only-focus-ring;
+}

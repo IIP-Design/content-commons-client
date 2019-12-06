@@ -15,7 +15,7 @@ const ProjectHeader = props => {
   return (
     <header className="section section--project_header">
       <div className="project_header">
-        <h2>
+        <h2 className="headline">
           { icon && <Icon name={ icon } size="tiny" circular inverted /> }
           <span className="project_header_text">{ text }</span>
         </h2>

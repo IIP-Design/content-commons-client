@@ -76,6 +76,7 @@ exports[`<DetailsPopup /> renders the final state 1`] = `
             "variableDefinitions": Array [
               Object {
                 "defaultValue": undefined,
+                "directives": Array [],
                 "kind": "VariableDefinition",
                 "type": Object {
                   "kind": "NonNullType",
@@ -118,11 +119,15 @@ exports[`<DetailsPopup /> renders the final state 1`] = `
           id="123"
         />
       }
+      disabled={false}
+      eventsEnabled={true}
       keepInViewPort={true}
+      offset={0}
       on="click"
       onClose={[Function]}
       onOpen={[Function]}
       open={false}
+      pinned={false}
       position="bottom left"
       trigger={
         <button
@@ -154,23 +159,37 @@ exports[`<DetailsPopup /> renders the final state 1`] = `
             Files
           </button>
         }
-        triggerRef={[Function]}
+        triggerRef={
+          Object {
+            "current": <button
+              class="linkStyle projects_data_actions_action"
+              data-projectitempopup="detailsPopup"
+              type="button"
+            >
+              Files
+            </button>,
+          }
+        }
       >
         <Ref
           innerRef={[Function]}
         >
-          <button
-            className="linkStyle projects_data_actions_action"
-            data-projectitempopup="detailsPopup"
-            onBlur={[Function]}
-            onClick={[Function]}
-            onFocus={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            type="button"
+          <RefFindNode
+            innerRef={[Function]}
           >
-            Files
-          </button>
+            <button
+              className="linkStyle projects_data_actions_action"
+              data-projectitempopup="detailsPopup"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              type="button"
+            >
+              Files
+            </button>
+          </RefFindNode>
         </Ref>
       </Portal>
     </Popup>

@@ -24,6 +24,8 @@ const TAG_QUERY = gql`
   }
 `;
 
+const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
+
 const TagDropdown = props => (
   <Query query={ TAG_QUERY } variables={ { locale: props.locale } }>
     { ( { data, loading, error } ) => {
@@ -86,5 +88,5 @@ TagDropdown.propTypes = {
   locale: PropTypes.string
 };
 
-export default TagDropdown;
+export default React.memo( TagDropdown, areEqual );
 export { TAG_QUERY };

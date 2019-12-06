@@ -1,5 +1,5 @@
 import '@babel/polyfill';
-import App, { Container } from 'next/app';
+import App from 'next/app';
 import Router from 'next/router';
 import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
@@ -57,15 +57,13 @@ class Commons extends App {
     } = this.props;
 
     return (
-      <Container>
-        <ApolloProvider client={ apollo }>
-          <Provider store={ store }>
-            <Page>
-              <Component { ...pageProps } />
-            </Page>
-          </Provider>
-        </ApolloProvider>
-      </Container>
+      <ApolloProvider client={ apollo }>
+        <Provider store={ store }>
+          <Page>
+            <Component { ...pageProps } />
+          </Page>
+        </Provider>
+      </ApolloProvider>
     );
   }
 }

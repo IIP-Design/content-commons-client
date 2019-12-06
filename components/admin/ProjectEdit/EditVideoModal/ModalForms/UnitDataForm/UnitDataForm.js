@@ -5,7 +5,8 @@
  */
 import React, { useContext } from 'react';
 import propTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
 import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/projectUpdate';
 import { Embed, Form, Grid } from 'semantic-ui-react';
@@ -63,7 +64,7 @@ const UnitDataForm = ( {
         id: unitId,
         [name]: value
       },
-      update: ( cache, { data: { updateVideoUnit } } ) => {
+      update: cache => {
         try {
           const cachedData = cache.readQuery( {
             query: VIDEO_UNIT_QUERY,
@@ -128,7 +129,7 @@ const UnitDataForm = ( {
             id: unitId,
             tagId: tag
           },
-          update: ( cache, { data: { updateVideoUnit } } ) => {
+          update: cache => {
             try {
               const cachedData = cache.readQuery( {
                 query: VIDEO_UNIT_QUERY,

@@ -1,4 +1,4 @@
-@import "../../../styles/colors.scss";
+@import "styles/colors.scss";
 
 .section--project_header {
   border-bottom: 1px solid $light-grey;
@@ -9,6 +9,10 @@
   }
   padding-top: 1rem;
   padding-bottom: 2rem;
+
+  @media screen and (min-width: 768px) {
+    padding-left: 0.25rem;
+  }
 }
 
 .project_header {
@@ -16,7 +20,7 @@
     margin-bottom: 1em;
   }
     
-  > h2 {
+  > .headline {
     display: flex;
     align-items: center;
     font-size: 34px;
@@ -25,7 +29,7 @@
     }
 
     > i.icon {
-      margin-right: 1rem;
+      margin-right: 0.4rem;
     }
   }
 }

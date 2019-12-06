@@ -35,7 +35,6 @@ exports[`<EditSupportFileRow /> renders without crashing 1`] = `
         </div>
       </GridColumn>
       <GridColumn
-        only="tablet computer"
         style={
           Object {
             "paddingLeft": 0,
@@ -44,7 +43,7 @@ exports[`<EditSupportFileRow /> renders without crashing 1`] = `
         width={2}
       >
         <div
-          className="tablet only computer only two wide column"
+          className="two wide column"
           style={
             Object {
               "paddingLeft": 0,
@@ -53,8 +52,8 @@ exports[`<EditSupportFileRow /> renders without crashing 1`] = `
         >
           <FileRemoveReplaceButtonGroup
             accept=".png,.jpeg,.jpg"
+            disableRemove={false}
             onRemove={[Function]}
-            onReplace={[Function]}
           />
         </div>
       </GridColumn>

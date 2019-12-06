@@ -94,7 +94,7 @@ class LoggedInNav extends Component {
               if ( item.name === 'upload' ) {
                 return (
                   <Menu.Item key={ item.key } name={ item.name } className={ `nav_loggedin ${item.name}` }>
-                    <Link prefetch href="/admin/upload" passHref>{ this.getIcon( item ) }</Link>
+                    <Link href="/admin/upload" passHref>{ this.getIcon( item ) }</Link>
                   </Menu.Item>
                 );
               }
@@ -124,14 +124,14 @@ class LoggedInNav extends Component {
                       : <UserProfileMenu submenuClosePopup={ this.submenuClosePopup } user={ user.firstName } />
                   }
                   on="click"
+                  // eslint-disable-next-line react/destructuring-assignment
                   open={ this.state[`${item.name}`] }
                   onOpen={ this.displayPopup }
                   onClose={ this.closePopup }
                   position="bottom center"
                 />
               );
-            } )
-          }
+            } ) }
           <a
             href="https://goo.gl/forms/9cJ3IBHH9QTld2Mj2"
             target="_blank"
@@ -153,7 +153,7 @@ class LoggedInNav extends Component {
               if ( item.name === 'upload' ) {
                 return (
                   <li key={ item.key }>
-                    <Link prefetch href="/admin/upload">
+                    <Link href="/admin/upload">
                       <a className="item">
                         <span onClick={ toggleMobileNav } onKeyUp={ keyUp } role="presentation">
                           { this.getIcon( item ) }
@@ -182,6 +182,7 @@ class LoggedInNav extends Component {
                   ) }
                   content={ this.renderMenu( item.name ) }
                   on="click"
+                  // eslint-disable-next-line react/destructuring-assignment
                   open={ this.state[`${item.name}`] }
                   onOpen={ this.displayPopup }
                   onClose={ this.closePopup }

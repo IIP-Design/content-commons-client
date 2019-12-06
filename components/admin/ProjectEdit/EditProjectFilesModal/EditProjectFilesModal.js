@@ -8,16 +8,16 @@ import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import { useFileUploadActions } from 'lib/hooks/useFileUploadActions';
 import Notification from 'components/Notification/Notification';
 import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
 import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown/UseDropdown';
-import FileUploadProgressBar from '../FileUploadProgressBar/FileUploadProgressBar';
+import FileUploadProgressBar from '../../FileUploadProgressBar/FileUploadProgressBar';
+import { FilesContext } from './FilesContext';
 
 import './EditProjectFilesModal.scss';
 
 const EditSupportFilesGrid = dynamic( () => import( /* webpackChunkName: "editSupportFilesGrid" */ './EditSupportFilesGrid/EditSupportFilesGrid' ) );
 const EditVideoFilesGrid = dynamic( () => import( /* webpackChunkName: "editVideoFilesGrid" */ './EditVideoFilesGrid/EditVideoFilesGrid' ) );
-
-export const FilesContext = React.createContext();
 
 const EditProjectFilesModal = ( {
   title, type, filesToEdit, extensions,
@@ -274,15 +274,13 @@ const EditProjectFilesModal = ( {
             && (
             <FileUploadProgressBar
               filesToUpload={ files.filter( file => ( file.input ) ) }
-              fileProgessMessage
+              fileProgressMessage
               barSize="small"
               customStyles={ uploadProgessStyles }
             />
-            )
-            }
+            ) }
           </Fragment>
-        )
-      }
+        ) }
 
       <Dimmer.Dimmable dimmed={ saving }>
         <Dimmer inverted simple />
@@ -314,8 +312,7 @@ const EditProjectFilesModal = ( {
             content={ step === 1 ? 'Next' : 'Previous' }
             onClick={ toggleStep }
           />
-          )
-          }
+          ) }
 
           <Button
             className="primary"

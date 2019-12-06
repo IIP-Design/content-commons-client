@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import compose from 'lodash.flowright';
 import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/projectUpdate';
 import {
@@ -23,7 +24,8 @@ import ProjectSupportFiles from '../ProjectSupportFiles';
 import { config } from './config';
 
 const VideoProjectSupportFiles = props => {
-  const { supportFiles: { types: { srt, other } } } = config;
+  // const { supportFiles: { types: { srt, other } } } = config;
+  const { supportFiles: { types: { captions, other } } } = config;
 
   const [progress, setProgress] = useState( 0 );
 
@@ -37,13 +39,15 @@ const VideoProjectSupportFiles = props => {
   } );
 
   const hasAcceptedExtension = ext => {
-    const allAcceptedExts = [...srt.extensions, ...other.extensions];
+    // const allAcceptedExts = [...srt.extensions, ...other.extensions];
+    const allAcceptedExts = [...captions.extensions, ...other.extensions];
     return allAcceptedExts.includes( ext );
   };
 
   const isSupportFile = name => {
     const ext = getFileExt( name );
-    return srt.extensions.includes( ext );
+    // return srt.extensions.includes( ext );
+    return captions.extensions.includes( ext );
   };
 
   const handleUploadProgress = ( progressEvent, file ) => {

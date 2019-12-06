@@ -45,6 +45,7 @@ exports[`<ShareButton /> renders without crashing 1`] = `
           <i
             aria-hidden="true"
             className="twitter icon"
+            onClick={[Function]}
           />
         </Icon>
       </ListIcon>

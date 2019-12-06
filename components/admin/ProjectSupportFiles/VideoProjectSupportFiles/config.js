@@ -2,11 +2,11 @@ export const config = {
   supportFiles: {
     // query: VIDEO_PROJECT_QUERY,
     types: {
-      srt: {
-        headline: 'SRT Files',
-        extensions: ['.srt'],
-        popupMsg: 'Some info about what SRT files are.',
-        editTitle: 'Edit srt files in this project'
+      captions: {
+        headline: 'Caption Files',
+        extensions: ['.srt', '.vtt'],
+        popupMsg: 'Caption files for videos.',
+        editTitle: 'Edit caption files in this project'
       },
       other: {
         headline: 'Additional Files',

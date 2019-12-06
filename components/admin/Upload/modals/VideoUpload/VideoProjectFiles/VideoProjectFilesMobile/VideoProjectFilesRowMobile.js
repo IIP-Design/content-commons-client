@@ -8,7 +8,7 @@ import QualityDropdown from 'components/admin/dropdowns/QualityDropdown/QualityD
 import FileRemoveReplaceMenu from 'components/admin/FileRemoveReplaceMenu/FileRemoveReplaceMenu';
 import { truncateAndReplaceStr } from 'lib/utils';
 import UploadCompletionTracker from '../UploadCompletionTracker';
-import { VideoUploadContext } from '../../VideoUpload';
+import { VideoUploadContext } from '../../VideoUploadContext';
 import './VideoProjectFilesRowMobile.scss';
 
 // Optimize re-renders as component could potentially have many rows
@@ -111,14 +111,12 @@ const VideoProjectFilesRowMobile = props => {
             { /* VideoBurnedInStatus */ }
             { fileType === 'video' && (
             <VideoBurnedInStatusDropdown id={ id } label="Subtitles" value={ videoBurnedInStatus } onChange={ updateField } />
-            )
-            }
+            ) }
 
             { /* Type/Use */ }
             { ( fileType === 'video' || fileType === 'image' ) && (
             <UseDropdown id={ id } label="Type/Use" value={ use } type={ fileType } onChange={ updateField } required />
-            )
-            }
+            ) }
 
             { /* Quality */ }
             { fileType === 'video' && (

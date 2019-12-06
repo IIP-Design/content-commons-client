@@ -6,7 +6,13 @@ import {
 } from 'lib/graphql/queries/video';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 
-export const props = { id: '234' };
+const id = '234';
+export const props = {
+  id,
+  projectUpdate: {
+    [id]: true
+  }
+};
 
 export const mocks = [
   {
@@ -195,6 +201,7 @@ export const mocks = [
               filetype: 'image/jpeg',
               alt: 'the alt text',
               url: `2019/06/${props.id}/image-1.jpg`,
+              signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
               use: {
                 __typename: 'ImageUse',
                 id: 'imu33',
@@ -215,7 +222,7 @@ export const mocks = [
             {
               __typename: 'VideoUnit',
               id: 'un91',
-              createdAt: '2019-06-18T14:58:10.024Z',
+              createdAt: '2019-05-20T14:58:10.024Z',
               updatedAt: '2019-06-18T14:58:10.024Z',
               title: 'test project title',
               descPublic: 'the arabic description',
@@ -265,6 +272,7 @@ export const mocks = [
                     filetype: 'image/jpeg',
                     alt: 'the alt text',
                     url: `2019/06/${props.id}/image-1.jpg`,
+                    signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
                     use: {
                       __typename: 'ImageUse',
                       id: 'imu33',
@@ -294,6 +302,7 @@ export const mocks = [
                   filetype: 'video/mp4',
                   quality: 'WEB',
                   url: `2019/06/${props.id}/video-file-1.mp4`,
+                  signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
                   videoBurnedInStatus: 'CLEAN',
                   dimensions: {
                     __typename: 'Dimensions',
@@ -335,7 +344,7 @@ export const mocks = [
             {
               __typename: 'VideoUnit',
               id: 'un95',
-              createdAt: '2019-06-18T12:58:10.024Z',
+              createdAt: '2019-05-20T14:58:10.024Z',
               updatedAt: '2019-06-18T12:58:10.024Z',
               title: 'test project title',
               descPublic: 'the english description',
@@ -433,6 +442,7 @@ export const mocks = [
                     filetype: 'image/jpeg',
                     alt: 'the alt text',
                     url: `2019/06/${props.id}/image-1.jpg`,
+                    signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
                     use: {
                       __typename: 'ImageUse',
                       id: 'imu33',
@@ -463,6 +473,7 @@ export const mocks = [
                   quality: 'WEB',
                   url: `2019/06/${props.id}/video-file-1.mp4`,
                   videoBurnedInStatus: 'CLEAN',
+                  signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
                   dimensions: {
                     __typename: 'Dimensions',
                     id: 'd21',
@@ -512,6 +523,7 @@ export const mocks = [
               filesize: 6424,
               filetype: 'application/x-subrip',
               use: null,
+              signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
               language: {
                 __typename: 'Language',
                 id: 'en33',
@@ -532,6 +544,7 @@ export const mocks = [
               filesize: 6424,
               filetype: 'application/x-subrip',
               use: null,
+              signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
               language: {
                 __typename: 'Language',
                 id: 'fr533',

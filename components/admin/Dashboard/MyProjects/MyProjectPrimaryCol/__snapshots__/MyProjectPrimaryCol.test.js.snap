@@ -3,15 +3,18 @@
 exports[`<MyProjectPrimaryCol /> renders a Popup with a truncated project title if it is over 35 characters 1`] = `
 <Popup
   content="Test Project Test Project Test Project Test Project"
+  disabled={false}
+  eventsEnabled={true}
   hideOnScroll={true}
   inverted={true}
-  keepInViewPort={true}
+  offset={0}
   on={
     Array [
       "hover",
       "focus",
     ]
   }
+  pinned={false}
   position="top left"
   size="mini"
   trigger={
@@ -53,11 +56,13 @@ exports[`<MyProjectPrimaryCol /> renders without crashing 1`] = `
     <div
       className="wrapper"
     >
-      <img
-        alt="the alt text"
-        className={null}
-        src="https://website.com"
-      />
+      <div
+        className="placeholder outer"
+      >
+        <div
+          className="placeholder inner"
+        />
+      </div>
     </div>
   </div>
   <div

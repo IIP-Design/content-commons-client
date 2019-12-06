@@ -26,7 +26,7 @@ import PopupTabbed from '../popups/PopupTabbed';
 import Popup from '../popups/Popup';
 
 import DownloadVideo from './DownloadVideo';
-import DownloadSrt from './DownloadSrt';
+import DownloadCaption from './DownloadCaption';
 import DownloadTranscript from './DownloadTranscript';
 import DownloadHelp from './DownloadHelp';
 import Share from '../Share/Share';
@@ -405,11 +405,11 @@ class Video extends Component {
                         )
                       },
                       {
-                        title: 'SRT',
+                        title: 'Caption File',
                         component: (
-                          <DownloadSrt
+                          <DownloadCaption
                             selectedLanguageUnit={ unit }
-                            instructions="Download SRTs"
+                            instructions="Download caption file(s) for this video."
                             item={ this.props.item }
                           />
                         )

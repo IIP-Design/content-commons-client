@@ -345,6 +345,7 @@ exports[`<VideoDetailsPopup /> renders the final state 1`] = `
             "variableDefinitions": Array [
               Object {
                 "defaultValue": undefined,
+                "directives": Array [],
                 "kind": "VariableDefinition",
                 "type": Object {
                   "kind": "NonNullType",
