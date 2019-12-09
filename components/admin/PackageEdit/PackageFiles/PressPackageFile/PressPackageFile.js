@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
-import compose from 'lodash.flowright';
+import { useQuery } from '@apollo/react-hooks';
 import { useFormikContext } from 'formik';
 import {
   Form, Grid, Input, Loader
@@ -24,8 +23,11 @@ const PressPackageFile = props => {
   const handleOnChange = useContext( HandleOnChangeContext );
   const { errors, touched, values } = useFormikContext();
 
-  if ( !props.data ) return null;
-  const { error, loading } = props.data;
+  const { loading, error, data } = useQuery( DOCUMENT_FILE_QUERY, {
+    partialRefetch: true,
+    variables: { id: props.id },
+    skip: !props.id
+  } );
 
   if ( loading ) {
     return (
@@ -41,7 +43,7 @@ const PressPackageFile = props => {
           active
           inline="centered"
           style={ { marginBottom: '1em' } }
-          content="Loading package file(s)..."
+          content="Loading package file..."
         />
       </div>
     );
@@ -49,7 +51,8 @@ const PressPackageFile = props => {
 
   if ( error ) return <ApolloError error={ error } />;
 
-  const { id, filename, image } = props.data.documentFile;
+  if ( !data ) return null;
+  const { id, filename, image } = data.documentFile;
 
   const metaData = [
     {
@@ -199,16 +202,7 @@ const PressPackageFile = props => {
 };
 
 PressPackageFile.propTypes = {
-  id: PropTypes.string,
-  data: PropTypes.object
+  id: PropTypes.string
 };
 
-export default compose(
-  graphql( DOCUMENT_FILE_QUERY, {
-    partialRefetch: true,
-    options: props => ( {
-      variables: { id: props.id }
-    } ),
-    skip: props => !props.id
-  } )
-)( PressPackageFile );
+export default PressPackageFile;
