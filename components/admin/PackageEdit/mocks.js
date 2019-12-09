@@ -1,19 +1,11 @@
-import { mocks as pkgFiles } from 'components/admin/PackageEdit/PackageFiles/mocks';
+import {
+  tag1, tag2, mocks as pkgFiles
+} from 'components/admin/PackageEdit/PackageFiles/mocks';
 import { PACKAGE_QUERY, DELETE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 
-const { documents } = pkgFiles[0].result.data.package;
+const { documents } = pkgFiles[0].result.data.pkg;
 
-export const language = {
-  __typename: 'Language',
-  id: 'ck2lzfx710hkq07206thus6pt',
-  languageCode: 'en',
-  locale: 'en-us',
-  textDirection: 'LTR',
-  displayName: 'English',
-  nativeName: 'English'
-};
-
-export const pressJournalism = {
+const pressJournalism = {
   __typename: 'Category',
   id: 'ck2lzgu1e0red072066m25ldt',
   translations: [
@@ -21,7 +13,15 @@ export const pressJournalism = {
       __typename: 'LanguageTranslation',
       id: 'ck2lzfz0d0i580720g3mg0xut',
       name: 'press & journalism',
-      language
+      language: {
+        __typename: 'Language',
+        id: 'ck2lzfx710hkq07206thus6pt',
+        languageCode: 'en',
+        locale: 'en-us',
+        textDirection: 'LTR',
+        displayName: 'English',
+        nativeName: 'English'
+      }
     },
     {
       __typename: 'LanguageTranslation',
@@ -50,32 +50,6 @@ export const pressJournalism = {
         displayName: 'French',
         nativeName: 'Français'
       }
-    }
-  ]
-};
-
-export const tag1 = {
-  __typename: 'Tag',
-  id: 'ck2lzgu1i0rei07206gvy1ygg',
-  translations: [
-    {
-      __typename: 'LanguageTranslation',
-      id: 'ck2lzfzwr0iey0720hrigffxo',
-      name: 'american culture',
-      language
-    }
-  ]
-};
-
-export const tag2 = {
-  __typename: 'Tag',
-  id: 'ck2lzgu2s0rer07208jc6y6ww',
-  translations: [
-    {
-      __typename: 'LanguageTranslation',
-      id: 'ck2lzg1900iui0720q28le4rs',
-      name: 'leadership',
-      language
     }
   ]
 };

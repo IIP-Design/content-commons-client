@@ -5,7 +5,7 @@ import {
   errorMocks, mocks, noDocumentsMocks, props
 } from './mocks';
 
-jest.mock( 'next/dynamic', () => function PressPackageFile() { return ''; } );
+jest.mock( 'next/dynamic', () => () => 'Press-Package-File' );
 jest.mock(
   'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsFormContainer',
   () => function PackageDetailsFormContainer() {
