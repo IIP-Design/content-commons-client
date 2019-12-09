@@ -1,6 +1,8 @@
 import { mount } from 'enzyme';
 import { MockedProvider, wait } from '@apollo/react-testing';
-import { errorMocks, mocks, props } from './mocks';
+import {
+  errorMocks, mocks, props, undefinedDataMocks
+} from './mocks';
 import PackageFiles from './PackageFiles';
 
 jest.mock( 'next/dynamic', () => () => 'Press-Package-File' );
@@ -17,6 +19,12 @@ const Component = (
 
 const ErrorComponent = (
   <MockedProvider mocks={ errorMocks }>
+    <PackageFiles { ...props } />
+  </MockedProvider>
+);
+
+const UndefinedDataComponent = (
+  <MockedProvider mocks={ undefinedDataMocks }>
     <PackageFiles { ...props } />
   </MockedProvider>
 );
@@ -62,6 +70,15 @@ describe( '<PackageFiles />', () => {
 
     expect( apolloError.exists() ).toEqual( true );
     expect( apolloError.contains( msg ) ).toEqual( true );
+  } );
+
+  it( 'renders ApolloError if `data === undefined` is returned', async () => {
+    const wrapper = mount( UndefinedDataComponent );
+    await wait( 0 );
+    wrapper.update();
+    const apolloError = wrapper.find( 'ApolloError' );
+
+    expect( apolloError.exists() ).toEqual( true );
   } );
 
   it( 'renders the final state without crashing', async () => {

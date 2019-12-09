@@ -387,3 +387,12 @@ export const errorMocks = [
     }
   }
 ];
+
+export const undefinedDataMocks = [
+  {
+    ...mocks[0],
+    result: {
+      data: undefined
+    }
+  }
+];
