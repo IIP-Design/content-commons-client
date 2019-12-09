@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
-import compose from 'lodash.flowright';
+import { useQuery } from '@apollo/react-hooks';
 import dynamic from 'next/dynamic';
 import { Loader } from 'semantic-ui-react';
 import { getCount, getPluralStringOrNot } from 'lib/utils';
@@ -13,8 +12,11 @@ import './PackageFiles.scss';
 const PressPackageFile = dynamic( () => import( /* webpackChunkName: "pressPackageFile" */ 'components/admin/PackageEdit/PackageFiles/PressPackageFile/PressPackageFile' ) );
 
 const PackageFiles = props => {
-  if ( !props.data ) return null;
-  const { error, loading } = props.data;
+  const { loading, error, data } = useQuery( PACKAGE_FILES_QUERY, {
+    partialRefetch: true,
+    variables: { id: props.id },
+    skip: !props.id
+  } );
 
   if ( loading ) {
     return (
@@ -37,8 +39,9 @@ const PackageFiles = props => {
   }
 
   if ( error ) return <ApolloError error={ error } />;
+  if ( !data ) return null;
 
-  const { pkg } = props.data;
+  const { pkg } = data;
   if ( !pkg || !getCount( pkg ) ) return null;
 
   const units = pkg.documents || [];
@@ -74,15 +77,7 @@ const PackageFiles = props => {
 };
 
 PackageFiles.propTypes = {
-  data: PropTypes.object
+  id: PropTypes.string
 };
 
-export default compose(
-  graphql( PACKAGE_FILES_QUERY, {
-    partialRefetch: true,
-    options: props => ( {
-      variables: { id: props.id }
-    } ),
-    skip: props => !props.id
-  } )
-)( PackageFiles );
+export default PackageFiles;
