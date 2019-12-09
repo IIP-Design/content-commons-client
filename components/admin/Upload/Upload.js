@@ -17,7 +17,7 @@ import eduIcon from 'static/icons/icon_150px_edu_blue.png';
 import videoIcon from 'static/icons/icon_150px_video_blue.png';
 import audioIcon from 'static/icons/icon_150px_audio_blue.png';
 import { CURRENT_USER_QUERY } from 'components/User/User';
-import { CREATE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
+import { CREATE_PACKAGE_MUTATION, PACKAGE_EXISTS_QUERY } from 'lib/graphql/queries/package';
 import { buildCreatePackageTree } from 'lib/graphql/builders/package';
 import moment from 'moment';
 import './Upload.scss';
@@ -26,13 +26,13 @@ import './Upload.scss';
 const VideoUpload = dynamic( () => import( /* webpackChunkName: "videoUpload" */ './modals/VideoUpload/VideoUpload' ) );
 
 const Upload = () => {
+  const [creationError, setCreationError] = useState( '' );
   const { loading, error, data } = useQuery( CURRENT_USER_QUERY );
-  const [createPackage, {
-    error: createPackageError,
-    loading: createPackageLoading
-  }] = useMutation(
+  const [createPackage, { loading: createPackageLoading }] = useMutation(
     CREATE_PACKAGE_MUTATION
   );
+
+  const [packageExists] = useMutation( PACKAGE_EXISTS_QUERY );
 
   const [modalOpen, setModalOpen] = useState( false );
   const [modalClassname, setModalClassname] = useState( 'upload_modal' );
@@ -40,38 +40,66 @@ const Upload = () => {
   const handleModalClassname = updatedModalClassname => setModalClassname( updatedModalClassname );
 
   /**
-   * Create dauly guidance packages ans sends user to
-   * package details screen on success
-   * @param {onject} user authenticated user
+   * Checks whether a package exists with the supplied field name and values
+   * @param {object} where cluase containing fields to test existance agaist, i.e. { title: Daily Guidance }
    */
+  const doesPackageExist = async where => {
+    const res = await packageExists( {
+      variables: {
+        where
+      }
+    } );
+
+    return res.data.packageExists;
+  };
+
+  /**
+  * Create dauly guidance packages and sends user to
+  * package details screen on success
+  * @param {onject} user authenticated user
+  */
   const createPressOfficePackage = async user => {
+    const title = `Guidance Package ${moment().format( 'MM-D-YY' )}`;
+
+    // One Daily Guidance package is created for each day
+    if ( await doesPackageExist( { title } ) ) {
+      setCreationError( `A Guidance Package with the name "${title}" already exists.` );
+      return;
+    }
+
+    // unique title, create package
     try {
       const res = await createPackage( {
         variables: {
           data: buildCreatePackageTree( user, {
             type: 'DAILY_GUIDANCE',
-            title: `Guidance Package ${moment().format( 'MM-D-YY' )}`,
+            title
           } )
         }
       } );
 
       const { id } = res.data.createPackage;
       Router.push( `/admin/package/${id}?action=create` );
-    } catch ( err ) { // apollo populates createPackageError }
+    } catch ( err ) {
+      setCreationError( err );
     }
   };
 
-
+  // current user query loading
   if ( loading ) return 'Loading...';
+
+  // current user query error
   if ( error ) return `Error! ${error.message}`;
 
-  const { authenticatedUser: { team } } = data;
+  const {
+    authenticatedUser: { team }
+  } = data;
 
   /**
-   * Sets button state based on team. Add loading class if
-   * button is processing.  Defaults to disabled
-   * @param {String} contentType Type of content to create
-   */
+  * Sets button state based on team. Add loading class if
+  * button is processing.  Defaults to disabled
+  * @param {String} contentType Type of content to create
+  */
   const setButtonState = contentType => {
     let cls = 'disabled'; // disabled is default state
     const type = contentType.toUpperCase();
@@ -85,11 +113,10 @@ const Upload = () => {
     return cls;
   };
 
-
   /**
-   * Wrapper function that farms out package creation to a
-   * function that handles specifc team's use case
-   */
+  * Wrapper function that farms out package creation to a
+  * function that handles specifc team's use case
+  */
   const handleCreateNewPackage = async () => {
     const { authenticatedUser } = data;
     if ( team ) {
@@ -153,10 +180,9 @@ const Upload = () => {
             aria-label="Create New Package"
             onClick={ handleCreateNewPackage }
           >
-            <Icon name="plus circle" style={ { opacity: 1 } } />
-            Create New Package
+            <Icon name="plus circle" style={ { opacity: 1 } } /> Create New Package
           </Button>
-          <ApolloError error={ createPackageError } />
+          <ApolloError error={ { otherError: creationError } } />
         </div>
       </section>
 
