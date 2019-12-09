@@ -11,6 +11,7 @@ import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
 import { graphql } from 'react-apollo';
 import compose from 'lodash.flowright';
 import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown/UseDropdown';
+import { normalize } from 'lib/graphql/normalizers/video';
 import FileUploadProgressBar from '../../FileUploadProgressBar/FileUploadProgressBar';
 import { FilesContext } from './FilesContext';
 
@@ -36,7 +37,7 @@ const EditProjectFilesModal = ( {
     updateFileField,
     addFiles,
     removeFile
-  } = useFileUploadActions();
+  } = useFileUploadActions( normalize );
 
   const allowedExtensions = extensions.join( ',' );
 
