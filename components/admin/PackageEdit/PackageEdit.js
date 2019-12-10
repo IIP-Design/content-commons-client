@@ -232,6 +232,7 @@ const PackageEdit = props => {
       <PackageDetailsFormContainer
         id={ packageId }
         updateNotification={ updateNotification }
+        hasUploadCompleted={ hasUploadCompleted }
       >
         { hasUploadCompleted && <PackageFiles id={ packageId } /> }
       </PackageDetailsFormContainer>

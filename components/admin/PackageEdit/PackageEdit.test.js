@@ -231,6 +231,8 @@ describe( '<PackageEdit />', () => {
     expect( pkgFormContainer.prop( 'id' ) ).toEqual( props.router.query.id );
     expect( pkgFormContainer.prop( 'updateNotification' ).name )
       .toEqual( 'updateNotification' );
+    expect( pkgFormContainer.prop( 'hasUploadCompleted' ) )
+      .toEqual( !!mocks[0].result.data.pkg.documents.length );
   } );
 
   it( 'renders the PackageActions', async () => {
@@ -382,6 +384,8 @@ describe( '<PackageEdit />, if there are no documents,', () => {
     expect( pkgFormContainer.prop( 'id' ) ).toEqual( props.router.query.id );
     expect( pkgFormContainer.prop( 'updateNotification' ).name )
       .toEqual( 'updateNotification' );
+    expect( pkgFormContainer.prop( 'hasUploadCompleted' ) )
+      .toEqual( !!noDocumentsMocks[0].result.data.pkg.documents.length );
   } );
 
   it( 'renders ApolloError with an empty error prop', async () => {
