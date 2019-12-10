@@ -83,21 +83,21 @@ describe( '<PackageDetailsForm />', () => {
 
   it( 'renders the title label and input', () => {
     const wrapper = mount( Component );
-    const form = wrapper.find( 'PackageDetailsForm' );
-    const titleLabel = form.find( 'FormField[label="Title"] label' );
-    const titleInput = form.find( 'FormField[label="Title"] input' );
+    const titleField = wrapper.find( 'FormField[label="Title"]' );
+    const titleLabel = wrapper.find( 'FormField[label="Title"] label' );
+    const titleInput = wrapper.find( 'FormField[label="Title"] input' );
 
     expect( titleLabel.prop( 'htmlFor' ) ).toEqual( titleInput.prop( 'id' ) );
     expect( titleInput.prop( 'required' ) ).toEqual( true );
     expect( titleInput.prop( 'value' ) ).toEqual( props.values.title );
     expect( titleInput.prop( 'name' ) ).toEqual( 'title' );
+    expect( titleField.prop( 'onChange' ).name ).toEqual( 'handleOnChange' );
   } );
 
   it( 'renders the package type label and input', () => {
     const wrapper = mount( Component );
-    const form = wrapper.find( 'PackageDetailsForm' );
-    const typeLabel = form.find( 'FormField[label="Package Type"] label' );
-    const typeInput = form.find( 'FormField[label="Package Type"] input' );
+    const typeLabel = wrapper.find( 'FormField[label="Package Type"] label' );
+    const typeInput = wrapper.find( 'FormField[label="Package Type"] input' );
 
     expect( typeLabel.prop( 'htmlFor' ) ).toEqual( typeInput.prop( 'id' ) );
     expect( typeInput.prop( 'value' ) ).toEqual( props.values.type );
@@ -135,6 +135,30 @@ describe( '<PackageDetailsForm />', () => {
     const form = wrapper.find( 'PackageDetailsForm' );
 
     expect( form.contains( props.children ) ).toEqual( true );
+  } );
+} );
+
+describe( '<PackageDetailsForm />, if title field error', () => {
+  const errorsProps = {
+    ...props,
+    values: {
+      ...props.values,
+      title: ''
+    },
+    errors: { title: 'A package title is required.' },
+    touched: { title: true }
+  };
+  const Component = <PackageDetailsForm { ...errorsProps } />;
+
+  it( 'renders error state and message', () => {
+    const wrapper = mount( Component );
+    const titleField = wrapper.find( 'FormField[name="title"]' );
+    const errorMsg = wrapper.find( '.error-message' );
+    const msg = 'A package title is required.';
+
+    expect( titleField.prop( 'title' ) ).toEqual( undefined );
+    expect( titleField.prop( 'error' ) ).toEqual( true );
+    expect( errorMsg.text() ).toEqual( msg );
   } );
 } );
 
