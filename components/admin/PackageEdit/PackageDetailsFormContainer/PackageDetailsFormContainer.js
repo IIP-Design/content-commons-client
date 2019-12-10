@@ -5,8 +5,7 @@
  */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
-import compose from 'lodash.flowright';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Formik } from 'formik';
 import { Loader } from 'semantic-ui-react';
 import useTimeout from 'lib/hooks/useTimeout';
@@ -18,16 +17,15 @@ import PackageDetailsForm from './PackageDetailsForm/PackageDetailsForm';
 import { initialSchema, baseSchema } from './validationSchema';
 
 const PackageDetailsFormContainer = props => {
+  const { loading, error, data } = useQuery( PACKAGE_FILES_QUERY, {
+    partialRefetch: true,
+    variables: { id: props.id },
+    skip: !props.id
+  } );
+  const [updatePackage] = useMutation( UPDATE_PACKAGE_MUTATION );
   const [showNotification, setShowNotification] = useState( false );
-
-  const hideNotification = () => {
-    setShowNotification( false );
-  };
+  const hideNotification = () => setShowNotification( false );
   const { startTimeout } = useTimeout( hideNotification, 2000 );
-
-  const { children } = props;
-  if ( !props.data ) return null;
-  const { error, loading } = props.data;
 
   if ( loading ) {
     return (
@@ -50,9 +48,10 @@ const PackageDetailsFormContainer = props => {
   }
 
   if ( error ) return <ApolloError error={ error } />;
+  if ( !data ) return null;
 
   const update = async ( values, prevValues ) => {
-    const { id, updatePackage } = props;
+    const { id } = props;
     if ( id ) { // ensure we have a package
       await updatePackage( {
         variables: {
@@ -73,10 +72,9 @@ const PackageDetailsFormContainer = props => {
     property.map( p => p.id )
   );
 
-  const getPackage = () => {
-    const { data } = props;
-    return ( data && data.pkg ) ? data.pkg : {};
-  };
+  const getPackage = () => (
+    ( data && data.pkg ) ? data.pkg : {}
+  );
 
   const getFiles = pkg => {
     if ( pkg ) {
@@ -139,7 +137,7 @@ const PackageDetailsFormContainer = props => {
         { ...props }
         save={ save }
       >
-        { children }
+        { props.children }
       </PackageDetailsForm>
     </div>
   );
@@ -157,19 +155,7 @@ const PackageDetailsFormContainer = props => {
 
 PackageDetailsFormContainer.propTypes = {
   id: PropTypes.string,
-  data: PropTypes.object,
-  children: PropTypes.node,
-  // updateNotification: PropTypes.func,
-  updatePackage: PropTypes.func
+  children: PropTypes.node // eslint-disable-line
 };
 
-export default compose(
-  graphql( UPDATE_PACKAGE_MUTATION, { name: 'updatePackage' } ),
-  graphql( PACKAGE_FILES_QUERY, {
-    partialRefetch: true,
-    options: props => ( {
-      variables: { id: props.id }
-    } ),
-    skip: props => !props.id
-  } )
-)( PackageDetailsFormContainer );
+export default PackageDetailsFormContainer;
