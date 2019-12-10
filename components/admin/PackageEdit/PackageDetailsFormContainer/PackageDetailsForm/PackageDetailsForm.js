@@ -104,7 +104,6 @@ const PackageDetailsForm = props => {
                 value={ getFormattedTypeName( values.type ) }
                 onChange={ handleChange }
                 readOnly
-                tabIndex={ -1 }
               />
             </Grid.Column>
           </Grid.Row>
