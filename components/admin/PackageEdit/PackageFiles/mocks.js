@@ -1,4 +1,4 @@
-import { PACKAGE_FILES_QUERY } from 'lib/graphql/queries/package';
+import { PACKAGE_FILES_QUERY, UPDATE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 
 export const AWS_URL = 'https://s3-bucket-url.s3.amazonaws.com';
 export const AWS_SIGNED_URL_QUERY_STRING = '?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE';
@@ -251,7 +251,10 @@ const getDocumentUseObj = ( val, property = 'name' ) => (
   documentUses.find( u => u[property] === val )
 );
 
-export const props = { id: 'test-123' };
+export const props = {
+  id: 'test-123',
+  children: <div>just another child node</div>
+};
 
 export const mocks = [
   {
@@ -373,6 +376,23 @@ export const mocks = [
               tags: [tag2]
             }
           ]
+        }
+      }
+    }
+  },
+  {
+    request: {
+      query: UPDATE_PACKAGE_MUTATION,
+      variables: {
+        data: {},
+        where: { id: props.id }
+      }
+    },
+    result: {
+      data: {
+        updatePackage: {
+          __typename: 'Package',
+          id: props.id
         }
       }
     }
