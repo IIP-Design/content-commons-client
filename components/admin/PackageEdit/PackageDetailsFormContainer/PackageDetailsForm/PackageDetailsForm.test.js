@@ -94,6 +94,40 @@ describe( '<PackageDetailsForm />', () => {
     expect( titleField.prop( 'onChange' ).name ).toEqual( 'handleOnChange' );
   } );
 
+  it( 'changing the title calls setFieldTouched and setFieldValue', () => {
+    const wrapper = mount( Component );
+    const titleField = wrapper.find( 'FormField[label="Title"]' );
+    const e = {};
+    const data = {
+      name: 'title',
+      value: 'a new title',
+      type: 'text'
+    };
+
+    titleField.prop( 'onChange' )( e, data );
+    expect( props.setFieldTouched )
+      .toHaveBeenCalledWith( data.name, true, false );
+    expect( props.setFieldValue )
+      .toHaveBeenCalledWith( data.name, data.value );
+  } );
+
+  it( 'checking TermsConditions calls setFieldTouched and setFieldValue', () => {
+    const wrapper = mount( Component );
+    const termsConditions = wrapper.find( 'TermsConditions' );
+    const e = {};
+    const data = {
+      name: 'termsConditions',
+      type: 'checkbox',
+      checked: true
+    };
+
+    termsConditions.prop( 'handleOnChange' )( e, data );
+    expect( props.setFieldTouched )
+      .toHaveBeenCalledWith( data.name, true, false );
+    expect( props.setFieldValue )
+      .toHaveBeenCalledWith( data.name, data.checked );
+  } );
+
   it( 'renders the package type label and input', () => {
     const wrapper = mount( Component );
     const typeLabel = wrapper.find( 'FormField[label="Package Type"] label' );
