@@ -6,6 +6,7 @@ const props = {
   children: <div>just another child component</div>,
   handleSubmit: jest.fn(),
   handleChange: jest.fn(),
+  hasUploadCompleted: false,
   values: {
     title: 'xyz.docx',
     type: 'Guidance',
@@ -21,19 +22,6 @@ const props = {
       id: 'test-123',
       action: 'create'
     }
-  }
-};
-
-const noActionProps = {
-  ...props,
-  router: { query: { id: 'test-123' } }
-};
-
-const acceptedTermsProps = {
-  ...props,
-  values: {
-    ...props.values,
-    termsConditions: true
   }
 };
 
@@ -65,17 +53,23 @@ jest.mock(
   } )
 );
 
-const Component = <PackageDetailsForm { ...props } />;
-const NoActionComponent = <PackageDetailsForm { ...noActionProps } />;
-const AcceptedTermsComponent = <PackageDetailsForm { ...acceptedTermsProps } />;
-
 describe( '<PackageDetailsForm />', () => {
+  const Component = <PackageDetailsForm { ...props } />;
+
   it( 'renders without crashing', () => {
     const wrapper = mount( Component );
     // unwrapped form
     const form = wrapper.find( 'PackageDetailsForm' );
 
     expect( form.exists() ).toEqual( true );
+  } );
+
+  it( 'renders FormikAutoSave', () => {
+    const wrapper = mount( Component );
+    const autoSave = wrapper.find( 'FormikAutoSave' );
+
+    expect( autoSave.exists() ).toEqual( true );
+    expect( autoSave.prop( 'save' ) ).toEqual( props.save );
   } );
 
   it( 'renders the headline and required text', () => {
@@ -122,13 +116,6 @@ describe( '<PackageDetailsForm />', () => {
       .toEqual( 'handleOnChange' );
   } );
 
-  it( 'does not render TermsConditions if !props.router.query.action', () => {
-    const wrapper = mount( NoActionComponent );
-    const termsConditions = wrapper.find( 'TermsConditions' );
-
-    expect( termsConditions.exists() ).toEqual( false );
-  } );
-
   it( 'renders disabled ButtonAddFiles if termsConditions === false', () => {
     const wrapper = mount( Component );
     const buttonAddFiles = wrapper.find( 'ButtonAddFiles' );
@@ -143,8 +130,41 @@ describe( '<PackageDetailsForm />', () => {
       .toEqual( !props.values.termsConditions );
   } );
 
-  it( 'renders enabled ButtonAddFiles if termsConditions === true', () => {
-    const wrapper = mount( AcceptedTermsComponent );
+  it( 'renders the child nodes', () => {
+    const wrapper = mount( Component );
+    const form = wrapper.find( 'PackageDetailsForm' );
+
+    expect( form.contains( props.children ) ).toEqual( true );
+  } );
+} );
+
+describe( '<PackageDetailsForm />, if !props.router.query.action', () => {
+  const noActionProps = {
+    ...props,
+    router: { query: { id: 'test-123' } }
+  };
+  const Component = <PackageDetailsForm { ...noActionProps } />;
+
+  it( 'does not render TermsConditions', () => {
+    const wrapper = mount( Component );
+    const termsConditions = wrapper.find( 'TermsConditions' );
+
+    expect( termsConditions.exists() ).toEqual( false );
+  } );
+} );
+
+describe( '<PackageDetailsForm />, if termsConditions === true', () => {
+  const acceptedTermsProps = {
+    ...props,
+    values: {
+      ...props.values,
+      termsConditions: true
+    }
+  };
+  const Component = <PackageDetailsForm { ...acceptedTermsProps } />;
+
+  it( 'renders enabled ButtonAddFiles', () => {
+    const wrapper = mount( Component );
     const buttonAddFiles = wrapper.find( 'ButtonAddFiles' );
     const msg = 'Save draft & upload files';
 
@@ -156,11 +176,25 @@ describe( '<PackageDetailsForm />', () => {
     expect( buttonAddFiles.prop( 'disabled' ) )
       .toEqual( !acceptedTermsProps.values.termsConditions );
   } );
+} );
 
-  it( 'renders the child nodes', () => {
+describe( '<PackageDetailsForm />, if uploads have been completed', () => {
+  const completedUploadsProps = {
+    ...props,
+    values: {
+      ...props.values,
+      termsConditions: true
+    },
+    hasUploadCompleted: true
+  };
+  const Component = <PackageDetailsForm { ...completedUploadsProps } />;
+
+  it( 'does not render TermsConditions & ButtonAddFiles if hasUploadCompleted', () => {
     const wrapper = mount( Component );
-    const form = wrapper.find( 'PackageDetailsForm' );
+    const termsConditions = wrapper.find( 'TermsConditions' );
+    const buttonAddFiles = wrapper.find( 'ButtonAddFiles' );
 
-    expect( form.contains( props.children ) ).toEqual( true );
+    expect( termsConditions.exists() ).toEqual( false );
+    expect( buttonAddFiles.exists() ).toEqual( false );
   } );
 } );
