@@ -172,19 +172,25 @@ describe( '<PackageDetailsForm />', () => {
   } );
 } );
 
-describe( '<PackageDetailsForm />, if title field error', () => {
+describe( '<PackageDetailsForm />, if form field errors', () => {
   const errorsProps = {
     ...props,
     values: {
       ...props.values,
       title: ''
     },
-    errors: { title: 'A package title is required.' },
-    touched: { title: true }
+    errors: {
+      title: 'A package title is required.',
+      termsConditions: 'You have to agree with our Terms of Use!'
+    },
+    touched: {
+      title: true,
+      termsConditions: true
+    }
   };
   const Component = <PackageDetailsForm { ...errorsProps } />;
 
-  it( 'renders error state and message', () => {
+  it( 'renders title field error and message', () => {
     const wrapper = mount( Component );
     const titleField = wrapper.find( 'FormField[name="title"]' );
     const errorMsg = wrapper.find( '.error-message' );
@@ -193,6 +199,13 @@ describe( '<PackageDetailsForm />, if title field error', () => {
     expect( titleField.prop( 'title' ) ).toEqual( undefined );
     expect( titleField.prop( 'error' ) ).toEqual( true );
     expect( errorMsg.text() ).toEqual( msg );
+  } );
+
+  it( 'renders TermsConditions error', () => {
+    const wrapper = mount( Component );
+    const termsConditions = wrapper.find( 'TermsConditions' );
+
+    expect( termsConditions.prop( 'error' ) ).toEqual( true );
   } );
 } );
 
