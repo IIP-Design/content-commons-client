@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
-import { graphql } from 'react-apollo';
-import compose from 'lodash.flowright';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { getCount } from 'lib/utils';
 import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
@@ -10,12 +9,20 @@ import ApolloError from 'components/errors/ApolloError';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import { PACKAGE_QUERY, DELETE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
-import PackageDetailsFormContainer from './PackageDetailsFormContainer/PackageDetailsFormContainer';
-import PackageActions from './PackageActions/PackageActions';
-import PackageFiles from './PackageFiles/PackageFiles';
+import PackageDetailsFormContainer from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsFormContainer';
+import PackageActions from 'components/admin/PackageEdit/PackageActions/PackageActions';
+import PackageFiles from 'components/admin/PackageEdit/PackageFiles/PackageFiles';
 import './PackageEdit.scss';
 
 const PackageEdit = props => {
+  const { loading, error: queryError, data } = useQuery( PACKAGE_QUERY, {
+    partialRefetch: true,
+    variables: { id: props.router.query.id },
+    displayName: 'PackageQuery',
+    skip: !props.router.query.id
+  } );
+  const [deletePackage] = useMutation( DELETE_PACKAGE_MUTATION );
+
   // const SAVE_MSG_DELAY = 2000;
   let saveMsgTimer = null;
 
@@ -49,9 +56,8 @@ const PackageEdit = props => {
   }, [] );
 
   useEffect( () => {
-    const { pkgQuery } = props;
-    if ( pkgQuery && pkgQuery.pkg && pkgQuery.pkg.documents ) {
-      const { documents } = pkgQuery.pkg;
+    if ( data && data.pkg && data.pkg.documents ) {
+      const { documents } = data.pkg;
       /**
        * Display files after upload finishes and upload modal
        * closes. For now, use documents count for UI dev. Perhaps,
@@ -62,7 +68,7 @@ const PackageEdit = props => {
         setHasUploadCompleted( Boolean( getCount( documents ) ) );
       }
     }
-  }, [props.pkgQuery] );
+  }, [data] );
 
   const updateNotification = msg => {
     setNotification( {
@@ -77,16 +83,13 @@ const PackageEdit = props => {
     timer = setTimeout( fn, delay );
   };
 
-  const deletePackageEnabled = () => {
-    const { pkgQuery } = props;
+  const deletePackageEnabled = () => (
     /**
      * disable delete package button if either there
      * is no package id OR package has been published
      */
-    return (
-      !packageId || ( pkgQuery && pkgQuery.pkg && !!pkgQuery.pkg.publishedAt )
-    );
-  };
+    !packageId || ( data && data.pkg && !!data.pkg.publishedAt )
+  );
 
   const handleDisplaySaveMsg = () => {
     if ( mounted ) {
@@ -100,8 +103,6 @@ const PackageEdit = props => {
   };
 
   const handleDeleteConfirm = async () => {
-    const { deletePackage } = props;
-
     const deletedPackageId = await deletePackage( {
       variables: { id: packageId }
     } ).catch( err => { setError( err ); } );
@@ -159,9 +160,6 @@ const PackageEdit = props => {
 
   const { showNotification, notificationMessage } = notification;
 
-  if ( !props.pkgQuery ) return null;
-  const { error: queryError, loading } = props.pkgQuery;
-
   if ( loading ) {
     return (
       <div style={ {
@@ -189,6 +187,8 @@ const PackageEdit = props => {
       </div>
     );
   }
+
+  if ( !data ) return null;
 
   return (
     <div className="edit-package">
@@ -247,31 +247,7 @@ const PackageEdit = props => {
 };
 
 PackageEdit.propTypes = {
-  deletePackage: PropTypes.func,
-  pkgQuery: PropTypes.object,
-  // updatePackage: PropTypes.func,
-  // updateFile: PropTypes.func,
   router: PropTypes.object,
 };
 
-export default compose(
-  withRouter,
-  graphql( PACKAGE_QUERY, {
-    name: 'pkgQuery',
-    options: props => ( {
-      variables: { id: props.router.query.id }
-    } ),
-    skip: props => !props.router.query.id
-  } ),
-  graphql( DELETE_PACKAGE_MUTATION, { name: 'deletePackage' } ),
-  // graphql( UPDATE_PACKAGE_MUTATION, {
-  //   name: 'updatePackage',
-  //   options: props => ( {
-  //     refetchQueries: [{
-  //       query: PACKAGE_PUBLISHED_QUERY,
-  //       variables: { id: props.id }
-  //     }],
-  //     onCompleted: () => {}
-  //   } )
-  // } )
-)( PackageEdit );
+export default withRouter( PackageEdit );
