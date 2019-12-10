@@ -27,6 +27,7 @@ const PackageDetailsForm = props => {
     touched,
     handleSubmit,
     handleChange,
+    hasUploadCompleted,
     setFieldValue,
     // isSubmitting,
     // isValid,
@@ -108,28 +109,31 @@ const PackageDetailsForm = props => {
             </Grid.Column>
           </Grid.Row>
 
-          <Grid.Row reversed="computer">
-            <Grid.Column mobile={ 11 }>
-              { router.query.action === 'create'
-                && (
-                  <TermsConditions
-                    handleOnChange={ handleOnChange }
-                    error={ touched.termsConditions && !!errors.termsConditions }
-                  />
-                ) }
-            </Grid.Column>
-            <Grid.Column mobile={ 16 } computer={ 5 }>
-              <ButtonAddFiles
-                accept=".doc, .docx"
-                onChange={ () => {} }
-                disabled={ !values.termsConditions }
-                fluid
-                multiple
-              >
-                Save draft & upload files
-              </ButtonAddFiles>
-            </Grid.Column>
-          </Grid.Row>
+          { !hasUploadCompleted
+            && (
+              <Grid.Row reversed="computer">
+                <Grid.Column mobile={ 11 }>
+                  { router.query.action === 'create'
+                    && (
+                      <TermsConditions
+                        handleOnChange={ handleOnChange }
+                        error={ touched.termsConditions && !!errors.termsConditions }
+                      />
+                    ) }
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } computer={ 5 }>
+                  <ButtonAddFiles
+                    accept=".doc, .docx"
+                    onChange={ () => {} }
+                    disabled={ !values.termsConditions }
+                    fluid
+                    multiple
+                  >
+                    Save draft & upload files
+                  </ButtonAddFiles>
+                </Grid.Column>
+              </Grid.Row>
+            ) }
 
           <Grid.Row>
             <Grid.Column width="16">
@@ -150,6 +154,7 @@ PackageDetailsForm.propTypes = {
   // status: PropTypes.string,
   handleSubmit: PropTypes.func,
   handleChange: PropTypes.func,
+  hasUploadCompleted: PropTypes.bool,
   values: PropTypes.object,
   errors: PropTypes.object,
   touched: PropTypes.object,
