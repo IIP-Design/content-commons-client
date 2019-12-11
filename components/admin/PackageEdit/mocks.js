@@ -145,6 +145,16 @@ export const errorMocks = [
   { ...mocks[1] }
 ];
 
+export const undefinedDataMocks = [
+  {
+    ...mocks[0],
+    result: {
+      data: undefined
+    }
+  },
+  { ...mocks[1] }
+];
+
 export const publishedMocks = [
   {
     ...mocks[0],

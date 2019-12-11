@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import { MockedProvider, wait } from '@apollo/react-testing';
 import PackageEdit from './PackageEdit';
 import {
-  errorMocks, mocks, noDocumentsMocks, props
+  errorMocks, mocks, noDocumentsMocks, props, undefinedDataMocks
 } from './mocks';
 
 jest.mock( 'next/dynamic', () => () => 'Press-Package-File' );
@@ -62,7 +62,7 @@ describe( '<PackageEdit />', () => {
     expect( loader.contains( msg ) ).toEqual( true );
   } );
 
-  it( 'renders error message if a pkgQuery error is returned', async () => {
+  it( 'renders error message if a queryError is returned', async () => {
     const wrapper = mount( ErrorComponent );
     await wait( 0 );
     wrapper.update();
@@ -289,11 +289,6 @@ describe( '<PackageEdit />, if there are no documents,', () => {
     </MockedProvider>
   );
 
-  /**
-   * @todo Suppress React 16.8 `act()` warnings globally.
-   * The React team's fix won't be out of alpha until 16.9.0.
-   * @see https://github.com/facebook/react/issues/14769
-   */
   const consoleError = console.error;
   beforeAll( () => suppressActWarning( consoleError ) );
 
@@ -312,7 +307,7 @@ describe( '<PackageEdit />, if there are no documents,', () => {
     expect( loader.contains( msg ) ).toEqual( true );
   } );
 
-  it( 'renders error message if a pkgQuery error is returned', async () => {
+  it( 'renders error message if a queryError is returned', async () => {
     const wrapper = mount( ErrorComponent );
     await wait( 0 );
     wrapper.update();
@@ -411,5 +406,29 @@ describe( '<PackageEdit />, if there are no documents,', () => {
       show: false,
       msg: ''
     } );
+  } );
+} );
+
+describe( '<PackageEdit />, if data === undefined is returned', () => {
+  const Component = (
+    <MockedProvider mocks={ undefinedDataMocks }>
+      <PackageEdit { ...props } />
+    </MockedProvider>
+  );
+
+  const consoleError = console.error;
+  beforeAll( () => suppressActWarning( consoleError ) );
+
+  afterAll( () => {
+    console.error = consoleError;
+  } );
+
+  it( 'renders ApolloError', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+    const apolloError = wrapper.find( 'ApolloError' );
+
+    expect( apolloError.exists() ).toEqual( true );
   } );
 } );
