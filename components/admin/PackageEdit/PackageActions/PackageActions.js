@@ -31,7 +31,7 @@ const PackageActions = props => {
           Publish{ publishedAndUpdated && ' Changes' }
         </Button>
       ) }
-      { status !== 'DRAFT' && <Button className="action-btn btn--publish" onClick={ handleUnPublish }>Unpublish</Button> }
+      { status === 'PUBLISHED' && <Button className="action-btn btn--publish" onClick={ handleUnPublish }>Unpublish</Button> }
     </section>
   );
 };
