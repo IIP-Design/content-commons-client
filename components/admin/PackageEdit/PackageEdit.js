@@ -189,6 +189,7 @@ const PackageEdit = props => {
   }
 
   if ( !data ) return null;
+  const { pkg } = data;
 
   return (
     <div className="edit-package">
@@ -241,7 +242,22 @@ const PackageEdit = props => {
          * can possibly be shared with VideoReview
          * with a little modification
          */ }
-      { hasUploadCompleted && <PackageActions handlePublish={ handlePublish } handleUnPublish={ handleUnPublish } /> }
+      { hasUploadCompleted
+        && (
+          <PackageActions
+            handlePublish={ handlePublish }
+            handleUnPublish={ handleUnPublish }
+            notPublished={ pkg && pkg.status !== 'PUBLISHED' }
+            status={ ( pkg && pkg.status ) || 'DRAFT' }
+            /**
+             * Last 2 props may need condition for projectUpdated.
+             * Other components use redux for this but will look
+             * into another approach.
+             */
+            publishedAndUpdated={ pkg && pkg.status === 'PUBLISHED' }
+            publishedAndNotUpdated={ pkg && pkg.status === 'PUBLISHED' }
+          />
+        ) }
     </div>
   );
 };

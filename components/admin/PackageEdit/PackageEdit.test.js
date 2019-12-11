@@ -243,11 +243,35 @@ describe( '<PackageEdit />', () => {
     wrapper.update();
 
     const pkgActions = wrapper.find( 'PackageActions' );
-    const fnNames = ['handlePublish', 'handleUnPublish'];
+    const { pkg } = mocks[0].result.data;
+    const propNames = [
+      'handlePublish',
+      'handleUnPublish',
+      'notPublished',
+      'publishedAndUpdated',
+      'publishedAndNotUpdated',
+      'status'
+    ];
 
     expect( pkgActions.exists() ).toEqual( true );
-    fnNames.forEach( ( fn, i ) => {
-      expect( pkgActions.prop( fn ).name ).toEqual( fnNames[i] );
+    propNames.forEach( ( pn, i ) => {
+      switch ( i ) {
+        case 0:
+        case 1:
+          expect( typeof pkgActions.prop( pn ) ).toEqual( 'function' );
+          expect( pkgActions.prop( pn ).name ).toEqual( propNames[i] );
+          break;
+        case 2:
+          expect( pkgActions.prop( pn ) ).toEqual( pkg.status !== 'PUBLISHED' );
+          break;
+        case 3:
+        case 4:
+          expect( pkgActions.prop( pn ) ).toEqual( pkg.status === 'PUBLISHED' );
+          break;
+        default:
+          expect( pkgActions.prop( pn ) ).toEqual( pkg.status );
+          break;
+      }
     } );
   } );
 
