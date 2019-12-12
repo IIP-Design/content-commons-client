@@ -5,12 +5,14 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import { getCount } from 'lib/utils';
 import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
+import ActionHeadline from 'components/admin/ActionHeadline/ActionHeadline';
 import ApolloError from 'components/errors/ApolloError';
+import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
+import ButtonPublish from 'components/admin/ButtonPublish/ButtonPublish';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import { PACKAGE_QUERY, DELETE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 import PackageDetailsFormContainer from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsFormContainer';
-import PackageActions from 'components/admin/PackageEdit/PackageActions/PackageActions';
 import PackageFiles from 'components/admin/PackageEdit/PackageFiles/PackageFiles';
 import './PackageEdit.scss';
 
@@ -193,7 +195,7 @@ const PackageEdit = props => {
 
   return (
     <div className="edit-package">
-      <div className="edit-package__header">
+      <div className="header">
         <ProjectHeader icon="file" text="Package Details">
           <ActionButtons
             type="package"
@@ -244,19 +246,29 @@ const PackageEdit = props => {
          */ }
       { hasUploadCompleted
         && (
-          <PackageActions
-            handlePublish={ handlePublish }
-            handleUnPublish={ handleUnPublish }
-            notPublished={ pkg && pkg.status !== 'PUBLISHED' }
-            status={ ( pkg && pkg.status ) || 'DRAFT' }
-            /**
-             * Last 2 props may need condition for projectUpdated.
-             * Other components use redux for this but will look
-             * into another approach.
-             */
-            publishedAndUpdated={ pkg && pkg.status === 'PUBLISHED' }
-            publishedAndNotUpdated={ pkg && pkg.status === 'PUBLISHED' }
-          />
+          <section className="actions">
+            <ActionHeadline
+              className="headline"
+              type="package"
+              notPublished={ pkg && pkg.status !== 'PUBLISHED' }
+              /**
+               * Last 2 props may need condition for projectUpdated.
+               * Other components use redux for this but will look
+               * into another approach.
+               */
+              publishedAndUpdated={ pkg && pkg.status === 'PUBLISHED' }
+              publishedAndNotUpdated={ pkg && pkg.status === 'PUBLISHED' }
+            />
+
+            <ButtonAddFiles className="basic action-btn btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
+
+            <ButtonPublish
+              handlePublish={ handlePublish }
+              handleUnPublish={ handleUnPublish }
+              publishedAndUpdated={ pkg && pkg.status === 'PUBLISHED' }
+              status={ ( pkg && pkg.status ) || 'DRAFT' }
+            />
+          </section>
         ) }
     </div>
   );

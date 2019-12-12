@@ -12,6 +12,14 @@ jest.mock(
     return 'PackageFiles';
   }
 );
+jest.mock(
+  'components/admin/ActionHeadline/ActionHeadline',
+  () => function ActionHeadline() { return ''; }
+);
+jest.mock(
+  'components/admin/ButtonPublish/ButtonPublish',
+  () => function ButtonPublish() { return ''; }
+);
 
 const ErrorComponent = (
   <MockedProvider mocks={ errorMocks }>
@@ -237,42 +245,41 @@ describe( '<PackageEdit />', () => {
       .toEqual( !!mocks[0].result.data.pkg.documents.length );
   } );
 
-  it( 'renders the PackageActions', async () => {
+  it( 'renders ActionHeadline', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
-    const pkgActions = wrapper.find( 'PackageActions' );
+    const actionHeadline = wrapper.find( 'ActionHeadline' );
     const { pkg } = mocks[0].result.data;
-    const propNames = [
-      'handlePublish',
-      'handleUnPublish',
-      'notPublished',
-      'publishedAndUpdated',
-      'publishedAndNotUpdated',
-      'status'
-    ];
+    const isPublished = pkg.status === 'PUBLISHED';
 
-    expect( pkgActions.exists() ).toEqual( true );
-    propNames.forEach( ( pn, i ) => {
-      switch ( i ) {
-        case 0:
-        case 1:
-          expect( typeof pkgActions.prop( pn ) ).toEqual( 'function' );
-          expect( pkgActions.prop( pn ).name ).toEqual( propNames[i] );
-          break;
-        case 2:
-          expect( pkgActions.prop( pn ) ).toEqual( pkg.status !== 'PUBLISHED' );
-          break;
-        case 3:
-        case 4:
-          expect( pkgActions.prop( pn ) ).toEqual( pkg.status === 'PUBLISHED' );
-          break;
-        default:
-          expect( pkgActions.prop( pn ) ).toEqual( pkg.status );
-          break;
-      }
+    expect( actionHeadline.exists() ).toEqual( true );
+    expect( actionHeadline.props() ).toEqual( {
+      className: 'headline',
+      notPublished: !isPublished,
+      publishedAndUpdated: isPublished,
+      publishedAndNotUpdated: isPublished,
+      type: 'package'
     } );
+  } );
+
+  it( 'renders ButtonPublish', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const buttonPublish = wrapper.find( 'ButtonPublish' );
+    const { pkg } = mocks[0].result.data;
+
+    expect( buttonPublish.exists() ).toEqual( true );
+    expect( buttonPublish.prop( 'status' ) ).toEqual( pkg.status );
+    expect( buttonPublish.prop( 'publishedAndUpdated' ) )
+      .toEqual( pkg.status === 'PUBLISHED' );
+    expect( buttonPublish.prop( 'handlePublish' ).name )
+      .toEqual( 'handlePublish' );
+    expect( buttonPublish.prop( 'handleUnPublish' ).name )
+      .toEqual( 'handleUnPublish' );
   } );
 
   it( 'renders ApolloError with an empty error prop', async () => {

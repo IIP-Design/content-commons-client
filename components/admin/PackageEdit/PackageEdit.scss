@@ -12,5 +12,18 @@
     @include base-button;
   }
 
+  > .actions {
+    padding-top: 2em;
+    text-align: center;
+
+    .action-btn {
+      &.btn--add-more {
+        &.ui.basic.button {
+          @include ghost-button;
+        }
+      }
+    }
+  }
+
   @include kbd-only-focus-ring;
 }
