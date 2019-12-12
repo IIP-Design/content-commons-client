@@ -4,9 +4,9 @@ import ButtonPublish from './ButtonPublish';
 const props = {
   handlePublish: jest.fn(),
   handleUnPublish: jest.fn(),
-  publishedAndUpdated: false,
   publishing: false,
-  status: 'DRAFT'
+  status: 'DRAFT',
+  updated: false
 };
 
 const getBtn = ( str, buttons ) => (
@@ -55,7 +55,7 @@ describe( '<ButtonPublish />, for DRAFT status', () => {
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
 
     expect( publishChangesBtn.exists() )
-      .toEqual( props.publishedAndUpdated );
+      .toEqual( props.status === 'PUBLISHED' && props.updated );
   } );
 
   it( 'does not render the Unpublish button', () => {
@@ -93,7 +93,7 @@ describe( '<ButtonPublish />, for PUBLISHED status', () => {
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
 
     expect( publishChangesBtn.exists() )
-      .toEqual( newProps.publishedAndUpdated );
+      .toEqual( newProps.status === 'PUBLISHED' && newProps.updated );
   } );
 
   it( 'renders the Unpublish button', () => {
@@ -126,7 +126,7 @@ describe( '<ButtonPublish />, for PUBLISHED status', () => {
 describe( '<ButtonPublish />, for PUBLISHED status & updated', () => {
   const newProps = {
     ...props,
-    publishedAndUpdated: true,
+    updated: true,
     status: 'PUBLISHED'
   };
   const Component = <ButtonPublish { ...newProps } />;
@@ -150,7 +150,7 @@ describe( '<ButtonPublish />, for PUBLISHED status & updated', () => {
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
 
     expect( publishChangesBtn.exists() )
-      .toEqual( newProps.publishedAndUpdated );
+      .toEqual( newProps.status === 'PUBLISHED' && newProps.updated );
   } );
 
   it( 'renders the correct className values for the Publish Changes button', () => {
@@ -160,7 +160,7 @@ describe( '<ButtonPublish />, for PUBLISHED status & updated', () => {
     const { className } = publishChangesBtn.props();
 
     expect( className.includes( 'action-btn btn--edit' ) )
-      .toEqual( newProps.publishedAndUpdated );
+      .toEqual( newProps.status === 'PUBLISHED' && newProps.updated );
     expect( className.includes( 'loading' ) ).toEqual( newProps.publishing );
   } );
 
@@ -227,7 +227,7 @@ describe( '<ButtonPublish />, for PUBLISHING status, publishing, and not updated
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
 
     expect( publishChangesBtn.exists() )
-      .toEqual( newProps.publishedAndUpdated );
+      .toEqual( newProps.status === 'PUBLISHED' && newProps.updated );
   } );
 
   it( 'renders the Unpublish button', () => {
@@ -260,9 +260,9 @@ describe( '<ButtonPublish />, for PUBLISHING status, publishing, and not updated
 describe( '<ButtonPublish />, for PUBLISHING status, publishing, and updated', () => {
   const newProps = {
     ...props,
-    publishedAndUpdated: true,
     publishing: true,
-    status: 'PUBLISHING'
+    status: 'PUBLISHING',
+    updated: true,
   };
   const Component = <ButtonPublish { ...newProps } />;
 
@@ -285,7 +285,7 @@ describe( '<ButtonPublish />, for PUBLISHING status, publishing, and updated', (
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
 
     expect( publishChangesBtn.exists() )
-      .toEqual( newProps.publishedAndUpdated );
+      .toEqual( ( newProps.status === 'PUBLISHED' || newProps.status === 'PUBLISHING' ) && newProps.updated );
   } );
 
   it( 'renders the correct className values for the Publish Changes button', () => {
@@ -295,7 +295,7 @@ describe( '<ButtonPublish />, for PUBLISHING status, publishing, and updated', (
     const { className } = publishChangesBtn.props();
 
     expect( className.includes( 'action-btn btn--edit' ) )
-      .toEqual( newProps.publishedAndUpdated );
+      .toEqual( ( newProps.status === 'PUBLISHED' || newProps.status === 'PUBLISHING' ) && newProps.updated );
     expect( className.includes( 'loading' ) ).toEqual( newProps.publishing );
   } );
 

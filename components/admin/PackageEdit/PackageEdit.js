@@ -264,8 +264,9 @@ const PackageEdit = props => {
             <ButtonPublish
               handlePublish={ handlePublish }
               handleUnPublish={ handleUnPublish }
-              publishedAndUpdated={ pkg && pkg.status === 'PUBLISHED' }
               status={ ( pkg && pkg.status ) || 'DRAFT' }
+              // see note above about projectUpdated & redux
+              updated={ pkg && pkg.status === 'PUBLISHED' }
             />
           </section>
         ) }

@@ -273,7 +273,8 @@ describe( '<PackageEdit />', () => {
 
     expect( buttonPublish.exists() ).toEqual( true );
     expect( buttonPublish.prop( 'status' ) ).toEqual( pkg.status );
-    expect( buttonPublish.prop( 'publishedAndUpdated' ) )
+    expect( buttonPublish.prop( 'publishing' ) ).toEqual( undefined );
+    expect( buttonPublish.prop( 'updated' ) )
       .toEqual( pkg.status === 'PUBLISHED' );
     expect( buttonPublish.prop( 'handlePublish' ).name )
       .toEqual( 'handlePublish' );
