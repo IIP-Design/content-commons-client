@@ -5,17 +5,16 @@ const ActionHeadline = props => {
   const {
     className,
     el: Element,
-    notPublished,
-    publishedAndUpdated,
-    publishedAndNotUpdated,
-    type
+    type,
+    published,
+    updated
   } = props;
 
   return (
     <Element className={ className }>
-      { publishedAndUpdated && `It looks like you made changes to your ${type}. Do you want to publish changes?` }
-      { notPublished && `Your ${type} looks great! Are you ready to Publish?` }
-      { publishedAndNotUpdated && 'Not ready to share with the world yet?' }
+      { published && updated && `It looks like you made changes to your ${type}. Do you want to publish changes?` }
+      { !published && `Your ${type} looks great! Are you ready to Publish?` }
+      { published && !updated && 'Not ready to share with the world yet?' }
     </Element>
   );
 };
@@ -28,10 +27,9 @@ ActionHeadline.defaultProps = {
 ActionHeadline.propTypes = {
   className: PropTypes.string,
   el: PropTypes.string,
-  notPublished: PropTypes.bool,
-  publishedAndUpdated: PropTypes.bool,
-  publishedAndNotUpdated: PropTypes.bool,
-  type: PropTypes.string
+  type: PropTypes.string,
+  published: PropTypes.bool,
+  updated: PropTypes.bool
 };
 
 export default ActionHeadline;

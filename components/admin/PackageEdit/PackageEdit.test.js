@@ -257,10 +257,9 @@ describe( '<PackageEdit />', () => {
     expect( actionHeadline.exists() ).toEqual( true );
     expect( actionHeadline.props() ).toEqual( {
       className: 'headline',
-      notPublished: !isPublished,
-      publishedAndUpdated: isPublished,
-      publishedAndNotUpdated: isPublished,
-      type: 'package'
+      type: 'package',
+      published: isPublished,
+      updated: isPublished
     } );
   } );
 

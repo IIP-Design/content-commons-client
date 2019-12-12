@@ -250,14 +250,13 @@ const PackageEdit = props => {
             <ActionHeadline
               className="headline"
               type="package"
-              notPublished={ pkg && pkg.status !== 'PUBLISHED' }
+              published={ pkg && pkg.status === 'PUBLISHED' }
+              updated={ pkg && pkg.status === 'PUBLISHED' }
               /**
-               * Last 2 props may need condition for projectUpdated.
+               * Need different condition for projectUpdated.
                * Other components use redux for this but will look
                * into another approach.
                */
-              publishedAndUpdated={ pkg && pkg.status === 'PUBLISHED' }
-              publishedAndNotUpdated={ pkg && pkg.status === 'PUBLISHED' }
             />
 
             <ButtonAddFiles className="basic action-btn btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>

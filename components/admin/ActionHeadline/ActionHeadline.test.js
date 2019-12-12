@@ -3,10 +3,9 @@ import ActionHeadline from './ActionHeadline';
 
 const props = {
   className: 'headline',
-  notPublished: true,
-  publishedAndUpdated: false,
-  publishedAndNotUpdated: false,
-  type: 'package'
+  type: 'package',
+  published: false,
+  updated: false
 };
 
 describe( '<ActionHeadline />, if not published', () => {
@@ -44,8 +43,8 @@ describe( '<ActionHeadline />, if not published', () => {
 describe( '<ActionHeadline />, if published and updated', () => {
   const newProps = {
     ...props,
-    notPublished: false,
-    publishedAndUpdated: true
+    published: true,
+    updated: true
   };
   const Component = <ActionHeadline { ...newProps } />;
 
@@ -81,8 +80,8 @@ describe( '<ActionHeadline />, if published and updated', () => {
 describe( '<ActionHeadline />, if published and not updated', () => {
   const newProps = {
     ...props,
-    notPublished: false,
-    publishedAndNotUpdated: true
+    published: true,
+    updated: false
   };
   const Component = <ActionHeadline { ...newProps } />;
 
