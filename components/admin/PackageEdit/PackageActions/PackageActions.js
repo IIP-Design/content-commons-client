@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'semantic-ui-react';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
+import ButtonPublish from 'components/admin/ButtonPublish/ButtonPublish';
 import './PackageActions.scss';
 
 const PackageActions = props => {
@@ -23,15 +23,13 @@ const PackageActions = props => {
       </h3>
 
       <ButtonAddFiles className="basic action-btn btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
-      { !publishedAndNotUpdated && (
-        <Button
-          className={ `action-btn btn--${publishedAndUpdated ? 'edit' : 'publish'}` }
-          onClick={ handlePublish }
-        >
-          Publish{ publishedAndUpdated && ' Changes' }
-        </Button>
-      ) }
-      { status === 'PUBLISHED' && <Button className="action-btn btn--publish" onClick={ handleUnPublish }>Unpublish</Button> }
+
+      <ButtonPublish
+        handlePublish={ handlePublish }
+        handleUnPublish={ handleUnPublish }
+        publishedAndUpdated={ publishedAndUpdated }
+        status={ status }
+      />
     </section>
   );
 };
