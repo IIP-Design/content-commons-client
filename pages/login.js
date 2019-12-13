@@ -12,7 +12,7 @@ import { CLOUDFLARE_SIGNIN_MUTATION } from 'components/Login/CloudflareLogin';
 class LoginPage extends Component {
   static async getInitialProps ( ctx ) {
     const cooks = cookies( ctx );
-    const cfAuth = cooks['CF_Authorization'];
+    const cfAuth = cooks.CF_Authorization;
 
     if ( cfAuth ) {
       await ctx.apolloClient
@@ -28,7 +28,7 @@ class LoginPage extends Component {
   }
 
   detectCloudflare = () => {
-    const cfAuth = this.props.cookies['CF_Authorization'];
+    const cfAuth = this.props.cookies.CF_Authorization;
     if ( cfAuth ) return cfAuth;
     return '';
   }
