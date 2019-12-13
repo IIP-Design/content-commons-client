@@ -91,7 +91,7 @@ const PackageDetailsFormContainer = props => {
       return {
         ...acc,
         [id]: {
-          fileTitle: filename,
+          filename,
           bureaus: getDropdownIds( bureaus ),
           tags: getDropdownIds( tags ),
           use: use.id,

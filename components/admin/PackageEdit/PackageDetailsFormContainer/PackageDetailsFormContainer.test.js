@@ -126,7 +126,7 @@ describe( '<PackageDetailsFormContainer />', () => {
         return {
           ...acc,
           [id]: {
-            fileTitle: filename,
+            filename,
             bureaus: bureaus.map( p => p.id ),
             tags: tags.map( p => p.id ),
             use: use.id,

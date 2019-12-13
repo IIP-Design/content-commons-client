@@ -30,7 +30,7 @@ jest.mock(
       values: {
         files: {
           '1asd': {
-            fileTitle: 'Lesotho National Day.docx'
+            filename: 'Lesotho National Day.docx'
           }
         }
       }
@@ -137,7 +137,7 @@ describe( '<PressPackageFile />', () => {
     expect( titleInput.prop( 'required' ) ).toEqual( true );
     expect( titleInput.prop( 'value' ) ).toEqual( documentFile.filename );
     expect( titleInput.prop( 'name' ) )
-      .toEqual( `files.${documentFile.id}.fileTitle` );
+      .toEqual( `files.${documentFile.id}.filename` );
   } );
 
   it( 'renders the Bureaus dropdown', async () => {
