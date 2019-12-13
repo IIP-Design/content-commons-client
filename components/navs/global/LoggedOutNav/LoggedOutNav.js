@@ -28,12 +28,6 @@ const menuItems = [
     name: 'documentation',
     to: '/documentation',
     label: 'Documentation',
-  },
-  {
-    key: 4,
-    name: 'login',
-    to: '/login',
-    label: 'Employee Login',
   }
 ];
 
@@ -48,6 +42,9 @@ const LoggedOutNav = props => {
             <Link href={ item.to }><a>{ item.label }</a></Link>
           </Menu.Item>
         ) ) }
+        <Menu.Item key='4' name='login'>
+          <a href="/login">Employee Login</a>
+        </Menu.Item>
         <a
           href="https://goo.gl/forms/9cJ3IBHH9QTld2Mj2"
           target="_blank"
