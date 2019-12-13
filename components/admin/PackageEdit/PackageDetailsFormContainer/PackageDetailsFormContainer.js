@@ -115,10 +115,6 @@ const PackageDetailsFormContainer = props => {
     return initialValues;
   };
 
-  const onHandleSubmit = ( values, actions ) => {
-    console.log( values, actions );
-  };
-
   const renderContent = formikProps => (
     <div className="edit-package__form">
       <Notification
@@ -146,7 +142,6 @@ const PackageDetailsFormContainer = props => {
     <Formik
       initialValues={ getInitialValues() }
       validationSchema={ props.id ? baseSchema : initialSchema }
-      onSubmit={ onHandleSubmit }
     >
       { renderContent }
     </Formik>

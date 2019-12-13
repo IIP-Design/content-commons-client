@@ -25,7 +25,6 @@ const PackageDetailsForm = props => {
     values,
     errors,
     touched,
-    handleSubmit,
     handleChange,
     hasUploadCompleted,
     setFieldValue,
@@ -66,7 +65,7 @@ const PackageDetailsForm = props => {
     <Fragment>
       { /* Only use autosave with existing project */ }
       { props.id && <FormikAutoSave save={ save } /> }
-      <Form className="package-data" onSubmit={ handleSubmit }>
+      <Form className="package-data">
         <Grid stackable>
           <Grid.Row>
             <Grid.Column width="16">
@@ -152,7 +151,6 @@ PackageDetailsForm.propTypes = {
   id: PropTypes.string,
   children: PropTypes.node,
   // status: PropTypes.string,
-  handleSubmit: PropTypes.func,
   handleChange: PropTypes.func,
   hasUploadCompleted: PropTypes.bool,
   values: PropTypes.object,

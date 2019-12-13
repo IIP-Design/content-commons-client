@@ -99,15 +99,6 @@ describe( '<PackageDetailsFormContainer />', () => {
     expect( formik.exists() ).toEqual( true );
   } );
 
-  it( 'Formik receives onHandleSubmit fn for onSubmit prop', async () => {
-    const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-    const formik = wrapper.find( 'Formik' );
-
-    expect( formik.prop( 'onSubmit' ).name ).toEqual( 'onHandleSubmit' );
-  } );
-
   it( 'Formik receives the correct initialValues', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
