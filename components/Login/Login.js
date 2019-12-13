@@ -3,41 +3,48 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import EmailLogin from './EmailLogin';
 import GoogleLogin from './GoogleLogin';
-import LogoutButton from '../Logout/Logout';
+import CloudflareLogin from './CloudflareLogin';
+
 import './Login.scss';
 
 const Login = props => {
-  // Need to fix this as it flashes when right before the redirect on login
-  if ( props.user ) {
-    return (
-      <div className="login login_wrapper">
-        <LogoutButton />
-      </div>
-    );
-  }
-
+  const { cfToken, email } = props;
   return (
     <div className="login login_wrapper">
       <h1>Log In</h1>
-      <p className="login_subtext">This workspace allows you to log in with your @america.gov Google account.</p>
+      { email
+        && (
+        <p className="login_subtext">
+          Oops! Commons is taking longer than expected to load. Click below to continue or try refreshing the page.
+        </p>
+        ) }
+      { email && <CloudflareLogin token={ cfToken } email={ email } /> }
 
-      { /* Login via google */ }
-      <GoogleLogin />
-      <p className="login_subtext-note">By logging in you agree to our
-        <Link href="/privacy"><a> Terms of Use</a>
-        </Link> and <Link href="/privacy"><a>Privacy Policy</a></Link>.
-      </p>
+      { !email
+        && (
+        <div>
+          <p className="login_subtext">This workspace allows you to log in with your @america.gov Google account.</p>
 
-      <p className="login_optionText">Or</p>
+          { /* Login via google */ }
+          <GoogleLogin />
+          <p className="login_subtext-note">By logging in you agree to our
+            <Link href="/privacy"><a> Terms of Use</a>
+            </Link> and <Link href="/privacy"><a>Privacy Policy</a></Link>.
+          </p>
 
-      { /* Login via email/password */ }
-      <EmailLogin />
+          <p className="login_optionText">Or</p>
+
+          { /* Login via email/password */ }
+          <EmailLogin />
+        </div>
+        ) }
     </div>
   );
 };
 
 Login.propTypes = {
-  user: PropTypes.object
+  cfToken: PropTypes.string,
+  email: PropTypes.string
 };
 
 export default Login;

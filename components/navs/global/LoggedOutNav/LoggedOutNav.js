@@ -28,6 +28,12 @@ const menuItems = [
     name: 'documentation',
     to: '/documentation',
     label: 'Documentation',
+  },
+  {
+    key: 4,
+    name: 'login',
+    to: '/login',
+    label: 'Employee Login',
   }
 ];
 
