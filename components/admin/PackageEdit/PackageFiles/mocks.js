@@ -396,6 +396,28 @@ export const mocks = [
         }
       }
     }
+  },
+  {
+    request: {
+      query: UPDATE_PACKAGE_MUTATION,
+      variables: {
+        data: {
+          title: 'new title',
+          documents: {
+            update: []
+          }
+        },
+        where: { id: props.id }
+      }
+    },
+    result: {
+      data: {
+        updatePackage: {
+          __typename: 'Package',
+          id: props.id
+        }
+      }
+    }
   }
 ];
 

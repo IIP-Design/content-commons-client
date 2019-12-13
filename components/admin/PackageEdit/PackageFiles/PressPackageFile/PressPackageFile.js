@@ -26,7 +26,8 @@ const PressPackageFile = props => {
   const { loading, error, data } = useQuery( DOCUMENT_FILE_QUERY, {
     partialRefetch: true,
     variables: { id: props.id },
-    skip: !props.id
+    skip: !props.id,
+    notifyOnNetworkStatusChange: true
   } );
 
   if ( loading ) {
@@ -106,17 +107,17 @@ const PressPackageFile = props => {
               <Form.Group widths="equal">
                 <div className="field">
                   <Form.Field
-                    id={ `fileTitle-${id}` }
-                    name={ `files.${id}.fileTitle` }
+                    id={ `filename-${id}` }
+                    name={ `files.${id}.filename` }
                     control={ Input }
                     label="Title"
                     required
                     autoFocus
-                    value={ values.files[id].fileTitle }
+                    value={ values.files[id].filename }
                     onChange={ handleOnChange }
-                    error={ isTouched( 'fileTitle' ) && hasError( 'fileTitle' ) }
+                    error={ isTouched( 'filename' ) && hasError( 'filename' ) }
                   />
-                  <p className="error-message">{ showErrorMsg( 'fileTitle' ) }</p>
+                  <p className="error-message">{ showErrorMsg( 'filename' ) }</p>
                 </div>
 
                 <Form.Field>
