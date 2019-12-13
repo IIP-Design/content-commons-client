@@ -10,6 +10,7 @@ import { Formik } from 'formik';
 import { Loader } from 'semantic-ui-react';
 import useTimeout from 'lib/hooks/useTimeout';
 import { getFileNameNoExt } from 'lib/utils';
+import { buildPackageFormTree } from 'lib/graphql/builders/package';
 import { PACKAGE_FILES_QUERY, UPDATE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 import ApolloError from 'components/errors/ApolloError';
 import Notification from 'components/Notification/Notification';
@@ -55,7 +56,7 @@ const PackageDetailsFormContainer = props => {
     if ( id ) { // ensure we have a package
       await updatePackage( {
         variables: {
-          data: {},
+          data: buildPackageFormTree( values, prevValues ),
           where: { id }
         },
       } ).catch( err => console.dir( err ) );
