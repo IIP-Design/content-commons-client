@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import { MockedProvider, wait } from '@apollo/react-testing';
-import { getFileNameNoExt } from 'lib/utils';
 import {
   errorMocks, mocks, props, undefinedDataMocks
 } from 'components/admin/PackageEdit/PackageFiles/mocks';
@@ -127,7 +126,7 @@ describe( '<PackageDetailsFormContainer />', () => {
         return {
           ...acc,
           [id]: {
-            fileTitle: getFileNameNoExt( filename ) || filename,
+            fileTitle: filename,
             bureaus: bureaus.map( p => p.id ),
             tags: tags.map( p => p.id ),
             use: use.id,

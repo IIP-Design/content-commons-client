@@ -384,7 +384,7 @@ export const mocks = [
     request: {
       query: UPDATE_PACKAGE_MUTATION,
       variables: {
-        data: {},
+        data: { title: 'new title' },
         where: { id: props.id }
       }
     },

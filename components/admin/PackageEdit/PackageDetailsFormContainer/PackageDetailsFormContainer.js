@@ -9,7 +9,6 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Formik } from 'formik';
 import { Loader } from 'semantic-ui-react';
 import useTimeout from 'lib/hooks/useTimeout';
-import { getFileNameNoExt } from 'lib/utils';
 import { buildPackageFormTree } from 'lib/graphql/builders/package';
 import { PACKAGE_FILES_QUERY, UPDATE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 import ApolloError from 'components/errors/ApolloError';
@@ -92,7 +91,7 @@ const PackageDetailsFormContainer = props => {
       return {
         ...acc,
         [id]: {
-          fileTitle: getFileNameNoExt( filename ) || filename,
+          fileTitle: filename,
           bureaus: getDropdownIds( bureaus ),
           tags: getDropdownIds( tags ),
           use: use.id,
