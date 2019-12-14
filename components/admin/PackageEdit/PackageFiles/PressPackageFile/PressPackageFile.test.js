@@ -28,10 +28,8 @@ jest.mock(
       errors: {},
       touched: {},
       values: {
-        files: {
-          '1asd': {
-            filename: 'Lesotho National Day.docx'
-          }
+        '1asd': {
+          filename: 'Lesotho National Day.docx'
         }
       }
     } ) )
@@ -137,7 +135,7 @@ describe( '<PressPackageFile />', () => {
     expect( titleInput.prop( 'required' ) ).toEqual( true );
     expect( titleInput.prop( 'value' ) ).toEqual( documentFile.filename );
     expect( titleInput.prop( 'name' ) )
-      .toEqual( `files.${documentFile.id}.filename` );
+      .toEqual( `${documentFile.id}.filename` );
   } );
 
   it( 'renders the Bureaus dropdown', async () => {
@@ -153,7 +151,7 @@ describe( '<PressPackageFile />', () => {
     expect( dropdown.exists() ).toEqual( true );
     expect( dropdown.prop( 'id' ) ).toEqual( `bureaus-${documentFile.id}` );
     expect( dropdown.prop( 'name' ) )
-      .toEqual( `files.${documentFile.id}.bureaus` );
+      .toEqual( `${documentFile.id}.bureaus` );
     expect( dropdown.prop( 'required' ) ).toEqual( true );
     expect( helperTxt.text() ).toEqual( 'Enter keywords separated by commas.' );
   } );
@@ -171,7 +169,7 @@ describe( '<PressPackageFile />', () => {
     expect( dropdown.prop( 'type' ) ).toEqual( 'document' );
     expect( dropdown.prop( 'label' ) ).toEqual( 'Release Type' );
     expect( dropdown.prop( 'name' ) )
-      .toEqual( `files.${documentFile.id}.use` );
+      .toEqual( `${documentFile.id}.use` );
     expect( dropdown.prop( 'required' ) ).toEqual( true );
   } );
 
@@ -187,7 +185,7 @@ describe( '<PressPackageFile />', () => {
     expect( dropdown.prop( 'id' ) ).toEqual( `visibility-${documentFile.id}` );
     expect( dropdown.prop( 'label' ) ).toEqual( 'Visibility Setting' );
     expect( dropdown.prop( 'name' ) )
-      .toEqual( `files.${documentFile.id}.visibility` );
+      .toEqual( `${documentFile.id}.visibility` );
     expect( dropdown.prop( 'required' ) ).toEqual( true );
   } );
 
@@ -204,7 +202,7 @@ describe( '<PressPackageFile />', () => {
     expect( dropdown.prop( 'id' ) ).toEqual( `tags-${documentFile.id}` );
     expect( dropdown.prop( 'label' ) ).toEqual( 'Tags' );
     expect( dropdown.prop( 'name' ) )
-      .toEqual( `files.${documentFile.id}.tags` );
+      .toEqual( `${documentFile.id}.tags` );
     expect( helperTxt.text() ).toEqual( 'Enter keywords separated by commas.' );
   } );
 

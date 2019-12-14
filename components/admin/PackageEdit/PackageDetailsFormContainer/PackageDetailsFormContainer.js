@@ -91,6 +91,7 @@ const PackageDetailsFormContainer = props => {
       return {
         ...acc,
         [id]: {
+          id,
           filename,
           bureaus: getDropdownIds( bureaus ),
           tags: getDropdownIds( tags ),
@@ -109,7 +110,7 @@ const PackageDetailsFormContainer = props => {
       title: pkg.title || '',
       type: pkg.type || '',
       termsConditions: false,
-      files: getFileValues( files )
+      ...getFileValues( files )
     };
 
     return initialValues;

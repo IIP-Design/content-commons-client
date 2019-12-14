@@ -69,15 +69,15 @@ const PressPackageFile = props => {
   ];
 
   const isTouched = field => (
-    touched && touched.files && touched.files[id] && touched.files[id][field]
+    touched && touched[id] && touched[id][field]
   );
 
   const hasError = field => (
-    errors.files && errors.files[id] && !!errors.files[id][field]
+    errors && errors[id] && !!errors[id][field]
   );
 
   const showErrorMsg = field => (
-    isTouched( field ) ? errors.files && errors.files[id] && errors.files[id][field] : ''
+    isTouched( field ) ? errors && errors[id] && errors[id][field] : ''
   );
 
   // for UI dev; remove after GraphQL is implemented
@@ -108,12 +108,12 @@ const PressPackageFile = props => {
                 <div className="field">
                   <Form.Field
                     id={ `filename-${id}` }
-                    name={ `files.${id}.filename` }
+                    name={ `${id}.filename` }
                     control={ Input }
                     label="Title"
                     required
                     autoFocus
-                    value={ values.files[id].filename }
+                    value={ values[id].filename }
                     onChange={ handleOnChange }
                     error={ isTouched( 'filename' ) && hasError( 'filename' ) }
                   />
@@ -128,12 +128,12 @@ const PressPackageFile = props => {
                      */ }
                   <Form.Dropdown
                     id={ `bureaus-${id}` }
-                    name={ `files.${id}.bureaus` }
+                    name={ `${id}.bureaus` }
                     label="Lead Bureau(s)"
                     options={ options }
                     placeholder="–"
                     onChange={ handleOnChange }
-                    value={ values.files[id].bureaus }
+                    value={ values[id].bureaus }
                     error={ isTouched( 'bureaus' ) && hasError( 'bureaus' ) }
                     multiple
                     search
@@ -150,12 +150,12 @@ const PressPackageFile = props => {
                 <Form.Field>
                   <UseDropdown
                     id={ `use-${id}` }
-                    name={ `files.${id}.use` }
+                    name={ `${id}.use` }
                     label="Release Type"
                     onChange={ handleOnChange }
                     type="document"
-                    value={ values.files[id].use }
-                    error={ isTouched( 'use' ) && errors.files && errors.files[id] && !errors.files[id].use }
+                    value={ values[id].use }
+                    error={ isTouched( 'use' ) && errors && errors[id] && !errors[id].use }
                     required
                   />
                   <p className="error-message">{ showErrorMsg( 'use' ) }</p>
@@ -164,9 +164,9 @@ const PressPackageFile = props => {
                 <Form.Field>
                   <VisibilityDropdown
                     id={ `visibility-${id}` }
-                    name={ `files.${id}.visibility` }
+                    name={ `${id}.visibility` }
                     label="Visibility Setting"
-                    value={ values.files[id].visibility }
+                    value={ values[id].visibility }
                     onChange={ handleOnChange }
                     error={ isTouched( 'visibility' ) && hasError( 'visibility' ) }
                     required
@@ -185,9 +185,9 @@ const PressPackageFile = props => {
                 <Form.Field>
                   <TagDropdown
                     id={ `tags-${id}` }
-                    name={ `files.${id}.tags` }
+                    name={ `${id}.tags` }
                     label="Tags"
-                    value={ values.files[id].tags }
+                    value={ values[id].tags }
                     error={ touched.tags && !!errors.tags }
                     onChange={ handleOnChange }
                   />

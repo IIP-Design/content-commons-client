@@ -106,25 +106,28 @@ describe( '<PackageDetailsFormContainer />', () => {
 
     const formik = wrapper.find( 'Formik' );
     const { pkg, pkg: { documents } } = mocks[0].result.data;
+    const fileValues = documents.reduce( ( acc, file ) => {
+      const {
+        id, bureaus, filename, tags, use, visibility
+      } = file;
+      return {
+        ...acc,
+        [id]: {
+          id,
+          filename,
+          bureaus: bureaus.map( p => p.id ),
+          tags: tags.map( p => p.id ),
+          use: use.id,
+          visibility
+        }
+      };
+    }, {} );
+
     const initialValues = {
       title: pkg.title || '',
       type: pkg.type || '',
       termsConditions: false,
-      files: documents.reduce( ( acc, file ) => {
-        const {
-          id, bureaus, filename, tags, use, visibility
-        } = file;
-        return {
-          ...acc,
-          [id]: {
-            filename,
-            bureaus: bureaus.map( p => p.id ),
-            tags: tags.map( p => p.id ),
-            use: use.id,
-            visibility
-          }
-        };
-      }, {} )
+      ...fileValues
     };
 
     expect( formik.prop( 'initialValues' ) ).toEqual( initialValues );
