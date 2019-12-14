@@ -4,7 +4,7 @@ import Login from 'components/Login/Login';
 import LogoutButton from 'components/Logout/Logout';
 import Router from 'next/router';
 import User, { CURRENT_USER_QUERY } from 'components/User/User';
-//import { redirectTo } from 'lib/browser';
+// import { redirectTo } from 'lib/browser';
 import cookies from 'next-cookies';
 import { graphql } from 'react-apollo';
 import compose from 'lodash.flowright';
@@ -38,7 +38,7 @@ class LoginPage extends Component {
     if ( !this.state.attemptedCf ) {
       try {
         await this.props.cloudflareSigninMutation();
-        Router.push('/');
+        Router.push( '/' );
       } catch ( err ) {
         this.setState( { attemptedCf: true } );
       }
@@ -95,4 +95,4 @@ export default compose(
     } )
   } ),
 )( LoginPage );
-//export default LoginPage;
+// export default LoginPage;
