@@ -31,6 +31,7 @@ const PackageEdit = props => {
   const [packageId, setPackageId] = useState( '' );
   const [mounted, setMounted] = useState( false );
   const [error, setError] = useState( {} );
+  const [isDirty, setIsDirty] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [hasUploadCompleted, setHasUploadCompleted] = useState( false );
 
@@ -236,6 +237,7 @@ const PackageEdit = props => {
         id={ packageId }
         updateNotification={ updateNotification }
         hasUploadCompleted={ hasUploadCompleted }
+        setIsDirty={ setIsDirty }
       >
         { hasUploadCompleted && <PackageFiles id={ packageId } /> }
       </PackageDetailsFormContainer>
@@ -251,12 +253,7 @@ const PackageEdit = props => {
               className="headline"
               type="package"
               published={ pkg && pkg.status === 'PUBLISHED' }
-              updated={ pkg && pkg.status === 'PUBLISHED' }
-              /**
-               * Need different condition for projectUpdated.
-               * Other components use redux for this but will look
-               * into another approach.
-               */
+              updated={ isDirty }
             />
 
             <ButtonAddFiles className="basic action-btn btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
@@ -265,8 +262,7 @@ const PackageEdit = props => {
               handlePublish={ handlePublish }
               handleUnPublish={ handleUnPublish }
               status={ ( pkg && pkg.status ) || 'DRAFT' }
-              // see note above about projectUpdated & redux
-              updated={ pkg && pkg.status === 'PUBLISHED' }
+              updated={ isDirty }
             />
           </section>
         ) }

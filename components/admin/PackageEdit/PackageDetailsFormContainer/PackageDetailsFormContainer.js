@@ -65,6 +65,7 @@ const PackageDetailsFormContainer = props => {
   const save = async ( values, prevValues ) => {
     await update( values, prevValues );
     setShowNotification( true );
+    props.setIsDirty( true );
     startTimeout();
   };
 
@@ -151,7 +152,8 @@ const PackageDetailsFormContainer = props => {
 
 PackageDetailsFormContainer.propTypes = {
   id: PropTypes.string,
-  children: PropTypes.node // eslint-disable-line
+  children: PropTypes.node, // eslint-disable-line
+  setIsDirty: PropTypes.func
 };
 
 export default PackageDetailsFormContainer;

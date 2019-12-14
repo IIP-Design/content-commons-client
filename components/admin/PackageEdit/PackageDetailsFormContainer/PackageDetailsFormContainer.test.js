@@ -178,6 +178,7 @@ describe( '<PackageDetailsFormContainer />', () => {
       'validateOnMount',
       'id',
       'children',
+      'setIsDirty',
       'save'
     ];
 

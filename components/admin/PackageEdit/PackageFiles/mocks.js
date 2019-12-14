@@ -253,7 +253,8 @@ const getDocumentUseObj = ( val, property = 'name' ) => (
 
 export const props = {
   id: 'test-123',
-  children: <div>just another child node</div>
+  children: <div>just another child node</div>,
+  setIsDirty: jest.fn()
 };
 
 export const mocks = [
