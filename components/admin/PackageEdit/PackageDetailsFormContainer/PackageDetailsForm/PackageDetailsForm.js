@@ -3,11 +3,16 @@
  * PackageDetailsForm
  *
  */
-import React, { Fragment } from 'react';
+import React, { createContext, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'next/router';
 import { Form, Grid, Input } from 'semantic-ui-react';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
+import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
+import TermsConditions from 'components/admin/TermsConditions/TermsConditions';
 import './PackageDetailsForm.scss';
+
+export const HandleOnChangeContext = createContext();
 
 /**
 * Form component only. Form is wrapped in specific content type HOC to handle
@@ -20,26 +25,47 @@ const PackageDetailsForm = props => {
     values,
     errors,
     touched,
-    handleSubmit,
     handleChange,
+    hasUploadCompleted,
     setFieldValue,
-    isSubmitting,
-    isValid,
+    // isSubmitting,
+    // isValid,
     setFieldTouched,
-    status,
-    save
+    // status,
+    save,
+    router
   } = props;
 
-  const handleOnChange = ( e, { name, value } ) => {
-    setFieldValue( name, value );
+  const handleOnChange = ( e, {
+    name, value, type, checked
+  } ) => {
+    if ( type === 'checkbox' ) {
+      setFieldValue( name, checked );
+    } else {
+      setFieldValue( name, value );
+    }
     setFieldTouched( name, true, false );
+  };
+
+  const getFormattedTypeName = type => {
+    if ( type ) {
+      switch ( type ) {
+        case 'DAILY_GUIDANCE':
+          return 'Guidance';
+        // case 'SOME_FUTURE_TYPE':
+        //   return 'Some Future Type';
+        default:
+          return type;
+      }
+    }
+    return '';
   };
 
   return (
     <Fragment>
-      { /* Only use autosave with exisiting project */ }
+      { /* Only use autosave with existing project */ }
       { props.id && <FormikAutoSave save={ save } /> }
-      <Form className="package-data" onSubmit={ handleSubmit }>
+      <Form className="package-data">
         <Grid stackable>
           <Grid.Row>
             <Grid.Column width="16">
@@ -75,17 +101,44 @@ const PackageDetailsForm = props => {
                 name="type"
                 control={ Input }
                 label="Package Type"
-                value={ values.type }
+                value={ getFormattedTypeName( values.type ) }
                 onChange={ handleChange }
                 readOnly
-                tabIndex={ -1 }
               />
             </Grid.Column>
           </Grid.Row>
 
+          { !hasUploadCompleted
+            && (
+              <Grid.Row reversed="computer">
+                <Grid.Column mobile={ 11 }>
+                  { router.query.action === 'create'
+                    && (
+                      <TermsConditions
+                        handleOnChange={ handleOnChange }
+                        error={ touched.termsConditions && !!errors.termsConditions }
+                      />
+                    ) }
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } computer={ 5 }>
+                  <ButtonAddFiles
+                    accept=".doc, .docx"
+                    onChange={ () => {} }
+                    disabled={ !values.termsConditions }
+                    fluid
+                    multiple
+                  >
+                    Save draft & upload files
+                  </ButtonAddFiles>
+                </Grid.Column>
+              </Grid.Row>
+            ) }
+
           <Grid.Row>
             <Grid.Column width="16">
-              { children }
+              <HandleOnChangeContext.Provider value={ handleOnChange }>
+                { children }
+              </HandleOnChangeContext.Provider>
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -97,17 +150,18 @@ const PackageDetailsForm = props => {
 PackageDetailsForm.propTypes = {
   id: PropTypes.string,
   children: PropTypes.node,
-  status: PropTypes.string,
-  handleSubmit: PropTypes.func,
+  // status: PropTypes.string,
   handleChange: PropTypes.func,
+  hasUploadCompleted: PropTypes.bool,
   values: PropTypes.object,
   errors: PropTypes.object,
   touched: PropTypes.object,
   setFieldValue: PropTypes.func,
-  isSubmitting: PropTypes.bool,
-  isValid: PropTypes.bool,
+  // isSubmitting: PropTypes.bool,
+  // isValid: PropTypes.bool,
   setFieldTouched: PropTypes.func,
   save: PropTypes.func,
+  router: PropTypes.object
 };
 
-export default PackageDetailsForm;
+export default withRouter( PackageDetailsForm );

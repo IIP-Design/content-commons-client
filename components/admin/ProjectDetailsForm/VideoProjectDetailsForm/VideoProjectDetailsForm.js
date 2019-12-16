@@ -30,7 +30,7 @@ import useTimeout from 'lib/hooks/useTimeout';
 import { initialSchema, baseSchema } from './validationSchema';
 
 const VideoProjectDetailsForm = props => {
-  const [showNotication, setShowNotification] = useState( false );
+  const [showNotification, setShowNotification] = useState( false );
 
   const hideNotification = () => {
     setShowNotification( false );
@@ -151,7 +151,7 @@ const VideoProjectDetailsForm = props => {
               left: '50%',
               transform: 'translateX(-50%)'
             } }
-            show={ showNotication }
+            show={ showNotification }
             msg="Changes saved"
           />
           <ProjectDetailsForm { ...formikProps } { ...props } save={ save } />

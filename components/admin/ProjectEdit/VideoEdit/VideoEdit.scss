@@ -31,20 +31,12 @@
     }
   }
 
-  &__btn--delete {
-    &.ui.basic.button {
-      @include transparent-button;
-    }
-  }
-
   @media screen and (min-width: 992px) {
     &__form--save {
       width: 100%;
     }
   }
 
-  &__btn--preview,
-  &__btn--save-draft,
   &__add-more {
     &.ui.basic.button {
       @include ghost-button;
@@ -56,27 +48,6 @@
     padding-left: 1.75em;
     @media screen and (max-width: 767px) {
       padding-left: 1rem;
-    }
-  }
-
-  &__btn--final-review,
-  &__form--save {
-    border: 2px solid $light-blue !important;
-    color: #fff !important;
-    background-color: $light-blue !important;
-
-    &:hover,
-    &:active,
-    &:focus {
-      border-color: $matisse-blue !important;
-      background-color: $matisse-blue !important;
-    }
-
-    &.disabled:hover,
-    &.disabled:active,
-    &.disabled:focus {
-      color: #fff !important;
-      background-color: $light-blue !important;
     }
   }
 

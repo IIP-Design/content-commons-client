@@ -1,0 +1,36 @@
+@import "styles/colors.scss";
+@import "styles/mixins.scss";
+
+.action-btn {
+  .ui.button {
+    @include base-button;
+  }
+
+  &.btn--delete {
+    &.ui.basic.button {
+      @include transparent-button;
+    }
+  }
+
+  &.btn--save-draft {
+    &.ui.basic.button {
+      @include ghost-button;
+    }
+  }
+  
+  &.btn--publish {
+    &.ui.button {
+      @include go-button;
+  
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: $matisse-blue; // only difference with VideoReview
+      }
+    }
+  }
+
+  &.btn--final-review {
+    @include go-button($light-blue, $hover-blue);
+  }
+}

@@ -6,7 +6,6 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { Button, Confirm } from 'semantic-ui-react';
 
 import { graphql } from 'react-apollo';
 import compose from 'lodash.flowright';
@@ -24,9 +23,9 @@ import {
   VIDEO_PROJECT_QUERY
 } from 'lib/graphql/queries/video';
 import { IMAGE_USES_QUERY } from 'lib/graphql/queries/common';
+import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import ApolloError from 'components/errors/ApolloError';
 import Notification from 'components/Notification/Notification';
-import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import ProjectUnits from 'components/admin/ProjectUnits/ProjectUnits';
 import FormInstructions from 'components/admin/FormInstructions/FormInstructions';
@@ -260,47 +259,26 @@ const VideoEdit = props => {
 
   return (
     <div className="edit-project">
-      { /* action buttons at top NEED TO BE MOVED to separate component */ }
       <div className="edit-project__header">
         <ProjectHeader icon="video camera" text="Project Details">
-          <Button
-            className="edit-project__btn--delete"
-            content="Delete Project"
-            basic
-            onClick={ () => setDeleteConfirmOpen( true ) }
-            disabled={ deleteProjectEnabled() }
-          />
-
-          <Confirm
-            className="delete"
-            open={ deleteConfirmOpen }
-            content={ (
-              <ConfirmModalContent
-                className="delete_confirm delete_confirm--video"
-                headline="Are you sure you want to delete this video project?"
-              >
-                <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
-              </ConfirmModalContent>
-            ) }
-            onCancel={ () => setDeleteConfirmOpen( false ) }
-            onConfirm={ handleDeleteConfirm }
-            cancelButton="No, take me back"
-            confirmButton="Yes, delete forever"
-          />
-
-          <Button
-            className="edit-project__btn--save-draft"
-            content="Save & Exit"
-            basic
-            onClick={ handleExit }
-            disabled={ !projectId || disableBtns }
-          />
-
-          <Button
-            className="edit-project__btn--final-review"
-            content="Final Review"
-            onClick={ handleFinalReview }
-            disabled={ !projectId || disableBtns }
+          <ActionButtons
+            deleteConfirmOpen={ deleteConfirmOpen }
+            setDeleteConfirmOpen={ setDeleteConfirmOpen }
+            disabled={ {
+              delete: deleteProjectEnabled(),
+              save: !projectId || disableBtns,
+              review: !projectId || disableBtns
+            } }
+            handle={ {
+              deleteConfirm: handleDeleteConfirm,
+              save: handleExit,
+              review: handleFinalReview
+            } }
+            show={ {
+              delete: true,
+              save: true,
+              review: true
+            } }
           />
         </ProjectHeader>
       </div>
