@@ -5,6 +5,7 @@ import update from 'immutability-helper';
 import isEqual from 'lodash/isEqual';
 import orderBy from 'lodash/orderBy';
 import { getLangTaxonomies } from 'lib/utils';
+import { getProjectsType, setProjectsQueries } from 'lib/graphql/util';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 import { TEAM_VIDEO_PROJECTS_QUERY } from 'lib/graphql/queries/video';
 import { TEAM_PACKAGES_QUERY } from 'lib/graphql/queries/package';
@@ -78,24 +79,13 @@ const TableBody = props => {
   } = props;
 
   // Determine type of dashboard projects
-  const getDashboardProjectsType = () => {
-    let projectsType;
-    const { contentTypes } = team;
-    if ( contentTypes.includes( 'VIDEO' ) ) projectsType = 'videoProjects';
-    if ( contentTypes.includes( 'PACKAGE' ) ) projectsType = 'packages';
-    return projectsType || null;
-  };
-  const dashboardProjectsType = getDashboardProjectsType();
+  const dashboardProjectsType = getProjectsType( team );
 
   // Determine which Query to run
-  const setGraphQuery = () => {
-    let query;
-    const { contentTypes } = team;
-    if ( contentTypes.includes( 'VIDEO' ) ) query = TEAM_VIDEO_PROJECTS_QUERY;
-    if ( contentTypes.includes( 'PACKAGE' ) ) query = TEAM_PACKAGES_QUERY;
-    return query;
-  };
-  const graphQuery = setGraphQuery();
+  const graphQuery = setProjectsQueries( team, {
+    videoProjects: TEAM_VIDEO_PROJECTS_QUERY,
+    packages: TEAM_PACKAGES_QUERY
+  } );
 
   // Run Query
   const {

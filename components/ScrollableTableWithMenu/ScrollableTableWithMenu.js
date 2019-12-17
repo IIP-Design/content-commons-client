@@ -212,6 +212,7 @@ class ScrollableTableWithMenu extends React.Component {
           </Grid.Column>
           <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 } className="items_tableMenus">
             <TableItemsDisplay
+              team={ team }
               handleChange={ this.handleItemsPerPageChange }
               searchTerm={ searchTerm }
               value={ itemsPerPage }

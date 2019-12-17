@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { Button, Modal } from 'semantic-ui-react';
 import { getCount, getPluralStringOrNot } from 'lib/utils';
+import { setProjectsQueries } from 'lib/graphql/util';
 import { DELETE_VIDEO_PROJECT_MUTATION } from 'lib/graphql/queries/video';
 import { DELETE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
@@ -20,14 +21,10 @@ const DeleteProjects = props => {
   } = props;
 
   // Determine which Query to run
-  const setGraphQuery = () => {
-    let query;
-    const { contentTypes } = team;
-    if ( contentTypes.includes( 'VIDEO' ) ) query = DELETE_VIDEO_PROJECT_MUTATION;
-    if ( contentTypes.includes( 'PACKAGE' ) ) query = DELETE_PACKAGE_MUTATION;
-    return query;
-  };
-  const graphQuery = setGraphQuery();
+  const graphQuery = setProjectsQueries( team, {
+    videoProjects: DELETE_VIDEO_PROJECT_MUTATION,
+    packages: DELETE_PACKAGE_MUTATION
+  } );
 
   const [deleteDashboardProject, { loading, error }] = useMutation( graphQuery );
 

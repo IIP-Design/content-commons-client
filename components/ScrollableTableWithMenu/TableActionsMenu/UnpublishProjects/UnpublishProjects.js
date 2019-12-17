@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { Button, Popup } from 'semantic-ui-react';
+import { setProjectsQueries } from 'lib/graphql/util';
 import { UNPUBLISH_VIDEO_PROJECT_MUTATION } from 'lib/graphql/queries/video';
 import { UNPUBLISH_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 
@@ -15,14 +16,10 @@ const UnpublishProjects = props => {
   } = props;
 
   // Determine which Query to run
-  const setGraphQuery = () => {
-    let query;
-    const { contentTypes } = team;
-    if ( contentTypes.includes( 'VIDEO' ) ) query = UNPUBLISH_VIDEO_PROJECT_MUTATION;
-    if ( contentTypes.includes( 'PACKAGE' ) ) query = UNPUBLISH_PACKAGE_MUTATION;
-    return query;
-  };
-  const graphQuery = setGraphQuery();
+  const graphQuery = setProjectsQueries( team, {
+    videoProjects: UNPUBLISH_VIDEO_PROJECT_MUTATION,
+    packages: UNPUBLISH_PACKAGE_MUTATION,
+  } )
 
   const [unpublishDashboardProject, { loading, error }] = useMutation( graphQuery );
 

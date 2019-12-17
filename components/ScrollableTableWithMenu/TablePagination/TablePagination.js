@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { Pagination } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
+import { getProjectsType, setProjectsQueries } from 'lib/graphql/util';
 import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/video';
 import { TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
 import './TablePagination.scss';
@@ -13,24 +14,13 @@ const TablePagination = props => {
   } = props;
 
   // Determine type of dashboard projects
-  const getDashboardProjectsType = () => {
-    let projectsType;
-    const { contentTypes } = team;
-    if ( contentTypes.includes( 'VIDEO' ) ) projectsType = 'videoProjects';
-    if ( contentTypes.includes( 'PACKAGE' ) ) projectsType = 'packages';
-    return projectsType || null;
-  };
-  const dashboardProjectsType = getDashboardProjectsType();
+  const dashboardProjectsType = getProjectsType( team );
 
   // Determine which Query to run
-  const setGraphQuery = () => {
-    let query;
-    const { contentTypes } = team;
-    if ( contentTypes.includes( 'VIDEO' ) ) query = TEAM_VIDEO_PROJECTS_COUNT_QUERY;
-    if ( contentTypes.includes( 'PACKAGE' ) ) query = TEAM_PACKAGES_COUNT_QUERY;
-    return query;
-  };
-  const graphQuery = setGraphQuery();
+  const graphQuery = setProjectsQueries( team, {
+    videoProjects: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
+    packages: TEAM_PACKAGES_COUNT_QUERY
+  } );
 
   const { loading, error, data } = useQuery( graphQuery, {
     variables: { ...variables },

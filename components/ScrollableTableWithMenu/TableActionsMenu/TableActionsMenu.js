@@ -8,6 +8,7 @@ import editIcon from 'static/images/dashboard/edit.svg';
 import createIcon from 'static/images/dashboard/create.svg';
 import archiveIcon from 'static/images/dashboard/archive.svg';
 import { getCount } from 'lib/utils';
+import { getProjectsType, setProjectsQueries } from 'lib/graphql/util';
 import { TEAM_VIDEO_PROJECTS_QUERY, TEAM_VIDEO_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/video';
 import { TEAM_PACKAGES_QUERY, TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
 import DeleteIconButton from './DeleteIconButton/DeleteIconButton';
@@ -38,28 +39,15 @@ const TableActionsMenu = props => {
   const { team } = props;
 
   // Determine type of dashboard projects
-  const getDashboardProjectsType = () => {
-    let projectsType;
-    const { contentTypes } = team;
-    if ( contentTypes.includes( 'VIDEO' ) ) projectsType = 'videoProjects';
-    if ( contentTypes.includes( 'PACKAGE' ) ) projectsType = 'packages';
-    return projectsType || null;
-  };
-  const dashboardProjectsType = getDashboardProjectsType();
+  const dashboardProjectsType = getProjectsType( team );
 
   // Determine which queries to run
-  const setGraphQueries = () => {
-    let queries = {};
-    const { contentTypes } = team;
-    if ( contentTypes.includes( 'VIDEO' ) ) {
-      queries = { projectsQuery: TEAM_VIDEO_PROJECTS_QUERY, projectsCount: TEAM_VIDEO_PROJECTS_COUNT_QUERY };
-    }
-    if ( contentTypes.includes( 'PACKAGE' ) ) {
-      queries = { projectsQuery: TEAM_PACKAGES_QUERY, projectsCount: TEAM_PACKAGES_COUNT_QUERY };
-    }
-    return queries;
-  };
-  const graphQueries = setGraphQueries();
+  const graphQueries = setProjectsQueries( team, {
+    videoProjects: TEAM_VIDEO_PROJECTS_QUERY,
+    videoProjectsCount: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
+    packages: TEAM_PACKAGES_QUERY,
+    packagesCount: TEAM_PACKAGES_COUNT_QUERY
+  } );
 
   // Run queries
   const {
