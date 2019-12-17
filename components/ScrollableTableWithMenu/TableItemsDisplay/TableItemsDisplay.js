@@ -53,7 +53,7 @@ const TableItemsDisplay = props => {
       </Grid.Column>
     );
   }
-  
+
   if ( error ) {
     return (
       <Grid.Column className="items_display">

@@ -19,7 +19,7 @@ const UnpublishProjects = props => {
   const graphQuery = setProjectsQueries( team, {
     videoProjects: UNPUBLISH_VIDEO_PROJECT_MUTATION,
     packages: UNPUBLISH_PACKAGE_MUTATION,
-  } )
+  } );
 
   const [unpublishDashboardProject, { loading, error }] = useMutation( graphQuery );
 
