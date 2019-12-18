@@ -2,18 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import ApolloError from 'components/errors/ApolloError';
-import { PACKAGE_DOCUMENTS_QUERY } from 'lib/graphql/queries/package';
+import { PACKAGE_FILES_QUERY } from 'lib/graphql/queries/package';
 
 
 const PackageDetailsPopup = props => {
-  const { loading, error, data } = useQuery( PACKAGE_DOCUMENTS_QUERY, {
+  const { loading, error, data } = useQuery( PACKAGE_FILES_QUERY, {
     variables: { id: props.id }
   } );
 
   if ( loading ) return <p>Loading....</p>;
   if ( error ) return <ApolloError error={ error } />;
 
-  const { documents } = data.packageDocuments;
+  const { documents } = data.pkg;
 
   return (
     <div className="details-files">
