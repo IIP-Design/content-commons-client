@@ -83,9 +83,9 @@ describe( '<PackageDetailsForm />', () => {
 
   it( 'renders the title label and input', () => {
     const wrapper = mount( Component );
-    const titleField = wrapper.find( 'FormField[label="Title"]' );
-    const titleLabel = wrapper.find( 'FormField[label="Title"] label' );
-    const titleInput = wrapper.find( 'FormField[label="Title"] input' );
+    const titleField = wrapper.find( 'FormField[name="title"]' );
+    const titleLabel = wrapper.find( 'FormField[name="title"] label' );
+    const titleInput = wrapper.find( 'FormField[name="title"] input' );
 
     expect( titleLabel.prop( 'htmlFor' ) ).toEqual( titleInput.prop( 'id' ) );
     expect( titleInput.prop( 'required' ) ).toEqual( true );
@@ -96,7 +96,7 @@ describe( '<PackageDetailsForm />', () => {
 
   it( 'changing the title calls setFieldTouched and setFieldValue', () => {
     const wrapper = mount( Component );
-    const titleField = wrapper.find( 'FormField[label="Title"]' );
+    const titleField = wrapper.find( 'FormField[name="title"]' );
     const e = {};
     const data = {
       name: 'title',

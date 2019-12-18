@@ -108,13 +108,13 @@ describe( '<PackageDetailsFormContainer />', () => {
     const { pkg, pkg: { documents } } = mocks[0].result.data;
     const fileValues = documents.reduce( ( acc, file ) => {
       const {
-        id, bureaus, filename, tags, use, visibility
+        id, bureaus, title, tags, use, visibility
       } = file;
       return {
         ...acc,
         [id]: {
           id,
-          filename,
+          title,
           bureaus: bureaus.map( p => p.id ),
           tags: tags.map( p => p.id ),
           use: use.id,

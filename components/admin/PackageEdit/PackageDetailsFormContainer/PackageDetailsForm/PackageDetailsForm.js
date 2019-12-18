@@ -83,7 +83,7 @@ const PackageDetailsForm = props => {
                     id="title"
                     name="title"
                     control={ Input }
-                    label="Title"
+                    label="Package Title"
                     required
                     autoFocus
                     value={ values.title }

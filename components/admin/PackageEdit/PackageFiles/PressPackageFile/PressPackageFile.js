@@ -107,17 +107,17 @@ const PressPackageFile = props => {
               <Form.Group widths="equal">
                 <div className="field">
                   <Form.Field
-                    id={ `filename-${id}` }
-                    name={ `${id}.filename` }
+                    id={ `title-${id}` }
+                    name={ `${id}.title` }
                     control={ Input }
                     label="Title"
                     required
                     autoFocus
-                    value={ values[id].filename }
+                    value={ values[id].title }
                     onChange={ handleOnChange }
-                    error={ isTouched( 'filename' ) && hasError( 'filename' ) }
+                    error={ isTouched( 'title' ) && hasError( 'title' ) }
                   />
-                  <p className="error-message">{ showErrorMsg( 'filename' ) }</p>
+                  <p className="error-message">{ showErrorMsg( 'title' ) }</p>
                 </div>
 
                 <Form.Field>
