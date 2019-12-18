@@ -1,5 +1,6 @@
 import { mount } from 'enzyme';
 import { MockedProvider, wait } from '@apollo/react-testing';
+import { HandleOnChangeContext } from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsForm/PackageDetailsForm';
 import {
   errorMocks, mocks, props, undefinedDataMocks
 } from './mocks';
@@ -29,7 +30,12 @@ jest.mock(
       touched: {},
       values: {
         '1asd': {
-          filename: 'Lesotho National Day.docx'
+          id: '1asd',
+          title: 'Lesotho National Day',
+          bureaus: [],
+          tags: ['ck2lzgu5b0rho07207cqfeya0'],
+          use: 'ck2wbvjaa10n20720fg5ayhn9',
+          visibility: 'INTERNAL'
         }
       }
     } ) )
@@ -40,21 +46,29 @@ jest.mock(
   () => function FormikAutoSave() { return ''; }
 );
 
+const handleOnChange = jest.fn().mockName( 'handleOnChange' );
+
 const Component = (
   <MockedProvider mocks={ mocks }>
-    <PressPackageFile { ...props } />
+    <HandleOnChangeContext.Provider value={ handleOnChange }>
+      <PressPackageFile { ...props } />
+    </HandleOnChangeContext.Provider>
   </MockedProvider>
 );
 
 const ErrorComponent = (
   <MockedProvider mocks={ errorMocks }>
-    <PressPackageFile { ...props } />
+    <HandleOnChangeContext.Provider value={ handleOnChange }>
+      <PressPackageFile { ...props } />
+    </HandleOnChangeContext.Provider>
   </MockedProvider>
 );
 
 const UndefinedDataComponent = (
   <MockedProvider mocks={ undefinedDataMocks }>
-    <PressPackageFile { ...props } />
+    <HandleOnChangeContext.Provider value={ handleOnChange }>
+      <PressPackageFile { ...props } />
+    </HandleOnChangeContext.Provider>
   </MockedProvider>
 );
 
@@ -133,9 +147,28 @@ describe( '<PressPackageFile />', () => {
 
     expect( titleLabel.prop( 'htmlFor' ) ).toEqual( titleInput.prop( 'id' ) );
     expect( titleInput.prop( 'required' ) ).toEqual( true );
-    expect( titleInput.prop( 'value' ) ).toEqual( documentFile.filename );
+    expect( titleInput.prop( 'value' ) ).toEqual( documentFile.title );
     expect( titleInput.prop( 'name' ) )
-      .toEqual( `${documentFile.id}.filename` );
+      .toEqual( `${documentFile.id}.title` );
+  } );
+
+  it( 'changing the title input field calls handleOnChange', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const titleInput = wrapper.find( 'FormField[label="Title"]' );
+    const { onChange } = titleInput.props();
+    const e = {};
+    const data = {
+      name: '1asd.title',
+      value: 'Lesotho National Day',
+      type: 'text'
+    };
+
+    onChange( e, data );
+    expect( onChange.getMockName() ).toEqual( 'handleOnChange' );
+    expect( handleOnChange ).toHaveBeenCalledWith( e, data );
   } );
 
   it( 'renders the Bureaus dropdown', async () => {
@@ -156,6 +189,25 @@ describe( '<PressPackageFile />', () => {
     expect( helperTxt.text() ).toEqual( 'Enter keywords separated by commas.' );
   } );
 
+  it( 'changing the Bureaus dropdown calls handleOnChange', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const dropdowns = wrapper.find( `FormDropdown` );
+    const dropdown = dropdowns.findWhere( n => n.prop( 'label' ) === 'Lead Bureau(s)' && n.name() === 'FormDropdown' );
+    const { onChange } = dropdown.props();
+    const e = {};
+    const data = {
+      name: '1asd.bureaus',
+      value: ['new-bureaus-id'],
+    };
+
+    onChange( e, data );
+    expect( onChange.getMockName() ).toEqual( 'handleOnChange' );
+    expect( handleOnChange ).toHaveBeenCalledWith( e, data );
+  } );
+
   it( 'renders the Release Type (Use) dropdown', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
@@ -171,6 +223,24 @@ describe( '<PressPackageFile />', () => {
     expect( dropdown.prop( 'name' ) )
       .toEqual( `${documentFile.id}.use` );
     expect( dropdown.prop( 'required' ) ).toEqual( true );
+  } );
+
+  it( 'changing the Release Type (Use) dropdown calls handleOnChange', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const dropdown = wrapper.find( 'UseDropdown' );
+    const { onChange } = dropdown.props();
+    const e = {};
+    const data = {
+      name: '1asd.use',
+      value: 'new-use-id',
+    };
+
+    onChange( e, data );
+    expect( onChange.getMockName() ).toEqual( 'handleOnChange' );
+    expect( handleOnChange ).toHaveBeenCalledWith( e, data );
   } );
 
   it( 'renders the Visibility dropdown', async () => {
@@ -189,6 +259,24 @@ describe( '<PressPackageFile />', () => {
     expect( dropdown.prop( 'required' ) ).toEqual( true );
   } );
 
+  it( 'changing Visibility calls handleOnChange', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const dropdown = wrapper.find( 'TagDropdown' );
+    const { onChange } = dropdown.props();
+    const e = {};
+    const data = {
+      name: '1asd.visibility',
+      value: 'PUBLIC',
+    };
+
+    onChange( e, data );
+    expect( onChange.getMockName() ).toEqual( 'handleOnChange' );
+    expect( handleOnChange ).toHaveBeenCalledWith( e, data );
+  } );
+
   it( 'renders the Tag dropdown', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
@@ -204,6 +292,24 @@ describe( '<PressPackageFile />', () => {
     expect( dropdown.prop( 'name' ) )
       .toEqual( `${documentFile.id}.tags` );
     expect( helperTxt.text() ).toEqual( 'Enter keywords separated by commas.' );
+  } );
+
+  it( 'changing the TagDropdown calls handleOnChange', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const dropdown = wrapper.find( 'TagDropdown' );
+    const { onChange } = dropdown.props();
+    const e = {};
+    const data = {
+      name: '1asd.tags',
+      value: ['new-tag-id'],
+    };
+
+    onChange( e, data );
+    expect( onChange.getMockName() ).toEqual( 'handleOnChange' );
+    expect( handleOnChange ).toHaveBeenCalledWith( e, data );
   } );
 
   it( 'renders MetaTerms', async () => {
