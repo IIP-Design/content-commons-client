@@ -17,6 +17,7 @@ import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/Vi
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import UserDropdown from 'components/admin/dropdowns/UserDropdown/UserDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
+import TermsConditions from 'components/admin/TermsConditions/TermsConditions';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 
 import './ProjectDetailsForm.scss';
@@ -190,17 +191,8 @@ const ProjectDetailsForm = props => {
           && (
             <Grid.Row reversed="computer">
               <Grid.Column mobile={ 11 }>
-                <Form.Checkbox
-                  id="termsConditions"
-                  name="termsConditions"
-                  label={ (
-                    <label htmlFor="termsConditions">
-                      By uploading these files I agree to the Content Commons <Link href="/privacy"><a>Terms of Use</a></Link> and licensing agreements. I understand that my content will be available to the public for general use.
-                    </label>
-                  ) }
-                  type="checkbox"
-                  required
-                  onChange={ handleOnChange }
+                <TermsConditions
+                  handleOnChange={ handleOnChange }
                   error={ touched.termsConditions && !!errors.termsConditions }
                 />
               </Grid.Column>

@@ -1,19 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { graphql } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import dynamic from 'next/dynamic';
 import { Loader } from 'semantic-ui-react';
 import { getCount, getPluralStringOrNot } from 'lib/utils';
+import { PACKAGE_FILES_QUERY } from 'lib/graphql/queries/package';
 import ApolloError from 'components/errors/ApolloError';
-import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import EditPackageFiles from 'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal';
 import './PackageFiles.scss';
 
 const PressPackageFile = dynamic( () => import( /* webpackChunkName: "pressPackageFile" */ 'components/admin/PackageEdit/PackageFiles/PressPackageFile/PressPackageFile' ) );
 
 const PackageFiles = props => {
-  const { error, loading } = props.data;
-  const pkg = props.data.package || {};
+  const { loading, error, data } = useQuery( PACKAGE_FILES_QUERY, {
+    partialRefetch: true,
+    variables: { id: props.id },
+    skip: !props.id
+  } );
 
   if ( loading ) {
     return (
@@ -36,6 +39,9 @@ const PackageFiles = props => {
   }
 
   if ( error ) return <ApolloError error={ error } />;
+  if ( !data ) return null;
+
+  const { pkg } = data;
   if ( !pkg || !getCount( pkg ) ) return null;
 
   const units = pkg.documents || [];
@@ -46,13 +52,10 @@ const PackageFiles = props => {
       <div className="heading">
         <div className="heading-group">
           <h3 className="headline uppercase">
-            { `Package ${getPluralStringOrNot( units, 'File' )}` }
+            { `Uploaded ${getPluralStringOrNot( units, 'File' )}` }
           </h3>
           <EditPackageFiles files={ units } />
         </div>
-        <ButtonAddFiles className="basic edit-package__btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>
-          + Add Files
-        </ButtonAddFiles>
       </div>
 
       <div className="files">
@@ -63,10 +66,10 @@ const PackageFiles = props => {
            * `<FrontOfficePackageFile />`
            */
           if ( pkg.type === 'DAILY_GUIDANCE' ) {
-            return <PressPackageFile key={ unit.id } unit={ unit } />;
+            return <PressPackageFile key={ unit.id } id={ unit.id } />;
           }
           return null;
-          // return <SomeOtherPackageFile key={ unit.id } unit={ unit } />;
+          // return <SomeOtherPackageFile key={ unit.id } id={ unit.id } />;
         } ) }
       </div>
     </section>
@@ -74,8 +77,7 @@ const PackageFiles = props => {
 };
 
 PackageFiles.propTypes = {
-  // id: PropTypes.string,
-  data: PropTypes.object
+  id: PropTypes.string
 };
 
 export default PackageFiles;

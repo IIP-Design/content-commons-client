@@ -1,36 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
-// import { compose /* , graphql */ } from 'react-apollo';
-import compose from 'lodash.flowright';
-import { Button, Confirm } from 'semantic-ui-react';
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import { getCount } from 'lib/utils';
+import { Loader } from 'semantic-ui-react';
+import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
+import ActionHeadline from 'components/admin/ActionHeadline/ActionHeadline';
 import ApolloError from 'components/errors/ApolloError';
-import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
-import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
-import FormInstructions from 'components/admin/FormInstructions/FormInstructions';
+import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
+import ButtonPublish from 'components/admin/ButtonPublish/ButtonPublish';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
-import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg';
-import PackageDetailsFormContainer from './PackageDetailsFormContainer/PackageDetailsFormContainer';
-import PackageActions from './PackageActions/PackageActions';
-import PackageFiles from './PackageFiles/PackageFiles';
-// remove mocks import after GraphQL
-import { mocks as pkgPublishedQuery } from './mocks';
-import { mocks } from './PackageDetailsFormContainer/mocks';
+import { PACKAGE_QUERY, DELETE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
+import PackageDetailsFormContainer from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsFormContainer';
+import PackageFiles from 'components/admin/PackageEdit/PackageFiles/PackageFiles';
 import './PackageEdit.scss';
 
 const PackageEdit = props => {
-  const SAVE_MSG_DELAY = 2000;
-  const UPLOAD_SUCCESS_MSG_DELAY = SAVE_MSG_DELAY + 1000;
+  const { loading, error: queryError, data } = useQuery( PACKAGE_QUERY, {
+    partialRefetch: true,
+    variables: { id: props.router.query.id },
+    displayName: 'PackageQuery',
+    skip: !props.router.query.id
+  } );
+  const [deletePackage] = useMutation( DELETE_PACKAGE_MUTATION );
 
-  let uploadSuccessTimer = null;
+  // const SAVE_MSG_DELAY = 2000;
   let saveMsgTimer = null;
 
-  const [packageId, setPackageId] = useState( /* props.id */ '' );
+  const [packageId, setPackageId] = useState( '' );
   const [mounted, setMounted] = useState( false );
   const [error, setError] = useState( {} );
-  const [displayTheUploadSuccessMsg, setDisplayTheUploadSuccessMsg] = useState( false );
+  const [isDirty, setIsDirty] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
+  const [hasUploadCompleted, setHasUploadCompleted] = useState( false );
 
   const [notification, setNotification] = useState( {
     notificationMessage: '',
@@ -39,14 +42,36 @@ const PackageEdit = props => {
 
   useEffect( () => {
     setMounted( true );
+    if ( props.router && props.router.query && props.router.query.id ) {
+      setPackageId( props.router.query.id );
+    } else {
+      /**
+       * What to do if no `id` in the `query`?
+       * Some type of error handling? Send to dashboard?
+       * Do nothing?
+       */
+    }
+
     return () => {
       setMounted( false );
-      clearTimeout( uploadSuccessTimer );
       clearTimeout( saveMsgTimer );
-
-      // props.uploadReset(); // clear files to upload store
     };
   }, [] );
+
+  useEffect( () => {
+    if ( data && data.pkg && data.pkg.documents ) {
+      const { documents } = data.pkg;
+      /**
+       * Display files after upload finishes and upload modal
+       * closes. For now, use documents count for UI dev. Perhaps,
+       * it'd be better display files after all thumbnails have
+       * resolved.
+       */
+      if ( documents ) {
+        setHasUploadCompleted( Boolean( getCount( documents ) ) );
+      }
+    }
+  }, [data] );
 
   const updateNotification = msg => {
     setNotification( {
@@ -55,38 +80,19 @@ const PackageEdit = props => {
     } );
   };
 
-  const addPackageIdToUrl = id => {
-    const { router } = props;
-
-    const path = `${router.asPath}&id=${id}`;
-    router.replace( router.asPath, path, { shallow: true } );
-  };
-
   const delayUnmount = ( fn, timer, delay ) => {
     if ( timer ) clearTimeout( timer );
     /* eslint-disable no-param-reassign */
     timer = setTimeout( fn, delay );
   };
 
-  const deletePackageEnabled = () => {
-    // for UI dev, remove after GraphQL
-    const { publishedAt } = pkgPublishedQuery[0].result.data.package;
-    return !packageId || publishedAt;
-
-    // const { pkgPublishedQuery } = props;
-    // /**
-    //  * disable delete package button if either there
-    //  * is no package id OR package has been published
-    //  */
-    // return !packageId || ( pkgPublishedQuery && pkgPublishedQuery.package && pkgPublishedQuery.package.publishedAt );
-  };
-
-  const handleDisplayUploadSuccessMsg = () => {
-    if ( mounted ) {
-      setDisplayTheUploadSuccessMsg( false );
-    }
-    uploadSuccessTimer = null;
-  };
+  const deletePackageEnabled = () => (
+    /**
+     * disable delete package button if either there
+     * is no package id OR package has been published
+     */
+    !packageId || ( data && data.pkg && !!data.pkg.publishedAt )
+  );
 
   const handleDisplaySaveMsg = () => {
     if ( mounted ) {
@@ -99,42 +105,14 @@ const PackageEdit = props => {
     props.router.push( { pathname: '/admin/dashboard' } );
   };
 
-  const handleUploadProgress = () => {
-    console.log( 'Handle Upload Progress' );
-  };
+  const handleDeleteConfirm = async () => {
+    const deletedPackageId = await deletePackage( {
+      variables: { id: packageId }
+    } ).catch( err => { setError( err ); } );
 
-  const handleDeleteConfirm = () => {
-    console.log( 'Confirm Delete' );
-    // const { deletePackage } = props;
-
-    // const deletedPackageId = await deletePackage( {
-    //   variables: { id: packageId }
-    // } ).catch( err => { setError( err ); } );
-
-    // if ( deletedPackageId ) {
-    //   handleExit();
-    // }
-  };
-
-  const handleSaveDraft = () => {
-    console.log( 'Save Draft' );
-    // const { updatePackage } = props;
-    // const data = buildUpdatePackageTree( filesToUpload, title, visibility, bureaus, categories, tags );
-
-    // await updatePackage( {
-    //   variables: {
-    //     data,
-    //     where: { id: packageId }
-    //   }
-    // } ).catch( err => console.dir( err ) );
-  };
-
-  const handleUploadComplete = () => {
-    console.log( 'Upload Complete' );
-    // setDisplayTheUploadSuccessMsg( true );
-    // updateNotification( 'Project saved as draft' );
-    // delayUnmount( handleDisplaySaveMsg, saveMsgTimer, SAVE_MSG_DELAY );
-    // delayUnmount( handleDisplayUploadSuccessMsg, uploadSuccessTimer, UPLOAD_SUCCESS_MSG_DELAY );
+    if ( deletedPackageId ) {
+      handleExit();
+    }
   };
 
   const handlePublish = () => {
@@ -176,32 +154,6 @@ const PackageEdit = props => {
     // }
   };
 
-  const handleUpload = () => {
-    console.log( 'Upload' );
-    // const { id, title } = pkg;
-    // const { /* uploadExecute, */ updateFile } = props;
-
-    // // If there are files to upload, upload them
-    // if ( filesToUpload && filesToUpload.length ) {
-    //   setIsUploading( true );
-
-    //   // 1. Upload files to S3 and fetch file meta data
-    //   await uploadExecute( id, filesToUpload, handleUploadProgress, updateFile );
-
-    //   // 2. once all files have been uploaded, create and save new project (only new)
-    //   handleSaveDraft( id, title, tags );
-
-    //   // 3. clean up upload process
-    //   handleUploadComplete();
-
-    //   // 4. set package id to newly created package (what if existing package?)
-    //   setPackageId( id );
-
-    //   // 5. update url to reflect a new package (only new)
-    //   addPackageIdToUrl( id );
-    // }
-  };
-
   const centeredStyles = {
     position: 'absolute',
     top: '9em',
@@ -211,57 +163,60 @@ const PackageEdit = props => {
 
   const { showNotification, notificationMessage } = notification;
 
-  // for UI dev, remove afterwards
-  const isUploading = false;
-  const filesToUpload = [];
+  if ( loading ) {
+    return (
+      <div style={ {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '200px'
+      } }
+      >
+        <Loader
+          active
+          inline="centered"
+          style={ { marginBottom: '1em' } }
+          content="Loading package details page..."
+        />
+      </div>
+    );
+  }
+
+  if ( queryError ) {
+    return (
+      <div style={ centeredStyles }>
+        <ApolloError error={ queryError } />
+      </div>
+    );
+  }
+
+  if ( !data ) return null;
+  const { pkg } = data;
 
   return (
     <div className="edit-package">
-      <div className="edit-package__header">
+      <div className="header">
         <ProjectHeader icon="file" text="Package Details">
-          { /**
-             * can move buttons to separate, shared component
-             * since they're almost the same as VideoEdit
-             * and VideoReview
-             */ }
-          <Button
-            className="edit-package__btn--delete"
-            content="Delete All"
-            basic
-            onClick={ () => setDeleteConfirmOpen( true ) }
-            disabled={ deletePackageEnabled() }
-          />
-
-          <Confirm
-            className="delete"
-            open={ deleteConfirmOpen }
-            content={ (
-              <ConfirmModalContent
-                className="delete_confirm delete_confirm--package"
-                headline="Are you sure you want to delete this package?"
-              >
-                <p>This package will be permanently removed from the Content Cloud. Any files that you uploaded here will not be uploaded.</p>
-              </ConfirmModalContent>
-            ) }
-            onCancel={ () => setDeleteConfirmOpen( false ) }
-            onConfirm={ handleDeleteConfirm }
-            cancelButton="No, take me back"
-            confirmButton="Yes, delete forever"
-          />
-
-          <Button
-            className="edit-package__btn--save-draft"
-            content="Save & Exit"
-            basic
-            onClick={ handleExit }
-            disabled={ !packageId }
-          />
-
-          <Button
-            className="edit-package__btn--publish"
-            content="Publish"
-            onClick={ handlePublish }
-            disabled={ !packageId }
+          <ActionButtons
+            type="package"
+            deleteConfirmOpen={ deleteConfirmOpen }
+            setDeleteConfirmOpen={ setDeleteConfirmOpen }
+            disabled={ {
+              delete: deletePackageEnabled(),
+              save: !packageId,
+              publish: !packageId
+            } }
+            handle={ {
+              deleteConfirm: handleDeleteConfirm,
+              save: handleExit,
+              publish: handlePublish
+            } }
+            show={ {
+              delete: hasUploadCompleted,
+              save: hasUploadCompleted,
+              publish: hasUploadCompleted
+            } }
           />
         </ProjectHeader>
       </div>
@@ -278,74 +233,45 @@ const PackageEdit = props => {
         msg={ notificationMessage }
       />
 
-      { /* upload progress */ }
-      <div className="edit-package__status">
-        { !packageId && !isUploading && <FormInstructions type="package" /> }
-        { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
-
-        { isUploading
-          && (
-          <FileUploadProgressBar
-            filesToUpload={ filesToUpload }
-            label="Please keep this page open until upload is complete"
-            fileProgressMessage
-          />
-          ) }
-      </div>
-
       <PackageDetailsFormContainer
         id={ packageId }
-        handleUpload={ handleUpload }
         updateNotification={ updateNotification }
-        // send mock data here for UI dev, remove after GraphQL
-        data={ mocks[0].result.data }
+        hasUploadCompleted={ hasUploadCompleted }
+        setIsDirty={ setIsDirty }
       >
-        <PackageFiles
-          id={ packageId }
-          // send mock data here for UI dev, remove after GraphQL
-          data={ mocks[0].result.data }
-        />
+        { hasUploadCompleted && <PackageFiles id={ packageId } /> }
       </PackageDetailsFormContainer>
 
       { /**
          * can possibly be shared with VideoReview
          * with a little modification
          */ }
-      <PackageActions
-        handlePublish={ handlePublish }
-        handleUnPublish={ handleUnPublish }
-      />
+      { hasUploadCompleted
+        && (
+          <section className="actions">
+            <ActionHeadline
+              className="headline"
+              type="package"
+              published={ pkg && pkg.status === 'PUBLISHED' }
+              updated={ isDirty }
+            />
+
+            <ButtonAddFiles className="basic action-btn btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
+
+            <ButtonPublish
+              handlePublish={ handlePublish }
+              handleUnPublish={ handleUnPublish }
+              status={ ( pkg && pkg.status ) || 'DRAFT' }
+              updated={ isDirty }
+            />
+          </section>
+        ) }
     </div>
   );
 };
 
 PackageEdit.propTypes = {
-  // id: PropTypes.string,
-  // deletePackage: PropTypes.func,
-  // pkgPublishedQuery: PropTypes.object,
-  // updatePackage: PropTypes.func,
-  // updateFile: PropTypes.func,
   router: PropTypes.object,
 };
 
-export default compose(
-  withRouter,
-  // graphql( PACKAGE_PUBLISHED_QUERY, {
-  //   name: 'pkgPublishedQuery',
-  //   options: props => ( {
-  //     variables: { id: props.id }
-  //   } ),
-  //   skip: props => !props.id
-  // } ),
-  // graphql( DELETE_PACKAGE_MUTATION, { name: 'deletePackage' } ),
-  // graphql( UPDATE_PACKAGE_MUTATION, {
-  //   name: 'updatePackage',
-  //   options: props => ( {
-  //     refetchQueries: [{
-  //       query: PACKAGE_PUBLISHED_QUERY,
-  //       variables: { id: props.id }
-  //     }],
-  //     onCompleted: () => {}
-  //   } )
-  // } )
-)( PackageEdit );
+export default withRouter( PackageEdit );

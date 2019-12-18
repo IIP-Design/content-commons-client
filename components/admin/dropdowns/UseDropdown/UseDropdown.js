@@ -80,7 +80,7 @@ const UseDropdown = props => {
 
             <Form.Dropdown
               id={ props.id }
-              name="use"
+              name={ props.name }
               options={ options }
               placeholder="–"
               loading={ loading }
@@ -96,12 +96,14 @@ const UseDropdown = props => {
 };
 
 UseDropdown.defaultProps = {
-  id: ''
+  id: '',
+  name: 'use'
 };
 
 UseDropdown.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
+  name: PropTypes.string,
   type: PropTypes.string
 };
 

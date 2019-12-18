@@ -78,14 +78,15 @@
 // that's not tied to the button action, so "go"), e.g.,
 // `Publish`, `Publish Changes`
 @mixin go-button($primary-color: $green, $secondary-color: $matisse-blue) {
-  border: 2px solid $primary-color;
-  color: #fff;
-  background-color: $primary-color;
+  border: 2px solid $primary-color !important;
+  color: #fff !important;
+  background-color: $primary-color !important;
 
   &:hover,
   &:active,
   &:focus {
-    border-color: $secondary-color;
+    border-color: $secondary-color !important;
+    background-color: $secondary-color !important;
   }
 }
 
