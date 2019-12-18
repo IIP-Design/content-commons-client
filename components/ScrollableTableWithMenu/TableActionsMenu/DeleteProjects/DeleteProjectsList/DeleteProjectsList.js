@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { setProjectTitle } from 'lib/graphql/util';
 import './DeleteProjectsList.scss';
-
-const displayProjectTitle = project => {
-  let title = '';
-  if ( project.__typename === 'VideoProject' ) title = project.projectTitle;
-  if ( project.__typename === 'Package' ) title = project.title;
-  return title;
-};
 
 const DeleteProjectsList = props => {
   const { headline, isDrafts, projects } = props;
@@ -23,7 +17,7 @@ const DeleteProjectsList = props => {
       >
         { projects.map( project => (
           <li key={ project.id } className="delete-list-item">
-            { displayProjectTitle( project ) }
+            { setProjectTitle( project ) }
           </li>
         ) ) }
       </ul>

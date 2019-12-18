@@ -18,13 +18,6 @@ import TableBodyNoProjects from './TableBodyNoProjects';
 import './TableBody.scss';
 
 const normalizeTypesData = type => {
-  const projectTitle = () => {
-    if ( type.__typename === 'VideoProject' ) return type.projectTitle;
-    if ( type.__typename === 'Package' ) return type.title;
-    if ( type.__typename === 'DocumentFile' ) return type.filename;
-    return '';
-  };
-
   const thumbnail = () => {
     if ( !type.thumbnails ) return {};
     return ( {
