@@ -5,7 +5,7 @@ import update from 'immutability-helper';
 import isEqual from 'lodash/isEqual';
 import orderBy from 'lodash/orderBy';
 import { getLangTaxonomies } from 'lib/utils';
-import { getProjectsType, setProjectsQueries } from 'lib/graphql/util';
+import { getProjectsType, setProjectsQueries, setProjectTitle } from 'lib/graphql/util';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 import { TEAM_VIDEO_PROJECTS_QUERY } from 'lib/graphql/queries/video';
 import { TEAM_PACKAGES_QUERY } from 'lib/graphql/queries/package';
@@ -38,7 +38,7 @@ const normalizeTypesData = type => {
     id: { value: type.id },
     createdAt: { value: type.createdAt },
     updatedAt: { value: type.updatedAt },
-    projectTitle: { value: projectTitle() },
+    projectTitle: { value: setProjectTitle( type ) },
     author: { value: `${type.author ? type.author.firstName : ''} ${type.author ? type.author.lastName : ''}` },
     team: { value: type.team ? type.team.name : '' },
     status: { value: type.status || '' },
