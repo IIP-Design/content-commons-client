@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from 'react-apollo/test-utils';
+import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
 import { addEmptyOption } from 'lib/utils';
 import BureauOfficesDropdown, { BUREAU_OFFICES_QUERY } from './BureauOfficesDropdown';

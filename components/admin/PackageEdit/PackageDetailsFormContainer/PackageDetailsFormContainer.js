@@ -133,6 +133,8 @@ const PackageDetailsFormContainer = props => {
       <PackageDetailsForm
         { ...formikProps }
         { ...props }
+        id={ props.id }
+        assetPath={ getPackage().assetPath }
         save={ save }
       >
         { props.children }

@@ -18,6 +18,13 @@ const withFileUpload = WrappedComponent => {
       getFileInfo: PropTypes.func
     };
 
+    /**
+     * Uploads files to S3 using a secure signed url
+     * @param {string} projectId Either a assetPath (w/o trailing /) or an id from which to construct an assetPath on the server
+     * @param {array} files files to upload
+     * @param {func} callback Callback to send upload progress events to
+     * @param {func} updateFn Functioin to run on successful file upload
+     */
     upload = async ( projectId, files, callback, updateFn ) => {
       const { getSignedS3UrlPut, getSignedS3UrlGet, getFileInfo } = this.props;
 

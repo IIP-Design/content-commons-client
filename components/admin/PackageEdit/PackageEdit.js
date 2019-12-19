@@ -19,9 +19,9 @@ import './PackageEdit.scss';
 const PackageEdit = props => {
   const { loading, error: queryError, data } = useQuery( PACKAGE_QUERY, {
     partialRefetch: true,
-    variables: { id: props.router.query.id },
+    variables: { id: props.id },
     displayName: 'PackageQuery',
-    skip: !props.router.query.id
+    skip: !props.id
   } );
   const [deletePackage] = useMutation( DELETE_PACKAGE_MUTATION );
 
@@ -42,14 +42,8 @@ const PackageEdit = props => {
 
   useEffect( () => {
     setMounted( true );
-    if ( props.router && props.router.query && props.router.query.id ) {
-      setPackageId( props.router.query.id );
-    } else {
-      /**
-       * What to do if no `id` in the `query`?
-       * Some type of error handling? Send to dashboard?
-       * Do nothing?
-       */
+    if ( props.id ) { // do not htink this is neeeded
+      setPackageId( props.id );
     }
 
     return () => {
@@ -271,6 +265,7 @@ const PackageEdit = props => {
 };
 
 PackageEdit.propTypes = {
+  id: PropTypes.string,
   router: PropTypes.object,
 };
 

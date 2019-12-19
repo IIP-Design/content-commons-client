@@ -34,8 +34,11 @@ const BureauOfficesDropdown = props => (
 
       let options = [];
       if ( data && data.bureaus ) {
-        options = sortBy( data.bureaus, bureau => bureau.name )
-          .map( bureau => ( { key: bureau.id, text: bureau.name, value: bureau.id } ) );
+        options = sortBy( data.bureaus, bureau => bureau.name ).map( bureau => ( {
+          key: bureau.id,
+          text: `${bureau.name} (${bureau.abbr})`,
+          value: bureau.id
+        } ) );
       }
 
       addEmptyOption( options );
@@ -46,14 +49,14 @@ const BureauOfficesDropdown = props => (
 
             <VisuallyHidden>
               <label htmlFor={ props.id }>
-                { `${props.id} bureau` }
+                { `${props.id} bureaus` }
               </label>
             </VisuallyHidden>
           ) }
 
           <Form.Dropdown
             id={ props.id }
-            name="bureau"
+            name="bureaus"
             options={ options }
             placeholder="–"
             loading={ loading }
