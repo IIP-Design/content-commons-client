@@ -133,6 +133,7 @@ const TableBody = props => {
   const dashboardProjects = setDashboardProjectsData();
   statusProjectIds = dashboardProjects ? dashboardProjects.map( p => p.id ) : [];
 
+  if ( !dashboardProjects ) return null;
   if ( searchTerm && !dashboardProjects.length ) return <TableBodyNoResults searchTerm={ searchTerm } />;
   if ( !dashboardProjects.length ) return <TableBodyNoProjects />;
 
@@ -187,4 +188,4 @@ TableBody.propTypes = {
 
 export default TableBody;
 
-export { TEAM_VIDEO_PROJECTS_QUERY, updateProjectStatus };
+export { updateProjectStatus };

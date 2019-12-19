@@ -27,6 +27,13 @@ Array [
               }
             }
             selectedItems={Array []}
+            team={
+              Object {
+                "contentTypes": Array [
+                  "VIDEO",
+                ],
+              }
+            }
             toggleItemSelection={[MockFunction]}
           />
         </div>
@@ -138,6 +145,13 @@ Array [
               }
             }
             selectedItems={Array []}
+            team={
+              Object {
+                "contentTypes": Array [
+                  "VIDEO",
+                ],
+              }
+            }
             toggleItemSelection={[MockFunction]}
           />
         </div>
