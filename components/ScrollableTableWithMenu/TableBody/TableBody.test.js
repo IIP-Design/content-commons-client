@@ -38,7 +38,7 @@ const props = {
   projectTab: 'teamProjects',
   team: {
     contentTypes: [
-      'VIDEO', 
+      'VIDEO',
       // 'PACKAGE'
     ]
   }
@@ -117,7 +117,7 @@ describe( '<TableBody />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const tableBody = wrapper.find( TableBody );    
+    const tableBody = wrapper.find( TableBody );
     const errorComponent = tableBody.find( 'TableBodyError ApolloError' );
 
     expect( errorComponent.exists() ).toEqual( true );
@@ -262,10 +262,10 @@ describe( '<TableBody />', () => {
 
   it( 'renders the correct table row(s)', async () => {
     const wrapper = mount( Component );
-    
+
     /**
      * Used w/ packages b/c of typename error
-     * Stille receiving error, 'cannot read locale of undefined' when running test on packages mock 
+     * Stille receiving error, 'cannot read locale of undefined' when running test on packages mock
      */
     // const wrapper = mount(
     //   <MockedProvider mocks={ mocks } addTypename={ true }>
@@ -276,12 +276,12 @@ describe( '<TableBody />', () => {
     // );
 
     await wait( 0 );
-    wrapper.update();    
+    wrapper.update();
 
     const tableBody = wrapper.find( TableBody );
-    const tableRows = tableBody.find( 'tr' );    
+    const tableRows = tableBody.find( 'tr' );
     const rowCount = tableRows.length;
-    const expectedRowCount = mocks[0].result.data.videoProjects.length;    
+    const expectedRowCount = mocks[0].result.data.videoProjects.length;
     // const expectedRowCount = mocks[2].result.data.packages.length;
 
     expect( rowCount ).toEqual( expectedRowCount );
@@ -313,7 +313,7 @@ describe( '<TableBody />', () => {
   describe( 'updateProjectStatus', () => {
     const projectsType = 'videoProjects';
 
-    it( 'updates the correct project', () => {      
+    it( 'updates the correct project', () => {
       const subscriptionData = { ...mocks[1].result };
       const result = updateProjectStatus( projectsType )( { videoProjects }, { subscriptionData } );
       expect( videoProjects[0].status ).toEqual( 'PUBLISHED' );

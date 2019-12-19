@@ -103,7 +103,7 @@ export const mocks = [
       data: { videoProjects },
       subscribeToStatuses: jest.fn()
     }
-  },  
+  },
   {
     request: {
       query: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
