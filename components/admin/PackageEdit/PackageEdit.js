@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import { getCount } from 'lib/utils';
 import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
@@ -11,18 +11,13 @@ import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import ButtonPublish from 'components/admin/ButtonPublish/ButtonPublish';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
-import { PACKAGE_QUERY, DELETE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
+import { DELETE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 import PackageDetailsFormContainer from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsFormContainer';
 import PackageFiles from 'components/admin/PackageEdit/PackageFiles/PackageFiles';
 import './PackageEdit.scss';
 
 const PackageEdit = props => {
-  const { loading, error: queryError, data } = useQuery( PACKAGE_QUERY, {
-    partialRefetch: true,
-    variables: { id: props.router.query.id },
-    displayName: 'PackageQuery',
-    skip: !props.router.query.id
-  } );
+  const { loading, error: queryError, data } = props;
   const [deletePackage] = useMutation( DELETE_PACKAGE_MUTATION );
 
   // const SAVE_MSG_DELAY = 2000;
@@ -44,12 +39,6 @@ const PackageEdit = props => {
     setMounted( true );
     if ( props.router && props.router.query && props.router.query.id ) {
       setPackageId( props.router.query.id );
-    } else {
-      /**
-       * What to do if no `id` in the `query`?
-       * Some type of error handling? Send to dashboard?
-       * Do nothing?
-       */
     }
 
     return () => {
@@ -271,7 +260,10 @@ const PackageEdit = props => {
 };
 
 PackageEdit.propTypes = {
-  router: PropTypes.object,
+  data: PropTypes.object,
+  error: PropTypes.object,
+  loading: PropTypes.bool,
+  router: PropTypes.object
 };
 
 export default withRouter( PackageEdit );

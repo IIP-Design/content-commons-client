@@ -5,7 +5,7 @@ import { PACKAGE_QUERY, DELETE_PACKAGE_MUTATION } from 'lib/graphql/queries/pack
 
 const { documents } = pkgFiles[0].result.data.pkg;
 
-const pressJournalism = {
+export const pressJournalism = {
   __typename: 'Category',
   id: 'ck2lzgu1e0red072066m25ldt',
   translations: [
