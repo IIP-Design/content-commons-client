@@ -139,7 +139,7 @@ const UserAdmin = () => {
 
 
   return (
-    <div style={ { position: 'absolute', zIndex: 5 } }>
+    <div style={ { position: 'absolute', right: 0, zIndex: 5 } }>
       { loggedInUser && loggedInUser.permissions.includes( 'ADMIN' ) && (
         <Button color="black" icon="user" onClick={ () => setOpen( true ) } />
       ) }
