@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Grid, Tab, Popup, Image
 } from 'semantic-ui-react';
+import UserAdmin from 'components/User/UserAdmin'; // for testing purposes, allows changing of user props
 import userIcon from 'static/icons/icon_user_profile_dark.svg';
 import TeamProjects from './TeamProjects/TeamProjects';
 import './Dashboard.scss';
@@ -89,6 +90,7 @@ class Dashboard extends React.Component {
             <span className="dashboard__avatar-label">Dashboard</span>
           </Grid.Column>
           <Grid.Column width={ 13 }>
+            <UserAdmin />
             <Tab
               menu={ { text: true, stackable: true } }
               panes={ this.renderPanes() }
