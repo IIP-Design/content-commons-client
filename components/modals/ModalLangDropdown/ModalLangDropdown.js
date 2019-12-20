@@ -5,9 +5,10 @@ import { getAvailableLanguages } from 'lib/elastic/query';
 import './ModalLangDropdown.scss';
 
 const ModalLangDropdown = props => {
-  const { item, selected } = props;
+  const { item, selected, handleLanguageChange } = props;
   const [languages] = useState( item ? getAvailableLanguages( item ) : null );
   const [isOpen, setIsOpen] = useState( false );
+
   if ( languages && languages.length > 1 ) {
     return (
       <Dropdown
@@ -18,7 +19,7 @@ const ModalLangDropdown = props => {
         onClick={ () => setIsOpen( !isOpen ) }
         onChange={ ( e, { value } ) => {
           setIsOpen( !isOpen );
-          props.handleLanguageChange( value );
+          handleLanguageChange( value );
         } }
       />
     );

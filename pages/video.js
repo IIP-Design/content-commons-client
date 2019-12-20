@@ -26,7 +26,6 @@ class VideoPage extends Component {
 
   render() {
     const { item, url } = this.props;
-    console.log( { item } );
     const styles = {
       page: {
         marginTop: '90px'
