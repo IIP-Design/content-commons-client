@@ -143,7 +143,9 @@
   &--results,
   &--video,
   &--article,
-  &--image {
+  &--image,
+  &--document,
+  &--package {
     header {
       @media screen and (max-width: 767px) {
         text-align: left;
@@ -188,6 +190,8 @@
   &--results,
   &--video,
   &--article,
+  &--document,
+  &--package,
   &--image,
   &--login,
   &--register,

@@ -53,7 +53,7 @@ class Video extends Component {
 
   /**
    * Update the url location and fetch the video player properties
-   * Fetch video props here as opoposed to render because we have to
+   * Fetch video props here as opposed to render because we have to
    * do an async request to check validity of youtube link
    */
   componentDidMount() {
