@@ -18,6 +18,8 @@ import ModalDescription from '../modals/ModalDescription/ModalDescription';
 import ModalPostMeta from '../modals/ModalPostMeta/ModalPostMeta';
 import ModalPostTags from '../modals/ModalPostTags/ModalPostTags';
 
+import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
+
 const Document = props => {
   const { item } = props;
   const {
@@ -47,6 +49,7 @@ const Document = props => {
           <ModalLangDropdown item={ item } selected={ language.display_name } />
         </div>
         <div>
+          <InternalUseDisplay brief />
           <PopupTrigger
             toolTip="Share video"
             icon={ { img: shareIcon, dim: 20 } }
@@ -86,6 +89,8 @@ const Document = props => {
       <ModalDescription description={ rawText } />
       <ModalPostMeta source={ owner } datePublished={ published } releaseType={ documentUse } />
       <ModalPostTags tags={ categories } />
+
+      <InternalUseDisplay expanded />
     </ModalItem>
   );
 };
