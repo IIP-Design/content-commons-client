@@ -51,7 +51,10 @@
   }
 
   &_section {
-    margin-top: 1em;
+    
+    &:not(.modal_section--postTags) {
+      margin-top: 1em;
+    }
 
     &--metaContent {
       margin-top: 1em;

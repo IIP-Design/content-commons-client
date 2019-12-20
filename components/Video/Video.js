@@ -311,6 +311,7 @@ class Video extends Component {
     const {
       unit, selectedLanguage, captions, videoProps, shareLink
     } = this.state;
+
     const {
       type, logo, author, team, published, modified, id, site
     } = this.props.item;
@@ -364,7 +365,7 @@ class Video extends Component {
                       { title: 'Help', component: <EmbedHelp /> }
                     ] }
                   />
-) }
+                ) }
               />
               ) }
               <PopupTrigger
@@ -382,7 +383,7 @@ class Video extends Component {
                       type={ this.props.item.type }
                     />
                   </Popup>
-) }
+                ) }
               />
               <PopupTrigger
                 toolTip="Download video"
@@ -423,7 +424,7 @@ class Video extends Component {
                       { title: 'Help', component: <DownloadHelp /> }
                     ] }
                   />
-) }
+                ) }
               />
             </div>
           </div>
@@ -432,7 +433,7 @@ class Video extends Component {
 
           <ModalContentMeta type={ type } dateUpdated={ modified } transcript={ this.getVideoTranscript() } />
           <ModalDescription description={ unit.desc } />
-          <ModalPostMeta author={ author } logo={ logo } source={ team } datePublished={ published } />
+          <ModalPostMeta logo={ logo } source={ team } datePublished={ published } />
           <ModalPostTags tags={ unit.categories } />
         </ModalItem>
       );
