@@ -1,5 +1,7 @@
-import { TEAM_VIDEO_PROJECTS_QUERY } from 'components/ScrollableTableWithMenu/TableBody/TableBody';
+import { TEAM_VIDEO_PROJECTS_QUERY } from 'lib/graphql/queries/video';
+import { TEAM_PACKAGES_QUERY } from 'lib/graphql/queries/package';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
+import { packages } from './pressMocks';
 
 export const videoProjects = [
   {
@@ -79,13 +81,13 @@ export const videoProjects = [
         ]
       }
     ]
-  }
+  },
 ];
 
 export const videoProjectIds = videoProjects.map( p => p.id );
 
 export const propVariables = {
-  team: 'IIP Video Production',
+  team: 'GPA Video',
   searchTerm: '',
   first: 4,
   skip: 0
@@ -116,5 +118,14 @@ export const mocks = [
         }
       }
     }
-  }
+  },
+  {
+    request: {
+      query: TEAM_PACKAGES_QUERY,
+      variables: { ...propVariables }
+    },
+    result: {
+      data: { packages },
+    }
+  },
 ];

@@ -1,22 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 import { Button, Popup } from 'semantic-ui-react';
+import { setProjectsQueries } from 'lib/graphql/util';
 import { UNPUBLISH_VIDEO_PROJECT_MUTATION } from 'lib/graphql/queries/video';
+import { UNPUBLISH_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 
 const UnpublishProjects = props => {
   const {
+    team,
     handleResetSelections,
     handleActionResult,
     showConfirmationMsg,
-    unpublishVideoProject,
     selections,
   } = props;
+
+  // Determine which Query to run
+  const graphQuery = setProjectsQueries( team, {
+    videoProjects: UNPUBLISH_VIDEO_PROJECT_MUTATION,
+    packages: UNPUBLISH_PACKAGE_MUTATION,
+  } );
+
+  const [unpublishDashboardProject, { loading, error }] = useMutation( graphQuery );
 
   const published = selections.filter( p => p.status === 'PUBLISHED' );
 
   const unpublishProject = async project => {
-    const result = await unpublishVideoProject( { variables: { id: project.id } } ).catch( error => ( {
+    const result = await unpublishDashboardProject( { variables: { id: project.id } } ).catch( error => ( {
       error,
       project,
       action: 'unpublish',
@@ -52,13 +62,11 @@ const UnpublishProjects = props => {
 };
 
 UnpublishProjects.propTypes = {
+  team: PropTypes.object,
   handleActionResult: PropTypes.func,
   handleResetSelections: PropTypes.func,
   showConfirmationMsg: PropTypes.func,
-  unpublishVideoProject: PropTypes.func,
   selections: PropTypes.array,
 };
 
-export default graphql( UNPUBLISH_VIDEO_PROJECT_MUTATION, {
-  name: 'unpublishVideoProject'
-} )( UnpublishProjects );
+export default UnpublishProjects;

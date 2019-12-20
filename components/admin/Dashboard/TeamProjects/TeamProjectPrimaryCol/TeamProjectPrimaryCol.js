@@ -58,7 +58,8 @@ const TeamProjectPrimaryCol = props => {
     d: { id },
     header,
     selectedItems,
-    toggleItemSelection
+    toggleItemSelection,
+    team
   } = props;
 
   const isDraft = d.status === 'DRAFT';
@@ -199,7 +200,7 @@ const TeamProjectPrimaryCol = props => {
                   { d.__typename !== 'DocumentFile' && (
                     <Fragment>
                       <span className="separator">|</span>
-                      <DetailsPopup id={ id } />
+                      <DetailsPopup id={ id } team={ team } />
                     </Fragment>
                   ) }
                 </Fragment>
@@ -222,7 +223,8 @@ TeamProjectPrimaryCol.propTypes = {
   d: PropTypes.object,
   header: PropTypes.object,
   selectedItems: PropTypes.instanceOf( Map ),
-  toggleItemSelection: PropTypes.func
+  toggleItemSelection: PropTypes.func,
+  team: PropTypes.object,
 };
 
 export default TeamProjectPrimaryCol;

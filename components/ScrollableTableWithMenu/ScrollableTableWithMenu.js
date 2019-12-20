@@ -190,7 +190,7 @@ class ScrollableTableWithMenu extends React.Component {
 
     const { columnMenu, team } = this.props;
 
-    const variables = { team, searchTerm };
+    const variables = { team: team.name, searchTerm };
 
     const paginationVars = { first: itemsPerPage, skip };
 
@@ -202,6 +202,7 @@ class ScrollableTableWithMenu extends React.Component {
         <Grid.Row className="items_tableMenus_wrapper">
           <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
             <TableActionsMenu
+              team={ team }
               displayActionsMenu={ displayActionsMenu }
               variables={ { ...variables, ...paginationVars } }
               selectedItems={ selectedItems }
@@ -211,6 +212,7 @@ class ScrollableTableWithMenu extends React.Component {
           </Grid.Column>
           <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 } className="items_tableMenus">
             <TableItemsDisplay
+              team={ team }
               handleChange={ this.handleItemsPerPageChange }
               searchTerm={ searchTerm }
               value={ itemsPerPage }
@@ -239,6 +241,7 @@ class ScrollableTableWithMenu extends React.Component {
                   selectedItems={ selectedItems }
                   tableHeaders={ tableHeaders }
                   toggleItemSelection={ this.toggleItemSelection }
+                  team={ team }
                   variables={ { ...variables, ...paginationVars } }
                   windowWidth={ windowWidth }
                   column={ column }
@@ -256,6 +259,7 @@ class ScrollableTableWithMenu extends React.Component {
               handlePageChange={ this.handlePageChange }
               itemsPerPage={ itemsPerPage }
               variables={ variables }
+              team={ team }
             />
           </Grid.Column>
         </Grid.Row>
@@ -267,7 +271,7 @@ class ScrollableTableWithMenu extends React.Component {
 ScrollableTableWithMenu.propTypes = {
   persistentTableHeaders: PropTypes.array,
   columnMenu: PropTypes.array,
-  team: PropTypes.string,
+  team: PropTypes.object,
   projectTab: PropTypes.string
 };
 

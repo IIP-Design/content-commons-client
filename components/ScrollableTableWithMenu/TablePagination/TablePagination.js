@@ -1,85 +1,61 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
 import { Pagination } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
+import { getProjectsType, setProjectsQueries } from 'lib/graphql/util';
+import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/video';
+import { TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
 import './TablePagination.scss';
-
-const TEAM_VIDEO_PROJECTS_COUNT_QUERY = gql`
-  query VideoProjectsCountByTeam( $team: String!, $searchTerm: String ) {
-    videoProjects(
-      where: {
-        AND: [
-          { team: { name: $team } },
-          {
-            OR: [
-              { projectTitle_contains: $searchTerm },
-              { descPublic_contains: $searchTerm },
-              { descInternal_contains: $searchTerm },
-              {
-                categories_some: {
-                  translations_some: { name_contains: $searchTerm }
-                }
-              },
-              {
-                author: {
-                  OR: [
-                    { firstName_contains: $searchTerm },
-                    { lastName_contains: $searchTerm },
-                    { email_contains: $searchTerm }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ) {
-      id
-    }
-  }
-`;
 
 const TablePagination = props => {
   const {
-    activePage, handlePageChange, itemsPerPage, variables
+    activePage, handlePageChange, itemsPerPage, variables, team
   } = props;
-  return (
-    <Query
-      query={ TEAM_VIDEO_PROJECTS_COUNT_QUERY }
-      variables={ { ...variables } }
-      fetchPolicy="cache-and-network"
-    >
-      { ( { loading, error, data } ) => {
-        if ( loading ) return 'Loading....';
-        if ( error ) return <ApolloError error={ error } />;
-        if ( !data || ( data && !data.videoProjects ) ) return null;
 
-        const projectsCount = data.videoProjects.length;
-        const totalPages = Math.ceil( projectsCount / itemsPerPage );
+  // Determine type of dashboard projects
+  const dashboardProjectsType = getProjectsType( team );
 
-        if ( projectsCount > 0 && totalPages > 1 ) {
-          return (
-            <Pagination
-              activePage={ activePage }
-              totalPages={ totalPages }
-              nextItem={ { content: 'Next ⟩', disabled: activePage === totalPages } }
-              prevItem={ { content: '⟨ Previous', disabled: activePage === 1 } }
-              siblingRange="2"
-              firstItem={ null }
-              lastItem={ null }
-              onPageChange={ handlePageChange }
-            />
-          );
-        }
-        return null;
-      } }
-    </Query>
-  );
+  // Determine which Query to run
+  const graphQuery = setProjectsQueries( team, {
+    videoProjects: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
+    packages: TEAM_PACKAGES_COUNT_QUERY
+  } );
+
+  const { loading, error, data } = useQuery( graphQuery, {
+    variables: { ...variables },
+    fetchPolicy: 'cache-and-network'
+  } );
+
+  if ( loading ) return 'Loading....';
+  if ( error ) return <ApolloError error={ error } />;
+
+  const dashboardData = data[dashboardProjectsType];
+  if ( !dashboardData ) return null;
+
+  const projectsCount = dashboardData.length;
+  const totalPages = Math.ceil( projectsCount / itemsPerPage );
+
+  if ( projectsCount > 0 && totalPages > 1 ) {
+    return (
+      <Pagination
+        activePage={ activePage }
+        totalPages={ totalPages }
+        nextItem={ { content: 'Next ⟩', disabled: activePage === totalPages } }
+        prevItem={ { content: '⟨ Previous', disabled: activePage === 1 } }
+        siblingRange="2"
+        firstItem={ null }
+        lastItem={ null }
+        onPageChange={ handlePageChange }
+      />
+    );
+  }
+
+  return null;
 };
 
 TablePagination.propTypes = {
+  team: PropTypes.object,
   activePage: PropTypes.number,
   handlePageChange: PropTypes.func,
   itemsPerPage: PropTypes.number,
