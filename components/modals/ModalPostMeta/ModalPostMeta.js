@@ -6,16 +6,17 @@ import './ModalPostMeta.scss';
 
 const ModalPostMeta = props => {
   const {
-    author,
     sourcelink,
     logo,
     source,
     datePublished,
-    originalLink
+    originalLink,
+    releaseType,
   } = props;
 
   const contentSite = contentRegExp( sourcelink );
   let sourceItem = <div />;
+
   if ( logo && sourcelink && !contentSite ) {
     sourceItem = (
       <a href={ sourcelink } target="_blank" rel="noopener noreferrer">
@@ -40,14 +41,8 @@ const ModalPostMeta = props => {
 
   return (
     <section className="modal_section modal_section--postMeta">
+      { releaseType && <span className="modal_postmeta_content">Release Type: { releaseType }</span> }
       { sourceItem }
-      { author
-        && (
-        <span className="modal_postmeta_content">
-          { `Author: ${author}` }
-        </span>
-        )
-      }
       <span className="modal_postmeta_content">
         { `Date Published: ${moment( datePublished ).format( 'MMMM DD, YYYY' )}` }
       </span>
@@ -61,7 +56,7 @@ const ModalPostMeta = props => {
 };
 
 ModalPostMeta.propTypes = {
-  author: string,
+  releaseType: string,
   sourcelink: string,
   logo: string,
   source: string,

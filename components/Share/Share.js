@@ -13,9 +13,12 @@ const Share = props => {
     id, isPreview, site, language, title, link, type
   } = props;
 
-  const queryStr = ( type === 'video' )
-    ? stringifyQueryString( { id, site, language } )
-    : stringifyQueryString( { id, site } );
+  const internalOnly = type === 'document';
+
+  const queryStr = ( type === 'post' )
+    ? stringifyQueryString( { id, site } )
+    : stringifyQueryString( { id, site, language } );
+
   let directLink = link;
   let shareLink = link;
 
@@ -26,12 +29,17 @@ const Share = props => {
     directLink = `${window.location.protocol}//${window.location.host}/article?${queryStr}`;
     shareLink = directLink;
   }
+  if ( type === 'document' ) {
+    directLink = `${window.location.protocol}//${window.location.host}/document?${queryStr}`;
+    shareLink = directLink;
+  }
+
   const facebookURL = `https://www.facebook.com/sharer/sharer.php?u=${shareLink}`;
   const tweet = `https://twitter.com/home?status=${title} ${shareLink}`;
 
   return (
     <div>
-      { shareLink && (
+      { shareLink && !internalOnly && (
         <List className="share_list">
           <ShareButton
             url={ facebookURL }
