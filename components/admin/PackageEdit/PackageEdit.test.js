@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import { MockedProvider, wait } from '@apollo/react-testing';
 import PackageEdit from './PackageEdit';
 import {
-  errorMocks, mocks, noDocumentsMocks, props, undefinedDataMocks
+  errorProps, loadingProps, mocks, noDataProps, noDocsProps, props
 } from './mocks';
 
 jest.mock( 'next/dynamic', () => () => 'Press-Package-File' );
@@ -22,8 +22,14 @@ jest.mock(
 );
 
 const ErrorComponent = (
-  <MockedProvider mocks={ errorMocks }>
-    <PackageEdit { ...props } />
+  <MockedProvider mocks={ mocks }>
+    <PackageEdit { ...errorProps } />
+  </MockedProvider>
+);
+
+const LoadingComponent = (
+  <MockedProvider mocks={ mocks }>
+    <PackageEdit { ...loadingProps } />
   </MockedProvider>
 );
 
@@ -60,7 +66,7 @@ describe( '<PackageEdit />', () => {
   } );
 
   it( 'renders initial loading state without crashing', () => {
-    const wrapper = mount( Component );
+    const wrapper = mount( LoadingComponent );
     const pkgEdit = wrapper.find( 'PackageEdit' );
     const loader = wrapper.find( 'Loader' );
     const msg = 'Loading package details page...';
@@ -176,31 +182,27 @@ describe( '<PackageEdit />', () => {
     expect( confirm().prop( 'open' ) ).toEqual( false );
   } );
 
-  it.skip( 'clicking the Confirm button in the Confirm modal calls deletePackage and redirects to the dashboard', async () => {
+  it( 'ActionButtons handle.deleteConfirm calls deletePackage and redirects to the dashboard', async done => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
     const actionButtons = () => wrapper.find( 'ActionButtons' );
-    const confirm = () => wrapper.find( 'Confirm' );
-    const btns = actionButtons().find( 'button' );
+    const { deleteConfirm } = actionButtons().prop( 'handle' );
 
-    // closed initially
-    expect( actionButtons().prop( 'deleteConfirmOpen' ) ).toEqual( false );
-    expect( confirm().prop( 'open' ) ).toEqual( false );
+    const test = async () => {
+      await deleteConfirm();
 
-    // open the modal
-    const deleteBtn = getBtn( 'Delete All', btns );
-    deleteBtn.simulate( 'click' );
-    expect( actionButtons().prop( 'deleteConfirmOpen' ) ).toEqual( true );
-    expect( confirm().prop( 'open' ) ).toEqual( true );
-
-    // confirm delete and go to dashboard
-    const spy = jest.spyOn( wrapper.find( 'PackageEdit' ).props(), 'deletePackage' );
-    const confirmBtn = getBtn( 'Yes, delete forever', confirm().find( 'button' ) );
-    confirmBtn.simulate( 'click' );
-    expect( spy ).toHaveBeenCalled();
-    expect( props.router.push ).toHaveBeenCalled();
+      /**
+       * redirect behavior test is also evidence that `deletePackage`
+       * was called since a redirect does not occur unless
+       * the `deletedPackageId` is returned from `deletePackage`
+       */
+      expect( props.router.push )
+        .toHaveBeenCalledWith( { pathname: '/admin/dashboard' } );
+      done();
+    };
+    test();
   } );
 
   it( 'clicking the Save & Exit button redirects to the dashboard', async () => {
@@ -218,7 +220,7 @@ describe( '<PackageEdit />', () => {
     } );
   } );
 
-  it.skip( 'clicking the Publish button ... TBD', async () => {
+  it( 'clicking the Publish button ... TBD', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
@@ -226,9 +228,14 @@ describe( '<PackageEdit />', () => {
     const actionButtons = () => wrapper.find( 'ActionButtons' );
     const btns = actionButtons().find( 'button' );
     const publishBtn = getBtn( 'Publish', btns );
+    const spy = jest.spyOn( global.console, 'log' );
 
     publishBtn.simulate( 'click' );
-    // TBD
+    /**
+     * Will need to revisit once publishing capability is added.
+     * For now, check to see if `console.log` was called.
+     */
+    expect( spy ).toHaveBeenCalledWith( 'Publish' );
   } );
 
   it( 'renders the PackageDetailsFormContainer', async () => {
@@ -242,7 +249,7 @@ describe( '<PackageEdit />', () => {
     expect( pkgFormContainer.prop( 'updateNotification' ).name )
       .toEqual( 'updateNotification' );
     expect( pkgFormContainer.prop( 'hasUploadCompleted' ) )
-      .toEqual( !!mocks[0].result.data.pkg.documents.length );
+      .toEqual( !!props.data.pkg.documents.length );
   } );
 
   it( 'renders ActionHeadline', async () => {
@@ -251,7 +258,7 @@ describe( '<PackageEdit />', () => {
     wrapper.update();
 
     const actionHeadline = wrapper.find( 'ActionHeadline' );
-    const { pkg } = mocks[0].result.data;
+    const { pkg } = props.data;
     const isPublished = pkg.status === 'PUBLISHED';
 
     expect( actionHeadline.exists() ).toEqual( true );
@@ -269,7 +276,7 @@ describe( '<PackageEdit />', () => {
     wrapper.update();
 
     const buttonPublish = wrapper.find( 'ButtonPublish' );
-    const { pkg } = mocks[0].result.data;
+    const { pkg } = props.data;
 
     expect( buttonPublish.exists() ).toEqual( true );
     expect( buttonPublish.prop( 'status' ) ).toEqual( pkg.status );
@@ -280,6 +287,38 @@ describe( '<PackageEdit />', () => {
       .toEqual( 'handlePublish' );
     expect( buttonPublish.prop( 'handleUnPublish' ).name )
       .toEqual( 'handleUnPublish' );
+  } );
+
+  it( 'ButtonPublish handlePublish calls handlePublish ... TBD', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const buttonPublish = wrapper.find( 'ButtonPublish' );
+    const spy = jest.spyOn( global.console, 'log' );
+
+    buttonPublish.prop( 'handlePublish' )();
+    /**
+     * Will need to revisit once publishing capability is added.
+     * For now, check to see if `console.log` was called.
+     */
+    expect( spy ).toHaveBeenCalledWith( 'Publish' );
+  } );
+
+  it( 'ButtonPublish handleUnPublish calls handleUnPublish ... TBD', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const buttonPublish = wrapper.find( 'ButtonPublish' );
+    const spy = jest.spyOn( global.console, 'log' );
+
+    buttonPublish.prop( 'handleUnPublish' )();
+    /**
+     * Will need to revisit once unpublishing capability is added.
+     * For now, check to see if `console.log` was called.
+     */
+    expect( spy ).toHaveBeenCalledWith( 'Unpublish' );
   } );
 
   it( 'renders ApolloError with an empty error prop', async () => {
@@ -315,20 +354,13 @@ describe( '<PackageEdit />', () => {
 
 describe( '<PackageEdit />, if there are no documents,', () => {
   const Component = (
-    <MockedProvider mocks={ noDocumentsMocks }>
-      <PackageEdit { ...props } />
+    <MockedProvider mocks={ mocks }>
+      <PackageEdit { ...noDocsProps } />
     </MockedProvider>
   );
 
-  const consoleError = console.error;
-  beforeAll( () => suppressActWarning( consoleError ) );
-
-  afterAll( () => {
-    console.error = consoleError;
-  } );
-
   it( 'renders initial loading state without crashing', () => {
-    const wrapper = mount( Component );
+    const wrapper = mount( LoadingComponent );
     const pkgEdit = wrapper.find( 'PackageEdit' );
     const loader = wrapper.find( 'Loader' );
     const msg = 'Loading package details page...';
@@ -406,7 +438,7 @@ describe( '<PackageEdit />, if there are no documents,', () => {
     expect( pkgFormContainer.prop( 'updateNotification' ).name )
       .toEqual( 'updateNotification' );
     expect( pkgFormContainer.prop( 'hasUploadCompleted' ) )
-      .toEqual( !!noDocumentsMocks[0].result.data.pkg.documents.length );
+      .toEqual( !!noDocsProps.data.pkg.documents.length );
   } );
 
   it( 'renders ApolloError with an empty error prop', async () => {
@@ -442,24 +474,17 @@ describe( '<PackageEdit />, if there are no documents,', () => {
 
 describe( '<PackageEdit />, if data === undefined is returned', () => {
   const Component = (
-    <MockedProvider mocks={ undefinedDataMocks }>
-      <PackageEdit { ...props } />
+    <MockedProvider mocks={ mocks }>
+      <PackageEdit { ...noDataProps } />
     </MockedProvider>
   );
 
-  const consoleError = console.error;
-  beforeAll( () => suppressActWarning( consoleError ) );
-
-  afterAll( () => {
-    console.error = consoleError;
-  } );
-
-  it( 'renders ApolloError', async () => {
+  it( 'returns null and does not crash', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
-    const apolloError = wrapper.find( 'ApolloError' );
+    const pkgEdit = wrapper.find( 'PackageEdit' );
 
-    expect( apolloError.exists() ).toEqual( true );
+    expect( pkgEdit.html() ).toEqual( null );
   } );
 } );

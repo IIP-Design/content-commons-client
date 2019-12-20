@@ -1,7 +1,7 @@
 import {
   tag1, tag2, mocks as pkgFiles
 } from 'components/admin/PackageEdit/PackageFiles/mocks';
-import { PACKAGE_QUERY, DELETE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
+import { DELETE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 
 const { documents } = pkgFiles[0].result.data.pkg;
 
@@ -57,46 +57,99 @@ export const pressJournalism = {
 export const props = {
   router: {
     push: jest.fn(),
-    query: {
-      id: 'test-123'
+    query: { id: 'test-123' }
+  },
+  error: undefined,
+  loading: false,
+  data: {
+    pkg: {
+      __typename: 'Package',
+      id: 'test-123',
+      createdAt: '2019-11-12T13:07:49.364Z',
+      updatedAt: '2019-11-12T13:08:28.830Z',
+      publishedAt: '',
+      type: 'DAILY_GUIDANCE',
+      assetPath: '',
+      author: {
+        __typename: 'User',
+        id: 'ck2m042xo0rnp0720nb4gxjix',
+        firstName: 'First',
+        lastName: 'Last'
+      },
+      team: {
+        __typename: 'Team',
+        id: 'ck2qgfbku0ubh0720iwhkvuyn',
+        name: 'GPA Press Office'
+      },
+      title: 'Final Guidance mm-dd-yy',
+      desc: '',
+      status: 'DRAFT',
+      visibility: 'INTERNAL',
+      categories: [pressJournalism],
+      tags: [tag1, tag2],
+      documents
     }
   }
+};
+
+export const noDocsProps = {
+  ...props,
+  error: undefined,
+  loading: false,
+  data: {
+    pkg: {
+      ...props.data.pkg,
+      documents: []
+    }
+  }
+};
+
+export const noDataProps = {
+  ...props,
+  error: undefined,
+  loading: false,
+  data: undefined
+};
+
+export const loadingProps = {
+  ...props,
+  error: undefined,
+  loading: true,
+  data: undefined
+};
+
+export const errorProps = {
+  ...props,
+  error: { graphQLErrors: [{ message: 'There was an error.' }] },
+  loading: false,
+  data: undefined
 };
 
 export const mocks = [
   {
     request: {
-      query: PACKAGE_QUERY,
+      query: DELETE_PACKAGE_MUTATION,
       variables: { id: props.router.query.id }
     },
     result: {
       data: {
-        pkg: {
+        deletePackage: {
           __typename: 'Package',
-          id: props.router.query.id,
-          createdAt: '2019-11-12T13:07:49.364Z',
-          updatedAt: '2019-11-12T13:08:28.830Z',
-          publishedAt: '',
-          type: 'DAILY_GUIDANCE',
-          assetPath: '',
-          author: {
-            __typename: 'User',
-            id: 'ck2m042xo0rnp0720nb4gxjix',
-            firstName: 'First',
-            lastName: 'Last'
-          },
-          team: {
-            __typename: 'Team',
-            id: 'ck2qgfbku0ubh0720iwhkvuyn',
-            name: 'GPA Press Office'
-          },
-          title: 'Final Guidance mm-dd-yy',
-          desc: '',
-          status: 'DRAFT',
-          visibility: 'INTERNAL',
-          categories: [pressJournalism],
-          tags: [tag1, tag2],
-          documents
+          id: props.router.query.id
+        }
+      }
+    }
+  }
+];
+
+export const publishedMocks = [
+  {
+    ...mocks[0],
+    result: {
+      data: {
+        package: {
+          ...mocks[0].result.data.package,
+          publishedAt: '2019-11-13T13:08:28.830Z'
         }
       }
     }
@@ -114,104 +167,5 @@ export const mocks = [
         }
       }
     }
-  },
-  // {
-  //   request: {
-  //     query: 'UPDATE_PACKAGE_MUTATION',
-  //     variables: {
-  //       data: { title: 'New Title' },
-  //       where: { id: props.router.query.id }
-  //     }
-  //   },
-  //   result: {
-  //     data: {
-  //       updatePackage: {
-  //         __typename: 'Package',
-  //         id: props.router.query.id,
-  //         title: 'New Title'
-  //       }
-  //     }
-  //   }
-  // }
-];
-
-export const errorMocks = [
-  {
-    ...mocks[0],
-    result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  },
-  { ...mocks[1] }
-];
-
-export const undefinedDataMocks = [
-  {
-    ...mocks[0],
-    result: {
-      data: undefined
-    }
-  },
-  { ...mocks[1] }
-];
-
-export const publishedMocks = [
-  {
-    ...mocks[0],
-    result: {
-      data: {
-        package: {
-          ...mocks[0].result.data.package,
-          publishedAt: '2019-11-13T13:08:28.830Z'
-        }
-      }
-    }
-  },
-  {
-    request: {
-      query: 'DELETE_PACKAGE_MUTATION',
-      variables: { id: props.router.query.id }
-    },
-    result: {
-      data: {
-        deletePackage: {
-          __typename: 'Package',
-          id: props.router.query.id
-        }
-      }
-    }
-  },
-  // {
-  //   request: {
-  //     query: 'UPDATE_PACKAGE_MUTATION',
-  //     variables: {
-  //       data: { title: 'New Title' },
-  //       where: { id: props.router.query.id }
-  //     }
-  //   },
-  //   result: {
-  //     data: {
-  //       updatePackage: {
-  //         __typename: 'Package',
-  //         id: props.router.query.id,
-  //         title: 'New Title'
-  //       }
-  //     }
-  //   }
-  // }
-];
-
-export const noDocumentsMocks = [
-  {
-    ...mocks[0],
-    result: {
-      data: {
-        pkg: {
-          ...mocks[0].result.data.pkg,
-          documents: []
-        }
-      }
-    }
-  },
-  { ...mocks[1] }
+  }
 ];
