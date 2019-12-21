@@ -19,7 +19,13 @@ const getPackageQuery = content => {
 };
 
 // no id redirect handled by `./index.js`
-const PackagePage = props => <PackageEdit data={ props.data } />;
+const PackagePage = props => (
+  <PackageEdit
+    data={ props.data }
+    loading={ props.loading }
+    error={ props.error }
+  />
+);
 
 PackagePage.getInitialProps = async ( { query, apolloClient } ) => {
   // empty query redirect handled by `./index.js`
@@ -44,7 +50,9 @@ PackagePage.getInitialProps = async ( { query, apolloClient } ) => {
 };
 
 PackagePage.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.object,
+  error: PropTypes.object,
+  loading: PropTypes.bool,
 };
 
 export default withRouter( PackagePage );
