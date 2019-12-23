@@ -16,4 +16,26 @@
       width: 50%;
     }
   }
+
+  &--document {
+
+    &_logo {
+      position: relative;
+      margin-bottom: 1em;
+      
+      img {
+        width: 30px;
+        height: auto;
+        margin-right: 0.5em;
+      }
+
+      p {
+        position: absolute;
+        top: 50%;
+        left: 2em;
+        transform: translateY(-50%);
+        margin-top: -3px;
+      }
+    }
+  }
 }

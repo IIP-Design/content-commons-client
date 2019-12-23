@@ -39,10 +39,21 @@ const ModalPostMeta = props => {
       : <div />;
   }
 
+  const documentSourceItem = () => (
+    <div className="modal_postmeta--document">
+      <div className="modal_postmeta--document_logo">
+        <img src={ logo } alt={ source } />
+        <p>U.S. Department of State</p>
+      </div>
+      <span className="modal_postmeta_content">Release Type: { releaseType }</span>
+      <span className="modal_postmeta_content">Source: { source }</span>
+    </div>
+  );
+
   return (
     <section className="modal_section modal_section--postMeta">
-      { releaseType && <span className="modal_postmeta_content">Release Type: { releaseType }</span> }
-      { sourceItem }
+      { releaseType && documentSourceItem() }
+      { !releaseType && sourceItem }
       <span className="modal_postmeta_content">
         { `Date Published: ${moment( datePublished ).format( 'MMMM DD, YYYY' )}` }
       </span>
