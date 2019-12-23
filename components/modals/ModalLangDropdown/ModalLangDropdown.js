@@ -14,7 +14,7 @@ const ModalLangDropdown = props => {
       <Dropdown
         className="modal_languages"
         value={ selected }
-        icon={ isOpen ? 'chevron up small' : 'chevron down small' }
+        icon={ isOpen ? 'chevron up' : 'chevron down' }
         options={ languages }
         onClick={ () => setIsOpen( !isOpen ) }
         onChange={ ( e, { value } ) => {
