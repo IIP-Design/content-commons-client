@@ -8,6 +8,7 @@ import 'styles/tooltip.scss';
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
+import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 import Share from '../Share/Share';
 import PopupTrigger from '../popups/PopupTrigger';
 import Popup from '../popups/Popup';
@@ -18,14 +19,12 @@ import ModalDescription from '../modals/ModalDescription/ModalDescription';
 import ModalPostMeta from '../modals/ModalPostMeta/ModalPostMeta';
 import ModalPostTags from '../modals/ModalPostTags/ModalPostTags';
 
-import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 
 const Document = props => {
   const { item } = props;
   const {
     id,
     published,
-    modified,
     owner,
     site,
     title,
@@ -49,7 +48,7 @@ const Document = props => {
           <ModalLangDropdown item={ item } selected={ language.display_name } />
         </div>
         <div>
-          <InternalUseDisplay brief />
+          <InternalUseDisplay />
           <PopupTrigger
             toolTip="Share video"
             icon={ { img: shareIcon, dim: 20 } }
@@ -99,7 +98,6 @@ Document.propTypes = {
   item: PropTypes.shape( {
     id: PropTypes.number,
     published: PropTypes.string,
-    modified: PropTypes.string,
     author: PropTypes.string,
     owner: PropTypes.string,
     site: PropTypes.string,

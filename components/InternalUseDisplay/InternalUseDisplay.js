@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 const styles = {
-  brief: {    
+  brief: {
     display: 'inline-block',
     margin: '0 1em 0 0',
     padding: '4px 10px',
@@ -20,17 +20,20 @@ const styles = {
     color: '#000',
     backgroundColor: '#d6d7d9',
   }
-}
+};
 
-const InternalUseDisplay = ( { brief, expanded } ) => (
-  <Fragment>
-    { brief && <p style={ styles.brief }>INTERNAL USE ONLY</p> }
-    { expanded && <p style={ styles.expanded }>INTERNAL USE ONLY - NOT FOR PUBLIC DISTRIBUTION</p> }
-  </Fragment>
+const renderInternalUseText = expanded => {
+  if ( expanded ) {
+    return <p style={ styles.expanded }>INTERNAL USE ONLY - NOT FOR PUBLIC DISTRIBUTION</p>;
+  }
+  return <p style={ styles.brief }>INTERNAL USE ONLY</p>;
+};
+
+const InternalUseDisplay = ( { expanded } ) => (
+  <Fragment>{ renderInternalUseText( expanded ) }</Fragment>
 );
 
 InternalUseDisplay.propTypes = {
-  brief: PropTypes.bool,
   expanded: PropTypes.bool,
 };
 
