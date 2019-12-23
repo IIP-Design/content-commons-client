@@ -6,6 +6,7 @@ import './ModalPostMeta.scss';
 
 const ModalPostMeta = props => {
   const {
+    type,
     sourcelink,
     logo,
     source,
@@ -13,35 +14,13 @@ const ModalPostMeta = props => {
     originalLink,
     releaseType,
   } = props;
-
+  
+  const isDocumentOrPackage = type && ( type === 'document' || type === 'package' );
   const contentSite = contentRegExp( sourcelink );
-  let sourceItem = <div />;
-
-  if ( logo && sourcelink && !contentSite ) {
-    sourceItem = (
-      <a href={ sourcelink } target="_blank" rel="noopener noreferrer">
-        <img src={ logo } alt={ source } className="modal_postmeta_logo" />
-      </a>
-    );
-  } else if ( logo ) {
-    sourceItem = <img src={ logo } alt={ source } className="modal_postmeta_logo" />;
-  } else if ( sourcelink && !contentSite ) {
-    sourceItem = (
-      <span className="modal_postmeta_content">
-        Source:
-        { ' ' }
-        <a href={ sourcelink } target="_blank" rel="noopener noreferrer">{ source }</a>
-      </span>
-    );
-  } else {
-    sourceItem = ( source && !contentSite )
-      ? <span className="modal_postmeta_content">Source: { source }</span>
-      : <div />;
-  }
-
-  const documentSourceItem = () => (
-    <div className="modal_postmeta--document">
-      <div className="modal_postmeta--document_logo">
+ 
+  const pressSourceItem = () => (
+    <div className="modal_postmeta--press">
+      <div className="modal_postmeta--press_logo">
         <img src={ logo } alt={ source } />
         <p>U.S. Department of State</p>
       </div>
@@ -50,10 +29,38 @@ const ModalPostMeta = props => {
     </div>
   );
 
+  const renderSourceItem = () => {
+    if ( isDocumentOrPackage ) return pressSourceItem();
+
+    let sourceItem = <div />;
+    if ( logo && sourcelink && !contentSite ) {
+      sourceItem = (
+        <a href={ sourcelink } target="_blank" rel="noopener noreferrer">
+          <img src={ logo } alt={ source } className="modal_postmeta_logo" />
+        </a>
+      );
+    } else if ( logo ) {
+      sourceItem = <img src={ logo } alt={ source } className="modal_postmeta_logo" />;
+    } else if ( sourcelink && !contentSite ) {
+      sourceItem = (
+        <span className="modal_postmeta_content">
+          Source:
+          { ' ' }
+          <a href={ sourcelink } target="_blank" rel="noopener noreferrer">{ source }</a>
+        </span>
+      );
+    } else {
+      sourceItem = ( source && !contentSite )
+        ? <span className="modal_postmeta_content">Source: { source }</span>
+        : <div />;
+    }
+
+    return sourceItem;
+  }  
+
   return (
     <section className="modal_section modal_section--postMeta">
-      { releaseType && documentSourceItem() }
-      { !releaseType && sourceItem }
+      { renderSourceItem() }
       <span className="modal_postmeta_content">
         { `Date Published: ${moment( datePublished ).format( 'MMMM DD, YYYY' )}` }
       </span>
@@ -67,6 +74,7 @@ const ModalPostMeta = props => {
 };
 
 ModalPostMeta.propTypes = {
+  type: string,
   releaseType: string,
   sourcelink: string,
   logo: string,

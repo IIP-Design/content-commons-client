@@ -86,7 +86,13 @@ const Document = props => {
       </div>
 
       <ModalDescription description={ rawText } />
-      <ModalPostMeta logo={ logo } source={ owner } datePublished={ published } releaseType={ documentUse } />
+      <ModalPostMeta
+        type={ type }
+        logo={ logo }
+        source={ owner }
+        datePublished={ published }
+        releaseType={ documentUse }
+      />
       <ModalPostTags tags={ categories } />
 
       <InternalUseDisplay expanded />
