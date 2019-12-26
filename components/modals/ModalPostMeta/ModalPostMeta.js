@@ -14,10 +14,10 @@ const ModalPostMeta = props => {
     originalLink,
     releaseType,
   } = props;
-  
+
   const isDocumentOrPackage = type && ( type === 'document' || type === 'package' );
   const contentSite = contentRegExp( sourcelink );
- 
+
   const pressSourceItem = () => (
     <div className="modal_postmeta--press">
       <div className="modal_postmeta--press_logo">
@@ -56,7 +56,7 @@ const ModalPostMeta = props => {
     }
 
     return sourceItem;
-  }  
+  };
 
   return (
     <section className="modal_section modal_section--postMeta">
