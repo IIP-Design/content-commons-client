@@ -9,14 +9,14 @@ import {
 } from './mocks';
 
 
-const props = {
+const videoProps = {
   id: 'ceae2',
   label: 'Type/Use',
   type: 'Video'
 };
 
 const imageProps = {
-  ...props,
+  ...videoProps,
   type: 'Image'
 };
 
@@ -27,6 +27,21 @@ const documentProps = {
   type: 'Document'
 };
 
+const getComponent = ( data, props ) => (
+  <MockedProvider mocks={ data } addTypename={ false }>
+    <UseDropdown { ...props } />
+  </MockedProvider>
+);
+
+const suppressActWarning = consoleError => {
+  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
+    if ( !args[0].includes( actMsg ) ) {
+      consoleError( ...args );
+    }
+  } );
+};
+
 describe( '<UseDropdown /> for video type', () => {
   /**
    * @todo Suppress React 16.8 `act()` warnings globally.
@@ -34,43 +49,17 @@ describe( '<UseDropdown /> for video type', () => {
    * @see https://github.com/facebook/react/issues/14769
    */
   const consoleError = console.error;
-  beforeAll( () => {
-    const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-    jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-      if ( !args[0].includes( actMsg ) ) {
-        consoleError( ...args );
-      }
-    } );
-  } );
+  beforeAll( () => suppressActWarning( consoleError ) );
 
   afterAll( () => {
     // restore console.error
     console.error = consoleError;
   } );
 
-  const Component = (
-    <MockedProvider mocks={ mocks } addTypename={ false }>
-      <UseDropdown { ...props } />
-    </MockedProvider>
-  );
-
-  const ErrorComponent = (
-    <MockedProvider mocks={ errorMocks } addTypename={ false }>
-      <UseDropdown { ...props } />
-    </MockedProvider>
-  );
-
-  const NullComponent = (
-    <MockedProvider mocks={ nullMocks } addTypename={ false }>
-      <UseDropdown { ...props } />
-    </MockedProvider>
-  );
-
-  const EmptyComponent = (
-    <MockedProvider mocks={ emptyMocks } addTypename={ false }>
-      <UseDropdown { ...props } />
-    </MockedProvider>
-  );
+  const Component = getComponent( mocks, videoProps );
+  const ErrorComponent = getComponent( errorMocks, videoProps );
+  const NullComponent = getComponent( nullMocks, videoProps );
+  const EmptyComponent = getComponent( emptyMocks, videoProps );
 
   it( 'renders loading state without crashing', () => {
     const wrapper = mount( Component );
@@ -142,50 +131,23 @@ describe( '<UseDropdown /> for video type', () => {
     const dropdown = wrapper.find( 'Dropdown [role="listbox"]' );
     const label = wrapper.find( 'label' );
 
-    expect( dropdown.prop( 'id' ) ).toEqual( props.id );
-    expect( label.prop( 'htmlFor' ) ).toEqual( props.id );
+    expect( dropdown.prop( 'id' ) ).toEqual( videoProps.id );
+    expect( label.prop( 'htmlFor' ) ).toEqual( videoProps.id );
   } );
 } );
 
 describe( '<UseDropdown /> for image type', () => {
   const consoleError = console.error;
-  beforeAll( () => {
-    const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-    jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-      if ( !args[0].includes( actMsg ) ) {
-        consoleError( ...args );
-      }
-    } );
-  } );
+  beforeAll( () => suppressActWarning( consoleError ) );
 
   afterAll( () => {
-    // restore console.error
     console.error = consoleError;
   } );
 
-  const Component = (
-    <MockedProvider mocks={ mocks } addTypename={ false }>
-      <UseDropdown { ...imageProps } />
-    </MockedProvider>
-  );
-
-  const ErrorComponent = (
-    <MockedProvider mocks={ errorMocks } addTypename={ false }>
-      <UseDropdown { ...imageProps } />
-    </MockedProvider>
-  );
-
-  const NullComponent = (
-    <MockedProvider mocks={ nullMocks } addTypename={ false }>
-      <UseDropdown { ...imageProps } />
-    </MockedProvider>
-  );
-
-  const EmptyComponent = (
-    <MockedProvider mocks={ emptyMocks } addTypename={ false }>
-      <UseDropdown { ...imageProps } />
-    </MockedProvider>
-  );
+  const Component = getComponent( mocks, imageProps );
+  const ErrorComponent = getComponent( errorMocks, imageProps );
+  const NullComponent = getComponent( nullMocks, imageProps );
+  const EmptyComponent = getComponent( emptyMocks, imageProps );
 
   it( 'renders loading state without crashing', () => {
     const wrapper = mount( Component );
@@ -257,50 +219,23 @@ describe( '<UseDropdown /> for image type', () => {
     const dropdown = wrapper.find( 'Dropdown [role="listbox"]' );
     const label = wrapper.find( 'label' );
 
-    expect( dropdown.prop( 'id' ) ).toEqual( props.id );
-    expect( label.prop( 'htmlFor' ) ).toEqual( props.id );
+    expect( dropdown.prop( 'id' ) ).toEqual( imageProps.id );
+    expect( label.prop( 'htmlFor' ) ).toEqual( imageProps.id );
   } );
 } );
 
 describe( '<UseDropdown /> for document type', () => {
   const consoleError = console.error;
-  beforeAll( () => {
-    const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-    jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-      if ( !args[0].includes( actMsg ) ) {
-        consoleError( ...args );
-      }
-    } );
-  } );
+  beforeAll( () => suppressActWarning( consoleError ) );
 
   afterAll( () => {
-    // restore console.error
     console.error = consoleError;
   } );
 
-  const Component = (
-    <MockedProvider mocks={ mocks } addTypename={ false }>
-      <UseDropdown { ...documentProps } />
-    </MockedProvider>
-  );
-
-  const ErrorComponent = (
-    <MockedProvider mocks={ errorMocks } addTypename={ false }>
-      <UseDropdown { ...documentProps } />
-    </MockedProvider>
-  );
-
-  const NullComponent = (
-    <MockedProvider mocks={ nullMocks } addTypename={ false }>
-      <UseDropdown { ...documentProps } />
-    </MockedProvider>
-  );
-
-  const EmptyComponent = (
-    <MockedProvider mocks={ emptyMocks } addTypename={ false }>
-      <UseDropdown { ...documentProps } />
-    </MockedProvider>
-  );
+  const Component = getComponent( mocks, documentProps );
+  const ErrorComponent = getComponent( errorMocks, documentProps );
+  const NullComponent = getComponent( nullMocks, documentProps );
+  const EmptyComponent = getComponent( emptyMocks, documentProps );
 
   it( 'renders loading state without crashing', () => {
     const wrapper = mount( Component );
