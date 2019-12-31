@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { string } from 'prop-types';
 import { contentRegExp } from 'lib/utils';
+import PressSourceMeta from 'components/PressSourceMeta/PressSourceMeta';
 import './ModalPostMeta.scss';
 
 const ModalPostMeta = props => {
@@ -18,19 +19,10 @@ const ModalPostMeta = props => {
   const isDocumentOrPackage = type && ( type === 'document' || type === 'package' );
   const contentSite = contentRegExp( sourcelink );
 
-  const pressSourceItem = () => (
-    <div className="modal_postmeta--press">
-      <div className="modal_postmeta--press_logo">
-        <img src={ logo } alt={ source } />
-        <p>U.S. Department of State</p>
-      </div>
-      <span className="modal_postmeta_content">Release Type: { releaseType }</span>
-      <span className="modal_postmeta_content">Source: { source }</span>
-    </div>
-  );
-
   const renderSourceItem = () => {
-    if ( isDocumentOrPackage ) return pressSourceItem();
+    if ( isDocumentOrPackage ) return (
+      <PressSourceMeta logo={ logo } source={ source } releaseType={ releaseType } />
+    );
 
     let sourceItem = <div />;
     if ( logo && sourcelink && !contentSite ) {

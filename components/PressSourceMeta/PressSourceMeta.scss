@@ -1,0 +1,23 @@
+@import "styles/colors.scss";
+
+.pressSource {  
+
+  &_logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+
+    img {
+      width: 30px;
+      height: auto;
+      margin-right: 0.5em;
+    }
+  }
+
+  &_content {
+    display: block;
+    font-size: 12px;
+    line-height: 1.428;
+    color: $shuttle-grey;
+  } 
+}

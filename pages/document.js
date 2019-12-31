@@ -19,7 +19,7 @@ const styles = {
 
 const DocumentPage = props => {
   const { item, url } = props;
-  if ( !item ) {    
+  if ( !item ) {
     return (
       <section className="max_width_1200" style={ styles.page }>
         <p style={ styles.paragraph }>Content Unavailable</p>

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import './ModalPostTags.scss';
 
 const renderCategory = ( category, index, arr ) => {
-  console.log(category)
   let { name } = category;
   const key = `cat_${index}`;
   if ( index > 2 ) {
