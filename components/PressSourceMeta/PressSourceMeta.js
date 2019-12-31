@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './PressSourceMeta.scss';
 
-const PressSourceMeta = ( { logo, source, releaseType  } ) => (
+const PressSourceMeta = ( { logo, source, releaseType } ) => (
   <div className="pressSource">
     <div className="pressSource_logo">
       <img src={ logo } alt={ source } />

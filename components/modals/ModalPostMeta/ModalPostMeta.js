@@ -20,9 +20,11 @@ const ModalPostMeta = props => {
   const contentSite = contentRegExp( sourcelink );
 
   const renderSourceItem = () => {
-    if ( isDocumentOrPackage ) return (
-      <PressSourceMeta logo={ logo } source={ source } releaseType={ releaseType } />
-    );
+    if ( isDocumentOrPackage ) {
+      return (
+        <PressSourceMeta logo={ logo } source={ source } releaseType={ releaseType } />
+      );
+    }
 
     let sourceItem = <div />;
     if ( logo && sourcelink && !contentSite ) {
