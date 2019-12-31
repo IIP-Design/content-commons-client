@@ -43,10 +43,7 @@ const Document = props => {
 
   return (
     <ModalItem headline={ title }>
-      <div className="modal_options">
-        <div className="modal_options_left">
-          <ModalLangDropdown item={ item } selected={ language.display_name } />
-        </div>
+      <div className="modal_options modal_options--noLanguage">
         <div>
           <InternalUseDisplay />
           <PopupTrigger

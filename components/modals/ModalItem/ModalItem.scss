@@ -96,6 +96,10 @@
     margin: 1em 0;
     height: 1.8em;
 
+    &--noLanguage {
+      justify-content: flex-end;
+    }
+
     &_share {
       > span:first-child,
       > img {
