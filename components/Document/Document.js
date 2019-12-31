@@ -33,7 +33,7 @@ const Document = props => {
     language,
     documentUrl,
     documentUse,
-    tags,    
+    tags,
     type,
   } = item;
 
