@@ -33,7 +33,7 @@ const Document = props => {
     language,
     documentUrl,
     documentUse,
-    categories,
+    tags,    
     type,
   } = item;
 
@@ -78,13 +78,12 @@ const Document = props => {
                 src={ downloadIcon }
                 width={ 18 }
                 height={ 18 }
-                alt="Not For Public Distribution"
+                alt="Download document icon"
               />
             </a>
           </Button>
         </div>
       </div>
-
       <ModalDescription description={ rawText } />
       <ModalPostMeta
         type={ type }
@@ -93,8 +92,7 @@ const Document = props => {
         datePublished={ published }
         releaseType={ documentUse }
       />
-      <ModalPostTags tags={ categories } />
-
+      <ModalPostTags tags={ tags } />
       <InternalUseDisplay expanded />
     </ModalItem>
   );
@@ -115,7 +113,7 @@ Document.propTypes = {
     language: PropTypes.object,
     documentUrl: PropTypes.string,
     documentUse: PropTypes.string,
-    categories: PropTypes.array,
+    tags: PropTypes.array,
     type: PropTypes.string,
   } ),
 };
