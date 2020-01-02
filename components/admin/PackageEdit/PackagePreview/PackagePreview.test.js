@@ -14,8 +14,8 @@ jest.mock(
   () => function PopupTabbed() { return ''; }
 );
 jest.mock(
-  'components/admin/download/DownloadOtherFiles/DownloadOtherFiles',
-  () => function DownloadOtherFiles() { return ''; }
+  'components/admin/download/DownloadPkgFiles/DownloadPkgFiles',
+  () => function DownloadPkgFiles() { return ''; }
 );
 
 const getComponent = ( data, props = { id: 'test-123' } ) => (
@@ -157,7 +157,7 @@ describe( '<PackagePreview />', () => {
     const downloadTrigger = getPopupTrigger( 'Download files', triggers );
     const content = mount( downloadTrigger.prop( 'content' ) );
     const panes = [
-      { title: 'Documents', componentName: 'DownloadOtherFiles' },
+      { title: 'Documents', componentName: 'DownloadPkgFiles' },
       { title: 'Help', componentName: 'DownloadHelp' }
     ];
 

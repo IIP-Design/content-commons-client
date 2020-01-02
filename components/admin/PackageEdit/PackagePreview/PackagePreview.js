@@ -5,7 +5,7 @@ import { Loader } from 'semantic-ui-react';
 import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
 import ApolloError from 'components/errors/ApolloError';
 import DownloadHelp from 'components/Video/DownloadHelp';
-import DownloadOtherFiles from 'components/admin/download/DownloadOtherFiles/DownloadOtherFiles';
+import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
 import ModalItem from 'components/modals/ModalItem/ModalItem';
 import Notification from 'components/Notification/Notification';
 import Popup from 'components/popups/Popup';
@@ -49,7 +49,7 @@ const PackagePreview = ( { id } ) => {
   if ( error ) return <ApolloError error={ error } />;
   if ( !data ) return null;
 
-  const { pkg: { title } } = data;
+  const { pkg: { title, documents } } = data;
 
   const previewMsgStyles = {
     position: 'absolute',
@@ -110,10 +110,9 @@ const PackagePreview = ( { id } ) => {
                   {
                     title: 'Documents',
                     component: (
-                      // will replace w/ <DownloadPressDocuments />
-                      <DownloadOtherFiles
-                        id={ id }
-                        instructions="Download Document(s)"
+                      <DownloadPkgFiles
+                        files={ documents }
+                        instructions="Download Package File(s)"
                         isPreview
                       />
                     )
