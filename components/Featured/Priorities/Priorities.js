@@ -150,6 +150,5 @@ const mapStateToProps = ( state, props ) => ( {
   priorities: state.featured.priorities[props.term]
 } );
 
-export const PrioritiesUnconnected = Priorities
-// export { PrioritiesUnconnected }; // 1/2/20 - renamed to resolve import/no-named-as-default lint error
+export const PrioritiesUnconnected = Priorities; // used for testing; 1/2/20 - renamed to resolve import/no-named-as-default lint error
 export default connect( mapStateToProps )( Priorities );
