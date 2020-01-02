@@ -5,6 +5,19 @@ import {
   errorMocks, mocks, undefinedDataMocks
 } from '../mocks';
 
+jest.mock(
+  'components/Share/Share',
+  () => function Share() { return ''; }
+);
+jest.mock(
+  'components/popups/PopupTabbed',
+  () => function PopupTabbed() { return ''; }
+);
+jest.mock(
+  'components/admin/download/DownloadOtherFiles/DownloadOtherFiles',
+  () => function DownloadOtherFiles() { return ''; }
+);
+
 const getComponent = ( data, props = { id: 'test-123' } ) => (
   <MockedProvider mocks={ data }>
     <PackagePreview { ...props } />
@@ -19,6 +32,10 @@ const suppressActWarning = consoleError => {
     }
   } );
 };
+
+const getPopupTrigger = ( str, triggers ) => (
+  triggers.findWhere( n => n.prop( 'tooltip' ) === str )
+);
 
 describe( '<PackagePreview />', () => {
   /**
@@ -66,6 +83,92 @@ describe( '<PackagePreview />', () => {
     const pkgPreview = wrapper.find( 'PackagePreview' );
 
     expect( pkgPreview.exists() ).toEqual( true );
+  } );
+
+  it( 'renders ModalItem with the correct prop values', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+    const modalItem = wrapper.find( 'ModalItem' );
+
+    expect( modalItem.prop( 'className' ) ).toEqual( 'package-preview' );
+    expect( modalItem.prop( 'headline' ) )
+      .toEqual( mocks[0].result.data.pkg.title );
+    expect( modalItem.prop( 'textDirection' ) ).toEqual( 'LTR' );
+  } );
+
+  it( 'renders Notification with the correct prop values', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const notification = wrapper.find( 'Notification' );
+    const msg = 'This is a preview of your package on Content Commons.';
+    const styles = {
+      position: 'absolute',
+      top: '0',
+      left: '0',
+      right: '0',
+      borderTopLeftRadius: '0.28571429rem',
+      borderTopRightRadius: '0.28571429rem',
+      padding: '1em 1.5em',
+      fontSize: '1em',
+      backgroundColor: '#fdb81e'
+    };
+
+    expect( notification.exists() ).toEqual( true );
+    expect( notification.prop( 'el' ) ).toEqual( 'p' );
+    expect( notification.prop( 'show' ) ).toEqual( true );
+    expect( notification.prop( 'customStyles' ) ).toEqual( styles );
+    expect( notification.prop( 'msg' ) ).toEqual( msg );
+  } );
+
+  it( 'renders "Share package" PopupTrigger', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const triggers = wrapper.find( 'PopupTrigger' );
+    const shareTrigger = getPopupTrigger( 'Share package', triggers );
+    const content = mount( shareTrigger.prop( 'content' ) );
+    const share = content.find( 'Share' );
+
+    expect( shareTrigger.exists() ).toEqual( true );
+    expect( content.name() ).toEqual( 'Popup' );
+    expect( content.prop( 'title' ) ).toEqual( 'Share this package.' );
+    expect( share.exists() ).toEqual( true );
+    expect( share.props() ).toEqual( {
+      id: 'test-123',
+      isPreview: true,
+      language: 'en-us',
+      link: 'The direct link to the package will appear here.',
+      site: '',
+      title: mocks[0].result.data.pkg.title,
+      type: 'package'
+    } );
+  } );
+
+  it( 'renders "Download files" PopupTrigger', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const triggers = wrapper.find( 'PopupTrigger' );
+    const downloadTrigger = getPopupTrigger( 'Download files', triggers );
+    const content = mount( downloadTrigger.prop( 'content' ) );
+    const panes = [
+      { title: 'Documents', componentName: 'DownloadOtherFiles' },
+      { title: 'Help', componentName: 'DownloadHelp' }
+    ];
+
+    expect( downloadTrigger.exists() ).toEqual( true );
+    expect( content.name() ).toEqual( 'PopupTabbed' );
+    expect( content.prop( 'title' ) ).toEqual( 'Download this document.' );
+    content.prop( 'panes' ).forEach( ( pane, i ) => {
+      const { title, component: { type: { name } } } = pane;
+      expect( title ).toEqual( panes[i].title );
+      expect( name ).toEqual( panes[i].componentName );
+    } );
   } );
 } );
 
