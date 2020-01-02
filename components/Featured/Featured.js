@@ -10,6 +10,7 @@ import {
   makeFeaturedError
 } from './selectors';
 
+import Packages from './Packages/Packages';
 import Recents from './Recents/Recents';
 import Priorities from './Priorities/Priorities';
 
@@ -25,6 +26,9 @@ class Featured extends Component {
           break;
         case 'recents':
           featuredComponents.push( <Recents key={ v4() } { ...props } /> );
+          break;
+        case 'packages':
+          featuredComponents.push( <Packages key={ v4() } { ...props } /> );
           break;
         default:
           break;
@@ -53,5 +57,5 @@ const mapStateToProps = () => createStructuredSelector( {
   error: makeFeaturedError()
 } );
 
-export { Featured }; // For test purposes
+export const FeaturedUnconnected = Featured; // For test purposes // 1/2/20 - renamed to resolve import/no-named-as-default lint error
 export default connect( mapStateToProps )( Featured );

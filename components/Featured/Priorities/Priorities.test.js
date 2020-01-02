@@ -1,5 +1,5 @@
 import { shallow } from 'enzyme';
-import { Priorities } from './Priorities';
+import { PrioritiesUnconnected } from './Priorities';
 
 const propsArray = [
   {
@@ -194,9 +194,9 @@ jest.mock( 'components/Video/Video', () => 'Video' );
 jest.mock( 'components/Post/Post', () => 'Post' );
 
 propsArray.forEach( props => {
-  const Component = <Priorities { ...props } />;
+  const Component = <PrioritiesUnconnected { ...props } />;
 
-  describe( '<Priorities />', () => {
+  describe( '<PrioritiesUnconnected />', () => {
     it( 'renders without crashing', () => {
       const wrapper = shallow( Component );
       expect( wrapper.exists() ).toEqual( true );
