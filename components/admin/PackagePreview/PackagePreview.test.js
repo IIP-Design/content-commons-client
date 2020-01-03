@@ -174,7 +174,7 @@ describe( '<PackagePreview />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const dateTime = wrapper.find( '.date-time' );
+    const dateTime = wrapper.find( '.package-preview > .date-time' );
     const dt = dateTime.find( 'dt' );
     const dd = dateTime.find( 'dd' );
     const time = dd.find( 'time' );
@@ -199,7 +199,7 @@ describe( '<PackagePreview />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const dateTime = wrapper.find( '.date-time' );
+    const dateTime = wrapper.find( '.package-preview > .date-time' );
     const dt = dateTime.find( 'dt' );
     const dd = dateTime.find( 'dd' );
     const time = dd.find( 'time' );

@@ -26,8 +26,42 @@
 
   .files {
     border-top: 1px solid $light-grey;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+
+    .ui.card {
+      border-radius: 0.111111111rem;
+
+      .seal {
+        display: flex;
+        border-radius: 0.111111111rem 0.111111111rem 0 0 !important;
+        padding: 1em;
+        color: #ffffff;
+        background-color: $blue;
+
+        > img {
+          width: 30px;
+          height: 30px;
+        }
+      }
+
+      > .header > .title {
+        padding: 1em;
+        font-size: 0.777777778rem
+      }
+    }
+
+    .ui.cards > .card > .content,
+    .ui.card > .content {
+      border-top: 0;
+    }
+
+    .ui.cards > .card .meta,
+    .ui.card .meta {
+      padding: 1em;
+      text-align: left;
+      background: transparent;
+    }
   }
 }
 

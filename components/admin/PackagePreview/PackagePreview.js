@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
-import { Loader } from 'semantic-ui-react';
+import { Card, Loader } from 'semantic-ui-react';
 import moment from 'moment';
 
 import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
@@ -18,6 +18,7 @@ import Share from 'components/Share/Share';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
 import downloadIcon from 'static/icons/icon_download.svg';
+import DosSeal from 'static/images/dos_seal.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
 import { getCount, getPluralStringOrNot } from 'lib/utils';
@@ -153,7 +154,39 @@ const PackagePreview = ( { id } ) => {
         </div>
       </div>
 
-      <div className="files">documents go here</div>
+      <div className="files">
+        <Card.Group>
+          { documents.map( doc => {
+            const { content } = doc;
+            const isDocUpdated = doc.updatedAt > doc.createdAt;
+            const docDateTime = isDocUpdated ? doc.updatedAt : doc.createdAt;
+            const docDateTimeTerms = [
+              {
+                definition: <time dateTime={ docDateTime }>{ `${moment( docDateTime ).format( 'LL' )}` }</time>,
+                displayName: isDocUpdated ? 'Updated' : 'Created',
+                name: isDocUpdated ? 'Updated' : 'Created'
+              }
+            ];
+
+            return (
+              <Card key={ doc.id } as="article" centered>
+                <div className="seal">
+                  <img src={ DosSeal } alt="U.S. Department of State seal" />
+                </div>
+                <Card.Header as="header">
+                  <h2 className="title">{ doc.title }</h2>
+                </Card.Header>
+                <Card.Content>
+                  { content ? content.html : <p>No text available</p> }
+                </Card.Content>
+                <Card.Meta as="footer">
+                  <MetaTerms className="date-time" unitId={ doc.id } terms={ docDateTimeTerms } />
+                </Card.Meta>
+              </Card>
+            );
+          } ) }
+        </Card.Group>
+      </div>
     </ModalItem>
   );
 };
