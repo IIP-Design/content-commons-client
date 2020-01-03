@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { Loader } from 'semantic-ui-react';
 import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
+
 import ApolloError from 'components/errors/ApolloError';
 import DownloadHelp from 'components/Video/DownloadHelp';
 import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
@@ -15,6 +16,8 @@ import Share from 'components/Share/Share';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
+
+import { getPluralStringOrNot } from 'lib/utils';
 
 const PackagePreview = ( { id } ) => {
   const { loading, error, data } = useQuery( PACKAGE_QUERY, {
@@ -99,20 +102,20 @@ const PackagePreview = ( { id } ) => {
           />
 
           <PopupTrigger
-            tooltip="Download files"
+            tooltip={ getPluralStringOrNot( documents, 'Download file' ) }
             icon={ { img: downloadIcon, dim: 18 } }
             position="right"
             show
             content={ (
               <PopupTabbed
-                title="Download this document."
+                title={ getPluralStringOrNot( documents, 'Package File' ) }
                 panes={ [
                   {
-                    title: 'Documents',
+                    title: getPluralStringOrNot( documents, 'Document' ),
                     component: (
                       <DownloadPkgFiles
                         files={ documents }
-                        instructions="Download Package File(s)"
+                        instructions={ getPluralStringOrNot( documents, 'Download Package File' ) }
                         isPreview
                       />
                     )

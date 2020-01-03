@@ -163,7 +163,7 @@ describe( '<PackagePreview />', () => {
 
     expect( downloadTrigger.exists() ).toEqual( true );
     expect( content.name() ).toEqual( 'PopupTabbed' );
-    expect( content.prop( 'title' ) ).toEqual( 'Download this document.' );
+    expect( content.prop( 'title' ) ).toEqual( 'Package Files' );
     content.prop( 'panes' ).forEach( ( pane, i ) => {
       const { title, component: { type: { name } } } = pane;
       expect( title ).toEqual( panes[i].title );
