@@ -8,52 +8,22 @@ import {
 // remove sortBy after GraphQL is implemented
 import sortBy from 'lodash/sortBy';
 import { getCount } from 'lib/utils';
-import { DOCUMENT_FILE_QUERY } from 'lib/graphql/queries/document';
-import ApolloError from 'components/errors/ApolloError';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
-// import test data for UI dev; remove after GraphQL is implemented
-import { bureaus } from 'components/admin/dropdowns/BureauOfficesDropdown/mocks';
+import BureauOfficesDropdown from 'components/admin/dropdowns/BureauOfficesDropdown/BureauOfficesDropdown';
 import { HandleOnChangeContext } from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsForm/PackageDetailsForm';
 import './PressPackageFile.scss';
 
 const PressPackageFile = props => {
+  const { document } = props;
   const handleOnChange = useContext( HandleOnChangeContext );
   const { errors, touched, values } = useFormikContext();
 
-  const { loading, error, data } = useQuery( DOCUMENT_FILE_QUERY, {
-    partialRefetch: true,
-    variables: { id: props.id },
-    skip: !props.id,
-    notifyOnNetworkStatusChange: true
-  } );
+  if ( !document ) return null;
 
-  if ( loading ) {
-    return (
-      <div style={ {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '200px'
-      } }
-      >
-        <Loader
-          active
-          inline="centered"
-          style={ { marginBottom: '1em' } }
-          content="Loading package file..."
-        />
-      </div>
-    );
-  }
-
-  if ( error ) return <ApolloError error={ error } />;
-
-  if ( !data ) return null;
-  const { id, filename, image } = data.documentFile;
+  const { id, filename, image } = document;
 
   const metaData = [
     {
@@ -80,26 +50,21 @@ const PressPackageFile = props => {
     isTouched( field ) ? errors && errors[id] && errors[id][field] : ''
   );
 
-  // for UI dev; remove after GraphQL is implemented
-  let options = [];
-  if ( bureaus ) {
-    options = sortBy( bureaus, bureau => bureau.name )
-      .map( bureau => ( { key: bureau.id, text: bureau.name, value: bureau.id } ) );
-  }
+  const value = values[id] ? values[id] : '';
 
   return (
     <div id={ id } className="package-file">
       <Grid>
         <Grid.Row>
           <Grid.Column mobile={ 16 } tablet={ 4 } computer={ 4 } className="thumbnail">
-            { getCount( image ) && image[0].signedUrl
-              ? <img src={ image[0].signedUrl } alt={ image[0].alt } />
-              : (
-                <div className="placeholder outer">
-                  <div className="placeholder inner" />
-                  <Loader active size="small" />
-                </div>
-              ) }
+            { getCount( image ) && image[0].signedUrl ? (
+              <img src={ image[0].signedUrl } alt={ image[0].alt } />
+            ) : (
+              <div className="placeholder outer">
+                <div className="placeholder inner" />
+                <Loader active size="small" />
+              </div>
+            ) }
           </Grid.Column>
 
           <Grid.Column mobile={ 16 } tablet={ 12 } computer={ 12 }>
@@ -113,7 +78,7 @@ const PressPackageFile = props => {
                     label="Title"
                     required
                     autoFocus
-                    value={ values[id].title }
+                    value={ value.title || '' }
                     onChange={ handleOnChange }
                     error={ isTouched( 'title' ) && hasError( 'title' ) }
                   />
@@ -121,24 +86,15 @@ const PressPackageFile = props => {
                 </div>
 
                 <Form.Field>
-                  { /**
-                     * for UI dev;
-                     * replace with <BureauOfficesDropdown />
-                     * after GraphQL is implemented
-                     */ }
-                  <Form.Dropdown
+                  <BureauOfficesDropdown
                     id={ `bureaus-${id}` }
                     name={ `${id}.bureaus` }
                     label="Lead Bureau(s)"
-                    options={ options }
-                    placeholder="–"
+                    value={ value.bureaus || [] }
                     onChange={ handleOnChange }
-                    value={ values[id].bureaus }
                     error={ isTouched( 'bureaus' ) && hasError( 'bureaus' ) }
                     multiple
                     search
-                    fluid
-                    selection
                     required
                   />
                   <p className="field__helper-text">Enter keywords separated by commas.</p>
@@ -154,7 +110,7 @@ const PressPackageFile = props => {
                     label="Release Type"
                     onChange={ handleOnChange }
                     type="document"
-                    value={ values[id].use }
+                    value={ value.use || '' }
                     error={ isTouched( 'use' ) && errors && errors[id] && !errors[id].use }
                     required
                   />
@@ -166,7 +122,7 @@ const PressPackageFile = props => {
                     id={ `visibility-${id}` }
                     name={ `${id}.visibility` }
                     label="Visibility Setting"
-                    value={ values[id].visibility }
+                    value={ value.visibility || '' }
                     onChange={ handleOnChange }
                     error={ isTouched( 'visibility' ) && hasError( 'visibility' ) }
                     required
@@ -187,7 +143,7 @@ const PressPackageFile = props => {
                     id={ `tags-${id}` }
                     name={ `${id}.tags` }
                     label="Tags"
-                    value={ values[id].tags }
+                    value={ value.tags || '' }
                     error={ touched.tags && !!errors.tags }
                     onChange={ handleOnChange }
                   />
@@ -203,7 +159,11 @@ const PressPackageFile = props => {
 };
 
 PressPackageFile.propTypes = {
-  id: PropTypes.string
+  document: PropTypes.shape( {
+    id: PropTypes.string,
+    filename: PropTypes.string,
+    image: PropTypes.array
+  } )
 };
 
 export default PressPackageFile;

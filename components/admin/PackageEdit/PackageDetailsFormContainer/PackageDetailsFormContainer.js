@@ -5,53 +5,27 @@
  */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import { Formik } from 'formik';
-import { Loader } from 'semantic-ui-react';
 import useTimeout from 'lib/hooks/useTimeout';
 import { buildUpdatePackageTree } from 'lib/graphql/builders/package';
-import { PACKAGE_FILES_QUERY, UPDATE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
-import ApolloError from 'components/errors/ApolloError';
+import { UPDATE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 import Notification from 'components/Notification/Notification';
 import PackageDetailsForm from './PackageDetailsForm/PackageDetailsForm';
 import { initialSchema, baseSchema } from './validationSchema';
 
 const PackageDetailsFormContainer = props => {
-  const { loading, error, data } = useQuery( PACKAGE_FILES_QUERY, {
-    partialRefetch: true,
-    variables: { id: props.id },
-    skip: !props.id
-  } );
+  const { pkg } = props;
   const [updatePackage] = useMutation( UPDATE_PACKAGE_MUTATION );
   const [showNotification, setShowNotification] = useState( false );
   const hideNotification = () => setShowNotification( false );
   const { startTimeout } = useTimeout( hideNotification, 2000 );
 
-  if ( loading ) {
-    return (
-      <div style={ {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '200px'
-      } }
-      >
-        <Loader
-          active
-          inline="centered"
-          style={ { marginBottom: '1em' } }
-          content="Loading package details form..."
-        />
-      </div>
-    );
-  }
-
-  if ( error ) return <ApolloError error={ error } />;
-  if ( !data ) return null;
+  if ( !pkg ) return null;
 
   const update = async ( values, prevValues ) => {
-    const { id } = props;
+    const { id } = pkg;
+
     if ( id ) { // ensure we have a package
       await updatePackage( {
         variables: {
@@ -69,17 +43,11 @@ const PackageDetailsFormContainer = props => {
     startTimeout();
   };
 
-  const getDropdownIds = property => (
-    property.map( p => p.id )
-  );
+  const getDropdownIds = property => ( ( property && Array.isArray( property ) ) ? property.map( p => p.id ) : [] );
 
-  const getPackage = () => (
-    ( data && data.pkg ) ? data.pkg : {}
-  );
-
-  const getFiles = pkg => {
-    if ( pkg ) {
-      return pkg.documents || [];
+  const getFiles = _pkg => {
+    if ( _pkg ) {
+      return _pkg.documents || [];
     }
     return [];
   };
@@ -104,15 +72,18 @@ const PackageDetailsFormContainer = props => {
   );
 
   const getInitialValues = () => {
-    const pkg = getPackage();
-    const files = getFiles( pkg );
+    let initialValues = {};
 
-    const initialValues = {
-      title: pkg.title || '',
-      type: pkg.type || '',
-      termsConditions: false,
-      ...getFileValues( files )
-    };
+    if ( pkg ) {
+      const files = getFiles( pkg );
+
+      initialValues = {
+        title: pkg.title || '',
+        type: pkg.type || '',
+        termsConditions: false,
+        ...getFileValues( files )
+      };
+    }
 
     return initialValues;
   };
@@ -133,8 +104,6 @@ const PackageDetailsFormContainer = props => {
       <PackageDetailsForm
         { ...formikProps }
         { ...props }
-        id={ props.id }
-        assetPath={ getPackage().assetPath }
         save={ save }
       >
         { props.children }
@@ -145,6 +114,7 @@ const PackageDetailsFormContainer = props => {
   return (
     <Formik
       initialValues={ getInitialValues() }
+      enableReinitialize // allow form to re initialize on document upload
       validationSchema={ props.id ? baseSchema : initialSchema }
     >
       { renderContent }
@@ -155,7 +125,13 @@ const PackageDetailsFormContainer = props => {
 PackageDetailsFormContainer.propTypes = {
   id: PropTypes.string,
   children: PropTypes.node, // eslint-disable-line
-  setIsDirty: PropTypes.func
+  setIsDirty: PropTypes.func,
+  pkg: PropTypes.shape( {
+    id: PropTypes.string,
+    title: PropTypes.string,
+    type: PropTypes.string,
+    documents: PropTypes.array
+  } )
 };
 
 export default PackageDetailsFormContainer;

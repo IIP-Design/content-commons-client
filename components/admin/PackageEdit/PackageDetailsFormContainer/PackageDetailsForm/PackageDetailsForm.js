@@ -3,22 +3,20 @@
  * PackageDetailsForm
  *
  */
-import React, { createContext, Fragment } from 'react';
+import React, { useState, createContext, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { Form, Grid, Input } from 'semantic-ui-react';
+import { getCount, getPluralStringOrNot } from 'lib/utils';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import TermsConditions from 'components/admin/TermsConditions/TermsConditions';
+import EditPackageFiles from 'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal';
+import { useCrudActionsDocument } from 'lib/hooks/useCrudActionsDocument';
 import './PackageDetailsForm.scss';
 
 export const HandleOnChangeContext = createContext();
 
-/**
-* Form component only. Form is wrapped in specific content type HOC to handle
-* queries, validation, etc
-* @param {object} props
-*/
 const PackageDetailsForm = props => {
   const {
     children,
@@ -26,19 +24,42 @@ const PackageDetailsForm = props => {
     errors,
     touched,
     handleChange,
-    hasUploadCompleted,
+    hasInitialUploadCompleted,
     setFieldValue,
     // isSubmitting,
     // isValid,
     setFieldTouched,
     // status,
     save,
-    router
+    pkg
   } = props;
 
-  const handleOnChange = ( e, {
-    name, value, type, checked
-  } ) => {
+  const router = useRouter();
+  const { createFile } = useCrudActionsDocument();
+
+  const [files, setFiles] = useState( [] );
+  const [modalOpen, setModalOpen] = useState( false );
+  const [progress, setProgress] = useState( 0 );
+
+  const handleUploadProgress = ( progressEvent, file ) => {
+    file.loaded = progressEvent.loaded;
+    setProgress( progressEvent.loaded );
+  };
+
+  const removeCreateQryParamFromUrl = () => {
+    router.replace(
+      router.pathname,
+      `/admin/package/${pkg.id}`,
+      { shallow: true }
+    );
+  };
+
+  const handleOnChange = (
+    e,
+    {
+      name, value, type, checked
+    }
+  ) => {
     if ( type === 'checkbox' ) {
       setFieldValue( name, checked );
     } else {
@@ -47,13 +68,40 @@ const PackageDetailsForm = props => {
     setFieldTouched( name, true, false );
   };
 
+  const handleAddFiles = e => {
+    const fileList = Array.from( e.target.files );
+    setFiles( fileList );
+    setModalOpen( true );
+  };
+
+  /**
+   * Save  files from edit modal
+   * @param {array} filesToSave
+   */
+  const handleSaveModalFiles = async filesToSave => {
+    await Promise.all( filesToSave.map( async file => createFile( pkg, file, handleUploadProgress ) ) );
+
+    // after initial save is complete, remove the "create" query param
+    removeCreateQryParamFromUrl();
+  };
+
+
+  /**
+   * Called from within edit modal to reset 'modalOpen' state to false
+   * If we do not reset then the state will never change and the modal
+   * will not reopen
+   */
+  const handleOnClose = () => {
+    setModalOpen( false );
+  };
+
   const getFormattedTypeName = type => {
     if ( type ) {
       switch ( type ) {
         case 'DAILY_GUIDANCE':
           return 'Guidance';
-        // case 'SOME_FUTURE_TYPE':
-        //   return 'Some Future Type';
+          // case 'SOME_FUTURE_TYPE':
+          //   return 'Some Future Type';
         default:
           return type;
       }
@@ -64,7 +112,7 @@ const PackageDetailsForm = props => {
   return (
     <Fragment>
       { /* Only use autosave with existing project */ }
-      { props.id && <FormikAutoSave save={ save } /> }
+      { pkg.id && <FormikAutoSave save={ save } /> }
       <Form className="package-data">
         <Grid stackable>
           <Grid.Row>
@@ -108,31 +156,39 @@ const PackageDetailsForm = props => {
             </Grid.Column>
           </Grid.Row>
 
-          { !hasUploadCompleted
-            && (
-              <Grid.Row reversed="computer">
-                <Grid.Column mobile={ 11 }>
-                  { router.query.action === 'create'
-                    && (
-                      <TermsConditions
-                        handleOnChange={ handleOnChange }
-                        error={ touched.termsConditions && !!errors.termsConditions }
-                      />
-                    ) }
-                </Grid.Column>
-                <Grid.Column mobile={ 16 } computer={ 5 }>
-                  <ButtonAddFiles
-                    accept=".doc, .docx"
-                    onChange={ () => {} }
-                    disabled={ !values.termsConditions }
-                    fluid
-                    multiple
-                  >
-                    Save draft & upload files
-                  </ButtonAddFiles>
-                </Grid.Column>
-              </Grid.Row>
-            ) }
+          { !hasInitialUploadCompleted && (
+            <Grid.Row reversed="computer">
+              <Grid.Column mobile={ 11 }>
+                <TermsConditions
+                  handleOnChange={ handleOnChange }
+                  error={ touched.termsConditions && !!errors.termsConditions }
+                />
+              </Grid.Column>
+              <Grid.Column mobile={ 16 } computer={ 5 }>
+                <EditPackageFiles
+                  filesToEdit={ files }
+                  extensions={ ['.doc', '.docx'] }
+                  trigger={ (
+                    <ButtonAddFiles
+                      accept=".doc, .docx"
+                      onChange={ handleAddFiles }
+                      disabled={ !values.termsConditions }
+                      fluid
+                      multiple
+                    >
+                      Save draft & upload files
+                    </ButtonAddFiles>
+                  ) }
+                  title={ `Preparing ${getCount( files )} ${getPluralStringOrNot( files, 'file' )} for upload... ` }
+                  headerStyles={ { fontSize: '1em', marginBottom: '.8em' } }
+                  modalOpen={ modalOpen }
+                  onClose={ handleOnClose }
+                  save={ handleSaveModalFiles }
+                  progress={ progress }
+                />
+              </Grid.Column>
+            </Grid.Row>
+          ) }
 
           <Grid.Row>
             <Grid.Column width="16">
@@ -148,11 +204,13 @@ const PackageDetailsForm = props => {
 };
 
 PackageDetailsForm.propTypes = {
-  id: PropTypes.string,
+  // id: PropTypes.string,
+  // assetPath: PropTypes.string,
+  pkg: PropTypes.object,
   children: PropTypes.node,
   // status: PropTypes.string,
   handleChange: PropTypes.func,
-  hasUploadCompleted: PropTypes.bool,
+  hasInitialUploadCompleted: PropTypes.bool,
   values: PropTypes.object,
   errors: PropTypes.object,
   touched: PropTypes.object,
@@ -160,8 +218,7 @@ PackageDetailsForm.propTypes = {
   // isSubmitting: PropTypes.bool,
   // isValid: PropTypes.bool,
   setFieldTouched: PropTypes.func,
-  save: PropTypes.func,
-  router: PropTypes.object
+  save: PropTypes.func
 };
 
-export default withRouter( PackageDetailsForm );
+export default PackageDetailsForm;

@@ -1,10 +1,11 @@
-@import "styles/colors.scss";
-@import "styles/mixins.scss";
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
 
 .package-files {
   border-top: 1px solid $light-grey;
   border-bottom: 1px solid $light-grey;
   padding-top: 2em;
+  padding-bottom: 2em;
   font-size: 0.777778rem;
 
   @include uppercase;
@@ -13,7 +14,7 @@
   .heading-group {
     display: flex;
   }
-  
+
   .heading {
     align-items: center;
     justify-content: space-between;
