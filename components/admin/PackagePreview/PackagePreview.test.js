@@ -1,8 +1,6 @@
 import { mount } from 'enzyme';
 import { MockedProvider, wait } from '@apollo/react-testing';
-import {
-  errorMocks, mocks, undefinedDataMocks
-} from 'components/admin/PackageEdit/mocks';
+import { errorMocks, mocks, undefinedDataMocks } from 'components/admin/PackageEdit/mocks';
 import PackagePreview from './PackagePreview';
 
 jest.mock(
@@ -157,8 +155,7 @@ describe( '<PackagePreview />', () => {
     const downloadTrigger = getPopupTrigger( 'Download files', triggers );
     const content = mount( downloadTrigger.prop( 'content' ) );
     const panes = [
-      { title: 'Documents', componentName: 'DownloadPkgFiles' },
-      { title: 'Help', componentName: 'DownloadHelp' }
+      { title: 'Documents', componentName: 'DownloadPkgFiles' }
     ];
 
     expect( downloadTrigger.exists() ).toEqual( true );

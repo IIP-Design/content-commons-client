@@ -5,7 +5,6 @@ import { Loader } from 'semantic-ui-react';
 import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
 
 import ApolloError from 'components/errors/ApolloError';
-import DownloadHelp from 'components/Video/DownloadHelp';
 import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
 import ModalItem from 'components/modals/ModalItem/ModalItem';
 import Notification from 'components/Notification/Notification';
@@ -119,8 +118,7 @@ const PackagePreview = ( { id } ) => {
                         isPreview
                       />
                     )
-                  },
-                  { title: 'Help', component: <DownloadHelp /> }
+                  }
                 ] }
               />
             ) }
