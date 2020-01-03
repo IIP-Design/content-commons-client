@@ -167,6 +167,17 @@ describe( '<PackagePreview />', () => {
       expect( name ).toEqual( panes[i].componentName );
     } );
   } );
+
+  it( 'renders the correct file count', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const fileCount = wrapper.find( '.file-count' );
+    const count = mocks[0].result.data.pkg.documents.length;
+
+    expect( fileCount.text() ).toEqual( `(${count}) documents` );
+  } );
 } );
 
 describe( '<PackageEdit />, if data === undefined is returned,', () => {

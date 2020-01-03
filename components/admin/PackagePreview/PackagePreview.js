@@ -13,11 +13,12 @@ import Popup from 'components/popups/Popup';
 import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
 import Share from 'components/Share/Share';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
-import { getPluralStringOrNot } from 'lib/utils';
+import { getCount, getPluralStringOrNot } from 'lib/utils';
 
 import './PackagePreview.scss';
 
@@ -126,6 +127,10 @@ const PackagePreview = ( { id } ) => {
               />
             ) }
           />
+          <span className="file-count">
+            { `(${getCount( documents )})` }
+            <VisuallyHidden> documents</VisuallyHidden>
+          </span>
         </div>
       </div>
 
