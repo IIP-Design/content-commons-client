@@ -10,11 +10,9 @@ import PackageEdit from 'components/admin/PackageEdit/PackageEdit';
  * @param {*} props
  */
 const PackagePage = props => {
-  const {
-    query: { id, action }
-  } = props;
+  const { query: { id } } = props;
 
-  return <PackageEdit id={ id } action={ action } />;
+  return <PackageEdit id={ id } />;
 };
 
 PackagePage.propTypes = {
