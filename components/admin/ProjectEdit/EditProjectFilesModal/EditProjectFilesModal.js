@@ -5,7 +5,7 @@ import {
   Form, Button, Modal, Header, Dimmer
 } from 'semantic-ui-react';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
-import { useFileUploadActions } from 'lib/hooks/useFileUploadActions';
+import { useFileStateManger } from 'lib/hooks/useFileStateManger';
 import Notification from 'components/Notification/Notification';
 import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
 import { graphql } from 'react-apollo';
@@ -37,7 +37,7 @@ const EditProjectFilesModal = ( {
     updateFileField,
     addFiles,
     removeFile
-  } = useFileUploadActions( normalize );
+  } = useFileStateManger( normalize );
 
   const allowedExtensions = extensions.join( ',' );
 
