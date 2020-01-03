@@ -155,7 +155,7 @@ const PressPackageFile = props => {
                     onChange={ handleOnChange }
                     type="document"
                     value={ values[id].use }
-                    error={ isTouched( 'use' ) && errors && errors[id] && !errors[id].use }
+                    error={ isTouched( 'use' ) && !values[id].use }
                     required
                   />
                   <p className="error-message">{ showErrorMsg( 'use' ) }</p>
