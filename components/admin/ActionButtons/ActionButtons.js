@@ -24,7 +24,7 @@ const ActionButtons = props => {
           <Fragment>
             <Button
               className="action-btn btn--delete"
-              content={ `Delete ${type === 'package' ? 'All' : 'Project'}` }
+              content={ `Delete ${type === 'package' ? 'Package' : 'Project'}` }
               basic
               onClick={ () => setDeleteConfirmOpen( true ) }
               disabled={ disabled.delete }
