@@ -74,6 +74,15 @@ const LoggedOutNav = props => {
             </li>
           ) ) }
           <li>
+            <Link href="/login">
+              <a>
+                <span onClick={ toggleMobileNav } onKeyUp={ keyUp } role="presentation">
+                  Employee Login
+                </span>
+              </a>
+            </Link>
+          </li>
+          <li>
             <a
               href="https://goo.gl/forms/PyLjAiaJVt3xONsd2"
               target="_blank"
