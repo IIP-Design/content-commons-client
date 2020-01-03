@@ -1,9 +1,9 @@
 import { mount } from 'enzyme';
 import { MockedProvider, wait } from '@apollo/react-testing';
-import PackagePreview from './PackagePreview';
 import {
   errorMocks, mocks, undefinedDataMocks
-} from '../mocks';
+} from 'components/admin/PackageEdit/mocks';
+import PackagePreview from './PackagePreview';
 
 jest.mock(
   'components/Share/Share',
