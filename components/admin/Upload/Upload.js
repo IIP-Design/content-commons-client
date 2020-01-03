@@ -41,7 +41,7 @@ const Upload = () => {
 
   /**
    * Checks whether a package exists with the supplied field name and values
-   * @param {object} where cluase containing fields to test existance agaist, i.e. { title: Daily Guidance }
+   * @param {object} where clause containing fields to test existance agaist, i.e. { title: Daily Guidance }
    */
   const doesPackageExist = async where => {
     const res = await packageExists( {
@@ -59,9 +59,12 @@ const Upload = () => {
   * @param {onject} user authenticated user
   */
   const createPressOfficePackage = async user => {
+    // todo: verify that user is on press team
     const title = `Guidance Package ${moment().format( 'MM-D-YY' )}`;
 
     // One Daily Guidance package is created for each day
+    // todo: since pacakges can be renamed, using the title is not
+    // a full proof way to check to ensure only 1 package is created/per day
     if ( await doesPackageExist( { title } ) ) {
       setCreationError( `A Guidance Package with the name "${title}" already exists.` );
       return;
@@ -130,6 +133,22 @@ const Upload = () => {
     }
   };
 
+  /**
+   * Renders button and only adds click handler if user is a member of the allowed team
+   * @param {object} options Contains button configuration
+   */
+  const renderButton = options => {
+    const {
+      contentType, icon, label, alt, onClick
+    } = options;
+    return (
+      <Button className={ `type ${setButtonState( contentType )}` } aria-label={ alt } onClick={ onClick }>
+        <img src={ icon } alt={ alt } />
+        <span>{ label }</span>
+      </Button>
+    );
+  };
+
   return (
     <div>
       <h1>Upload Content</h1>
@@ -142,16 +161,13 @@ const Upload = () => {
           <Modal
             className={ modalClassname }
             open={ modalOpen }
-            trigger={ (
-              <Button
-                className={ `type ${setButtonState( 'VIDEO' )}` }
-                aria-label="Upload Video Content"
-                onClick={ () => setModalOpen( true ) }
-              >
-                <img src={ videoIcon } alt="Upload video content" />
-                <span>Videos</span>
-              </Button>
-            ) }
+            trigger={ renderButton( {
+              contentType: 'VIDEO',
+              label: 'Videos',
+              icon: videoIcon,
+              alt: 'Upload video content',
+              onClick: team.name === 'GPA Video' ? () => setModalOpen( true ) : null
+            } ) }
             content={ (
               <VideoUpload
                 closeModal={ () => setModalOpen( false ) }
