@@ -7,7 +7,6 @@ import sortBy from 'lodash/sortBy';
 import gql from 'graphql-tag';
 
 import '../dropdown.scss';
-import { addEmptyOption } from 'lib/utils';
 
 const BUREAU_OFFICES_QUERY = gql`
   query BUREAU_OFFICES_QUERY {
@@ -41,8 +40,6 @@ const BureauOfficesDropdown = props => (
         } ) );
       }
 
-      addEmptyOption( options );
-
       return (
         <Fragment>
           { !props.label && (
@@ -61,7 +58,6 @@ const BureauOfficesDropdown = props => (
             placeholder="–"
             loading={ loading }
             fluid
-            search
             selection
             { ...props }
           />
