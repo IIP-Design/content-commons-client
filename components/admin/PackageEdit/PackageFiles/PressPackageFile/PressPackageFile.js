@@ -1,12 +1,9 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
 import { useFormikContext } from 'formik';
 import {
   Form, Grid, Input, Loader
 } from 'semantic-ui-react';
-// remove sortBy after GraphQL is implemented
-import sortBy from 'lodash/sortBy';
 import { getCount } from 'lib/utils';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
@@ -111,7 +108,7 @@ const PressPackageFile = props => {
                     onChange={ handleOnChange }
                     type="document"
                     value={ value.use || '' }
-                    error={ isTouched( 'use' ) && errors && errors[id] && !errors[id].use }
+                    error={ isTouched( 'use' ) && !value.use }
                     required
                   />
                   <p className="error-message">{ showErrorMsg( 'use' ) }</p>

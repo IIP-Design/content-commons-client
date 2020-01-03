@@ -51,7 +51,10 @@
   }
 
   &_section {
-    margin-top: 1em;
+    
+    &:not(.modal_section--postTags) {
+      margin-top: 1em;
+    }
 
     &--metaContent {
       margin-top: 1em;
@@ -92,6 +95,10 @@
     justify-content: space-between;
     margin: 1em 0;
     height: 1.8em;
+
+    &--noLanguage {
+      justify-content: flex-end;
+    }
 
     &_share {
       > span:first-child,
