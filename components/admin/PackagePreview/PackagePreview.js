@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { Loader } from 'semantic-ui-react';
+
 import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
 
 import ApolloError from 'components/errors/ApolloError';
@@ -17,6 +18,8 @@ import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
 import { getPluralStringOrNot } from 'lib/utils';
+
+import './PackagePreview.scss';
 
 const PackagePreview = ( { id } ) => {
   const { loading, error, data } = useQuery( PACKAGE_QUERY, {
