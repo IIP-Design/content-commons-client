@@ -23,6 +23,12 @@
       }
     }
   }
+
+  .files {
+    border-top: 1px solid $light-grey;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
 }
 
 .Package-preview {

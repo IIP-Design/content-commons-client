@@ -153,7 +153,7 @@ const PackagePreview = ( { id } ) => {
         </div>
       </div>
 
-      <div>documents go here</div>
+      <div className="files">documents go here</div>
     </ModalItem>
   );
 };
