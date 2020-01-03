@@ -106,6 +106,11 @@ const TeamProjectPrimaryCol = props => {
     `linkStyle projects_data_actions_action${isPublishing ? ' isPublishing' : ''}`
   );
 
+  const getPkgModalSize = screenSize => (
+    // screenSize: Semantic UI modal size prop value
+    d.__typename === 'Package' ? { size: screenSize } : {}
+  );
+
   const getContentPreviewComponent = () => {
     switch ( d.__typename ) {
       case 'Package':
@@ -220,6 +225,8 @@ const TeamProjectPrimaryCol = props => {
                       </button>
                     ) }
                     closeIcon
+                    className={ `${d.__typename}-preview` }
+                    { ...getPkgModalSize( 'fullscreen' ) }
                   >
                     <Modal.Content>
                       <ContentPreview id={ id } />

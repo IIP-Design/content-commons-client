@@ -24,3 +24,9 @@
     }
   }
 }
+
+.Package-preview {
+  &.ui.fullscreen.modal > .close {
+    top: auto;
+  }
+}
