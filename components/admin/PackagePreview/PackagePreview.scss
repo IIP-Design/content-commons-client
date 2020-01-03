@@ -3,6 +3,13 @@
 .package-preview {
   .modal_headline {
     margin-top: 1.5em;
+    margin-bottom: 0.25em;
+  }
+
+  .date-time {
+    > div > dt {
+      font-weight: 400;
+    }
   }
 
   .modal_options {

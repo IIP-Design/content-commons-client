@@ -115,24 +115,43 @@ export const mocks = [
       }
     }
   },
-  // {
-  //   request: {
-  //     query: 'UPDATE_PACKAGE_MUTATION',
-  //     variables: {
-  //       data: { title: 'New Title' },
-  //       where: { id: props.router.query.id }
-  //     }
-  //   },
-  //   result: {
-  //     data: {
-  //       updatePackage: {
-  //         __typename: 'Package',
-  //         id: props.router.query.id,
-  //         title: 'New Title'
-  //       }
-  //     }
-  //   }
-  // }
+  {
+    request: {
+      query: PACKAGE_QUERY,
+      variables: { id: 'new-pkg-id-xyz' }
+    },
+    result: {
+      data: {
+        pkg: {
+          __typename: 'Package',
+          id: 'new-package-id-xyz',
+          createdAt: '2020-01-03T17:52:30.082Z',
+          updatedAt: '2020-01-03T17:52:30.082Z',
+          publishedAt: '',
+          type: 'DAILY_GUIDANCE',
+          assetPath: '',
+          author: {
+            __typename: 'User',
+            id: 'ck2m042xo0rnp0720nb4gxjix',
+            firstName: 'First',
+            lastName: 'Last'
+          },
+          team: {
+            __typename: 'Team',
+            id: 'ck2qgfbku0ubh0720iwhkvuyn',
+            name: 'GPA Press Office'
+          },
+          title: 'Final Guidance mm-dd-yy',
+          desc: '',
+          status: 'DRAFT',
+          visibility: 'INTERNAL',
+          categories: [pressJournalism],
+          tags: [tag1, tag2],
+          documents
+        }
+      }
+    }
+  }
 ];
 
 export const errorMocks = [

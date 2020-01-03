@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { Loader } from 'semantic-ui-react';
+import moment from 'moment';
 
 import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
 
 import ApolloError from 'components/errors/ApolloError';
 import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
+import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import ModalItem from 'components/modals/ModalItem/ModalItem';
 import Notification from 'components/Notification/Notification';
 import Popup from 'components/popups/Popup';
@@ -55,7 +57,22 @@ const PackagePreview = ( { id } ) => {
   if ( error ) return <ApolloError error={ error } />;
   if ( !data ) return null;
 
-  const { pkg: { title, documents } } = data;
+  const { pkg } = data;
+  if ( !getCount( pkg ) ) return null;
+
+  const {
+    createdAt, updatedAt, title, documents
+  } = pkg;
+
+  const isUpdated = updatedAt > createdAt;
+  const dateTimeStamp = isUpdated ? updatedAt : createdAt;
+  const dateTimeTerms = [
+    {
+      definition: <time dateTime={ dateTimeStamp }>{ `${moment( dateTimeStamp ).format( 'LT, l' )}` }</time>,
+      displayName: isUpdated ? 'Updated' : 'Created',
+      name: isUpdated ? 'Updated' : 'Created'
+    }
+  ];
 
   const previewMsgStyles = {
     position: 'absolute',
@@ -82,6 +99,8 @@ const PackagePreview = ( { id } ) => {
         customStyles={ previewMsgStyles }
         msg="This is a preview of your package on Content Commons."
       />
+
+      <MetaTerms className="date-time" unitId={ id } terms={ dateTimeTerms } />
 
       <div className="modal_options">
         <div className="trigger-container">

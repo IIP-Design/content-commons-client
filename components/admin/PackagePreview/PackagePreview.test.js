@@ -1,5 +1,6 @@
 import { mount } from 'enzyme';
 import { MockedProvider, wait } from '@apollo/react-testing';
+import moment from 'moment';
 import { errorMocks, mocks, undefinedDataMocks } from 'components/admin/PackageEdit/mocks';
 import PackagePreview from './PackagePreview';
 
@@ -166,6 +167,54 @@ describe( '<PackagePreview />', () => {
       expect( title ).toEqual( panes[i].title );
       expect( name ).toEqual( panes[i].componentName );
     } );
+  } );
+
+  it( 'renders correct date & time if pkg has been updated', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const dateTime = wrapper.find( '.date-time' );
+    const dt = dateTime.find( 'dt' );
+    const dd = dateTime.find( 'dd' );
+    const time = dd.find( 'time' );
+    const { createdAt, updatedAt } = mocks[0].result.data.pkg;
+    const isUpdated = updatedAt > createdAt;
+    const label = isUpdated ? 'Updated' : 'Created';
+    const stamp = isUpdated ? updatedAt : createdAt;
+
+    expect( dateTime.exists() ).toEqual( true );
+    expect( dt.text() ).toEqual( label );
+    expect( dt.prop( 'id' ) ).toEqual( `${label}-test-123` );
+    expect( dd.prop( 'role' ) ).toEqual( 'definition' );
+    expect( dd.prop( 'aria-labelledby' ) ).toEqual( dt.prop( 'id' ) );
+    expect( time.prop( 'dateTime' ) ).toEqual( stamp );
+    expect( time.text() ).toEqual( moment( stamp ).format( 'LT, l' ) );
+  } );
+
+  it( 'renders correct date & time if pkg has NOT been updated', async () => {
+    // get new component with different package id
+    const NewComponent = getComponent( mocks, { id: 'new-pkg-id-xyz' } );
+    const wrapper = mount( NewComponent );
+    await wait( 0 );
+    wrapper.update();
+
+    const dateTime = wrapper.find( '.date-time' );
+    const dt = dateTime.find( 'dt' );
+    const dd = dateTime.find( 'dd' );
+    const time = dd.find( 'time' );
+    const { createdAt, updatedAt } = mocks[2].result.data.pkg;
+    const isUpdated = updatedAt > createdAt;
+    const label = isUpdated ? 'Updated' : 'Created';
+    const stamp = isUpdated ? updatedAt : createdAt;
+
+    expect( dateTime.exists() ).toEqual( true );
+    expect( dt.text() ).toEqual( label );
+    expect( dt.prop( 'id' ) ).toEqual( `${label}-new-pkg-id-xyz` );
+    expect( dd.prop( 'role' ) ).toEqual( 'definition' );
+    expect( dd.prop( 'aria-labelledby' ) ).toEqual( dt.prop( 'id' ) );
+    expect( time.prop( 'dateTime' ) ).toEqual( stamp );
+    expect( time.text() ).toEqual( moment( stamp ).format( 'LT, l' ) );
   } );
 
   it( 'renders the correct file count', async () => {
