@@ -5,15 +5,29 @@
  */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import truncate from 'lodash/truncate';
 import {
   Checkbox, Icon, Modal, Popup
 } from 'semantic-ui-react';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import ProjectPreviewContent from 'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
 import './TeamProjectPrimaryCol.scss';
+
+const PackagePreview = dynamic(
+  () => import(
+    /* webpackChunkName: "packagePreview" */
+    'components/admin/PackagePreview/PackagePreview'
+  )
+);
+
+const ProjectPreviewContent = dynamic(
+  () => import(
+    /* webpackChunkName: "projectPreviewContent" */
+    'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent'
+  )
+);
 
 const handleDataActionsOffClick = e => {
   // Check if click target is a data actions menu link
@@ -91,6 +105,20 @@ const TeamProjectPrimaryCol = props => {
   const getActionCls = () => (
     `linkStyle projects_data_actions_action${isPublishing ? ' isPublishing' : ''}`
   );
+
+  const getContentPreviewComponent = () => {
+    switch ( d.__typename ) {
+      case 'Package':
+        return PackagePreview;
+      // case 'SomeFutureType':
+      //   return FutureTypePreview;
+      case 'VideoProject':
+      default:
+        return ProjectPreviewContent;
+    }
+  };
+
+  const ContentPreview = getContentPreviewComponent();
 
   return (
     <Fragment>
@@ -194,7 +222,7 @@ const TeamProjectPrimaryCol = props => {
                     closeIcon
                   >
                     <Modal.Content>
-                      <ProjectPreviewContent id={ id } />
+                      <ContentPreview id={ id } />
                     </Modal.Content>
                   </Modal>
                   { d.__typename !== 'DocumentFile' && (
