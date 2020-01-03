@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { getCount } from 'lib/utils';
 import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import ActionHeadline from 'components/admin/ActionHeadline/ActionHeadline';
@@ -17,23 +16,26 @@ import PackageFiles from 'components/admin/PackageEdit/PackageFiles/PackageFiles
 import './PackageEdit.scss';
 
 const PackageEdit = props => {
+  const { id: packageId } = props;
+  const router = useRouter();
+
   const { loading, error: queryError, data } = useQuery( PACKAGE_QUERY, {
     partialRefetch: true,
-    variables: { id: props.id },
+    variables: { id: packageId },
     displayName: 'PackageQuery',
-    skip: !props.id
+    skip: !packageId
   } );
+
   const [deletePackage] = useMutation( DELETE_PACKAGE_MUTATION );
 
   // const SAVE_MSG_DELAY = 2000;
-  let saveMsgTimer = null;
+  const saveMsgTimer = null;
 
-  const [packageId, setPackageId] = useState( '' );
   const [mounted, setMounted] = useState( false );
   const [error, setError] = useState( {} );
   const [isDirty, setIsDirty] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
-  const [hasUploadCompleted, setHasUploadCompleted] = useState( false );
+  const [hasInitialUploadCompleted, setHasInitialUploadCompleted] = useState( false );
 
   const [notification, setNotification] = useState( {
     notificationMessage: '',
@@ -42,9 +44,6 @@ const PackageEdit = props => {
 
   useEffect( () => {
     setMounted( true );
-    if ( props.id ) { // do not htink this is neeeded
-      setPackageId( props.id );
-    }
 
     return () => {
       setMounted( false );
@@ -52,18 +51,19 @@ const PackageEdit = props => {
     };
   }, [] );
 
+
   useEffect( () => {
-    if ( data && data.pkg && data.pkg.documents ) {
-      const { documents } = data.pkg;
+    if ( data && data.pkg ) {
       /**
-       * Display files after upload finishes and upload modal
-       * closes. For now, use documents count for UI dev. Perhaps,
-       * it'd be better display files after all thumbnails have
+       * Display files after initial upload is saved and upload modal
+       * closes. Use the create query param to track action button display.
+       * This param is removed after initial save.
+       * We cannot rely on using the existence of documents as all documents
+       * could be removed after intial upload and we may need to delete the package
+       * Perhaps, it'd be better display files after all thumbnails have
        * resolved.
        */
-      if ( documents ) {
-        setHasUploadCompleted( Boolean( getCount( documents ) ) );
-      }
+      setHasInitialUploadCompleted( router.query.action !== 'create' );
     }
   }, [data] );
 
@@ -74,11 +74,11 @@ const PackageEdit = props => {
     } );
   };
 
-  const delayUnmount = ( fn, timer, delay ) => {
-    if ( timer ) clearTimeout( timer );
-    /* eslint-disable no-param-reassign */
-    timer = setTimeout( fn, delay );
-  };
+  // const delayUnmount = ( fn, timer, delay ) => {
+  //   if ( timer ) clearTimeout( timer );
+  //   /* eslint-disable no-param-reassign */
+  //   timer = setTimeout( fn, delay );
+  // };
 
   const deletePackageEnabled = () => (
     /**
@@ -88,15 +88,15 @@ const PackageEdit = props => {
     !packageId || ( data && data.pkg && !!data.pkg.publishedAt )
   );
 
-  const handleDisplaySaveMsg = () => {
-    if ( mounted ) {
-      updateNotification( '' );
-    }
-    saveMsgTimer = null;
-  };
+  // const handleDisplaySaveMsg = () => {
+  //   if ( mounted ) {
+  //     updateNotification( '' );
+  //   }
+  //   saveMsgTimer = null;
+  // };
 
   const handleExit = () => {
-    props.router.push( { pathname: '/admin/dashboard' } );
+    router.push( { pathname: '/admin/dashboard' } );
   };
 
   const handleDeleteConfirm = async () => {
@@ -207,9 +207,9 @@ const PackageEdit = props => {
               publish: handlePublish
             } }
             show={ {
-              delete: hasUploadCompleted,
-              save: hasUploadCompleted,
-              publish: hasUploadCompleted
+              delete: true, // package has been completed, show delete in the event user wants to delete instead of uploading files
+              save: hasInitialUploadCompleted,
+              publish: hasInitialUploadCompleted
             } }
           />
         </ProjectHeader>
@@ -228,45 +228,50 @@ const PackageEdit = props => {
       />
 
       <PackageDetailsFormContainer
-        id={ packageId }
+        pkg={ pkg }
         updateNotification={ updateNotification }
-        hasUploadCompleted={ hasUploadCompleted }
+        hasInitialUploadCompleted={ hasInitialUploadCompleted }
         setIsDirty={ setIsDirty }
       >
-        { hasUploadCompleted && <PackageFiles id={ packageId } /> }
+        <PackageFiles pkg={ pkg } hasInitialUploadCompleted={ hasInitialUploadCompleted } />
       </PackageDetailsFormContainer>
 
       { /**
          * can possibly be shared with VideoReview
          * with a little modification
-         */ }
-      { hasUploadCompleted
-        && (
-          <section className="actions">
-            <ActionHeadline
-              className="headline"
-              type="package"
-              published={ pkg && pkg.status === 'PUBLISHED' }
-              updated={ isDirty }
-            />
+      */ }
+      { hasInitialUploadCompleted && (
+        <section className="actions">
+          <ActionHeadline
+            className="headline"
+            type="package"
+            published={ pkg && pkg.status === 'PUBLISHED' }
+            updated={ isDirty }
+          />
 
-            <ButtonAddFiles className="basic action-btn btn--add-more" accept=".doc, .docx" onChange={ () => {} } multiple>+ Add Files</ButtonAddFiles>
+          <ButtonAddFiles
+            className="basic action-btn btn--add-more"
+            accept=".doc, .docx"
+            onChange={ () => {} }
+            multiple
+          >
+            + Add Files
+          </ButtonAddFiles>
 
-            <ButtonPublish
-              handlePublish={ handlePublish }
-              handleUnPublish={ handleUnPublish }
-              status={ ( pkg && pkg.status ) || 'DRAFT' }
-              updated={ isDirty }
-            />
-          </section>
-        ) }
+          <ButtonPublish
+            handlePublish={ handlePublish }
+            handleUnPublish={ handleUnPublish }
+            status={ ( pkg && pkg.status ) || 'DRAFT' }
+            updated={ isDirty }
+          />
+        </section>
+      ) }
     </div>
   );
 };
 
 PackageEdit.propTypes = {
-  id: PropTypes.string,
-  router: PropTypes.object,
+  id: PropTypes.string
 };
 
-export default withRouter( PackageEdit );
+export default PackageEdit;

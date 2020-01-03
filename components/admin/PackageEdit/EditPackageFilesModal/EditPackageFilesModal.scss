@@ -1,0 +1,61 @@
+@import "styles/colors.scss";
+
+.edit-support-files {
+  &.ui.modal.small {
+    width: 70%;
+    padding-bottom: 20px;
+
+    @media only screen and (min-width: 992px) {
+      width: 660px;
+    }
+
+    @media only screen and (min-width: 1200px) {
+      width: 700px;
+    }
+
+    .ui.inverted.simple.dimmer {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .ui.header {
+      background: #fff;
+      border-bottom: transparent;
+      padding: 1.25rem 1.5rem 1em 1.5rem;
+      color: $blue;
+    }
+
+    .content {
+      padding-top: 10px;
+
+      .ui.grid {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+
+        .row {
+          &:first-child {
+            border-bottom: 2px solid $alt-grey;
+            font-size: 1rem;
+          }
+
+          &:nth-child(2) {
+            padding-top: 15px;
+          }
+          padding-bottom: 0.5rem;
+          padding-top: 0.5rem;
+          font-size: 0.888888889rem;
+        }
+      }
+    }
+
+    .actions {
+      background: #fff;
+      border-top: transparent;
+      padding-top: 2.2em;
+      text-align: center;
+    }
+
+    .required {
+      color: $red;
+    }
+  }
+}
