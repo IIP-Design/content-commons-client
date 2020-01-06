@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import PackagePageIndex from './index';
+import PackagePageIndex from '../../pages/admin/package/index';
 
 const props = {
   query: { id: 'ck181818' },
