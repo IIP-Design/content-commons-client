@@ -42,15 +42,6 @@
         background-color: $blue;
       }
 
-      .seal {
-        display: flex;
-        align-items: center;
-
-        > img {
-          margin-right: 0.5em;
-        }
-      }
-
       .meta {
         > .seal {
           color: initial;

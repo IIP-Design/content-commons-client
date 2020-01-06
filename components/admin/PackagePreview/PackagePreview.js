@@ -8,6 +8,7 @@ import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
 
 import ApolloError from 'components/errors/ApolloError';
 import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
+import MediaObject from 'components/MediaObject/MediaObject';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import ModalItem from 'components/modals/ModalItem/ModalItem';
 import Notification from 'components/Notification/Notification';
@@ -172,10 +173,15 @@ const PackagePreview = ( { id } ) => {
             return (
               <Card key={ doc.id } as="article" centered>
                 <div className="use-container">
-                  <div className="seal">
-                    <img src={ DosSeal } alt="U.S. Department of State seal" height="30" width="30" />
-                    <span>{ use ? use.name : '' }</span>
-                  </div>
+                  <MediaObject
+                    body={ <span>{ use ? use.name : '' }</span> }
+                    className="seal"
+                    img={ {
+                      src: DosSeal,
+                      alt: 'U.S. Department of State seal',
+                      style: { height: '30px', width: '30px' }
+                    } }
+                  />
                   <img src={ iconPost } alt="document icon" />
                 </div>
                 <Card.Header as="header">
@@ -186,10 +192,15 @@ const PackagePreview = ( { id } ) => {
                 </Card.Content>
                 <Card.Meta as="footer">
                   <MetaTerms className="date-time" unitId={ doc.id } terms={ docDateTimeTerms } />
-                  <div className="seal">
-                    <img src={ DosSeal } alt="U.S. Department of State seal" height="24" width="24" />
-                    <span>U.S. Department of State</span>
-                  </div>
+                  <MediaObject
+                    body={ <span>U.S. Department of State</span> }
+                    className="seal"
+                    img={ {
+                      src: DosSeal,
+                      alt: 'U.S. Department of State seal',
+                      style: { height: '24px', width: '24px' }
+                    } }
+                  />
                 </Card.Meta>
               </Card>
             );
