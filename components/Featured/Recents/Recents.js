@@ -146,5 +146,5 @@ const mapStateToProps = ( state, props ) => ( {
   postTypeLabels: state.global.postTypes.list
 } );
 
-export const RecentsUnconnected = Recents; // 1/2/20 - renamed to resolve import/no-named-as-default lint error
+export const RecentsUnconnected = Recents; // used for testing; 1/2/20 - resolves import/no-named-as-default lint error
 export default connect( mapStateToProps )( Recents );
