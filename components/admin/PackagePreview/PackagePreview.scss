@@ -32,32 +32,29 @@
     .ui.card {
       border-radius: 0.111111111rem;
 
-      .seal {
+      .use-container {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         border-radius: 0.111111111rem 0.111111111rem 0 0 !important;
         padding: 1em;
         color: #ffffff;
         background-color: $blue;
+      }
+
+      .seal {
+        display: flex;
+        align-items: center;
 
         > img {
           margin-right: 0.5em;
-          width: 30px;
-          height: 30px;
         }
       }
 
       .meta {
         > .seal {
-          padding: 0;
           color: initial;
           font-family: Georgia, serif;
-          background-color: transparent;
-
-          > img {
-            width: 24px;
-            height: 24px;
-          }
         }
       }
 

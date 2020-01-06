@@ -19,6 +19,7 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import DosSeal from 'static/images/dos_seal.svg';
+import iconPost from 'static/icons/icon_32px_post.png';
 import shareIcon from 'static/icons/icon_share.svg';
 
 import { getCount, getPluralStringOrNot } from 'lib/utils';
@@ -170,9 +171,12 @@ const PackagePreview = ( { id } ) => {
 
             return (
               <Card key={ doc.id } as="article" centered>
-                <div className="seal">
-                  <img src={ DosSeal } alt="U.S. Department of State seal" />
-                  <span>{ use ? use.name : '' }</span>
+                <div className="use-container">
+                  <div className="seal">
+                    <img src={ DosSeal } alt="U.S. Department of State seal" height="30" width="30" />
+                    <span>{ use ? use.name : '' }</span>
+                  </div>
+                  <img src={ iconPost } alt="document icon" />
                 </div>
                 <Card.Header as="header">
                   <h2 className="title">{ doc.title }</h2>
@@ -183,7 +187,7 @@ const PackagePreview = ( { id } ) => {
                 <Card.Meta as="footer">
                   <MetaTerms className="date-time" unitId={ doc.id } terms={ docDateTimeTerms } />
                   <div className="seal">
-                    <img src={ DosSeal } alt="U.S. Department of State seal" />
+                    <img src={ DosSeal } alt="U.S. Department of State seal" height="24" width="24" />
                     <span>U.S. Department of State</span>
                   </div>
                 </Card.Meta>
