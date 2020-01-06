@@ -57,5 +57,5 @@ const mapStateToProps = () => createStructuredSelector( {
   error: makeFeaturedError()
 } );
 
-export const FeaturedUnconnected = Featured; // For test purposes // 1/2/20 - renamed to resolve import/no-named-as-default lint error
+export const FeaturedUnconnected = Featured; // For test purposes // 1/2/20 - resolves import/no-named-as-default lint error
 export default connect( mapStateToProps )( Featured );

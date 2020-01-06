@@ -30,7 +30,7 @@ const styles = {
 };
 
 const Package = props => (
-  <Card style={ { width: '200px', borderRadius: '8px' } }>
+  <Card style={ { width: '100%', borderRadius: '8px' } }>
     <Card.Content style={ { paddingBottom: '0.5em' } }>
       <Card.Header style={ styles.header }>
         <p>Guidance Package</p>
