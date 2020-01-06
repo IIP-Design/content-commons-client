@@ -6,6 +6,13 @@
     margin-bottom: 0.25em;
   }
 
+  .internal-use {
+    &.brief {
+      margin: 1em 1em 0 1em;
+      width: 123px;
+    }
+  }
+
   .date-time {
     > div > dt {
       font-weight: 400;

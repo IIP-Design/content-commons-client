@@ -8,6 +8,7 @@ import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
 
 import ApolloError from 'components/errors/ApolloError';
 import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
+import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 import MediaObject from 'components/MediaObject/MediaObject';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import ModalItem from 'components/modals/ModalItem/ModalItem';
@@ -184,12 +185,17 @@ const PackagePreview = ( { id } ) => {
                   />
                   <img src={ iconPost } alt="document icon" />
                 </div>
+
+                <InternalUseDisplay />
+
                 <Card.Header as="header">
                   <h2 className="title">{ doc.title }</h2>
                 </Card.Header>
+
                 <Card.Content>
                   { content ? content.html : <p>No text available</p> }
                 </Card.Content>
+
                 <Card.Meta as="footer">
                   <MetaTerms className="date-time" unitId={ doc.id } terms={ docDateTimeTerms } />
                   <MediaObject
