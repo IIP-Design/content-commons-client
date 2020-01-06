@@ -36,11 +36,44 @@ const PackageDetailsFormContainer = props => {
     }
   };
 
+  /**
+   * Workaround: Checks current values against previous values to see if an update is needed
+   * This is a workaround as the Formik prev values are getting out of sync
+   * with the previously saved values.  When the modal is opened and changes are
+   * made to the values, these saved/updated values are lost along the way.
+   * Need to investigate futher and fix
+   * @param {*} values
+   */
+  const isUpdateNeeded = ( values, prevValues ) => {
+    if ( values.title !== prevValues.title ) return true;
+
+    const { documents } = pkg;
+    const hasChanged = documents.map( document => {
+      const updatedDoc = values[document.id];
+      const documentChanged = Object.keys( updatedDoc ).map( key => {
+        if ( key === 'use' ) {
+          return updatedDoc[key] === document[key].id;
+        }
+        if ( Array.isArray( updatedDoc[key] ) ) {
+          const flattened = document[key].map( item => item.id );
+          return JSON.stringify( flattened ) === JSON.stringify( updatedDoc[key] );
+        }
+        return updatedDoc[key] === document[key];
+      } );
+      return documentChanged.every( currentValue => currentValue );
+    } );
+
+    return hasChanged.some( currentValue => !currentValue );
+  };
+
+
   const save = async ( values, prevValues ) => {
-    await update( values, prevValues );
-    setShowNotification( true );
-    props.setIsDirty( true );
-    startTimeout();
+    if ( isUpdateNeeded( values, prevValues ) ) {
+      await update( values, pkg.documents );
+      setShowNotification( true );
+      props.setIsDirty( true );
+      startTimeout();
+    }
   };
 
   const getDropdownIds = property => ( ( property && Array.isArray( property ) ) ? property.map( p => p.id ) : [] );
