@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Card } from 'semantic-ui-react';
-import dosSeal from 'static/images/dos_seal.svg';
+import { formatDate } from 'lib/utils';
 
 const styles = {
   header: {
@@ -29,21 +30,46 @@ const styles = {
   },
 };
 
-const Package = props => (
-  <Card style={ { width: '100%', borderRadius: '8px' } }>
-    <Card.Content style={ { paddingBottom: '0.5em' } }>
-      <Card.Header style={ styles.header }>
-        <p>Guidance Package</p>
-        <p>October 7, 2019</p>
-      </Card.Header>
-      <Card.Meta style={ styles.meta }>12 files</Card.Meta>
-      <Card.Meta style={ styles.meta }>Updated: 12:08 PM, 10/14/19</Card.Meta>
-      <Card.Meta style={ { marginTop: '3px' } }>
-        <img src={ dosSeal } alt="U.S. Department of State Seal" style={ styles.logo.img } />
-        <span style={ styles.logo.source }>GPA Press Office</span>
-      </Card.Meta>
-    </Card.Content>
-  </Card>
-);
+const Package = ( { item } ) => {
+  const {
+    logo,
+    published,
+    modified,
+    owner,
+    documents
+  } = item;
+
+  const formattedModfiedDate = formatDate( modified, 'en-US', {
+    month: '2-digit',
+    day: '2-digit',
+    year: '2-digit'
+  } );
+
+  const formattedModfiedTime = formatDate( modified, 'en-US', {
+    hour: 'numeric',
+    minute: '2-digit'
+  } );
+
+  return (
+    <Card style={ { width: '100%', borderRadius: '8px' } }>
+      <Card.Content style={ { paddingBottom: '0.5em' } }>
+        <Card.Header style={ styles.header }>
+          <p>Guidance Package</p>
+          <p>{ formatDate( published ) }</p>
+        </Card.Header>
+        <Card.Meta style={ styles.meta }>{ documents.length } files</Card.Meta>
+        <Card.Meta style={ styles.meta }>{ `Updated: ${formattedModfiedTime}, ${formattedModfiedDate}` }</Card.Meta>
+        <Card.Meta style={ { marginTop: '3px' } }>
+          <img src={ logo } alt="U.S. Department of State Seal" style={ styles.logo.img } />
+          <span style={ styles.logo.source }>{ `GPA ${owner}` }</span>
+        </Card.Meta>
+      </Card.Content>
+    </Card>
+  );
+};
+
+Package.propTypes = {
+  item: PropTypes.object
+};
 
 export default Package;
