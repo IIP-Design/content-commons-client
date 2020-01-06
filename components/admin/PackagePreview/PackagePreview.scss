@@ -26,20 +26,22 @@
 
   .files {
     border-top: 1px solid $light-grey;
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
 
     .ui.card {
       border-radius: 0.111111111rem;
 
       .seal {
         display: flex;
+        align-items: center;
         border-radius: 0.111111111rem 0.111111111rem 0 0 !important;
         padding: 1em;
         color: #ffffff;
         background-color: $blue;
 
         > img {
+          margin-right: 0.5em;
           width: 30px;
           height: 30px;
         }

@@ -157,7 +157,7 @@ const PackagePreview = ( { id } ) => {
       <div className="files">
         <Card.Group>
           { documents.map( doc => {
-            const { content } = doc;
+            const { content, use } = doc;
             const isDocUpdated = doc.updatedAt > doc.createdAt;
             const docDateTime = isDocUpdated ? doc.updatedAt : doc.createdAt;
             const docDateTimeTerms = [
@@ -172,6 +172,7 @@ const PackagePreview = ( { id } ) => {
               <Card key={ doc.id } as="article" centered>
                 <div className="seal">
                   <img src={ DosSeal } alt="U.S. Department of State seal" />
+                  <span>{ use ? use.name : '' }</span>
                 </div>
                 <Card.Header as="header">
                   <h2 className="title">{ doc.title }</h2>
