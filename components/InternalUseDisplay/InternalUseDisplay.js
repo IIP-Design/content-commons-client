@@ -1,40 +1,27 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import './InternalUseDisplay.scss';
 
-const styles = {
-  brief: {
-    display: 'inline-block',
-    margin: '0 1em 0 0',
-    padding: '4px 10px',
-    verticalAlign: 'top',
-    fontSize: '12px',
-    color: '#000',
-    backgroundColor: '#d6d7d9',
-  },
-  expanded: {
-    width: '100%',
-    marginTop: '2em',
-    padding: '11px 0',
-    textAlign: 'center',
-    fontSize: '12px',
-    color: '#000',
-    backgroundColor: '#d6d7d9',
-  }
-};
-
-const renderInternalUseText = expanded => {
+const renderInternalUseText = ( className, expanded, style ) => {
   if ( expanded ) {
-    return <p style={ styles.expanded }>INTERNAL USE ONLY - NOT FOR PUBLIC DISTRIBUTION</p>;
+    return <p className={ `internal-use expanded ${className}` } style={ style }>INTERNAL USE ONLY - NOT FOR PUBLIC DISTRIBUTION</p>;
   }
-  return <p style={ styles.brief }>INTERNAL USE ONLY</p>;
+  return <p className={ `internal-use brief ${className}` } style={ style }>INTERNAL USE ONLY</p>;
 };
 
-const InternalUseDisplay = ( { expanded } ) => (
-  <Fragment>{ renderInternalUseText( expanded ) }</Fragment>
+const InternalUseDisplay = ( { className, expanded, style } ) => (
+  <Fragment>{ renderInternalUseText( className, expanded, style ) }</Fragment>
 );
 
+InternalUseDisplay.defaultProps = {
+  className: '',
+  style: {}
+};
+
 InternalUseDisplay.propTypes = {
+  className: PropTypes.string,
   expanded: PropTypes.bool,
+  style: PropTypes.object
 };
 
 export default InternalUseDisplay;
