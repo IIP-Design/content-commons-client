@@ -47,6 +47,20 @@
         }
       }
 
+      .meta {
+        > .seal {
+          padding: 0;
+          color: initial;
+          font-family: Georgia, serif;
+          background-color: transparent;
+
+          > img {
+            width: 24px;
+            height: 24px;
+          }
+        }
+      }
+
       > .header > .title {
         padding: 1em;
         font-size: 0.777777778rem

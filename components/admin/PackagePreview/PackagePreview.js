@@ -182,6 +182,10 @@ const PackagePreview = ( { id } ) => {
                 </Card.Content>
                 <Card.Meta as="footer">
                   <MetaTerms className="date-time" unitId={ doc.id } terms={ docDateTimeTerms } />
+                  <div className="seal">
+                    <img src={ DosSeal } alt="U.S. Department of State seal" />
+                    <span>U.S. Department of State</span>
+                  </div>
                 </Card.Meta>
               </Card>
             );
