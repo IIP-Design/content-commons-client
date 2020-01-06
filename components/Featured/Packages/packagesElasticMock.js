@@ -79,6 +79,14 @@ export const packagesMock = [
         {
           id: 'es_doc_id8',
           type: 'document'
+        },
+        {
+          id: 'es_doc_id9',
+          type: 'document'
+        },
+        {
+          id: 'es_doc_id10',
+          type: 'document'
         }
       ]
     }
