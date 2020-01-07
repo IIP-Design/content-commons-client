@@ -12,6 +12,7 @@ import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay
 import MediaObject from 'components/MediaObject/MediaObject';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import ModalItem from 'components/modals/ModalItem/ModalItem';
+import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 import Notification from 'components/Notification/Notification';
 import Popup from 'components/popups/Popup';
 import PopupTrigger from 'components/popups/PopupTrigger';
@@ -183,6 +184,17 @@ const PackagePreview = ( { id } ) => {
               return '';
             };
 
+            const getEnglishTags = tags => (
+              tags.reduce( ( acc, tag ) => {
+                const englishTag = tag.translations.find( t => t.language.locale === 'en-us' );
+
+                if ( getCount( englishTag ) ) {
+                  acc.push( { id: tag.id, name: englishTag.name } );
+                }
+                return acc;
+              }, [] )
+            );
+
             return (
               <Card
                 key={ doc.id }
@@ -220,6 +232,7 @@ const PackagePreview = ( { id } ) => {
 
                 <Card.Meta as="footer">
                   <MetaTerms className="date-time" unitId={ doc.id } terms={ docDateTimeTerms } />
+                  { doc.tags && <ModalPostTags tags={ getEnglishTags( doc.tags ) } /> }
                   <MediaObject
                     body={ <span>U.S. Department of State</span> }
                     className="seal"
