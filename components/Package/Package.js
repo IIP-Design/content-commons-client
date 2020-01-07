@@ -69,7 +69,7 @@ const Package = ( { item } ) => {
 };
 
 Package.propTypes = {
-  item: PropTypes.object
+  item: PropTypes.object,
 };
 
 export default Package;
