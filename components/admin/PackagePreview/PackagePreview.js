@@ -171,6 +171,17 @@ const PackagePreview = ( { id } ) => {
               }
             ];
 
+            const getMarkup = () => {
+              if ( content && content.html ) {
+                /**
+                 * Arbitrarily display the first 8 paragraphs.
+                 * a better way?
+                 */
+                return content.html.split( /\s*<\/p>/, 8 ).filter( n => n ).join( '' );
+              }
+              return '';
+            };
+
             return (
               <Card key={ doc.id } as="article" centered>
                 <div className="use-container">
@@ -193,7 +204,10 @@ const PackagePreview = ( { id } ) => {
                 </Card.Header>
 
                 <Card.Content>
-                  { content ? content.html : <p>No text available</p> }
+                  { /* dangerouslySetInnerHTML for now */ }
+                  { content
+                    ? <div dangerouslySetInnerHTML={ { __html: getMarkup() } } /> // eslint-disable-line
+                    : <p>No text available</p> }
                 </Card.Content>
 
                 <Card.Meta as="footer">
