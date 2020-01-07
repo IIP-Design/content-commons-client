@@ -24,6 +24,7 @@ import DosSeal from 'static/images/dos_seal.svg';
 import iconPost from 'static/icons/icon_32px_post.png';
 import shareIcon from 'static/icons/icon_share.svg';
 
+import { hasCssSupport } from 'lib/browser';
 import { getCount, getPluralStringOrNot } from 'lib/utils';
 
 import './PackagePreview.scss';
@@ -183,7 +184,14 @@ const PackagePreview = ( { id } ) => {
             };
 
             return (
-              <Card key={ doc.id } as="article" centered>
+              <Card
+                key={ doc.id }
+                as="article"
+                fluid
+                { ...( hasCssSupport( 'display', 'grid' )
+                  ? { fluid: true }
+                  : { centered: true } ) }
+              >
                 <div className="use-container">
                   <MediaObject
                     body={ <span>{ use ? use.name : '' }</span> }

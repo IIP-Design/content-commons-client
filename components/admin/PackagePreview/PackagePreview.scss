@@ -36,8 +36,21 @@
     padding-top: 1.5em;
     padding-bottom: 1.5em;
 
+    @supports (display: grid) {
+      .ui.cards {
+        display: grid;
+        grid-gap: 2rem;
+        // use min 290px to match Semantic UI .ui.card width
+        grid-template-columns: repeat( auto-fill, minmax( 290px, 1fr ) );
+        margin: 0;
+      }
+    }
+
     .ui.card {
       border-radius: 0.111111111rem;
+      @supports (display: grid) {
+        margin: 0;
+      }
 
       .use-container {
         display: flex;
