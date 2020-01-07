@@ -183,7 +183,7 @@ const PackagePreview = ( { id } ) => {
                       style: { height: '30px', width: '30px' }
                     } }
                   />
-                  <img src={ iconPost } alt="document icon" />
+                  <img src={ iconPost } alt="document icon" className="icon" />
                 </div>
 
                 <InternalUseDisplay />
