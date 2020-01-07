@@ -13,6 +13,14 @@ import BureauOfficesDropdown from 'components/admin/dropdowns/BureauOfficesDropd
 import { HandleOnChangeContext } from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsForm/PackageDetailsForm';
 import './PressPackageFile.scss';
 
+
+// todo: write props comparison
+// use memo here to avoid rerending this files
+// when it is not re-rendered
+// const areEqual = ( prevProps, nextProps ) => {
+//   return prevProps.value === nextProps.value;
+// };
+
 const PressPackageFile = props => {
   const { document } = props;
   const handleOnChange = useContext( HandleOnChangeContext );
@@ -48,7 +56,7 @@ const PressPackageFile = props => {
   );
 
   const value = values[id] ? values[id] : '';
-
+  console.log( `rendering ${value.title}` );
   return (
     <div id={ id } className="package-file">
       <Grid>
@@ -163,4 +171,5 @@ PressPackageFile.propTypes = {
   } )
 };
 
+// export default React.memo( PressPackageFile, areEqual );
 export default PressPackageFile;
