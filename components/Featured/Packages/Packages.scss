@@ -1,0 +1,32 @@
+.latestPackages {
+
+  &_section {
+    padding: 2em;
+    background-color: #f1f1f1;
+  }
+
+  &_container {
+    max-width: 1340px;
+    margin: 0 auto;
+    padding: 1em;
+    background-color: #fff;
+  }
+
+  &_grid {
+    padding-bottom: 1em;
+  }
+
+  &_header {
+    display: flex;
+    justify-content: space-between;
+
+    &_title {
+      font-size: 24px;
+    }
+
+    &_link {
+      font-size: 14px;
+      color: #0071bc;
+    }
+  }
+}
