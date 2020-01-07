@@ -3,36 +3,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Grid, Message } from 'semantic-ui-react';
 import Package from 'components/Package/Package';
-
-const styles = {
-  section: {
-    padding: '2em',
-    backgroundColor: '#f1f1f1',
-  },
-  container: {
-    maxWidth: '1340px',
-    margin: '0 auto',
-    padding: '1em',
-    backgroundColor: '#fff',
-  },
-  grid: {
-    paddingBottom: '1em',
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between'
-  },
-  title: {
-    fontSize: '24px',
-  },
-  link: {
-    fontSize: '14px',
-    color: '#0071bc',
-  }
-};
+import './Packages.scss';
 
 const renderError = () => (
-  <section className="latestPackages" style={ styles.section }>
+  <section className="latestPackages_section">
     <Message>Oops, something went wrong.  We are unable to load the most recent guidance packages.</Message>
   </section>
 );
@@ -45,13 +19,13 @@ const Packages = props => {
   }
 
   return (
-    <section className="latestPackages" style={ styles.section }>
-      <div style={ styles.container }>
-        <div style={ styles.header }>
-          <h1 style={ styles.title }>Latest Guidance Packages</h1>
-          <a href="/" style={ styles.link }>Browse All</a>
+    <section className="latestPackages_section">
+      <div className="latestPackages_container">
+        <div className="latestPackages_header">
+          <h1 className="latestPackages_header_title">Latest Guidance Packages</h1>
+          <a className="latestPackages_header_link" href="/">Browse All</a>
         </div>
-        <Grid columns="equal" stackable style={ styles.grid }>
+        <Grid columns="equal" stackable className="latestPackages_grid">
           { packages.slice( 0, 4 ).map( pkg => (
             <Grid.Column key={ pkg.id }><Package item={ pkg } /></Grid.Column>
           ) ) }
