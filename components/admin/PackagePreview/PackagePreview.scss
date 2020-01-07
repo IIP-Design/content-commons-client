@@ -14,7 +14,6 @@
   }
 
   .date-time {
-    margin-bottom: 0.25em;
     color: $grey;
 
     > div > dt {
@@ -73,7 +72,16 @@
       .meta {
         margin-top: initial;
 
+        > .date-time {
+          font-size: 12px; // match size of tags
+
+          > div > dt {
+            margin-right: 0;
+          }
+        }
+
         > .modal_section--postTags {
+          margin-top: -0.75em;
           margin-bottom: 1em;
         }
 
