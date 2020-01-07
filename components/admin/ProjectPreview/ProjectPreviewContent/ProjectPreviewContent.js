@@ -36,10 +36,17 @@ import Share from 'components/Share/Share';
 import downloadIcon from 'static/icons/icon_download.svg';
 import embedIcon from 'static/icons/icon_embed.svg';
 import shareIcon from 'static/icons/icon_share.svg';
+import logoDOS from 'static/images/dos_seal.svg';
 import { getStreamData, getVimeoId, getYouTubeId } from 'lib/utils';
 import { UNIT_DETAILS_FRAGMENT } from 'lib/graphql/queries/video';
 
 import './ProjectPreviewContent.scss';
+
+const dosOwners = [
+  'GPA Video',
+  'GPA Media Strategy',
+  'U.S. Missions'
+];
 
 /* eslint-disable react/prefer-stateless-function */
 class ProjectPreviewContent extends React.PureComponent {
@@ -237,7 +244,7 @@ class ProjectPreviewContent extends React.PureComponent {
     }
 
     const {
-      title, language, descPublic, files, tags
+      title, language, descPublic, files, tags, categories
     } = selectedUnit;
     const contentType = this.getContentType( __typename );
 
@@ -452,12 +459,16 @@ class ProjectPreviewContent extends React.PureComponent {
           <ModalDescription description={ descPublic } />
         </div>
 
-        <ModalPostMeta source={ team.name } datePublished={ createdAt } />
+        <ModalPostMeta
+          logo={ dosOwners.includes( team.name ) ? logoDOS : null }
+          source={ team.name }
+          datePublished={ createdAt }
+        />
 
-        { ( tags && tags.length > 0 )
+        { ( categories && categories.length > 0 )
           && (
-            <ModalPostTags tags={ this.getTags( tags, selectedUnit ) } />
-          ) }
+          <ModalPostTags tags={ this.getTags( categories, selectedUnit ) } />
+        ) }
       </ModalItem>
     );
   }

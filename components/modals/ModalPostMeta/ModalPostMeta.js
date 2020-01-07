@@ -33,8 +33,18 @@ const ModalPostMeta = props => {
           <img src={ logo } alt={ source } className="modal_postmeta_logo" />
         </a>
       );
-    } else if ( logo ) {
-      sourceItem = <img src={ logo } alt={ source } className="modal_postmeta_logo" />;
+    // } else if ( logo ) {
+    //   sourceItem = <img src={ logo } alt={ source } className="modal_postmeta_logo" />;
+    } else if ( logo && !sourcelink ) {
+      sourceItem = (
+        <span style={ {
+          display: 'flex',
+          alignItems: 'center'
+        } }>
+          <img src={ logo } alt={ source } className="modal_postmeta_logo" style={ { width: '30px', marginRight: '3px' } } />
+          <span className="modal_postmeta_content">{ source }</span>
+        </span>
+      );
     } else if ( sourcelink && !contentSite ) {
       sourceItem = (
         <span className="modal_postmeta_content">
