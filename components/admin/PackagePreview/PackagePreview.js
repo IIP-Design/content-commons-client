@@ -8,12 +8,10 @@ import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
 
 import ApolloError from 'components/errors/ApolloError';
 import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
-import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
-import MediaObject from 'components/MediaObject/MediaObject';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import ModalItem from 'components/modals/ModalItem/ModalItem';
-import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 import Notification from 'components/Notification/Notification';
+import PressPackageItem from 'components/admin/PackagePreview/PressPackageItem/PressPackageItem';
 import Popup from 'components/popups/Popup';
 import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
@@ -21,11 +19,8 @@ import Share from 'components/Share/Share';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
 import downloadIcon from 'static/icons/icon_download.svg';
-import DosSeal from 'static/images/dos_seal.svg';
-import iconPost from 'static/icons/icon_32px_post.png';
 import shareIcon from 'static/icons/icon_share.svg';
 
-import { hasCssSupport } from 'lib/browser';
 import { getCount, getPluralStringOrNot } from 'lib/utils';
 
 import './PackagePreview.scss';
@@ -154,98 +149,16 @@ const PackagePreview = ( { id } ) => {
           />
           <span className="file-count">
             { `(${getCount( documents )})` }
-            <VisuallyHidden> documents</VisuallyHidden>
+            <VisuallyHidden> documents in this package</VisuallyHidden>
           </span>
         </div>
       </div>
 
       <div className="files">
         <Card.Group>
-          { documents.map( doc => {
-            const { content, use } = doc;
-            const isDocUpdated = doc.updatedAt > doc.createdAt;
-            const docDateTime = isDocUpdated ? doc.updatedAt : doc.createdAt;
-            const docDateTimeTerms = [
-              {
-                definition: <time dateTime={ docDateTime }>{ `${moment( docDateTime ).format( 'LL' )}` }</time>,
-                displayName: isDocUpdated ? 'Updated' : 'Created',
-                name: isDocUpdated ? 'Updated' : 'Created'
-              }
-            ];
-
-            const getMarkup = () => {
-              if ( content && content.html ) {
-                /**
-                 * Arbitrarily display the first 8 paragraphs.
-                 * a better way?
-                 */
-                return content.html.split( /\s*<\/p>/, 8 ).filter( n => n ).join( '' );
-              }
-              return '';
-            };
-
-            const getEnglishTags = tags => (
-              tags.reduce( ( acc, tag ) => {
-                const englishTag = tag.translations.find( t => t.language.locale === 'en-us' );
-
-                if ( getCount( englishTag ) ) {
-                  acc.push( { id: tag.id, name: englishTag.name } );
-                }
-                return acc;
-              }, [] )
-            );
-
-            return (
-              <Card
-                key={ doc.id }
-                as="article"
-                fluid
-                { ...( hasCssSupport( 'display', 'grid' )
-                  ? { fluid: true }
-                  : { centered: true } ) }
-              >
-                <div className="use-container">
-                  <MediaObject
-                    body={ <span>{ use ? use.name : '' }</span> }
-                    className="seal"
-                    img={ {
-                      src: DosSeal,
-                      alt: 'U.S. Department of State seal',
-                      style: { height: '30px', width: '30px' }
-                    } }
-                  />
-                  <img src={ iconPost } alt="document icon" className="icon" />
-                </div>
-
-                <InternalUseDisplay />
-
-                <Card.Header as="header">
-                  <h2 className="title">{ doc.title }</h2>
-                </Card.Header>
-
-                <Card.Content>
-                  { /* dangerouslySetInnerHTML for now */ }
-                  { content
-                    ? <div dangerouslySetInnerHTML={ { __html: getMarkup() } } /> // eslint-disable-line
-                    : <p>No text available</p> }
-                </Card.Content>
-
-                <Card.Meta as="footer">
-                  <MetaTerms className="date-time" unitId={ doc.id } terms={ docDateTimeTerms } />
-                  { doc.tags && <ModalPostTags tags={ getEnglishTags( doc.tags ) } /> }
-                  <MediaObject
-                    body={ <span>U.S. Department of State</span> }
-                    className="seal"
-                    img={ {
-                      src: DosSeal,
-                      alt: 'U.S. Department of State seal',
-                      style: { height: '24px', width: '24px' }
-                    } }
-                  />
-                </Card.Meta>
-              </Card>
-            );
-          } ) }
+          { documents.map( doc => (
+            <PressPackageItem file={ doc } />
+          ) ) }
         </Card.Group>
       </div>
     </ModalItem>

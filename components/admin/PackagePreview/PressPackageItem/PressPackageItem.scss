@@ -1,0 +1,61 @@
+@import "styles/colors.scss";
+
+.press-package-item {
+  &.ui.card {
+    border-radius: 0.111111111rem;
+    @supports (display: grid) {
+      margin: 0;
+    }
+
+    > .use-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 0.111111111rem 0.111111111rem 0 0 !important;
+      padding: 1em;
+      color: #ffffff;
+      background-color: $blue;
+
+      > .icon {
+          height: 30px;
+          width: 30px;
+        }
+    }
+
+    > .header {
+      > .title {
+          padding: 1em;
+          font-size: 0.777777778rem
+        }
+    }
+
+    > .content {
+      border-top: 0;
+    }
+
+    > .meta {
+      margin-top: initial;
+      padding: 1em;
+      text-align: left;
+      background: transparent;
+
+      > .date-time {
+        font-size: 12px; // match size of tags
+
+        > div > dt {
+          margin-right: 0;
+        }
+      }
+
+      > .modal_section--postTags {
+        margin-top: -0.75em;
+        margin-bottom: 1em;
+      }
+
+      > .seal {
+        color: initial;
+        font-family: Georgia, serif;
+      }
+    }
+  }
+}
