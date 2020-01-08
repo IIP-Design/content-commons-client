@@ -8,6 +8,7 @@ import { withRouter } from 'next/router';
 
 import { getYouTubeId } from 'lib/utils';
 import { updateUrl } from 'lib/browser';
+import { displayDOSLogo } from 'lib/sourceLogoUtils';
 
 // import plusIcon from '../assets/icons/icon_plus.svg';
 import downloadIcon from 'static/icons/icon_download.svg';
@@ -313,7 +314,7 @@ class Video extends Component {
     } = this.state;
 
     const {
-      type, logo, author, team, published, modified, id, site
+      type, logo, owner, published, modified, id, site
     } = this.props.item;
 
     const toggleCaptions = [...new Set( unit.source.map( item => item.burnedInCaptions ) )];
@@ -433,7 +434,11 @@ class Video extends Component {
 
           <ModalContentMeta type={ type } dateUpdated={ modified } transcript={ this.getVideoTranscript() } />
           <ModalDescription description={ unit.desc } />
-          <ModalPostMeta logo={ logo } source={ team } datePublished={ published } />
+          <ModalPostMeta
+            logo={ logo || displayDOSLogo( owner ) }
+            source={ owner }
+            datePublished={ published }
+          />
           <ModalPostTags tags={ unit.categories } />
         </ModalItem>
       );

@@ -10,10 +10,32 @@
 
   &_logo {
     height: 5em;
+    max-height: 70px;
     padding: 1em 0;
 
     @media screen and (max-width: 767px) {
       width: 50%;
     }
+
+    &_wrapper {
+      display: inline-block;
+    }
+
+    &--withSource {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+
+      &_img {
+        width: 30px; 
+        height: auto;
+        padding: 0;
+      }
+
+      &_source {
+        font-size: 18px;
+      }
+    }
   }
 }
+

@@ -50,6 +50,7 @@ class ResultItem extends Component {
       'GPA Media Strategy',
       'U.S. Missions'
     ];
+
     if ( !source && item.type === 'video' && dosOwners.includes( item.owner ) ) {
       source = (
         <div style={ { display: 'block', marginTop: '2px' } }>
@@ -109,7 +110,7 @@ class ResultItem extends Component {
               <Image data-action={ action } src={ item.thumbnail } width="100%" height="100%" />
               <Image data-action={ action } src={ item.icon } className="card_postIcon" />
             </div>
-) }
+          ) }
         >
           <Modal.Content>
             { this.getModalContent( item ) }
