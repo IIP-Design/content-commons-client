@@ -11,7 +11,7 @@ import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/Downloa
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import ModalItem from 'components/modals/ModalItem/ModalItem';
 import Notification from 'components/Notification/Notification';
-import PressPackageItem from 'components/admin/PackagePreview/PressPackageItem/PressPackageItem';
+import PackageItemPreview from 'components/admin/PackagePreview/PackageItemPreview/PackageItemPreview';
 import Popup from 'components/popups/Popup';
 import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
@@ -62,8 +62,11 @@ const PackagePreview = ( { id } ) => {
   if ( !getCount( pkg ) ) return null;
 
   const {
-    createdAt, updatedAt, title, documents
+    createdAt, updatedAt, title, type, documents
   } = pkg;
+
+  // in future: const files = documents || files || etc.
+  const files = documents;
 
   const isUpdated = updatedAt > createdAt;
   const dateTimeStamp = isUpdated ? updatedAt : createdAt;
@@ -154,11 +157,13 @@ const PackagePreview = ( { id } ) => {
         </div>
       </div>
 
-      <div className="files">
+      <div className="package-items">
         <Card.Group>
-          { documents.map( doc => (
-            <PressPackageItem file={ doc } />
-          ) ) }
+          { getCount( files )
+            ? files.map( file => (
+              <PackageItemPreview key={ file.id } file={ file } type={ type } />
+            ) )
+            : 'There are no files associated with this package.' }
         </Card.Group>
       </div>
     </ModalItem>

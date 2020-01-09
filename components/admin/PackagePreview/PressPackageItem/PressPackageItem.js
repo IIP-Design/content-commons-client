@@ -17,7 +17,7 @@ import { getCount } from 'lib/utils';
 import './PressPackageItem.scss';
 
 const PressPackageItem = props => {
-  const { file: doc } = props;
+  const { file: doc, handleClick } = props;
   if ( !doc || !getCount( doc ) ) return null;
 
   const { content, use } = doc;
@@ -56,59 +56,63 @@ const PressPackageItem = props => {
   return (
     <Card
       key={ doc.id }
-      as="article"
       className="press-package-item"
+      onClick={ handleClick }
+      { ...( handleClick ? { onClick: handleClick } : {} ) }
       { ...( hasCssSupport( 'display', 'grid' )
         ? { fluid: true }
         : { centered: true } ) }
     >
-      <div className="use-container">
-        <MediaObject
-          body={ <span>{ use && use.name ? use.name : '' }</span> }
-          className="seal"
-          img={ {
-            src: DosSeal,
-            alt: 'U.S. Department of State seal',
-            style: { height: '30px', width: '30px' }
-          } }
-        />
-        <img src={ iconPost } alt="document icon" className="icon" />
-      </div>
+      <article className="container">
+        <div className="use-container">
+          <MediaObject
+            body={ <span>{ use && use.name ? use.name : '' }</span> }
+            className="seal"
+            img={ {
+              src: DosSeal,
+              alt: 'U.S. Department of State seal',
+              style: { height: '30px', width: '30px' }
+            } }
+          />
+          <img src={ iconPost } alt="document icon" className="icon" />
+        </div>
 
-      <InternalUseDisplay />
+        <InternalUseDisplay />
 
-      <Card.Header as="header">
-        <h2 className="title">{ doc.title || '' }</h2>
-      </Card.Header>
+        <Card.Header as="header">
+          <h2 className="title">{ doc.title || '' }</h2>
+        </Card.Header>
 
-      <Card.Content>
-        { /* dangerouslySetInnerHTML for now */ }
-        { content
-          ? <div dangerouslySetInnerHTML={ { __html: getMarkup() } } /> // eslint-disable-line
-          : <p>No text available</p> }
-      </Card.Content>
+        <Card.Content>
+          { /* dangerouslySetInnerHTML for now */ }
+          { content
+            ? <div dangerouslySetInnerHTML={ { __html: getMarkup() } } /> // eslint-disable-line
+            : <p>No text available</p> }
+        </Card.Content>
 
-      <Card.Meta as="footer">
-        <MetaTerms className="date-time" unitId={ doc.id } terms={ docDateTimeTerms } />
+        <Card.Meta as="footer">
+          <MetaTerms className="date-time" unitId={ doc.id } terms={ docDateTimeTerms } />
 
-        { Array.isArray( doc.tags ) && getCount( doc.tags ) > 0 && <ModalPostTags tags={ getEnglishTags( doc.tags ) } /> }
+          { Array.isArray( doc.tags ) && getCount( doc.tags ) > 0 && <ModalPostTags tags={ getEnglishTags( doc.tags ) } /> }
 
-        <MediaObject
-          body={ <span>U.S. Department of State</span> }
-          className="seal"
-          img={ {
-            src: DosSeal,
-            alt: 'U.S. Department of State seal',
-            style: { height: '24px', width: '24px' }
-          } }
-        />
-      </Card.Meta>
+          <MediaObject
+            body={ <span>U.S. Department of State</span> }
+            className="seal"
+            img={ {
+              src: DosSeal,
+              alt: 'U.S. Department of State seal',
+              style: { height: '24px', width: '24px' }
+            } }
+          />
+        </Card.Meta>
+      </article>
     </Card>
   );
 };
 
 PressPackageItem.propTypes = {
-  file: PropTypes.object
+  file: PropTypes.object,
+  handleClick: PropTypes.func
 };
 
 export default PressPackageItem;

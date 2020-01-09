@@ -7,54 +7,75 @@
       margin: 0;
     }
 
-    > .use-container {
+    > .container {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-radius: 0.111111111rem 0.111111111rem 0 0 !important;
-      padding: 1em;
-      color: #ffffff;
-      background-color: $blue;
-
-      > .icon {
-          height: 30px;
-          width: 30px;
-        }
-    }
-
-    > .header {
-      > .title {
-          padding: 1em;
-          font-size: 0.777777778rem
-        }
-    }
-
-    > .content {
-      border-top: 0;
-    }
-
-    > .meta {
-      margin-top: initial;
-      padding: 1em;
+      flex-direction: column;
+      height: 100%;
       text-align: left;
-      background: transparent;
 
-      > .date-time {
-        font-size: 12px; // match size of tags
-
-        > div > dt {
-          margin-right: 0;
+      > .use-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 0.111111111rem 0.111111111rem 0 0 !important;
+        padding: 1em;
+        color: #ffffff;
+        font-size: 0.777777778rem;
+        background-color: $blue;
+  
+        > .icon {
+            height: 30px;
+            width: 30px;
+          }
+      }
+  
+      > .header {
+        > .title {
+            padding: 1em;
+            font-size: 0.777777778rem;
+          }
+      }
+  
+      > .internal-use {
+        &.brief {
+          margin: 1em 1em 0 1em;
+          width: 123px;
         }
       }
-
-      > .modal_section--postTags {
-        margin-top: -0.75em;
-        margin-bottom: 1em;
-      }
-
-      > .seal {
+  
+      > .content {
+        flex: 1;
+        border-top: 0;
+        padding: 1em;
         color: initial;
-        font-family: Georgia, serif;
+        font-size: 0.777777778rem;
+      }
+  
+      > .meta {
+        margin-top: initial;
+        padding: 0.777777778rem;
+        text-align: left;
+        background: transparent;
+  
+        > .date-time {
+          color: $grey;
+          font-size: 12px; // match size of tags
+          
+          > div > dt {
+            margin-right: 0;
+            font-weight: 400;
+          }
+        }
+  
+        > .modal_section--postTags {
+          margin-top: -0.5em;
+          margin-bottom: 1em;
+        }
+  
+        > .seal {
+          color: initial;
+          font-family: Georgia, serif;
+        }
       }
     }
   }
