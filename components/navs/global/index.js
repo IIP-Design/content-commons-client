@@ -8,11 +8,12 @@
  *
  */
 import React, { PureComponent } from 'react';
+import dynamic from 'next/dynamic';
 import User from 'components/User/User';
-import LoggedInNav from './LoggedInNav/LoggedInNav';
-import LoggedOutNav from './LoggedOutNav/LoggedOutNav';
-
 import './global.scss';
+
+const LoggedInNav = dynamic( () => import( /* webpackChunkName: "LoggedInNav" */ './LoggedInNav/LoggedInNav' ) );
+const LoggedOutNav = dynamic( () => import( /* webpackChunkName: "LoggedOutNav" */ './LoggedOutNav/LoggedOutNav' ) );
 
 class GlobalNav extends PureComponent {
   constructor( props ) {
@@ -76,11 +77,13 @@ class GlobalNav extends PureComponent {
           <span className="bar" />
         </button>
         <User>
-          { ( { data } ) => {
+          { ( { data, loading } ) => {
+            if ( loading ) {
+              return null;
+            }
             const authenticatedUser = ( data && data.authenticatedUser ) ? data.authenticatedUser : null;
             return this.renderNav( authenticatedUser );
-          }
-        }
+          } }
         </User>
       </nav>
     );
