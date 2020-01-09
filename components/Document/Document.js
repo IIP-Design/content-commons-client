@@ -14,7 +14,6 @@ import PopupTrigger from '../popups/PopupTrigger';
 import Popup from '../popups/Popup';
 
 import ModalItem from '../modals/ModalItem';
-import ModalLangDropdown from '../modals/ModalLangDropdown/ModalLangDropdown';
 import ModalDescription from '../modals/ModalDescription/ModalDescription';
 import ModalPostMeta from '../modals/ModalPostMeta/ModalPostMeta';
 import ModalPostTags from '../modals/ModalPostTags/ModalPostTags';
