@@ -6,7 +6,7 @@ import moment from 'moment';
 import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 import MediaObject from 'components/MediaObject/MediaObject';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
-import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
+import TagsList from 'components/modals/ModalPostTags/ModalPostTags';
 
 import DosSeal from 'static/images/dos_seal.svg';
 import iconPost from 'static/icons/icon_32px_post.png';
@@ -93,7 +93,9 @@ const PressPackageItem = props => {
         <Card.Meta as="footer">
           <MetaTerms className="date-time" unitId={ doc.id } terms={ docDateTimeTerms } />
 
-          { Array.isArray( doc.tags ) && getCount( doc.tags ) > 0 && <ModalPostTags tags={ getEnglishTags( doc.tags ) } /> }
+          { Array.isArray( doc.tags )
+            && getCount( doc.tags ) > 0
+            && <TagsList tags={ getEnglishTags( doc.tags ) } /> }
 
           <MediaObject
             body={ <span>U.S. Department of State</span> }
