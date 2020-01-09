@@ -25,7 +25,7 @@ const ModalPostMeta = props => {
   const renderSourceItem = () => {
     if ( isDocumentOrPackage ) {
       return (
-        <PressSourceMeta logo={ logo } source={ source } releaseType={ releaseType } />
+        <PressSourceMeta author={ author } logo={ logo } source={ source } releaseType={ releaseType } />
       );
     }
 
