@@ -2,9 +2,27 @@
 
 .press-package-item {
   &.ui.card {
+    align-items: stretch;
     border-radius: 0.111111111rem;
     @supports (display: grid) {
       margin: 0;
+    }
+    font-family: inherit;
+
+    &:hover,
+    &:active {
+      cursor: pointer;
+      transform: translateY(-3px);
+    }
+
+    :focus:not(:focus-visible) {
+      outline: none;
+    }
+  
+    &:focus {
+      transform: translateY(-3px);
+      outline: 2px dotted $medium-grey;
+      outline-offset: 2px;
     }
 
     > .container {

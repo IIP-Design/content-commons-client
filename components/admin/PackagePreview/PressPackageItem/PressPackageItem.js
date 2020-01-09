@@ -45,8 +45,10 @@ const PressPackageItem = props => {
   return (
     <Card
       key={ doc.id }
+      as="button"
       className="press-package-item"
       onClick={ handleClick }
+      type="button"
       { ...( handleClick ? { onClick: handleClick } : {} ) }
       { ...( hasCssSupport( 'display', 'grid' )
         ? { fluid: true }
