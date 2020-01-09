@@ -27,7 +27,12 @@ const CURRENT_USER_QUERY = gql`
 `;
 
 const User = props => (
-  <Query { ...props } query={ CURRENT_USER_QUERY }>
+  <Query
+    { ...props }
+    query={ CURRENT_USER_QUERY }
+    ssr={ false }
+    fetchPolicy="network-only"
+  >
     { payload => props.children( payload ) }
   </Query>
 );
