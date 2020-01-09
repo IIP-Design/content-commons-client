@@ -12,7 +12,7 @@ import DosSeal from 'static/images/dos_seal.svg';
 import iconPost from 'static/icons/icon_32px_post.png';
 
 import { hasCssSupport } from 'lib/browser';
-import { getCount } from 'lib/utils';
+import { getCount, getTransformedLangTaxArray } from 'lib/utils';
 
 import './PressPackageItem.scss';
 
@@ -41,17 +41,6 @@ const PressPackageItem = props => {
     }
     return '';
   };
-
-  const getEnglishTags = tags => (
-    tags.reduce( ( acc, tag ) => {
-      const englishTag = ( tag && tag.translations && tag.translations.find( t => t.language.locale === 'en-us' ) ) || [];
-
-      if ( getCount( englishTag ) && tag.id ) {
-        acc.push( { id: tag.id, name: englishTag.name } );
-      }
-      return acc;
-    }, [] )
-  );
 
   return (
     <Card
@@ -95,7 +84,7 @@ const PressPackageItem = props => {
 
           { Array.isArray( doc.tags )
             && getCount( doc.tags ) > 0
-            && <TagsList tags={ getEnglishTags( doc.tags ) } /> }
+            && <TagsList tags={ getTransformedLangTaxArray( doc.tags ) } /> }
 
           <MediaObject
             body={ <span>U.S. Department of State</span> }

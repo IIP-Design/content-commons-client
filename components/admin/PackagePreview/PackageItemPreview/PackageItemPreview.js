@@ -8,7 +8,7 @@ import PressPackageItem from 'components/admin/PackagePreview/PressPackageItem/P
 
 import DosSeal from 'static/images/dos_seal.svg';
 
-import { getCount } from 'lib/utils';
+import { getCount, getTransformedLangTaxArray } from 'lib/utils';
 
 import './PackageItemPreview.scss';
 
@@ -34,17 +34,6 @@ const PackageItemPreview = props => {
   const handleOpen = () => setIsOpen( true );
   const handleClose = () => setIsOpen( false );
 
-  const getEnglishTags = () => (
-    tags.reduce( ( acc, tag ) => {
-      const englishTag = ( tag && tag.translations && tag.translations.find( t => t.language.locale === 'en-us' ) ) || [];
-
-      if ( getCount( englishTag ) && tag.id ) {
-        acc.push( { id: tag.id, name: englishTag.name } );
-      }
-      return acc;
-    }, [] )
-  );
-
   const getNormalizedItem = () => ( {
     // id,
     published: publishedAt || '',
@@ -59,7 +48,7 @@ const PackageItemPreview = props => {
     language: language || {},
     documentUrl: url || '',
     documentUse: file.use.name || '',
-    tags: getEnglishTags() || [],
+    tags: getTransformedLangTaxArray( tags ) || [],
     type: 'document',
   } );
 
