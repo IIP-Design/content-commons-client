@@ -48,7 +48,8 @@ class ResultItem extends Component {
     const dosOwners = [
       'GPA Video',
       'GPA Media Strategy',
-      'U.S. Missions'
+      'GPA Editorial & Design',
+      'U.S. Missions',      
     ];
 
     if ( !source && item.type === 'video' && dosOwners.includes( item.owner ) ) {
