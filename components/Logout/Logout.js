@@ -15,7 +15,13 @@ const SIGN_OUT_MUTATION = gql`
 const Logout = props => (
   <Mutation
     mutation={ SIGN_OUT_MUTATION }
-    refetchQueries={ [{ query: CURRENT_USER_QUERY }] }
+    refetchQueries={ [
+      {
+        query: CURRENT_USER_QUERY,
+        fetchPolicy: 'network-only',
+        ssr: false
+      }
+    ] }
   >
     { signOut => (
       <Button
@@ -24,7 +30,8 @@ const Logout = props => (
           await signOut();
           Router.push( { pathname: '/' } );
         } }
-      >Logout
+      >
+        Logout
       </Button>
     ) }
   </Mutation>

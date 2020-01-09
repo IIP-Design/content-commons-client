@@ -107,7 +107,13 @@ export default compose(
             password: values.password,
             email: values.email
           },
-          refetchQueries: [{ query: CURRENT_USER_QUERY }]
+          refetchQueries: [
+            {
+              query: CURRENT_USER_QUERY,
+              fetchPolicy: 'network-only',
+              ssr: false
+            }
+          ]
         } );
 
         // if confirmation is successful, send user to login screen

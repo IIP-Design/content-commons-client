@@ -61,7 +61,11 @@ class GoogleLoginComponent extends Component {
       <Mutation
         mutation={ GOOGLE_SIGNIN_MUTATION }
         variables={ { token: this.state.accessToken } }
-        refetchQueries={ [{ query: CURRENT_USER_QUERY }] }
+        refetchQueries={ [{
+          query: CURRENT_USER_QUERY,
+          fetchPolicy: 'network-only',
+          ssr: false
+        }] }
       >
         { ( googleSignin, { loading, error } ) => (
           <div>
@@ -82,8 +86,7 @@ class GoogleLoginComponent extends Component {
               onFailure={ this.failureGoogle }
             />
           </div>
-        )
-      }
+        ) }
       </Mutation>
     );
   }

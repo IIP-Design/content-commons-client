@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { Container, Header, List } from 'semantic-ui-react';
-import UserAdmin from 'components/User/UserAdmin'; // for testing purposes, allows changing of user props
 import './Footer.scss';
 import slackLogo from 'static/images/logo_slack.png';
 import flagImage from 'static/images/flag.jpg';
@@ -47,7 +46,6 @@ const Footer = () => {
   ];
   return (
     <footer className="ui">
-      <UserAdmin />
       <div className="footer-feedback">
         <p>
           Help us improve{ ' ' }

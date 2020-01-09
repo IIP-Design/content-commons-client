@@ -30,7 +30,7 @@ import useTimeout from 'lib/hooks/useTimeout';
 import { initialSchema, baseSchema } from './validationSchema';
 
 const VideoProjectDetailsForm = props => {
-  const [showNotication, setShowNotification] = useState( false );
+  const [showNotification, setShowNotification] = useState( false );
 
   const hideNotification = () => {
     setShowNotification( false );
@@ -151,7 +151,7 @@ const VideoProjectDetailsForm = props => {
               left: '50%',
               transform: 'translateX(-50%)'
             } }
-            show={ showNotication }
+            show={ showNotification }
             msg="Changes saved"
           />
           <ProjectDetailsForm { ...formikProps } { ...props } save={ save } />
@@ -175,7 +175,13 @@ VideoProjectDetailsForm.propTypes = {
 export default compose(
   withRouter,
   connect( null, reduxActions ),
-  graphql( CURRENT_USER_QUERY, { name: 'user' } ), // only run on create
+  graphql( CURRENT_USER_QUERY, {
+    name: 'user',
+    options: {
+      fetchPolicy: 'network-only',
+      ssr: false
+    }
+  } ), // only run on create
   graphql( CREATE_VIDEO_PROJECT_MUTATION, { name: 'createVideoProject' } ),
   graphql( UPDATE_VIDEO_PROJECT_MUTATION, { name: 'updateVideoProject' } ),
   graphql( VIDEO_PROJECT_FORM_QUERY, {
