@@ -9,6 +9,7 @@ import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
 import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
+import Notification from 'components/Notification/Notification';
 import Share from '../Share/Share';
 import PopupTrigger from '../popups/PopupTrigger';
 import Popup from '../popups/Popup';
@@ -20,14 +21,16 @@ import ModalPostTags from '../modals/ModalPostTags/ModalPostTags';
 
 
 const Document = props => {
-  const { item } = props;
+  const { isAdminPreview, item } = props;
   const {
     id,
     published,
     owner,
     site,
     title,
+    content,
     content: { rawText },
+    link,
     logo,
     language,
     documentUrl,
@@ -37,38 +40,70 @@ const Document = props => {
   } = item;
 
   useEffect( () => {
-    updateUrl( `/document?id=${id}&site=${site}&language=${language.locale}` );
+    if ( !isAdminPreview ) {
+      updateUrl( `/document?id=${id}&site=${site}&language=${language.locale}` );
+    }
   }, [] );
 
+  const previewMsgStyles = {
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    right: '0',
+    // match Semantic UI border-radius
+    borderTopLeftRadius: '0.28571429rem',
+    borderTopRightRadius: '0.28571429rem',
+    padding: '1em 1.5em',
+    fontSize: '1em',
+    backgroundColor: '#fdb81e'
+  };
+
+  const DownloadElement = isAdminPreview ? 'span' : 'a';
+
   return (
-    <ModalItem headline={ title }>
+    <ModalItem headline={ title } className={ isAdminPreview ? 'package-item-preview' : '' }>
       <div className="modal_options modal_options--noLanguage">
         <div>
+          { isAdminPreview
+            && (
+              <Notification
+                el="p"
+                show
+                customStyles={ previewMsgStyles }
+                msg="This is a preview of your file on Content Commons."
+              />
+            ) }
           <InternalUseDisplay />
           <PopupTrigger
-            toolTip="Share video"
+            toolTip="Share document"
             icon={ { img: shareIcon, dim: 20 } }
             show
             content={ (
               <Popup title="Copy the link to share internally.">
                 <Share
-                  link=""
+                  link={ link }
                   id={ id }
                   site={ site }
                   title={ title }
                   language={ language.locale }
                   type={ type }
+                  { ...( isAdminPreview ? { isPreview: true } : {} ) }
                 />
               </Popup>
             ) }
           />
           <Button className="trigger" tooltip="Not For Public Distribution">
-            <a
-              href={ documentUrl }
-              className="trigger"
-              download
-              target="_blank"
-              rel="noopener noreferrer"
+            <DownloadElement
+              { ...( isAdminPreview
+                ? {}
+                : {
+                  href: documentUrl,
+                  className: 'trigger',
+                  download: true,
+                  target: '_blank',
+                  rel: 'noopener noreferrer'
+                }
+              ) }
             >
               <img
                 src={ downloadIcon }
@@ -76,11 +111,29 @@ const Document = props => {
                 height={ 18 }
                 alt="Download document icon"
               />
-            </a>
+            </DownloadElement>
           </Button>
         </div>
       </div>
-      <ModalDescription description={ rawText } />
+
+      { content && content.html && isAdminPreview
+        && (
+          // dangerouslySetInnerHTML for now
+          <div
+            className="body"
+            // eslint-disable-next-line
+            dangerouslySetInnerHTML={ { __html: content.html } }
+          />
+        ) }
+
+      { content
+        && !content.html
+        && !content.rawText
+        && !content.markdown
+        && <ModalDescription description="No text available" /> }
+
+      { !isAdminPreview && <ModalDescription description={ rawText } /> }
+
       <ModalPostMeta
         type={ type }
         logo={ logo }
@@ -94,7 +147,12 @@ const Document = props => {
   );
 };
 
+Document.defaultProps = {
+  isAdminPreview: false
+};
+
 Document.propTypes = {
+  isAdminPreview: PropTypes.bool,
   item: PropTypes.shape( {
     id: PropTypes.number,
     published: PropTypes.string,

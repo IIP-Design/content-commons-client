@@ -2,7 +2,15 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // import dynamic from 'next/dynamic';
 import { Modal } from 'semantic-ui-react';
+
+import Document from 'components/Document/Document';
 import PressPackageItem from 'components/admin/PackagePreview/PressPackageItem/PressPackageItem';
+
+import DosSeal from 'static/images/dos_seal.svg';
+
+import { getCount } from 'lib/utils';
+
+import './PackageItemPreview.scss';
 
 /**
  * dynamic import results in
@@ -15,11 +23,45 @@ import PressPackageItem from 'components/admin/PackagePreview/PressPackageItem/P
 //   )
 // );
 
-const PackageItemPreview = ( { file, type } ) => {
+const PackageItemPreview = props => {
   const [isOpen, setIsOpen] = useState( false );
+
+  const { file, team, type } = props;
+  const {
+    publishedAt, language, title, content, tags, url
+  } = file;
 
   const handleOpen = () => setIsOpen( true );
   const handleClose = () => setIsOpen( false );
+
+  const getEnglishTags = () => (
+    tags.reduce( ( acc, tag ) => {
+      const englishTag = ( tag && tag.translations && tag.translations.find( t => t.language.locale === 'en-us' ) ) || [];
+
+      if ( getCount( englishTag ) && tag.id ) {
+        acc.push( { id: tag.id, name: englishTag.name } );
+      }
+      return acc;
+    }, [] )
+  );
+
+  const getNormalizedItem = () => ( {
+    // id,
+    published: publishedAt || '',
+    author: '',
+    owner: team.name || '',
+    site: '',
+    link: 'The direct link to the package will appear here.',
+    title,
+    content: content || {},
+    logo: DosSeal || '',
+    thumbnail: '',
+    language: language || {},
+    documentUrl: url || '',
+    documentUse: file.use.name || '',
+    tags: getEnglishTags() || [],
+    type: 'document',
+  } );
 
   const getTriggerComponent = () => {
     switch ( type ) {
@@ -43,7 +85,7 @@ const PackageItemPreview = ( { file, type } ) => {
       closeIcon
     >
       <Modal.Content>
-        <p>{ file.title }</p>
+        <Document item={ getNormalizedItem() } isAdminPreview />
       </Modal.Content>
     </Modal>
   );
@@ -51,6 +93,7 @@ const PackageItemPreview = ( { file, type } ) => {
 
 PackageItemPreview.propTypes = {
   file: PropTypes.object,
+  team: PropTypes.object,
   type: PropTypes.string
 };
 

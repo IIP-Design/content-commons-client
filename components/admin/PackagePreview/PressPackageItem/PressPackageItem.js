@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'semantic-ui-react';
-
 import moment from 'moment';
+
 import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 import MediaObject from 'components/MediaObject/MediaObject';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';

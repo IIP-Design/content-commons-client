@@ -62,7 +62,7 @@ const PackagePreview = ( { id } ) => {
   if ( !getCount( pkg ) ) return null;
 
   const {
-    createdAt, updatedAt, title, type, documents
+    createdAt, updatedAt, title, team, type, documents
   } = pkg;
 
   // in future: const files = documents || files || etc.
@@ -161,7 +161,12 @@ const PackagePreview = ( { id } ) => {
         <Card.Group>
           { getCount( files )
             ? files.map( file => (
-              <PackageItemPreview key={ file.id } file={ file } type={ type } />
+              <PackageItemPreview
+                key={ file.id }
+                file={ file }
+                team={ team }
+                type={ type }
+              />
             ) )
             : 'There are no files associated with this package.' }
         </Card.Group>
