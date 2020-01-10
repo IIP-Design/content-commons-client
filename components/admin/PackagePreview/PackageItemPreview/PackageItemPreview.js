@@ -8,7 +8,7 @@ import PressPackageItem from 'components/admin/PackagePreview/PressPackageItem/P
 
 import DosSeal from 'static/images/dos_seal.svg';
 
-import { getCount, getTransformedLangTaxArray } from 'lib/utils';
+import { getTransformedLangTaxArray } from 'lib/utils';
 
 import './PackageItemPreview.scss';
 
