@@ -12,7 +12,6 @@ import { Dropdown, Embed, Loader } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 
 import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo';
-// import DownloadSrt from 'components/admin/download/DownloadSrt/DownloadSrt';
 import DownloadCaption from 'components/admin/download/DownloadCaption/DownloadCaption';
 import DownloadThumbnail from 'components/admin/download/DownloadThumbnail/DownloadThumbnail';
 import DownloadOtherFiles from 'components/admin/download/DownloadOtherFiles/DownloadOtherFiles';
@@ -37,6 +36,7 @@ import downloadIcon from 'static/icons/icon_download.svg';
 import embedIcon from 'static/icons/icon_embed.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 import { getStreamData, getVimeoId, getYouTubeId } from 'lib/utils';
+import { displayDOSLogo } from 'lib/sourceLogoUtils';
 import { UNIT_DETAILS_FRAGMENT } from 'lib/graphql/queries/video';
 
 import './ProjectPreviewContent.scss';
@@ -222,7 +222,9 @@ class ProjectPreviewContent extends React.PureComponent {
     if ( error ) return <ApolloError error={ error } />;
     if ( !project || !Object.keys( project ).length ) return null;
 
-    const { __typename, team, units } = project;
+    const {
+      __typename, team, author, units
+    } = project;
     const { dropDownIsOpen, selectedLanguage } = this.state;
 
     const projectUnits = this.getProjectUnits( units );
@@ -237,7 +239,7 @@ class ProjectPreviewContent extends React.PureComponent {
     }
 
     const {
-      title, language, descPublic, files, tags
+      title, language, descPublic, files, categories
     } = selectedUnit;
     const contentType = this.getContentType( __typename );
 
@@ -278,9 +280,6 @@ class ProjectPreviewContent extends React.PureComponent {
       top: '0',
       left: '0',
       right: '0',
-      // match Semantic UI border-radius
-      borderTopLeftRadius: '0.28571429rem',
-      borderTopRightRadius: '0.28571429rem',
       padding: '1em 1.5em',
       fontSize: '1em',
       backgroundColor: '#fdb81e'
@@ -452,11 +451,17 @@ class ProjectPreviewContent extends React.PureComponent {
           <ModalDescription description={ descPublic } />
         </div>
 
-        <ModalPostMeta source={ team.name } datePublished={ createdAt } />
+        <ModalPostMeta
+          textDirection={ language.textDirection }
+          author={ author }
+          logo={ displayDOSLogo( team.name ) }
+          source={ team.name }
+          datePublished={ createdAt }
+        />
 
-        { ( tags && tags.length > 0 )
+        { ( categories && categories.length > 0 )
           && (
-            <ModalPostTags tags={ this.getTags( tags, selectedUnit ) } />
+          <ModalPostTags tags={ this.getTags( categories, selectedUnit ) } />
           ) }
       </ModalItem>
     );
@@ -474,6 +479,11 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
       id
       projectType
       descPublic
+      author {
+        id
+        firstName
+        lastName
+      }
       team {
         id
         name

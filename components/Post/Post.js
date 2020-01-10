@@ -122,7 +122,6 @@ const Post = props => {
         <ModalText textContent={ item.content } />
         <ModalPostMeta
           type={ item.type }
-          author={ item.author }
           sourcelink={ item.sourcelink }
           logo={ item.logo }
           source={ item.site }
