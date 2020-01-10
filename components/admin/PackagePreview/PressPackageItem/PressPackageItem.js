@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'semantic-ui-react';
 import moment from 'moment';
@@ -31,15 +31,38 @@ const PressPackageItem = props => {
     }
   ];
 
-  const getMarkup = () => {
-    if ( content && content.html && typeof content.html === 'string' ) {
-      /**
-       * Arbitrarily display the first 8 paragraphs.
-       * a better way?
-       */
-      return content.html.split( /\s*<\/p>/, 8 ).filter( n => n ).join( '' );
-    }
-    return '';
+  const getIndex = ( array, regex ) => (
+    array.reduce( ( ret, p, i ) => {
+      if ( regex.test( p ) ) {
+        ret = i; // eslint-disable-line
+      }
+      return ret;
+    }, 0 )
+  );
+
+  const getLongestParagraph = () => {
+    // is there a better way to get an excerpt?
+    const paragraphs = content.html.split( /\s*<\/p>/ );
+
+    /**
+     * To improve chances of returning a relevant body
+     * paragraph, slice the array to remove boilerplate
+     * headings at top and clearances at bottom.
+     */
+    const start = getIndex( paragraphs, /(For Immediate Release)/g );
+    // index for # # # line, ( # === \x23 hex value )
+    const end = getIndex( paragraphs, /(\x23\s*){3}/g ) || -1;
+
+    const longestParagraph = paragraphs
+      .slice( start === 0 ? start : start + 1, end )
+      .reduce( ( longest, p ) => {
+        if ( p.length && p.length > longest.length ) {
+          longest = p; // eslint-disable-line
+        }
+        return longest;
+      }, '' );
+
+    return `${longestParagraph}</p>`;
   };
 
   return (
@@ -76,8 +99,14 @@ const PressPackageItem = props => {
 
         <Card.Content>
           { /* dangerouslySetInnerHTML for now */ }
-          { content
-            ? <div dangerouslySetInnerHTML={ { __html: getMarkup() } } /> // eslint-disable-line
+          { content && content.html
+            ? (
+              <Fragment>
+                <p>Excerpt:</p>
+                { /* eslint-disable-next-line */ }
+                <div dangerouslySetInnerHTML={ { __html: getLongestParagraph() } } />
+              </Fragment>
+            ) // eslint-disable-line
             : <p>No text available</p> }
         </Card.Content>
 
