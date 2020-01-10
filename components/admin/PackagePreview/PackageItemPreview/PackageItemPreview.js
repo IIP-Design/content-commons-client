@@ -8,7 +8,7 @@ import PressPackageItem from 'components/admin/PackagePreview/PressPackageItem/P
 
 import DosSeal from 'static/images/dos_seal.svg';
 
-import { getTransformedLangTaxArray } from 'lib/utils';
+import { getCount, getTransformedLangTaxArray } from 'lib/utils';
 
 import './PackageItemPreview.scss';
 
@@ -27,6 +27,8 @@ const PackageItemPreview = props => {
   const [isOpen, setIsOpen] = useState( false );
 
   const { file, team, type } = props;
+
+  if ( !file || !getCount( file ) ) return null;
   const {
     publishedAt, language, title, content, tags, url
   } = file;
@@ -38,7 +40,7 @@ const PackageItemPreview = props => {
     // id,
     published: publishedAt || '',
     author: '',
-    owner: team.name || '',
+    owner: ( team && team.name ) || '',
     site: '',
     link: 'The direct link to the package will appear here.',
     title,
@@ -47,7 +49,7 @@ const PackageItemPreview = props => {
     thumbnail: '',
     language: language || {},
     documentUrl: url || '',
-    documentUse: file.use.name || '',
+    documentUse: ( file.use && file.use.name ) || '',
     tags: getTransformedLangTaxArray( tags ) || [],
     type: 'document',
   } );
