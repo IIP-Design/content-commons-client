@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [3.1.0](2020-01-13)
+
+**Added:**
+
+- Add "Create New Package" button to upload screen
+- Activate content type buttons on upload screen based on user's team permissions
+- Update Dashboard component to support Press Office packages
+- Created UserAdmin component to allow team switching for testing purposes
+- Allow upload of caption .vtt files
+- Set visibility flag on each asset to track internal only assets
+
+**Changed:**
+
+- Code libraries were updated:
+
+  - react: 16.11
+  - react-apollo: 3.13
+  - graphql: 14.5.8
+  - next.js: 9.12
+
+- Store full path to elastic search asset to accomodate sharing on external sites
+- Update help text on project detials screen
+
+**Fixed:**
+
+- Bulk project Unpublish now removes assets for S3
+- SRT filename adjusted to support Facebook upload
+- Turned server side render off for user queries to fix cache issue
+
 # [3.0.0](2019-12-02)
 
 Version 3 is a complete rewrite with focus on the authoring platform. A jump is made to version 3 from 1.8.4 as v2 was an extension of v1 that did not include SSR.
