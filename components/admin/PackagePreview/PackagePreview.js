@@ -70,11 +70,12 @@ const PackagePreview = ( { id } ) => {
 
   const isUpdated = updatedAt > createdAt;
   const dateTimeStamp = isUpdated ? updatedAt : createdAt;
+  const label = isUpdated ? 'Updated' : 'Created';
   const dateTimeTerms = [
     {
       definition: <time dateTime={ dateTimeStamp }>{ `${moment( dateTimeStamp ).format( 'LT, l' )}` }</time>,
-      displayName: isUpdated ? 'Updated' : 'Created',
-      name: isUpdated ? 'Updated' : 'Created'
+      displayName: label,
+      name: label
     }
   ];
 

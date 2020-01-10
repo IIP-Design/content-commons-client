@@ -22,12 +22,13 @@ const PressPackageItem = props => {
 
   const { content, use } = doc;
   const isDocUpdated = doc.updatedAt > doc.createdAt;
-  const docDateTime = isDocUpdated ? doc.updatedAt : doc.createdAt;
-  const docDateTimeTerms = [
+  const dateTimeStamp = isDocUpdated ? doc.updatedAt : doc.createdAt;
+  const label = isDocUpdated ? 'Updated' : 'Created';
+  const dateTimeTerms = [
     {
-      definition: <time dateTime={ docDateTime }>{ `${moment( docDateTime ).format( 'LL' )}` }</time>,
-      displayName: isDocUpdated ? 'Updated' : 'Created',
-      name: isDocUpdated ? 'Updated' : 'Created'
+      definition: <time dateTime={ dateTimeStamp }>{ `${moment( dateTimeStamp ).format( 'LL' )}` }</time>,
+      displayName: label,
+      name: label
     }
   ];
 
@@ -104,14 +105,14 @@ const PressPackageItem = props => {
               <Fragment>
                 <p>Excerpt:</p>
                 { /* eslint-disable-next-line */ }
-                <div dangerouslySetInnerHTML={ { __html: getLongestParagraph() } } />
+                <div className="markup" dangerouslySetInnerHTML={ { __html: getLongestParagraph() } } />
               </Fragment>
             ) // eslint-disable-line
             : <p>No text available</p> }
         </Card.Content>
 
         <Card.Meta as="footer">
-          <MetaTerms className="date-time" unitId={ doc.id } terms={ docDateTimeTerms } />
+          <MetaTerms className="date-time" unitId={ doc.id } terms={ dateTimeTerms } />
 
           { Array.isArray( doc.tags )
             && getCount( doc.tags ) > 0
