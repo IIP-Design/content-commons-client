@@ -107,7 +107,7 @@ const PressPackageItem = props => {
                 { /* eslint-disable-next-line */ }
                 <div className="markup" dangerouslySetInnerHTML={ { __html: getLongestParagraph() } } />
               </Fragment>
-            ) // eslint-disable-line
+            )
             : <p>No text available</p> }
         </Card.Content>
 

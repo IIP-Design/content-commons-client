@@ -1,7 +1,9 @@
 import { mount } from 'enzyme';
 import { MockedProvider, wait } from '@apollo/react-testing';
 import moment from 'moment';
-import { errorMocks, mocks, undefinedDataMocks } from 'components/admin/PackageEdit/mocks';
+import {
+  errorMocks, mocks, noDocumentsMocks, undefinedDataMocks
+} from 'components/admin/PackageEdit/mocks';
 import PackagePreview from './PackagePreview';
 
 jest.mock(
@@ -15,6 +17,10 @@ jest.mock(
 jest.mock(
   'components/admin/download/DownloadPkgFiles/DownloadPkgFiles',
   () => function DownloadPkgFiles() { return ''; }
+);
+jest.mock(
+  'components/admin/PackagePreview/PackageItemPreview/PackageItemPreview',
+  () => function PackageItemPreview() { return ''; }
 );
 
 const getComponent = ( data, props = { id: 'test-123' } ) => (
@@ -224,8 +230,55 @@ describe( '<PackagePreview />', () => {
 
     const fileCount = wrapper.find( '.file-count' );
     const count = mocks[0].result.data.pkg.documents.length;
+    const msg = `(${count}) documents in this package`;
 
-    expect( fileCount.text() ).toEqual( `(${count}) documents` );
+    expect( fileCount.text() ).toEqual( msg );
+  } );
+
+  it( 'renders PackageItemPreview for each file', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const packageItems = wrapper.find( '.package-items' );
+    const packageItemPreviews = packageItems.find( 'PackageItemPreview' );
+    const { team, type, documents } = mocks[0].result.data.pkg;
+
+    expect( packageItems.exists() ).toEqual( true );
+    expect( packageItemPreviews.length ).toEqual( documents.length );
+    packageItemPreviews.forEach( ( p, i ) => {
+      const propValues = {
+        file: documents[i],
+        team,
+        type
+      };
+      expect( p.props() ).toEqual( propValues );
+    } );
+  } );
+} );
+
+describe( '<PackageEdit />, if there are no documents,', () => {
+  const consoleError = console.error;
+  beforeAll( () => suppressActWarning( consoleError ) );
+
+  afterAll( () => {
+    console.error = consoleError;
+  } );
+
+  const Component = getComponent( noDocumentsMocks );
+
+  it( 'renders the No Files message', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const packageItems = wrapper.find( '.package-items' );
+    const packageItemPreviews = packageItems.find( 'PackageItemPreview' );
+    const msg = 'There are no files associated with this package.';
+
+    expect( packageItems.exists() ).toEqual( true );
+    expect( packageItemPreviews.exists() ).toEqual( false );
+    expect( packageItems.contains( msg ) ).toEqual( true );
   } );
 } );
 
