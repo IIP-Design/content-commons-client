@@ -22,12 +22,14 @@ import { buildCreatePackageTree } from 'lib/graphql/builders/package';
 import moment from 'moment';
 import './Upload.scss';
 
-// using dynamic import so that components load when they are needed, or rendered
 const VideoUpload = dynamic( () => import( /* webpackChunkName: "videoUpload" */ './modals/VideoUpload/VideoUpload' ) );
 
 const Upload = () => {
   const [creationError, setCreationError] = useState( '' );
-  const { loading, error, data } = useQuery( CURRENT_USER_QUERY );
+  const { loading, error, data } = useQuery( CURRENT_USER_QUERY, {
+    ssr: false,
+    fetchPolicy: 'network-only'
+  } );
   const [createPackage, { loading: createPackageLoading }] = useMutation(
     CREATE_PACKAGE_MUTATION
   );
@@ -98,6 +100,14 @@ const Upload = () => {
     authenticatedUser: { team }
   } = data;
 
+  const teamCanCreateContentType = contentType => {
+    const type = contentType.toUpperCase();
+    if ( team && team.contentTypes ) {
+      return team.contentTypes.includes( type );
+    }
+    return false;
+  };
+
   /**
   * Sets button state based on team. Add loading class if
   * button is processing.  Defaults to disabled
@@ -105,8 +115,8 @@ const Upload = () => {
   */
   const setButtonState = contentType => {
     let cls = 'disabled'; // disabled is default state
-    const type = contentType.toUpperCase();
-    if ( team.contentTypes.includes( type ) ) {
+
+    if ( teamCanCreateContentType( contentType ) ) {
       // enable button
       cls = '';
     }
@@ -139,8 +149,11 @@ const Upload = () => {
    */
   const renderButton = options => {
     const {
-      contentType, icon, label, alt, onClick
+      contentType, icon, label, alt,
     } = options;
+
+    const onClick = teamCanCreateContentType( contentType ) ? () => setModalOpen( true ) : null;
+
     return (
       <Button className={ `type ${setButtonState( contentType )}` } aria-label={ alt } onClick={ onClick }>
         <img src={ icon } alt={ alt } />
@@ -165,8 +178,7 @@ const Upload = () => {
               contentType: 'VIDEO',
               label: 'Videos',
               icon: videoIcon,
-              alt: 'Upload video content',
-              onClick: team.name === 'GPA Video' ? () => setModalOpen( true ) : null
+              alt: 'Upload video content'
             } ) }
             content={ (
               <VideoUpload
