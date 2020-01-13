@@ -15,10 +15,10 @@ import {
 } from 'lib/graphql/queries/dashboard';
 
 // TEMP
-import { packageMocks, documentFileMocks } from './pressMocks';
+// import { packageMocks, documentFileMocks } from './pressMocks';
 
-const teamPackages = packageMocks[0].result.data;
-const teamDocumentFiles = documentFileMocks[0].result.data;
+// const teamPackages = packageMocks[0].result.data;
+// const teamDocumentFiles = documentFileMocks[0].result.data;
 
 const getLangTaxonomies = ( array, locale = 'en-us' ) => {
   if ( !Array.isArray( array ) || !array.length ) return '';
@@ -95,8 +95,8 @@ const TableBody = props => {
   // TEMP - add mock data w/ videoProjects query result
   const allProjectTypesData = getTypesData( [
     videoProjects,
-    teamDocumentFiles,
-    teamPackages
+    // teamDocumentFiles,
+    // teamPackages
   ] );
 
   const [statusSubscription, setStatusSubscription] = useState();
