@@ -40,7 +40,7 @@ const PackageItemPreview = props => {
     // id,
     published: publishedAt || '',
     author: '',
-    owner: ( team && team.name ) || '',
+    owner: ( team?.name ) || '',
     site: '',
     link: 'The direct link to the package will appear here.',
     title,
@@ -49,7 +49,7 @@ const PackageItemPreview = props => {
     thumbnail: '',
     language: language || {},
     documentUrl: url || '',
-    documentUse: ( file.use && file.use.name ) || '',
+    documentUse: ( file?.use?.name ) || '',
     tags: getTransformedLangTaxArray( tags ) || [],
     type: 'document',
   } );

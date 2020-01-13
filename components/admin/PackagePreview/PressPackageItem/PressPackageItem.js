@@ -86,7 +86,7 @@ const PressPackageItem = props => {
       <article className="container">
         <div className="use-container">
           <MediaObject
-            body={ <span>{ use && use.name ? use.name : '' }</span> }
+            body={ <span>{ use?.name || '' }</span> }
             className="seal"
             img={ {
               src: DosSeal,
@@ -105,7 +105,7 @@ const PressPackageItem = props => {
 
         <Card.Content>
           { /* dangerouslySetInnerHTML for now */ }
-          { content && content.html
+          { content?.html
             ? (
               <Fragment>
                 <p>Excerpt:</p>
