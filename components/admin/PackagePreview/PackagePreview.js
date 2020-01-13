@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { Card, Loader } from 'semantic-ui-react';
-import moment from 'moment';
 
 import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
 
@@ -15,13 +14,14 @@ import PackageItemPreview from 'components/admin/PackagePreview/PackageItemPrevi
 import Popup from 'components/popups/Popup';
 import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
+import { getDateTimeTerms } from 'components/admin/PackagePreview/PressPackageItem/PressPackageItem';
 import Share from 'components/Share/Share';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
-import { getCount, getPluralStringOrNot } from 'lib/utils';
+import { getCount, getPluralStringOrNot, getPreviewNotificationStyles } from 'lib/utils';
 
 import './PackagePreview.scss';
 
@@ -68,30 +68,6 @@ const PackagePreview = ( { id } ) => {
   // in future: const files = documents || files || etc.
   const files = documents;
 
-  const isUpdated = updatedAt > createdAt;
-  const dateTimeStamp = isUpdated ? updatedAt : createdAt;
-  const label = isUpdated ? 'Updated' : 'Created';
-  const dateTimeTerms = [
-    {
-      definition: <time dateTime={ dateTimeStamp }>{ `${moment( dateTimeStamp ).format( 'LT, l' )}` }</time>,
-      displayName: label,
-      name: label
-    }
-  ];
-
-  const previewMsgStyles = {
-    position: 'absolute',
-    top: '0',
-    left: '0',
-    right: '0',
-    // match Semantic UI border-radius
-    borderTopLeftRadius: '0.28571429rem',
-    borderTopRightRadius: '0.28571429rem',
-    padding: '1em 1.5em',
-    fontSize: '1em',
-    backgroundColor: '#fdb81e'
-  };
-
   return (
     <ModalItem
       className="package-preview"
@@ -101,11 +77,15 @@ const PackagePreview = ( { id } ) => {
       <Notification
         el="p"
         show
-        customStyles={ previewMsgStyles }
+        customStyles={ getPreviewNotificationStyles() }
         msg="This is a preview of your package on Content Commons."
       />
 
-      <MetaTerms className="date-time" unitId={ id } terms={ dateTimeTerms } />
+      <MetaTerms
+        className="date-time"
+        unitId={ id }
+        terms={ getDateTimeTerms( createdAt, updatedAt, 'LT, l' ) }
+      />
 
       <div className="modal_options">
         <div className="trigger-container">

@@ -35,7 +35,9 @@ import Share from 'components/Share/Share';
 import downloadIcon from 'static/icons/icon_download.svg';
 import embedIcon from 'static/icons/icon_embed.svg';
 import shareIcon from 'static/icons/icon_share.svg';
-import { getStreamData, getVimeoId, getYouTubeId } from 'lib/utils';
+import {
+  getPreviewNotificationStyles, getStreamData, getVimeoId, getYouTubeId
+} from 'lib/utils';
 import { displayDOSLogo } from 'lib/sourceLogoUtils';
 import { UNIT_DETAILS_FRAGMENT } from 'lib/graphql/queries/video';
 
@@ -275,16 +277,6 @@ class ProjectPreviewContent extends React.PureComponent {
       thumbnailAlt = project.thumbnails[0].alt;
     }
 
-    const previewMsgStyles = {
-      position: 'absolute',
-      top: '0',
-      left: '0',
-      right: '0',
-      padding: '1em 1.5em',
-      fontSize: '1em',
-      backgroundColor: '#fdb81e'
-    };
-
     return (
       <ModalItem
         className="project-preview"
@@ -294,7 +286,7 @@ class ProjectPreviewContent extends React.PureComponent {
         <Notification
           el="p"
           show
-          customStyles={ previewMsgStyles }
+          customStyles={ getPreviewNotificationStyles() }
           msg={ `This is a preview of your ${contentType} project on Content Commons.` }
         />
 

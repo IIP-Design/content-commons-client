@@ -10,15 +10,16 @@ import shareIcon from 'static/icons/icon_share.svg';
 
 import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 import Notification from 'components/Notification/Notification';
-import Share from '../Share/Share';
-import PopupTrigger from '../popups/PopupTrigger';
-import Popup from '../popups/Popup';
+import Share from 'components/Share/Share';
+import PopupTrigger from 'components/popups/PopupTrigger';
+import Popup from 'components/popups/Popup';
 
-import ModalItem from '../modals/ModalItem';
-import ModalDescription from '../modals/ModalDescription/ModalDescription';
-import ModalPostMeta from '../modals/ModalPostMeta/ModalPostMeta';
-import ModalPostTags from '../modals/ModalPostTags/ModalPostTags';
+import ModalItem from 'components/modals/ModalItem';
+import ModalDescription from 'components/modals/ModalDescription/ModalDescription';
+import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
+import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 
+import { getPreviewNotificationStyles } from 'lib/utils';
 
 const Document = props => {
   const { isAdminPreview, item } = props;
@@ -45,19 +46,6 @@ const Document = props => {
     }
   }, [] );
 
-  const previewMsgStyles = {
-    position: 'absolute',
-    top: '0',
-    left: '0',
-    right: '0',
-    // match Semantic UI border-radius
-    borderTopLeftRadius: '0.28571429rem',
-    borderTopRightRadius: '0.28571429rem',
-    padding: '1em 1.5em',
-    fontSize: '1em',
-    backgroundColor: '#fdb81e'
-  };
-
   const DownloadElement = isAdminPreview ? 'span' : 'a';
 
   return (
@@ -69,7 +57,7 @@ const Document = props => {
               <Notification
                 el="p"
                 show
-                customStyles={ previewMsgStyles }
+                customStyles={ getPreviewNotificationStyles() }
                 msg="This is a preview of your file on Content Commons."
               />
             ) }

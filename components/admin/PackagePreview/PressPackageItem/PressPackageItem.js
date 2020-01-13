@@ -16,21 +16,26 @@ import { getCount, getTransformedLangTaxArray } from 'lib/utils';
 
 import './PressPackageItem.scss';
 
-const PressPackageItem = props => {
-  const { file: doc, handleClick } = props;
-  if ( !doc || !getCount( doc ) ) return null;
-
-  const { content, use } = doc;
-  const isDocUpdated = doc.updatedAt > doc.createdAt;
-  const dateTimeStamp = isDocUpdated ? doc.updatedAt : doc.createdAt;
+export const getDateTimeTerms = ( createdAt, updatedAt, format ) => {
+  const isDocUpdated = updatedAt > createdAt;
+  const dateTimeStamp = isDocUpdated ? updatedAt : createdAt;
   const label = isDocUpdated ? 'Updated' : 'Created';
-  const dateTimeTerms = [
+  return [
     {
-      definition: <time dateTime={ dateTimeStamp }>{ `${moment( dateTimeStamp ).format( 'LL' )}` }</time>,
+      definition: <time dateTime={ dateTimeStamp }>{ `${moment( dateTimeStamp ).format( format )}` }</time>,
       displayName: label,
       name: label
     }
   ];
+};
+
+const PressPackageItem = props => {
+  const { file: doc, handleClick } = props;
+  if ( !doc || !getCount( doc ) ) return null;
+
+  const {
+    createdAt, updatedAt, content, use
+  } = doc;
 
   const getIndex = ( array, regex ) => (
     array.reduce( ( ret, p, i ) => {
@@ -112,7 +117,11 @@ const PressPackageItem = props => {
         </Card.Content>
 
         <Card.Meta as="footer">
-          <MetaTerms className="date-time" unitId={ doc.id } terms={ dateTimeTerms } />
+          <MetaTerms
+            className="date-time"
+            unitId={ doc.id }
+            terms={ getDateTimeTerms( createdAt, updatedAt, 'LL' ) }
+          />
 
           { Array.isArray( doc.tags )
             && getCount( doc.tags ) > 0
