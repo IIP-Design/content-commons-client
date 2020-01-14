@@ -13,7 +13,7 @@ const Page = props => {
   useEffect( () => {
     const footerHeight = document.querySelector( 'footer' ).getBoundingClientRect().height;
     setMainElemPadding( prevState => Math.round( prevState + footerHeight ) );
-  }, [] )
+  }, [] );
 
   const { router } = props;
   const { pathname } = router;

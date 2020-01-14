@@ -33,12 +33,14 @@ const TeamProjects = () => {
   const { authenticatedUser: { team } } = data;
 
   // If a team does not have any contentTypes associated with it then display message with links
-  if ( !team.contentTypes.length ) return (
-    <Fragment>
-      <p>There aren't any team projects available to view.</p>
-      <p>You can <Link href="/admin/upload" passHref><a className="linkStyle">upload a project</a></Link> or <Link href="/" passHref><a className="linkStyle">browse for other PD content</a></Link>.</p>
-    </Fragment>    
-  );
+  if ( !team.contentTypes.length ) {
+    return (
+      <Fragment>
+        <p>There aren't any team projects available to view.</p>
+        <p>You can <Link href="/admin/upload" passHref><a className="linkStyle">upload a project</a></Link> or <Link href="/" passHref><a className="linkStyle">browse for other PD content</a></Link>.</p>
+      </Fragment>
+    );
+  }
 
   return (
     <ScrollableTableWithMenu
