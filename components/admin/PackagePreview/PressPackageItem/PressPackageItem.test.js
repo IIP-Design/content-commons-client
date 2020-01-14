@@ -247,15 +247,14 @@ describe( '<PressPackageItem />', () => {
   it( 'renders the content markup', () => {
     const wrapper = mount( Component );
     const content = wrapper.find( 'CardContent > div.content' );
-    const markupDiv = content.find( 'div.markup' );
-    const markup = '<p>A statement provides the official U.S. policy/view or comment on a particular foreign policy issue usually in the name of the Spokesperson, Deputy Spokesperson, and sometimes from the Secretary of State.</p>';
+    const markupDiv = content.find( 'div.excerpt' );
+    const markup = <p>A statement provides the official U.S. policy/view or comment on a particular foreign policy issue usually in the name of the Spokesperson, Deputy Spokesperson, and sometimes from the Secretary of State.</p>;
 
     expect( content.exists() ).toEqual( true );
     expect( content.prop( 'className' ) ).toEqual( 'content' );
     expect( content.contains( 'Excerpt:' ) ).toEqual( true );
     expect( markupDiv.exists() ).toEqual( true );
-    expect( markupDiv.prop( 'dangerouslySetInnerHTML' ).__html )
-      .toEqual( markup );
+    expect( markupDiv.contains( markup ) ).toEqual( true );
   } );
 
   it( 'renders "No text available" if !content.html', () => {

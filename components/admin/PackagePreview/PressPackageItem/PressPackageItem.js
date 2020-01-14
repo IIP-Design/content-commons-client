@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'semantic-ui-react';
+import ReactMarkdown from 'react-markdown';
+import htmlParser from 'react-markdown/plugins/html-parser';
 import moment from 'moment';
 
 import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
@@ -71,6 +73,11 @@ const PressPackageItem = props => {
     return `${longestParagraph}</p>`;
   };
 
+  // disallow <script></script> tags
+  const parseHtml = htmlParser( {
+    isValidNode: node => node.type !== 'script'
+  } );
+
   return (
     <Card
       key={ doc.id }
@@ -104,13 +111,17 @@ const PressPackageItem = props => {
         </Card.Header>
 
         <Card.Content>
-          { /* dangerouslySetInnerHTML for now */ }
           { content?.html
             ? (
               <Fragment>
                 <p>Excerpt:</p>
-                { /* eslint-disable-next-line */ }
-                <div className="markup" dangerouslySetInnerHTML={ { __html: getLongestParagraph() } } />
+                <ReactMarkdown
+                  className="excerpt"
+                  source={ getLongestParagraph() }
+                  // must sanitize html during docx conversion
+                  escapeHtml={ false }
+                  astPlugins={ [parseHtml] }
+                />
               </Fragment>
             )
             : <p>No text available</p> }

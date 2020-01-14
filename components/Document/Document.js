@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import ReactMarkdown from 'react-markdown';
+import htmlParser from 'react-markdown/plugins/html-parser';
 import { updateUrl } from 'lib/browser';
 
 import { Button } from 'semantic-ui-react';
@@ -47,6 +49,11 @@ const Document = props => {
   }, [] );
 
   const DownloadElement = isAdminPreview ? 'span' : 'a';
+
+  // disallow <script></script> tags
+  const parseHtml = htmlParser( {
+    isValidNode: node => node.type !== 'script'
+  } );
 
   return (
     <ModalItem headline={ title } className={ isAdminPreview ? 'package-item-preview' : '' }>
@@ -106,11 +113,12 @@ const Document = props => {
 
       { content && content.html && isAdminPreview
         && (
-          // dangerouslySetInnerHTML for now
-          <div
+          <ReactMarkdown
             className="body"
-            // eslint-disable-next-line
-            dangerouslySetInnerHTML={ { __html: content.html } }
+            source={ content.html }
+            // must sanitize html during docx conversion
+            escapeHtml={ false }
+            astPlugins={ [parseHtml] }
           />
         ) }
 
