@@ -2,10 +2,6 @@
  *
  * Global Nav
  *
- * TODO: Need to rewrite menus without the semantic ui
- * <Responsive /> as it throws an error due to ssr:
- * "Warning: Did not expect server HTML to contain a <i> in <nav>""
- *
  */
 import React, { PureComponent } from 'react';
 import dynamic from 'next/dynamic';

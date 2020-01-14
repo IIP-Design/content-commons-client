@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import Header from './Header/Header';
@@ -7,6 +7,14 @@ import Meta from './Meta';
 import { capitalizeFirst } from '../lib/utils';
 
 const Page = props => {
+  // Set padding on main elem dynamically so footer is always at bottom of page and under content
+  const [mainElemPadding, setMainElemPadding] = useState( 72 );
+
+  useEffect( () => {
+    const footerHeight = document.querySelector( 'footer' ).getBoundingClientRect().height;
+    setMainElemPadding( prevState => Math.round( prevState + footerHeight ) );
+  }, [] )
+
   const { router } = props;
   const { pathname } = router;
 
@@ -21,10 +29,10 @@ const Page = props => {
   const bodyCls = ( pathname === '/' ) ? '' : 'ui container inside';
 
   return (
-    <div>
+    <div style={ { position: 'relative', minHeight: '100vh' } }>
       <Meta title={ title } />
       <Header />
-      <main className={ bodyCls }>
+      <main className={ bodyCls } style={ { paddingBottom: `${mainElemPadding}px` } }>
         { props.children }
       </main>
       <Footer />
