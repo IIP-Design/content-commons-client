@@ -31,20 +31,14 @@
       height: 100%;
       text-align: left;
 
-      > .use-container {
+      > .document-use {
         display: flex;
         align-items: center;
-        justify-content: space-between;
         border-radius: 0.111111111rem 0.111111111rem 0 0 !important;
         padding: 1em;
         color: #ffffff;
         font-size: 0.777777778rem;
         background-color: $blue;
-  
-        > .icon {
-            height: 30px;
-            width: 30px;
-          }
       }
   
       > .header {

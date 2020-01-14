@@ -11,7 +11,7 @@ import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import TagsList from 'components/modals/ModalPostTags/ModalPostTags';
 
 import DosSeal from 'static/images/dos_seal.svg';
-import iconPost from 'static/icons/icon_32px_post.png';
+import iconDocument from 'static/icons/icon_32px_document-white.png';
 
 import { hasCssSupport } from 'lib/browser';
 import { getCount, getTransformedLangTaxArray } from 'lib/utils';
@@ -85,7 +85,6 @@ const PressPackageItem = props => {
       key={ doc.id }
       as="button"
       className="press-package-item"
-      onClick={ handleClick }
       type="button"
       { ...( handleClick ? { onClick: handleClick } : {} ) }
       { ...( hasCssSupport( 'display', 'grid' )
@@ -93,18 +92,15 @@ const PressPackageItem = props => {
         : { centered: true } ) }
     >
       <article className="container">
-        <div className="use-container">
-          <MediaObject
-            body={ <span>{ use?.name || '' }</span> }
-            className="seal"
-            img={ {
-              src: DosSeal,
-              alt: 'U.S. Department of State seal',
-              style: { height: '30px', width: '30px' }
-            } }
-          />
-          <img src={ iconPost } alt="document icon" className="icon" />
-        </div>
+        <MediaObject
+          className="document-use"
+          body={ <span>{ use?.name || '' }</span> }
+          img={ {
+            src: iconDocument,
+            alt: 'document icon',
+            style: { height: '30px', width: '30px' }
+          } }
+        />
 
         <InternalUseDisplay />
 

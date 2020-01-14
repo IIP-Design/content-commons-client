@@ -114,8 +114,6 @@ describe( '<PackagePreview />', () => {
       top: '0',
       left: '0',
       right: '0',
-      borderTopLeftRadius: '0.28571429rem',
-      borderTopRightRadius: '0.28571429rem',
       padding: '1em 1.5em',
       fontSize: '1em',
       backgroundColor: '#fdb81e'

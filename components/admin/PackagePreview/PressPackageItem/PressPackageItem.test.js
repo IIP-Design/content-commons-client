@@ -190,38 +190,18 @@ describe( '<PressPackageItem />', () => {
     expect( article.exists() ).toEqual( true );
   } );
 
-  it( 'renders the .use-container', () => {
+  it( 'renders the .document-use MediaObject', () => {
     const wrapper = mount( Component );
-    const useContainer = wrapper.find( 'div.use-container' );
-
-    expect( useContainer.exists() ).toEqual( true );
-  } );
-
-  it( 'renders the .use-container > MediaObject', () => {
-    const wrapper = mount( Component );
-    const mediaObject = wrapper.find( 'div.use-container > MediaObject' );
+    const mediaObject = wrapper.find( 'MediaObject.document-use' );
     const body = mount( <span>{ props.file.use.name }</span> );
 
     expect( mediaObject.exists() ).toEqual( true );
-    expect( mediaObject.prop( 'className' ) ).toEqual( 'seal' );
     expect( mount( mediaObject.prop( 'body' ) ) ).toEqual( body );
     expect( mediaObject.prop( 'img' ) ).toEqual( {
-      // src: 'DosSeal',
-      src: {}, // empty object since dos_seal.svg isn't mocked
-      alt: 'U.S. Department of State seal',
+      src: {}, // empty object since icon_32px_post.png isn't mocked
+      alt: 'document icon',
       style: { height: '30px', width: '30px' }
     } );
-  } );
-
-  it( 'renders the .use-container > document icon', () => {
-    const wrapper = mount( Component );
-    const img = wrapper.find( 'div.use-container > img' );
-
-    expect( img.exists() ).toEqual( true );
-    expect( img.prop( 'className' ) ).toEqual( 'icon' );
-    expect( img.prop( 'alt' ) ).toEqual( 'document icon' );
-    // empty object since icon_32px_post.png isn't mocked
-    expect( img.prop( 'src' ) ).toEqual( {} );
   } );
 
   it( 'renders InternalUseDisplay', () => {
@@ -269,7 +249,7 @@ describe( '<PressPackageItem />', () => {
       }
     } );
     const content = wrapper.find( 'CardContent > div.content' );
-    const markupDiv = content.find( 'div.markup' );
+    const markupDiv = content.find( 'div.excerpt' );
     const markup = <p>No text available</p>;
 
     expect( content.exists() ).toEqual( true );
