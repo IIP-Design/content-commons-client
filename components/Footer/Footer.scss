@@ -4,9 +4,13 @@ footer {
   position: absolute;
   bottom: 0;
   width: 100%;
+  max-height: 388px;
   text-align: center;
   color: #fff;
-  background-color: $light-blue;  
+  background-color: $light-blue;
+  @media screen and (max-width: 767px) {
+    max-height: 580px;
+  }
 
   a,
   a:hover,

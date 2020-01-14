@@ -7,14 +7,6 @@ import Meta from './Meta';
 import { capitalizeFirst } from '../lib/utils';
 
 const Page = props => {
-  // Set padding on main elem dynamically so footer is always at bottom of page and under content
-  const [mainElemPadding, setMainElemPadding] = useState( 72 );
-
-  useEffect( () => {
-    const footerHeight = document.querySelector( 'footer' ).getBoundingClientRect().height;
-    setMainElemPadding( prevState => Math.round( prevState + footerHeight ) );
-  }, [] );
-
   const { router } = props;
   const { pathname } = router;
 
@@ -32,7 +24,7 @@ const Page = props => {
     <div style={ { position: 'relative', minHeight: '100vh' } }>
       <Meta title={ title } />
       <Header />
-      <main className={ bodyCls } style={ { paddingBottom: `${mainElemPadding}px` } }>
+      <main className={ bodyCls }>
         { props.children }
       </main>
       <Footer />

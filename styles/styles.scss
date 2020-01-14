@@ -73,6 +73,13 @@ h6.ui.header {
   font-size: 1rem; // 18px;
 }
 
+main {
+  padding-bottom: 560px; // height of footer plus extra padding
+  @media screen and (max-width: 767px) {
+    padding-bottom: 652px
+  }
+}
+
 .ui.container {
   width: 100%;
 
