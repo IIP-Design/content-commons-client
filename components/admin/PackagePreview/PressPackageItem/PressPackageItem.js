@@ -59,12 +59,10 @@ const PressPackageItem = props => {
      */
     const start = getIndex( paragraphs, /(For Immediate Release)/g );
     // index for # # # line, ( # === \x23 hex value )
-    // (\x23\s*){3}/g regex is unsafe, so commenting out for now
-    // const end = getIndex( paragraphs, /(\x23\s*){3}/g ) || -1;
+    const end = getIndex( paragraphs, /\x23\s*/g ) || -1;
 
     const longestParagraph = paragraphs
-      // .slice( start === 0 ? start : start + 1, end )
-      .slice( start === 0 ? start : start + 1 )
+      .slice( start === 0 ? start : start + 1, end )
       .reduce( ( longest, p ) => {
         if ( p.length && p.length > longest.length ) {
           longest = p; // eslint-disable-line
