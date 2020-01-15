@@ -29,7 +29,7 @@ const Share = props => {
     directLink = `${window.location.protocol}//${window.location.host}/article?${queryStr}`;
     shareLink = directLink;
   }
-  if ( type === 'document' ) {
+  if ( type === 'document' && !isPreview ) {
     directLink = `${window.location.protocol}//${window.location.host}/document?${queryStr}`;
     shareLink = directLink;
   }
@@ -62,6 +62,10 @@ const Share = props => {
       />
     </div>
   );
+};
+
+Share.defaultProps = {
+  isPreview: false
 };
 
 Share.propTypes = {

@@ -96,7 +96,9 @@ const ModalPostMeta = props => {
         <span className="modal_postmeta_content">{ `Author: ${author.firstName} ${author.lastName}` }</span>
       ) }
       <span className="modal_postmeta_content">
-        { `Date Published: ${moment( datePublished ).format( 'MMMM DD, YYYY' )}` }
+        { datePublished
+          ? `Date Published: ${moment( datePublished ).format( 'MMMM DD, YYYY' )}`
+          : 'Date Published: ' }
       </span>
       {
         originalLink
@@ -116,7 +118,7 @@ ModalPostMeta.propTypes = {
   logo: string,
   source: string,
   datePublished: string,
-  originalLink: string
+  originalLink: string,
 };
 
 export default ModalPostMeta;

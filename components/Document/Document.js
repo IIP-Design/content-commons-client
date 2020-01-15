@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import ReactMarkdown from 'react-markdown';
+import htmlParser from 'react-markdown/plugins/html-parser';
 import { updateUrl } from 'lib/browser';
 
 import { Button } from 'semantic-ui-react';
@@ -9,26 +11,29 @@ import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
 import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
-import Share from '../Share/Share';
-import PopupTrigger from '../popups/PopupTrigger';
-import Popup from '../popups/Popup';
+import Notification from 'components/Notification/Notification';
+import Share from 'components/Share/Share';
+import PopupTrigger from 'components/popups/PopupTrigger';
+import Popup from 'components/popups/Popup';
 
-import ModalItem from '../modals/ModalItem';
-import ModalLangDropdown from '../modals/ModalLangDropdown/ModalLangDropdown';
-import ModalDescription from '../modals/ModalDescription/ModalDescription';
-import ModalPostMeta from '../modals/ModalPostMeta/ModalPostMeta';
-import ModalPostTags from '../modals/ModalPostTags/ModalPostTags';
+import ModalItem from 'components/modals/ModalItem';
+import ModalDescription from 'components/modals/ModalDescription/ModalDescription';
+import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
+import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 
+import { getPreviewNotificationStyles } from 'lib/utils';
 
 const Document = props => {
-  const { item } = props;
+  const { isAdminPreview, item } = props;
   const {
     id,
     published,
     owner,
     site,
     title,
+    content,
     content: { rawText },
+    link,
     logo,
     language,
     documentUrl,
@@ -38,38 +43,62 @@ const Document = props => {
   } = item;
 
   useEffect( () => {
-    updateUrl( `/document?id=${id}&site=${site}&language=${language.locale}` );
+    if ( !isAdminPreview ) {
+      updateUrl( `/document?id=${id}&site=${site}&language=${language.locale}` );
+    }
   }, [] );
 
+  const DownloadElement = isAdminPreview ? 'span' : 'a';
+
+  // disallow <script></script> tags
+  const parseHtml = htmlParser( {
+    isValidNode: node => node.type !== 'script'
+  } );
+
   return (
-    <ModalItem headline={ title }>
+    <ModalItem headline={ title } className={ isAdminPreview ? 'package-item-preview' : '' }>
       <div className="modal_options modal_options--noLanguage">
         <div>
+          { isAdminPreview
+            && (
+              <Notification
+                el="p"
+                show
+                customStyles={ getPreviewNotificationStyles() }
+                msg="This is a preview of your file on Content Commons."
+              />
+            ) }
           <InternalUseDisplay />
           <PopupTrigger
-            toolTip="Share video"
+            toolTip="Share document"
             icon={ { img: shareIcon, dim: 20 } }
             show
             content={ (
               <Popup title="Copy the link to share internally.">
                 <Share
-                  link=""
+                  link={ link }
                   id={ id }
                   site={ site }
                   title={ title }
                   language={ language.locale }
                   type={ type }
+                  { ...( isAdminPreview ? { isPreview: true } : {} ) }
                 />
               </Popup>
             ) }
           />
           <Button className="trigger" tooltip="Not For Public Distribution">
-            <a
-              href={ documentUrl }
-              className="trigger"
-              download
-              target="_blank"
-              rel="noopener noreferrer"
+            <DownloadElement
+              { ...( isAdminPreview
+                ? {}
+                : {
+                  href: documentUrl,
+                  className: 'trigger',
+                  download: true,
+                  target: '_blank',
+                  rel: 'noopener noreferrer'
+                }
+              ) }
             >
               <img
                 src={ downloadIcon }
@@ -77,11 +106,30 @@ const Document = props => {
                 height={ 18 }
                 alt="Download document icon"
               />
-            </a>
+            </DownloadElement>
           </Button>
         </div>
       </div>
-      <ModalDescription description={ rawText } />
+
+      { content && content.html && isAdminPreview
+        && (
+          <ReactMarkdown
+            className="body"
+            source={ content.html }
+            // must sanitize html during docx conversion
+            escapeHtml={ false }
+            astPlugins={ [parseHtml] }
+          />
+        ) }
+
+      { content
+        && !content.html
+        && !content.rawText
+        && !content.markdown
+        && <ModalDescription description="No text available" /> }
+
+      { !isAdminPreview && <ModalDescription description={ rawText } /> }
+
       <ModalPostMeta
         type={ type }
         logo={ logo }
@@ -95,7 +143,12 @@ const Document = props => {
   );
 };
 
+Document.defaultProps = {
+  isAdminPreview: false
+};
+
 Document.propTypes = {
+  isAdminPreview: PropTypes.bool,
   item: PropTypes.shape( {
     id: PropTypes.number,
     published: PropTypes.string,
