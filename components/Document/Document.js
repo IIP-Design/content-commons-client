@@ -24,7 +24,7 @@ import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 import { getPreviewNotificationStyles } from 'lib/utils';
 
 const Document = props => {
-  const { isAdminPreview, item } = props;
+  const { isAdminPreview, displayAsModal, item } = props;
   const {
     id,
     published,
@@ -43,7 +43,7 @@ const Document = props => {
   } = item;
 
   useEffect( () => {
-    if ( !isAdminPreview ) {
+    if ( !displayAsModal ) {
       updateUrl( `/document?id=${id}&site=${site}&language=${language.locale}` );
     }
   }, [] );
@@ -144,13 +144,14 @@ const Document = props => {
 };
 
 Document.defaultProps = {
-  isAdminPreview: false
+  isAdminPreview: false,
 };
 
 Document.propTypes = {
   isAdminPreview: PropTypes.bool,
+  displayAsModal: PropTypes.bool,
   item: PropTypes.shape( {
-    id: PropTypes.number,
+    id: PropTypes.string,
     published: PropTypes.string,
     author: PropTypes.string,
     owner: PropTypes.string,

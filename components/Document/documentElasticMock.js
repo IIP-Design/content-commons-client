@@ -1,7 +1,7 @@
 export const documentItem = [
   {
     _source: {
-      id: 1234,
+      id: '1234',
       site: 'commons.america.gov',
       type: 'document',
       owner: 'Press Office',

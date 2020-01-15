@@ -18,6 +18,8 @@ import { getDateTimeTerms } from 'components/admin/PackagePreview/PressPackageIt
 import Share from 'components/Share/Share';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
+import Package from 'components/Package/Package';
+
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
@@ -68,92 +70,105 @@ const PackagePreview = ( { id } ) => {
   // in future: const files = documents || files || etc.
   const files = documents;
 
-  return (
-    <ModalItem
-      className="package-preview"
-      headline={ title }
-      textDirection="LTR" // use LTR since pkg have no lang field
-    >
-      <Notification
-        el="p"
-        show
-        customStyles={ getPreviewNotificationStyles() }
-        msg="This is a preview of your package on Content Commons."
-      />
+  // Structure obj for use in Package component
+  const pkgItem = {
+    id,
+    published: createdAt,
+    modified: updatedAt,
+    team,
+    type,
+    title,
+    packageFiles: documents
+  };
 
-      <MetaTerms
-        className="date-time"
-        unitId={ id }
-        terms={ getDateTimeTerms( createdAt, updatedAt, 'LT, l' ) }
-      />
+  return <Package item={ pkgItem } isAdminPreview />;
 
-      <div className="modal_options">
-        <div className="trigger-container">
-          <PopupTrigger
-            tooltip="Share package"
-            icon={ { img: shareIcon, dim: 18 } }
-            show
-            content={ (
-              <Popup title="Share this package.">
-                <Share
-                  id={ id }
-                  isPreview
-                  language="en-us" // use en since pkg have no lang field
-                  link="The direct link to the package will appear here."
-                  site=""
-                  title={ title }
-                  type="package"
-                />
-              </Popup>
-            ) }
-          />
+  // return (
+  //   <ModalItem
+  //     className="package-preview"
+  //     headline={ title }
+  //     textDirection="LTR" // use LTR since pkg have no lang field
+  //   >
+  //     <Notification
+  //       el="p"
+  //       show
+  //       customStyles={ getPreviewNotificationStyles() }
+  //       msg="This is a preview of your package on Content Commons."
+  //     />
 
-          <PopupTrigger
-            tooltip={ getPluralStringOrNot( documents, 'Download file' ) }
-            icon={ { img: downloadIcon, dim: 18 } }
-            position="right"
-            show
-            content={ (
-              <PopupTabbed
-                title={ getPluralStringOrNot( documents, 'Package File' ) }
-                panes={ [
-                  {
-                    title: getPluralStringOrNot( documents, 'Document' ),
-                    component: (
-                      <DownloadPkgFiles
-                        files={ documents }
-                        instructions={ getPluralStringOrNot( documents, 'Download Package File' ) }
-                        isPreview
-                      />
-                    )
-                  }
-                ] }
-              />
-            ) }
-          />
-          <span className="file-count">
-            { `(${getCount( documents )})` }
-            <VisuallyHidden> documents in this package</VisuallyHidden>
-          </span>
-        </div>
-      </div>
+  //     <MetaTerms
+  //       className="date-time"
+  //       unitId={ id }
+  //       terms={ getDateTimeTerms( createdAt, updatedAt, 'LT, l' ) }
+  //     />
 
-      <div className="package-items">
-        <Card.Group>
-          { getCount( files )
-            ? files.map( file => (
-              <PackageItemPreview
-                key={ file.id }
-                file={ file }
-                team={ team }
-                type={ type }
-              />
-            ) )
-            : 'There are no files associated with this package.' }
-        </Card.Group>
-      </div>
-    </ModalItem>
-  );
+  //     <div className="modal_options">
+  //       <div className="trigger-container">
+  //         <PopupTrigger
+  //           tooltip="Share package"
+  //           icon={ { img: shareIcon, dim: 18 } }
+  //           show
+  //           content={ (
+  //             <Popup title="Share this package.">
+  //               <Share
+  //                 id={ id }
+  //                 isPreview
+  //                 language="en-us" // use en since pkg have no lang field
+  //                 link="The direct link to the package will appear here."
+  //                 site=""
+  //                 title={ title }
+  //                 type="package"
+  //               />
+  //             </Popup>
+  //           ) }
+  //         />
+
+  //         <PopupTrigger
+  //           tooltip={ getPluralStringOrNot( documents, 'Download file' ) }
+  //           icon={ { img: downloadIcon, dim: 18 } }
+  //           position="right"
+  //           show
+  //           content={ (
+  //             <PopupTabbed
+  //               title={ getPluralStringOrNot( documents, 'Package File' ) }
+  //               panes={ [
+  //                 {
+  //                   title: getPluralStringOrNot( documents, 'Document' ),
+  //                   component: (
+  //                     <DownloadPkgFiles
+  //                       files={ documents }
+  //                       instructions={ getPluralStringOrNot( documents, 'Download Package File' ) }
+  //                       isPreview
+  //                     />
+  //                   )
+  //                 }
+  //               ] }
+  //             />
+  //           ) }
+  //         />
+  //         <span className="file-count">
+  //           { `(${getCount( documents )})` }
+  //           <VisuallyHidden> documents in this package</VisuallyHidden>
+  //         </span>
+  //       </div>
+  //     </div>
+
+  //     <div className="package-items">
+  //       <Card.Group>
+  //         { getCount( files )
+  //           ? files.map( file => (
+  //             <PackageItemPreview
+  //               key={ file.id }
+  //               file={ file }
+  //               team={ team }
+  //               type={ type }
+  //             />
+  //           ) )
+  //           : 'There are no files associated with this package.' }
+  //       </Card.Group>
+  //     </div>
+  //   </ModalItem>
+  // );
 };
 
 PackagePreview.propTypes = {

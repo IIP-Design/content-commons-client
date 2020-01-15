@@ -92,7 +92,7 @@ const PressPackageItem = props => {
       <article className="container">
         <MediaObject
           className="document-use"
-          body={ <span>{ use?.name || '' }</span> }
+          body={ <span>{ use?.name || use || '' }</span> }
           img={ {
             src: iconDocument,
             alt: 'document icon',

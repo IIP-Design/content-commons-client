@@ -1,0 +1,52 @@
+@import "styles/colors.scss";
+
+.package {
+
+  .modal_headline {
+    margin-top: 1.5em;
+    margin-bottom: 0.25em;
+  }
+
+  .date-time {
+    color: $grey;
+
+    > div > dt {
+      font-weight: 400;
+    }
+  }
+
+  .file-count {
+    margin-top: -2px;
+    font-size: 16px;
+  }
+
+  .modal_options {
+    justify-content: flex-end;
+
+    > .trigger-container {
+      display: flex;
+
+      > .file-count {
+        color: $matisse-blue;
+      }
+    }
+  }
+
+  .package-items {
+    border-top: 1px solid $light-grey;
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+    font-size: 0.777777778rem;
+    text-align: left;
+  
+    @supports (display: grid) {
+      .ui.cards {
+        display: grid;
+        grid-gap: 2rem;
+        // use min 290px to match Semantic UI .ui.card width
+        grid-template-columns: repeat( auto-fill, minmax( 290px, 1fr ) );
+        margin: 0;
+      }
+    }
+  }
+}

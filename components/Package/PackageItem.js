@@ -10,7 +10,7 @@ import DosSeal from 'static/images/dos_seal.svg';
 
 import { getCount, getTransformedLangTaxArray } from 'lib/utils';
 
-import './PackageItemPreview.scss';
+import './PackageItem.scss';
 
 /**
  * dynamic import results in
@@ -23,12 +23,13 @@ import './PackageItemPreview.scss';
 //   )
 // );
 
-const PackageItemPreview = props => {
+const PackageItem = props => {
   const [isOpen, setIsOpen] = useState( false );
 
   const { file, team, type } = props;
 
   if ( !file || !getCount( file ) ) return null;
+
   const {
     publishedAt, language, title, content, tags, url
   } = file;
@@ -37,11 +38,12 @@ const PackageItemPreview = props => {
   const handleClose = () => setIsOpen( false );
 
   const getNormalizedItem = () => ( {
-    // id,
-    published: publishedAt || '',
+    id: file.id || '',
+    // published: publishedAt || '',
+    published: publishedAt || file.published || '',
     author: '',
-    owner: ( team?.name ) || '',
-    site: '',
+    owner: ( team?.name ) || ( file?.owner ) || '',
+    site: file.site || '',
     link: 'The direct link to the package will appear here.',
     title,
     content: content || {},
@@ -49,7 +51,8 @@ const PackageItemPreview = props => {
     thumbnail: '',
     language: language || {},
     documentUrl: url || '',
-    documentUse: ( file?.use?.name ) || '',
+    // documentUse: ( file?.use?.name ) || '',
+    documentUse: ( file?.use?.name ) || file.use || '',
     tags: getTransformedLangTaxArray( tags ) || [],
     type: 'document',
   } );
@@ -76,16 +79,16 @@ const PackageItemPreview = props => {
       closeIcon
     >
       <Modal.Content>
-        <Document item={ getNormalizedItem() } isAdminPreview displayAsModal />
+        <Document item={ getNormalizedItem() } displayAsModal />
       </Modal.Content>
     </Modal>
   );
 };
 
-PackageItemPreview.propTypes = {
+PackageItem.propTypes = {
   file: PropTypes.object,
   team: PropTypes.object,
   type: PropTypes.string
 };
 
-export default PackageItemPreview;
+export default PackageItem;
