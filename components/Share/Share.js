@@ -13,7 +13,7 @@ const Share = props => {
     id, isPreview, site, language, title, link, type
   } = props;
 
-  const internalOnly = type === 'document';
+  const internalOnly = type === 'document' || type === 'package';
 
   const queryStr = ( type === 'post' )
     ? stringifyQueryString( { id, site } )
