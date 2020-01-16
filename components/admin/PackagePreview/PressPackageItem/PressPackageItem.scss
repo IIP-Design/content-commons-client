@@ -37,7 +37,8 @@
         border-radius: 0.111111111rem 0.111111111rem 0 0 !important;
         padding: 1em;
         color: #ffffff;
-        font-size: 0.777777778rem;
+        font-size: 18px;
+        font-style: italic;
         background-color: $blue;
       }
   
@@ -87,7 +88,6 @@
   
         > .seal {
           color: initial;
-          font-family: Georgia, serif;
         }
       }
     }

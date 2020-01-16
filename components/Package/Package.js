@@ -21,16 +21,18 @@ import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 import PackageItem from './PackageItem';
 
+import { normalizeDocumentItemByAPI } from './normalizeDocumentItemByAPI';
+
 import './Package.scss';
 
 const Package = props => {
-  const { isAdminPreview } = props;
+  const { isAdminPreview, useGraphQl } = props;
   const {
     id,
     published,
     modified,
-    team,
     type,
+    team,
     title,
     packageFiles
   } = props.item;
@@ -114,7 +116,8 @@ const Package = props => {
             ? packageFiles.map( file => (
               <PackageItem
                 key={ file.id }
-                file={ file }
+                // file={ file }
+                file={ normalizeDocumentItemByAPI( { file } ) }
                 team={ team }
                 type={ type }
               />
@@ -128,6 +131,7 @@ const Package = props => {
 
 Package.propTypes = {
   isAdminPreview: PropTypes.bool,
+  useGraphQl: PropTypes.bool,
   item: PropTypes.object,
 };
 

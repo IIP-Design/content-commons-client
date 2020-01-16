@@ -2,14 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // import dynamic from 'next/dynamic';
 import { Modal } from 'semantic-ui-react';
-
+import { getCount, getTransformedLangTaxArray } from 'lib/utils';
 import Document from 'components/Document/Document';
 import PressPackageItem from 'components/admin/PackagePreview/PressPackageItem/PressPackageItem';
-
 import DosSeal from 'static/images/dos_seal.svg';
-
-import { getCount, getTransformedLangTaxArray } from 'lib/utils';
-
 import './PackageItem.scss';
 
 /**
@@ -30,32 +26,32 @@ const PackageItem = props => {
 
   if ( !file || !getCount( file ) ) return null;
 
-  const {
-    publishedAt, language, title, content, tags, url
-  } = file;
+  // const {
+  //   publishedAt, language, title, content, tags, url
+  // } = file;
 
   const handleOpen = () => setIsOpen( true );
   const handleClose = () => setIsOpen( false );
 
-  const getNormalizedItem = () => ( {
-    id: file.id || '',
-    // published: publishedAt || '',
-    published: publishedAt || file.published || '',
-    author: '',
-    owner: ( team?.name ) || ( file?.owner ) || '',
-    site: file.site || '',
-    link: 'The direct link to the package will appear here.',
-    title,
-    content: content || {},
-    logo: DosSeal || '',
-    thumbnail: '',
-    language: language || {},
-    documentUrl: url || '',
-    // documentUse: ( file?.use?.name ) || '',
-    documentUse: ( file?.use?.name ) || file.use || '',
-    tags: getTransformedLangTaxArray( tags ) || [],
-    type: 'document',
-  } );
+  // const getNormalizedItem = () => ( {
+  //   id: file.id || '',
+  //   // published: publishedAt || '',
+  //   published: publishedAt || file.published || '',
+  //   author: '',
+  //   owner: ( team?.name ) || ( file?.owner ) || '',
+  //   site: file.site || '',
+  //   link: 'The direct link to the package will appear here.',
+  //   title,
+  //   content: content || {},
+  //   logo: DosSeal || '',
+  //   thumbnail: '',
+  //   language: language || {},
+  //   documentUrl: url || '',
+  //   // documentUse: ( file?.use?.name ) || '',
+  //   documentUse: ( file?.use?.name ) || file.use || '',
+  //   tags: getTransformedLangTaxArray( tags ) || [],
+  //   type: 'document',
+  // } );
 
   const getTriggerComponent = () => {
     switch ( type ) {
@@ -79,7 +75,8 @@ const PackageItem = props => {
       closeIcon
     >
       <Modal.Content>
-        <Document item={ getNormalizedItem() } displayAsModal />
+        { /* <Document item={ getNormalizedItem() } displayAsModal /> */ }
+        <Document item={ file } displayAsModal />
       </Modal.Content>
     </Modal>
   );

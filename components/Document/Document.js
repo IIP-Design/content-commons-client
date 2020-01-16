@@ -33,7 +33,6 @@ const Document = props => {
     title,
     content,
     content: { rawText },
-    link,
     logo,
     language,
     documentUrl,
@@ -76,7 +75,6 @@ const Document = props => {
             content={ (
               <Popup title="Copy the link to share internally.">
                 <Share
-                  link={ link }
                   id={ id }
                   site={ site }
                   title={ title }
@@ -156,7 +154,6 @@ Document.propTypes = {
     author: PropTypes.string,
     owner: PropTypes.string,
     site: PropTypes.string,
-    link: PropTypes.string,
     title: PropTypes.string,
     content: PropTypes.object,
     logo: PropTypes.string,

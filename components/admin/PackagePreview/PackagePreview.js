@@ -81,7 +81,7 @@ const PackagePreview = ( { id } ) => {
     packageFiles: documents
   };
 
-  return <Package item={ pkgItem } isAdminPreview />;
+  return <Package item={ pkgItem } isAdminPreview useGraphQl />;
 
   // return (
   //   <ModalItem
