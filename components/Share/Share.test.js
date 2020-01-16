@@ -30,6 +30,22 @@ describe( '<Share />', () => {
     expect( list.exists() ).toEqual( false );
   } );
 
+  it( 'does not render the Facebook and Twitter share links if type is document', () => {
+    const wrapper = mount( Component );
+    wrapper.setProps( { type: 'document' } );
+    const list = wrapper.find( 'List.share_list' );
+
+    expect( list.exists() ).toEqual( false );
+  } );
+
+  it( 'does not render the Facebook and Twitter share links if type is package', () => {
+    const wrapper = mount( Component );
+    wrapper.setProps( { type: 'package' } );
+    const list = wrapper.find( 'List.share_list' );
+
+    expect( list.exists() ).toEqual( false );
+  } );
+
   it( 'passes the correct Facebook and Twitter share links', () => {
     const wrapper = mount( Component );
     const facebookBtn = wrapper.find( 'ShareButton[icon="facebook f"]' );
