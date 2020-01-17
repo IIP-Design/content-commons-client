@@ -127,8 +127,7 @@ const PressPackageItem = props => {
                 />
               </Fragment>
             )
-            : <p>No text available</p>
-          }
+            : <p>No text available</p> }
         </Card.Content>
 
         <Card.Meta as="footer">

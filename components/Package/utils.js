@@ -24,7 +24,6 @@ export const normalizeDocumentItemByAPI = ( { file, useGraphQl = false } ) => {
     tags: file.tags || [],
   };
 
-
   if ( useGraphQl ) {
     const graphFields = {
       created: file.createdAt || '',

@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import { Modal } from 'semantic-ui-react';
 import { getCount } from 'lib/utils';
 import Document from 'components/Document/Document';
-import PressPackageItem from 'components/admin/PackagePreview/PressPackageItem/PressPackageItem';
-// import PressPackageItem from './PressPackageItem/PressPackageItem';
+import PressPackageItem from '../PressPackageItem/PressPackageItem';
 import './PackageItem.scss';
 
 /**

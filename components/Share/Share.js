@@ -24,11 +24,11 @@ const Share = props => {
 
   // video, document, package types
   if ( !isPreview && type !== 'post' ) {
-    directLink = `${window.location.protocol}//${window.location.host}/${type}?${queryStr}`;    
+    directLink = `${window.location.protocol}//${window.location.host}/${type}?${queryStr}`;
   }
 
   // post, document, package types
-  if ( type !== 'video' ) {    
+  if ( type !== 'video' ) {
     shareLink = directLink;
   }
 

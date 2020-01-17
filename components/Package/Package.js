@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { updateUrl } from 'lib/browser';
 import { getCount, getPluralStringOrNot, getPreviewNotificationStyles } from 'lib/utils';
-import { normalizeDocumentItemByAPI } from './normalizeDocumentItemByAPI';
 import { Card } from 'semantic-ui-react';
 
 import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
@@ -12,13 +11,14 @@ import Notification from 'components/Notification/Notification';
 import Popup from 'components/popups/Popup';
 import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
-import { getDateTimeTerms } from 'components/admin/PackagePreview/PressPackageItem/PressPackageItem';
 import Share from 'components/Share/Share';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import PackageItem from './PackageItem';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
+import { getDateTimeTerms } from './PressPackageItem/PressPackageItem';
+import PackageItem from './PackageItem/PackageItem';
+import { normalizeDocumentItemByAPI } from './utils';
 
 import './Package.scss';
 

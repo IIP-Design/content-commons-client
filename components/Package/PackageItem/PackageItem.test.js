@@ -1,5 +1,7 @@
 import { mount } from 'enzyme';
-import PackageItemPreview from './PackageItemPreview';
+import PackageItem from './PackageItem';
+
+const PackageItemPreview = PackageItem;
 
 jest.mock(
   'components/Document/Document',
