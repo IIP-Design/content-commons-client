@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { updateUrl } from 'lib/browser';
 import { getCount, getPluralStringOrNot, getPreviewNotificationStyles } from 'lib/utils';
-
+import { normalizeDocumentItemByAPI } from './normalizeDocumentItemByAPI';
 import { Card } from 'semantic-ui-react';
 
 import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
@@ -15,13 +15,10 @@ import PopupTabbed from 'components/popups/PopupTabbed';
 import { getDateTimeTerms } from 'components/admin/PackagePreview/PressPackageItem/PressPackageItem';
 import Share from 'components/Share/Share';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-
+import PackageItem from './PackageItem';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
-import PackageItem from './PackageItem';
-
-import { normalizeDocumentItemByAPI } from './normalizeDocumentItemByAPI';
 
 import './Package.scss';
 
@@ -32,10 +29,16 @@ const Package = props => {
     published,
     modified,
     type,
-    team,
     title,
+    site,
     packageFiles
   } = props.item;
+
+  useEffect( () => {
+    if ( !isAdminPreview ) {
+      updateUrl( `/package?id=${id}&site=${site}&language=en-us` );
+    }
+  }, [] );
 
   return (
     <ModalItem
@@ -69,10 +72,10 @@ const Package = props => {
               <Popup title="Share this package.">
                 <Share
                   id={ id }
-                  isPreview
+                  isPreview={ isAdminPreview }
                   language="en-us" // use en since pkg have no lang field
                   link="The direct link to the package will appear here."
-                  site=""
+                  site={ site }
                   title={ title }
                   type="package"
                 />
@@ -116,9 +119,7 @@ const Package = props => {
             ? packageFiles.map( file => (
               <PackageItem
                 key={ file.id }
-                // file={ file }
-                file={ normalizeDocumentItemByAPI( { file } ) }
-                team={ team }
+                file={ normalizeDocumentItemByAPI( { file, useGraphQl } ) }
                 type={ type }
               />
             ) )

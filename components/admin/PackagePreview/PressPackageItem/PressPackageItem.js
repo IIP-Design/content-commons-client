@@ -14,7 +14,7 @@ import DosSeal from 'static/images/dos_seal.svg';
 import iconDocument from 'static/icons/icon_32px_document-white.png';
 
 import { hasCssSupport } from 'lib/browser';
-import { getCount, getTransformedLangTaxArray } from 'lib/utils';
+import { getCount } from 'lib/utils';
 
 import './PressPackageItem.scss';
 
@@ -34,10 +34,6 @@ export const getDateTimeTerms = ( createdAt, updatedAt, format ) => {
 const PressPackageItem = props => {
   const { file: doc, handleClick } = props;
   if ( !doc || !getCount( doc ) ) return null;
-
-  // const {
-  //   createdAt, updatedAt, content, use
-  // } = doc;
 
   const {
     id,
@@ -131,7 +127,8 @@ const PressPackageItem = props => {
                 />
               </Fragment>
             )
-            : <p>No text available</p> }
+            : <p>No text available</p>
+          }
         </Card.Content>
 
         <Card.Meta as="footer">
@@ -141,19 +138,14 @@ const PressPackageItem = props => {
             terms={ getDateTimeTerms( published, modified, 'LL' ) }
           />
 
-          { /* { Array.isArray( doc.tags )
-            && getCount( doc.tags ) > 0
-            && <TagsList tags={ getTransformedLangTaxArray( doc.tags ) } /> } */ }
-
           { getCount( tags ) > 0 && <TagsList tags={ tags } /> }
 
           <MediaObject
-            // body={ <span>U.S. Department of State</span> }
             body={ <span>{ owner || 'U.S. Department of State' }</span> }
             className="seal"
             img={ {
               src: DosSeal,
-              alt: 'U.S. Department of State seal',
+              alt: `${owner || 'U.S. Department of State'} seal`,
               style: { height: '24px', width: '24px' }
             } }
           />

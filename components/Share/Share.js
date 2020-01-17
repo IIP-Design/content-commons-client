@@ -22,16 +22,19 @@ const Share = props => {
   let directLink = link;
   let shareLink = link;
 
-  if ( type === 'video' && !isPreview ) {
-    directLink = `${window.location.protocol}//${window.location.host}/video?${queryStr}`;
+  // video, document, package types
+  if ( !isPreview && type !== 'post' ) {
+    directLink = `${window.location.protocol}//${window.location.host}/${type}?${queryStr}`;    
   }
+
+  // post, document, package types
+  if ( type !== 'video' ) {    
+    shareLink = directLink;
+  }
+
+  // post type
   if ( contentRegExp( link ) && type === 'post' ) {
     directLink = `${window.location.protocol}//${window.location.host}/article?${queryStr}`;
-    shareLink = directLink;
-  }
-  if ( type === 'document' && !isPreview ) {
-    directLink = `${window.location.protocol}//${window.location.host}/document?${queryStr}`;
-    shareLink = directLink;
   }
 
   const facebookURL = `https://www.facebook.com/sharer/sharer.php?u=${shareLink}`;
