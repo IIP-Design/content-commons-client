@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import Header from './Header/Header';
@@ -21,7 +21,7 @@ const Page = props => {
   const bodyCls = ( pathname === '/' ) ? '' : 'ui container inside';
 
   return (
-    <div>
+    <div style={ { position: 'relative', minHeight: '100vh' } }>
       <Meta title={ title } />
       <Header />
       <main className={ bodyCls }>
