@@ -26,7 +26,7 @@ const PackageFiles = props => {
     setProgress( progressEvent.loaded );
   };
 
-  const handleOpenModel = e => {
+  const handleOpenModel = () => {
     setModalOpen( true );
   };
 
@@ -86,14 +86,15 @@ const PackageFiles = props => {
       ) }
 
       <div className="files">
-        { units.map( unit => {
+        { /* Remove index after demo  */ }
+        { units.map( ( unit, index ) => {
           /**
            * Future: conditionally render `<PressPackageFile />`
            * or some other type of package file, e.g.,
            * `<FrontOfficePackageFile />`
            */
           if ( pkg.type === 'DAILY_GUIDANCE' ) {
-            return <PressPackageFile key={ unit.id } document={ unit } />;
+            return <PressPackageFile key={ unit.id } document={ unit } index={ index } />;
           }
           return null;
           // return <SomeOtherPackageFile key={ unit.id } id={ unit.id } />;
