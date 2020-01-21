@@ -19,11 +19,11 @@ const ModalPostMeta = props => {
   } = props;
 
   const isRTL = textDirection === 'RTL';
-  const isDocumentOrPackage = type && ( type === 'document' || type === 'package' );
+  const isDocument = type && ( type === 'document' );
   const contentSite = contentRegExp( sourcelink );
 
   const renderSourceItem = () => {
-    if ( isDocumentOrPackage ) {
+    if ( isDocument ) {
       return (
         <PressSourceMeta author={ author } logo={ logo } source={ source } releaseType={ releaseType } />
       );

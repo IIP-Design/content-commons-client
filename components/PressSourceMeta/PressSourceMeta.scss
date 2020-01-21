@@ -2,20 +2,8 @@
 
 .pressSource {  
 
-  &_logo {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1em;
-
-    img {
-      width: 30px;
-      height: auto;
-      margin-right: 0.5em;
-    }
-
-    > p {
-      font-size: 18px;
-    }
+  &_source {
+    font-size: 18px;    
   }
 
   &_content {
