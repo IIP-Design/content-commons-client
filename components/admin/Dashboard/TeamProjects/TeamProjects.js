@@ -4,9 +4,8 @@
  *
  */
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { CURRENT_USER_QUERY } from 'components/User/User';
 import ScrollableTableWithMenu from 'components/ScrollableTableWithMenu/ScrollableTableWithMenu';
+import { useAuth } from 'context/authContext';
 
 const persistentTableHeaders = [
   { name: 'projectTitle', label: 'PROJECT TITLE' },
@@ -22,12 +21,10 @@ const menuItems = [
 ];
 
 const TeamProjects = () => {
-  const { loading, error, data } = useQuery( CURRENT_USER_QUERY );
+  const { user } = useAuth();
+  const team = user?.team;
 
-  if ( loading ) return 'Loading...';
-  if ( error ) return `Error! ${error.message}`;
-
-  const { authenticatedUser: { team } } = data;
+  if ( !team ) return null;
 
   return (
     <ScrollableTableWithMenu

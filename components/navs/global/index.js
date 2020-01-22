@@ -7,87 +7,62 @@
  * "Warning: Did not expect server HTML to contain a <i> in <nav>""
  *
  */
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
-import User from 'components/User/User';
 import './global.scss';
+// import User from 'components/User/User';
+import { useAuth } from 'context/authContext';
 
 const LoggedInNav = dynamic( () => import( /* webpackChunkName: "LoggedInNav" */ './LoggedInNav/LoggedInNav' ) );
 const LoggedOutNav = dynamic( () => import( /* webpackChunkName: "LoggedOutNav" */ './LoggedOutNav/LoggedOutNav' ) );
 
-class GlobalNav extends PureComponent {
-  constructor( props ) {
-    super( props );
-    this.state = {
-      mobileNavVisible: false
-    };
-  }
+const GlobalNav = () => {
+  const [mobileNavVisible, setMobileNavVisible] = useState( false );
+  const { user } = useAuth();
 
-
-  handleKeyUp = e => {
-    if ( e.key === 'Enter' ) {
-      this.handleNavClick();
-    }
-  }
-
-  handleNavClick = () => {
-    const { mobileNavVisible } = this.state;
+  const handleNavClick = () => {
     if ( !mobileNavVisible ) {
-      this.setState( { mobileNavVisible: true } );
+      setMobileNavVisible( true );
     } else {
-      this.setState( { mobileNavVisible: false } );
+      setMobileNavVisible( false );
     }
-  }
+  };
 
-  renderNav( authenticatedUser ) {
-    const { mobileNavVisible } = this.state;
+  const handleKeyUp = e => {
+    if ( e.key === 'Enter' ) {
+      handleNavClick();
+    }
+  };
 
-    if ( authenticatedUser ) {
-      return (
+  return (
+    <nav>
+      <button
+        type="button"
+        className="mobileNavBurger"
+        onClick={ handleNavClick }
+        onKeyUp={ handleKeyUp }
+        tabIndex={ 0 }
+      >
+        <span className="bar" />
+        <span className="bar" />
+        <span className="bar" />
+      </button>
+      { user ? (
         <LoggedInNav
           mobileNavVisible={ mobileNavVisible }
-          toggleMobileNav={ this.handleNavClick }
-          keyUp={ this.keyUp }
-          user={ authenticatedUser }
+          toggleMobileNav={ handleNavClick }
+          keyUp={ handleKeyUp }
+          user={ user }
         />
-      );
-    }
-
-    return (
-      <LoggedOutNav
-        mobileNavVisible={ mobileNavVisible }
-        toggleMobileNav={ this.handleNavClick }
-        keyUp={ this.keyUp }
-      />
-    );
-  }
-
-  render() {
-    return (
-      <nav>
-        <button
-          type="button"
-          className="mobileNavBurger"
-          onClick={ this.handleNavClick }
-          onKeyUp={ this.keyUp }
-          tabIndex={ 0 }
-        >
-          <span className="bar" />
-          <span className="bar" />
-          <span className="bar" />
-        </button>
-        <User>
-          { ( { data, loading } ) => {
-            if ( loading ) {
-              return null;
-            }
-            const authenticatedUser = ( data && data.authenticatedUser ) ? data.authenticatedUser : null;
-            return this.renderNav( authenticatedUser );
-          } }
-        </User>
-      </nav>
-    );
-  }
-}
+      ) : (
+        <LoggedOutNav
+          mobileNavVisible={ mobileNavVisible }
+          toggleMobileNav={ handleNavClick }
+          keyUp={ handleKeyUp }
+        />
+      ) }
+    </nav>
+  );
+};
 
 export default GlobalNav;
