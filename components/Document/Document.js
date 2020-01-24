@@ -80,6 +80,7 @@ const Document = props => {
                   language={ language.locale }
                   type={ type }
                   { ...( isAdminPreview ? { isPreview: true } : {} ) }
+                  { ...( isAdminPreview ? { link: 'The direct link to the package will appear here.' } : null ) }
                 />
               </Popup>
             ) }
