@@ -8,7 +8,7 @@ import DosSeal from 'static/images/dos_seal.svg';
 
 export const normalizeDocumentItemByAPI = ( { file, useGraphQl = false } ) => {
   const documentObj = {
-    type: file.type,
+    type: 'document',
     id: file.id || '',
     published: file.published || '',
     modified: file.modified || '',
@@ -29,7 +29,7 @@ export const normalizeDocumentItemByAPI = ( { file, useGraphQl = false } ) => {
       created: file.createdAt || '',
       published: file.publishedAt || '',
       modified: file.updatedAt || '',
-      author: `${file.author?.firstname} ${file.author?.lastname}` || '',
+      author: ( file.author ? `${file.author.firstname} ${file.author.lastname}` : '' ),
       owner: ( file.team?.name ) || '',
       documentUrl: file.url || '',
       documentUse: ( file?.use?.name ) || '',

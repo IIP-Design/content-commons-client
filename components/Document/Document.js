@@ -32,7 +32,6 @@ const Document = props => {
     site,
     title,
     content,
-    content: { rawText },
     logo,
     language,
     documentUrl,
@@ -55,7 +54,7 @@ const Document = props => {
   } );
 
   return (
-    <ModalItem headline={ title } className={ isAdminPreview ? 'package-item-preview' : '' }>
+    <ModalItem headline={ title } className={ isAdminPreview ? 'package-item' : '' }>
       <div className="modal_options modal_options--noLanguage">
         <div>
           { isAdminPreview
@@ -126,7 +125,9 @@ const Document = props => {
         && !content.markdown
         && <ModalDescription description="No text available" /> }
 
-      { !isAdminPreview && <ModalDescription description={ rawText } /> }
+      { !content && <ModalDescription description="No text available" /> }
+
+      { !isAdminPreview && <ModalDescription description={ content.rawText } /> }
 
       <ModalPostMeta
         type={ type }

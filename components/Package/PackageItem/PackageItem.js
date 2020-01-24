@@ -21,7 +21,7 @@ import './PackageItem.scss';
 const PackageItem = props => {
   const [isOpen, setIsOpen] = useState( false );
 
-  const { file, type } = props;
+  const { file, type, isAdminPreview } = props;
 
   if ( !file || !getCount( file ) ) return null;
 
@@ -50,7 +50,7 @@ const PackageItem = props => {
       closeIcon
     >
       <Modal.Content>
-        <Document item={ file } displayAsModal />
+        <Document item={ file } displayAsModal { ...( isAdminPreview ? { isAdminPreview } : '' ) } />
       </Modal.Content>
     </Modal>
   );
@@ -58,7 +58,8 @@ const PackageItem = props => {
 
 PackageItem.propTypes = {
   file: PropTypes.object,
-  type: PropTypes.string
+  type: PropTypes.string,
+  isAdminPreview: PropTypes.bool
 };
 
 export default PackageItem;

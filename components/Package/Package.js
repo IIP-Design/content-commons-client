@@ -121,6 +121,7 @@ const Package = props => {
                 key={ file.id }
                 file={ normalizeDocumentItemByAPI( { file, useGraphQl } ) }
                 type={ type }
+                { ...( isAdminPreview ? { isAdminPreview } : '' ) }
               />
             ) )
             : 'There are no files associated with this package.' }
