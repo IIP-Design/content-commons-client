@@ -1,3 +1,5 @@
+@import "styles/colors.scss";
+
 .latestPackages {
 
   &_section {
@@ -26,7 +28,7 @@
 
     &_link {
       font-size: 14px;
-      color: #0071bc;
+      color: $light-blue;
     }
   }
 }

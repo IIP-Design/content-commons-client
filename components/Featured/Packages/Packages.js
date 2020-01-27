@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Grid, Message } from 'semantic-ui-react';
-import Package from 'components/Package/Package';
+import PackageCard from './PackageCard/PackageCard';
 import './Packages.scss';
 
 const renderError = () => (
@@ -27,7 +27,7 @@ const Packages = props => {
         </div>
         <Grid columns="equal" stackable className="latestPackages_grid">
           { packages.slice( 0, 4 ).map( pkg => (
-            <Grid.Column key={ pkg.id }><Package item={ pkg } /></Grid.Column>
+            <Grid.Column key={ pkg.id }><PackageCard item={ pkg } /></Grid.Column>
           ) ) }
         </Grid>
       </div>

@@ -7,7 +7,7 @@ export const packagesMock = [
       type: 'package',
       published: '2017-12-18T10:53:49+00:00',
       modified: '2018-01-03T13:38:57+00:00',
-      owner: 'Press Office',
+      owner: 'GPA Press Office',
       items: [
         {
           id: 'es_doc_id1',
@@ -28,7 +28,7 @@ export const packagesMock = [
       type: 'package',
       published: '2019-07-18T10:53:49+00:00',
       modified: '2019-08-03T13:38:57+00:00',
-      owner: 'Press Office',
+      owner: 'GPA Press Office',
       items: [
         {
           id: 'es_doc_id3',
@@ -49,16 +49,12 @@ export const packagesMock = [
       type: 'package',
       published: '2019-10-18T10:53:49+00:00',
       modified: '2019-11-03T13:38:57+00:00',
-      owner: 'Press Office',
+      owner: 'GPA Press Office',
       items: [
         {
           id: 'es_doc_id5',
           type: 'document'
         },
-        {
-          id: 'es_doc_id6',
-          type: 'document'
-        }
       ]
     }
   },
@@ -69,8 +65,8 @@ export const packagesMock = [
       site: 'commons.america.gov',
       type: 'package',
       published: '2019-09-18T10:53:49+00:00',
-      modified: '2019-10-03T24:38:57+00:00',
-      owner: 'Press Office',
+      modified: '2019-10-03T23:38:57+00:00',
+      owner: 'GPA Press Office',
       items: [
         {
           id: 'es_doc_id7',

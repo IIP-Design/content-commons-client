@@ -12,12 +12,13 @@
       padding: 2.6em 1em;
       margin-bottom: 5px;
       text-align: center;      
-      color: #fff;
       background-color: $blue;
 
-      &:not(.ui) {
+      &:not(.ui),
+      > h2 {
         font-size: 15px;
         font-weight: 400;
+        color: #fff;
       }
     }
   }
@@ -25,7 +26,20 @@
   .meta {
     font-size: 11px;
     line-height: 1.428;
-    color: #050505; 
+    color: $dark-grey;
+
+    dl.terms.date-time {      
+      margin-bottom: 0.5em;
+
+      div > dt {
+        margin-right: 0;
+        font-weight: normal;
+      }
+
+      div > dd {
+        margin-right: 0.1em;
+      } 
+    }
   }
 
   .package_card_logo {
@@ -38,7 +52,7 @@
 
     &_source {
       font-size: 12px;
-      color: #050505;
+      color: $dark-grey;
     }
   }
 }
