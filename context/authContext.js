@@ -6,10 +6,11 @@ import {
   CURRENT_USER_QUERY
 } from 'lib/graphql/queries/user';
 import { useRouter } from 'next/router';
-import { redirectTo } from 'lib/browser';
+import { redirectTo, isDevEnvironment } from 'lib/browser';
 import { isRestrictedPage, hasPermissionsToAccessPage } from 'lib/authentication';
 import { Loader } from 'semantic-ui-react';
 import cookie from 'js-cookie';
+
 
 const AuthContext = React.createContext();
 
@@ -35,12 +36,14 @@ function AuthProvider( props ) {
       client.resetStore();
       setUser( null );
 
-      const url = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+      if ( !isDevEnvironment() ) {
+        // const url = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
 
-      // sign out of CF
-      // window.location = `https://america.cloudflareaccess.com/cdn-cgi/access/logout?returnTo=${url}`;
-      // do we need returnTo on?
-      window.location = 'https://america.cloudflareaccess.com/cdn-cgi/access/logout';
+        // sign out of CF
+        // window.location = `https://america.cloudflareaccess.com/cdn-cgi/access/logout?returnTo=${url}`;
+        // do we need returnTo on?
+        window.location = 'https://america.cloudflareaccess.com/cdn-cgi/access/logout';
+      }
     }
   } );
 
