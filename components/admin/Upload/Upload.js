@@ -5,7 +5,7 @@
  */
 import React, { useState } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import Link from 'next/link';
 import { Button, Modal, Icon } from 'semantic-ui-react';
 import dynamic from 'next/dynamic';
@@ -16,20 +16,18 @@ import docIcon from 'static/icons/icon_150px_document_blue.png';
 import eduIcon from 'static/icons/icon_150px_edu_blue.png';
 import videoIcon from 'static/icons/icon_150px_video_blue.png';
 import audioIcon from 'static/icons/icon_150px_audio_blue.png';
-import { CURRENT_USER_QUERY } from 'components/User/User';
 import { CREATE_PACKAGE_MUTATION, PACKAGE_EXISTS_QUERY } from 'lib/graphql/queries/package';
 import { buildCreatePackageTree } from 'lib/graphql/builders/package';
+import { useAuth } from 'context/authContext';
 import moment from 'moment';
 import './Upload.scss';
 
 const VideoUpload = dynamic( () => import( /* webpackChunkName: "videoUpload" */ './modals/VideoUpload/VideoUpload' ) );
 
 const Upload = () => {
+  const { user } = useAuth();
+
   const [creationError, setCreationError] = useState( '' );
-  const { loading, error, data } = useQuery( CURRENT_USER_QUERY, {
-    ssr: false,
-    fetchPolicy: 'network-only'
-  } );
   const [createPackage, { loading: createPackageLoading }] = useMutation(
     CREATE_PACKAGE_MUTATION
   );
@@ -58,9 +56,8 @@ const Upload = () => {
   /**
   * Create dauly guidance packages and sends user to
   * package details screen on success
-  * @param {onject} user authenticated user
   */
-  const createPressOfficePackage = async user => {
+  const createPressOfficePackage = async () => {
     // todo: verify that user is on press team
     const title = `Guidance Package ${moment().format( 'MM-D-YY' )}`;
 
@@ -90,18 +87,11 @@ const Upload = () => {
     }
   };
 
-  // current user query loading
-  if ( loading ) return 'Loading...';
-
-  // current user query error
-  if ( error ) return `Error! ${error.message}`;
-
-  const {
-    authenticatedUser: { team }
-  } = data;
 
   const teamCanCreateContentType = contentType => {
+    const team = user?.team;
     const type = contentType.toUpperCase();
+
     if ( team && team.contentTypes ) {
       return team.contentTypes.includes( type );
     }
@@ -131,11 +121,11 @@ const Upload = () => {
   * function that handles specifc team's use case
   */
   const handleCreateNewPackage = async () => {
-    const { authenticatedUser } = data;
+    const { team } = user;
     if ( team ) {
       switch ( team.name ) {
         case 'GPA Press Office':
-          createPressOfficePackage( authenticatedUser );
+          createPressOfficePackage();
           break;
 
         default:

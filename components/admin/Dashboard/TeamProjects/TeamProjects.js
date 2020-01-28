@@ -4,10 +4,9 @@
  *
  */
 import React, { Fragment } from 'react';
-import { useQuery } from '@apollo/react-hooks';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { CURRENT_USER_QUERY } from 'components/User/User';
+import { useAuth } from 'context/authContext';
 
 const ScrollableTableWithMenu = dynamic( () => import( 'components/ScrollableTableWithMenu/ScrollableTableWithMenu' ) );
 
@@ -25,12 +24,10 @@ const menuItems = [
 ];
 
 const TeamProjects = () => {
-  const { loading, error, data } = useQuery( CURRENT_USER_QUERY );
+  const { user } = useAuth();
+  const team = user?.team;
 
-  if ( loading ) return 'Loading...';
-  if ( error ) return `Error! ${error.message}`;
-
-  const { authenticatedUser: { team } } = data;
+  if ( !team ) return null;
 
   // If a team does not have any contentTypes associated with it then display message with links
   if ( !team.contentTypes.length ) {

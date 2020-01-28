@@ -7,7 +7,7 @@ import {
 } from 'semantic-ui-react';
 import { USERS_QUERY } from 'components/admin/dropdowns/UserDropdown/UserDropdown';
 import { titleCase } from 'lib/utils';
-import { CURRENT_USER_QUERY } from 'components/User/User';
+import { useAuth } from 'context/authContext';
 
 const GET_TEAMS_QUERY = gql`
   {
@@ -54,7 +54,9 @@ const UserAdmin = () => {
   const { data: teamData } = useQuery( GET_TEAMS_QUERY );
   const { data: usersData } = useQuery( USERS_QUERY );
   const { data: permissionData } = useQuery( PERMISSION_QUERY );
-  const { data: loggedInUserData } = useQuery( CURRENT_USER_QUERY );
+
+  const { user } = useAuth();
+
   const [updateUser] = useMutation( UPDATE_USER_MUTATION );
 
   const [values, setValues] = useState( {
@@ -65,10 +67,10 @@ const UserAdmin = () => {
 
   useEffect( () => {
     if ( usersData ) {
-      const userOptions = usersData.users.map( user => ( {
-        key: user.id,
-        text: `${user.lastName}, ${user.firstName} [${user.email}]`,
-        value: user.id
+      const userOptions = usersData.users.map( _user => ( {
+        key: _user.id,
+        text: `${_user.lastName}, ${_user.firstName} [${_user.email}]`,
+        value: _user.id
       } ) );
 
       setUsers( userOptions );
@@ -100,10 +102,10 @@ const UserAdmin = () => {
   }, [permissionData] );
 
   useEffect( () => {
-    if ( loggedInUserData ) {
-      setLoggedInUser( loggedInUserData.authenticatedUser );
+    if ( user ) {
+      setLoggedInUser( user );
     }
-  }, [loggedInUserData] );
+  }, [user] );
 
 
   const handleSave = async () => {
@@ -128,12 +130,12 @@ const UserAdmin = () => {
 
   const handleChangeUser = ( e, { value } ) => {
     const { users: _users } = usersData;
-    const user = _users.find( u => u.id === value );
+    const _user = _users.find( u => u.id === value );
 
     setValues( {
       user: value,
-      team: user.team ? user.team.id : '',
-      permission: user.permissions && user.permissions.length ? user.permissions[0] : ''
+      team: _user.team ? _user.team.id : '',
+      permission: _user.permissions && _user.permissions.length ? _user.permissions[0] : ''
     } );
   };
 
