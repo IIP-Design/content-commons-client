@@ -3,10 +3,9 @@ import App from 'next/app';
 import Router from 'next/router';
 import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
+import { AuthProvider } from 'context/authContext';
 import withRedux from 'next-redux-wrapper';
 import isEmpty from 'lodash/isEmpty';
-import { isRestrictedPage, checkForAuthenticatedUser } from 'lib/authentication';
-import { redirectTo } from 'lib/browser';
 import withApollo from 'hocs/withApollo';
 import Page from 'components/Page';
 import makeStore from 'lib/redux/store';
@@ -32,17 +31,6 @@ class Commons extends App {
       pageProps = await Component.getInitialProps( ctx );
     }
 
-    let authenticatedUser = null;
-    // If on a restricted page, check for authenticated user
-    if ( isRestrictedPage( ctx.pathname ) ) {
-      authenticatedUser = await checkForAuthenticatedUser( ctx.apolloClient ).catch( err => console.dir( err ) );
-
-      if ( !authenticatedUser ) {
-        // we don't have an authenticated user, redirect to login page
-        redirectTo( '/login', { res: ctx.res } );
-      }
-    }
-
     // exposes apollo query to component
     if ( !isEmpty( ctx.query ) ) {
       pageProps.query = ctx.query;
@@ -58,11 +46,13 @@ class Commons extends App {
 
     return (
       <ApolloProvider client={ apollo }>
-        <Provider store={ store }>
-          <Page>
-            <Component { ...pageProps } />
-          </Page>
-        </Provider>
+        <AuthProvider>
+          <Provider store={ store }>
+            <Page>
+              <Component { ...pageProps } />
+            </Page>
+          </Provider>
+        </AuthProvider>
       </ApolloProvider>
     );
   }

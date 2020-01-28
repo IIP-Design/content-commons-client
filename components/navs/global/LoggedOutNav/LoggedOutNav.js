@@ -27,7 +27,13 @@ const menuItems = [
     key: 3,
     name: 'documentation',
     to: '/documentation',
-    label: 'Documentation',
+    label: 'Documentation'
+  },
+  {
+    key: 4,
+    name: 'login',
+    to: '/login',
+    label: 'Login'
   }
 ];
 

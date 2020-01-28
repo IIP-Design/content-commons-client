@@ -9,18 +9,15 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
 import * as reduxActions from 'lib/redux/actions/projectUpdate';
+import { useAuth } from 'context/authContext';
 import {
   CREATE_VIDEO_PROJECT_MUTATION,
   UPDATE_VIDEO_PROJECT_MUTATION,
   VIDEO_PROJECT_FORM_QUERY
 } from 'lib/graphql/queries/video';
-import { CURRENT_USER_QUERY } from 'components/User/User';
 import { graphql } from 'react-apollo';
 import compose from 'lodash.flowright';
-import {
-  buildCreateVideoProjectTree,
-  buildFormTree
-} from 'lib/graphql/builders/video';
+import { buildCreateVideoProjectTree, buildFormTree } from 'lib/graphql/builders/video';
 import { Formik } from 'formik';
 
 import ProjectDetailsForm from 'components/admin/ProjectDetailsForm/ProjectDetailsForm';
@@ -30,6 +27,8 @@ import useTimeout from 'lib/hooks/useTimeout';
 import { initialSchema, baseSchema } from './validationSchema';
 
 const VideoProjectDetailsForm = props => {
+  const { user } = useAuth();
+
   const [showNotification, setShowNotification] = useState( false );
 
   const hideNotification = () => {
@@ -64,10 +63,7 @@ const VideoProjectDetailsForm = props => {
   };
 
   const getInitialValues = () => {
-    const {
-      user: { authenticatedUser },
-      data
-    } = props;
+    const { data } = props;
 
     const videoProject = data && data.projectForm ? data.projectForm : {};
 
@@ -77,15 +73,11 @@ const VideoProjectDetailsForm = props => {
 
     const tags = videoProject.tags ? videoProject.tags.map( tag => tag.id ) : [];
 
-    const author = videoProject.author
-      ? videoProject.author.id
-      : authenticatedUser.id;
+    const author = videoProject.author ? videoProject.author.id : user.id;
 
     const initialValues = {
       author,
-      team: videoProject.team
-        ? videoProject.team.name
-        : authenticatedUser.team.name,
+      team: videoProject.team ? videoProject.team.name : user?.team?.name,
       projectTitle: videoProject.projectTitle || '',
       visibility: videoProject.visibility || 'PUBLIC',
       categories,
@@ -99,12 +91,7 @@ const VideoProjectDetailsForm = props => {
   };
 
   const onHandleSubmit = async ( values, actions ) => {
-    const {
-      user,
-      createVideoProject,
-      updateNotification,
-      handleUpload
-    } = props;
+    const { createVideoProject, updateNotification, handleUpload } = props;
     const { setStatus, setErrors, setSubmitting } = actions;
 
     // 1. let user know system is saving
@@ -132,8 +119,6 @@ const VideoProjectDetailsForm = props => {
 
     setSubmitting( false );
   };
-
-  if ( props.user.loading ) return <p>Loading....</p>;
 
   return (
     <Formik
@@ -163,7 +148,6 @@ const VideoProjectDetailsForm = props => {
 
 VideoProjectDetailsForm.propTypes = {
   id: PropTypes.string,
-  user: PropTypes.object,
   data: PropTypes.object,
   createVideoProject: PropTypes.func,
   updateNotification: PropTypes.func,
@@ -175,13 +159,6 @@ VideoProjectDetailsForm.propTypes = {
 export default compose(
   withRouter,
   connect( null, reduxActions ),
-  graphql( CURRENT_USER_QUERY, {
-    name: 'user',
-    options: {
-      fetchPolicy: 'network-only',
-      ssr: false
-    }
-  } ), // only run on create
   graphql( CREATE_VIDEO_PROJECT_MUTATION, { name: 'createVideoProject' } ),
   graphql( UPDATE_VIDEO_PROJECT_MUTATION, { name: 'updateVideoProject' } ),
   graphql( VIDEO_PROJECT_FORM_QUERY, {
