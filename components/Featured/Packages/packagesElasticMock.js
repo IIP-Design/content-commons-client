@@ -2,7 +2,7 @@ export const packagesMock = [
   {
     _id: 'xmtc_mkBT73GdEj6qL1X',
     _source: {
-      id: 1,
+      id: '1',
       site: 'commons.america.gov',
       type: 'package',
       published: '2017-12-18T10:53:49+00:00',
@@ -23,7 +23,7 @@ export const packagesMock = [
   {
     _id: 'xmtc_mkBT73GdEj6qL2X',
     _source: {
-      id: 2,
+      id: '2',
       site: 'commons.america.gov',
       type: 'package',
       published: '2019-07-18T10:53:49+00:00',
@@ -44,7 +44,7 @@ export const packagesMock = [
   {
     _id: 'xmtc_mkBT73GdEj6qL3X',
     _source: {
-      id: 3,
+      id: '3',
       site: 'commons.america.gov',
       type: 'package',
       published: '2019-10-18T10:53:49+00:00',
@@ -61,7 +61,7 @@ export const packagesMock = [
   {
     _id: 'xmtc_mkBT73GdEj6qL4X',
     _source: {
-      id: 4,
+      id: '4',
       site: 'commons.america.gov',
       type: 'package',
       published: '2019-09-18T10:53:49+00:00',

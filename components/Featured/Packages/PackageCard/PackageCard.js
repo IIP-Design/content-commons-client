@@ -56,7 +56,7 @@ const PackageCard = ( { item } ) => {
           </Card.Content>
         </Card>
       ) }
-      content='PACKAGE MODAL'
+      content="PACKAGE MODAL"
     />
   );
 };

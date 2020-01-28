@@ -41,7 +41,7 @@ const Featured = ( { data } ) => {
       { featuredComponents }
     </div>
   );
-}
+};
 
 Featured.propTypes = {
   data: PropTypes.array,

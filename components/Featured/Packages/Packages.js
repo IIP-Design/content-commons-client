@@ -18,6 +18,8 @@ const Packages = props => {
     return renderError();
   }
 
+  if ( !packages.length ) return null;
+
   return (
     <section className="latestPackages_section">
       <div className="latestPackages_container">
