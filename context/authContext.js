@@ -16,31 +16,38 @@ const AuthContext = React.createContext();
 function AuthProvider( props ) {
   const client = useApolloClient();
   const router = useRouter();
-  const [attemptToSignIntoCF, setAttemptToSignIntoCF] = useState( false );
+  const [attemptToSignIntoCF, setAttemptToSignIntoCF] = useState(
+    false
+  );
   const [user, setUser] = useState( null );
 
   // Attempt to fetch user
-  const { data, loading: userLoading, error: userError } = useQuery( CURRENT_USER_QUERY, {
-    ssr: false
-  } );
+  const { data, loading: userLoading, error: userError } = useQuery(
+    CURRENT_USER_QUERY,
+    {
+      ssr: false
+    }
+  );
 
+  // Sign in mutation
   const [
     signIn,
     { data: signInData, loading: signInLoading, error: signInError }
   ] = useMutation( CLOUDFLARE_SIGNIN_MUTATION );
 
+  // Sign out mutation
   const [signOut] = useMutation( USER_SIGN_OUT_MUTATION, {
     onCompleted: () => {
       setAttemptToSignIntoCF( false );
       client.resetStore();
       setUser( null );
 
-      const url = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
-
       // sign out of CF
-      // window.location = `https://america.cloudflareaccess.com/cdn-cgi/access/logout?returnTo=${url}`;
-      // do we need returnTo on?
-      window.location = 'https://america.cloudflareaccess.com/cdn-cgi/access/logout';
+      const {
+        location: { protocol, hostname, port }
+      } = window;
+      const url = `${protocol}//${hostname}:${port}`;
+      window.location = `https://america.cloudflareaccess.com/cdn-cgi/access/logout?returnTo=${url}`;
     }
   } );
 
@@ -94,7 +101,9 @@ function AuthProvider( props ) {
 
   if ( userLoading ) {
     return (
-      <Loader size="medium" active>Loading</Loader>
+      <Loader size="medium" active>
+                                       Loading
+      </Loader>
     );
   }
 
