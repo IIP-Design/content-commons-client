@@ -28,12 +28,6 @@ const menuItems = [
     name: 'documentation',
     to: '/documentation',
     label: 'Documentation'
-  },
-  {
-    key: 4,
-    name: 'login',
-    to: '/login',
-    label: 'Login'
   }
 ];
 
@@ -43,11 +37,15 @@ const LoggedOutNav = props => {
   return (
     <span>
       <div className="ui compact secondary menu nav_loggedout_wrapper">
-        { !mobileNavVisible && menuItems.map( item => (
-          <Menu.Item key={ item.key } name={ item.name }>
-            <Link href={ item.to }><a>{ item.label }</a></Link>
-          </Menu.Item>
-        ) ) }
+        { !mobileNavVisible
+          && menuItems.map( item => (
+            <Menu.Item key={ item.key } name={ item.name }>
+              <Link href={ item.to }><a>{ item.label }</a></Link>
+            </Menu.Item>
+          ) ) }
+        <Menu.Item key="4" name="login">
+          <a href="/login">Login</a>
+        </Menu.Item>
         <a
           href="https://goo.gl/forms/9cJ3IBHH9QTld2Mj2"
           target="_blank"
@@ -58,9 +56,7 @@ const LoggedOutNav = props => {
         </a>
       </div>
 
-      {
-        mobileNavVisible
-        && (
+      { mobileNavVisible && (
         <ul className="mobileMenu">
           <li>
             <Icon name="close" onClick={ toggleMobileNav } onKeyUp={ keyUp } tabIndex={ 0 } />
@@ -77,6 +73,15 @@ const LoggedOutNav = props => {
             </li>
           ) ) }
           <li>
+            <Link href="/login">
+              <a>
+                <span onClick={ toggleMobileNav } onKeyUp={ keyUp } role="presentation">
+                  Login
+                </span>
+              </a>
+            </Link>
+          </li>
+          <li>
             <a
               href="https://goo.gl/forms/PyLjAiaJVt3xONsd2"
               target="_blank"
@@ -87,8 +92,7 @@ const LoggedOutNav = props => {
             </a>
           </li>
         </ul>
-        )
-      }
+      ) }
     </span>
   );
 };
