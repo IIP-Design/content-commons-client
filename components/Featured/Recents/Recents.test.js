@@ -1,5 +1,5 @@
 import { shallow } from 'enzyme';
-import { Recents } from './Recents';
+import { RecentsUnconnected } from './Recents';
 
 const propsArray = [
   {
@@ -190,7 +190,7 @@ jest.mock( 'components/Video/Video', () => 'Video' );
 jest.mock( 'components/Post/Post', () => 'Post' );
 
 propsArray.forEach( props => {
-  const Component = <Recents { ...props } />;
+  const Component = <RecentsUnconnected { ...props } />;
 
   describe( '<Recents />', () => {
     it( 'renders without crashing', () => {

@@ -146,5 +146,5 @@ const mapStateToProps = ( state, props ) => ( {
   postTypeLabels: state.global.postTypes.list
 } );
 
-export { Recents };
+export const RecentsUnconnected = Recents; // resolves 'Using exported name 'Featured' as identifier for default export' eslint error
 export default connect( mapStateToProps )( Recents );

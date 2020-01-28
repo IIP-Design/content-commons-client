@@ -12,6 +12,21 @@ const featuredData = [
     component: 'priorities',
     order: 1,
     props: {
+      term: 'venezuela',
+      label: 'Venezuela',
+      categories: [
+        { key: 'JFqWJ2MBNxuyMP4E5Cgn', display_name: 'Global Issues' },
+        { key: 'MVqWJ2MBNxuyMP4E6Ci0', display_name: 'Good Governance' },
+        { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' }
+      ],
+      locale: 'en-us'
+    }
+  },
+  {
+    key: v4(),
+    component: 'priorities',
+    order: 2,
+    props: {
       term: '5G',
       label: '5G',
       categories: [],
@@ -21,7 +36,7 @@ const featuredData = [
   {
     key: v4(),
     component: 'priorities',
-    order: 2,
+    order: 3,
     props: {
       term: 'iran',
       label: 'Iran',
@@ -36,7 +51,7 @@ const featuredData = [
   {
     key: v4(),
     component: 'recents',
-    order: 3,
+    order: 4,
     props: {
       postType: 'video',
       locale: 'en-us'
@@ -45,7 +60,7 @@ const featuredData = [
   {
     key: v4(),
     component: 'recents',
-    order: 4,
+    order: 5,
     props: {
       postType: 'post',
       locale: 'en-us'

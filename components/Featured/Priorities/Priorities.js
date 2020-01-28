@@ -150,5 +150,5 @@ const mapStateToProps = ( state, props ) => ( {
   priorities: state.featured.priorities[props.term]
 } );
 
-export { Priorities };
+export const PrioritiesUnconnected = Priorities; // resolves 'Using exported name 'Featured' as identifier for default export' eslint error
 export default connect( mapStateToProps )( Priorities );

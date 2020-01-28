@@ -53,5 +53,5 @@ const mapStateToProps = () => createStructuredSelector( {
   error: makeFeaturedError()
 } );
 
-export { Featured }; // For test purposes
+export const FeaturedUnconnected = Featured; // resolves 'Using exported name 'Featured' as identifier for default export' eslint error
 export default connect( mapStateToProps )( Featured );
