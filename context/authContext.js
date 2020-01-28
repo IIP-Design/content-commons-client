@@ -49,6 +49,7 @@ function AuthProvider( props ) {
       } = window;
       const url = `${protocol}//${hostname}:${port}`;
       window.location = `https://america.cloudflareaccess.com/cdn-cgi/access/logout?returnTo=${url}`;
+      cookie.remove( 'CF_Authorization' );
     }
   } );
 
