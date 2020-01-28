@@ -1,66 +1,130 @@
-import React from 'react';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import { CURRENT_USER_QUERY, USER_SIGN_OUT_MUTATION } from 'lib/graphql/queries/user';
+import React, { useState, useEffect } from 'react';
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
+import {
+  CLOUDFLARE_SIGNIN_MUTATION,
+  USER_SIGN_OUT_MUTATION,
+  CURRENT_USER_QUERY
+} from 'lib/graphql/queries/user';
 import { useRouter } from 'next/router';
+import { redirectTo } from 'lib/browser';
 import { isRestrictedPage, hasPermissionsToAccessPage } from 'lib/authentication';
 import { Loader } from 'semantic-ui-react';
+import cookie from 'js-cookie';
 
 const AuthContext = React.createContext();
 
 function AuthProvider( props ) {
-  const allowedRolesForRestrictedPages = ['EDITOR', 'TEAM_ADMIN', 'ADMIN'];
+  const client = useApolloClient();
   const router = useRouter();
+  const [attemptToSignIntoCF, setAttemptToSignIntoCF] = useState( false );
+  const [user, setUser] = useState( null );
 
-  const {
-    client, loading, error, data
-  } = useQuery( CURRENT_USER_QUERY, { ssr: false } );
+  // Attempt to fetch user
+  const { data, loading: userLoading, error: userError } = useQuery( CURRENT_USER_QUERY, {
+    ssr: false
+  } );
+
+  const [
+    signIn,
+    { data: signInData, loading: signInLoading, error: signInError }
+  ] = useMutation( CLOUDFLARE_SIGNIN_MUTATION );
 
   const [signOut] = useMutation( USER_SIGN_OUT_MUTATION, {
     onCompleted: () => {
+      setAttemptToSignIntoCF( false );
       client.resetStore();
+      setUser( null );
+
+      const url = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+
+      // sign out of CF
+      // window.location = `https://america.cloudflareaccess.com/cdn-cgi/access/logout?returnTo=${url}`;
+      // do we need returnTo on?
+      window.location = 'https://america.cloudflareaccess.com/cdn-cgi/access/logout';
     }
   } );
 
-  if ( loading ) {
+  const reDirect = _user => {
+    if ( isRestrictedPage( router.pathname ) ) {
+      // if restricted page, redirect if user does not have neccessary permissions
+      if ( _user && !hasPermissionsToAccessPage( _user?.permissions ) ) {
+        redirectTo( '/', {} );
+      }
+    } else {
+      // Send to home after login if not restricted
+      redirectTo( '/', {} );
+    }
+  };
+
+  // User can either be set on inital load when CURRENT_USER_QUERY query returns
+  // OR when user clicks the "login" button and executes the CLOUDFLARE_SIGNIN_MUTATION
+  useEffect( () => {
+    if ( data?.user ) {
+      setUser( data.user );
+    } else if ( signInData?.cloudflareSignin ) {
+      setUser( signInData.cloudflareSignin );
+    }
+  }, [data, signInData] );
+
+  const login = async () => {
+    // do we have a CloudFlare token?
+    const cfAuth = cookie.get( 'CF_Authorization' );
+
+    if ( cfAuth ) {
+      // ensure signIn only called once
+      if ( !attemptToSignIntoCF ) {
+        signIn( { variables: { token: cfAuth } } ).catch( err => console.dir( signInError ) );
+        setAttemptToSignIntoCF( true );
+      }
+
+      if ( signInLoading ) {
+        // console.log( 'Signing in' );
+      }
+
+      if ( signInError ) {
+        // console.log( 'There was an error' )
+      }
+
+      // if we have successful sign in, redirect
+      if ( signInData?.cloudflareSignin ) {
+        reDirect( signInData.cloudflareSignin );
+      }
+    }
+  };
+
+  if ( userLoading ) {
     return (
-      <Loader size="large" active>
-        Loading
-      </Loader>
+      <Loader size="medium" active>Loading</Loader>
     );
   }
 
-  if ( error ) {
-    // handle error -- redirect or show error
+  if ( userError ) {
+    return <div>Error</div>;
   }
 
-  const user = data?.user;
-
-  // Verify user has permissions to access page if page is restricted
-  if ( isRestrictedPage( router.pathname ) ) {
-    if ( !user || !hasPermissionsToAccessPage( user?.permissions, allowedRolesForRestrictedPages ) ) {
-      // No user, send to login page
-      if ( !user ) {
-        router.push( '/login' );
-      }
-      // we have a user with in sufficient permissions; send to home
-      router.push( '/' );
+  if ( !data.user ) {
+    // Attempt to log user in if we do not have a vaild user
+    // and user is attempting to access a restricted page
+    if ( isRestrictedPage( router.pathname ) ) {
+      login();
     }
   }
 
-  const login = () => console.log( 'login' );
-  const register = () => console.log( 'register' );
   const logout = async () => signOut();
+  const register = () => console.log( 'register' );
 
   return (
     <AuthContext.Provider
       value={ {
-        user, login, logout, register
+        user,
+        login,
+        logout,
+        register
       } }
       { ...props }
     />
   );
 }
-
 
 function useAuth() {
   const context = React.useContext( AuthContext );

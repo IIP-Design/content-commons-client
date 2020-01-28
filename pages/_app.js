@@ -6,9 +6,6 @@ import { Provider } from 'react-redux';
 import { AuthProvider } from 'context/authContext';
 import withRedux from 'next-redux-wrapper';
 import isEmpty from 'lodash/isEmpty';
-import { isRestrictedPage } from 'lib/authentication';
-import { redirectTo } from 'lib/browser';
-import cookies from 'next-cookies';
 import withApollo from 'hocs/withApollo';
 import Page from 'components/Page';
 import makeStore from 'lib/redux/store';
@@ -30,20 +27,8 @@ class Commons extends App {
   static async getInitialProps( { Component, ctx } ) {
     let pageProps = {};
 
-    // Run getInitialProps on page component if it exists
     if ( Component.getInitialProps ) {
       pageProps = await Component.getInitialProps( ctx );
-    }
-
-    // If server rendering, check to see if user is logged in
-    // if not, redirect to login page
-    if ( ctx.req ) {
-      if ( isRestrictedPage( ctx.pathname ) ) {
-        const { americaCommonsToken } = cookies( ctx );
-        if ( !americaCommonsToken ) {
-          redirectTo( '/login', { res: ctx.res } );
-        }
-      }
     }
 
     // exposes apollo query to component
