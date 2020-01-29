@@ -115,7 +115,7 @@ const PressPackageFile = props => {
                     search
                     required
                   />
-                  <p className="field__helper-text">Enter keywords separated by commas.</p>
+                  <p className="field__helper-text">Begin typing bureau name and separate by commas.</p>
                   <p className="error-message">{ showErrorMsg( 'bureaus' ) }</p>
                 </Form.Field>
               </Form.Group>
