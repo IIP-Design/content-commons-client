@@ -1,5 +1,6 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
+import { getVimeoId, getYouTubeId } from 'lib/utils';
 import Share from './Share';
 
 const props = {
@@ -7,7 +8,7 @@ const props = {
   isPreview: false,
   site: '',
   language: 'en-us',
-  link: 'https://www.vimeo.com/23729318',
+  link: 'https://player.vimeo.com/video/23729318',
   title: 'the title',
   type: 'video'
 };
@@ -46,17 +47,32 @@ describe( '<Share />', () => {
     expect( list.exists() ).toEqual( false );
   } );
 
-  it( 'passes the correct Facebook and Twitter share links', () => {
+  it( 'passes the correct Facebook and Twitter share links if provided a Vimeo link', () => {
     const wrapper = mount( Component );
     const facebookBtn = wrapper.find( 'ShareButton[icon="facebook f"]' );
     const twitterBtn = wrapper.find( 'ShareButton[icon="twitter"]' );
-    const facebookShare = 'https://www.facebook.com/sharer/sharer.php?u=';
-    const twitterShare = 'https://twitter.com/home?status=';
+    const videoLink = `https://vimeo.com/${getVimeoId( props.link )}`;
+    const facebookShare = `https://www.facebook.com/sharer/sharer.php?u=${videoLink}`;
+    const twitterShare = `https://twitter.com/intent/tweet?text=${props.title}&url=${videoLink}`;
 
-    expect( facebookBtn.prop( 'url' ) )
-      .toEqual( `${facebookShare}${props.link}` );
-    expect( twitterBtn.prop( 'url' ) )
-      .toEqual( `${twitterShare}${props.title} ${props.link}` );
+    expect( facebookBtn.prop( 'url' ) ).toEqual( facebookShare );
+    expect( twitterBtn.prop( 'url' ) ).toEqual( twitterShare );
+  } );
+
+  it( 'passes the correct Facebook and Twitter share links if provided a YouTube link', () => {
+    const newProps = {
+      ...props,
+      link: 'https://youtu.be/-PNN_5pmLfc'
+    };
+    const wrapper = mount( <Share { ...newProps } /> );
+    const facebookBtn = wrapper.find( 'ShareButton[icon="facebook f"]' );
+    const twitterBtn = wrapper.find( 'ShareButton[icon="twitter"]' );
+    const videoLink = `https://youtu.be/${getYouTubeId( newProps.link )}`;
+    const facebookShare = `https://www.facebook.com/sharer/sharer.php?u=${videoLink}`;
+    const twitterShare = `https://twitter.com/intent/tweet?text=${newProps.title}&url=${videoLink}`;
+
+    expect( facebookBtn.prop( 'url' ) ).toEqual( facebookShare );
+    expect( twitterBtn.prop( 'url' ) ).toEqual( twitterShare );
   } );
 
   it( 'passes the correct Facebook and Twitter share links if type is post and is from content.america.gov', () => {
@@ -72,15 +88,13 @@ describe( '<Share />', () => {
     const shareLink = libBrowser.stringifyQueryString();
     const facebookBtn = wrapper.find( 'ShareButton[icon="facebook f"]' );
     const twitterBtn = wrapper.find( 'ShareButton[icon="twitter"]' );
-    const facebookShare = 'https://www.facebook.com/sharer/sharer.php?u=';
-    const twitterShare = 'https://twitter.com/home?status=';
+    const facebookShare = `https://www.facebook.com/sharer/sharer.php?u=${shareLink}`;
+    const twitterShare = `https://twitter.com/intent/tweet?text=${props.title}&url=${shareLink}`;
 
     expect( wrapper.prop( 'link' ) ).toEqual( 'content.america.gov' );
     expect( wrapper.prop( 'type' ) ).toEqual( 'post' );
-    expect( facebookBtn.prop( 'url' ) )
-      .toEqual( `${facebookShare}${shareLink}` );
-    expect( twitterBtn.prop( 'url' ) )
-      .toEqual( `${twitterShare}${props.title} ${shareLink}` );
+    expect( facebookBtn.prop( 'url' ) ).toEqual( facebookShare );
+    expect( twitterBtn.prop( 'url' ) ).toEqual( twitterShare );
   } );
 
   it( 'passes the correct link to ClipboardCopy if type is video & !isPreview', () => {
