@@ -28,6 +28,13 @@ const DeleteProjects = props => {
 
   const [deleteDashboardProject, { loading, error }] = useMutation( graphQuery );
 
+  // Set project type text for confirmation modal display
+  const displayProjectTypeText = () => {
+    if ( team.contentTypes.includes( 'VIDEO' ) ) return 'video';
+    if ( team.contentTypes.includes( 'PACKAGE' ) ) return 'package';
+    return '';
+  };
+
   const getDrafts = () => {
     if ( selections && selections.length ) {
       return selections.filter( selection => selection.status === 'DRAFT' );
@@ -41,7 +48,6 @@ const DeleteProjects = props => {
     }
     return [];
   };
-
 
   const drafts = getDrafts();
   const draftsCount = getCount( drafts );
@@ -73,14 +79,14 @@ const DeleteProjects = props => {
         className="delete_confirm delete_confirm--video"
         headline={
           hasNonDraftsOnly
-            ? 'Only DRAFT video projects can be deleted from the dashboard.'
-            : `Are you sure you want to delete the selected DRAFT video ${getPluralStringOrNot( drafts, 'project' )}?` // eslint-disable-line
+            ? `Only DRAFT ${displayProjectTypeText()} projects can be deleted from the dashboard.`
+            : `Are you sure you want to delete the selected DRAFT ${displayProjectTypeText()} ${getPluralStringOrNot( drafts, 'project' )}?` // eslint-disable-line
         }
       >
         { draftsCount > 0
         && (
           <DeleteProjectsList
-            headline={ `The following DRAFT video ${getPluralStringOrNot( drafts, 'project' )} will be removed permanently from the Content Cloud:` }
+            headline={ `The following DRAFT ${displayProjectTypeText()} ${getPluralStringOrNot( drafts, 'project' )} will be removed permanently from the Content Cloud:` }
             projects={ drafts }
             isDrafts
           />
@@ -89,7 +95,7 @@ const DeleteProjects = props => {
         { nonDraftsCount > 0
         && (
           <DeleteProjectsList
-            headline={ `${draftsCount > 0 && nonDraftsCount > 0 ? 'Only DRAFT video projects can be deleted from the dashboard. ' : ''}The following non-DRAFT video ${getPluralStringOrNot( nonDrafts, 'project' )} will NOT be removed:` }
+            headline={ `${draftsCount > 0 && nonDraftsCount > 0 ? `Only DRAFT ${displayProjectTypeText()} projects can be deleted from the dashboard. ` : ''}The following non-DRAFT ${displayProjectTypeText()} ${getPluralStringOrNot( nonDrafts, 'project' )} will NOT be removed:` }
             projects={ nonDrafts }
           />
         ) }
