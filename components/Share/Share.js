@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'semantic-ui-react';
 import { stringifyQueryString } from 'lib/browser';
-import { contentRegExp } from 'lib/utils';
+import { contentRegExp, getVimeoId, getYouTubeId } from 'lib/utils';
 import ClipboardCopy from '../ClipboardCopy';
 import ShareButton from './ShareButton';
 
@@ -13,25 +13,38 @@ const Share = props => {
     id, isPreview, site, language, title, link, type
   } = props;
 
-  const queryStr = ( type === 'video' )
-    ? stringifyQueryString( { id, site, language } )
-    : stringifyQueryString( { id, site } );
+  const internalOnly = type === 'document' || type === 'package';
+
+  const queryStr = ( type === 'post' )
+    ? stringifyQueryString( { id, site } )
+    : stringifyQueryString( { id, site, language } );
+
   let directLink = link;
   let shareLink = link;
 
   if ( type === 'video' && !isPreview ) {
     directLink = `${window.location.protocol}//${window.location.host}/video?${queryStr}`;
+    if ( link.includes( 'youtu' ) ) {
+      shareLink = `https://youtu.be/${getYouTubeId( link )}`;
+    } else if ( link.includes( 'vimeo' ) ) {
+      shareLink = `https://vimeo.com/${getVimeoId( link )}`;
+    }
   }
   if ( contentRegExp( link ) && type === 'post' ) {
     directLink = `${window.location.protocol}//${window.location.host}/article?${queryStr}`;
     shareLink = directLink;
   }
+  if ( type === 'document' && !isPreview ) {
+    directLink = `${window.location.protocol}//${window.location.host}/document?${queryStr}`;
+    shareLink = directLink;
+  }
+
   const facebookURL = `https://www.facebook.com/sharer/sharer.php?u=${shareLink}`;
-  const tweet = `https://twitter.com/home?status=${title} ${shareLink}`;
+  const tweet = `https://twitter.com/intent/tweet?text=${title}&url=${shareLink}`;
 
   return (
     <div>
-      { shareLink && (
+      { shareLink && !internalOnly && (
         <List className="share_list">
           <ShareButton
             url={ facebookURL }
@@ -54,6 +67,10 @@ const Share = props => {
       />
     </div>
   );
+};
+
+Share.defaultProps = {
+  isPreview: false
 };
 
 Share.propTypes = {

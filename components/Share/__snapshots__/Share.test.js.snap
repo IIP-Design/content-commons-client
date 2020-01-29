@@ -5,7 +5,7 @@ exports[`<Share /> renders without crashing 1`] = `
   id="c888"
   isPreview={false}
   language="en-us"
-  link="https://www.vimeo.com/23729318"
+  link="https://player.vimeo.com/video/23729318"
   site=""
   title="the title"
   type="video"
@@ -22,11 +22,11 @@ exports[`<Share /> renders without crashing 1`] = `
           icon="facebook f"
           isPreview={false}
           label="Share on Facebook"
-          url="https://www.facebook.com/sharer/sharer.php?u=https://www.vimeo.com/23729318"
+          url="https://www.facebook.com/sharer/sharer.php?u=https://vimeo.com/23729318"
         >
           <ListItem
             as="a"
-            href="https://www.facebook.com/sharer/sharer.php?u=https://www.vimeo.com/23729318"
+            href="https://www.facebook.com/sharer/sharer.php?u=https://vimeo.com/23729318"
             onClick={[Function]}
             onKeyPress={[Function]}
             rel="noopener noreferrer"
@@ -39,7 +39,7 @@ exports[`<Share /> renders without crashing 1`] = `
           >
             <a
               className="item"
-              href="https://www.facebook.com/sharer/sharer.php?u=https://www.vimeo.com/23729318"
+              href="https://www.facebook.com/sharer/sharer.php?u=https://vimeo.com/23729318"
               onClick={[Function]}
               onKeyPress={[Function]}
               rel="noopener noreferrer"
@@ -80,11 +80,11 @@ exports[`<Share /> renders without crashing 1`] = `
           icon="twitter"
           isPreview={false}
           label="Share on Twitter"
-          url="https://twitter.com/home?status=the title https://www.vimeo.com/23729318"
+          url="https://twitter.com/intent/tweet?text=the title&url=https://vimeo.com/23729318"
         >
           <ListItem
             as="a"
-            href="https://twitter.com/home?status=the title https://www.vimeo.com/23729318"
+            href="https://twitter.com/intent/tweet?text=the title&url=https://vimeo.com/23729318"
             onClick={[Function]}
             onKeyPress={[Function]}
             rel="noopener noreferrer"
@@ -97,7 +97,7 @@ exports[`<Share /> renders without crashing 1`] = `
           >
             <a
               className="item"
-              href="https://twitter.com/home?status=the title https://www.vimeo.com/23729318"
+              href="https://twitter.com/intent/tweet?text=the title&url=https://vimeo.com/23729318"
               onClick={[Function]}
               onKeyPress={[Function]}
               rel="noopener noreferrer"
