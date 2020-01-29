@@ -7,9 +7,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import {
-  Menu, Popup, Icon
-} from 'semantic-ui-react';
+import { Menu, Popup, Icon } from 'semantic-ui-react';
 import UserProfileMenu from 'components/menus/UserProfile/UserProfile';
 import NotificationsMenu from 'components/menus/Notifications/Notifications';
 import notifyIcon from 'static/icons/icon_notifications.svg';
@@ -48,34 +46,43 @@ class LoggedInNav extends Component {
     user_profile: false,
     notifications: false,
     hasNotifications: false
-  }
+  };
 
-  getIcon = item => (
-    <img src={ item.icon } width={ item.width } height={ item.height } alt={ item.alt } />
-  )
+  getIcon = item => <img src={ item.icon } width={ item.width } height={ item.height } alt={ item.alt } />;
 
   displayPopup = ( e, data ) => {
     if ( data.id === 'notifications' && !this.state.hasNotifications ) return;
     this.setState( { [data.id]: true } );
-  }
+  };
 
   closePopup = ( e, data ) => {
     this.setState( { [data.id]: false } );
-  }
+  };
 
   submenuClosePopup = () => {
     this.setState( {
       user_profile: false,
       notifications: false
     } );
-  }
+  };
 
   renderMenu( menu ) {
     const { toggleMobileNav, user } = this.props;
     if ( menu === 'notifications' ) {
-      return <NotificationsMenu submenuClosePopup={ this.submenuClosePopup } toggleMobileNav={ toggleMobileNav } />;
+      return (
+        <NotificationsMenu
+          submenuClosePopup={ this.submenuClosePopup }
+          toggleMobileNav={ toggleMobileNav }
+        />
+      );
     }
-    return <UserProfileMenu submenuClosePopup={ this.submenuClosePopup } toggleMobileNav={ toggleMobileNav } user={ user.firstName } />;
+    return (
+      <UserProfileMenu
+        submenuClosePopup={ this.submenuClosePopup }
+        toggleMobileNav={ toggleMobileNav }
+        user={ user.firstName }
+      />
+    );
   }
 
   render() {
@@ -93,8 +100,14 @@ class LoggedInNav extends Component {
             && menuItems.map( item => {
               if ( item.name === 'upload' ) {
                 return (
-                  <Menu.Item key={ item.key } name={ item.name } className={ `nav_loggedin ${item.name}` }>
-                    <Link href="/admin/upload" passHref>{ this.getIcon( item ) }</Link>
+                  <Menu.Item
+                    key={ item.key }
+                    name={ item.name }
+                    className={ `nav_loggedin ${item.name}` }
+                  >
+                    <Link href="/admin/upload" passHref>
+                      { this.getIcon( item ) }
+                    </Link>
                   </Menu.Item>
                 );
               }
@@ -117,11 +130,15 @@ class LoggedInNav extends Component {
                       { this.getIcon( item ) }
                     </Menu.Item>
                   ) }
-
                   content={
-                    item.name === 'notifications'
-                      ? <NotificationsMenu submenuClosePopup={ this.submenuClosePopup } />
-                      : <UserProfileMenu submenuClosePopup={ this.submenuClosePopup } user={ user.firstName } />
+                    item.name === 'notifications' ? (
+                      <NotificationsMenu submenuClosePopup={ this.submenuClosePopup } />
+                    ) : (
+                      <UserProfileMenu
+                        submenuClosePopup={ this.submenuClosePopup }
+                        user={ user.firstName }
+                      />
+                    )
                   }
                   on="click"
                   // eslint-disable-next-line react/destructuring-assignment
@@ -142,9 +159,7 @@ class LoggedInNav extends Component {
           </a>
         </div>
 
-        {
-          mobileNavVisible
-          && (
+        { mobileNavVisible && (
           <ul className="mobileMenu">
             <li>
               <Icon name="close" onClick={ toggleMobileNav } onKeyUp={ keyUp } tabIndex={ 0 } />
@@ -202,8 +217,7 @@ class LoggedInNav extends Component {
               </a>
             </li>
           </ul>
-          )
-        }
+        ) }
       </span>
     );
   }
