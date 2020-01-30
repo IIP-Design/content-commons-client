@@ -1,5 +1,3 @@
-/* eslint-disable */ 
-// reenable lint after demo
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useFormikContext } from 'formik';
@@ -24,15 +22,12 @@ import './PressPackageFile.scss';
 // };
 
 const PressPackageFile = props => {
-  const { document, index } = props;
+  const { document } = props;
   const handleOnChange = useContext( HandleOnChangeContext );
   const { errors, touched, values } = useFormikContext();
 
 
   if ( !document ) return null;
-
-  // Thumb is not yet avaialable; remove after demo
-  const thumb = `/static/documentThumbs/image${index + 1}.png`;
 
   const { id, filename, image } = document;
 
@@ -68,21 +63,14 @@ const PressPackageFile = props => {
       <Grid>
         <Grid.Row>
           <Grid.Column mobile={ 16 } tablet={ 4 } computer={ 4 }>
-            { /* {getCount(image) && image[0].signedUrl ? (
-              <img src={image[0].signedUrl} alt={image[0].alt} />
+            { getCount( image ) && image[0].signedUrl ? (
+              <img src={ image[0].signedUrl } alt={ image[0].alt } />
             ) : (
               <div className="placeholder outer">
                 <div className="placeholder inner" />
                 <Loader active size="small" />
               </div>
-            )} */ }
-
-            { /* Thumb is not yet avaialable; remove after demo */ }
-            <img
-              src={ thumb }
-              alt={ value.title }
-              style={ { border: '1px solid #eee', boxShadow: '0px 0px 5px 0px #eeeeee' } }
-            />
+            ) }
           </Grid.Column>
 
           <Grid.Column mobile={ 16 } tablet={ 12 } computer={ 12 }>

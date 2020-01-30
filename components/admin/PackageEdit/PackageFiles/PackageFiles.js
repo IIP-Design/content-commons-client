@@ -86,15 +86,15 @@ const PackageFiles = props => {
       ) }
 
       <div className="files">
-        { /* Remove index after demo  */ }
-        { units.map( ( unit, index ) => {
+
+        { units.map( unit => {
           /**
            * Future: conditionally render `<PressPackageFile />`
            * or some other type of package file, e.g.,
            * `<FrontOfficePackageFile />`
            */
           if ( pkg.type === 'DAILY_GUIDANCE' ) {
-            return <PressPackageFile key={ unit.id } document={ unit } index={ index } />;
+            return <PressPackageFile key={ unit.id } document={ unit } />;
           }
           return null;
           // return <SomeOtherPackageFile key={ unit.id } id={ unit.id } />;
