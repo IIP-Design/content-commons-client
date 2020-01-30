@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import {
   CLOUDFLARE_SIGNIN_MUTATION,
@@ -7,41 +7,64 @@ import {
 } from 'lib/graphql/queries/user';
 import { useRouter } from 'next/router';
 import { redirectTo, isDevEnvironment } from 'lib/browser';
-import { isRestrictedPage, hasPermissionsToAccessPage } from 'lib/authentication';
+import { isRestrictedPage } from 'lib/authentication';
 import { Loader } from 'semantic-ui-react';
 import cookie from 'js-cookie';
-
+import cookies from 'next-cookies';
 
 const AuthContext = React.createContext();
+const allowedRolesForRestrictedPages = ['EDITOR', 'TEAM_ADMIN', 'ADMIN'];
+
+export const hasPagePermissions = user => user.permissions.some( permission => allowedRolesForRestrictedPages.includes( permission ) );
+
+const getCloudFlareToken = ctx => {
+  // CloudFlare is not connected to the dev environment
+  // so send replacement
+  if ( isDevEnvironment( ctx ) ) {
+    return 'cfToken';
+  }
+
+  /* eslint-disable camelcase */
+  const { CF_Authorization } = cookies( ctx );
+  return CF_Authorization;
+  /* eslint-enable */
+};
+
+export const canAccessPage = async ctx => {
+  if ( isRestrictedPage( ctx.pathname ) ) {
+    const cfAuth = getCloudFlareToken( ctx );
+    const { data: { user } } = await ctx.apolloClient.query( { query: CURRENT_USER_QUERY } );
+    if ( !cfAuth || !user || !hasPagePermissions( user ) ) {
+      return false;
+    }
+  }
+  return true;
+};
+
 
 function AuthProvider( props ) {
   const client = useApolloClient();
   const router = useRouter();
-  const [attemptToSignIntoCF, setAttemptToSignIntoCF] = useState(
-    false
-  );
-  const [user, setUser] = useState( null );
+  const [attemptToSignIntoCF, setAttemptToSignIntoCF] = useState( false );
+
 
   // Attempt to fetch user
-  const { data, loading: userLoading, error: userError } = useQuery(
-    CURRENT_USER_QUERY,
-    {
-      ssr: false
-    }
-  );
+  const { data, loading: userLoading, error: userError } = useQuery( CURRENT_USER_QUERY, {
+    ssr: false
+  } );
 
   // Sign in mutation
-  const [
-    signIn,
-    { data: signInData, loading: signInLoading, error: signInError }
-  ] = useMutation( CLOUDFLARE_SIGNIN_MUTATION );
+  const [signIn, { data: signInData, loading: signInLoading, error: signInError }] = useMutation(
+    CLOUDFLARE_SIGNIN_MUTATION, {
+      refetchQueries: [{ query: CURRENT_USER_QUERY }]
+    }
+  );
 
   // Sign out mutation
   const [signOut] = useMutation( USER_SIGN_OUT_MUTATION, {
     onCompleted: () => {
       setAttemptToSignIntoCF( false );
       client.resetStore();
-      setUser( null );
 
       // sign out of CF
       const {
@@ -50,35 +73,14 @@ function AuthProvider( props ) {
       const url = `${protocol}//${hostname}:${port}`;
       window.location = `https://america.cloudflareaccess.com/cdn-cgi/access/logout?returnTo=${url}`;
       cookie.remove( 'CF_Authorization' );
+      router.push( '/' );
     }
   } );
 
-  const reDirect = _user => {
-    if ( isRestrictedPage( router.pathname ) ) {
-      // if restricted page, redirect if user does not have neccessary permissions
-      if ( _user && !hasPermissionsToAccessPage( _user?.permissions ) ) {
-        redirectTo( '/', {} );
-      }
-    } else {
-      // Send to home after login if not restricted
-      redirectTo( '/', {} );
-    }
-  };
-
-  // User can either be set on inital load when CURRENT_USER_QUERY query returns
-  // OR when user clicks the "login" button and executes the CLOUDFLARE_SIGNIN_MUTATION
-  useEffect( () => {
-    if ( data?.user ) {
-      setUser( data.user );
-    } else if ( signInData?.cloudflareSignin ) {
-      setUser( signInData.cloudflareSignin );
-    }
-  }, [data, signInData] );
 
   const login = async () => {
     // do we have a CloudFlare token?
     const cfAuth = cookie.get( 'CF_Authorization' );
-
     if ( cfAuth ) {
       // ensure signIn only called once
       if ( !attemptToSignIntoCF ) {
@@ -94,32 +96,20 @@ function AuthProvider( props ) {
         // console.log( 'There was an error' )
       }
 
-      // if we have successful sign in, redirect
-      if ( signInData?.cloudflareSignin ) {
-        reDirect( signInData.cloudflareSignin );
-      }
+      redirectTo( '/', {} );
     }
   };
 
-  if ( userLoading ) {
-    return (
-      <Loader size="medium" active>
-                                       Loading
-      </Loader>
-    );
-  }
 
-  if ( userError ) {
-    return <div>Error</div>;
-  }
+  // if ( userLoading ) {
+  //   return (
+  //     <Loader size="medium" active> Loading </Loader>
+  //   );
+  // }
 
-  if ( !data.user ) {
-    // Attempt to log user in if we do not have a vaild user
-    // and user is attempting to access a restricted page
-    if ( isRestrictedPage( router.pathname ) ) {
-      login();
-    }
-  }
+  // if ( userError ) {
+  //   return <div>Error</div>;
+  // }
 
   const logout = async () => signOut();
   const register = () => console.log( 'register' );
@@ -127,7 +117,8 @@ function AuthProvider( props ) {
   return (
     <AuthContext.Provider
       value={ {
-        user,
+        user: data?.user,
+        loading: userLoading,
         login,
         logout,
         register
@@ -136,6 +127,7 @@ function AuthProvider( props ) {
     />
   );
 }
+
 
 function useAuth() {
   const context = React.useContext( AuthContext );

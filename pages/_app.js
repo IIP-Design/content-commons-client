@@ -3,7 +3,8 @@ import App from 'next/app';
 import Router from 'next/router';
 import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
-import { AuthProvider } from 'context/authContext';
+import { AuthProvider, canAccessPage } from 'context/authContext';
+import { redirectTo } from 'lib/browser';
 import withRedux from 'next-redux-wrapper';
 import isEmpty from 'lodash/isEmpty';
 import withApollo from 'hocs/withApollo';
@@ -26,6 +27,11 @@ if ( process.env.NODE_ENV !== 'production' ) {
 class Commons extends App {
   static async getInitialProps( { Component, ctx } ) {
     let pageProps = {};
+
+    // if user does not have appropriatepage permissions redirect
+    if ( !( await canAccessPage( ctx ) ) ) {
+      redirectTo( '/login', { res: ctx.res } );
+    }
 
     if ( Component.getInitialProps ) {
       pageProps = await Component.getInitialProps( ctx );
