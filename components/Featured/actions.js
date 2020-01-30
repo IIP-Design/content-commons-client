@@ -9,11 +9,13 @@ import { normalizeItem } from 'lib/elastic/parser';
 import { typePrioritiesRequest, typeRecentsRequest } from 'lib/elastic/api';
 import { isDataStale } from 'lib/utils';
 import { v4 } from 'uuid';
+import { packagesMock } from 'components/Featured/Packages/packagesElasticMock';
 import {
   LOAD_FEATURED_PENDING,
   LOAD_FEATURED_FAILED,
   LOAD_FEATURED_SUCCESS
 } from './constants';
+
 
 export const loadFeatured = data => async ( dispatch, getState ) => {
   const timeSinceLastLoad = getState().featured.lastLoad;
@@ -34,6 +36,7 @@ export const loadFeatured = data => async ( dispatch, getState ) => {
             data: res,
             key: v4()
           } ) );
+        case 'packages':
         case 'recents':
           return typeRecentsRequest( props.postType, props.locale ).then( res => ( {
             component,
@@ -55,6 +58,11 @@ export const loadFeatured = data => async ( dispatch, getState ) => {
           switch ( res.component ) {
             case 'priorities':
               priorities[res.term] = items;
+              break;
+            case 'packages':
+              // TEMP mock data
+              items = [...res.data.hits.hits, ...packagesMock].map( item => normalizeItem( item, res.locale ) );
+              recents[res.postType] = items;
               break;
             case 'recents':
               recents[res.postType] = items;

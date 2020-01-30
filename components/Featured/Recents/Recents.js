@@ -113,7 +113,7 @@ class Recents extends Component {
                       />
                     </div>
                   </div>
-  ) }
+                ) }
               >
                 <Modal.Content>
                   { this.getModalContent( recents[0] ) }
@@ -146,5 +146,5 @@ const mapStateToProps = ( state, props ) => ( {
   postTypeLabels: state.global.postTypes.list
 } );
 
-export { Recents };
+export const RecentsUnconnected = Recents; // used for testing; 1/2/20 - resolves import/no-named-as-default lint error
 export default connect( mapStateToProps )( Recents );

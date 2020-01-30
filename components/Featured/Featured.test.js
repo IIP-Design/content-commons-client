@@ -1,5 +1,5 @@
 import { shallow } from 'enzyme';
-import { Featured } from './Featured';
+import { FeaturedUnconnected } from './Featured';
 
 const props1 = {
   data: [
@@ -33,10 +33,10 @@ const props2 = {
 jest.mock( './Priorities/Priorities', () => 'Priorities' );
 jest.mock( './Recents/Recents', () => 'Recents' );
 
-const Component1 = <Featured { ...props1 } />;
-const Component2 = <Featured { ...props2 } />;
+const Component1 = <FeaturedUnconnected { ...props1 } />;
+const Component2 = <FeaturedUnconnected { ...props2 } />;
 
-describe( '<Featured />', () => {
+describe( '<FeaturedUnconnected />', () => {
   it( 'renders without crashing', () => {
     const wrapper = shallow( Component1 );
     expect( wrapper.exists() ).toEqual( true );
@@ -51,7 +51,7 @@ describe( '<Featured />', () => {
     const wrapper = shallow( Component1 );
     let componentCopy;
     props1.data.forEach( d => {
-      componentCopy = wrapper.find( d.component.charAt(0).toUpperCase() + d.component.slice( 1 ) );
+      componentCopy = wrapper.find( d.component.charAt( 0 ).toUpperCase() + d.component.slice( 1 ) );
       expect( componentCopy.exists() ).toEqual( true );
     } );
   } );
