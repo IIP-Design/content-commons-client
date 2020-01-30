@@ -1,12 +1,11 @@
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import TeamProjects from './TeamProjects';
 
 /**
  * Need to mock Next.js dynamic imports
  * in order for this test suite to run.
  */
-jest.mock( 'next-server/dynamic', () => () => 'VideoDetailsPopup' );
-jest.mock( 'next-server/dynamic', () => () => 'ImageDetailsPopup' );
+jest.mock( 'next/dynamic', () => () => 'ScrollableTableWithMenu' );
 
 const props = {
   columnMenu: [
@@ -20,15 +19,25 @@ const props = {
     { name: 'visibility', label: 'VISIBILITY' },
     { name: 'author', label: 'AUTHOR' }
   ],
-  user: { team: { name: 'IIP Video Production' } }
+  user: {
+    team: {
+      name: 'IIP Video Production',
+      contentTypes: ['VIDEO', 'PACKAGE']
+    } 
+  }
 };
+
+jest.mock( 'context/authContext', () => ( {
+  useAuth: jest.fn( () => true )
+} ) );
 
 const Component = <TeamProjects { ...props } />;
 
 describe( '<TeamProjects />', () => {
-  it.only( 'renders without crashing', () => {
-    const wrapper = shallow( Component );
-
+  
+  it( 'renders without crashing', () => {
+    const wrapper = mount( Component );    
     expect( wrapper.exists() ).toEqual( true );
   } );
+
 } );
