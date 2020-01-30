@@ -3,18 +3,27 @@
  * Global Nav
  *
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import { useAuth, hasPagePermissions } from 'context/authContext';
+import { Loader } from 'semantic-ui-react';
 import './global.scss';
-// import User from 'components/User/User';
-import { useAuth } from 'context/authContext';
 
 const LoggedInNav = dynamic( () => import( /* webpackChunkName: "LoggedInNav" */ './LoggedInNav/LoggedInNav' ) );
 const LoggedOutNav = dynamic( () => import( /* webpackChunkName: "LoggedOutNav" */ './LoggedOutNav/LoggedOutNav' ) );
 
 const GlobalNav = () => {
   const [mobileNavVisible, setMobileNavVisible] = useState( false );
-  const { user } = useAuth();
+  const [isSubscriber, setIsSubscriber] = useState( true );
+  const { user, loading } = useAuth();
+
+  useEffect( () => {
+    if ( !user ) {
+      setIsSubscriber( false );
+    } else {
+      setIsSubscriber( !hasPagePermissions( user ) );
+    }
+  }, [user] );
 
   const handleNavClick = () => {
     if ( !mobileNavVisible ) {
@@ -30,19 +39,32 @@ const GlobalNav = () => {
     }
   };
 
+  const renderHamburgerMenu = () => (
+    <button
+      type="button"
+      className="mobileNavBurger"
+      onClick={ handleNavClick }
+      onKeyUp={ handleKeyUp }
+      tabIndex={ 0 }
+    >
+      <span className="bar" />
+      <span className="bar" />
+      <span className="bar" />
+    </button>
+  );
+
+  if ( loading ) {
+    return (
+      <nav style={ { marginTop: '1rem', marginRight: '1rem' } }>
+        <Loader size="tiny" inverted active />
+      </nav>
+    );
+  }
+
   return (
     <nav>
-      <button
-        type="button"
-        className="mobileNavBurger"
-        onClick={ handleNavClick }
-        onKeyUp={ handleKeyUp }
-        tabIndex={ 0 }
-      >
-        <span className="bar" />
-        <span className="bar" />
-        <span className="bar" />
-      </button>
+      { /* Subscriber only has 1 item, so do not show hambruger menu */ }
+      { !isSubscriber && renderHamburgerMenu() }
       { user ? (
         <LoggedInNav
           mobileNavVisible={ mobileNavVisible }

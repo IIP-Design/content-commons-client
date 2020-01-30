@@ -13,6 +13,7 @@ import NotificationsMenu from 'components/menus/Notifications/Notifications';
 import notifyIcon from 'static/icons/icon_notifications.svg';
 import userIcon from 'static/icons/icon_user_profile.svg';
 import uploadIcon from 'static/icons/icon_upload.svg';
+import { hasPagePermissions } from 'context/authContext';
 
 const menuItems = [
   {
@@ -37,7 +38,8 @@ const menuItems = [
     icon: userIcon,
     width: 26,
     height: 26,
-    alt: 'View user profile'
+    alt: 'View user profile',
+    subscriber: true
   }
 ];
 
@@ -80,8 +82,107 @@ class LoggedInNav extends Component {
       <UserProfileMenu
         submenuClosePopup={ this.submenuClosePopup }
         toggleMobileNav={ toggleMobileNav }
-        user={ user.firstName }
+        user={ user }
       />
+    );
+  }
+
+  renderMenuItem( item ) {
+    const { hasNotifications } = this.state;
+    const active = hasNotifications ? 'active' : '';
+
+    return (
+      <Menu.Item
+        key={ item.key }
+        name={ item.name }
+        className={
+          item.name === 'notifications'
+            ? `nav_loggedin ${item.name} ${active}`
+            : `nav_loggedin ${item.name}`
+        }
+      >
+        { item.name === 'upload' ? (
+          <Link href="/admin/upload" passHref>
+            { this.getIcon( item ) }
+          </Link>
+        ) : (
+          this.getIcon( item )
+        ) }
+      </Menu.Item>
+    );
+  }
+
+  renderListItem( item ) {
+    const { toggleMobileNav, keyUp } = this.props;
+
+    return (
+      <li key={ item.key }>
+        { item.name === 'upload' ? (
+          <Link href="/admin/upload">
+            <a className="item">
+              <span onClick={ toggleMobileNav } onKeyUp={ keyUp } role="presentation">
+                { this.getIcon( item ) }
+              </span>
+            </a>
+          </Link>
+        ) : (
+          this.getIcon( item )
+        ) }
+      </li>
+    );
+  }
+
+  renderNavItem( item ) {
+    const { mobileNavVisible } = this.props;
+    if ( mobileNavVisible ) {
+      return this.renderListItem( item );
+    }
+
+    return this.renderMenuItem( item );
+  }
+
+  renderFeedbackButton = () => (
+    <a
+      href="https://goo.gl/forms/9cJ3IBHH9QTld2Mj2"
+      target="_blank"
+      className="item feedback"
+      rel="noopener noreferrer"
+    >
+      Feedback
+    </a>
+  );
+
+
+  renderPopUp( item ) {
+    const { mobileNavVisible } = this.props;
+    return (
+      <Popup
+        key={ item.key }
+        id={ item.name }
+        className="nav_submenu_popup"
+        trigger={ this.renderNavItem( item ) }
+        content={ this.renderMenu( item.name ) }
+        on="click"
+        open={ this.state[`${item.name}`] }
+        onOpen={ this.displayPopup }
+        onClose={ this.closePopup }
+        position={ `bottom ${mobileNavVisible ? 'center' : 'right'}` }
+      />
+    );
+  }
+
+  renderNav( items ) {
+    return (
+      <>
+        { items.map( item => {
+          if ( item.name === 'upload' ) {
+            return this.renderNavItem( item );
+          }
+
+          return this.renderPopUp( item );
+        } ) }
+
+      </>
     );
   }
 
@@ -89,134 +190,34 @@ class LoggedInNav extends Component {
     const {
       mobileNavVisible, toggleMobileNav, keyUp, user
     } = this.props;
-    const { hasNotifications } = this.state;
 
-    const active = hasNotifications ? 'active' : '';
+    const isSubscriber = !hasPagePermissions( user );
+    const items = isSubscriber ? menuItems.filter( item => item.subscriber ) : menuItems;
+
+    //  Subscriber only has 1 item, so vuew stays the same for all viewports
+    if ( isSubscriber ) {
+      return (
+        <div className="ui compact secondary menu">
+          { this.renderNav( items ) }
+        </div>
+      );
+    }
 
     return (
       <span>
         <div className="ui compact secondary menu nav_loggedin_wrapper">
-          { !mobileNavVisible
-            && menuItems.map( item => {
-              if ( item.name === 'upload' ) {
-                return (
-                  <Menu.Item
-                    key={ item.key }
-                    name={ item.name }
-                    className={ `nav_loggedin ${item.name}` }
-                  >
-                    <Link href="/admin/upload" passHref>
-                      { this.getIcon( item ) }
-                    </Link>
-                  </Menu.Item>
-                );
-              }
-
-              return (
-                <Popup
-                  key={ item.key }
-                  id={ item.name }
-                  className="nav_submenu_popup"
-                  trigger={ (
-                    <Menu.Item
-                      key={ item.key }
-                      name={ item.name }
-                      className={
-                        item.name === 'notifications'
-                          ? `nav_loggedin ${item.name} ${active}`
-                          : `nav_loggedin ${item.name}`
-                      }
-                    >
-                      { this.getIcon( item ) }
-                    </Menu.Item>
-                  ) }
-                  content={
-                    item.name === 'notifications' ? (
-                      <NotificationsMenu submenuClosePopup={ this.submenuClosePopup } />
-                    ) : (
-                      <UserProfileMenu
-                        submenuClosePopup={ this.submenuClosePopup }
-                        user={ user.firstName }
-                      />
-                    )
-                  }
-                  on="click"
-                  // eslint-disable-next-line react/destructuring-assignment
-                  open={ this.state[`${item.name}`] }
-                  onOpen={ this.displayPopup }
-                  onClose={ this.closePopup }
-                  position="bottom center"
-                />
-              );
-            } ) }
-          <a
-            href="https://goo.gl/forms/9cJ3IBHH9QTld2Mj2"
-            target="_blank"
-            className="item feedback"
-            rel="noopener noreferrer"
-          >
-            Feedback
-          </a>
+          { !mobileNavVisible && this.renderNav( items ) }
+          { this.renderFeedbackButton() }
         </div>
 
         { mobileNavVisible && (
-          <ul className="mobileMenu">
-            <li>
-              <Icon name="close" onClick={ toggleMobileNav } onKeyUp={ keyUp } tabIndex={ 0 } />
-            </li>
-            { menuItems.map( item => {
-              if ( item.name === 'upload' ) {
-                return (
-                  <li key={ item.key }>
-                    <Link href="/admin/upload">
-                      <a className="item">
-                        <span onClick={ toggleMobileNav } onKeyUp={ keyUp } role="presentation">
-                          { this.getIcon( item ) }
-                        </span>
-                      </a>
-                    </Link>
-                  </li>
-                );
-              }
-              return (
-                <Popup
-                  key={ item.key }
-                  id={ item.name }
-                  className="nav_submenu_popup"
-                  trigger={ (
-                    <li
-                      key={ item.key }
-                      className={
-                        item.name === 'notifications'
-                          ? `mobile_loggedin ${item.name} ${active}`
-                          : `mobile_loggedin ${item.name}`
-                      }
-                    >
-                      { this.getIcon( item ) }
-                    </li>
-                  ) }
-                  content={ this.renderMenu( item.name ) }
-                  on="click"
-                  // eslint-disable-next-line react/destructuring-assignment
-                  open={ this.state[`${item.name}`] }
-                  onOpen={ this.displayPopup }
-                  onClose={ this.closePopup }
-                  position="bottom center"
-                />
-              );
-            } ) }
-            <li>
-              <a
-                href="https://goo.gl/forms/PyLjAiaJVt3xONsd2"
-                target="_blank"
-                className="item feedback"
-                rel="noopener noreferrer"
-                onClick={ toggleMobileNav }
-              >
-                Feedback
-              </a>
-            </li>
-          </ul>
+        <ul className="mobileMenu">
+          <li>
+            <Icon name="close" onClick={ toggleMobileNav } onKeyUp={ keyUp } tabIndex={ 0 } />
+          </li>
+          { this.renderNav( items ) }
+          <li>{ this.renderFeedbackButton() }</li>
+        </ul>
         ) }
       </span>
     );

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Router from 'next/router';
 import LogoutButton from 'components/Logout/Logout';
+import { hasPagePermissions } from 'context/authContext';
 import '../menu.scss';
 
 class UserProfileMenu extends Component {
@@ -35,7 +36,8 @@ class UserProfileMenu extends Component {
 
   render() {
     const { user } = this.props;
-    const name = ( user ) || '';
+    const isSubscriber = !hasPagePermissions( user );
+    const name = ( user.firstName ) || '';
     const logOutStyle = {
       borderRadius: 0,
       padding: '20px 0 20px 15px',
@@ -48,31 +50,46 @@ class UserProfileMenu extends Component {
     return (
       <div className="nav_submenu">
         <div className="nav_submenu_header">
-          <p className="nav_submenu_header_item nav_submenu_header_item--title">
-            Welcome { name }!
-          </p>
+          <p className="nav_submenu_header_item nav_submenu_header_item--title">Welcome { name }!</p>
         </div>
         <section className="nav_submenu_section">
-          <Link href="/admin/dashboard">
-            <a className="nav_submenu_item nav_submenu_item--margin">
-              <span onClick={ this.linkClick } role="presentation">Dashboard</span>
-            </a>
-          </Link>
+          { !isSubscriber && (
+            <Link href="/admin/dashboard">
+              <a className="nav_submenu_item nav_submenu_item--margin">
+                <span onClick={ this.linkClick } role="presentation">
+                  Dashboard
+                </span>
+              </a>
+            </Link>
+          ) }
           <Link href="/profile">
             <a className="nav_submenu_item nav_submenu_item--profile_settings">
-              <span onClick={ this.linkClick } role="presentation">Profile Settings</span>
+              <span onClick={ this.linkClick } role="presentation">
+                Profile Settings
+              </span>
             </a>
           </Link>
         </section>
         <section className="nav_submenu_section">
           <Link href="/about">
             <a className="nav_submenu_item nav_submenu_item--margin">
-              <span onClick={ this.linkClick } role="presentation">About</span>
+              <span onClick={ this.linkClick } role="presentation">
+                About
+              </span>
             </a>
           </Link>
           <Link href="/help">
+            <a className="nav_submenu_item nav_submenu_item--margin">
+              <span onClick={ this.linkClick } role="presentation">
+                Help
+              </span>
+            </a>
+          </Link>
+          <Link href="/documentation">
             <a className="nav_submenu_item">
-              <span onClick={ this.linkClick } role="presentation">Help</span>
+              <span onClick={ this.linkClick } role="presentation">
+                Documentation
+              </span>
             </a>
           </Link>
         </section>
@@ -84,7 +101,7 @@ class UserProfileMenu extends Component {
             className="nav_submenu_item"
             onClick={ this.linkClick }
           >
-          Send Feedback
+            Send Feedback
           </a>
         </section>
         <section className="nav_submenu_section nav_submenu_section--logout">
@@ -98,7 +115,7 @@ class UserProfileMenu extends Component {
 UserProfileMenu.propTypes = {
   toggleMobileNav: PropTypes.func,
   submenuClosePopup: PropTypes.func,
-  user: PropTypes.string
+  user: PropTypes.object
 };
 
 export default UserProfileMenu;

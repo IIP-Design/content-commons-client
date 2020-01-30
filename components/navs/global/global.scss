@@ -1,9 +1,9 @@
-@import "../../../styles/colors.scss";
+@import '../../../styles/colors.scss';
 
 .bar--home nav {
   position: absolute;
   top: 1rem;
-  right: 1rem;  
+  right: 1rem;
   @media screen and (max-width: 767px) {
     position: fixed;
   }
@@ -14,7 +14,7 @@
 
     &:hover {
       &:after {
-        content: "";
+        content: '';
         position: absolute;
         left: 0;
         bottom: 0;
@@ -60,9 +60,8 @@ nav {
   .ui.compact.menu {
     height: 100%;
   }
-  
-  .ui.secondary.menu {    
 
+  .ui.secondary.menu {
     &.nav_loggedin_wrapper,
     &.nav_loggedout_wrapper {
       @media screen and (max-width: 992px) {
@@ -76,13 +75,18 @@ nav {
       font-weight: bold;
       letter-spacing: 0.5px;
       color: $blue;
+
+      &.nav_loggedin {
+        padding-right: 0.5rem !important;
+      }
+
       @media screen and (min-width: 993px) {
         &:not(.feedback) {
           padding-right: 0.8rem !important;
 
           &.nav_loggedin {
             padding-top: 0.2rem !important;
-            padding-right: 0.2rem !important;
+            padding-right: 0.5rem !important;
           }
         }
       }
@@ -95,7 +99,7 @@ nav {
         &:hover {
           transition: transform 0.2s;
         }
-      }    
+      }
 
       &.nav_loggedin {
         padding: 0 0.2em;
@@ -107,7 +111,7 @@ nav {
           &:after {
             display: none !important;
           }
-        }      
+        }
 
         &.notifications {
           opacity: 0.4;
@@ -194,7 +198,7 @@ nav {
 
       &.mobile_loggedin {
         &.notifications {
-         opacity: 0.4;
+          opacity: 0.4;
 
           &.active {
             opacity: 1;
