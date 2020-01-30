@@ -39,9 +39,18 @@ const TeamProjects = () => {
     );
   }
 
+  // Hide Category column if viewing Packages
+  const setMenutItems = () => {
+    let columnMenuItems = menuItems;
+    if ( team.contentTypes.includes( 'PACKAGE' ) ) {
+      columnMenuItems = menuItems.filter( item => item.name !== 'categories' );
+    }
+    return columnMenuItems;
+  }
+
   return (
     <ScrollableTableWithMenu
-      columnMenu={ menuItems }
+      columnMenu={ setMenutItems() }
       persistentTableHeaders={ persistentTableHeaders }
       team={ team }
       projectTab="teamProjects"
