@@ -8,7 +8,8 @@ export const drafts = [
     team: {
       id: 'cjrkzhvku000f0756l44blw33',
       name: 'IIP Video Production',
-      organization: 'Department of State'
+      organization: 'Department of State',
+      contentTypes: ['VIDEO']
     },
     author: {
       id: 'cjrl1omfr002o075614zs8dxz',
@@ -120,7 +121,8 @@ export const drafts = [
     team: {
       id: 'cjrkzhvku000f0756l44blw33',
       name: 'IIP Video Production',
-      organization: 'Department of State'
+      organization: 'Department of State',
+      contentTypes: ['VIDEO']
     },
     author: {
       id: 'cjrl1omfr002o075614zs8dxz',
@@ -335,7 +337,8 @@ export const nonDrafts = [
     team: {
       id: 'cjrkzhvku000f0756l44blw33',
       name: 'IIP Video Production',
-      organization: 'Department of State'
+      organization: 'Department of State',
+      contentTypes: ['VIDEO']
     },
     author: {
       id: 'cjuybpucc1tuk0756bpi84enp',

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import sortBy from 'lodash/sortBy';
@@ -10,35 +10,38 @@ import {
   makeFeaturedError
 } from './selectors';
 
+import Packages from './Packages/Packages';
 import Recents from './Recents/Recents';
 import Priorities from './Priorities/Priorities';
 
-class Featured extends Component {
-  render() {
-    const sorted = sortBy( this.props.data, 'order' );
-    const featuredComponents = [];
-    sorted.forEach( d => {
-      const { component, props } = d;
-      switch ( component ) {
-        case 'priorities':
-          featuredComponents.push( <Priorities key={ v4() } { ...props } /> );
-          break;
-        case 'recents':
-          featuredComponents.push( <Recents key={ v4() } { ...props } /> );
-          break;
-        default:
-          break;
-      }
-    } );
+const Featured = ( { data } ) => {
+  const sorted = sortBy( data, 'order' );
+  const featuredComponents = [];
 
-    if ( !featuredComponents.length ) return <div />;
-    return (
-      <div className="featured">
-        { featuredComponents }
-      </div>
-    );
-  }
-}
+  sorted.forEach( d => {
+    const { component, props } = d;
+    switch ( component ) {
+      case 'priorities':
+        featuredComponents.push( <Priorities key={ v4() } { ...props } /> );
+        break;
+      case 'recents':
+        featuredComponents.push( <Recents key={ v4() } { ...props } /> );
+        break;
+      case 'packages':
+        featuredComponents.push( <Packages key={ v4() } { ...props } /> );
+        break;
+      default:
+        break;
+    }
+  } );
+
+  if ( !featuredComponents.length ) return <div />;
+  return (
+    <div className="featured">
+      { featuredComponents }
+    </div>
+  );
+};
 
 Featured.propTypes = {
   data: PropTypes.array,
@@ -53,5 +56,5 @@ const mapStateToProps = () => createStructuredSelector( {
   error: makeFeaturedError()
 } );
 
-export { Featured }; // For test purposes
+export const FeaturedUnconnected = Featured; // For test purposes // 1/2/20 - resolves import/no-named-as-default lint error
 export default connect( mapStateToProps )( Featured );
