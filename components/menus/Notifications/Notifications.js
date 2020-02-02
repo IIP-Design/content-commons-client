@@ -4,27 +4,6 @@ import Link from 'next/link';
 import '../menu.scss';
 
 class NotificationsMenu extends Component {
-  constructor( props ) {
-    super( props );
-    this.linkClick = this.linkClick.bind( this );
-  }
-
-  componentDidMount() {
-    window.addEventListener( 'resize', this.props.submenuClosePopup );
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener( 'resize', this.props.submenuClosePopup );
-  }
-
-  linkClick() {
-    const { toggleMobileNav, submenuClosePopup } = this.props;
-    if ( toggleMobileNav ) {
-      toggleMobileNav();
-    }
-    submenuClosePopup();
-  }
-
   render() {
     return (
       <div className="nav_submenu">
@@ -32,7 +11,9 @@ class NotificationsMenu extends Component {
           <p className="nav_submenu_header_item nav_submenu_header_item--title">Notifications</p>
           <Link href="/help">
             <a className="nav_submenu_header_item">
-              <span onClick={ this.linkClick } role="presentation">Help</span>
+              <span onClick={ this.props.closePopup() } role="presentation">
+                Help
+              </span>
             </a>
           </Link>
         </div>
@@ -45,8 +26,7 @@ class NotificationsMenu extends Component {
 }
 
 NotificationsMenu.propTypes = {
-  toggleMobileNav: PropTypes.func,
-  submenuClosePopup: PropTypes.func
+  closePopup: PropTypes.func
 };
 
 export default NotificationsMenu;

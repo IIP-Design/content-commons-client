@@ -4,16 +4,19 @@
  *
  */
 
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import { Menu, Popup, Icon } from 'semantic-ui-react';
+import {
+  Menu, Popup, Icon
+} from 'semantic-ui-react';
 import UserProfileMenu from 'components/menus/UserProfile/UserProfile';
 import NotificationsMenu from 'components/menus/Notifications/Notifications';
 import notifyIcon from 'static/icons/icon_notifications.svg';
 import userIcon from 'static/icons/icon_user_profile.svg';
 import uploadIcon from 'static/icons/icon_upload.svg';
 import { hasPagePermissions } from 'context/authContext';
+// import HamburgerIcon from '../index';
 
 const menuItems = [
   {
@@ -43,190 +46,187 @@ const menuItems = [
   }
 ];
 
-class LoggedInNav extends Component {
-  state = {
-    user_profile: false,
-    notifications: false,
-    hasNotifications: false
+const LoggedInNav = props => {
+  const {
+    mobileMenuVisible, toggleMobileMenu, keyUp, user
+  } = props;
+
+  // const [hasNotifications, setHasNotifications] = useState( false );
+  const [popupState, setPopupState] = useState( false );
+
+  const closeMobileMenu = () => {
+    setPopupState( false );
+    toggleMobileMenu( false );
   };
 
-  getIcon = item => <img src={ item.icon } width={ item.width } height={ item.height } alt={ item.alt } />;
-
-  displayPopup = ( e, data ) => {
-    if ( data.id === 'notifications' && !this.state.hasNotifications ) return;
-    this.setState( { [data.id]: true } );
+  const closePopup = () => {
+    setPopupState( false );
   };
 
-  closePopup = ( e, data ) => {
-    this.setState( { [data.id]: false } );
+  const openPopup = () => {
+    setPopupState( true );
   };
 
-  submenuClosePopup = () => {
-    this.setState( {
-      user_profile: false,
-      notifications: false
-    } );
-  };
+  useEffect( () => {
+    window.addEventListener( 'resize', closeMobileMenu );
+    return () => {
+      window.removeEventListener( 'resize', closeMobileMenu );
+    };
+  }, [] );
 
-  renderMenu( menu ) {
-    const { toggleMobileNav, user } = this.props;
-    if ( menu === 'notifications' ) {
-      return (
-        <NotificationsMenu
-          submenuClosePopup={ this.submenuClosePopup }
-          toggleMobileNav={ toggleMobileNav }
-        />
-      );
-    }
-    return (
-      <UserProfileMenu
-        submenuClosePopup={ this.submenuClosePopup }
-        toggleMobileNav={ toggleMobileNav }
-        user={ user }
-      />
-    );
-  }
 
-  renderMenuItem( item ) {
-    const { hasNotifications } = this.state;
-    const active = hasNotifications ? 'active' : '';
+  const getIcon = item => (
+    <img
+      src={ item.icon }
+      width={ item.width }
+      height={ item.height }
+      alt={ item.alt }
+    />
+  );
 
-    return (
-      <Menu.Item
-        key={ item.key }
-        name={ item.name }
-        className={
-          item.name === 'notifications'
-            ? `nav_loggedin ${item.name} ${active}`
-            : `nav_loggedin ${item.name}`
-        }
-      >
-        { item.name === 'upload' ? (
-          <Link href="/admin/upload" passHref>
-            { this.getIcon( item ) }
-          </Link>
-        ) : (
-          this.getIcon( item )
-        ) }
-      </Menu.Item>
-    );
-  }
 
-  renderListItem( item ) {
-    const { toggleMobileNav, keyUp } = this.props;
-
-    return (
-      <li key={ item.key }>
-        { item.name === 'upload' ? (
-          <Link href="/admin/upload">
-            <a className="item">
-              <span onClick={ toggleMobileNav } onKeyUp={ keyUp } role="presentation">
-                { this.getIcon( item ) }
-              </span>
-            </a>
-          </Link>
-        ) : (
-          this.getIcon( item )
-        ) }
-      </li>
-    );
-  }
-
-  renderNavItem( item ) {
-    const { mobileNavVisible } = this.props;
-    if ( mobileNavVisible ) {
-      return this.renderListItem( item );
-    }
-
-    return this.renderMenuItem( item );
-  }
-
-  renderFeedbackButton = () => (
+  const renderFeedbackButton = () => (
     <a
       href="https://goo.gl/forms/9cJ3IBHH9QTld2Mj2"
       target="_blank"
       className="item feedback"
       rel="noopener noreferrer"
-    >
-      Feedback
+    > Feedback
     </a>
   );
 
-
-  renderPopUp( item ) {
-    const { mobileNavVisible } = this.props;
-    return (
-      <Popup
-        key={ item.key }
-        id={ item.name }
-        className="nav_submenu_popup"
-        trigger={ this.renderNavItem( item ) }
-        content={ this.renderMenu( item.name ) }
-        on="click"
-        open={ this.state[`${item.name}`] }
-        onOpen={ this.displayPopup }
-        onClose={ this.closePopup }
-        position={ `bottom ${mobileNavVisible ? 'center' : 'right'}` }
-      />
-    );
-  }
-
-  renderNav( items ) {
-    return (
-      <>
-        { items.map( item => {
-          if ( item.name === 'upload' ) {
-            return this.renderNavItem( item );
-          }
-
-          return this.renderPopUp( item );
-        } ) }
-
-      </>
-    );
-  }
-
-  render() {
-    const {
-      mobileNavVisible, toggleMobileNav, keyUp, user
-    } = this.props;
-
-    const isSubscriber = !hasPagePermissions( user );
-    const items = isSubscriber ? menuItems.filter( item => item.subscriber ) : menuItems;
-
-    //  Subscriber only has 1 item, so vuew stays the same for all viewports
-    if ( isSubscriber ) {
-      return (
-        <div className="ui compact secondary menu">
-          { this.renderNav( items ) }
-        </div>
-      );
+  const renderMenu = menu => {
+    if ( menu === 'notifications' ) {
+      return <NotificationsMenu closePopup={ closeMobileMenu } />;
     }
 
     return (
-      <span>
-        <div className="ui compact secondary menu nav_loggedin_wrapper">
-          { !mobileNavVisible && this.renderNav( items ) }
-          { this.renderFeedbackButton() }
-        </div>
-
-        { mobileNavVisible && (
-        <ul className="mobileMenu">
-          <li>
-            <Icon name="close" onClick={ toggleMobileNav } onKeyUp={ keyUp } tabIndex={ 0 } />
-          </li>
-          { this.renderNav( items ) }
-          <li>{ this.renderFeedbackButton() }</li>
-        </ul>
-        ) }
-      </span>
+      <UserProfileMenu closePopup={ closeMobileMenu } user={ user } />
     );
-  }
-}
+  };
+
+  const renderPopUp = ( item, renderTriggerFn ) => (
+    <Popup
+      key={ item.key }
+      id={ item.name }
+      className="nav_submenu_popup"
+      trigger={ renderTriggerFn( item ) }
+      content={ renderMenu( item.name ) }
+      hideOnScroll
+      on="click"
+      open={ popupState }
+      onOpen={ openPopup }
+      onClose={ closePopup }
+      position={ `bottom ${mobileMenuVisible ? 'center' : 'right'}` }
+    />
+  );
+
+
+  const renderListItem = item => (
+    <li key={ item.key }>
+      { item.name === 'upload' ? (
+        <Link href="/admin/upload">
+          <a className="item">
+            <span onClick={ () => toggleMobileMenu( false ) } onKeyUp={ keyUp } role="presentation">
+              { getIcon( item ) }
+            </span>
+          </a>
+        </Link>
+      ) : (
+        getIcon( item )
+      ) }
+    </li>
+  );
+
+  const renderMenuItem = item => {
+    // const active = hasNotifications ? 'active' : '';
+    const disabled = item.name === 'notifications';
+
+    return (
+      <Menu.Item key={ item.key } name={ item.name } disabled={ disabled }>
+        { item.name === 'upload' ? (
+          <Link href="/admin/upload" passHref>
+            { getIcon( item ) }
+          </Link>
+        ) : (
+          getIcon( item )
+        ) }
+      </Menu.Item>
+    );
+  };
+
+
+  const renderHamburgerMenu = () => (
+    <button
+      type="button"
+      className={ `hamburger ${mobileMenuVisible ? 'hide' : ''}` }
+      onClick={ () => toggleMobileMenu( true ) }
+      onKeyUp={ () => toggleMobileMenu( true ) }
+      tabIndex={ 0 }
+    >
+      <span className="bar" />
+      <span className="bar" />
+      <span className="bar" />
+    </button>
+  );
+
+  const renderMobileNav = items => {
+    if ( !mobileMenuVisible ) {
+      return renderHamburgerMenu();
+    }
+
+    return (
+      <ul>
+        <li>
+          <Icon name="close" onClick={ () => toggleMobileMenu( false ) } onKeyUp={ keyUp } tabIndex={ 0 } />
+        </li>
+        { items.map( item => {
+          if ( item.name === 'user_profile' ) {
+            return renderPopUp( item, renderListItem );
+          }
+          return renderListItem( item );
+        } ) }
+        { renderFeedbackButton() }
+      </ul>
+    );
+  };
+
+  const renderDesktopNav = items => (
+    <Menu>
+      { items.map( item => {
+        if ( item.name === 'user_profile' ) {
+          return renderPopUp( item, renderMenuItem );
+        }
+        return renderMenuItem( item );
+      } ) }
+      { renderFeedbackButton() }
+    </Menu>
+  );
+
+
+  const isSubscriber = !hasPagePermissions( user );
+
+  const _menuItems = isSubscriber ? menuItems.filter( item => item.subscriber ) : menuItems;
+
+  return (
+    <>
+      { /* Desktop nav */ }
+      { !mobileMenuVisible && (
+        <div>
+          <Menu>{ renderDesktopNav( _menuItems ) }</Menu>
+        </div>
+      ) }
+
+      { /* Mobile nav */ }
+      <div>{ renderMobileNav( _menuItems ) }</div>
+    </>
+  );
+};
+
 
 LoggedInNav.propTypes = {
-  mobileNavVisible: PropTypes.bool,
-  toggleMobileNav: PropTypes.func,
+  mobileMenuVisible: PropTypes.bool,
+  toggleMobileMenu: PropTypes.func,
   keyUp: PropTypes.func,
   user: PropTypes.object
 };

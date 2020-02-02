@@ -1,41 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import Router from 'next/router';
 import LogoutButton from 'components/Logout/Logout';
 import { hasPagePermissions } from 'context/authContext';
 import '../menu.scss';
 
 class UserProfileMenu extends Component {
-  componentDidMount() {
-    window.addEventListener( 'resize', this.props.submenuClosePopup );
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener( 'resize', this.props.submenuClosePopup );
-  }
-
-  handleSignoutClick = signoutMutation => {
-    signoutMutation();
-    const { toggleMobileNav } = this.props;
-    if ( toggleMobileNav ) {
-      toggleMobileNav();
-    }
-    Router.push( {
-      pathname: '/login'
-    } );
-  }
-
-  linkClick = () => {
-    const { toggleMobileNav, submenuClosePopup } = this.props;
-    if ( toggleMobileNav ) {
-      toggleMobileNav();
-    }
-    submenuClosePopup();
-  }
-
   render() {
-    const { user } = this.props;
+    const { user, closePopup } = this.props;
     const isSubscriber = !hasPagePermissions( user );
     const name = ( user.firstName ) || '';
     const logOutStyle = {
@@ -56,7 +28,7 @@ class UserProfileMenu extends Component {
           { !isSubscriber && (
             <Link href="/admin/dashboard">
               <a className="nav_submenu_item nav_submenu_item--margin">
-                <span onClick={ this.linkClick } role="presentation">
+                <span onClick={ closePopup } role="presentation">
                   Dashboard
                 </span>
               </a>
@@ -64,7 +36,7 @@ class UserProfileMenu extends Component {
           ) }
           <Link href="/profile">
             <a className="nav_submenu_item nav_submenu_item--profile_settings">
-              <span onClick={ this.linkClick } role="presentation">
+              <span onClick={ closePopup } role="presentation">
                 Profile Settings
               </span>
             </a>
@@ -73,21 +45,21 @@ class UserProfileMenu extends Component {
         <section className="nav_submenu_section">
           <Link href="/about">
             <a className="nav_submenu_item nav_submenu_item--margin">
-              <span onClick={ this.linkClick } role="presentation">
+              <span onClick={ closePopup } role="presentation">
                 About
               </span>
             </a>
           </Link>
           <Link href="/help">
             <a className="nav_submenu_item nav_submenu_item--margin">
-              <span onClick={ this.linkClick } role="presentation">
+              <span onClick={ closePopup } role="presentation">
                 Help
               </span>
             </a>
           </Link>
           <Link href="/documentation">
             <a className="nav_submenu_item">
-              <span onClick={ this.linkClick } role="presentation">
+              <span onClick={ closePopup } role="presentation">
                 Documentation
               </span>
             </a>
@@ -99,7 +71,7 @@ class UserProfileMenu extends Component {
             href="https://goo.gl/forms/PyLjAiaJVt3xONsd2"
             rel="noopener noreferrer"
             className="nav_submenu_item"
-            onClick={ this.linkClick }
+            onClick={ closePopup }
           >
             Send Feedback
           </a>
@@ -113,8 +85,7 @@ class UserProfileMenu extends Component {
 }
 
 UserProfileMenu.propTypes = {
-  toggleMobileNav: PropTypes.func,
-  submenuClosePopup: PropTypes.func,
+  closePopup: PropTypes.func,
   user: PropTypes.object
 };
 

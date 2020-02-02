@@ -1,14 +1,15 @@
 /**
  *
- * LoggedOutNav
+ * LoggedInNav
  *
  */
 
-
-import React from 'react';
-import { bool, func } from 'prop-types';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import Link from 'next/link';
-import { Menu, Icon } from 'semantic-ui-react';
+import {
+  Menu, Icon
+} from 'semantic-ui-react';
 
 const menuItems = [
   {
@@ -32,75 +33,128 @@ const menuItems = [
 ];
 
 const LoggedOutNav = props => {
-  const { mobileNavVisible, toggleMobileNav, keyUp } = props;
+  const {
+    mobileMenuVisible, toggleMobileMenu, keyUp,
+  } = props;
 
-  return (
-    <span>
-      <div className="ui compact secondary menu nav_loggedout_wrapper">
-        { !mobileNavVisible
-          && menuItems.map( item => (
-            <Menu.Item key={ item.key } name={ item.name }>
-              <Link href={ item.to }><a>{ item.label }</a></Link>
-            </Menu.Item>
-          ) ) }
+
+  const closeMobileMenu = () => {
+    toggleMobileMenu( false );
+  };
+
+
+  useEffect( () => {
+    window.addEventListener( 'resize', closeMobileMenu );
+    return () => {
+      window.removeEventListener( 'resize', closeMobileMenu );
+    };
+  }, [] );
+
+
+  const renderFeedbackButton = () => (
+    <a
+      href="https://goo.gl/forms/9cJ3IBHH9QTld2Mj2"
+      target="_blank"
+      className="item feedback"
+      rel="noopener noreferrer"
+    >
+      { ' ' }
+      Feedback
+    </a>
+  );
+
+
+  const renderListItem = item => (
+    <li key={ item.key }>
+      <Link href={ item.to }>
+        <a className="item">
+          <span onClick={ () => toggleMobileMenu( false ) } onKeyUp={ keyUp } role="presentation">
+            { item.label }
+          </span>
+        </a>
+      </Link>
+    </li>
+  );
+
+  const renderMenuItem = item => (
+    <Menu.Item key={ item.key } name={ item.name }>
+      <Link href={ item.to } passHref>
+        { item.label }
+      </Link>
+    </Menu.Item>
+  );
+
+  const renderHamburgerMenu = () => (
+    <button
+      type="button"
+      className={ `hamburger ${mobileMenuVisible ? 'hide' : ''}` }
+      onClick={ () => toggleMobileMenu( true ) }
+      onKeyUp={ () => toggleMobileMenu( true ) }
+      tabIndex={ 0 }
+    >
+      <span className="bar" />
+      <span className="bar" />
+      <span className="bar" />
+    </button>
+  );
+
+  const renderMobileNav = items => {
+    if ( !mobileMenuVisible ) {
+      return renderHamburgerMenu();
+    }
+
+    return (
+      <ul>
+        <li>
+          <Icon name="close" onClick={ () => toggleMobileMenu( false ) } onKeyUp={ keyUp } tabIndex={ 0 } />
+        </li>
+        { items.map( item => renderListItem( item ) ) }
+        <li>
+          <Link href="/login">
+            <a>
+              <span onClick={ () => toggleMobileMenu( false ) } onKeyUp={ keyUp } role="presentation">
+                Login
+              </span>
+            </a>
+          </Link>
+        </li>
+        { renderFeedbackButton() }
+      </ul>
+    );
+  };
+
+  const renderDesktopNav = items => (
+    <>
+      <Menu>
+        { items.map( item => renderMenuItem( item ) ) }
         <Menu.Item key="4" name="login">
           <a href="/login">Login</a>
         </Menu.Item>
-        <a
-          href="https://goo.gl/forms/9cJ3IBHH9QTld2Mj2"
-          target="_blank"
-          className="item feedback"
-          rel="noopener noreferrer"
-        >
-          Feedback
-        </a>
-      </div>
+        { renderFeedbackButton() }
+      </Menu>
+    </>
+  );
 
-      { mobileNavVisible && (
-        <ul className="mobileMenu">
-          <li>
-            <Icon name="close" onClick={ toggleMobileNav } onKeyUp={ keyUp } tabIndex={ 0 } />
-          </li>
-          { menuItems.map( item => (
-            <li key={ item.key }>
-              <Link href={ item.to }>
-                <a>
-                  <span onClick={ toggleMobileNav } onKeyUp={ keyUp } role="presentation">
-                    { item.label }
-                  </span>
-                </a>
-              </Link>
-            </li>
-          ) ) }
-          <li>
-            <Link href="/login">
-              <a>
-                <span onClick={ toggleMobileNav } onKeyUp={ keyUp } role="presentation">
-                  Login
-                </span>
-              </a>
-            </Link>
-          </li>
-          <li>
-            <a
-              href="https://goo.gl/forms/PyLjAiaJVt3xONsd2"
-              target="_blank"
-              className="item feedback"
-              rel="noopener noreferrer"
-            >
-              Feedback
-            </a>
-          </li>
-        </ul>
+
+  return (
+    <>
+      { /* Desktop nav */ }
+      { !mobileMenuVisible && (
+        <div>
+          <Menu>{ renderDesktopNav( menuItems ) }</Menu>
+        </div>
       ) }
-    </span>
+
+      { /* Mobile nav */ }
+      <div>{ renderMobileNav( menuItems ) }</div>
+    </>
   );
 };
 
 LoggedOutNav.propTypes = {
-  mobileNavVisible: bool,
-  toggleMobileNav: func,
-  keyUp: func
+  mobileMenuVisible: PropTypes.bool,
+  toggleMobileMenu: PropTypes.func,
+  keyUp: PropTypes.func
 };
 
 export default LoggedOutNav;

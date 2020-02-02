@@ -1,4 +1,4 @@
-@import "../../styles/colors.scss";
+@import '../../styles/colors.scss';
 
 .nav_submenu {
   min-width: 240px;
@@ -27,17 +27,13 @@
     }
 
     &:after {
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       padding-top: 5px;
-      background-image: linear-gradient(
-        90deg,
-        $light-blue 3%,
-        $bright-blue 100%
-      );
+      background-image: linear-gradient(90deg, $light-blue 3%, $bright-blue 100%);
     }
   }
 
