@@ -56,7 +56,7 @@ const PackagePreview = ( { id } ) => {
     team,
     type,
     title,
-    packageFiles: documents
+    documents
   };
 
   return <Package item={ pkgItem } isAdminPreview useGraphQl />;

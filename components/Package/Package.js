@@ -31,7 +31,7 @@ const Package = props => {
     type,
     title,
     site,
-    packageFiles
+    documents
   } = props.item;
 
   useEffect( () => {
@@ -84,21 +84,20 @@ const Package = props => {
           />
 
           <PopupTrigger
-            tooltip={ getPluralStringOrNot( packageFiles, 'Download file' ) }
+            tooltip={ getPluralStringOrNot( documents, 'Download file' ) }
             icon={ { img: downloadIcon, dim: 18 } }
             position="right"
             show
             content={ (
               <PopupTabbed
-                title={ getPluralStringOrNot( packageFiles, 'Package File' ) }
+                title={ getPluralStringOrNot( documents, 'Package File' ) }
                 panes={ [
                   {
-                    title: getPluralStringOrNot( packageFiles, 'Document' ),
+                    title: getPluralStringOrNot( documents, 'Document' ),
                     component: (
                       <DownloadPkgFiles
-                        files={ packageFiles }
-                        instructions={ getPluralStringOrNot( packageFiles, 'Download Package File' ) }
-                        isPreview
+                        files={ documents }
+                        instructions={ getPluralStringOrNot( documents, 'Download Package File' ) }
                       />
                     )
                   }
@@ -107,7 +106,7 @@ const Package = props => {
             ) }
           />
           <span className="file-count">
-            { `(${getCount( packageFiles )})` }
+            { `(${getCount( documents )})` }
             <VisuallyHidden> documents in this package</VisuallyHidden>
           </span>
         </div>
@@ -115,13 +114,13 @@ const Package = props => {
 
       <div className="package-items">
         <Card.Group>
-          { getCount( packageFiles )
-            ? packageFiles.map( file => (
+          { getCount( documents )
+            ? documents.map( file => (
               <PackageItem
                 key={ file.id }
                 file={ normalizeDocumentItemByAPI( { file, useGraphQl } ) }
                 type={ type }
-                { ...( isAdminPreview ? { isAdminPreview } : '' ) }
+                isAdminPreview={ isAdminPreview }
               />
             ) )
             : 'There are no files associated with this package.' }

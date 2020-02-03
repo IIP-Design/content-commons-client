@@ -50,7 +50,7 @@ const PackageItem = props => {
       closeIcon
     >
       <Modal.Content>
-        <Document item={ file } displayAsModal { ...( isAdminPreview ? { isAdminPreview } : '' ) } />
+        <Document item={ file } displayAsModal isAdminPreview={ isAdminPreview } />
       </Modal.Content>
     </Modal>
   );

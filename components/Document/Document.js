@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
-import htmlParser from 'react-markdown/plugins/html-parser';
 import { updateUrl } from 'lib/browser';
+import { parseHtml, getPreviewNotificationStyles } from 'lib/utils';
 
 import { Button } from 'semantic-ui-react';
 import 'styles/tooltip.scss';
@@ -21,7 +21,11 @@ import ModalDescription from 'components/modals/ModalDescription/ModalDescriptio
 import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
 import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 
-import { getPreviewNotificationStyles } from 'lib/utils';
+
+// disallow <script></script> tags
+// export const parseHtml = htmlParser( {
+//   isValidNode: node => node.type !== 'script'
+// } );
 
 const Document = props => {
   const { isAdminPreview, displayAsModal, item } = props;
@@ -48,65 +52,61 @@ const Document = props => {
 
   const DownloadElement = isAdminPreview ? 'span' : 'a';
 
-  // disallow <script></script> tags
-  const parseHtml = htmlParser( {
-    isValidNode: node => node.type !== 'script'
-  } );
-
   return (
     <ModalItem headline={ title } className={ isAdminPreview ? 'package-item' : '' }>
       <div className="modal_options modal_options--noLanguage">
-        <div>
-          { isAdminPreview
-            && (
-              <Notification
-                el="p"
-                show
-                customStyles={ getPreviewNotificationStyles() }
-                msg="This is a preview of your file on Content Commons."
+        { isAdminPreview
+          && (
+            <Notification
+              el="p"
+              show
+              customStyles={ getPreviewNotificationStyles() }
+              msg="This is a preview of your file on Content Commons."
+            />
+          ) }
+        <InternalUseDisplay />
+        <PopupTrigger
+          toolTip="Share document"
+          icon={ { img: shareIcon, dim: 20 } }
+          show
+          content={ (
+            <Popup title="Copy the link to share internally.">
+              <Share
+                id={ id }
+                site={ site }
+                title={ title }
+                language={ language.locale }
+                type={ type }
+                {
+                  ...( isAdminPreview
+                    ? { isPreview: true, link: 'The direct link to the package will appear here.' }
+                    : {}
+                ) }
               />
+            </Popup>
+          ) }
+        />
+        <Button className="trigger" tooltip="Not For Public Distribution">
+          <DownloadElement
+            { ...( isAdminPreview
+              ? {}
+              : {
+                href: documentUrl,
+                className: 'trigger',
+                download: true,
+                target: '_blank',
+                rel: 'noopener noreferrer'
+              }
             ) }
-          <InternalUseDisplay />
-          <PopupTrigger
-            toolTip="Share document"
-            icon={ { img: shareIcon, dim: 20 } }
-            show
-            content={ (
-              <Popup title="Copy the link to share internally.">
-                <Share
-                  id={ id }
-                  site={ site }
-                  title={ title }
-                  language={ language.locale }
-                  type={ type }
-                  { ...( isAdminPreview ? { isPreview: true } : {} ) }
-                  { ...( isAdminPreview ? { link: 'The direct link to the package will appear here.' } : null ) }
-                />
-              </Popup>
-            ) }
-          />
-          <Button className="trigger" tooltip="Not For Public Distribution">
-            <DownloadElement
-              { ...( isAdminPreview
-                ? {}
-                : {
-                  href: documentUrl,
-                  className: 'trigger',
-                  download: true,
-                  target: '_blank',
-                  rel: 'noopener noreferrer'
-                }
-              ) }
-            >
-              <img
-                src={ downloadIcon }
-                width={ 18 }
-                height={ 18 }
-                alt="Download document icon"
-              />
-            </DownloadElement>
-          </Button>
-        </div>
+          >
+            <img
+              src={ downloadIcon }
+              width={ 18 }
+              height={ 18 }
+              alt="Download document icon"
+            />
+          </DownloadElement>
+        </Button>
       </div>
 
       { content && content.html && isAdminPreview
@@ -128,7 +128,7 @@ const Document = props => {
 
       { !content && <ModalDescription description="No text available" /> }
 
-      { !isAdminPreview && <ModalDescription description={ content.rawText } /> }
+      { !isAdminPreview && <ModalDescription description={ content } /> }
 
       <ModalPostMeta
         type={ type }

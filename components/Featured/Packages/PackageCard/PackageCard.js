@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { getPluralStringOrNot } from 'lib/utils';
-import { getDateTimeTerms } from 'components/admin/PackagePreview/PressPackageItem/PressPackageItem';
+import { getDateTimeTerms } from 'components/Package/PressPackageItem/PressPackageItem';
 import { Modal, Card } from 'semantic-ui-react';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import MediaObject from 'components/MediaObject/MediaObject';

@@ -10,7 +10,7 @@ const MediaObject = props => {
   return (
     <Element className={ `media ${className}` } style={ style }>
       <img
-        className={ `media-figure ${img.className ? img.className : ''}` }
+        className={ `media-figure ${img.className}` }
         src={ img.src }
         alt={ img.alt }
         style={ img.style }
