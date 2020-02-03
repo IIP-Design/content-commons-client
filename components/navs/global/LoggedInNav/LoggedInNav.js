@@ -16,7 +16,7 @@ import notifyIcon from 'static/icons/icon_notifications.svg';
 import userIcon from 'static/icons/icon_user_profile.svg';
 import uploadIcon from 'static/icons/icon_upload.svg';
 import { hasPagePermissions } from 'context/authContext';
-// import HamburgerIcon from '../index';
+import HamburgerIcon from '../HamburgerIcon';
 
 const menuItems = [
   {
@@ -66,6 +66,7 @@ const LoggedInNav = props => {
   const openPopup = () => {
     setPopupState( true );
   };
+
 
   useEffect( () => {
     window.addEventListener( 'resize', closeMobileMenu );
@@ -156,23 +157,14 @@ const LoggedInNav = props => {
   };
 
 
-  const renderHamburgerMenu = () => (
-    <button
-      type="button"
-      className={ `hamburger ${mobileMenuVisible ? 'hide' : ''}` }
-      onClick={ () => toggleMobileMenu( true ) }
-      onKeyUp={ () => toggleMobileMenu( true ) }
-      tabIndex={ 0 }
-    >
-      <span className="bar" />
-      <span className="bar" />
-      <span className="bar" />
-    </button>
-  );
-
   const renderMobileNav = items => {
     if ( !mobileMenuVisible ) {
-      return renderHamburgerMenu();
+      return (
+        <HamburgerIcon
+          mobileMenuVisible={ mobileMenuVisible }
+          toggleMobileMenu={ () => toggleMobileMenu( true ) }
+        />
+      );
     }
 
     return (

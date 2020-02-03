@@ -10,6 +10,7 @@ import Link from 'next/link';
 import {
   Menu, Icon
 } from 'semantic-ui-react';
+import HamburgerIcon from '../HamburgerIcon';
 
 const menuItems = [
   {
@@ -84,23 +85,15 @@ const LoggedOutNav = props => {
     </Menu.Item>
   );
 
-  const renderHamburgerMenu = () => (
-    <button
-      type="button"
-      className={ `hamburger ${mobileMenuVisible ? 'hide' : ''}` }
-      onClick={ () => toggleMobileMenu( true ) }
-      onKeyUp={ () => toggleMobileMenu( true ) }
-      tabIndex={ 0 }
-    >
-      <span className="bar" />
-      <span className="bar" />
-      <span className="bar" />
-    </button>
-  );
 
   const renderMobileNav = items => {
     if ( !mobileMenuVisible ) {
-      return renderHamburgerMenu();
+      return (
+        <HamburgerIcon
+          mobileMenuVisible={ mobileMenuVisible }
+          toggleMobileMenu={ () => toggleMobileMenu( true ) }
+        />
+      );
     }
 
     return (
