@@ -213,7 +213,7 @@ const LoggedInNav = props => {
       { /* Desktop nav */ }
       { !mobileMenuVisible && (
         <div>
-          <Menu>{ renderDesktopNav( _menuItems ) }</Menu>
+          { renderDesktopNav( _menuItems ) }
         </div>
       ) }
 

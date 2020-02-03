@@ -8,6 +8,21 @@
     position: fixed;
   }
 
+  &.loader {
+    margin-right: 1em;
+    margin-top: 1em;
+
+    @media screen and (min-width: 768px) {
+      right: 3.1em;
+      top: 2em;
+    }
+
+    @media screen and (min-width: 993px) {
+      right: 3.1em;
+      top: 2em;
+    }
+  }
+
   .ui.menu .item:not(.feedback) a {
     border-radius: 0;
     color: white;
@@ -46,10 +61,15 @@ nav {
   right: 0;
   top: 0.3em;
 
-  // .loader {
-  //   margin-right: 1.5em;
-  //   margin-right: 2em;
-  // }
+  &.loader {
+    right: 1em;
+    top: 1.3em;
+
+    @media screen and (min-width: 768px) {
+      right: 2.8em;
+      top: 1.7em;
+    }
+  }
 
   .hamburger {
     cursor: pointer;
@@ -147,6 +167,10 @@ nav {
       align-items: center;
     }
 
+    &.nav_loggedin .item {
+      margin-right: 0.5em;
+    }
+
     a.item:hover {
       &:not(.feedback) {
         background: none;
@@ -161,7 +185,6 @@ nav {
       font-weight: bold;
       letter-spacing: 0.5px;
       color: $blue;
-      margin-right: 1em;
 
       a {
         color: #fff;
@@ -173,6 +196,7 @@ nav {
 
       &.feedback {
         margin-right: 2em;
+        margin-left: 0.5em;
         padding: 0.8em;
         border-radius: 0 !important;
         color: $blue !important;

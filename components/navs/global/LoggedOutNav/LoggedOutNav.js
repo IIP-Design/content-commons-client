@@ -125,7 +125,7 @@ const LoggedOutNav = props => {
 
   const renderDesktopNav = items => (
     <>
-      <Menu>
+      <Menu className="nav_loggedin">
         { items.map( item => renderMenuItem( item ) ) }
         <Menu.Item key="4" name="login">
           <a href="/login">Login</a>
@@ -141,7 +141,7 @@ const LoggedOutNav = props => {
       { /* Desktop nav */ }
       { !mobileMenuVisible && (
         <div>
-          <Menu>{ renderDesktopNav( menuItems ) }</Menu>
+          { renderDesktopNav( menuItems ) }
         </div>
       ) }
 
