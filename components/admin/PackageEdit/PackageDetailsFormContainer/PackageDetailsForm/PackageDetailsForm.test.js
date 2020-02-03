@@ -1,7 +1,7 @@
 import { mount, shallow } from 'enzyme';
+import { wrap } from 'module';
 import PackageDetailsForm from './PackageDetailsForm';
 import { mocks } from '../../mocks';
-import { wrap } from 'module';
 
 jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
@@ -10,7 +10,7 @@ const props = {
   children: <div>just another child component</div>,
   handleSubmit: jest.fn(),
   handleChange: jest.fn(),
-  hasUploadCompleted: false,
+  hasInitialUploadCompleted: false,
   values: {
     title: 'xyz.docx',
     type: 'Guidance',
@@ -72,7 +72,6 @@ describe( '<PackageDetailsForm />', () => {
 
   it( 'renders without crashing', () => {
     const wrapper = mount( Component );
-    console.log(wrapper.debug())
     // unwrapped form
     const form = wrapper.find( 'PackageDetailsForm' );
     expect( form.exists() ).toEqual( true );
@@ -178,7 +177,7 @@ describe( '<PackageDetailsForm />', () => {
   it( 'renders disabled ButtonAddFiles if termsConditions === false', () => {
     const wrapper = mount( Component );
     const editPkgFilesModal = wrapper.find( 'EditPackageFilesModal' );
-    const btnAddFilesProps = editPkgFilesModal.props('trigger').trigger.props;
+    const btnAddFilesProps = editPkgFilesModal.props( 'trigger' ).trigger.props;
     const msg = 'Save draft & upload files';
 
     expect( editPkgFilesModal.exists() ).toEqual( true );
@@ -234,6 +233,9 @@ describe( '<PackageDetailsForm />, if form field errors', () => {
   } );
 } );
 
+/*
+* Shawn 2/3/20 - relevant only on initial upload, commenting out for now
+*/
 // describe( '<PackageDetailsForm />, if !props.router.query.action', () => {
 //   const noActionProps = {
 //     ...props,
@@ -261,11 +263,10 @@ describe( '<PackageDetailsForm />, if termsConditions === true', () => {
 
   it( 'renders enabled ButtonAddFiles', () => {
     const wrapper = mount( Component );
-    const buttonAddFiles = wrapper.find( 'ButtonAddFiles' );
     const msg = 'Save draft & upload files';
 
-    const editPkgFilesModal = wrapper.find( 'EditPackageFilesModal' );
-    const btnAddFilesProps = editPkgFilesModal.props('trigger').trigger.props;
+    const editPkgFilesModal = wrapper.find( 'EditPackageFilesModal' ); // ButtonAddFiles parent
+    const btnAddFilesProps = editPkgFilesModal.props( 'trigger' ).trigger.props;
     expect( editPkgFilesModal.exists() ).toEqual( true );
     expect( btnAddFilesProps.children ).toEqual( msg );
     expect( btnAddFilesProps.accept ).toEqual( '.doc, .docx' );
@@ -282,16 +283,16 @@ describe( '<PackageDetailsForm />, if uploads have been completed', () => {
       ...props.values,
       termsConditions: true
     },
-    hasUploadCompleted: true
+    hasInitialUploadCompleted: true
   };
   const Component = <PackageDetailsForm { ...completedUploadsProps } />;
 
-  // it( 'does not render TermsConditions & ButtonAddFiles if hasUploadCompleted', () => {
-  //   const wrapper = mount( Component );
-  //   const termsConditions = wrapper.find( 'TermsConditions' );
-  //   const buttonAddFiles = wrapper.find( 'ButtonAddFiles' );
+  it( 'does not render TermsConditions & ButtonAddFiles if hasUploadCompleted', () => {
+    const wrapper = mount( Component );
+    const termsConditions = wrapper.find( 'TermsConditions' );
+    const editPkgFilesModal = wrapper.find( 'EditPackageFilesModal' ); // ButtonAddFiles parent
 
-  //   expect( termsConditions.exists() ).toEqual( false );
-  //   expect( buttonAddFiles.exists() ).toEqual( false );
-  // } );
+    expect( termsConditions.exists() ).toEqual( false );
+    expect( editPkgFilesModal.exists() ).toEqual( false );
+  } );
 } );
