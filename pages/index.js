@@ -12,7 +12,13 @@ const featuredData = [
     component: 'packages',
     order: 1,
     props: {
-      postType: 'package',
+      term: 'venezuela',
+      label: 'Venezuela',
+      categories: [
+        { key: 'JFqWJ2MBNxuyMP4E5Cgn', display_name: 'Global Issues' },
+        { key: 'MVqWJ2MBNxuyMP4E6Ci0', display_name: 'Good Governance' },
+        { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' }
+      ],
       locale: 'en-us'
     }
   },
