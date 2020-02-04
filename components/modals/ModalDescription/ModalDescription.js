@@ -8,7 +8,7 @@ const ModalDescription = props => {
   const { description } = props;
 
   const renderDescription = () => {
-    if ( description.html ) {
+    if ( typeof description === 'object' && description.html ) {
       return (
         <ReactMarkdown
           className="modal_description_text"
@@ -20,7 +20,7 @@ const ModalDescription = props => {
       );
     }
     return <p className="modal_description_text">{ description }</p>;
-  }
+  };
 
   return (
     <section className="modal_section modal_section--description">
