@@ -154,6 +154,17 @@ const PackageDetailsForm = props => {
                 readOnly
               />
             </Grid.Column>
+
+            <Grid.Column mobile={ 16 } tablet={ 4 } computer={ 4 }>
+              <Form.Field
+                id="team"
+                name="team"
+                control={ Input }
+                label="Team"
+                value={ pkg?.team?.name || '' }
+                readOnly
+              />
+            </Grid.Column>
           </Grid.Row>
 
           { !hasInitialUploadCompleted && (
