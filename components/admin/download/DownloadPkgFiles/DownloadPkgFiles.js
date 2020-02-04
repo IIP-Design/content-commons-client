@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Item } from 'semantic-ui-react';
-import { getS3Url } from 'lib/utils';
 import downloadIcon from 'static/icons/icon_download.svg';
 
 const DownloadPkgFiles = props => {
@@ -14,7 +13,7 @@ const DownloadPkgFiles = props => {
       <Item.Group key={ `fs_${id}` } className={ `download-item${isPreview ? ' preview' : ''}` }>
         <Item
           as={ isPreview ? 'span' : 'a' }
-          href={ isPreview ? null : getS3Url( url ) }
+          href={ isPreview ? null : url }
           download={ isPreview ? null : filename }
         >
           <Item.Image size="mini" src={ downloadIcon } alt="download icon" className="download-icon" />
