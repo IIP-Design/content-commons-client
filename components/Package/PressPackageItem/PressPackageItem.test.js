@@ -1,6 +1,7 @@
 import { mount, shallow } from 'enzyme';
 import moment from 'moment';
 import PressPackageItem from './PressPackageItem';
+import { normalizeDocumentItemByAPI } from '../utils.js';
 
 jest.mock(
   'components/InternalUseDisplay/InternalUseDisplay',
@@ -164,7 +165,8 @@ const props = {
   handleClick: jest.fn()
 };
 
-const Component = <PressPackageItem { ...props } />;
+const normalizedDocFile = normalizeDocumentItemByAPI( { file: props.file, useGraphQl: true } );
+const Component = <PressPackageItem file={ normalizedDocFile } handleClick={ props.handleClick } />;
 
 describe( '<PressPackageItem />', () => {
   it( 'renders without crashing', () => {

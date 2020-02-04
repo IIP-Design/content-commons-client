@@ -188,13 +188,17 @@ main {
   }
 }
 
-.ui.modal > .content {
-  font-size: 0.77em;
-  padding: 1.3em;
-}
-
 .ui.modal {
   border-radius: 0;
+
+  &.fullscreen {
+    max-width: 1600px;
+  }
+
+  > .content {
+    font-size: 0.77em;
+    padding: 1.3em;
+  }
 }
 
 .ui.embed > .icon:before {

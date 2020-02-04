@@ -2,6 +2,7 @@
 
 .press-package-item {
   &.ui.card {
+    width: 100%;
     align-items: stretch;
     border-radius: 0.111111111rem;
     @supports (display: grid) {
@@ -37,7 +38,8 @@
         border-radius: 0.111111111rem 0.111111111rem 0 0 !important;
         padding: 1em;
         color: #ffffff;
-        font-size: 0.777777778rem;
+        font-size: 18px;
+        font-style: italic;
         background-color: $blue;
       }
   
@@ -87,7 +89,6 @@
   
         > .seal {
           color: initial;
-          font-family: Georgia, serif;
         }
       }
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { string } from 'prop-types';
+import PropTypes, { string, object } from 'prop-types';
 import { contentRegExp } from 'lib/utils';
 import PressSourceMeta from 'components/PressSourceMeta/PressSourceMeta';
 import './ModalPostMeta.scss';
@@ -19,11 +19,11 @@ const ModalPostMeta = props => {
   } = props;
 
   const isRTL = textDirection === 'RTL';
-  const isDocumentOrPackage = type && ( type === 'document' || type === 'package' );
+  const isDocument = type && ( type === 'document' );
   const contentSite = contentRegExp( sourcelink );
 
   const renderSourceItem = () => {
-    if ( isDocumentOrPackage ) {
+    if ( isDocument ) {
       return (
         <PressSourceMeta author={ author } logo={ logo } source={ source } releaseType={ releaseType } />
       );
@@ -114,7 +114,10 @@ ModalPostMeta.propTypes = {
   type: string,
   releaseType: string,
   sourcelink: string,
-  author: string,
+  author: PropTypes.oneOfType( [
+    string,
+    object
+  ] ),
   logo: string,
   source: string,
   datePublished: string,

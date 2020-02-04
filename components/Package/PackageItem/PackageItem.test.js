@@ -1,12 +1,13 @@
 import { mount } from 'enzyme';
-import PackageItemPreview from './PackageItemPreview';
+import PackageItem from './PackageItem';
+import { normalizeDocumentItemByAPI } from '../utils.js';
 
 jest.mock(
   'components/Document/Document',
   () => function Document() { return ''; }
 );
 jest.mock(
-  'components/admin/PackagePreview/PressPackageItem/PressPackageItem',
+  '../PressPackageItem/PressPackageItem',
   () => function PressPackageItem() { return ''; }
 );
 jest.mock( 'static/images/dos_seal.svg', () => 'DosSeal' );
@@ -153,10 +154,20 @@ const props = {
     name: 'GPA Press Office',
     __typename: 'Team'
   },
-  type: 'DAILY_GUIDANCE'
+  type: 'DAILY_GUIDANCE',
+  isAdminPreview: true,
 };
 
-const Component = <PackageItemPreview { ...props } />;
+const normalizedDocFile = normalizeDocumentItemByAPI( { file: props.file, useGraphQl: true } );
+
+const Component = (
+  <PackageItem
+    file={ normalizedDocFile }
+    team={ props.team }
+    type={ props.type }
+    isAdminPreview={ props.isAdminPreview }
+  />
+);
 
 const suppressActWarning = consoleError => {
   const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
@@ -167,7 +178,7 @@ const suppressActWarning = consoleError => {
   } );
 };
 
-describe( '<PackageItemPreview />', () => {
+describe( '<PackageItem />', () => {
   /**
    * @todo Suppress React 16.8 `act()` warnings globally.
    * The React team's fix won't be out of alpha until 16.9.0.
@@ -223,7 +234,7 @@ describe( '<PackageItemPreview />', () => {
 
     expect( wrapper.prop( 'type' ) ).toEqual( props.type );
     expect( trigger.name() ).toEqual( 'PressPackageItem' );
-    expect( trigger.prop( 'file' ) ).toEqual( props.file );
+    expect( trigger.prop( 'file' ) ).toEqual( normalizedDocFile );
     expect( trigger.prop( 'handleClick' ).name ).toEqual( 'handleOpen' );
   } );
 
@@ -240,29 +251,24 @@ describe( '<PackageItemPreview />', () => {
     expect( contentComponent.exists() ).toEqual( true );
     expect( contentComponent.prop( 'isAdminPreview' ) ).toEqual( true );
     expect( contentComponent.prop( 'item' ) ).toEqual( {
-      published: props.file.publishedAt || '',
+      type: 'document',
+      id: props.file.id,
+      published: '',
+      modified: props.file.updatedAt,
+      created: props.file.createdAt,
       author: '',
-      owner: props.team.name,
+      owner: '',
       site: '',
-      link: 'The direct link to the package will appear here.',
       title: props.file.title,
       content: props.file.content,
       logo: 'DosSeal',
-      thumbnail: '',
       language: props.file.language,
       documentUrl: props.file.url,
       documentUse: props.file.use.name,
       tags: [
-        {
-          id: 'ck2lzgu500rgb0720scmree6q',
-          name: 'business and entrepreneurship'
-        },
-        {
-          id: 'ck2lzgu5b0rho07207cqfeya0',
-          name: 'armed conflict'
-        }
-      ],
-      type: 'document',
+        { id: 'ck2lzgu500rgb0720scmree6q', name: 'business and entrepreneurship' },
+        { id: 'ck2lzgu5b0rho07207cqfeya0', name: 'armed conflict' }
+      ]
     } );
   } );
 } );

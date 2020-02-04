@@ -1,7 +1,7 @@
 export const documentItem = [
   {
     _source: {
-      id: 1234,
+      id: '1234',
       site: 'commons.america.gov',
       type: 'document',
       owner: 'Press Office',
@@ -21,7 +21,7 @@ export const documentItem = [
       title: 'Lesotho national day',
       content: {
         rawText: 'The United States is closely following the migrant caravan, in which thousands of migrants from Honduras and other countries continue to make a dangerous journey through Guatemala and into Mexico. Many migrants are attempting to transit these countries and in the process are violating their sovereignty, their laws, and their procedures. As President Trump has stated, consistent with U.S. law, the United States will not allow illegal immigrants to enter or remain in the United States.',
-        html: '',
+        html: '<p>The United States is closely following the migrant caravan, in which thousands of migrants from Honduras and other countries continue to make a dangerous journey through Guatemala and into Mexico. Many migrants are attempting to transit these countries and in the process are violating their sovereignty, their laws, and their procedures. As President Trump has stated, consistent with U.S. law, the United States will not allow illegal immigrants to enter or remain in the United States.</p>',
         markdown: ''
       },
       image: [

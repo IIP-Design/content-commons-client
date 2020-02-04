@@ -14,7 +14,7 @@ import DosSeal from 'static/images/dos_seal.svg';
 import iconDocument from 'static/icons/icon_32px_document-white.png';
 
 import { hasCssSupport } from 'lib/browser';
-import { getCount, getTransformedLangTaxArray } from 'lib/utils';
+import { getCount } from 'lib/utils';
 
 import './PressPackageItem.scss';
 
@@ -36,7 +36,14 @@ const PressPackageItem = props => {
   if ( !doc || !getCount( doc ) ) return null;
 
   const {
-    createdAt, updatedAt, content, use
+    id,
+    published,
+    modified,
+    title,
+    documentUse,
+    content,
+    tags,
+    owner,
   } = doc;
 
   const getIndex = ( array, regex ) => (
@@ -80,7 +87,7 @@ const PressPackageItem = props => {
 
   return (
     <Card
-      key={ doc.id }
+      key={ id }
       as="button"
       className="press-package-item"
       type="button"
@@ -92,7 +99,7 @@ const PressPackageItem = props => {
       <article className="container">
         <MediaObject
           className="document-use"
-          body={ <span>{ use?.name || '' }</span> }
+          body={ <span>{ documentUse }</span> }
           img={ {
             src: iconDocument,
             alt: 'document icon',
@@ -103,7 +110,7 @@ const PressPackageItem = props => {
         <InternalUseDisplay />
 
         <Card.Header as="header">
-          <h2 className="title">{ doc.title || '' }</h2>
+          <h2 className="title">{ title }</h2>
         </Card.Header>
 
         <Card.Content>
@@ -126,20 +133,18 @@ const PressPackageItem = props => {
         <Card.Meta as="footer">
           <MetaTerms
             className="date-time"
-            unitId={ doc.id }
-            terms={ getDateTimeTerms( createdAt, updatedAt, 'LL' ) }
+            unitId={ id }
+            terms={ getDateTimeTerms( published, modified, 'LL' ) }
           />
 
-          { Array.isArray( doc.tags )
-            && getCount( doc.tags ) > 0
-            && <TagsList tags={ getTransformedLangTaxArray( doc.tags ) } /> }
+          { getCount( tags ) > 0 && <TagsList tags={ tags } /> }
 
           <MediaObject
-            body={ <span>U.S. Department of State</span> }
+            body={ <span>{ owner || 'U.S. Department of State' }</span> }
             className="seal"
             img={ {
               src: DosSeal,
-              alt: 'U.S. Department of State seal',
+              alt: `${owner || 'U.S. Department of State'} seal`,
               style: { height: '24px', width: '24px' }
             } }
           />

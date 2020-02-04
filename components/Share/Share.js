@@ -22,20 +22,24 @@ const Share = props => {
   let directLink = link;
   let shareLink = link;
 
-  if ( type === 'video' && !isPreview ) {
-    directLink = `${window.location.protocol}//${window.location.host}/video?${queryStr}`;
-    if ( link.includes( 'youtu' ) ) {
+  // video, document, package types
+  if ( !isPreview && type !== 'post' ) {
+    directLink = `${window.location.protocol}//${window.location.host}/${type}?${queryStr}`;
+
+    if ( link?.includes( 'youtu' ) ) {
       shareLink = `https://youtu.be/${getYouTubeId( link )}`;
-    } else if ( link.includes( 'vimeo' ) ) {
+    } else if ( link?.includes( 'vimeo' ) ) {
       shareLink = `https://vimeo.com/${getVimeoId( link )}`;
     }
   }
+
+  // post type
   if ( contentRegExp( link ) && type === 'post' ) {
     directLink = `${window.location.protocol}//${window.location.host}/article?${queryStr}`;
-    shareLink = directLink;
   }
-  if ( type === 'document' && !isPreview ) {
-    directLink = `${window.location.protocol}//${window.location.host}/document?${queryStr}`;
+
+  // post, document, package types
+  if ( type !== 'video' ) {
     shareLink = directLink;
   }
 

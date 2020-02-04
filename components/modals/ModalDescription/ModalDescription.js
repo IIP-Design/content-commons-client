@@ -1,18 +1,33 @@
 import React from 'react';
-import { string } from 'prop-types';
+import ReactMarkdown from 'react-markdown';
+import PropTypes from 'prop-types';
+import { parseHtml } from 'lib/utils';
 import './ModalDescription.scss';
 
 const ModalDescription = props => {
   const { description } = props;
+
   return (
     <section className="modal_section modal_section--description">
-      <p className="modal_description_text">{ description }</p>
+      { description.html && (
+        <ReactMarkdown
+          className="modal_description_text"
+          source={ description.html }
+          // must sanitize html during docx conversion
+          escapeHtml={ false }
+          astPlugins={ [parseHtml] }
+        />
+      ) }
+      { !description.html && <p className="modal_description_text">{ description }</p> }
     </section>
   );
 };
 
 ModalDescription.propTypes = {
-  description: string
+  description: PropTypes.oneOfType( [
+    PropTypes.string,
+    PropTypes.object
+  ] ),
 };
 
 export default ModalDescription;
