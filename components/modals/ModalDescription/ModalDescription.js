@@ -7,9 +7,9 @@ import './ModalDescription.scss';
 const ModalDescription = props => {
   const { description } = props;
 
-  return (
-    <section className="modal_section modal_section--description">
-      { description.html && (
+  const renderDescription = () => {
+    if ( description.html ) {
+      return (
         <ReactMarkdown
           className="modal_description_text"
           source={ description.html }
@@ -17,8 +17,14 @@ const ModalDescription = props => {
           escapeHtml={ false }
           astPlugins={ [parseHtml] }
         />
-      ) }
-      { !description.html && <p className="modal_description_text">{ description }</p> }
+      );
+    }
+    return <p className="modal_description_text">{ description }</p>;
+  }
+
+  return (
+    <section className="modal_section modal_section--description">
+      { renderDescription() }
     </section>
   );
 };
