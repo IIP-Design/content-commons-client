@@ -8,7 +8,7 @@ const ModalDescription = props => {
   const { description } = props;
 
   const renderDescription = () => {
-    if ( !description?.html ) {
+    if ( description !== null && description?.html ) {
       return (
         <ReactMarkdown
           className="modal_description_text"
