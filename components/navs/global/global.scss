@@ -27,7 +27,8 @@
     border-radius: 0;
     color: white;
 
-    &:hover {
+    &:hover,
+    &:focus {
       &:after {
         content: '';
         position: absolute;

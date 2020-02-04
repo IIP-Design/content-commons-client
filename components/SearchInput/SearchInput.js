@@ -63,17 +63,14 @@ class Search extends Component {
       locale: value,
       direction: getDirection( value )
     } );
-  }
+  };
 
   handleQueryOnChange = ( e, { value } ) => {
     // this.getLanguage( value );
     this.props.updateSearchTerm( value );
   };
 
-
-  handleSubmit = async e => {
-    e.preventDefault();
-
+  handleSubmit = async () => {
     const { filter, search } = this.props;
     const query = fetchQueryString( { ...filter, term: search.term, language: this.state.locale } );
     this.props.router.push( {
@@ -82,16 +79,29 @@ class Search extends Component {
     } );
   };
 
+  handleSearchClick = e => {
+    e.preventDefault();
+    this.handleSubmit();
+  };
+
+  handleSearchKeyUp = e => {
+    if ( e.key === 'Enter' ) {
+      this.handleSubmit();
+    }
+  };
+
   maybeLoadLanguages() {
-    const { router: { pathname }, languages: { list } } = this.props;
+    const {
+      router: { pathname },
+      languages: { list }
+    } = this.props;
 
     if ( pathname.indexOf( 'admin' ) === -1 && !list.length ) {
       this.props.loadLanguages();
     }
   }
 
-
-  render () {
+  render() {
     let inputProps = {};
     if ( this.state.direction === 'left' ) {
       inputProps = { className: 'search_input' };
@@ -122,7 +132,14 @@ class Search extends Component {
             onChange={ this.handleQueryOnChange }
             value={ this.props.search.term ? this.props.search.term : '' }
             size="large"
-            icon={ <Icon name="search" onClick={ this.handleSubmit } /> }
+            icon={ (
+              <Icon
+                tabIndex="0"
+                name="search"
+                onClick={ this.handleSearchClick }
+                onKeyUp={ this.handleSearchKeyUp }
+              />
+            ) }
             placeholder="Type in keywords to search"
             { ...inputProps }
           />
