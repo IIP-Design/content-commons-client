@@ -75,10 +75,6 @@
 
     &--mobile {
       &.ui.popup {
-        position: absolute;
-        right: 0 !important;
-        left: 50% !important;
-        transform: translateX(-50%);
         min-width: 300px;
         max-width: 100%;
         width: 95%;
