@@ -2,10 +2,15 @@
 
 .bar--home nav {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  // top: 1rem;
+  // right: 1rem;
+  top: 2em;
+  right: 2em;
+  @media screen and (max-width: 992px) {
+    z-index: 2;
+  }
   @media screen and (max-width: 767px) {
-    position: fixed;
+    position: fixed;    
   }
 
   &.loader {
@@ -43,44 +48,32 @@
   }
 
   .close.icon {
-    position: absolute;
-    top: 1em;
-    right: 1em;
-    font-size: 1.2em;
-    cursor: pointer;
-
     @media screen and (min-width: 768px) {
-      top: 1.5em;
-      right: 2em;
+      top: 2em;
+      right: 1.5em;
     }
   }
 }
 
 nav {
-  z-index: 2;
-  position: absolute;
-  right: 0;
-  top: 0.3em;
-
-  &.loader {
-    right: 1em;
-    top: 1.3em;
-
-    @media screen and (min-width: 768px) {
-      right: 2.8em;
-      top: 1.7em;
-    }
+  @media screen and (max-width: 768px) {
+    position: absolute;
+    top: 0;
+    right: 0;    
   }
 
   .hamburger {
-    cursor: pointer;
-    -webkit-appearance: none;
-    padding: 0;
     width: 20px;
-    margin-right: 0.5em;
-    margin-top: 0.5em;
+    padding: 0;
+    margin-top: 10px;
     border: none;
     background: transparent;
+    cursor: pointer;
+    -webkit-appearance: none;
+    @media screen and (min-width: 993px) {
+      display: none;
+    }
+
     .bar {
       display: block;
       margin-bottom: 3px;
@@ -91,16 +84,7 @@ nav {
 
     &.hide {
       display: none;
-    }
-
-    @media screen and (min-width: 993px) {
-      display: none;
-    }
-
-    @media screen and (min-width: 768px) {
-      margin-right: 2em;
-      margin-top: 1em;
-    }
+    }    
   }
 
   ul {
@@ -135,14 +119,14 @@ nav {
 
     .close.icon {
       position: absolute;
-      top: 0.5em;
-      right: 1em;
+      top: 0.8em;
+      right: 0.5em;
       font-size: 1.2em;
       cursor: pointer;
 
       @media screen and (min-width: 768px) {
-        top: 1em;
-        right: 1.5em;
+        top: 0.8em;
+        right: 1.3em;
       }
     }
 
@@ -166,6 +150,7 @@ nav {
     @media screen and (min-width: 993px) {
       display: flex;
       align-items: center;
+      margin-left: 1em;
     }
 
     &.nav_loggedin .item {
@@ -196,7 +181,7 @@ nav {
       }
 
       &.feedback {
-        margin-right: 2em;
+        // margin-right: 2em;
         margin-left: 0.5em;
         padding: 0.8em;
         border-radius: 0 !important;
