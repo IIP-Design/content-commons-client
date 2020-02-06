@@ -56,7 +56,7 @@
 }
 
 nav {
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 767px) {
     position: absolute;
     top: 0;
     right: 0;    
@@ -153,8 +153,10 @@ nav {
       margin-left: 1em;
     }
 
-    &.nav_loggedin .item {
-      margin-right: 0.5em;
+    &.nav_loggedout .item {
+      @media screen and (min-width: 1300px) {
+        margin-right: 0.5em;
+      }      
     }
 
     a.item:hover {
@@ -171,6 +173,9 @@ nav {
       font-weight: bold;
       letter-spacing: 0.5px;
       color: $blue;
+      @media screen and (min-width: 769px) and (max-width: 1024px) {
+        font-size: 14px;
+      }
 
       a {
         color: #fff;
@@ -181,12 +186,15 @@ nav {
       }
 
       &.feedback {
-        // margin-right: 2em;
         margin-left: 0.5em;
         padding: 0.8em;
         border-radius: 0 !important;
         color: $blue !important;
         background-color: $orange;
+        @media screen and (min-width: 769px) and (max-width: 1024px) {
+          padding: 0.5em;
+        }
+
         &:hover {
           border-bottom: none !important;
           background-color: $orange;

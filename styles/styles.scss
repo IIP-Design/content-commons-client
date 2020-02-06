@@ -88,11 +88,6 @@ main {
     padding-right: 2em;
   }
 
-  // @media only screen and (min-width: 1200px) {
-  //   padding-left: 3em;
-  //   padding-right: 3em;
-  // }
-
   @media only screen and (min-width: 1600px) {
     width: 1601px;
     margin-left: auto !important;
@@ -176,10 +171,6 @@ main {
       }
     }
   }
-
-  // @media screen and (max-width: 899px) {
-  //   border-color: $grey;
-  // }
 
   &.no-background {
     border: none;

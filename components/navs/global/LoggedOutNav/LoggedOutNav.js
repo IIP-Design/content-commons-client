@@ -118,7 +118,7 @@ const LoggedOutNav = props => {
 
   const renderDesktopNav = items => (
     <>
-      <Menu className="nav_loggedin">
+      <Menu className="nav_loggedout">
         { items.map( item => renderMenuItem( item ) ) }
         <Menu.Item key="4" name="login">
           <a href="/login">Login</a>
