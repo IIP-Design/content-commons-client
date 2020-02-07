@@ -32,7 +32,7 @@ const PackageDetailsFormContainer = props => {
           data: buildUpdatePackageTree( values, prevValues ),
           where: { id }
         },
-      } ).catch( err => console.dir( err?.message ) );
+      } ).catch( err => console.dir( err ) );
     }
   };
 
