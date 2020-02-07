@@ -1,5 +1,3 @@
-import { PACKAGE_FILES_QUERY, UPDATE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
-
 export const AWS_URL = 'https://s3-bucket-url.s3.amazonaws.com';
 export const AWS_SIGNED_URL_QUERY_STRING = '?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE';
 
@@ -251,194 +249,123 @@ const getDocumentUseObj = ( val, property = 'name' ) => (
   documentUses.find( u => u[property] === val )
 );
 
+const id = 'test-123';
 export const props = {
-  id: 'test-123',
-  children: <div>just another child node</div>,
-  setIsDirty: jest.fn()
-};
-
-export const mocks = [
-  {
-    request: {
-      query: PACKAGE_FILES_QUERY,
-      variables: { id: props.id }
-    },
-    result: {
-      data: {
-        pkg: {
-          __typename: 'Package',
-          id: props.id,
-          title: 'Guidance Package mm-dd-yy',
-          type: 'DAILY_GUIDANCE',
-          documents: [
-            {
-              __typename: 'DocumentFile',
-              id: '1asd',
-              createdAt: '2019-11-12T13:07:49.364Z',
-              updatedAt: '2019-11-12T13:08:28.830Z',
-              publishedAt: '',
-              language: english,
-              title: 'Lesotho National Day',
-              filename: 'Lesotho National Day.docx',
-              filetype: 'Statement',
-              filesize: 25000,
-              status: 'DRAFT',
-              content: {
-                __typename: 'DocumentConversionFormat',
-                id: 'ccc1',
-                rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
-                html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
-                markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
-              },
-              url: `2019/11/${props.id}/lesotho_national_day.docx`,
-              signedUrl: `${AWS_URL}/2019/11/${props.id}/lesotho_national_day.docx${AWS_SIGNED_URL_QUERY_STRING}`,
-              visibility: 'INTERNAL',
-              image: [
-                {
-                  ...image,
-                  id: 'th1',
-                  filename: 'lesotho_national_day.png',
-                  url: `2019/11/${props.id}/lesotho_national_day.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${props.id}/lesotho_national_day.png${AWS_SIGNED_URL_QUERY_STRING}`
-                }
-              ],
-              use: getDocumentUseObj( 'Statement' ),
-              bureaus,
-              categories: [globalIssues],
-              tags: [tag1]
-            },
-            {
-              __typename: 'DocumentFile',
-              id: '2sdf',
-              createdAt: '2019-11-12T13:07:49.364Z',
-              updatedAt: '2019-11-12T13:08:28.830Z',
-              publishedAt: '',
-              language: english,
-              title: 'U.S.-Pakistan Women’s Council Advances Women’s Economic Empowerment at Houston Event',
-              filename: 'U.S.-Pakistan Women’s Council Advances Women’s Economic Empowerment at Houston Event.docx',
-              filetype: 'Media Note',
-              filesize: 25000,
-              status: 'DRAFT',
-              content: {
-                __typename: 'DocumentConversionFormat',
-                id: 'ccc1',
-                rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
-                html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
-                markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
-              },
-              url: `2019/11/${props.id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx`,
-              signedUrl: `${AWS_URL}/2019/11/${props.id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx${AWS_SIGNED_URL_QUERY_STRING}`,
-              visibility: 'INTERNAL',
-              image: [
-                {
-                  ...image,
-                  id: 'th2',
-                  filename: 'us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png',
-                  url: `2019/11/${props.id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${props.id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png${AWS_SIGNED_URL_QUERY_STRING}`
-                }
-              ],
-              use: getDocumentUseObj( 'Media Note' ),
-              bureaus,
-              categories: [globalIssues, humanRights],
-              tags: []
-            },
-            {
-              __typename: 'DocumentFile',
-              id: '3dxs',
-              createdAt: '2019-11-12T13:07:49.364Z',
-              updatedAt: '2019-11-12T13:08:28.830Z',
-              publishedAt: '',
-              language: english,
-              title: 'Rewards for Justice: Reward Offer for Those Involved in the 2017 “Tongo Tongo” Ambush in Niger',
-              filename: 'Rewards for Justice: Reward Offer for Those Involved in the 2017 “Tongo Tongo” Ambush in Niger.docx',
-              filetype: 'Media Note',
-              filesize: 25000,
-              status: 'DRAFT',
-              content: {
-                __typename: 'DocumentConversionFormat',
-                id: 'ccc1',
-                rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
-                html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
-                markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
-              },
-              url: `2019/11/${props.id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.docx`,
-              signedUrl: `${AWS_URL}/2019/11/${props.id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.docx${AWS_SIGNED_URL_QUERY_STRING}`,
-              visibility: 'INTERNAL',
-              image: [
-                {
-                  ...image,
-                  id: 'th3',
-                  filename: 'rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png',
-                  url: `2019/11/${props.id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${props.id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png${AWS_SIGNED_URL_QUERY_STRING}`
-                }
-              ],
-              use: getDocumentUseObj( 'Media Note' ),
-              bureaus,
-              categories: [globalIssues],
-              tags: [tag2]
-            }
-          ]
-        }
-      }
-    }
-  },
-  {
-    request: {
-      query: UPDATE_PACKAGE_MUTATION,
-      variables: {
-        data: { title: 'new title' },
-        where: { id: props.id }
-      }
-    },
-    result: {
-      data: {
-        updatePackage: {
-          __typename: 'Package',
-          id: props.id
-        }
-      }
-    }
-  },
-  {
-    request: {
-      query: UPDATE_PACKAGE_MUTATION,
-      variables: {
-        data: {
-          title: 'new title',
-          documents: {
-            update: []
-          }
+  pkg: {
+    __typename: 'Package',
+    id,
+    title: 'Guidance Package mm-dd-yy',
+    type: 'DAILY_GUIDANCE',
+    documents: [
+      {
+        __typename: 'DocumentFile',
+        id: '1asd',
+        createdAt: '2019-11-12T13:07:49.364Z',
+        updatedAt: '2019-11-12T13:08:28.830Z',
+        publishedAt: '',
+        language: english,
+        title: 'Lesotho National Day',
+        filename: 'Lesotho National Day.docx',
+        filetype: 'Statement',
+        filesize: 25000,
+        status: 'DRAFT',
+        content: {
+          __typename: 'DocumentConversionFormat',
+          id: 'ccc1',
+          rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
+          html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
+          markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
         },
-        where: { id: props.id }
+        url: `2019/11/${id}/lesotho_national_day.docx`,
+        signedUrl: `${AWS_URL}/2019/11/${id}/lesotho_national_day.docx${AWS_SIGNED_URL_QUERY_STRING}`,
+        visibility: 'INTERNAL',
+        image: [
+          {
+            ...image,
+            id: 'th1',
+            filename: 'lesotho_national_day.png',
+            url: `2019/11/${id}/lesotho_national_day.png`,
+            signedUrl: `${AWS_URL}/2019/11/${id}/lesotho_national_day.png${AWS_SIGNED_URL_QUERY_STRING}`
+          }
+        ],
+        use: getDocumentUseObj( 'Statement' ),
+        bureaus,
+        categories: [globalIssues],
+        tags: [tag1]
+      },
+      {
+        __typename: 'DocumentFile',
+        id: '2sdf',
+        createdAt: '2019-11-12T13:07:49.364Z',
+        updatedAt: '2019-11-12T13:08:28.830Z',
+        publishedAt: '',
+        language: english,
+        title: 'U.S.-Pakistan Women’s Council Advances Women’s Economic Empowerment at Houston Event',
+        filename: 'U.S.-Pakistan Women’s Council Advances Women’s Economic Empowerment at Houston Event.docx',
+        filetype: 'Media Note',
+        filesize: 25000,
+        status: 'DRAFT',
+        content: {
+          __typename: 'DocumentConversionFormat',
+          id: 'ccc1',
+          rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
+          html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
+          markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
+        },
+        url: `2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx`,
+        signedUrl: `${AWS_URL}/2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx${AWS_SIGNED_URL_QUERY_STRING}`,
+        visibility: 'INTERNAL',
+        image: [
+          {
+            ...image,
+            id: 'th2',
+            filename: 'us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png',
+            url: `2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png`,
+            signedUrl: `${AWS_URL}/2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png${AWS_SIGNED_URL_QUERY_STRING}`
+          }
+        ],
+        use: getDocumentUseObj( 'Media Note' ),
+        bureaus,
+        categories: [globalIssues, humanRights],
+        tags: []
+      },
+      {
+        __typename: 'DocumentFile',
+        id: '3dxs',
+        createdAt: '2019-11-12T13:07:49.364Z',
+        updatedAt: '2019-11-12T13:08:28.830Z',
+        publishedAt: '',
+        language: english,
+        title: 'Rewards for Justice: Reward Offer for Those Involved in the 2017 “Tongo Tongo” Ambush in Niger',
+        filename: 'Rewards for Justice: Reward Offer for Those Involved in the 2017 “Tongo Tongo” Ambush in Niger.docx',
+        filetype: 'Media Note',
+        filesize: 25000,
+        status: 'DRAFT',
+        content: {
+          __typename: 'DocumentConversionFormat',
+          id: 'ccc1',
+          rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
+          html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
+          markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
+        },
+        url: `2019/11/${id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.docx`,
+        signedUrl: `${AWS_URL}/2019/11/${id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.docx${AWS_SIGNED_URL_QUERY_STRING}`,
+        visibility: 'INTERNAL',
+        image: [
+          {
+            ...image,
+            id: 'th3',
+            filename: 'rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png',
+            url: `2019/11/${id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png`,
+            signedUrl: `${AWS_URL}/2019/11/${id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png${AWS_SIGNED_URL_QUERY_STRING}`
+          }
+        ],
+        use: getDocumentUseObj( 'Media Note' ),
+        bureaus,
+        categories: [globalIssues],
+        tags: [tag2]
       }
-    },
-    result: {
-      data: {
-        updatePackage: {
-          __typename: 'Package',
-          id: props.id
-        }
-      }
-    }
-  }
-];
-
-export const errorMocks = [
-  {
-    ...mocks[0],
-    result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
-];
-
-export const undefinedDataMocks = [
-  {
-    ...mocks[0],
-    result: {
-      data: undefined
-    }
-  }
-];
+    ]
+  },
+  hasInitialUploadCompleted: true
+};
