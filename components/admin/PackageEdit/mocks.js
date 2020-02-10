@@ -4,12 +4,7 @@ export const AWS_URL = 'https://s3-bucket-url.s3.amazonaws.com';
 export const AWS_SIGNED_URL_QUERY_STRING = '?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE';
 
 export const props = {
-  router: {
-    push: jest.fn(),
-    query: {
-      id: 'test-123'
-    }
-  }
+  id: 'test-123'
 };
 
 const english = {
@@ -79,88 +74,6 @@ const bureaus = [
     ]
   }
 ];
-
-const globalIssues = {
-  __typename: 'Category',
-  id: 'ck2lzgu1e0rea0720a0drvwkp',
-  translations: [
-    {
-      __typename: 'LanguageTranslation',
-      id: 'ck2lzfyja0hze072082syb27d',
-      name: 'global issues',
-      language: english
-    },
-    {
-      __typename: 'LanguageTranslation',
-      id: 'ck2lzfyjs0hzl07207ejimjx7',
-      name: 'Asuntos mundiales',
-      language: {
-        __typename: 'Language',
-        id: 'ck2lzfx7o0hl707205uteku77',
-        languageCode: 'es',
-        locale: 'es-es',
-        textDirection: 'LTR',
-        displayName: 'Spanish',
-        nativeName: 'Español'
-      }
-    },
-    {
-      __typename: 'LanguageTranslation',
-      id: 'ck2lzfykd0hzs0720700s81yb',
-      name: 'Questions mondiales',
-      language: {
-        __typename: 'Language',
-        id: 'ck2lzfx710hkp07206oo0icbv',
-        languageCode: 'fr',
-        locale: 'fr-fr',
-        textDirection: 'LTR',
-        displayName: 'French',
-        nativeName: 'Français'
-      }
-    }
-  ]
-};
-
-const humanRights = {
-  __typename: 'Category',
-  id: 'ck2lzgu1e0rec0720oq0g4liq',
-  translations: [
-    {
-      __typename: 'LanguageTranslation',
-      id: 'ck2lzfyud0i3a0720hko7y2a9',
-      name: 'human rights',
-      language: english
-    },
-    {
-      __typename: 'LanguageTranslation',
-      id: 'ck2lzfyuv0i3h0720twczq24b',
-      name: 'derechos humanos',
-      language: {
-        __typename: 'Language',
-        id: 'ck2lzfx7o0hl707205uteku77',
-        languageCode: 'es',
-        locale: 'es-es',
-        textDirection: 'LTR',
-        displayName: 'Spanish',
-        nativeName: 'Español'
-      }
-    },
-    {
-      __typename: 'LanguageTranslation',
-      id: 'ck2lzfyvb0i3o0720fiv0ozlm',
-      name: 'Droits de l’homme',
-      language: {
-        __typename: 'Language',
-        id: 'ck2lzfx710hkp07206oo0icbv',
-        languageCode: 'fr',
-        locale: 'fr-fr',
-        textDirection: 'LTR',
-        displayName: 'French',
-        nativeName: 'Français'
-      }
-    }
-  ]
-};
 
 const documentUses = [
   {
@@ -277,7 +190,7 @@ const documents = [
     ],
     use: getDocumentUseObj( 'Statement' ),
     bureaus,
-    categories: [globalIssues],
+    categories: [],
     tags: [tag1]
   },
   {
@@ -312,7 +225,7 @@ const documents = [
     ],
     use: getDocumentUseObj( 'Media Note' ),
     bureaus,
-    categories: [globalIssues, humanRights],
+    categories: [],
     tags: []
   },
   {
@@ -347,71 +260,22 @@ const documents = [
     ],
     use: getDocumentUseObj( 'Media Note' ),
     bureaus,
-    categories: [globalIssues],
+    categories: [],
     tags: [tag2]
   }
 ];
-
-const pressJournalism = {
-  __typename: 'Category',
-  id: 'ck2lzgu1e0red072066m25ldt',
-  translations: [
-    {
-      __typename: 'LanguageTranslation',
-      id: 'ck2lzfz0d0i580720g3mg0xut',
-      name: 'press & journalism',
-      language: {
-        __typename: 'Language',
-        id: 'ck2lzfx710hkq07206thus6pt',
-        languageCode: 'en',
-        locale: 'en-us',
-        textDirection: 'LTR',
-        displayName: 'English',
-        nativeName: 'English'
-      }
-    },
-    {
-      __typename: 'LanguageTranslation',
-      id: 'ck2lzfz0y0i5f0720az8sehv4',
-      name: 'Prensa y periodismo',
-      language: {
-        __typename: 'Language',
-        id: 'ck2lzfx7o0hl707205uteku77',
-        languageCode: 'es',
-        locale: 'es-es',
-        textDirection: 'LTR',
-        displayName: 'Spanish',
-        nativeName: 'Español'
-      }
-    },
-    {
-      __typename: 'LanguageTranslation',
-      id: 'ck2lzfz1i0i5m0720wa9pemol',
-      name: 'Presse et journalisme',
-      language: {
-        __typename: 'Language',
-        id: 'ck2lzfx710hkp07206oo0icbv',
-        languageCode: 'fr',
-        locale: 'fr-fr',
-        textDirection: 'LTR',
-        displayName: 'French',
-        nativeName: 'Français'
-      }
-    }
-  ]
-};
 
 export const mocks = [
   {
     request: {
       query: PACKAGE_QUERY,
-      variables: { id: props.router.query.id }
+      variables: { id: props.id }
     },
     result: {
       data: {
         pkg: {
           __typename: 'Package',
-          id: props.router.query.id,
+          id: props.id,
           createdAt: '2019-11-12T13:07:49.364Z',
           updatedAt: '2019-11-12T13:08:28.830Z',
           publishedAt: '',
@@ -432,8 +296,31 @@ export const mocks = [
           desc: '',
           status: 'DRAFT',
           visibility: 'INTERNAL',
-          categories: [pressJournalism],
-          tags: [tag1, tag2],
+          categories: [],
+          tags: [
+            {
+              __typename: 'Tag',
+              id: 'ck2lzgu1i0rei07206gvy1ygg',
+              translations: [
+                {
+                  __typename: 'LanguageTranslation',
+                  id: 'ck2lzfzwr0iey0720hrigffxo',
+                  name: 'american culture'
+                }
+              ]
+            },
+            {
+              __typename: 'Tag',
+              id: 'ck2lzgu2s0rer07208jc6y6ww',
+              translations: [
+                {
+                  __typename: 'LanguageTranslation',
+                  id: 'ck2lzg1900iui0720q28le4rs',
+                  name: 'leadership'
+                }
+              ]
+            }
+          ],
           documents
         }
       }
@@ -442,13 +329,13 @@ export const mocks = [
   {
     request: {
       query: DELETE_PACKAGE_MUTATION,
-      variables: { id: props.router.query.id }
+      variables: { id: props.id }
     },
     result: {
       data: {
         deletePackage: {
           __typename: 'Package',
-          id: props.router.query.id
+          id: props.id
         }
       }
     }
@@ -483,7 +370,7 @@ export const mocks = [
           desc: '',
           status: 'DRAFT',
           visibility: 'INTERNAL',
-          categories: [pressJournalism],
+          categories: [],
           tags: [tag1, tag2],
           documents
         }
@@ -527,35 +414,17 @@ export const publishedMocks = [
   {
     request: {
       query: 'DELETE_PACKAGE_MUTATION',
-      variables: { id: props.router.query.id }
+      variables: { id: props.id }
     },
     result: {
       data: {
         deletePackage: {
           __typename: 'Package',
-          id: props.router.query.id
+          id: props.id
         }
       }
     }
-  },
-  // {
-  //   request: {
-  //     query: 'UPDATE_PACKAGE_MUTATION',
-  //     variables: {
-  //       data: { title: 'New Title' },
-  //       where: { id: props.router.query.id }
-  //     }
-  //   },
-  //   result: {
-  //     data: {
-  //       updatePackage: {
-  //         __typename: 'Package',
-  //         id: props.router.query.id,
-  //         title: 'New Title'
-  //       }
-  //     }
-  //   }
-  // }
+  }
 ];
 
 export const noDocumentsMocks = [
