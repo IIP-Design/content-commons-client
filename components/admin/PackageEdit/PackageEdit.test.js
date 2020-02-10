@@ -1,5 +1,6 @@
 import { mount } from 'enzyme';
 import { MockedProvider, wait } from '@apollo/react-testing';
+import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import PackageEdit from './PackageEdit';
 import {
   errorMocks, mocks, noDocumentsMocks, props, undefinedDataMocks
@@ -20,12 +21,7 @@ jest.mock(
   'components/admin/ButtonPublish/ButtonPublish',
   () => function ButtonPublish() { return ''; }
 );
-
-const ErrorComponent = (
-  <MockedProvider mocks={ errorMocks }>
-    <PackageEdit { ...props } />
-  </MockedProvider>
-);
+jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
 const getBtn = ( str, buttons ) => (
   buttons.findWhere( n => n.text() === str && n.name() === 'button' )
@@ -41,9 +37,26 @@ const suppressActWarning = consoleError => {
 };
 
 describe( '<PackageEdit />', () => {
+  const router = {
+    push: jest.fn(),
+    query: {
+      id: 'test-123'
+    }
+  };
+
   const Component = (
     <MockedProvider mocks={ mocks }>
-      <PackageEdit { ...props } />
+      <RouterContext.Provider value={ router }>
+        <PackageEdit { ...props } />
+      </RouterContext.Provider>
+    </MockedProvider>
+  );
+
+  const ErrorComponent = (
+    <MockedProvider mocks={ errorMocks }>
+      <RouterContext.Provider value={ router }>
+        <PackageEdit { ...props } />
+      </RouterContext.Provider>
     </MockedProvider>
   );
 
@@ -130,7 +143,7 @@ describe( '<PackageEdit />', () => {
     } );
   } );
 
-  it( 'clicking the Delete All button opens the Confirm modal', async () => {
+  it( 'clicking the Delete Package button opens the Confirm modal', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
@@ -144,7 +157,7 @@ describe( '<PackageEdit />', () => {
     expect( confirm().prop( 'open' ) ).toEqual( false );
 
     // open the modal
-    const deleteBtn = getBtn( 'Delete All', btns );
+    const deleteBtn = getBtn( 'Delete Package', btns );
     deleteBtn.simulate( 'click' );
     expect( actionButtons().prop( 'deleteConfirmOpen' ) ).toEqual( true );
     expect( confirm().prop( 'open' ) ).toEqual( true );
@@ -164,7 +177,7 @@ describe( '<PackageEdit />', () => {
     expect( confirm().prop( 'open' ) ).toEqual( false );
 
     // open the modal
-    const deleteBtn = getBtn( 'Delete All', btns );
+    const deleteBtn = getBtn( 'Delete Package', btns );
     deleteBtn.simulate( 'click' );
     expect( actionButtons().prop( 'deleteConfirmOpen' ) ).toEqual( true );
     expect( confirm().prop( 'open' ) ).toEqual( true );
@@ -176,7 +189,7 @@ describe( '<PackageEdit />', () => {
     expect( confirm().prop( 'open' ) ).toEqual( false );
   } );
 
-  it.skip( 'clicking the Confirm button in the Confirm modal calls deletePackage and redirects to the dashboard', async () => {
+  it( 'clicking the Confirm button in the Confirm modal calls deletePackage and redirects to the dashboard', async done => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
@@ -190,17 +203,25 @@ describe( '<PackageEdit />', () => {
     expect( confirm().prop( 'open' ) ).toEqual( false );
 
     // open the modal
-    const deleteBtn = getBtn( 'Delete All', btns );
+    const deleteBtn = getBtn( 'Delete Package', btns );
     deleteBtn.simulate( 'click' );
     expect( actionButtons().prop( 'deleteConfirmOpen' ) ).toEqual( true );
     expect( confirm().prop( 'open' ) ).toEqual( true );
 
-    // confirm delete and go to dashboard
-    const spy = jest.spyOn( wrapper.find( 'PackageEdit' ).props(), 'deletePackage' );
-    const confirmBtn = getBtn( 'Yes, delete forever', confirm().find( 'button' ) );
-    confirmBtn.simulate( 'click' );
-    expect( spy ).toHaveBeenCalled();
-    expect( props.router.push ).toHaveBeenCalled();
+    // Redirect is a side effect of package deletion.
+    const confirmBtnTest = async () => {
+      const confirmBtn = getBtn( 'Yes, delete forever', confirm().find( 'button' ) );
+      confirmBtn.simulate( 'click' );
+      await wait( 0 );
+      wrapper.update();
+
+      expect( router.push ).toHaveBeenCalledWith( {
+        pathname: '/admin/dashboard'
+      } );
+      done();
+    };
+
+    confirmBtnTest();
   } );
 
   it( 'clicking the Save & Exit button redirects to the dashboard', async () => {
@@ -213,12 +234,12 @@ describe( '<PackageEdit />', () => {
     const saveBtn = getBtn( 'Save & Exit', btns );
 
     saveBtn.simulate( 'click' );
-    expect( props.router.push ).toHaveBeenCalledWith( {
+    expect( router.push ).toHaveBeenCalledWith( {
       pathname: '/admin/dashboard'
     } );
   } );
 
-  it.skip( 'clicking the Publish button ... TBD', async () => {
+  it( 'clicking the Publish button ... TBD', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
@@ -226,8 +247,35 @@ describe( '<PackageEdit />', () => {
     const actionButtons = () => wrapper.find( 'ActionButtons' );
     const btns = actionButtons().find( 'button' );
     const publishBtn = getBtn( 'Publish', btns );
+    const logSpy = jest.spyOn( global.console, 'log' );
 
     publishBtn.simulate( 'click' );
+
+    /**
+     * For now, test for console.log. Update after
+     * publish workflow has been implemented.
+     */
+    expect( logSpy ).toHaveBeenCalledWith( 'Publish' );
+    // TBD
+  } );
+
+  it.skip( 'clicking the Unpublish button ... TBD', async () => {
+    const wrapper = mount( Component );
+    await wait( 0 );
+    wrapper.update();
+
+    const actionButtons = () => wrapper.find( 'ActionButtons' );
+    const btns = actionButtons().find( 'button' );
+    const unPublishBtn = getBtn( 'Unpublish', btns );
+    const logSpy = jest.spyOn( global.console, 'log' );
+
+    unPublishBtn.simulate( 'click' );
+
+    /**
+     * For now, test for console.log. Update after
+     * unpublish workflow has been implemented.
+     */
+    expect( logSpy ).toHaveBeenCalledWith( 'Unpublish' );
     // TBD
   } );
 
@@ -236,13 +284,20 @@ describe( '<PackageEdit />', () => {
     await wait( 0 );
     wrapper.update();
     const pkgFormContainer = wrapper.find( 'PackageDetailsFormContainer' );
+    const { pkg } = mocks[0].result.data;
 
     expect( pkgFormContainer.exists() ).toEqual( true );
-    expect( pkgFormContainer.prop( 'id' ) ).toEqual( props.router.query.id );
+    expect( pkgFormContainer.prop( 'pkg' ) ).toEqual( pkg );
+    expect( typeof pkgFormContainer.prop( 'updateNotification' ) )
+      .toEqual( 'function' );
     expect( pkgFormContainer.prop( 'updateNotification' ).name )
       .toEqual( 'updateNotification' );
-    expect( pkgFormContainer.prop( 'hasUploadCompleted' ) )
-      .toEqual( !!mocks[0].result.data.pkg.documents.length );
+    expect( typeof pkgFormContainer.prop( 'setIsDirty' ) )
+      .toEqual( 'function' );
+    expect( pkgFormContainer.prop( 'setIsDirty' ).name )
+      .toEqual( 'bound dispatchAction' );
+    expect( pkgFormContainer.prop( 'hasInitialUploadCompleted' ) )
+      .toEqual( router.query.action !== 'create' );
   } );
 
   it( 'renders ActionHeadline', async () => {
@@ -314,9 +369,27 @@ describe( '<PackageEdit />', () => {
 } );
 
 describe( '<PackageEdit />, if there are no documents,', () => {
+  const router = {
+    push: jest.fn(),
+    query: {
+      id: 'test-123',
+      action: 'create'
+    }
+  };
+
   const Component = (
     <MockedProvider mocks={ noDocumentsMocks }>
-      <PackageEdit { ...props } />
+      <RouterContext.Provider value={ router }>
+        <PackageEdit { ...props } />
+      </RouterContext.Provider>
+    </MockedProvider>
+  );
+
+  const ErrorComponent = (
+    <MockedProvider mocks={ errorMocks }>
+      <RouterContext.Provider value={ router }>
+        <PackageEdit { ...props } />
+      </RouterContext.Provider>
     </MockedProvider>
   );
 
@@ -373,19 +446,6 @@ describe( '<PackageEdit />, if there are no documents,', () => {
     expect( projectHeader.contains( title ) ).toEqual( true );
   } );
 
-  it( 'does not display the action buttons', async () => {
-    const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
-    const actionButtons = wrapper.find( 'ActionButtons' );
-    const btns = ['delete', 'save', 'publish'];
-
-    btns.forEach( btn => {
-      expect( actionButtons.prop( 'show' )[btn] ).toEqual( false );
-    } );
-  } );
-
   it( 'does not render PackageActions', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
@@ -400,13 +460,20 @@ describe( '<PackageEdit />, if there are no documents,', () => {
     await wait( 0 );
     wrapper.update();
     const pkgFormContainer = wrapper.find( 'PackageDetailsFormContainer' );
+    const { pkg } = noDocumentsMocks[0].result.data;
 
     expect( pkgFormContainer.exists() ).toEqual( true );
-    expect( pkgFormContainer.prop( 'id' ) ).toEqual( props.router.query.id );
+    expect( pkgFormContainer.prop( 'pkg' ) ).toEqual( pkg );
+    expect( typeof pkgFormContainer.prop( 'updateNotification' ) )
+      .toEqual( 'function' );
     expect( pkgFormContainer.prop( 'updateNotification' ).name )
       .toEqual( 'updateNotification' );
-    expect( pkgFormContainer.prop( 'hasUploadCompleted' ) )
-      .toEqual( !!noDocumentsMocks[0].result.data.pkg.documents.length );
+    expect( typeof pkgFormContainer.prop( 'setIsDirty' ) )
+      .toEqual( 'function' );
+    expect( pkgFormContainer.prop( 'setIsDirty' ).name )
+      .toEqual( 'bound dispatchAction' );
+    expect( pkgFormContainer.prop( 'hasInitialUploadCompleted' ) )
+      .toEqual( router.query.action !== 'create' );
   } );
 
   it( 'renders ApolloError with an empty error prop', async () => {
@@ -441,9 +508,19 @@ describe( '<PackageEdit />, if there are no documents,', () => {
 } );
 
 describe( '<PackageEdit />, if data === undefined is returned', () => {
+  const router = {
+    push: jest.fn(),
+    query: {
+      id: 'test-123',
+      action: 'create'
+    }
+  };
+
   const Component = (
     <MockedProvider mocks={ undefinedDataMocks }>
-      <PackageEdit { ...props } />
+      <RouterContext.Provider value={ router }>
+        <PackageEdit { ...props } />
+      </RouterContext.Provider>
     </MockedProvider>
   );
 

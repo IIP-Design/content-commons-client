@@ -26,8 +26,7 @@ const PressPackageFile = props => {
   const handleOnChange = useContext( HandleOnChangeContext );
   const { errors, touched, values } = useFormikContext();
 
-
-  if ( !document ) return null;
+  if ( !document || !getCount( document ) ) return null;
 
   const { id, filename, image } = document;
 

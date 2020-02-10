@@ -1,5 +1,4 @@
-import { mount, shallow } from 'enzyme';
-import { wrap } from 'module';
+import { mount } from 'enzyme';
 import PackageDetailsForm from './PackageDetailsForm';
 import { mocks } from '../../mocks';
 

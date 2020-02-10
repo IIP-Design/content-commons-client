@@ -49,8 +49,9 @@ const PackageDetailsFormContainer = props => {
 
     const { documents } = pkg;
     const hasChanged = documents.map( document => {
-      const updatedDoc = values[document.id];
+      const updatedDoc = values[document.id] || {};
       const documentChanged = Object.keys( updatedDoc ).map( key => {
+        if ( !key || !document[key] ) return false;
         if ( key === 'use' ) {
           return updatedDoc[key] === document[key].id;
         }
@@ -97,7 +98,7 @@ const PackageDetailsFormContainer = props => {
           title: title || filename,
           bureaus: getDropdownIds( bureaus ),
           tags: getDropdownIds( tags ),
-          use: use.id,
+          use: use?.id || '',
           visibility
         }
       };

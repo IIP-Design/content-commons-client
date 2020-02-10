@@ -1,9 +1,6 @@
 import { mount } from 'enzyme';
-import { MockedProvider, wait } from '@apollo/react-testing';
 import { HandleOnChangeContext } from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsForm/PackageDetailsForm';
-import {
-  errorMocks, mocks, props, undefinedDataMocks
-} from './mocks';
+import { AWS_URL, AWS_SIGNED_URL_QUERY_STRING } from '../mocks';
 import PressPackageFile from './PressPackageFile';
 
 jest.mock(
@@ -19,9 +16,19 @@ jest.mock(
   () => function VisibilityDropdown() { return ''; }
 );
 jest.mock(
+  'components/admin/dropdowns/BureauOfficesDropdown/BureauOfficesDropdown',
+  () => function BureauOfficesDropdown() { return ''; }
+);
+jest.mock(
   'components/admin/MetaTerms/MetaTerms',
   () => function MetaTerms() { return ''; }
 );
+jest.mock(
+  'components/admin/FormikAutoSave/FormikAutoSave',
+  () => function FormikAutoSave() { return ''; }
+);
+jest.mock( 'next/dynamic', () => () => 'Dynamic' );
+jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 jest.mock(
   'formik',
   () => ( {
@@ -41,35 +48,51 @@ jest.mock(
     } ) )
   } )
 );
-jest.mock(
-  'components/admin/FormikAutoSave/FormikAutoSave',
-  () => function FormikAutoSave() { return ''; }
-);
+
+const id = 'test-123';
+const props = {
+  document: {
+    id: '1asd',
+    title: 'Lesotho National Day',
+    filename: 'Lesotho National Day.docx',
+    image: [
+      {
+        __typename: 'ImageFile',
+        id: 'th1',
+        createdAt: '2019-11-12T13:01:01.906Z',
+        updatedAt: '2019-11-12T13:01:01.906Z',
+        filename: 'lesotho_national_day.png',
+        filetype: 'png',
+        filesize: 35000,
+        visibility: 'PUBLIC',
+        alt: 'thumbnail of guidance document',
+        url: `2019/11/${id}/lesotho_national_day.png`,
+        signedUrl: `${AWS_URL}/2019/11/${id}/lesotho_national_day.png${AWS_SIGNED_URL_QUERY_STRING}`,
+        language: {
+          __typename: 'Language',
+          id: 'ck2lzfx710hkq07206thus6pt',
+          languageCode: 'en',
+          locale: 'en-us',
+          textDirection: 'LTR',
+          displayName: 'English',
+          nativeName: 'English'
+        },
+        use: {
+          __typename: 'ImageUse',
+          id: 'ck2lzfx510hhj07205mal3e4l',
+          name: 'Thumbnail/Cover Image'
+        }
+      }
+    ]
+  }
+};
 
 const handleOnChange = jest.fn().mockName( 'handleOnChange' );
 
 const Component = (
-  <MockedProvider mocks={ mocks }>
-    <HandleOnChangeContext.Provider value={ handleOnChange }>
-      <PressPackageFile { ...props } />
-    </HandleOnChangeContext.Provider>
-  </MockedProvider>
-);
-
-const ErrorComponent = (
-  <MockedProvider mocks={ errorMocks }>
-    <HandleOnChangeContext.Provider value={ handleOnChange }>
-      <PressPackageFile { ...props } />
-    </HandleOnChangeContext.Provider>
-  </MockedProvider>
-);
-
-const UndefinedDataComponent = (
-  <MockedProvider mocks={ undefinedDataMocks }>
-    <HandleOnChangeContext.Provider value={ handleOnChange }>
-      <PressPackageFile { ...props } />
-    </HandleOnChangeContext.Provider>
-  </MockedProvider>
+  <HandleOnChangeContext.Provider value={ handleOnChange }>
+    <PressPackageFile { ...props } />
+  </HandleOnChangeContext.Provider>
 );
 
 describe( '<PressPackageFile />', () => {
@@ -92,71 +115,27 @@ describe( '<PressPackageFile />', () => {
     console.error = consoleError;
   } );
 
-  it( 'renders initial loading state without crashing', () => {
+  it( 'renders without crashing', () => {
     const wrapper = mount( Component );
-    const pressPkgFile = wrapper.find( 'PressPackageFile' );
-    const loader = wrapper.find( 'Loader' );
-    const msg = 'Loading package file...';
 
-    expect( pressPkgFile.exists() ).toEqual( true );
-    expect( loader.exists() ).toEqual( true );
-    expect( loader.contains( msg ) ).toEqual( true );
+    expect( wrapper.exists() ).toEqual( true );
   } );
 
-  it( 'renders error message if a GraphQL error is returned', async () => {
-    const wrapper = mount( ErrorComponent );
-    await wait( 0 );
-    wrapper.update();
-
-    const apolloError = wrapper.find( 'ApolloError' );
-    const msg = 'There was an error.';
-
-    expect( apolloError.exists() ).toEqual( true );
-    expect( apolloError.contains( msg ) ).toEqual( true );
-  } );
-
-  it( 'returns ApolloError if `data === undefined` is returned', async () => {
-    const wrapper = mount( UndefinedDataComponent );
-    await wait( 0 );
-    wrapper.update();
-    const apolloError = wrapper.find( 'ApolloError' );
-
-    expect( apolloError.exists() ).toEqual( true );
-  } );
-
-  it( 'renders the final state without crashing', async () => {
+  it( 'renders the file title input field', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-    const pressPkgFile = wrapper.find( 'PressPackageFile' );
-    const div = wrapper.find( 'PressPackageFile > div' );
-
-    expect( pressPkgFile.exists() ).toEqual( true );
-    expect( div.prop( 'id' ) ).toEqual( props.id );
-    expect( div.prop( 'className' ) ).toEqual( 'package-file' );
-  } );
-
-  it( 'renders the file title input field', async () => {
-    const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
     const titleLabel = wrapper.find( 'FormField[label="Title"] label' );
     const titleInput = wrapper.find( 'FormField[label="Title"] input' );
-    const { documentFile } = mocks[0].result.data;
+    const { document } = props;
 
     expect( titleLabel.prop( 'htmlFor' ) ).toEqual( titleInput.prop( 'id' ) );
     expect( titleInput.prop( 'required' ) ).toEqual( true );
-    expect( titleInput.prop( 'value' ) ).toEqual( documentFile.title );
+    expect( titleInput.prop( 'value' ) ).toEqual( document.title );
     expect( titleInput.prop( 'name' ) )
-      .toEqual( `${documentFile.id}.title` );
+      .toEqual( `${document.id}.title` );
   } );
 
-  it( 'changing the title input field calls handleOnChange', async () => {
+  it( 'changing the title input field calls handleOnChange', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
     const titleInput = wrapper.find( 'FormField[label="Title"]' );
     const { onChange } = titleInput.props();
     const e = {};
@@ -171,35 +150,27 @@ describe( '<PressPackageFile />', () => {
     expect( handleOnChange ).toHaveBeenCalledWith( e, data );
   } );
 
-  it( 'renders the Bureaus dropdown', async () => {
+  it( 'renders the Bureaus dropdown', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
-    const { documentFile } = mocks[0].result.data;
-    const dropdowns = wrapper.find( `FormDropdown` );
-    const dropdown = dropdowns.findWhere( n => n.prop( 'label' ) === 'Lead Bureau(s)' && n.name() === 'FormDropdown' );
-    const helperTxt = wrapper.find( 'TagDropdown + [className="field__helper-text"]' );
+    const dropdown = wrapper.find( `BureauOfficesDropdown` );
+    const helperTxt = wrapper.find( 'BureauOfficesDropdown + [className="field__helper-text"]' );
+    const { document } = props;
 
     expect( dropdown.exists() ).toEqual( true );
-    expect( dropdown.prop( 'id' ) ).toEqual( `bureaus-${documentFile.id}` );
+    expect( dropdown.prop( 'id' ) ).toEqual( `bureaus-${document.id}` );
     expect( dropdown.prop( 'name' ) )
-      .toEqual( `${documentFile.id}.bureaus` );
+      .toEqual( `${document.id}.bureaus` );
     expect( dropdown.prop( 'required' ) ).toEqual( true );
-    expect( helperTxt.text() ).toEqual( 'Enter keywords separated by commas.' );
+    expect( helperTxt.text() ).toEqual( 'Begin typing bureau name and separate by commas.' );
   } );
 
-  it( 'changing the Bureaus dropdown calls handleOnChange', async () => {
+  it( 'changing the Bureaus dropdown calls handleOnChange', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
-    const dropdowns = wrapper.find( `FormDropdown` );
-    const dropdown = dropdowns.findWhere( n => n.prop( 'label' ) === 'Lead Bureau(s)' && n.name() === 'FormDropdown' );
+    const dropdown = wrapper.find( `BureauOfficesDropdown` );
     const { onChange } = dropdown.props();
     const e = {};
     const data = {
-      name: '1asd.bureaus',
+      name: `${props.document.id}.bureaus`,
       value: ['new-bureaus-id'],
     };
 
@@ -208,33 +179,26 @@ describe( '<PressPackageFile />', () => {
     expect( handleOnChange ).toHaveBeenCalledWith( e, data );
   } );
 
-  it( 'renders the Release Type (Use) dropdown', async () => {
+  it( 'renders the Release Type (Use) dropdown', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
-    const { documentFile } = mocks[0].result.data;
+    const { document } = props;
     const dropdown = wrapper.find( `UseDropdown` );
 
     expect( dropdown.exists() ).toEqual( true );
-    expect( dropdown.prop( 'id' ) ).toEqual( `use-${documentFile.id}` );
+    expect( dropdown.prop( 'id' ) ).toEqual( `use-${document.id}` );
     expect( dropdown.prop( 'type' ) ).toEqual( 'document' );
     expect( dropdown.prop( 'label' ) ).toEqual( 'Release Type' );
-    expect( dropdown.prop( 'name' ) )
-      .toEqual( `${documentFile.id}.use` );
+    expect( dropdown.prop( 'name' ) ).toEqual( `${document.id}.use` );
     expect( dropdown.prop( 'required' ) ).toEqual( true );
   } );
 
-  it( 'changing the Release Type (Use) dropdown calls handleOnChange', async () => {
+  it( 'changing the Release Type (Use) dropdown calls handleOnChange', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
     const dropdown = wrapper.find( 'UseDropdown' );
     const { onChange } = dropdown.props();
     const e = {};
     const data = {
-      name: '1asd.use',
+      name: `${props.document.id}.use`,
       value: 'new-use-id',
     };
 
@@ -243,32 +207,25 @@ describe( '<PressPackageFile />', () => {
     expect( handleOnChange ).toHaveBeenCalledWith( e, data );
   } );
 
-  it( 'renders the Visibility dropdown', async () => {
+  it( 'renders the Visibility dropdown', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
-    const { documentFile } = mocks[0].result.data;
+    const { document } = props;
     const dropdown = wrapper.find( `VisibilityDropdown` );
 
     expect( dropdown.exists() ).toEqual( true );
-    expect( dropdown.prop( 'id' ) ).toEqual( `visibility-${documentFile.id}` );
+    expect( dropdown.prop( 'id' ) ).toEqual( `visibility-${document.id}` );
     expect( dropdown.prop( 'label' ) ).toEqual( 'Visibility Setting' );
-    expect( dropdown.prop( 'name' ) )
-      .toEqual( `${documentFile.id}.visibility` );
+    expect( dropdown.prop( 'name' ) ).toEqual( `${document.id}.visibility` );
     expect( dropdown.prop( 'required' ) ).toEqual( true );
   } );
 
-  it( 'changing Visibility calls handleOnChange', async () => {
+  it( 'changing Visibility calls handleOnChange', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
     const dropdown = wrapper.find( 'TagDropdown' );
     const { onChange } = dropdown.props();
     const e = {};
     const data = {
-      name: '1asd.visibility',
+      name: `${props.document.id}.visibility`,
       value: 'PUBLIC',
     };
 
@@ -277,33 +234,26 @@ describe( '<PressPackageFile />', () => {
     expect( handleOnChange ).toHaveBeenCalledWith( e, data );
   } );
 
-  it( 'renders the Tag dropdown', async () => {
+  it( 'renders the Tag dropdown', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
-    const { documentFile } = mocks[0].result.data;
+    const { document } = props;
     const dropdown = wrapper.find( 'TagDropdown' );
     const helperTxt = wrapper.find( 'TagDropdown + [className="field__helper-text"]' );
 
     expect( dropdown.exists() ).toEqual( true );
-    expect( dropdown.prop( 'id' ) ).toEqual( `tags-${documentFile.id}` );
+    expect( dropdown.prop( 'id' ) ).toEqual( `tags-${document.id}` );
     expect( dropdown.prop( 'label' ) ).toEqual( 'Tags' );
-    expect( dropdown.prop( 'name' ) )
-      .toEqual( `${documentFile.id}.tags` );
+    expect( dropdown.prop( 'name' ) ).toEqual( `${document.id}.tags` );
     expect( helperTxt.text() ).toEqual( 'Enter keywords separated by commas.' );
   } );
 
-  it( 'changing the TagDropdown calls handleOnChange', async () => {
+  it( 'changing the TagDropdown calls handleOnChange', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
     const dropdown = wrapper.find( 'TagDropdown' );
     const { onChange } = dropdown.props();
     const e = {};
     const data = {
-      name: '1asd.tags',
+      name: `${props.document.id}.tags`,
       value: ['new-tag-id'],
     };
 
@@ -312,18 +262,15 @@ describe( '<PressPackageFile />', () => {
     expect( handleOnChange ).toHaveBeenCalledWith( e, data );
   } );
 
-  it( 'renders MetaTerms', async () => {
+  it( 'renders MetaTerms', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
-    const { documentFile } = mocks[0].result.data;
+    const { document } = props;
     const meta = wrapper.find( 'MetaTerms' );
     const metaData = [
       {
         name: 'file-name',
         displayName: 'File Name',
-        definition: documentFile.filename || ''
+        definition: document.filename || ''
       },
       {
         name: 'pages',
@@ -333,8 +280,88 @@ describe( '<PressPackageFile />', () => {
     ];
 
     expect( meta.exists() ).toEqual( true );
-    expect( meta.prop( 'unitId' ) ).toEqual( props.id );
+    expect( meta.prop( 'unitId' ) ).toEqual( props.document.id );
     expect( meta.prop( 'terms' ) ).toEqual( metaData );
+  } );
+
+  it( 'renders null if !document', () => {
+    const nullProps = {
+      ...props,
+      document: null
+    };
+    const NullComponent = (
+      <HandleOnChangeContext.Provider value={ handleOnChange }>
+        <PressPackageFile { ...nullProps } />
+      </HandleOnChangeContext.Provider>
+    );
+    const wrapper = mount( NullComponent );
+
+    expect( wrapper.html() ).toEqual( null );
+  } );
+
+  it( 'renders null if document === {}', () => {
+    const emptyProps = {
+      ...props,
+      document: {}
+    };
+    const EmptyComponent = (
+      <HandleOnChangeContext.Provider value={ handleOnChange }>
+        <PressPackageFile { ...emptyProps } />
+      </HandleOnChangeContext.Provider>
+    );
+    const wrapper = mount( EmptyComponent );
+
+    expect( wrapper.html() ).toEqual( null );
+  } );
+
+  it( 'renders a thumbnail placeholder if !props.image', () => {
+    const nullImgProps = {
+      ...props,
+      document: {
+        ...props.document,
+        image: null
+      }
+    };
+    const NullImgComponent = (
+      <HandleOnChangeContext.Provider value={ handleOnChange }>
+        <PressPackageFile { ...nullImgProps } />
+      </HandleOnChangeContext.Provider>
+    );
+    const wrapper = mount( NullImgComponent );
+    const placeholderOuter = wrapper.find( '.placeholder.outer' );
+    const placeholderInner = wrapper.find( '.placeholder.inner' );
+    const loader = wrapper.find( 'Loader' );
+
+    expect( placeholderOuter.exists() ).toEqual( true );
+    expect( placeholderInner.exists() ).toEqual( true );
+    expect( loader.exists() ).toEqual( true );
+    expect( loader.prop( 'active' ) ).toEqual( true );
+    expect( loader.prop( 'size' ) ).toEqual( 'small' );
+  } );
+
+  it( 'renders a thumbnail placeholder if props.image === []', () => {
+    const emptyImgProps = {
+      ...props,
+      document: {
+        ...props.document,
+        image: []
+      }
+    };
+    const EmptyImgComponent = (
+      <HandleOnChangeContext.Provider value={ handleOnChange }>
+        <PressPackageFile { ...emptyImgProps } />
+      </HandleOnChangeContext.Provider>
+    );
+    const wrapper = mount( EmptyImgComponent );
+    const placeholderOuter = wrapper.find( '.placeholder.outer' );
+    const placeholderInner = wrapper.find( '.placeholder.inner' );
+    const loader = wrapper.find( 'Loader' );
+
+    expect( placeholderOuter.exists() ).toEqual( true );
+    expect( placeholderInner.exists() ).toEqual( true );
+    expect( loader.exists() ).toEqual( true );
+    expect( loader.prop( 'active' ) ).toEqual( true );
+    expect( loader.prop( 'size' ) ).toEqual( 'small' );
   } );
 
   /**

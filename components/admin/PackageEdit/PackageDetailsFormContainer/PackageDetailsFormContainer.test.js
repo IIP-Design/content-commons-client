@@ -1,8 +1,7 @@
 import { mount } from 'enzyme';
 import { MockedProvider, wait } from '@apollo/react-testing';
-import {
-  errorMocks, mocks, props, undefinedDataMocks
-} from 'components/admin/PackageEdit/PackageFiles/mocks';
+import { AWS_URL, AWS_SIGNED_URL_QUERY_STRING } from 'components/admin/PackageEdit/PackageFiles/mocks';
+import { UPDATE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 import PackageDetailsFormContainer from './PackageDetailsFormContainer';
 
 jest.mock(
@@ -10,20 +9,213 @@ jest.mock(
   () => function PackageDetailsForm() { return ''; }
 );
 
+const id = 'test-123';
+const english = {
+  __typename: 'Language',
+  id: 'ck2lzfx710hkq07206thus6pt',
+  languageCode: 'en',
+  locale: 'en-us',
+  textDirection: 'LTR',
+  displayName: 'English',
+  nativeName: 'English'
+};
+
+const image = {
+  __typename: 'ImageFile',
+  createdAt: '2019-11-12T13:01:01.906Z',
+  updatedAt: '2019-11-12T13:01:01.906Z',
+  language: english,
+  filename: 'image.png',
+  filetype: 'png',
+  filesize: 35000,
+  visibility: 'PUBLIC',
+  url: `daily_guidance/2020/01/commons.america.gov_${id}/image.png`,
+  signedUrl: `${AWS_URL}/2020/01/${id}/image.png${AWS_SIGNED_URL_QUERY_STRING}`,
+  alt: 'thumbnail of guidance document',
+  use: {
+    __typename: 'ImageUse',
+    id: 'ck2lzfx510hhj07205mal3e4l',
+    name: 'Thumbnail/Cover Image'
+  }
+};
+
+const mocks = [
+  {
+    request: {
+      query: UPDATE_PACKAGE_MUTATION,
+      variables: {
+        data: {
+          title: 'new title',
+          type: 'DAILY_GUIDANCE',
+          documents: {
+            update: [
+              {
+                data: {
+                  title: 'Lesotho National Day',
+                  visibility: 'INTERNAL',
+                  use: {
+                    connect: {
+                      id: 'ck2wbvj7u10lo07207aa55qmz'
+                    }
+                  },
+                  bureaus: {},
+                  tags: {}
+                },
+                where: {
+                  id: '1asd'
+                }
+              },
+              {
+                data: {
+                  title: 'U.S.-Pakistan Women’s Council Advances Women’s Economic Empowerment at Houston Event',
+                  visibility: 'INTERNAL',
+                  use: {
+                    connect: {
+                      id: 'ck2wbvj7u10lo07207aa55qmz'
+                    }
+                  },
+                  bureaus: {},
+                  tags: {}
+                },
+                where: {
+                  id: '2sdf'
+                }
+              }
+            ]
+          }
+        },
+        where: { id }
+      }
+    },
+    result: {
+      data: {
+        updatePackage: {
+          __typename: 'Package',
+          id,
+          title: 'new title',
+          createdAt: '2020-01-28T15:42:06.826Z',
+          updatedAt: '2020-02-06T12:43:31.110Z',
+          publishedAt: '',
+          type: 'DAILY_GUIDANCE',
+          assetPath: `daily_guidance/2020/01/commons.america.gov_${id}`,
+          desc: null,
+          status: 'DRAFT',
+          visibility: 'INTERNAL',
+          author: {
+            __typename: 'User',
+            id: 'ck2m042xo0rnp0720nb4gxjix',
+            firstName: 'Edwin',
+            lastName: 'Mah'
+          },
+          team: {
+            __typename: 'Team',
+            id: 'ck2qgfbku0ubh0720iwhkvuyn',
+            name: 'GPA Press Office'
+          },
+          categories: [],
+          tags: [],
+          documents: [
+            {
+              __typename: 'DocumentFile',
+              id: '1asd',
+              createdAt: '2019-11-12T13:07:49.364Z',
+              updatedAt: '2019-11-12T13:08:28.830Z',
+              publishedAt: '',
+              language: english,
+              title: 'Lesotho National Day',
+              filename: 'Lesotho National Day.docx',
+              filetype: 'Statement',
+              filesize: 25000,
+              status: 'DRAFT',
+              content: {
+                __typename: 'DocumentConversionFormat',
+                id: 'ccc1',
+                rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
+                html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
+                markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
+              },
+              url: `2019/11/${id}/lesotho_national_day.docx`,
+              signedUrl: `${AWS_URL}/2019/11/${id}/lesotho_national_day.docx${AWS_SIGNED_URL_QUERY_STRING}`,
+              visibility: 'INTERNAL',
+              image: [
+                {
+                  ...image,
+                  id: 'th1',
+                  filename: 'lesotho_national_day.png',
+                  url: `2019/11/${id}/lesotho_national_day.png`,
+                  signedUrl: `${AWS_URL}/2019/11/${id}/lesotho_national_day.png${AWS_SIGNED_URL_QUERY_STRING}`
+                }
+              ],
+              use: {
+                __typename: 'DocumentUse',
+                id: 'ck2wbvj7u10lo07207aa55qmz',
+                name: 'Media Note'
+              },
+              bureaus: [],
+              categories: [],
+              tags: []
+            },
+            {
+              __typename: 'DocumentFile',
+              id: '2sdf',
+              createdAt: '2019-11-12T13:07:49.364Z',
+              updatedAt: '2019-11-12T13:08:28.830Z',
+              publishedAt: '',
+              language: english,
+              title: 'U.S.-Pakistan Women’s Council Advances Women’s Economic Empowerment at Houston Event',
+              filename: 'U.S.-Pakistan Women’s Council Advances Women’s Economic Empowerment at Houston Event.docx',
+              filetype: 'Media Note',
+              filesize: 25000,
+              status: 'DRAFT',
+              content: {
+                __typename: 'DocumentConversionFormat',
+                id: 'ccc1',
+                rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
+                html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
+                markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
+              },
+              url: `2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx`,
+              signedUrl: `${AWS_URL}/2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx${AWS_SIGNED_URL_QUERY_STRING}`,
+              visibility: 'INTERNAL',
+              image: [
+                {
+                  ...image,
+                  id: 'th2',
+                  filename: 'us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png',
+                  url: `2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png`,
+                  signedUrl: `${AWS_URL}/2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png${AWS_SIGNED_URL_QUERY_STRING}`
+                }
+              ],
+              use: {
+                __typename: 'DocumentUse',
+                id: 'ck2wbvj7u10lo07207aa55qmz',
+                name: 'Media Note'
+              },
+              bureaus: [],
+              categories: [],
+              tags: []
+            },
+          ]
+        }
+      }
+    }
+  }
+];
+
+const props = {
+  id,
+  children: <div>just another child node</div>,
+  setIsDirty: jest.fn(),
+  pkg: {
+    id,
+    title: 'Guidance Package 01-28-20',
+    type: 'DAILY_GUIDANCE',
+    documents: mocks[0].result.data.updatePackage.documents
+  }
+};
+
 const Component = (
-  <MockedProvider mocks={ mocks }>
-    <PackageDetailsFormContainer { ...props } />
-  </MockedProvider>
-);
-
-const ErrorComponent = (
-  <MockedProvider mocks={ errorMocks }>
-    <PackageDetailsFormContainer { ...props } />
-  </MockedProvider>
-);
-
-const UndefinedDataComponent = (
-  <MockedProvider mocks={ undefinedDataMocks }>
+  <MockedProvider mocks={ mocks } addTypename>
     <PackageDetailsFormContainer { ...props } />
   </MockedProvider>
 );
@@ -48,72 +240,32 @@ describe( '<PackageDetailsFormContainer />', () => {
     console.error = consoleError;
   } );
 
-  it( 'renders initial loading state without crashing', () => {
+  it( 'renders without crashing', () => {
     const wrapper = mount( Component );
-    const formContainer = wrapper.find( 'PackageDetailsFormContainer' );
-    const loader = wrapper.find( 'Loader' );
-    const msg = 'Loading package details form...';
-
-    expect( formContainer.exists() ).toEqual( true );
-    expect( loader.exists() ).toEqual( true );
-    expect( loader.contains( msg ) ).toEqual( true );
-  } );
-
-  it( 'renders error message if a GraphQL error is returned', async () => {
-    const wrapper = mount( ErrorComponent );
-    await wait( 0 );
-    wrapper.update();
-
-    const apolloError = wrapper.find( 'ApolloError' );
-    const msg = 'There was an error.';
-
-    expect( apolloError.exists() ).toEqual( true );
-    expect( apolloError.contains( msg ) ).toEqual( true );
-  } );
-
-  it( 'renders ApolloError if `data === undefined` is returned', async () => {
-    const wrapper = mount( UndefinedDataComponent );
-    await wait( 0 );
-    wrapper.update();
-    const apolloError = wrapper.find( 'ApolloError' );
-
-    expect( apolloError.exists() ).toEqual( true );
-  } );
-
-  it( 'renders the final state without crashing', async () => {
-    const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
     const formContainer = wrapper.find( 'PackageDetailsFormContainer' );
 
     expect( formContainer.exists() ).toEqual( true );
   } );
 
-  it( 'renders Formik component', async () => {
+  it( 'renders Formik component', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
     const formik = wrapper.find( 'Formik' );
 
     expect( formik.exists() ).toEqual( true );
   } );
 
-  it( 'Formik receives the correct initialValues', async () => {
+  it( 'Formik receives the correct initialValues', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-
     const formik = wrapper.find( 'Formik' );
-    const { pkg, pkg: { documents } } = mocks[0].result.data;
-    const fileValues = documents.reduce( ( acc, file ) => {
+    const { pkg } = props;
+    const fileValues = pkg.documents.reduce( ( acc, file ) => {
       const {
-        id, bureaus, title, tags, use, visibility
+        bureaus, title, tags, use, visibility
       } = file;
       return {
         ...acc,
-        [id]: {
-          id,
+        [file.id]: {
+          id: file.id,
           title,
           bureaus: bureaus.map( p => p.id ),
           tags: tags.map( p => p.id ),
@@ -133,10 +285,15 @@ describe( '<PackageDetailsFormContainer />', () => {
     expect( formik.prop( 'initialValues' ) ).toEqual( initialValues );
   } );
 
-  it( 'renders PackageDetailsForm and passes correct props', async () => {
+  it( 'Formik has enableReinitialize prop', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
+    const formik = wrapper.find( 'Formik' );
+
+    expect( formik.prop( 'enableReinitialize' ) ).toEqual( true );
+  } );
+
+  it( 'renders PackageDetailsForm and passes correct props', () => {
+    const wrapper = mount( Component );
     const detailsForm = wrapper.find( 'PackageDetailsForm' );
     const passedProps = [
       'values',
@@ -179,14 +336,17 @@ describe( '<PackageDetailsFormContainer />', () => {
       'id',
       'children',
       'setIsDirty',
+      'pkg',
       'save'
     ];
 
     expect( detailsForm.exists() ).toEqual( true );
     expect( Object.keys( detailsForm.props() ) ).toEqual( passedProps );
+    expect( detailsForm.prop( 'save' ).name ).toEqual( 'save' );
+    expect( typeof detailsForm.prop( 'save' ) ).toEqual( 'function' );
   } );
 
-  it( 'renders Notification but does not show initially', async () => {
+  it( 'renders Notification but is not shown initially', async () => {
     const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
@@ -197,10 +357,8 @@ describe( '<PackageDetailsFormContainer />', () => {
     expect( notification.prop( 'msg' ) ).toEqual( 'Changes saved' );
   } );
 
-  it( 'renders Notification and shows on form save', async done => {
+  it( 'renders Notification and is shown on form save', done => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
 
     const notification = () => wrapper.find( 'Notification' );
     const detailsForm = wrapper.find( 'PackageDetailsForm' );
@@ -210,13 +368,54 @@ describe( '<PackageDetailsFormContainer />', () => {
     expect( notification().prop( 'show' ) ).toEqual( false );
 
     const test = async () => {
-      const values = { title: 'new title' };
-      const prevValues = { title: 'old title' };
+      const values = {
+        title: 'new title',
+        type: 'DAILY_GUIDANCE',
+        termsConditions: false,
+        '1asd': {
+          id: '1asd',
+          title: 'Lesotho National Day',
+          visibility: 'INTERNAL',
+          use: 'ck2wbvj7u10lo07207aa55qmz',
+          bureaus: [],
+          tags: []
+        },
+        '2sdf': {
+          id: '2sdf',
+          title: 'U.S.-Pakistan Women’s Council Advances Women’s Economic Empowerment at Houston Event',
+          visibility: 'INTERNAL',
+          use: 'ck2wbvj7u10lo07207aa55qmz',
+          bureaus: [],
+          tags: []
+        }
+      };
+      const prevValues = {
+        title: 'Guidance Package 01-28-20',
+        type: 'DAILY_GUIDANCE',
+        termsConditions: false,
+        '1asd': {
+          id: '1asd',
+          title: 'Lesotho National Day',
+          visibility: 'INTERNAL',
+          use: 'ck2wbvj7u10lo07207aa55qmz',
+          bureaus: [],
+          tags: []
+        },
+        '2sdf': {
+          id: '2sdf',
+          title: 'U.S.-Pakistan Women’s Council Advances Women’s Economic Empowerment at Houston Event',
+          visibility: 'INTERNAL',
+          use: 'ck2wbvj7u10lo07207aa55qmz',
+          bureaus: [],
+          tags: []
+        }
+      };
 
       await detailsForm.prop( 'save' )( values, prevValues );
       wrapper.update();
 
       // shown
+      expect( props.setIsDirty ).toHaveBeenCalledWith( true );
       expect( notification().prop( 'show' ) ).toEqual( true );
       done();
     };

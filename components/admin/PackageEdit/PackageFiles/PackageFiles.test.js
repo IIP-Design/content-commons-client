@@ -1,33 +1,24 @@
 import { mount } from 'enzyme';
-import { MockedProvider, wait } from '@apollo/react-testing';
-import {
-  errorMocks, mocks, props, undefinedDataMocks
-} from './mocks';
+import { props } from './mocks';
 import PackageFiles from './PackageFiles';
 
 jest.mock( 'next/dynamic', () => () => 'Press-Package-File' );
 jest.mock(
   'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal',
-  () => function EditPackageFilesModal() { return ''; }
+  () => function EditPackageFiles() { return ''; }
 );
 
-const Component = (
-  <MockedProvider mocks={ mocks }>
-    <PackageFiles { ...props } />
-  </MockedProvider>
-);
+jest.mock( 'lib/hooks/useCrudActionsDocument', () => ( {
+  useCrudActionsDocument: () => ( {
+    createFile: jest.fn(),
+    deleteFile: jest.fn(),
+    updateFile: jest.fn()
+  } )
+} ) );
 
-const ErrorComponent = (
-  <MockedProvider mocks={ errorMocks }>
-    <PackageFiles { ...props } />
-  </MockedProvider>
-);
+jest.mock( 'next/config', () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
-const UndefinedDataComponent = (
-  <MockedProvider mocks={ undefinedDataMocks }>
-    <PackageFiles { ...props } />
-  </MockedProvider>
-);
+const Component = <PackageFiles { ...props } />;
 
 describe( '<PackageFiles />', () => {
   /**
@@ -49,79 +40,79 @@ describe( '<PackageFiles />', () => {
     console.error = consoleError;
   } );
 
-  it( 'renders initial loading state without crashing', () => {
+  it( 'renders without crashing', () => {
     const wrapper = mount( Component );
-    const pkgFiles = wrapper.find( 'PackageFiles' );
-    const loader = wrapper.find( 'Loader' );
-    const msg = 'Loading package file(s)...';
 
-    expect( pkgFiles.exists() ).toEqual( true );
-    expect( loader.exists() ).toEqual( true );
-    expect( loader.contains( msg ) ).toEqual( true );
+    expect( wrapper.exists() ).toEqual( true );
   } );
 
-  it( 'renders error message if a GraphQL error is returned', async () => {
-    const wrapper = mount( ErrorComponent );
-    await wait( 0 );
-    wrapper.update();
-
-    const apolloError = wrapper.find( 'ApolloError' );
-    const msg = 'There was an error.';
-
-    expect( apolloError.exists() ).toEqual( true );
-    expect( apolloError.contains( msg ) ).toEqual( true );
-  } );
-
-  it( 'renders ApolloError if `data === undefined` is returned', async () => {
-    const wrapper = mount( UndefinedDataComponent );
-    await wait( 0 );
-    wrapper.update();
-    const apolloError = wrapper.find( 'ApolloError' );
-
-    expect( apolloError.exists() ).toEqual( true );
-  } );
-
-  it( 'renders the final state without crashing', async () => {
+  it( 'renders the correct PressPackageFile components with correct document prop', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-    const pkgFiles = wrapper.find( 'PackageFiles' );
-
-    expect( pkgFiles.exists() ).toEqual( true );
-  } );
-
-  it( 'renders the correct PressPackageFile components', async () => {
-    const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
 
     const pressPkgFiles = wrapper.find( 'Press-Package-File' );
-    const { documents } = mocks[0].result.data.pkg;
+    const { documents } = props.pkg;
 
     expect( pressPkgFiles.length ).toEqual( documents.length );
     pressPkgFiles.forEach( ( file, i ) => {
-      expect( file.prop( 'id' ) ).toEqual( documents[i].id );
+      expect( file.prop( 'document' ) ).toEqual( documents[i] );
     } );
   } );
 
-  it( 'renders the correct heading', async () => {
+  it( 'renders the correct heading', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
+    const { documents } = props.pkg;
+    const heading = `Uploaded File${documents.length > 1 ? 's' : ''} (${documents.length})`;
 
-    const pkgFiles = wrapper.find( 'PackageFiles' );
-    const { documents } = mocks[0].result.data.pkg;
-    const heading = `Uploaded File${documents.length > 1 ? 's' : ''}`;
-
-    expect( pkgFiles.contains( heading ) ).toEqual( true );
+    expect( wrapper.contains( heading ) ).toEqual( true );
   } );
 
-  it( 'renders EditPackageFilesModal', async () => {
+  it( 'renders EditPackageFiles with correct props', () => {
     const wrapper = mount( Component );
-    await wait( 0 );
-    wrapper.update();
-    const editPkgFilesModal = wrapper.find( 'EditPackageFilesModal' );
+    const editPkgFiles = wrapper.find( 'EditPackageFiles' );
+    const units = props.pkg.documents || [];
 
-    expect( editPkgFilesModal.exists() ).toEqual( true );
+    expect( editPkgFiles.exists() ).toEqual( true );
+    expect( editPkgFiles.prop( 'filesToEdit' ) ).toEqual( units );
+    expect( editPkgFiles.prop( 'extensions' ) ).toEqual( ['.doc', '.docx'] );
+    expect( editPkgFiles.prop( 'title' ) ).toEqual( 'Edit Package Files' );
+    expect( editPkgFiles.prop( 'modalOpen' ) ).toEqual( false );
+    expect( editPkgFiles.prop( 'save' ).name ).toEqual( 'handleSave' );
+    expect( typeof editPkgFiles.prop( 'save' ) ).toEqual( 'function' );
+    expect( editPkgFiles.prop( 'onClose' ).name ).toEqual( 'handleCloseModal' );
+    expect( typeof editPkgFiles.prop( 'onClose' ) ).toEqual( 'function' );
+    expect( editPkgFiles.prop( 'progress' ) ).toEqual( 0 );
+  } );
+
+  it( 'EditPackageFiles trigger/onClose opens/closes the modal', () => {
+    const wrapper = mount( Component );
+    const editPkgFiles = () => wrapper.find( 'EditPackageFiles' );
+    const trigger = mount( editPkgFiles().prop( 'trigger' ) );
+
+    // closed initially
+    expect( editPkgFiles().prop( 'modalOpen' ) ).toEqual( false );
+
+    // open the modal
+    trigger.simulate( 'click' );
+    wrapper.update();
+    expect( editPkgFiles().prop( 'modalOpen' ) ).toEqual( true );
+
+    // close the modal
+    editPkgFiles().prop( 'onClose' )();
+    wrapper.update();
+    expect( editPkgFiles().prop( 'modalOpen' ) ).toEqual( false );
+  } );
+
+  it( 'renders null if !hasInitialUploadCompleted', () => {
+    const wrapper = mount( Component );
+    wrapper.setProps( { hasInitialUploadCompleted: false } );
+
+    expect( wrapper.html() ).toEqual( null );
+  } );
+
+  it( 'renders null if pkg === {}', () => {
+    const wrapper = mount( Component );
+    wrapper.setProps( { pkg: {} } );
+
+    expect( wrapper.html() ).toEqual( null );
   } );
 } );
