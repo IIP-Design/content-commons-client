@@ -12,12 +12,12 @@ const featuredData = [
     component: 'priorities',
     order: 1,
     props: {
-      term: 'venezuela',
-      label: 'Venezuela',
+      term: 'iran',
+      label: 'Iran',
       categories: [
-        { key: 'JFqWJ2MBNxuyMP4E5Cgn', display_name: 'Global Issues' },
-        { key: 'MVqWJ2MBNxuyMP4E6Ci0', display_name: 'Good Governance' },
-        { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' }
+        { key: 'dLWWJ2MBCLPpGnLD3D-N', display_name: 'Economic Opportunity' },
+        { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' },
+        { key: 'JFqWJ2MBNxuyMP4E5Cgn', display_name: 'Global Issues' }
       ],
       locale: 'en-us'
     }
@@ -38,12 +38,12 @@ const featuredData = [
     component: 'priorities',
     order: 3,
     props: {
-      term: 'iran',
-      label: 'Iran',
+      term: 'venezuela',
+      label: 'Venezuela',
       categories: [
-        { key: 'dLWWJ2MBCLPpGnLD3D-N', display_name: 'Economic Opportunity' },
-        { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' },
-        { key: 'JFqWJ2MBNxuyMP4E5Cgn', display_name: 'Global Issues' }
+        { key: 'JFqWJ2MBNxuyMP4E5Cgn', display_name: 'Global Issues' },
+        { key: 'MVqWJ2MBNxuyMP4E6Ci0', display_name: 'Good Governance' },
+        { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' }
       ],
       locale: 'en-us'
     }
