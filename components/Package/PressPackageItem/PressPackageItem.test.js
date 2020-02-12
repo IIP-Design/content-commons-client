@@ -39,6 +39,7 @@ const props = {
     visibility: 'INTERNAL',
     url: '2019/12/sample one.docx',
     signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2019/12/sample%20one.docx?AWSAccessKeyId=ggggg&Expires=1578603029&Signature=erererer',
+    excerpt: '<p>A statement provides the official U.S. policy/view or comment on a particular foreign policy issue usually in the name of the Spokesperson, Deputy Spokesperson, and sometimes from the Secretary of State.</p>',
     content: {
       id: 'ck391csz01yrw07205d7xr8iw',
       rawText: 'U.S. DEPARTMENT OF STATE Office of the Spokesperson For Immediate Release Statement by ROBERT PALLADINO, DEPUTY SPOKESPERSON Month Date, 2018 100th Anniversary of the U.S.-Canada Boundary Waters Treaty &lt;Not in CAPS&gt; A statement provides the official U.S. policy/view or comment on a particular foreign policy issue usually in the name of the Spokesperson, Deputy Spokesperson, and sometimes from the Secretary of State.',
@@ -229,36 +230,33 @@ describe( '<PressPackageItem />', () => {
   it( 'renders the content markup', () => {
     const wrapper = mount( Component );
     const content = wrapper.find( 'CardContent > div.content' );
-    const markupDiv = content.find( 'div.excerpt' );
-    const markup = <p>A statement provides the official U.S. policy/view or comment on a particular foreign policy issue usually in the name of the Spokesperson, Deputy Spokesperson, and sometimes from the Secretary of State.</p>;
+    const markupElem = content.find( 'div.excerpt > ParsedHtml' );
+    const excerpt = <p>A statement provides the official U.S. policy/view or comment on a particular foreign policy issue usually in the name of the Spokesperson, Deputy Spokesperson, and sometimes from the Secretary of State.</p>;
 
     expect( content.exists() ).toEqual( true );
     expect( content.prop( 'className' ) ).toEqual( 'content' );
     expect( content.contains( 'Excerpt:' ) ).toEqual( true );
-    expect( markupDiv.exists() ).toEqual( true );
-    expect( markupDiv.contains( markup ) ).toEqual( true );
+    expect( markupElem.exists() ).toEqual( true );
+    expect( markupElem.contains( excerpt ) ).toEqual( true );
   } );
 
-  it( 'renders "No text available" if !content.html', () => {
+  it( 'renders "No excerpt available" if !excerpt', () => {
     const wrapper = mount( Component );
     wrapper.setProps( {
       file: {
         ...props.file,
-        content: {
-          ...props.file.content,
-          html: null
-        }
+        excerpt: ''
       }
     } );
     const content = wrapper.find( 'CardContent > div.content' );
-    const markupDiv = content.find( 'div.excerpt' );
-    const markup = <p>No text available</p>;
+    const markupElem = content.find( 'div.excerpt' );
+    const excerpt = <p>No excerpt available</p>;
 
     expect( content.exists() ).toEqual( true );
     expect( content.prop( 'className' ) ).toEqual( 'content' );
     expect( content.contains( 'Excerpt:' ) ).toEqual( false );
-    expect( markupDiv.exists() ).toEqual( false );
-    expect( content.contains( markup ) ).toEqual( true );
+    expect( markupElem.exists() ).toEqual( false );
+    expect( content.contains( excerpt ) ).toEqual( true );
   } );
 
   it( 'renders footer', () => {

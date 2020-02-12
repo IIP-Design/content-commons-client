@@ -33,6 +33,7 @@ export const normalizeDocumentItemByAPI = ( { file, useGraphQl = false } ) => {
       owner: ( file.team?.name ) || '',
       documentUrl: file.url || '',
       documentUse: ( file?.use?.name ) || '',
+      excerpt: file?.excerpt || '',
       tags: getTransformedLangTaxArray( file.tags ) || [],
     };
 
