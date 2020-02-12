@@ -63,6 +63,29 @@
         padding: 1em;
         color: initial;
         font-size: 0.777777778rem;
+
+        > .excerpt {
+          overflow: hidden;
+
+          em {
+            font-style: normal;
+          }
+
+          strong {
+            font-weight: 400;
+          }
+
+          ul, ol {
+            margin: 0 0 0 1.25em;
+            padding-left: 0;
+          }
+
+          // > p {
+          //   display: -webkit-box;
+          //   -webkit-line-clamp: 8;
+          //   -webkit-box-orient: vertical;
+          // }
+        }
       }
   
       > .meta {

@@ -41,44 +41,10 @@ const PressPackageItem = props => {
     modified,
     title,
     documentUse,
-    content,
+    excerpt,
     tags,
     owner,
   } = doc;
-
-  const getIndex = ( array, regex ) => (
-    array.reduce( ( ret, p, i ) => {
-      if ( regex.test( p ) ) {
-        ret = i; // eslint-disable-line
-      }
-      return ret;
-    }, 0 )
-  );
-
-  const getLongestParagraph = () => {
-    // is there a better way to get an excerpt?
-    const paragraphs = content.html.split( /\s*<\/p>/ );
-
-    /**
-     * To improve chances of returning a relevant body
-     * paragraph, slice the array to remove boilerplate
-     * headings at top and clearances at bottom.
-     */
-    const start = getIndex( paragraphs, /(For Immediate Release)/g );
-    // index for # # # line, ( # === \x23 hex value )
-    const end = getIndex( paragraphs, /\x23\s*/g ) || -1;
-
-    const longestParagraph = paragraphs
-      .slice( start === 0 ? start : start + 1, end )
-      .reduce( ( longest, p ) => {
-        if ( p.length && p.length > longest.length ) {
-          longest = p; // eslint-disable-line
-        }
-        return longest;
-      }, '' );
-
-    return `${longestParagraph}</p>`;
-  };
 
   // disallow <script></script> tags
   const parseHtml = htmlParser( {
@@ -114,20 +80,19 @@ const PressPackageItem = props => {
         </Card.Header>
 
         <Card.Content>
-          { content?.html
+          { excerpt
             ? (
               <Fragment>
                 <p>Excerpt:</p>
                 <ReactMarkdown
                   className="excerpt"
-                  source={ getLongestParagraph() }
-                  // must sanitize html during docx conversion
+                  source={ excerpt }
                   escapeHtml={ false }
                   astPlugins={ [parseHtml] }
                 />
               </Fragment>
             )
-            : <p>No text available</p> }
+            : <p>No excerpt available</p> }
         </Card.Content>
 
         <Card.Meta as="footer">
