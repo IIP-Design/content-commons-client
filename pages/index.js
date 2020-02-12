@@ -9,7 +9,7 @@ import { v4 } from 'uuid';
 const featuredData = [
   {
     key: v4(),
-    component: 'packages',
+    component: 'priorities',
     order: 1,
     props: {
       term: 'iran',
