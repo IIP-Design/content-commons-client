@@ -23,7 +23,7 @@ import { normalizeDocumentItemByAPI } from './utils';
 import './Package.scss';
 
 const Package = props => {
-  const { isAdminPreview, useGraphQl } = props;
+  const { displayAsModal, isAdminPreview, useGraphQl } = props;
   const {
     id,
     published,
@@ -35,14 +35,14 @@ const Package = props => {
   } = props.item;
 
   useEffect( () => {
-    if ( !isAdminPreview ) {
+    if ( !displayAsModal ) {
       updateUrl( `/package?id=${id}&site=${site}&language=en-us` );
     }
   }, [] );
 
   return (
     <ModalItem
-      className="package"
+      className={ isAdminPreview ? 'package package--preview' : 'package' }
       headline={ title }
       textDirection="LTR" // use LTR since pkg have no lang field
     >
@@ -131,6 +131,7 @@ const Package = props => {
 };
 
 Package.propTypes = {
+  displayAsModal: PropTypes.bool,
   isAdminPreview: PropTypes.bool,
   useGraphQl: PropTypes.bool,
   item: PropTypes.object,

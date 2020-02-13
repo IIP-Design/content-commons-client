@@ -2,8 +2,14 @@
 
 .package {
 
-  .modal_headline {
-    margin-top: 1.5em;
+  &--preview {
+    
+    .modal_headline {
+      margin-top: 1.5em;
+    }
+  }
+
+  .modal_headline {    
     margin-bottom: 0.25em;
   }
 

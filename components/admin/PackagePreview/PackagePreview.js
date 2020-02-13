@@ -59,7 +59,7 @@ const PackagePreview = ( { id } ) => {
     documents
   };
 
-  return <Package item={ pkgItem } isAdminPreview useGraphQl />;
+  return <Package item={ pkgItem } displayAsModal isAdminPreview useGraphQl />;
 };
 
 PackagePreview.propTypes = {
