@@ -4,12 +4,13 @@ import moment from 'moment';
 import { getPluralStringOrNot } from 'lib/utils';
 import { getDateTimeTerms } from 'components/Package/PressPackageItem/PressPackageItem';
 import { Modal, Card } from 'semantic-ui-react';
+import Package from 'components/Package/Package';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import MediaObject from 'components/MediaObject/MediaObject';
 import DosSeal from 'static/images/dos_seal.svg';
 import './PackageCard.scss';
 
-const PackageCard = ( { item } ) => {
+const PackageCard = ( { item, stretch } ) => {
   const {
     id,
     published,
@@ -28,7 +29,7 @@ const PackageCard = ( { item } ) => {
     <Modal
       closeIcon
       trigger={ (
-        <Card className="package_card">
+        <Card className={ `package_card ${stretch ? 'stretch' : ''}` }>
           <Card.Content>
             <Card.Header>
               <h2>Guidance Package</h2>
@@ -56,12 +57,14 @@ const PackageCard = ( { item } ) => {
           </Card.Content>
         </Card>
       ) }
-      content="PACKAGE MODAL"
-    />
+    >
+      <Modal.Content><Package item={ item } displayAsModal /></Modal.Content>
+    </Modal>
   );
 };
 
 PackageCard.propTypes = {
+  stretch: PropTypes.bool,
   item: PropTypes.object,
 };
 
