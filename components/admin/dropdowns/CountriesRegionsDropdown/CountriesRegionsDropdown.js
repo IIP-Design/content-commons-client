@@ -8,8 +8,8 @@ import gql from 'graphql-tag';
 
 import '../dropdown.scss';
 
-const COUNTRIES_REGION_QUERY = gql`
-  query COUNTRIES_REGION_QUERY {
+const COUNTRIES_REGIONS_QUERY = gql`
+  query COUNTRIES_REGIONS_QUERY {
     countries {
       id
       name
@@ -27,7 +27,7 @@ const COUNTRIES_REGION_QUERY = gql`
 const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
 const CountriesRegionsDropdown = props => (
-  <Query query={ COUNTRIES_REGION_QUERY }>
+  <Query query={ COUNTRIES_REGIONS_QUERY }>
     { ( { data, loading, error } ) => {
       if ( error ) return `Error! ${error.message}`;
 
@@ -79,4 +79,4 @@ CountriesRegionsDropdown.propTypes = {
 };
 
 export default React.memo( CountriesRegionsDropdown, areEqual );
-export { COUNTRIES_REGION_QUERY };
+export { COUNTRIES_REGIONS_QUERY };

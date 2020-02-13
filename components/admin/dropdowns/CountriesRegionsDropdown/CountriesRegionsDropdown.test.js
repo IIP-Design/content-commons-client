@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
-import CountriesRegionsDropdown, { COUNTRIES_REGION_QUERY } from './CountriesRegionsDropdown';
+import CountriesRegionsDropdown, { COUNTRIES_REGIONS_QUERY } from './CountriesRegionsDropdown';
 
 const props = {
   id: '123xyz',
@@ -12,7 +12,7 @@ const props = {
 const mocks = [
   {
     request: {
-      query: COUNTRIES_REGION_QUERY
+      query: COUNTRIES_REGIONS_QUERY
     },
     result: {
       data: {
