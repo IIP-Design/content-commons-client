@@ -182,7 +182,7 @@ describe( '<CountriesRegionsDropdown />', () => {
     const options = sortBy( countries, country => country.name )
       .map( country => ( {
         key: country.id,
-        text: `${country.name} (${country.region.abbr})`,
+        text: `${country.name} (${country.abbr})`,
         value: country.id
       } ) );
 

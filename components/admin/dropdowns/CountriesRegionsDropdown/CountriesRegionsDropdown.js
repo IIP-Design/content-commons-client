@@ -35,7 +35,7 @@ const CountriesRegionsDropdown = props => (
       if ( data && data.countries ) {
         options = sortBy( data.countries, country => country.name ).map( country => ( {
           key: country.id,
-          text: `${country.name} (${country.region.abbr})`,
+          text: `${country.name} (${country.abbr})`,
           value: country.id
         } ) );
       }
