@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Grid, Message } from 'semantic-ui-react';
-import PackageCard from './PackageCard/PackageCard';
+import PackageCard from 'components/Package/PackageCard/PackageCard';
 import './Packages.scss';
 
 const renderError = () => (
