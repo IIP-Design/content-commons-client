@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { Grid } from 'semantic-ui-react';
 import * as actions from 'lib/redux/actions/filter';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
+
+import { packageItem } from 'components/Package/packageElasticMock';
+
 import SearchTerm from 'components/SearchTerm/SearchTerm';
 import FilterMenu from 'components/FilterMenu/FilterMenu';
 import ResultItem from './ResultItem/ResultItem';
@@ -27,19 +30,31 @@ const Results = props => {
 
   const items = getDataFromHits( props.search.response );
 
+  const mockPkgItem = {
+    _index: 'packages_20181005',
+    _type: 'package',
+    _id: 'w3T0PHABlLhn4oe-vJya',
+    _score: null,
+    sort: [1581570624001],
+    _source: packageItem[0]._source
+  };
+  const itemsWithPackageMock = [mockPkgItem, ...items];
+
   return (
     <section className="results">
       { props.search.currentPage !== -1 && (
       <div>
         <SearchTerm />
-        { !items.length && ( <NoResults searchTerm={ props.search.currentTerm } /> ) }
+        { /* { !items.length && ( <NoResults searchTerm={ props.search.currentTerm } /> ) } */ }
+        { !itemsWithPackageMock.length && ( <NoResults searchTerm={ props.search.currentTerm } /> ) }
         <hr />
         <FilterMenu />
         <section>
           <ResultsHeader toggleView={ toggleView } currentView={ view } />
         </section>
         <Grid className="results_wrapper">
-          { items.map( item => (
+          { /* { items.map( item => ( */ }
+          { itemsWithPackageMock.map( item => (
             <Grid.Column
               mobile={ 16 }
               tablet={ view === 'gallery' ? 8 : 16 }
