@@ -6,7 +6,7 @@ import {
 } from 'semantic-ui-react';
 import { getCount } from 'lib/utils';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
-import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
+import CountriesRegionsDropdown from 'components/admin/dropdowns/CountriesRegionsDropdown/CountriesRegionsDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
 import BureauOfficesDropdown from 'components/admin/dropdowns/BureauOfficesDropdown/BureauOfficesDropdown';
@@ -144,13 +144,15 @@ const PressPackageFile = props => {
                 </Form.Field>
 
                 <Form.Field>
-                  <TagDropdown
-                    id={ `tags-${id}` }
-                    name={ `${id}.tags` }
-                    label="Tags"
-                    value={ value.tags || '' }
-                    error={ touched.tags && !!errors.tags }
+                  <CountriesRegionsDropdown
+                    id={ `countries-${id}` }
+                    name={ `${id}.countries` }
+                    label="Countries/Regions Tags"
+                    value={ value.countries || [] }
                     onChange={ handleOnChange }
+                    error={ isTouched( 'countries' ) && hasError( 'countries' ) }
+                    multiple
+                    search
                   />
                   <p className="field__helper-text">Enter keywords separated by commas.</p>
                 </Form.Field>

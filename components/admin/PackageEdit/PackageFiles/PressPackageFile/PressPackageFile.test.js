@@ -4,8 +4,8 @@ import { AWS_URL, AWS_SIGNED_URL_QUERY_STRING } from '../mocks';
 import PressPackageFile from './PressPackageFile';
 
 jest.mock(
-  'components/admin/dropdowns/TagDropdown/TagDropdown',
-  () => function TagDropdown() { return ''; }
+  'components/admin/dropdowns/CountriesRegionsDropdown/CountriesRegionsDropdown',
+  () => function CountriesRegionsDropdown() { return ''; }
 );
 jest.mock(
   'components/admin/dropdowns/UseDropdown/UseDropdown',
@@ -40,7 +40,7 @@ jest.mock(
           id: '1asd',
           title: 'Lesotho National Day',
           bureaus: [],
-          tags: ['ck2lzgu5b0rho07207cqfeya0'],
+          countries: ['ck2lzgu5b0rho07207cqfeya0'],
           use: 'ck2wbvjaa10n20720fg5ayhn9',
           visibility: 'INTERNAL'
         }
@@ -221,7 +221,7 @@ describe( '<PressPackageFile />', () => {
 
   it( 'changing Visibility calls handleOnChange', () => {
     const wrapper = mount( Component );
-    const dropdown = wrapper.find( 'TagDropdown' );
+    const dropdown = wrapper.find( 'CountriesRegionsDropdown' );
     const { onChange } = dropdown.props();
     const e = {};
     const data = {
@@ -234,26 +234,26 @@ describe( '<PressPackageFile />', () => {
     expect( handleOnChange ).toHaveBeenCalledWith( e, data );
   } );
 
-  it( 'renders the Tag dropdown', () => {
+  it( 'renders the Countries/Regions dropdown', () => {
     const wrapper = mount( Component );
     const { document } = props;
-    const dropdown = wrapper.find( 'TagDropdown' );
-    const helperTxt = wrapper.find( 'TagDropdown + [className="field__helper-text"]' );
+    const dropdown = wrapper.find( 'CountriesRegionsDropdown' );
+    const helperTxt = wrapper.find( 'CountriesRegionsDropdown + [className="field__helper-text"]' );
 
     expect( dropdown.exists() ).toEqual( true );
-    expect( dropdown.prop( 'id' ) ).toEqual( `tags-${document.id}` );
-    expect( dropdown.prop( 'label' ) ).toEqual( 'Tags' );
-    expect( dropdown.prop( 'name' ) ).toEqual( `${document.id}.tags` );
+    expect( dropdown.prop( 'id' ) ).toEqual( `countries-${document.id}` );
+    expect( dropdown.prop( 'label' ) ).toEqual( 'Countries/Regions Tags' );
+    expect( dropdown.prop( 'name' ) ).toEqual( `${document.id}.countries` );
     expect( helperTxt.text() ).toEqual( 'Enter keywords separated by commas.' );
   } );
 
-  it( 'changing the TagDropdown calls handleOnChange', () => {
+  it( 'changing the CountriesRegionsDropdown calls handleOnChange', () => {
     const wrapper = mount( Component );
-    const dropdown = wrapper.find( 'TagDropdown' );
+    const dropdown = wrapper.find( 'CountriesRegionsDropdown' );
     const { onChange } = dropdown.props();
     const e = {};
     const data = {
-      name: `${props.document.id}.tags`,
+      name: `${props.document.id}.countries`,
       value: ['new-tag-id'],
     };
 
