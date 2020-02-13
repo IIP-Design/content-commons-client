@@ -13,11 +13,22 @@
     .ui.label {
       margin: 0.14285714em;
       font-weight: 100;
-      font-size: 0.667em;
+      font-size: 0.667em;      
+
+      &:hover {
+        
+        i.delete {
+          opacity: 1;
+        }
+      }
 
       &:not(.clear_filter) {
         border: 1px solid #d6d7d9;
         background-color: #fff;
+      }
+
+      &:not(.single) {
+        cursor: pointer;
       }
 
       &.single {
