@@ -10,6 +10,8 @@ import MediaObject from 'components/MediaObject/MediaObject';
 import DosSeal from 'static/images/dos_seal.svg';
 import './PackageCard.scss';
 
+import Popover from 'components/popups/Popover/Popover';
+
 const PackageCard = ( { item, stretch } ) => {
   const {
     id,
@@ -26,40 +28,51 @@ const PackageCard = ( { item, stretch } ) => {
   const documentFilesCountDisplay = `${documents.length} ${getPluralStringOrNot( documents, 'file' )}`;
 
   return (
-    <Modal
-      closeIcon
-      trigger={ (
-        <Card className={ `package_card ${stretch ? 'stretch' : ''}` }>
-          <Card.Content>
+    <Card className={ `package_card ${stretch ? 'stretch' : ''}` }>
+      <Card.Content>
+        <Modal
+          closeIcon
+          trigger={ (
             <Card.Header>
               <h2>Guidance Package</h2>
               <p>{ formattedPublishedDate }</p>
             </Card.Header>
-            <Card.Meta>{ documentFilesCountDisplay }</Card.Meta>
-            <Card.Meta>
-              <MetaTerms
-                className="date-time"
-                unitId={ id }
-                terms={ getDateTimeTerms( published, modified, 'LT, l' ) }
-              />
-            </Card.Meta>
-            <Card.Meta>
-              <MediaObject
-                body={ <span style={ { fontSize: '12px' } }>{ owner }</span> }
-                className="seal"
-                img={ {
-                  src: DosSeal,
-                  alt: `${owner} Seal`,
-                  style: { height: '20px', width: '20px' }
-                } }
-              />
-            </Card.Meta>
-          </Card.Content>
-        </Card>
-      ) }
-    >
-      <Modal.Content><Package item={ item } displayAsModal /></Modal.Content>
-    </Modal>
+          ) }
+        >
+          <Modal.Content><Package item={ item } displayAsModal /></Modal.Content>
+        </Modal>
+        <Card.Meta className="meta--popup">
+          <Popover
+            trigger={ documentFilesCountDisplay }
+          >
+            <ul
+              className="popup_content"
+              aria-labelledby="package_documents"
+            >
+              { documents.map( doc => <li key={ doc.id } className="popup_content_item">{ doc.filename }</li> ) }
+            </ul>
+          </Popover>
+        </Card.Meta>
+        <Card.Meta>
+          <MetaTerms
+            className="date-time"
+            unitId={ id }
+            terms={ getDateTimeTerms( published, modified, 'LT, l' ) }
+          />
+        </Card.Meta>
+        <Card.Meta>
+          <MediaObject
+            body={ <span style={ { fontSize: '12px' } }>{ owner }</span> }
+            className="seal"
+            img={ {
+              src: DosSeal,
+              alt: `${owner} Seal`,
+              style: { height: '20px', width: '20px' }
+            } }
+          />
+        </Card.Meta>
+      </Card.Content>
+    </Card>
   );
 };
 
