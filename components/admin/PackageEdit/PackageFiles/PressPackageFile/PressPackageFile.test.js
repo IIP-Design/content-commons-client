@@ -247,7 +247,7 @@ describe( '<PressPackageFile />', () => {
     expect( helperTxt.text() ).toEqual( 'Enter keywords separated by commas.' );
   } );
 
-  it( 'changing the CountriesRegionsDropdown calls handleOnChange', () => {
+  it( 'changing the Countries/Regions calls handleOnChange', () => {
     const wrapper = mount( Component );
     const dropdown = wrapper.find( 'CountriesRegionsDropdown' );
     const { onChange } = dropdown.props();
@@ -282,6 +282,31 @@ describe( '<PressPackageFile />', () => {
     expect( meta.exists() ).toEqual( true );
     expect( meta.prop( 'unitId' ) ).toEqual( props.document.id );
     expect( meta.prop( 'terms' ) ).toEqual( metaData );
+  } );
+
+  it( 'renders fieldset', () => {
+    const wrapper = mount( Component );
+    const fieldset = wrapper.find( 'fieldset' );
+
+    expect( fieldset.exists() ).toEqual( true );
+    expect( fieldset.length ).toEqual( 1 );
+    expect( fieldset.hasClass( 'form-fields' ) ).toEqual( true );
+    expect( fieldset.prop( 'name' ) ).toEqual( props.document.filename );
+  } );
+
+  it( 'renders legend', () => {
+    const wrapper = mount( Component );
+    /**
+     * Find legend as follows to test that the
+     * legend is nested inside of the fieldset
+     */
+    const legend = wrapper.find( 'fieldset legend' );
+    const content = `edit fields for ${props.document.filename}`;
+
+    expect( legend.exists() ).toEqual( true );
+    expect( legend.length ).toEqual( 1 );
+    expect( legend.hasClass( 'hide-visually' ) ).toEqual( true );
+    expect( legend.contains( content ) ).toEqual( true );
   } );
 
   it( 'renders null if !document', () => {

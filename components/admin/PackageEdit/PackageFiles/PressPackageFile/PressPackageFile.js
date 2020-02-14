@@ -10,6 +10,7 @@ import CountriesRegionsDropdown from 'components/admin/dropdowns/CountriesRegion
 import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
 import BureauOfficesDropdown from 'components/admin/dropdowns/BureauOfficesDropdown/BureauOfficesDropdown';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { HandleOnChangeContext } from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsForm/PackageDetailsForm';
 import './PressPackageFile.scss';
 
@@ -73,7 +74,10 @@ const PressPackageFile = props => {
           </Grid.Column>
 
           <Grid.Column mobile={ 16 } tablet={ 12 } computer={ 12 }>
-            <div className="form-fields">
+            <fieldset className="form-fields" name={ filename }>
+              <VisuallyHidden el="legend">
+                { `edit fields for ${filename}` }
+              </VisuallyHidden>
               <Form.Group widths="equal">
                 <div className="field">
                   <Form.Field
@@ -157,7 +161,7 @@ const PressPackageFile = props => {
                   <p className="field__helper-text">Enter keywords separated by commas.</p>
                 </Form.Field>
               </Form.Group>
-            </div>
+            </fieldset>
           </Grid.Column>
         </Grid.Row>
       </Grid>
