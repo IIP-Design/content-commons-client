@@ -4,11 +4,13 @@ import './Popover.scss';
 
 const Popover = props => {
   const {
+    className,
     trigger,
     children
   } = props;
 
   const popoverNode = useRef();
+
   const [active, setActive] = useState( false );
 
   const handleClick = e => {
@@ -28,21 +30,24 @@ const Popover = props => {
   }, [] );
 
   return (
-    <span className="popover" ref={ popoverNode }>
+    <span className={ className ? `popover ${className}` : 'popover' } ref={ popoverNode }>
       <button
         type="button"
-        id="popoverButton"
+        id="popoverTrigger"
         className="popover_trigger"
         aria-haspopup="true"
-        aria-controls="package_documents_list"
+        aria-expanded={ active } // active state determines if popover content expanded
+        aria-controls="popoverContent"
         onClick={ () => setActive( !active ) }
       >
         { trigger }
       </button>
       { active && (
         <span
+          id="popoverContent"
           className="popover_content"
           aria-labelledby="popoverButton"
+          aria-hidden={ !active }
         >
           { children }
         </span>
@@ -52,6 +57,7 @@ const Popover = props => {
 };
 
 Popover.propTypes = {
+  className: PropTypes.string,
   trigger: PropTypes.oneOfType( [
     PropTypes.object,
     PropTypes.string

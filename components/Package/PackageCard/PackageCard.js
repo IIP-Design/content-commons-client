@@ -43,13 +43,11 @@ const PackageCard = ( { item, stretch } ) => {
         </Modal>
         <Card.Meta className="meta--popup">
           <Popover
+            className="fileList"
             trigger={ documentFilesCountDisplay }
           >
-            <ul
-              className="popup_content"
-              aria-labelledby="package_documents"
-            >
-              { documents.map( doc => <li key={ doc.id } className="popup_content_item">{ doc.filename }</li> ) }
+            <ul>
+              { documents.map( doc => <li key={ doc.id }>{ doc.filename }</li> ) }
             </ul>
           </Popover>
         </Card.Meta>
