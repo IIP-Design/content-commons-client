@@ -128,6 +128,7 @@ export const packageItemGraph = {
       visibility: 'INTERNAL',
       url: '2019/12/sample one.docx',
       signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2019/12/sample%20one.docx?AWSAccessKeyId=ggggg&Expires=1578603029&Signature=erererer',
+      excerpt: '<p>A statement provides the official U.S. policy/view or comment on a particular foreign policy issue usually in the name of the Spokesperson, Deputy Spokesperson, and sometimes from the Secretary of State.</p>',
       content: {
         id: 'ck391csz01yrw07205d7xr8iw',
         rawText: 'U.S. DEPARTMENT OF STATE Office of the Spokesperson For Immediate Release Statement by ROBERT PALLADINO, DEPUTY SPOKESPERSON Month Date, 2018 100th Anniversary of the U.S.-Canada Boundary Waters Treaty &lt;Not in CAPS&gt; A statement provides the official U.S. policy/view or comment on a particular foreign policy issue usually in the name of the Spokesperson, Deputy Spokesperson, and sometimes from the Secretary of State.',
@@ -249,6 +250,32 @@ export const packageItemGraph = {
           __typename: 'Tag'
         }
       ],
+      countries: [
+        {
+          __typename: 'Country',
+          id: 'ck6krp9773f420720i7aesohq',
+          name: 'Benin',
+          abbr: 'AF',
+          region: {
+            __typename: 'Region',
+            id: 'ck6krp96g3f3c0720c1w09bx1',
+            name: 'Bureau of African Affairs',
+            abbr: 'AF'
+          }
+        },
+        {
+          __typename: 'Country',
+          id: 'ck6krp97d3f470720osba7g4m',
+          name: 'Botswana',
+          abbr: 'AF',
+          region: {
+            __typename: 'Region',
+            id: 'ck6krp96g3f3c0720c1w09bx1',
+            name: 'Bureau of African Affairs',
+            abbr: 'AF'
+          }
+        }
+      ]
     }
   ]
 };
