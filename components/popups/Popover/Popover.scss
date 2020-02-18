@@ -9,13 +9,14 @@
     border: none;
     padding: 0;
     color: $light-blue;
+    cursor: pointer;
   }
 
   &_content {
     z-index: 2;
     position: absolute;
     top: calc(100% + 20px);
-    left: 0;    
+    left: -10px;    
     font-size: 11px;
     line-height: 1.6;    
 
@@ -32,9 +33,12 @@
       width: 20px;
       height: 20px;
       clip-path: polygon(50% 0%, 0% 100%, 100% 100%, 100% 100%);
-    }
+    }    
+  }
 
-    ul {
+  &.fileList {
+    
+    .popover_content > ul {
       margin: 0;
       padding-left: 0;      
       color: $shuttle-grey;
@@ -50,4 +54,5 @@
       }
     }
   }
+  
 }
