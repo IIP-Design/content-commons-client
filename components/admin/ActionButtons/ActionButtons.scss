@@ -1,5 +1,5 @@
-@import "styles/colors.scss";
-@import "styles/mixins.scss";
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
 
 .action-btn {
   .ui.button {
@@ -12,16 +12,17 @@
     }
   }
 
-  &.btn--save-draft {
+  &.btn--save-draft,
+  &.btn--publish-changes {
     &.ui.basic.button {
       @include ghost-button;
     }
   }
-  
+
   &.btn--publish {
     &.ui.button {
       @include go-button;
-  
+
       &:hover,
       &:active,
       &:focus {
