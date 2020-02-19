@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { getPluralStringOrNot } from 'lib/utils';
-import { getDateTimeTerms } from 'components/Package/PressPackageItem/PressPackageItem';
 import { Modal, Card } from 'semantic-ui-react';
 import Package from 'components/Package/Package';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
@@ -11,6 +10,7 @@ import DosSeal from 'static/images/dos_seal.svg';
 import './PackageCard.scss';
 
 import Popover from 'components/popups/Popover/Popover';
+import { getDateTimeTerms } from '../utils';
 
 const PackageCard = ( { item, stretch } ) => {
   const {
@@ -60,12 +60,12 @@ const PackageCard = ( { item, stretch } ) => {
         </Card.Meta>
         <Card.Meta>
           <MediaObject
-            body={ <span style={ { fontSize: '12px' } }>{ owner }</span> }
+            body={ <span style={ { fontSize: '11px' } }>{ owner }</span> }
             className="seal"
             img={ {
               src: DosSeal,
               alt: `${owner} Seal`,
-              style: { height: '20px', width: '20px' }
+              style: { height: '16px', width: '16px' }
             } }
           />
         </Card.Meta>
