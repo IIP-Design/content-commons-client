@@ -14,7 +14,8 @@ import {
   PACKAGE_QUERY,
   DELETE_PACKAGE_MUTATION,
   PUBLISH_PACKAGE_MUTATION,
-  UNPUBLISH_PACKAGE_MUTATION
+  UNPUBLISH_PACKAGE_MUTATION,
+  UPDATE_PACKAGE_STATUS_MUTATION
 } from 'lib/graphql/queries/package';
 import PackageDetailsFormContainer from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsFormContainer';
 import PackageFiles from 'components/admin/PackageEdit/PackageFiles/PackageFiles';
@@ -36,6 +37,7 @@ const PackageEdit = props => {
   const [deletePackage] = useMutation( DELETE_PACKAGE_MUTATION );
   const [publishPackage] = useMutation( PUBLISH_PACKAGE_MUTATION );
   const [unpublishPackage] = useMutation( UNPUBLISH_PACKAGE_MUTATION );
+  const [updatePackageStatus] = useMutation( UPDATE_PACKAGE_STATUS_MUTATION );
 
   const saveMsgTimer = null;
 
@@ -44,7 +46,6 @@ const PackageEdit = props => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [hasInitialUploadCompleted, setHasInitialUploadCompleted] = useState( false );
   const [publishing, setPublishing] = useState( false );
-  const [publishStatus, setPublishStatus] = useState( '' );
 
   const [notification, setNotification] = useState( {
     notificationMessage: '',
@@ -61,6 +62,39 @@ const PackageEdit = props => {
     setError( { otherError: `ERROR: Package failed to ${status.substr( 0, status.indexOf( '_' ) ).toLowerCase()}` } );
     stopPolling();
     setPublishing( false );
+
+    const updatedStatus = status === 'PUBLISH_FAILURE' ? 'DRAFT' : 'PUBLISHED';
+
+    updatePackageStatus( {
+      variables: {
+        data: { status: updatedStatus },
+        where: { id }
+      }
+    } );
+  };
+
+  /**
+   * On successful publish or unpublish, stop polling and update the package status to
+   * reflect updated status
+   * @param {string} id package id
+   * @param {sring} status package publish status
+   */
+  const handlePublishSuccess = ( id, status ) => {
+    stopPolling();
+    setPublishing( false );
+
+    const updatedStatus = status === 'PUBLISH_SUCCESS' ? 'PUBLISHED' : 'DRAFT';
+    const updatedPublishAt = status === 'PUBLISH_SUCCESS' ? new Date().toISOString() : null;
+
+    updatePackageStatus( {
+      variables: {
+        data: {
+          status: updatedStatus,
+          publishedAt: updatedPublishAt
+        },
+        where: { id }
+      }
+    } );
   };
 
   /**
@@ -75,17 +109,10 @@ const PackageEdit = props => {
       handlePublishError( id, status );
     }
 
-    // We assume that the status has changed during the operation, i.e. DRAFT to PUBLISHED
-    // When the saved status = the query status, we stop the poll as operation completed successfully
-    if ( status === publishStatus ) {
-      if ( publishing ) {
-        stopPolling();
-        // route to dashboard
-        router.push( '/admin/dashboard' );
-      }
+    if ( status === 'PUBLISH_SUCCESS' || status === 'UNPUBLISH_SUCCESS' ) {
+      handlePublishSuccess( id, status );
+      router.push( '/admin/dashboard' );
     }
-
-    setPublishStatus( status );
   };
 
   useEffect( () => () => {
