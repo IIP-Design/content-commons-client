@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@apollo/react-hooks';
+import PropTypes from 'prop-types';
 import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import ActionHeadline from 'components/admin/ActionHeadline/ActionHeadline';
@@ -10,7 +10,12 @@ import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import ButtonPublish from 'components/admin/ButtonPublish/ButtonPublish';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
-import { PACKAGE_QUERY, DELETE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
+import {
+  PACKAGE_QUERY,
+  DELETE_PACKAGE_MUTATION,
+  PUBLISH_PACKAGE_MUTATION,
+  UNPUBLISH_PACKAGE_MUTATION
+} from 'lib/graphql/queries/package';
 import PackageDetailsFormContainer from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsFormContainer';
 import PackageFiles from 'components/admin/PackageEdit/PackageFiles/PackageFiles';
 import './PackageEdit.scss';
@@ -19,7 +24,9 @@ const PackageEdit = props => {
   const { id: packageId } = props;
   const router = useRouter();
 
-  const { loading, error: queryError, data } = useQuery( PACKAGE_QUERY, {
+  const {
+    loading, error: queryError, data, startPolling, stopPolling
+  } = useQuery( PACKAGE_QUERY, {
     partialRefetch: true,
     variables: { id: packageId },
     displayName: 'PackageQuery',
@@ -27,28 +34,63 @@ const PackageEdit = props => {
   } );
 
   const [deletePackage] = useMutation( DELETE_PACKAGE_MUTATION );
+  const [publishPackage] = useMutation( PUBLISH_PACKAGE_MUTATION );
+  const [unpublishPackage] = useMutation( UNPUBLISH_PACKAGE_MUTATION );
 
-  // const SAVE_MSG_DELAY = 2000;
   const saveMsgTimer = null;
 
-  const [mounted, setMounted] = useState( false );
   const [error, setError] = useState( {} );
   const [isDirty, setIsDirty] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [hasInitialUploadCompleted, setHasInitialUploadCompleted] = useState( false );
+  const [publishing, setPublishing] = useState( false );
+  const [publishStatus, setPublishStatus] = useState( '' );
 
   const [notification, setNotification] = useState( {
     notificationMessage: '',
     showNotification: false
   } );
 
-  useEffect( () => {
-    setMounted( true );
 
-    return () => {
-      setMounted( false );
-      clearTimeout( saveMsgTimer );
-    };
+  /**
+   * If an error occurs during publish or unpublish, stop polling and display error to the user
+   * @param {string} id package id
+   * @param {sring} status package publish status
+   */
+  const handlePublishError = ( id, status ) => {
+    setError( { otherError: `ERROR: Package failed to ${status.substr( 0, status.indexOf( '_' ) ).toLowerCase()}` } );
+    stopPolling();
+    setPublishing( false );
+  };
+
+  /**
+   * The publish and unpublish actions start a poll to detect a publish status change to the package
+   * via its status prop or detect an error.
+   */
+  const handleStatusChange = () => {
+    const id = data?.pkg?.id;
+    const status = data?.pkg?.status;
+
+    if ( status === 'PUBLISH_FAILURE' || status === 'UNPUBLISH_FAILURE' ) {
+      handlePublishError( id, status );
+    }
+
+    // We assume that the status has changed during the operation, i.e. DRAFT to PUBLISHED
+    // When the saved status = the query status, we stop the poll as operation completed successfully
+    if ( status === publishStatus ) {
+      if ( publishing ) {
+        stopPolling();
+        // route to dashboard
+        router.push( '/admin/dashboard' );
+      }
+    }
+
+    setPublishStatus( status );
+  };
+
+  useEffect( () => () => {
+    clearTimeout( saveMsgTimer );
+    stopPolling();
   }, [] );
 
 
@@ -64,8 +106,12 @@ const PackageEdit = props => {
        * resolved.
        */
       setHasInitialUploadCompleted( router.query.action !== 'create' );
+
+      // When the data changes, check status
+      handleStatusChange();
     }
   }, [data] );
+
 
   const updateNotification = msg => {
     setNotification( {
@@ -73,12 +119,6 @@ const PackageEdit = props => {
       showNotification: !!msg
     } );
   };
-
-  // const delayUnmount = ( fn, timer, delay ) => {
-  //   if ( timer ) clearTimeout( timer );
-  //   /* eslint-disable no-param-reassign */
-  //   timer = setTimeout( fn, delay );
-  // };
 
   const deletePackageEnabled = () => (
     /**
@@ -88,12 +128,24 @@ const PackageEdit = props => {
     !packageId || ( data && data.pkg && !!data.pkg.publishedAt )
   );
 
-  // const handleDisplaySaveMsg = () => {
-  //   if ( mounted ) {
-  //     updateNotification( '' );
-  //   }
-  //   saveMsgTimer = null;
-  // };
+  /**
+   * Execute publish or unpublish mutation and start polling
+   * @param {function} pulishFunc publish or unpublish graphql mutation
+   */
+  const executePublishOperation = async pulishFunc => {
+    if ( !publishing ) {
+      try {
+        setPublishing( true );
+        await pulishFunc( { variables: { id: packageId } } );
+        startPolling( 100 );
+      } catch ( err ) {
+        setPublishing( false );
+        setError( err );
+        stopPolling();
+      }
+    }
+  };
+
 
   const handleExit = () => {
     router.push( { pathname: '/admin/dashboard' } );
@@ -109,43 +161,12 @@ const PackageEdit = props => {
     }
   };
 
-  const handlePublish = () => {
-    console.log( 'Publish' );
-    // Prevent multiple clicks - multiple clicks resulted in Package going into PUBLISHING status
-    // if ( !e.detail || e.detail === 1 ) e.target.disabled = true;
-
-    // const { publishPackage } = props;
-
-    // try {
-    //   setPublishing( true );
-    //   console.log( 'Publishing to queue...' );
-    //   await publishPackage( { variables: { id } } );
-
-    //   // Remove updated package from redux packageUpdate state
-    //   props.packageUpdated( id, false );
-    // } catch ( err ) {
-    //   setPublishing( false );
-    //   setPublishError( err );
-    // }
+  const handlePublish = async () => {
+    executePublishOperation( publishPackage );
   };
 
-  const handleUnPublish = () => {
-    console.log( 'Unpublish' );
-    // Prevent multiple clicks - multiple clicks resulted in package going into PUBLISHING status
-    // if ( !e.detail || e.detail === 1 ) e.target.disabled = true;
-
-    // const { unPublishPackage } = props;
-
-    // try {
-    //   setPublishing( true );
-    //   await unPublishPackage( { variables: { id } } );
-
-    //   // Remove updated package from redux packageUpdate state
-    //   props.packageUpdated( id, false );
-    // } catch ( err ) {
-    //   setPublishing( false );
-    //   setPublishError( err );
-    // }
+  const handleUnPublish = async () => {
+    executePublishOperation( unpublishPackage );
   };
 
   const centeredStyles = {
@@ -204,12 +225,16 @@ const PackageEdit = props => {
             handle={ {
               deleteConfirm: handleDeleteConfirm,
               save: handleExit,
-              publish: handlePublish
+              publish: handlePublish,
+              publishChanges: () => console.log( 'publish update' ), // handlePublish,
+              unpublish: handleUnPublish
             } }
             show={ {
               delete: true, // package has been completed, show delete in the event user wants to delete instead of uploading files
               save: hasInitialUploadCompleted,
-              publish: hasInitialUploadCompleted
+              publish: hasInitialUploadCompleted && pkg.status === 'DRAFT',
+              publishChanges: false,
+              unpublish: pkg.status === 'PUBLISHED'
             } }
           />
         </ProjectHeader>
@@ -218,7 +243,6 @@ const PackageEdit = props => {
       <div style={ centeredStyles }>
         <ApolloError error={ error } />
       </div>
-
       { /* Form data saved notification */ }
       <Notification
         el="p"
@@ -226,7 +250,6 @@ const PackageEdit = props => {
         show={ showNotification }
         msg={ notificationMessage }
       />
-
       <PackageDetailsFormContainer
         pkg={ pkg }
         updateNotification={ updateNotification }
@@ -235,11 +258,10 @@ const PackageEdit = props => {
       >
         <PackageFiles pkg={ pkg } hasInitialUploadCompleted={ hasInitialUploadCompleted } />
       </PackageDetailsFormContainer>
-
       { /**
-         * can possibly be shared with VideoReview
-         * with a little modification
-      */ }
+       * can possibly be shared with VideoReview
+       * with a little modification
+       */ }
       { hasInitialUploadCompleted && (
         <section className="actions">
           <ActionHeadline
