@@ -20,12 +20,18 @@ const Popover = props => {
 
   const handleScroll = () => setActive( false );
 
+  const handleKeyDown = e => {
+    if ( e.key === 'Esc' || e.key === 'Escape' ) setActive( false );
+  };
+
   useEffect( () => {
     window.addEventListener( 'click', handleClick );
     window.addEventListener( 'scroll', handleScroll );
+    window.addEventListener( 'keydown', handleKeyDown );
     return () => {
       window.removeEventListener( 'click', handleClick );
       window.removeEventListener( 'scroll', handleScroll );
+      window.removeEventListener( 'keydown', handleKeyDown );
     };
   }, [] );
 

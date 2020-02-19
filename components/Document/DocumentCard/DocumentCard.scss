@@ -1,0 +1,116 @@
+@import "styles/colors.scss";
+
+.document_card {
+  &:focus {
+    outline: none;
+  }
+
+  &.ui.card {
+    width: 100%;
+    align-items: stretch;
+    border-radius: 0.111111111rem;
+    @supports (display: grid) {
+      margin: 0;
+    }
+    font-family: inherit;
+
+    > .container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      text-align: left;
+
+      > .document-use {
+        display: flex;
+        align-items: center;
+        border-radius: 0.111111111rem 0.111111111rem 0 0 !important;
+        padding: 1em;
+        color: #ffffff;
+        font-size: 18px;
+        font-style: italic;
+        background-color: $blue;
+      }
+  
+      > .header {
+        button.title {
+          padding: 0.777777778rem;          
+          border: none;
+          font-family: inherit;
+          font-weight: 700;
+          color: $blue;
+          -webkit-appearance: none;
+        }
+
+        > .title {
+            padding: 1em;
+            font-size: 1rem;
+            cursor: pointer;
+          }
+      }
+  
+      > .internal-use {
+        &.brief {
+          margin: 1em 1em 0 1em;
+          width: 123px;
+        }
+      }
+  
+      > .content {
+        flex: 1;
+        border-top: 0;
+        padding: 0 1em 1em 1em;
+        color: initial;
+        font-size: 0.777777778rem;
+
+        > .excerpt {
+          overflow: hidden;
+
+          em {
+            font-style: normal;
+          }
+
+          strong {
+            font-weight: 400;
+          }
+
+          ul, ol {
+            margin: 0 0 0 1.25em;
+            padding-left: 0;
+          }
+        }
+      }
+  
+      > .meta {
+        position: initial;
+        margin-top: 2em;
+        padding: 0.777777778rem;
+        text-align: left;
+        background: transparent;
+  
+        > .date-time {
+          color: $grey;
+          font-size: 12px; // match size of tags
+          
+          > div > dt {
+            margin-right: 0;
+            font-weight: 400;
+          }
+        }
+  
+        > .modal_section--postTags {
+          margin-top: -0.75em;
+        }
+  
+        > .seal {
+          font-size: 11px;
+          color: $grey;
+          
+          img {
+            width: 16px;
+            height: 16px;
+          }
+        }
+      }
+    }
+  }
+}

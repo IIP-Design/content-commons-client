@@ -55,5 +55,18 @@
         margin: 0;
       }
     }
+
+    .document_card.ui.card > .container {
+      .media.seal {
+        margin-top: 5px;
+        font-size: 15px;
+        color: #000;
+        
+        img {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }     
   }
 }

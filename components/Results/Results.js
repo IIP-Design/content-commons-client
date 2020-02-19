@@ -6,6 +6,7 @@ import * as actions from 'lib/redux/actions/filter';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
 
 import { packageItem } from 'components/Package/packageElasticMock';
+import { documentItem } from 'components/Document/documentElasticMock';
 
 import SearchTerm from 'components/SearchTerm/SearchTerm';
 import FilterMenu from 'components/FilterMenu/FilterMenu';
@@ -30,15 +31,25 @@ const Results = props => {
 
   const items = getDataFromHits( props.search.response );
 
-  const mockPkgItem = {
-    _index: 'packages_20181005',
-    _type: 'package',
-    _id: 'w3T0PHABlLhn4oe-vJya',
-    _score: null,
-    sort: [1581570624001],
-    _source: packageItem[0]._source
-  };
-  const itemsWithPackageMock = [mockPkgItem, ...items];
+  const docPkgMocks = [
+    {
+      _index: 'packages_20181005',
+      _type: 'package',
+      _id: 'w3T0PHABlLhn4oe-vJya',
+      _score: null,
+      sort: [1581570624001],
+      _source: packageItem[0]._source
+    },
+    {
+      _index: 'packages_20201001',
+      _type: 'document',
+      _id: 'w3T0PHABlLhn4oe-vJyA',
+      _score: null,
+      sort: [1581570624003],
+      _source: documentItem[0]._source
+    }
+  ];
+  const itemsWithMocks = [...docPkgMocks, ...items];
 
   return (
     <section className="results">
@@ -46,7 +57,7 @@ const Results = props => {
       <div>
         <SearchTerm />
         { /* { !items.length && ( <NoResults searchTerm={ props.search.currentTerm } /> ) } */ }
-        { !itemsWithPackageMock.length && ( <NoResults searchTerm={ props.search.currentTerm } /> ) }
+        { !itemsWithMocks.length && ( <NoResults searchTerm={ props.search.currentTerm } /> ) }
         <hr />
         <FilterMenu />
         <section>
@@ -54,7 +65,7 @@ const Results = props => {
         </section>
         <Grid className="results_wrapper">
           { /* { items.map( item => ( */ }
-          { itemsWithPackageMock.map( item => (
+          { itemsWithMocks.map( item => (
             <Grid.Column
               mobile={ 16 }
               tablet={ view === 'gallery' ? 8 : 16 }
