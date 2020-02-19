@@ -5,8 +5,8 @@ import { Card, Image, Modal } from 'semantic-ui-react';
 import { contentRegExp } from 'lib/utils';
 import Video from 'components/Video/Video';
 import Post from 'components/Post/Post';
-import Package from 'components/Package/Package';
 import PackageCard from 'components/Package/PackageCard/PackageCard';
+import DocumentCard from 'components/Document/DocumentCard/DocumentCard';
 import './ResultItem.scss';
 import './ResultItemRTL.scss';
 import logoDos from 'static/images/dos_seal.svg';
@@ -21,9 +21,6 @@ class ResultItem extends Component {
 
         case 'post':
           return <Post item={ item } />;
-
-        case 'package':
-          return <Package item={ item } displayAsModal />;
 
         default:
           return noContent;
@@ -109,6 +106,10 @@ class ResultItem extends Component {
 
     if ( item.type === 'package' ) {
       return <PackageCard item={ item } stretch />;
+    }
+
+    if ( item.type === 'document' ) {
+      return <DocumentCard file={ item } />;
     }
 
     return (

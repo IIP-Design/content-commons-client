@@ -1,11 +1,11 @@
+import moment from 'moment';
+import { getTransformedLangTaxArray } from 'lib/utils';
+import DosSeal from 'static/images/dos_seal.svg';
+
 /*
  * Normalize Document type data structure from both APIs
  *
  */
-
-import { getTransformedLangTaxArray } from 'lib/utils';
-import DosSeal from 'static/images/dos_seal.svg';
-
 export const normalizeDocumentItemByAPI = ( { file, useGraphQl = false } ) => {
   const documentObj = {
     type: 'document',
@@ -41,4 +41,21 @@ export const normalizeDocumentItemByAPI = ( { file, useGraphQl = false } ) => {
   }
 
   return documentObj;
+};
+
+/*
+ * Format date/time for package, document cards display
+ *
+ */
+export const getDateTimeTerms = ( createdAt, updatedAt, format ) => {
+  const isDocUpdated = updatedAt > createdAt;
+  const dateTimeStamp = isDocUpdated ? updatedAt : createdAt;
+  const label = isDocUpdated ? 'Updated' : 'Created';
+  return [
+    {
+      definition: <time dateTime={ dateTimeStamp }>{ `${moment( dateTimeStamp ).format( format )}` }</time>,
+      displayName: label,
+      name: label
+    }
+  ];
 };
