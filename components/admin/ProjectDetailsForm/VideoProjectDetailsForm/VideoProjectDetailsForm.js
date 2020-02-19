@@ -64,7 +64,6 @@ const VideoProjectDetailsForm = props => {
 
   const getInitialValues = () => {
     const { data } = props;
-
     const videoProject = data && data.projectForm ? data.projectForm : {};
 
     const categories = videoProject.categories
@@ -73,7 +72,7 @@ const VideoProjectDetailsForm = props => {
 
     const tags = videoProject.tags ? videoProject.tags.map( tag => tag.id ) : [];
 
-    const author = videoProject.author ? videoProject.author.id : user.id;
+    const author = videoProject.author ? videoProject.author.id : user?.id;
 
     const initialValues = {
       author,
