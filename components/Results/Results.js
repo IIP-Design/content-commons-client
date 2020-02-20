@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Grid } from 'semantic-ui-react';
 import * as actions from 'lib/redux/actions/filter';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
+import { useAuth } from 'context/authContext';
 
 import { packageItem } from 'components/Package/packageElasticMock';
 import { documentItem } from 'components/Document/documentElasticMock';
@@ -50,6 +51,15 @@ const Results = props => {
     }
   ];
   const itemsWithMocks = [...docPkgMocks, ...items];
+  let resultItems = itemsWithMocks;
+
+  const { user } = useAuth();
+  const notLoggedIn = user === null;
+  const loggedInSubscriber = user?.permissions.includes( 'SUBSCRIBER' );
+
+  if ( notLoggedIn || !loggedInSubscriber ) {
+    resultItems = resultItems.filter( item => item._type !== 'package' && item._type !== 'document' );
+  }
 
   return (
     <section className="results">
@@ -57,7 +67,7 @@ const Results = props => {
       <div>
         <SearchTerm />
         { /* { !items.length && ( <NoResults searchTerm={ props.search.currentTerm } /> ) } */ }
-        { !itemsWithMocks.length && ( <NoResults searchTerm={ props.search.currentTerm } /> ) }
+        { !resultItems.length && ( <NoResults searchTerm={ props.search.currentTerm } /> ) }
         <hr />
         <FilterMenu />
         <section>
@@ -65,7 +75,7 @@ const Results = props => {
         </section>
         <Grid className="results_wrapper">
           { /* { items.map( item => ( */ }
-          { itemsWithMocks.map( item => (
+          { resultItems.map( item => (
             <Grid.Column
               mobile={ 16 }
               tablet={ view === 'gallery' ? 8 : 16 }
