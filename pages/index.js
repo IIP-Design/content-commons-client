@@ -34,7 +34,7 @@ const featuredData = [
   {
     key: v4(),
     component: 'priorities',
-    order: 4,
+    order: 3,
     props: {
       term: '5G',
       label: '5G',

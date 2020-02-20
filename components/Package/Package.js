@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { updateUrl } from 'lib/browser';
 import { getCount, getPluralStringOrNot, getPreviewNotificationStyles } from 'lib/utils';
@@ -18,6 +18,9 @@ import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 import PackageItem from './PackageItem/PackageItem';
 import { normalizeDocumentItemByAPI, getDateTimeTerms } from './utils';
+
+import { packageDocumentsRequest } from 'lib/elastic/api';
+import { getDataFromHits } from 'lib/elastic/parser';
 
 import './Package.scss';
 
@@ -39,6 +42,19 @@ const Package = props => {
     }
   }, [] );
 
+  const [fetchedDocs, setFetchedDocs] = useState( [] );
+
+  const getDocs = async () => {
+    const docIds = documents.map( doc => doc.id );
+    const responseHits = await packageDocumentsRequest( docIds );
+    const docs = getDataFromHits( responseHits ).map( hit => hit._source );
+    setFetchedDocs( docs );
+  };
+
+  useEffect( () => {
+    getDocs();
+  }, [] );
+  console.log(fetchedDocs)
   return (
     <ModalItem
       className={ isAdminPreview ? 'package package--preview' : 'package' }
@@ -113,8 +129,19 @@ const Package = props => {
 
       <div className="package-items">
         <Card.Group>
-          { getCount( documents )
+          {/* { getCount( documents )
             ? documents.map( file => (
+              <PackageItem
+                key={ file.id }
+                file={ normalizeDocumentItemByAPI( { file, useGraphQl } ) }
+                type={ type }
+                isAdminPreview={ isAdminPreview }
+              />
+            ) )
+            : 'There are no files associated with this package.' } */}
+
+          { getCount( fetchedDocs )
+            ? fetchedDocs.map( file => (
               <PackageItem
                 key={ file.id }
                 file={ normalizeDocumentItemByAPI( { file, useGraphQl } ) }
