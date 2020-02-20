@@ -61,7 +61,7 @@ const DocumentCard = props => {
             alt: 'document icon',
             style: { height: '30px', width: '30px' }
           } }
-        />
+        />        
 
         <InternalUseDisplay />
 
@@ -79,7 +79,7 @@ const DocumentCard = props => {
                 aria-expanded={ isOpen }
                 aria-controls="documentCard_content"
               >
-                { title }
+                { title || 'DOCUMENT' }
               </button>
             ) }
             closeIcon

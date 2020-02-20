@@ -13,7 +13,6 @@ const renderError = () => (
 
 const Packages = props => {
   const { featured, packages } = props;
-
   if ( featured.error ) {
     return renderError();
   }
@@ -28,7 +27,7 @@ const Packages = props => {
           <a className="latestPackages_header_link" href="/">Browse All</a>
         </div>
         <Grid columns="equal" stackable className="latestPackages_grid">
-          { packages.slice( 0, 4 ).map( pkg => (
+          { packages.map( pkg => (
             <Grid.Column key={ pkg.id }><PackageCard item={ pkg } /></Grid.Column>
           ) ) }
         </Grid>

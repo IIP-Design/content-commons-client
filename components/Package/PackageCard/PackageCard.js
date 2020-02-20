@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { getPluralStringOrNot } from 'lib/utils';
@@ -12,6 +12,9 @@ import './PackageCard.scss';
 import Popover from 'components/popups/Popover/Popover';
 import { getDateTimeTerms } from '../utils';
 
+import { packageDocumentsRequest } from 'lib/elastic/api';
+import { getDataFromHits } from 'lib/elastic/parser';
+
 const PackageCard = ( { item, stretch } ) => {
   const {
     id,
@@ -19,7 +22,20 @@ const PackageCard = ( { item, stretch } ) => {
     modified,
     owner,
     documents
-  } = item;
+  } = item;  
+
+  const [fetchedDocs, setFetchedDocs] = useState( [] );
+
+  const getDocs = async () => {
+    const docIds = documents.map( doc => doc.id );
+    const responseHits = await packageDocumentsRequest( docIds );
+    const docs = getDataFromHits( responseHits ).map( hit => hit._source );
+    setFetchedDocs( docs );
+  };
+
+  useEffect( () => {
+    getDocs();
+  }, [] );
 
   const formattedPublishedDate = (
     <time dateTime={ published }>{ moment( published ).format( 'LL' ) }</time>
@@ -47,7 +63,8 @@ const PackageCard = ( { item, stretch } ) => {
             trigger={ documentFilesCountDisplay }
           >
             <ul>
-              { documents.map( doc => <li key={ doc.id }>{ doc.filename }</li> ) }
+              {/* { documents.map( doc => <li key={ doc.id }>{ doc.filename }</li> ) } */}
+              { fetchedDocs.map( doc => <li key={ doc.id }>{ doc.filename }</li> ) }
             </ul>
           </Popover>
         </Card.Meta>
