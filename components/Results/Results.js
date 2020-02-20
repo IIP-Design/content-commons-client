@@ -50,12 +50,12 @@ const Results = props => {
       _source: documentItem[0]._source
     }
   ];
-  const itemsWithMocks = [...docPkgMocks, ...items];
-  let resultItems = itemsWithMocks;
+
+  let resultItems = [...docPkgMocks, ...items];
 
   const { user } = useAuth();
   const notLoggedIn = user === null;
-  const loggedInSubscriber = user?.permissions.includes( 'SUBSCRIBER' );
+  const loggedInSubscriber = user?.permissions.some( p => p === 'SUBSCRIBER' || p === 'EDITOR' );
 
   if ( notLoggedIn || !loggedInSubscriber ) {
     resultItems = resultItems.filter( item => item._type !== 'package' && item._type !== 'document' );

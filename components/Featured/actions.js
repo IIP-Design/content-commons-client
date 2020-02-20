@@ -6,10 +6,9 @@
 
 
 import { normalizeItem } from 'lib/elastic/parser';
-import { typePrioritiesRequest, typeRecentsRequest } from 'lib/elastic/api';
+import { typePrioritiesRequest, typeRecentsRequest, typeRequestDesc } from 'lib/elastic/api';
 import { isDataStale } from 'lib/utils';
 import { v4 } from 'uuid';
-import { packagesMock } from 'components/Featured/Packages/packagesElasticMock';
 import {
   LOAD_FEATURED_PENDING,
   LOAD_FEATURED_FAILED,
@@ -37,6 +36,12 @@ export const loadFeatured = data => async ( dispatch, getState ) => {
             key: v4()
           } ) );
         case 'packages':
+          return typeRequestDesc( props.postType ).then( res => ( {
+            component,
+            ...props,
+            data: res,
+            key: v4()
+          } ) );
         case 'recents':
           return typeRecentsRequest( props.postType, props.locale ).then( res => ( {
             component,
@@ -60,8 +65,6 @@ export const loadFeatured = data => async ( dispatch, getState ) => {
               priorities[res.term] = items;
               break;
             case 'packages':
-              // TEMP mock data
-              items = [...res.data.hits.hits, ...packagesMock].map( item => normalizeItem( item, res.locale ) );
               recents[res.postType] = items;
               break;
             case 'recents':
