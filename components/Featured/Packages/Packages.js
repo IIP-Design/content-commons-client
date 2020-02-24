@@ -32,7 +32,7 @@ const Packages = props => {
             } }
           >
             <a className="latestPackages_header_link">Browse All</a>
-          </Link>          
+          </Link>
         </div>
         <Grid columns="equal" stackable className="latestPackages_grid">
           { packages.map( pkg => (

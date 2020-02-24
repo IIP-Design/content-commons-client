@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { getPluralStringOrNot } from 'lib/utils';
-import { getDateTimeTerms, setElasticPkgDocs } from '../utils';
 import { Modal, Card } from 'semantic-ui-react';
 import Package from 'components/Package/Package';
 import Popover from 'components/popups/Popover/Popover';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import MediaObject from 'components/MediaObject/MediaObject';
 import DosSeal from 'static/images/dos_seal.svg';
+import { getDateTimeTerms, setElasticPkgDocs } from '../utils';
 import './PackageCard.scss';
 
 const PackageCard = ( { item, stretch } ) => {
