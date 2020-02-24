@@ -2,18 +2,14 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { getPluralStringOrNot } from 'lib/utils';
+import { getDateTimeTerms, setElasticPkgDocs } from '../utils';
 import { Modal, Card } from 'semantic-ui-react';
 import Package from 'components/Package/Package';
+import Popover from 'components/popups/Popover/Popover';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import MediaObject from 'components/MediaObject/MediaObject';
 import DosSeal from 'static/images/dos_seal.svg';
 import './PackageCard.scss';
-
-import Popover from 'components/popups/Popover/Popover';
-
-import { packageDocumentsRequest } from 'lib/elastic/api';
-import { getDataFromHits } from 'lib/elastic/parser';
-import { getDateTimeTerms } from '../utils';
 
 const PackageCard = ( { item, stretch } ) => {
   const {
@@ -27,18 +23,9 @@ const PackageCard = ( { item, stretch } ) => {
   const [isLoading, setIsLoading] = useState( false );
   const [fetchedDocs, setFetchedDocs] = useState( [] );
 
-  const getDocs = async () => {
-    setIsLoading( true );
-    const docIds = documents.map( doc => doc.id );
-    const responseHits = await packageDocumentsRequest( docIds );
-    const docs = getDataFromHits( responseHits ).map( hit => hit._source );
-    setFetchedDocs( docs );
-    setIsLoading( false );
-  };
-
   useEffect( () => {
     if ( !isLoading ) {
-      getDocs();
+      setElasticPkgDocs( documents, setFetchedDocs );
     }
     return () => setIsLoading( false ); // cleanup async op
   }, [] );
