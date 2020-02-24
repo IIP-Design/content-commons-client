@@ -61,7 +61,7 @@ const DocumentCard = props => {
             alt: 'document icon',
             style: { height: '30px', width: '30px' }
           } }
-        />        
+        />
 
         <InternalUseDisplay />
 

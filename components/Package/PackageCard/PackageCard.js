@@ -10,10 +10,10 @@ import DosSeal from 'static/images/dos_seal.svg';
 import './PackageCard.scss';
 
 import Popover from 'components/popups/Popover/Popover';
-import { getDateTimeTerms } from '../utils';
 
 import { packageDocumentsRequest } from 'lib/elastic/api';
 import { getDataFromHits } from 'lib/elastic/parser';
+import { getDateTimeTerms } from '../utils';
 
 const PackageCard = ( { item, stretch } ) => {
   const {
@@ -22,19 +22,25 @@ const PackageCard = ( { item, stretch } ) => {
     modified,
     owner,
     documents
-  } = item;  
+  } = item;
 
+  const [isLoading, setIsLoading] = useState( false );
   const [fetchedDocs, setFetchedDocs] = useState( [] );
 
   const getDocs = async () => {
+    setIsLoading( true );
     const docIds = documents.map( doc => doc.id );
     const responseHits = await packageDocumentsRequest( docIds );
     const docs = getDataFromHits( responseHits ).map( hit => hit._source );
     setFetchedDocs( docs );
+    setIsLoading( false );
   };
 
   useEffect( () => {
-    getDocs();
+    if ( !isLoading ) {
+      getDocs();
+    }
+    return () => setIsLoading( false ); // cleanup async op
   }, [] );
 
   const formattedPublishedDate = (
@@ -63,7 +69,6 @@ const PackageCard = ( { item, stretch } ) => {
             trigger={ documentFilesCountDisplay }
           >
             <ul>
-              {/* { documents.map( doc => <li key={ doc.id }>{ doc.filename }</li> ) } */}
               { fetchedDocs.map( doc => <li key={ doc.id }>{ doc.filename }</li> ) }
             </ul>
           </Popover>
