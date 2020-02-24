@@ -4,7 +4,7 @@ import Router from 'next/router';
 import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
 import { AuthProvider, canAccessPage } from 'context/authContext';
-import { redirectTo } from 'lib/browser';
+import { isDevEnvironment, redirectTo } from 'lib/browser';
 import withRedux from 'next-redux-wrapper';
 import isEmpty from 'lodash/isEmpty';
 import withApollo from 'hocs/withApollo';
@@ -25,7 +25,7 @@ if ( process.env.NODE_ENV !== 'production' ) {
   } );
 }
 
-if ( process.env.NODE_ENV === 'production' ) {
+if ( !isDevEnvironment() ) {
   Router.events.on( 'routeChangeComplete', url => gtag.pageview( url ) );
 }
 
