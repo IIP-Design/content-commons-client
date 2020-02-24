@@ -65,8 +65,6 @@ export const loadFeatured = data => async ( dispatch, getState ) => {
               priorities[res.term] = items;
               break;
             case 'packages':
-              recents[res.postType] = items;
-              break;
             case 'recents':
               recents[res.postType] = items;
               break;

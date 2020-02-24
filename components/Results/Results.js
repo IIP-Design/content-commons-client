@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Grid } from 'semantic-ui-react';
 import * as actions from 'lib/redux/actions/filter';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
-import { useAuth } from 'context/authContext';
 import SearchTerm from 'components/SearchTerm/SearchTerm';
 import FilterMenu from 'components/FilterMenu/FilterMenu';
 import ResultItem from './ResultItem/ResultItem';
@@ -27,14 +26,6 @@ const Results = props => {
   };
 
   const items = getDataFromHits( props.search.response );
-
-  const { user } = useAuth();
-  const notLoggedIn = user === null;
-  const loggedInSubscriber = user?.permissions.some( p => p === 'SUBSCRIBER' || p === 'EDITOR' );
-
-  // if ( notLoggedIn || !loggedInSubscriber ) {
-  //   resultItems = resultItems.filter( item => item._type !== 'package' && item._type !== 'document' );
-  // }
 
   return (
     <section className="results">
