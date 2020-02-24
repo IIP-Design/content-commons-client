@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { updateUrl } from 'lib/browser';
 import { getCount, getPluralStringOrNot, getPreviewNotificationStyles } from 'lib/utils';
+import { normalizeDocumentItemByAPI, getDateTimeTerms, setElasticPkgDocs } from './utils';
 import {
   Card, Segment, Dimmer, Loader
 } from 'semantic-ui-react';
@@ -15,14 +16,10 @@ import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
 import Share from 'components/Share/Share';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import PackageItem from './PackageItem/PackageItem';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
-import { packageDocumentsRequest } from 'lib/elastic/api';
-import { getDataFromHits } from 'lib/elastic/parser';
-import PackageItem from './PackageItem/PackageItem';
-import { normalizeDocumentItemByAPI, getDateTimeTerms } from './utils';
-
 
 import './Package.scss';
 
@@ -47,18 +44,9 @@ const Package = props => {
   const [isLoading, setIsLoading] = useState( false );
   const [fetchedDocs, setFetchedDocs] = useState( [] );
 
-  const getDocs = async () => {
-    setIsLoading( true );
-    const docIds = documents.map( doc => doc.id );
-    const responseHits = await packageDocumentsRequest( docIds );
-    const docs = getDataFromHits( responseHits ).map( hit => hit._source );
-    setFetchedDocs( docs );
-    setIsLoading( false );
-  };
-
   useEffect( () => {
     if ( !isLoading ) {
-      getDocs();
+      setElasticPkgDocs( documents, setFetchedDocs );
     }
     return () => setIsLoading( false ); // cleanup async op
   }, [] );
