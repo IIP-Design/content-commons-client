@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 import { Grid, Message } from 'semantic-ui-react';
 import PackageCard from 'components/Package/PackageCard/PackageCard';
 import './Packages.scss';
@@ -24,7 +25,14 @@ const Packages = props => {
       <div className="latestPackages_container">
         <div className="latestPackages_header">
           <h1 className="latestPackages_header_title">Latest Guidance Packages</h1>
-          <a className="latestPackages_header_link" href="/">Browse All</a>
+          <Link
+            href={ {
+              pathname: '/results',
+              query: { language: 'en-us', sortBy: 'published', postTypes: ['package'] }
+            } }
+          >
+            <a className="latestPackages_header_link">Browse All</a>
+          </Link>          
         </div>
         <Grid columns="equal" stackable className="latestPackages_grid">
           { packages.map( pkg => (

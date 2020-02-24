@@ -1,5 +1,7 @@
 import moment from 'moment';
 import { getTransformedLangTaxArray } from 'lib/utils';
+import { packageDocumentsRequest } from 'lib/elastic/api';
+import { getDataFromHits } from 'lib/elastic/parser';
 import DosSeal from 'static/images/dos_seal.svg';
 
 /*
@@ -58,4 +60,17 @@ export const getDateTimeTerms = ( createdAt, updatedAt, format ) => {
       name: label
     }
   ];
+};
+
+/*
+ * Request documents for a package from Elasticsearch
+ * Set docs for component via callback fn
+ * @param docs array of objects w shape { id, item }
+ * @param cb callback fn
+ */
+export const setElasticPkgDocs = async ( documents, cb ) => {
+  const docIds = documents.map( doc => doc.id );
+  const responseHits = await packageDocumentsRequest( docIds );
+  const docs = getDataFromHits( responseHits ).map( hit => hit._source );
+  return cb( docs );
 };
