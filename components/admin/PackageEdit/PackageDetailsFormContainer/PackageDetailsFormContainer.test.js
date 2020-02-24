@@ -39,6 +39,131 @@ const image = {
   }
 };
 
+const documents = [
+  {
+    __typename: 'DocumentFile',
+    id: '1asd',
+    createdAt: '2019-11-12T13:07:49.364Z',
+    updatedAt: '2019-11-12T13:08:28.830Z',
+    publishedAt: '',
+    language: english,
+    title: 'Lesotho National Day',
+    filename: 'Lesotho National Day.docx',
+    filetype: 'Statement',
+    filesize: 25000,
+    status: 'DRAFT',
+    excerpt: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
+    content: {
+      __typename: 'DocumentConversionFormat',
+      id: 'ccc1',
+      rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
+      html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
+      markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
+    },
+    url: `2019/11/${id}/lesotho_national_day.docx`,
+    signedUrl: `${AWS_URL}/2019/11/${id}/lesotho_national_day.docx${AWS_SIGNED_URL_QUERY_STRING}`,
+    visibility: 'INTERNAL',
+    image: [
+      {
+        ...image,
+        id: 'th1',
+        filename: 'lesotho_national_day.png',
+        url: `2019/11/${id}/lesotho_national_day.png`,
+        signedUrl: `${AWS_URL}/2019/11/${id}/lesotho_national_day.png${AWS_SIGNED_URL_QUERY_STRING}`
+      }
+    ],
+    use: {
+      __typename: 'DocumentUse',
+      id: 'ck2wbvj7u10lo07207aa55qmz',
+      name: 'Media Note'
+    },
+    bureaus: [],
+    categories: [],
+    tags: [],
+    countries: [
+      {
+        __typename: 'Country',
+        id: 'ck6krp9723f3y0720dfzwzv9f',
+        name: 'Bahrain',
+        abbr: 'NEA',
+        region: {
+          __typename: 'Region',
+          id: 'ck6krp96o3f3i07201zo5ai59',
+          name: 'Bureau of Near Eastern Affairs',
+          abbr: 'NEA'
+        }
+      }
+    ]
+  },
+  {
+    __typename: 'DocumentFile',
+    id: '2sdf',
+    createdAt: '2019-11-12T13:07:49.364Z',
+    updatedAt: '2019-11-12T13:08:28.830Z',
+    publishedAt: '',
+    language: english,
+    title: 'U.S.-Pakistan Women’s Council Advances Women’s Economic Empowerment at Houston Event',
+    filename: 'U.S.-Pakistan Women’s Council Advances Women’s Economic Empowerment at Houston Event.docx',
+    filetype: 'Media Note',
+    filesize: 25000,
+    status: 'DRAFT',
+    excerpt: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
+    content: {
+      __typename: 'DocumentConversionFormat',
+      id: 'ccc1',
+      rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
+      html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
+      markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
+    },
+    url: `2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx`,
+    signedUrl: `${AWS_URL}/2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx${AWS_SIGNED_URL_QUERY_STRING}`,
+    visibility: 'INTERNAL',
+    image: [
+      {
+        ...image,
+        id: 'th2',
+        filename: 'us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png',
+        url: `2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png`,
+        signedUrl: `${AWS_URL}/2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png${AWS_SIGNED_URL_QUERY_STRING}`
+      }
+    ],
+    use: {
+      __typename: 'DocumentUse',
+      id: 'ck2wbvj7u10lo07207aa55qmz',
+      name: 'Media Note'
+    },
+    bureaus: [],
+    categories: [],
+    tags: [],
+    countries: [
+      {
+        __typename: 'Country',
+        id: 'ck6krp9773f420720i7aesohq',
+        name: 'Benin',
+        abbr: 'AF',
+        region: {
+          __typename: 'Region',
+          id: 'ck6krp96g3f3c0720c1w09bx1',
+          name: 'Bureau of African Affairs',
+          abbr: 'AF'
+        }
+      },
+      {
+        __typename: 'Country',
+        id: 'ck6krp97d3f470720osba7g4m',
+        name: 'Botswana',
+        abbr: 'AF',
+        region: {
+          __typename: 'Region',
+          id: 'ck6krp96g3f3c0720c1w09bx1',
+          name: 'Bureau of African Affairs',
+          abbr: 'AF'
+        }
+      }
+    ]
+  },
+];
+
 const mocks = [
   {
     request: {
@@ -59,7 +184,11 @@ const mocks = [
                     }
                   },
                   bureaus: {},
-                  tags: {}
+                  countries: {
+                    connect: [
+                      { id: 'ck6krp9723f3y0720dfzwzv9f' }
+                    ]
+                  }
                 },
                 where: {
                   id: '1asd'
@@ -75,7 +204,12 @@ const mocks = [
                     }
                   },
                   bureaus: {},
-                  tags: {}
+                  countries: {
+                    connect: [
+                      { id: 'ck6krp9773f420720i7aesohq' },
+                      { id: 'ck6krp97d3f470720osba7g4m' }
+                    ]
+                  }
                 },
                 where: {
                   id: '2sdf'
@@ -114,92 +248,11 @@ const mocks = [
           },
           categories: [],
           tags: [],
-          documents: [
-            {
-              __typename: 'DocumentFile',
-              id: '1asd',
-              createdAt: '2019-11-12T13:07:49.364Z',
-              updatedAt: '2019-11-12T13:08:28.830Z',
-              publishedAt: '',
-              language: english,
-              title: 'Lesotho National Day',
-              filename: 'Lesotho National Day.docx',
-              filetype: 'Statement',
-              filesize: 25000,
-              status: 'DRAFT',
-              content: {
-                __typename: 'DocumentConversionFormat',
-                id: 'ccc1',
-                rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
-                html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
-                markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
-              },
-              url: `2019/11/${id}/lesotho_national_day.docx`,
-              signedUrl: `${AWS_URL}/2019/11/${id}/lesotho_national_day.docx${AWS_SIGNED_URL_QUERY_STRING}`,
-              visibility: 'INTERNAL',
-              image: [
-                {
-                  ...image,
-                  id: 'th1',
-                  filename: 'lesotho_national_day.png',
-                  url: `2019/11/${id}/lesotho_national_day.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${id}/lesotho_national_day.png${AWS_SIGNED_URL_QUERY_STRING}`
-                }
-              ],
-              use: {
-                __typename: 'DocumentUse',
-                id: 'ck2wbvj7u10lo07207aa55qmz',
-                name: 'Media Note'
-              },
-              bureaus: [],
-              categories: [],
-              tags: []
-            },
-            {
-              __typename: 'DocumentFile',
-              id: '2sdf',
-              createdAt: '2019-11-12T13:07:49.364Z',
-              updatedAt: '2019-11-12T13:08:28.830Z',
-              publishedAt: '',
-              language: english,
-              title: 'U.S.-Pakistan Women’s Council Advances Women’s Economic Empowerment at Houston Event',
-              filename: 'U.S.-Pakistan Women’s Council Advances Women’s Economic Empowerment at Houston Event.docx',
-              filetype: 'Media Note',
-              filesize: 25000,
-              status: 'DRAFT',
-              content: {
-                __typename: 'DocumentConversionFormat',
-                id: 'ccc1',
-                rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
-                html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
-                markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
-              },
-              url: `2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx`,
-              signedUrl: `${AWS_URL}/2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx${AWS_SIGNED_URL_QUERY_STRING}`,
-              visibility: 'INTERNAL',
-              image: [
-                {
-                  ...image,
-                  id: 'th2',
-                  filename: 'us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png',
-                  url: `2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png`,
-                  signedUrl: `${AWS_URL}/2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png${AWS_SIGNED_URL_QUERY_STRING}`
-                }
-              ],
-              use: {
-                __typename: 'DocumentUse',
-                id: 'ck2wbvj7u10lo07207aa55qmz',
-                name: 'Media Note'
-              },
-              bureaus: [],
-              categories: [],
-              tags: []
-            },
-          ]
+          documents
         }
       }
     }
-  }
+  },
 ];
 
 const props = {
@@ -210,7 +263,7 @@ const props = {
     id,
     title: 'Guidance Package 01-28-20',
     type: 'DAILY_GUIDANCE',
-    documents: mocks[0].result.data.updatePackage.documents
+    documents
   }
 };
 
@@ -260,7 +313,7 @@ describe( '<PackageDetailsFormContainer />', () => {
     const { pkg } = props;
     const fileValues = pkg.documents.reduce( ( acc, file ) => {
       const {
-        bureaus, title, tags, use, visibility
+        bureaus, title, countries, use, visibility
       } = file;
       return {
         ...acc,
@@ -268,7 +321,7 @@ describe( '<PackageDetailsFormContainer />', () => {
           id: file.id,
           title,
           bureaus: bureaus.map( p => p.id ),
-          tags: tags.map( p => p.id ),
+          countries: countries.map( p => p.id ),
           use: use.id,
           visibility
         }
@@ -378,7 +431,9 @@ describe( '<PackageDetailsFormContainer />', () => {
           visibility: 'INTERNAL',
           use: 'ck2wbvj7u10lo07207aa55qmz',
           bureaus: [],
-          tags: []
+          countries: [
+            'ck6krp9723f3y0720dfzwzv9f'
+          ]
         },
         '2sdf': {
           id: '2sdf',
@@ -386,7 +441,10 @@ describe( '<PackageDetailsFormContainer />', () => {
           visibility: 'INTERNAL',
           use: 'ck2wbvj7u10lo07207aa55qmz',
           bureaus: [],
-          tags: []
+          countries: [
+            'ck6krp9773f420720i7aesohq',
+            'ck6krp97d3f470720osba7g4m'
+          ]
         }
       };
       const prevValues = {
@@ -399,7 +457,7 @@ describe( '<PackageDetailsFormContainer />', () => {
           visibility: 'INTERNAL',
           use: 'ck2wbvj7u10lo07207aa55qmz',
           bureaus: [],
-          tags: []
+          countries: []
         },
         '2sdf': {
           id: '2sdf',
@@ -407,7 +465,7 @@ describe( '<PackageDetailsFormContainer />', () => {
           visibility: 'INTERNAL',
           use: 'ck2wbvj7u10lo07207aa55qmz',
           bureaus: [],
-          tags: []
+          countries: []
         }
       };
 

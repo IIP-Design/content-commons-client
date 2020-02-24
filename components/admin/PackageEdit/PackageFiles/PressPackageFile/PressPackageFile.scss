@@ -12,6 +12,14 @@
     border-bottom: 1px solid $light-grey;
   }
 
+  fieldset {
+    &.form-fields {
+      border: 0;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
   @media screen and (max-width: 767px) {
     .ui.form .fields:not(:last-child),
     .ui.form .fields .field:not(:last-child) {

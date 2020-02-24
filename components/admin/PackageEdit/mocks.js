@@ -170,6 +170,7 @@ const documents = [
     filetype: 'Statement',
     filesize: 25000,
     status: 'DRAFT',
+    excerpt: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
     content: {
       __typename: 'DocumentConversionFormat',
       id: 'ccc1',
@@ -191,7 +192,21 @@ const documents = [
     use: getDocumentUseObj( 'Statement' ),
     bureaus,
     categories: [],
-    tags: [tag1]
+    tags: [tag1],
+    countries: [
+      {
+        __typename: 'Country',
+        id: 'ck6krp9723f3y0720dfzwzv9f',
+        name: 'Bahrain',
+        abbr: 'NEA',
+        region: {
+          __typename: 'Region',
+          id: 'ck6krp96o3f3i07201zo5ai59',
+          name: 'Bureau of Near Eastern Affairs',
+          abbr: 'NEA'
+        }
+      }
+    ]
   },
   {
     __typename: 'DocumentFile',
@@ -205,6 +220,7 @@ const documents = [
     filetype: 'Media Note',
     filesize: 25000,
     status: 'DRAFT',
+    excerpt: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
     content: {
       __typename: 'DocumentConversionFormat',
       id: 'ccc1',
@@ -226,7 +242,33 @@ const documents = [
     use: getDocumentUseObj( 'Media Note' ),
     bureaus,
     categories: [],
-    tags: []
+    tags: [],
+    countries: [
+      {
+        __typename: 'Country',
+        id: 'ck6krp9773f420720i7aesohq',
+        name: 'Benin',
+        abbr: 'AF',
+        region: {
+          __typename: 'Region',
+          id: 'ck6krp96g3f3c0720c1w09bx1',
+          name: 'Bureau of African Affairs',
+          abbr: 'AF'
+        }
+      },
+      {
+        __typename: 'Country',
+        id: 'ck6krp97d3f470720osba7g4m',
+        name: 'Botswana',
+        abbr: 'AF',
+        region: {
+          __typename: 'Region',
+          id: 'ck6krp96g3f3c0720c1w09bx1',
+          name: 'Bureau of African Affairs',
+          abbr: 'AF'
+        }
+      }
+    ]
   },
   {
     __typename: 'DocumentFile',
@@ -240,6 +282,7 @@ const documents = [
     filetype: 'Media Note',
     filesize: 25000,
     status: 'DRAFT',
+    excerpt: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
     content: {
       __typename: 'DocumentConversionFormat',
       id: 'ccc1',
@@ -261,7 +304,33 @@ const documents = [
     use: getDocumentUseObj( 'Media Note' ),
     bureaus,
     categories: [],
-    tags: [tag2]
+    tags: [tag2],
+    countries: [
+      {
+        __typename: 'Country',
+        id: 'ck6krp9773f420720i7aesohq',
+        name: 'Benin',
+        abbr: 'AF',
+        region: {
+          __typename: 'Region',
+          id: 'ck6krp96g3f3c0720c1w09bx1',
+          name: 'Bureau of African Affairs',
+          abbr: 'AF'
+        }
+      },
+      {
+        __typename: 'Country',
+        id: 'ck6krp97d3f470720osba7g4m',
+        name: 'Botswana',
+        abbr: 'AF',
+        region: {
+          __typename: 'Region',
+          id: 'ck6krp96g3f3c0720c1w09bx1',
+          name: 'Bureau of African Affairs',
+          abbr: 'AF'
+        }
+      }
+    ]
   }
 ];
 

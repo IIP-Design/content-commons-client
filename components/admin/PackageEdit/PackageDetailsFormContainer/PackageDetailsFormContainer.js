@@ -89,7 +89,7 @@ const PackageDetailsFormContainer = props => {
   const getFileValues = array => (
     array.reduce( ( acc, file ) => {
       const {
-        id, bureaus, filename, tags, title, use, visibility
+        id, bureaus, filename, countries, title, use, visibility
       } = file;
       return {
         ...acc,
@@ -97,7 +97,7 @@ const PackageDetailsFormContainer = props => {
           id,
           title: title || filename,
           bureaus: getDropdownIds( bureaus ),
-          tags: getDropdownIds( tags ),
+          countries: getDropdownIds( countries ),
           use: use?.id || '',
           visibility
         }
