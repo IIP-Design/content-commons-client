@@ -4,13 +4,12 @@ import Router from 'next/router';
 import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
 import { AuthProvider, canAccessPage } from 'context/authContext';
-import { isDevEnvironment, redirectTo } from 'lib/browser';
+import { redirectTo } from 'lib/browser';
 import withRedux from 'next-redux-wrapper';
 import isEmpty from 'lodash/isEmpty';
 import withApollo from 'hocs/withApollo';
 import Page from 'components/Page';
 import makeStore from 'lib/redux/store';
-import * as gtag from 'lib/gtag';
 import 'styles/styles.scss';
 
 // This is a bit of a hack to ensure styles reload on client side route changes.
@@ -23,10 +22,6 @@ if ( process.env.NODE_ENV !== 'production' ) {
     const timestamp = new Date().valueOf();
     chunksNodes[0].href = `${path}?${timestamp}`;
   } );
-}
-
-if ( !isDevEnvironment() ) {
-  Router.events.on( 'routeChangeComplete', url => gtag.pageview( url ) );
 }
 
 class Commons extends App {

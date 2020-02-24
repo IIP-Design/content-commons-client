@@ -6,6 +6,8 @@ import { Header, Image } from 'semantic-ui-react';
 import NProgress from 'nprogress';
 import DosSeal from 'static/images/dos_seal.svg';
 import SearchInput from 'components/SearchInput/SearchInput';
+import { isDevEnvironment } from 'lib/browser';
+import * as gtag from 'lib/gtag';
 import GlobalNav from '../navs/global';
 import './Header.scss';
 
@@ -13,8 +15,11 @@ Router.onRouteChangeStart = () => {
   NProgress.start();
 };
 
-Router.onRouteChangeComplete = () => {
+Router.onRouteChangeComplete = url => {
   NProgress.done();
+  if ( typeof window !== 'undefined' && !isDevEnvironment() ) {
+    gtag.pageview( url );
+  }
 };
 
 Router.onRouteChangeError = () => {
