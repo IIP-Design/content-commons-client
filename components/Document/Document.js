@@ -21,6 +21,7 @@ import ModalDescription from 'components/modals/ModalDescription/ModalDescriptio
 import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
 import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 
+import './Document.scss';
 
 // disallow <script></script> tags
 // export const parseHtml = htmlParser( {
@@ -29,6 +30,7 @@ import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 
 const Document = props => {
   const { isAdminPreview, displayAsModal, item } = props;
+
   const {
     id,
     published,
@@ -53,7 +55,7 @@ const Document = props => {
   const DownloadElement = isAdminPreview ? 'span' : 'a';
 
   return (
-    <ModalItem headline={ title } className={ isAdminPreview ? 'package-item' : '' }>
+    <ModalItem headline={ title } className={ isAdminPreview ? 'document--preview' : '' }>
       <div className="modal_options modal_options--noLanguage">
         { isAdminPreview
           && (

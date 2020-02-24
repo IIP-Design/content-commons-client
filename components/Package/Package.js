@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { updateUrl } from 'lib/browser';
 import { getCount, getPluralStringOrNot, getPreviewNotificationStyles } from 'lib/utils';
-import { normalizeDocumentItemByAPI, getDateTimeTerms, setElasticPkgDocs } from './utils';
 import {
   Card, Segment, Dimmer, Loader
 } from 'semantic-ui-react';
@@ -16,15 +15,17 @@ import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
 import Share from 'components/Share/Share';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import PackageItem from './PackageItem/PackageItem';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
+import PackageItem from './PackageItem/PackageItem';
+import { normalizeDocumentItemByAPI, getDateTimeTerms, setElasticPkgDocs } from './utils';
 
 import './Package.scss';
 
 const Package = props => {
   const { displayAsModal, isAdminPreview, useGraphQl } = props;
+
   const {
     id,
     published,
@@ -45,9 +46,12 @@ const Package = props => {
   const [fetchedDocs, setFetchedDocs] = useState( [] );
 
   useEffect( () => {
-    if ( !isLoading ) {
-      setElasticPkgDocs( documents, setFetchedDocs );
+    if ( useGraphQl ) {
+      setFetchedDocs( documents );
+    } else {
+      if ( !isLoading ) setElasticPkgDocs( documents, setFetchedDocs );
     }
+
     return () => setIsLoading( false ); // cleanup async op
   }, [] );
 
