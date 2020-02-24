@@ -5,7 +5,6 @@ import { getItemRequest } from 'lib/elastic/api';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
 import { populateMetaArray } from 'lib/socialHeaders.js';
 import Package from 'components/Package/Package';
-import { packageItem } from 'components/Package/packageElasticMock';
 
 const styles = {
   page: {
@@ -48,10 +47,11 @@ PackagePage.getInitialProps = async ( { req, query, asPath } ) => {
     ? `https://${req.headers.host}${asPath}`
     : '';
 
+  const useIdKey = asPath.includes( 'package' );
+
   if ( query && query.site && query.id ) {
-    // const response = await getItemRequest( query.site, query.id );
-    // const item = getDataFromHits( response );
-    const item = packageItem;
+    const response = await getItemRequest( query.site, query.id, useIdKey );
+    const item = getDataFromHits( response );
 
     if ( item && item[0] ) {
       return {
