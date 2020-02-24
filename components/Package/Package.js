@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { updateUrl } from 'lib/browser';
 import { getCount, getPluralStringOrNot, getPreviewNotificationStyles } from 'lib/utils';
-import { Card } from 'semantic-ui-react';
+import {
+  Card, Segment, Dimmer, Loader
+} from 'semantic-ui-react';
 
 import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
@@ -16,11 +18,11 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
+import { packageDocumentsRequest } from 'lib/elastic/api';
+import { getDataFromHits } from 'lib/elastic/parser';
 import PackageItem from './PackageItem/PackageItem';
 import { normalizeDocumentItemByAPI, getDateTimeTerms } from './utils';
 
-import { packageDocumentsRequest } from 'lib/elastic/api';
-import { getDataFromHits } from 'lib/elastic/parser';
 
 import './Package.scss';
 
@@ -42,19 +44,25 @@ const Package = props => {
     }
   }, [] );
 
+  const [isLoading, setIsLoading] = useState( false );
   const [fetchedDocs, setFetchedDocs] = useState( [] );
 
   const getDocs = async () => {
+    setIsLoading( true );
     const docIds = documents.map( doc => doc.id );
     const responseHits = await packageDocumentsRequest( docIds );
     const docs = getDataFromHits( responseHits ).map( hit => hit._source );
     setFetchedDocs( docs );
+    setIsLoading( false );
   };
 
   useEffect( () => {
-    getDocs();
+    if ( !isLoading ) {
+      getDocs();
+    }
+    return () => setIsLoading( false ); // cleanup async op
   }, [] );
-  console.log(fetchedDocs)
+
   return (
     <ModalItem
       className={ isAdminPreview ? 'package package--preview' : 'package' }
@@ -111,7 +119,7 @@ const Package = props => {
                     title: getPluralStringOrNot( documents, 'Document' ),
                     component: (
                       <DownloadPkgFiles
-                        files={ documents }
+                        files={ fetchedDocs }
                         instructions={ getPluralStringOrNot( documents, 'Download Package File' ) }
                       />
                     )
@@ -128,29 +136,25 @@ const Package = props => {
       </div>
 
       <div className="package-items">
-        <Card.Group>
-          {/* { getCount( documents )
-            ? documents.map( file => (
-              <PackageItem
-                key={ file.id }
-                file={ normalizeDocumentItemByAPI( { file, useGraphQl } ) }
-                type={ type }
-                isAdminPreview={ isAdminPreview }
-              />
-            ) )
-            : 'There are no files associated with this package.' } */}
-
-          { getCount( fetchedDocs )
-            ? fetchedDocs.map( file => (
-              <PackageItem
-                key={ file.id }
-                file={ normalizeDocumentItemByAPI( { file, useGraphQl } ) }
-                type={ type }
-                isAdminPreview={ isAdminPreview }
-              />
-            ) )
-            : 'There are no files associated with this package.' }
-        </Card.Group>
+        { isLoading && (
+          <Segment>
+            <Dimmer active inverted><Loader>Loading...</Loader></Dimmer>
+          </Segment>
+        ) }
+        { !isLoading && (
+          <Card.Group>
+            { getCount( fetchedDocs )
+              ? fetchedDocs.map( file => (
+                <PackageItem
+                  key={ file.id }
+                  file={ normalizeDocumentItemByAPI( { file, useGraphQl } ) }
+                  type={ type }
+                  isAdminPreview={ isAdminPreview }
+                />
+              ) )
+              : 'There are no files associated with this package.' }
+          </Card.Group>
+        ) }
       </div>
     </ModalItem>
   );
