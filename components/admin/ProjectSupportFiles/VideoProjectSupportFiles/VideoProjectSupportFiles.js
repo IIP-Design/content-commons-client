@@ -60,6 +60,8 @@ const VideoProjectSupportFiles = props => {
     const { updateSupportFile, updateImageFile } = props;
 
     const qry = getQuery( file.id, {
+      // add the name here to ensure that the parent updateAt prop is updated
+      filename: file.name.trim(),
       language: {
         connect: {
           id: file.language
