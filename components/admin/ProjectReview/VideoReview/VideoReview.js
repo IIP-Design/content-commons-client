@@ -6,8 +6,7 @@ import usePublish from 'lib/hooks/usePublish';
 import {
   Button, Confirm, Grid, Icon, Loader
 } from 'semantic-ui-react';
-import moment from 'moment';
-import { findAllValuesForKey } from 'lib/utils';
+import { hasUnpublishedUpdates } from 'lib/utils';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import VideoProjectData from 'components/admin/ProjectReview/VideoProjectData/VideoProjectData';
 import VideoSupportFiles from 'components/admin/ProjectReview/VideoSupportFiles/VideoSupportFiles';
@@ -59,33 +58,17 @@ const VideoReview = props => {
     updateProjectStatus
   );
 
-  /**
-   * Determine if the project has unpublixhed changes
-   */
-  const hasUnpublishedUpdates = () => {
-    const { project } = data;
-
-    // Get all nested 'updatedAt' values as updatedAt at project level'
-    // does not account for updates futher down the tree
-    const updatedAts = findAllValuesForKey( project, 'updatedAt' );
-
-    // Get the most recent updatedAt value
-    const latestUpdatedAt = updatedAts.sort().pop();
-
-    // If project has been published, compare
-    if ( project.publishedAt ) {
-      setIsDirty( moment( latestUpdatedAt ).isAfter( project.publishedAt, 'second' ) );
-    }
-  };
-
 
   useEffect( () => {
     if ( data && data.project ) {
       // When the data changes, check status
       handleStatusChange( data.project );
 
-      // When the data changes, check whether project has unpublished updates
-      hasUnpublishedUpdates();
+      // When the data changes, if project has been published
+      // check whether project has unpublished updates
+      if ( data.project.publishedAt ) {
+        setIsDirty( hasUnpublishedUpdates( data.project ) );
+      }
     }
   }, [data] );
 
