@@ -11,7 +11,8 @@ const ActionButtons = props => {
     setDeleteConfirmOpen,
     disabled,
     handle,
-    show
+    show,
+    loading
   } = props;
 
   const isPackage = type.toLowerCase() === 'package';
@@ -63,7 +64,7 @@ const ActionButtons = props => {
 
       { show.publishChanges && (
         <Button
-          className="action-btn btn--publish-changes"
+          className={ `action-btn btn--publish-changes ${loading.publishChanges ? 'loading' : ''}` }
           content="Publish Changes"
           basic
           onClick={ handle.publishChanges }
@@ -73,7 +74,7 @@ const ActionButtons = props => {
 
       { show.publish && (
         <Button
-          className="action-btn btn--publish"
+          className={ `action-btn btn--publish ${loading.publish ? 'loading' : ''}` }
           content="Publish"
           onClick={ handle.publish }
           disabled={ disabled.publish }
@@ -82,7 +83,7 @@ const ActionButtons = props => {
 
       { show.unpublish && (
         <Button
-          className="action-btn btn--publish"
+          className={ `action-btn btn--publish ${loading.unpublish ? 'loading' : ''}` }
           content="UnPublish"
           onClick={ handle.unpublish }
           disabled={ disabled.unpublish }
@@ -116,7 +117,8 @@ ActionButtons.propTypes = {
   setDeleteConfirmOpen: PropTypes.func,
   disabled: PropTypes.object,
   handle: PropTypes.object,
-  show: PropTypes.object
+  show: PropTypes.object,
+  loading: PropTypes.object
 };
 
 export default ActionButtons;
