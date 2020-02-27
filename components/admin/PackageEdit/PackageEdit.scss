@@ -1,5 +1,5 @@
-@import "styles/colors.scss";
-@import "styles/mixins.scss";
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
 
 .edit-package {
   @media screen and (max-width: 550px) {
@@ -17,7 +17,8 @@
     text-align: center;
 
     .action-btn {
-      &.btn--add-more {
+      &.btn--add-more,
+      &.btn--edit {
         &.ui.basic.button {
           @include ghost-button;
         }
