@@ -72,7 +72,7 @@ const PackageDetailsFormContainer = props => {
     if ( isUpdateNeeded( values, prevValues ) ) {
       await update( values, pkg.documents );
       setShowNotification( true );
-      props.setIsDirty( true );
+      // props.setIsDirty( true );
       startTimeout();
     }
   };
@@ -158,8 +158,7 @@ const PackageDetailsFormContainer = props => {
 
 PackageDetailsFormContainer.propTypes = {
   id: PropTypes.string,
-  children: PropTypes.node, // eslint-disable-line
-  setIsDirty: PropTypes.func,
+  children: PropTypes.node, // eslint-disable-line 
   pkg: PropTypes.shape( {
     id: PropTypes.string,
     title: PropTypes.string,

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import usePublish from 'lib/hooks/usePublish';
-import { hasUnpublishedUpdates } from 'lib/utils';
+import useIsDirty from 'lib/hooks/useIsDirty';
 import PropTypes from 'prop-types';
 import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
@@ -41,10 +41,10 @@ const PackageEdit = props => {
   const [unpublishPackage] = useMutation( UNPUBLISH_PACKAGE_MUTATION );
   const [updatePackageStatus] = useMutation( UPDATE_PACKAGE_STATUS_MUTATION );
 
-  const saveMsgTimer = null;
-
   const [error, setError] = useState( {} );
-  const [isDirty, setIsDirty] = useState( false );
+
+  // publishOperation tells the action buttons which operation is excuting so that it can
+  // set its loading indcator on the right button
   const [publishOperation, setPublishOperation] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [hasInitialUploadCompleted, setHasInitialUploadCompleted] = useState( false );
@@ -65,11 +65,7 @@ const PackageEdit = props => {
     updatePackageStatus
   );
 
-
-  useEffect( () => () => {
-    clearTimeout( saveMsgTimer );
-  }, [] );
-
+  const isDirty = useIsDirty( data?.pkg );
 
   useEffect( () => {
     if ( data && data.pkg ) {
@@ -86,12 +82,6 @@ const PackageEdit = props => {
 
       // When the data changes, check status
       handleStatusChange( data.pkg );
-
-      // When the data changes, if project has been published
-      // check whether project has unpublished updates
-      if ( data.pkg.publishedAt ) {
-        setIsDirty( hasUnpublishedUpdates( data.pkg ) );
-      }
     }
   }, [data] );
 
@@ -233,7 +223,6 @@ const PackageEdit = props => {
         pkg={ pkg }
         updateNotification={ updateNotification }
         hasInitialUploadCompleted={ hasInitialUploadCompleted }
-        setIsDirty={ setIsDirty }
       >
         <PackageFiles pkg={ pkg } hasInitialUploadCompleted={ hasInitialUploadCompleted } />
       </PackageDetailsFormContainer>

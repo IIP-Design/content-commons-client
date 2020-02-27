@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import Router from 'next/router';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import usePublish from 'lib/hooks/usePublish';
+import useIsDirty from 'lib/hooks/useIsDirty';
 import {
   Button, Confirm, Grid, Icon, Loader
 } from 'semantic-ui-react';
-import { hasUnpublishedUpdates } from 'lib/utils';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import VideoProjectData from 'components/admin/ProjectReview/VideoProjectData/VideoProjectData';
 import VideoSupportFiles from 'components/admin/ProjectReview/VideoSupportFiles/VideoSupportFiles';
@@ -28,7 +28,6 @@ import './VideoReview.scss';
 
 const VideoReview = props => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
-  const [isDirty, setIsDirty] = useState( false );
   const { id } = props;
 
   const {
@@ -58,17 +57,12 @@ const VideoReview = props => {
     updateProjectStatus
   );
 
+  const isDirty = useIsDirty( data?.project );
 
   useEffect( () => {
     if ( data && data.project ) {
       // When the data changes, check status
       handleStatusChange( data.project );
-
-      // When the data changes, if project has been published
-      // check whether project has unpublished updates
-      if ( data.project.publishedAt ) {
-        setIsDirty( hasUnpublishedUpdates( data.project ) );
-      }
     }
   }, [data] );
 
