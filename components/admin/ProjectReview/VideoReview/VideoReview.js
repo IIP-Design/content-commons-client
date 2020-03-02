@@ -212,7 +212,7 @@ const VideoReview = props => {
         ) }
       </ProjectHeader>
 
-      <div className="centered">
+      <div className="centered" style={ { top: '1em' } }>
         <ApolloError error={ publishError } />
       </div>
 

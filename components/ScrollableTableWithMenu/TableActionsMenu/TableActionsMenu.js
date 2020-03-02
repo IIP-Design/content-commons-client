@@ -61,9 +61,6 @@ const TableActionsMenu = props => {
   } );
 
   const {
-    loading: projectsCountLoading,
-    error: projectsCountError,
-    data: dashboardProjectsCount,
     refetch: dashboardProjectsCountRefetch
   } = useQuery( graphQueries.projectsCount, {
     variables: {
@@ -261,6 +258,7 @@ const TableActionsMenu = props => {
                 handleActionResult={ handleActionResult }
                 showConfirmationMsg={ showConfirmationMsg }
                 selections={ selections }
+                variables={ props.variables }
               />
             </>
           ) }
