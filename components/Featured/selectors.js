@@ -6,6 +6,7 @@ import { createSelector } from 'reselect';
 const selectFeatured = state => state.featured;
 const selectFeaturedLoading = state => state.featured.loading;
 const selectFeaturedError = state => state.featured.error;
+const selectAuthentication = state => state.authentication;
 
 /**
  * Selector factories: returns selector instances
@@ -13,9 +14,11 @@ const selectFeaturedError = state => state.featured.error;
 const makeFeatured = () => createSelector( selectFeatured, featured => featured );
 const makeFeaturedLoading = () => createSelector( selectFeaturedLoading, loading => loading );
 const makeFeaturedError = () => createSelector( selectFeaturedError, error => error );
+const makeAuthentication = () => createSelector( selectAuthentication, authentication => authentication );
 
 export {
   makeFeatured,
   makeFeaturedLoading,
-  makeFeaturedError
+  makeFeaturedError,
+  makeAuthentication
 };

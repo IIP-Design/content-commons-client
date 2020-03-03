@@ -8,7 +8,7 @@ import {
 import { useRouter } from 'next/router';
 import { redirectTo, isDevEnvironment } from 'lib/browser';
 import { isRestrictedPage } from 'lib/authentication';
-import { Loader } from 'semantic-ui-react';
+// import { Loader } from 'semantic-ui-react';
 import cookie from 'js-cookie';
 import cookies from 'next-cookies';
 
@@ -41,12 +41,10 @@ export const canAccessPage = async ctx => {
   return true;
 };
 
-
 function AuthProvider( props ) {
   const client = useApolloClient();
   const router = useRouter();
   const [attemptToSignIntoCF, setAttemptToSignIntoCF] = useState( false );
-
 
   // Attempt to fetch user
   const { data, loading: userLoading, error: userError } = useQuery( CURRENT_USER_QUERY, {

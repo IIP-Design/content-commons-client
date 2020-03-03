@@ -1,12 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { userLoggedIn } from 'lib/redux/actions/authentication';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
+import { useAuth } from 'context/authContext';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
 import Meta from './Meta';
 import { capitalizeFirst } from '../lib/utils';
 
 const Page = props => {
+  // If user logged in then update redux store authenticated prop
+  const dispatch = useDispatch();
+  const { user } = useAuth();
+
+  useEffect( () => {
+    if ( user ) dispatch( userLoggedIn() );
+  }, [user] );
+
   const { router } = props;
   const { pathname } = router;
 
@@ -32,11 +43,9 @@ const Page = props => {
   );
 };
 
-
 Page.propTypes = {
   children: PropTypes.node,
   router: PropTypes.object
 };
-
 
 export default withRouter( Page );

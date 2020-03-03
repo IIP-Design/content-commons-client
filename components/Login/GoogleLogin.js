@@ -1,4 +1,7 @@
-import React, { Component } from 'react';
+import React, { useState, Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { userLoggedIn } from 'lib/redux/actions/authentication';
 import { GoogleLogin } from 'react-google-login';
 import { Button } from 'semantic-ui-react';
 import getConfig from 'next/config';
@@ -55,7 +58,6 @@ class GoogleLoginComponent extends Component {
     } catch ( err ) {}
   }
 
-
   render() {
     return (
       <Mutation
@@ -82,6 +84,9 @@ class GoogleLoginComponent extends Component {
 
                 // 2. Send google token server to verfiy and fetch User
                 await this.willGoogleSignin( googleSignin );
+
+                // 3. Set redux authenticated prop
+                this.props.userLoggedIn();
               } }
               onFailure={ this.failureGoogle }
             />
@@ -92,4 +97,8 @@ class GoogleLoginComponent extends Component {
   }
 }
 
-export default GoogleLoginComponent;
+GoogleLoginComponent.propTypes = {
+  userLoggedIn: PropTypes.bool
+};
+
+export default connect( null, { userLoggedIn } )( GoogleLoginComponent );
