@@ -7,14 +7,15 @@ import { v4 } from 'uuid';
 import {
   makeFeatured,
   makeFeaturedLoading,
-  makeFeaturedError
+  makeFeaturedError,
+  makeAuthentication
 } from './selectors';
 
 import Packages from './Packages/Packages';
 import Recents from './Recents/Recents';
 import Priorities from './Priorities/Priorities';
 
-const Featured = ( { data } ) => {
+const Featured = ( { data, authentication } ) => {
   const sorted = sortBy( data, 'order' );
   const featuredComponents = [];
 
@@ -28,7 +29,9 @@ const Featured = ( { data } ) => {
         featuredComponents.push( <Recents key={ v4() } { ...props } /> );
         break;
       case 'packages':
-        featuredComponents.push( <Packages key={ v4() } { ...props } /> );
+        if ( authentication.isLoggedIn ) {
+          featuredComponents.push( <Packages key={ v4() } { ...props } /> );
+        }
         break;
       default:
         break;
@@ -47,13 +50,15 @@ Featured.propTypes = {
   data: PropTypes.array,
   featured: PropTypes.object,
   loading: PropTypes.bool,
-  error: PropTypes.bool
+  error: PropTypes.bool,
+  authentication: PropTypes.object,
 };
 
 const mapStateToProps = () => createStructuredSelector( {
   featured: makeFeatured(),
   loading: makeFeaturedLoading(),
-  error: makeFeaturedError()
+  error: makeFeaturedError(),
+  authentication: makeAuthentication(),
 } );
 
 export const FeaturedUnconnected = Featured; // For test purposes // 1/2/20 - resolves import/no-named-as-default lint error
