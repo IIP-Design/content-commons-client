@@ -9,9 +9,6 @@ import { getMainDefinition } from 'apollo-utilities';
 import withApollo from 'next-with-apollo';
 import getConfig from 'next/config';
 
-// Links are designed to be composed together to form control flow chains
-// to manage a GraphQL operation request.
-
 const { publicRuntimeConfig } = getConfig();
 
 const request = async ( headers, operation ) => {
@@ -20,6 +17,12 @@ const request = async ( headers, operation ) => {
   } );
 };
 
+// Links are designed to be composed together to form control flow chains
+// to manage a GraphQL operation request.
+
+// Web socket link (currently disabled)
+// This link is particularly useful to use GraphQL Subscriptions,
+// but it will also allow you to send GraphQL queries and mutations over WebSockets as well.
 const getWsLink = () => {
   const client = new SubscriptionClient( publicRuntimeConfig.REACT_APP_APOLLO_SUBSCRIPTIONS_ENDPOINT, {
     reconnect: true,
@@ -33,14 +36,16 @@ const getWsLink = () => {
   return _wsLink;
 };
 
-// if you instantiate on the server, the error will be thrown
+// Only generate on the clients as if you instantiate on the server, the error will be thrown
 const wsLink = process.browser ? getWsLink() : null;
 
+// Apollo Link that sends HTTP requests.
 const httpLink = new HttpLink( {
   uri: publicRuntimeConfig.REACT_APP_APOLLO_ENDPOINT,
   credentials: 'include' // send any logged in browser cookies w/each request
 } );
 
+// Default error handler
 const errorLink = onError( ( { graphQLErrors, networkError } ) => {
   if ( process.env.NODE_ENV === 'development' ) {
     if ( graphQLErrors ) {
@@ -57,8 +62,9 @@ const errorLink = onError( ( { graphQLErrors, networkError } ) => {
   }
 } );
 
-
-const link = process.browser ? split( // only create the split in the browser
+// only create the split in the browser
+/* eslint-disable no-unused-vars */
+const link = process.browser ? split(
   // split based on operation type
   ( { query } ) => {
     const { kind, operation } = getMainDefinition( query );
@@ -68,29 +74,32 @@ const link = process.browser ? split( // only create the split in the browser
   httpLink,
 ) : httpLink;
 
+
 const createClient = ( { headers, initialState } ) => new ApolloClient( {
   link: ApolloLink.from( [
     errorLink,
 
-    new ApolloLink( ( operation, forward ) => new Observable( observer => {
-      let handle;
-      Promise.resolve( operation )
-        .then( oper => request( headers, oper ) )
-        .then( () => {
-          handle = forward( operation ).subscribe( {
-            next: observer.next.bind( observer ),
-            error: observer.error.bind( observer ),
-            complete: observer.complete.bind( observer ),
-          } );
-        } )
-        .catch( observer.error.bind( observer ) );
+    new ApolloLink(
+      ( operation, forward ) => new Observable( observer => {
+        let handle;
+        Promise.resolve( operation )
+          .then( oper => request( headers, oper ) )
+          .then( () => {
+            handle = forward( operation ).subscribe( {
+              next: observer.next.bind( observer ),
+              error: observer.error.bind( observer ),
+              complete: observer.complete.bind( observer )
+            } );
+          } )
+          .catch( observer.error.bind( observer ) );
 
-      return () => {
-        if ( handle ) handle.unsubscribe();
-      };
-    } ) ),
+        return () => {
+          if ( handle ) handle.unsubscribe();
+        };
+      } )
+    ),
 
-    link
+    httpLink // link  - disable web socket link for now
   ] ),
 
   cache: new InMemoryCache().restore( initialState || {} )
