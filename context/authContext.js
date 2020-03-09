@@ -8,7 +8,6 @@ import {
 import { useRouter } from 'next/router';
 import { redirectTo, isDevEnvironment } from 'lib/browser';
 import { isRestrictedPage } from 'lib/authentication';
-import { Loader } from 'semantic-ui-react';
 import cookie from 'js-cookie';
 import cookies from 'next-cookies';
 
@@ -50,8 +49,10 @@ function AuthProvider( props ) {
 
   // Attempt to fetch user
   const { data, loading: userLoading, error: userError } = useQuery( CURRENT_USER_QUERY, {
-    ssr: false
+    ssr: false,
+    fetchPolicy: 'network-only'
   } );
+
 
   // Sign in mutation
   const [signIn, { data: signInData, loading: signInLoading, error: signInError }] = useMutation(
@@ -100,16 +101,6 @@ function AuthProvider( props ) {
     }
   };
 
-
-  // if ( userLoading ) {
-  //   return (
-  //     <Loader size="medium" active> Loading </Loader>
-  //   );
-  // }
-
-  // if ( userError ) {
-  //   return <div>Error</div>;
-  // }
 
   const logout = async () => signOut();
   const register = () => console.log( 'register' );
