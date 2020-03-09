@@ -81,7 +81,8 @@ const GoogleLoginComponent = () => {
               // 2. Send google token server to verfiy and fetch User
               await willGoogleSignin( googleSignin );
 
-              // 3. Set redux authenticated prop
+              // 3. Set authentication cookie & redux authentication prop
+              document.cookie = 'authentication=loggedIn';
               dispatch( userLoggedIn() );
             } }
             onFailure={ failureGoogle }
