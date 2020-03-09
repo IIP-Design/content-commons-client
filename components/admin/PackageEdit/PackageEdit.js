@@ -122,9 +122,8 @@ const PackageEdit = props => {
   };
 
   const handlePublishChanges = async () => {
-    // setPublishOperation( 'publishChanges' );
-    // executePublishOperation( packageId, publishPackage );
-    console.log( 'handlePublishChanges' );
+    setPublishOperation( 'publishChanges' );
+    executePublishOperation( packageId, publishPackage );
   };
 
   const handleUnPublish = async () => {
