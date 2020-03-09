@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
-
+import React, { useEffect } from 'react';
+import cookies from 'next-cookies';
+import { useDispatch } from 'react-redux';
 import Featured from 'components/Featured/Featured';
 import { clearFilters } from 'lib/redux/actions/filter';
 import { loadFeatured } from 'components/Featured/actions';
 import { loadPostTypes } from 'lib/redux/actions/postType';
+import { userLoggedIn, userLoggedOut } from 'lib/redux/actions/authentication';
 import { v4 } from 'uuid';
 
 const featuredData = [
@@ -77,30 +79,37 @@ const featuredData = [
   }
 ];
 
-class Landing extends Component {
-  static async getInitialProps ( { store } ) {
-    // trigger parellel loading calls
-    const resetFilters = store.dispatch( clearFilters() );
-    const featured = store.dispatch( loadFeatured( featuredData ) );
-    const postTypes = store.dispatch( loadPostTypes() );
+const Landing = () => (
+  <section>
+    <Featured data={ featuredData } />
+  </section>
+);
 
-    // await completion
-    await Promise.all( [
-      resetFilters,
-      featured,
-      postTypes
-    ] );
+Landing.getInitialProps = async ctx => {
+  const { store } = ctx;
+  const { authentication } = cookies( ctx );
+  const isLoggedIn = authentication === 'loggedIn';
 
-    return {};
+  // Dispatch authentication action on SSR render
+  if ( isLoggedIn ) {
+    store.dispatch( userLoggedIn() );
+  } else {
+    store.dispatch( userLoggedOut() );
   }
 
-  render() {
-    return (
-      <section>
-        <Featured data={ featuredData } />
-      </section>
-    );
-  }
-}
+  // trigger parellel loading calls
+  const resetFilters = store.dispatch( clearFilters() );
+  const postTypes = store.dispatch( loadPostTypes( isLoggedIn ) );
+  const featured = store.dispatch( loadFeatured( featuredData ) );
+
+  // await completion
+  await Promise.all( [
+    resetFilters,
+    postTypes,
+    featured
+  ] );
+
+  return {};
+};
 
 export default Landing;

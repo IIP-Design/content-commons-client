@@ -11,18 +11,28 @@ import { loadPostTypes } from 'lib/redux/actions/postType';
 import { loadSources } from 'lib/redux/actions/source';
 import { loadCategories } from 'lib/redux/actions/category';
 import { loadLanguages } from 'lib/redux/actions/language';
-import { userLoggedIn } from 'lib/redux/actions/authentication';
+import { userLoggedIn, userLoggedOut } from 'lib/redux/actions/authentication';
 
 const ResultsPage = () => <Results />;
 
-ResultsPage.getInitialProps = async ( ctx ) => {
-  const { americaCommonsToken } = cookies( ctx );
+ResultsPage.getInitialProps = async ctx => {
   const {
     query: {
       language, term, sortBy, postTypes, date, categories, sources
     },
     store
   } = ctx;
+
+  // Check cookie if user is logged in, update authentication prop on redux store
+  const { authentication } = cookies( ctx );
+  const isLoggedIn = authentication === 'loggedIn';
+
+  // Dispatch authentication action on SSR render
+  if ( isLoggedIn ) {
+    store.dispatch( userLoggedIn() );
+  } else {
+    store.dispatch( userLoggedOut() );
+  }
 
   // trigger parallel loading calls
   const languageUpdate = store.dispatch( updateLanguage( language || 'en-us' ) );
@@ -31,7 +41,7 @@ ResultsPage.getInitialProps = async ( ctx ) => {
   const termUpdate = store.dispatch( updateSearchTerm( term ) );
   const dateChange = store.dispatch( dateUpdate( date ) );
   const categoryChange = store.dispatch( categoryUpdate( categories ) );
-  const sourceChange = store.dispatch( sourceUpdate( sources ) );  
+  const sourceChange = store.dispatch( sourceUpdate( sources ) );
 
   await languageUpdate;
   await sortByUpdate;
@@ -40,12 +50,6 @@ ResultsPage.getInitialProps = async ( ctx ) => {
   await dateChange;
   await categoryChange;
   await sourceChange;
-
-  // If cookie is defined, then user is logged in, update authentication prop on store
-  if ( americaCommonsToken ) {
-    const isLoggedIn = store.dispatch( userLoggedIn() );
-    await isLoggedIn;
-  }
 
   // after all search values are updated, execute search request
   store.dispatch( createRequest() );
@@ -60,7 +64,7 @@ ResultsPage.getInitialProps = async ( ctx ) => {
   let langs;
 
   if ( !global.postTypes.list.length ) {
-    types = store.dispatch( loadPostTypes() );
+    types = store.dispatch( loadPostTypes( isLoggedIn ) ); // uses authentication filter to set which types to display
   }
 
   if ( !global.languages.list.length ) {

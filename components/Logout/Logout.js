@@ -22,9 +22,11 @@ const Logout = props => {
     <Button
       { ...filteredProps }
       onClick={ async () => {
-        await logout();
-        // update redux store
+        // update authentication cookie & update redux store authentication prop
+        document.cookie = 'authentication=loggedOut';
         dispatch( userLoggedOut() );
+
+        await logout();
         Router.push( { pathname: '/' } );
       } }
     >Logout
