@@ -9,8 +9,17 @@ import { v4 } from 'uuid';
 const featuredData = [
   {
     key: v4(),
-    component: 'priorities',
+    component: 'packages',
     order: 1,
+    props: {
+      postType: 'package',
+      locale: 'en-us'
+    }
+  },
+  {
+    key: v4(),
+    component: 'priorities',
+    order: 2,
     props: {
       term: 'iran',
       label: 'Iran',
@@ -25,7 +34,7 @@ const featuredData = [
   {
     key: v4(),
     component: 'priorities',
-    order: 2,
+    order: 3,
     props: {
       term: '5G',
       label: '5G',
@@ -36,7 +45,7 @@ const featuredData = [
   {
     key: v4(),
     component: 'priorities',
-    order: 3,
+    order: 4,
     props: {
       term: 'venezuela',
       label: 'Venezuela',
@@ -51,7 +60,7 @@ const featuredData = [
   {
     key: v4(),
     component: 'recents',
-    order: 4,
+    order: 5,
     props: {
       postType: 'video',
       locale: 'en-us'
@@ -60,7 +69,7 @@ const featuredData = [
   {
     key: v4(),
     component: 'recents',
-    order: 5,
+    order: 6,
     props: {
       postType: 'post',
       locale: 'en-us'

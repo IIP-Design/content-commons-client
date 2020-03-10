@@ -7,7 +7,8 @@ export const packagesMock = [
       type: 'package',
       published: '2017-12-18T10:53:49+00:00',
       modified: '2018-01-03T13:38:57+00:00',
-      owner: 'GPA Press Office',
+      owner: 'Press Office',
+      title: 'Guidance Package 12-18-17',
       items: [
         {
           id: 'es_doc_id1',
@@ -28,7 +29,8 @@ export const packagesMock = [
       type: 'package',
       published: '2019-07-18T10:53:49+00:00',
       modified: '2019-08-03T13:38:57+00:00',
-      owner: 'GPA Press Office',
+      owner: 'Press Office',
+      title: 'Guidance Package 01-18-19',
       items: [
         {
           id: 'es_doc_id3',
@@ -49,7 +51,8 @@ export const packagesMock = [
       type: 'package',
       published: '2019-10-18T10:53:49+00:00',
       modified: '2019-11-03T13:38:57+00:00',
-      owner: 'GPA Press Office',
+      owner: 'Press Office',
+      title: 'Guidance Package 10-18-19',
       items: [
         {
           id: 'es_doc_id5',
@@ -66,7 +69,8 @@ export const packagesMock = [
       type: 'package',
       published: '2019-09-18T10:53:49+00:00',
       modified: '2019-10-03T23:38:57+00:00',
-      owner: 'GPA Press Office',
+      owner: 'Press Office',
+      title: 'Guidance Package 09-18-19',
       items: [
         {
           id: 'es_doc_id7',

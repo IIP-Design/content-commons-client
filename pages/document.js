@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { getItemRequest } from 'lib/elastic/api';
 import Document from 'components/Document/Document';
-import { documentItem } from 'components/Document/documentElasticMock';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
 import { populateMetaArray } from 'lib/socialHeaders.js';
 import Head from 'next/head';
@@ -48,10 +47,11 @@ DocumentPage.getInitialProps = async ( { req, query, asPath } ) => {
     ? `https://${req.headers.host}${asPath}`
     : '';
 
+  const useIdKey = asPath.includes( 'document' );
+
   if ( query && query.site && query.id ) {
-    // const response = await getItemRequest( query.site, query.id );
-    // const item = getDataFromHits( response );
-    const item = documentItem;
+    const response = await getItemRequest( query.site, query.id, useIdKey );
+    const item = getDataFromHits( response );
 
     if ( item && item[0] ) {
       return {

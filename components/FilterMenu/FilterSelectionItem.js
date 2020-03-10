@@ -3,28 +3,42 @@ import PropTypes from 'prop-types';
 import { Label, Icon } from 'semantic-ui-react';
 
 const FilterSelectionItem = props => {
+  const {
+    value,
+    name,
+    label,
+    filter,
+    single,
+    onClick,
+  } = props;
+
   const handleOnClick = () => {
-    props.onClick( {
-      value: props.value,
-      name: props.name
+    onClick( {
+      value,
+      name
     } );
   };
 
   return (
-    <Label key={ props.value } data-label={ props.value } className={ props.single ? 'single' : '' }>
-      { props.label }
-      { !props.single && <Icon name="delete" filter={ props.filter } onClick={ handleOnClick } /> }
+    <Label
+      key={ value }
+      data-label={ value }
+      className={ single ? 'single' : '' }
+      onClick={ !single ? handleOnClick : null }
+    >
+      { label }
+      { !single && <Icon name="delete" filter={ filter } /> }
     </Label>
   );
 };
 
 FilterSelectionItem.propTypes = {
   value: PropTypes.string,
+  name: PropTypes.string,
   label: PropTypes.string,
   filter: PropTypes.string,
   single: PropTypes.bool,
   onClick: PropTypes.func,
-  name: PropTypes.string
 };
 
 export default FilterSelectionItem;

@@ -1,0 +1,58 @@
+@import "styles/colors.scss";
+
+.popover {
+  position: relative;
+  width: 100%;
+
+  &_trigger {
+    -webkit-appearance: none;
+    border: none;
+    padding: 0;
+    color: $light-blue;
+    cursor: pointer;
+  }
+
+  &_content {
+    z-index: 2;
+    position: absolute;
+    top: calc(100% + 20px);
+    left: -10px;    
+    font-size: 11px;
+    line-height: 1.6;    
+
+    &.expanded {
+      display: block;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: 10px;
+      background: $light-grey;
+      width: 20px;
+      height: 20px;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%, 100% 100%);
+    }    
+  }
+
+  &.fileList {
+    
+    .popover_content > ul {
+      margin: 0;
+      padding-left: 0;      
+      color: $shuttle-grey;
+      background-color: $light-grey;
+      list-style: none;
+
+      li {
+        padding: 1em;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid hsla( 0, 0, 50%, 0.2 );
+        }
+      }
+    }
+  }
+  
+}

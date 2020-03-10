@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { updateUrl } from 'lib/browser';
 import { getCount, getPluralStringOrNot, getPreviewNotificationStyles } from 'lib/utils';
-import { Card } from 'semantic-ui-react';
+import {
+  Card, Segment, Dimmer, Loader
+} from 'semantic-ui-react';
 
 import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
@@ -16,14 +18,14 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
-import { getDateTimeTerms } from './PressPackageItem/PressPackageItem';
 import PackageItem from './PackageItem/PackageItem';
-import { normalizeDocumentItemByAPI } from './utils';
+import { normalizeDocumentItemByAPI, getDateTimeTerms, setElasticPkgDocs } from './utils';
 
 import './Package.scss';
 
 const Package = props => {
-  const { isAdminPreview, useGraphQl } = props;
+  const { displayAsModal, isAdminPreview, useGraphQl } = props;
+
   const {
     id,
     published,
@@ -35,14 +37,27 @@ const Package = props => {
   } = props.item;
 
   useEffect( () => {
-    if ( !isAdminPreview ) {
+    if ( !displayAsModal ) {
       updateUrl( `/package?id=${id}&site=${site}&language=en-us` );
     }
   }, [] );
 
+  const [isLoading, setIsLoading] = useState( false );
+  const [fetchedDocs, setFetchedDocs] = useState( [] );
+
+  useEffect( () => {
+    if ( useGraphQl ) {
+      setFetchedDocs( documents );
+    } else {
+      if ( !isLoading ) setElasticPkgDocs( documents, setFetchedDocs );
+    }
+
+    return () => setIsLoading( false ); // cleanup async op
+  }, [] );
+
   return (
     <ModalItem
-      className="package"
+      className={ isAdminPreview ? 'package package--preview' : 'package' }
       headline={ title }
       textDirection="LTR" // use LTR since pkg have no lang field
     >
@@ -96,7 +111,7 @@ const Package = props => {
                     title: getPluralStringOrNot( documents, 'Document' ),
                     component: (
                       <DownloadPkgFiles
-                        files={ documents }
+                        files={ fetchedDocs }
                         instructions={ getPluralStringOrNot( documents, 'Download Package File' ) }
                       />
                     )
@@ -113,24 +128,32 @@ const Package = props => {
       </div>
 
       <div className="package-items">
-        <Card.Group>
-          { getCount( documents )
-            ? documents.map( file => (
-              <PackageItem
-                key={ file.id }
-                file={ normalizeDocumentItemByAPI( { file, useGraphQl } ) }
-                type={ type }
-                isAdminPreview={ isAdminPreview }
-              />
-            ) )
-            : 'There are no files associated with this package.' }
-        </Card.Group>
+        { isLoading && (
+          <Segment>
+            <Dimmer active inverted><Loader>Loading...</Loader></Dimmer>
+          </Segment>
+        ) }
+        { !isLoading && (
+          <Card.Group>
+            { getCount( fetchedDocs )
+              ? fetchedDocs.map( file => (
+                <PackageItem
+                  key={ file.id }
+                  file={ normalizeDocumentItemByAPI( { file, useGraphQl } ) }
+                  type={ type }
+                  isAdminPreview={ isAdminPreview }
+                />
+              ) )
+              : 'There are no files associated with this package.' }
+          </Card.Group>
+        ) }
       </div>
     </ModalItem>
   );
 };
 
 Package.propTypes = {
+  displayAsModal: PropTypes.bool,
   isAdminPreview: PropTypes.bool,
   useGraphQl: PropTypes.bool,
   item: PropTypes.object,

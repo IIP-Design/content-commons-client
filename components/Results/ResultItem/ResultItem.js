@@ -5,6 +5,8 @@ import { Card, Image, Modal } from 'semantic-ui-react';
 import { contentRegExp } from 'lib/utils';
 import Video from 'components/Video/Video';
 import Post from 'components/Post/Post';
+import PackageCard from 'components/Package/PackageCard/PackageCard';
+import DocumentCard from 'components/Document/DocumentCard/DocumentCard';
 import './ResultItem.scss';
 import './ResultItemRTL.scss';
 import logoDos from 'static/images/dos_seal.svg';
@@ -49,7 +51,7 @@ class ResultItem extends Component {
       'GPA Video',
       'GPA Media Strategy',
       'GPA Editorial & Design',
-      'U.S. Missions',      
+      'U.S. Missions',
     ];
 
     if ( !source && item.type === 'video' && dosOwners.includes( item.owner ) ) {
@@ -101,6 +103,14 @@ class ResultItem extends Component {
     }
 
     const action = `openModal - ${item.title}`;
+
+    if ( item.type === 'package' ) {
+      return <PackageCard item={ item } stretch />;
+    }
+
+    if ( item.type === 'document' ) {
+      return <DocumentCard file={ item } />;
+    }
 
     return (
       <Card>
