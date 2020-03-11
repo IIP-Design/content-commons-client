@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/filter';
 import FilterMenuItem from './FilterMenuItem';
 import FilterSelections from './FilterSelections';
+import FilterMenuCountries from './FilterMenuCountries';
 
 import './FilterMenu.scss';
 
@@ -31,6 +32,8 @@ import './FilterMenu.scss';
 class FilterMenu extends Component {
   render() {
     const { filter, global } = this.props;
+
+    const isPressGuidance = global.postTypes.list.some( postType => postType.display_name === 'Guidance Packages' );
 
     return (
       <section className="filterMenu_wrapper">
@@ -63,14 +66,19 @@ class FilterMenu extends Component {
             options={ global.sources.list }
             formItem="checkbox"
           />
-          { /* Category */ }
-          <FilterMenuItem
-            filter="Category"
-            name="categories"
-            selected={ filter.categories }
-            options={ global.categories.list }
-            formItem="checkbox"
-          />
+          { isPressGuidance
+            /* Countries */
+            ? <FilterMenuCountries selected={ [] } />
+            : (
+              /* Category */
+              <FilterMenuItem
+                filter="Category"
+                name="categories"
+                selected={ filter.categories }
+                options={ global.categories.list }
+                formItem="checkbox"
+              />
+            ) }
         </div>
       </section>
     );

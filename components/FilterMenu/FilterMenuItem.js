@@ -80,7 +80,7 @@ const FilterMenuItem = props => {
     }
 
     // make copy of selected filter array, i.e. categories
-    const arr = props.filterStore[props.name].slice( 0 );
+    const arr = props.filterStore[props.name]?.slice( 0 );
 
     // Some values have mutliple search terms within the input value
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
@@ -120,8 +120,8 @@ const FilterMenuItem = props => {
     // Some values have mutliple search terms within the input value
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
     // so we split the value into array and add/remove each to search array
-    const values = option.value.split( '|' );
-    const checked = !!( intersection( selected, values ).length );
+    const values = option?.value?.split( '|' );
+    const checked = !!( intersection( props.selected, values ).length );
 
     return (
       <Form.Checkbox
@@ -178,7 +178,7 @@ const FilterMenuItem = props => {
       >
         { props.filter } <Icon name={ filterItemOpen ? 'chevron up' : 'chevron down' } />
       </span>
-      <Form className={ filterItemOpen ? 'filterMenu_options show' : 'filterMenu_options' }>
+      <Form className={ `${filterItemOpen ? 'filterMenu_options show' : 'filterMenu_options'} ${props.className}` }>
         <Form.Group>
           {
            formatOptions( options, filter ).map( option => ( ( formItem === 'checkbox' )
@@ -196,8 +196,12 @@ const FilterMenuItem = props => {
   );
 };
 
+FilterMenuItem.defaultProps = {
+  className: ''
+};
 
 FilterMenuItem.propTypes = {
+  className: PropTypes.string,
   formItem: PropTypes.string,
   filter: PropTypes.string,
   options: PropTypes.array,
