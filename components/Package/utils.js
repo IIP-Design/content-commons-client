@@ -74,3 +74,10 @@ export const setElasticPkgDocs = async ( documents, cb ) => {
   const docs = getDataFromHits( responseHits ).map( hit => hit._source );
   return cb( docs );
 };
+
+export const getElasticPkgDocs = async documents => {
+  const docIds = documents.map( doc => doc.id );
+  const responseHits = await packageDocumentsRequest( docIds );
+  const docs = getDataFromHits( responseHits ).map( hit => hit._source );
+  return docs;
+};

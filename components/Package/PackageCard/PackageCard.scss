@@ -39,11 +39,24 @@
       background-color: $blue;
       cursor: pointer;
 
-      &:not(.ui),
-      > h2 {
-        font-size: 15px;
-        font-weight: 400;
-        color: #fff;
+      button {
+        -webkit-appearance: none;
+        margin: 0;
+        padding: 0;
+        border: none;    
+        background-color: $blue;
+
+        &:focus {
+          outline: 2px dotted $medium-grey; 
+          outline-offset: 2px;
+        }
+
+        h2, p {
+          font-family: 'Source Sans Pro';
+          font-size: 15px;
+          font-weight: 400;
+          color: #fff;
+        }
       }
     }
   }

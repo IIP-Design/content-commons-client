@@ -56,6 +56,12 @@
       }
     }
 
+    // Loading Segment
+    .ui.segment {
+      border: none;
+      box-shadow: none;
+    }
+
     .document_card.ui.card > .container {
       .media.seal {
         margin-top: 5px;

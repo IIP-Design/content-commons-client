@@ -19,7 +19,7 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 import PackageItem from './PackageItem/PackageItem';
-import { normalizeDocumentItemByAPI, getDateTimeTerms, setElasticPkgDocs } from './utils';
+import { normalizeDocumentItemByAPI, getDateTimeTerms, setElasticPkgDocs, getElasticPkgDocs } from './utils';
 
 import './Package.scss';
 
@@ -49,10 +49,14 @@ const Package = props => {
     if ( useGraphQl ) {
       setFetchedDocs( documents );
     } else {
-      if ( !isLoading ) setElasticPkgDocs( documents, setFetchedDocs );
+      const fetchDocs = async () => {
+        setIsLoading( true );
+        const docs = await getElasticPkgDocs( documents );
+        setFetchedDocs( docs );
+        setIsLoading( false );
+      };
+      fetchDocs();
     }
-
-    return () => setIsLoading( false ); // cleanup async op
   }, [] );
 
   return (

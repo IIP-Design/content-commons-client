@@ -10,6 +10,11 @@
     padding: 0;
     color: $light-blue;
     cursor: pointer;
+
+    &:focus {
+      outline: 2px dotted $medium-grey; 
+      outline-offset: 2px;
+    }
   }
 
   &_content {
