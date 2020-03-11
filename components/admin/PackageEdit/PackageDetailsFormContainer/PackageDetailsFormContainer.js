@@ -72,7 +72,6 @@ const PackageDetailsFormContainer = props => {
     if ( isUpdateNeeded( values, prevValues ) ) {
       await update( values, pkg.documents );
       setShowNotification( true );
-      // props.setIsDirty( true );
       startTimeout();
     }
   };

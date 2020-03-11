@@ -2,6 +2,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
+import useTimeout from 'lib/hooks/useTimeout';
 import { Button, Checkbox, Modal } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
 import editIcon from 'static/images/dashboard/edit.svg';
@@ -27,12 +28,6 @@ const getDraftProjects = projects => {
     }
     return [...acc];
   }, [] );
-};
-
-const delayUnmount = ( fn, timer, delay ) => {
-  if ( timer ) clearTimeout( timer );
-  /* eslint-disable no-param-reassign */
-  timer = setTimeout( fn, delay );
 };
 
 const TableActionsMenu = props => {
@@ -61,9 +56,6 @@ const TableActionsMenu = props => {
   } );
 
   const {
-    loading: projectsCountLoading,
-    error: projectsCountError,
-    data: dashboardProjectsCount,
     refetch: dashboardProjectsCountRefetch
   } = useQuery( graphQueries.projectsCount, {
     variables: {
@@ -75,30 +67,12 @@ const TableActionsMenu = props => {
   const [displayConfirmationMsg, setDisplayConfirmationMsg] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [actionFailures, setActionFailures] = useState( [] );
-  const [confirmationMsgTimer, setConfirmationMsgTimer] = useState( null );
 
   const [isMounted, setIsMounted] = useState( false );
   useEffect( () => {
     setIsMounted( true );
     return () => setIsMounted( false );
   }, [isMounted] );
-
-  useEffect( () => {
-    if ( displayConfirmationMsg && !actionFailures.length ) {
-      delayUnmount(
-        /* eslint-disable no-use-before-define */
-        hideConfirmationMsg,
-        confirmationMsgTimer,
-        CONFIRMATION_MSG_DELAY
-      );
-    }
-  } );
-
-  if ( loading ) return 'Loading....';
-  if ( error ) return <ApolloError error={ error } />;
-
-  // Dashboard Projects Data
-  const dashboardData = dashboardProjects[dashboardProjectsType];
 
   const showConfirmationMsg = () => {
     setDisplayConfirmationMsg( true );
@@ -109,8 +83,23 @@ const TableActionsMenu = props => {
       setDisplayConfirmationMsg( false );
       setActionFailures( [] );
     }
-    setConfirmationMsgTimer( null );
   };
+
+  const { startTimeout } = useTimeout( hideConfirmationMsg, CONFIRMATION_MSG_DELAY );
+
+  useEffect( () => {
+    if ( displayConfirmationMsg && !actionFailures.length ) {
+      startTimeout();
+    }
+  } );
+
+
+  if ( loading ) return 'Loading....';
+  if ( error ) return <ApolloError error={ error } />;
+
+  // Dashboard Projects Data
+  const dashboardData = dashboardProjects[dashboardProjectsType];
+
 
   const handleActionResult = result => {
     if ( result.error ) {
@@ -188,6 +177,7 @@ const TableActionsMenu = props => {
     handleResetSelections
   } = props;
 
+
   const renderMenu = () => {
     if ( !dashboardData ) return null;
 
@@ -261,6 +251,7 @@ const TableActionsMenu = props => {
                 handleActionResult={ handleActionResult }
                 showConfirmationMsg={ showConfirmationMsg }
                 selections={ selections }
+                variables={ props.variables }
               />
             </>
           ) }

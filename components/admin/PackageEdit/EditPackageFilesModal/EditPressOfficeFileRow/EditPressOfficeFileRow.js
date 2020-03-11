@@ -62,7 +62,7 @@ const EditPressOfficeFileRow = props => {
 
       { /* Bureaus */ }
       <Grid.Column width={ 5 } style={ { paddingRight: 0 } }>
-        <BureauOfficesDropdown id={ id } value={ bureaus } multiple search onChange={ update } required />
+        <BureauOfficesDropdown id={ id } value={ bureaus } multiple search closeOnChange onChange={ update } required />
       </Grid.Column>
 
       { /* Actions */ }
