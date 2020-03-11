@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { getPluralStringOrNot } from 'lib/utils';
-import { Modal, Card } from 'semantic-ui-react';
+import { Modal, Card, Loader, Dimmer, Segment } from 'semantic-ui-react';
 import Package from 'components/Package/Package';
 import Popover from 'components/popups/Popover/Popover';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import MediaObject from 'components/MediaObject/MediaObject';
 import DosSeal from 'static/images/dos_seal.svg';
-import { getDateTimeTerms, setElasticPkgDocs } from '../utils';
+import { getDateTimeTerms, getElasticPkgDocs } from '../utils';
 import './PackageCard.scss';
 
 const PackageCard = ( { item, stretch } ) => {
@@ -24,10 +24,13 @@ const PackageCard = ( { item, stretch } ) => {
   const [fetchedDocs, setFetchedDocs] = useState( [] );
 
   useEffect( () => {
-    if ( !isLoading ) {
-      setElasticPkgDocs( documents, setFetchedDocs );
-    }
-    return () => setIsLoading( false ); // cleanup async op
+    const fetchDocs = async () => {
+      setIsLoading( true );
+      const docs = await getElasticPkgDocs( documents );
+      setFetchedDocs( docs );
+      setIsLoading( false );
+    };
+    fetchDocs();
   }, [] );
 
   const formattedPublishedDate = (
@@ -41,14 +44,27 @@ const PackageCard = ( { item, stretch } ) => {
       <Card.Content>
         <Modal
           closeIcon
+          size="fullscreen"
           trigger={ (
             <Card.Header>
-              <h2>Guidance Package</h2>
-              <p>{ formattedPublishedDate }</p>
+              <button
+                id={ `packageCard_trigger_${id}` }
+                className="title"
+                type="button"
+              >
+                <h2>Guidance Package</h2>
+                <p>{ formattedPublishedDate }</p>
+              </button>
             </Card.Header>
           ) }
         >
-          <Modal.Content><Package item={ item } displayAsModal /></Modal.Content>
+          <Modal.Content
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={ `packageCard_trigger_${id}` }
+          >
+            <Package item={ item } displayAsModal />
+          </Modal.Content>
         </Modal>
         <Card.Meta className="meta--popup">
           <Popover
@@ -56,7 +72,8 @@ const PackageCard = ( { item, stretch } ) => {
             trigger={ documentFilesCountDisplay }
           >
             <ul>
-              { fetchedDocs.map( doc => <li key={ doc.id }>{ doc.filename }</li> ) }
+              { isLoading && <Segment><Dimmer active inverted><Loader>Loading...</Loader></Dimmer></Segment> }
+              { !isLoading && fetchedDocs.map( doc => <li key={ doc.id }>{ doc.filename }</li> ) }
             </ul>
           </Popover>
         </Card.Meta>

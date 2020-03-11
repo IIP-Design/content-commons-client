@@ -71,20 +71,23 @@ const DocumentCard = props => {
             onOpen={ handleOpen }
             onClose={ handleClose }
             trigger={ (
-              <button
-                id="documentCard_trigger"
-                className="title"
-                type="button"
-                aria-haspopup="true"
-                aria-expanded={ isOpen }
-                aria-controls="documentCard_content"
-              >
-                { title || 'DOCUMENT' }
-              </button>
+              <h2>
+                <button
+                  id={ `documentCard_trigger_${id}` }
+                  className="title"
+                  type="button"
+                >
+                  { title || 'DOCUMENT' }
+                </button>
+              </h2>
             ) }
             closeIcon
           >
-            <Modal.Content id="documentCard_content" aria-modal="true" aria-labelledby="documentCard_trigger" aria-hidden={ !isOpen }>
+            <Modal.Content
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={ `documentCard_trigger_${id}` }
+            >
               <Document item={ doc } displayAsModal isAdminPreview={ isAdminPreview } />
             </Modal.Content>
           </Modal>

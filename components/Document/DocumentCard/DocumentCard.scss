@@ -14,6 +14,12 @@
     }
     font-family: inherit;
 
+    &:hover {
+      transform: none;
+      border: 1px solid #f1f1f1;
+      box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
     > .container {
       display: flex;
       flex-direction: column;
@@ -32,6 +38,11 @@
       }
 
       > .header {
+
+        h2 {
+          font-size: inherit;          
+        }
+
         button.title {
           padding: 0.777777778rem;
           border: none;
@@ -40,6 +51,12 @@
           text-align: left;
           color: $blue;
           -webkit-appearance: none;
+          cursor: pointer;
+
+          &:focus {
+            outline: 2px dotted $medium-grey; 
+            outline-offset: 2px;
+          }
         }
 
         > .title {
@@ -50,8 +67,9 @@
       }
 
       > .internal-use {
+        
         &.brief {
-          margin: 1em 1em 0 1em;
+          margin: 1em 1em 0 0.77778rem;
           width: 123px;
         }
       }

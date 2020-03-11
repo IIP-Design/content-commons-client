@@ -35,11 +35,13 @@ const Popover = props => {
     };
   }, [] );
 
+  const uniqueID = Date.now();
+
   return (
     <span className={ className ? `popover ${className}` : 'popover' } ref={ popoverNode }>
       <button
         type="button"
-        id="popoverTrigger"
+        id={ `popoverButton_${uniqueID}` }
         className="popover_trigger"
         aria-haspopup="true"
         aria-expanded={ active } // active state determines if popover content expanded
@@ -50,9 +52,9 @@ const Popover = props => {
       </button>
       { active && (
         <span
-          id="popoverContent"
+          id={ `popoverContent_${uniqueID}` }
           className="popover_content"
-          aria-labelledby="popoverButton"
+          aria-labelledby={ `popoverButton_${uniqueID}` }
           aria-hidden={ !active }
         >
           { children }
