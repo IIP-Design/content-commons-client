@@ -1,4 +1,4 @@
-@import "styles/colors.scss";
+@import 'styles/colors.scss';
 
 .document_card {
   &:focus {
@@ -30,31 +30,32 @@
         font-style: italic;
         background-color: $blue;
       }
-  
+
       > .header {
         button.title {
-          padding: 0.777777778rem;          
+          padding: 0.777777778rem;
           border: none;
           font-family: inherit;
           font-weight: 700;
+          text-align: left;
           color: $blue;
           -webkit-appearance: none;
         }
 
         > .title {
-            padding: 1em;
-            font-size: 1rem;
-            cursor: pointer;
-          }
+          padding: 1em;
+          font-size: 1rem;
+          cursor: pointer;
+        }
       }
-  
+
       > .internal-use {
         &.brief {
           margin: 1em 1em 0 1em;
           width: 123px;
         }
       }
-  
+
       > .content {
         flex: 1;
         border-top: 0;
@@ -73,38 +74,39 @@
             font-weight: 400;
           }
 
-          ul, ol {
+          ul,
+          ol {
             margin: 0 0 0 1.25em;
             padding-left: 0;
           }
         }
       }
-  
+
       > .meta {
         position: initial;
         margin-top: 2em;
         padding: 0.777777778rem;
         text-align: left;
         background: transparent;
-  
+
         > .date-time {
           color: $grey;
           font-size: 12px; // match size of tags
-          
+
           > div > dt {
             margin-right: 0;
             font-weight: 400;
           }
         }
-  
+
         > .modal_section--postTags {
           margin-top: -0.75em;
         }
-  
+
         > .seal {
           font-size: 11px;
           color: $grey;
-          
+
           img {
             width: 16px;
             height: 16px;
