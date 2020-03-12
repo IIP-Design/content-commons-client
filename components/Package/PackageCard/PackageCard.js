@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { getPluralStringOrNot } from 'lib/utils';
-import { Modal, Card, Loader, Dimmer, Segment } from 'semantic-ui-react';
+import useAPIRequest from 'lib/hooks/useAPIRequest';
+import {
+  Modal, Card, Loader, Dimmer, Segment
+} from 'semantic-ui-react';
 import Package from 'components/Package/Package';
 import Popover from 'components/popups/Popover/Popover';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
@@ -20,18 +23,7 @@ const PackageCard = ( { item, stretch } ) => {
     documents
   } = item;
 
-  const [isLoading, setIsLoading] = useState( false );
-  const [fetchedDocs, setFetchedDocs] = useState( [] );
-
-  useEffect( () => {
-    const fetchDocs = async () => {
-      setIsLoading( true );
-      const docs = await getElasticPkgDocs( documents );
-      setFetchedDocs( docs );
-      setIsLoading( false );
-    };
-    fetchDocs();
-  }, [] );
+  const { response: fetchedDocs, error } = useAPIRequest( () => getElasticPkgDocs( documents ) );
 
   const formattedPublishedDate = (
     <time dateTime={ published }>{ moment( published ).format( 'LL' ) }</time>
@@ -72,8 +64,9 @@ const PackageCard = ( { item, stretch } ) => {
             trigger={ documentFilesCountDisplay }
           >
             <ul>
-              { isLoading && <Segment><Dimmer active inverted><Loader>Loading...</Loader></Dimmer></Segment> }
-              { !isLoading && fetchedDocs.map( doc => <li key={ doc.id }>{ doc.filename }</li> ) }
+              { !fetchedDocs && <Segment><Dimmer active inverted><Loader>Loading...</Loader></Dimmer></Segment> }
+              { fetchedDocs?.map( doc => <li key={ doc.id }>{ doc.filename }</li> ) }
+              { error && <li className="error-message">Error occurred with package documents request.</li> }
             </ul>
           </Popover>
         </Card.Meta>
