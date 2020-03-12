@@ -175,13 +175,11 @@ const FilterMenuItem = props => {
              ? renderCheckbox( option )
              : renderRadio( option ) ) )
           }
-          { options.length === 0
-            && (
-              <span style={ { textAlign: 'center', paddingTop: '3px' } }>
+          { options.length === 0 && (
+          <span style={ { textAlign: 'center', paddingTop: '3px' } }>
                 None Available
-              </span>
-            )
-          }
+          </span>
+          ) }
         </Form.Group>
       </Form>
     </div>

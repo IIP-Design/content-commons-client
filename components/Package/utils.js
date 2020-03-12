@@ -72,7 +72,8 @@ export const getElasticPkgDocs = async documents => {
     const responseHits = await packageDocumentsRequest( docIds );
     const docs = getDataFromHits( responseHits ).map( hit => hit._source );
     return docs;
-  } catch( error ) {
+  } catch ( error ) {
+    console.log( error );
     return error;
-  }  
+  }
 };
