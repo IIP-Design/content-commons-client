@@ -48,14 +48,14 @@ function AuthProvider( props ) {
 
 
   // Attempt to fetch user
-  const { data, loading: userLoading, error: userError } = useQuery( CURRENT_USER_QUERY, {
+  const { data, loading: userLoading } = useQuery( CURRENT_USER_QUERY, {
     ssr: false,
     fetchPolicy: 'network-only'
   } );
 
 
   // Sign in mutation
-  const [signIn, { data: signInData, loading: signInLoading, error: signInError }] = useMutation(
+  const [signIn, { loading: signInLoading, error: signInError }] = useMutation(
     CLOUDFLARE_SIGNIN_MUTATION, {
       refetchQueries: [{ query: CURRENT_USER_QUERY }]
     }
@@ -74,6 +74,7 @@ function AuthProvider( props ) {
       const url = `${protocol}//${hostname}:${port}`;
       window.location = `https://america.cloudflareaccess.com/cdn-cgi/access/logout?returnTo=${url}`;
       cookie.remove( 'CF_Authorization' );
+      cookie.remove( 'ES_TOKEN' );
       router.push( '/' );
     }
   } );
