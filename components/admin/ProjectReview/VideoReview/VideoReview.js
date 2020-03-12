@@ -1,14 +1,12 @@
-import React, { Fragment, useState } from 'react';
-import { func, object, string } from 'prop-types';
+import React, { Fragment, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import Router from 'next/router';
-import { connect } from 'react-redux';
-import * as actions from 'lib/redux/actions/projectUpdate';
-import { graphql } from 'react-apollo';
-import compose from 'lodash.flowright';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import usePublish from 'lib/hooks/usePublish';
+import useIsDirty from 'lib/hooks/useIsDirty';
 import {
   Button, Confirm, Grid, Icon, Loader
 } from 'semantic-ui-react';
-
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import VideoProjectData from 'components/admin/ProjectReview/VideoProjectData/VideoProjectData';
 import VideoSupportFiles from 'components/admin/ProjectReview/VideoSupportFiles/VideoSupportFiles';
@@ -18,27 +16,56 @@ import ProjectPreview from 'components/admin/ProjectPreview/ProjectPreview';
 import ProjectPreviewContent from 'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
 import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
 import ApolloError from 'components/errors/ApolloError';
-
 import {
   PUBLISH_VIDEO_PROJECT_MUTATION,
   UNPUBLISH_VIDEO_PROJECT_MUTATION,
   DELETE_VIDEO_PROJECT_MUTATION,
+  UPDATE_VIDEO_PROJECT_MUTATION,
   VIDEO_PROJECT_QUERY
 } from 'lib/graphql/queries/video';
-import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
-// import { findAllValuesForKey } from 'lib/utils';
 
 import './VideoReview.scss';
 
-
 const VideoReview = props => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
-  const [publishError, setPublishError] = useState( null );
-  const [publishing, setPublishing] = useState( false );
+  const { id } = props;
 
   const {
-    id, data, data: { error, loading }, statusChange
-  } = props;
+    loading, error, data, startPolling, stopPolling
+  } = useQuery( VIDEO_PROJECT_QUERY, {
+    variables: { id: props.id },
+    // using network-only here to ensure that we have the latest to determine
+    // if the project has unpublished changes
+    // todo - verify update mutation is returning necessary data to avoid
+    // using network policy
+    fetchPolicy: 'network-only'
+  } );
+
+  const [updateProjectStatus] = useMutation( UPDATE_VIDEO_PROJECT_MUTATION );
+  const [publishProject] = useMutation( PUBLISH_VIDEO_PROJECT_MUTATION );
+  const [unPublishProject] = useMutation( UNPUBLISH_VIDEO_PROJECT_MUTATION );
+  const [deleteProject] = useMutation( DELETE_VIDEO_PROJECT_MUTATION, );
+
+  const {
+    publishing,
+    publishError,
+    executePublishOperation,
+    handleStatusChange
+  } = usePublish(
+    startPolling,
+    stopPolling,
+    updateProjectStatus
+  );
+
+  const isDirty = useIsDirty( data?.project );
+
+  useEffect( () => {
+    if ( data && data.project ) {
+      // When the data changes, check status
+      handleStatusChange( data.project );
+    }
+  }, [data] );
+
 
   if ( loading ) {
     return (
@@ -73,44 +100,19 @@ const VideoReview = props => {
 
   if ( !data.project ) return <ProjectNotFound />;
 
-  if ( publishing ) {
-    if ( statusChange && statusChange.projectStatusChange && statusChange.projectStatusChange.error ) {
-      setPublishError( { otherError: statusChange.projectStatusChange.error } );
-      setPublishing( false );
-    }
-  }
 
   const displayConfirmDelete = () => setDeleteConfirmOpen( true );
   const handleDeleteCancel = () => setDeleteConfirmOpen( false );
 
   const setButtonState = btn => `project_button project_button--${btn} ${publishing ? 'loading' : ''}`;
 
-  // const updatesToPublish = () => {
-  //   const { project } = data;
-  //   if ( project ) {
-  //     // updatedAt at the project level does not account for nested updates
-  //     // so we need to find all updatedAt props to locate most recent update
-  //     const allUpdates = findAllValuesForKey( project, 'updatedAt' );
-  //     const mostRecentUpdate = allUpdates.reduce( ( max, p ) => ( p > max ? p : max ), allUpdates[0] );
-  //     const { status, publishedAt } = project;
-
-  //     if ( status === 'PUBLISHED' ) {
-  //       const lastUpdate = new Date( mostRecentUpdate ).getTime();
-  //       const publishDate = new Date( publishedAt ).getTime();
-
-  //       // At publish time, updatedAt and pubishedAt are approximately equal so
-  //       // we add 10 seconds so that Update does not show right after a publish
-  //       if ( publishedAt && ( lastUpdate > ( publishDate + 10000 ) ) ) { return true; }
-  //     }
-  //   }
-
-  //   return false;
-  // };
-
-  const handleDeleteProject = () => {
-    const { deleteProject } = props;
-    deleteProject( { variables: { id } } );
-    Router.push( { pathname: '/admin/dashboard' } );
+  const handleDeleteProject = async () => {
+    try {
+      await deleteProject( { variables: { id } } );
+      Router.push( { pathname: '/admin/dashboard' } );
+    } catch ( err ) {
+      console.log( err.toString() );
+    }
   };
 
   const handleEdit = () => {
@@ -124,59 +126,35 @@ const VideoReview = props => {
     }, `/admin/project/video/${id}/edit` );
   };
 
-  const handlePublish = async e => {
-    // Prevent multiple clicks - multiple clicks resulted in project going into PUBLISHING status
-    if ( !e.detail || e.detail === 1 ) e.target.disabled = true;
-
-    const { publishProject } = props;
-
-    try {
-      setPublishing( true );
-      console.log( 'Publishing to queue...' );
-      await publishProject( { variables: { id } } );
-
-      // Remove updated project from redux projectUpdate state
-      props.projectUpdated( id, false );
-    } catch ( err ) {
-      setPublishing( false );
-      setPublishError( err );
-    }
+  const handlePublish = async () => {
+    executePublishOperation( id, publishProject );
   };
 
-  const handleUnPublish = async e => {
-    // Prevent multiple clicks - multiple clicks resulted in project going into PUBLISHING status
-    if ( !e.detail || e.detail === 1 ) e.target.disabled = true;
-
-    const { unPublishProject } = props;
-
-    try {
-      setPublishing( true );
-      await unPublishProject( { variables: { id } } );
-
-      // Remove updated project from redux projectUpdate state
-      props.projectUpdated( id, false );
-    } catch ( err ) {
-      setPublishing( false );
-      setPublishError( err );
-    }
+  const handleUnPublish = async () => {
+    executePublishOperation( id, unPublishProject );
   };
 
-  // Project Status & Update States
-  const { projectUpdate } = props; // redux
-  const publishedAndUpdated = projectUpdate[id] && data.project.status === 'PUBLISHED';
-  const publishedAndNotUpdated = !projectUpdate[id] && data.project.status === 'PUBLISHED';
-  const notPublished = data.project.status !== 'PUBLISHED';
+  const getPublishMessage = () => {
+    if ( data?.project?.status === 'PUBLISHED' ) {
+      if ( isDirty ) {
+        return 'It looks like you made changes to your project. Do you want to publish changes?';
+      }
+      return 'Not ready to share with the world yet?';
+    }
+    return 'Your project looks great! Are you ready to Publish?';
+  };
+
+  const isPublished = data?.project?.status === 'PUBLISHED';
 
   return (
     <div className="review-project">
-
       <ProjectHeader icon="video camera" text="Project Details - Review">
         { data.project.status === 'DRAFT' && (
-        <Button
-          content="Delete Project"
-          className="project_button project_button--delete"
-          onClick={ displayConfirmDelete }
-        />
+          <Button
+            content="Delete Project"
+            className="project_button project_button--delete"
+            onClick={ displayConfirmDelete }
+          />
         ) }
 
         <Confirm
@@ -187,7 +165,10 @@ const VideoReview = props => {
               className="delete_confirm delete_confirm--video"
               headline="Are you sure you want to delete this video project?"
             >
-              <p>This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.</p>
+              <p>
+                This video project will be permanently removed from the Content Cloud. Any videos
+                that you uploaded here will not be uploaded.
+              </p>
             </ConfirmModalContent>
           ) }
           onCancel={ handleDeleteCancel }
@@ -213,19 +194,25 @@ const VideoReview = props => {
           options={ { closeIcon: true } }
         />
 
-        { data.project.status === 'DRAFT'
-          ? <Button className={ setButtonState( 'publish' ) } onClick={ handlePublish }>Publish</Button>
-          : (
-            <Fragment>
-              { publishedAndUpdated && (
-                <Button className={ setButtonState( 'edit' ) } onClick={ handlePublish }>Publish Changes</Button>
-              ) }
-              <Button className="project_button project_button--publish" onClick={ handleUnPublish }>Unpublish</Button>
-            </Fragment>
-          ) }
+        { data.project.status === 'DRAFT' ? (
+          <Button className={ setButtonState( 'publish' ) } onClick={ handlePublish }>
+            Publish
+          </Button>
+        ) : (
+          <Fragment>
+            { isDirty && (
+              <Button className={ setButtonState( 'edit' ) } onClick={ handlePublish }>
+                Publish Changes
+              </Button>
+            ) }
+            <Button className="project_button project_button--publish" onClick={ handleUnPublish }>
+              Unpublish
+            </Button>
+          </Fragment>
+        ) }
       </ProjectHeader>
 
-      <div className="centered">
+      <div className="centered" style={ { top: '1em' } }>
         <ApolloError error={ publishError } />
       </div>
 
@@ -244,100 +231,41 @@ const VideoReview = props => {
       <VideoProjectFiles id={ id } />
 
       <section className="section section--publish">
-        <h3 className="title">
-          { publishedAndUpdated && 'It looks like you made changes to your project. Do you want to publish changes?' }
-          { notPublished && 'Your project looks great! Are you ready to Publish?' }
-          { publishedAndNotUpdated && 'Not ready to share with the world yet?' }
-        </h3>
+        <h3 className="title">{ getPublishMessage() }</h3>
         <Button
           className="project_button project_button--edit"
           content="Edit"
           onClick={ handleEdit }
         />
-        { !publishedAndNotUpdated && (
-          <Button
-            className={ `project_button project_button--${publishedAndUpdated ? 'edit' : 'publish'}` }
-            onClick={ handlePublish }
-          >
-            Publish{ publishedAndUpdated && ' Changes' }
+
+        { /* Project is in draft status and not published */ }
+        { !isPublished && (
+          <Button className="project_button project_button--publish" onClick={ handlePublish }>
+            Publish
           </Button>
         ) }
-        { data.project.status !== 'DRAFT' && <Button className="project_button project_button--publish" onClick={ handleUnPublish }>Unpublish</Button> }
+
+        { /* Project is published but changes have been made that have not been published */ }
+        { isPublished && isDirty && (
+          <Button className="project_button project_button--edit" onClick={ handlePublish }>
+            Publish Changes
+          </Button>
+        ) }
+
+        { /* Project is published  */ }
+        { isPublished && (
+          <Button className="project_button project_button--publish" onClick={ handleUnPublish }>
+            UnPublish
+          </Button>
+        ) }
       </section>
     </div>
   );
 };
 
 VideoReview.propTypes = {
-  id: string,
-  data: object,
-  statusChange: object,
-  deleteProject: func,
-  publishProject: func,
-  unPublishProject: func,
-  projectUpdate: object,
-  projectUpdated: func
+  id: PropTypes.string
 };
 
-const mapStateToProps = state => ( {
-  projectUpdate: state.projectUpdate
-} );
 
-const deleteProjectMutation = graphql( DELETE_VIDEO_PROJECT_MUTATION, {
-  name: 'deleteProject',
-  options: props => ( {
-    variables: { id: props.id }
-  } )
-} );
-
-const publishProjectMutation = graphql( PUBLISH_VIDEO_PROJECT_MUTATION, {
-  name: 'publishProject',
-  options: props => ( {
-    variables: { id: props.id }
-  } )
-} );
-
-const unPublishProjectMutation = graphql( UNPUBLISH_VIDEO_PROJECT_MUTATION, {
-  name: 'unPublishProject',
-  options: props => ( {
-    variables: { id: props.id }
-  } )
-} );
-
-const projectStatusChangeSubscription = graphql( PROJECT_STATUS_CHANGE_SUBSCRIPTION, {
-  name: 'statusChange',
-  options: props => ( {
-    variables: { id: props.id },
-    onSubscriptionData: ( { subscriptionData } ) => {
-      const { data: { projectStatusChange } } = subscriptionData;
-      if ( projectStatusChange ) {
-        if ( projectStatusChange.status === 'PUBLISHED' || projectStatusChange.status === 'DRAFT' ) {
-          Router.push( { pathname: '/admin/dashboard' } );
-        }
-      }
-    }
-  } )
-} );
-
-const videoReviewQuery = graphql( VIDEO_PROJECT_QUERY, {
-  options: props => ( {
-    variables: { id: props.id }
-  } )
-} );
-
-export default compose(
-  connect( mapStateToProps, actions ),
-  deleteProjectMutation,
-  publishProjectMutation,
-  unPublishProjectMutation,
-  projectStatusChangeSubscription,
-  videoReviewQuery
-)( VideoReview );
-
-export const VideoReviewUnitTest = compose(
-  deleteProjectMutation,
-  publishProjectMutation,
-  unPublishProjectMutation,
-  projectStatusChangeSubscription,
-  videoReviewQuery
-)( VideoReview );
+export default VideoReview;

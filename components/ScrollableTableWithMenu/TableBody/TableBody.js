@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
-import isEqual from 'lodash/isEqual';
 import orderBy from 'lodash/orderBy';
 import { getLangTaxonomies } from 'lib/utils';
 import { getProjectsType, setProjectsQueries, setProjectTitle } from 'lib/graphql/util';
-import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 import { TEAM_VIDEO_PROJECTS_QUERY } from 'lib/graphql/queries/video';
 import { TEAM_PACKAGES_QUERY } from 'lib/graphql/queries/package';
 import { Table } from 'semantic-ui-react';
@@ -82,43 +80,12 @@ const TableBody = props => {
 
   // Run Query
   const {
-    loading, error, data, subscribeToMore
+    loading, error, data,
   } = useQuery( graphQuery, {
     variables: { ...variables },
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network'
   } );
-
-  const [statusSubscription, setStatusSubscription] = useState();
-  let statusProjectIds = [];
-
-  useEffect( () => {
-    const subscribeToStatuses = () => subscribeToMore( {
-      document: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
-      variables: { ids: statusProjectIds },
-      updateQuery: updateProjectStatus( dashboardProjectsType )
-    } );
-
-    if ( statusSubscription ) {
-      // Do not resubscribe if the IDs did not change
-      if ( isEqual( statusSubscription.ids, statusProjectIds ) ) {
-        return;
-      }
-      statusSubscription.unsub();
-    }
-    if ( statusProjectIds.length < 1 ) {
-      setStatusSubscription( null );
-      return;
-    }
-    const subscription = {
-      ids: statusProjectIds,
-      unsub: subscribeToStatuses()
-    };
-    setStatusSubscription( subscription );
-    return () => {
-      subscription.unsub();
-    };
-  }, [statusProjectIds] );
 
   if ( loading ) return <TableBodyLoading />;
   if ( error ) return <TableBodyError error={ error } />;
@@ -131,7 +98,6 @@ const TableBody = props => {
     return projectsData || null;
   };
   const dashboardProjects = setDashboardProjectsData();
-  statusProjectIds = dashboardProjects ? dashboardProjects.map( p => p.id ) : [];
 
   if ( !dashboardProjects ) return null;
   if ( searchTerm && !dashboardProjects.length ) return <TableBodyNoResults searchTerm={ searchTerm } />;

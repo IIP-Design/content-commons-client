@@ -1,97 +1,339 @@
-import { mount, shallow } from 'enzyme';
-import moment from 'moment';
+import { mount } from 'enzyme';
+import Router from 'next/router';
 import { normalizeItem } from 'lib/elastic/parser';
+import { getPluralStringOrNot } from 'lib/utils';
+import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
+import { normalizeDocumentItemByAPI } from './utils';
 import Package from './Package';
 import { packageItem } from './packageElasticMock';
 import { packageItemGraph } from './packageGraphMock';
+import { getDateTimeTerms } from './PressPackageItem/PressPackageItem';
 
-const elasticPropsItem = normalizeItem( packageItem[0], 'en-us' );
+jest.mock(
+  'components/Share/Share',
+  () => function Share() { return ''; }
+);
+jest.mock(
+  'components/popups/PopupTabbed',
+  () => function PopupTabbed() { return ''; }
+);
+jest.mock(
+  'components/popups/PopupTrigger',
+  () => function PopupTrigger() { return ''; }
+);
+jest.mock(
+  'components/Package/PackageItem/PackageItem',
+  () => function PackageItem() { return ''; }
+);
+jest.mock(
+  'components/admin/MetaTerms/MetaTerms',
+  () => function MetaTerms() { return ''; }
+);
 
-const {
-  id, createdAt, updatedAt, title, team, type, documents
-} = packageItemGraph;
+describe( '<Package /> (GraphQL API)', () => {
+  beforeEach( () => {
+    const mockedRouter = {
+      replace: jest.fn()
+    };
+    Router.router = mockedRouter;
+  } );
 
-// Structure obj for use in Package component
-const graphPropsItem = {
-  id,
-  published: createdAt,
-  modified: updatedAt,
-  team,
-  type,
-  title,
-  packageFiles: documents
-};
-
-const propsByAPI = {
-  elastic: {
-    props: {
-      item: elasticPropsItem
-    },
-    docFilesLength: elasticPropsItem.packageFiles.length
-  },
-  graphQL: {
-    props: {
-      item: graphPropsItem
-    },
-    docFilesLength: graphPropsItem.packageFiles.length
-  }
-};
-
-Object.keys( propsByAPI ).forEach( apiType => {
-  const { props } = propsByAPI[apiType];
+  const {
+    createdAt, updatedAt, title, team, type, documents
+  } = packageItemGraph;
+  const item = {
+    id: 'test-123',
+    published: createdAt,
+    modified: updatedAt,
+    team,
+    type,
+    title,
+    documents
+  };
+  const props = {
+    isAdminPreview: true,
+    useGraphQl: true,
+    item
+  };
   const Component = <Package { ...props } />;
-  const { docFilesLength } = propsByAPI[apiType];
 
-  describe( `<Package /> (${apiType} API)`, () => {
-    const wrapper = shallow( Component );
+  it( 'renders without crashing', () => {
+    const wrapper = mount( Component );
+    expect( wrapper.exists() ).toEqual( true );
+  } );
 
-    it( 'renders without crashing', () => {
-      expect( wrapper.exists() ).toEqual( true );
+  it( 'renders the correct headline', () => {
+    const wrapper = mount( Component );
+    const headline = wrapper.find( '.modal_headline' );
+
+    expect( headline.name() ).toEqual( 'h1' );
+    expect( headline.text() ).toEqual( props.item.title );
+  } );
+
+  it( 'renders the preview Notification', () => {
+    const wrapper = mount( Component );
+    const notification = wrapper.find( 'Notification' );
+    const msg = 'This is a preview of your package on Content Commons.';
+
+    expect( notification.exists() ).toEqual( true );
+    expect( notification.prop( 'msg' ) ).toEqual( msg );
+    expect( notification.prop( 'customStyles' ) )
+      .toEqual( {
+        position: 'absolute',
+        top: '0',
+        left: '0',
+        right: '0',
+        padding: '1em 1.5em',
+        fontSize: '1em',
+        backgroundColor: '#fdb81e'
+      } );
+  } );
+
+  it( 'renders the MetaTerms', () => {
+    const wrapper = mount( Component );
+    const metaTerms = wrapper.find( 'MetaTerms' );
+    const { published, modified } = props.item;
+    const terms = getDateTimeTerms( published, modified, 'LT, l' );
+
+    expect( metaTerms.exists() ).toEqual( true );
+    expect( metaTerms.prop( 'className' ) ).toEqual( 'date-time' );
+    expect( metaTerms.prop( 'unitId' ) ).toEqual( props.item.id );
+    expect( metaTerms.prop( 'terms' )[0].displayName ).toEqual( 'Updated' );
+    expect( metaTerms.prop( 'terms' )[0].name ).toEqual( 'Updated' );
+    expect( mount( metaTerms.prop( 'terms' )[0].definition ) )
+      .toEqual( mount( terms[0].definition ) );
+  } );
+
+  it( 'renders Share PopupTrigger', () => {
+    const wrapper = mount( Component );
+    const triggers = wrapper.find( 'PopupTrigger' );
+    const shareTrigger = triggers.findWhere( n => n.prop( 'tooltip' ) === 'Share package' );
+    const content = mount( shareTrigger.prop( 'content' ) );
+    const share = content.find( 'Share' );
+
+    expect( shareTrigger.exists() ).toEqual( true );
+    expect( shareTrigger.prop( 'show' ) ).toEqual( true );
+    expect( shareTrigger.prop( 'icon' ) ).toEqual( {
+      img: 'image-stub',
+      dim: 18
     } );
-
-    it( 'renders the package title', () => {
-      const headline = wrapper.find( 'ModalItem' ).prop( 'headline' );
-      expect( headline ).toEqual( props.item.title );
+    expect( content.exists() ).toEqual( true );
+    expect( content.name() ).toEqual( 'Popup' );
+    expect( content.prop( 'title' ) ).toEqual( 'Share this package.' );
+    expect( share.exists() ).toEqual( true );
+    expect( share.props() ).toEqual( {
+      id: props.item.id,
+      isPreview: props.isAdminPreview,
+      language: 'en-us',
+      link: 'The direct link to the package will appear here.',
+      site: props.item.site,
+      title: props.item.title,
+      type: 'package'
     } );
+  } );
 
-    it( 'renders the date', () => {
-      const metaTerms = wrapper.find( 'MetaTerms' );
+  it( 'renders Download PopupTrigger', () => {
+    const wrapper = mount( Component );
+    const triggers = wrapper.find( 'PopupTrigger' );
+    const downloadTrigger = triggers.findWhere( n => n.prop( 'tooltip' ) === getPluralStringOrNot( documents, 'Download file' ) );
+    const content = mount( downloadTrigger.prop( 'content' ) );
+    const downloadTab = content.find( 'PopupTabbed' );
+    const pane = downloadTab.prop( 'panes' )[0];
 
-      const { published, modified } = props.item;
-      const isUpdated = modified > published;
-      const label = isUpdated ? 'Updated' : 'Created';
-      const dateTime = isUpdated ? modified : published;
-      const formattedDateTime = moment( dateTime ).format( 'LT, l' );
-      const timeElement = mount( <time dateTime={ dateTime }>{ formattedDateTime }</time> );
-
-      const { definition, displayName, name } = metaTerms.prop( 'terms' )[0];
-
-      expect( metaTerms.exists() ).toEqual( true );
-      expect( displayName ).toEqual( label );
-      expect( name ).toEqual( label );
-      expect( mount( definition ) ).toEqual( timeElement );
+    expect( downloadTrigger.exists() ).toEqual( true );
+    expect( downloadTrigger.prop( 'position' ) ).toEqual( 'right' );
+    expect( downloadTrigger.prop( 'show' ) ).toEqual( true );
+    expect( downloadTrigger.prop( 'icon' ) ).toEqual( {
+      img: 'image-stub',
+      dim: 18
     } );
+    expect( content.exists() ).toEqual( true );
+    expect( content.name() ).toEqual( 'PopupTabbed' );
+    expect( content.prop( 'title' ) )
+      .toEqual( getPluralStringOrNot( documents, 'Package File' ) );
+    expect( downloadTab.exists() ).toEqual( true );
+    expect( downloadTab.prop( 'title' ) )
+      .toEqual( getPluralStringOrNot( documents, 'Package File' ) );
+    expect( pane.title )
+      .toEqual( getPluralStringOrNot( documents, 'Document' ) );
+    expect( mount( pane.component ) ).toEqual( mount(
+      <DownloadPkgFiles
+        files={ documents }
+        instructions={ getPluralStringOrNot( documents, 'Download Package File' ) }
+      />
+    ) );
+  } );
 
-    it( 'renders the Share button', () => {
-      const shareButton = wrapper.findWhere( n => n.prop( 'tooltip' ) === 'Share package' );
-      expect( shareButton.exists() ).toEqual( true );
-    } );
+  it( 'renders correct file count for file downloads', () => {
+    const wrapper = mount( Component );
+    const fileCountElem = wrapper.find( '.file-count' );
+    const visuallyHidden = fileCountElem.find( 'VisuallyHidden' );
 
-    it( 'renders the Download button', () => {
-      const downloadButton = wrapper.findWhere( n => n.prop( 'tooltip' ) === 'Download file' );
-      expect( downloadButton.exists() ).toEqual( true );
-    } );
+    expect( fileCountElem.text() )
+      .toEqual( `(${props.item.documents.length}) documents in this package` );
+    expect( visuallyHidden.exists() ).toEqual( true );
+  } );
 
-    it( 'renders correct file count for file downloads', () => {
-      const fileCount = wrapper.find( '.file-count' );
-      const fileCountNum = Number( fileCount.text().match( /\d+/g )[0] );
-      expect( fileCountNum ).toEqual( docFilesLength );
-    } );
+  it( 'renders the correct PackageItems', () => {
+    const wrapper = mount( Component );
+    const packageItems = wrapper.find( 'PackageItem' );
 
-    it( 'renders the correct number of PackageItems', () => {
-      const packageItemComponents = wrapper.find( 'PackageItem' );
-      expect( packageItemComponents.exists() ).toEqual( true );
-      expect( packageItemComponents ).toHaveLength( docFilesLength );
+    expect( packageItems.exists() ).toEqual( true );
+    expect( packageItems ).toHaveLength( props.item.documents.length );
+    packageItems.forEach( ( pkgItem, i ) => {
+      const file = props.item.documents[i];
+      const { useGraphQl } = props;
+      expect( pkgItem.prop( 'type' ) ).toEqual( 'DAILY_GUIDANCE' );
+      expect( pkgItem.prop( 'isAdminPreview' ) )
+        .toEqual( props.isAdminPreview );
+      expect( pkgItem.prop( 'file' ) )
+        .toEqual( normalizeDocumentItemByAPI( { file, useGraphQl } ) );
     } );
+  } );
+
+  it( 'does not call updateUrl on mount', () => {
+    mount( Component );
+
+    // updateUrl returns Router.replace call
+    expect( Router.router.replace ).not.toHaveBeenCalled();
+  } );
+} );
+
+describe( '<Package /> (Elastic API)', () => {
+  beforeEach( () => {
+    const mockedRouter = {
+      replace: jest.fn()
+    };
+    Router.router = mockedRouter;
+  } );
+  const props = {
+    isAdminPreview: false,
+    useGraphQl: false,
+    item: normalizeItem( packageItem[0], 'en-us' )
+  };
+  const Component = <Package { ...props } />;
+
+  it( 'renders without crashing', () => {
+    const wrapper = mount( Component );
+    expect( wrapper.exists() ).toEqual( true );
+  } );
+
+  it( 'renders the correct headline', () => {
+    const wrapper = mount( Component );
+    const headline = wrapper.find( '.modal_headline' );
+
+    expect( headline.name() ).toEqual( 'h1' );
+    expect( headline.text() ).toEqual( props.item.title );
+  } );
+
+  it( 'does not render the preview Notification', () => {
+    const wrapper = mount( Component );
+    const notification = wrapper.find( 'Notification' );
+
+    expect( notification.exists() ).toEqual( false );
+  } );
+
+  it( 'renders the MetaTerms', () => {
+    const wrapper = mount( Component );
+    const metaTerms = wrapper.find( 'MetaTerms' );
+    const { published, modified } = props.item;
+    const terms = getDateTimeTerms( published, modified, 'LT, l' );
+
+    expect( metaTerms.exists() ).toEqual( true );
+    expect( metaTerms.prop( 'className' ) ).toEqual( 'date-time' );
+    expect( metaTerms.prop( 'unitId' ) ).toEqual( props.item.id );
+    expect( metaTerms.prop( 'terms' )[0].displayName ).toEqual( 'Updated' );
+    expect( metaTerms.prop( 'terms' )[0].name ).toEqual( 'Updated' );
+    expect( mount( metaTerms.prop( 'terms' )[0].definition ) )
+      .toEqual( mount( terms[0].definition ) );
+  } );
+
+  it( 'renders Share PopupTrigger', () => {
+    const wrapper = mount( Component );
+    const triggers = wrapper.find( 'PopupTrigger' );
+    const shareTrigger = triggers.findWhere( n => n.prop( 'tooltip' ) === 'Share package' );
+    const content = mount( shareTrigger.prop( 'content' ) );
+    const share = content.find( 'Share' );
+
+    expect( shareTrigger.exists() ).toEqual( true );
+    expect( shareTrigger.prop( 'show' ) ).toEqual( true );
+    expect( content.exists() ).toEqual( true );
+    expect( content.name() ).toEqual( 'Popup' );
+    expect( content.prop( 'title' ) ).toEqual( 'Share this package.' );
+    expect( share.exists() ).toEqual( true );
+    expect( share.props() ).toEqual( {
+      id: props.item.id,
+      isPreview: props.isAdminPreview,
+      language: 'en-us',
+      link: 'The direct link to the package will appear here.',
+      site: props.item.site,
+      title: props.item.title,
+      type: 'package'
+    } );
+  } );
+
+  it( 'renders Download PopupTrigger', () => {
+    const wrapper = mount( Component );
+    const triggers = wrapper.find( 'PopupTrigger' );
+    const { documents } = props.item;
+    const downloadTrigger = triggers.findWhere( n => n.prop( 'tooltip' ) === getPluralStringOrNot( documents, 'Download file' ) );
+    const content = mount( downloadTrigger.prop( 'content' ) );
+    const downloadTab = content.find( 'PopupTabbed' );
+    const pane = downloadTab.prop( 'panes' )[0];
+
+    expect( downloadTrigger.exists() ).toEqual( true );
+    expect( downloadTrigger.prop( 'position' ) ).toEqual( 'right' );
+    expect( downloadTrigger.prop( 'show' ) ).toEqual( true );
+    expect( content.exists() ).toEqual( true );
+    expect( content.name() ).toEqual( 'PopupTabbed' );
+    expect( content.prop( 'title' ) )
+      .toEqual( getPluralStringOrNot( documents, 'Package File' ) );
+    expect( downloadTab.exists() ).toEqual( true );
+    expect( downloadTab.prop( 'title' ) )
+      .toEqual( getPluralStringOrNot( documents, 'Package File' ) );
+    expect( pane.title )
+      .toEqual( getPluralStringOrNot( documents, 'Document' ) );
+    expect( mount( pane.component ) ).toEqual( mount(
+      <DownloadPkgFiles
+        files={ documents }
+        instructions={ getPluralStringOrNot( documents, 'Download Package File' ) }
+      />
+    ) );
+  } );
+
+  it( 'renders correct file count for file downloads', () => {
+    const wrapper = mount( Component );
+    const fileCountElem = wrapper.find( '.file-count' );
+    const visuallyHidden = fileCountElem.find( 'VisuallyHidden' );
+
+    expect( fileCountElem.text() )
+      .toEqual( `(${props.item.documents.length}) documents in this package` );
+    expect( visuallyHidden.exists() ).toEqual( true );
+  } );
+
+  it( 'renders the correct PackageItems', () => {
+    const wrapper = mount( Component );
+    const packageItems = wrapper.find( 'PackageItem' );
+
+    expect( packageItems.exists() ).toEqual( true );
+    expect( packageItems ).toHaveLength( props.item.documents.length );
+    packageItems.forEach( ( pkgItem, i ) => {
+      const file = props.item.documents[i];
+      const { useGraphQl } = props;
+      expect( pkgItem.prop( 'type' ) ).toEqual( 'package' );
+      expect( pkgItem.prop( 'isAdminPreview' ) )
+        .toEqual( props.isAdminPreview );
+      expect( pkgItem.prop( 'file' ) )
+        .toEqual( normalizeDocumentItemByAPI( { file, useGraphQl } ) );
+    } );
+  } );
+
+  it( 'calls updateUrl on mount', () => {
+    mount( Component );
+    const { id, site } = props.item;
+    const url = `/package?id=${id}&site=${site}&language=en-us`;
+
+    // updateUrl returns Router.replace call
+    expect( Router.router.replace ).toHaveBeenCalledWith( url );
   } );
 } );

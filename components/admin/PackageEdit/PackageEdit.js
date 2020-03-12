@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@apollo/react-hooks';
+import usePublish from 'lib/hooks/usePublish';
+import useIsDirty from 'lib/hooks/useIsDirty';
 import PropTypes from 'prop-types';
 import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
@@ -39,87 +41,31 @@ const PackageEdit = props => {
   const [unpublishPackage] = useMutation( UNPUBLISH_PACKAGE_MUTATION );
   const [updatePackageStatus] = useMutation( UPDATE_PACKAGE_STATUS_MUTATION );
 
-  const saveMsgTimer = null;
-
   const [error, setError] = useState( {} );
-  const [isDirty, setIsDirty] = useState( false );
+
+  // publishOperation tells the action buttons which operation is excuting so that it can
+  // set its loading indcator on the right button
+  const [publishOperation, setPublishOperation] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [hasInitialUploadCompleted, setHasInitialUploadCompleted] = useState( false );
-  const [publishing, setPublishing] = useState( false );
 
   const [notification, setNotification] = useState( {
     notificationMessage: '',
     showNotification: false
   } );
 
+  const {
+    publishing,
+    publishError,
+    executePublishOperation,
+    handleStatusChange
+  } = usePublish(
+    startPolling,
+    stopPolling,
+    updatePackageStatus
+  );
 
-  /**
-   * If an error occurs during publish or unpublish, stop polling and display error to the user
-   * @param {string} id package id
-   * @param {sring} status package publish status
-   */
-  const handlePublishError = ( id, status ) => {
-    setError( { otherError: `ERROR: Package failed to ${status.substr( 0, status.indexOf( '_' ) ).toLowerCase()}` } );
-    stopPolling();
-    setPublishing( false );
-
-    const updatedStatus = status === 'PUBLISH_FAILURE' ? 'DRAFT' : 'PUBLISHED';
-
-    updatePackageStatus( {
-      variables: {
-        data: { status: updatedStatus },
-        where: { id }
-      }
-    } );
-  };
-
-  /**
-   * On successful publish or unpublish, stop polling and update the package status to
-   * reflect updated status
-   * @param {string} id package id
-   * @param {sring} status package publish status
-   */
-  const handlePublishSuccess = ( id, status ) => {
-    stopPolling();
-    setPublishing( false );
-
-    const updatedStatus = status === 'PUBLISH_SUCCESS' ? 'PUBLISHED' : 'DRAFT';
-    const updatedPublishAt = status === 'PUBLISH_SUCCESS' ? new Date().toISOString() : null;
-
-    updatePackageStatus( {
-      variables: {
-        data: {
-          status: updatedStatus,
-          publishedAt: updatedPublishAt
-        },
-        where: { id }
-      }
-    } );
-  };
-
-  /**
-   * The publish and unpublish actions start a poll to detect a publish status change to the package
-   * via its status prop or detect an error.
-   */
-  const handleStatusChange = () => {
-    const id = data?.pkg?.id;
-    const status = data?.pkg?.status;
-
-    if ( status === 'PUBLISH_FAILURE' || status === 'UNPUBLISH_FAILURE' ) {
-      handlePublishError( id, status );
-    }
-
-    if ( status === 'PUBLISH_SUCCESS' || status === 'UNPUBLISH_SUCCESS' ) {
-      handlePublishSuccess( id, status );
-      router.push( '/admin/dashboard' );
-    }
-  };
-
-  useEffect( () => () => {
-    clearTimeout( saveMsgTimer );
-    stopPolling();
-  }, [] );
-
+  const isDirty = useIsDirty( data?.pkg );
 
   useEffect( () => {
     if ( data && data.pkg ) {
@@ -135,7 +81,7 @@ const PackageEdit = props => {
       setHasInitialUploadCompleted( router.query.action !== 'create' );
 
       // When the data changes, check status
-      handleStatusChange();
+      handleStatusChange( data.pkg );
     }
   }, [data] );
 
@@ -155,24 +101,6 @@ const PackageEdit = props => {
     !packageId || ( data && data.pkg && !!data.pkg.publishedAt )
   );
 
-  /**
-   * Execute publish or unpublish mutation and start polling
-   * @param {function} pulishFunc publish or unpublish graphql mutation
-   */
-  const executePublishOperation = async pulishFunc => {
-    if ( !publishing ) {
-      try {
-        setPublishing( true );
-        await pulishFunc( { variables: { id: packageId } } );
-        startPolling( 100 );
-      } catch ( err ) {
-        setPublishing( false );
-        setError( err );
-        stopPolling();
-      }
-    }
-  };
-
 
   const handleExit = () => {
     router.push( { pathname: '/admin/dashboard' } );
@@ -189,11 +117,18 @@ const PackageEdit = props => {
   };
 
   const handlePublish = async () => {
-    executePublishOperation( publishPackage );
+    setPublishOperation( 'publish' );
+    executePublishOperation( packageId, publishPackage );
+  };
+
+  const handlePublishChanges = async () => {
+    setPublishOperation( 'publishChanges' );
+    executePublishOperation( packageId, publishPackage );
   };
 
   const handleUnPublish = async () => {
-    executePublishOperation( unpublishPackage );
+    setPublishOperation( 'unpublish' );
+    executePublishOperation( packageId, unpublishPackage );
   };
 
   const centeredStyles = {
@@ -253,15 +188,20 @@ const PackageEdit = props => {
               deleteConfirm: handleDeleteConfirm,
               save: handleExit,
               publish: handlePublish,
-              publishChanges: () => console.log( 'publish update' ), // handlePublish,
+              publishChanges: handlePublishChanges,
               unpublish: handleUnPublish
             } }
             show={ {
               delete: true, // package has been completed, show delete in the event user wants to delete instead of uploading files
               save: hasInitialUploadCompleted,
               publish: hasInitialUploadCompleted && pkg.status === 'DRAFT',
-              publishChanges: false,
+              publishChanges: pkg.publishedAt && isDirty,
               unpublish: pkg.status === 'PUBLISHED'
+            } }
+            loading={ {
+              publish: publishing && publishOperation === 'publish',
+              publishChanges: publishing && publishOperation === 'publishChanges',
+              unpublish: publishing && publishOperation === 'unpublish'
             } }
           />
         </ProjectHeader>
@@ -269,6 +209,7 @@ const PackageEdit = props => {
 
       <div style={ centeredStyles }>
         <ApolloError error={ error } />
+        <ApolloError error={ publishError } />
       </div>
       { /* Form data saved notification */ }
       <Notification
@@ -281,7 +222,6 @@ const PackageEdit = props => {
         pkg={ pkg }
         updateNotification={ updateNotification }
         hasInitialUploadCompleted={ hasInitialUploadCompleted }
-        setIsDirty={ setIsDirty }
       >
         <PackageFiles pkg={ pkg } hasInitialUploadCompleted={ hasInitialUploadCompleted } />
       </PackageDetailsFormContainer>

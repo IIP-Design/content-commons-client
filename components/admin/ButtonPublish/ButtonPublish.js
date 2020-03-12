@@ -21,7 +21,7 @@ const ButtonPublish = props => {
           <Fragment>
             { ( ( status === 'PUBLISHED' || status === 'PUBLISHING' ) && updated )
               && (
-                <Button className={ setButtonState( 'edit' ) } onClick={ handlePublish }>Publish Changes</Button>
+                <Button className={ setButtonState( 'edit basic' ) } onClick={ handlePublish }>Publish Changes</Button>
               ) }
             <Button className="action-btn btn--publish" onClick={ handleUnPublish }>Unpublish</Button>
           </Fragment>

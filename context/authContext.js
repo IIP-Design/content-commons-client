@@ -8,7 +8,6 @@ import {
 import { useRouter } from 'next/router';
 import { redirectTo, isDevEnvironment } from 'lib/browser';
 import { isRestrictedPage } from 'lib/authentication';
-import { Loader } from 'semantic-ui-react';
 import cookie from 'js-cookie';
 import cookies from 'next-cookies';
 
@@ -49,12 +48,14 @@ function AuthProvider( props ) {
 
 
   // Attempt to fetch user
-  const { data, loading: userLoading, error: userError } = useQuery( CURRENT_USER_QUERY, {
-    ssr: false
+  const { data, loading: userLoading } = useQuery( CURRENT_USER_QUERY, {
+    ssr: false,
+    fetchPolicy: 'network-only'
   } );
 
+
   // Sign in mutation
-  const [signIn, { data: signInData, loading: signInLoading, error: signInError }] = useMutation(
+  const [signIn, { loading: signInLoading, error: signInError }] = useMutation(
     CLOUDFLARE_SIGNIN_MUTATION, {
       refetchQueries: [{ query: CURRENT_USER_QUERY }]
     }
@@ -73,6 +74,7 @@ function AuthProvider( props ) {
       const url = `${protocol}//${hostname}:${port}`;
       window.location = `https://america.cloudflareaccess.com/cdn-cgi/access/logout?returnTo=${url}`;
       cookie.remove( 'CF_Authorization' );
+      cookie.remove( 'ES_TOKEN' );
       router.push( '/' );
     }
   } );
@@ -100,16 +102,6 @@ function AuthProvider( props ) {
     }
   };
 
-
-  // if ( userLoading ) {
-  //   return (
-  //     <Loader size="medium" active> Loading </Loader>
-  //   );
-  // }
-
-  // if ( userError ) {
-  //   return <div>Error</div>;
-  // }
 
   const logout = async () => signOut();
   const register = () => console.log( 'register' );

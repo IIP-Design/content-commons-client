@@ -72,7 +72,6 @@ const PackageDetailsFormContainer = props => {
     if ( isUpdateNeeded( values, prevValues ) ) {
       await update( values, pkg.documents );
       setShowNotification( true );
-      props.setIsDirty( true );
       startTimeout();
     }
   };
@@ -89,7 +88,7 @@ const PackageDetailsFormContainer = props => {
   const getFileValues = array => (
     array.reduce( ( acc, file ) => {
       const {
-        id, bureaus, filename, tags, title, use, visibility
+        id, bureaus, filename, countries, title, use, visibility
       } = file;
       return {
         ...acc,
@@ -97,7 +96,7 @@ const PackageDetailsFormContainer = props => {
           id,
           title: title || filename,
           bureaus: getDropdownIds( bureaus ),
-          tags: getDropdownIds( tags ),
+          countries: getDropdownIds( countries ),
           use: use?.id || '',
           visibility
         }
@@ -158,8 +157,7 @@ const PackageDetailsFormContainer = props => {
 
 PackageDetailsFormContainer.propTypes = {
   id: PropTypes.string,
-  children: PropTypes.node, // eslint-disable-line
-  setIsDirty: PropTypes.func,
+  children: PropTypes.node, // eslint-disable-line 
   pkg: PropTypes.shape( {
     id: PropTypes.string,
     title: PropTypes.string,

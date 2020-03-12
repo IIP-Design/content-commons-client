@@ -45,11 +45,9 @@ const PackageFiles = props => {
    * @param {array} filesToRemove
    */
   const handleSave = async ( filesToSave, filesToRemove ) => {
-    filesToRemove.forEach( async file => {
-      await deleteFile( pkg, file );
-    } );
+    await Promise.all( filesToRemove.map( file => deleteFile( pkg, file ) ) );
 
-    return Promise.all( filesToSave.map( async file => {
+    return Promise.all( filesToSave.map( file => {
       if ( file.input ) {
         return createFile( pkg, file, handleUploadProgress );
       }
