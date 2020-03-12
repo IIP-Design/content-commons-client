@@ -5,7 +5,6 @@ import { getCount, getPluralStringOrNot, getPreviewNotificationStyles } from 'li
 import {
   Card, Segment, Dimmer, Loader
 } from 'semantic-ui-react';
-
 import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import ModalItem from 'components/modals/ModalItem/ModalItem';
@@ -15,11 +14,12 @@ import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
 import Share from 'components/Share/Share';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 import PackageItem from './PackageItem/PackageItem';
-import { normalizeDocumentItemByAPI, getDateTimeTerms, setElasticPkgDocs, getElasticPkgDocs } from './utils';
+import {
+  normalizeDocumentItemByAPI, getDateTimeTerms, getElasticPkgDocs
+} from './utils';
 
 import './Package.scss';
 
@@ -49,13 +49,13 @@ const Package = props => {
     if ( useGraphQl ) {
       setFetchedDocs( documents );
     } else {
-      const fetchDocs = async () => {
-        setIsLoading( true );
+      const fetchElasticDocs = async () => {
+        setIsLoading( true )
         const docs = await getElasticPkgDocs( documents );
         setFetchedDocs( docs );
         setIsLoading( false );
       };
-      fetchDocs();
+      fetchElasticDocs();
     }
   }, [] );
 

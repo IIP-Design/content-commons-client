@@ -64,20 +64,15 @@ export const getDateTimeTerms = ( createdAt, updatedAt, format ) => {
 
 /*
  * Request documents for a package from Elasticsearch
- * Set docs for component via callback fn
  * @param docs array of objects w shape { id, item }
- * @param cb callback fn
  */
-export const setElasticPkgDocs = async ( documents, cb ) => {
-  const docIds = documents.map( doc => doc.id );
-  const responseHits = await packageDocumentsRequest( docIds );
-  const docs = getDataFromHits( responseHits ).map( hit => hit._source );
-  return cb( docs );
-};
-
 export const getElasticPkgDocs = async documents => {
-  const docIds = documents.map( doc => doc.id );
-  const responseHits = await packageDocumentsRequest( docIds );
-  const docs = getDataFromHits( responseHits ).map( hit => hit._source );
-  return docs;
+  try {
+    const docIds = documents.map( doc => doc.id );
+    const responseHits = await packageDocumentsRequest( docIds );
+    const docs = getDataFromHits( responseHits ).map( hit => hit._source );
+    return docs;
+  } catch( error ) {
+    return error;
+  }  
 };
