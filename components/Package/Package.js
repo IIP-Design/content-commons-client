@@ -20,7 +20,6 @@ import PackageItem from './PackageItem/PackageItem';
 import {
   normalizeDocumentItemByAPI, getDateTimeTerms, getElasticPkgDocs
 } from './utils';
-
 import './Package.scss';
 
 const Package = props => {
@@ -44,15 +43,20 @@ const Package = props => {
 
   const [isLoading, setIsLoading] = useState( false );
   const [fetchedDocs, setFetchedDocs] = useState( [] );
+  const [error, setError] = useState( null );
 
   useEffect( () => {
     if ( useGraphQl ) {
       setFetchedDocs( documents );
     } else {
       const fetchElasticDocs = async () => {
-        setIsLoading( true )
-        const docs = await getElasticPkgDocs( documents );
-        setFetchedDocs( docs );
+        setIsLoading( true );
+        try {
+          const docs = await getElasticPkgDocs( documents );
+          setFetchedDocs( docs );
+        } catch ( error ) {
+          setError( error );
+        }
         setIsLoading( false );
       };
       fetchElasticDocs();
@@ -151,6 +155,7 @@ const Package = props => {
               : 'There are no files associated with this package.' }
           </Card.Group>
         ) }
+        { error && <div className="error-message">Error occurred with package documents request.</div> }
       </div>
     </ModalItem>
   );
