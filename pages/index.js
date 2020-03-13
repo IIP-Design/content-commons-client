@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Featured from 'components/Featured/Featured';
 import { clearFilters } from 'lib/redux/actions/filter';
 import { loadFeatured } from 'components/Featured/actions';
 import { loadPostTypes } from 'lib/redux/actions/postType';
 import { v4 } from 'uuid';
+import { fetchUser } from 'context/authContext';
 
 const featuredData = [
   {
@@ -78,11 +80,20 @@ const featuredData = [
 ];
 
 class Landing extends Component {
-  static async getInitialProps ( { store } ) {
+  static async getInitialProps ( { apolloClient, store, } ) {
+    const featuredDataForLanding = [...featuredData];
+
+    const user = await fetchUser( apolloClient );
+
+    if ( !user ) {
+      // remove internal packages from query
+      featuredDataForLanding.shift();
+    }
+
     // trigger parellel loading calls
     const resetFilters = store.dispatch( clearFilters() );
-    const featured = store.dispatch( loadFeatured( featuredData ) );
-    const postTypes = store.dispatch( loadPostTypes() );
+    const featured = store.dispatch( loadFeatured( featuredDataForLanding ) );
+    const postTypes = store.dispatch( loadPostTypes( user ) );
 
     // await completion
     await Promise.all( [
@@ -91,16 +102,21 @@ class Landing extends Component {
       postTypes
     ] );
 
-    return {};
+    return { featuredDataForLanding };
   }
 
   render() {
+    const { featuredDataForLanding } = this.props;
     return (
       <section>
-        <Featured data={ featuredData } />
+        <Featured data={ featuredDataForLanding } />
       </section>
     );
   }
 }
+
+Landing.propTypes = {
+  featuredDataForLanding: PropTypes.array
+};
 
 export default Landing;

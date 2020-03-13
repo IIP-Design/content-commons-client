@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Results from 'components/Results/Results/';
+import { fetchUser } from 'context/authContext';
 
 import {
   updateLanguage, updateSort, updateSearchTerm, createRequest
@@ -14,11 +15,13 @@ import { loadLanguages } from 'lib/redux/actions/language';
 
 class ResultsPage extends Component {
   // Get search params from url
-  static async getInitialProps ( {
+  static async getInitialProps( {
     query: {
       language, term, sortBy, postTypes, date, categories, sources
-    }, store
+    }, apolloClient, store
   } ) {
+    const user = await fetchUser( apolloClient );
+
     // trigger parallel loading calls
     const languageUpdate = store.dispatch( updateLanguage( language || 'en-us' ) );
     const sortByUpdate = store.dispatch( updateSort( sortBy || 'published' ) );
@@ -37,7 +40,7 @@ class ResultsPage extends Component {
     await sourceChange;
 
     // after all search values are updated, execute search request
-    store.dispatch( createRequest() );
+    store.dispatch( createRequest( user ) );
     // load filter menus if needed
     const { global } = store.getState();
 
@@ -49,7 +52,7 @@ class ResultsPage extends Component {
     let langs;
 
     if ( !global.postTypes.list.length ) {
-      types = store.dispatch( loadPostTypes() );
+      types = store.dispatch( loadPostTypes( user ) );
     }
 
     if ( !global.languages.list.length ) {
@@ -65,9 +68,7 @@ class ResultsPage extends Component {
   }
 
   render() {
-    return (
-      <Results />
-    );
+    return <Results />;
   }
 }
 

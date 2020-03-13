@@ -16,10 +16,21 @@ const allowedRolesForRestrictedPages = ['EDITOR', 'TEAM_ADMIN', 'ADMIN'];
 
 export const hasPagePermissions = user => user.permissions.some( permission => allowedRolesForRestrictedPages.includes( permission ) );
 
+export const fetchUser = async apolloClient => {
+  // const cfAuth = getCloudFlareToken( ctx );
+  try {
+    const { data: { user } } = await apolloClient.query( { query: CURRENT_USER_QUERY } );
+    return user;
+  } catch ( err ) {
+    return null;
+  }
+};
+
+
 const getCloudFlareToken = ctx => {
   // CloudFlare is not connected to the dev environment
   // so send replacement
-  if ( isDevEnvironment( ctx ) ) {
+  if ( isDevEnvironment() ) {
     return 'cfToken';
   }
 
@@ -44,6 +55,8 @@ export const canAccessPage = async ctx => {
 function AuthProvider( props ) {
   const client = useApolloClient();
   const router = useRouter();
+
+  // ensure signIn only called once
   const [attemptToSignIntoCF, setAttemptToSignIntoCF] = useState( false );
 
 
