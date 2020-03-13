@@ -179,6 +179,7 @@ const FilterMenuItem = props => {
         { props.filter } <Icon name={ filterItemOpen ? 'chevron up' : 'chevron down' } />
       </span>
       <Form className={ `${filterItemOpen ? 'filterMenu_options show' : 'filterMenu_options'} ${props.className}` }>
+        { props.options.length > 0 && props.searchInput }
         <Form.Group>
           {
            formatOptions( options, filter ).map( option => ( ( formItem === 'checkbox' )
@@ -197,7 +198,8 @@ const FilterMenuItem = props => {
 };
 
 FilterMenuItem.defaultProps = {
-  className: ''
+  className: '',
+  searchInput: null
 };
 
 FilterMenuItem.propTypes = {
@@ -210,6 +212,7 @@ FilterMenuItem.propTypes = {
   name: PropTypes.string,
   term: PropTypes.string,
   language: PropTypes.string,
+  searchInput: PropTypes.oneOfType( [PropTypes.node, () => null] ),
   /* eslint-disable-next-line react/no-unused-prop-types */
   selected: PropTypes.oneOfType( [PropTypes.string, PropTypes.array] )
 };
