@@ -80,19 +80,20 @@ const featuredData = [
 ];
 
 class Landing extends Component {
-  static async getInitialProps ( { apolloClient, store, } ) {
+  static async getInitialProps ( ctx ) {
+    const { store } = ctx;
     const featuredDataForLanding = [...featuredData];
 
-    const user = await fetchUser( apolloClient );
+    const user = await fetchUser( ctx );
 
     if ( !user ) {
-      // remove internal packages from query
+      // remove internal packages (internal conent) from query if user is not present
       featuredDataForLanding.shift();
     }
 
     // trigger parellel loading calls
     const resetFilters = store.dispatch( clearFilters() );
-    const featured = store.dispatch( loadFeatured( featuredDataForLanding ) );
+    const featured = store.dispatch( loadFeatured( featuredDataForLanding, user ) );
     const postTypes = store.dispatch( loadPostTypes( user ) );
 
     // await completion

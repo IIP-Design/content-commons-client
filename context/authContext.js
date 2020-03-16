@@ -16,17 +16,10 @@ const allowedRolesForRestrictedPages = ['EDITOR', 'TEAM_ADMIN', 'ADMIN'];
 
 export const hasPagePermissions = user => user.permissions.some( permission => allowedRolesForRestrictedPages.includes( permission ) );
 
-export const fetchUser = async apolloClient => {
-  // const cfAuth = getCloudFlareToken( ctx );
-  try {
-    const { data: { user } } = await apolloClient.query( { query: CURRENT_USER_QUERY } );
-    return user;
-  } catch ( err ) {
-    return null;
-  }
-};
-
-
+/**
+ * Return the cookie that CloudFlare sets upon successful sign in to
+ * @param {*} ctx next.js context object
+ */
 const getCloudFlareToken = ctx => {
   // CloudFlare is not connected to the dev environment
   // so send replacement
@@ -40,11 +33,42 @@ const getCloudFlareToken = ctx => {
   /* eslint-enable */
 };
 
+/**
+ * Returns a user if both qa CloudFlare token AND
+ * valid user exist, else return null
+ * @param {obj} ctx next.js context object
+ */
+export const fetchUser = async ctx => {
+  const cfAuth = getCloudFlareToken( ctx );
+
+  if ( !cfAuth ) {
+    return null;
+  }
+
+  try {
+    const {
+      data: { user }
+    } = await ctx.apolloClient.query( { query: CURRENT_USER_QUERY } );
+    if ( user ) {
+      const { ES_TOKEN } = cookies( ctx );
+      return { ...user, esToken: ES_TOKEN };
+    }
+    return null;
+  } catch ( err ) {
+    return null;
+  }
+};
+
+/**
+ * Checks to see if on a protected page and if so
+ * verify a logged user with applicable permissions
+ * @param {*} ctx ext.js context object
+ */
 export const canAccessPage = async ctx => {
   if ( isRestrictedPage( ctx.pathname ) ) {
-    const cfAuth = getCloudFlareToken( ctx );
-    const { data: { user } } = await ctx.apolloClient.query( { query: CURRENT_USER_QUERY } );
-    if ( !cfAuth || !user || !hasPagePermissions( user ) ) {
+    const user = fetchUser( ctx );
+
+    if ( !user || !hasPagePermissions( user ) ) {
       return false;
     }
   }

@@ -15,12 +15,14 @@ import { loadLanguages } from 'lib/redux/actions/language';
 
 class ResultsPage extends Component {
   // Get search params from url
-  static async getInitialProps( {
-    query: {
-      language, term, sortBy, postTypes, date, categories, sources
-    }, apolloClient, store
-  } ) {
-    const user = await fetchUser( apolloClient );
+  static async getInitialProps( ctx ) {
+    const {
+      query: {
+        language, term, sortBy, postTypes, date, categories, sources
+      }, store
+    } = ctx;
+
+    const user = await fetchUser( ctx );
 
     // trigger parallel loading calls
     const languageUpdate = store.dispatch( updateLanguage( language || 'en-us' ) );
