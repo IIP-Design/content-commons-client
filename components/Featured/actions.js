@@ -16,7 +16,7 @@ import {
 } from './constants';
 
 
-export const loadFeatured = data => async ( dispatch, getState ) => {
+export const loadFeatured = ( data, user ) => async ( dispatch, getState ) => {
   const timeSinceLastLoad = getState().featured.lastLoad;
   const isStale = isDataStale( timeSinceLastLoad );
   // deal with server errors and axios
@@ -29,21 +29,23 @@ export const loadFeatured = data => async ( dispatch, getState ) => {
       const { component, props } = d;
       switch ( component ) {
         case 'priorities':
-          return typePrioritiesRequest( props.term, props.categories, props.locale ).then( res => ( {
-            component,
-            ...props,
-            data: res,
-            key: v4()
-          } ) );
+          return typePrioritiesRequest( props.term, props.categories, props.locale, user ).then(
+            res => ( {
+              component,
+              ...props,
+              data: res,
+              key: v4()
+            } )
+          );
         case 'packages':
-          return typeRequestDesc( props.postType ).then( res => ( {
+          return typeRequestDesc( props.postType, user ).then( res => ( {
             component,
             ...props,
             data: res,
             key: v4()
           } ) );
         case 'recents':
-          return typeRecentsRequest( props.postType, props.locale ).then( res => ( {
+          return typeRecentsRequest( props.postType, props.locale, user ).then( res => ( {
             component,
             ...props,
             data: res,
