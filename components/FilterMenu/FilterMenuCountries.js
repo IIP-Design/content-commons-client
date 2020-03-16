@@ -54,7 +54,7 @@ const FilterMenuCountries = props => {
     <FilterMenuItem
       className="clamped"
       filter="Country"
-      name="country"
+      name="countries"
       selected={ props.selected }
       options={ getMenuOptions() }
       formItem="checkbox"
