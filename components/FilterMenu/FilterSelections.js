@@ -95,7 +95,7 @@ class FilterSelections extends Component {
     const { filter, global } = this.props;
 
     // manually set filter order due to Safari issue
-    const filterOrder = ['date', 'postTypes', 'sources', 'categories'];
+    const filterOrder = ['date', 'postTypes', 'sources', 'categories', 'countries'];
 
     // loop thru filters to build selection list
     filterOrder.forEach( key => {
