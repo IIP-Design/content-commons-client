@@ -68,7 +68,7 @@ class FilterMenu extends Component {
           />
           { isPressGuidance
             /* Countries */
-            ? <FilterMenuCountries selected={ [] } />
+            ? <FilterMenuCountries selected={ filter.countries } />
             : (
               /* Category */
               <FilterMenuItem
