@@ -6,11 +6,12 @@ import {
   updateLanguage, updateSort, updateSearchTerm, createRequest
 } from 'lib/redux/actions/search';
 import {
-  postTypeUpdate, dateUpdate, categoryUpdate, sourceUpdate
+  postTypeUpdate, dateUpdate, categoryUpdate, countryUpdate, sourceUpdate
 } from 'lib/redux/actions/filter';
 import { loadPostTypes } from 'lib/redux/actions/postType';
 import { loadSources } from 'lib/redux/actions/source';
 import { loadCategories } from 'lib/redux/actions/category';
+import { loadCountries } from 'lib/redux/actions/country';
 import { loadLanguages } from 'lib/redux/actions/language';
 
 class ResultsPage extends Component {
@@ -18,7 +19,7 @@ class ResultsPage extends Component {
   static async getInitialProps( ctx ) {
     const {
       query: {
-        language, term, sortBy, postTypes, date, categories, sources
+        language, term, sortBy, postTypes, date, categories, sources, countries
       }, store
     } = ctx;
 
@@ -31,6 +32,7 @@ class ResultsPage extends Component {
     const termUpdate = store.dispatch( updateSearchTerm( term ) );
     const dateChange = store.dispatch( dateUpdate( date ) );
     const categoryChange = store.dispatch( categoryUpdate( categories ) );
+    const countryChange = store.dispatch( countryUpdate( countries ) );
     const sourceChange = store.dispatch( sourceUpdate( sources ) );
 
     await languageUpdate;
@@ -39,6 +41,7 @@ class ResultsPage extends Component {
     await termUpdate;
     await dateChange;
     await categoryChange;
+    await countryChange;
     await sourceChange;
 
     // after all search values are updated, execute search request
@@ -50,6 +53,7 @@ class ResultsPage extends Component {
     // Always load srcs and cats based on query
     const srcs = store.dispatch( loadSources() );
     const cats = store.dispatch( loadCategories() );
+    const countrieses = store.dispatch( loadCountries() );
 
     let types;
     let langs;
@@ -66,6 +70,7 @@ class ResultsPage extends Component {
     if ( srcs ) await srcs;
     if ( cats ) await cats;
     if ( langs ) await langs;
+    if ( countrieses ) await countrieses;
 
     return {};
   }
