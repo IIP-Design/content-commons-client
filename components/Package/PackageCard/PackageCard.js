@@ -65,6 +65,7 @@ const PackageCard = ( { item, stretch } ) => {
           >
             <ul>
               { !fetchedDocs && <Segment><Dimmer active inverted><Loader>Loading...</Loader></Dimmer></Segment> }
+              { !fetchedDocs?.length && <li>There are no documents for this package.</li> }
               { fetchedDocs?.map( doc => <li key={ doc.id }>{ doc.filename }</li> ) }
               { error && <li className="error-message">Error occurred with package documents request.</li> }
             </ul>

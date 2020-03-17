@@ -2,12 +2,15 @@
 
 .popover {
   position: relative;
+  display: inline-block;
   width: 100%;
 
   &_trigger {
     -webkit-appearance: none;
+    -moz-appearance: none;
     border: none;
     padding: 0;
+    background: transparent;
     color: $light-blue;
     cursor: pointer;
 
@@ -37,6 +40,7 @@
       background: $light-grey;
       width: 20px;
       height: 20px;
+      -webkit-clip-path: polygon(50% 0%, 0% 100%, 100% 100%, 100% 100%);
       clip-path: polygon(50% 0%, 0% 100%, 100% 100%, 100% 100%);
     }    
   }
