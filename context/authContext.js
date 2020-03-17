@@ -14,6 +14,11 @@ import cookies from 'next-cookies';
 const AuthContext = React.createContext();
 const allowedRolesForRestrictedPages = ['EDITOR', 'TEAM_ADMIN', 'ADMIN'];
 
+/**
+ * Check user page permissions
+ * Exported to make avaiale for SSR
+ * @param {object} user graphQL user
+ */
 export const hasPagePermissions = user => user.permissions.some( permission => allowedRolesForRestrictedPages.includes( permission ) );
 
 /**
@@ -36,11 +41,13 @@ const getCloudFlareToken = ctx => {
 /**
  * Returns a user if both qa CloudFlare token AND
  * valid user exist, else return null
+ * Exported to make avaiale for SSR
  * @param {obj} ctx next.js context object
  */
 export const fetchUser = async ctx => {
   const cfAuth = getCloudFlareToken( ctx );
 
+  // CloudFlare token MUST be available, if not return null
   if ( !cfAuth ) {
     return null;
   }
@@ -50,6 +57,7 @@ export const fetchUser = async ctx => {
       data: { user }
     } = await ctx.apolloClient.query( { query: CURRENT_USER_QUERY } );
     if ( user ) {
+      // add token to authenticate to elastic api to user
       const { ES_TOKEN } = cookies( ctx );
       return { ...user, esToken: ES_TOKEN };
     }
@@ -62,12 +70,15 @@ export const fetchUser = async ctx => {
 /**
  * Checks to see if on a protected page and if so
  * verify a logged user with applicable permissions
+ * Exported to make avaiale for SSR
  * @param {*} ctx ext.js context object
  */
 export const canAccessPage = async ctx => {
+  // are we on a page that requires permissions?
   if ( isRestrictedPage( ctx.pathname ) ) {
-    const user = fetchUser( ctx );
+    const user = await fetchUser( ctx );
 
+    // ensure a user and a user with proper permissions
     if ( !user || !hasPagePermissions( user ) ) {
       return false;
     }
