@@ -16,6 +16,39 @@
 
   &_grid {
     padding-bottom: 1em;
+
+    &.ui.grid {
+      > .column:not(.row) {        
+        width: auto;
+        @media screen and (max-width: 992px) {
+          width: 50%;
+        }
+        @media screen and (max-width: 767px) {
+          width: 100%;
+        }
+
+        .ui.card.package_card {
+          @media screen and (max-width: 992px) {
+             min-width: auto; 
+             max-width: 100%;
+          }
+        }
+
+        &.card-min-width {
+
+          > .ui.card.package_card {
+            min-width: 260px;
+          }
+        }                
+
+        &.flex-column {
+          flex: 1;
+          @media screen and (max-width: 992px) {
+            flex: auto;
+          }
+        }
+      }
+    }
   }
 
   &_header {
