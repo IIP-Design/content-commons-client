@@ -91,6 +91,7 @@
 
     &--profile_settings,
     &--profile_settings:hover {
+      pointer-events: none;
       color: $alt-grey;
       cursor: default;
     }
