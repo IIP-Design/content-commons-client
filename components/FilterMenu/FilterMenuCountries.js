@@ -8,7 +8,7 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { COUNTRIES_REGIONS_QUERY } from 'lib/graphql/queries/document';
 import { getCount } from 'lib/utils';
 
-const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
+// const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
 const FilterMenuCountries = props => {
   const { loading, error, data } = useQuery( COUNTRIES_REGIONS_QUERY );
@@ -17,12 +17,15 @@ const FilterMenuCountries = props => {
   if ( error ) return <ApolloError error={ error } />;
   if ( loading ) {
     return (
-      <Loader
-        active
-        inline
-        size="tiny"
-        content="Loading..."
-      />
+      <div style={ { display: 'flex', alignItems: 'center', marginTop: '0.625rem' } }>
+        <Loader
+          active
+          inline
+          size="mini"
+          style={ { marginRight: '0.25rem' } }
+        />
+        <span style={ { color: '#112e51', fontSize: '0.888888889rem' } }>Loading...</span>
+      </div>
     );
   }
   if ( !data ) return null;
@@ -81,4 +84,5 @@ FilterMenuCountries.propTypes = {
   selected: PropTypes.array
 };
 
-export default React.memo( FilterMenuCountries, areEqual );
+// export default React.memo( FilterMenuCountries, areEqual );
+export default FilterMenuCountries;
