@@ -34,9 +34,14 @@ const Packages = props => {
             <a className="latestPackages_header_link">Browse All</a>
           </Link>
         </div>
-        <Grid columns="equal" stackable className="latestPackages_grid">
+        <Grid className="latestPackages_grid">
           { packages.map( pkg => (
-            <Grid.Column key={ pkg.id }><PackageCard item={ pkg } /></Grid.Column>
+            <Grid.Column
+              key={ pkg.id }
+              className={ packages.length > 3 ? 'flex-column' : 'card-min-width' }
+            >
+              <PackageCard item={ pkg } />
+            </Grid.Column>
           ) ) }
         </Grid>
       </div>
