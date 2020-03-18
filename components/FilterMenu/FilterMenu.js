@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/filter';
+import { getCount } from 'lib/utils';
 import FilterMenuItem from './FilterMenuItem';
 import FilterSelections from './FilterSelections';
 import FilterMenuCountries from './FilterMenuCountries';
@@ -33,7 +34,10 @@ class FilterMenu extends Component {
   render() {
     const { filter, global } = this.props;
 
-    const isPressGuidance = global.postTypes.list.some( postType => postType.display_name === 'Guidance Packages' );
+    const hasCategories = getCount( global.categories.list ) > 0;
+    const hasFilterType = type => (
+      filter.postTypes.some( postType => postType === type )
+    );
 
     return (
       <section className="filterMenu_wrapper">
@@ -66,11 +70,9 @@ class FilterMenu extends Component {
             options={ global.sources.list }
             formItem="checkbox"
           />
-          { isPressGuidance
-            /* Countries */
-            ? <FilterMenuCountries selected={ filter.countries } />
-            : (
-              /* Category */
+          { /* Category */ }
+          { hasCategories
+            && (
               <FilterMenuItem
                 filter="Category"
                 name="categories"
@@ -79,6 +81,10 @@ class FilterMenu extends Component {
                 formItem="checkbox"
               />
             ) }
+
+          { /* Countries */ }
+          { /* can also display for package, but need to adj es query */ }
+          { hasFilterType( 'document' ) && <FilterMenuCountries selected={ filter.countries } /> }
         </div>
       </section>
     );
