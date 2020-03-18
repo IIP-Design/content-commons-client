@@ -2,7 +2,8 @@ import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
-import CountriesRegionsDropdown, { COUNTRIES_REGIONS_QUERY } from './CountriesRegionsDropdown';
+import { COUNTRIES_REGIONS_QUERY } from 'lib/graphql/queries/document';
+import CountriesRegionsDropdown from './CountriesRegionsDropdown';
 
 const props = {
   id: '123xyz',
