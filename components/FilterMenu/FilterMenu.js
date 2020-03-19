@@ -61,7 +61,6 @@ const FilterMenu = props => {
           ) }
 
         { /* Countries */ }
-        { /* can also display for package, but need to adj es query */ }
         { hasFilterType( 'document' ) && <FilterMenuCountries selected={ filter.countries } /> }
       </div>
     </section>
