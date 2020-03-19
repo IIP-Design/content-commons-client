@@ -1,9 +1,9 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
-import { COUNTRIES_REGIONS_QUERY } from 'lib/graphql/queries/document';
 import { getCount } from 'lib/utils';
 import FilterMenuCountries from '../FilterMenuCountries';
+import { countriesQueryMocks as mocks } from '../mocks';
 
 jest.mock(
   'components/FilterMenu/FilterMenuItem',
@@ -13,68 +13,6 @@ jest.mock(
 const props = {
   selected: ['Angola', 'Albania']
 };
-
-const mocks = [
-  {
-    request: {
-      query: COUNTRIES_REGIONS_QUERY
-    },
-    result: {
-      data: {
-        countries: [
-          {
-            __typename: 'Country',
-            id: 'ck6krp96x3f3m0720yet8wkch',
-            name: 'Antigua and Barbuda',
-            abbr: 'WHA',
-            region: {
-              __typename: 'Region',
-              id: 'ck6krp96o3f3k0720aoufd395',
-              name: 'Bureau of Western Hemisphere Affairs',
-              abbr: 'WHA'
-            }
-          },
-          {
-            __typename: 'Country',
-            id: 'ck6krp96x3f3n0720q1289gee',
-            name: 'Angola',
-            abbr: 'AF',
-            region: {
-              __typename: 'Region',
-              id: 'ck6krp96g3f3c0720c1w09bx1',
-              name: 'Bureau of African Affairs',
-              abbr: 'AF'
-            }
-          },
-          {
-            __typename: 'Country',
-            id: 'ck6krp96y3f3o0720mg6m44hb',
-            name: 'Algeria',
-            abbr: 'NEA',
-            region: {
-              __typename: 'Region',
-              id: 'ck6krp96o3f3i07201zo5ai59',
-              name: 'Bureau of Near Eastern Affairs',
-              abbr: 'NEA'
-            }
-          },
-          {
-            __typename: 'Country',
-            id: 'ck6krp96y3f3p0720ncj81nes',
-            name: 'Albania',
-            abbr: 'EUR',
-            region: {
-              __typename: 'Region',
-              id: 'ck6krp96o3f3h07201q3rj4n7',
-              name: 'Bureau of European and Eurasian Affairs',
-              abbr: 'EUR'
-            }
-          }
-        ]
-      }
-    }
-  }
-];
 
 const errorMocks = [
   {
@@ -302,21 +240,12 @@ describe( '<FilterMenuCountries />', () => {
     const searchInput = mount( menuItem.prop( 'searchInput' ) );
     const visuallyHidden = searchInput.find( 'VisuallyHidden > div.hide-visually' );
     const visuallyHiddenLabel = searchInput.find( 'label' );
-    const formInput = searchInput.find( 'FormInput' );
 
     expect( visuallyHidden.exists() ).toEqual( true );
     expect( visuallyHiddenLabel.prop( 'htmlFor' ) )
       .toEqual( 'filter-countries' );
     expect( visuallyHiddenLabel.contains( 'Search countries' ) )
       .toEqual( true );
-
-    expect( formInput.exists() ).toEqual( true );
-    expect( formInput.prop( 'id' ) ).toEqual( 'filter-countries' );
-    expect( formInput.prop( 'placeholder' ) ).toEqual( 'Search countries' );
-    expect( formInput.prop( 'name' ) ).toEqual( 'countries' );
-    expect( formInput.prop( 'icon' ) ).toEqual( 'search' );
-    expect( typeof formInput.prop( 'onChange' ) ).toEqual( 'function' );
-    expect( formInput.prop( 'onChange' ).name ).toEqual( 'handleChange' );
   } );
 
   it( 'renders searchInput > FormInput component with correct props', async () => {
