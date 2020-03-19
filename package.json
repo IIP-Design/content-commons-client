@@ -101,6 +101,7 @@
     "jest-transform-graphql": "^2.1.0",
     "lint-staged": "^9.4.3",
     "prettier": "^1.19.1",
+    "redux-mock-store": "^1.5.4",
     "waait": "^1.0.5",
     "webpack-filter-warnings-plugin": "^1.2.1"
   },
