@@ -13,6 +13,7 @@ import { loadSources } from 'lib/redux/actions/source';
 import { loadCategories } from 'lib/redux/actions/category';
 import { loadCountries } from 'lib/redux/actions/country';
 import { loadLanguages } from 'lib/redux/actions/language';
+import { COUNTRIES_REGIONS_QUERY } from 'lib/graphql/queries/document';
 
 class ResultsPage extends Component {
   // Get search params from url
@@ -53,7 +54,11 @@ class ResultsPage extends Component {
     // Always load srcs and cats based on query
     const srcs = store.dispatch( loadSources() );
     const cats = store.dispatch( loadCategories() );
-    const countrieses = store.dispatch( loadCountries() );
+
+    const gqlCountries = ctx.apolloClient.query( {
+      query: COUNTRIES_REGIONS_QUERY
+    } );
+    const countrieses = store.dispatch( loadCountries( gqlCountries ) );
 
     let types;
     let langs;
