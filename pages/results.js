@@ -43,6 +43,7 @@ class ResultsPage extends Component {
 
     // after all search values are updated, execute search request
     store.dispatch( createRequest( user ) );
+
     // load filter menus if needed
     const { global } = store.getState();
 
