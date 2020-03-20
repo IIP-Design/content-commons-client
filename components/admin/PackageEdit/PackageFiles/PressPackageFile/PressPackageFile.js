@@ -86,7 +86,6 @@ const PressPackageFile = props => {
                     control={ Input }
                     label="Title"
                     required
-                    autoFocus
                     value={ value.title || '' }
                     onChange={ handleOnChange }
                     error={ isTouched( 'title' ) && hasError( 'title' ) }
