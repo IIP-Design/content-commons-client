@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useApolloClient } from '@apollo/react-hooks';
 import { Form } from 'semantic-ui-react';
@@ -9,6 +9,10 @@ import { getCount } from 'lib/utils';
 
 const FilterMenuCountries = props => {
   const [searchedCountry, setSearchedCountry] = useState( '' );
+
+  useEffect( () => {
+    setSearchedCountry( '' );
+  }, [props.selected] );
 
   const client = useApolloClient();
   const { countries } = client.readQuery( {
