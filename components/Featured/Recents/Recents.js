@@ -12,7 +12,6 @@ import Post from 'components/Post/Post';
 
 import './Recents.scss';
 
-
 class Recents extends Component {
   getModalContent = item => {
     const noContent = <div>No content currently available</div>;
@@ -29,15 +28,15 @@ class Recents extends Component {
       }
     }
     return noContent;
-  }
+  };
 
   getCategories = item => {
     const categories = item.categories.slice( 0, 3 ).reduce( ( acc, cat, index, arr ) => {
       const c = acc + cat.name.toLowerCase();
-      return ( index < arr.length - 1 ) ? `${c} · ` : c;
+      return index < arr.length - 1 ? `${c} · ` : c;
     }, '' );
     return categories;
-  }
+  };
 
   renderRecentsWithMeta() {
     return this.props.recents.slice( 1 ).map( recent => (
@@ -62,9 +61,7 @@ class Recents extends Component {
           </Item>
         ) }
       >
-        <Modal.Content>
-          { this.getModalContent( recent ) }
-        </Modal.Content>
+        <Modal.Content>{ this.getModalContent( recent ) }</Modal.Content>
       </Modal>
     ) );
   }
@@ -85,7 +82,11 @@ class Recents extends Component {
             <Link
               href={ {
                 pathname: '/results',
-                query: { language: 'en-us', sortBy: 'published', postTypes: [this.props.postType] }
+                query: {
+                  language: 'en-us',
+                  sortBy: 'published',
+                  postTypes: [this.props.postType]
+                }
               } }
             >
               <a className="browseAll">Browse All</a>
@@ -93,32 +94,36 @@ class Recents extends Component {
           </div>
           { featured.error && (
             <Message>
-              { `Oops, something went wrong.  We are unable to load the most recent ${postTypeLabel.display_name.toLowerCase()}s.` }
+              { `Oops, something went wrong.  We are unable to load the most recent ${
+                postTypeLabel ? `${postTypeLabel.display_name.toLowerCase()}s` : ''
+              }.` }
             </Message>
           ) }
           <Grid columns="equal" stackable stretched>
             <Grid.Column width={ 8 } className="recentsgridleft">
-              { recents && recents[0]
-              && (
-              <Modal
-                closeIcon
-                trigger={ (
-                  <div className="recentsleft" style={ { backgroundImage: `url( ${recents[0].thumbnail} )` } }>
-                    <div className="recentsoverlay">
-                      <div className="recentsoverlay_title">{ recents[0].title }</div>
-                      <img
-                        src={ recents[0].icon }
-                        className="recentsoverlay_icon"
-                        alt={ `${postType} icon` }
-                      />
+              { recents && recents[0] && (
+                <Modal
+                  closeIcon
+                  trigger={ (
+                    <div
+                      className="recentsleft"
+                      style={ {
+                        backgroundImage: `url( ${recents[0].thumbnail} )`
+                      } }
+                    >
+                      <div className="recentsoverlay">
+                        <div className="recentsoverlay_title">{ recents[0].title }</div>
+                        <img
+                          src={ recents[0].icon }
+                          className="recentsoverlay_icon"
+                          alt={ `${postType} icon` }
+                        />
+                      </div>
                     </div>
-                  </div>
-                ) }
-              >
-                <Modal.Content>
-                  { this.getModalContent( recents[0] ) }
-                </Modal.Content>
-              </Modal>
+                  ) }
+                >
+                  <Modal.Content>{ this.getModalContent( recents[0] ) }</Modal.Content>
+                </Modal>
               ) }
             </Grid.Column>
             <Grid.Column width={ 8 } className="recentsgridright">
@@ -127,7 +132,6 @@ class Recents extends Component {
           </Grid>
         </div>
       </section>
-
     );
   }
 }
@@ -138,7 +142,6 @@ Recents.propTypes = {
   postType: PropTypes.string,
   postTypeLabels: PropTypes.array
 };
-
 
 const mapStateToProps = ( state, props ) => ( {
   featured: state.featured,
