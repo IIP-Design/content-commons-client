@@ -160,7 +160,7 @@ const FilterMenuItem = props => {
 
 
   const {
-    formItem, options, filter
+    className, formItem, options, filter, searchInput
   } = props;
 
 
@@ -176,21 +176,29 @@ const FilterMenuItem = props => {
         role="menuitem"
         tabIndex={ 0 }
       >
-        { props.filter } <Icon name={ filterItemOpen ? 'chevron up' : 'chevron down' } />
+        { filter } <Icon name={ filterItemOpen ? 'chevron up' : 'chevron down' } />
       </span>
-      <Form className={ `${filterItemOpen ? 'filterMenu_options show' : 'filterMenu_options'} ${props.className}` }>
-        { props.options.length > 0 && props.searchInput }
+      <Form className={ `${filterItemOpen ? 'filterMenu_options show' : 'filterMenu_options'} ${className}` }>
+
+        { searchInput }
+
         <Form.Group>
-          {
-           formatOptions( options, filter ).map( option => ( ( formItem === 'checkbox' )
-             ? renderCheckbox( option )
-             : renderRadio( option ) ) )
-          }
-          { options.length === 0 && (
-          <span style={ { textAlign: 'center', paddingTop: '3px' } }>
-            None Available
-          </span>
-          ) }
+          { formatOptions( options, filter ).map( option => ( ( formItem === 'checkbox' )
+            ? renderCheckbox( option )
+            : renderRadio( option ) ) ) }
+
+          { options.length === 0
+            && (
+            <span style={ {
+              paddingTop: '3px',
+              color: '#112e51',
+              fontSize: '0.888888889rem',
+              textAlign: 'center'
+            } }
+            >
+              None Available
+            </span>
+            ) }
         </Form.Group>
       </Form>
     </div>

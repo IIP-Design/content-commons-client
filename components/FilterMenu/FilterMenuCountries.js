@@ -33,13 +33,12 @@ const FilterMenuCountries = props => {
   const getMenuOptions = () => {
     if ( getCount( data.countries ) ) {
       return data.countries.reduce( ( acc, country ) => {
-        const name = country.name.toLowerCase();
-        const searchTerm = searchedCountry.toLowerCase();
+        const displayName = `${country.name} (${country.abbr})`;
+        const searchTerm = searchedCountry.toLowerCase().trim();
 
-        if ( name.includes( searchTerm ) ) {
+        if ( displayName.toLowerCase().includes( searchTerm ) ) {
           acc.push( {
-            // count: 0,
-            display_name: country.name,
+            display_name: displayName,
             key: country.name
           } );
         }

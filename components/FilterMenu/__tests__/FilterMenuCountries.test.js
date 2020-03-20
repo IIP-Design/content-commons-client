@@ -200,12 +200,12 @@ describe( '<FilterMenuCountries />', () => {
     const getMenuOptions = () => {
       if ( getCount( countries ) ) {
         return countries.reduce( ( acc, country ) => {
-          const name = country.name.toLowerCase();
-          const searchTerm = searchedCountry.toLowerCase();
+          const displayName = `${country.name} (${country.abbr})`;
+          const searchTerm = searchedCountry.toLowerCase().trim();
 
-          if ( name.includes( searchTerm ) ) {
+          if ( displayName.toLowerCase().includes( searchTerm ) ) {
             acc.push( {
-              display_name: country.name,
+              display_name: displayName,
               key: country.name
             } );
           }
