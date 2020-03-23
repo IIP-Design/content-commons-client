@@ -195,6 +195,7 @@ describe( '<FilterMenuCountries />', () => {
     expect( formInput.prop( 'placeholder' ) ).toEqual( 'Search countries' );
     expect( formInput.prop( 'name' ) ).toEqual( 'countries' );
     expect( formInput.prop( 'icon' ) ).toEqual( 'search' );
+    expect( formInput.prop( 'iconPosition' ) ).toEqual( 'left' );
     expect( typeof formInput.prop( 'onChange' ) ).toEqual( 'function' );
     expect( formInput.prop( 'onChange' ).name ).toEqual( 'handleChange' );
   } );

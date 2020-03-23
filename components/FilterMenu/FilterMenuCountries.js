@@ -58,6 +58,7 @@ const FilterMenuCountries = props => {
             placeholder="Search countries"
             name="countries"
             icon="search"
+            iconPosition="left"
             value={ searchedCountry }
             onChange={ handleChange }
           />
