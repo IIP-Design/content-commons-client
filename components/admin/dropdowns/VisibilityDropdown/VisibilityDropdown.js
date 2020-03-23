@@ -22,22 +22,27 @@ const VisibilityDropdown = props => (
     { ( { data, loading, error } ) => {
       if ( error ) return `Error! ${error.message}`;
 
-      let options = [];
+      const options = [{
+        key: 'PUBLIC',
+        text: 'Public (displayed on Content Commons)',
+        value: 'PUBLIC'
+      }];
 
-      if ( data && data.__type && data.__type.enumValues ) {
-        options = data.__type.enumValues
-          .map( enumValue => {
-            const text = enumValue.name === 'PUBLIC'
-              ? 'Public (displayed on Content Commons)'
-              : 'Internal (Department of State only)';
+      // Commenting out for now since Internal only view is not yet enabled.
+      // if ( data && data.__type && data.__type.enumValues ) {
+      //   options = data.__type.enumValues
+      //     .map( enumValue => {
+      //       const text = enumValue.name === 'PUBLIC'
+      //         ? 'Public (displayed on Content Commons)'
+      //         : 'Internal (Department of State only)';
 
-            return {
-              key: enumValue.name,
-              text,
-              value: enumValue.name
-            };
-          } );
-      }
+      //       return {
+      //         key: enumValue.name,
+      //         text,
+      //         value: enumValue.name
+      //       };
+      //     } );
+      // }
 
       return (
         <Fragment>
