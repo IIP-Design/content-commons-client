@@ -12,10 +12,12 @@ import './FilterMenu.scss';
 const FilterMenu = props => {
   const { filter, global } = props;
 
-  const hasCategories = getCount( global.categories.list ) > 0;
-  const hasFilterType = type => (
-    filter.postTypes.some( postType => postType === type )
-  );
+  const showMenuItem = item => {
+    if ( item === 'document' ) {
+      return global?.postTypes?.list.some( type => type.key === item ) || false;
+    }
+    return getCount( global?.[item].list ) > 0;
+  };
 
   return (
     <section className="filterMenu_wrapper">
@@ -49,7 +51,7 @@ const FilterMenu = props => {
           formItem="checkbox"
         />
         { /* Category */ }
-        { hasCategories
+        { showMenuItem( 'categories' )
           && (
             <FilterMenuItem
               filter="Category"
@@ -61,7 +63,7 @@ const FilterMenu = props => {
           ) }
 
         { /* Countries */ }
-        { hasFilterType( 'document' ) && <FilterMenuCountries selected={ filter.countries } /> }
+        { showMenuItem( 'document' ) && <FilterMenuCountries selected={ filter.countries } /> }
       </div>
     </section>
   );

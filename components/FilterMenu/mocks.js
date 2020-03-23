@@ -62,7 +62,7 @@ export const countriesQueryMocks = [
   }
 ];
 
-export const pkgAndDocSelected = {
+export const noCategories = {
   search: {
     currentPage: 1,
     endIndex: 2,
@@ -382,64 +382,10 @@ export const pkgAndDocSelected = {
   }
 };
 
-export const pkgSelected = {
-  ...pkgAndDocSelected,
-  filter: {
-    ...pkgAndDocSelected.filter,
-    postTypes: ['package']
-  }
-};
-
-export const documentSelected = {
-  ...pkgAndDocSelected,
-  filter: {
-    ...pkgAndDocSelected.filter,
-    postTypes: ['document']
-  }
-};
-
-export const postTypeWithCategoriesSelected = {
-  ...pkgAndDocSelected,
-  filter: {
-    ...pkgAndDocSelected.filter,
-    countries: [],
-    postTypes: ['video'],
-    categories: ['test-category-1']
-  },
+export const noDocumentPostType = {
+  ...noCategories,
   global: {
-    ...pkgAndDocSelected.global,
-    countries: {
-      error: false,
-      list: [],
-      loading: false
-    },
-    categories: {
-      error: false,
-      list: [
-        {
-          count: 1,
-          display_name: 'test-category-1',
-          key: 'test-category-1'
-        },
-        {
-          count: 1,
-          display_name: 'test-category-2',
-          key: 'test-category-2'
-        }
-      ],
-      loading: false
-    },
-    sources: {
-      error: false,
-      list: [
-        {
-          key: 'GPA Video',
-          display_name: 'GPA Video',
-          count: 3
-        }
-      ],
-      loading: false
-    },
+    ...noCategories.global,
     postTypes: {
       error: false,
       list: [
@@ -450,19 +396,7 @@ export const postTypeWithCategoriesSelected = {
         }
       ],
       loading: false
-    }
-  }
-};
-
-export const allPostTypesSelected = {
-  ...pkgAndDocSelected,
-  filter: {
-    ...pkgAndDocSelected.filter,
-    postTypes: ['video', 'document', 'package'],
-    categories: ['test-category-1']
-  },
-  global: {
-    ...pkgAndDocSelected.global,
+    },
     categories: {
       error: false,
       list: [
@@ -479,22 +413,13 @@ export const allPostTypesSelected = {
       ],
       loading: false
     },
-    sources: {
-      error: false,
-      list: [
-        {
-          key: 'GPA Video',
-          display_name: 'GPA Video',
-          count: 2
-        },
-        {
-          key: 'GPA Press Office',
-          display_name: 'GPA Press Office',
-          count: 3
-        }
-      ],
-      loading: false
-    },
+  }
+};
+
+export const documentTypePlusCategories = {
+  ...noCategories,
+  global: {
+    ...noCategories.global,
     postTypes: {
       error: false,
       list: [
@@ -515,18 +440,7 @@ export const allPostTypesSelected = {
         }
       ],
       loading: false
-    }
-  }
-};
-
-export const noPostTypesSelected = {
-  ...pkgAndDocSelected,
-  filter: {
-    ...pkgAndDocSelected.filter,
-    postTypes: []
-  },
-  global: {
-    ...pkgAndDocSelected.global,
+    },
     categories: {
       error: false,
       list: [
@@ -543,42 +457,5 @@ export const noPostTypesSelected = {
       ],
       loading: false
     },
-    sources: {
-      error: false,
-      list: [
-        {
-          key: 'GPA Video',
-          display_name: 'GPA Video',
-          count: 2
-        },
-        {
-          key: 'GPA Press Office',
-          display_name: 'GPA Press Office',
-          count: 3
-        }
-      ],
-      loading: false
-    },
-    postTypes: {
-      error: false,
-      list: [
-        {
-          key: 'video',
-          display_name: 'Video',
-          count: 2
-        },
-        {
-          key: 'document',
-          display_name: 'Document',
-          count: 2
-        },
-        {
-          key: 'package',
-          display_name: 'Guidance Packages',
-          count: 1
-        }
-      ],
-      loading: false
-    }
   }
 };
