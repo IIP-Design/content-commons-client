@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import FilterMenu from '../FilterMenu';
-import * as state from '../mocks';
+import * as state from './mocks';
 
 jest.mock(
   '../FilterMenuItem',

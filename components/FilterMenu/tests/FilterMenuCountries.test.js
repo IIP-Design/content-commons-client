@@ -1,7 +1,6 @@
 import { mount } from 'enzyme';
-// import { MockedProvider } from '@apollo/react-testing';
 import FilterMenuCountries from '../FilterMenuCountries';
-import { countriesQueryMocks as mocks } from '../mocks';
+import { countriesQueryMocks as mocks } from './mocks';
 
 jest.mock(
   'components/FilterMenu/FilterMenuItem',
