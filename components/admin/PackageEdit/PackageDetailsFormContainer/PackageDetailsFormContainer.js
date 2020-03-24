@@ -15,7 +15,7 @@ import PackageDetailsForm from './PackageDetailsForm/PackageDetailsForm';
 import { initialSchema, baseSchema } from './validationSchema';
 
 const PackageDetailsFormContainer = props => {
-  const { pkg } = props;
+  const { pkg, setIsFormValid } = props;
   const [updatePackage] = useMutation( UPDATE_PACKAGE_MUTATION );
   const [showNotification, setShowNotification] = useState( false );
   const hideNotification = () => setShowNotification( false );
@@ -121,28 +121,31 @@ const PackageDetailsFormContainer = props => {
     return initialValues;
   };
 
-  const renderContent = formikProps => (
-    <div className="edit-package__form">
-      <Notification
-        el="p"
-        customStyles={ {
-          position: 'absolute',
-          top: '9em',
-          left: '50%',
-          transform: 'translateX(-50%)'
-        } }
-        show={ showNotification }
-        msg="Changes saved"
-      />
-      <PackageDetailsForm
-        { ...formikProps }
-        { ...props }
-        save={ save }
-      >
-        { props.children }
-      </PackageDetailsForm>
-    </div>
-  );
+  const renderContent = formikProps => {
+    setIsFormValid( formikProps.isValid );
+    return (
+      <div className="edit-package__form">
+        <Notification
+          el="p"
+          customStyles={ {
+            position: 'absolute',
+            top: '9em',
+            left: '50%',
+            transform: 'translateX(-50%)'
+          } }
+          show={ showNotification }
+          msg="Changes saved"
+        />
+        <PackageDetailsForm
+          { ...formikProps }
+          { ...props }
+          save={ save }
+        >
+          { props.children }
+        </PackageDetailsForm>
+      </div>
+    );
+  };
 
   return (
     <Formik
@@ -162,7 +165,8 @@ PackageDetailsFormContainer.propTypes = {
     title: PropTypes.string,
     type: PropTypes.string,
     documents: PropTypes.array
-  } )
+  } ),
+  setIsFormValid: PropTypes.func
 };
 
 export default PackageDetailsFormContainer;
