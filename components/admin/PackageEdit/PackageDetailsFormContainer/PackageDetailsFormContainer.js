@@ -147,7 +147,7 @@ const PackageDetailsFormContainer = props => {
   return (
     <Formik
       initialValues={ getInitialValues() }
-      validationSchema={ props.id ? baseSchema : initialSchema }
+      validationSchema={ pkg.id ? baseSchema : initialSchema }
     >
       { renderContent }
     </Formik>
