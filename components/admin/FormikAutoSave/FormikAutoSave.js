@@ -13,9 +13,10 @@ import { connect } from 'formik';
  */
 const FormikAutoSave = props => {
   const isMounted = useIsMounted();
+
   const {
     save, debounceMs, formik: {
-      values, validationSchema
+      validateForm, values
     }
   } = props;
 
@@ -31,7 +32,6 @@ const FormikAutoSave = props => {
     await save( updatedValues, prevValues );
   };
 
-
   /**
    * Executes provided save function at the provided debounceMs timeout (default: 500)
    * Uses useCallback hook to create a memoized version of debouncedSave. This ensures that
@@ -41,29 +41,26 @@ const FormikAutoSave = props => {
    * @param {object } updatedValues Form values that have changed since last save
    */
   const debouncedSave = useCallback(
-    debounce(
-      async updatedValues => {
-        if ( !validationSchema ) {
-          return _save( updatedValues );
-        }
+    async updatedValues => {
+      const errors = await validateForm( updatedValues );
+      const hasErrors = Object.keys( errors ).length > 0;
 
-        const valid = await validationSchema.isValid( updatedValues );
-        if ( !valid ) { return; }
-        _save( updatedValues );
-      },
-      debounceMs
-    ),
-    [save, validationSchema, debounceMs]
+      if ( !hasErrors ) {
+        debounce(
+          async () => _save( updatedValues ),
+          debounceMs
+        )();
+      }
+    }, [debounceMs]
   );
-
 
   useEffect( () => {
     if ( !isMounted ) { // do not save on mount
       debouncedSave( values );
     }
+
     setPrevValues( values );
   }, [values] );
-
 
   return null;
 };
