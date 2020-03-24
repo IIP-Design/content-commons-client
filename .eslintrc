@@ -115,7 +115,16 @@
   },
   "settings": {
     "import/resolver": {
-      "babel-module": {}
+      "babel-module": {
+        "alias": {
+          "components": "./components",
+          "context": "./context",
+          "hocs": "./hocs",
+          "lib": "./lib",
+          "static": "./static",
+          "styles": "./styles"
+        }
+      }
     }
   }
 }
