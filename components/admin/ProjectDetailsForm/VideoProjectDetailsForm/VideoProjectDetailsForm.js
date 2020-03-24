@@ -35,7 +35,8 @@ const VideoProjectDetailsForm = props => {
     setShowNotification( false );
   };
 
-  const { startTimeout } = useTimeout( hideNotification, 2000 );
+  // const { startTimeout } = useTimeout( hideNotification, 2000 );
+  const { startTimeout } = useTimeout( hideNotification, 1000 );
 
   const update = async ( values, prevValues ) => {
     const { id, updateVideoProject } = props;
@@ -52,7 +53,10 @@ const VideoProjectDetailsForm = props => {
 
   const save = async ( values, prevValues ) => {
     await update( values, prevValues );
-    setShowNotification( true );
+
+    if ( !showNotification ) {
+      setShowNotification( true );
+    }    
 
     // Notify redux state that Project updated, indexed by project id
     // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview

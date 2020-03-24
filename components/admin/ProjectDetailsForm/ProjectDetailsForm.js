@@ -12,14 +12,12 @@ import {
   Input,
   TextArea
 } from 'semantic-ui-react';
-import Link from 'next/link';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import UserDropdown from 'components/admin/dropdowns/UserDropdown/UserDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
 import TermsConditions from 'components/admin/TermsConditions/TermsConditions';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
-
 import './ProjectDetailsForm.scss';
 
 /**
