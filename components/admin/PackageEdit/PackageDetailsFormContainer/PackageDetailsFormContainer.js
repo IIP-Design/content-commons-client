@@ -147,7 +147,6 @@ const PackageDetailsFormContainer = props => {
   return (
     <Formik
       initialValues={ getInitialValues() }
-      enableReinitialize // allow form to re initialize on document upload
       validationSchema={ props.id ? baseSchema : initialSchema }
     >
       { renderContent }
