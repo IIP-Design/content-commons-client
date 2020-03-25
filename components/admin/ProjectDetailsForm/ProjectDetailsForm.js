@@ -130,7 +130,7 @@ const ProjectDetailsForm = props => {
                     label="Categories"
                     value={ values.categories }
                     onChange={ handleOnChange }
-                    error={ touched.categories && !!errors.categories }
+                    error={ !values.categories.length || values.categories.length > 2 }
                     multiple
                     search
                     closeOnBlur
