@@ -3,7 +3,7 @@
  * PackageDetailsFormContainer
  *
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { Formik } from 'formik';
@@ -16,6 +16,19 @@ import { initialSchema, baseSchema } from './validationSchema';
 
 const PackageDetailsFormContainer = props => {
   const { pkg, setIsFormValid } = props;
+
+  const [docNumber, setDocNumber] = useState( pkg?.documents ? pkg.documents.length : null );
+  const [reinitialize, setReinitialize] = useState( false );
+
+  useEffect( () => {
+    if ( pkg?.documents && pkg.documents.length !== docNumber ) {
+      setReinitialize( true );
+      setDocNumber( pkg.documents.length );
+    } else {
+      setReinitialize( false );
+    }
+  }, [pkg] );
+
   const [updatePackage] = useMutation( UPDATE_PACKAGE_MUTATION );
   const [showNotification, setShowNotification] = useState( false );
   const hideNotification = () => setShowNotification( false );
@@ -150,6 +163,7 @@ const PackageDetailsFormContainer = props => {
   return (
     <Formik
       initialValues={ getInitialValues() }
+      enableReinitialize={ reinitialize }
       validationSchema={ pkg.id ? baseSchema : initialSchema }
     >
       { renderContent }
