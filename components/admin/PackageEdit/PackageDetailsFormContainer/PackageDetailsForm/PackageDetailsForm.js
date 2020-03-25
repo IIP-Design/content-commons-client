@@ -13,6 +13,7 @@ import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import TermsConditions from 'components/admin/TermsConditions/TermsConditions';
 import EditPackageFiles from 'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal';
 import { useCrudActionsDocument } from 'lib/hooks/useCrudActionsDocument';
+
 import './PackageDetailsForm.scss';
 
 export const HandleOnChangeContext = createContext();
@@ -26,12 +27,9 @@ const PackageDetailsForm = props => {
     handleChange,
     hasInitialUploadCompleted,
     setFieldValue,
-    // isSubmitting,
-    // isValid,
     setFieldTouched,
-    // status,
     save,
-    pkg
+    pkg,
   } = props;
 
   const router = useRouter();
@@ -215,19 +213,14 @@ const PackageDetailsForm = props => {
 };
 
 PackageDetailsForm.propTypes = {
-  // id: PropTypes.string,
-  // assetPath: PropTypes.string,
   pkg: PropTypes.object,
   children: PropTypes.node,
-  // status: PropTypes.string,
   handleChange: PropTypes.func,
   hasInitialUploadCompleted: PropTypes.bool,
   values: PropTypes.object,
   errors: PropTypes.object,
   touched: PropTypes.object,
   setFieldValue: PropTypes.func,
-  // isSubmitting: PropTypes.bool,
-  // isValid: PropTypes.bool,
   setFieldTouched: PropTypes.func,
   save: PropTypes.func
 };

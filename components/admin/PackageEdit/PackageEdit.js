@@ -48,6 +48,7 @@ const PackageEdit = props => {
   const [publishOperation, setPublishOperation] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [hasInitialUploadCompleted, setHasInitialUploadCompleted] = useState( false );
+  const [isFormValid, setIsFormValid] = useState( true );
 
   const [notification, setNotification] = useState( {
     notificationMessage: '',
@@ -181,7 +182,7 @@ const PackageEdit = props => {
             setDeleteConfirmOpen={ setDeleteConfirmOpen }
             disabled={ {
               delete: deletePackageEnabled(),
-              save: !packageId,
+              save: !packageId || !isFormValid,
               publish: !packageId
             } }
             handle={ {
@@ -222,6 +223,7 @@ const PackageEdit = props => {
         pkg={ pkg }
         updateNotification={ updateNotification }
         hasInitialUploadCompleted={ hasInitialUploadCompleted }
+        setIsFormValid={ setIsFormValid }
       >
         <PackageFiles pkg={ pkg } hasInitialUploadCompleted={ hasInitialUploadCompleted } />
       </PackageDetailsFormContainer>
