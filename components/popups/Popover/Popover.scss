@@ -3,7 +3,7 @@
 .popover {
   position: relative;
   display: inline-block;
-  width: 100%;
+  width: 100%;  
 
   &_trigger {
     -webkit-appearance: none;
@@ -48,8 +48,10 @@
   &.fileList {
     
     .popover_content > ul {
+      max-height: 200px;      
       margin: 0;
-      padding-left: 0;      
+      padding-left: 0;
+      overflow-y: auto;    
       color: $shuttle-grey;
       background-color: $light-grey;
       list-style: none;
