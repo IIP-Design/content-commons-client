@@ -51,7 +51,8 @@
       max-height: 200px;      
       margin: 0;
       padding-left: 0;
-      overflow-y: auto;    
+      overflow-y: auto;
+      overflow-x: hidden;
       color: $shuttle-grey;
       background-color: $light-grey;
       list-style: none;
