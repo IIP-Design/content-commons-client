@@ -84,7 +84,7 @@ const ActionButtons = props => {
       { show.unpublish && (
         <Button
           className={ `action-btn btn--publish ${loading.unpublish ? 'loading' : ''}` }
-          content="UnPublish"
+          content="Unpublish"
           onClick={ handle.unpublish }
           disabled={ disabled.unpublish }
         />

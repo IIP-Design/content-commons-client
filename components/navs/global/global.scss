@@ -177,6 +177,10 @@ nav {
         font-size: 14px;
       }
 
+      &:not(.disabled) {
+        cursor: pointer;
+      }
+
       a {
         color: #fff;
       }

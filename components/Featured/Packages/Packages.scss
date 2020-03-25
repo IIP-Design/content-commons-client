@@ -18,8 +18,7 @@
     padding-bottom: 1em;
 
     &.ui.grid {
-      > .column:not(.row) {        
-        width: auto;
+      > .column:not(.row) {
         @media screen and (max-width: 992px) {
           width: 50%;
         }
@@ -35,6 +34,7 @@
         }
 
         &.card-min-width {
+          width: auto;
 
           > .ui.card.package_card {
             min-width: 260px;
@@ -46,6 +46,10 @@
           flex: 1;
           @media screen and (max-width: 992px) {
             flex: auto;
+          }
+
+          > .ui.card.package_card {
+            max-width: 100%;
           }
         }
       }
