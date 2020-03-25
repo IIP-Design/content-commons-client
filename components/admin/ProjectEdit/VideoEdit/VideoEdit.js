@@ -53,6 +53,7 @@ const VideoEdit = props => {
   const [projectId, setProjectId] = useState( props.id );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [displayTheUploadSuccessMsg, setDisplayTheUploadSuccessMsg] = useState( false );
+  const [isFormValid, setIsFormValid] = useState( true );
 
   const [notification, setNotification] = useState( {
     notificationMessage: '',
@@ -266,8 +267,8 @@ const VideoEdit = props => {
             setDeleteConfirmOpen={ setDeleteConfirmOpen }
             disabled={ {
               delete: deleteProjectEnabled(),
-              save: !projectId || disableBtns,
-              review: !projectId || disableBtns
+              save: !projectId || disableBtns || !isFormValid,
+              review: !projectId || disableBtns || !isFormValid
             } }
             handle={ {
               deleteConfirm: handleDeleteConfirm,
@@ -327,6 +328,7 @@ const VideoEdit = props => {
           updateNotification={ updateNotification }
           handleUpload={ handleUpload }
           maxCategories={ MAX_CATEGORY_COUNT }
+          setIsFormValid={ setIsFormValid }
         />
       </div>
 

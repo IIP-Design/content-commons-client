@@ -27,6 +27,7 @@ import useTimeout from 'lib/hooks/useTimeout';
 import { initialSchema, baseSchema } from './validationSchema';
 
 const VideoProjectDetailsForm = props => {
+  const { setIsFormValid } = props;
   const { user } = useAuth();
 
   const [showNotification, setShowNotification] = useState( false );
@@ -56,7 +57,7 @@ const VideoProjectDetailsForm = props => {
 
     if ( !showNotification ) {
       setShowNotification( true );
-    }    
+    }
 
     // Notify redux state that Project updated, indexed by project id
     // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
@@ -123,28 +124,33 @@ const VideoProjectDetailsForm = props => {
     setSubmitting( false );
   };
 
+  const renderContent = formikProps => {
+    setIsFormValid( formikProps.isValid );
+    return (
+      <>
+        <Notification
+          el="p"
+          customStyles={ {
+            position: 'absolute',
+            top: '9em',
+            left: '50%',
+            transform: 'translateX(-50%)'
+          } }
+          show={ showNotification }
+          msg="Changes saved"
+        />
+        <ProjectDetailsForm { ...formikProps } { ...props } save={ save } />
+      </>
+    );
+  };
+
   return (
     <Formik
       initialValues={ getInitialValues() }
       validationSchema={ props.id ? baseSchema : initialSchema }
       onSubmit={ onHandleSubmit }
     >
-      { formikProps => (
-        <>
-          <Notification
-            el="p"
-            customStyles={ {
-              position: 'absolute',
-              top: '9em',
-              left: '50%',
-              transform: 'translateX(-50%)'
-            } }
-            show={ showNotification }
-            msg="Changes saved"
-          />
-          <ProjectDetailsForm { ...formikProps } { ...props } save={ save } />
-        </>
-      ) }
+      { renderContent }
     </Formik>
   );
 };
@@ -156,7 +162,8 @@ VideoProjectDetailsForm.propTypes = {
   updateNotification: PropTypes.func,
   handleUpload: PropTypes.func,
   updateVideoProject: PropTypes.func,
-  projectUpdated: PropTypes.func
+  projectUpdated: PropTypes.func,
+  setIsFormValid: PropTypes.func
 };
 
 export default compose(
