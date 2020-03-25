@@ -49,7 +49,7 @@ const PackageEdit = props => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [hasInitialUploadCompleted, setHasInitialUploadCompleted] = useState( false );
   const [isFormValid, setIsFormValid] = useState( true );
-
+  const [hasEdits, setHasEdits] = useState( false );
   const [notification, setNotification] = useState( {
     notificationMessage: '',
     showNotification: false
@@ -124,7 +124,12 @@ const PackageEdit = props => {
 
   const handlePublishChanges = async () => {
     setPublishOperation( 'publishChanges' );
-    executePublishOperation( packageId, publishPackage );
+    executePublishOperation( packageId, publishPackage )
+      .then( () => {
+        if ( hasEdits ) {
+          setHasEdits( false );
+        }
+      } );
   };
 
   const handleUnPublish = async () => {
@@ -196,7 +201,7 @@ const PackageEdit = props => {
               delete: true, // package has been completed, show delete in the event user wants to delete instead of uploading files
               save: hasInitialUploadCompleted,
               publish: hasInitialUploadCompleted && pkg.status === 'DRAFT',
-              publishChanges: pkg.publishedAt && isDirty,
+              publishChanges: pkg.publishedAt && ( isDirty || hasEdits ),
               unpublish: pkg.status === 'PUBLISHED'
             } }
             loading={ {
@@ -225,7 +230,11 @@ const PackageEdit = props => {
         hasInitialUploadCompleted={ hasInitialUploadCompleted }
         setIsFormValid={ setIsFormValid }
       >
-        <PackageFiles pkg={ pkg } hasInitialUploadCompleted={ hasInitialUploadCompleted } />
+        <PackageFiles
+          pkg={ pkg }
+          hasInitialUploadCompleted={ hasInitialUploadCompleted }
+          setHasEdits={ setHasEdits }
+        />
       </PackageDetailsFormContainer>
       { /**
        * can possibly be shared with VideoReview

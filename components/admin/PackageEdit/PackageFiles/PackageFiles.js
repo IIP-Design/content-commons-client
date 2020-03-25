@@ -10,7 +10,7 @@ import './PackageFiles.scss';
 const PressPackageFile = dynamic( () => import( /* webpackChunkName: "pressPackageFile" */ 'components/admin/PackageEdit/PackageFiles/PressPackageFile/PressPackageFile' ) );
 
 const PackageFiles = props => {
-  const { pkg, hasInitialUploadCompleted } = props;
+  const { pkg, hasInitialUploadCompleted, setHasEdits } = props;
 
   const [modalOpen, setModalOpen] = useState( false );
   const [progress, setProgress] = useState( 0 );
@@ -52,7 +52,7 @@ const PackageFiles = props => {
         return createFile( pkg, file, handleUploadProgress );
       }
       return updateFile( pkg, file );
-    } ) );
+    } ) ).then( () => setHasEdits( true ) );
   };
 
   return (
@@ -104,7 +104,8 @@ const PackageFiles = props => {
 
 PackageFiles.propTypes = {
   pkg: PropTypes.object,
-  hasInitialUploadCompleted: PropTypes.bool
+  hasInitialUploadCompleted: PropTypes.bool,
+  setHasEdits: PropTypes.func
 };
 
 export default PackageFiles;
