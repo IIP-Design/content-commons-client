@@ -5,17 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [3.1.5](2020-03-25)
+
+**Added:**
+
+- Coronavirus (COVID-19) priorities section to homepage
+
+# [3.1.4](2020-03-20)
+
+**Fixed:**
+
+- Hide internal-only visibility option for videos until that view is made available.
+
 # [3.1.3](2020-02-11)
 
 **Fixed:**
 
-- re-order priorities section on homepage
+- Re-order priorities section on homepage
 
 # [3.1.2](2020-02-03)
 
 **Added:**
 
-- Venezuela priorities section to Home
+- Venezuela priorities section to homepage
 
 **Fixed:**
 
