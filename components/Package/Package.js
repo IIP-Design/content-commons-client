@@ -120,6 +120,7 @@ const Package = props => {
                     component: (
                       <DownloadPkgFiles
                         files={ fetchedDocs }
+                        isPreview={ isAdminPreview }
                         instructions={ getPluralStringOrNot( documents, 'Download Package File' ) }
                       />
                     )
