@@ -196,8 +196,8 @@ const PackageEdit = props => {
               delete: true, // package has been completed, show delete in the event user wants to delete instead of uploading files
               save: hasInitialUploadCompleted,
               publish: hasInitialUploadCompleted && pkg.status === 'DRAFT',
-              publishChanges: pkg.publishedAt && isDirty,
-              unpublish: pkg.status === 'PUBLISHED'
+              publishChanges: pkg?.publishedAt && isDirty,
+              unpublish: pkg?.status === 'PUBLISHED'
             } }
             loading={ {
               publish: publishing && publishOperation === 'publish',
@@ -225,7 +225,10 @@ const PackageEdit = props => {
         hasInitialUploadCompleted={ hasInitialUploadCompleted }
         setIsFormValid={ setIsFormValid }
       >
-        <PackageFiles pkg={ pkg } hasInitialUploadCompleted={ hasInitialUploadCompleted } />
+        <PackageFiles
+          pkg={ pkg }
+          hasInitialUploadCompleted={ hasInitialUploadCompleted }
+        />
       </PackageDetailsFormContainer>
       { /**
        * can possibly be shared with VideoReview
