@@ -2,10 +2,12 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useFormikContext } from 'formik';
 import {
-  Form, Grid, Input, Loader
+  Form, Grid, Input
 } from 'semantic-ui-react';
 import { getCount } from 'lib/utils';
+import thumbnailUnavailable from 'static/images/thumbnail_document_unavailable.png';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
+import DocumentPaceholder from 'components/Placeholder/DocumentPaceholder';
 import CountriesRegionsDropdown from 'components/admin/dropdowns/CountriesRegionsDropdown/CountriesRegionsDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
@@ -18,9 +20,7 @@ import './PressPackageFile.scss';
 // todo: write props comparison
 // use memo here to avoid rerending this files
 // when it is not re-rendered
-// const areEqual = ( prevProps, nextProps ) => {
-//   return prevProps.value === nextProps.value;
-// };
+const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
 const PressPackageFile = props => {
   const { document } = props;
@@ -58,26 +58,30 @@ const PressPackageFile = props => {
 
   const value = values[id] ? values[id] : '';
 
+  const getThumbnail = () => {
+    if ( getCount( image ) ) {
+      if ( image[0].url === 'UNAVAILABLE' ) {
+        return <img src={ thumbnailUnavailable } alt="Thumbnail unavailable" />;
+      }
+      if ( image[0].signedUrl ) {
+        return <img src={ image[0].signedUrl } alt={ image[0].alt } />;
+      }
+    }
+
+    return <DocumentPaceholder />;
+  };
+
   return (
     <div id={ id } className="package-file">
       <Grid>
         <Grid.Row>
-          <Grid.Column mobile={ 16 } tablet={ 4 } computer={ 4 }>
-            { getCount( image ) && image[0].signedUrl ? (
-              <img src={ image[0].signedUrl } alt={ image[0].alt } />
-            ) : (
-              <div className="placeholder outer">
-                <div className="placeholder inner" />
-                <Loader active size="small" />
-              </div>
-            ) }
+          <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 } className="thumbnail">
+            { getThumbnail( image ) }
           </Grid.Column>
 
-          <Grid.Column mobile={ 16 } tablet={ 12 } computer={ 12 }>
+          <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 }>
             <fieldset className="form-fields" name={ filename }>
-              <VisuallyHidden el="legend">
-                { `edit fields for ${filename}` }
-              </VisuallyHidden>
+              <VisuallyHidden el="legend">{ `edit fields for ${filename}` }</VisuallyHidden>
               <Form.Group widths="equal">
                 <div className="field">
                   <Form.Field
@@ -105,7 +109,9 @@ const PressPackageFile = props => {
                     search
                     required
                   />
-                  <p className="field__helper-text">Begin typing bureau name and separate by commas.</p>
+                  <p className="field__helper-text">
+                    Begin typing bureau name and separate by commas.
+                  </p>
                   <p className="error-message">{ showErrorMsg( 'bureaus' ) }</p>
                 </Form.Field>
               </Form.Group>
