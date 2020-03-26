@@ -25,19 +25,21 @@ describe( '<DownloadPkgFiles />, if isPreview', () => {
   };
 
   const Component = <DownloadPkgFiles { ...props } />;
+  let wrapper;
+
+  beforeEach( () => {
+    wrapper = mount( Component );
+  } );
 
   it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
     expect( wrapper.exists() ).toEqual( true );
   } );
 
   it( 'renders the instructions', () => {
-    const wrapper = mount( Component );
     expect( wrapper.contains( props.instructions ) ).toEqual( true );
   } );
 
   it( 'renders the correct className value for each item', () => {
-    const wrapper = mount( Component );
     const itemsGroups = wrapper.find( 'ItemGroup' );
 
     expect( itemsGroups.length ).toEqual( props.files.length );
@@ -47,7 +49,6 @@ describe( '<DownloadPkgFiles />, if isPreview', () => {
   } );
 
   it( 'renders the preview text for each item', () => {
-    const wrapper = mount( Component );
     const itemsGroups = wrapper.find( 'ItemGroup' );
     const previewTxt = 'The link will be active after publishing.';
 
@@ -58,7 +59,6 @@ describe( '<DownloadPkgFiles />, if isPreview', () => {
   } );
 
   it( 'renders the download text for each item', () => {
-    const wrapper = mount( Component );
     const itemsGroups = wrapper.find( 'ItemGroup' );
 
     expect( itemsGroups.length ).toEqual( props.files.length );
@@ -69,7 +69,6 @@ describe( '<DownloadPkgFiles />, if isPreview', () => {
   } );
 
   it( 'renders an <img /> for each item', () => {
-    const wrapper = mount( Component );
     const itemsGroups = wrapper.find( 'ItemGroup' );
 
     expect( itemsGroups.length ).toEqual( props.files.length );
@@ -84,7 +83,6 @@ describe( '<DownloadPkgFiles />, if isPreview', () => {
   } );
 
   it( 'renders the correct as, href, and download prop values', () => {
-    const wrapper = mount( Component );
     const items = wrapper.find( 'Item' );
 
     expect( items.length ).toEqual( props.files.length );
@@ -104,19 +102,21 @@ describe( '<DownloadPkgFiles />, if !isPreview', () => {
   };
 
   const Component = <DownloadPkgFiles { ...props } />;
+  let wrapper;
+
+  beforeEach( () => {
+    wrapper = mount( Component );
+  } );
 
   it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
     expect( wrapper.exists() ).toEqual( true );
   } );
 
   it( 'renders the instructions', () => {
-    const wrapper = mount( Component );
     expect( wrapper.contains( props.instructions ) ).toEqual( true );
   } );
 
   it( 'renders the correct className value for each item', () => {
-    const wrapper = mount( Component );
     const itemsGroups = wrapper.find( 'ItemGroup' );
 
     expect( itemsGroups.length ).toEqual( props.files.length );
@@ -126,7 +126,6 @@ describe( '<DownloadPkgFiles />, if !isPreview', () => {
   } );
 
   it( 'does not render the preview text for each item', () => {
-    const wrapper = mount( Component );
     const itemsGroups = wrapper.find( 'ItemGroup' );
     const previewTxt = 'The link will be active after publishing.';
 
@@ -137,7 +136,6 @@ describe( '<DownloadPkgFiles />, if !isPreview', () => {
   } );
 
   it( 'renders the download text for each item', () => {
-    const wrapper = mount( Component );
     const itemsGroups = wrapper.find( 'ItemGroup' );
 
     expect( itemsGroups.length ).toEqual( props.files.length );
@@ -148,15 +146,13 @@ describe( '<DownloadPkgFiles />, if !isPreview', () => {
   } );
 
   it( 'renders the correct as, href, and download prop values', () => {
-    const wrapper = mount( Component );
     const items = wrapper.find( 'Item' );
-    const s3Bucket = 'https://s3-url.com';
 
     expect( items.length ).toEqual( props.files.length );
     items.forEach( ( item, i ) => {
       const { filename, url: assetPath } = props.files[i];
       expect( item.prop( 'as' ) ).toEqual( 'a' );
-      expect( item.prop( 'href' ) ).toEqual( `${s3Bucket}/${assetPath}` );
+      expect( item.prop( 'href' ) ).toEqual( assetPath );
       expect( item.prop( 'download' ) ).toEqual( filename );
     } );
   } );
@@ -170,16 +166,19 @@ describe( '<DownloadPkgFiles />, if there are no files', () => {
   };
 
   const Component = <DownloadPkgFiles { ...props } />;
+  let wrapper;
+
+  beforeEach( () => {
+    wrapper = mount( Component );
+  } );
 
   it( 'renders the "No files to download" message', () => {
-    const wrapper = mount( Component );
     const msg = 'There are no files available for download at this time.';
 
     expect( wrapper.contains( msg ) ).toEqual( true );
   } );
 
   it( 'does not render any items', () => {
-    const wrapper = mount( Component );
     const itemsGroups = wrapper.find( 'ItemGroup' );
 
     expect( itemsGroups.length ).toEqual( 0 );
@@ -194,19 +193,21 @@ describe( '<DownloadPkgFiles />, if !props.files', () => {
   };
 
   const Component = <DownloadPkgFiles { ...props } />;
+  let wrapper;
+
+  beforeEach( () => {
+    wrapper = mount( Component );
+  } );
 
   it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
     expect( wrapper.exists() ).toEqual( true );
   } );
 
   it( 'renders the instructions', () => {
-    const wrapper = mount( Component );
     expect( wrapper.contains( props.instructions ) ).toEqual( true );
   } );
 
   it( 'does not render any items', () => {
-    const wrapper = mount( Component );
     const itemGroups = wrapper.find( 'ItemGroup' );
 
     expect( itemGroups.length ).toEqual( 0 );
