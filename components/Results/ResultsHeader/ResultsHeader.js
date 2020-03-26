@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { object, func, string } from 'prop-types';
 import { connect } from 'react-redux';
 import { Form, Select, Dropdown } from 'semantic-ui-react';
 import { numberWithCommas } from 'lib/utils';
-import { sortRequest, updateSizeRequest } from 'lib/redux/actions/search';
+import * as actions from 'lib/redux/actions/search';
+import { useAuth } from 'context/authContext';
 import ResultsToggleView from '../ResultsToggleView/ResultsToggleView';
 import './ResultsHeader.scss';
 
@@ -13,20 +14,26 @@ TEMP
 const options = [{ key: 1, text: 'Relevance', value: 'relevance' }, { key: 2, text: 'Recent', value: 'published' }];
 /** * */
 
-class ResultsHeader extends Component {
-  constructor( props ) {
-    super( props );
-    this.handleOnChange = this.handleOnChange.bind( this );
-    this.toggleNumberOfResults = this.toggleNumberOfResults.bind( this );
+const ResultsHeader = ( {
+  search,
+  toggleView,
+  currentView,
+  sortRequest,
+  updateSizeRequest
+} ) => {
+  const { user } = useAuth();
+  const searchResponseHits = search.response.took && search.response.hits.hits.length;
+  if ( !searchResponseHits ) return null;
 
-    this.state = {
-      pageSize: props.search.pageSize
-    };
-  }
+  const {
+    total, startIndex, endIndex, sort, pageSize
+  } = search;
 
-  getPageSizes = () => {
+  const resultItemsStart = startIndex + 1;
+  const resultItemsEnd = endIndex + 1;
+
+  const getPageSizes = () => {
     const pageSizes = [];
-    const { total } = this.props.search;
 
     pageSizes.push( { text: '12', value: 12 } );
 
@@ -42,52 +49,38 @@ class ResultsHeader extends Component {
     return pageSizes;
   };
 
-  handleOnChange( event, { value } ) {
-    this.props.sortRequest( value );
-  }
+  const handleOnChange = ( e, { value } ) => {
+    sortRequest( value, user );
+  };
 
-  toggleNumberOfResults( e, { value } ) {
-    this.props.updateSizeRequest( value );
-  }
+  const toggleNumberOfResults = ( e, { value } ) => {
+    updateSizeRequest( value, user );
+  };
 
-  // should probably se scroll query here??
-  render() {
-    const {
-      total, startIndex, endIndex, sort
-    } = this.props.search;
-    const { toggleView, currentView } = this.props;
-    const resultItemsStart = startIndex + 1;
-    const resultItemsEnd = endIndex + 1;
-
-    if ( this.props.search.response.took && this.props.search.response.hits.hits.length ) {
-      return (
-        <div>
-          <ResultsToggleView toggle={ toggleView } currentView={ currentView } />
-          <div className="results_header">
-            <Form className="results_sort">
-              <Form.Group>
-                <Form.Field control={ Select } value={ sort } options={ options } onChange={ this.handleOnChange } />
-              </Form.Group>
-            </Form>
-            <div className="results_total">
-              { resultItemsStart }-{ resultItemsEnd } of { numberWithCommas( total ) }
-              <span style={ total > 12 ? { display: 'inline' } : { display: 'none' } }> | Show: </span>
-              <Dropdown
-                style={ total > 12 ? { display: 'inline' } : { display: 'none' } }
-                defaultValue={ this.state.pageSize }
-                options={ this.getPageSizes() }
-                className="results_total_numOfResults"
-                onChange={ this.toggleNumberOfResults }
-              />
-            </div>
-          </div>
+  return (
+    <div>
+      <ResultsToggleView toggle={ toggleView } currentView={ currentView } />
+      <div className="results_header">
+        <Form className="results_sort">
+          <Form.Group>
+            <Form.Field control={ Select } value={ sort } options={ options } onChange={ handleOnChange } />
+          </Form.Group>
+        </Form>
+        <div className="results_total">
+          { resultItemsStart }-{ resultItemsEnd } of { numberWithCommas( total ) }
+          <span style={ total > 12 ? { display: 'inline' } : { display: 'none' } }> | Show: </span>
+          <Dropdown
+            style={ total > 12 ? { display: 'inline' } : { display: 'none' } }
+            defaultValue={ pageSize }
+            options={ getPageSizes() }
+            className="results_total_numOfResults"
+            onChange={ toggleNumberOfResults }
+          />
         </div>
-      );
-    }
-
-    return <div />;
-  }
-}
+      </div>
+    </div>
+  );
+};
 
 const mapStateToProps = state => ( {
   search: state.search
@@ -101,4 +94,4 @@ ResultsHeader.propTypes = {
   currentView: string
 };
 
-export default connect( mapStateToProps, { sortRequest, updateSizeRequest } )( ResultsHeader );
+export default connect( mapStateToProps, actions )( ResultsHeader );
