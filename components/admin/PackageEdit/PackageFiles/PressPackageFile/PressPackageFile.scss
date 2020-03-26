@@ -17,6 +17,16 @@
       border: 0;
       margin: 0;
       padding: 0;
+
+      .field > .data {
+        // for long strings in title - break word w/ hyphens if browser support, otherwise fallback to wrap
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        hyphens: auto;
+      }
     }
   }
 
@@ -42,7 +52,7 @@
 
   .meta {
     > .data {
-      margin-bottom: 1.5em;
+      margin-bottom: 1.5em;      
     }
   }
 

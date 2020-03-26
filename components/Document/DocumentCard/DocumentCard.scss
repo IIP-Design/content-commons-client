@@ -48,6 +48,12 @@
           font-family: inherit;
           font-weight: 700;
           text-align: left;
+          overflow-wrap: anywhere;
+          word-wrap: anywhere; // FF won't recognize break-word on buttons
+          -webkit-hyphens: auto;
+          -ms-hyphens: auto;
+          -moz-hyphens: auto;
+          hyphens: auto;
           background: transparent;
           color: $blue;          
           cursor: pointer;
