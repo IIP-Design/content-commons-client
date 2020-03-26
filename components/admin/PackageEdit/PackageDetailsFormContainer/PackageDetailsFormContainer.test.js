@@ -264,14 +264,9 @@ const props = {
     title: 'Guidance Package 01-28-20',
     type: 'DAILY_GUIDANCE',
     documents
-  }
+  },
+  setIsFormValid: jest.fn()
 };
-
-const Component = (
-  <MockedProvider mocks={ mocks } addTypename>
-    <PackageDetailsFormContainer { ...props } />
-  </MockedProvider>
-);
 
 describe( '<PackageDetailsFormContainer />', () => {
   /**
@@ -293,23 +288,36 @@ describe( '<PackageDetailsFormContainer />', () => {
     console.error = consoleError;
   } );
 
-  it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
-    const formContainer = wrapper.find( 'PackageDetailsFormContainer' );
+  let Component;
+  let wrapper;
+  let formContainer;
+  let detailsForm;
+  let formik;
+  let notification;
 
+  beforeEach( () => {
+    Component = (
+      <MockedProvider mocks={ mocks } addTypename>
+        <PackageDetailsFormContainer { ...props } />
+      </MockedProvider>
+    );
+
+    wrapper = mount( Component );
+    formContainer = wrapper.find( 'PackageDetailsFormContainer' );
+    detailsForm = wrapper.find( 'PackageDetailsForm' );
+    formik = wrapper.find( 'Formik' );
+    notification = () => wrapper.find( 'Notification' );
+  } );
+
+  it( 'renders without crashing', () => {
     expect( formContainer.exists() ).toEqual( true );
   } );
 
   it( 'renders Formik component', () => {
-    const wrapper = mount( Component );
-    const formik = wrapper.find( 'Formik' );
-
     expect( formik.exists() ).toEqual( true );
   } );
 
   it( 'Formik receives the correct initialValues', () => {
-    const wrapper = mount( Component );
-    const formik = wrapper.find( 'Formik' );
     const { pkg } = props;
     const fileValues = pkg.documents.reduce( ( acc, file ) => {
       const {
@@ -338,16 +346,28 @@ describe( '<PackageDetailsFormContainer />', () => {
     expect( formik.prop( 'initialValues' ) ).toEqual( initialValues );
   } );
 
-  it( 'Formik has enableReinitialize prop', () => {
-    const wrapper = mount( Component );
-    const formik = wrapper.find( 'Formik' );
+  it( 'Formik does not have enableReinitialize prop if pkg.documents === documents count', () => {
+    expect( formik.prop( 'enableReinitialize' ) ).toEqual( false );
+  } );
+
+  it.skip( 'Formik has enableReinitialize prop if pkg.documents !== documents count', () => {
+    // @todo need to figure out
+    // const newDocuments = documents.slice( documents.length - 1 );
+    // const newProps = {
+    //   ...props,
+    //   pkg: {
+    //     ...props.pkg,
+    //     documents: newDocuments
+    //   }
+    // };
+    // wrapper.setProps( {
+    //   children: <PackageDetailsFormContainer { ...newProps } />
+    // } );
 
     expect( formik.prop( 'enableReinitialize' ) ).toEqual( true );
   } );
 
   it( 'renders PackageDetailsForm and passes correct props', () => {
-    const wrapper = mount( Component );
-    const detailsForm = wrapper.find( 'PackageDetailsForm' );
     const passedProps = [
       'values',
       'errors',
@@ -383,6 +403,7 @@ describe( '<PackageDetailsFormContainer />', () => {
       'registerField',
       'getFieldProps',
       'getFieldMeta',
+      'getFieldHelpers',
       'validateOnBlur',
       'validateOnChange',
       'validateOnMount',
@@ -390,6 +411,7 @@ describe( '<PackageDetailsFormContainer />', () => {
       'children',
       'setIsDirty',
       'pkg',
+      'setIsFormValid',
       'save'
     ];
 
@@ -400,22 +422,15 @@ describe( '<PackageDetailsFormContainer />', () => {
   } );
 
   it( 'renders Notification but is not shown initially', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
-    const notification = wrapper.find( 'Notification' );
 
-    expect( notification.exists() ).toEqual( true );
-    expect( notification.prop( 'show' ) ).toEqual( false );
-    expect( notification.prop( 'msg' ) ).toEqual( 'Changes saved' );
+    expect( notification().exists() ).toEqual( true );
+    expect( notification().prop( 'show' ) ).toEqual( false );
+    expect( notification().prop( 'msg' ) ).toEqual( 'Changes saved' );
   } );
 
   it( 'renders Notification and is shown on form save', done => {
-    const wrapper = mount( Component );
-
-    const notification = () => wrapper.find( 'Notification' );
-    const detailsForm = wrapper.find( 'PackageDetailsForm' );
-
     // not shown initially
     expect( notification().exists() ).toEqual( true );
     expect( notification().prop( 'show' ) ).toEqual( false );
@@ -473,7 +488,7 @@ describe( '<PackageDetailsFormContainer />', () => {
       wrapper.update();
 
       // shown
-      expect( props.setIsDirty ).toHaveBeenCalledWith( true );
+      expect( props.setIsFormValid ).toHaveBeenCalledWith( true );
       expect( notification().prop( 'show' ) ).toEqual( true );
       done();
     };
