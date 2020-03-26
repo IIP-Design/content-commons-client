@@ -22,27 +22,27 @@ const VisibilityDropdown = props => (
     { ( { data, loading, error } ) => {
       if ( error ) return `Error! ${error.message}`;
 
-      const options = [{
-        key: 'PUBLIC',
-        text: 'Public (displayed on Content Commons)',
-        value: 'PUBLIC'
-      }];
+      let options = [];
 
-      // Commenting out for now since Internal only view is not yet enabled.
-      // if ( data && data.__type && data.__type.enumValues ) {
-      //   options = data.__type.enumValues
-      //     .map( enumValue => {
-      //       const text = enumValue.name === 'PUBLIC'
-      //         ? 'Public (displayed on Content Commons)'
-      //         : 'Internal (Department of State only)';
+      if ( data && data.__type && data.__type.enumValues ) {
+        options = data.__type.enumValues
+          .map( enumValue => {
+            const text = enumValue.name === 'PUBLIC'
+              ? 'Public (displayed on Content Commons)'
+              : 'Internal (Department of State only)';
 
-      //       return {
-      //         key: enumValue.name,
-      //         text,
-      //         value: enumValue.name
-      //       };
-      //     } );
-      // }
+            return {
+              key: enumValue.name,
+              text,
+              value: enumValue.name
+            };
+          } );
+      }
+
+      // hide specific value
+      if ( props.hide ) {
+        options = options.filter( option => option.value.toLowerCase() !== props.hide );
+      }
 
       return (
         <Fragment>
@@ -78,7 +78,8 @@ VisibilityDropdown.defaultProps = {
 
 VisibilityDropdown.propTypes = {
   id: PropTypes.string,
-  label: PropTypes.string
+  label: PropTypes.string,
+  hide: PropTypes.string
 };
 
 export default React.memo( VisibilityDropdown, areEqual );

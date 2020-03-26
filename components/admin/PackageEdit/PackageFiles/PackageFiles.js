@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { Button } from 'semantic-ui-react';
 import { getCount, getPluralStringOrNot } from 'lib/utils';
 import EditPackageFiles from 'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal';
+import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
 import { useCrudActionsDocument } from 'lib/hooks/useCrudActionsDocument';
 import './PackageFiles.scss';
 
@@ -15,7 +16,10 @@ const PackageFiles = props => {
   const [modalOpen, setModalOpen] = useState( false );
   const [progress, setProgress] = useState( 0 );
 
-  const { createFile, deleteFile, updateFile } = useCrudActionsDocument( pkg.id );
+  const { createFile, deleteFile, updateFile } = useCrudActionsDocument( {
+    pollQuery: PACKAGE_QUERY,
+    variables: { id: pkg.id }
+  } );
 
   if ( !hasInitialUploadCompleted || !pkg || !getCount( pkg ) ) return null;
 

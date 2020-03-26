@@ -12,7 +12,9 @@ import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import TermsConditions from 'components/admin/TermsConditions/TermsConditions';
 import EditPackageFiles from 'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal';
+import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
 import { useCrudActionsDocument } from 'lib/hooks/useCrudActionsDocument';
+
 
 import './PackageDetailsForm.scss';
 
@@ -33,7 +35,10 @@ const PackageDetailsForm = props => {
   } = props;
 
   const router = useRouter();
-  const { createFile } = useCrudActionsDocument();
+  const { createFile } = useCrudActionsDocument( {
+    pollQuery: PACKAGE_QUERY,
+    variables: { id: pkg.id }
+  } );
 
   const [files, setFiles] = useState( [] );
   const [modalOpen, setModalOpen] = useState( false );

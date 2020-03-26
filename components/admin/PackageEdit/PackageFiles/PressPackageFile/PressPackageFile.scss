@@ -1,5 +1,5 @@
-@import "styles/colors.scss";
-@import "styles/mixins.scss";
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
 
 .package-file {
   padding-top: 2em;
@@ -29,34 +29,12 @@
 
   .thumbnail {
     > img {
-      @media screen and (max-width: 767px) {
-        margin-bottom: 1em;
-      }
+      width: 225px;
+      margin-bottom: 1em;
       height: auto;
-      width: 100%;
       max-width: 100%;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
-                  0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    }
-
-    > .placeholder {
-      &.outer {
-        position: relative;
-        height: 0;
-        padding-top: calc(11/8.5 * 100%);
-        overflow: hidden;
-        background-color: $light-grey;
-
-        > .loader {
-          z-index: 15;
-        }
-      }
-
-      &.inner {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+      @media screen and (min-width: 767px) {
         width: 100%;
       }
     }
