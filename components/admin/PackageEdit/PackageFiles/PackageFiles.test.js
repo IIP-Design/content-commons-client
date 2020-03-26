@@ -18,8 +18,6 @@ jest.mock( 'lib/hooks/useCrudActionsDocument', () => ( {
 
 jest.mock( 'next/config', () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
-const Component = <PackageFiles { ...props } />;
-
 describe( '<PackageFiles />', () => {
   /**
    * @todo Suppress React 16.8 `act()` warnings globally.
@@ -40,15 +38,19 @@ describe( '<PackageFiles />', () => {
     console.error = consoleError;
   } );
 
-  it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
+  let Component;
+  let wrapper;
 
+  beforeEach( () => {
+    Component = <PackageFiles { ...props } />;
+    wrapper = mount( Component );
+  } );
+
+  it( 'renders without crashing', () => {
     expect( wrapper.exists() ).toEqual( true );
   } );
 
   it( 'renders the correct PressPackageFile components with correct document prop', () => {
-    const wrapper = mount( Component );
-
     const pressPkgFiles = wrapper.find( 'Press-Package-File' );
     const { documents } = props.pkg;
 
@@ -59,7 +61,6 @@ describe( '<PackageFiles />', () => {
   } );
 
   it( 'renders the correct heading', () => {
-    const wrapper = mount( Component );
     const { documents } = props.pkg;
     const heading = `Uploaded File${documents.length > 1 ? 's' : ''} (${documents.length})`;
 
@@ -67,7 +68,6 @@ describe( '<PackageFiles />', () => {
   } );
 
   it( 'renders EditPackageFiles with correct props', () => {
-    const wrapper = mount( Component );
     const editPkgFiles = wrapper.find( 'EditPackageFiles' );
     const units = props.pkg.documents || [];
 
@@ -84,7 +84,6 @@ describe( '<PackageFiles />', () => {
   } );
 
   it( 'EditPackageFiles trigger/onClose opens/closes the modal', () => {
-    const wrapper = mount( Component );
     const editPkgFiles = () => wrapper.find( 'EditPackageFiles' );
     const trigger = mount( editPkgFiles().prop( 'trigger' ) );
 
@@ -102,17 +101,73 @@ describe( '<PackageFiles />', () => {
     expect( editPkgFiles().prop( 'modalOpen' ) ).toEqual( false );
   } );
 
-  it( 'renders null if !hasInitialUploadCompleted', () => {
-    const wrapper = mount( Component );
-    wrapper.setProps( { hasInitialUploadCompleted: false } );
+  it( 'EditPackageFiles save calls props.setHasEdits', done => {
+    const editPkgFiles = () => wrapper.find( 'EditPackageFiles' );
+    const test = async () => {
+      const filesToDelete = [
+        {
+          id: '3dxs',
+          name: 'Rewards for Justice: Reward Offer for Those Involved in the 2017 “Tongo Tongo” Ambush in Niger.docx',
+          use: 'ck2wbvj7u10lo07207aa55qmz',
+          bureaus: [
+            'sdfq'
+          ],
+          url: 'daily_guidance/2019/11/test-123/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.docx'
+        }
+      ];
+      const filesToSave = [
+        {
+          id: '1asd',
+          name: 'Lesotho National Day.docx',
+          use: 'ck2wbvjaa10n20720fg5ayhn9',
+          bureaus: [
+            'sdfq'
+          ],
+          url: 'daily_guidance/2019/11/test-123/Lesotho_National_Day.docx'
+        },
+        {
+          id: '2sdf',
+          name: 'U.S.-Pakistan Women’s Council Advances Women’s Economic Empowerment at Houston Event.docx',
+          use: 'ck2wbvj7u10lo07207aa55qmz',
+          bureaus: [
+            'sdfq'
+          ],
+          url: 'daily_guidance/2019/11/test-123/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx'
+        }
+      ];
 
+      await editPkgFiles().prop( 'save' )( filesToSave, filesToDelete );
+      wrapper.update();
+
+      expect( props.setHasEdits ).toHaveBeenCalledWith( true );
+      done();
+    };
+
+    test();
+  } );
+
+  it( 'renders null if !hasInitialUploadCompleted', () => {
+    wrapper.setProps( { hasInitialUploadCompleted: false } );
     expect( wrapper.html() ).toEqual( null );
   } );
 
   it( 'renders null if pkg === {}', () => {
-    const wrapper = mount( Component );
     wrapper.setProps( { pkg: {} } );
-
     expect( wrapper.html() ).toEqual( null );
+  } );
+
+  it( 'renders no files message if pkg.documents === []', () => {
+    wrapper.setProps( {
+      pkg: {
+        ...props.pkg,
+        documents: []
+      }
+    } );
+    const msg = 'This package does not have any uploaded files.';
+    const { pkg } = wrapper.props();
+    const count = pkg.documents.length;
+
+    expect( wrapper.contains( msg ) ).toEqual( true );
+    expect( wrapper.contains( `Uploaded File (${count})` ) ).toEqual( true );
   } );
 } );

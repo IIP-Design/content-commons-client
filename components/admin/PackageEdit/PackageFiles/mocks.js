@@ -367,5 +367,6 @@ export const props = {
       }
     ]
   },
-  hasInitialUploadCompleted: true
+  hasInitialUploadCompleted: true,
+  setHasEdits: jest.fn()
 };
