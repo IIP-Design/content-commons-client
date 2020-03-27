@@ -20,7 +20,6 @@ Handles the public Content Commons as well as the client side adminstative inter
   - **REACT_APP_YOUTUBE_API_KEY** : key for YouTube services
   - **REACT_APP_VIMEO_TOKEN** : token for Vimeo services
   - **REACT_APP_GOOGLE_CLIENT_ID** : id used for Google authentication
-  - **REACT_APP_GOOGLE_API_KEY** : key to Google services, i.e. language detect
   - **REACT_APP_APOLLO_ENDPOINT** : public api to Content Commons Adminstation Server (graphql server)
   - **REACT_APP_APOLLO_SUBSCRIPTIONS_ENDPOINT** : web socket for apollo subscriptions
   - **REACT_APP_AWS_S3_AUTHORING_BUCKET**: S3 bucket for authoring uploads
