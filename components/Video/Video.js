@@ -325,7 +325,11 @@ class Video extends Component {
 
     if ( unit && selectedLanguage ) {
       return (
-        <ModalItem headline={ unit.title } textDirection={ selectedLanguage.text_direction }>
+        <ModalItem
+          headline={ unit.title }
+          textDirection={ selectedLanguage.text_direction }
+          lang={ selectedLanguage.language_code }
+        >
           <div className="modal_options">
             <div className="modal_options_left">
               <ModalLangDropdown

@@ -275,7 +275,7 @@ const FileDataForm = ( {
         <Grid.Row>
           <Grid.Column className="video-file-form-col-1" mobile={ 16 } computer={ 8 }>
             <div className="file_meta">
-              <span className="file_meta_content file_meta_content--filetype">
+              <span className="file_meta_content file_meta_content--filetype" lang={ language?.languageCode || 'en' }>
                 { file.filename }
               </span>
               { file.filesize && (

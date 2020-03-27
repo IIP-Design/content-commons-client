@@ -37,12 +37,19 @@ const DocumentCard = props => {
     excerpt,
     tags,
     owner,
+    language,
   } = doc;
 
   // disallow <script></script> tags
   const parseHtml = htmlParser( {
     isValidNode: node => node.type !== 'script'
   } );
+
+  const setLangAttr = () => {
+    if ( language.languageCode ) return language.languageCode;
+    if ( language.language_code ) return language.language_code;
+    return 'en';
+  };
 
   return (
     <Card
@@ -52,7 +59,7 @@ const DocumentCard = props => {
         ? { fluid: true }
         : { centered: true } ) }
     >
-      <article className="container">
+      <article className="container" lang={ setLangAttr() }>
         <MediaObject
           className="document-use"
           body={ <span>{ documentUse }</span> }

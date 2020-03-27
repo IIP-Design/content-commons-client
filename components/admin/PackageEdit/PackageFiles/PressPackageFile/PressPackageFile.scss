@@ -20,8 +20,8 @@
 
       .field > .data {
         // for long strings in title - break word w/ hyphens if browser support, otherwise fallback to wrap
-        overflow-wrap: break-word;
-        word-wrap: break-word;
+        overflow-wrap: anywhere;
+        word-wrap: anywhere;
         -webkit-hyphens: auto;
         -ms-hyphens: auto;
         -moz-hyphens: auto;

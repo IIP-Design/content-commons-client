@@ -20,7 +20,7 @@ import './PressPackageFile.scss';
 // todo: write props comparison
 // use memo here to avoid rerending this files
 // when it is not re-rendered
-const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
+// const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
 const PressPackageFile = props => {
   const { document } = props;
@@ -29,7 +29,9 @@ const PressPackageFile = props => {
 
   if ( !document || !getCount( document ) ) return null;
 
-  const { id, filename, image } = document;
+  const {
+    id, filename, image, language
+  } = document;
 
   const metaData = [
     {
@@ -147,7 +149,7 @@ const PressPackageFile = props => {
 
               <Form.Group widths="equal">
                 <Form.Field>
-                  <div className="data">
+                  <div className="data" lang={ language.languageCode }>
                     <MetaTerms unitId={ id } terms={ metaData } />
                   </div>
                 </Form.Field>
@@ -178,7 +180,8 @@ PressPackageFile.propTypes = {
   document: PropTypes.shape( {
     id: PropTypes.string,
     filename: PropTypes.string,
-    image: PropTypes.array
+    image: PropTypes.array,
+    language: PropTypes.object
   } )
 };
 

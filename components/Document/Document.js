@@ -53,9 +53,15 @@ const Document = props => {
   }, [] );
 
   const DownloadElement = isAdminPreview ? 'span' : 'a';
+  // const lang = language.languageCode ? language.languageCode : language.language_code ? language.language_code : 'en';
+  const setLangAttr = () => {
+    if ( language.languageCode ) return language.languageCode;
+    if ( language.language_code ) return language.language_code;
+    return 'en';
+  };
 
   return (
-    <ModalItem headline={ title } className={ isAdminPreview ? 'document--preview' : '' }>
+    <ModalItem headline={ title } className={ isAdminPreview ? 'document--preview' : '' } lang={ setLangAttr() }>
       <div className="modal_options modal_options--noLanguage">
         { isAdminPreview
           && (

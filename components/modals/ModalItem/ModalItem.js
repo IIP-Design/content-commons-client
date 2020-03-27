@@ -5,11 +5,11 @@ import './ModalItemRTL.scss';
 
 const ModalItem = props => {
   const {
-    className, headline, subHeadline, textDirection
+    className, headline, subHeadline, textDirection, lang
   } = props;
 
   return (
-    <div className={ `modal ${textDirection} ${className}` }>
+    <div className={ `modal ${textDirection} ${className}` } lang={ lang || 'en' }>
       <h1 className="modal_headline">
         { headline }
         { subHeadline && (
@@ -26,7 +26,8 @@ ModalItem.propTypes = {
   headline: string,
   children: node,
   subHeadline: string,
-  textDirection: string
+  textDirection: string,
+  lang: string
 };
 
 export default ModalItem;

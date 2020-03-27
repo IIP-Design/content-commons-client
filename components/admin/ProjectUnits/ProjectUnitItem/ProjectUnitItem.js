@@ -101,7 +101,7 @@ const ProjectUnitItem = props => {
           showPercent
         />
       ) }
-      <Card.Content className={ error ? 'error' : '' }>
+      <Card.Content className={ error ? 'error' : '' } lang={ unit.language?.languageCode || 'en' }>
         <Card.Header>{ unit && unit.title ? unit.title : '[Title]' }</Card.Header>
         <Card.Meta>
           <List>

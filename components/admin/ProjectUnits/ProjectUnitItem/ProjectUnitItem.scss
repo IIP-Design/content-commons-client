@@ -49,6 +49,13 @@ a.ui.card.project-unit-item:hover {
       .header:not(.ui) {
         font-size: 0.888888889rem;
         margin-bottom: 0.5em;
+        // for long strings in title - break word w/ hyphens if browser support, otherwise fallback to wrap
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        hyphens: auto;
       }
 
       .meta {
