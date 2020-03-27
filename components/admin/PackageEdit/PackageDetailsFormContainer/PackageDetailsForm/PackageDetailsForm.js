@@ -14,7 +14,7 @@ import TermsConditions from 'components/admin/TermsConditions/TermsConditions';
 import EditPackageFiles from 'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal';
 import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
 import { useCrudActionsDocument } from 'lib/hooks/useCrudActionsDocument';
-
+import useToggleModal from 'lib/hooks/useToggleModal';
 
 import './PackageDetailsForm.scss';
 
@@ -40,8 +40,9 @@ const PackageDetailsForm = props => {
     variables: { id: pkg.id }
   } );
 
+  const { modalOpen, handleOpenModel, handleCloseModal } = useToggleModal();
+
   const [files, setFiles] = useState( [] );
-  const [modalOpen, setModalOpen] = useState( false );
   const [progress, setProgress] = useState( 0 );
 
   const handleUploadProgress = ( progressEvent, file ) => {
@@ -57,12 +58,9 @@ const PackageDetailsForm = props => {
     );
   };
 
-  const handleOnChange = (
-    e,
-    {
-      name, value, type, checked
-    }
-  ) => {
+  const handleOnChange = ( e, {
+    name, value, type, checked
+  } ) => {
     if ( type === 'checkbox' ) {
       setFieldValue( name, checked );
     } else {
@@ -74,11 +72,11 @@ const PackageDetailsForm = props => {
   const handleAddFiles = e => {
     const fileList = Array.from( e.target.files );
     setFiles( fileList );
-    setModalOpen( true );
+    handleOpenModel();
   };
 
   /**
-   * Save  files from edit modal
+   * Save files from edit modal
    * @param {array} filesToSave
    */
   const handleSaveModalFiles = async filesToSave => {
@@ -88,15 +86,6 @@ const PackageDetailsForm = props => {
     removeCreateQryParamFromUrl();
   };
 
-
-  /**
-   * Called from within edit modal to reset 'modalOpen' state to false
-   * If we do not reset then the state will never change and the modal
-   * will not reopen
-   */
-  const handleOnClose = () => {
-    setModalOpen( false );
-  };
 
   const getFormattedTypeName = type => {
     if ( type ) {
@@ -196,7 +185,7 @@ const PackageDetailsForm = props => {
                   title={ `Preparing ${getCount( files )} ${getPluralStringOrNot( files, 'file' )} for upload... ` }
                   headerStyles={ { fontSize: '1em', marginBottom: '.8em' } }
                   modalOpen={ modalOpen }
-                  onClose={ handleOnClose }
+                  onClose={ handleCloseModal }
                   save={ handleSaveModalFiles }
                   progress={ progress }
                 />

@@ -5,6 +5,7 @@ import { Button } from 'semantic-ui-react';
 import { getCount, getPluralStringOrNot } from 'lib/utils';
 import EditPackageFiles from 'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal';
 import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
+import useToggleModal from 'lib/hooks/useToggleModal';
 import { useCrudActionsDocument } from 'lib/hooks/useCrudActionsDocument';
 import './PackageFiles.scss';
 
@@ -13,13 +14,14 @@ const PressPackageFile = dynamic( () => import( /* webpackChunkName: "pressPacka
 const PackageFiles = props => {
   const { pkg, hasInitialUploadCompleted } = props;
 
-  const [modalOpen, setModalOpen] = useState( false );
   const [progress, setProgress] = useState( 0 );
 
-  const { createFile, deleteFile, updateFile } = useCrudActionsDocument( {
+  const { saveFiles } = useCrudActionsDocument( {
     pollQuery: PACKAGE_QUERY,
     variables: { id: pkg.id }
   } );
+
+  const { modalOpen, handleOpenModel, handleCloseModal } = useToggleModal();
 
   if ( !hasInitialUploadCompleted || !pkg || !getCount( pkg ) ) return null;
 
@@ -30,33 +32,14 @@ const PackageFiles = props => {
     setProgress( progressEvent.loaded );
   };
 
-  const handleOpenModel = () => {
-    setModalOpen( true );
-  };
-
-  /**
-   * Called from within edit modal to reset 'modalOpen' state to false
-   * If we do not reset then the state will never change and the modal
-   * will not reopen
-   */
-  const handleCloseModal = () => {
-    setModalOpen( false );
-  };
-
   /**
    * Save/Delete files from edit modal
    * @param {array} filesToSave
    * @param {array} filesToRemove
    */
-  const handleSave = async ( filesToSave, filesToRemove ) => {
-    await Promise.all( filesToRemove.map( file => deleteFile( pkg, file ) ) );
-
-    return Promise.all( filesToSave.map( file => {
-      if ( file.input ) {
-        return createFile( pkg, file, handleUploadProgress );
-      }
-      return updateFile( pkg, file );
-    } ) );
+  const handleSave = async ( toSave, toRemove ) => {
+    const files = { toSave, toRemove };
+    saveFiles( pkg, files, handleUploadProgress );
   };
 
   return (

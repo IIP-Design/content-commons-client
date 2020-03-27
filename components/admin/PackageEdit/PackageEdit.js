@@ -4,11 +4,13 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import usePublish from 'lib/hooks/usePublish';
 import useIsDirty from 'lib/hooks/useIsDirty';
 import PropTypes from 'prop-types';
-import { Loader } from 'semantic-ui-react';
+import { Button, Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import ActionHeadline from 'components/admin/ActionHeadline/ActionHeadline';
 import ApolloError from 'components/errors/ApolloError';
-import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
+import useToggleModal from 'lib/hooks/useToggleModal';
+import { useCrudActionsDocument } from 'lib/hooks/useCrudActionsDocument';
+import EditPackageFiles from 'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal'; import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import ButtonPublish from 'components/admin/ButtonPublish/ButtonPublish';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
@@ -36,12 +38,21 @@ const PackageEdit = props => {
     skip: !packageId
   } );
 
+  const { saveFiles } = useCrudActionsDocument( {
+    pollQuery: PACKAGE_QUERY,
+    variables: { id: packageId }
+  } );
+
+  const { modalOpen, handleOpenModel, handleCloseModal } = useToggleModal();
+
+
   const [deletePackage] = useMutation( DELETE_PACKAGE_MUTATION );
   const [publishPackage] = useMutation( PUBLISH_PACKAGE_MUTATION );
   const [unpublishPackage] = useMutation( UNPUBLISH_PACKAGE_MUTATION );
   const [updatePackageStatus] = useMutation( UPDATE_PACKAGE_STATUS_MUTATION );
 
   const [error, setError] = useState( {} );
+  const [progress, setProgress] = useState( 0 );
 
   // publishOperation tells the action buttons which operation is excuting so that it can
   // set its loading indcator on the right button
@@ -130,6 +141,16 @@ const PackageEdit = props => {
   const handleUnPublish = async () => {
     setPublishOperation( 'unpublish' );
     executePublishOperation( packageId, unpublishPackage );
+  };
+
+  const handleUploadProgress = ( progressEvent, file ) => {
+    file.loaded = progressEvent.loaded;
+    setProgress( progressEvent.loaded );
+  };
+
+  const handleSave = async ( toSave, toRemove ) => {
+    const files = { toSave, toRemove };
+    saveFiles( data.pkg, files, handleUploadProgress );
   };
 
   const centeredStyles = {
@@ -225,10 +246,7 @@ const PackageEdit = props => {
         hasInitialUploadCompleted={ hasInitialUploadCompleted }
         setIsFormValid={ setIsFormValid }
       >
-        <PackageFiles
-          pkg={ pkg }
-          hasInitialUploadCompleted={ hasInitialUploadCompleted }
-        />
+        <PackageFiles pkg={ pkg } hasInitialUploadCompleted={ hasInitialUploadCompleted } />
       </PackageDetailsFormContainer>
       { /**
        * can possibly be shared with VideoReview
@@ -243,14 +261,25 @@ const PackageEdit = props => {
             updated={ isDirty }
           />
 
-          <ButtonAddFiles
-            className="basic action-btn btn--add-more"
-            accept=".doc, .docx"
-            onChange={ () => {} }
-            multiple
-          >
-            + Add Files
-          </ButtonAddFiles>
+          <EditPackageFiles
+            filesToEdit={ pkg?.documents }
+            extensions={ ['.doc', '.docx'] }
+            trigger={ (
+              <Button
+                className="basic action-btn btn--add-more"
+                onClick={ handleOpenModel }
+                size="small"
+                basic
+              >
+                + Add Files
+              </Button>
+            ) }
+            title="Edit Package Files"
+            modalOpen={ modalOpen }
+            onClose={ handleCloseModal }
+            save={ handleSave }
+            progress={ progress } // use here to re-render modal
+          />
 
           <ButtonPublish
             handlePublish={ handlePublish }
