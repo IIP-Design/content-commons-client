@@ -1,10 +1,11 @@
-import React, { Fragment, useCallback, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Card } from 'semantic-ui-react';
 import ReactMarkdown from 'react-markdown';
 import htmlParser from 'react-markdown/plugins/html-parser';
 import { getDateTimeTerms } from 'components/Package/utils';
 
+import ContentHeightClamp from 'components/ContentHeightClamp/ContentHeightClamp';
 import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 import MediaObject from 'components/MediaObject/MediaObject';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
@@ -22,13 +23,6 @@ import './DocumentCard.scss';
 const DocumentCard = props => {
   const { isAdminPreview, file: doc } = props;
   const [isOpen, setIsOpen] = useState( false );
-  const [excerptHeight, setExcerptHeight] = useState( 0 );
-
-  const excerptRef = useCallback( node => {
-    if ( node !== null ) {
-      setExcerptHeight( node.getBoundingClientRect().height );
-    }
-  }, [] );
 
   if ( !doc || !getCount( doc ) ) return null;
 
@@ -112,13 +106,13 @@ const DocumentCard = props => {
             ? (
               <Fragment>
                 <p>Excerpt:</p>
-                <div ref={ excerptRef } className={ `excerpt${excerptHeight > 160 && ' clamped'}` }>
+                <ContentHeightClamp className="excerpt">
                   <ReactMarkdown
                     source={ excerpt }
                     escapeHtml={ false }
                     astPlugins={ [parseHtml] }
                   />
-                </div>
+                </ContentHeightClamp>
               </Fragment>
             )
             : <p>No excerpt available</p> }
