@@ -20,6 +20,8 @@ import TermsConditions from 'components/admin/TermsConditions/TermsConditions';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 import './ProjectDetailsForm.scss';
 
+import isEmpty from 'lodash/isEmpty';
+
 /**
  * Form component only.  Form is wrapped in specifc content type HOC to handle
  * queries, validation, etc
@@ -33,13 +35,15 @@ const ProjectDetailsForm = props => {
     handleSubmit,
     handleChange,
     setFieldValue,
-    isSubmitting,
     isValid,
     setFieldTouched,
     maxCategories,
     status,
-    save
+    save,
   } = props;
+
+  // Is this a newly created project? Used for conditionally disabling "Save draft & upload.." button - ln. 208
+  const initProjectCreation = isEmpty( touched );
 
   const handleOnChange = ( e, {
     name, value, type, checked
@@ -131,7 +135,7 @@ const ProjectDetailsForm = props => {
                     label="Categories"
                     value={ values.categories }
                     onChange={ handleOnChange }
-                    error={ !values.categories.length || values.categories.length > 2 }
+                    error={ touched.categories && ( !values.categories.length || values.categories.length > 2 ) }
                     multiple
                     search
                     closeOnBlur
@@ -201,7 +205,7 @@ const ProjectDetailsForm = props => {
                   onClick={ handleSubmit }
                   className="edit-project__form--save"
                   content="Save draft & upload files to this project"
-                  disabled={ !isValid || isSubmitting }
+                  disabled={ !isValid || initProjectCreation }
                 />
               </Grid.Column>
             </Grid.Row>
@@ -221,7 +225,6 @@ ProjectDetailsForm.propTypes = {
   errors: PropTypes.object,
   touched: PropTypes.object,
   setFieldValue: PropTypes.func,
-  isSubmitting: PropTypes.bool,
   isValid: PropTypes.bool,
   setFieldTouched: PropTypes.func,
   maxCategories: PropTypes.number,
