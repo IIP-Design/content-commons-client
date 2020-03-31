@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Form, Select, Dropdown } from 'semantic-ui-react';
 import { numberWithCommas } from 'lib/utils';
 import * as actions from 'lib/redux/actions/search';
-import { useAuth } from 'context/authContext';
+import useClientUserToken from 'lib/hooks/useClientUserToken';
 import ResultsToggleView from '../ResultsToggleView/ResultsToggleView';
 import './ResultsHeader.scss';
 
@@ -21,7 +21,7 @@ const ResultsHeader = ( {
   sortRequest,
   updateSizeRequest
 } ) => {
-  const { user } = useAuth();
+  const user = useClientUserToken();
   const searchResponseHits = search.response.took && search.response.hits.hits.length;
   if ( !searchResponseHits ) return null;
 
