@@ -203,7 +203,7 @@ const EditPackageFilesModal = ( {
 
     return (
       <EditPressOfficeFilesGrid
-        files={ sortedFiles }
+        files={ files }
         update={ updateField }
         removeFile={ handleRemove }
         accept={ allowedExtensions }
@@ -264,6 +264,7 @@ const EditPackageFilesModal = ( {
 
           <Button
             className="primary"
+            loading={ !!saving }
             type="button"
             content="Save"
             onClick={ handleSave }
