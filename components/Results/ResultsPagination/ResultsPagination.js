@@ -3,11 +3,11 @@ import { object, func } from 'prop-types';
 import { connect } from 'react-redux';
 import { Pagination } from 'semantic-ui-react';
 import * as actions from 'lib/redux/actions/search';
-import useClientUserToken from 'lib/hooks/useClientUserToken';
+import { useAuth } from 'context/authContext';
 import './ResultsPagination.scss';
 
 const ResultsPagination = ( { targetRequest, search } ) => {
-  const user = useClientUserToken();
+  const { user } = useAuth();
   const { totalPages, currentPage } = search;
 
   if ( totalPages < 2 ) return null;
