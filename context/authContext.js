@@ -101,7 +101,6 @@ function AuthProvider( props ) {
     fetchPolicy: 'network-only'
   } );
 
-
   // Sign in mutation
   const [signIn, { loading: signInLoading, error: signInError }] = useMutation(
     CLOUDFLARE_SIGNIN_MUTATION, {
@@ -149,7 +148,6 @@ function AuthProvider( props ) {
       redirectTo( '/', {} );
     }
   };
-
 
   const logout = async () => signOut();
   const register = () => console.log( 'register' );
