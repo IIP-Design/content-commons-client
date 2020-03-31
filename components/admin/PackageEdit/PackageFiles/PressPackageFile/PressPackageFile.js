@@ -6,6 +6,7 @@ import {
 } from 'semantic-ui-react';
 import { getCount } from 'lib/utils';
 import thumbnailUnavailable from 'static/images/thumbnail_document_unavailable.png';
+import thumbnail from 'static/images/thumbnail_document.png';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import DocumentPaceholder from 'components/Placeholder/DocumentPaceholder';
 import CountriesRegionsDropdown from 'components/admin/dropdowns/CountriesRegionsDropdown/CountriesRegionsDropdown';
@@ -64,6 +65,9 @@ const PressPackageFile = props => {
     if ( getCount( image ) ) {
       if ( image[0].url === 'UNAVAILABLE' ) {
         return <img src={ thumbnailUnavailable } alt="Thumbnail unavailable" />;
+      }
+      if ( image[0].url === 'NONE' ) {
+        return <img src={ thumbnail } alt="Thumbnail" />;
       }
       if ( image[0].signedUrl ) {
         return <img src={ image[0].signedUrl } alt={ image[0].alt } />;
