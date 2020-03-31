@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import htmlParser from 'react-markdown/plugins/html-parser';
 import { getDateTimeTerms } from 'components/Package/utils';
 
+import ContentHeightClamp from 'components/ContentHeightClamp/ContentHeightClamp';
 import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 import MediaObject from 'components/MediaObject/MediaObject';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
@@ -46,8 +47,9 @@ const DocumentCard = props => {
   } );
 
   const setLangAttr = () => {
-    if ( language.languageCode ) return language.languageCode;
-    if ( language.language_code ) return language.language_code;
+    if ( language?.languageCode ) return language.languageCode;
+    // eslint-disable-next-line
+    if ( language?.language_code ) return language.language_code;
     return 'en';
   };
 
@@ -105,12 +107,13 @@ const DocumentCard = props => {
             ? (
               <Fragment>
                 <p>Excerpt:</p>
-                <ReactMarkdown
-                  className="excerpt"
-                  source={ excerpt }
-                  escapeHtml={ false }
-                  astPlugins={ [parseHtml] }
-                />
+                <ContentHeightClamp className="excerpt">
+                  <ReactMarkdown
+                    source={ excerpt }
+                    escapeHtml={ false }
+                    astPlugins={ [parseHtml] }
+                  />
+                </ContentHeightClamp>
               </Fragment>
             )
             : <p>No excerpt available</p> }
