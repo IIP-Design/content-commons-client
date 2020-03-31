@@ -39,9 +39,10 @@ const getCloudFlareToken = ctx => {
 };
 
 /**
- * Returns a user if both qa CloudFlare token AND
+ * Returns a user if both a CloudFlare token AND
  * valid user exist, else return null
- * Exported to make avaiale for SSR
+ * Exported to make avaiale for SSR and outside
+ * of react components
  * @param {obj} ctx next.js context object
  */
 export const fetchUser = async ctx => {
@@ -71,7 +72,7 @@ export const fetchUser = async ctx => {
  * Checks to see if on a protected page and if so
  * verify a logged user with applicable permissions
  * Exported to make avaiale for SSR
- * @param {*} ctx ext.js context object
+ * @param {*} ctx next.js context object
  */
 export const canAccessPage = async ctx => {
   // are we on a page that requires permissions?
@@ -119,8 +120,12 @@ function AuthProvider( props ) {
       const {
         location: { protocol, hostname, port }
       } = window;
-      const url = `${protocol}//${hostname}:${port}`;
-      window.location = `https://america.cloudflareaccess.com/cdn-cgi/access/logout?returnTo=${url}`;
+
+      // Only do CloudFlare logout if on staging, beta or prod
+      if ( !isDevEnvironment() ) {
+        const url = `${protocol}//${hostname}:${port}`;
+        window.location = `https://america.cloudflareaccess.com/cdn-cgi/access/logout?returnTo=${url}`;
+      }
       cookie.remove( 'CF_Authorization' );
       cookie.remove( 'ES_TOKEN' );
       router.push( '/' );
@@ -153,6 +158,10 @@ function AuthProvider( props ) {
 
   const logout = async () => signOut();
   const register = () => console.log( 'register' );
+
+  if ( data?.user ) {
+    data.user.esToken = cookie.get( 'ES_TOKEN' );
+  }
 
   return (
     <AuthContext.Provider
