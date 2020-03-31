@@ -74,7 +74,7 @@ class FilterSelections extends Component {
       const label = list.find( item => item.key.indexOf( value ) !== -1 );
       return ( {
         value,
-        label: label.display_name,
+        label: label ? label.display_name : '',
         name,
         single: isRadio
       } );
