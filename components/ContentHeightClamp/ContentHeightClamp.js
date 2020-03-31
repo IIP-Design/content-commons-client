@@ -7,6 +7,7 @@ const ContentHeightClamp = props => {
     children, className, el: Element, maxHeight, style
   } = props;
   const [height, setHeight] = useState( 0 );
+  const isLong = height > maxHeight;
 
   const ref = useCallback( node => {
     if ( node !== null ) {
@@ -17,8 +18,10 @@ const ContentHeightClamp = props => {
   return (
     <Element
       ref={ ref }
-      className={ `height-clamp ${className} ${height > maxHeight ? 'clamped' : 'unclamped'}` }
+      className={ `height-clamp ${className} ${isLong ? 'clamped' : 'unclamped'}` }
       style={ style }
+      // allow scrolling for kbd only users if isLong
+      { ...( isLong ? { tabIndex: 0 } : {} ) }
     >
       { children }
     </Element>
