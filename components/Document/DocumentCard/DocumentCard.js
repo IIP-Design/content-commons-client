@@ -47,8 +47,9 @@ const DocumentCard = props => {
   } );
 
   const setLangAttr = () => {
-    if ( language.languageCode ) return language.languageCode;
-    if ( language.language_code ) return language.language_code;
+    if ( language?.languageCode ) return language.languageCode;
+    // eslint-disable-next-line
+    if ( language?.language_code ) return language.language_code;
     return 'en';
   };
 
