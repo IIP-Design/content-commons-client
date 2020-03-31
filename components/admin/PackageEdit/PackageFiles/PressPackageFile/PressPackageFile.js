@@ -146,6 +146,7 @@ const PressPackageFile = props => {
                     onChange={ handleOnChange }
                     error={ isTouched( 'visibility' ) && hasError( 'visibility' ) }
                     required
+                    hide="public"
                   />
                   <p className="error-message">{ showErrorMsg( 'visibility' ) }</p>
                 </Form.Field>
