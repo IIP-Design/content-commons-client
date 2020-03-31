@@ -7,11 +7,11 @@ import difference from 'lodash/difference';
 import union from 'lodash/union';
 import intersection from 'lodash/intersection';
 import { connect } from 'react-redux';
-
 import './FilterMenuItem.scss';
 
 const FilterMenuItem = props => {
   const [filterItemOpen, setFilterItemOpen] = useState( false );
+  const [selected, setSelected] = useState( [] );
 
   /**
    * Format data into state that dopdowns will use
@@ -73,6 +73,12 @@ const FilterMenuItem = props => {
   };
 
   const handleCheckboxChange = async ( e, { value, checked } ) => {
+    if ( selected.includes( value ) ) {
+      setSelected( selected.filter( s => s !== value ) );
+    } else {
+      setSelected( [...selected, value] );
+    }
+
     // make copy of selected filter array, i.e. categories
     const arr = props.filterStore[props.name].slice( 0 );
 
@@ -115,7 +121,7 @@ const FilterMenuItem = props => {
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
     // so we split the value into array and add/remove each to search array
     const values = option.value.split( '|' );
-    const checked = !!( intersection( props.selected, values ).length );
+    const checked = !!( intersection( selected, values ).length );
 
     return (
       <Form.Checkbox
@@ -148,6 +154,10 @@ const FilterMenuItem = props => {
     };
   }, [filterItemOpen] );
 
+  useEffect( () => {
+    setSelected( props.selected );
+  }, [] );
+
 
   const {
     formItem, options, filter
@@ -177,7 +187,7 @@ const FilterMenuItem = props => {
           }
           { options.length === 0 && (
           <span style={ { textAlign: 'center', paddingTop: '3px' } }>
-                None Available
+            None Available
           </span>
           ) }
         </Form.Group>
