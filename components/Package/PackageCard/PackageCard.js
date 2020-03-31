@@ -23,7 +23,7 @@ const PackageCard = ( { item, stretch } ) => {
     documents
   } = item;
 
-  const { response: fetchedDocs, error } = useAPIRequest( () => getElasticPkgDocs( documents ) );
+  const { response: fetchedDocs, error } = useAPIRequest( getElasticPkgDocs, [documents] );
 
   const formattedPublishedDate = (
     <time dateTime={ published }>{ moment( published ).format( 'LL' ) }</time>
@@ -55,7 +55,7 @@ const PackageCard = ( { item, stretch } ) => {
             aria-modal="true"
             aria-labelledby={ `packageCard_trigger_${id}` }
           >
-            <Package item={ item } displayAsModal />
+            <Package item={ { ...item, documents: fetchedDocs } } displayAsModal />
           </Modal.Content>
         </Modal>
         <Card.Meta className="meta--popup">

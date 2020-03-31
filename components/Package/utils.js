@@ -67,10 +67,10 @@ export const getDateTimeTerms = ( createdAt, updatedAt, format ) => {
  * Request documents for a package from Elasticsearch
  * @param docs array of objects w shape { id, item }
  */
-export const getElasticPkgDocs = async documents => {
+export const getElasticPkgDocs = async ( documents, user ) => {
   try {
     const docIds = documents.map( doc => doc.id );
-    const responseHits = await packageDocumentsRequest( docIds );
+    const responseHits = await packageDocumentsRequest( docIds, user );
     const docs = getDataFromHits( responseHits ).map( hit => hit._source );
     return docs;
   } catch ( error ) {

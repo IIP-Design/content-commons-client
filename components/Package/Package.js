@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { updateUrl } from 'lib/browser';
 import { getCount, getPluralStringOrNot, getPreviewNotificationStyles } from 'lib/utils';
-import {
-  Card, Segment, Dimmer, Loader
-} from 'semantic-ui-react';
+import { Card } from 'semantic-ui-react';
 import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import ModalItem from 'components/modals/ModalItem/ModalItem';
@@ -16,14 +14,19 @@ import Share from 'components/Share/Share';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
+
+
 import PackageItem from './PackageItem/PackageItem';
 import {
-  normalizeDocumentItemByAPI, getDateTimeTerms, getElasticPkgDocs
+  normalizeDocumentItemByAPI, getDateTimeTerms
 } from './utils';
+
 import './Package.scss';
 
 const Package = props => {
-  const { displayAsModal, isAdminPreview, useGraphQl } = props;
+  const {
+    displayAsModal, isAdminPreview, useGraphQl
+  } = props;
 
   const {
     id,
@@ -41,27 +44,6 @@ const Package = props => {
     }
   }, [] );
 
-  const [isLoading, setIsLoading] = useState( false );
-  const [fetchedDocs, setFetchedDocs] = useState( [] );
-  const [error, setError] = useState( null );
-
-  useEffect( () => {
-    if ( useGraphQl ) {
-      setFetchedDocs( documents );
-    } else {
-      const fetchElasticDocs = async () => {
-        setIsLoading( true );
-        try {
-          const docs = await getElasticPkgDocs( documents );
-          setFetchedDocs( docs );
-        } catch ( error ) {
-          setError( error );
-        }
-        setIsLoading( false );
-      };
-      fetchElasticDocs();
-    }
-  }, [] );
 
   return (
     <ModalItem
@@ -69,16 +51,14 @@ const Package = props => {
       headline={ title }
       textDirection="LTR" // use LTR since pkg have no lang field
     >
-      {
-        isAdminPreview && (
-          <Notification
-            el="p"
-            show
-            customStyles={ getPreviewNotificationStyles() }
-            msg="This is a preview of your package on Content Commons."
-          />
-        )
-      }
+      { isAdminPreview && (
+        <Notification
+          el="p"
+          show
+          customStyles={ getPreviewNotificationStyles() }
+          msg="This is a preview of your package on Content Commons."
+        />
+      ) }
       <MetaTerms
         className="date-time"
         unitId={ id }
@@ -119,7 +99,7 @@ const Package = props => {
                     title: getPluralStringOrNot( documents, 'Document' ),
                     component: (
                       <DownloadPkgFiles
-                        files={ fetchedDocs }
+                        files={ documents }
                         isPreview={ isAdminPreview }
                         instructions={ getPluralStringOrNot( documents, 'Download Package File' ) }
                       />
@@ -137,26 +117,18 @@ const Package = props => {
       </div>
 
       <div className="package-items">
-        { isLoading && (
-          <Segment>
-            <Dimmer active inverted><Loader>Loading...</Loader></Dimmer>
-          </Segment>
-        ) }
-        { !isLoading && (
-          <Card.Group>
-            { getCount( fetchedDocs )
-              ? fetchedDocs.map( file => (
-                <PackageItem
-                  key={ file.id }
-                  file={ normalizeDocumentItemByAPI( { file, useGraphQl } ) }
-                  type={ type }
-                  isAdminPreview={ isAdminPreview }
-                />
-              ) )
-              : 'There are no files associated with this package.' }
-          </Card.Group>
-        ) }
-        { error && <div className="error-message">Error occurred with package documents request.</div> }
+        <Card.Group>
+          { getCount( documents )
+            ? documents.map( file => (
+              <PackageItem
+                key={ file.id }
+                file={ normalizeDocumentItemByAPI( { file, useGraphQl } ) }
+                type={ type }
+                isAdminPreview={ isAdminPreview }
+              />
+            ) )
+            : 'There are no files associated with this package.' }
+        </Card.Group>
       </div>
     </ModalItem>
   );
@@ -166,7 +138,7 @@ Package.propTypes = {
   displayAsModal: PropTypes.bool,
   isAdminPreview: PropTypes.bool,
   useGraphQl: PropTypes.bool,
-  item: PropTypes.object,
+  item: PropTypes.object
 };
 
 export default Package;

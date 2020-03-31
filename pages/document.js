@@ -4,6 +4,7 @@ import { getItemRequest } from 'lib/elastic/api';
 import Document from 'components/Document/Document';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
 import { populateMetaArray } from 'lib/socialHeaders.js';
+import { fetchUser } from 'context/authContext';
 import Head from 'next/head';
 
 const styles = {
@@ -42,7 +43,12 @@ const DocumentPage = props => {
   );
 };
 
-DocumentPage.getInitialProps = async ( { req, query, asPath } ) => {
+DocumentPage.getInitialProps = async ctx => {
+  const { req, query, asPath } = ctx;
+
+  const user = await fetchUser( ctx );
+
+
   const url = ( req && req.headers && req.headers.host && asPath )
     ? `https://${req.headers.host}${asPath}`
     : '';
@@ -50,7 +56,7 @@ DocumentPage.getInitialProps = async ( { req, query, asPath } ) => {
   const useIdKey = asPath.includes( 'document' );
 
   if ( query && query.site && query.id ) {
-    const response = await getItemRequest( query.site, query.id, useIdKey );
+    const response = await getItemRequest( query.site, query.id, useIdKey, user );
     const item = getDataFromHits( response );
 
     if ( item && item[0] ) {

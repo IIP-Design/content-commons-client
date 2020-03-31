@@ -5,6 +5,8 @@ import { getItemRequest } from 'lib/elastic/api';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
 import { populateMetaArray } from 'lib/socialHeaders.js';
 import Package from 'components/Package/Package';
+import { fetchUser } from 'context/authContext';
+import { getElasticPkgDocs } from 'components/Package/utils';
 
 const styles = {
   page: {
@@ -42,7 +44,10 @@ const PackagePage = props => {
   );
 };
 
-PackagePage.getInitialProps = async ( { req, query, asPath } ) => {
+PackagePage.getInitialProps = async ctx => {
+  const { req, query, asPath } = ctx;
+  const user = await fetchUser( ctx );
+
   const url = ( req && req.headers && req.headers.host && asPath )
     ? `https://${req.headers.host}${asPath}`
     : '';
@@ -50,12 +55,15 @@ PackagePage.getInitialProps = async ( { req, query, asPath } ) => {
   const useIdKey = asPath.includes( 'package' );
 
   if ( query && query.site && query.id ) {
-    const response = await getItemRequest( query.site, query.id, useIdKey );
+    const response = await getItemRequest( query.site, query.id, useIdKey, user );
     const item = getDataFromHits( response );
 
     if ( item && item[0] ) {
+      const documents = await getElasticPkgDocs( item[0]._source.items, user );
+      const _item = normalizeItem( item[0], query.language );
+
       return {
-        item: normalizeItem( item[0], query.language ),
+        item: { ..._item, documents },
         url
       };
     }
