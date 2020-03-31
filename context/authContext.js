@@ -76,7 +76,7 @@ export const fetchUser = async ctx => {
  */
 export const canAccessPage = async ctx => {
   // are we on a page that requires permissions?
-  if ( isRestrictedPage( ctx.pathname ) ) {
+  if ( isRestrictedPage( ctx ) ) {
     const user = await fetchUser( ctx );
 
     // ensure a user and a user with proper permissions
