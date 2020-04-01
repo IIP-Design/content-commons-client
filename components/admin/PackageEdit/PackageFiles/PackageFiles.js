@@ -67,7 +67,9 @@ const PackageFiles = props => {
       </div>
 
       { !units.length && (
-        <div style={ { marginTop: '1em' } }>This package does not have any uploaded files.</div>
+        <p style={ { marginTop: '1em', maxWidth: '55ch' } }>
+          This package does not have any uploaded files. Please upload at least one file to publish this package to Content Commons.
+        </p>
       ) }
 
       <div className="files">
