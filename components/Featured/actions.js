@@ -17,75 +17,81 @@ import {
 
 
 export const loadFeatured = ( data, user ) => async ( dispatch, getState ) => {
-  const timeSinceLastLoad = getState().featured.lastLoad;
-  const isStale = isDataStale( timeSinceLastLoad );
-  // deal with server errors and axios
-  if ( isStale ) {
-    dispatch( {
-      type: LOAD_FEATURED_PENDING
-    } );
+  if ( data ) {
+    const timeSinceLastLoad = getState().featured.lastLoad;
+    const isStale = isDataStale( timeSinceLastLoad );
+    // deal with server errors and axios
 
-    const promiseArr = data.map( d => {
-      const { component, props } = d;
-      switch ( component ) {
-        case 'priorities':
-          return typePrioritiesRequest( props.term, props.categories, props.locale, user ).then(
-            res => ( {
+    if ( isStale ) {
+      dispatch( {
+        type: LOAD_FEATURED_PENDING
+      } );
+
+      const promiseArr = data.map( d => {
+        const { component, props } = d;
+        switch ( component ) {
+          case 'priorities':
+            return typePrioritiesRequest( props.term, props.categories, props.locale, user ).then(
+              res => ( {
+                component,
+                ...props,
+                data: res,
+                key: v4()
+              } )
+            );
+          case 'packages':
+            return typeRequestDesc( props.postType, user ).then( res => ( {
               component,
               ...props,
               data: res,
               key: v4()
-            } )
-          );
-        case 'packages':
-          return typeRequestDesc( props.postType, user ).then( res => ( {
-            component,
-            ...props,
-            data: res,
-            key: v4()
-          } ) );
-        case 'recents':
-          return typeRecentsRequest( props.postType, props.locale, user ).then( res => ( {
-            component,
-            ...props,
-            data: res,
-            key: v4()
-          } ) );
-        default:
-          return {};
-      }
-    } );
-    await Promise.all( promiseArr ).then( resArr => {
-      const priorities = {};
-      const recents = {};
-      let items;
-      resArr.forEach( res => {
-        if ( res.data && res.data.hits && res.data.hits.hits ) {
-          items = res.data.hits.hits.map( item => normalizeItem( item, res.locale ) );
-          switch ( res.component ) {
-            case 'priorities':
-              priorities[res.term] = items;
-              break;
-            case 'packages':
-            case 'recents':
-              recents[res.postType] = items;
-              break;
-            default:
-              break;
-          }
+            } ) );
+          case 'recents':
+            return typeRecentsRequest( props.postType, props.locale, user ).then( res => ( {
+              component,
+              ...props,
+              data: res,
+              key: v4()
+            } ) );
+          default:
+            return {};
         }
       } );
-      dispatch( {
-        type: LOAD_FEATURED_SUCCESS,
-        payload: {
-          priorities,
-          recents
-        }
-      } );
-    } ).catch( err => {
-      dispatch( {
-        type: LOAD_FEATURED_FAILED
-      } );
-    } );
+
+      await Promise.all( promiseArr )
+        .then( resArr => {
+          const priorities = {};
+          const recents = {};
+          let items;
+          resArr.forEach( res => {
+            if ( res?.data?.hits?.hits ) {
+              items = res.data.hits.hits.map( item => normalizeItem( item, res.locale ) );
+              switch ( res.component ) {
+                case 'priorities':
+                  priorities[res.term] = items;
+                  break;
+                case 'packages':
+                case 'recents':
+                  recents[res.postType] = items;
+                  break;
+                default:
+                  break;
+              }
+            }
+          } );
+          dispatch( {
+            type: LOAD_FEATURED_SUCCESS,
+            payload: {
+              priorities,
+              recents
+            }
+          } );
+        } )
+        .catch( err => {
+          dispatch( {
+            type: LOAD_FEATURED_FAILED
+          } );
+        } );
+    }
   }
 };
