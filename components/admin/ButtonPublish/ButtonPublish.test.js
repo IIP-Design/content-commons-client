@@ -6,7 +6,8 @@ const props = {
   handleUnPublish: jest.fn(),
   publishing: false,
   status: 'DRAFT',
-  updated: false
+  updated: false,
+  disabled: false
 };
 
 const getBtn = ( str, buttons ) => (
@@ -14,24 +15,26 @@ const getBtn = ( str, buttons ) => (
 );
 
 describe( '<ButtonPublish />, for DRAFT status', () => {
-  const Component = <ButtonPublish { ...props } />;
+  let Component;
+  let wrapper;
+  let btns;
+
+  beforeEach( () => {
+    Component = <ButtonPublish { ...props } />;
+    wrapper = mount( Component );
+    btns = wrapper.find( 'Button' );
+  } );
 
   it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
     expect( wrapper.exists() ).toEqual( true );
   } );
 
   it( 'renders the Publish button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishBtn = getBtn( 'Publish', btns );
-
     expect( publishBtn.exists() ).toEqual( props.status === 'DRAFT' );
   } );
 
   it( 'renders the correct className values for the Publish button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishBtn = getBtn( 'Publish', btns );
     const { className } = publishBtn.props();
 
@@ -41,8 +44,6 @@ describe( '<ButtonPublish />, for DRAFT status', () => {
   } );
 
   it( 'clicking Publish button calls handlePublish', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishBtn = getBtn( 'Publish', btns );
 
     publishBtn.simulate( 'click' );
@@ -50,8 +51,6 @@ describe( '<ButtonPublish />, for DRAFT status', () => {
   } );
 
   it( 'does not render the Publish Changes button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
 
     expect( publishChangesBtn.exists() )
@@ -59,10 +58,54 @@ describe( '<ButtonPublish />, for DRAFT status', () => {
   } );
 
   it( 'does not render the Unpublish button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const unpublishBtn = getBtn( 'Unpublish', btns );
+    expect( unpublishBtn.exists() ).toEqual( false );
+  } );
+} );
 
+describe( '<ButtonPublish />, for DRAFT status & disabled', () => {
+  const newProps = {
+    ...props,
+    disabled: true
+  };
+  let Component;
+  let wrapper;
+  let btns;
+
+  beforeEach( () => {
+    Component = <ButtonPublish { ...newProps } />;
+    wrapper = mount( Component );
+    btns = wrapper.find( 'Button' );
+  } );
+
+  it( 'renders without crashing', () => {
+    expect( wrapper.exists() ).toEqual( true );
+  } );
+
+  it( 'renders the disabled Publish button', () => {
+    const publishBtn = getBtn( 'Publish', btns );
+    expect( publishBtn.exists() ).toEqual( props.status === 'DRAFT' );
+    expect( publishBtn.prop( 'disabled' ) ).toEqual( true );
+  } );
+
+  it( 'renders the correct className values for the Publish button', () => {
+    const publishBtn = getBtn( 'Publish', btns );
+    const { className } = publishBtn.props();
+
+    expect( className.includes( 'action-btn btn--publish' ) )
+      .toEqual( props.status === 'DRAFT' );
+    expect( className.includes( 'loading' ) ).toEqual( props.publishing );
+  } );
+
+  it( 'does not render the Publish Changes button', () => {
+    const publishChangesBtn = getBtn( 'Publish Changes', btns );
+
+    expect( publishChangesBtn.exists() )
+      .toEqual( props.status === 'PUBLISHED' && props.updated );
+  } );
+
+  it( 'does not render the Unpublish button', () => {
+    const unpublishBtn = getBtn( 'Unpublish', btns );
     expect( unpublishBtn.exists() ).toEqual( false );
   } );
 } );
@@ -72,24 +115,26 @@ describe( '<ButtonPublish />, for PUBLISHED status', () => {
     ...props,
     status: 'PUBLISHED'
   };
-  const Component = <ButtonPublish { ...newProps } />;
+  let Component;
+  let wrapper;
+  let btns;
+
+  beforeEach( () => {
+    Component = <ButtonPublish { ...newProps } />;
+    wrapper = mount( Component );
+    btns = wrapper.find( 'Button' );
+  } );
 
   it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
     expect( wrapper.exists() ).toEqual( true );
   } );
 
   it( 'does not render the Publish button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishBtn = getBtn( 'Publish', btns );
-
     expect( publishBtn.exists() ).toEqual( newProps.status === 'DRAFT' );
   } );
 
   it( 'does not render the Publish Changes button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
 
     expect( publishChangesBtn.exists() )
@@ -97,16 +142,12 @@ describe( '<ButtonPublish />, for PUBLISHED status', () => {
   } );
 
   it( 'renders the Unpublish button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const unpublishBtn = getBtn( 'Unpublish', btns );
 
     expect( unpublishBtn.exists() ).toEqual( newProps.status !== 'DRAFT' );
   } );
 
   it( 'renders the correct className values for the Unpublish button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const unpublishBtn = getBtn( 'Unpublish', btns );
     const { className } = unpublishBtn.props();
 
@@ -114,8 +155,6 @@ describe( '<ButtonPublish />, for PUBLISHED status', () => {
   } );
 
   it( 'clicking Unpublish button calls handleUnPublish', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const unpublishBtn = getBtn( 'Unpublish', btns );
 
     unpublishBtn.simulate( 'click' );
@@ -129,24 +168,26 @@ describe( '<ButtonPublish />, for PUBLISHED status & updated', () => {
     updated: true,
     status: 'PUBLISHED'
   };
-  const Component = <ButtonPublish { ...newProps } />;
+  let Component;
+  let wrapper;
+  let btns;
+
+  beforeEach( () => {
+    Component = <ButtonPublish { ...newProps } />;
+    wrapper = mount( Component );
+    btns = wrapper.find( 'Button' );
+  } );
 
   it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
     expect( wrapper.exists() ).toEqual( true );
   } );
 
   it( 'does not render the Publish button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishBtn = getBtn( 'Publish', btns );
-
     expect( publishBtn.exists() ).toEqual( newProps.status === 'DRAFT' );
   } );
 
   it( 'renders the Publish Changes button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
 
     expect( publishChangesBtn.exists() )
@@ -154,8 +195,6 @@ describe( '<ButtonPublish />, for PUBLISHED status & updated', () => {
   } );
 
   it( 'renders the correct className values for the Publish Changes button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
     const { className } = publishChangesBtn.props();
 
@@ -165,8 +204,6 @@ describe( '<ButtonPublish />, for PUBLISHED status & updated', () => {
   } );
 
   it( 'clicking Publish Changes button calls handlePublish', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
 
     publishChangesBtn.simulate( 'click' );
@@ -174,16 +211,11 @@ describe( '<ButtonPublish />, for PUBLISHED status & updated', () => {
   } );
 
   it( 'renders the Unpublish button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const unpublishBtn = getBtn( 'Unpublish', btns );
-
     expect( unpublishBtn.exists() ).toEqual( newProps.status !== 'DRAFT' );
   } );
 
   it( 'renders the correct className values for the Unpublish button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const unpublishBtn = getBtn( 'Unpublish', btns );
     const { className } = unpublishBtn.props();
 
@@ -191,8 +223,6 @@ describe( '<ButtonPublish />, for PUBLISHED status & updated', () => {
   } );
 
   it( 'clicking Unpublish button calls handleUnPublish', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const unpublishBtn = getBtn( 'Unpublish', btns );
 
     unpublishBtn.simulate( 'click' );
@@ -200,47 +230,62 @@ describe( '<ButtonPublish />, for PUBLISHED status & updated', () => {
   } );
 } );
 
-describe( '<ButtonPublish />, for PUBLISHING status, publishing, and not updated', () => {
+describe( '<ButtonPublish />, for PUBLISHED status, updated, & disabled', () => {
   const newProps = {
     ...props,
-    publishing: true,
-    status: 'PUBLISHING'
+    updated: true,
+    status: 'PUBLISHED',
+    disabled: true
   };
-  const Component = <ButtonPublish { ...newProps } />;
+  let Component;
+  let wrapper;
+  let btns;
+
+  beforeEach( () => {
+    Component = <ButtonPublish { ...newProps } />;
+    wrapper = mount( Component );
+    btns = wrapper.find( 'Button' );
+  } );
 
   it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
     expect( wrapper.exists() ).toEqual( true );
   } );
 
   it( 'does not render the Publish button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishBtn = getBtn( 'Publish', btns );
-
     expect( publishBtn.exists() ).toEqual( newProps.status === 'DRAFT' );
   } );
 
-  it( 'does not render the Publish Changes button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
+  it( 'renders the disabled Publish Changes button', () => {
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
 
     expect( publishChangesBtn.exists() )
       .toEqual( newProps.status === 'PUBLISHED' && newProps.updated );
+    expect( publishChangesBtn.prop( 'disabled' ) ).toEqual( true );
+  } );
+
+  it( 'renders the correct className values for the Publish Changes button', () => {
+    const publishChangesBtn = getBtn( 'Publish Changes', btns );
+    const { className } = publishChangesBtn.props();
+
+    expect( className.includes( 'action-btn btn--edit' ) )
+      .toEqual( newProps.status === 'PUBLISHED' && newProps.updated );
+    expect( className.includes( 'loading' ) ).toEqual( newProps.publishing );
+  } );
+
+  it( 'clicking Publish Changes button calls handlePublish', () => {
+    const publishChangesBtn = getBtn( 'Publish Changes', btns );
+
+    publishChangesBtn.simulate( 'click' );
+    expect( props.handlePublish ).toHaveBeenCalled();
   } );
 
   it( 'renders the Unpublish button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const unpublishBtn = getBtn( 'Unpublish', btns );
-
     expect( unpublishBtn.exists() ).toEqual( newProps.status !== 'DRAFT' );
   } );
 
   it( 'renders the correct className values for the Unpublish button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const unpublishBtn = getBtn( 'Unpublish', btns );
     const { className } = unpublishBtn.props();
 
@@ -248,8 +293,58 @@ describe( '<ButtonPublish />, for PUBLISHING status, publishing, and not updated
   } );
 
   it( 'clicking Unpublish button calls handleUnPublish', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
+    const unpublishBtn = getBtn( 'Unpublish', btns );
+
+    unpublishBtn.simulate( 'click' );
+    expect( props.handleUnPublish ).toHaveBeenCalled();
+  } );
+} );
+
+describe( '<ButtonPublish />, for PUBLISHING status, publishing, & not updated', () => {
+  const newProps = {
+    ...props,
+    publishing: true,
+    status: 'PUBLISHING'
+  };
+  let Component;
+  let wrapper;
+  let btns;
+
+  beforeEach( () => {
+    Component = <ButtonPublish { ...newProps } />;
+    wrapper = mount( Component );
+    btns = wrapper.find( 'Button' );
+  } );
+
+  it( 'renders without crashing', () => {
+    expect( wrapper.exists() ).toEqual( true );
+  } );
+
+  it( 'does not render the Publish button', () => {
+    const publishBtn = getBtn( 'Publish', btns );
+    expect( publishBtn.exists() ).toEqual( newProps.status === 'DRAFT' );
+  } );
+
+  it( 'does not render the Publish Changes button', () => {
+    const publishChangesBtn = getBtn( 'Publish Changes', btns );
+
+    expect( publishChangesBtn.exists() )
+      .toEqual( newProps.status === 'PUBLISHED' && newProps.updated );
+  } );
+
+  it( 'renders the Unpublish button', () => {
+    const unpublishBtn = getBtn( 'Unpublish', btns );
+    expect( unpublishBtn.exists() ).toEqual( newProps.status !== 'DRAFT' );
+  } );
+
+  it( 'renders the correct className values for the Unpublish button', () => {
+    const unpublishBtn = getBtn( 'Unpublish', btns );
+    const { className } = unpublishBtn.props();
+
+    expect( className.includes( 'action-btn btn--publish' ) ).toEqual( true );
+  } );
+
+  it( 'clicking Unpublish button calls handleUnPublish', () => {
     const unpublishBtn = getBtn( 'Unpublish', btns );
 
     unpublishBtn.simulate( 'click' );
@@ -264,24 +359,27 @@ describe( '<ButtonPublish />, for PUBLISHING status, publishing, and updated', (
     status: 'PUBLISHING',
     updated: true,
   };
-  const Component = <ButtonPublish { ...newProps } />;
+  let Component;
+  let wrapper;
+  let btns;
+
+  beforeEach( () => {
+    Component = <ButtonPublish { ...newProps } />;
+    wrapper = mount( Component );
+    btns = wrapper.find( 'Button' );
+  } );
 
   it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
     expect( wrapper.exists() ).toEqual( true );
   } );
 
   it( 'does not render the Publish button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishBtn = getBtn( 'Publish', btns );
 
     expect( publishBtn.exists() ).toEqual( newProps.status === 'DRAFT' );
   } );
 
   it( 'renders the Publish Changes button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
 
     expect( publishChangesBtn.exists() )
@@ -289,8 +387,6 @@ describe( '<ButtonPublish />, for PUBLISHING status, publishing, and updated', (
   } );
 
   it( 'renders the correct className values for the Publish Changes button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
     const { className } = publishChangesBtn.props();
 
@@ -300,8 +396,6 @@ describe( '<ButtonPublish />, for PUBLISHING status, publishing, and updated', (
   } );
 
   it( 'clicking Publish Changes button calls handlePublish', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
 
     publishChangesBtn.simulate( 'click' );
@@ -309,16 +403,12 @@ describe( '<ButtonPublish />, for PUBLISHING status, publishing, and updated', (
   } );
 
   it( 'renders the Unpublish button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const unpublishBtn = getBtn( 'Unpublish', btns );
 
     expect( unpublishBtn.exists() ).toEqual( newProps.status !== 'DRAFT' );
   } );
 
   it( 'renders the correct className values for the Unpublish button', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const unpublishBtn = getBtn( 'Unpublish', btns );
     const { className } = unpublishBtn.props();
 
@@ -326,8 +416,6 @@ describe( '<ButtonPublish />, for PUBLISHING status, publishing, and updated', (
   } );
 
   it( 'clicking Unpublish button calls handleUnPublish', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const unpublishBtn = getBtn( 'Unpublish', btns );
 
     unpublishBtn.simulate( 'click' );

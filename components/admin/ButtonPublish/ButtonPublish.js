@@ -8,7 +8,8 @@ const ButtonPublish = props => {
     handleUnPublish,
     publishing,
     status,
-    updated
+    updated,
+    disabled
   } = props;
 
   const setButtonState = btn => `action-btn btn--${btn} ${publishing ? 'loading' : ''}`;
@@ -16,12 +17,12 @@ const ButtonPublish = props => {
   return (
     <Fragment>
       { status === 'DRAFT'
-        ? <Button className={ setButtonState( 'publish' ) } onClick={ handlePublish }>Publish</Button>
+        ? <Button className={ setButtonState( 'publish' ) } onClick={ handlePublish } disabled={ disabled }>Publish</Button>
         : (
           <Fragment>
             { ( ( status === 'PUBLISHED' || status === 'PUBLISHING' ) && updated )
               && (
-                <Button className={ setButtonState( 'edit basic' ) } onClick={ handlePublish }>Publish Changes</Button>
+                <Button className={ setButtonState( 'edit basic' ) } onClick={ handlePublish } disabled={ disabled }>Publish Changes</Button>
               ) }
             <Button className="action-btn btn--publish" onClick={ handleUnPublish }>Unpublish</Button>
           </Fragment>
@@ -40,6 +41,7 @@ ButtonPublish.propTypes = {
   publishing: PropTypes.bool,
   status: PropTypes.string,
   updated: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 export default ButtonPublish;
