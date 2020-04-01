@@ -204,7 +204,7 @@ const PackageEdit = props => {
             disabled={ {
               delete: deletePackageEnabled(),
               save: !packageId || !isFormValid,
-              publishChanges: !pkg.documents.length,
+              publishChanges: !packageId || !pkg.documents.length,
               publish: !packageId || !pkg.documents.length
             } }
             handle={ {
