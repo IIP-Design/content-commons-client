@@ -156,7 +156,7 @@ const FilterMenuItem = props => {
 
   useEffect( () => {
     setSelected( props.selected );
-  }, [] );
+  }, [props.selected] );
 
 
   const {
