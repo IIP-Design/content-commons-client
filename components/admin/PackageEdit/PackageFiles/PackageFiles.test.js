@@ -18,8 +18,6 @@ jest.mock( 'lib/hooks/useCrudActionsDocument', () => ( {
 
 jest.mock( 'next/config', () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
-const Component = <PackageFiles { ...props } />;
-
 describe( '<PackageFiles />', () => {
   /**
    * @todo Suppress React 16.8 `act()` warnings globally.
@@ -40,15 +38,19 @@ describe( '<PackageFiles />', () => {
     console.error = consoleError;
   } );
 
-  it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
+  let Component;
+  let wrapper;
 
+  beforeEach( () => {
+    Component = <PackageFiles { ...props } />;
+    wrapper = mount( Component );
+  } );
+
+  it( 'renders without crashing', () => {
     expect( wrapper.exists() ).toEqual( true );
   } );
 
   it( 'renders the correct PressPackageFile components with correct document prop', () => {
-    const wrapper = mount( Component );
-
     const pressPkgFiles = wrapper.find( 'Press-Package-File' );
     const { documents } = props.pkg;
 
@@ -59,7 +61,6 @@ describe( '<PackageFiles />', () => {
   } );
 
   it( 'renders the correct heading', () => {
-    const wrapper = mount( Component );
     const { documents } = props.pkg;
     const heading = `Uploaded File${documents.length > 1 ? 's' : ''} (${documents.length})`;
 
@@ -67,7 +68,6 @@ describe( '<PackageFiles />', () => {
   } );
 
   it( 'renders EditPackageFiles with correct props', () => {
-    const wrapper = mount( Component );
     const editPkgFiles = wrapper.find( 'EditPackageFiles' );
     const units = props.pkg.documents || [];
 
@@ -84,7 +84,6 @@ describe( '<PackageFiles />', () => {
   } );
 
   it( 'EditPackageFiles trigger/onClose opens/closes the modal', () => {
-    const wrapper = mount( Component );
     const editPkgFiles = () => wrapper.find( 'EditPackageFiles' );
     const trigger = mount( editPkgFiles().prop( 'trigger' ) );
 
@@ -103,16 +102,20 @@ describe( '<PackageFiles />', () => {
   } );
 
   it( 'renders null if !hasInitialUploadCompleted', () => {
-    const wrapper = mount( Component );
     wrapper.setProps( { hasInitialUploadCompleted: false } );
-
     expect( wrapper.html() ).toEqual( null );
   } );
 
   it( 'renders null if pkg === {}', () => {
-    const wrapper = mount( Component );
     wrapper.setProps( { pkg: {} } );
-
     expect( wrapper.html() ).toEqual( null );
+  } );
+
+  it( 'renders the no files message and heading if there are no package documents', () => {
+    const msg = 'This package does not have any uploaded files. Please upload at least one file to publish this package to Content Commons.';
+    wrapper.setProps( { pkg: { documents: [] } } );
+
+    expect( wrapper.contains( 'Uploaded File (0)' ) ).toEqual( true );
+    expect( wrapper.contains( msg ) ).toEqual( true );
   } );
 } );

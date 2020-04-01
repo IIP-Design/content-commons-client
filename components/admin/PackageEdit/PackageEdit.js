@@ -204,7 +204,8 @@ const PackageEdit = props => {
             disabled={ {
               delete: deletePackageEnabled(),
               save: !packageId || !isFormValid,
-              publish: !packageId
+              publishChanges: !packageId || !pkg.documents.length,
+              publish: !packageId || !pkg.documents.length
             } }
             handle={ {
               deleteConfirm: handleDeleteConfirm,
@@ -286,6 +287,7 @@ const PackageEdit = props => {
             handleUnPublish={ handleUnPublish }
             status={ ( pkg && pkg.status ) || 'DRAFT' }
             updated={ isDirty }
+            disabled={ !packageId || !pkg.documents.length }
           />
         </section>
       ) }

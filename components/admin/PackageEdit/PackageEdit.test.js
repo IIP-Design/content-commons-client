@@ -36,7 +36,7 @@ const suppressActWarning = consoleError => {
   } );
 };
 
-describe( '<PackageEdit />', () => {
+describe( '<PackageEdit />, if DRAFT status', () => {
   const router = {
     push: jest.fn(),
     query: {
@@ -72,8 +72,13 @@ describe( '<PackageEdit />', () => {
     console.error = consoleError;
   } );
 
+  let wrapper;
+
+  beforeEach( () => {
+    wrapper = mount( Component );
+  } );
+
   it( 'renders initial loading state without crashing', () => {
-    const wrapper = mount( Component );
     const pkgEdit = wrapper.find( 'PackageEdit' );
     const loader = wrapper.find( 'Loader' );
     const msg = 'Loading package details page...';
@@ -84,11 +89,11 @@ describe( '<PackageEdit />', () => {
   } );
 
   it( 'renders error message if a queryError is returned', async () => {
-    const wrapper = mount( ErrorComponent );
+    const errorWrapper = mount( ErrorComponent );
     await wait( 0 );
-    wrapper.update();
+    errorWrapper.update();
 
-    const apolloError = wrapper.find( 'ApolloError' );
+    const apolloError = errorWrapper.find( 'ApolloError' );
     const msg = 'There was an error.';
 
     expect( apolloError.exists() ).toEqual( true );
@@ -96,7 +101,6 @@ describe( '<PackageEdit />', () => {
   } );
 
   it( 'renders the final state without crashing', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
     const pkgEdit = wrapper.find( 'PackageEdit' );
@@ -105,7 +109,6 @@ describe( '<PackageEdit />', () => {
   } );
 
   it( 'renders the ProjectHeader', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
@@ -119,7 +122,6 @@ describe( '<PackageEdit />', () => {
   } );
 
   it( 'renders the ActionButtons', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
@@ -144,7 +146,6 @@ describe( '<PackageEdit />', () => {
   } );
 
   it( 'clicking the Delete Package button opens the Confirm modal', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
@@ -164,7 +165,6 @@ describe( '<PackageEdit />', () => {
   } );
 
   it( 'clicking the Cancel button in the Confirm modal closes the modal', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
@@ -190,7 +190,6 @@ describe( '<PackageEdit />', () => {
   } );
 
   it( 'clicking the Confirm button in the Confirm modal calls deletePackage and redirects to the dashboard', async done => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
@@ -225,7 +224,6 @@ describe( '<PackageEdit />', () => {
   } );
 
   it( 'clicking the Save & Exit button redirects to the dashboard', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
@@ -239,48 +237,31 @@ describe( '<PackageEdit />', () => {
     } );
   } );
 
-  it( 'clicking the Publish button ... TBD', async () => {
-    const wrapper = mount( Component );
+  it.skip( 'clicking the Publish button ... TBD', async () => {
     await wait( 0 );
     wrapper.update();
 
     const actionButtons = () => wrapper.find( 'ActionButtons' );
     const btns = actionButtons().find( 'button' );
     const publishBtn = getBtn( 'Publish', btns );
-    const logSpy = jest.spyOn( global.console, 'log' );
 
     publishBtn.simulate( 'click' );
-
-    /**
-     * For now, test for console.log. Update after
-     * publish workflow has been implemented.
-     */
-    expect( logSpy ).toHaveBeenCalledWith( 'Publish' );
     // TBD
   } );
 
   it.skip( 'clicking the Unpublish button ... TBD', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
     const actionButtons = () => wrapper.find( 'ActionButtons' );
     const btns = actionButtons().find( 'button' );
     const unPublishBtn = getBtn( 'Unpublish', btns );
-    const logSpy = jest.spyOn( global.console, 'log' );
 
     unPublishBtn.simulate( 'click' );
-
-    /**
-     * For now, test for console.log. Update after
-     * unpublish workflow has been implemented.
-     */
-    expect( logSpy ).toHaveBeenCalledWith( 'Unpublish' );
     // TBD
   } );
 
   it( 'renders the PackageDetailsFormContainer', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
     const pkgFormContainer = wrapper.find( 'PackageDetailsFormContainer' );
@@ -292,16 +273,15 @@ describe( '<PackageEdit />', () => {
       .toEqual( 'function' );
     expect( pkgFormContainer.prop( 'updateNotification' ).name )
       .toEqual( 'updateNotification' );
-    expect( typeof pkgFormContainer.prop( 'setIsDirty' ) )
+    expect( typeof pkgFormContainer.prop( 'setIsFormValid' ) )
       .toEqual( 'function' );
-    expect( pkgFormContainer.prop( 'setIsDirty' ).name )
+    expect( pkgFormContainer.prop( 'setIsFormValid' ).name )
       .toEqual( 'bound dispatchAction' );
     expect( pkgFormContainer.prop( 'hasInitialUploadCompleted' ) )
       .toEqual( router.query.action !== 'create' );
   } );
 
   it( 'renders ActionHeadline', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
@@ -319,7 +299,6 @@ describe( '<PackageEdit />', () => {
   } );
 
   it( 'renders ButtonPublish', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
@@ -331,6 +310,8 @@ describe( '<PackageEdit />', () => {
     expect( buttonPublish.prop( 'publishing' ) ).toEqual( undefined );
     expect( buttonPublish.prop( 'updated' ) )
       .toEqual( pkg.status === 'PUBLISHED' );
+    expect( buttonPublish.prop( 'disabled' ) )
+      .toEqual( !pkg.documents.length );
     expect( buttonPublish.prop( 'handlePublish' ).name )
       .toEqual( 'handlePublish' );
     expect( buttonPublish.prop( 'handleUnPublish' ).name )
@@ -338,17 +319,18 @@ describe( '<PackageEdit />', () => {
   } );
 
   it( 'renders ApolloError with an empty error prop', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
-    const apolloError = wrapper.find( 'ApolloError' );
+    const apolloErrors = wrapper.find( 'ApolloError' );
 
-    expect( apolloError.exists() ).toEqual( true );
-    expect( apolloError.prop( 'error' ) ).toEqual( {} );
+    expect( apolloErrors.exists() ).toEqual( true );
+    expect( apolloErrors.length ).toEqual( 2 );
+    apolloErrors.forEach( error => {
+      expect( error.prop( 'error' ) ).toEqual( {} );
+    } );
   } );
 
   it( 'renders Notification with the correct initial props', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
     const notification = wrapper.find( 'Notification' );
@@ -368,7 +350,164 @@ describe( '<PackageEdit />', () => {
   } );
 } );
 
-describe( '<PackageEdit />, if there are no documents,', () => {
+describe( '<PackageEdit />, if there are no documents & router.query.action !== create', () => {
+  const router = {
+    push: jest.fn(),
+    query: {
+      id: 'test-123'
+    }
+  };
+
+  const Component = (
+    <MockedProvider mocks={ noDocumentsMocks }>
+      <RouterContext.Provider value={ router }>
+        <PackageEdit { ...props } />
+      </RouterContext.Provider>
+    </MockedProvider>
+  );
+
+  const ErrorComponent = (
+    <MockedProvider mocks={ errorMocks }>
+      <RouterContext.Provider value={ router }>
+        <PackageEdit { ...props } />
+      </RouterContext.Provider>
+    </MockedProvider>
+  );
+
+  const consoleError = console.error;
+  beforeAll( () => suppressActWarning( consoleError ) );
+
+  afterAll( () => {
+    console.error = consoleError;
+  } );
+
+  let wrapper;
+
+  beforeEach( () => {
+    wrapper = mount( Component );
+  } );
+
+  it( 'renders initial loading state without crashing', () => {
+    const pkgEdit = wrapper.find( 'PackageEdit' );
+    const loader = wrapper.find( 'Loader' );
+    const msg = 'Loading package details page...';
+
+    expect( pkgEdit.exists() ).toEqual( true );
+    expect( loader.exists() ).toEqual( true );
+    expect( loader.contains( msg ) ).toEqual( true );
+  } );
+
+  it( 'renders error message if a queryError is returned', async () => {
+    const errorWrapper = mount( ErrorComponent );
+    await wait( 0 );
+    errorWrapper.update();
+
+    const apolloError = errorWrapper.find( 'ApolloError' );
+    const msg = 'There was an error.';
+
+    expect( apolloError.exists() ).toEqual( true );
+    expect( apolloError.contains( msg ) ).toEqual( true );
+  } );
+
+  it( 'renders the final state without crashing', async () => {
+    await wait( 0 );
+    wrapper.update();
+    const pkgEdit = wrapper.find( 'PackageEdit' );
+
+    expect( pkgEdit.exists() ).toEqual( true );
+  } );
+
+  it( 'renders the Action buttons', async () => {
+    await wait( 0 );
+    wrapper.update();
+
+    const actionButtons = wrapper.find( 'ActionButtons' );
+    const btns = ['Delete Package', 'Save & Exit', 'Publish'];
+
+    btns.forEach( b => {
+      const btn = getBtn( b, actionButtons );
+      expect( btn.exists() ).toEqual( true );
+      if ( b === 'Publish' ) {
+        expect( btn.prop( 'disabled' ) ).toEqual( true );
+      } else {
+        expect( btn.prop( 'disabled' ) ).toEqual( undefined );
+      }
+    } );
+  } );
+
+  it( 'renders the PackageDetailsFormContainer', async () => {
+    await wait( 0 );
+    wrapper.update();
+    const pkgFormContainer = wrapper.find( 'PackageDetailsFormContainer' );
+    const { pkg } = noDocumentsMocks[0].result.data;
+
+    expect( pkgFormContainer.exists() ).toEqual( true );
+    expect( pkgFormContainer.prop( 'pkg' ) ).toEqual( pkg );
+    expect( typeof pkgFormContainer.prop( 'updateNotification' ) )
+      .toEqual( 'function' );
+    expect( pkgFormContainer.prop( 'updateNotification' ).name )
+      .toEqual( 'updateNotification' );
+    expect( typeof pkgFormContainer.prop( 'setIsFormValid' ) )
+      .toEqual( 'function' );
+    expect( pkgFormContainer.prop( 'setIsFormValid' ).name )
+      .toEqual( 'bound dispatchAction' );
+    expect( pkgFormContainer.prop( 'hasInitialUploadCompleted' ) )
+      .toEqual( router.query.action !== 'create' );
+  } );
+
+  it( 'renders ButtonPublish', async () => {
+    await wait( 0 );
+    wrapper.update();
+
+    const buttonPublish = wrapper.find( 'ButtonPublish' );
+    const { pkg } = mocks[0].result.data;
+
+    expect( buttonPublish.exists() ).toEqual( true );
+    expect( buttonPublish.prop( 'status' ) ).toEqual( pkg.status );
+    expect( buttonPublish.prop( 'publishing' ) ).toEqual( undefined );
+    expect( buttonPublish.prop( 'updated' ) )
+      .toEqual( pkg.status === 'PUBLISHED' );
+    expect( buttonPublish.prop( 'disabled' ) )
+      .toEqual( !!pkg.documents.length );
+    expect( buttonPublish.prop( 'handlePublish' ).name )
+      .toEqual( 'handlePublish' );
+    expect( buttonPublish.prop( 'handleUnPublish' ).name )
+      .toEqual( 'handleUnPublish' );
+  } );
+
+  it( 'renders ApolloError with an empty error prop', async () => {
+    await wait( 0 );
+    wrapper.update();
+    const apolloErrors = wrapper.find( 'ApolloError' );
+
+    expect( apolloErrors.exists() ).toEqual( true );
+    expect( apolloErrors.length ).toEqual( 2 );
+    apolloErrors.forEach( error => {
+      expect( error.prop( 'error' ) ).toEqual( {} );
+    } );
+  } );
+
+  it( 'renders Notification with the correct initial props', async () => {
+    await wait( 0 );
+    wrapper.update();
+    const notification = wrapper.find( 'Notification' );
+
+    expect( notification.exists() ).toEqual( true );
+    expect( notification.props() ).toEqual( {
+      el: 'p',
+      customStyles: {
+        position: 'absolute',
+        top: '9em',
+        left: '50%',
+        transform: 'translateX(-50%)'
+      },
+      show: false,
+      msg: ''
+    } );
+  } );
+} );
+
+describe( '<PackageEdit />, if there are no documents', () => {
   const router = {
     push: jest.fn(),
     query: {
@@ -400,8 +539,13 @@ describe( '<PackageEdit />, if there are no documents,', () => {
     console.error = consoleError;
   } );
 
+  let wrapper;
+
+  beforeEach( () => {
+    wrapper = mount( Component );
+  } );
+
   it( 'renders initial loading state without crashing', () => {
-    const wrapper = mount( Component );
     const pkgEdit = wrapper.find( 'PackageEdit' );
     const loader = wrapper.find( 'Loader' );
     const msg = 'Loading package details page...';
@@ -412,11 +556,11 @@ describe( '<PackageEdit />, if there are no documents,', () => {
   } );
 
   it( 'renders error message if a queryError is returned', async () => {
-    const wrapper = mount( ErrorComponent );
+    const errorWrapper = mount( ErrorComponent );
     await wait( 0 );
-    wrapper.update();
+    errorWrapper.update();
 
-    const apolloError = wrapper.find( 'ApolloError' );
+    const apolloError = errorWrapper.find( 'ApolloError' );
     const msg = 'There was an error.';
 
     expect( apolloError.exists() ).toEqual( true );
@@ -424,7 +568,6 @@ describe( '<PackageEdit />, if there are no documents,', () => {
   } );
 
   it( 'renders the final state without crashing', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
     const pkgEdit = wrapper.find( 'PackageEdit' );
@@ -433,7 +576,6 @@ describe( '<PackageEdit />, if there are no documents,', () => {
   } );
 
   it( 'renders the ProjectHeader', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
 
@@ -446,17 +588,31 @@ describe( '<PackageEdit />, if there are no documents,', () => {
     expect( projectHeader.contains( title ) ).toEqual( true );
   } );
 
-  it( 'does not render PackageActions', async () => {
-    const wrapper = mount( Component );
+  it( 'renders the Delete Package button', async () => {
     await wait( 0 );
     wrapper.update();
-    const pkgActions = wrapper.find( 'PackageActions' );
 
-    expect( pkgActions.exists() ).toEqual( false );
+    const actionButtons = wrapper.find( 'ActionButtons' );
+    const deleteBtn = getBtn( 'Delete Package', actionButtons );
+
+    expect( deleteBtn.exists() ).toEqual( true );
+    expect( deleteBtn.prop( 'disabled' ) ).toEqual( undefined );
+  } );
+
+  it( 'does not render the Save, Publish Changes, Publish, & Unpublish buttons', async () => {
+    await wait( 0 );
+    wrapper.update();
+
+    const actionButtons = wrapper.find( 'ActionButtons' );
+    const unrenderedBtns = ['Save & Exit', 'Publish Changes', 'Publish', 'Unpublish'];
+
+    unrenderedBtns.forEach( b => {
+      const btn = getBtn( b, actionButtons );
+      expect( btn.exists() ).toEqual( false );
+    } );
   } );
 
   it( 'renders the PackageDetailsFormContainer', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
     const pkgFormContainer = wrapper.find( 'PackageDetailsFormContainer' );
@@ -468,26 +624,27 @@ describe( '<PackageEdit />, if there are no documents,', () => {
       .toEqual( 'function' );
     expect( pkgFormContainer.prop( 'updateNotification' ).name )
       .toEqual( 'updateNotification' );
-    expect( typeof pkgFormContainer.prop( 'setIsDirty' ) )
+    expect( typeof pkgFormContainer.prop( 'setIsFormValid' ) )
       .toEqual( 'function' );
-    expect( pkgFormContainer.prop( 'setIsDirty' ).name )
+    expect( pkgFormContainer.prop( 'setIsFormValid' ).name )
       .toEqual( 'bound dispatchAction' );
     expect( pkgFormContainer.prop( 'hasInitialUploadCompleted' ) )
       .toEqual( router.query.action !== 'create' );
   } );
 
   it( 'renders ApolloError with an empty error prop', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
-    const apolloError = wrapper.find( 'ApolloError' );
+    const apolloErrors = wrapper.find( 'ApolloError' );
 
-    expect( apolloError.exists() ).toEqual( true );
-    expect( apolloError.prop( 'error' ) ).toEqual( {} );
+    expect( apolloErrors.exists() ).toEqual( true );
+    expect( apolloErrors.length ).toEqual( 2 );
+    apolloErrors.forEach( error => {
+      expect( error.prop( 'error' ) ).toEqual( {} );
+    } );
   } );
 
   it( 'renders Notification with the correct initial props', async () => {
-    const wrapper = mount( Component );
     await wait( 0 );
     wrapper.update();
     const notification = wrapper.find( 'Notification' );
