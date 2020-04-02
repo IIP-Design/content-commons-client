@@ -3,7 +3,7 @@ import {
 } from 'react';
 import debounce from 'lodash/debounce';
 import useIsMounted from 'lib/hooks/useIsMounted';
-import { connect } from 'formik';;
+import { connect } from 'formik';
 
 /**
  * Saves Formik form using debounce at an interval of debounceMs
@@ -55,7 +55,7 @@ const FormikAutoSave = props => {
   );
 
   useEffect( () => {
-    if ( !isMounted ) { // do not save on mount
+    if ( isMounted ) { // do not save on mount
       debouncedSave( values );
     }
 
