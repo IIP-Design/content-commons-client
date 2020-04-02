@@ -13,6 +13,7 @@ export default {
   LOGINDOC_URL: 'https://iip-static-assets.s3.amazonaws.com/Commons/LoginHelpDoc.md',
   SEARCHINGDOC_URL: 'https://iip-static-assets.s3.amazonaws.com/Commons/SearchingContentDoc.md',
   UPLOADINGDOC_URL: 'https://iip-static-assets.s3.amazonaws.com/Commons/UploadVideoDoc.md',
+  UPLOADINGGUIDANCEDOC_URL: 'https://iip-static-assets.s3.amazonaws.com/Commons/UploadingPressGuidanceDoc.md',
   YOUTUBE_API_URL: 'https://www.googleapis.com/youtube/v3/videos',
   GOOGLE_LANGUAGE_DETECT_URL: 'https://translation.googleapis.com/language/translate/v2/detect',
   EMAIL: 'design@america.gov',

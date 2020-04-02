@@ -6,7 +6,7 @@ import DocumentationMenu from 'components/DocumentationMenu/DocumentationMenu';
 import MarkdownPage from 'components/MarkdownPage';
 import withCachedFetch from 'hocs/withCachedFetch/withCachedFetch';
 
-const UploadingVideo = props => {
+const UploadingGuidance = props => {
   const { data, error } = props;
 
   return (
@@ -21,9 +21,9 @@ const UploadingVideo = props => {
   );
 };
 
-UploadingVideo.propTypes = {
+UploadingGuidance.propTypes = {
   data: PropTypes.string,
   error: PropTypes.oneOfType( [PropTypes.number, PropTypes.bool] )
 };
 
-export default withCachedFetch( UploadingVideo, config.UPLOADINGDOC_URL );
+export default withCachedFetch( UploadingGuidance, config.UPLOADINGGUIDANCEDOC_URL );
