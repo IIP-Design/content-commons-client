@@ -11,7 +11,7 @@ const UploadingVideo = props => {
 
   return (
     <MarkdownPage
-      pageTitle="Content Commons Download"
+      pageTitle="Content Commons Documentation"
       pageSubTitle="Click on the links below for how-to guides on each subject. Please use Google Chrome for the best experience."
       data={ data }
       error={ error }
