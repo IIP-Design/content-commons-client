@@ -74,7 +74,7 @@ class Priorities extends Component {
       priorities, featured, label
     } = this.props;
     if ( priorities && priorities.length < 3 ) return <div />;
-    const categoryIds = this.props.categories.map( cat => cat.key );
+    const categoryIds = this.props.categories?.map( cat => cat.key );
     return (
       <section className="priorities">
         <div className="prioritiescontainer">
@@ -94,8 +94,8 @@ class Priorities extends Component {
             </Link>
 
           </div>
-          <Loader active={ featured.loading } />
-          { featured.error && (
+          <Loader active={ featured?.loading } />
+          { featured?.error && (
             <Message>
               Oops, something went wrong.  We are unable to load the department priority section.
             </Message>
