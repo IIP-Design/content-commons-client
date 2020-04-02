@@ -7,11 +7,13 @@ import difference from 'lodash/difference';
 import union from 'lodash/union';
 import intersection from 'lodash/intersection';
 import { connect } from 'react-redux';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import './FilterMenuItem.scss';
 
 const FilterMenuItem = props => {
   const [filterItemOpen, setFilterItemOpen] = useState( false );
   const [selected, setSelected] = useState( [] );
+  const isMounted = useIsMounted();
 
   /**
    * Format data into state that dopdowns will use
@@ -155,7 +157,9 @@ const FilterMenuItem = props => {
   }, [filterItemOpen] );
 
   useEffect( () => {
-    setSelected( props.selected );
+    if ( isMounted ) {
+      setSelected( props.selected );
+    }
   }, [props.selected] );
 
 

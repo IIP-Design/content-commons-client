@@ -80,7 +80,7 @@ const LoggedOutNav = props => {
   const renderMenuItem = item => (
     <Menu.Item key={ item.key } name={ item.name }>
       <Link href={ item.to } passHref>
-        { item.label }
+        <a>{ item.label }</a>
       </Link>
     </Menu.Item>
   );
