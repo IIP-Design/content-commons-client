@@ -7,26 +7,26 @@ import FilterSelections from './FilterSelections';
 
 import './FilterMenu.scss';
 
-const areEqual = ( prevProps, nextProps ) => {
-  const {
-    filter: {
-      categories, sources, postTypes, date
-    }
-  } = nextProps;
+// const areEqual = ( prevProps, nextProps ) => {
+//   const {
+//     filter: {
+//       categories, sources, postTypes, date
+//     }
+//   } = nextProps;
 
-  const { filter: prevFilter } = prevProps;
+//   const { filter: prevFilter } = prevProps;
 
-  if (
-    categories !== prevFilter.categories
-    || sources !== prevFilter.sources
-    || postTypes !== prevFilter.postTypes
-    || date !== prevFilter.date
-  ) {
-    return false;
-  }
+//   if (
+//     categories !== prevFilter.categories
+//     || sources !== prevFilter.sources
+//     || postTypes !== prevFilter.postTypes
+//     || date !== prevFilter.date
+//   ) {
+//     return false;
+//   }
 
-  return true;
-};
+//   return true;
+// };
 
 class FilterMenu extends Component {
   render() {
@@ -88,4 +88,4 @@ const mapStateToProps = state => ( {
   global: state.global
 } );
 
-export default connect( mapStateToProps, actions )( React.memo( FilterMenu, areEqual ) );
+export default connect( mapStateToProps, actions )( FilterMenu );
