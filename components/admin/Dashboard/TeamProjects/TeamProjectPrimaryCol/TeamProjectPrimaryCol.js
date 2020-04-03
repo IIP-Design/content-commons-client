@@ -191,6 +191,7 @@ const TeamProjectPrimaryCol = props => {
             <Title
               as={ getEditUrl( 'pretty' ) }
               href={ getEditUrl( 'long' ) }
+              prefetch={ false }
             >
               <Trigger className={ getTitleCls() }>
                 { d[header.name] }
@@ -214,6 +215,7 @@ const TeamProjectPrimaryCol = props => {
                   <Link
                     as={ getEditUrl( 'pretty' ) }
                     href={ getEditUrl( 'long' ) }
+                    prefetch={ false }
                   >
                     <a className={ getActionCls() }>Edit</a>
                   </Link>

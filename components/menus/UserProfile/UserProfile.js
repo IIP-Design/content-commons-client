@@ -34,7 +34,7 @@ class UserProfileMenu extends Component {
               </a>
             </Link>
           ) }
-          <Link href="/profile">
+          <Link href="/profile" prefetch={ false }>
             <a className="nav_submenu_item nav_submenu_item--profile_settings">
               <span onClick={ closePopup } role="presentation">
                 Profile Settings
