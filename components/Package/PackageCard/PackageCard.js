@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { getPluralStringOrNot } from 'lib/utils';
 import useAPIRequest from 'lib/hooks/useAPIRequest';
 import {
@@ -20,15 +19,12 @@ const PackageCard = ( { item, stretch } ) => {
     published,
     modified,
     owner,
+    title,
     documents
   } = item;
 
+
   const { response: fetchedDocs, error } = useAPIRequest( getElasticPkgDocs, [documents] );
-
-  const formattedPublishedDate = (
-    <time dateTime={ published }>{ moment( published ).format( 'LL' ) }</time>
-  );
-
   const documentFilesCountDisplay = `${documents.length} ${getPluralStringOrNot( documents, 'file' )}`;
 
   return (
@@ -39,13 +35,8 @@ const PackageCard = ( { item, stretch } ) => {
           size="fullscreen"
           trigger={ (
             <Card.Header>
-              <button
-                id={ `packageCard_trigger_${id}` }
-                className="title"
-                type="button"
-              >
-                <h2>Guidance Package</h2>
-                <p>{ formattedPublishedDate }</p>
+              <button id={ `packageCard_trigger_${id}` } className="title" type="button">
+                <h2>{ title }</h2>
               </button>
             </Card.Header>
           ) }
@@ -59,15 +50,22 @@ const PackageCard = ( { item, stretch } ) => {
           </Modal.Content>
         </Modal>
         <Card.Meta className="meta--popup">
-          <Popover
-            className="fileList"
-            trigger={ documentFilesCountDisplay }
-          >
+          <Popover className="fileList" trigger={ documentFilesCountDisplay }>
             <ul>
-              { !fetchedDocs && <Segment><Dimmer active inverted><Loader>Loading...</Loader></Dimmer></Segment> }
+              { !fetchedDocs && (
+                <Segment>
+                  <Dimmer active inverted>
+                    <Loader>Loading...</Loader>
+                  </Dimmer>
+                </Segment>
+              ) }
               { !fetchedDocs?.length && <li>There are no documents for this package.</li> }
-              { fetchedDocs?.map( doc => <li key={ doc.id }>{ doc.filename }</li> ) }
-              { error && <li className="error-message">Error occurred with package documents request.</li> }
+              { fetchedDocs?.map( doc => (
+                <li key={ doc.id }>{ doc.filename }</li>
+              ) ) }
+              { error && (
+                <li className="error-message">Error occurred with package documents request.</li>
+              ) }
             </ul>
           </Popover>
         </Card.Meta>
