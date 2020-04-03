@@ -12,7 +12,7 @@ import {
   Checkbox, Icon, Modal, Popup
 } from 'semantic-ui-react';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import packageThumbnail from 'static/images/thumbnail_package.png';
+import packageThumbnail from 'static/images/thumbnail_package.svg';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
 import './TeamProjectPrimaryCol.scss';
 
@@ -77,6 +77,7 @@ const TeamProjectPrimaryCol = props => {
     team
   } = props;
 
+
   const isDraft = d.status === 'DRAFT';
   const isPublishing = d.status === 'PUBLISHING';
   const actions = ['Edit', 'Preview', 'Files'];
@@ -84,14 +85,26 @@ const TeamProjectPrimaryCol = props => {
   const Title = isPublishing ? 'span' : Link;
   const projectTitleLength = d[header.name].length >= 35;
 
+  const getThumbnailStyles = type => {
+    switch ( type.toLowerCase() ) {
+      case 'package':
+        return { borderRadius: '10px' };
+
+      default:
+        return {};
+    }
+  };
+
   // todo share with my dashboard
   const getThumbnail = item => {
+    const type = item?.__typename;
     let url = '';
     let alt = '';
+
     if ( item?.thumbnail?.signedUrl ) {
       url = item.thumbnail.signedUrl;
       alt = item.thumbnail.alt;
-    } else if ( item?.__typename?.toLowerCase() === 'package' ) {
+    } else if ( type?.toLowerCase() === 'package' ) {
       url = packageThumbnail;
       alt = 'Package';
     }
@@ -100,6 +113,7 @@ const TeamProjectPrimaryCol = props => {
       return (
         <img
           className={ isDraft ? 'draft' : null }
+          style={ getThumbnailStyles( type ) }
           src={ url }
           alt={ alt }
         />
@@ -169,7 +183,7 @@ const TeamProjectPrimaryCol = props => {
         <div className="wrapper">
           { getThumbnail( d ) }
           { isDraft && (
-            <p className="draft-overlay">
+            <p className="draft-overlay" style={ getThumbnailStyles( d.__typename ) }>
               <span>{ d.status }</span>
             </p>
           ) }

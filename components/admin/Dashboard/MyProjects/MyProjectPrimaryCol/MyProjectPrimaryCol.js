@@ -11,7 +11,7 @@ import {
   Checkbox, Icon, Modal, Popup
 } from 'semantic-ui-react';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import packageThumbnail from 'static/images/thumbnail_package.png';
+import packageThumbnail from 'static/images/thumbnail_package.svg';
 import ProjectPreviewContent from 'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
 import './MyProjectPrimaryCol.scss';
@@ -70,19 +70,39 @@ const MyProjectPrimaryCol = props => {
   const projectTitleLength = d[header.name].length >= 35;
 
   // todo share with team dashboard
+  const getThumbnailStyles = type => {
+    switch ( type.toLowerCase() ) {
+      case 'package':
+        return { borderRadius: '10px' };
+
+      default:
+        return {};
+    }
+  };
+
+  // todo share with my dashboard
   const getThumbnail = item => {
+    const type = item?.__typename;
     let url = '';
     let alt = '';
+
     if ( item?.thumbnail?.signedUrl ) {
       url = item.thumbnail.signedUrl;
       alt = item.thumbnail.alt;
-    } else if ( item?.__typename?.toLowerCase() === 'package' ) {
+    } else if ( type?.toLowerCase() === 'package' ) {
       url = packageThumbnail;
       alt = 'Package';
     }
 
     if ( url ) {
-      return <img className={ isDraft ? 'draft' : null } src={ url } alt={ alt } />;
+      return (
+        <img
+          className={ isDraft ? 'draft' : null }
+          style={ getThumbnailStyles( type ) }
+          src={ url }
+          alt={ alt }
+        />
+      );
     }
 
     return (
