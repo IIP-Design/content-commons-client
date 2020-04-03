@@ -11,6 +11,7 @@ import {
   Checkbox, Icon, Modal, Popup
 } from 'semantic-ui-react';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import packageThumbnail from 'static/images/thumbnail_package.png';
 import ProjectPreviewContent from 'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
 import './MyProjectPrimaryCol.scss';
@@ -68,6 +69,29 @@ const MyProjectPrimaryCol = props => {
   const Title = isPublishing ? 'span' : Link;
   const projectTitleLength = d[header.name].length >= 35;
 
+  // todo share with team dashboard
+  const getThumbnail = item => {
+    let url = '';
+    let alt = '';
+    if ( item?.thumbnail?.signedUrl ) {
+      url = item.thumbnail.signedUrl;
+      alt = item.thumbnail.alt;
+    } else if ( item?.__typename?.toLowerCase() === 'package' ) {
+      url = packageThumbnail;
+      alt = 'Package';
+    }
+
+    if ( url ) {
+      return <img className={ isDraft ? 'draft' : null } src={ url } alt={ alt } />;
+    }
+
+    return (
+      <div className="placeholder outer">
+        <div className="placeholder inner" />
+      </div>
+    );
+  };
+
   const getEditUrl = ( format = '' ) => {
     if ( isPublishing || !format ) return null;
     if ( format === 'pretty' ) {
@@ -98,19 +122,7 @@ const MyProjectPrimaryCol = props => {
       </div>
       <div className="projects_thumbnail">
         <div className="wrapper">
-          { d.thumbnail.signedUrl
-            ? (
-              <img
-                className={ isDraft ? 'draft' : null }
-                src={ d.thumbnail.signedUrl }
-                alt={ d.thumbnail.alt }
-              />
-            )
-            : (
-              <div className="placeholder outer">
-                <div className="placeholder inner" />
-              </div>
-            ) }
+          { getThumbnail( d ) }
 
           { isDraft && (
             <p className="draft-overlay">
@@ -121,83 +133,61 @@ const MyProjectPrimaryCol = props => {
       </div>
       <div className="projects_data">
         { /**
-           * Display tooltip for keyboard accessibility.
-           * Tradeoff? Can't use <Link> in trigger and no
-           * page transition animation, but err on side
-           * of better accessibility.
-           */ }
-        { projectTitleLength
-          ? (
-            <Popup
-              trigger={ (
-                <Trigger
-                  href={ getEditUrl( 'pretty' ) }
-                  className={ getTitleCls() }
-                >
-                  <span aria-hidden>
-                    { truncate( d[header.name], { length: 35 } ) }
-                  </span>
-                  <VisuallyHidden el="span">
-                    { d[header.name] }
-                  </VisuallyHidden>
-                </Trigger>
-              ) }
-              content={ d[header.name] }
-              hideOnScroll
-              inverted
-              on={ ['hover', 'focus'] }
-              size="mini"
-            />
-          )
-          : (
-            <Title
-              as={ getEditUrl( 'pretty' ) }
-              href={ getEditUrl( 'long' ) }
-              prefetch={ false }
-            >
-              <Trigger className={ getTitleCls() }>
-                { d[header.name] }
+         * Display tooltip for keyboard accessibility.
+         * Tradeoff? Can't use <Link> in trigger and no
+         * page transition animation, but err on side
+         * of better accessibility.
+         */ }
+        { projectTitleLength ? (
+          <Popup
+            trigger={ (
+              <Trigger href={ getEditUrl( 'pretty' ) } className={ getTitleCls() }>
+                <span aria-hidden>{ truncate( d[header.name], { length: 35 } ) }</span>
+                <VisuallyHidden el="span">{ d[header.name] }</VisuallyHidden>
               </Trigger>
-            </Title>
-          ) }
+            ) }
+            content={ d[header.name] }
+            hideOnScroll
+            inverted
+            on={ ['hover', 'focus'] }
+            size="mini"
+          />
+        ) : (
+          <Title as={ getEditUrl( 'pretty' ) } href={ getEditUrl( 'long' ) } prefetch={ false }>
+            <Trigger className={ getTitleCls() }>{ d[header.name] }</Trigger>
+          </Title>
+        ) }
         <div className="projects_data_actions">
           <div className="projects_data_actions_wrapper">
-            { isPublishing
-              ? actions.map( ( action, i ) => (
+            { isPublishing ? (
+              actions.map( ( action, i ) => (
                 <Fragment key={ `${action}-${id}` }>
-                  <span className={ getActionCls() }>
-                    { action }
-                  </span>
-                  { ( i < actions.length - 1 )
-                    && <span className="separator">|</span> }
+                  <span className={ getActionCls() }>{ action }</span>
+                  { i < actions.length - 1 && <span className="separator">|</span> }
                 </Fragment>
               ) )
-              : (
-                <Fragment>
-                  <Link
-                    as={ getEditUrl( 'pretty' ) }
-                    href={ getEditUrl( 'long' ) }
-                    prefetch={ false }
-                  >
-                    <a className={ getActionCls() }>Edit</a>
-                  </Link>
-                  <span className="separator">|</span>
-                  <Modal
-                    trigger={ (
-                      <button type="button" className={ getActionCls() }>
-                        Preview
-                      </button>
-                    ) }
-                    closeIcon
-                  >
-                    <Modal.Content>
-                      <ProjectPreviewContent id={ id } />
-                    </Modal.Content>
-                  </Modal>
-                  <span className="separator">|</span>
-                  <DetailsPopup id={ id } />
-                </Fragment>
-              ) }
+            ) : (
+              <Fragment>
+                <Link as={ getEditUrl( 'pretty' ) } href={ getEditUrl( 'long' ) } prefetch={ false }>
+                  <a className={ getActionCls() }>Edit</a>
+                </Link>
+                <span className="separator">|</span>
+                <Modal
+                  trigger={ (
+                    <button type="button" className={ getActionCls() }>
+                      Preview
+                    </button>
+                  ) }
+                  closeIcon
+                >
+                  <Modal.Content>
+                    <ProjectPreviewContent id={ id } />
+                  </Modal.Content>
+                </Modal>
+                <span className="separator">|</span>
+                <DetailsPopup id={ id } />
+              </Fragment>
+            ) }
           </div>
           <button
             type="button"
