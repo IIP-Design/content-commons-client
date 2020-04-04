@@ -34,8 +34,8 @@ const PackageFiles = props => {
 
   /**
    * Save/Delete files from edit modal
-   * @param {array} filesToSave
-   * @param {array} filesToRemove
+   * @param {array} toSave
+   * @param {array} toRemove
    */
   const handleSave = async ( toSave, toRemove ) => {
     const files = { toSave, toRemove };
