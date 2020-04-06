@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from 'context/authContext';
+import { useAuth, fetchUser } from 'context/authContext';
 import Login from 'components/Login/Login';
-import { isDevEnvironment } from 'lib/browser';
+import { isDevEnvironment, redirectTo } from 'lib/browser';
 import { Loader } from 'semantic-ui-react';
 
 const LoginPage = () => {
@@ -32,5 +32,11 @@ const LoginPage = () => {
   );
 };
 
+LoginPage.getInitialProps = async ctx => {
+  const user = await fetchUser( ctx );
+  if ( user ) {
+    redirectTo( '/', { res: ctx?.res } );
+  }
+};
 
 export default LoginPage;
