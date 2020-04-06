@@ -14,11 +14,11 @@ const renderError = () => (
 
 const Packages = props => {
   const { featured, packages } = props;
-  if ( featured.error ) {
+  if ( featured?.error ) {
     return renderError();
   }
 
-  if ( !packages.length ) return null;
+  if ( !packages?.length ) return null;
 
   return (
     <section className="latestPackages_section">
