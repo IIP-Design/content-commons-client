@@ -104,7 +104,10 @@ function AuthProvider( props ) {
   // Sign in mutation
   const [signIn, { loading: signInLoading, error: signInError }] = useMutation(
     CLOUDFLARE_SIGNIN_MUTATION, {
-      refetchQueries: [{ query: CURRENT_USER_QUERY }]
+      refetchQueries: [{ query: CURRENT_USER_QUERY }],
+      onCompleted: () => {
+        redirectTo( '/', {} );
+      }
     }
   );
 
@@ -148,8 +151,6 @@ function AuthProvider( props ) {
       if ( signInError ) {
         // console.log( 'There was an error' )
       }
-
-      redirectTo( '/', {} );
     }
   };
 
