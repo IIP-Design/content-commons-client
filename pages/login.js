@@ -16,8 +16,6 @@ const LoginPage = () => {
         login();
       }
       setIsDev( _isDev );
-    } else {
-      redirectTo( '/', {} );
     }
   }, [] );
 
