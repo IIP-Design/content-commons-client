@@ -41,17 +41,16 @@ const FormikAutoSave = props => {
    * @param {object } updatedValues Form values that have changed since last save
    */
   const debouncedSave = useCallback(
-    async updatedValues => {
-      const errors = await validateForm( updatedValues );
-      const hasErrors = Object.keys( errors ).length > 0;
-
-      if ( !hasErrors ) {
-        debounce(
-          async () => _save( updatedValues ),
-          debounceMs
-        )();
-      }
-    }, [debounceMs]
+    debounce(
+      async updatedValues => {
+        const errors = await validateForm( updatedValues );
+        const hasErrors = Object.keys( errors ).length > 0;
+        if ( hasErrors ) { return; }
+        _save( updatedValues );
+      },
+      debounceMs
+    ),
+    [save, debounceMs]
   );
 
   useEffect( () => {

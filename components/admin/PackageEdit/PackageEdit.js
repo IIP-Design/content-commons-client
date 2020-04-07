@@ -10,7 +10,7 @@ import ActionHeadline from 'components/admin/ActionHeadline/ActionHeadline';
 import ApolloError from 'components/errors/ApolloError';
 import useToggleModal from 'lib/hooks/useToggleModal';
 import { useCrudActionsDocument } from 'lib/hooks/useCrudActionsDocument';
-import EditPackageFiles from 'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal'; import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
+import EditPackageFiles from 'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal';
 import ButtonPublish from 'components/admin/ButtonPublish/ButtonPublish';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
