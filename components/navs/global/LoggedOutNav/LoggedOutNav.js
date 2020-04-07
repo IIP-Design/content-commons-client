@@ -10,6 +10,7 @@ import Link from 'next/link';
 import {
   Menu, Icon
 } from 'semantic-ui-react';
+import config from 'config';
 import HamburgerIcon from '../HamburgerIcon';
 
 const menuItems = [
@@ -54,7 +55,7 @@ const LoggedOutNav = props => {
 
   const renderFeedbackButton = () => (
     <a
-      href="https://goo.gl/forms/9cJ3IBHH9QTld2Mj2"
+      href={ config.FEEDBACK_FORM_URL }
       target="_blank"
       className="item feedback"
       rel="noopener noreferrer"

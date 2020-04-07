@@ -1,10 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { Container, Header, List } from 'semantic-ui-react';
-import './Footer.scss';
+import config from 'config';
 import slackLogo from 'static/images/logo_slack.png';
 import flagImage from 'static/images/flag.jpg';
 import DosSeal from 'static/images/dos_seal.svg';
+
+import './Footer.scss';
 
 const Footer = () => {
   const menuItems = [
@@ -54,7 +56,7 @@ const Footer = () => {
           </Link>
           . We are looking for&nbsp;
           <a
-            href="https://goo.gl/forms/9cJ3IBHH9QTld2Mj2"
+            href={ config.FEEDBACK_FORM_URL }
             target="_blank"
             className="footer_link"
             rel="noopener noreferrer"

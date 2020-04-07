@@ -16,6 +16,7 @@ import notifyIcon from 'static/icons/icon_notifications.svg';
 import userIcon from 'static/icons/icon_user_profile.svg';
 import uploadIcon from 'static/icons/icon_upload.svg';
 import { hasPagePermissions } from 'context/authContext';
+import config from 'config';
 import HamburgerIcon from '../HamburgerIcon';
 
 const menuItems = [
@@ -88,7 +89,7 @@ const LoggedInNav = props => {
 
   const renderFeedbackButton = () => (
     <a
-      href="https://goo.gl/forms/9cJ3IBHH9QTld2Mj2"
+      href={ config.FEEDBACK_FORM_URL }
       target="_blank"
       className="item feedback"
       rel="noopener noreferrer"

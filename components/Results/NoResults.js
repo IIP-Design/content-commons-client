@@ -1,5 +1,6 @@
 import React from 'react';
 import { string } from 'prop-types';
+import config from 'config';
 
 const message = term => ( ( term )
   ? `Sorry, no matches found for "${term}"`
@@ -13,7 +14,7 @@ const NoResults = props => (
         We are working to enhance the search functionality of Content Commons. If you continue to
         experience issues with your search results or are having trouble with a particular search term,
         <a
-          href="https://goo.gl/forms/9cJ3IBHH9QTld2Mj2"
+          href={ config.FEEDBACK_FORM_URL }
           target="_blank"
           className="footer_link"
           rel="noopener noreferrer"
