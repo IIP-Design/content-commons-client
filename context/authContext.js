@@ -54,21 +54,14 @@ export const fetchUser = async ctx => {
   }
 
   try {
-    const data = await ctx.apolloClient.query( {
-      query: CURRENT_USER_QUERY,
-      fetchPolicy: 'network-only',
-    } );
-
-    console.dir( data );
-    if ( data?.user ) {
-      console.log( 'has user' );
-
+    const {
+      data: { user }
+    } = await ctx.apolloClient.query( { query: CURRENT_USER_QUERY, fetchPolicy: 'network-only' } );
+    if ( user ) {
       // add token to authenticate to elastic api to user
       const { ES_TOKEN } = cookies( ctx );
-      return { ...data.user, esToken: ES_TOKEN };
+      return { ...user, esToken: ES_TOKEN };
     }
-    console.log( 'return null' );
-
     return null;
   } catch ( err ) {
     return null;
@@ -101,7 +94,6 @@ function AuthProvider( props ) {
 
   // ensure signIn only called once
   const [attemptToSignIntoCF, setAttemptToSignIntoCF] = useState( false );
-
 
   // Attempt to fetch user
   const { data, loading: userLoading } = useQuery( CURRENT_USER_QUERY, {

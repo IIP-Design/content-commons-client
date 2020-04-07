@@ -96,7 +96,6 @@ class Landing extends Component {
     const featuredDataForLanding = [...featuredData];
 
     const user = await fetchUser( ctx );
-    console.log( `User ${JSON.stringify( user )}` );
 
     if ( !user ) {
       // remove internal packages (internal conent) from query if user is not present
