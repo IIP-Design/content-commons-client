@@ -47,9 +47,6 @@ const getCloudFlareToken = ctx => {
  */
 export const fetchUser = async ctx => {
   const cfAuth = getCloudFlareToken( ctx );
-  console.log( 'ctx' );
-  console.dir( ctx );
-  console.log( `cfAuth ${cfAuth}` );
 
   // CloudFlare token MUST be available, if not return null
   if ( !cfAuth ) {
@@ -58,8 +55,11 @@ export const fetchUser = async ctx => {
 
   try {
     const {
-      data: { user }
-    } = await ctx.apolloClient.query( { query: CURRENT_USER_QUERY, fetchPolicy: 'network-only' } );
+      data: { user },
+    } = await ctx.apolloClient.query( {
+      query: CURRENT_USER_QUERY,
+      fetchPolicy: 'cache-and-network',
+    } );
     if ( user ) {
       console.log( 'has user' );
 
@@ -67,8 +67,6 @@ export const fetchUser = async ctx => {
       const { ES_TOKEN } = cookies( ctx );
       return { ...user, esToken: ES_TOKEN };
     }
-    console.log( 'return null' );
-
     return null;
   } catch ( err ) {
     return null;

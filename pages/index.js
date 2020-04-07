@@ -96,15 +96,10 @@ class Landing extends Component {
     const featuredDataForLanding = [...featuredData];
 
     const user = await fetchUser( ctx );
-
-    console.log( 'user' );
-    console.dir( user );
-
+    console.log( `User ${JSON.stringify( user )}` );
 
     if ( !user ) {
       // remove internal packages (internal conent) from query if user is not present
-      console.log( 'removing' );
-
       featuredDataForLanding.shift();
     }
 
@@ -125,8 +120,6 @@ class Landing extends Component {
 
   render() {
     const { featuredDataForLanding } = this.props;
-    console.log( 'featuredDataForLanding' );
-    console.dir( featuredDataForLanding );
 
     return (
       <section>
