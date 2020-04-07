@@ -52,19 +52,23 @@ export const fetchUser = async ctx => {
   console.log( `cfAuth ${cfAuth}` );
 
   // CloudFlare token MUST be available, if not return null
-  // if ( !cfAuth ) {
-  //   return null;
-  // }
+  if ( !cfAuth ) {
+    return null;
+  }
 
   try {
     const {
       data: { user }
     } = await ctx.apolloClient.query( { query: CURRENT_USER_QUERY, fetchPolicy: 'network-only' } );
     if ( user ) {
+      console.log( 'has user' );
+
       // add token to authenticate to elastic api to user
       const { ES_TOKEN } = cookies( ctx );
       return { ...user, esToken: ES_TOKEN };
     }
+    console.log( 'return null' );
+
     return null;
   } catch ( err ) {
     return null;
