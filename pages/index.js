@@ -99,8 +99,6 @@ class Landing extends Component {
 
     if ( !user ) {
       // remove internal packages (internal conent) from query if user is not present
-      console.log( 'removing package from featured' );
-
       featuredDataForLanding.shift();
     }
 
@@ -121,8 +119,6 @@ class Landing extends Component {
 
   render() {
     const { featuredDataForLanding } = this.props;
-    console.log( 'featuredDataForLanding' );
-    console.dir( featuredDataForLanding );
     return (
       <section>
         <Featured data={ featuredDataForLanding } />

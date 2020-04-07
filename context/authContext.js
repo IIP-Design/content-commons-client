@@ -47,11 +47,14 @@ const getCloudFlareToken = ctx => {
  */
 export const fetchUser = async ctx => {
   const cfAuth = getCloudFlareToken( ctx );
+  console.log( 'ctx' );
+  console.dir( ctx );
+  console.log( `cfAuth ${cfAuth}` );
 
   // CloudFlare token MUST be available, if not return null
-  if ( !cfAuth ) {
-    return null;
-  }
+  // if ( !cfAuth ) {
+  //   return null;
+  // }
 
   try {
     const {
