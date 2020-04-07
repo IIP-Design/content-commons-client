@@ -54,19 +54,21 @@ export const fetchUser = async ctx => {
   }
 
   try {
-    const {
-      data: { user },
-    } = await ctx.apolloClient.query( {
+    const data = await ctx.apolloClient.query( {
       query: CURRENT_USER_QUERY,
-      fetchPolicy: 'cache-and-network',
+      fetchPolicy: 'network-only',
     } );
-    if ( user ) {
+
+    console.dir( data );
+    if ( data?.user ) {
       console.log( 'has user' );
 
       // add token to authenticate to elastic api to user
       const { ES_TOKEN } = cookies( ctx );
-      return { ...user, esToken: ES_TOKEN };
+      return { ...data.user, esToken: ES_TOKEN };
     }
+    console.log( 'return null' );
+
     return null;
   } catch ( err ) {
     return null;
