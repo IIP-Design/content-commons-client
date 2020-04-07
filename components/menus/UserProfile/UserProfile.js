@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import LogoutButton from 'components/Logout/Logout';
 import { hasPagePermissions } from 'context/authContext';
+import config from 'config';
+
 import '../menu.scss';
 
 class UserProfileMenu extends Component {
@@ -68,7 +70,7 @@ class UserProfileMenu extends Component {
         <section className="nav_submenu_section">
           <a
             target="_blank"
-            href="https://goo.gl/forms/PyLjAiaJVt3xONsd2"
+            href={ config.FEEDBACK_FORM_URL }
             rel="noopener noreferrer"
             className="nav_submenu_item"
             onClick={ closePopup }
