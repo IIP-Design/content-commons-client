@@ -5,6 +5,9 @@
   &_section {
     padding: 2em;
     background-color: #f1f1f1;
+    @media screen and (max-width: 767px) {
+      padding: 1em;
+    }
   }
 
   &_container {
@@ -34,7 +37,9 @@
         }
 
         &.card-min-width {
-          width: auto;
+          @media screen and (min-width: 993px) {
+            width: auto;
+          }
 
           > .ui.card.package_card {
             min-width: 260px;
@@ -43,13 +48,10 @@
         }                
 
         &.flex-column {
-          flex: 1;
-          @media screen and (max-width: 992px) {
-            flex: auto;
-          }
+          flex: auto;
 
           > .ui.card.package_card {
-            max-width: 100%;
+            width: 100%;
           }
         }
       }

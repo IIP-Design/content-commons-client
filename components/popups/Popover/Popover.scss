@@ -26,7 +26,13 @@
     top: calc(100% + 20px);
     left: -10px;    
     font-size: 11px;
-    line-height: 1.6;    
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+    word-wrap: anywhere; // FF won't recognize break-word on buttons
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
 
     &.expanded {
       display: block;
@@ -48,7 +54,8 @@
   &.fileList {
     
     .popover_content > ul {
-      max-height: 200px;      
+      max-height: 200px;
+      max-width: 250px;
       margin: 0;
       padding-left: 0;
       overflow-y: auto;

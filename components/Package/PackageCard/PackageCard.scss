@@ -1,6 +1,7 @@
 @import 'styles/colors.scss';
 
 .ui.card.package_card {
+  height: 100%;
   max-width: 260px;
   border-radius: 8px;
 
@@ -11,9 +12,8 @@
       transform: none;
     }
 
-    .content {
-      .header {
-        height: 100%;
+    .content {      
+      .header {       
         margin-bottom: 10px;
       }
 
@@ -26,9 +26,12 @@
   }
 
   .content {
+    display: flex;
+    flex-direction: column;
     padding-bottom: 0.5em;
 
     .header {
+      flex: 1;
       padding: 2.6em 1em;
       margin-bottom: 5px;
       text-align: center;
