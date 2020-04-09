@@ -73,10 +73,6 @@ const FilterMenuItem = props => {
   };
 
   const handleCheckboxChange = async ( e, { value, checked } ) => {
-    console.log( {
-      value,
-      checked
-    } );
     if ( selected.includes( value ) ) {
       setSelected( selected.filter( s => s !== value ) );
     } else {
@@ -125,7 +121,6 @@ const FilterMenuItem = props => {
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
     // so we split the value into array and add/remove each to search array
     const values = option?.value?.split( '|' );
-    // const checked = !!( intersection( props.selected, values ).length );
     const checked = !!( intersection( selected, values ).length );
 
     return (
@@ -197,7 +192,7 @@ const FilterMenuItem = props => {
             <span style={ {
               paddingTop: '3px',
               color: '#112e51',
-              fontSize: '0.888888889rem',
+              fontSize: '0.77rem',
               textAlign: 'center'
             } }
             >

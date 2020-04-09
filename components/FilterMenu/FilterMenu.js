@@ -61,7 +61,6 @@ const FilterMenu = props => {
               formItem="checkbox"
             />
           ) }
-
         { /* Countries */ }
         { showMenuItem( 'document' ) && <FilterMenuCountries selected={ filter.countries } /> }
       </div>
