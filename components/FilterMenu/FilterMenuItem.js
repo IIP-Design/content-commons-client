@@ -80,7 +80,7 @@ const FilterMenuItem = props => {
     }
 
     // make copy of selected filter array, i.e. categories
-    const arr = props.filterStore[props.name].slice( 0 );
+    const arr = props.filterStore[props.name]?.slice( 0 );
 
     // Some values have mutliple search terms within the input value
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
@@ -120,7 +120,7 @@ const FilterMenuItem = props => {
     // Some values have mutliple search terms within the input value
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
     // so we split the value into array and add/remove each to search array
-    const values = option.value.split( '|' );
+    const values = option?.value?.split( '|' );
     const checked = !!( intersection( selected, values ).length );
 
     return (
@@ -160,7 +160,7 @@ const FilterMenuItem = props => {
 
 
   const {
-    formItem, options, filter
+    className, formItem, options, filter, searchInput
   } = props;
 
 
@@ -176,28 +176,42 @@ const FilterMenuItem = props => {
         role="menuitem"
         tabIndex={ 0 }
       >
-        { props.filter } <Icon name={ filterItemOpen ? 'chevron up' : 'chevron down' } />
+        { filter } <Icon name={ filterItemOpen ? 'chevron up' : 'chevron down' } />
       </span>
-      <Form className={ filterItemOpen ? 'filterMenu_options show' : 'filterMenu_options' }>
+      <Form className={ `${filterItemOpen ? 'filterMenu_options show' : 'filterMenu_options'} ${className}` }>
+
+        { searchInput }
+
         <Form.Group>
-          {
-           formatOptions( options, filter ).map( option => ( ( formItem === 'checkbox' )
-             ? renderCheckbox( option )
-             : renderRadio( option ) ) )
-          }
-          { options.length === 0 && (
-          <span style={ { textAlign: 'center', paddingTop: '3px' } }>
-            None Available
-          </span>
-          ) }
+          { formatOptions( options, filter ).map( option => ( ( formItem === 'checkbox' )
+            ? renderCheckbox( option )
+            : renderRadio( option ) ) ) }
+
+          { options.length === 0
+            && (
+            <span style={ {
+              paddingTop: '3px',
+              color: '#112e51',
+              fontSize: '0.77rem',
+              textAlign: 'center'
+            } }
+            >
+              None Available
+            </span>
+            ) }
         </Form.Group>
       </Form>
     </div>
   );
 };
 
+FilterMenuItem.defaultProps = {
+  className: '',
+  searchInput: null
+};
 
 FilterMenuItem.propTypes = {
+  className: PropTypes.string,
   formItem: PropTypes.string,
   filter: PropTypes.string,
   options: PropTypes.array,
@@ -206,6 +220,7 @@ FilterMenuItem.propTypes = {
   name: PropTypes.string,
   term: PropTypes.string,
   language: PropTypes.string,
+  searchInput: PropTypes.oneOfType( [PropTypes.node, () => null] ),
   /* eslint-disable-next-line react/no-unused-prop-types */
   selected: PropTypes.oneOfType( [PropTypes.string, PropTypes.array] )
 };

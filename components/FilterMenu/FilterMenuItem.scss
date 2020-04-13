@@ -75,5 +75,10 @@
         }
       }
     }
+
+    &.clamped {
+      max-height: 16.666666667rem;
+      overflow: auto;
+    }
   }
 }
