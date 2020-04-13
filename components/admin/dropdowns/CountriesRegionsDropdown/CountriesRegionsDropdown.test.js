@@ -2,7 +2,8 @@ import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
-import CountriesRegionsDropdown, { COUNTRIES_REGIONS_QUERY } from './CountriesRegionsDropdown';
+import { COUNTRIES_REGIONS_QUERY } from 'lib/graphql/queries/document';
+import CountriesRegionsDropdown from './CountriesRegionsDropdown';
 
 const props = {
   id: '123xyz',
@@ -18,40 +19,48 @@ const mocks = [
       data: {
         countries: [
           {
+            __typename: 'Country',
             id: 'ck6krp96x3f3m0720yet8wkch',
             name: 'Antigua and Barbuda',
             abbr: 'WHA',
             region: {
+              __typename: 'Region',
               id: 'ck6krp96o3f3k0720aoufd395',
               name: 'Bureau of Western Hemisphere Affairs',
               abbr: 'WHA'
             }
           },
           {
+            __typename: 'Country',
             id: 'ck6krp96x3f3n0720q1289gee',
             name: 'Angola',
             abbr: 'AF',
             region: {
+              __typename: 'Region',
               id: 'ck6krp96g3f3c0720c1w09bx1',
               name: 'Bureau of African Affairs',
               abbr: 'AF'
             }
           },
           {
+            __typename: 'Country',
             id: 'ck6krp96y3f3o0720mg6m44hb',
             name: 'Algeria',
             abbr: 'NEA',
             region: {
+              __typename: 'Region',
               id: 'ck6krp96o3f3i07201zo5ai59',
               name: 'Bureau of Near Eastern Affairs',
               abbr: 'NEA'
             }
           },
           {
+            __typename: 'Country',
             id: 'ck6krp96y3f3p0720ncj81nes',
             name: 'Albania',
             abbr: 'EUR',
             region: {
+              __typename: 'Region',
               id: 'ck6krp96o3f3h07201q3rj4n7',
               name: 'Bureau of European and Eurasian Affairs',
               abbr: 'EUR'
@@ -91,7 +100,7 @@ const emptyMocks = [
 ];
 
 const Component = (
-  <MockedProvider mocks={ mocks } addTypename={ false }>
+  <MockedProvider mocks={ mocks } addTypename>
     <CountriesRegionsDropdown { ...props } />
   </MockedProvider>
 );

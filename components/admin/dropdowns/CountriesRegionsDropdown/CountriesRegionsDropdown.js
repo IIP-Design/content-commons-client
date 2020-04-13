@@ -4,25 +4,8 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import sortBy from 'lodash/sortBy';
-import gql from 'graphql-tag';
-
+import { COUNTRIES_REGIONS_QUERY } from 'lib/graphql/queries/document';
 import '../dropdown.scss';
-
-const COUNTRIES_REGIONS_QUERY = gql`
-  query COUNTRIES_REGIONS_QUERY {
-    countries {
-      id
-      name
-      abbr
-      region {
-        id
-        name
-        abbr
-      }
-    }
-  }
-`;
-
 
 const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
