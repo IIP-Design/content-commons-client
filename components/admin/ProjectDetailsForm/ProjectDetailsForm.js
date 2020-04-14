@@ -33,7 +33,6 @@ const ProjectDetailsForm = props => {
     errors,
     touched,
     handleSubmit,
-    handleChange,
     setFieldValue,
     isValid,
     setFieldTouched,
@@ -41,6 +40,10 @@ const ProjectDetailsForm = props => {
     status,
     save,
   } = props;
+
+  // If form values have been updated then touched obj will have props
+  // Used to prevent auto save on initial render
+  const hasFormBeenUpdated = !!Object.keys( touched ).length;
 
   // Is this a newly created project? Used for conditionally disabling "Save draft & upload.." button - ln. 208
   const initProjectCreation = isEmpty( touched );
@@ -59,7 +62,7 @@ const ProjectDetailsForm = props => {
   return (
     <Fragment>
       { /* Only use autosave with exisiting project */ }
-      { props.id && <FormikAutoSave save={ save } /> }
+      { props.id && hasFormBeenUpdated && <FormikAutoSave save={ save } /> }
       <Form className="edit-project__form project-data" onSubmit={ handleSubmit }>
         <Grid stackable>
           <Grid.Row>
@@ -169,7 +172,7 @@ const ProjectDetailsForm = props => {
                 control={ TextArea }
                 label="Public Description"
                 value={ values.descPublic }
-                onChange={ handleChange }
+                onChange={ handleOnChange }
               />
 
               <div className="field">
@@ -180,7 +183,7 @@ const ProjectDetailsForm = props => {
                   control={ TextArea }
                   label="Internal Description"
                   value={ values.descInternal }
-                  onChange={ handleChange }
+                  onChange={ handleOnChange }
                 />
                 <p className="field__helper-text">
                   Share with DoS colleagues reasons for this project as it relates to Department objectives,
@@ -220,7 +223,6 @@ ProjectDetailsForm.propTypes = {
   id: PropTypes.string,
   status: PropTypes.string,
   handleSubmit: PropTypes.func,
-  handleChange: PropTypes.func,
   values: PropTypes.object,
   errors: PropTypes.object,
   touched: PropTypes.object,
