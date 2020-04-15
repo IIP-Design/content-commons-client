@@ -1,6 +1,4 @@
-import React, {
-  useState, useEffect, useContext
-} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import { getCount } from 'lib/utils';
@@ -72,7 +70,7 @@ const ProjectUnitItem = props => {
   };
 
   const renderProjectItem = () => (
-    <Card className="project-unit-item">
+    <Card className="project-unit-item" as="div">
       <div className="image-wrapper">
         { renderThumbnail() }
 
@@ -86,8 +84,7 @@ const ProjectUnitItem = props => {
           </List>
         ) }
 
-        { !error
-          && <img className="metaicon" src={ iconVideoCamera } alt="Video Icon" /> }
+        { !error && <img className="metaicon" src={ iconVideoCamera } alt="Video Icon" /> }
       </div>
 
       { /* Remove progress bar if above conditions are met */ }
