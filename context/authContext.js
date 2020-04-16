@@ -79,10 +79,20 @@ export const canAccessPage = async ctx => {
   if ( isRestrictedPage( ctx ) ) {
     const user = await fetchUser( ctx );
 
-    // ensure a user and a user with proper permissions
-    if ( !user || !hasPagePermissions( user ) ) {
-      return false;
+    // No valid user, return
+    if( !user ) {
+      return false
     }
+    
+    // if on publisher pages, verify publisher permissions
+    if ( ctx?.pathname?.startsWith( '/admin') ) {
+      if( !hasPagePermissions( user ) ) {
+        return false;
+      }
+    }
+
+    // assume a subscriber since user exists (subscriber is the base permission level)
+    return true
   }
   return true;
 };
@@ -123,7 +133,7 @@ function AuthProvider( props ) {
       } = window;
 
       // Only do CloudFlare logout if on staging, beta or prod
-      if ( !isDevEnvironment() ) {
+      if ( !isDevEnvironment() ) { 
         const url = `${protocol}//${hostname}:${port}`;
         window.location = `https://america.cloudflareaccess.com/cdn-cgi/access/logout?returnTo=${url}`;
       }
