@@ -1,14 +1,21 @@
-const withSass = require( '@zeit/next-sass' );
+const withStyles = require( '@webdeb/next-styles' );
 
 const withBundleAnalyzer = require( '@next/bundle-analyzer' )( {
   enabled: process.env.ANALYZE === 'true'
 } );
 
-const FilterWarningsPlugin = require( 'webpack-filter-warnings-plugin' );
 require( 'dotenv' ).config();
 
+/**
+ * Next 9.3 now has built in css/scss module support. However, using the native
+ * support requires that all global style sheets be imported in the _app file and NOT
+ * within each component file. Using the 'withStyles' library allows the continued use
+ * of gobal styles within each components and modules as we incrementally move to using
+ * modules as a matter of course.
+ */
+
 module.exports = withBundleAnalyzer(
-  withSass( {
+  withStyles( {
     publicRuntimeConfig: {
       REACT_APP_WEBSITE_NAME: process.env.REACT_APP_WEBSITE_NAME,
       REACT_APP_PUBLIC_API: process.env.REACT_APP_PUBLIC_API,
@@ -17,23 +24,20 @@ module.exports = withBundleAnalyzer(
       REACT_APP_GOOGLE_CLIENT_ID: process.env.REACT_APP_GOOGLE_CLIENT_ID,
       REACT_APP_VIMEO_TOKEN: process.env.REACT_APP_VIMEO_TOKEN,
       REACT_APP_YOUTUBE_API_KEY: process.env.REACT_APP_YOUTUBE_API_KEY,
-      REACT_APP_AWS_S3_AUTHORING_BUCKET:
-        process.env.REACT_APP_AWS_S3_AUTHORING_BUCKET,
-      REACT_APP_AWS_S3_PRODUCTION_BUCKET:
-        process.env.REACT_APP_AWS_S3_PRODUCTION_BUCKET,
-      REACT_APP_SINGLE_ARTICLE_MODULE:
-        process.env.REACT_APP_SINGLE_ARTICLE_MODULE,
+      REACT_APP_AWS_S3_AUTHORING_BUCKET: process.env.REACT_APP_AWS_S3_AUTHORING_BUCKET,
+      REACT_APP_AWS_S3_PRODUCTION_BUCKET: process.env.REACT_APP_AWS_S3_PRODUCTION_BUCKET,
+      REACT_APP_SINGLE_ARTICLE_MODULE: process.env.REACT_APP_SINGLE_ARTICLE_MODULE,
       REACT_APP_CDP_MODULES_URL: process.env.REACT_APP_CDP_MODULES_URL,
       REACT_APP_GOOGLE_ANALYTICS_ID: process.env.REACT_APP_GOOGLE_ANALYTICS_ID
     },
     serverRuntimeConfig: {},
     poweredByHeader: false,
+    sass: true,
+    modules: true,
+    miniCssExtractOptions: {
+      ignoreOrder: true
+    },
     webpack( config ) {
-      config.plugins.push(
-        new FilterWarningsPlugin( {
-          exclude: /mini-css-extract-plugin[^]*Conflicting order between:/
-        } )
-      );
       config.module.rules.push( {
         test: /\.(png|svg|jpg|eot|otf|ttf|woff|woff2)$/,
         use: {
