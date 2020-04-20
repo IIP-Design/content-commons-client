@@ -17,6 +17,7 @@ const TableHeader = props => {
     handleSort,
     displayActionsMenu
   } = props;
+
   return (
     <Table.Header>
       <Table.Row>
