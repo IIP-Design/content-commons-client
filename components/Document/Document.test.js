@@ -1,4 +1,4 @@
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import Document from './Document';
 import documentItem from './documentMock';
 
@@ -9,32 +9,131 @@ jest.mock( 'next/config', () => () => ( {
   }
 } ) );
 
-const props = {
+// GraphQL API
+const previewProps = {
   isAdminPreview: true,
   displayAsModal: true,
-  item: {...documentItem}
+  item: { ...documentItem }
 };
+const PreviewComponent = <Document { ...previewProps } />;
+const previewWrapper = mount( PreviewComponent );
 
-const Component = <Document { ...props } />;
+// Elastic API
+const nonpreviewProps = {
+  isAdminPreview: false,
+  displayAsModal: true,
+  item: { ...documentItem }
+};
+const NonPreviewComponent = <Document { ...nonpreviewProps } />;
+const nonPreviewWrapper = mount( NonPreviewComponent );
 
 describe( 'Document', () => {
-  const wrapper = mount( Component );
-
-  it( 'renders without crashing', () => {    
-    expect( wrapper.exists() ).toEqual( true );
+  it( 'renders without crashing', () => {
+    expect( previewWrapper.exists() ).toEqual( true );
   } );
 
-  it( 'renders the correct headline', () => {
-    const headline = wrapper.find( '.modal_headline' );
-    expect( headline.text() ).toEqual( props.item.title );
-  } );
-
-  it( 'renders the preview Notification', () => {
-    const notification = wrapper.find( 'Notification' );
+  it( 'renders the preview Notification (GraphQL API)', () => {
+    const notification = previewWrapper.find( 'Notification' );
     const msg = 'This is a preview of your file on Content Commons.';
 
     expect( notification.exists() ).toEqual( true );
     expect( notification.prop( 'msg' ) ).toEqual( msg );
   } );
 
+  it( 'does not render the preview Notification w/ Elastic API', () => {
+    const notification = nonPreviewWrapper.find( 'Notification' );
+    expect( notification.exists() ).toEqual( false );
+  } );
+
+  it( 'renders the correct headline', () => {
+    const headline = previewWrapper.find( '.modal_headline' );
+    expect( headline.text() ).toEqual( previewProps.item.title );
+  } );
+
+  it( 'renders the Internal Use Only display', () => {
+    const internalUseDisplay = previewWrapper.find( 'InternalUseDisplay' );
+    expect( internalUseDisplay.length ).toEqual( 2 );
+
+    let isOneExpanded = false;
+    internalUseDisplay.forEach( node => {
+      if ( node.prop( 'expanded' ) === true ) {
+        isOneExpanded = true;
+      }
+    } );
+    expect( isOneExpanded ).toEqual( true );
+  } );
+
+  it( 'renders Share PopupTrigger (Preview)', () => {
+    const shareTrigger = previewWrapper.findWhere( n => n.name() === 'PopupTrigger' && n.prop( 'toolTip' ) === 'Share document' );
+    expect( shareTrigger.exists() ).toEqual( true );
+
+    const content = mount( shareTrigger.prop( 'content' ) );
+    expect( content.exists() ).toEqual( true );
+    expect( content.name() ).toEqual( 'Popup' );
+    expect( content.prop( 'title' ) ).toEqual( 'Copy the link to share internally.' );
+
+    const share = content.find( 'Share' );
+    expect( share.exists() ).toEqual( true );
+    expect( share.props() ).toEqual( {
+      id: previewProps.item.id,
+      isPreview: previewProps.isAdminPreview,
+      language: 'en-us',
+      link: 'The direct link to the package will appear here.',
+      site: previewProps.item.site,
+      title: previewProps.item.title,
+      type: 'document'
+    } );
+  } );
+
+  it( 'renders the Share PopupTrigger (Non-preview)', () => {
+    const shareTrigger = nonPreviewWrapper.findWhere( n => n.name() === 'PopupTrigger' && n.prop( 'toolTip' ) === 'Share document' );
+    expect( shareTrigger.exists() ).toEqual( true );
+
+    const content = mount( shareTrigger.prop( 'content' ) );
+    expect( content.exists() ).toEqual( true );
+    expect( content.name() ).toEqual( 'Popup' );
+    expect( content.prop( 'title' ) ).toEqual( 'Copy the link to share internally.' );
+
+    const share = content.find( 'Share' );
+    expect( share.exists() ).toEqual( true );
+    expect( share.props() ).toEqual( {
+      id: nonpreviewProps.item.id,
+      isPreview: nonpreviewProps.isAdminPreview,
+      language: 'en-us',
+      site: nonpreviewProps.item.site,
+      title: nonpreviewProps.item.title,
+      type: 'document'
+    } );
+
+    const directLink = share.find( 'ClipboardCopy' ).prop( 'copyItem' );
+    const documentLink = `http://${nonpreviewProps.item.site}/${nonpreviewProps.item.type}?id=${nonpreviewProps.item.id}&site=${nonpreviewProps.item.site}&language=en-us`;
+    expect( directLink ).toEqual( documentLink );
+  } );
+
+  it( 'renders the Download element (Preview)', () => {
+    const downloadBtn = previewWrapper.findWhere( n => n.name() === 'Button' && n.prop( 'tooltip' ) === 'Not For Public Distribution' );
+    expect( downloadBtn.exists() ).toEqual( true );
+
+    const downloadURL = downloadBtn.findWhere( n => n.prop( 'href' ) === nonpreviewProps.item.documentUrl );
+    expect( downloadURL.exists() ).toEqual( false );
+  } );
+
+  it( 'renders the Download element w/ url (Non-preview)', () => {
+    const downloadBtn = nonPreviewWrapper.findWhere( n => n.name() === 'Button' && n.prop( 'tooltip' ) === 'Not For Public Distribution' );
+    expect( downloadBtn.exists() ).toEqual( true );
+
+    const downloadURL = downloadBtn.findWhere( n => n.prop( 'href' ) === nonpreviewProps.item.documentUrl );
+    expect( downloadURL.exists() ).toEqual( true );
+  } );
+
+  it( 'renders the description (Preview)', () => {
+    const desc = previewWrapper.find( 'ReactMarkdown' );
+    expect( desc.prop( 'source' ) ).toEqual( previewProps.item.content.html );
+  } );
+
+  it( 'renders the description (Non-Preview)', () => {
+    const desc = nonPreviewWrapper.find( 'ModalDescription' );
+    const descSource = desc.find( 'ReactMarkdown' );
+    expect( descSource.prop( 'source' ) ).toEqual( nonpreviewProps.item.content.html );
+  } );
 } );
