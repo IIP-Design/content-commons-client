@@ -74,6 +74,8 @@ const updateProjectStatus = dashboardProjectsType => ( prev, {
 
 const TableBody = props => {
   const {
+    bodyPaginationVars,
+    column,
     direction,
     searchTerm,
     selectedItems,
@@ -97,13 +99,14 @@ const TableBody = props => {
   const {
     loading, error, data
   } = useQuery( graphQuery, {
-    variables: { ...variables },
+    variables: column === 'author' ? { ...variables } : { ...variables, ...bodyPaginationVars },
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network'
   } );
 
-  if ( loading ) return <TableBodyLoading />;
   if ( error ) return <TableBodyError error={ error } />;
+  // Checks for existing data so loading doesn't flash when resort columns
+  if ( loading && !data ) return <TableBodyLoading />;
 
   // Set dashboard projects data & ID's for status subscription
   const setDashboardProjectsData = () => {
@@ -114,24 +117,24 @@ const TableBody = props => {
 
     return projectsData || null;
   };
+
   const dashboardProjects = setDashboardProjectsData();
 
   if ( !dashboardProjects ) return null;
   if ( searchTerm && !dashboardProjects.length ) return <TableBodyNoResults searchTerm={ searchTerm } />;
   if ( !dashboardProjects.length ) return <TableBodyNoProjects />;
 
-  // Sort data by clicked column & direction
-  // Default sort by createdAt & DESC
+  const normalized = normalizeDashboardData( dashboardProjects );
+
+  // No option exisiting in schema to order by author
+  // When author column is clicked, a query is sent to the server without pagination variables
+  // This results in an overfetch that has to be filtered on the the client side
   const order = direction ? `${direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
 
-  const tableData = orderBy(
-    normalizeDashboardData( dashboardProjects ),
+  const authorSorting = orderBy(
+    normalized,
     tableDatum => {
-      let { column } = props;
-
-      if ( !column ) column = 'createdAt';
-      // Format table data for case insensitive sorting
-      const formattedTableDatum = tableDatum[column].toString().toLowerCase();
+      const formattedTableDatum = tableDatum.author;
 
       return formattedTableDatum;
     },
@@ -139,12 +142,14 @@ const TableBody = props => {
   );
 
   // skip & first query vars are used as start/end slice() params to paginate tableData on client
-  const { skip, first } = variables;
-  const paginatedTableData = tableData.slice( skip, skip + first );
+  const { skip, first } = bodyPaginationVars;
+  const paginatedAuthorSorting = authorSorting.slice( skip, skip + first );
+
+  const tableData = column === 'author' ? paginatedAuthorSorting : normalized;
 
   return (
     <Table.Body className="projects">
-      { paginatedTableData.map( d => (
+      { tableData.map( d => (
         <TableRow
           key={ d.id }
           d={ d }
@@ -160,6 +165,7 @@ const TableBody = props => {
 };
 
 TableBody.propTypes = {
+  bodyPaginationVars: PropTypes.object,
   column: PropTypes.string,
   searchTerm: PropTypes.string,
   selectedItems: PropTypes.object,

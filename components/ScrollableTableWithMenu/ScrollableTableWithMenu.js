@@ -24,12 +24,13 @@ class ScrollableTableWithMenu extends React.Component {
     selectedItems: new Map(),
     hasSelectedAllItems: false, // eslint-disable-line
     displayActionsMenu: false,
-    column: null,
-    direction: null,
+    column: 'createdAt',
+    direction: 'descending',
     windowWidth: null,
     searchTerm: '',
     activePage: 1,
     itemsPerPage: 15,
+    orderBy: 'createdAt_DESC',
     skip: 0
   };
 
@@ -42,7 +43,9 @@ class ScrollableTableWithMenu extends React.Component {
   }
 
   componentDidUpdate = ( _, prevState ) => {
-    if ( prevState.itemsPerPage !== this.state.itemsPerPage ) {
+    const { itemsPerPage } = this.state;
+
+    if ( prevState.itemsPerPage !== itemsPerPage ) {
       this.handleResetActivePage();
     }
   }
@@ -59,6 +62,7 @@ class ScrollableTableWithMenu extends React.Component {
     this.setState( prevState => {
       const { itemsPerPage } = prevState;
       const skip = ( activePage - 1 ) * itemsPerPage;
+
       return {
         selectedItems: new Map(),
         displayActionsMenu: false,
@@ -97,10 +101,17 @@ class ScrollableTableWithMenu extends React.Component {
 
     // Pass column, direction to TableBody so re-rendered on TableHeader click
     // Reset to first page of results after sort
-    this.setState( prevState => ( {
-      column: prevState.column !== clickedColumn ? clickedColumn : prevState.column,
-      direction: prevState.direction === 'ascending' ? 'descending' : 'ascending'
-    } ), this.handleResetActivePage );
+    this.setState( prevState => {
+      const column = prevState.column !== clickedColumn ? clickedColumn : prevState.column;
+      const direction = prevState.direction === 'ascending' ? 'descending' : 'ascending';
+      const orderBy = `${column}_${direction === 'ascending' ? 'ASC' : 'DESC'}`;
+
+      return {
+        column,
+        direction,
+        orderBy
+      };
+    }, this.handleResetActivePage );
   };
 
   tableMenuOnChange = e => {
@@ -109,12 +120,14 @@ class ScrollableTableWithMenu extends React.Component {
       name: e.target.parentNode.dataset.propname,
       label: e.target.parentNode.dataset.proplabel
     };
+
     this.setState( prevState => {
       if ( prevState.tableHeaders.map( h => h.name ).includes( menuItem.name ) ) {
         return {
           tableHeaders: prevState.tableHeaders.filter( h => h.name !== menuItem.name )
         };
       }
+
       return { tableHeaders: [...prevState.tableHeaders, menuItem] };
     } );
   };
@@ -122,19 +135,22 @@ class ScrollableTableWithMenu extends React.Component {
   tableMenuSelectionsOnResize = debounce( () => {
     const { persistentTableHeaders, columnMenu } = this.props;
     const windowWidth = window.innerWidth;
-    const prevWindowWidth = this.state.windowWidth;
+    const { windowWidth: prevWindowWidth } = this.state;
+
     if ( prevWindowWidth !== '' && prevWindowWidth <= this._breakpoint && !isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
       return this.setState( { tableHeaders: persistentTableHeaders, windowWidth } );
     }
     if ( isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
       return this.setState( { tableHeaders: [...persistentTableHeaders, ...columnMenu], windowWidth } );
     }
+
     return this.setState( { windowWidth } );
   }, this.TIMEOUT_DELAY, { leading: false, trailing: true } )
 
   tableMenuSelectionsOnMobile = () => {
     if ( isMobile() ) {
       const { columnMenu } = this.props;
+
       this.setState( prevState => ( {
         tableHeaders: [...prevState.tableHeaders, ...columnMenu]
       } ) );
@@ -154,19 +170,21 @@ class ScrollableTableWithMenu extends React.Component {
         newSelectedItems.set( item, !prevState.hasSelectedAllItems );
       } );
 
-      return ( {
+      return {
         selectedItems: newSelectedItems,
         hasSelectedAllItems: !prevState.hasSelectedAllItems,
         displayActionsMenu: !prevState.hasSelectedAllItems
-      } );
+      };
     } );
   }
 
   toggleItemSelection = ( e, data ) => {
     const isChecked = data.checked;
+
     this.setState( prevState => {
       const updatedSelectedItems = prevState.selectedItems.set( String( data['data-label'] ), isChecked );
       const areOtherItemsSelected = Array.from( updatedSelectedItems.values() ).includes( true );
+
       return {
         selectedItems: updatedSelectedItems,
         displayActionsMenu: areOtherItemsSelected
@@ -185,13 +203,15 @@ class ScrollableTableWithMenu extends React.Component {
       activePage,
       itemsPerPage,
       skip,
+      orderBy,
       windowWidth
     } = this.state;
 
-    const { columnMenu, team } = this.props;
+    const { columnMenu, projectTab, team } = this.props;
 
     const variables = { team: team.name, searchTerm };
 
+    const bodyPaginationVars = { first: itemsPerPage, orderBy, skip };
     const paginationVars = { first: itemsPerPage, skip };
 
     return (
@@ -242,11 +262,12 @@ class ScrollableTableWithMenu extends React.Component {
                   tableHeaders={ tableHeaders }
                   toggleItemSelection={ this.toggleItemSelection }
                   team={ team }
-                  variables={ { ...variables, ...paginationVars } }
+                  bodyPaginationVars={ { ...bodyPaginationVars } }
+                  variables={ { ...variables } }
                   windowWidth={ windowWidth }
                   column={ column }
                   direction={ direction }
-                  projectTab={ this.props.projectTab }
+                  projectTab={ projectTab }
                 />
               </Table>
             </div>
