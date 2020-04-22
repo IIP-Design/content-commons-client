@@ -44,6 +44,7 @@ const Packages = props => {
             </Grid.Column>
           ) ) }
         </Grid>
+        <p className="latestPackages_guidance_link">For press guidance and releases from before 04/27/2020, please visit the <a href="https://pressguidance2.state.gov/">archived press guidance database</a>.</p>
       </div>
     </section>
   );
