@@ -52,7 +52,7 @@ const Footer = () => {
         </p>
       </div>
       <Container text className="footer-content">
-        <Header as="h1">
+        <Header as="div">
           <Header.Subheader className="subtitle">
             Join the conversation on{ ' ' }
             <img src={ slackLogo } alt="Slack" className="footer_img footer_img--slack" />{ ' ' }
@@ -73,7 +73,7 @@ const Footer = () => {
             </List.Item>
           ) ) }
         </List>
-        <Header as="h1">
+        <Header as="div">
           <Header.Subheader className="subtext">
             Can&apos;t find what you are looking for? To ask questions or provide feedback send us
             an email at <a href="mailto:design@america.gov">design@america.gov</a>.
