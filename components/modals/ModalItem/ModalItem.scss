@@ -51,14 +51,10 @@
   }
 
   &_section {
-    
-    &:not(.modal_section--postTags) {
-      margin-top: 1em;
-    }
 
-    &--metaContent {
+    &:not(.modal_section--postTags):not(.modal_section--metaContent) {
       margin-top: 1em;
-    }
+    }    
 
     & figure {
       max-width: 100%;
