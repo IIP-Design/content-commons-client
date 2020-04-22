@@ -5,7 +5,7 @@ import { MockedProvider } from '@apollo/react-testing';
 import { Loader, Table } from 'semantic-ui-react';
 import { TEAM_VIDEO_PROJECTS_QUERY } from 'lib/graphql/queries/video';
 import { TEAM_PACKAGES_QUERY } from 'lib/graphql/queries/package';
-import TableBody, { updateProjectStatus } from './TableBody';
+import TableBody from './TableBody';
 import { videoProjects, mocks } from './mocks';
 
 /**
@@ -28,6 +28,10 @@ const props = {
     { name: 'team', label: 'TEAM' }
   ],
   toggleItemSelection: jest.fn(),
+  bodyPaginationVars: {
+    first: 4,
+    skip: 0
+  },
   variables: {
     team: 'GPA Video',
     searchTerm: '',
@@ -38,7 +42,7 @@ const props = {
   projectTab: 'teamProjects',
   team: {
     contentTypes: [
-      'VIDEO',
+      'VIDEO'
       // 'PACKAGE'
     ]
   }
@@ -59,8 +63,10 @@ describe( '<TableBody />', () => {
    * @see https://github.com/facebook/react/issues/14769
    */
   const consoleError = console.error;
+
   beforeAll( () => {
     const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+
     jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
       if ( !args[0].includes( actMsg ) ) {
         consoleError( ...args );
@@ -83,7 +89,7 @@ describe( '<TableBody />', () => {
     expect( tableBody.contains( 'Loading...' ) ).toEqual( true );
   } );
 
-  it( 'renders error message if an error is returned', async () => {
+  it( 'renders error message if an error is returned', async() => {
     const errorMocks = [
       {
         request: {
@@ -125,7 +131,7 @@ describe( '<TableBody />', () => {
       .toEqual( true );
   } );
 
-  it( 'renders null if videoProjects or packages are null', async () => {
+  it( 'renders null if videoProjects or packages are null', async() => {
     const nullMocks = [
       {
         request: {
@@ -164,7 +170,7 @@ describe( '<TableBody />', () => {
     expect( tableBody.html() ).toEqual( null );
   } );
 
-  it( 'renders a "No projects" message if there are no video or package projects', async () => {
+  it( 'renders a "No projects" message if there are no video or package projects', async() => {
     const emptyMocks = [
       {
         request: {
@@ -203,7 +209,7 @@ describe( '<TableBody />', () => {
     expect( tableBody.contains( 'No projects' ) ).toEqual( true );
   } );
 
-  it( 'renders a "No results" message if there are no search results', async () => {
+  it( 'renders a "No results" message if there are no search results', async() => {
     const newSearchTerm = 'new term';
 
     const newProps = {
@@ -253,14 +259,16 @@ describe( '<TableBody />', () => {
     const tableBody = wrapper.find( TableBody );
     const noResultsMsg = (
       <Table.Cell>
-        No results for &ldquo;{ newProps.searchTerm }&rdquo;
+        No results for &ldquo;
+        { newProps.searchTerm }
+        &rdquo;
       </Table.Cell>
     );
 
     expect( tableBody.contains( noResultsMsg ) ).toEqual( true );
   } );
 
-  it( 'renders the correct table row(s)', async () => {
+  it( 'renders the correct table row(s)', async() => {
     const wrapper = mount( Component );
 
     /**
@@ -308,32 +316,4 @@ describe( '<TableBody />', () => {
   //   wrapper.update();
   //   expect( spy ).toHaveBeenCalled();
   // } );
-
-
-  describe( 'updateProjectStatus', () => {
-    const projectsType = 'videoProjects';
-
-    it( 'updates the correct project', () => {
-      const subscriptionData = { ...mocks[1].result };
-      const result = updateProjectStatus( projectsType )( { videoProjects }, { subscriptionData } );
-      expect( videoProjects[0].status ).toEqual( 'PUBLISHED' );
-      expect( result.videoProjects[0].status ).toEqual( 'DRAFT' );
-      expect( videoProjects[0].id ).toEqual( result.videoProjects[0].id );
-    } );
-
-    it( 'does not update anything for null data', () => {
-      const subscriptionData = { data: { projectStatusChange: null } };
-      const prev = { videoProjects };
-      const result = updateProjectStatus( projectsType )( prev, { subscriptionData } );
-      expect( result ).toEqual( prev );
-    } );
-
-    it( 'does not update anything for a non existent project ID', () => {
-      const subscriptionData = { ...mocks[1].result };
-      subscriptionData.data.projectStatusChange.id = 'xxxx';
-      const prev = { videoProjects };
-      const result = updateProjectStatus( projectsType )( prev, { subscriptionData } );
-      expect( result ).toEqual( prev );
-    } );
-  } );
 } );

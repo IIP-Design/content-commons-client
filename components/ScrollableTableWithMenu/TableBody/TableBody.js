@@ -50,28 +50,6 @@ const normalizeDashboardData = types => {
   return normalizedProjects;
 };
 
-const updateProjectStatus = dashboardProjectsType => ( prev, {
-  subscriptionData: { data: { projectStatusChange } }
-} ) => {
-  if ( !projectStatusChange ) {
-    return prev;
-  }
-  const projectIndex = prev[dashboardProjectsType].findIndex( p => p.id === projectStatusChange.id );
-
-  if ( projectIndex === -1 ) {
-    return prev;
-  }
-
-  // Using immutability helper in order to ensure that React will rerender after the status change
-  return update( prev, {
-    [dashboardProjectsType]: {
-      [projectIndex]: {
-        status: { $set: projectStatusChange.status }
-      }
-    }
-  } );
-};
-
 const TableBody = props => {
   const {
     bodyPaginationVars,
@@ -179,4 +157,3 @@ TableBody.propTypes = {
 
 export default TableBody;
 
-export { updateProjectStatus };
