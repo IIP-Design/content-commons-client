@@ -19,5 +19,6 @@ export default {
   EMAIL: 'design@america.gov',
   ERROR_MESSAGE: 'Oops! Something went wrong. If this issue persists, please email the IIP Office of Design',
   TIME_TO_STALE: 300000, // 5 minutes in milliseconds
-  FEEDBACK_FORM_URL: 'https://goo.gl/forms/9cJ3IBHH9QTld2Mj2'
+  FEEDBACK_FORM_URL: 'https://goo.gl/forms/9cJ3IBHH9QTld2Mj2',
+  PRESS_GUIDANCE_DB_URL: 'https://pressguidance2.state.gov/'
 };

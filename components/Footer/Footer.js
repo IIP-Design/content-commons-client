@@ -1,7 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { Container, Header, List } from 'semantic-ui-react';
+
 import config from 'config';
+import { useAuth } from 'context/authContext';
+
 import slackLogo from 'static/images/logo_slack.png';
 import flagImage from 'static/images/flag.jpg';
 import DosSeal from 'static/images/dos_seal.svg';
@@ -9,17 +12,9 @@ import DosSeal from 'static/images/dos_seal.svg';
 import './Footer.scss';
 
 const Footer = () => {
+  const { user } = useAuth();
+
   const menuItems = [
-    {
-      name: 'home',
-      to: '/',
-      label: 'Content Commons'
-    },
-    // {
-    //   name: 'developer',
-    //   to: '#',
-    //   label: 'Developer Tools'
-    // },
     {
       name: 'privacy',
       to: '/privacy',
@@ -35,16 +30,6 @@ const Footer = () => {
       to: '/documentation',
       label: 'Documentation'
     }
-    // {
-    //   name: 'tos',
-    //   to: 'tos',
-    //   label: 'Terms of Service'
-    // },
-    // {
-    //   name: 'sitemap',
-    //   to: 'sitemap',
-    //   label: 'Sitemap'
-    // }
   ];
   return (
     <footer className="ui">
@@ -67,7 +52,7 @@ const Footer = () => {
         </p>
       </div>
       <Container text className="footer-content">
-        <Header as="h1">
+        <Header as="div">
           <Header.Subheader className="subtitle">
             Join the conversation on{ ' ' }
             <img src={ slackLogo } alt="Slack" className="footer_img footer_img--slack" />{ ' ' }
@@ -75,6 +60,11 @@ const Footer = () => {
           </Header.Subheader>
         </Header>
         <List horizontal divided className="footer-nav">
+          { user && (
+            <List.Item>
+              <a className="footer_link" href={ config.PRESS_GUIDANCE_DB_URL } rel="noopener noreferrer" target="_blank">Archived Press Guidance</a>
+            </List.Item>
+          ) }
           { menuItems.map( item => (
             <List.Item key={ item.name }>
               <Link href={ item.to }>
@@ -83,7 +73,7 @@ const Footer = () => {
             </List.Item>
           ) ) }
         </List>
-        <Header as="h1">
+        <Header as="div">
           <Header.Subheader className="subtext">
             Can&apos;t find what you are looking for? To ask questions or provide feedback send us
             an email at <a href="mailto:design@america.gov">design@america.gov</a>.
