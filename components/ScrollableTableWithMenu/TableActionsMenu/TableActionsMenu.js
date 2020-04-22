@@ -22,10 +22,12 @@ const CONFIRMATION_MSG_DELAY = 3000;
 
 const getDraftProjects = projects => {
   if ( !projects ) return [];
+
   return projects.reduce( ( acc, curr ) => {
     if ( curr.status === 'DRAFT' ) {
       return [...acc, curr.id];
     }
+
     return [...acc];
   }, [] );
 };
@@ -69,8 +71,10 @@ const TableActionsMenu = props => {
   const [actionFailures, setActionFailures] = useState( [] );
 
   const [isMounted, setIsMounted] = useState( false );
+
   useEffect( () => {
     setIsMounted( true );
+
     return () => setIsMounted( false );
   }, [isMounted] );
 
@@ -113,6 +117,7 @@ const TableActionsMenu = props => {
 
   const handleActionCompleted = () => {
     const { variables } = props;
+
     dashboardProjectsRefetch( { ...variables } );
     dashboardProjectsCountRefetch( {
       team: variables.team,
@@ -123,31 +128,40 @@ const TableActionsMenu = props => {
 
   const transformSelectedItemsMap = () => {
     const { selectedItems } = props;
+
     if ( selectedItems.size === 0 ) return [];
     const arr = [];
+
     selectedItems.forEach( ( value, key ) => arr.push( { id: key, value } ) );
+
     return arr;
   };
 
   const getSelectedProjectsIds = () => {
     const projectsArr = transformSelectedItemsMap();
+
     if ( projectsArr && projectsArr.length ) {
       return projectsArr.reduce( ( acc, curr ) => {
         if ( curr.value ) {
           return [...acc, curr.id];
         }
+
         return [...acc];
       }, [] );
     }
+
     return [];
   };
 
   const getSelectedProjects = projects => {
     const projectIds = getSelectedProjectsIds();
+
     if ( projects && projects.length ) {
       const selections = projectIds.map( s => projects.find( p => s === p.id ) );
+
       return selections;
     }
+
     return [];
   };
 
@@ -158,6 +172,7 @@ const TableActionsMenu = props => {
     if ( selections.length > 0 ) {
       return selections.every( id => draftProjects.includes( id ) );
     }
+
     return false;
   };
 
@@ -168,6 +183,7 @@ const TableActionsMenu = props => {
 
   const getProjectsOnPage = projects => {
     const { first, skip } = props.variables;
+
     return projects && projects.slice( skip, skip + first );
   };
 

@@ -80,7 +80,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.7.5",
     "@babel/traverse": "^7.7.2",
     "@babel/types": "^7.7.2",
-    "@gpa-lab/eslint-config": "^1.1.0",
+    "@gpa-lab/eslint-config": "^1.1.2",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^25.3.0",
     "babel-plugin-graphql-tag": "^2.5.0",

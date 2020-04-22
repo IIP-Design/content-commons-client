@@ -18,10 +18,11 @@ import './TableBody.scss';
 const normalizeTypesData = type => {
   const thumbnail = () => {
     if ( !type.thumbnails ) return {};
-    return ( {
+
+    return {
       signedUrl: type.thumbnails && type.thumbnails.length ? type.thumbnails[0].signedUrl : '',
       alt: type.thumbnails && type.thumbnails.length ? type.thumbnails[0].alt : ''
-    } );
+    };
   };
 
   const normalizedTypeData = Object.create( {}, {
@@ -37,29 +38,45 @@ const normalizeTypesData = type => {
     thumbnail: { value: thumbnail() },
     categories: { value: getLangTaxonomies( type.categories ) }
   } );
+
   return normalizedTypeData;
 };
 
 const normalizeDashboardData = types => {
   const normalizedProjects = [];
+
   types.forEach( type => normalizedProjects.push( normalizeTypesData( type ) ) );
+
   return normalizedProjects;
 };
 
-const updateProjectStatus = dashboardProjectsType => ( prev, { subscriptionData: { data: { projectStatusChange } } } ) => {
+const updateProjectStatus = dashboardProjectsType => ( prev, {
+  subscriptionData: { data: { projectStatusChange } }
+} ) => {
   if ( !projectStatusChange ) {
     return prev;
   }
   const projectIndex = prev[dashboardProjectsType].findIndex( p => p.id === projectStatusChange.id );
+
   if ( projectIndex === -1 ) {
     return prev;
   }
+
   // Using immutability helper in order to ensure that React will rerender after the status change
-  return update( prev, { [dashboardProjectsType]: { [projectIndex]: { status: { $set: projectStatusChange.status } } } } );
+  return update( prev, {
+    [dashboardProjectsType]: {
+      [projectIndex]: {
+        status: { $set: projectStatusChange.status }
+      }
+    }
+  } );
 };
 
 const TableBody = props => {
   const {
+    bodyPaginationVars,
+    column,
+    direction,
     searchTerm,
     selectedItems,
     tableHeaders,
@@ -80,52 +97,59 @@ const TableBody = props => {
 
   // Run Query
   const {
-    loading, error, data,
+    loading, error, data
   } = useQuery( graphQuery, {
-    variables: { ...variables },
+    variables: column === 'author' ? { ...variables } : { ...variables, ...bodyPaginationVars },
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network'
   } );
 
-  if ( loading ) return <TableBodyLoading />;
   if ( error ) return <TableBodyError error={ error } />;
+  // Checks for existing data so loading doesn't flash when resort columns
+  if ( loading && !data ) return <TableBodyLoading />;
 
   // Set dashboard projects data & ID's for status subscription
   const setDashboardProjectsData = () => {
     let projectsData;
+
     if ( dashboardProjectsType === 'videoProjects' ) projectsData = data.videoProjects;
     if ( dashboardProjectsType === 'packages' ) projectsData = data.packages;
+
     return projectsData || null;
   };
+
   const dashboardProjects = setDashboardProjectsData();
 
   if ( !dashboardProjects ) return null;
   if ( searchTerm && !dashboardProjects.length ) return <TableBodyNoResults searchTerm={ searchTerm } />;
   if ( !dashboardProjects.length ) return <TableBodyNoProjects />;
 
-  // Sort data by clicked column & direction
-  // Default sort by createdAt & DESC
-  const direction = props.direction ? `${props.direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
+  const normalized = normalizeDashboardData( dashboardProjects );
 
-  const tableData = orderBy(
-    normalizeDashboardData( dashboardProjects ),
+  // No option exisiting in schema to order by author
+  // When author column is clicked, a query is sent to the server without pagination variables
+  // This results in an overfetch that has to be filtered on the the client side
+  const order = direction ? `${direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
+
+  const authorSorting = orderBy(
+    normalized,
     tableDatum => {
-      let { column } = props;
-      if ( !column ) column = 'createdAt';
-      // Format table data for case insensitive sorting
-      const formattedTableDatum = tableDatum[column].toString().toLowerCase();
+      const formattedTableDatum = tableDatum.author;
+
       return formattedTableDatum;
     },
-    [direction]
+    [order]
   );
 
   // skip & first query vars are used as start/end slice() params to paginate tableData on client
-  const { skip, first } = variables;
-  const paginatedTableData = tableData.slice( skip, skip + first );
+  const { skip, first } = bodyPaginationVars;
+  const paginatedAuthorSorting = authorSorting.slice( skip, skip + first );
+
+  const tableData = column === 'author' ? paginatedAuthorSorting : normalized;
 
   return (
     <Table.Body className="projects">
-      { paginatedTableData.map( d => (
+      { tableData.map( d => (
         <TableRow
           key={ d.id }
           d={ d }
@@ -141,6 +165,7 @@ const TableBody = props => {
 };
 
 TableBody.propTypes = {
+  bodyPaginationVars: PropTypes.object,
   column: PropTypes.string,
   searchTerm: PropTypes.string,
   selectedItems: PropTypes.object,
@@ -149,7 +174,7 @@ TableBody.propTypes = {
   variables: PropTypes.object,
   direction: PropTypes.string,
   projectTab: PropTypes.string,
-  team: PropTypes.object,
+  team: PropTypes.object
 };
 
 export default TableBody;
