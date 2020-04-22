@@ -61,7 +61,7 @@ const Footer = () => {
         </Header>
         <List horizontal divided className="footer-nav">
           { user && (
-            <List.Item key="pressguidance">
+            <List.Item>
               <a className="footer_link" href={ config.PRESS_GUIDANCE_DB_URL }>Archived Press Guidance</a>
             </List.Item>
           ) }
