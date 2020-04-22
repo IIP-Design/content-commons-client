@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Grid, Message } from 'semantic-ui-react';
+
+import config from 'config';
 import PackageCard from 'components/Package/PackageCard/PackageCard';
+
 import './Packages.scss';
 
 const renderError = () => (
@@ -44,6 +47,7 @@ const Packages = props => {
             </Grid.Column>
           ) ) }
         </Grid>
+        <p className="latestPackages_guidance_link">For press guidance and releases from before 04/27/2020, please visit the <a href={ config.PRESS_GUIDANCE_DB_URL } rel="noopener noreferrer" target="_blank">archived press guidance database</a>.</p>
       </div>
     </section>
   );
