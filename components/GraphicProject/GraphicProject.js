@@ -9,7 +9,9 @@ import shareIcon from 'static/icons/icon_share.svg';
 
 import Notification from 'components/Notification/Notification';
 import Share from 'components/Share/Share';
-import DownloadHelp from './DownloadHelp';
+
+import DownloadHelp from './Download/DownloadHelp';
+import DownloadItem from './Download/DownloadItem';
 
 import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from '../popups/PopupTabbed';
@@ -85,30 +87,33 @@ const GraphicProject = props => {
 
   const {
     title,
-    language: graphicLanguage,
+    language: selectedUnitLanguage,
     srcUrl,
     alt
   } = selectedUnit;
 
   useEffect( () => {
     if ( !displayAsModal ) {
-      updateUrl( `/graphic?id=${id}&site=${site}&language=${graphicLanguage.locale}` );
+      updateUrl( `/graphic?id=${id}&site=${site}&language=${selectedUnitLanguage.locale}` );
     }
   }, [selectedUnit] );
+
+  // Get all images (Twitter, Facebook) associated with selected unit language for DownloadItem component
+  const selectedUnitImages = images.filter( img => img.language.display_name === selectedUnitLanguage.display_name );
 
   const DownloadElement = isAdminPreview ? 'span' : 'a';
 
   return (
     <ModalItem
       headline={ title }
-      textDirection={ graphicLanguage.text_direction }
-      lang={ graphicLanguage.language_code }
+      textDirection={ selectedUnitLanguage.text_direction }
+      lang={ selectedUnitLanguage.language_code }
     >
       <div className="modal_options">
         <div className="modal_options_left">
           <ModalLangDropdown
             item={ item }
-            selected={ graphicLanguage.display_name }
+            selected={ selectedUnitLanguage.display_name }
             handleLanguageChange={ handleLanguageChange }
           />
         </div>
@@ -123,7 +128,7 @@ const GraphicProject = props => {
                   id={ id }
                   site={ site }
                   title={ title }
-                  language={ graphicLanguage.locale }
+                  language={ selectedUnitLanguage.locale }
                   type={ type }
                 />
               </Popup>
@@ -140,7 +145,12 @@ const GraphicProject = props => {
                 panes={ [
                   {
                     title: 'Graphic Files',
-                    component: <p>Graphic Files</p>
+                    component: (
+                      <DownloadItem
+                        items={ selectedUnitImages }
+                        instructions={ `Download the graphic files in ${selectedUnitLanguage.display_name}. This download option is best for uploading this graphic to web pages and social media.` }
+                      />
+                    )
                   },
                   {
                     title: 'Editable Files',

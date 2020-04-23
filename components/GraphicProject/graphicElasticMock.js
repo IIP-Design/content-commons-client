@@ -16,9 +16,9 @@ export const graphicElasticMock = [
         {
           title: 'Mon titre graphique',
           visibility: 'PUBLIC',
-          srcUrl: 'https: //cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_ARABIC_Output.png',
+          srcUrl: 'https: //cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_FRENCH_Twitter_Output.png',
           language: {
-            language_code: 'en',
+            language_code: 'fr',
             text_direction: 'ltr',
             locale: 'fr-fr',
             display_name: 'French',
@@ -30,6 +30,25 @@ export const graphicElasticMock = [
           width: 800,
           height: 600,
           social: 'Twitter',
+          style: 'Quote'
+        },
+        {
+          title: 'Mon titre graphique FACEBOOK',
+          visibility: 'PUBLIC',
+          srcUrl: 'https: //cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_FRENCH_Facebook_Output.png',
+          language: {
+            language_code: 'fr',
+            text_direction: 'ltr',
+            locale: 'fr-fr',
+            display_name: 'French',
+            native_name: 'French'
+          },
+          name: 'locale.jpg',
+          alt: 'Texte alternatif français',
+          filesize: '600 MB',
+          width: 800,
+          height: 600,
+          social: 'Facebook',
           style: 'Quote'
         },
         {
