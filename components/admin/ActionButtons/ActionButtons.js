@@ -62,6 +62,17 @@ const ActionButtons = props => {
         />
       ) }
 
+      { /* will need to complete/fix later */ }
+      { show.preview && (
+        <Button
+          className="action-btn btn--preview"
+          content="Preview"
+          primary
+          onClick={ () => { console.log( 'preview' ) } }
+          disabled={ disabled.preview }
+        />
+      ) }
+
       { show.publishChanges && (
         <Button
           className={ `action-btn btn--publish-changes ${loading.publishChanges ? 'loading' : ''}` }

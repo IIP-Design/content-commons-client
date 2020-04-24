@@ -1,6 +1,12 @@
 import { mount } from 'enzyme';
 import ActionButtons from './ActionButtons';
 
+jest.mock( 'next/config', () => () => ( {
+  publicRuntimeConfig: {
+    REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url'
+  }
+} ) );
+
 const props = {
   type: 'package',
   deleteConfirmOpen: false,
@@ -8,20 +14,33 @@ const props = {
   disabled: {
     delete: false,
     save: false,
+    preview: false,
     publish: false,
+    publishChanges: false,
+    unpublish: false,
     review: false
   },
   handle: {
     deleteConfirm: jest.fn(),
     save: jest.fn(),
     publish: jest.fn(),
+    publishChanges: jest.fn(),
+    unpublish: jest.fn(),
     review: jest.fn()
   },
   show: {
     delete: true,
     save: true,
+    preview: true,
     publish: true,
+    publishChanges: true,
+    unpublish: true,
     review: true
+  },
+  loading: {
+    publish: false,
+    publishChanges: false,
+    unpublish: false
   }
 };
 
@@ -34,6 +53,7 @@ describe( '<ActionButtons />, if not disabled', () => {
 
   it( 'renders without crashing', () => {
     const wrapper = mount( Component );
+
     expect( wrapper.exists() ).toEqual( true );
   } );
 
@@ -41,14 +61,18 @@ describe( '<ActionButtons />, if not disabled', () => {
     const wrapper = mount( Component );
     const btns = wrapper.find( 'Button' );
     const btnTxt = [
-      'Delete All',
+      'Delete Package',
       'Save & Exit',
+      'Preview',
+      'Publish Changes',
       'Publish',
+      'Unpublish',
       'Final Review'
     ];
 
     btns.forEach( ( btn, i ) => {
       const txt = btnTxt[i];
+
       expect( btn.text() ).toEqual( txt );
       expect( btn.prop( 'disabled' ) ).toEqual( false );
     } );
@@ -58,7 +82,7 @@ describe( '<ActionButtons />, if not disabled', () => {
     const wrapper = mount( Component );
 
     const btns = wrapper.find( 'Button' );
-    const deleteBtn = getBtn( 'Delete All', btns );
+    const deleteBtn = getBtn( 'Delete Package', btns );
     const { className } = deleteBtn.props();
 
     expect( className.includes( 'action-btn btn--delete' ) ).toEqual( true );
@@ -68,7 +92,7 @@ describe( '<ActionButtons />, if not disabled', () => {
     const wrapper = mount( Component );
 
     const btns = wrapper.find( 'Button' );
-    const deleteBtn = getBtn( 'Delete All', btns );
+    const deleteBtn = getBtn( 'Delete Package', btns );
 
     deleteBtn.simulate( 'click' );
     expect( props.setDeleteConfirmOpen ).toHaveBeenCalledWith( true );
@@ -175,7 +199,10 @@ describe( '<ActionButtons />, if disabled', () => {
     disabled: {
       delete: true,
       save: true,
+      preview: true,
       publish: true,
+      publishChanges: true,
+      unpublish: true,
       review: true
     }
   };
@@ -183,6 +210,7 @@ describe( '<ActionButtons />, if disabled', () => {
 
   it( 'renders without crashing', () => {
     const wrapper = mount( Component );
+
     expect( wrapper.exists() ).toEqual( true );
   } );
 
@@ -190,14 +218,18 @@ describe( '<ActionButtons />, if disabled', () => {
     const wrapper = mount( Component );
     const btns = wrapper.find( 'Button' );
     const btnTxt = [
-      'Delete All',
+      'Delete Package',
       'Save & Exit',
+      'Preview',
+      'Publish Changes',
       'Publish',
+      'Unpublish',
       'Final Review'
     ];
 
     btns.forEach( ( btn, i ) => {
       const txt = btnTxt[i];
+
       expect( btn.text() ).toEqual( txt );
       expect( btn.prop( 'disabled' ) ).toEqual( true );
     } );
