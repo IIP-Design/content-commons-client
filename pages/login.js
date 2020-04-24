@@ -35,6 +35,7 @@ const LoginPage = ( { redirect  } ) => {
   } else {
     // login with CloudFlare
     login();
+    return null;
   }
 };
 
