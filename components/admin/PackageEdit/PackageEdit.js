@@ -204,8 +204,8 @@ const PackageEdit = props => {
             disabled={ {
               delete: deletePackageEnabled(),
               save: !packageId || !isFormValid,
-              publishChanges: !packageId || !pkg.documents.length,
-              publish: !packageId || !pkg.documents.length
+              publishChanges: !packageId || !pkg?.documents?.length,
+              publish: !packageId || !pkg?.documents?.length
             } }
             handle={ {
               deleteConfirm: handleDeleteConfirm,
@@ -217,7 +217,7 @@ const PackageEdit = props => {
             show={ {
               delete: true, // package has been completed, show delete in the event user wants to delete instead of uploading files
               save: hasInitialUploadCompleted,
-              publish: hasInitialUploadCompleted && pkg.status === 'DRAFT',
+              publish: hasInitialUploadCompleted && pkg?.status === 'DRAFT',
               publishChanges: pkg?.publishedAt && isDirty,
               unpublish: pkg?.status === 'PUBLISHED'
             } }

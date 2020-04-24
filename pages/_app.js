@@ -3,7 +3,7 @@ import App from 'next/app';
 import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
 import { AuthProvider, canAccessPage } from 'context/authContext';
-import { redirectTo } from 'lib/browser';
+import { redirectTo, parseObjectToQueryParams } from 'lib/browser';
 import withRedux from 'next-redux-wrapper';
 import isEmpty from 'lodash/isEmpty';
 import withApollo from 'hocs/withApollo';
@@ -15,9 +15,14 @@ class Commons extends App {
   static async getInitialProps( { Component, ctx } ) {
     let pageProps = {};
 
-    // if user does not have appropriatepage permissions redirect
+    // if user does not have appropriate page permissions redirect 
     if ( !( await canAccessPage( ctx ) ) ) {
-      redirectTo( '/login', { res: ctx.res } );
+      // only redirect if we are going to login
+      if ( ctx.pathname !== '/login' ) {  
+        // add redirect url as a query param
+        // cannot use client side storage or libraries as this is executing on the server 
+        redirectTo( `/login?return=${ctx.asPath}`, ctx );
+      }
     }
 
     if ( Component.getInitialProps ) {

@@ -60,7 +60,7 @@ const ProjectPage = props => {
 
 // Executes before page renders
 ProjectPage.getInitialProps = async ( { query, res, apolloClient } ) => {
-  // Send to dahsboard if the query is not present or the content type is not valid
+  // Send to dashboard if the query is not present or the content type is not valid
   // Handles server side route checking
   if ( isEmpty( query ) || !allowedContentTypes( query.content ) ) {
     redirectTo( '/admin/dashboard', { res } );

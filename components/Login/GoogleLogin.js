@@ -44,13 +44,9 @@ class GoogleLoginComponent extends Component {
 
   // A catch block is needed to prevent a browser console error
   // as the mutate function returns a promise
-  willGoogleSignin = async googleSigninMutation => {
+  willGoogleSignin = googleSigninMutation => {
     try {
-      await googleSigninMutation();
-      Router.push( {
-        pathname: '/'
-      } );
-      // redirect to dashboard
+     googleSigninMutation();
       /* eslint-disable no-empty */
     } catch ( err ) {}
   }
