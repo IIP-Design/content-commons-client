@@ -5,8 +5,12 @@ import { useQuery } from '@apollo/react-hooks';
 import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import ApolloError from 'components/errors/ApolloError';
+import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
+import FormInstructions from 'components/admin/FormInstructions/FormInstructions';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
+import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg';
+// import withFileUpload from 'hocs/withFileUpload/withFileUpload';
 import { GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
 
 const GraphicEdit = props => {
@@ -23,6 +27,7 @@ const GraphicEdit = props => {
   } );
 
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
+  const [displayTheUploadSuccessMsg, setDisplayTheUploadSuccessMsg] = useState( false );
   const [disableBtns, setDisableBtns] = useState( false );
   const [notification, setNotification] = useState( {
     notificationMessage: '',
@@ -127,6 +132,9 @@ const GraphicEdit = props => {
   if ( !data ) return null;
 
   const { showNotification, notificationMessage } = notification;
+  const isUploading = false; // temp
+  const filesToUpload = []; // temp
+  // const { upload: { isUploading, filesToUpload } } = props;
 
   return (
     <div className="edit-project">
@@ -172,6 +180,37 @@ const GraphicEdit = props => {
         show={ showNotification }
         msg={ notificationMessage }
       />
+
+      { /* upload progress  */ }
+      <div className="edit-project__status alpha">
+        { !projectId && !isUploading && <FormInstructions /> }
+        { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
+
+        { isUploading
+          && (
+            <FileUploadProgressBar
+              filesToUpload={ filesToUpload }
+              label="Please keep this page open until upload is complete"
+              fileProgressMessage
+            />
+          ) }
+      </div>
+
+
+      { /* upload progress */ }
+      <div className="edit-project__status beta">
+        { !projectId && !isUploading && <FormInstructions /> }
+        { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
+
+        { isUploading
+          && (
+            <FileUploadProgressBar
+              filesToUpload={ filesToUpload }
+              label="Please keep this page open until upload is complete"
+              fileProgressMessage
+            />
+          ) }
+      </div>
     </div>
   );
 };
