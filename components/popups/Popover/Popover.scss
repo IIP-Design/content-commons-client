@@ -3,7 +3,6 @@
 .popover {
   position: relative;
   display: inline-block;
-  width: 100%;  
 
   &_trigger {
     -webkit-appearance: none;
@@ -24,7 +23,8 @@
     z-index: 2;
     position: absolute;
     top: calc(100% + 20px);
-    left: -10px;    
+    left: -10px;
+    min-width: max-content;
     font-size: 11px;
     line-height: 1.6;
     overflow-wrap: anywhere;
@@ -38,6 +38,16 @@
       display: block;
     }
 
+    &.expandFromRight {
+      right: 0;
+      left: auto;
+
+      &:before {
+        right: 0;
+        left: auto;
+      }
+    }
+
     &:before {
       content: '';
       position: absolute;
@@ -49,29 +59,6 @@
       -webkit-clip-path: polygon(50% 0%, 0% 100%, 100% 100%, 100% 100%);
       clip-path: polygon(50% 0%, 0% 100%, 100% 100%, 100% 100%);
     }    
-  }
-
-  &.fileList {
-    
-    .popover_content > ul {
-      max-height: 200px;
-      max-width: 250px;
-      margin: 0;
-      padding-left: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      color: $shuttle-grey;
-      background-color: $light-grey;
-      list-style: none;
-
-      li {
-        padding: 1em;
-
-        &:not(:last-child) {
-          border-bottom: 1px solid hsla( 0, 0, 50%, 0.2 );
-        }
-      }
-    }
   }
   
 }

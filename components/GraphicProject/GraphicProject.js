@@ -25,6 +25,10 @@ import ModalDescription from 'components/modals/ModalDescription/ModalDescriptio
 import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
 import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 
+
+import Popover from 'components/popups/Popover/Popover';
+import TabLayout from 'components/TabLayout/TabLayout';
+
 /* eslint-disable-next-line import/no-unresolved */
 import tempSrcUrl from './graphicPlaceHolderImg.png';
 
@@ -134,6 +138,39 @@ const GraphicProject = props => {
               </Popup>
             ) }
           />
+
+          <Popover
+            trigger={ <img src={ downloadIcon } style={ { width: '20px', height: '20px' } } alt="downlad icon" /> }
+            expandFromRight
+          >
+            <TabLayout
+              headline="Download this graphic."
+              tabs={ [
+                {
+                  title: 'Graphic Files',
+                  content: (
+                    <DownloadItem
+                      items={ selectedUnitImages }
+                      instructions={ `Download the graphic files in ${selectedUnitLanguage.display_name}. This download option is best for uploading this graphic to web pages and social media.` }
+                    />
+                  )
+                },
+                {
+                  title: 'Editable Files',
+                  content: <p>Editable Files</p>
+                },
+                {
+                  title: 'Other',
+                  content: <p>Other Files</p>
+                },
+                {
+                  title: 'Help',
+                  content: <DownloadHelp />
+                }
+              ] }
+            />
+          </Popover>
+
           <PopupTrigger
             toolTip="Download graphic"
             icon={ { img: downloadIcon, dim: 18 } }

@@ -4,7 +4,7 @@ import './Popover.scss';
 
 const Popover = props => {
   const {
-    className,
+    expandFromRight,
     trigger,
     children
   } = props;
@@ -28,6 +28,7 @@ const Popover = props => {
     window.addEventListener( 'click', handleClick );
     window.addEventListener( 'scroll', handleScroll );
     window.addEventListener( 'keydown', handleKeyDown );
+
     return () => {
       window.removeEventListener( 'click', handleClick );
       window.removeEventListener( 'scroll', handleScroll );
@@ -38,7 +39,7 @@ const Popover = props => {
   const uniqueID = Date.now();
 
   return (
-    <span className={ className ? `popover ${className}` : 'popover' } ref={ popoverNode }>
+    <span className="popover" ref={ popoverNode }>
       <button
         type="button"
         id={ `popoverButton_${uniqueID}` }
@@ -53,7 +54,7 @@ const Popover = props => {
       { active && (
         <span
           id={ `popoverContent_${uniqueID}` }
-          className="popover_content"
+          className={ expandFromRight ? 'popover_content expandFromRight' : 'popover_content' }
           aria-labelledby={ `popoverButton_${uniqueID}` }
           aria-hidden={ !active }
         >
@@ -65,7 +66,7 @@ const Popover = props => {
 };
 
 Popover.propTypes = {
-  className: PropTypes.string,
+  expandFromRight: PropTypes.bool,
   trigger: PropTypes.oneOfType( [
     PropTypes.object,
     PropTypes.string
