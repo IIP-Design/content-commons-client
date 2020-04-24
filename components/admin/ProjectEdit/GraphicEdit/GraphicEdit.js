@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import ApolloError from 'components/errors/ApolloError';
+import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import { GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
 
@@ -23,6 +24,10 @@ const GraphicEdit = props => {
 
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [disableBtns, setDisableBtns] = useState( false );
+  const [notification, setNotification] = useState( {
+    notificationMessage: '',
+    showNotification: false
+  } );
 
   useEffect( () => {
     if ( data.graphicProject ) {
@@ -121,6 +126,8 @@ const GraphicEdit = props => {
 
   if ( !data ) return null;
 
+  const { showNotification, notificationMessage } = notification;
+
   return (
     <div className="edit-project">
       <div className="edit-project__header">
@@ -157,6 +164,14 @@ const GraphicEdit = props => {
           />
         </ProjectHeader>
       </div>
+
+      { /* Form data saved notification */ }
+      <Notification
+        el="p"
+        customStyles={ centeredStyles }
+        show={ showNotification }
+        msg={ notificationMessage }
+      />
     </div>
   );
 };
