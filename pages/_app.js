@@ -15,12 +15,12 @@ class Commons extends App {
   static async getInitialProps( { Component, ctx } ) {
     let pageProps = {};
 
-    // if user does not have appropriate page permissions redirect 
-    if ( !( await canAccessPage( ctx ) ) ) {
-      // only redirect if we are going to login
-      if ( ctx.pathname !== '/login' ) {  
+    // if user does not have appropriate page permissions redirect
+    if ( !await canAccessPage( ctx ) ) {
+      // only set redirect url to a non login url
+      if ( ctx.pathname !== '/login' ) {
         // add redirect url as a query param
-        // cannot use client side storage or libraries as this is executing on the server 
+        // cannot use client side storage or libraries as this is executing on the server
         redirectTo( `/login?return=${ctx.asPath}`, ctx );
       }
     }
