@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import ApolloError from 'components/errors/ApolloError';
@@ -12,7 +12,7 @@ import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg';
 // import withFileUpload from 'hocs/withFileUpload/withFileUpload';
-import { GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
+import { DELETE_GRAPHIC_PROJECT_MUTATION, GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
 
 const GraphicEdit = props => {
   const router = useRouter();
@@ -31,6 +31,7 @@ const GraphicEdit = props => {
     displayName: 'GraphicProjectQuery',
     skip: !props.id
   } );
+  const [deleteGraphicProject] = useMutation( DELETE_GRAPHIC_PROJECT_MUTATION );
 
   const [error, setError] = useState( {} );
   const [mounted, setMounted] = useState( false );
@@ -86,16 +87,13 @@ const GraphicEdit = props => {
   };
 
   const handleDeleteConfirm = async () => {
-    console.log( `delete project ${projectId}` );
+    const deletedProjectId = await deleteGraphicProject( {
+      variables: { id: projectId }
+    } ).catch( err => { setError( err ); } );
 
-    return null;
-    // const deletedProjectId = await deleteProject( {
-    //   variables: { id: projectId }
-    // } ).catch( err => { setError( err ); } );
-
-    // if ( deletedProjectId ) {
-    //   handleExit();
-    // }
+    if ( deletedProjectId ) {
+      handleExit();
+    }
   };
 
   const handlePublish = async () => {
