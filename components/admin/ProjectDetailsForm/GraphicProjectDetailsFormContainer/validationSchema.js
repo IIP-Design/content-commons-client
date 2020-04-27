@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 
 const _baseSchema = {
-  title: Yup.string()
+  projectTitle: Yup.string()
     .required( 'A project title is required.' ),
   visibility: Yup.string()
     .required( 'A visibility setting is required.' ),
