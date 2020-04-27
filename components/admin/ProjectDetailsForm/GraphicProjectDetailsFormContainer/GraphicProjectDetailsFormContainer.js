@@ -49,11 +49,6 @@ const GraphicProjectDetailsFormContainer = props => {
       setShowNotification( true );
     }
 
-    // Notify redux state that Project updated, indexed by project id
-    // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
-    // const { id, projectUpdated } = props;
-    // projectUpdated( id, true );
-
     startTimeout();
   };
 

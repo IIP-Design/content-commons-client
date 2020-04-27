@@ -145,15 +145,19 @@ const ProjectDetailsForm = props => {
 
                 { config.copyright
                   && (
-                    <Form.Field
-                      id="copyright"
-                      control={ Input }
-                      label={ config.copyright?.label || 'Copyright' }
-                      placeholder=""
-                      name="copyright"
-                      { ...( config.copyright?.required && { required: true } ) }
-                      value={ values.copyright }
-                    />
+                    <div className="field">
+                      <Form.Field
+                        id="copyright"
+                        control={ Input }
+                        label={ config.copyright?.label || 'Copyright' }
+                        placeholder=""
+                        name="copyright"
+                        value={ values.copyright }
+                        onChange={ handleOnChange }
+                        { ...( config.copyright?.required && { required: true } ) }
+                      />
+                      <p className="error-message">{ touched.copyright ? errors.copyright : '' }</p>
+                    </div>
                   ) }
               </Form.Group>
 
