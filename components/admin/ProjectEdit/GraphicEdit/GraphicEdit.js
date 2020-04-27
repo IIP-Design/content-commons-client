@@ -7,6 +7,7 @@ import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import ApolloError from 'components/errors/ApolloError';
 import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
 import FormInstructions from 'components/admin/FormInstructions/FormInstructions';
+import GraphicProjectDetailsFormContainer from 'components/admin/ProjectDetailsForm/GraphicProjectDetailsFormContainer/GraphicProjectDetailsFormContainer';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg';
@@ -14,28 +15,37 @@ import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg
 import { GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
 
 const GraphicEdit = props => {
-  const { id: projectId } = props;
   const router = useRouter();
+  const MAX_CATEGORY_COUNT = 2;
+  const SAVE_MSG_DELAY = 2000;
+  const UPLOAD_SUCCESS_MSG_DELAY = SAVE_MSG_DELAY + 1000;
+
+  let uploadSuccessTimer = null;
+  let saveMsgTimer = null;
 
   const {
     loading, error: queryError, data
   } = useQuery( GRAPHIC_PROJECT_QUERY, {
     partialRefetch: true,
-    variables: { id: projectId },
+    variables: { id: props.id },
     displayName: 'GraphicProjectQuery',
-    skip: !projectId
+    skip: !props.id
   } );
 
+  const [error, setError] = useState( {} );
+  const [mounted, setMounted] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [displayTheUploadSuccessMsg, setDisplayTheUploadSuccessMsg] = useState( false );
+  const [projectId, setProjectId] = useState( props.id );
   const [disableBtns, setDisableBtns] = useState( false );
+  const [isFormValid, setIsFormValid] = useState( true );
   const [notification, setNotification] = useState( {
     notificationMessage: '',
     showNotification: false
   } );
 
   useEffect( () => {
-    if ( data.graphicProject ) {
+    if ( data?.graphicProject ) {
       const { images } = data.graphicProject;
 
       if ( !images.length ) {
@@ -44,6 +54,19 @@ const GraphicEdit = props => {
     }
   }, [] );
 
+  const updateNotification = msg => {
+    setNotification( {
+      notificationMessage: msg,
+      showNotification: !!msg
+    } );
+  };
+
+  const addProjectIdToUrl = id => {
+    const path = `${router.asPath}&id=${id}`;
+
+    router.replace( router.asPath, path, { shallow: true } );
+  };
+
   const deleteProjectEnabled = () => (
     /**
      * disable delete project button if either there
@@ -51,6 +74,12 @@ const GraphicEdit = props => {
      */
     !projectId || ( data?.graphicProject && !!data.graphicProject.publishedAt )
   );
+
+  const delayUnmount = ( fn, timer, delay ) => {
+    if ( timer ) clearTimeout( timer );
+    /* eslint-disable no-param-reassign */
+    timer = setTimeout( fn, delay );
+  };
 
   const handleExit = () => {
     router.push( { pathname: '/admin/dashboard' } );
@@ -93,6 +122,81 @@ const GraphicEdit = props => {
     // executePublishOperation( projectId, unPublishProject );
   };
 
+  const handleSaveDraft = async ( id, projectTitle, tags ) => {
+    console.log( 'handleSaveDraft' );
+
+    return null;
+    // const dataObj = buildUpdateGraphicProjectTree( filesToUpload, imageUses[0].id, projectTitle, tags );
+
+    // await updateGraphicProject( {
+    //   variables: {
+    //     data: dataObj,
+    //     where: {
+    //       id
+    //     }
+    //   }
+    // } ).catch( err => console.dir( err ) );
+  };
+
+  const handleUploadProgress = async ( progressEvent, file ) => {
+    console.log( 'handleUploadProgress' );
+    // props.uploadProgress( file.id, progressEvent );
+  };
+
+  const handleDisplayUploadSuccessMsg = () => {
+    if ( mounted ) {
+      setDisplayTheUploadSuccessMsg( false );
+    }
+    uploadSuccessTimer = null;
+  };
+
+  const handleDisplaySaveMsg = () => {
+    if ( mounted ) {
+      updateNotification( '' );
+    }
+    saveMsgTimer = null;
+  };
+
+  const handleUploadComplete = () => {
+    console.log( 'handleUploadComplete' );
+    // const { setIsUploading, uploadReset } = props;
+    // const { uploadReset } = props;
+
+    // setIsUploading( false );
+    // uploadReset(); // reset upload redux store
+    // setDisplayTheUploadSuccessMsg( true );
+    // updateNotification( 'Project saved as draft' );
+    // delayUnmount( handleDisplaySaveMsg, saveMsgTimer, SAVE_MSG_DELAY );
+    // delayUnmount( handleDisplayUploadSuccessMsg, uploadSuccessTimer, UPLOAD_SUCCESS_MSG_DELAY );
+  };
+
+  const handleUpload = async ( project, tags ) => {
+    console.log( 'handleUpload' );
+
+    return null;
+    // const { id, projectTitle } = project;
+    // const { uploadExecute, updateFile } = props;
+
+    // // If there are files to upload, upload them
+    // if ( filesToUpload && filesToUpload.length ) {
+    //   setIsUploading( true );
+
+    //   // 1. Upload files to S3 & Vimeo and fetch file meta data
+    //   await uploadExecute( id, filesToUpload, handleUploadProgress, updateFile );
+
+    //   // 2. once all files have been uploaded, create and save new project (only new)
+    //   handleSaveDraft( id, projectTitle, tags );
+
+    //   // 3. clean up upload process
+    //   handleUploadComplete();
+
+    //   // 4. set project id to newly created project (what if exsiting project?)
+    //   setProjectId( id );
+
+    //   // 5. update url to reflect a new project (only new)
+    //   addProjectIdToUrl( id );
+  };
+
   const centeredStyles = {
     position: 'absolute',
     top: '9em',
@@ -129,12 +233,15 @@ const GraphicEdit = props => {
     );
   }
 
-  if ( !data ) return null;
+  // if ( !data ) return null;
 
   const { showNotification, notificationMessage } = notification;
   const isUploading = false; // temp
   const filesToUpload = []; // temp
   // const { upload: { isUploading, filesToUpload } } = props;
+  const contentStyle = {
+    border: `3px solid ${projectId ? 'transparent' : '#02bfe7'}`
+  };
 
   return (
     <div className="edit-project">
@@ -145,10 +252,10 @@ const GraphicEdit = props => {
             setDeleteConfirmOpen={ setDeleteConfirmOpen }
             disabled={ {
               delete: deleteProjectEnabled(),
-              save: !projectId || disableBtns,
-              preview: !projectId || disableBtns,
-              publish: !projectId || disableBtns,
-              publishChanges: !projectId || disableBtns
+              save: !projectId || disableBtns || !isFormValid,
+              preview: !projectId || disableBtns || !isFormValid,
+              publish: !projectId || disableBtns || !isFormValid,
+              publishChanges: !projectId || disableBtns || !isFormValid
             } }
             handle={ {
               deleteConfirm: handleDeleteConfirm,
@@ -171,6 +278,10 @@ const GraphicEdit = props => {
             } }
           />
         </ProjectHeader>
+      </div>
+
+      <div style={ centeredStyles }>
+        <ApolloError error={ error } />
       </div>
 
       { /* Form data saved notification */ }
@@ -196,6 +307,17 @@ const GraphicEdit = props => {
           ) }
       </div>
 
+      { /* project details form */ }
+      <div className="edit-project__content" style={ contentStyle }>
+        <GraphicProjectDetailsFormContainer
+          id={ projectId }
+          data={ data }
+          updateNotification={ updateNotification }
+          handleUpload={ handleUpload }
+          maxCategories={ MAX_CATEGORY_COUNT }
+          setIsFormValid={ setIsFormValid }
+        />
+      </div>
 
       { /* upload progress */ }
       <div className="edit-project__status beta">
