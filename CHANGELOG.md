@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [4.0.0](https://github.com/IIP-Design/content-commons-client/compare/v3.1.1...v4.0.0)
+
+**Added:**
+- Add redirect to previous url on successful login.
+- Add ability for subscriber to see restricted content.
+- Add uploading documentation for press guidance.
+- Add Document content type.
+- Add Press Guidance Package content type.
+- Add Press Guidance upload capability.
+- Logged in users can access Press Guidance.
+- Add link to the press guidance archive at the bottom of the featured packages box and conditionally add a similar link to the footer while only displaying the link if the user is logged in.
+- Add Countries dropdown
+- Add Bureaus dropdown
+- Add Packages to priorities section
+- Add country filter search for documents
+
+**Changed:**
+
+- Replaced h1 elements in the footer with divs in the interest of improved accessibility
+- Replaced GTM implemenation with React app
+- Google authentication thru CloudFlare access
+- State.gov authentication thru CloudFlare access using one time pin
+
+**Fixed:**
+
+- Fixed the broken feedback link in the user profile dropdown and added feedback link as variable in config file.
+
 # [3.1.5](2020-03-25)
 
 **Added:**
