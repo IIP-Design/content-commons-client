@@ -1,63 +1,14 @@
 @import "styles/colors.scss";
 
-.tab-layout {
-  width: 100%;
-  max-width: 540px;
-  min-height: 425px;
+.tab-layout {  
+  width: 540px;
+  min-height: 360px;
   padding: 20px;
   background-color: #fff;
-  box-shadow: 0px 2px 4px 0px $shuttle-grey;
+  box-shadow: 0px 2px 4px 0px $shuttle-grey;  
 
   &__headline {
     font-weight: normal;
     color: $blue;
-  }
-
-  .tabs {
-
-    &__titles {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      margin-bottom: 1em;
-      border-bottom: 1px solid $alt-grey;
-
-      button.tab-title {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;        
-        position: relative;
-        padding: 1em 1em 0.5em;
-        border: none;
-        font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, Helvetica, sans-serif;
-        font-weight: 700;
-        font-size: 0.89rem;
-        color: $blue;
-        cursor: pointer;        
-
-        &:last-child {
-          margin-left: 50px;
-        }
-
-        &.active {
-          &:after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -2px;            
-            width: 100%;
-            height: 3px;
-            background-color: $light-blue;
-          }
-        }
-      }
-    }
-
-    &__content {
-      .content {
-        max-height: 300px;
-        overflow-y: auto;
-      }
-    }
   }
 }

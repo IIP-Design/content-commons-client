@@ -4,6 +4,7 @@ import './Popover.scss';
 
 const Popover = props => {
   const {
+    id,
     expandFromRight,
     trigger,
     children
@@ -36,13 +37,11 @@ const Popover = props => {
     };
   }, [] );
 
-  const uniqueID = Date.now();
-
   return (
     <span className="popover" ref={ popoverNode }>
       <button
         type="button"
-        id={ `popoverButton_${uniqueID}` }
+        id={ `popoverButton_${id}` }
         className="popover_trigger"
         aria-haspopup="true"
         aria-expanded={ active } // active state determines if popover content expanded
@@ -53,9 +52,9 @@ const Popover = props => {
       </button>
       { active && (
         <span
-          id={ `popoverContent_${uniqueID}` }
+          id={ `popoverContent_${id}` }
           className={ expandFromRight ? 'popover_content expandFromRight' : 'popover_content' }
-          aria-labelledby={ `popoverButton_${uniqueID}` }
+          aria-labelledby={ `popoverButton_${id}` }
           aria-hidden={ !active }
         >
           { children }
@@ -66,6 +65,7 @@ const Popover = props => {
 };
 
 Popover.propTypes = {
+  id: PropTypes.string,
   expandFromRight: PropTypes.bool,
   trigger: PropTypes.oneOfType( [
     PropTypes.object,

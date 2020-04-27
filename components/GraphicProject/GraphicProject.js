@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { updateUrl } from 'lib/browser';
 import { displayDOSLogo } from 'lib/sourceLogoUtils';
 
@@ -45,6 +46,7 @@ const GraphicProject = props => {
     modified,
     owner,
     desc,
+    copyright,
     images,
     supportFiles,
     categories
@@ -140,6 +142,7 @@ const GraphicProject = props => {
           />
 
           <Popover
+            id={ id }
             trigger={ <img src={ downloadIcon } style={ { width: '20px', height: '20px' } } alt="downlad icon" /> }
             expandFromRight
           >
@@ -157,7 +160,25 @@ const GraphicProject = props => {
                 },
                 {
                   title: 'Editable Files',
-                  content: <p>Editable Files</p>
+                  content: (
+                    <DownloadItem
+                      items={ supportFiles }
+                      instructions={ (
+                        <Fragment>
+                          <p>
+                            By downloading these editable files you agree to the
+                            <Link href="/about"><a>Terms of Use</a></Link>
+                          </p>
+                          <p>
+                            <strong>
+                              Credit for this photo must be used: ©
+                              { copyright }
+                            </strong>
+                          </p>
+                        </Fragment>
+                      ) }
+                    />
+                  )
                 },
                 {
                   title: 'Other',
@@ -171,7 +192,7 @@ const GraphicProject = props => {
             />
           </Popover>
 
-          <PopupTrigger
+          {/* <PopupTrigger
             toolTip="Download graphic"
             icon={ { img: downloadIcon, dim: 18 } }
             position="right"
@@ -201,7 +222,7 @@ const GraphicProject = props => {
                 ] }
               />
             ) }
-          />
+          /> */}
         </div>
       </div>
       {/* TO DO: Update thumbnail to use srcUrl */}

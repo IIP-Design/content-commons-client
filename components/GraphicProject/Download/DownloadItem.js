@@ -49,7 +49,7 @@ const DownloadItem = ( { items, instructions } ) => {
 
   return (
     <div className="download-item__wrapper">
-      <p className="download-item__instructions">{ instructions }</p>
+      <div className="download-item__instructions">{ instructions }</div>
       { items.map( renderItem ) }
     </div>
   );
@@ -57,7 +57,10 @@ const DownloadItem = ( { items, instructions } ) => {
 
 DownloadItem.propTypes = {
   items: PropTypes.array,
-  instructions: PropTypes.string
+  instructions: PropTypes.oneOfType( [
+    PropTypes.string,
+    PropTypes.object
+  ] )
 };
 
 export default DownloadItem;

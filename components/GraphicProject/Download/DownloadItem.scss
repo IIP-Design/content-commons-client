@@ -42,11 +42,15 @@
   }
 
   &__instructions {
-    margin-bottom: 2em;    
+    margin-bottom: 0.5em;    
     font-style: italic;
     font-size: 0.75rem;
-    line-height: 1.5;
+    line-height: 1.428;
     color: $grey;
+
+    > p {
+      margin-bottom: 3px;
+    }
   }  
 
   .item {

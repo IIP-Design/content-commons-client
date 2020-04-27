@@ -1,0 +1,41 @@
+@import "styles/colors.scss";
+
+.tabs__titles {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: 0.5em;
+  border-bottom: 1px solid $alt-grey;
+
+  button.tab-title {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;        
+    position: relative;
+    margin: 1em 1em 0;
+    padding-bottom: 0.5em;
+    border: none;
+    font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 0.89rem;
+    color: $blue;
+    background-color: transparent;
+    cursor: pointer;        
+
+    &:last-child {
+      margin-left: 50px;
+    }
+
+    &.active {
+      &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;            
+        width: 100%;
+        height: 3px;
+        background-color: $light-blue;
+      }
+    }
+  }
+}

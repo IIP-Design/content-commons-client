@@ -48,7 +48,7 @@ const PackageCard = ( { item, stretch } ) => {
           </Modal.Content>
         </Modal>
         <Card.Meta className="meta--popup">
-          <Popover trigger={ documentFilesCountDisplay }>
+          <Popover id={ id } trigger={ documentFilesCountDisplay }>
             <FileListDisplay files={ fetchedDocs } fileType="document" error={ error } />
           </Popover>
         </Card.Meta>
