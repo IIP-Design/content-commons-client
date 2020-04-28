@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
-
 import { Table } from 'semantic-ui-react';
+
 import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
-import TableBodyMessage from './TableBodyMessage';
+import TableBodyMessage from './TableBodyMessage/TableBodyMessage';
 
 import './TableBody.scss';
 

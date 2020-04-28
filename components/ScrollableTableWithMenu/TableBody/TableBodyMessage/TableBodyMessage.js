@@ -6,7 +6,7 @@ import ApolloError from 'components/errors/ApolloError';
 
 const setMessage = ( type, error, searchTerm ) => {
   switch ( type ) {
-  case 'error' && error:
+  case 'error':
     return <ApolloError error={ error } />;
   case 'loading':
     return (
@@ -19,22 +19,28 @@ const setMessage = ( type, error, searchTerm ) => {
     );
   case 'no-projects':
     return 'No projects';
-  case 'no-results' && searchTerm:
+  case 'no-results':
     return `No results for &ldquo;${searchTerm}&rdquo;`;
   default:
     return '';
   }
 };
 
-const TableBodyMessage = ( { error, searchTerm, type } ) => (
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>
-        {setMessage( type, error, searchTerm ) }
-      </Table.Cell>
-    </Table.Row>
-  </Table.Body>
-);
+const TableBodyMessage = ( { error, searchTerm, type } ) => {
+  if ( type ) {
+    return (
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>
+            {setMessage( type, error, searchTerm ) }
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    );
+  }
+
+  return null;
+};
 
 TableBodyMessage.propTypes = {
   error: PropTypes.object,
