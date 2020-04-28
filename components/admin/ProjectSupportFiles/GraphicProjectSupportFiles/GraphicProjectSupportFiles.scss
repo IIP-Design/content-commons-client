@@ -1,0 +1,40 @@
+.graphic-project-support-files {
+  .list-heading {
+    display: flex;
+    align-items: center;
+
+    .title {
+      margin-right: 0.625rem;
+      margin-bottom: 0;
+      text-transform: capitalize;
+    }
+  }
+
+  .support-files-list {
+    list-style: none;
+    padding-left: 0;
+    font-size: 0.888888889rem;
+
+    > .support-file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .filename {
+        padding-top: 0.625rem;
+        padding-bottom: 0.625rem;
+      }
+
+      .actions {
+        display: flex;
+        flex-basis: 30%;
+        justify-content: flex-end;
+
+        .language {
+          margin-right: 1rem;
+          width: 10rem;
+        }
+      }
+    }
+  }
+}

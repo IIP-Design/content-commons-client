@@ -7,6 +7,7 @@ import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/Langua
 import { UPDATE_SUPPORT_FILE_MUTATION, DELETE_SUPPORT_FILE_MUTATION } from 'lib/graphql/queries/common';
 import { GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
 import { getCount } from 'lib/utils';
+import './GraphicProjectSupportFiles.scss';
 
 const GraphicProjectSupportFiles = props => {
   const {
@@ -50,10 +51,8 @@ const GraphicProjectSupportFiles = props => {
 
   return (
     <div className={ `graphic-project-support-files ${headline.replace( ' ', '-' )}` }>
-      <div className="heading" style={ { display: 'flex', alignItems: 'center' } }>
-        <h3 style={ { marginRight: '0.625em', marginBottom: 0, textTransform: 'capitalize' } }>
-          { headline }
-        </h3>
+      <div className="list-heading">
+        <h3 className="title">{ headline }</h3>
         <IconPopup
           message={ helperText }
           iconSize="small"
@@ -61,27 +60,30 @@ const GraphicProjectSupportFiles = props => {
           popupSize="mini"
         />
       </div>
-      <ul style={ { listStyle: 'none', paddingLeft: 0, fontSize: '0.888888889rem' } }>
+      <ul className="support-files-list">
         { files.map( file => {
           const { id, filename } = file;
 
           return (
-            <li key={ id }>
-              <span>{ filename }</span>
+            <li key={ id } className="support-file-item">
+              <span className="filename">{ filename }</span>
 
-              { headline.includes( 'editable' )
-                && (
-                  <LanguageDropdown
-                    id={ id }
-                    value={ file.language.id }
-                    onChange={ handleLanguageChange }
-                    required
-                  />
-                ) }
+              <span className="actions">
+                { headline.includes( 'editable' )
+                  && (
+                    <LanguageDropdown
+                      id={ id }
+                      className="language"
+                      value={ file.language.id }
+                      onChange={ handleLanguageChange }
+                      required
+                    />
+                  ) }
 
-              <FileRemoveReplaceButtonGroup
-                onRemove={ () => handleDelete( id ) }
-              />
+                <FileRemoveReplaceButtonGroup
+                  onRemove={ () => handleDelete( id ) }
+                />
+              </span>
             </li>
           );
         } ) }
@@ -92,7 +94,6 @@ const GraphicProjectSupportFiles = props => {
 
 GraphicProjectSupportFiles.propTypes = {
   projectId: PropTypes.string,
-  handleUpdate: PropTypes.func,
   headline: PropTypes.string,
   helperText: PropTypes.string,
   files: PropTypes.array
