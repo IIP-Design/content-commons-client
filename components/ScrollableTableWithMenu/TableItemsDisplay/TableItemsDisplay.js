@@ -44,10 +44,10 @@ const TableItemsDisplay = ( {
     );
   }
 
-  if ( !count ) return null;
+  if ( count === null || count === undefined ) return null;
 
   const firstPageItem = skip + 1;
-  const range = skip + count;
+  const range = skip + itemsPerPage;
   const lastPageItem = range < count ? range : count;
 
   return (
