@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import './DownloadHelp.scss';
+import './Help.scss';
 
-const DownloadHelp = () => (
+const Help = () => (
   <div className="graphic-download--help">
     <p><strong>Download Graphic</strong></p>
     <ol>
@@ -20,4 +20,4 @@ const DownloadHelp = () => (
   </div>
 );
 
-export default DownloadHelp;
+export default Help;

@@ -11,8 +11,10 @@ import shareIcon from 'static/icons/icon_share.svg';
 import Notification from 'components/Notification/Notification';
 import Share from 'components/Share/Share';
 
-import DownloadHelp from './Download/DownloadHelp';
 import DownloadItem from './Download/DownloadItem';
+import Help from './Download/Help';
+import EditableFiles from './Download/EditableFiles';
+import GraphicFiles from './Download/GraphicFiles';
 
 import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from '../popups/PopupTabbed';
@@ -107,8 +109,6 @@ const GraphicProject = props => {
   // Get all images (Twitter, Facebook) associated with selected unit language for DownloadItem component
   const selectedUnitImages = images.filter( img => img.language.display_name === selectedUnitLanguage.display_name );
 
-  const DownloadElement = isAdminPreview ? 'span' : 'a';
-
   return (
     <ModalItem
       headline={ title }
@@ -153,16 +153,16 @@ const GraphicProject = props => {
                   title: 'Graphic Files',
                   content: (
                     <DownloadItem
-                      items={ selectedUnitImages }
                       instructions={ `Download the graphic files in ${selectedUnitLanguage.display_name}. This download option is best for uploading this graphic to web pages and social media.` }
-                    />
+                    >
+                      { selectedUnitImages.map( img => <GraphicFiles key={ img.title } file={ img } /> ) }
+                    </DownloadItem>
                   )
                 },
                 {
                   title: 'Editable Files',
                   content: (
                     <DownloadItem
-                      items={ supportFiles }
                       instructions={ (
                         <Fragment>
                           <p>
@@ -171,13 +171,17 @@ const GraphicProject = props => {
                           </p>
                           <p>
                             <strong>
-                              Credit for this photo must be used: ©
-                              { copyright }
+                              Credit for this photo must be used:
+                              { `${String.fromCharCode( 169 )} ${copyright}` }
                             </strong>
                           </p>
                         </Fragment>
                       ) }
-                    />
+                    >
+                      { supportFiles
+                        .filter( file => file.editable === true )
+                        .map( file => <EditableFiles key={ file } file={ file } /> ) }
+                    </DownloadItem>
                   )
                 },
                 {
@@ -186,43 +190,11 @@ const GraphicProject = props => {
                 },
                 {
                   title: 'Help',
-                  content: <DownloadHelp />
+                  content: <Help />
                 }
               ] }
             />
           </Popover>
-
-          {/* <PopupTrigger
-            toolTip="Download graphic"
-            icon={ { img: downloadIcon, dim: 18 } }
-            position="right"
-            show
-            content={ (
-              <PopupTabbed
-                title="Download this graphic."
-                panes={ [
-                  {
-                    title: 'Graphic Files',
-                    component: (
-                      <DownloadItem
-                        items={ selectedUnitImages }
-                        instructions={ `Download the graphic files in ${selectedUnitLanguage.display_name}. This download option is best for uploading this graphic to web pages and social media.` }
-                      />
-                    )
-                  },
-                  {
-                    title: 'Editable Files',
-                    component: <p>Editable Files</p>
-                  },
-                  {
-                    title: 'Other',
-                    component: <p>Other Files</p>
-                  },
-                  { title: 'Help', component: <DownloadHelp /> }
-                ] }
-              />
-            ) }
-          /> */}
         </div>
       </div>
       {/* TO DO: Update thumbnail to use srcUrl */}
