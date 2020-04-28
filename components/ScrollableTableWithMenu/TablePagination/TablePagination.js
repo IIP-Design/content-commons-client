@@ -7,7 +7,7 @@ import ApolloError from 'components/errors/ApolloError';
 import './TablePagination.scss';
 
 const TablePagination = ( {
-  activePage, count, error, loading, handlePageChange, itemsPerPage
+  activePage, count, error, handlePageChange, itemsPerPage, loading
 } ) => {
   if ( loading && !count ) return 'Loading....';
   if ( error ) return <ApolloError error={ error } />;
