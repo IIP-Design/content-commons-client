@@ -1,0 +1,115 @@
+@import "styles/colors.scss";
+@import "styles/mixins.scss";
+
+.edit-graphic-project {
+  @include kbd-only-focus-ring;
+  @include uppercase;
+
+  @media screen and (max-width: 550px) {
+    .project_buttons {
+      @include two-column-layout;
+    }
+  }
+
+  .ui.button {
+    @include base-button;
+
+    &.primary {
+      @include ghost-button;
+    }
+  }
+
+  // @media screen and (min-width: 992px) {
+  //   &__form--save {
+  //     width: 100%;
+  //   }
+  // }
+
+  .status {
+    font-size: 0.875em;
+
+    &.beta {
+      > .ui.progress {
+        margin-bottom: 4.75em;
+      }
+    }
+
+    > .ui.progress {
+      border-radius: 0;
+      margin-bottom: 3em;
+      font-size: 0.875em;
+      background-color: $light-grey;
+
+      .bar {
+        border-radius: 0;
+        &::after {
+          border-radius: 0;
+        }
+      }
+
+      .label {
+        font-weight: normal;
+      }
+    }
+  }
+
+  // &__items {
+  //   /**
+  //    * use rem for l & r padding to
+  //    * match and override Semantic UI
+  //    */
+  //   padding: 1.75em 1rem;
+  // }
+
+  .content,
+  .support-files {
+    padding: 1.75em 0;
+  }
+
+  .content,
+  .support-files,
+  &__items {
+    @media screen and (min-width: 768px) {
+      padding: 1.75em;
+    }
+  }
+
+  // .ui.modal {
+  //   > .content {
+  //     position: relative;
+  //   }
+  // }
+
+  .ui.active.progress {
+    .bar {
+      &::after {
+        background: repeating-linear-gradient(
+          45deg,
+          #ffffff,
+          #ffffff 1em,
+          $curious-blue 1em,
+          $curious-blue 2em
+        );
+      }
+    }
+  }
+
+  .support-files {
+    border-top: 1px solid $light-grey;
+
+    > .heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 1.5rem;
+    }
+
+    @media screen and (min-width: 992px) {
+      > .container {
+        display: grid;
+        grid-template-columns: repeat(2, 0.5fr);
+        gap: 2rem;
+      }
+    }
+  }
+}

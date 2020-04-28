@@ -16,6 +16,7 @@ import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg
 // import withFileUpload from 'hocs/withFileUpload/withFileUpload';
 import { getPluralStringOrNot } from 'lib/utils';
 import { DELETE_GRAPHIC_PROJECT_MUTATION, GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
+import './GraphicEdit.scss';
 
 const GraphicEdit = props => {
   const router = useRouter();
@@ -268,8 +269,8 @@ const GraphicEdit = props => {
   };
 
   return (
-    <div className="edit-project">
-      <div className="edit-project__header">
+    <div className="edit-graphic-project">
+      <div className="header">
         <ProjectHeader icon="images outline" text="Project Details">
           <ActionButtons
             deleteConfirmOpen={ deleteConfirmOpen }
@@ -317,7 +318,7 @@ const GraphicEdit = props => {
       />
 
       { /* upload progress  */ }
-      <div className="edit-project__status alpha">
+      <div className="status alpha">
         { !projectId && !isUploading && <FormInstructions /> }
         { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
 
@@ -332,7 +333,7 @@ const GraphicEdit = props => {
       </div>
 
       { /* project details form */ }
-      <div className="edit-project__content" style={ contentStyle }>
+      <div className="content" style={ contentStyle }>
         <GraphicProjectDetailsFormContainer
           id={ projectId }
           data={ data }
@@ -344,7 +345,7 @@ const GraphicEdit = props => {
       </div>
 
       { /* upload progress */ }
-      <div className="edit-project__status beta">
+      <div className="status beta">
         { !projectId && !isUploading && <FormInstructions /> }
         { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
 
@@ -358,8 +359,8 @@ const GraphicEdit = props => {
           ) }
       </div>
 
-      <div className="edit-project__support-files">
-        <div className="heading" style={ { display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '1.5rem' } }>
+      <div className="support-files">
+        <div className="heading">
           <h2 className="uppercase" style={ { marginBottom: 0 } }>Support Files</h2>
           { projectId
             && (
@@ -373,7 +374,7 @@ const GraphicEdit = props => {
             ) }
         </div>
 
-        <div className="support-files-container" style={ { display: 'grid', gridTemplateColumns: 'repeat(2, 0.5fr)' } }>
+        <div className="container">
           <GraphicProjectSupportFiles
             projectId={ projectId }
             headline={ getPluralStringOrNot( editableSupportFiles, 'editable file' ) }
