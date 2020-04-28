@@ -377,7 +377,7 @@ const GraphicEdit = props => {
         <div className="container">
           <GraphicProjectSupportFiles
             projectId={ projectId }
-            headline={ getPluralStringOrNot( editableSupportFiles, 'editable file' ) }
+            headline="editable files"
             helperText="Original files that may be edited and adapted as needed for reuse."
             files={ editableSupportFiles }
           />
@@ -386,7 +386,7 @@ const GraphicEdit = props => {
 
           <GraphicProjectSupportFiles
             projectId={ projectId }
-            headline={ getPluralStringOrNot( additionalSupportFiles, 'additional file' ) }
+            headline="additional files"
             helperText="Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics."
             files={ additionalSupportFiles }
           />
