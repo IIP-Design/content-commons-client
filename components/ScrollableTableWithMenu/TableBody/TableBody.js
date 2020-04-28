@@ -4,10 +4,7 @@ import orderBy from 'lodash/orderBy';
 
 import { Table } from 'semantic-ui-react';
 import TableRow from 'components/ScrollableTableWithMenu/TableRow/TableRow';
-import TableBodyLoading from './TableBodyLoading';
-import TableBodyError from './TableBodyError';
-import TableBodyNoResults from './TableBodyNoResults';
-import TableBodyNoProjects from './TableBodyNoProjects';
+import TableBodyMessage from './TableBodyMessage';
 
 import './TableBody.scss';
 
@@ -25,14 +22,14 @@ const TableBody = ( {
   toggleItemSelection,
   team
 } ) => {
-  if ( error ) return <TableBodyError error={ error } />;
+  if ( error ) return <TableBodyMessage error={ error } type="error" />;
 
   // Checks for existing data so loading doesn't flash when resort columns
-  if ( loading && !data ) return <TableBodyLoading />;
+  if ( loading && !data ) return <TableBodyMessage type="loading" />;
 
   if ( !data ) return null;
-  if ( searchTerm && !data.length ) return <TableBodyNoResults searchTerm={ searchTerm } />;
-  if ( !data.length ) return <TableBodyNoProjects />;
+  if ( searchTerm && !data.length ) return <TableBodyMessage searchTerm={ searchTerm } type="no-results" />;
+  if ( !data.length ) return <TableBodyMessage type="no-projects" />;
 
   // No option exisiting in schema to order by author
   // When author column is clicked, a query is sent to the server without pagination variables
