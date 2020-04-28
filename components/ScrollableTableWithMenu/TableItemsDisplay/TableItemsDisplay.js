@@ -27,7 +27,7 @@ const TableItemsDisplay = ( {
   searchTerm,
   skip
 } ) => {
-  if ( loading ) {
+  if ( loading && !count ) {
     return (
       <Grid.Column className="items_display">
         <Loader active inline size="mini" />

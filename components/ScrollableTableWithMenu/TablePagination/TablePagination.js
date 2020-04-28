@@ -9,7 +9,7 @@ import './TablePagination.scss';
 const TablePagination = ( {
   activePage, count, error, loading, handlePageChange, itemsPerPage
 } ) => {
-  if ( loading ) return 'Loading....';
+  if ( loading && !count ) return 'Loading....';
   if ( error ) return <ApolloError error={ error } />;
 
   if ( !count ) return null;
