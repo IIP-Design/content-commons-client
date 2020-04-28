@@ -3,10 +3,12 @@
  * ScrollableTableWithMenu
  *
  */
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 import { Table, Grid } from 'semantic-ui-react';
+import { useQuery } from '@apollo/react-hooks';
+
 import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import TableHeader from './TableHeader/TableHeader';
 import TableBody from './TableBody/TableBody';
@@ -15,279 +17,242 @@ import TableSearch from './TableSearch/TableSearch';
 import TableMenu from './TableMenu/TableMenu';
 import TableActionsMenu from './TableActionsMenu/TableActionsMenu';
 import TablePagination from './TablePagination/TablePagination';
+import { DashboardContext } from 'context/dashboardContext';
+
 import './ScrollableTableWithMenu.scss';
 
-/* eslint-disable react/prefer-stateless-function */
-class ScrollableTableWithMenu extends React.Component {
-  state = {
-    tableHeaders: this.props.persistentTableHeaders,
-    selectedItems: new Map(),
-    hasSelectedAllItems: false, // eslint-disable-line
-    displayActionsMenu: false,
-    column: 'createdAt',
-    direction: 'descending',
-    windowWidth: null,
-    searchTerm: '',
-    activePage: 1,
-    itemsPerPage: 15,
-    orderBy: 'createdAt_DESC',
-    skip: 0
-  };
+const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectTab, team } ) => {
+  const [tableHeaders, setTableHeaders] = useState( persistentTableHeaders );
+  const [selectedItems, setSelectedItems] = useState( new Map() );
+  const [hasSelectedAllItems, setHasSelectedAllItems] = useState( false );
+  const [displayActionsMenu, setDisplayActionsMenu] = useState( false );
+  const [column, setColumn] = useState( 'createdAt' );
+  const [direction, setDirection] = useState( 'descending' );
+  const [windowWidth, setWindowWidth] = useState( null );
+  const [searchTerm, setSearchTerm] = useState( '' );
+  const [activePage, setActivePage] = useState( 1 );
+  const [itemsPerPage, setItemsPerPage] = useState( 15 );
+  const [orderBy, setOrderBy] = useState( 'createdAt_DESC' );
+  const [skip, setSkip] = useState( 0 );
 
-  TIMEOUT_DELAY = 500;
+  const TIMEOUT_DELAY = 500;
+  const _breakpoint = 767;
 
-  /* eslint-disable react/sort-comp */
-  componentDidMount = () => {
-    this.tableMenuSelectionsOnMobile();
-    window.addEventListener( 'resize', this.tableMenuSelectionsOnResize );
-  }
+  // componentDidUpdate = ( _, prevState ) => {
+  //   const { itemsPerPage } = this.state;
 
-  componentDidUpdate = ( _, prevState ) => {
-    const { itemsPerPage } = this.state;
+  //   if ( prevState.itemsPerPage !== itemsPerPage ) {
+  //     this.handleResetActivePage();
+  //   }
+  // }
 
-    if ( prevState.itemsPerPage !== itemsPerPage ) {
-      this.handleResetActivePage();
+  const tableMenuSelectionsOnMobile = () => {
+    if ( isMobile() ) {
+      setTableHeaders( [...tableHeaders, ...columnMenu] );
     }
-  }
-
-  componentWillUnmount = () => {
-    window.removeEventListener( 'resize', this.tableMenuSelectionsOnResize );
-  }
-
-  handleItemsPerPageChange = ( e, value ) => {
-    this.setState( { itemsPerPage: value } );
   };
 
-  handlePageChange = ( e, { activePage } ) => {
-    this.setState( prevState => {
-      const { itemsPerPage } = prevState;
-      const skip = ( activePage - 1 ) * itemsPerPage;
+  const tableMenuSelectionsOnResize = debounce( () => {
+    const currentWidth = window.innerWidth;
 
-      return {
-        selectedItems: new Map(),
-        displayActionsMenu: false,
-        activePage,
-        skip
-      };
-    } );
+    if ( windowWidth !== '' && windowWidth <= _breakpoint && !isWindowWidthLessThanOrEqualTo( _breakpoint ) ) {
+      setTableHeaders( persistentTableHeaders );
+      setWindowWidth( currentWidth );
+    }
+
+    if ( isWindowWidthLessThanOrEqualTo( _breakpoint ) ) {
+      setTableHeaders( [...persistentTableHeaders, ...columnMenu] );
+      setWindowWidth( currentWidth );
+    }
+
+    setWindowWidth( currentWidth );
+  }, TIMEOUT_DELAY, { leading: false, trailing: true } );
+
+  const { dispatch, state } = useContext( DashboardContext );
+
+  useEffect( () => {
+    tableMenuSelectionsOnMobile();
+    window.addEventListener( 'resize', tableMenuSelectionsOnResize );
+
+    // Clean up event listener on dismount
+    return () => {
+      window.removeEventListener( 'resize', tableMenuSelectionsOnResize );
+    };
+  }, [] );
+
+  const variables = { team: team.name, searchTerm };
+  const countData = useQuery( state.queries.count, {
+    variables: { ...variables }
+  } );
+
+  useEffect( () => {
+    const { data, error, loading: countLoading } = countData;
+
+    dispatch( { type: 'UPDATE_COUNT', payload: { count: { data, error, countLoading }, team } } );
+  }, [countData] );
+
+  const handleItemsPerPageChange = ( e, value ) => {
+    setItemsPerPage( value );
   };
 
-  handleResetActivePage = () => {
-    this.setState( { activePage: 1, skip: 0 } );
-  }
+  const handlePageChange = () => {
+    setSelectedItems( new Map() );
+    setDisplayActionsMenu( false );
+    setSkip( ( activePage - 1 ) * itemsPerPage );
+  };
 
-  handleResetSelections = () => {
-    this.setState(
-      {
-        selectedItems: new Map(),
-        displayActionsMenu: false
-      },
-      this.handleResetActivePage
-    );
-  }
+  const handleResetActivePage = () => {
+    setActivePage( 1 );
+    setSkip( 0 );
+  };
 
-  handleSearchSubmit = ( e, searchTerm ) => {
+  const handleResetSelections = () => {
+    setSelectedItems( new Map() );
+    setDisplayActionsMenu( false );
+    handleResetActivePage();
+  };
+
+  const handleSearchSubmit = e => {
     e.preventDefault();
-    this.setState(
-      { searchTerm: searchTerm.trim() },
-      this.handleResetActivePage
-    );
-  }
+    setSearchTerm( searchTerm.trim() );
+    handleResetActivePage();
+  };
 
-  handleSort = clickedColumn => () => {
-    const { displayActionsMenu } = this.state;
-
+  const handleSort = clickedColumn => () => {
     if ( displayActionsMenu ) return;
 
     // Pass column, direction to TableBody so re-rendered on TableHeader click
     // Reset to first page of results after sort
-    this.setState( prevState => {
-      const column = prevState.column !== clickedColumn ? clickedColumn : prevState.column;
-      const direction = prevState.direction === 'ascending' ? 'descending' : 'ascending';
-      const orderBy = `${column}_${direction === 'ascending' ? 'ASC' : 'DESC'}`;
+    if ( column !== clickedColumn ) setColumn( clickedColumn );
+    setDirection( direction === 'ascending' ? 'descending' : 'ascending' );
+    setOrderBy( `${column}_${direction === 'ascending' ? 'ASC' : 'DESC'}` );
 
-      return {
-        column,
-        direction,
-        orderBy
-      };
-    }, this.handleResetActivePage );
+    handleResetActivePage();
   };
 
-  tableMenuOnChange = e => {
+  const tableMenuOnChange = e => {
     e.persist();
     const menuItem = {
       name: e.target.parentNode.dataset.propname,
       label: e.target.parentNode.dataset.proplabel
     };
 
-    this.setState( prevState => {
-      if ( prevState.tableHeaders.map( h => h.name ).includes( menuItem.name ) ) {
-        return {
-          tableHeaders: prevState.tableHeaders.filter( h => h.name !== menuItem.name )
-        };
-      }
-
-      return { tableHeaders: [...prevState.tableHeaders, menuItem] };
-    } );
+    if ( tableHeaders.map( h => h.name ).includes( menuItem.name ) ) {
+      setTableHeaders( tableHeaders.filter( h => h.name !== menuItem.name ) );
+    } else {
+      setTableHeaders( [...tableHeaders, menuItem] );
+    }
   };
 
-  tableMenuSelectionsOnResize = debounce( () => {
-    const { persistentTableHeaders, columnMenu } = this.props;
-    const windowWidth = window.innerWidth;
-    const { windowWidth: prevWindowWidth } = this.state;
-
-    if ( prevWindowWidth !== '' && prevWindowWidth <= this._breakpoint && !isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
-      return this.setState( { tableHeaders: persistentTableHeaders, windowWidth } );
-    }
-    if ( isWindowWidthLessThanOrEqualTo( this._breakpoint ) ) {
-      return this.setState( { tableHeaders: [...persistentTableHeaders, ...columnMenu], windowWidth } );
-    }
-
-    return this.setState( { windowWidth } );
-  }, this.TIMEOUT_DELAY, { leading: false, trailing: true } )
-
-  tableMenuSelectionsOnMobile = () => {
-    if ( isMobile() ) {
-      const { columnMenu } = this.props;
-
-      this.setState( prevState => ( {
-        tableHeaders: [...prevState.tableHeaders, ...columnMenu]
-      } ) );
-    }
-  }
-
-  toggleAllItemsSelection = e => {
+  const toggleAllItemsSelection = e => {
     e.stopPropagation();
     const allItems = Array
       .from( document.querySelectorAll( '[data-label]' ) )
       .map( item => item.dataset.label );
 
-    this.setState( prevState => {
-      const newSelectedItems = new Map();
+    const newSelectedItems = new Map();
 
-      allItems.forEach( item => {
-        newSelectedItems.set( item, !prevState.hasSelectedAllItems );
-      } );
-
-      return {
-        selectedItems: newSelectedItems,
-        hasSelectedAllItems: !prevState.hasSelectedAllItems,
-        displayActionsMenu: !prevState.hasSelectedAllItems
-      };
+    allItems.forEach( item => {
+      newSelectedItems.set( item, !hasSelectedAllItems );
     } );
-  }
 
-  toggleItemSelection = ( e, data ) => {
-    const isChecked = data.checked;
+    setSelectedItems( newSelectedItems );
+    setHasSelectedAllItems( !hasSelectedAllItems );
+    setDisplayActionsMenu( !hasSelectedAllItems );
+  };
 
-    this.setState( prevState => {
-      const updatedSelectedItems = prevState.selectedItems.set( String( data['data-label'] ), isChecked );
-      const areOtherItemsSelected = Array.from( updatedSelectedItems.values() ).includes( true );
+  const toggleItemSelection = ( e, d ) => {
+    const isChecked = d.checked;
 
-      return {
-        selectedItems: updatedSelectedItems,
-        displayActionsMenu: areOtherItemsSelected
-      };
-    } );
-  }
+    const updatedSelectedItems = selectedItems.set( String( d['data-label'] ), isChecked );
+    const areOtherItemsSelected = Array.from( updatedSelectedItems.values() ).includes( true );
 
-  render() {
-    const {
-      tableHeaders,
-      displayActionsMenu,
-      column,
-      direction,
-      selectedItems,
-      searchTerm,
-      activePage,
-      itemsPerPage,
-      skip,
-      orderBy,
-      windowWidth
-    } = this.state;
+    setSelectedItems( updatedSelectedItems );
+    setDisplayActionsMenu( areOtherItemsSelected );
+  };
 
-    const { columnMenu, projectTab, team } = this.props;
+  const bodyPaginationVars = { first: itemsPerPage, orderBy, skip };
+  const paginationVars = { first: itemsPerPage, skip };
 
-    const variables = { team: team.name, searchTerm };
+  const count = state?.count?.count ? state.count.count : null;
+  const error = state?.count?.error ? state.count.error : null;
+  const loading = state?.count?.loading ? state.count.loading : false;
 
-    const bodyPaginationVars = { first: itemsPerPage, orderBy, skip };
-    const paginationVars = { first: itemsPerPage, skip };
-
-    return (
-      <Grid>
-        <Grid.Row className="items_tableSearch">
-          <TableSearch handleSearchSubmit={ this.handleSearchSubmit } />
-        </Grid.Row>
-        <Grid.Row className="items_tableMenus_wrapper">
-          <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
-            <TableActionsMenu
-              team={ team }
-              displayActionsMenu={ displayActionsMenu }
-              variables={ { ...variables, ...paginationVars } }
-              selectedItems={ selectedItems }
-              handleResetSelections={ this.handleResetSelections }
-              toggleAllItemsSelection={ this.toggleAllItemsSelection }
-            />
-          </Grid.Column>
-          <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 } className="items_tableMenus">
-            <TableItemsDisplay
-              team={ team }
-              handleChange={ this.handleItemsPerPageChange }
-              searchTerm={ searchTerm }
-              value={ itemsPerPage }
-              variables={ { ...variables, ...paginationVars } }
-            />
-            <TableMenu
-              columnMenu={ columnMenu }
-              tableMenuOnChange={ this.tableMenuOnChange }
-            />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column className="items_table_wrapper">
-            <div className="items_table">
-              <Table sortable celled>
-                <TableHeader
-                  tableHeaders={ tableHeaders }
-                  column={ column }
-                  direction={ direction }
-                  handleSort={ this.handleSort }
-                  toggleAllItemsSelection={ this.toggleAllItemsSelection }
-                  displayActionsMenu={ displayActionsMenu }
-                />
-                <TableBody
-                  searchTerm={ searchTerm }
-                  selectedItems={ selectedItems }
-                  tableHeaders={ tableHeaders }
-                  toggleItemSelection={ this.toggleItemSelection }
-                  team={ team }
-                  bodyPaginationVars={ { ...bodyPaginationVars } }
-                  variables={ { ...variables } }
-                  windowWidth={ windowWidth }
-                  column={ column }
-                  direction={ direction }
-                  projectTab={ projectTab }
-                />
-              </Table>
-            </div>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column className="items_tablePagination">
-            <TablePagination
-              activePage={ activePage }
-              handlePageChange={ this.handlePageChange }
-              itemsPerPage={ itemsPerPage }
-              variables={ variables }
-              team={ team }
-            />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    );
-  }
-}
+  return (
+    <Grid>
+      <Grid.Row className="items_tableSearch">
+        <TableSearch handleSearchSubmit={ handleSearchSubmit } />
+      </Grid.Row>
+      <Grid.Row className="items_tableMenus_wrapper">
+        <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
+          <TableActionsMenu
+            team={ team }
+            displayActionsMenu={ displayActionsMenu }
+            variables={ { ...variables, ...paginationVars } }
+            selectedItems={ selectedItems }
+            handleResetSelections={ handleResetSelections }
+            toggleAllItemsSelection={ toggleAllItemsSelection }
+          />
+        </Grid.Column>
+        <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 } className="items_tableMenus">
+          <TableItemsDisplay
+            count={ count }
+            error={ error }
+            loading={ loading }
+            handleChange={ handleItemsPerPageChange }
+            itemsPerPage={ itemsPerPage }
+            searchTerm={ searchTerm }
+            skip={ skip }
+          />
+          <TableMenu
+            columnMenu={ columnMenu }
+            tableMenuOnChange={ tableMenuOnChange }
+          />
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column className="items_table_wrapper">
+          <div className="items_table">
+            <Table sortable celled>
+              <TableHeader
+                tableHeaders={ tableHeaders }
+                column={ column }
+                direction={ direction }
+                handleSort={ handleSort }
+                toggleAllItemsSelection={ toggleAllItemsSelection }
+                displayActionsMenu={ displayActionsMenu }
+              />
+              <TableBody
+                searchTerm={ searchTerm }
+                selectedItems={ selectedItems }
+                tableHeaders={ tableHeaders }
+                toggleItemSelection={ toggleItemSelection }
+                team={ team }
+                bodyPaginationVars={ { ...bodyPaginationVars } }
+                variables={ { ...variables } }
+                windowWidth={ windowWidth }
+                column={ column }
+                direction={ direction }
+                projectTab={ projectTab }
+              />
+            </Table>
+          </div>
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column className="items_tablePagination">
+          <TablePagination
+            activePage={ activePage }
+            handlePageChange={ handlePageChange }
+            itemsPerPage={ itemsPerPage }
+            variables={ variables }
+            team={ team }
+          />
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+  );
+};
 
 ScrollableTableWithMenu.propTypes = {
   persistentTableHeaders: PropTypes.array,
