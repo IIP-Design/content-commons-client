@@ -82,7 +82,8 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
 
   const variables = { team: team.name, searchTerm };
   const countData = useQuery( state.queries.count, {
-    variables: { ...variables }
+    variables: { ...variables },
+    fetchPolicy: 'cache-and-network'
   } );
 
   useEffect( () => {
@@ -95,10 +96,11 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     setItemsPerPage( value );
   };
 
-  const handlePageChange = () => {
+  const handlePageChange = ( e, { activePage: page } ) => {
     setSelectedItems( new Map() );
     setDisplayActionsMenu( false );
-    setSkip( ( activePage - 1 ) * itemsPerPage );
+    setActivePage( page );
+    setSkip( ( page - 1 ) * itemsPerPage );
   };
 
   const handleResetActivePage = () => {
@@ -243,10 +245,11 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
         <Grid.Column className="items_tablePagination">
           <TablePagination
             activePage={ activePage }
+            count={ count }
+            error={ error }
+            loading={ loading }
             handlePageChange={ handlePageChange }
             itemsPerPage={ itemsPerPage }
-            variables={ variables }
-            team={ team }
           />
         </Grid.Column>
       </Grid.Row>

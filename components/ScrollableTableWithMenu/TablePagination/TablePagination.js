@@ -1,42 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
 import { Pagination } from 'semantic-ui-react';
+
 import ApolloError from 'components/errors/ApolloError';
-import { getProjectsType, setProjectsQueries } from 'lib/graphql/util';
-import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/video';
-import { TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
+
 import './TablePagination.scss';
 
-const TablePagination = props => {
-  const {
-    activePage, handlePageChange, itemsPerPage, variables, team
-  } = props;
-
-  // Determine type of dashboard projects
-  const dashboardProjectsType = getProjectsType( team );
-
-  // Determine which Query to run
-  const graphQuery = setProjectsQueries( team, {
-    videoProjects: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
-    packages: TEAM_PACKAGES_COUNT_QUERY
-  } );
-
-  const { loading, error, data } = useQuery( graphQuery, {
-    variables: { ...variables },
-    fetchPolicy: 'cache-and-network'
-  } );
-
+const TablePagination = ( {
+  activePage, count, error, loading, handlePageChange, itemsPerPage
+} ) => {
   if ( loading ) return 'Loading....';
   if ( error ) return <ApolloError error={ error } />;
 
-  const dashboardData = data[dashboardProjectsType];
-  if ( !dashboardData ) return null;
+  if ( !count ) return null;
 
-  const projectsCount = dashboardData.length;
-  const totalPages = Math.ceil( projectsCount / itemsPerPage );
+  const totalPages = Math.ceil( count / itemsPerPage );
 
-  if ( projectsCount > 0 && totalPages > 1 ) {
+  if ( count > 0 && totalPages > 1 ) {
     return (
       <Pagination
         activePage={ activePage }
@@ -55,12 +35,12 @@ const TablePagination = props => {
 };
 
 TablePagination.propTypes = {
-  team: PropTypes.object,
   activePage: PropTypes.number,
+  count: PropTypes.number,
+  error: PropTypes.object,
   handlePageChange: PropTypes.func,
   itemsPerPage: PropTypes.number,
-  variables: PropTypes.object
+  loading: PropTypes.bool
 };
 
 export default TablePagination;
-export { TEAM_VIDEO_PROJECTS_COUNT_QUERY };
