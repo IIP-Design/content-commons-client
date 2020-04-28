@@ -5,13 +5,16 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import ApolloError from 'components/errors/ApolloError';
+import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
 import FormInstructions from 'components/admin/FormInstructions/FormInstructions';
 import GraphicProjectDetailsFormContainer from 'components/admin/ProjectDetailsForm/GraphicProjectDetailsFormContainer/GraphicProjectDetailsFormContainer';
+import GraphicProjectSupportFiles from 'components/admin/ProjectSupportFiles/GraphicProjectSupportFiles/GraphicProjectSupportFiles';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg';
 // import withFileUpload from 'hocs/withFileUpload/withFileUpload';
+import { getPluralStringOrNot } from 'lib/utils';
 import { DELETE_GRAPHIC_PROJECT_MUTATION, GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
 
 const GraphicEdit = props => {
@@ -80,6 +83,10 @@ const GraphicEdit = props => {
     if ( timer ) clearTimeout( timer );
     /* eslint-disable no-param-reassign */
     timer = setTimeout( fn, delay );
+  };
+
+  const handleAddFiles = () => {
+    console.log( 'add files' );
   };
 
   const handleExit = () => {
@@ -194,6 +201,25 @@ const GraphicEdit = props => {
     //   // 5. update url to reflect a new project (only new)
     //   addProjectIdToUrl( id );
   };
+
+  const getSupportFiles = type => {
+    if ( type === 'editable' ) {
+      return data?.graphicProject?.supportFiles.filter( file => {
+        const { filetype } = file;
+
+        return filetype.startsWith( 'image' ) || filetype.includes( 'application/pdf' ) || filetype.includes( 'application/postscript' );
+      } ) || [];
+    }
+
+    return data?.graphicProject?.supportFiles.filter( file => {
+      const { filetype } = file;
+
+      return !filetype.startsWith( 'image' ) && !filetype.includes( 'application/pdf' ) && !filetype.includes( 'application/postscript' );
+    } ) || [];
+  };
+
+  const editableSupportFiles = getSupportFiles( 'editable' );
+  const additionalSupportFiles = getSupportFiles( 'additional' );
 
   const centeredStyles = {
     position: 'absolute',
@@ -330,6 +356,38 @@ const GraphicEdit = props => {
               fileProgressMessage
             />
           ) }
+      </div>
+
+      <div className="edit-project__support-files">
+        <div className="heading" style={ { display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '1.5rem' } }>
+          <h2 className="uppercase" style={ { marginBottom: 0 } }>Support Files</h2>
+          { projectId
+            && (
+              <ButtonAddFiles
+                accept="image/*, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc"
+                onChange={ handleAddFiles }
+                multiple
+              >
+                + Add Files
+              </ButtonAddFiles>
+            ) }
+        </div>
+
+        <div className="support-files-container" style={ { display: 'grid', gridTemplateColumns: 'repeat(2, 0.5fr)' } }>
+          <GraphicProjectSupportFiles
+            projectId={ projectId }
+            headline={ getPluralStringOrNot( editableSupportFiles, 'editable file' ) }
+            helperText="Original files that may be edited and adapted as needed for reuse."
+            files={ editableSupportFiles }
+          />
+
+          <GraphicProjectSupportFiles
+            projectId={ projectId }
+            headline={ getPluralStringOrNot( additionalSupportFiles, 'additional file' ) }
+            helperText="Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics."
+            files={ additionalSupportFiles }
+          />
+        </div>
       </div>
     </div>
   );
