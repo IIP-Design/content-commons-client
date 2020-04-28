@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v4.0.0...HEAD)
+_This sections lists changes committed since most recent release_
+
+**Added:**
+- Added countries filter to frontend search
+- Added scss module support to next config
+
+**Changed:**
+- Use component state instead of props for checkboxes in filter menus
+- Swap out airbnb eslint config for custom GPA/LAB shared config
+- Paginate and sort Dashboard on the server and not the client
+- Removed subscription data from TableBody & updated test
+
+**Fixed:**
+- Fixed width in files popover menu
+
 # [4.0.0](https://github.com/IIP-Design/content-commons-client/compare/v3.1.1...v4.0.0)
 
 **Added:**
