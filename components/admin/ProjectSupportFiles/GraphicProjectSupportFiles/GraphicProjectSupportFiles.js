@@ -90,7 +90,7 @@ const GraphicProjectSupportFiles = props => {
 
       { getCount( files )
         ? renderList()
-        : <p className="no-files">no files available</p> }
+        : <p className="no-files">No files to upload</p> }
     </div>
   );
 };
