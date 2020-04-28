@@ -45,9 +45,36 @@ const GraphicProjectSupportFiles = props => {
     } ).catch( err => console.dir( err ) );
   };
 
-  if ( !getCount( files ) ) {
-    return <p>no files available</p>;
-  }
+  const renderList = () => (
+    <ul className="support-files-list">
+      { files.map( file => {
+        const { id, filename } = file;
+
+        return (
+          <li key={ id } className="support-file-item">
+            <span className="filename">{ filename }</span>
+
+            <span className="actions">
+              { headline.includes( 'editable' )
+                && (
+                  <LanguageDropdown
+                    id={ id }
+                    className="language"
+                    value={ file.language.id }
+                    onChange={ handleLanguageChange }
+                    required
+                  />
+                ) }
+
+              <FileRemoveReplaceButtonGroup
+                onRemove={ () => handleDelete( id ) }
+              />
+            </span>
+          </li>
+        );
+      } ) }
+    </ul>
+  );
 
   return (
     <div className={ `graphic-project-support-files ${headline.replace( ' ', '-' )}` }>
@@ -60,34 +87,10 @@ const GraphicProjectSupportFiles = props => {
           popupSize="mini"
         />
       </div>
-      <ul className="support-files-list">
-        { files.map( file => {
-          const { id, filename } = file;
 
-          return (
-            <li key={ id } className="support-file-item">
-              <span className="filename">{ filename }</span>
-
-              <span className="actions">
-                { headline.includes( 'editable' )
-                  && (
-                    <LanguageDropdown
-                      id={ id }
-                      className="language"
-                      value={ file.language.id }
-                      onChange={ handleLanguageChange }
-                      required
-                    />
-                  ) }
-
-                <FileRemoveReplaceButtonGroup
-                  onRemove={ () => handleDelete( id ) }
-                />
-              </span>
-            </li>
-          );
-        } ) }
-      </ul>
+      { getCount( files )
+        ? renderList()
+        : <p className="no-files">no files available</p> }
     </div>
   );
 };
