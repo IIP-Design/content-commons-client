@@ -382,6 +382,8 @@ const GraphicEdit = props => {
             files={ editableSupportFiles }
           />
 
+          <div className="separator" />
+
           <GraphicProjectSupportFiles
             projectId={ projectId }
             headline={ getPluralStringOrNot( additionalSupportFiles, 'additional file' ) }
