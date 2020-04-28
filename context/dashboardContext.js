@@ -14,19 +14,6 @@ const initialState = {
 
 export const DashboardContext = React.createContext( initialState );
 
-// Determine type of dashboard projects
-// const dashboardProjectsType = getProjectsType( team );
-
-// // Determine which queries to run
-// const graphQueries = setProjectsQueries( team, {
-//   graphicProjects: TEAM_GRAPHIC_PROJECTS_QUERY,
-//   graphicProjectsCount: TEAM_GRAPHIC_PROJECTS_COUNT_QUERY,
-//   videoProjects: TEAM_VIDEO_PROJECTS_QUERY,
-//   videoProjectsCount: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
-//   packages: TEAM_PACKAGES_QUERY,
-//   packagesCount: TEAM_PACKAGES_COUNT_QUERY
-// } );
-
 const testContentTypes = team => {
   const contentTypes = team?.contentTypes ? team.contentTypes : '';
 
@@ -71,11 +58,6 @@ export const setQueries = team => {
 
 export const dashboardReducer = ( state, action ) => {
   switch ( action.type ) {
-  case 'set-queries':
-    return {
-      ...state,
-      queries: setQueries( action.payload.team )
-    };
   case 'UPDATE_COUNT':
     return {
       ...state,
