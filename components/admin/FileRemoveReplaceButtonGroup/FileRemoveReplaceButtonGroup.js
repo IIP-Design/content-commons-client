@@ -16,7 +16,7 @@ const FileRemoveReplaceButtonGroup = props => {
     <Button.Group basic className="FileRemoveReplaceButtonGroup__btn-group">
       <Button onClick={ onRemove } disabled={ disableRemove }>
         <span tooltip="Remove">
-          <img src={ removeIcon } alt="Remove Video File Button" />
+          <img src={ removeIcon } alt="Remove File Button" />
         </span>
       </Button>
     </Button.Group>
