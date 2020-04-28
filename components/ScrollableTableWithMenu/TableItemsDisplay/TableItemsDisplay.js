@@ -3,15 +3,11 @@
  * TableItemsDisplay
  *
  */
-
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
-import { Dropdown, Grid, Loader } from 'semantic-ui-react';
-import { getProjectsType, setProjectsQueries } from 'lib/graphql/util';
+import React from 'react';
 import ApolloError from 'components/errors/ApolloError';
-import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/video';
-import { TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
+import PropTypes from 'prop-types';
+import { Dropdown, Grid, Loader } from 'semantic-ui-react';
+
 import './TableItemsDisplay.scss';
 
 const displaySizeOptions = [
@@ -19,32 +15,18 @@ const displaySizeOptions = [
   { key: 25, value: 25, text: '25' },
   { key: 50, value: 50, text: '50' },
   { key: 75, value: 75, text: '75' },
-  { key: 100, value: 100, text: '100' },
+  { key: 100, value: 100, text: '100' }
 ];
 
-const TableItemsDisplay = props => {
-  const {
-    team,
-    handleChange,
-    searchTerm,
-    value: count,
-    variables,
-    variables: { skip }
-  } = props;
-
-  // Determine type of dashboard projects
-  const dashboardProjectsType = getProjectsType( team );
-
-  // Determine which Query to run
-  const graphQuery = setProjectsQueries( team, {
-    videoProjects: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
-    packages: TEAM_PACKAGES_COUNT_QUERY
-  } );
-
-  const { loading, error, data } = useQuery( graphQuery, {
-    variables: { ...variables }
-  } );
-
+const TableItemsDisplay = ( {
+  count,
+  error,
+  loading,
+  handleChange,
+  itemsPerPage,
+  searchTerm,
+  skip
+} ) => {
   if ( loading ) {
     return (
       <Grid.Column className="items_display">
@@ -62,40 +44,48 @@ const TableItemsDisplay = props => {
     );
   }
 
-  const dashboardData = data[dashboardProjectsType];
-  if ( !dashboardData ) return null;
+  if ( !count ) return null;
 
-  const projectsCount = dashboardData.length;
   const firstPageItem = skip + 1;
   const range = skip + count;
-  const lastPageItem = range < projectsCount ? range : projectsCount;
+  const lastPageItem = range < count ? range : count;
 
   return (
     <Grid.Column className="items_display">
       <span>
-        Show:{ ' ' }
+        { 'Show: ' }
         <Dropdown
           id="items-per-page"
           inline
           options={ displaySizeOptions }
-          value={ count }
+          value={ itemsPerPage }
           onChange={ ( e, { value } ) => handleChange( e, value ) }
         />
         { ' | ' }
-        { projectsCount > 0
-          ? <span>{ firstPageItem } - { lastPageItem } of { projectsCount }{ searchTerm && <Fragment> for &ldquo;{ searchTerm }&rdquo;</Fragment> }</span>
-          : <span>No { searchTerm ? 'results' : 'projects' }{ searchTerm && <Fragment> for &ldquo;{ searchTerm }&rdquo;</Fragment> }</span> }
+        { count > 0 ? (
+          <span>
+            {`${firstPageItem} - ${lastPageItem} of ${count}`}
+            { searchTerm && ` for &ldquo; ${searchTerm} &rdquo`}
+          </span>
+        ) : (
+          <span>
+            {`No ${searchTerm ? 'results' : 'projects'}` }
+            { searchTerm && ` for &ldquo; ${searchTerm} &rdquo;` }
+          </span>
+        ) }
       </span>
     </Grid.Column>
   );
 };
 
 TableItemsDisplay.propTypes = {
-  team: PropTypes.object,
+  count: PropTypes.number,
+  error: PropTypes.object,
   handleChange: PropTypes.func,
+  itemsPerPage: PropTypes.number,
+  loading: PropTypes.bool,
   searchTerm: PropTypes.string,
-  value: PropTypes.number,
-  variables: PropTypes.object,
+  skip: PropTypes.number
 };
 
 export default TableItemsDisplay;
