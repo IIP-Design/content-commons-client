@@ -31,7 +31,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   const [windowWidth, setWindowWidth] = useState( null );
   const [searchTerm, setSearchTerm] = useState( '' );
   const [activePage, setActivePage] = useState( 1 );
-  const [itemsPerPage, setItemsPerPage] = useState( 15 );
+  const [itemsPerPage, setItemsPerPage] = useState( 2 );
   const [orderBy, setOrderBy] = useState( 'createdAt_DESC' );
   const [skip, setSkip] = useState( 0 );
 
@@ -81,16 +81,31 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   }, [] );
 
   const variables = { team: team.name, searchTerm };
+  const bodyPaginationVars = { first: itemsPerPage, orderBy, skip };
+  const paginationVars = { first: itemsPerPage, skip };
+
   const countData = useQuery( state.queries.count, {
     variables: { ...variables },
     fetchPolicy: 'cache-and-network'
   } );
 
-  useEffect( () => {
-    const { data, error, loading: countLoading } = countData;
+  const contentData = useQuery( state.queries.content, {
+    variables: column === 'author' ? { ...variables } : { ...variables, ...bodyPaginationVars },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network'
+  } );
 
-    dispatch( { type: 'UPDATE_COUNT', payload: { count: { data, error, countLoading }, team } } );
+  useEffect( () => {
+    const { data, error, loading, refetch } = countData;
+
+    dispatch( { type: 'UPDATE_COUNT', payload: { count: { data, error, loading, refetch }, team } } );
   }, [countData] );
+
+  useEffect( () => {
+    const { data, error, loading, refetch } = contentData;
+
+    dispatch( { type: 'UPDATE_CONTENT', payload: { data, error, loading, refetch, type: state.projectType } } );
+  }, [contentData] );
 
   const handleItemsPerPageChange = ( e, value ) => {
     setItemsPerPage( value );
@@ -154,13 +169,15 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
 
     const newSelectedItems = new Map();
 
+    const hasSelected = !hasSelectedAllItems;
+
     allItems.forEach( item => {
-      newSelectedItems.set( item, !hasSelectedAllItems );
+      newSelectedItems.set( item, hasSelected );
     } );
 
     setSelectedItems( newSelectedItems );
-    setHasSelectedAllItems( !hasSelectedAllItems );
-    setDisplayActionsMenu( !hasSelectedAllItems );
+    setHasSelectedAllItems( hasSelected );
+    setDisplayActionsMenu( hasSelected );
   };
 
   const toggleItemSelection = ( e, d ) => {
@@ -173,12 +190,15 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     setDisplayActionsMenu( areOtherItemsSelected );
   };
 
-  const bodyPaginationVars = { first: itemsPerPage, orderBy, skip };
-  const paginationVars = { first: itemsPerPage, skip };
-
   const count = state?.count?.count ? state.count.count : null;
-  const error = state?.count?.error ? state.count.error : null;
-  const loading = state?.count?.loading ? state.count.loading : false;
+  const countError = state?.count?.error ? state.count.error : null;
+  const countLoading = state?.count?.loading ? state.count.loading : false;
+  const countRefetch = state?.count?.refetch ? state.count.refetch : () => {};
+
+  const projectData = state?.content?.data ? state.content.data : null;
+  const projectError = state?.content?.error ? state.content.error : null;
+  const projectLoading = state?.content?.loading ? state.content.loading : false;
+  const projectRefetch = state?.content?.refetch ? state.content.refetch : () => {};
 
   return (
     <Grid>
@@ -194,13 +214,14 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
             selectedItems={ selectedItems }
             handleResetSelections={ handleResetSelections }
             toggleAllItemsSelection={ toggleAllItemsSelection }
+            refetch={ countRefetch }
           />
         </Grid.Column>
         <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 } className="items_tableMenus">
           <TableItemsDisplay
             count={ count }
-            error={ error }
-            loading={ loading }
+            error={ countError }
+            loading={ countLoading }
             handleChange={ handleItemsPerPageChange }
             itemsPerPage={ itemsPerPage }
             searchTerm={ searchTerm }
@@ -225,17 +246,18 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
                 displayActionsMenu={ displayActionsMenu }
               />
               <TableBody
+                bodyPaginationVars={ { ...bodyPaginationVars } }
+                column={ column }
+                data={ projectData }
+                direction={ direction }
+                error={ projectError }
+                loading={ projectLoading }
+                projectTab={ projectTab }
                 searchTerm={ searchTerm }
                 selectedItems={ selectedItems }
                 tableHeaders={ tableHeaders }
                 toggleItemSelection={ toggleItemSelection }
                 team={ team }
-                bodyPaginationVars={ { ...bodyPaginationVars } }
-                variables={ { ...variables } }
-                windowWidth={ windowWidth }
-                column={ column }
-                direction={ direction }
-                projectTab={ projectTab }
               />
             </Table>
           </div>
@@ -246,8 +268,8 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
           <TablePagination
             activePage={ activePage }
             count={ count }
-            error={ error }
-            loading={ loading }
+            error={ countError }
+            loading={ countLoading }
             handlePageChange={ handlePageChange }
             itemsPerPage={ itemsPerPage }
           />

@@ -1,12 +1,12 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
 
-import { getProjectsType, setProjectsQueries, setProjectTitle } from 'lib/graphql/util';
+import { normalizeDashboardData } from 'lib/graphql/util';
 import { TEAM_GRAPHIC_PROJECTS_QUERY, TEAM_GRAPHIC_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/graphic';
 import { TEAM_VIDEO_PROJECTS_QUERY, TEAM_VIDEO_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/video';
 import { TEAM_PACKAGES_QUERY, TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
 
 const initialState = {
+  content: {},
   count: {},
   queries: null,
   team: { contentTypes: null }
@@ -82,13 +82,25 @@ export const dashboardReducer = ( state, action ) => {
       count: {
         count: parseCount( action.payload.count.data, action.payload.team ),
         error: action.payload.count.error,
-        loading: action.payload.count.loading
+        loading: action.payload.count.loading,
+        refetch: action.payload.count.refetch
+      }
+    };
+  case 'UPDATE_CONTENT':
+    return {
+      ...state,
+      content: {
+        data: normalizeDashboardData( action.payload.data, action.payload.type ),
+        error: action.payload.error,
+        loading: action.payload.loading,
+        refetch: action.payload.refetch
       }
     };
   case 'UPDATE_TEAM':
     return {
       ...state,
       team: action.payload.team,
+      projectType: testContentTypes( action.payload.team ),
       queries: setQueries( action.payload.team )
     };
   default:
