@@ -1,0 +1,17 @@
+.graphic-project-graphic-files {
+  .form-fields {
+    display: grid;
+    grid-template-columns: repeat( auto-fill, minmax( 300px, 0.5fr ) );
+    gap: 2rem;
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat( auto-fill, minmax( 150px, 1fr ) );
+      grid-column-gap: 1rem;
+
+      @media (max-width: 1160px) {
+        margin-bottom: 1.25rem;
+      }
+    }
+  }
+}

@@ -7,6 +7,7 @@ import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import AddFilesSectionHeading from 'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading';
 import ApolloError from 'components/errors/ApolloError';
 import GraphicProjectDetailsFormContainer from 'components/admin/ProjectDetailsForm/GraphicProjectDetailsFormContainer/GraphicProjectDetailsFormContainer';
+import GraphicProjectGraphicFiles from 'components/admin/ProjectEdit/GraphicEdit/GraphicProjectGraphicFiles/GraphicProjectGraphicFiles';
 import GraphicProjectSupportFiles from 'components/admin/ProjectSupportFiles/GraphicProjectSupportFiles/GraphicProjectSupportFiles';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
@@ -218,6 +219,7 @@ const GraphicEdit = props => {
 
   const editableSupportFiles = getSupportFiles( 'editable' );
   const additionalSupportFiles = getSupportFiles( 'additional' );
+  const graphicFiles = data?.graphicProject?.images || [];
 
   const centeredStyles = {
     position: 'absolute',
@@ -369,6 +371,20 @@ const GraphicEdit = props => {
             files={ additionalSupportFiles }
           />
         </div>
+      </div>
+
+      <div className="graphic-files">
+        <AddFilesSectionHeading
+          projectId={ projectId }
+          title="Graphics in Project"
+          acceptedFileTypes="image/*"
+          handleAddFiles={ handleAddFiles }
+        />
+
+        <GraphicProjectGraphicFiles
+          projectId={ projectId }
+          files={ graphicFiles }
+        />
       </div>
     </div>
   );
