@@ -6,7 +6,7 @@ import {
   CURRENT_USER_QUERY
 } from 'lib/graphql/queries/user';
 import { useRouter } from 'next/router';
-import { redirectTo, isDevEnvironment } from 'lib/browser';
+import { isDevEnvironment } from 'lib/browser';
 import { isRestrictedPage } from 'lib/authentication';
 import cookie from 'js-cookie';
 import cookies from 'next-cookies';
@@ -80,11 +80,11 @@ export const fetchUser = async ctx => {
  * Exported to make avaiale for SSR
  * @param {*} ctx next.js context object
  */
-export const canAccessPage = async ctx => { 
+export const canAccessPage = async ctx => {
   // are we on a page that requires permissions?
-  if ( isRestrictedPage( ctx ) ) {  
+  if ( isRestrictedPage( ctx ) ) {
     const user = await fetchUser( ctx );
-    
+
     // No valid user, return
     if ( !user ) {
       return false;
@@ -119,9 +119,9 @@ function AuthProvider( props ) {
   } );
 
   // Sign in mutation
-  const [signIn, { loading: signInLoading, error: signInError }] = useMutation(
+  const [signIn] = useMutation(
     CLOUDFLARE_SIGNIN_MUTATION, {
-      refetchQueries: [{ query: CURRENT_USER_QUERY }] 
+      refetchQueries: [{ query: CURRENT_USER_QUERY }]
     }
   );
 
@@ -149,21 +149,21 @@ function AuthProvider( props ) {
   } );
 
 
-  const login = async () => {
+  const login = async() => {
     // do we have a CloudFlare token?
     const cfAuth = cookie.get( 'CF_Authorization' );
 
     if ( cfAuth ) {
       // ensure signIn only called once
       if ( !attemptToSignIntoCF ) {
-        signIn( { variables: { token: cfAuth } } ).catch( err => console.dir( signInError ) );
+        signIn( { variables: { token: cfAuth } } ).catch( err => {} );
         setAttemptToSignIntoCF( true );
       }
     }
   };
 
   const logout = async() => signOut();
-  const register = () => console.log( 'register' );
+  const register = () => {};
 
   if ( data?.user ) {
     data.user.esToken = cookie.get( 'ES_TOKEN' );
