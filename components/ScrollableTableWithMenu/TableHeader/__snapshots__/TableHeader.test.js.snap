@@ -3,7 +3,6 @@
 exports[`<TableHeader /> renders without crashing 1`] = `
 Array [
   <TableHeader
-    displayActionsMenu={false}
     handleSort={
       [MockFunction] {
         "calls": Array [
@@ -76,16 +75,16 @@ Array [
           >
             <TableHeaderCell
               as="th"
-              className=""
+              className="displayActionsMenu"
               key="projectTitle"
               sorted={null}
             >
               <TableCell
                 as="th"
-                className=""
+                className="displayActionsMenu"
               >
                 <th
-                  className=""
+                  className="displayActionsMenu"
                 >
                   PROJECT TITLE
                 </th>
@@ -93,16 +92,16 @@ Array [
             </TableHeaderCell>
             <TableHeaderCell
               as="th"
-              className=""
+              className="displayActionsMenu"
               key="createdAt"
               sorted={null}
             >
               <TableCell
                 as="th"
-                className=""
+                className="displayActionsMenu"
               >
                 <th
-                  className=""
+                  className="displayActionsMenu"
                 >
                   CREATED
                 </th>
@@ -110,16 +109,16 @@ Array [
             </TableHeaderCell>
             <TableHeaderCell
               as="th"
-              className=""
+              className="displayActionsMenu"
               key="visibility"
               sorted={null}
             >
               <TableCell
                 as="th"
-                className=""
+                className="displayActionsMenu"
               >
                 <th
-                  className=""
+                  className="displayActionsMenu"
                 >
                   VISIBILITY
                 </th>
@@ -127,16 +126,16 @@ Array [
             </TableHeaderCell>
             <TableHeaderCell
               as="th"
-              className=""
+              className="displayActionsMenu"
               key="author"
               sorted="descending"
             >
               <TableCell
                 as="th"
-                className="descending sorted"
+                className="descending sorted displayActionsMenu"
               >
                 <th
-                  className="descending sorted"
+                  className="descending sorted displayActionsMenu"
                 >
                   AUTHOR
                 </th>
@@ -162,16 +161,16 @@ Array [
         >
           <TableHeaderCell
             as="th"
-            className=""
+            className="displayActionsMenu"
             key="projectTitle"
             sorted={null}
           >
             <TableCell
               as="th"
-              className=""
+              className="displayActionsMenu"
             >
               <th
-                className=""
+                className="displayActionsMenu"
               >
                 PROJECT TITLE
               </th>
@@ -179,16 +178,16 @@ Array [
           </TableHeaderCell>
           <TableHeaderCell
             as="th"
-            className=""
+            className="displayActionsMenu"
             key="createdAt"
             sorted={null}
           >
             <TableCell
               as="th"
-              className=""
+              className="displayActionsMenu"
             >
               <th
-                className=""
+                className="displayActionsMenu"
               >
                 CREATED
               </th>
@@ -196,16 +195,16 @@ Array [
           </TableHeaderCell>
           <TableHeaderCell
             as="th"
-            className=""
+            className="displayActionsMenu"
             key="visibility"
             sorted={null}
           >
             <TableCell
               as="th"
-              className=""
+              className="displayActionsMenu"
             >
               <th
-                className=""
+                className="displayActionsMenu"
               >
                 VISIBILITY
               </th>
@@ -213,16 +212,16 @@ Array [
           </TableHeaderCell>
           <TableHeaderCell
             as="th"
-            className=""
+            className="displayActionsMenu"
             key="author"
             sorted="descending"
           >
             <TableCell
               as="th"
-              className="descending sorted"
+              className="descending sorted displayActionsMenu"
             >
               <th
-                className="descending sorted"
+                className="descending sorted displayActionsMenu"
               >
                 AUTHOR
               </th>

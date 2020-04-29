@@ -69,12 +69,12 @@ TableBody.propTypes = {
   bodyPaginationVars: PropTypes.object,
   column: PropTypes.string,
   data: PropTypes.array,
+  direction: PropTypes.string,
   error: PropTypes.object,
   loading: PropTypes.bool,
+  projectTab: PropTypes.string,
   searchTerm: PropTypes.string,
-  tableHeaders: PropTypes.array,
-  direction: PropTypes.string,
-  projectTab: PropTypes.string
+  tableHeaders: PropTypes.array
 };
 
 export default TableBody;

@@ -24,14 +24,12 @@ const myProjectsProps = {
     },
     categories: 'about america'
   },
-  selectedItems: new Map(),
   tableHeaders: [
     { name: 'projectTitle', label: 'PROJECT TITLE' },
     { name: 'updatedAt', label: 'CREATED' },
     { name: 'visibility', label: 'VISIBILITY' },
     { name: 'author', label: 'AUTHOR' }
   ],
-  toggleItemSelection: jest.fn(),
   projectTab: 'myProjects'
 };
 

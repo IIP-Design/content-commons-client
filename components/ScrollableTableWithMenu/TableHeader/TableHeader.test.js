@@ -12,13 +12,12 @@ const props = {
     { name: 'visibility', label: 'VISIBILITY' },
     { name: 'author', label: 'AUTHOR' }
   ],
-  handleSort: jest.fn(),
-  displayActionsMenu: false
+  handleSort: jest.fn()
 };
 
 jest.mock( 'react', () => ( {
   ...jest.requireActual( 'react' ),
-  useContext: () => ( { state: { column: 'author', direction: 'descending' } } )
+  useContext: () => ( { state: { column: 'author', direction: 'descending', selected: { displayActionsMenu: true } } } )
 } ) );
 
 const createTable = tableProps => (
@@ -49,7 +48,7 @@ describe( '<TableHeader />', () => {
   } );
 
   it( 'renders the correct table header class value if displayActionsMenu', () => {
-    const newProps = { ...props, displayActionsMenu: true };
+    const newProps = { ...props };
     const wrapper = mount( createTable( newProps ) );
 
     const th = wrapper.find( 'th' );
@@ -71,5 +70,14 @@ describe( '<TableHeader />', () => {
         expect( c.prop( 'sorted' ) ).toEqual( null );
       }
     } );
+  } );
+
+  it( 'fires the handleSort function on click', () => {
+    const wrapper = mount( createTable( props ) );
+
+    const header = wrapper.find( 'TableHeaderCell' ).first();
+
+    header.simulate( 'click' );
+    expect( props.handleSort ).toHaveBeenCalledWith( 'projectTitle' );
   } );
 } );

@@ -1,8 +1,9 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
-import { formatDate } from 'lib/utils';
 import { Table } from 'semantic-ui-react';
+
+import { formatDate } from 'lib/utils';
 import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon/TableMobileDataToggleIcon';
 
 const MyProjectPrimaryCol = dynamic( () => import(

@@ -49,15 +49,12 @@ const props = {
   loading: false,
   projectTab: 'teamProjects',
   searchTerm: '',
-  selectedItems: new Map(),
   tableHeaders: [
     { name: 'projectTitle', label: 'PROJECT TITLE' },
     { name: 'visibility', label: 'VISIBILITY' },
     { name: 'updatedAt', label: 'MODIFIED' },
     { name: 'author', label: 'AUTHOR' }
-  ],
-  toggleItemSelection: jest.fn(),
-  team: { contentTypes: ['VIDEO'] }
+  ]
 };
 
 // Wrap TableBody in a table component to avoid warning message about invalid nesting of a <tbody>
@@ -123,7 +120,7 @@ describe( '<TableBody />', () => {
     expect( message.prop( 'type' ) ).toEqual( 'no-results' );
   } );
 
-  it( 'renders the correct table row(s)', async() => {
+  it( 'renders the correct table row(s)', () => {
     const wrapper = mount( createTable( props ) );
 
     const tableRows = wrapper.find( 'tr' );
