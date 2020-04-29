@@ -5,8 +5,12 @@ import Upload from './Upload';
  * Use custom element to avoid "incorrect casing" error msg
  * @see https://jestjs.io/docs/en/tutorial-react.html#snapshot-testing-with-mocks-enzyme-and-react-16
  */
-// jest.mock( 'next-server/dynamic', () => () => 'VideoUpload' );
-jest.mock( 'next-server/dynamic', () => () => 'video-upload' );
+jest.mock( 'next/dynamic', () => () => 'video-upload' );
+
+jest.mock( 'next/config', () => () => ( {
+  publicRuntimeConfig: {}
+} ) );
+
 
 const Component = <Upload />;
 
@@ -64,6 +68,7 @@ describe( '<Upload />', () => {
 
     uploadComponents.forEach( component => {
       const customClass = 'some-custom-class-name';
+
       component.prop( 'updateModalClassname' )( customClass );
       wrapper.update();
       expect( modal().prop( 'className' ) ).toEqual( customClass );

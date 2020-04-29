@@ -3,7 +3,7 @@
  * PageUpload
  *
  */
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useMutation } from '@apollo/react-hooks';
 import Link from 'next/link';
@@ -23,9 +23,37 @@ import moment from 'moment';
 import './Upload.scss';
 
 const VideoUpload = dynamic( () => import( /* webpackChunkName: "videoUpload" */ './modals/VideoUpload/VideoUpload' ) );
+const GraphicUpload = dynamic( () => import( /* webpackChunkName: "graphicUpload" */ './modals/GraphicUpload/GraphicUpload' ) );
 
 const Upload = () => {
   const { user } = useAuth();
+
+  // Reducer to manage the modal state for multiple modals
+  const reducer = ( _state, action ) => {
+    // content types are uppercased to match graphQL enum
+    const key = action.contentType.toLowerCase();
+
+    switch ( action.type ) {
+    case 'open':
+      return { ..._state, [key]: true };
+
+    case 'close':
+      return { ..._state, [key]: false };
+
+    default:
+      return {};
+    }
+  };
+
+  const [state, dispatch] = useReducer( reducer, {
+    video: false,
+    graphic: false
+  } );
+
+  const [modalClassname, setModalClassname] = useState( 'upload_modal' );
+
+  const handleModalClassname = updatedModalClassname => setModalClassname( updatedModalClassname );
+
 
   const [creationError, setCreationError] = useState( '' );
   const [createPackage, { loading: createPackageLoading }] = useMutation(
@@ -34,10 +62,6 @@ const Upload = () => {
 
   const [packageExists] = useMutation( PACKAGE_EXISTS_QUERY );
 
-  const [modalOpen, setModalOpen] = useState( false );
-  const [modalClassname, setModalClassname] = useState( 'upload_modal' );
-
-  const handleModalClassname = updatedModalClassname => setModalClassname( updatedModalClassname );
 
   /**
    * Checks whether a package exists with the supplied field name and values
@@ -57,15 +81,16 @@ const Upload = () => {
   * Create dauly guidance packages and sends user to
   * package details screen on success
   */
-  const createPressOfficePackage = async () => {
-    // todo: verify that user is on press team
+  const createPressOfficePackage = async() => {
+    // to do: verify that user is on press team
     const title = `Guidance Package ${moment().format( 'MM-D-YY' )}`;
 
     // One Daily Guidance package is created for each day
-    // todo: since pacakges can be renamed, using the title is not
+    // to do: since pacakges can be renamed, using the title is not
     // a full proof way to check to ensure only 1 package is created/per day
     if ( await doesPackageExist( { title } ) ) {
       setCreationError( `A Guidance Package with the name "${title}" already exists.` );
+
       return;
     }
 
@@ -81,13 +106,17 @@ const Upload = () => {
       } );
 
       const { id } = res.data.createPackage;
+
       Router.push( `/admin/package/${id}?action=create` );
     } catch ( err ) {
       setCreationError( err );
     }
   };
 
-
+  /**
+ * Checks whether team has permission to create provided content type
+ * @param {string} contentType content type to verifu, i.e. VIDEO
+ */
   const teamCanCreateContentType = contentType => {
     const team = user?.team;
     const type = contentType.toUpperCase();
@@ -95,6 +124,7 @@ const Upload = () => {
     if ( team && team.contentTypes ) {
       return team.contentTypes.includes( type );
     }
+
     return false;
   };
 
@@ -113,6 +143,7 @@ const Upload = () => {
     if ( createPackageLoading ) {
       cls = `${cls} loading`;
     }
+
     return cls;
   };
 
@@ -120,15 +151,16 @@ const Upload = () => {
   * Wrapper function that farms out package creation to a
   * function that handles specifc team's use case
   */
-  const handleCreateNewPackage = async () => {
+  const handleCreateNewPackage = async() => {
     const { team } = user;
+
     if ( team ) {
       switch ( team.name ) {
-        case 'GPA Press Office':
-          createPressOfficePackage();
-          break;
+      case 'GPA Press Office':
+        createPressOfficePackage();
+        break;
 
-        default:
+      default:
       }
     }
   };
@@ -139,10 +171,10 @@ const Upload = () => {
    */
   const renderButton = options => {
     const {
-      contentType, icon, label, alt,
+      contentType, icon, label, alt
     } = options;
 
-    const onClick = teamCanCreateContentType( contentType ) ? () => setModalOpen( true ) : null;
+    const onClick = teamCanCreateContentType( contentType ) ? () => dispatch( { type: 'open', contentType } ) : null;
 
     return (
       <Button className={ `type ${setButtonState( contentType )}` } aria-label={ alt } onClick={ onClick }>
@@ -157,13 +189,16 @@ const Upload = () => {
       <h1>Upload Content</h1>
       <section className="upload-content">
         <div className="contentTypes">
+          {/* Audios */}
           <Button className="type disabled" aria-label="Upload Audio Content">
             <img src={ audioIcon } alt="Upload Audio Content" />
             <span>Audio</span>
           </Button>
+
+          {/* Videos */}
           <Modal
             className={ modalClassname }
-            open={ modalOpen }
+            open={ state.video }
             trigger={ renderButton( {
               contentType: 'VIDEO',
               label: 'Videos',
@@ -172,25 +207,44 @@ const Upload = () => {
             } ) }
             content={ (
               <VideoUpload
-                closeModal={ () => setModalOpen( false ) }
+                closeModal={ () => dispatch( { type: 'close', contentType: 'video' } ) }
                 updateModalClassname={ handleModalClassname }
               />
             ) }
           />
-          <Button className="type disabled" aria-label="Upload Image Content">
-            <img src={ imageIcon } alt="Upload images content" />
-            <span>Images</span>
-          </Button>
+
+          {/* Graphics */}
+          <Modal
+            className={ modalClassname }
+            open={ state.graphic }
+            trigger={ renderButton( {
+              contentType: 'GRAPHIC',
+              label: 'Graphics',
+              icon: imageIcon,
+              alt: 'Upload graphics content'
+            } ) }
+            content={ (
+              <GraphicUpload
+                closeModal={ () => dispatch( { type: 'close', contentType: 'graphic' } ) }
+                updateModalClassname={ handleModalClassname }
+              />
+            ) }
+          />
+
+          {/* Documents */}
           <Button className="type disabled" aria-label="Upload Document Content">
             <img src={ docIcon } alt="Upload document content" />
             <span>Documents</span>
           </Button>
+
+          {/* Teaching Materials */}
           <Button className="type disabled" aria-label="Upload Teaching Material Content">
             <img src={ eduIcon } alt="Upload teaching material content" />
             <span>Teaching Materials</span>
           </Button>
         </div>
 
+        {/* Packages */}
         <div className="upload-content_package">
           <p className="conjunction">- OR -</p>
           <Button
@@ -198,7 +252,8 @@ const Upload = () => {
             aria-label="Create New Package"
             onClick={ handleCreateNewPackage }
           >
-            <Icon name="plus circle" style={ { opacity: 1 } } /> Create New Package
+            <Icon name="plus circle" style={ { opacity: 1 } } />
+            Create New Package
           </Button>
           <ApolloError error={ { otherError: creationError } } />
         </div>
@@ -212,26 +267,29 @@ const Upload = () => {
             <li>Are allowed on the CDP servers.</li>
           </ol>
           <p>
-            By uploading content you agree to our{ ' ' }
+            By uploading content you agree to our
             <Link href="/about">
               <a>Terms of Use</a>
             </Link>
             .
           </p>
           <p>
-            Still have questions? Read our{ ' ' }
+            Still have questions? Read our
             <Link href="/about">
               <a>FAQs</a>
-            </Link>{ ' ' }
+            </Link>
             about uploading content.
           </p>
         </div>
         <div className="upload_information_bestResults">
           <h3>For best results:</h3>
           <p>
-            We recommend naming files descriptively using keywords or languages, ex: "
-            <i>project-tile_arabic.jpg</i>", to help pre-populate metadata fields and save you time
-            when uploading content!
+            We recommend naming files descriptively using keywords or languages, ex: &quot;
+            {' '}
+            <i>project-tile_arabic.jpg</i>
+            {' '}
+            &quot;, to help pre-populate metadata fields and save you
+            time when uploading content!
           </p>
         </div>
       </section>
