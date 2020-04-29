@@ -116,9 +116,9 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     handleResetActivePage();
   };
 
-  const handleSearchSubmit = e => {
+  const handleSearchSubmit = ( e, term ) => {
     e.preventDefault();
-    setSearchTerm( searchTerm.trim() );
+    setSearchTerm( term.trim() );
     handleResetActivePage();
   };
 

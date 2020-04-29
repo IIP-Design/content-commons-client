@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import {
   Button, Form, Grid, Input
 } from 'semantic-ui-react';
+
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+
 import './TableSearch.scss';
 
-const TableSearch = props => {
+const TableSearch = ( { handleSearchSubmit } ) => {
   const [searchTerm, setSearchTerm] = useState( '' );
   const [hasActiveSearch, setHasActiveSearch] = useState( false );
-
-  const { handleSearchSubmit } = props;
 
   const handleClear = e => {
     setSearchTerm( '' );
@@ -34,6 +34,7 @@ const TableSearch = props => {
     <Grid.Column floated="right" mobile={ 16 } computer={ 6 } className="tableSearch_wrapper">
       <Form onSubmit={ handleSubmit } size="tiny">
         <VisuallyHidden>
+          { /* eslint-disable-next-line jsx-a11y/label-has-associated-control */ }
           <label htmlFor="search-projects">Search projects</label>
         </VisuallyHidden>
         <Input
