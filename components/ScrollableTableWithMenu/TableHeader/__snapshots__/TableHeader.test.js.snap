@@ -3,8 +3,6 @@
 exports[`<TableHeader /> renders without crashing 1`] = `
 Array [
   <TableHeader
-    column={null}
-    direction={null}
     displayActionsMenu={false}
     handleSort={
       [MockFunction] {
@@ -131,14 +129,14 @@ Array [
               as="th"
               className=""
               key="author"
-              sorted={null}
+              sorted="descending"
             >
               <TableCell
                 as="th"
-                className=""
+                className="descending sorted"
               >
                 <th
-                  className=""
+                  className="descending sorted"
                 >
                   AUTHOR
                 </th>
@@ -217,14 +215,14 @@ Array [
             as="th"
             className=""
             key="author"
-            sorted={null}
+            sorted="descending"
           >
             <TableCell
               as="th"
-              className=""
+              className="descending sorted"
             >
               <th
-                className=""
+                className="descending sorted"
               >
                 AUTHOR
               </th>

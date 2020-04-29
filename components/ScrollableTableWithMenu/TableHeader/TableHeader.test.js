@@ -1,5 +1,8 @@
+import React from 'react';
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
+
+import { DashboardContext } from '../../../context/dashboardContext';
 import TableHeader from './TableHeader';
 
 const props = {
@@ -9,21 +12,27 @@ const props = {
     { name: 'visibility', label: 'VISIBILITY' },
     { name: 'author', label: 'AUTHOR' }
   ],
-  column: null,
-  direction: null,
   handleSort: jest.fn(),
   displayActionsMenu: false
 };
 
-const Component = (
-  <table>
-    <TableHeader { ...props } />
-  </table>
+jest.mock( 'react', () => ( {
+  ...jest.requireActual( 'react' ),
+  useContext: () => ( { state: { column: 'author', direction: 'descending' } } )
+} ) );
+
+const createTable = tableProps => (
+  <DashboardContext.Provider>
+    <table>
+      <TableHeader { ...tableProps } />
+    </table>
+  </DashboardContext.Provider>
 );
 
 describe( '<TableHeader />', () => {
   it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
+    const wrapper = mount( createTable( props ) );
+
     const header = wrapper.find( 'TableHeader' );
 
     expect( header.exists() ).toEqual( true );
@@ -31,7 +40,7 @@ describe( '<TableHeader />', () => {
   } );
 
   it( 'renders the correct table header values', () => {
-    const wrapper = mount( Component );
+    const wrapper = mount( createTable( props ) );
     const th = wrapper.find( 'th' );
 
     th.forEach( ( t, i ) => {
@@ -40,35 +49,24 @@ describe( '<TableHeader />', () => {
   } );
 
   it( 'renders the correct table header class value if displayActionsMenu', () => {
-    const newProps = { ...props, ...{ displayActionsMenu: true } };
-    const wrapper = mount(
-      <table>
-        <TableHeader { ...newProps } />
-      </table>
-    );
+    const newProps = { ...props, displayActionsMenu: true };
+    const wrapper = mount( createTable( newProps ) );
+
     const th = wrapper.find( 'th' );
 
     th.forEach( t => {
-      expect( t.prop( 'className' ) ).toEqual( 'displayActionsMenu' );
+      expect( t.prop( 'className' ) ).toContain( 'displayActionsMenu' );
     } );
   } );
 
   it( 'renders the correct table header sorted and direction values if `column === header.name`', () => {
-    const newProps = {
-      ...props,
-      ...{ column: 'createdAt', direction: 'ascending' }
-    };
-    const wrapper = mount(
-      <table>
-        <TableHeader { ...newProps } />
-      </table>
-    );
+    const wrapper = mount( createTable( props ) );
 
     const cell = wrapper.find( 'TableHeaderCell' );
 
     cell.forEach( c => {
-      if ( c.prop( 'children' ) === 'CREATED' ) {
-        expect( c.prop( 'sorted' ) ).toEqual( newProps.direction );
+      if ( c.prop( 'children' ) === 'AUTHOR' ) {
+        expect( c.prop( 'sorted' ) ).toEqual( 'descending' );
       } else {
         expect( c.prop( 'sorted' ) ).toEqual( null );
       }
