@@ -35,7 +35,7 @@ Array [
             "name": "projectTitle",
           }
         }
-        selectedItems={Array []}
+        selectedItems={Map {}}
         toggleItemSelection={[MockFunction]}
       />
     </div>
@@ -181,7 +181,7 @@ Array [
             "name": "projectTitle",
           }
         }
-        selectedItems={Array []}
+        selectedItems={Map {}}
         toggleItemSelection={[MockFunction]}
       />
     </div>
@@ -279,7 +279,7 @@ Array [
             "name": "projectTitle",
           }
         }
-        selectedItems={Array []}
+        selectedItems={Map {}}
         toggleItemSelection={[MockFunction]}
       />
     </div>

@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
-import { Table } from 'semantic-ui-react';
 
 import TableBody from './TableBody';
 
@@ -63,9 +62,9 @@ const props = {
 
 // Wrap TableBody in a table component to avoid warning message about invalid nesting of a <tbody>
 const createTable = tableProps => (
-  <Table>
+  <table>
     <TableBody { ...tableProps } />
-  </Table>
+  </table>
 );
 
 describe( '<TableBody />', () => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 
-import { DashboardContext } from '../../../context/dashboardContext';
+import { DashboardContext } from 'context/dashboardContext';
 import TableHeader from './TableHeader';
 
 const props = {

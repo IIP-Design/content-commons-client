@@ -6,7 +6,7 @@ import TableRow from './TableRow';
  * Need to mock Next.js dynamic imports
  * in order for this test suite to run.
  */
-jest.mock( 'next-server/dynamic', () => () => 'VideoDetailsPopup' );
+jest.mock( 'next/dynamic', () => () => 'VideoDetailsPopup' );
 
 const myProjectsProps = {
   d: {
@@ -20,7 +20,7 @@ const myProjectsProps = {
     visibility: 'INTERNAL',
     thumbnails: {
       url: 'https://thumbnailurl.com',
-      alt: 'some alt text',
+      alt: 'some alt text'
     },
     categories: 'about america'
   },
@@ -52,6 +52,7 @@ const TeamProjectsComponent = <TableRow { ...teamProjectsProps } />;
 describe( '<TableRow />', () => {
   it( 'renders without crashing', () => {
     const wrapper = shallow( MyProjectsComponent );
+
     expect( wrapper.exists() ).toEqual( true );
   } );
 

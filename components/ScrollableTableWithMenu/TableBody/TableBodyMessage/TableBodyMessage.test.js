@@ -1,13 +1,13 @@
 import { mount } from 'enzyme';
-import { Loader, Table } from 'semantic-ui-react';
+import { Loader } from 'semantic-ui-react';
 
 import TableBodyMessage from './TableBodyMessage';
 
 // Wrap TableBody in a table component to avoid warning message about invalid nesting of a <tbody>
 const createTable = messageProps => (
-  <Table>
+  <table>
     <TableBodyMessage { ...messageProps } />
-  </Table>
+  </table>
 );
 
 describe( '<TableBodyMessage>', () => {
