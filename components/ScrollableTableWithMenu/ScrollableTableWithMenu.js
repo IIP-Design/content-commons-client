@@ -76,7 +76,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     fetchPolicy: 'cache-and-network'
   } );
 
-  const isLegacySort = state.column === 'author' || state.column === 'team';
+  const isLegacySort = state.column === 'author' || state.column === 'categories' || state.column === 'team';
 
   const contentData = useQuery( state.queries.content, {
     variables: isLegacySort ? { ...variables } : { ...variables, ...bodyPaginationVars },
@@ -135,7 +135,10 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
       dispatch( { type: 'UPDATE_COLUMN', payload: { column: clickedColumn, direction } } );
     }
 
-    const columnName = clickedColumn === 'projectTitle' ? 'title' : clickedColumn;
+    const isVideo = team?.contentTypes && team.contentTypes.includes( 'VIDEO' );
+    const columnName = !isVideo && clickedColumn === 'projectTitle'
+      ? 'title'
+      : clickedColumn;
 
     setOrderBy( `${columnName}_${direction === 'ascending' ? 'ASC' : 'DESC'}` );
 

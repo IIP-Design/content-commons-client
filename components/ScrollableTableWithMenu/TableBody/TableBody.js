@@ -47,7 +47,7 @@ const TableBody = ( {
   const { skip, first } = bodyPaginationVars;
   const paginatedSorting = legacySorting( column ).slice( skip, skip + first );
 
-  const isLegacySort = column === 'author' || column === 'team';
+  const isLegacySort = column === 'author' || column === 'categories' || column === 'team';
 
   const tableData = isLegacySort ? paginatedSorting : data;
 
