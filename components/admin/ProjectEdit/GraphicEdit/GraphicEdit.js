@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
+import AddFilesSectionHeading from 'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading';
 import ApolloError from 'components/errors/ApolloError';
-import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
 import FormInstructions from 'components/admin/FormInstructions/FormInstructions';
 import GraphicProjectDetailsFormContainer from 'components/admin/ProjectDetailsForm/GraphicProjectDetailsFormContainer/GraphicProjectDetailsFormContainer';
@@ -14,7 +14,6 @@ import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg';
 // import withFileUpload from 'hocs/withFileUpload/withFileUpload';
-import { getPluralStringOrNot } from 'lib/utils';
 import { DELETE_GRAPHIC_PROJECT_MUTATION, GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
 import './GraphicEdit.scss';
 
@@ -359,20 +358,13 @@ const GraphicEdit = props => {
           ) }
       </div>
 
-      <div className="support-files">
-        <div className="heading">
-          <h2 className="uppercase" style={ { marginBottom: 0 } }>Support Files</h2>
-          { projectId
-            && (
-              <ButtonAddFiles
-                accept="image/*, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc"
-                onChange={ handleAddFiles }
-                multiple
-              >
-                + Add Files
-              </ButtonAddFiles>
-            ) }
-        </div>
+      <div className="graphic-support-files">
+        <AddFilesSectionHeading
+          projectId={ projectId }
+          title="Support Files"
+          acceptedFileTypes="image/*, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc"
+          handleAddFiles={ handleAddFiles }
+        />
 
         <div className="container">
           <GraphicProjectSupportFiles

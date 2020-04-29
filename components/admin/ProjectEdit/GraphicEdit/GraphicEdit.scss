@@ -58,13 +58,13 @@
   // }
 
   .content,
-  .support-files {
+  .graphic-support-files {
     padding: 1.75em 0;
   }
 
   .content,
-  .support-files,
-  &__items {
+  .graphic-support-files,
+  .graphic-files {
     @media screen and (min-width: 768px) {
       padding: 1.75em;
     }
@@ -90,33 +90,19 @@
     }
   }
 
-  .support-files {
+  .graphic-support-files,
+  .graphic-files {
     border-top: 1px solid $light-grey;
+  }
 
-    > .heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-bottom: 1.5rem;
+  @media screen and (min-width: 992px) {
+    .graphic-support-files > .container {
+      display: grid;
+      grid-template-columns: 0.5fr 1px 0.5fr;
+      gap: 1rem;
 
-      .ui.button {
-        &.primary {
-          @include ghost-button;
-          padding-top: 0.785714em;
-          padding-bottom: 0.785714em;
-        }
-      }
-    }
-
-    @media screen and (min-width: 992px) {
-      > .container {
-        display: grid;
-        grid-template-columns: 0.5fr 1px 0.5fr;
-        gap: 1rem;
-
-        > .separator {
-          border-right: 1px solid $light-grey;
-        }
+      > .separator {
+        border-right: 1px solid $light-grey;
       }
     }
   }
