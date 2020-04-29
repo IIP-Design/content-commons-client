@@ -4,7 +4,7 @@ import downloadIcon from 'static/icons/icon_download.svg';
 import './DownloadItemContent.scss';
 
 /* eslint-disable-next-line import/no-unresolved */
-import tempSrcUrl from '../graphicPlaceHolderImg.png';
+import tempSrcUrl from './graphicPlaceHolderImg.png';
 
 const DownloadItemContent = props => {
   const {
@@ -25,7 +25,10 @@ const DownloadItemContent = props => {
 DownloadItemContent.propTypes = {
   srcUrl: PropTypes.string,
   hoverText: PropTypes.string,
-  children: PropTypes.object
+  children: PropTypes.oneOfType( [
+    PropTypes.object,
+    PropTypes.array
+  ] )
 };
 
 export default DownloadItemContent;

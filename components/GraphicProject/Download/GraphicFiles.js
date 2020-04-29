@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DownloadItemContent from './DownloadItemContent';
+import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
 
 const GraphicFiles = ( { file } ) => {
   const {
@@ -21,6 +21,7 @@ const GraphicFiles = ( { file } ) => {
           <strong>
             {' '}
             for
+            {' '}
             { social }
           </strong>
         </p>

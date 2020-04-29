@@ -11,14 +11,16 @@ import shareIcon from 'static/icons/icon_share.svg';
 import Notification from 'components/Notification/Notification';
 import Share from 'components/Share/Share';
 
-import DownloadItem from './Download/DownloadItem';
-import Help from './Download/Help';
-import EditableFiles from './Download/EditableFiles';
+import DownloadItem from 'components/download/DownloadItem/DownloadItem';
 import GraphicFiles from './Download/GraphicFiles';
+import EditableFiles from './Download/EditableFiles';
+import OtherFiles from './Download/OtherFiles';
+import Help from './Download/Help';
 
 import PopupTrigger from 'components/popups/PopupTrigger';
-import PopupTabbed from '../popups/PopupTabbed';
 import Popup from 'components/popups/Popup';
+import Popover from 'components/popups/Popover/Popover';
+import TabLayout from 'components/TabLayout/TabLayout';
 
 import ModalItem from 'components/modals/ModalItem';
 import ModalLangDropdown from '../modals/ModalLangDropdown/ModalLangDropdown';
@@ -28,12 +30,10 @@ import ModalDescription from 'components/modals/ModalDescription/ModalDescriptio
 import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
 import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 
-
-import Popover from 'components/popups/Popover/Popover';
-import TabLayout from 'components/TabLayout/TabLayout';
+import './GraphicProject.scss';
 
 /* eslint-disable-next-line import/no-unresolved */
-import tempSrcUrl from './graphicPlaceHolderImg.png';
+import tempSrcUrl from 'components/download/DownloadItem/graphicPlaceHolderImg.png';
 
 const GraphicProject = props => {
   const router = useRouter();
@@ -65,7 +65,7 @@ const GraphicProject = props => {
     return images;
   };
 
-  const [graphicUnits, setGraphicUnits] = useState( filterGraphicImgs() );
+  const graphicUnits = filterGraphicImgs();
 
   // Set default unit to English lang version if available
   // unless path is for specific lang or no english version
@@ -84,6 +84,7 @@ const GraphicProject = props => {
     return graphicUnits[0];
   };
 
+  // Selected Unit State
   const [selectedUnit, setSelectedUnit] = useState( setDefaultSelectedUnit() );
 
   // Update selected unit on language change
@@ -106,14 +107,23 @@ const GraphicProject = props => {
     }
   }, [selectedUnit] );
 
-  // Get all images (Twitter, Facebook) associated with selected unit language for DownloadItem component
+  // Images by language
   const selectedUnitImages = images.filter( img => img.language.display_name === selectedUnitLanguage.display_name );
+  // Editable support files by language
+  const selectedUnitSupportFiles = supportFiles
+    .filter( file => file.editable === true )
+    .filter( file => file.language.display_name === selectedUnitLanguage.display_name );
+  // Non-editable files by language
+  const selectedUnitOtherFiles = supportFiles
+    .filter( file => file.editable !== true )
+    .filter( file => file.language.display_name === selectedUnitLanguage.display_name );
 
   return (
     <ModalItem
       headline={ title }
       textDirection={ selectedUnitLanguage.text_direction }
       lang={ selectedUnitLanguage.language_code }
+      className="graphic-project"
     >
       <div className="modal_options">
         <div className="modal_options_left">
@@ -124,27 +134,31 @@ const GraphicProject = props => {
           />
         </div>
         <div className="trigger-container">
-          <PopupTrigger
+          <Popover
+            id={ `${id}_graphic-share` }
+            className="graphic-project__popover graphic-project__popover--share"
+            trigger={ <img src={ shareIcon } style={ { width: '20px', height: '20px' } } alt="share icon" /> }
+            expandFromRight
             toolTip="Share graphic"
-            icon={ { img: shareIcon, dim: 20 } }
-            show
-            content={ (
-              <Popup title="Share this graphic.">
-                <Share
-                  id={ id }
-                  site={ site }
-                  title={ title }
-                  language={ selectedUnitLanguage.locale }
-                  type={ type }
-                />
-              </Popup>
-            ) }
-          />
+          >
+            <div className="popup_share">
+              <h2 className="ui header">Share this graphic.</h2>
+              <Share
+                id={ id }
+                site={ site }
+                title={ title }
+                language={ selectedUnitLanguage.locale }
+                type={ type }
+              />
+            </div>
+          </Popover>
 
           <Popover
-            id={ id }
-            trigger={ <img src={ downloadIcon } style={ { width: '20px', height: '20px' } } alt="downlad icon" /> }
+            id={ `${id}_graphic-download` }
+            className="graphic-project__popover graphic-project__popover--download"
+            trigger={ <img src={ downloadIcon } style={ { width: '20px', height: '20px' } } alt="download icon" /> }
             expandFromRight
+            toolTip="Download graphic"
           >
             <TabLayout
               headline="Download this graphic."
@@ -155,7 +169,7 @@ const GraphicProject = props => {
                     <DownloadItem
                       instructions={ `Download the graphic files in ${selectedUnitLanguage.display_name}. This download option is best for uploading this graphic to web pages and social media.` }
                     >
-                      { selectedUnitImages.map( img => <GraphicFiles key={ img.title } file={ img } /> ) }
+                      { selectedUnitImages.map( img => <GraphicFiles key={ img.srcUrl } file={ img } /> ) }
                     </DownloadItem>
                   )
                 },
@@ -171,22 +185,33 @@ const GraphicProject = props => {
                           </p>
                           <p>
                             <strong>
-                              Credit for this photo must be used:
-                              { `${String.fromCharCode( 169 )} ${copyright}` }
+                              Credit for this photo must be used: &copy;
+                              {' '}
+                              { `${copyright}` }
                             </strong>
                           </p>
                         </Fragment>
                       ) }
                     >
-                      { supportFiles
-                        .filter( file => file.editable === true )
-                        .map( file => <EditableFiles key={ file } file={ file } /> ) }
+                      { selectedUnitSupportFiles
+                        .map( file => <EditableFiles key={ file.srcUrl } file={ file } /> )}
                     </DownloadItem>
                   )
                 },
                 {
                   title: 'Other',
-                  content: <p>Other Files</p>
+                  content: (
+                    <DownloadItem
+                      instructions={ (
+                        <p>
+                          By downloading these editable files you agree to the
+                          <Link href="/about"><a>Terms of Use</a></Link>
+                        </p>
+                      ) }
+                    >
+                      { selectedUnitOtherFiles.map( file => <OtherFiles key={ file.srcUrl } file={ file } /> ) }
+                    </DownloadItem>
+                  )
                 },
                 {
                   title: 'Help',

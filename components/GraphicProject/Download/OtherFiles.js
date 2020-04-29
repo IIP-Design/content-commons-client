@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { capitalizeFirst } from 'lib/utils';
 import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
 
-const EditableFiles = ( { file } ) => {
+const OtherFiles = ( { file } ) => {
   const {
     srcUrl
   } = file;
@@ -31,8 +31,8 @@ const EditableFiles = ( { file } ) => {
   );
 };
 
-EditableFiles.propTypes = {
+OtherFiles.propTypes = {
   file: PropTypes.object
 };
 
-export default EditableFiles;
+export default OtherFiles;

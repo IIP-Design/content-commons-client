@@ -1,6 +1,7 @@
 @import "styles/colors.scss";
 
 .tabs__titles {
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -25,17 +26,13 @@
     &:last-child {
       margin-left: 50px;
     }
+  }
 
-    &.active {
-      &:after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: -2px;            
-        width: 100%;
-        height: 3px;
-        background-color: $light-blue;
-      }
-    }
+  .slider {
+    position: absolute;
+    bottom: -2px;
+    height: 3px;
+    background-color: $light-blue;
+    transition: all 0.3s ease-in-out;
   }
 }

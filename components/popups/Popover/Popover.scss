@@ -2,7 +2,7 @@
 
 .popover {
   position: relative;
-  display: inline-block;
+  display: inline-block;  
 
   &_trigger {
     -webkit-appearance: none;
@@ -16,6 +16,19 @@
     &:focus {
       outline: 2px dotted $medium-grey; 
       outline-offset: 2px;
+    }    
+
+    &[tooltip] {
+      margin: 0;
+
+      &:after {
+        font-size: 0.67rem;
+      }
+
+      &:hover {
+        transform: scale(1.2);
+        transition: transform 0.2s;
+      }      
     }
   }
 

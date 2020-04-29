@@ -5,9 +5,11 @@ import './Popover.scss';
 const Popover = props => {
   const {
     id,
+    className,
     expandFromRight,
     trigger,
-    children
+    children,
+    toolTip
   } = props;
 
   const popoverNode = useRef();
@@ -38,7 +40,7 @@ const Popover = props => {
   }, [] );
 
   return (
-    <span className="popover" ref={ popoverNode }>
+    <span className={ `popover ${className}` } ref={ popoverNode }>
       <button
         type="button"
         id={ `popoverButton_${id}` }
@@ -47,6 +49,7 @@ const Popover = props => {
         aria-expanded={ active } // active state determines if popover content expanded
         aria-controls="popoverContent"
         onClick={ () => setActive( !active ) }
+        tooltip={ toolTip }
       >
         { trigger }
       </button>
@@ -66,12 +69,14 @@ const Popover = props => {
 
 Popover.propTypes = {
   id: PropTypes.string,
+  className: PropTypes.string,
   expandFromRight: PropTypes.bool,
   trigger: PropTypes.oneOfType( [
     PropTypes.object,
     PropTypes.string
   ] ),
-  children: PropTypes.object
+  children: PropTypes.object,
+  toolTip: PropTypes.string
 };
 
 export default Popover;

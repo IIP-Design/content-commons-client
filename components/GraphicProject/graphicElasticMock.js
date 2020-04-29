@@ -54,7 +54,7 @@ export const graphicElasticMock = [
         {
           title: 'My graphic title',
           visibility: 'PUBLIC',
-          srcUrl: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_ARABIC_Output.png',
+          srcUrl: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_English_Output.png',
           language: {
             language_code: 'en',
             text_direction: 'ltr',
@@ -75,7 +75,91 @@ export const graphicElasticMock = [
         {
           visibility: 'INTERNAL',
           editable: true,
-          srcUrl: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_ARABIC_Output.psd',
+          srcUrl: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_English_Output.psd',
+          language: {
+            language_code: 'en',
+            text_direction: 'ltr',
+            locale: 'en-us',
+            display_name: 'English',
+            native_name: 'English'
+          }
+        },
+        {
+          visibility: 'INTERNAL',
+          editable: true,
+          srcUrl: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_English_Output.ai',
+          language: {
+            language_code: 'en',
+            text_direction: 'ltr',
+            locale: 'en-us',
+            display_name: 'English',
+            native_name: 'English'
+          }
+        },
+        {
+          visibility: 'INTERNAL',
+          editable: true,
+          srcUrl: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_French_Output.psd',
+          language: {
+            language_code: 'fr',
+            text_direction: 'ltr',
+            locale: 'fr-fr',
+            display_name: 'French',
+            native_name: 'French'
+          }
+        },
+        {
+          visibility: 'INTERNAL',
+          editable: true,
+          srcUrl: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_French_Output.ai',
+          language: {
+            language_code: 'fr',
+            text_direction: 'ltr',
+            locale: 'fr-fr',
+            display_name: 'French',
+            native_name: 'French'
+          }
+        },
+        {
+          visibility: 'INTERNAL',
+          editable: false,
+          srcUrl: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_French_Output.doc',
+          language: {
+            language_code: 'fr',
+            text_direction: 'ltr',
+            locale: 'fr-fr',
+            display_name: 'French',
+            native_name: 'French'
+          }
+        },
+        {
+          visibility: 'INTERNAL',
+          editable: false,
+          srcUrl: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_French_Output.pdf',
+          language: {
+            language_code: 'fr',
+            text_direction: 'ltr',
+            locale: 'fr-fr',
+            display_name: 'French',
+            native_name: 'French'
+          }
+        },
+        {
+          visibility: 'INTERNAL',
+          editable: false,
+          srcUrl: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_English_Output.doc',
+          language: {
+            language_code: 'en',
+            text_direction: 'ltr',
+            locale: 'en-us',
+            display_name: 'English',
+            native_name: 'English'
+          }
+        },
+        {
+          visibility: 'INTERNAL',
+          editable: false,
+          srcUrl: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_English_Output.pdf',
           language: {
             language_code: 'en',
             text_direction: 'ltr',

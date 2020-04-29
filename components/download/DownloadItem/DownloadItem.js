@@ -9,7 +9,10 @@ const DownloadItem = ( { instructions, children } ) => (
 );
 
 DownloadItem.propTypes = {
-  children: PropTypes.array,
+  children: PropTypes.oneOfType( [
+    PropTypes.array,
+    PropTypes.object
+  ] ),
   instructions: PropTypes.oneOfType( [
     PropTypes.string,
     PropTypes.object
