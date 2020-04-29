@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
+import { Confirm } from 'semantic-ui-react';
+import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import IconPopup from 'components/popups/IconPopup/IconPopup';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
@@ -13,8 +15,15 @@ const GraphicProjectSupportFiles = props => {
   const {
     projectId, headline, helperText, files
   } = props;
+  const [fileIdToDelete, setFileIdToDelete] = useState( '' );
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [deleteSupportFile] = useMutation( DELETE_SUPPORT_FILE_MUTATION );
   const [updateSupportFile] = useMutation( UPDATE_SUPPORT_FILE_MUTATION );
+
+  const handleResetAfterDelete = () => {
+    setDeleteConfirmOpen( false );
+    setFileIdToDelete( '' );
+  };
 
   const handleDelete = async id => {
     await deleteSupportFile( {
@@ -25,7 +34,9 @@ const GraphicProjectSupportFiles = props => {
           variables: { id: projectId }
         }
       ]
-    } ).catch( err => console.dir( err ) );
+    } )
+      .then( handleResetAfterDelete )
+      .catch( err => console.dir( err ) );
   };
 
   const handleLanguageChange = async ( e, { id, value } ) => {
@@ -67,7 +78,10 @@ const GraphicProjectSupportFiles = props => {
                 ) }
 
               <FileRemoveReplaceButtonGroup
-                onRemove={ () => handleDelete( id ) }
+                onRemove={ () => {
+                  setDeleteConfirmOpen( true );
+                  setFileIdToDelete( id );
+                } }
               />
             </span>
           </li>
@@ -87,6 +101,21 @@ const GraphicProjectSupportFiles = props => {
           popupSize="mini"
         />
       </div>
+
+      <Confirm
+        className="delete"
+        open={ deleteConfirmOpen }
+        content={ (
+          <ConfirmModalContent
+            className="delete_confirm"
+            headline="Are you sure you want to delete this file?"
+          />
+        ) }
+        onCancel={ handleResetAfterDelete }
+        onConfirm={ () => handleDelete( fileIdToDelete ) }
+        cancelButton="No, take me back"
+        confirmButton="Yes, delete forever"
+      />
 
       { getCount( files )
         ? renderList()
