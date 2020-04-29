@@ -26,12 +26,10 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   const [selectedItems, setSelectedItems] = useState( new Map() );
   const [hasSelectedAllItems, setHasSelectedAllItems] = useState( false );
   const [displayActionsMenu, setDisplayActionsMenu] = useState( false );
-  const [column, setColumn] = useState( 'createdAt' );
-  const [direction, setDirection] = useState( 'descending' );
   const [windowWidth, setWindowWidth] = useState( null );
   const [searchTerm, setSearchTerm] = useState( '' );
   const [activePage, setActivePage] = useState( 1 );
-  const [itemsPerPage, setItemsPerPage] = useState( 2 );
+  const [itemsPerPage, setItemsPerPage] = useState( 15 );
   const [orderBy, setOrderBy] = useState( 'createdAt_DESC' );
   const [skip, setSkip] = useState( 0 );
 
@@ -89,8 +87,10 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     fetchPolicy: 'cache-and-network'
   } );
 
+  const isLegacySort = state.column === 'author' || state.column === 'team';
+
   const contentData = useQuery( state.queries.content, {
-    variables: column === 'author' ? { ...variables } : { ...variables, ...bodyPaginationVars },
+    variables: isLegacySort ? { ...variables } : { ...variables, ...bodyPaginationVars },
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network'
   } );
@@ -140,9 +140,17 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
 
     // Pass column, direction to TableBody so re-rendered on TableHeader click
     // Reset to first page of results after sort
-    if ( column !== clickedColumn ) setColumn( clickedColumn );
-    setDirection( direction === 'ascending' ? 'descending' : 'ascending' );
-    setOrderBy( `${column}_${direction === 'ascending' ? 'ASC' : 'DESC'}` );
+    const direction = state.direction === 'ascending' ? 'descending' : 'ascending';
+
+    if ( state.column !== clickedColumn ) {
+      dispatch( { type: 'UPDATE_COLUMN', payload: { column: clickedColumn, direction } } );
+    } else {
+      dispatch( { type: 'UPDATE_COLUMN', payload: { column: clickedColumn, direction } } );
+    }
+
+    const columnName = clickedColumn === 'projectTitle' ? 'title' : clickedColumn;
+
+    setOrderBy( `${columnName}_${direction === 'ascending' ? 'ASC' : 'DESC'}` );
 
     handleResetActivePage();
   };
@@ -208,13 +216,17 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
       <Grid.Row className="items_tableMenus_wrapper">
         <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
           <TableActionsMenu
-            team={ team }
+            data={ projectData }
             displayActionsMenu={ displayActionsMenu }
-            variables={ { ...variables, ...paginationVars } }
-            selectedItems={ selectedItems }
+            error={ projectError }
             handleResetSelections={ handleResetSelections }
+            loading={ projectLoading }
+            refetch={ projectRefetch }
+            refetchCount={ countRefetch }
+            selectedItems={ selectedItems }
+            team={ team }
             toggleAllItemsSelection={ toggleAllItemsSelection }
-            refetch={ countRefetch }
+            variables={ { ...variables, ...paginationVars } }
           />
         </Grid.Column>
         <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 } className="items_tableMenus">
@@ -238,18 +250,15 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
           <div className="items_table">
             <Table sortable celled>
               <TableHeader
-                tableHeaders={ tableHeaders }
-                column={ column }
-                direction={ direction }
                 handleSort={ handleSort }
-                toggleAllItemsSelection={ toggleAllItemsSelection }
+                tableHeaders={ tableHeaders }
                 displayActionsMenu={ displayActionsMenu }
               />
               <TableBody
                 bodyPaginationVars={ { ...bodyPaginationVars } }
-                column={ column }
+                column={ state.column }
                 data={ projectData }
-                direction={ direction }
+                direction={ state.direction }
                 error={ projectError }
                 loading={ projectLoading }
                 projectTab={ projectTab }

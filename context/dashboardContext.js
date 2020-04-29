@@ -6,8 +6,10 @@ import { TEAM_VIDEO_PROJECTS_QUERY, TEAM_VIDEO_PROJECTS_COUNT_QUERY } from 'lib/
 import { TEAM_PACKAGES_QUERY, TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
 
 const initialState = {
+  column: 'createdAt',
   content: {},
   count: {},
+  direction: 'descending',
   queries: null,
   team: { contentTypes: null }
 };
@@ -58,6 +60,12 @@ export const setQueries = team => {
 
 export const dashboardReducer = ( state, action ) => {
   switch ( action.type ) {
+  case 'UPDATE_COLUMN':
+    return {
+      ...state,
+      column: action.payload.column,
+      direction: action.payload.direction
+    };
   case 'UPDATE_COUNT':
     return {
       ...state,
