@@ -11,6 +11,10 @@ const initialState = {
   count: {},
   direction: 'descending',
   queries: null,
+  selected: {
+    displayActionsMenu: false,
+    selectedItems: new Map()
+  },
   team: { contentTypes: null }
 };
 
@@ -34,66 +38,119 @@ const parseCount = ( queryData, team ) => {
   return count;
 };
 
+const toggleItemSelection = ( data, selected ) => {
+  const isChecked = data.checked;
+
+  const updated = selected.set( String( data['data-label'] ), isChecked );
+  const areOthersSelected = Array.from( updated.values() ).includes( true );
+
+  return {
+    displayActionsMenu: areOthersSelected,
+    selectedItems: updated
+  };
+};
+
+const toggleAllItemsSelection = selected => {
+  const selectedIds = Array
+    .from( document.querySelectorAll( '[data-label]' ) )
+    .map( item => item.dataset.label );
+
+  const newSelectedItems = new Map();
+
+  const hasSelected = Array.from( selected.keys() ).length > 0;
+
+  if ( !hasSelected ) {
+    selectedIds.forEach( item => {
+      newSelectedItems.set( item, !hasSelected );
+    } );
+  }
+
+  return {
+    displayActionsMenu: !hasSelected,
+    selectedItems: newSelectedItems
+  };
+};
+
 export const setQueries = team => {
   const queries = {};
 
   switch ( testContentTypes( team ) ) {
-  case 'graphic':
-    queries.content = TEAM_GRAPHIC_PROJECTS_QUERY;
-    queries.count = TEAM_GRAPHIC_PROJECTS_COUNT_QUERY;
+    case 'graphic':
+      queries.content = TEAM_GRAPHIC_PROJECTS_QUERY;
+      queries.count = TEAM_GRAPHIC_PROJECTS_COUNT_QUERY;
 
-    return queries;
-  case 'video':
-    queries.content = TEAM_VIDEO_PROJECTS_QUERY;
-    queries.count = TEAM_VIDEO_PROJECTS_COUNT_QUERY;
+      return queries;
+    case 'video':
+      queries.content = TEAM_VIDEO_PROJECTS_QUERY;
+      queries.count = TEAM_VIDEO_PROJECTS_COUNT_QUERY;
 
-    return queries;
-  case 'packages':
-    queries.content = TEAM_PACKAGES_QUERY;
-    queries.count = TEAM_PACKAGES_COUNT_QUERY;
+      return queries;
+    case 'packages':
+      queries.content = TEAM_PACKAGES_QUERY;
+      queries.count = TEAM_PACKAGES_COUNT_QUERY;
 
-    return queries;
-  default:
-    return queries;
+      return queries;
+    default:
+      return queries;
   }
 };
 
 export const dashboardReducer = ( state, action ) => {
+  const { payload } = action;
+
   switch ( action.type ) {
-  case 'UPDATE_COLUMN':
-    return {
-      ...state,
-      column: action.payload.column,
-      direction: action.payload.direction
-    };
-  case 'UPDATE_COUNT':
-    return {
-      ...state,
-      count: {
-        count: parseCount( action.payload.count.data, action.payload.team ),
-        error: action.payload.count.error,
-        loading: action.payload.count.loading,
-        refetch: action.payload.count.refetch
-      }
-    };
-  case 'UPDATE_CONTENT':
-    return {
-      ...state,
-      content: {
-        data: normalizeDashboardData( action.payload.data, action.payload.type ),
-        error: action.payload.error,
-        loading: action.payload.loading,
-        refetch: action.payload.refetch
-      }
-    };
-  case 'UPDATE_TEAM':
-    return {
-      ...state,
-      team: action.payload.team,
-      projectType: testContentTypes( action.payload.team ),
-      queries: setQueries( action.payload.team )
-    };
-  default:
-    return { ...state };
+    case 'UPDATE_COLUMN':
+      return {
+        ...state,
+        column: payload.column,
+        direction: payload.direction
+      };
+    case 'UPDATE_COUNT':
+      return {
+        ...state,
+        count: {
+          count: parseCount( payload.count.data, payload.team ),
+          error: payload.count.error,
+          loading: payload.count.loading,
+          refetch: payload.count.refetch
+        }
+      };
+    case 'UPDATE_CONTENT':
+      return {
+        ...state,
+        content: {
+          data: normalizeDashboardData( payload.data, payload.type ),
+          error: payload.error,
+          loading: payload.loading,
+          refetch: payload.refetch
+        }
+      };
+    case 'UPDATE_SELECTED':
+      return {
+        ...state,
+        selected: toggleItemSelection( payload.data, payload.selected )
+      };
+    case 'UPDATE_SELECTED_ALL':
+      return {
+        ...state,
+        selected: toggleAllItemsSelection( payload.selected )
+      };
+    case 'RESET_SELECTED':
+      return {
+        ...state,
+        selected: {
+          displayActionsMenu: false,
+          selectedItems: new Map()
+        }
+      };
+    case 'UPDATE_TEAM':
+      return {
+        ...state,
+        team: payload.team,
+        projectType: testContentTypes( payload.team ),
+        queries: setQueries( payload.team )
+      };
+    default:
+      return { ...state };
   }
 };

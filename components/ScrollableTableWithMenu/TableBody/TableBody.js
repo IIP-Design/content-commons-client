@@ -17,10 +17,7 @@ const TableBody = ( {
   loading,
   projectTab,
   searchTerm,
-  selectedItems,
-  tableHeaders,
-  toggleItemSelection,
-  team
+  tableHeaders
 } ) => {
   if ( error ) return <TableBodyMessage error={ error } type="error" />;
 
@@ -31,15 +28,15 @@ const TableBody = ( {
   if ( searchTerm && !data.length ) return <TableBodyMessage searchTerm={ searchTerm } type="no-results" />;
   if ( !data.length ) return <TableBodyMessage type="no-projects" />;
 
-  // No option exisiting in schema to order by author
+  // No option exisiting in schema to order by author or team
   // When author column is clicked, a query is sent to the server without pagination variables
   // This results in an overfetch that has to be filtered on the the client side
   const order = direction ? `${direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
 
-  const authorSorting = orderBy(
+  const legacySorting = col => orderBy(
     data,
     tableDatum => {
-      const formattedTableDatum = tableDatum.author;
+      const formattedTableDatum = tableDatum[col];
 
       return formattedTableDatum;
     },
@@ -48,9 +45,11 @@ const TableBody = ( {
 
   // skip & first query vars are used as start/end slice() params to paginate tableData on client
   const { skip, first } = bodyPaginationVars;
-  const paginatedAuthorSorting = authorSorting.slice( skip, skip + first );
+  const paginatedSorting = legacySorting( column ).slice( skip, skip + first );
 
-  const tableData = column === 'author' ? paginatedAuthorSorting : data;
+  const isLegacySort = column === 'author' || column === 'team';
+
+  const tableData = isLegacySort ? paginatedSorting : data;
 
   return (
     <Table.Body className="projects">
@@ -58,11 +57,8 @@ const TableBody = ( {
         <TableRow
           key={ d.id }
           d={ d }
-          selectedItems={ selectedItems }
           tableHeaders={ tableHeaders }
-          toggleItemSelection={ toggleItemSelection }
           projectTab={ projectTab }
-          team={ team }
         />
       ) ) }
     </Table.Body>
@@ -76,12 +72,9 @@ TableBody.propTypes = {
   error: PropTypes.object,
   loading: PropTypes.bool,
   searchTerm: PropTypes.string,
-  selectedItems: PropTypes.object,
   tableHeaders: PropTypes.array,
-  toggleItemSelection: PropTypes.func,
   direction: PropTypes.string,
-  projectTab: PropTypes.string,
-  team: PropTypes.object
+  projectTab: PropTypes.string
 };
 
 export default TableBody;

@@ -23,9 +23,6 @@ import './ScrollableTableWithMenu.scss';
 
 const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectTab, team } ) => {
   const [tableHeaders, setTableHeaders] = useState( persistentTableHeaders );
-  const [selectedItems, setSelectedItems] = useState( new Map() );
-  const [hasSelectedAllItems, setHasSelectedAllItems] = useState( false );
-  const [displayActionsMenu, setDisplayActionsMenu] = useState( false );
   const [windowWidth, setWindowWidth] = useState( null );
   const [searchTerm, setSearchTerm] = useState( '' );
   const [activePage, setActivePage] = useState( 1 );
@@ -35,14 +32,6 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
 
   const TIMEOUT_DELAY = 500;
   const _breakpoint = 767;
-
-  // componentDidUpdate = ( _, prevState ) => {
-  //   const { itemsPerPage } = this.state;
-
-  //   if ( prevState.itemsPerPage !== itemsPerPage ) {
-  //     this.handleResetActivePage();
-  //   }
-  // }
 
   const tableMenuSelectionsOnMobile = () => {
     if ( isMobile() ) {
@@ -112,8 +101,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   };
 
   const handlePageChange = ( e, { activePage: page } ) => {
-    setSelectedItems( new Map() );
-    setDisplayActionsMenu( false );
+    dispatch( { type: 'RESET_SELECTED' } );
     setActivePage( page );
     setSkip( ( page - 1 ) * itemsPerPage );
   };
@@ -124,8 +112,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   };
 
   const handleResetSelections = () => {
-    setSelectedItems( new Map() );
-    setDisplayActionsMenu( false );
+    dispatch( { type: 'RESET_SELECTED' } );
     handleResetActivePage();
   };
 
@@ -136,7 +123,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   };
 
   const handleSort = clickedColumn => () => {
-    if ( displayActionsMenu ) return;
+    if ( state.displayActionsMenu ) return;
 
     // Pass column, direction to TableBody so re-rendered on TableHeader click
     // Reset to first page of results after sort
@@ -171,31 +158,9 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
 
   const toggleAllItemsSelection = e => {
     e.stopPropagation();
-    const allItems = Array
-      .from( document.querySelectorAll( '[data-label]' ) )
-      .map( item => item.dataset.label );
+    const selected = state?.selected?.selectedItems ? state.selected.selectedItems : new Map();
 
-    const newSelectedItems = new Map();
-
-    const hasSelected = !hasSelectedAllItems;
-
-    allItems.forEach( item => {
-      newSelectedItems.set( item, hasSelected );
-    } );
-
-    setSelectedItems( newSelectedItems );
-    setHasSelectedAllItems( hasSelected );
-    setDisplayActionsMenu( hasSelected );
-  };
-
-  const toggleItemSelection = ( e, d ) => {
-    const isChecked = d.checked;
-
-    const updatedSelectedItems = selectedItems.set( String( d['data-label'] ), isChecked );
-    const areOtherItemsSelected = Array.from( updatedSelectedItems.values() ).includes( true );
-
-    setSelectedItems( updatedSelectedItems );
-    setDisplayActionsMenu( areOtherItemsSelected );
+    dispatch( { type: 'UPDATE_SELECTED_ALL', payload: { selected } } );
   };
 
   const count = state?.count?.count ? state.count.count : null;
@@ -217,14 +182,11 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
         <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 }>
           <TableActionsMenu
             data={ projectData }
-            displayActionsMenu={ displayActionsMenu }
             error={ projectError }
             handleResetSelections={ handleResetSelections }
             loading={ projectLoading }
             refetch={ projectRefetch }
             refetchCount={ countRefetch }
-            selectedItems={ selectedItems }
-            team={ team }
             toggleAllItemsSelection={ toggleAllItemsSelection }
             variables={ { ...variables, ...paginationVars } }
           />
@@ -252,7 +214,6 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
               <TableHeader
                 handleSort={ handleSort }
                 tableHeaders={ tableHeaders }
-                displayActionsMenu={ displayActionsMenu }
               />
               <TableBody
                 bodyPaginationVars={ { ...bodyPaginationVars } }
@@ -263,10 +224,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
                 loading={ projectLoading }
                 projectTab={ projectTab }
                 searchTerm={ searchTerm }
-                selectedItems={ selectedItems }
                 tableHeaders={ tableHeaders }
-                toggleItemSelection={ toggleItemSelection }
-                team={ team }
               />
             </Table>
           </div>

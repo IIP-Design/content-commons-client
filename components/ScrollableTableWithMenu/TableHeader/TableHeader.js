@@ -11,12 +11,9 @@ import { DashboardContext } from 'context/dashboardContext';
 
 import './TableHeader.scss';
 
-const TableHeader = ( {
-  tableHeaders,
-  handleSort,
-  displayActionsMenu
-} ) => {
-  const { state } = useContext( DashboardContext );
+const TableHeader = ( { handleSort, tableHeaders } ) => {
+  const { state: { column, direction, selected } } = useContext( DashboardContext );
+  const displayActionsMenu = selected?.displayActionsMenu ? selected.displayActionsMenu : false;
 
   return (
     <Table.Header>
@@ -24,7 +21,7 @@ const TableHeader = ( {
         { tableHeaders.map( header => (
           <Table.HeaderCell
             key={ header.name }
-            sorted={ state.column === header.name ? state.direction : null }
+            sorted={ column === header.name ? direction : null }
             onClick={ handleSort( header.name ) }
             className={ displayActionsMenu ? 'displayActionsMenu' : '' }
           >
@@ -38,8 +35,7 @@ const TableHeader = ( {
 
 TableHeader.propTypes = {
   tableHeaders: PropTypes.array.isRequired,
-  handleSort: PropTypes.func,
-  displayActionsMenu: PropTypes.bool
+  handleSort: PropTypes.func
 };
 
 export default TableHeader;

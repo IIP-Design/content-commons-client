@@ -3,28 +3,33 @@
  * MyProjectPrimaryCol
  *
  */
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import truncate from 'lodash/truncate';
 import {
   Checkbox, Icon, Modal, Popup
 } from 'semantic-ui-react';
+
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import packageThumbnail from 'static/images/thumbnail_package.svg';
 import ProjectPreviewContent from 'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
+import { DashboardContext } from 'context/dashboardContext';
+
 import './MyProjectPrimaryCol.scss';
 
 const handleDataActionsOffClick = e => {
   // Check if click target is a data actions menu link
   const isDataActionsMenuLink = e.target.classList.contains( 'projects_data_actions_action' );
+
   if ( isDataActionsMenuLink ) return;
 
   // If click target is not actions menu toggle button
   if ( !e.target.classList.contains( 'ellipsis' ) ) {
     // Close any open menus
     const openDataActionsMenu = document.querySelector( '.displayDataActions' );
+
     if ( openDataActionsMenu !== null ) openDataActionsMenu.classList.remove( 'displayDataActions' );
 
     // Remove the document click event handler since no open menus
@@ -43,6 +48,7 @@ const toggleDataActions = e => {
   } else {
     // Close any other open dataActions menus
     const openDataActionsMenu = document.querySelector( '.displayDataActions' );
+
     if ( openDataActionsMenu !== null ) openDataActionsMenu.classList.remove( 'displayDataActions' );
 
     // Display target dataActions menu
@@ -53,18 +59,20 @@ const toggleDataActions = e => {
   }
 };
 
-const MyProjectPrimaryCol = props => {
-  const {
-    d,
-    d: { id },
-    header,
-    selectedItems,
-    toggleItemSelection
-  } = props;
+const MyProjectPrimaryCol = ( {
+  d,
+  d: { id },
+  header
+} ) => {
+  const { dispatch, state } = useContext( DashboardContext );
+
+  const selectedItems = state?.selected?.selectedItems ? state.selected.selectedItems : new Map();
 
   const isDraft = d.status === 'DRAFT';
   const isPublishing = d.status === 'PUBLISHING';
-  const actions = ['Edit', 'Preview', 'Files'];
+  const actions = [
+    'Edit', 'Preview', 'Files'
+  ];
   const Trigger = isPublishing ? 'span' : 'a';
   const Title = isPublishing ? 'span' : Link;
   const projectTitleLength = d[header.name].length >= 35;
@@ -122,13 +130,12 @@ const MyProjectPrimaryCol = props => {
     }
   };
 
-  const getTitleCls = () => (
-    `projects_data_title${isPublishing ? ' isPublishing' : ''}`
-  );
+  const getTitleCls = () => `projects_data_title${isPublishing ? ' isPublishing' : ''}`;
+  const getActionCls = () => `linkStyle projects_data_actions_action${isPublishing ? ' isPublishing' : ''}`;
 
-  const getActionCls = () => (
-    `linkStyle projects_data_actions_action${isPublishing ? ' isPublishing' : ''}`
-  );
+  const toggle = ( _, data ) => {
+    dispatch( { type: 'UPDATE_SELECTED', payload: { data, selected: selectedItems } } );
+  };
 
   return (
     <Fragment>
@@ -136,7 +143,7 @@ const MyProjectPrimaryCol = props => {
         <Checkbox
           { ...( isPublishing ? {} : { 'data-label': id } ) }
           checked={ !!selectedItems.get( `${id}` ) }
-          onChange={ toggleItemSelection }
+          onChange={ toggle }
           disabled={ isPublishing }
         />
       </div>
@@ -179,35 +186,35 @@ const MyProjectPrimaryCol = props => {
         ) }
         <div className="projects_data_actions">
           <div className="projects_data_actions_wrapper">
-            { isPublishing ? (
-              actions.map( ( action, i ) => (
+            { isPublishing
+              ? actions.map( ( action, i ) => (
                 <Fragment key={ `${action}-${id}` }>
                   <span className={ getActionCls() }>{ action }</span>
                   { i < actions.length - 1 && <span className="separator">|</span> }
                 </Fragment>
               ) )
-            ) : (
-              <Fragment>
-                <Link as={ getEditUrl( 'pretty' ) } href={ getEditUrl( 'long' ) } prefetch={ false }>
-                  <a className={ getActionCls() }>Edit</a>
-                </Link>
-                <span className="separator">|</span>
-                <Modal
-                  trigger={ (
-                    <button type="button" className={ getActionCls() }>
-                      Preview
-                    </button>
-                  ) }
-                  closeIcon
-                >
-                  <Modal.Content>
-                    <ProjectPreviewContent id={ id } />
-                  </Modal.Content>
-                </Modal>
-                <span className="separator">|</span>
-                <DetailsPopup id={ id } />
-              </Fragment>
-            ) }
+              : (
+                <Fragment>
+                  <Link as={ getEditUrl( 'pretty' ) } href={ getEditUrl( 'long' ) } prefetch={ false }>
+                    <a className={ getActionCls() }>Edit</a>
+                  </Link>
+                  <span className="separator">|</span>
+                  <Modal
+                    trigger={ (
+                      <button type="button" className={ getActionCls() }>
+                        Preview
+                      </button>
+                    ) }
+                    closeIcon
+                  >
+                    <Modal.Content>
+                      <ProjectPreviewContent id={ id } />
+                    </Modal.Content>
+                  </Modal>
+                  <span className="separator">|</span>
+                  <DetailsPopup id={ id } />
+                </Fragment>
+              ) }
           </div>
           <button
             type="button"

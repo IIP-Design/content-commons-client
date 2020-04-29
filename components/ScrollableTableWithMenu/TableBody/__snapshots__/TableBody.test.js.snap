@@ -40,15 +40,6 @@ Array [
                 "name": "projectTitle",
               }
             }
-            selectedItems={Map {}}
-            team={
-              Object {
-                "contentTypes": Array [
-                  "VIDEO",
-                ],
-              }
-            }
-            toggleItemSelection={[MockFunction]}
           />
         </div>
         <TableMobileDataToggleIcon
@@ -172,15 +163,6 @@ Array [
                 "name": "projectTitle",
               }
             }
-            selectedItems={Map {}}
-            team={
-              Object {
-                "contentTypes": Array [
-                  "VIDEO",
-                ],
-              }
-            }
-            toggleItemSelection={[MockFunction]}
           />
         </div>
         <TableMobileDataToggleIcon
