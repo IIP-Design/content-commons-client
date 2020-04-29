@@ -6,13 +6,11 @@ import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import AddFilesSectionHeading from 'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading';
 import ApolloError from 'components/errors/ApolloError';
-import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
-import FormInstructions from 'components/admin/FormInstructions/FormInstructions';
 import GraphicProjectDetailsFormContainer from 'components/admin/ProjectDetailsForm/GraphicProjectDetailsFormContainer/GraphicProjectDetailsFormContainer';
 import GraphicProjectSupportFiles from 'components/admin/ProjectSupportFiles/GraphicProjectSupportFiles/GraphicProjectSupportFiles';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
-import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg';
+import UploadProgress from 'components/admin/ProjectEdit/UploadProgress/UploadProgress';
 // import withFileUpload from 'hocs/withFileUpload/withFileUpload';
 import { DELETE_GRAPHIC_PROJECT_MUTATION, GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
 import './GraphicEdit.scss';
@@ -317,19 +315,13 @@ const GraphicEdit = props => {
       />
 
       { /* upload progress  */ }
-      <div className="status alpha">
-        { !projectId && !isUploading && <FormInstructions /> }
-        { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
-
-        { isUploading
-          && (
-            <FileUploadProgressBar
-              filesToUpload={ filesToUpload }
-              label="Please keep this page open until upload is complete"
-              fileProgressMessage
-            />
-          ) }
-      </div>
+      <UploadProgress
+        className="alpha"
+        projectId={ projectId }
+        filesToUpload={ filesToUpload }
+        displayTheUploadSuccessMsg={ displayTheUploadSuccessMsg }
+        isUploading={ isUploading }
+      />
 
       { /* project details form */ }
       <div className="content" style={ contentStyle }>
@@ -344,19 +336,13 @@ const GraphicEdit = props => {
       </div>
 
       { /* upload progress */ }
-      <div className="status beta">
-        { !projectId && !isUploading && <FormInstructions /> }
-        { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
-
-        { isUploading
-          && (
-            <FileUploadProgressBar
-              filesToUpload={ filesToUpload }
-              label="Please keep this page open until upload is complete"
-              fileProgressMessage
-            />
-          ) }
-      </div>
+      <UploadProgress
+        className="beta"
+        projectId={ projectId }
+        filesToUpload={ filesToUpload }
+        displayTheUploadSuccessMsg={ displayTheUploadSuccessMsg }
+        isUploading={ isUploading }
+      />
 
       <div className="graphic-support-files">
         <AddFilesSectionHeading

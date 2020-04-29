@@ -15,48 +15,6 @@
     @include base-button;
   }
 
-  // @media screen and (min-width: 992px) {
-  //   &__form--save {
-  //     width: 100%;
-  //   }
-  // }
-
-  .status {
-    font-size: 0.875em;
-
-    &.beta {
-      > .ui.progress {
-        margin-bottom: 4.75em;
-      }
-    }
-
-    > .ui.progress {
-      border-radius: 0;
-      margin-bottom: 3em;
-      font-size: 0.875em;
-      background-color: $light-grey;
-
-      .bar {
-        border-radius: 0;
-        &::after {
-          border-radius: 0;
-        }
-      }
-
-      .label {
-        font-weight: normal;
-      }
-    }
-  }
-
-  // &__items {
-  //   /**
-  //    * use rem for l & r padding to
-  //    * match and override Semantic UI
-  //    */
-  //   padding: 1.75em 1rem;
-  // }
-
   .content,
   .graphic-support-files {
     padding: 1.75em 0;
@@ -67,26 +25,6 @@
   .graphic-files {
     @media screen and (min-width: 768px) {
       padding: 1.75em;
-    }
-  }
-
-  // .ui.modal {
-  //   > .content {
-  //     position: relative;
-  //   }
-  // }
-
-  .ui.active.progress {
-    .bar {
-      &::after {
-        background: repeating-linear-gradient(
-          45deg,
-          #ffffff,
-          #ffffff 1em,
-          $curious-blue 1em,
-          $curious-blue 2em
-        );
-      }
     }
   }
 
