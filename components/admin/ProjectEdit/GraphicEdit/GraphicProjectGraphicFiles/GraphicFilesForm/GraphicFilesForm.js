@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input } from 'semantic-ui-react';
+import { useMutation } from '@apollo/react-hooks';
+import { Confirm, Form, Input } from 'semantic-ui-react';
+import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
+import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 import GraphicStyleDropdown from 'components/admin/dropdowns/GraphicStyleDropdown/GraphicStyleDropdown';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import SocialPlatformDropdown from 'components/admin/dropdowns/SocialPlatformDropdown/SocialPlatformDropdown';
+import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import './GraphicFilesForm.scss';
 
 const GraphicFilesForm = props => {
@@ -18,6 +22,34 @@ const GraphicFilesForm = props => {
     touched,
     values
   } = props;
+
+  const [fileIdToDelete, setFileIdToDelete] = useState( '' );
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
+  const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
+
+  const handleReset = () => {
+    setDeleteConfirmOpen( false );
+    setFileIdToDelete( '' );
+  };
+
+  const handleDelete = async id => {
+    await updateGraphicProject( {
+      variables: {
+        data: {
+          images: {
+            'delete': {
+              id
+            }
+          }
+        },
+        where: {
+          id: projectId
+        }
+      }
+    } )
+      .then( handleReset )
+      .catch( err => console.dir( err ) );
+  };
 
   const handleOnChange = ( e, { name, value } ) => {
     setFieldValue( name, value );
@@ -35,20 +67,45 @@ const GraphicFilesForm = props => {
   return (
     <div className="graphic-project-graphic-files">
       { projectId && <FormikAutoSave save={ save } /> }
+
+      <Confirm
+        className="delete"
+        open={ deleteConfirmOpen }
+        content={ (
+          <ConfirmModalContent
+            className="delete_confirm"
+            headline="Are you sure you want to delete this graphic?"
+          >
+            <p>This graphic will be permanently removed from the Content Commons and any other projects or collections it appears on.</p>
+          </ConfirmModalContent>
+        ) }
+        onCancel={ handleReset }
+        onConfirm={ () => handleDelete( fileIdToDelete ) }
+        cancelButton="No, take me back"
+        confirmButton="Yes, delete forever"
+      />
+
       <Form className="form-fields">
         { files.map( file => {
           const { id } = file;
           const value = values[id];
 
           return (
-            <div key={ id }>
+            <div key={ id } className={ `graphic-file-${id}` }>
+              <FileRemoveReplaceButtonGroup
+                onRemove={ () => {
+                  setDeleteConfirmOpen( true );
+                  setFileIdToDelete( id );
+                } }
+              />
+
               <div className="field">
                 <Form.Field
                   id={ `title-${id}` }
                   name={ `${id}.title` }
                   control={ Input }
                   label="Graphic Title"
-                  value={ value.title }
+                  value={ value.title || '' }
                   onChange={ handleOnChange }
                 />
               </div>
