@@ -206,14 +206,14 @@ const GraphicEdit = props => {
       return data?.graphicProject?.supportFiles.filter( file => {
         const { filetype } = file;
 
-        return filetype.startsWith( 'image' ) || filetype.includes( 'application/pdf' ) || filetype.includes( 'application/postscript' );
+        return filetype === 'image/vnd.adobe.photoshop';
       } ) || [];
     }
 
     return data?.graphicProject?.supportFiles.filter( file => {
       const { filetype } = file;
 
-      return !filetype.startsWith( 'image' ) && !filetype.includes( 'application/pdf' ) && !filetype.includes( 'application/postscript' );
+      return filetype !== 'image/vnd.adobe.photoshop';
     } ) || [];
   };
 
