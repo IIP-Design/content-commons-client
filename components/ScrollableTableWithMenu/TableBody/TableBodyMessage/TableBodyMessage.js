@@ -6,23 +6,23 @@ import ApolloError from 'components/errors/ApolloError';
 
 const setMessage = ( type, error, searchTerm ) => {
   switch ( type ) {
-  case 'error':
-    return <ApolloError error={ error } />;
-  case 'loading':
-    return (
-      <Fragment>
-        <Loader active inline size="small" />
-        <span style={ { marginLeft: '0.5em', fontSize: '1.5em' } }>
-          Loading...
-        </span>
-      </Fragment>
-    );
-  case 'no-projects':
-    return 'No projects';
-  case 'no-results':
-    return `No results for &ldquo;${searchTerm}&rdquo;`;
-  default:
-    return '';
+    case 'error':
+      return <ApolloError error={ error } />;
+    case 'loading':
+      return (
+        <Fragment>
+          <Loader active inline size="small" />
+          <span style={ { marginLeft: '0.5em', fontSize: '1.5em' } }>
+            Loading...
+          </span>
+        </Fragment>
+      );
+    case 'no-projects':
+      return 'No projects';
+    case 'no-results':
+      return `No results for &ldquo;${searchTerm}&rdquo;`;
+    default:
+      return '';
   }
 };
 

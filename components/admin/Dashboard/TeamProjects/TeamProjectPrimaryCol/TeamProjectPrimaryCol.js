@@ -19,19 +19,20 @@ import { DashboardContext } from 'context/dashboardContext';
 
 import './TeamProjectPrimaryCol.scss';
 
-const PackagePreview = dynamic(
-  () => import(
-    /* webpackChunkName: "packagePreview" */
-    'components/admin/PackagePreview/PackagePreview'
-  )
-);
+const GraphicPreview = dynamic( () => import(
+  /* webpackChunkName: "graphicPreview" */
+  'components/admin/GraphicPreview/GraphicPreview'
+) );
 
-const ProjectPreviewContent = dynamic(
-  () => import(
-    /* webpackChunkName: "projectPreviewContent" */
-    'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent'
-  )
-);
+const PackagePreview = dynamic( () => import(
+  /* webpackChunkName: "packagePreview" */
+  'components/admin/PackagePreview/PackagePreview'
+) );
+
+const ProjectPreviewContent = dynamic( () => import(
+  /* webpackChunkName: "projectPreviewContent" */
+  'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent'
+) );
 
 const handleDataActionsOffClick = e => {
   // Check if click target is a data actions menu link
@@ -139,11 +140,16 @@ const TeamProjectPrimaryCol = ( {
     // TEMP Package || DocumentFile url
     if ( d.__typename === 'Package' ) return `/admin/package/${id}`;
     if ( d.__typename === 'DocumentFile' ) return `/admin/document/${id}`;
+    if ( d.__typename === 'GraphicProject' ) return `/admin/project/graphic/${id}`;
 
     if ( format === 'pretty' ) {
+      if ( d.__typename === 'GraphicProject' ) return `/admin/project/graphic/${id}/edit`;
+
       return `/admin/project/video/${id}/edit`;
     }
     if ( format === 'long' ) {
+      if ( d.__typename === 'GraphicProject' ) return `/admin/project?content=graphic&id=${id}&action=edit`;
+
       return `/admin/project?content=video&id=${id}&action=edit`;
     }
   };
@@ -164,8 +170,8 @@ const TeamProjectPrimaryCol = ( {
     switch ( d.__typename ) {
       case 'Package':
         return PackagePreview;
-      // case 'SomeFutureType':
-      //   return FutureTypePreview;
+      case 'GraphicProject':
+        return GraphicPreview;
       case 'VideoProject':
       default:
         return ProjectPreviewContent;
@@ -250,7 +256,7 @@ const TeamProjectPrimaryCol = ( {
                     { ...getPkgModalSize( 'fullscreen' ) }
                   >
                     <Modal.Content>
-                      <ContentPreview id={ id } />
+                      <ContentPreview data={ d } id={ id } />
                     </Modal.Content>
                   </Modal>
                   { d.__typename !== 'DocumentFile' && (
