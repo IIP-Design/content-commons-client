@@ -6,6 +6,7 @@ import GraphicFilesForm from 'components/admin/ProjectEdit/GraphicEdit/GraphicPr
 import { getCount } from 'lib/utils';
 import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import { buildUpdateGraphicProjectImagesTree } from 'lib/graphql/builders/graphic';
+import { baseSchema } from './validationSchema';
 
 const GraphicProjectGraphicFiles = props => {
   const { files, projectId } = props;
@@ -55,7 +56,7 @@ const GraphicProjectGraphicFiles = props => {
   return (
     <Formik
       initialValues={ getInitialValues() }
-      // validationSchema={ projectId ? baseSchema : initialSchema }
+      validationSchema={ baseSchema }
     >
       { formikProps => (
         <GraphicFilesForm
