@@ -6,8 +6,7 @@ import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmMod
 import IconPopup from 'components/popups/IconPopup/IconPopup';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
-import { UPDATE_SUPPORT_FILE_MUTATION, DELETE_SUPPORT_FILE_MUTATION } from 'lib/graphql/queries/common';
-import { GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
+import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import { getCount } from 'lib/utils';
 import './GraphicProjectSupportFiles.scss';
 
@@ -17,43 +16,59 @@ const GraphicProjectSupportFiles = props => {
   } = props;
   const [fileIdToDelete, setFileIdToDelete] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
-  const [deleteSupportFile] = useMutation( DELETE_SUPPORT_FILE_MUTATION );
-  const [updateSupportFile] = useMutation( UPDATE_SUPPORT_FILE_MUTATION );
+  const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
 
-  const handleResetAfterDelete = () => {
+  const handleReset = () => {
     setDeleteConfirmOpen( false );
     setFileIdToDelete( '' );
   };
 
   const handleDelete = async id => {
-    await deleteSupportFile( {
-      variables: { id },
-      refetchQueries: [
-        {
-          query: GRAPHIC_PROJECT_QUERY,
-          variables: { id: projectId }
-        }
-      ]
-    } )
-      .then( handleResetAfterDelete )
-      .catch( err => console.dir( err ) );
-  };
-
-  const handleLanguageChange = async ( e, { id, value } ) => {
-    await updateSupportFile( {
+    await updateGraphicProject( {
       variables: {
         data: {
-          language: {
-            connect: {
-              id: value
+          supportFiles: {
+            'delete': {
+              id
             }
           }
         },
         where: {
-          id
+          id: projectId
         }
       }
-    } ).catch( err => console.dir( err ) );
+    } )
+      .then( handleReset )
+      .catch( err => console.dir( err ) );
+  };
+
+  const handleLanguageChange = async ( e, { id, value } ) => {
+    await updateGraphicProject( {
+      variables: {
+        data: {
+          supportFiles: {
+            // pull out to builder fn?
+            update: {
+              data: {
+                language: {
+                  connect: {
+                    id: value
+                  }
+                }
+              },
+              where: {
+                id
+              }
+            }
+          }
+        },
+        where: {
+          id: projectId
+        }
+      }
+    } )
+      .then( handleReset )
+      .catch( err => console.dir( err ) );
   };
 
   const renderList = () => (
@@ -111,7 +126,7 @@ const GraphicProjectSupportFiles = props => {
             headline="Are you sure you want to delete this file?"
           />
         ) }
-        onCancel={ handleResetAfterDelete }
+        onCancel={ handleReset }
         onConfirm={ () => handleDelete( fileIdToDelete ) }
         cancelButton="No, take me back"
         confirmButton="Yes, delete forever"
