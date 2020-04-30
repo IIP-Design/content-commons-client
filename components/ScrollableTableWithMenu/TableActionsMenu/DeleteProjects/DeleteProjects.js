@@ -1,37 +1,34 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { Button, Modal } from 'semantic-ui-react';
-import { getCount, getPluralStringOrNot } from 'lib/utils';
-import { setProjectsQueries } from 'lib/graphql/util';
-import { DELETE_VIDEO_PROJECT_MUTATION } from 'lib/graphql/queries/video';
-import { DELETE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
+
+import { getPluralStringOrNot } from 'lib/utils';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import DeleteProjectsList from './DeleteProjectsList/DeleteProjectsList';
+import { DashboardContext } from 'context/dashboardContext';
 
-const DeleteProjects = props => {
-  const {
-    team,
-    deleteConfirmOpen,
-    handleActionResult,
-    handleDeleteCancel,
-    handleDeleteConfirm,
-    handleResetSelections,
-    selections,
-  } = props;
 
-  // Determine which Query to run
-  const graphQuery = setProjectsQueries( team, {
-    videoProjects: DELETE_VIDEO_PROJECT_MUTATION,
-    packages: DELETE_PACKAGE_MUTATION
-  } );
+const DeleteProjects = ( {
+  deleteConfirmOpen,
+  handleActionResult,
+  handleDeleteCancel,
+  handleDeleteConfirm,
+  handleResetSelections,
+  selections
+} ) => {
+  const { state } = useContext( DashboardContext );
 
-  const [deleteDashboardProject, { loading, error }] = useMutation( graphQuery );
+  const [deleteDashboardProject, { loading, error }] = useMutation( state.queries.remove );
 
   // Set project type text for confirmation modal display
   const displayProjectTypeText = () => {
-    if ( team.contentTypes.includes( 'VIDEO' ) ) return 'video';
-    if ( team.contentTypes.includes( 'PACKAGE' ) ) return 'package';
+    const types = state?.team?.contentTypes ? state.team.contentTypes : [];
+
+    if ( types.includes( 'GRAPHIC' ) ) return 'graphic';
+    if ( types.includes( 'VIDEO' ) ) return 'video';
+    if ( types.includes( 'PACKAGE' ) ) return 'package';
+
     return '';
   };
 
@@ -39,6 +36,7 @@ const DeleteProjects = props => {
     if ( selections && selections.length ) {
       return selections.filter( selection => selection.status === 'DRAFT' );
     }
+
     return [];
   };
 
@@ -46,31 +44,45 @@ const DeleteProjects = props => {
     if ( selections && selections.length ) {
       return selections.filter( selection => selection.status !== 'DRAFT' );
     }
+
     return [];
   };
 
-  const drafts = getDrafts();
-  const draftsCount = getCount( drafts );
-
-  const nonDrafts = getNonDrafts();
-  const nonDraftsCount = getCount( nonDrafts );
-
-  const hasNonDraftsOnly = draftsCount === 0 && nonDraftsCount > 0;
+  const hasDrafts = getDrafts().length > 0;
+  const hasNonDrafts = getNonDrafts().length > 0;
+  const hasNonDraftsOnly = !hasDrafts && hasNonDrafts;
+  const hasBoth = hasDrafts && hasNonDrafts;
 
   const deleteProject = async project => {
     const result = await deleteDashboardProject( { variables: { id: project.id } } ).catch( error => ( {
       error,
       project,
-      action: 'delete',
+      action: 'delete'
     } ) );
+
     handleActionResult( result );
   };
 
-  const handleDeleteProjects = async () => {
-    await Promise.all( drafts.map( deleteProject ) );
+  const handleDeleteProjects = async() => {
+    await Promise.all( getDrafts().map( deleteProject ) );
     handleResetSelections();
     handleDeleteConfirm();
     handleDeleteCancel();
+  };
+
+  if ( !deleteDashboardProject ) return null;
+
+  /**
+   * Dynamically composes a message string and list of items based on whether the items are drafts or not
+   * If passed the string 'draft' will provide the message fragment for draft content, otherwise will return that for non drafts
+   *
+   * @param {string} isDraft
+   * @returns {string} dynamic message fragment
+   */
+  const messageFragment = isDraft => {
+    const getFunc = isDraft === 'draft' ? getDrafts() : getNonDrafts();
+
+    return `${displayProjectTypeText()} ${getPluralStringOrNot( getFunc, 'project' )}`;
   };
 
   return (
@@ -80,23 +92,24 @@ const DeleteProjects = props => {
         headline={
           hasNonDraftsOnly
             ? `Only DRAFT ${displayProjectTypeText()} projects can be deleted from the dashboard.`
-            : `Are you sure you want to delete the selected DRAFT ${displayProjectTypeText()} ${getPluralStringOrNot( drafts, 'project' )}?` // eslint-disable-line
+            : `Are you sure you want to delete the selected DRAFT ${messageFragment( 'draft' )}?`
         }
       >
-        { draftsCount > 0
-        && (
+        { hasDrafts && (
           <DeleteProjectsList
-            headline={ `The following DRAFT ${displayProjectTypeText()} ${getPluralStringOrNot( drafts, 'project' )} will be removed permanently from the Content Cloud:` }
-            projects={ drafts }
+            headline={ `The following DRAFT ${messageFragment( 'draft' )} will be removed permanently from the Content Cloud:` }
+            projects={ getDrafts() }
             isDrafts
           />
         ) }
 
-        { nonDraftsCount > 0
-        && (
+        { hasNonDrafts && (
           <DeleteProjectsList
-            headline={ `${draftsCount > 0 && nonDraftsCount > 0 ? `Only DRAFT ${displayProjectTypeText()} projects can be deleted from the dashboard. ` : ''}The following non-DRAFT ${displayProjectTypeText()} ${getPluralStringOrNot( nonDrafts, 'project' )} will NOT be removed:` }
-            projects={ nonDrafts }
+            headline={
+              `${hasBoth ? `Only DRAFT ${displayProjectTypeText()} projects can be deleted from the dashboard. ` : ''}
+              The following non-DRAFT ${messageFragment()} will NOT be removed:`
+            }
+            projects={ getNonDrafts() }
           />
         ) }
       </ConfirmModalContent>
@@ -125,13 +138,12 @@ const DeleteProjects = props => {
 };
 
 DeleteProjects.propTypes = {
-  team: PropTypes.object,
   deleteConfirmOpen: PropTypes.bool,
   handleActionResult: PropTypes.func,
   handleDeleteCancel: PropTypes.func,
   handleDeleteConfirm: PropTypes.func,
   handleResetSelections: PropTypes.func,
-  selections: PropTypes.array,
+  selections: PropTypes.array
 };
 
 export default DeleteProjects;

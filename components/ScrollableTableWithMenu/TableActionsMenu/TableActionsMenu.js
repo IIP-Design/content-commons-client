@@ -131,7 +131,7 @@ const TableActionsMenu = ( {
       const selections = [];
 
       projectIds.map( s => projects.map( p => {
-        if ( s === p.id ) selections.push( s );
+        if ( s === p.id ) selections.push( p );
 
         return null;
       } ) );
@@ -211,7 +211,6 @@ const TableActionsMenu = ( {
           <DeleteIconButton displayConfirmDelete={ displayConfirmDelete } />
 
           <DeleteProjects
-            team={ team }
             deleteConfirmOpen={ deleteConfirmOpen }
             handleDeleteCancel={ handleDeleteCancel }
             handleDeleteConfirm={ handleActionCompleted }

@@ -1,16 +1,20 @@
 import React from 'react';
 
 import { getProjectsType, normalizeDashboardData } from 'lib/graphql/util';
-import { TEAM_GRAPHIC_PROJECTS_QUERY, TEAM_GRAPHIC_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/graphic';
-import { TEAM_VIDEO_PROJECTS_QUERY, TEAM_VIDEO_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/video';
-import { TEAM_PACKAGES_QUERY, TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
+import { DELETE_GRAPHIC_PROJECT_MUTATION, TEAM_GRAPHIC_PROJECTS_QUERY, TEAM_GRAPHIC_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/graphic';
+import { DELETE_PACKAGE_MUTATION, TEAM_PACKAGES_QUERY, TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
+import { DELETE_VIDEO_PROJECT_MUTATION, TEAM_VIDEO_PROJECTS_QUERY, TEAM_VIDEO_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/video';
 
 const initialState = {
   column: 'createdAt',
   content: {},
   count: {},
   direction: 'descending',
-  queries: null,
+  queries: {
+    content: null,
+    count: null,
+    remove: null
+  },
   selected: {
     displayActionsMenu: false,
     selectedItems: new Map()
@@ -76,16 +80,19 @@ export const setQueries = team => {
     case 'graphicProjects':
       queries.content = TEAM_GRAPHIC_PROJECTS_QUERY;
       queries.count = TEAM_GRAPHIC_PROJECTS_COUNT_QUERY;
+      queries.remove = DELETE_GRAPHIC_PROJECT_MUTATION;
 
       return queries;
     case 'videoProjects':
       queries.content = TEAM_VIDEO_PROJECTS_QUERY;
       queries.count = TEAM_VIDEO_PROJECTS_COUNT_QUERY;
+      queries.remove = DELETE_VIDEO_PROJECT_MUTATION;
 
       return queries;
     case 'packages':
       queries.content = TEAM_PACKAGES_QUERY;
       queries.count = TEAM_PACKAGES_COUNT_QUERY;
+      queries.remove = DELETE_PACKAGE_MUTATION;
 
       return queries;
     default:
