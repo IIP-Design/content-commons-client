@@ -17,7 +17,11 @@ const props = {
 
 jest.mock( 'react', () => ( {
   ...jest.requireActual( 'react' ),
-  useContext: () => ( { state: { column: 'author', direction: 'descending', selected: { displayActionsMenu: true } } } )
+  useContext: () => ( { state: {
+    column: 'author',
+    direction: 'descending',
+    selected: { displayActionsMenu: true }
+  } } )
 } ) );
 
 const createTable = tableProps => (

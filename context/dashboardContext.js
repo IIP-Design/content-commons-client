@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { normalizeDashboardData } from 'lib/graphql/util';
+import { getProjectsType, normalizeDashboardData } from 'lib/graphql/util';
 import { TEAM_GRAPHIC_PROJECTS_QUERY, TEAM_GRAPHIC_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/graphic';
 import { TEAM_VIDEO_PROJECTS_QUERY, TEAM_VIDEO_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/video';
 import { TEAM_PACKAGES_QUERY, TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
@@ -20,18 +20,16 @@ const initialState = {
 
 export const DashboardContext = React.createContext( initialState );
 
-const testContentTypes = team => {
+const getContentTypesFromTeam = team => {
   const contentTypes = team?.contentTypes ? team.contentTypes : '';
 
-  if ( contentTypes.includes( 'GRAPHIC' ) ) return 'graphic';
-  if ( contentTypes.includes( 'VIDEO' ) ) return 'video';
-  if ( contentTypes.includes( 'PACKAGE' ) ) return 'packages';
+  const type = getProjectsType( contentTypes );
 
-  return null;
+  return type || null;
 };
 
 const parseCount = ( queryData, team ) => {
-  const type = testContentTypes( team );
+  const type = getContentTypesFromTeam( team );
 
   const count = queryData?.[type] ? queryData[type].length : 0;
 
@@ -74,13 +72,13 @@ const toggleAllItemsSelection = selected => {
 export const setQueries = team => {
   const queries = {};
 
-  switch ( testContentTypes( team ) ) {
-    case 'graphic':
+  switch ( getContentTypesFromTeam( team ) ) {
+    case 'graphicProjects':
       queries.content = TEAM_GRAPHIC_PROJECTS_QUERY;
       queries.count = TEAM_GRAPHIC_PROJECTS_COUNT_QUERY;
 
       return queries;
-    case 'video':
+    case 'videoProjects':
       queries.content = TEAM_VIDEO_PROJECTS_QUERY;
       queries.count = TEAM_VIDEO_PROJECTS_COUNT_QUERY;
 
@@ -147,7 +145,7 @@ export const dashboardReducer = ( state, action ) => {
       return {
         ...state,
         team: payload.team,
-        projectType: testContentTypes( payload.team ),
+        projectType: getContentTypesFromTeam( payload.team ),
         queries: setQueries( payload.team )
       };
     default:
