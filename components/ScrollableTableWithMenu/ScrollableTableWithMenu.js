@@ -66,7 +66,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     const { data, error, loading, refetch } = countData;
 
     // Save project count in context
-    dispatch( { type: 'UPDATE_COUNT', payload: { count: { data, error, loading, refetch }, team } } );
+    dispatch( { type: 'UPDATE_COUNT', payload: { count: { data, error, loading, refetch }, team, type: state.projectType } } );
   }, [countData] );
 
   useEffect( () => {
