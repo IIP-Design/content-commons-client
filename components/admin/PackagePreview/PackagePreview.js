@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
-import { Loader } from 'semantic-ui-react';
+
 import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
 import { getCount } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import Package from 'components/Package/Package';
+import PreviewLoader from 'components/admin/Dashboard/PreviewLoader/PreviewLoader';
+
 import './PackagePreview.scss';
 
 const PackagePreview = ( { id } ) => {
@@ -16,32 +18,13 @@ const PackagePreview = ( { id } ) => {
     skip: !id
   } );
 
-  if ( loading ) {
-    return (
-      <div
-        className="preview-package-loader"
-        style={ {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '200px'
-        } }
-      >
-        <Loader
-          active
-          inline="centered"
-          style={ { marginBottom: '1em' } }
-        />
-        <p>Loading the package preview...</p>
-      </div>
-    );
-  }
-
   if ( error ) return <ApolloError error={ error } />;
+  if ( loading ) return <PreviewLoader />;
+
   if ( !data ) return null;
 
   const { pkg } = data;
+
   if ( !getCount( pkg ) ) return null;
 
   const {

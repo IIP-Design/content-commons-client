@@ -7,7 +7,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { Dropdown, Embed, Loader } from 'semantic-ui-react';
+import { Dropdown, Embed } from 'semantic-ui-react';
 
 import ApolloError from 'components/errors/ApolloError';
 
@@ -30,6 +30,7 @@ import Notification from 'components/Notification/Notification';
 import Popup from 'components/popups/Popup';
 import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
+import PreviewLoader from 'components/admin/Dashboard/PreviewLoader/PreviewLoader';
 import Share from 'components/Share/Share';
 
 import downloadIcon from 'static/icons/icon_download.svg';
@@ -57,13 +58,16 @@ class ProjectPreviewContent extends React.PureComponent {
   componentDidMount = () => {
     if ( this.props.data.project ) {
       const { units } = this.props.data.project;
-      if ( !units || ( units && units.length === 0 ) ) return;
+
+      if ( !units || units.length === 0 ) return;
 
       const language = this.getUnitLanguage( units );
-      if ( !language || ( language && !Object.keys( language ).length ) ) {
+
+      if ( !language && !Object.keys( language ).length ) {
         return;
       }
 
+      // eslint-disable-next-line react/no-did-mount-set-state
       this.setState( prevState => {
         if ( !prevState.selectedLanguage ) {
           return { selectedLanguage: language.displayName };
@@ -75,10 +79,12 @@ class ProjectPreviewContent extends React.PureComponent {
   componentDidUpdate = ( _, prevState ) => {
     if ( this.props.data.project ) {
       const { units } = this.props.data.project;
-      if ( !units || ( units && units.length === 0 ) ) return;
+
+      if ( !units || units.length === 0 ) return;
 
       const language = this.getUnitLanguage( units );
-      if ( !language || ( language && !Object.keys( language ).length ) ) {
+
+      if ( !language || !Object.keys( language ).length ) {
         return;
       }
 
@@ -88,40 +94,39 @@ class ProjectPreviewContent extends React.PureComponent {
     }
   }
 
-  getLanguages = units => (
-    this.getUnitsWithFiles( units )
-      .map( unit => ( {
-        key: unit.language.languageCode,
-        value: unit.language.displayName,
-        text: unit.language.displayName
-      } ) )
-  );
+  getLanguages = units => this.getUnitsWithFiles( units )
+    .map( unit => ( {
+      key: unit.language.languageCode,
+      value: unit.language.displayName,
+      text: unit.language.displayName
+    } ) )
+  ;
 
-  getProjectUnits = units => (
-    units.reduce( ( acc, unit ) => ( {
-      ...acc,
-      [unit.language.displayName]: unit
-    } ), {} )
-  );
+  getProjectUnits = units => units.reduce( ( acc, unit ) => ( {
+    ...acc,
+    [unit.language.displayName]: unit
+  } ), {} )
+  ;
 
-  getUnitsWithFiles = units => (
-    units.filter( u => u.files.length > 0 )
-  );
+  getUnitsWithFiles = units => units.filter( u => u.files.length > 0 )
+  ;
 
-  getEnglishIndex = units => (
-    units.findIndex( unit => unit.language.displayName === 'English' )
-  );
+  getEnglishIndex = units => units.findIndex( unit => unit.language.displayName === 'English' )
+  ;
 
   getFilesCount = ( units, i ) => {
     if ( units[i] && units[i].files ) {
       return units[i].files.length;
     }
+
     return 0;
   };
 
-  getCurrUnitIndex = ( i, count = 0 ) => (
-    ( i > -1 && count > 0 ) ? i : 0
-  );
+  getCurrUnitIndex = ( i, count = 0 ) => {
+    if ( i > -1 && count > 0 ) return i;
+
+    return 0;
+  };
 
   getUnitLanguage = units => {
     /**
@@ -131,6 +136,7 @@ class ProjectPreviewContent extends React.PureComponent {
     const englishIndex = this.getEnglishIndex( units );
     const englishFilesCount = this.getFilesCount( units, englishIndex );
     const i = this.getCurrUnitIndex( englishIndex, englishFilesCount );
+
     return units[i] ? units[i].language : {};
   };
 
@@ -154,6 +160,7 @@ class ProjectPreviewContent extends React.PureComponent {
     }
 
     let embedSrc = '';
+
     if ( url.includes( 'youtu' ) ) {
       embedSrc = `https://www.youtube.com/embed/${getYouTubeId( url )}`;
     } else if ( url.includes( 'vimeo' ) ) {
@@ -164,21 +171,18 @@ class ProjectPreviewContent extends React.PureComponent {
   }
 
   getTag = ( tag, unit ) => {
-    const translation = tag.translations.find( t => (
-      t.language.locale === unit.language.locale
-    ) );
+    const translation = tag.translations.find( t => t.language.locale === unit.language.locale );
 
     if ( translation && translation.name ) {
       return translation.name;
     }
   };
 
-  getTags = ( tags, unit ) => (
-    tags.reduce( ( acc, curr ) => ( [
-      ...acc,
-      { name: this.getTag( curr, unit ) }
-    ] ), [] )
-  );
+  getTags = ( tags, unit ) => tags.reduce( ( acc, curr ) => [
+    ...acc,
+    { name: this.getTag( curr, unit ) }
+  ], [] )
+  ;
 
   toggleArrow = () => {
     this.setState( prevState => ( {
@@ -186,9 +190,8 @@ class ProjectPreviewContent extends React.PureComponent {
     } ) );
   }
 
-  selectLanguage = language => (
-    this.setState( { selectedLanguage: language } )
-  )
+  selectLanguage = language => this.setState( { selectedLanguage: language } )
+
 
   handleChange = ( e, { value } ) => {
     this.toggleArrow();
@@ -199,29 +202,9 @@ class ProjectPreviewContent extends React.PureComponent {
     const { id } = this.props;
     const { error, loading, project } = this.props.data;
 
-    if ( loading ) {
-      return (
-        <div
-          className="preview-project-loader"
-          style={ {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: '200px'
-          } }
-        >
-          <Loader
-            active
-            inline="centered"
-            style={ { marginBottom: '1em' } }
-          />
-          <p>Loading the project preview...</p>
-        </div>
-      );
-    }
-
     if ( error ) return <ApolloError error={ error } />;
+    if ( loading ) return <PreviewLoader />;
+
     if ( !project || !Object.keys( project ).length ) return null;
 
     const {
@@ -248,7 +231,11 @@ class ProjectPreviewContent extends React.PureComponent {
     if ( files && files.length === 0 ) {
       return (
         <p style={ { fontSize: '1rem' } }>
-          This { language.displayName } language unit does not have any files to preview.
+          This
+          {' '}
+          { language.displayName }
+          {' '}
+          language unit does not have any files to preview.
         </p>
       );
     }
@@ -261,6 +248,7 @@ class ProjectPreviewContent extends React.PureComponent {
     const vimeoUrl = getStreamData( stream, 'vimeo', 'url' );
 
     let embedItem = '';
+
     if ( youTubeUrl ) {
       embedItem = this.getEmbedUrl( youTubeUrl );
     } else if ( !youTubeUrl && vimeoUrl ) {
@@ -269,6 +257,7 @@ class ProjectPreviewContent extends React.PureComponent {
 
     let thumbnailUrl = '';
     let thumbnailAlt = `a thumbnail image for this project in ${language.displayName}`;
+
     if ( selectedUnit.thumbnails && selectedUnit.thumbnails.length > 0 ) {
       thumbnailUrl = selectedUnit.thumbnails[0].image.signedUrl;
       thumbnailAlt = selectedUnit.thumbnails[0].image.alt;
@@ -291,7 +280,7 @@ class ProjectPreviewContent extends React.PureComponent {
         />
 
         <div className="modal_options">
-          { ( units && this.getUnitsWithFiles( units ).length === 1 )
+          { units && this.getUnitsWithFiles( units ).length === 1
             // use units since they're defined by language
             ? (
               <div className="modal_languages_single">
@@ -310,7 +299,7 @@ class ProjectPreviewContent extends React.PureComponent {
             ) }
 
           <div className="trigger-container">
-            { ( contentType === 'video' && embedItem ) && (
+            { contentType === 'video' && embedItem && (
               <PopupTrigger
                 toolTip="Embed video"
                 icon={ { img: embedIcon, dim: 24 } }
@@ -422,14 +411,14 @@ class ProjectPreviewContent extends React.PureComponent {
               source="youtube"
             />
           ) }
-          { ( !youTubeUrl && vimeoUrl ) && (
+          { !youTubeUrl && vimeoUrl && (
             <Embed
               id={ getVimeoId( vimeoUrl ) }
               placeholder={ thumbnailUrl }
               source="vimeo"
             />
           ) }
-          { ( !youTubeUrl && !vimeoUrl ) && (
+          { !youTubeUrl && !vimeoUrl && (
             <figure className="modal_thumbnail overlay">
               <img
                 className="overlay-image"
@@ -451,10 +440,8 @@ class ProjectPreviewContent extends React.PureComponent {
           datePublished={ createdAt }
         />
 
-        { ( categories && categories.length > 0 )
-          && (
-          <ModalPostTags tags={ this.getTags( categories, selectedUnit ) } />
-          ) }
+        { categories && categories.length > 0
+          && <ModalPostTags tags={ this.getTags( categories, selectedUnit ) } />}
       </ModalItem>
     );
   }
@@ -462,7 +449,7 @@ class ProjectPreviewContent extends React.PureComponent {
 
 ProjectPreviewContent.propTypes = {
   id: PropTypes.string,
-  data: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired
 };
 
 const VIDEO_PROJECT_PREVIEW_QUERY = gql`
@@ -493,7 +480,7 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
 
 export default graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
   options: props => ( {
-    variables: { id: props.id },
+    variables: { id: props.id }
   } )
 } )( ProjectPreviewContent );
 
