@@ -1,4 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
 import React, { Fragment, useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Checkbox, Modal } from 'semantic-ui-react';

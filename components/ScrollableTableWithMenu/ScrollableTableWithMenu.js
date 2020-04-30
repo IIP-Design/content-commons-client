@@ -30,15 +30,64 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   const [orderBy, setOrderBy] = useState( 'createdAt_DESC' );
   const [skip, setSkip] = useState( 0 );
 
+  // Constants for layout transformations
   const TIMEOUT_DELAY = 500;
   const _breakpoint = 767;
 
+  const { dispatch, state } = useContext( DashboardContext );
+
+  // Set GraphQL query variables
+  const variables = { team: team.name, searchTerm };
+  const bodyPaginationVars = { first: itemsPerPage, orderBy, skip };
+  const paginationVars = { first: itemsPerPage, skip };
+
+  /**
+   * Get count of projects from GraphQL
+   */
+  const countData = useQuery( state.queries.count, {
+    variables: { ...variables },
+    fetchPolicy: 'cache-and-network'
+  } );
+
+  // The data for following columns cannot by sort within the GraphQL query
+  const isLegacySort = state.column === 'author' || state.column === 'categories' || state.column === 'team';
+
+  /**
+   * Get data for each project from GraphQL, if can be sorted by the GraphQL query send pagination vars
+   * Otherwise, return all results for client-side soriting within the TableBody Component
+   */
+  const contentData = useQuery( state.queries.content, {
+    variables: isLegacySort ? { ...variables } : { ...variables, ...bodyPaginationVars },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network'
+  } );
+
+  useEffect( () => {
+    const { data, error, loading, refetch } = countData;
+
+    // Save project count in context
+    dispatch( { type: 'UPDATE_COUNT', payload: { count: { data, error, loading, refetch }, team } } );
+  }, [countData] );
+
+  useEffect( () => {
+    const { data, error, loading, refetch } = contentData;
+
+    // Save project data in context
+    dispatch( { type: 'UPDATE_CONTENT', payload: { data, error, loading, refetch, type: state.projectType } } );
+  }, [contentData] );
+
+  /**
+   * Set the table headers on mobile
+   */
   const tableMenuSelectionsOnMobile = () => {
     if ( isMobile() ) {
       setTableHeaders( [...tableHeaders, ...columnMenu] );
     }
   };
 
+  /**
+   * Handle resizing the table
+   */
   const tableMenuSelectionsOnResize = debounce( () => {
     const currentWidth = window.innerWidth;
 
@@ -55,8 +104,6 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     setWindowWidth( currentWidth );
   }, TIMEOUT_DELAY, { leading: false, trailing: true } );
 
-  const { dispatch, state } = useContext( DashboardContext );
-
   useEffect( () => {
     tableMenuSelectionsOnMobile();
     window.addEventListener( 'resize', tableMenuSelectionsOnResize );
@@ -67,61 +114,51 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     };
   }, [] );
 
-  const variables = { team: team.name, searchTerm };
-  const bodyPaginationVars = { first: itemsPerPage, orderBy, skip };
-  const paginationVars = { first: itemsPerPage, skip };
-
-  const countData = useQuery( state.queries.count, {
-    variables: { ...variables },
-    fetchPolicy: 'cache-and-network'
-  } );
-
-  const isLegacySort = state.column === 'author' || state.column === 'categories' || state.column === 'team';
-
-  const contentData = useQuery( state.queries.content, {
-    variables: isLegacySort ? { ...variables } : { ...variables, ...bodyPaginationVars },
-    notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'cache-and-network'
-  } );
-
-  useEffect( () => {
-    const { data, error, loading, refetch } = countData;
-
-    dispatch( { type: 'UPDATE_COUNT', payload: { count: { data, error, loading, refetch }, team } } );
-  }, [countData] );
-
-  useEffect( () => {
-    const { data, error, loading, refetch } = contentData;
-
-    dispatch( { type: 'UPDATE_CONTENT', payload: { data, error, loading, refetch, type: state.projectType } } );
-  }, [contentData] );
-
-  const handleItemsPerPageChange = ( e, value ) => {
-    setItemsPerPage( value );
-  };
-
-  const handlePageChange = ( e, { activePage: page } ) => {
+  /**
+   * Update the table when navigating using the table pagination
+   *
+   * @param {Object} _ Unused synthetic click event object
+   * @param {Object} data Event data object destructured to pull off active page
+   */
+  const handlePageChange = ( _, { activePage: page } ) => {
     dispatch( { type: 'RESET_SELECTED' } );
     setActivePage( page );
     setSkip( ( page - 1 ) * itemsPerPage );
   };
 
+  /**
+   * Resets the table to the first page of results.
+   */
   const handleResetActivePage = () => {
     setActivePage( 1 );
     setSkip( 0 );
   };
 
+  /**
+   * Resets the table and the selected items list
+   */
   const handleResetSelections = () => {
     dispatch( { type: 'RESET_SELECTED' } );
     handleResetActivePage();
   };
 
+  /**
+   * Saves the submitted search term to state intiating a new filtered query
+   *
+   * @param {Object} e Synthetic click event object
+   * @param {string} term Term on which to filter search results
+   */
   const handleSearchSubmit = ( e, term ) => {
     e.preventDefault();
     setSearchTerm( term.trim() );
     handleResetActivePage();
   };
 
+  /**
+   * Resorts the table based on the selected column name.
+   *
+   * @param {string} clickedColumn Selected column name
+   */
   const handleSort = clickedColumn => () => {
     if ( state.displayActionsMenu ) return;
 
@@ -145,6 +182,11 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     handleResetActivePage();
   };
 
+  /**
+   * Updates the table when a column is shown/hidden
+   *
+   * @param {Object} e Synthetic click event object
+   */
   const tableMenuOnChange = e => {
     e.persist();
     const menuItem = {
@@ -159,6 +201,11 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     }
   };
 
+  /**
+   * Toggles all items in table to selected true/false
+   *
+   * @param {Object} e Synthetic click event object
+   */
   const toggleAllItemsSelection = e => {
     e.stopPropagation();
     const selected = state?.selected?.selectedItems ? state.selected.selectedItems : new Map();
@@ -199,7 +246,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
             count={ count }
             error={ countError }
             loading={ countLoading }
-            handleChange={ handleItemsPerPageChange }
+            handleChange={ setItemsPerPage }
             itemsPerPage={ itemsPerPage }
             searchTerm={ searchTerm }
             skip={ skip }

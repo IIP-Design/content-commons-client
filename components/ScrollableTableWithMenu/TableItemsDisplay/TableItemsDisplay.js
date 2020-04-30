@@ -59,7 +59,7 @@ const TableItemsDisplay = ( {
           inline
           options={ displaySizeOptions }
           value={ itemsPerPage }
-          onChange={ ( e, { value } ) => handleChange( e, value ) }
+          onChange={ ( e, { value } ) => handleChange( value ) }
         />
         { ' | ' }
         { count > 0 ? (
