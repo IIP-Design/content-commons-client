@@ -1,3 +1,5 @@
+@import "styles/colors.scss";
+
 .graphic-project-graphic-files {
   .form-fields {
     display: grid;
@@ -12,6 +14,113 @@
 
     .error-message {
       margin-bottom: 1.25rem;
+    }
+
+    .image-wrapper {
+      position: relative;
+      margin-bottom: 2rem;
+
+      > .thumbnail {
+        display: block;
+      }
+
+      .fluid {
+        height: auto;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: $grey-medium-transparent;
+        opacity: 0;
+        transition: all 200ms linear;
+      }
+
+      .ui.basic.buttons.FileRemoveReplaceButtonGroup__btn-group {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 44px;
+        width: 44px;
+
+        > .ui.button {
+          opacity: 0;
+          transition: all 200ms linear;
+
+          &:focus {
+            background-color: $grey-medium-transparent !important;
+          }
+
+          &:hover,
+          &:active {
+            background-color: transparent !important;
+          }
+
+          &:hover,
+          &:focus,
+          &:active {
+            border-radius: 0;
+            opacity: 1;
+          }
+
+          [tooltip] {
+            img {
+              height: 22px;
+            }
+
+            &::after {
+              z-index: 300;
+            }
+          }
+        }
+      }
+
+      &:hover {
+        &::before {
+          opacity: 1;
+        }
+
+        .ui.basic.buttons.FileRemoveReplaceButtonGroup__btn-group {
+          > .ui.button {
+            opacity: 1;
+          }
+        }
+
+        // .meta-wrap {
+        //   background-color: transparent;
+        // }
+      }
+
+      .meta-wrap {
+        position: absolute;
+        bottom: 0;
+        padding: 0.5rem;
+        width: 100%;
+        background-color: $grey-medium-transparent;
+        // transition: all 200ms linear;
+
+        > .meta {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-size: 0.666666667rem;
+          color: #fff;
+          text-shadow: 0px 0px 4px #000;
+        }
+      }
+
+      .placeholder {
+        position: relative;
+        width: 260px;
+        height: 120px;
+        background-color: $light-grey; //$ice-blue;
+      }
     }
   }
 }

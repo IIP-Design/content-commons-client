@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
-import { Confirm, Form, Input } from 'semantic-ui-react';
+import { Confirm, Form, Input, Loader } from 'semantic-ui-react';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
@@ -9,6 +9,7 @@ import GraphicStyleDropdown from 'components/admin/dropdowns/GraphicStyleDropdow
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import SocialPlatformDropdown from 'components/admin/dropdowns/SocialPlatformDropdown/SocialPlatformDropdown';
 import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
+import { formatBytes } from 'lib/utils';
 import './GraphicFilesForm.scss';
 
 const GraphicFilesForm = props => {
@@ -64,6 +65,22 @@ const GraphicFilesForm = props => {
     isTouched( id, field ) ? errors?.[id] && errors[id][field] : ''
   );
 
+  const renderThumbnail = image => {
+    if ( image ) {
+      return (
+        <img
+          src={ image.signedUrl }
+          alt={ image.alt }
+          className="thumbnail fluid"
+        />
+      );
+    }
+
+    return <div className="placeholder" />;
+  };
+
+  const uploadInProgress = false; // temp
+
   return (
     <div className="graphic-project-graphic-files">
       { projectId && <FormikAutoSave save={ save } /> }
@@ -87,17 +104,31 @@ const GraphicFilesForm = props => {
 
       <Form className="form-fields">
         { files.map( file => {
-          const { id } = file;
+          const { id, filename, filesize } = file;
           const value = values[id];
 
           return (
             <div key={ id } className={ `graphic-file-${id}` }>
-              <FileRemoveReplaceButtonGroup
-                onRemove={ () => {
-                  setDeleteConfirmOpen( true );
-                  setFileIdToDelete( id );
-                } }
-              />
+              <div className="image-wrapper">
+                { renderThumbnail( file ) }
+
+                <FileRemoveReplaceButtonGroup
+                  onRemove={ () => {
+                    setDeleteConfirmOpen( true );
+                    setFileIdToDelete( id );
+                  } }
+                  icon="trash"
+                />
+
+                { uploadInProgress && <Loader active size="small" /> }
+
+                <div className="meta-wrap">
+                  <div className="meta">
+                    <span className="filename">{ filename }</span>
+                    <span className="filesize">{ formatBytes( filesize, 1 ) }</span>
+                  </div>
+                </div>
+              </div>
 
               <div className="field">
                 <Form.Field
