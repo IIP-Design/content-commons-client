@@ -14,6 +14,7 @@ import {
 } from 'semantic-ui-react';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
+import CopyrightDropdown from 'components/admin/dropdowns/CopyrightDropdown/CopyrightDropdown';
 import UserDropdown from 'components/admin/dropdowns/UserDropdown/UserDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
 import TermsConditions from 'components/admin/TermsConditions/TermsConditions';
@@ -146,14 +147,13 @@ const ProjectDetailsForm = props => {
                 { config.copyright
                   && (
                     <div className="field">
-                      <Form.Field
+                      <CopyrightDropdown
                         id="copyright"
-                        control={ Input }
-                        label={ config.copyright?.label || 'Copyright' }
-                        placeholder=""
                         name="copyright"
+                        label={ config.copyright?.label || 'Copyright' }
                         value={ values.copyright }
                         onChange={ handleOnChange }
+                        error={ touched.copyright && !!errors.copyright }
                         { ...( config.copyright?.required && { required: true } ) }
                       />
                       <p className="error-message">{ touched.copyright ? errors.copyright : '' }</p>
