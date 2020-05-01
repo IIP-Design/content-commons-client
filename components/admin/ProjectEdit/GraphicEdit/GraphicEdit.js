@@ -14,6 +14,7 @@ import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import UploadProgress from 'components/admin/ProjectEdit/UploadProgress/UploadProgress';
 // import withFileUpload from 'hocs/withFileUpload/withFileUpload';
 import { DELETE_GRAPHIC_PROJECT_MUTATION, GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
+import { getFileExt } from 'lib/utils';
 import './GraphicEdit.scss';
 
 const GraphicEdit = props => {
@@ -202,19 +203,27 @@ const GraphicEdit = props => {
   };
 
   const getSupportFiles = type => {
-    if ( type === 'editable' ) {
-      return data?.graphicProject?.supportFiles.filter( file => {
-        const { filetype } = file;
+    const editableExtensions = [
+      '.psd', '.ai', '.ae', '.eps', '.jpg', '.jpeg', '.png'
+    ];
+    const editableFiles = [];
+    const additionalFiles = [];
 
-        return filetype === 'image/vnd.adobe.photoshop';
-      } ) || [];
+    if ( data?.graphicProject?.supportFiles ) {
+      const { supportFiles } = data.graphicProject;
+
+      supportFiles.forEach( file => {
+        const extension = getFileExt( file.filename );
+
+        if ( editableExtensions.includes( extension ) ) {
+          editableFiles.push( file );
+        } else {
+          additionalFiles.push( file );
+        }
+      } );
     }
 
-    return data?.graphicProject?.supportFiles.filter( file => {
-      const { filetype } = file;
-
-      return filetype !== 'image/vnd.adobe.photoshop';
-    } ) || [];
+    return type === 'editable' ? editableFiles : additionalFiles;
   };
 
   const editableSupportFiles = getSupportFiles( 'editable' );
@@ -379,7 +388,7 @@ const GraphicEdit = props => {
         <AddFilesSectionHeading
           projectId={ projectId }
           title="Graphics in Project"
-          acceptedFileTypes="image/*"
+          acceptedFileTypes="image/gif, image/jpeg, image/png"
           handleAddFiles={ handleAddFiles }
         />
 
