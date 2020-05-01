@@ -14,6 +14,7 @@ const Share = props => {
   } = props;
 
   const internalOnly = type === 'document' || type === 'package';
+  const video = type === 'video';
 
   const queryStr = ( type === 'post' )
     ? stringifyQueryString( { id, site } )
@@ -48,7 +49,7 @@ const Share = props => {
 
   return (
     <div>
-      { shareLink && !internalOnly && (
+      { shareLink && !internalOnly && !video && (
         <List className="share_list">
           <ShareButton
             url={ facebookURL }
