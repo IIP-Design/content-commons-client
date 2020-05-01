@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { Confirm, Form, Input, Loader } from 'semantic-ui-react';
@@ -10,7 +10,7 @@ import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/Langua
 import SocialPlatformDropdown from 'components/admin/dropdowns/SocialPlatformDropdown/SocialPlatformDropdown';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
-import { formatBytes } from 'lib/utils';
+import { formatBytes, truncateAndReplaceStr } from 'lib/utils';
 import './GraphicFilesForm.scss';
 
 const GraphicFilesForm = props => {
@@ -107,6 +107,9 @@ const GraphicFilesForm = props => {
         { files.map( file => {
           const { id, filename, filesize, language } = file;
           const value = values[id];
+          const name = filename?.length > 30
+            ? truncateAndReplaceStr( filename, 28, 10 )
+            : filename;
 
           return (
             <fieldset
@@ -133,8 +136,29 @@ const GraphicFilesForm = props => {
 
                 <div className="meta-wrap">
                   <div className="meta">
-                    <span className="filename">{ filename }</span>
-                    <span className="filesize">{ formatBytes( filesize, 1 ) }</span>
+                    <span className="filename">
+                      { filename !== name
+                        ? (
+                          <Fragment>
+                            <button
+                              tooltip={ filename }
+                              type="button"
+                              aria-hidden="true"
+                              className="filename truncated"
+                            >
+                              { name }
+                            </button>
+                            <VisuallyHidden el="span">
+                              { filename }
+                            </VisuallyHidden>
+                          </Fragment>
+                        )
+                        : filename }
+                    </span>
+
+                    <span className="filesize">
+                      { formatBytes( filesize, 1 ) }
+                    </span>
                   </div>
                 </div>
               </div>

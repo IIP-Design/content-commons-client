@@ -1,3 +1,5 @@
+@import "styles/mixins.scss";
+
 .graphic-project-support-files {
   .list-heading {
     display: flex;
@@ -29,6 +31,21 @@
       .filename {
         padding-top: 0.625rem;
         padding-bottom: 0.625rem;
+
+        .truncated {
+          @include button-style-reset($font-size: 0.888888889rem);
+
+          &:focus {
+            @include focus-styling;
+          }
+
+          &::after {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
+            width: 12rem;
+          }
+        }
       }
 
       .actions {

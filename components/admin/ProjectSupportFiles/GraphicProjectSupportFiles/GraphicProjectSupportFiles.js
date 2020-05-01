@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { Confirm } from 'semantic-ui-react';
@@ -6,9 +6,10 @@ import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmMod
 import IconPopup from 'components/popups/IconPopup/IconPopup';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import useTimeout from 'lib/hooks/useTimeout';
-import { getCount } from 'lib/utils';
+import { getCount, truncateAndReplaceStr } from 'lib/utils';
 import './GraphicProjectSupportFiles.scss';
 
 const GraphicProjectSupportFiles = props => {
@@ -83,10 +84,29 @@ const GraphicProjectSupportFiles = props => {
     <ul className="support-files-list">
       { files.map( file => {
         const { id, filename } = file;
+        const name = filename?.length > 36
+          ? truncateAndReplaceStr( filename, 32, 12 )
+          : filename;
 
         return (
           <li key={ id } className="support-file-item">
-            <span className="filename">{ filename }</span>
+            <span className="filename">
+              { filename !== name
+                ? (
+                  <Fragment>
+                    <button
+                      tooltip={ filename }
+                      type="button"
+                      aria-hidden="true"
+                      className="truncated"
+                    >
+                      { name }
+                    </button>
+                    <VisuallyHidden el="span">{ filename }</VisuallyHidden>
+                  </Fragment>
+                )
+                : name }
+            </span>
 
             <span className="actions">
               { headline.includes( 'editable' )
