@@ -74,17 +74,17 @@ const toggleDataActions = e => {
   }
 };
 
-const TeamProjectPrimaryCol = ( {
-  d,
-  d: { id },
-  header
-} ) => {
+const TeamProjectPrimaryCol = ( { d, header } ) => {
   const { dispatch, state } = useContext( DashboardContext );
 
   const selectedItems = state?.selected?.selectedItems ? state.selected.selectedItems : new Map();
 
+  if ( !d ) return null;
+
+  const { id } = d;
   const isDraft = d.status === 'DRAFT';
   const isPublishing = d.status === 'PUBLISHING';
+
   const actions = [
     'Edit', 'Preview', 'Files'
   ];

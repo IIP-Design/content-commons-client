@@ -3,14 +3,15 @@ import gql from 'graphql-tag';
 
 import { getProjectsType, normalizeDashboardData } from 'lib/graphql/util';
 // import { DELETE_GRAPHIC_PROJECT_MUTATION, TEAM_GRAPHIC_PROJECTS_QUERY, TEAM_GRAPHIC_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/graphic';
-import { DELETE_PACKAGE_MUTATION, TEAM_PACKAGES_QUERY, TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
-import { DELETE_VIDEO_PROJECT_MUTATION, TEAM_VIDEO_PROJECTS_QUERY, TEAM_VIDEO_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/video';
+import { DELETE_PACKAGE_MUTATION, PACKAGE_FILES_QUERY, TEAM_PACKAGES_QUERY, TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
+import { DELETE_VIDEO_PROJECT_MUTATION, TEAM_VIDEO_PROJECTS_QUERY, TEAM_VIDEO_PROJECTS_COUNT_QUERY, VIDEO_PROJECT_FILES_QUERY } from 'lib/graphql/queries/video';
 
 import { graphicMock } from './mocks';
 // Use dummy queries instead of actual graphic, not yet written queries, to suppress errors
 const DELETE_GRAPHIC_PROJECT_MUTATION = gql`mutation { deleteUser(where: { id: "1234" }) { id } }`;
 const TEAM_GRAPHIC_PROJECTS_QUERY = gql`query { users { lastName } }`;
 const TEAM_GRAPHIC_PROJECTS_COUNT_QUERY = gql`query { users { lastName } }`;
+const GRAPHIC_PROJECT_FILES_QUERY = gql`query { users { lastName } }`;
 
 // Sets default values before any GraphQL query is executed
 const initialState = {
@@ -21,6 +22,7 @@ const initialState = {
   queries: {
     content: null,
     count: null,
+    files: null,
     remove: null
   },
   selected: {
@@ -116,18 +118,21 @@ export const setQueries = team => {
     case 'graphicProjects':
       queries.content = TEAM_GRAPHIC_PROJECTS_QUERY;
       queries.count = TEAM_GRAPHIC_PROJECTS_COUNT_QUERY;
+      queries.files = GRAPHIC_PROJECT_FILES_QUERY;
       queries.remove = DELETE_GRAPHIC_PROJECT_MUTATION;
 
       return queries;
     case 'videoProjects':
       queries.content = TEAM_VIDEO_PROJECTS_QUERY;
       queries.count = TEAM_VIDEO_PROJECTS_COUNT_QUERY;
+      queries.files = VIDEO_PROJECT_FILES_QUERY;
       queries.remove = DELETE_VIDEO_PROJECT_MUTATION;
 
       return queries;
     case 'packages':
       queries.content = TEAM_PACKAGES_QUERY;
       queries.count = TEAM_PACKAGES_COUNT_QUERY;
+      queries.files = PACKAGE_FILES_QUERY;
       queries.remove = DELETE_PACKAGE_MUTATION;
 
       return queries;
