@@ -30,7 +30,7 @@ import Notification from 'components/Notification/Notification';
 import Popup from 'components/popups/Popup';
 import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
-import PreviewLoader from 'components/admin/Dashboard/PreviewLoader/PreviewLoader';
+import PreviewLoader from 'components/admin/Previews/PreviewLoader/PreviewLoader';
 import Share from 'components/Share/Share';
 
 import downloadIcon from 'static/icons/icon_download.svg';

@@ -12,8 +12,8 @@ import VideoProjectData from 'components/admin/ProjectReview/VideoProjectData/Vi
 import VideoSupportFiles from 'components/admin/ProjectReview/VideoSupportFiles/VideoSupportFiles';
 import VideoProjectFiles from 'components/admin/ProjectReview/VideoProjectFiles/VideoProjectFiles';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
-import ProjectPreview from 'components/admin/ProjectPreview/ProjectPreview';
-import ProjectPreviewContent from 'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
+import ProjectPreview from 'components/admin/Previews/ProjectPreview/ProjectPreview';
+import ProjectPreviewContent from 'components/admin/Previews/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
 import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
 import ApolloError from 'components/errors/ApolloError';
 import {
@@ -44,7 +44,7 @@ const VideoReview = props => {
   const [updateProjectStatus] = useMutation( UPDATE_VIDEO_PROJECT_MUTATION );
   const [publishProject] = useMutation( PUBLISH_VIDEO_PROJECT_MUTATION );
   const [unPublishProject] = useMutation( UNPUBLISH_VIDEO_PROJECT_MUTATION );
-  const [deleteProject] = useMutation( DELETE_VIDEO_PROJECT_MUTATION, );
+  const [deleteProject] = useMutation( DELETE_VIDEO_PROJECT_MUTATION );
 
   const {
     publishing,
@@ -69,13 +69,14 @@ const VideoReview = props => {
 
   if ( loading ) {
     return (
-      <div style={ {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '200px'
-      } }
+      <div
+        style={ {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '200px'
+        } }
       >
         <Loader
           active
@@ -106,7 +107,7 @@ const VideoReview = props => {
 
   const setButtonState = btn => `project_button project_button--${btn} ${publishing ? 'loading' : ''}`;
 
-  const handleDeleteProject = async () => {
+  const handleDeleteProject = async() => {
     try {
       await deleteProject( { variables: { id } } );
       Router.push( { pathname: '/admin/dashboard' } );
@@ -126,11 +127,11 @@ const VideoReview = props => {
     }, `/admin/project/video/${id}/edit` );
   };
 
-  const handlePublish = async () => {
+  const handlePublish = async() => {
     executePublishOperation( id, publishProject );
   };
 
-  const handleUnPublish = async () => {
+  const handleUnPublish = async() => {
     executePublishOperation( id, unPublishProject );
   };
 
@@ -139,8 +140,10 @@ const VideoReview = props => {
       if ( isDirty ) {
         return 'It looks like you made changes to your project. Do you want to publish changes?';
       }
+
       return 'Not ready to share with the world yet?';
     }
+
     return 'Your project looks great! Are you ready to Publish?';
   };
 

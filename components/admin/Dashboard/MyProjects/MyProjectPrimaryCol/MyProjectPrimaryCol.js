@@ -13,7 +13,7 @@ import {
 
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import packageThumbnail from 'static/images/thumbnail_package.svg';
-import ProjectPreviewContent from 'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
+import ProjectPreviewContent from 'components/admin/Previews/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
 import { DashboardContext } from 'context/dashboardContext';
 

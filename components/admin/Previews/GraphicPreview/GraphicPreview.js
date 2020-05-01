@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import ApolloError from 'components/errors/ApolloError';
-import PreviewLoader from 'components/admin/Dashboard/PreviewLoader/PreviewLoader';
+import PreviewLoader from 'components/admin/Previews/PreviewLoader/PreviewLoader';
 import { DashboardContext } from 'context/dashboardContext';
 
 const GraphicPreview = ( { data } ) => {

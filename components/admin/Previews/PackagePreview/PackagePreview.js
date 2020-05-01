@@ -6,7 +6,7 @@ import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
 import { getCount } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 import Package from 'components/Package/Package';
-import PreviewLoader from 'components/admin/Dashboard/PreviewLoader/PreviewLoader';
+import PreviewLoader from 'components/admin/Previews/PreviewLoader/PreviewLoader';
 
 import './PackagePreview.scss';
 

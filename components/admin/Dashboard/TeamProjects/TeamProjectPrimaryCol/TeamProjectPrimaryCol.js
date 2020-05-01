@@ -21,17 +21,17 @@ import './TeamProjectPrimaryCol.scss';
 
 const GraphicPreview = dynamic( () => import(
   /* webpackChunkName: "graphicPreview" */
-  'components/admin/GraphicPreview/GraphicPreview'
+  'components/admin/Previews/GraphicPreview/GraphicPreview'
 ) );
 
 const PackagePreview = dynamic( () => import(
   /* webpackChunkName: "packagePreview" */
-  'components/admin/PackagePreview/PackagePreview'
+  'components/admin/Previews/PackagePreview/PackagePreview'
 ) );
 
 const ProjectPreviewContent = dynamic( () => import(
   /* webpackChunkName: "projectPreviewContent" */
-  'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent'
+  'components/admin/Previews/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent'
 ) );
 
 const handleDataActionsOffClick = e => {
