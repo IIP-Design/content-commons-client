@@ -1,11 +1,11 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from 'react-apollo/test-utils';
+import { MockedProvider } from '@apollo/react-testing';
 import { titleCase } from 'lib/utils';
 import TagDropdown, { TAG_QUERY } from './TagDropdown';
 import { rtlTags, tags } from './mocks';
 
-jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
+jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
 const props = {
   id: '123xyz',
@@ -96,7 +96,24 @@ const EmptyComponent = (
   </MockedProvider>
 );
 
+const suppressActWarning = consoleError => {
+  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+
+  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
+    if ( !args[0].includes( actMsg ) ) {
+      consoleError( ...args );
+    }
+  } );
+};
+
 describe( '<TagDropdown />', () => {
+  const consoleError = console.error;
+
+  beforeAll( () => suppressActWarning( consoleError ) );
+  afterAll( () => {
+    console.error = consoleError;
+  } );
+
   it( 'renders loading state without crashing', () => {
     const wrapper = mount( Component );
     const tagDropdown = wrapper.find( 'TagDropdown' );
@@ -108,6 +125,7 @@ describe( '<TagDropdown />', () => {
 
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
+
     await wait( 0 );
     wrapper.update();
     const tagDropdown = wrapper.find( 'TagDropdown' );
@@ -118,6 +136,7 @@ describe( '<TagDropdown />', () => {
 
   it( 'does not crash if tags is null', async () => {
     const wrapper = mount( NullComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -127,6 +146,7 @@ describe( '<TagDropdown />', () => {
 
   it( 'does not crash if tags is []', async () => {
     const wrapper = mount( EmptyComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -136,6 +156,7 @@ describe( '<TagDropdown />', () => {
 
   it( 'renders the final state without crashing', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -150,8 +171,10 @@ describe( '<TagDropdown />', () => {
       .sort( ( tagA, tagB ) => {
         const textA = tagA.text.toLowerCase();
         const textB = tagB.text.toLowerCase();
+
         if ( textA < textB ) return -1;
         if ( textA > textB ) return 1;
+
         return 0;
       } );
 
@@ -162,6 +185,7 @@ describe( '<TagDropdown />', () => {
 
   it( 'renders rtl className for a rtl language', async () => {
     const wrapper = mount( RTLComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -171,9 +195,10 @@ describe( '<TagDropdown />', () => {
 
   it( 'assigns a matching id & htmlFor value to the Dropdown and label, respectively', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
-    const dropdown = wrapper.find( 'Dropdown > div' );
+    const dropdown = wrapper.find( 'Dropdown div[name="tags"]' );
     const label = wrapper.find( 'label' );
 
     expect( dropdown.prop( 'id' ) ).toEqual( props.id );

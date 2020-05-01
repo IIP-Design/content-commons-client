@@ -1,11 +1,11 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from 'react-apollo/test-utils';
+import { MockedProvider } from '@apollo/react-testing';
 import { addEmptyOption, titleCase } from 'lib/utils';
 import VideoBurnedInStatusDropdown, { VIDEO_BURNED_IN_STATUS_QUERY } from './VideoBurnedInStatusDropdown';
 
 const props = {
-  id: '',
+  id: 's123',
   label: 'Subtitles'
 };
 
@@ -83,7 +83,24 @@ const EmptyComponent = (
   </MockedProvider>
 );
 
+const suppressActWarning = consoleError => {
+  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+
+  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
+    if ( !args[0].includes( actMsg ) ) {
+      consoleError( ...args );
+    }
+  } );
+};
+
 describe( '<VideoBurnedInStatusDropdown />', () => {
+  const consoleError = console.error;
+
+  beforeAll( () => suppressActWarning( consoleError ) );
+  afterAll( () => {
+    console.error = consoleError;
+  } );
+
   it( 'renders loading state without crashing', () => {
     const wrapper = mount( Component );
     const dropdown = wrapper.find( 'VideoBurnedInStatusDropdown' );
@@ -95,6 +112,7 @@ describe( '<VideoBurnedInStatusDropdown />', () => {
 
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
+
     await wait( 0 );
     wrapper.update();
     const dropdown = wrapper.find( 'VideoBurnedInStatusDropdown' );
@@ -106,34 +124,41 @@ describe( '<VideoBurnedInStatusDropdown />', () => {
 
   it( 'does not crash if enumValues is null', async () => {
     const wrapper = mount( NullComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
-    const emptyOption = [{
-      key: '-',
-      text: '-',
-      value: null
-    }];
+    const emptyOption = [
+      {
+        key: '-',
+        text: '-',
+        value: null
+      }
+    ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
   } );
 
   it( 'does not crash if enumValues is []', async () => {
     const wrapper = mount( EmptyComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
-    const emptyOption = [{
-      key: '-',
-      text: '-',
-      value: null
-    }];
+    const emptyOption = [
+      {
+        key: '-',
+        text: '-',
+        value: null
+      }
+    ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
   } );
 
   it( 'renders the final state without crashing', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -142,6 +167,7 @@ describe( '<VideoBurnedInStatusDropdown />', () => {
     const semanticUIValues = enumValues.filter( enumValue => enumValue.name !== 'CAPTIONED' )
       .map( enumValue => {
         let text = titleCase( enumValue.name );
+
         text = ( text === 'Clean' ) ? `${text} - No captions` : text;
 
         return {
@@ -158,9 +184,10 @@ describe( '<VideoBurnedInStatusDropdown />', () => {
 
   it( 'assigns a matching id & htmlFor value to the Dropdown and label, respectively', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
-    const dropdown = wrapper.find( 'Dropdown > div' );
+    const dropdown = wrapper.find( 'Dropdown div[name="videoBurnedInStatus"]' );
     const label = wrapper.find( 'label' );
 
     expect( dropdown.prop( 'id' ) ).toEqual( props.id );
