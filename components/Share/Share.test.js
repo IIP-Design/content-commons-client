@@ -3,6 +3,10 @@ import toJSON from 'enzyme-to-json';
 import { getVimeoId, getYouTubeId } from 'lib/utils';
 import Share from './Share';
 
+jest.mock( 'next/config', () => () => ( {
+  publicRuntimeConfig: {},
+} ) );
+
 const props = {
   id: 'c888',
   isPreview: false,
@@ -47,32 +51,12 @@ describe( '<Share />', () => {
     expect( list.exists() ).toEqual( false );
   } );
 
-  it( 'passes the correct Facebook and Twitter share links if provided a Vimeo link', () => {
+  it( 'does not render the Facebook and Twitter share links if type is video', () => {
     const wrapper = mount( Component );
-    const facebookBtn = wrapper.find( 'ShareButton[icon="facebook f"]' );
-    const twitterBtn = wrapper.find( 'ShareButton[icon="twitter"]' );
-    const videoLink = `https://vimeo.com/${getVimeoId( props.link )}`;
-    const facebookShare = `https://www.facebook.com/sharer/sharer.php?u=${videoLink}`;
-    const twitterShare = `https://twitter.com/intent/tweet?text=${props.title}&url=${videoLink}`;
+    wrapper.setProps( { type: 'video' } );
+    const list = wrapper.find( 'List.share_list' );
 
-    expect( facebookBtn.prop( 'url' ) ).toEqual( facebookShare );
-    expect( twitterBtn.prop( 'url' ) ).toEqual( twitterShare );
-  } );
-
-  it( 'passes the correct Facebook and Twitter share links if provided a YouTube link', () => {
-    const newProps = {
-      ...props,
-      link: 'https://youtu.be/-PNN_5pmLfc'
-    };
-    const wrapper = mount( <Share { ...newProps } /> );
-    const facebookBtn = wrapper.find( 'ShareButton[icon="facebook f"]' );
-    const twitterBtn = wrapper.find( 'ShareButton[icon="twitter"]' );
-    const videoLink = `https://youtu.be/${getYouTubeId( newProps.link )}`;
-    const facebookShare = `https://www.facebook.com/sharer/sharer.php?u=${videoLink}`;
-    const twitterShare = `https://twitter.com/intent/tweet?text=${newProps.title}&url=${videoLink}`;
-
-    expect( facebookBtn.prop( 'url' ) ).toEqual( facebookShare );
-    expect( twitterBtn.prop( 'url' ) ).toEqual( twitterShare );
+    expect( list.exists() ).toEqual( false );
   } );
 
   it( 'passes the correct Facebook and Twitter share links if type is post and is from content.america.gov', () => {
@@ -148,11 +132,11 @@ describe( '<Share />', () => {
 
     const libBrowser = require( 'lib/browser' ); // eslint-disable-line
     libBrowser.stringifyQueryString = jest.fn( () => (
-      `http://localhost/article?id=${props.id}&site=${props.site}`
+      `http://localhost/image?id=${props.id}&site=${props.site}&language=${props.language}`
     ) );
 
     expect( wrapper.prop( 'type' ) ).toEqual( 'image' );
     expect( clipboardCopy.prop( 'copyItem' ) )
-      .toEqual( props.link );
+      .toEqual(libBrowser.stringifyQueryString());
   } );
 } );
