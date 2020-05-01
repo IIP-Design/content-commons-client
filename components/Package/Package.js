@@ -15,7 +15,6 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
-
 import PackageItem from './PackageItem/PackageItem';
 import {
   normalizeDocumentItemByAPI, getDateTimeTerms

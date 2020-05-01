@@ -3,12 +3,20 @@
 .download-item {
   position: relative;  
   display: flex;
-  padding: 0.8em;
+  padding: 1em;
   margin-bottom: 5px;
   border: 1px solid $light-grey;
   font-size: 14px;
   box-shadow: -1px 5px 10px -11px rgba(0, 0, 0, 0.75);
   cursor: pointer;
+
+  &--preview {
+    cursor: default;
+    
+    &:active {
+      pointer-events: none;
+    }    
+  }
 
   &:hover {
 
@@ -51,7 +59,12 @@
     > p {
       margin-bottom: 3px;
     }
-  }  
+  }
+
+  &__noContent {
+    margin-top: 2em;
+    font-size: 14px;
+  }
 
   .item {
 

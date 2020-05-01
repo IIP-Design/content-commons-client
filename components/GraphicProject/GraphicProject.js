@@ -4,23 +4,22 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { updateUrl } from 'lib/browser';
 import { displayDOSLogo } from 'lib/sourceLogoUtils';
+import { getPreviewNotificationStyles } from 'lib/utils';
+import { useAuth } from 'context/authContext';
+import { normalizeGraphicProjectByAPI } from './utils';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
 import Notification from 'components/Notification/Notification';
-import Share from 'components/Share/Share';
-
+import Popover from 'components/popups/Popover/Popover';
+import TabLayout from 'components/TabLayout/TabLayout';
 import DownloadItem from 'components/download/DownloadItem/DownloadItem';
+import Share from 'components/Share/Share';
 import GraphicFiles from './Download/GraphicFiles';
 import EditableFiles from './Download/EditableFiles';
 import OtherFiles from './Download/OtherFiles';
 import Help from './Download/Help';
-
-import PopupTrigger from 'components/popups/PopupTrigger';
-import Popup from 'components/popups/Popup';
-import Popover from 'components/popups/Popover/Popover';
-import TabLayout from 'components/TabLayout/TabLayout';
 
 import ModalItem from 'components/modals/ModalItem';
 import ModalLangDropdown from '../modals/ModalLangDropdown/ModalLangDropdown';
@@ -36,8 +35,16 @@ import './GraphicProject.scss';
 import tempSrcUrl from 'components/download/DownloadItem/graphicPlaceHolderImg.png';
 
 const GraphicProject = props => {
+  const { user } = useAuth();
   const router = useRouter();
-  const { isAdminPreview, displayAsModal, item } = props;
+
+  const {
+    isAdminPreview,
+    displayAsModal,
+    item,
+    useGraphQl
+  } = props;
+  const normalizedGraphicData = normalizeGraphicProjectByAPI( { file: item, useGraphQl } );
 
   const {
     id,
@@ -48,11 +55,12 @@ const GraphicProject = props => {
     modified,
     owner,
     desc,
+    descInternal,
     copyright,
     images,
     supportFiles,
     categories
-  } = item;
+  } = normalizedGraphicData;
 
   // Use Twitter graphics as default for display otherwise whatever graphic image is available
   const filterGraphicImgs = () => {
@@ -64,7 +72,6 @@ const GraphicProject = props => {
 
     return images;
   };
-
   const graphicUnits = filterGraphicImgs();
 
   // Set default unit to English lang version if available
@@ -102,33 +109,128 @@ const GraphicProject = props => {
   } = selectedUnit;
 
   useEffect( () => {
+    // If page display, update url path
     if ( !displayAsModal ) {
       updateUrl( `/graphic?id=${id}&site=${site}&language=${selectedUnitLanguage.locale}` );
     }
   }, [selectedUnit] );
 
-  // Images by language
+  // Image files by language
   const selectedUnitImages = images.filter( img => img.language.display_name === selectedUnitLanguage.display_name );
+
   // Editable support files by language
+  const editableFileTypes = [
+    '.psd', '.ai', '.eps', '.ae', '.jpg', '.jpeg', '.png'
+  ];
   const selectedUnitSupportFiles = supportFiles
-    .filter( file => file.editable === true )
+    .filter( file => {
+      const { filename } = file;
+      const fileType = filename.slice( filename.lastIndexOf( '.' ) );
+
+      return editableFileTypes.includes( fileType );
+    } )
     .filter( file => file.language.display_name === selectedUnitLanguage.display_name );
+
   // Non-editable files by language
   const selectedUnitOtherFiles = supportFiles
-    .filter( file => file.editable !== true )
+    .filter( file => {
+      const { filename } = file;
+      const fileType = filename.slice( filename.lastIndexOf( '.' ) );
+
+      return !editableFileTypes.includes( fileType );
+    } )
     .filter( file => file.language.display_name === selectedUnitLanguage.display_name );
+
+  const copyrightMsg = copyright === 'COPYRIGHT'
+    ? 'Copyright terms outlined in internal description'
+    : 'No copyright beyond provided watermarked attribution';
+
+  const tabs = [
+    {
+      title: 'Graphic Files',
+      content: (
+        <DownloadItem
+          instructions={ `Download the graphic files in ${selectedUnitLanguage.display_name}. This download option is best for uploading this graphic to web pages and social media.` }
+        >
+          { !selectedUnitImages.length
+            && <p className="download-item__noContent">There are no graphic files available for download at this time.</p>}
+          { selectedUnitImages.map( img => <GraphicFiles key={ img.srcUrl } file={ img } isAdminPreview={ isAdminPreview } /> ) }
+        </DownloadItem>
+      )
+    },
+    {
+      title: 'Editable Files',
+      content: (
+        <DownloadItem
+          instructions={ (
+            <Fragment>
+              <p>
+                By downloading these editable files you agree to the
+                { ' ' }
+                <Link href="/about"><a>Terms of Use</a></Link>
+              </p>
+              <p><strong>{ copyrightMsg }</strong></p>
+            </Fragment>
+          ) }
+        >
+          { !selectedUnitSupportFiles.length
+            && <p className="download-item__noContent">There are no editable files available for download at this time.</p>}
+          { selectedUnitSupportFiles
+            .map( file => <EditableFiles key={ file.srcUrl } file={ file } isAdminPreview={ isAdminPreview } /> ) }
+        </DownloadItem>
+      )
+    },
+    {
+      title: 'Other',
+      content: (
+        <DownloadItem
+          instructions={ (
+            <p>
+              By downloading these files you agree to the
+              { ' ' }
+              <Link href="/about"><a>Terms of Use</a></Link>
+            </p>
+          ) }
+        >
+          { !selectedUnitOtherFiles.length
+            && <p className="download-item__noContent">There are no other files available for download at this time.</p>}
+          { selectedUnitOtherFiles.map( file => <OtherFiles key={ file.srcUrl } file={ file } isAdminPreview={ isAdminPreview } /> ) }
+        </DownloadItem>
+      )
+    },
+    {
+      title: 'Help',
+      content: <Help />
+    }
+  ];
+
+  const authFilterTabs = () => {
+    if ( user ) {
+      return tabs;
+    }
+
+    return tabs.filter( tab => tab.title !== 'Editable Files' );
+  };
 
   return (
     <ModalItem
       headline={ title }
       textDirection={ selectedUnitLanguage.text_direction }
       lang={ selectedUnitLanguage.language_code }
-      className="graphic-project"
+      className={ isAdminPreview ? 'graphic-project adminPreview' : 'graphic-project' }
     >
+      { isAdminPreview && (
+        <Notification
+          el="p"
+          show
+          customStyles={ getPreviewNotificationStyles() }
+          msg="This is a preview of your graphics project on Content Commons."
+        />
+      ) }
       <div className="modal_options">
         <div className="modal_options_left">
           <ModalLangDropdown
-            item={ item }
+            item={ normalizedGraphicData }
             selected={ selectedUnitLanguage.display_name }
             handleLanguageChange={ handleLanguageChange }
           />
@@ -149,6 +251,11 @@ const GraphicProject = props => {
                 title={ title }
                 language={ selectedUnitLanguage.locale }
                 type={ type }
+                isPreview={ isAdminPreview }
+                { ...( isAdminPreview
+                  ? { link: 'The direct link to the package will appear here.' }
+                  : null
+                ) }
               />
             </div>
           </Popover>
@@ -162,62 +269,7 @@ const GraphicProject = props => {
           >
             <TabLayout
               headline="Download this graphic."
-              tabs={ [
-                {
-                  title: 'Graphic Files',
-                  content: (
-                    <DownloadItem
-                      instructions={ `Download the graphic files in ${selectedUnitLanguage.display_name}. This download option is best for uploading this graphic to web pages and social media.` }
-                    >
-                      { selectedUnitImages.map( img => <GraphicFiles key={ img.srcUrl } file={ img } /> ) }
-                    </DownloadItem>
-                  )
-                },
-                {
-                  title: 'Editable Files',
-                  content: (
-                    <DownloadItem
-                      instructions={ (
-                        <Fragment>
-                          <p>
-                            By downloading these editable files you agree to the
-                            <Link href="/about"><a>Terms of Use</a></Link>
-                          </p>
-                          <p>
-                            <strong>
-                              Credit for this photo must be used: &copy;
-                              {' '}
-                              { `${copyright}` }
-                            </strong>
-                          </p>
-                        </Fragment>
-                      ) }
-                    >
-                      { selectedUnitSupportFiles
-                        .map( file => <EditableFiles key={ file.srcUrl } file={ file } /> )}
-                    </DownloadItem>
-                  )
-                },
-                {
-                  title: 'Other',
-                  content: (
-                    <DownloadItem
-                      instructions={ (
-                        <p>
-                          By downloading these editable files you agree to the
-                          <Link href="/about"><a>Terms of Use</a></Link>
-                        </p>
-                      ) }
-                    >
-                      { selectedUnitOtherFiles.map( file => <OtherFiles key={ file.srcUrl } file={ file } /> ) }
-                    </DownloadItem>
-                  )
-                },
-                {
-                  title: 'Help',
-                  content: <Help />
-                }
-              ] }
+              tabs={ authFilterTabs() }
             />
           </Popover>
         </div>
@@ -226,6 +278,14 @@ const GraphicProject = props => {
       <ModalImage thumbnail={ tempSrcUrl } thumbnailMeta={ { alt } } />
       <ModalContentMeta type={ projectType } dateUpdated={ modified } />
       <ModalDescription description={ desc } />
+      <section className="graphic-project__content">
+        <p className="graphic-project__content__title">Internal Description:</p>
+        { descInternal }
+      </section>
+      <section className="graphic-project__content">
+        <p className="graphic-project__content__title">Alt (Alternative) Text:</p>
+        { alt }
+      </section>
       <ModalPostMeta
         logo={ displayDOSLogo( owner ) }
         source={ owner }
@@ -248,14 +308,15 @@ GraphicProject.propTypes = {
     owner: PropTypes.string,
     alt: PropTypes.string,
     desc: PropTypes.string,
+    descInternal: PropTypes.string,
     copyright: PropTypes.string,
     images: PropTypes.array,
     supportFiles: PropTypes.array,
-    tags: PropTypes.array,
     categories: PropTypes.array
   } ),
   displayAsModal: PropTypes.bool,
-  isAdminPreview: PropTypes.bool
+  isAdminPreview: PropTypes.bool,
+  useGraphQl: PropTypes.bool
 };
 
 export default GraphicProject;

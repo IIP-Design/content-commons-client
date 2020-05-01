@@ -3,18 +3,24 @@ import PropTypes from 'prop-types';
 import { capitalizeFirst } from 'lib/utils';
 import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
 
-const EditableFiles = ( { file } ) => {
+const EditableFiles = ( { file, isAdminPreview } ) => {
   const {
-    srcUrl
+    srcUrl,
+    filename
   } = file;
 
-  let fileType = srcUrl.slice( srcUrl.lastIndexOf( '.' ) + 1 );
+  const fileName = filename.slice( 0, filename.indexOf( '.' ) );
+  let fileType = filename.slice( filename.lastIndexOf( '.' ) + 1 );
 
   fileType = capitalizeFirst( fileType );
-  const fileName = srcUrl.slice( srcUrl.lastIndexOf( '/' ) + 1, srcUrl.lastIndexOf( '.' ) );
 
   return (
-    <DownloadItemContent key={ srcUrl } srcUrl={ srcUrl } hoverText={ `Download "${fileName}" (${fileType})` }>
+    <DownloadItemContent
+      key={ srcUrl }
+      srcUrl={ srcUrl }
+      hoverText={ `Download "${fileName}" (${fileType})` }
+      isAdminPreview={ isAdminPreview }
+    >
       <div className="item-content">
         <p className="item-content__title">
           <strong>Download </strong>
@@ -32,7 +38,8 @@ const EditableFiles = ( { file } ) => {
 };
 
 EditableFiles.propTypes = {
-  file: PropTypes.object
+  file: PropTypes.object,
+  isAdminPreview: PropTypes.bool
 };
 
 export default EditableFiles;

@@ -2,6 +2,13 @@
 
 .graphic-project {
 
+  &.adminPreview {
+    
+    > .modal_headline {
+      margin-top: 1.5em;
+    }
+  }
+
   &__popover {
 
     .popover_content {
@@ -33,4 +40,14 @@
       }
     }
   }
+
+  &__content {
+    margin-top: 1em;
+    
+    &__title {
+      margin-bottom: 3px;
+      font-size: 12px;
+      color: $shuttle-grey;
+    }
+  }  
 }

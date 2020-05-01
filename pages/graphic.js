@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { getItemRequest } from 'lib/elastic/api';
 import GraphicProject from 'components/GraphicProject/GraphicProject';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
-import { populateMetaArray } from 'lib/socialHeaders.js';
+import { populateMetaArray } from 'lib/socialHeaders';
 import { fetchUser } from 'context/authContext';
 import Head from 'next/head';
 
+import { Modal } from 'semantic-ui-react';
 import { graphicElasticMock } from 'components/GraphicProject/graphicElasticMock';
+import { graphicGraphqlMock } from 'components/GraphicProject/graphicGraphqlMock';
 
 const styles = {
   page: {
@@ -40,6 +42,21 @@ const GraphicPage = props => {
       <section className="max_width_1200" style={ styles.page }>
         <GraphicProject item={ item } />
       </section>
+
+      {/* TESTING */}
+      <section style={ { marginTop: '50px' } }>
+        <h3>TEST GRAPHIC PREVIEW MODAL</h3>
+        <Modal
+          closeIcon
+          trigger={ <p>Preview</p> }
+        >
+          <Modal.Content>
+            <GraphicProject item={ graphicGraphqlMock } displayAsModal isAdminPreview useGraphQl />
+          </Modal.Content>
+        </Modal>
+      </section>
+      {/* END TESTING */}
+
     </Fragment>
   );
 };
