@@ -19,7 +19,7 @@ const mocks = [
         graphicStyles: [
           {
             id: 'ck9h3ka3o269y0720t7wzp5uq',
-            name: 'Banner'
+            name: 'Gif'
           },
           {
             id: 'ck9h3koe426aa0720y421wmk3',
