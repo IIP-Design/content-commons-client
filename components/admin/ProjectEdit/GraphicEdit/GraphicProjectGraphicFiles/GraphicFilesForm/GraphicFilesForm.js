@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { Confirm, Form, Input, Loader } from 'semantic-ui-react';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
+import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 import GraphicStyleDropdown from 'components/admin/dropdowns/GraphicStyleDropdown/GraphicStyleDropdown';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
@@ -162,6 +163,25 @@ const GraphicFilesForm = props => {
                   </div>
                 </div>
               </div>
+
+              { uploadInProgress // more conditions needed?
+                && (
+                  <div className="progress-bar">
+                    <button
+                      className="cancel-upload"
+                      onClick={ () => { console.log( 'cancel' ); } }
+                      type="button"
+                    >
+                      Cancel
+                    </button>
+                    <FileUploadProgressBar
+                      filesToUpload={ [] } // temp
+                      barSize="tiny"
+                      onComplete={ () => {} } // temp
+                      showPercent
+                    />
+                  </div>
+                ) }
 
               <div className="field">
                 <Form.Field

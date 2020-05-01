@@ -34,7 +34,7 @@
 
     .image-wrapper {
       position: relative;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
 
       > .thumbnail {
         display: block;
@@ -153,6 +153,28 @@
         width: 260px;
         height: 120px;
         background-color: $light-grey; //$ice-blue;
+      }
+    }
+
+    .progress-bar {
+      display: grid;
+      grid-template-columns: 2.25rem 1fr;
+      gap: 0.25rem;
+      margin-bottom: 1rem;
+
+      .cancel-upload {
+        @include button-style-reset($font-size: 0.777777778rem);
+
+        &:focus {
+          @include focus-styling;
+        }
+      }
+
+      .file-progress--wrapper {
+        .ui.progress.active {
+          margin-bottom: 0;
+          margin-top: 7px;
+        }
       }
     }
   }
