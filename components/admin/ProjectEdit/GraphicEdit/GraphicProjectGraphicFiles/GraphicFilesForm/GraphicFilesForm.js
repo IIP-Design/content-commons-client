@@ -105,7 +105,7 @@ const GraphicFilesForm = props => {
 
       <Form className="form-fields">
         { files.map( file => {
-          const { id, filename, filesize } = file;
+          const { id, filename, filesize, language } = file;
           const value = values[id];
 
           return (
@@ -147,6 +147,7 @@ const GraphicFilesForm = props => {
                   label="Graphic Title"
                   value={ value.title || '' }
                   onChange={ handleOnChange }
+                  className={ language.textDirection }
                 />
               </div>
 
