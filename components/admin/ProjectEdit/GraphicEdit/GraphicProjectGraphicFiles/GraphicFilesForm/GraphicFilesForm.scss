@@ -6,6 +6,14 @@
     grid-template-columns: repeat( auto-fill, minmax( 300px, 0.5fr ) );
     gap: 2rem;
 
+    fieldset {
+      &[class^="graphic-file"] {
+        border: 0;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
     .two-col {
       display: grid;
       grid-template-columns: repeat( auto-fill, minmax( 150px, 1fr ) );

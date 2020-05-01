@@ -8,6 +8,7 @@ import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 import GraphicStyleDropdown from 'components/admin/dropdowns/GraphicStyleDropdown/GraphicStyleDropdown';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import SocialPlatformDropdown from 'components/admin/dropdowns/SocialPlatformDropdown/SocialPlatformDropdown';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import { formatBytes } from 'lib/utils';
 import './GraphicFilesForm.scss';
@@ -108,7 +109,15 @@ const GraphicFilesForm = props => {
           const value = values[id];
 
           return (
-            <div key={ id } className={ `graphic-file-${id}` }>
+            <fieldset
+              key={ id }
+              className={ `graphic-file-${id}` }
+              name={ filename }
+            >
+              <VisuallyHidden el="legend">
+                { `edit fields for ${filename}` }
+              </VisuallyHidden>
+
               <div className="image-wrapper">
                 { renderThumbnail( file ) }
 
@@ -190,7 +199,7 @@ const GraphicFilesForm = props => {
                   { showErrorMsg( id, 'social' ) }
                 </p>
               </div>
-            </div>
+            </fieldset>
           );
         } ) }
       </Form>
