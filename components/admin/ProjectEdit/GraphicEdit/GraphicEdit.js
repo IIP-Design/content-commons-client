@@ -360,6 +360,7 @@ const GraphicEdit = props => {
             headline="editable files"
             helperText="Original files that may be edited and adapted as needed for reuse."
             files={ editableSupportFiles }
+            updateNotification={ updateNotification }
           />
 
           <div className="separator" />
@@ -369,6 +370,7 @@ const GraphicEdit = props => {
             headline="additional files"
             helperText="Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics."
             files={ additionalSupportFiles }
+            updateNotification={ updateNotification }
           />
         </div>
       </div>
@@ -384,6 +386,7 @@ const GraphicEdit = props => {
         <GraphicProjectGraphicFiles
           projectId={ projectId }
           files={ graphicFiles }
+          updateNotification={ updateNotification }
         />
       </div>
     </div>

@@ -3,14 +3,19 @@ import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { Formik } from 'formik';
 import GraphicFilesForm from 'components/admin/ProjectEdit/GraphicEdit/GraphicProjectGraphicFiles/GraphicFilesForm/GraphicFilesForm';
-import { getCount } from 'lib/utils';
 import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import { buildUpdateGraphicProjectImagesTree } from 'lib/graphql/builders/graphic';
+import useTimeout from 'lib/hooks/useTimeout';
+import { getCount } from 'lib/utils';
 import { baseSchema } from './validationSchema';
 
 const GraphicProjectGraphicFiles = props => {
-  const { files, projectId } = props;
+  const { files, projectId, updateNotification } = props;
   const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
+
+  const showNotification = () => updateNotification( 'Changes saved' );
+  const hideNotification = () => updateNotification( '' );
+  const { startTimeout } = useTimeout( hideNotification, 2000 );
 
   const getInitialValues = () => {
     let initialValues = {};
@@ -49,7 +54,10 @@ const GraphicProjectGraphicFiles = props => {
             id: projectId
           }
         }
-      } ).catch( err => console.dir( err ) );
+      } )
+        .then( showNotification )
+        .then( () => startTimeout() )
+        .catch( err => console.dir( err ) );
     }
   };
 
@@ -71,7 +79,8 @@ const GraphicProjectGraphicFiles = props => {
 
 GraphicProjectGraphicFiles.propTypes = {
   projectId: PropTypes.string,
-  files: PropTypes.array
+  files: PropTypes.array,
+  updateNotification: PropTypes.func
 };
 
 export default GraphicProjectGraphicFiles;

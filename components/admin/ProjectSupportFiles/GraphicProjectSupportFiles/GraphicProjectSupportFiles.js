@@ -7,20 +7,26 @@ import IconPopup from 'components/popups/IconPopup/IconPopup';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
+import useTimeout from 'lib/hooks/useTimeout';
 import { getCount } from 'lib/utils';
 import './GraphicProjectSupportFiles.scss';
 
 const GraphicProjectSupportFiles = props => {
   const {
-    projectId, headline, helperText, files
+    projectId, headline, helperText, files, updateNotification
   } = props;
   const [fileIdToDelete, setFileIdToDelete] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
 
+  const showNotification = () => updateNotification( 'Changes saved' );
+  const hideNotification = () => updateNotification( '' );
+  const { startTimeout } = useTimeout( hideNotification, 2000 );
+
   const handleReset = () => {
     setDeleteConfirmOpen( false );
     setFileIdToDelete( '' );
+    startTimeout();
   };
 
   const handleDelete = async id => {
@@ -38,6 +44,7 @@ const GraphicProjectSupportFiles = props => {
         }
       }
     } )
+      .then( showNotification )
       .then( handleReset )
       .catch( err => console.dir( err ) );
   };
@@ -67,6 +74,7 @@ const GraphicProjectSupportFiles = props => {
         }
       }
     } )
+      .then( showNotification )
       .then( handleReset )
       .catch( err => console.dir( err ) );
   };
@@ -143,7 +151,8 @@ GraphicProjectSupportFiles.propTypes = {
   projectId: PropTypes.string,
   headline: PropTypes.string,
   helperText: PropTypes.string,
-  files: PropTypes.array
+  files: PropTypes.array,
+  updateNotification: PropTypes.func
 };
 
 export default GraphicProjectSupportFiles;
