@@ -20,28 +20,28 @@ const myProjectsProps = {
     visibility: 'INTERNAL',
     thumbnails: {
       url: 'https://thumbnailurl.com',
-      alt: 'some alt text'
+      alt: 'some alt text',
     },
-    categories: 'about america'
+    categories: 'about america',
   },
   tableHeaders: [
     { name: 'projectTitle', label: 'PROJECT TITLE' },
     { name: 'updatedAt', label: 'CREATED' },
     { name: 'visibility', label: 'VISIBILITY' },
-    { name: 'author', label: 'AUTHOR' }
+    { name: 'author', label: 'AUTHOR' },
   ],
-  projectTab: 'myProjects'
+  projectTab: 'myProjects',
 };
 
 const teamProjectsProps = {
   ...myProjectsProps,
-  projectTab: 'teamProjects'
+  projectTab: 'teamProjects',
 };
 
 const menuItems = [
   { name: 'team', label: 'TEAM' },
   { name: 'categories', label: 'CATEGORIES' },
-  { name: 'updatedAt', label: 'MODIFIED DATE' }
+  { name: 'updatedAt', label: 'MODIFIED DATE' },
 ];
 
 const MyProjectsComponent = <TableRow { ...myProjectsProps } />;
@@ -79,8 +79,8 @@ describe( '<TableRow />', () => {
       ...myProjectsProps,
       tableHeaders: [
         ...myProjectsProps.tableHeaders,
-        ...menuItems
-      ]
+        ...menuItems,
+      ],
     };
 
     const wrapper = shallow( <TableRow { ...newProps } /> );

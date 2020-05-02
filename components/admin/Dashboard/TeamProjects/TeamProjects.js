@@ -16,13 +16,13 @@ const persistentTableHeaders = [
   { name: 'projectTitle', label: 'PROJECT TITLE' },
   { name: 'createdAt', label: 'CREATED' },
   { name: 'visibility', label: 'VISIBILITY' },
-  { name: 'author', label: 'AUTHOR' }
+  { name: 'author', label: 'AUTHOR' },
 ];
 
 const menuItems = [
   { name: 'team', label: 'TEAM' },
   { name: 'categories', label: 'CATEGORIES' },
-  { name: 'updatedAt', label: 'MODIFIED DATE' }
+  { name: 'updatedAt', label: 'MODIFIED DATE' },
 ];
 
 const TeamProjects = () => {
@@ -37,23 +37,20 @@ const TeamProjects = () => {
 
   if ( !team ) return null;
 
+  const uploadLink = <Link href="/admin/upload" passHref><a className="linkStyle">upload a project</a></Link>;
+  const browseLink = <Link href="/" passHref><a className="linkStyle">browse for other PD content</a></Link>;
+
   // If a team does not have any contentTypes associated with it then display message with links
   if ( !team.contentTypes.length ) {
     return (
       <Fragment>
         <p>There aren&apos;t any team projects available to view.</p>
-        <p>
-          {'You can '}
-          <Link href="/admin/upload" passHref><a className="linkStyle">upload a project</a></Link>
-          {' or '}
-          <Link href="/" passHref><a className="linkStyle">browse for other PD content</a></Link>
-          .
-        </p>
+        <p>{`You can ${uploadLink} or ${browseLink}.`}</p>
       </Fragment>
     );
   }
 
-  // Hide Category column if viewing Packages
+  // Hide category column if viewing Packages
   const setMenuItems = () => {
     let columnMenuItems = menuItems;
 

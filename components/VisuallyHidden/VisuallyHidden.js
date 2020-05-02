@@ -8,17 +8,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './VisuallyHidden.scss';
 
-const VisuallyHidden = ( { el: Element, children } ) => (
-  <Element className="hide-visually">{ children }</Element>
-);
+const VisuallyHidden = ( { el: Element, children } ) => <Element className="hide-visually">{ children }</Element>;
 
 VisuallyHidden.propTypes = {
   el: PropTypes.string,
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 
 VisuallyHidden.defaultProps = {
-  el: 'div'
+  el: 'div',
 };
 
 export default VisuallyHidden;

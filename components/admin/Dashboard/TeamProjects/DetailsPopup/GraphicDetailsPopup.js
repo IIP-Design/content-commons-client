@@ -14,7 +14,7 @@ const GraphicDetailsPopup = ( { id } ) => {
    */
   const fileData = useQuery( state.queries.files, {
     variables: { id },
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'cache-and-network',
   } );
 
   useEffect( () => {
@@ -46,7 +46,7 @@ const GraphicDetailsPopup = ( { id } ) => {
               filetype,
               filesize,
               language: { displayName },
-              use
+              use,
             } = file;
 
             return (
@@ -70,7 +70,7 @@ const GraphicDetailsPopup = ( { id } ) => {
 };
 
 GraphicDetailsPopup.propTypes = {
-  id: PropTypes.string
+  id: PropTypes.string,
 };
 
 export default GraphicDetailsPopup;

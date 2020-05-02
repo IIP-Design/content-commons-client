@@ -9,7 +9,7 @@ const props = {
   error: null,
   handlePageChange: jest.fn(),
   itemsPerPage: 5,
-  loading: false
+  loading: false,
 };
 
 describe( '<TablePagination />', () => {

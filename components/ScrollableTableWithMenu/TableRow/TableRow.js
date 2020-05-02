@@ -6,15 +6,9 @@ import { Table } from 'semantic-ui-react';
 import { formatDate } from 'lib/utils';
 import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon/TableMobileDataToggleIcon';
 
-const MyProjectPrimaryCol = dynamic( () => import(
-  /* webpackChunkName: "myProjectPrimaryCol" */
-  'components/admin/Dashboard/MyProjects/MyProjectPrimaryCol/MyProjectPrimaryCol'
-) );
+const MyProjectPrimaryCol = dynamic( () => import( /* webpackChunkName: "myProjectPrimaryCol" */ 'components/admin/Dashboard/MyProjects/MyProjectPrimaryCol/MyProjectPrimaryCol' ) );
 
-const TeamProjectPrimaryCol = dynamic( () => import(
-  /* webpackChunkName: "teamProjectPrimaryCol" */
-  'components/admin/Dashboard/TeamProjects/TeamProjectPrimaryCol/TeamProjectPrimaryCol'
-) );
+const TeamProjectPrimaryCol = dynamic( () => import( /* webpackChunkName: "teamProjectPrimaryCol" */ 'components/admin/Dashboard/TeamProjects/TeamProjectPrimaryCol/TeamProjectPrimaryCol' ) );
 
 const TableRow = ( { d, tableHeaders, projectTab } ) => {
   const [displayMobileData, setDisplayMobileData] = useState( false );
@@ -84,7 +78,7 @@ const TableRow = ( { d, tableHeaders, projectTab } ) => {
 TableRow.propTypes = {
   d: PropTypes.object,
   tableHeaders: PropTypes.array,
-  projectTab: PropTypes.string
+  projectTab: PropTypes.string,
 };
 
 export default TableRow;

@@ -23,13 +23,13 @@ const initialState = {
     content: null,
     count: null,
     files: null,
-    remove: null
+    remove: null,
   },
   selected: {
     displayActionsMenu: false,
-    selectedItems: new Map()
+    selectedItems: new Map(),
   },
-  team: { contentTypes: null }
+  team: { contentTypes: null },
 };
 
 export const DashboardContext = React.createContext( initialState );
@@ -75,7 +75,7 @@ const toggleItemSelection = ( data, selected ) => {
 
   return {
     displayActionsMenu: areOthersSelected,
-    selectedItems: updated
+    selectedItems: updated,
   };
 };
 
@@ -101,7 +101,7 @@ const toggleAllItemsSelection = selected => {
 
   return {
     displayActionsMenu: !hasSelected,
-    selectedItems: newSelectedItems
+    selectedItems: newSelectedItems,
   };
 };
 
@@ -149,7 +149,7 @@ export const dashboardReducer = ( state, action ) => {
       return {
         ...state,
         column: payload.column,
-        direction: payload.direction
+        direction: payload.direction,
       };
     case 'UPDATE_COUNT':
       // Count and error load in mock values for graphics until actual queries get connected
@@ -159,8 +159,8 @@ export const dashboardReducer = ( state, action ) => {
           count: payload.type === 'graphicProjects' ? parseCount( graphicMock, payload.team ) : parseCount( payload.count.data, payload.team ),
           error: payload.type === 'graphicProjects' ? null : payload.count.error,
           loading: payload.count.loading,
-          refetch: payload.count.refetch
-        }
+          refetch: payload.count.refetch,
+        },
       };
     case 'UPDATE_CONTENT':
       // Data and error load in mock values for graphics until actual queries get connected
@@ -170,33 +170,33 @@ export const dashboardReducer = ( state, action ) => {
           data: payload.type === 'graphicProjects' ? normalizeDashboardData( graphicMock, payload.type ) : normalizeDashboardData( payload.data, payload.type ),
           error: payload.type === 'graphicProjects' ? null : payload.error,
           loading: payload.loading,
-          refetch: payload.refetch
-        }
+          refetch: payload.refetch,
+        },
       };
     case 'UPDATE_SELECTED':
       return {
         ...state,
-        selected: toggleItemSelection( payload.data, payload.selected )
+        selected: toggleItemSelection( payload.data, payload.selected ),
       };
     case 'UPDATE_SELECTED_ALL':
       return {
         ...state,
-        selected: toggleAllItemsSelection( payload.selected )
+        selected: toggleAllItemsSelection( payload.selected ),
       };
     case 'RESET_SELECTED':
       return {
         ...state,
         selected: {
           displayActionsMenu: false,
-          selectedItems: new Map()
-        }
+          selectedItems: new Map(),
+        },
       };
     case 'UPDATE_TEAM':
       return {
         ...state,
         team: payload.team,
         projectType: getContentTypesFromTeam( payload.team ),
-        queries: setQueries( payload.team )
+        queries: setQueries( payload.team ),
       };
     default:
       return { ...state };

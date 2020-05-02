@@ -17,7 +17,7 @@ const TableBody = ( {
   loading,
   projectTab,
   searchTerm,
-  tableHeaders
+  tableHeaders,
 } ) => {
   if ( error ) return <TableBodyMessage error={ error } type="error" />;
 
@@ -40,7 +40,7 @@ const TableBody = ( {
 
       return formattedTableDatum;
     },
-    [order]
+    [order],
   );
 
   // skip & first query vars are used as start/end slice() params to paginate tableData on client
@@ -74,7 +74,7 @@ TableBody.propTypes = {
   loading: PropTypes.bool,
   projectTab: PropTypes.string,
   searchTerm: PropTypes.string,
-  tableHeaders: PropTypes.array
+  tableHeaders: PropTypes.array,
 };
 
 export default TableBody;

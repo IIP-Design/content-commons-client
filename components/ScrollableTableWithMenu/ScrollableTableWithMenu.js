@@ -46,7 +46,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
    */
   const countData = useQuery( state.queries.count, {
     variables: { ...variables },
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'cache-and-network',
   } );
 
   // The data for following columns cannot by sort within the GraphQL query
@@ -59,7 +59,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   const contentData = useQuery( state.queries.content, {
     variables: isLegacySort ? { ...variables } : { ...variables, ...bodyPaginationVars },
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'cache-and-network',
   } );
 
   useEffect( () => {
@@ -191,7 +191,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     e.persist();
     const menuItem = {
       name: e.target.parentNode.dataset.propname,
-      label: e.target.parentNode.dataset.proplabel
+      label: e.target.parentNode.dataset.proplabel,
     };
 
     if ( tableHeaders.map( h => h.name ).includes( menuItem.name ) ) {
@@ -300,7 +300,7 @@ ScrollableTableWithMenu.propTypes = {
   persistentTableHeaders: PropTypes.array,
   columnMenu: PropTypes.array,
   team: PropTypes.object,
-  projectTab: PropTypes.string
+  projectTab: PropTypes.string,
 };
 
 export default ScrollableTableWithMenu;

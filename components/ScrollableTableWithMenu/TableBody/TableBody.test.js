@@ -13,7 +13,7 @@ const props = {
   bodyPaginationVars: {
     first: 2,
     orderBy: 'createdAt_DESC',
-    skip: 0
+    skip: 0,
   },
   column: 'createdAt',
   data: [
@@ -28,7 +28,7 @@ const props = {
       thumbnail: {},
       updatedAt: '2020-04-22T13:22:42.672Z',
       visibility: 'INTERNAL',
-      __typename: 'Package'
+      __typename: 'Package',
     },
     {
       author: 'Marek',
@@ -41,8 +41,8 @@ const props = {
       thumbnail: {},
       updatedAt: '2020-04-20T16:31:14.936Z',
       visibility: 'INTERNAL',
-      __typename: 'Package'
-    }
+      __typename: 'Package',
+    },
   ],
   direction: 'descending',
   error: null,
@@ -53,8 +53,8 @@ const props = {
     { name: 'projectTitle', label: 'PROJECT TITLE' },
     { name: 'visibility', label: 'VISIBILITY' },
     { name: 'updatedAt', label: 'MODIFIED' },
-    { name: 'author', label: 'AUTHOR' }
-  ]
+    { name: 'author', label: 'AUTHOR' },
+  ],
 };
 
 // Wrap TableBody in a table component to avoid warning message about invalid nesting of a <tbody>
