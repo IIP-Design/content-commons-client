@@ -116,9 +116,10 @@
       .meta-wrap {
         position: absolute;
         bottom: 0;
+        z-index: 10;
         padding: 0.5rem;
         width: 100%;
-        background-color: $grey-medium-transparent;
+        // background-color: $grey-medium-transparent;
         // transition: all 200ms linear;
 
         > .meta {
@@ -146,6 +147,16 @@
             }
           }
         }
+      }
+
+      &::after {
+        position: absolute;
+        bottom: 0;
+        content: '';
+        display: block;
+        height: 100%;
+        width: 100%;
+        background-image: linear-gradient(transparent 50%, $grey-medium-transparent 90%);
       }
 
       .placeholder {
