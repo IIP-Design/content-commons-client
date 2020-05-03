@@ -109,7 +109,7 @@ const GraphicFilesForm = props => {
           const { id, filename, filesize, language } = file;
           const value = values[id];
           const name = filename?.length > 30
-            ? truncateAndReplaceStr( filename, 28, 10 )
+            ? truncateAndReplaceStr( filename, 20, 10 )
             : filename;
 
           return (

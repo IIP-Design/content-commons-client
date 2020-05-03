@@ -85,7 +85,7 @@ const GraphicProjectSupportFiles = props => {
       { files.map( file => {
         const { id, filename } = file;
         const name = filename?.length > 36
-          ? truncateAndReplaceStr( filename, 32, 12 )
+          ? truncateAndReplaceStr( filename, 24, 12 )
           : filename;
 
         return (
