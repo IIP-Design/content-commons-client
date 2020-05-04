@@ -11,7 +11,7 @@ import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/Langua
 import SocialPlatformDropdown from 'components/admin/dropdowns/SocialPlatformDropdown/SocialPlatformDropdown';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
-import { formatBytes, truncateAndReplaceStr } from 'lib/utils';
+import { formatBytes, getCount, truncateAndReplaceStr } from 'lib/utils';
 import './GraphicFilesForm.scss';
 
 const GraphicFilesForm = props => {
@@ -82,6 +82,14 @@ const GraphicFilesForm = props => {
   };
 
   const uploadInProgress = false; // temp
+
+  if ( !getCount( files ) ) {
+    return (
+      <div className="graphic-project-graphic-files">
+        <p className="no-files">No files to upload</p>
+      </div>
+    );
+  }
 
   return (
     <div className="graphic-project-graphic-files">

@@ -2,6 +2,10 @@
 @import "styles/mixins.scss";
 
 .graphic-project-graphic-files {
+  .no-files {
+    font-size: 0.888888889rem
+  }
+
   .form-fields {
     display: grid;
     grid-template-columns: repeat( auto-fill, minmax( 300px, 0.5fr ) );
