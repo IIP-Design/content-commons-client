@@ -344,16 +344,15 @@ const GraphicEdit = props => {
       />
 
       { /* project details form */ }
-      <div className="content" style={ contentStyle }>
-        <GraphicProjectDetailsFormContainer
-          id={ projectId }
-          data={ data }
-          updateNotification={ updateNotification }
-          handleUpload={ handleUpload }
-          maxCategories={ MAX_CATEGORY_COUNT }
-          setIsFormValid={ setIsFormValid }
-        />
-      </div>
+      <GraphicProjectDetailsFormContainer
+        id={ projectId }
+        contentStyle={ contentStyle }
+        data={ data }
+        updateNotification={ updateNotification }
+        handleUpload={ handleUpload }
+        maxCategories={ MAX_CATEGORY_COUNT }
+        setIsFormValid={ setIsFormValid }
+      />
 
       { /* upload progress */ }
       <UploadProgress
@@ -364,6 +363,7 @@ const GraphicEdit = props => {
         isUploading={ isUploading }
       />
 
+      { /* project support files */ }
       <GraphicSupportFilesContainer
         projectId={ projectId }
         handleAddFiles={ handleAddFiles }
@@ -371,6 +371,7 @@ const GraphicEdit = props => {
         fileTypes={ supportFilesConfig }
       />
 
+      { /* project graphic files */ }
       <GraphicFilesFormContainer
         projectId={ projectId }
         files={ graphicFiles }

@@ -6,15 +6,14 @@ import { useAuth } from 'context/authContext';
 import { CREATE_GRAPHIC_PROJECT_MUTATION, UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import { buildCreateGraphicProjectTree, buildFormTree } from 'lib/graphql/builders/graphic';
 import { Formik } from 'formik';
-
-import ProjectDetailsForm from 'components/admin/ProjectDetailsForm/ProjectDetailsForm';
 import Notification from 'components/Notification/Notification';
-
+import ProjectDetailsForm from 'components/admin/ProjectDetailsForm/ProjectDetailsForm';
 import useTimeout from 'lib/hooks/useTimeout';
 import { initialSchema, baseSchema } from './validationSchema';
+import './GraphicProjectDetailsFormContainer.scss'
 
 const GraphicProjectDetailsFormContainer = props => {
-  const { setIsFormValid } = props;
+  const { contentStyle, setIsFormValid } = props;
   const { user } = useAuth();
 
   const [createGraphicProject] = useMutation( CREATE_GRAPHIC_PROJECT_MUTATION );
@@ -172,18 +171,21 @@ const GraphicProjectDetailsFormContainer = props => {
   };
 
   return (
-    <Formik
-      initialValues={ getInitialValues() }
-      validationSchema={ props.id ? baseSchema : initialSchema }
-      onSubmit={ onHandleSubmit }
-    >
-      { renderContent }
-    </Formik>
+    <div className="content graphic-project-details-form-container" style={ contentStyle }>
+      <Formik
+        initialValues={ getInitialValues() }
+        validationSchema={ props.id ? baseSchema : initialSchema }
+        onSubmit={ onHandleSubmit }
+      >
+        { renderContent }
+      </Formik>
+    </div>
   );
 };
 
 GraphicProjectDetailsFormContainer.propTypes = {
   id: PropTypes.string,
+  contentStyle: PropTypes.object,
   data: PropTypes.object,
   updateNotification: PropTypes.func,
   handleUpload: PropTypes.func,
