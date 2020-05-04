@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { Formik } from 'formik';
-import GraphicFilesForm from 'components/admin/ProjectEdit/GraphicEdit/GraphicProjectGraphicFiles/GraphicFilesForm/GraphicFilesForm';
+import GraphicFilesForm from 'components/admin/ProjectEdit/GraphicEdit/GraphicFilesFormContainer/GraphicFilesForm/GraphicFilesForm';
 import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import { buildUpdateGraphicProjectImagesTree } from 'lib/graphql/builders/graphic';
 import useTimeout from 'lib/hooks/useTimeout';
 import { getCount } from 'lib/utils';
 import { baseSchema } from './validationSchema';
 
-const GraphicProjectGraphicFiles = props => {
+const GraphicFilesFormContainer = props => {
   const { files, projectId, updateNotification } = props;
   const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
 
@@ -77,10 +77,10 @@ const GraphicProjectGraphicFiles = props => {
   );
 };
 
-GraphicProjectGraphicFiles.propTypes = {
+GraphicFilesFormContainer.propTypes = {
   projectId: PropTypes.string,
   files: PropTypes.array,
   updateNotification: PropTypes.func
 };
 
-export default GraphicProjectGraphicFiles;
+export default GraphicFilesFormContainer;
