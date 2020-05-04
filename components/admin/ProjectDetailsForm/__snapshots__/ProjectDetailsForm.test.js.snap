@@ -1,0 +1,628 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
+<ProjectDetailsForm
+  config={
+    Object {
+      "alt": Object {
+        "label": "Alt (Alternative) Text",
+        "required": false,
+      },
+      "categories": Object {
+        "label": "Categories",
+        "required": true,
+      },
+      "copyright": Object {
+        "label": "Copyright",
+        "required": true,
+      },
+      "descInternal": Object {
+        "label": "Internal Description",
+        "required": false,
+      },
+      "descPublic": Object {
+        "label": "Public Description",
+        "required": false,
+      },
+      "headline": "Social Media Graphics Project Data",
+      "projectTitle": Object {
+        "label": "Project Name",
+        "required": true,
+      },
+      "tags": Object {
+        "label": "Tags",
+        "required": false,
+      },
+      "team": Object {
+        "label": "Source",
+        "required": false,
+      },
+      "visibility": Object {
+        "label": "Visibility Setting",
+        "required": true,
+      },
+    }
+  }
+  dirty={false}
+  errors={Object {}}
+  handleChange={[MockFunction]}
+  handleSubmit={[MockFunction]}
+  isValid={true}
+  maxCategories={2}
+  save={[MockFunction]}
+  setFieldTouched={[MockFunction]}
+  setFieldValue={[MockFunction]}
+  touched={Object {}}
+  values={
+    Object {
+      "alt": "some alt text",
+      "author": "author-aidkwi83",
+      "categories": Array [
+        "category-123",
+      ],
+      "copyright": "NO_COPYRIGHT",
+      "descInternal": "internal description",
+      "descPublic": "public description",
+      "projectTitle": "Just a test title",
+      "tags": Array [
+        "tag-123",
+      ],
+      "team": "team-dfiiad",
+      "visibility": "visibility-12345",
+    }
+  }
+>
+  <Form
+    as="form"
+    className="edit-project__form project-data"
+    onSubmit={[MockFunction]}
+  >
+    <form
+      className="ui form edit-project__form project-data"
+      onSubmit={[Function]}
+    >
+      <Grid
+        stackable={true}
+      >
+        <div
+          className="ui stackable grid"
+        >
+          <GridRow>
+            <div
+              className="row"
+            >
+              <GridColumn
+                width="16"
+              >
+                <div
+                  className="sixteen wide column"
+                >
+                  <h2
+                    className="heading"
+                  >
+                    <span
+                      className="uppercase"
+                    >
+                      Social Media Graphics Project Data
+                    </span>
+                    <br />
+                    <small
+                      className="msg--required"
+                    >
+                      Required Fields *
+                    </small>
+                  </h2>
+                </div>
+              </GridColumn>
+            </div>
+          </GridRow>
+          <GridRow>
+            <div
+              className="row"
+            >
+              <GridColumn
+                computer={8}
+                mobile={16}
+              >
+                <div
+                  className="eight wide computer sixteen wide mobile column"
+                >
+                  <FormGroup
+                    widths="equal"
+                  >
+                    <div
+                      className="equal width fields"
+                    >
+                      <div
+                        className="field"
+                      >
+                        <FormField
+                          autoFocus={true}
+                          control={[Function]}
+                          id="projectTitle"
+                          label="Project Name"
+                          name="projectTitle"
+                          onChange={[Function]}
+                          required={true}
+                          value="Just a test title"
+                        >
+                          <div
+                            className="required field"
+                          >
+                            <label
+                              htmlFor="projectTitle"
+                            >
+                              Project Name
+                            </label>
+                            <Input
+                              autoFocus={true}
+                              id="projectTitle"
+                              name="projectTitle"
+                              onChange={[Function]}
+                              required={true}
+                              type="text"
+                              value="Just a test title"
+                            >
+                              <div
+                                className="ui input"
+                              >
+                                <input
+                                  autoFocus={true}
+                                  id="projectTitle"
+                                  name="projectTitle"
+                                  onChange={[Function]}
+                                  required={true}
+                                  type="text"
+                                  value="Just a test title"
+                                />
+                              </div>
+                            </Input>
+                          </div>
+                        </FormField>
+                        <p
+                          className="error-message"
+                        />
+                      </div>
+                      <div
+                        className="field"
+                      >
+                        <div
+                          className="field"
+                        >
+                          <VisibilityDropdown
+                            hide="internal"
+                            id="visibility"
+                            label="Visibility Setting"
+                            name="visibility"
+                            onChange={[Function]}
+                            required={true}
+                            value="visibility-12345"
+                          />
+                        </div>
+                        <p
+                          className="error-message"
+                        />
+                      </div>
+                    </div>
+                  </FormGroup>
+                  <FormGroup
+                    widths="equal"
+                  >
+                    <div
+                      className="equal width fields"
+                    >
+                      <FormField
+                        control={[Function]}
+                        id="team"
+                        label="Source"
+                        name="team"
+                        placeholder=""
+                        value="team-dfiiad"
+                      >
+                        <div
+                          className="field"
+                        >
+                          <label
+                            htmlFor="team"
+                          >
+                            Source
+                          </label>
+                          <Input
+                            id="team"
+                            name="team"
+                            placeholder=""
+                            type="text"
+                            value="team-dfiiad"
+                          >
+                            <div
+                              className="ui input"
+                            >
+                              <input
+                                id="team"
+                                name="team"
+                                onChange={[Function]}
+                                placeholder=""
+                                type="text"
+                                value="team-dfiiad"
+                              />
+                            </div>
+                          </Input>
+                        </div>
+                      </FormField>
+                      <div
+                        className="field"
+                      >
+                        <CopyrightDropdown
+                          id="copyright"
+                          label="Copyright"
+                          name="copyright"
+                          onChange={[Function]}
+                          required={true}
+                          value="NO_COPYRIGHT"
+                        />
+                        <p
+                          className="error-message"
+                        />
+                      </div>
+                    </div>
+                  </FormGroup>
+                  <FormGroup
+                    widths="equal"
+                  >
+                    <div
+                      className="equal width fields"
+                    >
+                      <div
+                        className="field"
+                      >
+                        <CategoryDropdown
+                          closeOnBlur={true}
+                          closeOnChange={true}
+                          id="categories"
+                          label="Categories"
+                          multiple={true}
+                          name="categories"
+                          onChange={[Function]}
+                          required={true}
+                          search={true}
+                          value={
+                            Array [
+                              "category-123",
+                            ]
+                          }
+                        />
+                        <p
+                          className="field__helper-text"
+                        >
+                          Select up to 
+                          2
+                          .
+                        </p>
+                      </div>
+                      <div
+                        className="field"
+                      >
+                        <TagDropdown
+                          id="tags"
+                          label="Tags"
+                          locale="en-us"
+                          name="tags"
+                          onChange={[Function]}
+                          value={
+                            Array [
+                              "tag-123",
+                            ]
+                          }
+                        />
+                        <p
+                          className="field__helper-text"
+                        >
+                          Enter keywords separated by commas to search available tags.
+                        </p>
+                      </div>
+                    </div>
+                  </FormGroup>
+                </div>
+              </GridColumn>
+              <GridColumn
+                computer={8}
+                mobile={16}
+              >
+                <div
+                  className="eight wide computer sixteen wide mobile column"
+                >
+                  <FormField
+                    control={[Function]}
+                    id="descPublic"
+                    label="Public Description"
+                    name="descPublic"
+                    onChange={[MockFunction]}
+                    value="public description"
+                  >
+                    <div
+                      className="field"
+                    >
+                      <label
+                        htmlFor="descPublic"
+                      >
+                        Public Description
+                      </label>
+                      <TextArea
+                        as="textarea"
+                        id="descPublic"
+                        name="descPublic"
+                        onChange={[MockFunction]}
+                        rows={3}
+                        value="public description"
+                      >
+                        <Ref
+                          innerRef={
+                            Object {
+                              "current": <textarea
+                                id="descPublic"
+                                name="descPublic"
+                                rows="3"
+                              >
+                                public description
+                              </textarea>,
+                            }
+                          }
+                        >
+                          <RefFindNode
+                            innerRef={
+                              Object {
+                                "current": <textarea
+                                  id="descPublic"
+                                  name="descPublic"
+                                  rows="3"
+                                >
+                                  public description
+                                </textarea>,
+                              }
+                            }
+                          >
+                            <textarea
+                              id="descPublic"
+                              name="descPublic"
+                              onChange={[Function]}
+                              onInput={[Function]}
+                              rows={3}
+                              value="public description"
+                            />
+                          </RefFindNode>
+                        </Ref>
+                      </TextArea>
+                    </div>
+                  </FormField>
+                  <div
+                    className="field"
+                  >
+                    <FormField
+                      className="with-helper-text"
+                      control={[Function]}
+                      id="descInternal"
+                      label="Internal Description"
+                      name="descInternal"
+                      onChange={[MockFunction]}
+                      value="internal description"
+                    >
+                      <div
+                        className="field with-helper-text"
+                      >
+                        <label
+                          htmlFor="descInternal"
+                        >
+                          Internal Description
+                        </label>
+                        <TextArea
+                          as="textarea"
+                          id="descInternal"
+                          name="descInternal"
+                          onChange={[MockFunction]}
+                          rows={3}
+                          value="internal description"
+                        >
+                          <Ref
+                            innerRef={
+                              Object {
+                                "current": <textarea
+                                  id="descInternal"
+                                  name="descInternal"
+                                  rows="3"
+                                >
+                                  internal description
+                                </textarea>,
+                              }
+                            }
+                          >
+                            <RefFindNode
+                              innerRef={
+                                Object {
+                                  "current": <textarea
+                                    id="descInternal"
+                                    name="descInternal"
+                                    rows="3"
+                                  >
+                                    internal description
+                                  </textarea>,
+                                }
+                              }
+                            >
+                              <textarea
+                                id="descInternal"
+                                name="descInternal"
+                                onChange={[Function]}
+                                onInput={[Function]}
+                                rows={3}
+                                value="internal description"
+                              />
+                            </RefFindNode>
+                          </Ref>
+                        </TextArea>
+                      </div>
+                    </FormField>
+                    <p
+                      className="field__helper-text"
+                    >
+                      Share with DoS colleagues reasons for this project as it relates to Department objectives, best practices for using the project, or any other notes you would like to keep internal.
+                    </p>
+                  </div>
+                  <div
+                    className="field"
+                  >
+                    <FormField
+                      className="with-helper-text"
+                      control={[Function]}
+                      id="alt"
+                      label="Alt (Alternative) Text"
+                      name="alt"
+                      onChange={[MockFunction]}
+                      value="some alt text"
+                    >
+                      <div
+                        className="field with-helper-text"
+                      >
+                        <label
+                          htmlFor="alt"
+                        >
+                          Alt (Alternative) Text
+                        </label>
+                        <TextArea
+                          as="textarea"
+                          id="alt"
+                          name="alt"
+                          onChange={[MockFunction]}
+                          rows={3}
+                          value="some alt text"
+                        >
+                          <Ref
+                            innerRef={
+                              Object {
+                                "current": <textarea
+                                  id="alt"
+                                  name="alt"
+                                  rows="3"
+                                >
+                                  some alt text
+                                </textarea>,
+                              }
+                            }
+                          >
+                            <RefFindNode
+                              innerRef={
+                                Object {
+                                  "current": <textarea
+                                    id="alt"
+                                    name="alt"
+                                    rows="3"
+                                  >
+                                    some alt text
+                                  </textarea>,
+                                }
+                              }
+                            >
+                              <textarea
+                                id="alt"
+                                name="alt"
+                                onChange={[Function]}
+                                onInput={[Function]}
+                                rows={3}
+                                value="some alt text"
+                              />
+                            </RefFindNode>
+                          </Ref>
+                        </TextArea>
+                      </div>
+                    </FormField>
+                    <p
+                      className="field__helper-text"
+                    >
+                      This text helps screen-reading tools describe images to visually impaired readers.
+                    </p>
+                  </div>
+                </div>
+              </GridColumn>
+            </div>
+          </GridRow>
+          <GridRow
+            reversed="computer"
+          >
+            <div
+              className="computer reversed row"
+            >
+              <GridColumn
+                mobile={11}
+              >
+                <div
+                  className="eleven wide mobile column"
+                >
+                  <TermsConditions
+                    handleOnChange={[Function]}
+                  />
+                </div>
+              </GridColumn>
+              <GridColumn
+                computer={5}
+                mobile={16}
+              >
+                <div
+                  className="five wide computer sixteen wide mobile column"
+                >
+                  <Button
+                    as="button"
+                    className="edit-project__form--save"
+                    content="Save draft & upload files to this project"
+                    disabled={true}
+                    onClick={[MockFunction]}
+                    type="submit"
+                  >
+                    <Ref
+                      innerRef={
+                        Object {
+                          "current": <button
+                            class="ui disabled button edit-project__form--save"
+                            disabled=""
+                            tabindex="-1"
+                            type="submit"
+                          >
+                            Save draft & upload files to this project
+                          </button>,
+                        }
+                      }
+                    >
+                      <RefFindNode
+                        innerRef={
+                          Object {
+                            "current": <button
+                              class="ui disabled button edit-project__form--save"
+                              disabled=""
+                              tabindex="-1"
+                              type="submit"
+                            >
+                              Save draft & upload files to this project
+                            </button>,
+                          }
+                        }
+                      >
+                        <button
+                          className="ui disabled button edit-project__form--save"
+                          disabled={true}
+                          onClick={[Function]}
+                          tabIndex={-1}
+                          type="submit"
+                        >
+                          Save draft & upload files to this project
+                        </button>
+                      </RefFindNode>
+                    </Ref>
+                  </Button>
+                </div>
+              </GridColumn>
+            </div>
+          </GridRow>
+        </div>
+      </Grid>
+    </form>
+  </Form>
+</ProjectDetailsForm>
+`;
