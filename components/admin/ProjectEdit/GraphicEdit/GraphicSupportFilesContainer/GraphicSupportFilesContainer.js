@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import AddFilesSectionHeading from 'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading';
 import GraphicSupportFiles from 'components/admin/ProjectSupportFiles/GraphicSupportFiles/GraphicSupportFiles';
@@ -26,9 +26,8 @@ const GraphicSupportFilesContainer = props => {
           const { files, headline, helperText } = fileType;
 
           return (
-            <Fragment>
+            <React.Fragment key={ `${projectId}-${headline}` }>
               <GraphicSupportFiles
-                key={ projectId }
                 projectId={ projectId }
                 headline={ headline }
                 helperText={ helperText }
@@ -37,7 +36,7 @@ const GraphicSupportFilesContainer = props => {
               />
 
               { i !== fileTypes.length - 1 && <div className="separator" /> }
-            </Fragment>
+            </React.Fragment>
           );
         } ) }
       </div>
