@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import AddFilesSectionHeading from 'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading';
-import GraphicProjectSupportFiles from 'components/admin/ProjectSupportFiles/GraphicProjectSupportFiles/GraphicProjectSupportFiles';
+import GraphicSupportFiles from 'components/admin/ProjectSupportFiles/GraphicSupportFiles/GraphicSupportFiles';
 import './GraphicSupportFilesContainer.scss';
 
 const GraphicSupportFilesContainer = props => {
@@ -27,7 +27,7 @@ const GraphicSupportFilesContainer = props => {
 
           return (
             <Fragment>
-              <GraphicProjectSupportFiles
+              <GraphicSupportFiles
                 key={ projectId }
                 projectId={ projectId }
                 headline={ headline }

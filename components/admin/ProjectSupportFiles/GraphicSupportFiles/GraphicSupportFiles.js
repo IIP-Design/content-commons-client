@@ -10,9 +10,9 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import useTimeout from 'lib/hooks/useTimeout';
 import { getCount, truncateAndReplaceStr } from 'lib/utils';
-import './GraphicProjectSupportFiles.scss';
+import './GraphicSupportFiles.scss';
 
-const GraphicProjectSupportFiles = props => {
+const GraphicSupportFiles = props => {
   const {
     projectId, headline, helperText, files, updateNotification
   } = props;
@@ -167,7 +167,7 @@ const GraphicProjectSupportFiles = props => {
   );
 };
 
-GraphicProjectSupportFiles.propTypes = {
+GraphicSupportFiles.propTypes = {
   projectId: PropTypes.string,
   headline: PropTypes.string,
   helperText: PropTypes.string,
@@ -175,4 +175,4 @@ GraphicProjectSupportFiles.propTypes = {
   updateNotification: PropTypes.func
 };
 
-export default GraphicProjectSupportFiles;
+export default GraphicSupportFiles;
