@@ -34,11 +34,15 @@ const GraphicFilesFormContainer = props => {
           id, filename, language, social, style, title
         } = file;
 
+        const socialPlatforms = social
+          ? social.map( platform => platform.id )
+          : [];
+
         acc[id] = {
           id,
           title: title || filename,
           language: language?.id || '',
-          social: social?.id || '',
+          social: socialPlatforms,
           style: style?.id || ''
         };
 

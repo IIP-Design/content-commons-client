@@ -246,6 +246,10 @@ const GraphicFilesForm = props => {
                   value={ value.social || '' }
                   error={ isTouched( id, 'social' ) && !value.social }
                   onChange={ handleOnChange }
+                  multiple
+                  search
+                  closeOnBlur
+                  closeOnChange
                   required
                 />
                 <p className="error-message">
