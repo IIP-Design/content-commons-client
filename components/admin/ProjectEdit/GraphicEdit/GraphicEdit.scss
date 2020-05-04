@@ -15,31 +15,13 @@
     @include base-button;
   }
 
-  .content,
-  .graphic-support-files {
+  .content {
     padding: 1.75em 0;
   }
 
-  .content,
-  .graphic-support-files {
+  .content {
     @media screen and (min-width: 768px) {
       padding: 1.75em;
-    }
-  }
-
-  .graphic-support-files {
-    border-top: 1px solid $light-grey;
-  }
-
-  @media screen and (min-width: 992px) {
-    .graphic-support-files > .container {
-      display: grid;
-      grid-template-columns: 0.5fr 1px 0.5fr;
-      gap: 1rem;
-
-      > .separator {
-        border-right: 1px solid $light-grey;
-      }
     }
   }
 }

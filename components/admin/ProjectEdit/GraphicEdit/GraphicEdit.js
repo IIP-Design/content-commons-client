@@ -4,11 +4,10 @@ import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
-import AddFilesSectionHeading from 'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading';
 import ApolloError from 'components/errors/ApolloError';
 import GraphicProjectDetailsFormContainer from 'components/admin/ProjectDetailsForm/GraphicProjectDetailsFormContainer/GraphicProjectDetailsFormContainer';
+import GraphicSupportFilesContainer from 'components/admin/ProjectEdit/GraphicEdit/GraphicSupportFilesContainer/GraphicSupportFilesContainer';
 import GraphicFilesFormContainer from 'components/admin/ProjectEdit/GraphicEdit/GraphicFilesFormContainer/GraphicFilesFormContainer';
-import GraphicProjectSupportFiles from 'components/admin/ProjectSupportFiles/GraphicProjectSupportFiles/GraphicProjectSupportFiles';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import UploadProgress from 'components/admin/ProjectEdit/UploadProgress/UploadProgress';
@@ -226,9 +225,19 @@ const GraphicEdit = props => {
     return type === 'editable' ? editableFiles : additionalFiles;
   };
 
-  const editableSupportFiles = getSupportFiles( 'editable' );
-  const additionalSupportFiles = getSupportFiles( 'additional' );
   const graphicFiles = data?.graphicProject?.images || [];
+  const supportFilesConfig = [
+    {
+      headline: 'editable files',
+      helperText: 'Original files that may be edited and adapted as needed for reuse.',
+      files: getSupportFiles( 'editable' )
+    },
+    {
+      headline: 'additional files',
+      helperText: 'Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics.',
+      files: getSupportFiles( 'additional' )
+    }
+  ];
 
   const centeredStyles = {
     position: 'absolute',
@@ -355,34 +364,12 @@ const GraphicEdit = props => {
         isUploading={ isUploading }
       />
 
-      <div className="graphic-support-files">
-        <AddFilesSectionHeading
-          projectId={ projectId }
-          title="Support Files"
-          acceptedFileTypes="image/*, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc"
-          handleAddFiles={ handleAddFiles }
-        />
-
-        <div className="container">
-          <GraphicProjectSupportFiles
-            projectId={ projectId }
-            headline="editable files"
-            helperText="Original files that may be edited and adapted as needed for reuse."
-            files={ editableSupportFiles }
-            updateNotification={ updateNotification }
-          />
-
-          <div className="separator" />
-
-          <GraphicProjectSupportFiles
-            projectId={ projectId }
-            headline="additional files"
-            helperText="Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics."
-            files={ additionalSupportFiles }
-            updateNotification={ updateNotification }
-          />
-        </div>
-      </div>
+      <GraphicSupportFilesContainer
+        projectId={ projectId }
+        handleAddFiles={ handleAddFiles }
+        updateNotification={ updateNotification }
+        fileTypes={ supportFilesConfig }
+      />
 
       <GraphicFilesFormContainer
         projectId={ projectId }
