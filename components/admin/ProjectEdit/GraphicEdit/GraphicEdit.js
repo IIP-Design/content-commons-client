@@ -384,20 +384,12 @@ const GraphicEdit = props => {
         </div>
       </div>
 
-      <div className="graphic-files">
-        <AddFilesSectionHeading
-          projectId={ projectId }
-          title="Graphics in Project"
-          acceptedFileTypes="image/gif, image/jpeg, image/png"
-          handleAddFiles={ handleAddFiles }
-        />
-
-        <GraphicFilesFormContainer
-          projectId={ projectId }
-          files={ graphicFiles }
-          updateNotification={ updateNotification }
-        />
-      </div>
+      <GraphicFilesFormContainer
+        projectId={ projectId }
+        files={ graphicFiles }
+        handleAddFiles={ handleAddFiles }
+        updateNotification={ updateNotification }
+      />
     </div>
   );
 };
