@@ -31,7 +31,7 @@ const Packages = props => {
           <Link
             href={ {
               pathname: '/results',
-              query: { language: 'en-us', sortBy: 'published', postTypes: ['package'] }
+              query: { language: 'en-us', sortBy: 'created', postTypes: ['package'] }
             } }
           >
             <a className="latestPackages_header_link">Browse All</a>
