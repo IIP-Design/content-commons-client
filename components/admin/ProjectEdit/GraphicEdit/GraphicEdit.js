@@ -376,6 +376,7 @@ const GraphicEdit = props => {
         projectId={ projectId }
         files={ graphicFiles }
         handleAddFiles={ handleAddFiles }
+        setIsFormValid={ setIsFormValid }
         updateNotification={ updateNotification }
       />
     </div>

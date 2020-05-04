@@ -10,7 +10,7 @@ import Notification from 'components/Notification/Notification';
 import ProjectDetailsForm from 'components/admin/ProjectDetailsForm/ProjectDetailsForm';
 import useTimeout from 'lib/hooks/useTimeout';
 import { initialSchema, baseSchema } from './validationSchema';
-import './GraphicProjectDetailsFormContainer.scss'
+import './GraphicProjectDetailsFormContainer.scss';
 
 const GraphicProjectDetailsFormContainer = props => {
   const { contentStyle, setIsFormValid } = props;

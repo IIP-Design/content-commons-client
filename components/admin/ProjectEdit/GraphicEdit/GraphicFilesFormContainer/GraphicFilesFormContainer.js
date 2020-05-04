@@ -13,7 +13,11 @@ import './GraphicFilesFormContainer.scss';
 
 const GraphicFilesFormContainer = props => {
   const {
-    files, projectId, handleAddFiles, updateNotification
+    files,
+    projectId,
+    handleAddFiles,
+    setIsFormValid,
+    updateNotification
   } = props;
   const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
 
@@ -78,13 +82,17 @@ const GraphicFilesFormContainer = props => {
         initialValues={ getInitialValues() }
         validationSchema={ baseSchema }
       >
-        { formikProps => (
-          <GraphicFilesForm
-            { ...formikProps }
-            { ...props }
-            save={ save }
-          />
-        ) }
+        { formikProps => {
+          setIsFormValid( formikProps.isValid );
+
+          return (
+            <GraphicFilesForm
+              { ...formikProps }
+              { ...props }
+              save={ save }
+            />
+          );
+        } }
       </Formik>
     </div>
   );
@@ -94,6 +102,7 @@ GraphicFilesFormContainer.propTypes = {
   projectId: PropTypes.string,
   files: PropTypes.array,
   handleAddFiles: PropTypes.func,
+  setIsFormValid: PropTypes.func,
   updateNotification: PropTypes.func
 };
 
