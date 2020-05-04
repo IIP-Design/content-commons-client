@@ -7,9 +7,11 @@ import { populateMetaArray } from 'lib/socialHeaders';
 import { fetchUser } from 'context/authContext';
 import Head from 'next/head';
 
+/** For Preview Graphic Modal Testing on line 47-59 - REMOVE */
 import { Modal } from 'semantic-ui-react';
 import { graphicElasticMock } from 'components/GraphicProject/graphicElasticMock';
 import { graphicGraphqlMock } from 'components/GraphicProject/graphicGraphqlMock';
+/** END MODAL TESTING */
 
 const styles = {
   page: {
@@ -73,7 +75,9 @@ GraphicPage.getInitialProps = async ctx => {
     // const response = await getItemRequest( query.site, query.id, user );
     // const item = getDataFromHits( response );
 
+    /** * TESTING - REMOVE ** */
     const item = { ...graphicElasticMock };
+    /** END TESTING * */
 
     if ( item && item[0] ) {
       return {
