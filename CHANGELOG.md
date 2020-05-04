@@ -17,6 +17,7 @@ _This sections lists changes committed since most recent release_
 - Swap out airbnb eslint config for custom GPA/LAB shared config
 - Paginate and sort Dashboard on the server and not the client
 - Removed subscription data from TableBody & updated test
+- Sort packages on the home page by creation date
 
 **Fixed:**
 - Fixed width in files popover menu
