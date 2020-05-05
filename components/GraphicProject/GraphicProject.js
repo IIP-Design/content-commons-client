@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { updateUrl } from 'lib/browser';
 import { displayDOSLogo } from 'lib/sourceLogoUtils';
 import { getPreviewNotificationStyles } from 'lib/utils';
@@ -17,8 +17,7 @@ import TabLayout from 'components/TabLayout/TabLayout';
 import DownloadItem from 'components/download/DownloadItem/DownloadItem';
 import Share from 'components/Share/Share';
 import GraphicFiles from './Download/GraphicFiles';
-import EditableFiles from './Download/EditableFiles';
-import OtherFiles from './Download/OtherFiles';
+import GenericFiles from './Download/GenericFiles';
 import Help from './Download/Help';
 
 import ModalItem from 'components/modals/ModalItem';
@@ -34,16 +33,15 @@ import './GraphicProject.scss';
 /* eslint-disable-next-line import/no-unresolved */
 import tempSrcUrl from 'components/download/DownloadItem/graphicPlaceHolderImg.png';
 
-const GraphicProject = props => {
+const GraphicProject = ( {
+  displayAsModal,
+  isAdminPreview,
+  item,
+  useGraphQl
+} ) => {
   const { user } = useAuth();
   const router = useRouter();
 
-  const {
-    isAdminPreview,
-    displayAsModal,
-    item,
-    useGraphQl
-  } = props;
   const normalizedGraphicData = normalizeGraphicProjectByAPI( { file: item, useGraphQl } );
 
   const {
@@ -104,7 +102,6 @@ const GraphicProject = props => {
   const {
     title,
     language: selectedUnitLanguage,
-    srcUrl,
     alt
   } = selectedUnit;
 
@@ -154,7 +151,9 @@ const GraphicProject = props => {
         >
           { !selectedUnitImages.length
             && <p className="download-item__noContent">There are no graphic files available for download at this time.</p>}
-          { selectedUnitImages.map( img => <GraphicFiles key={ img.srcUrl } file={ img } isAdminPreview={ isAdminPreview } /> ) }
+          { selectedUnitImages.map(
+            img => <GraphicFiles key={ img.srcUrl } file={ img } isAdminPreview={ isAdminPreview } />
+          ) }
         </DownloadItem>
       )
     },
@@ -175,8 +174,9 @@ const GraphicProject = props => {
         >
           { !selectedUnitSupportFiles.length
             && <p className="download-item__noContent">There are no editable files available for download at this time.</p>}
-          { selectedUnitSupportFiles
-            .map( file => <EditableFiles key={ file.srcUrl } file={ file } isAdminPreview={ isAdminPreview } /> ) }
+          { selectedUnitSupportFiles.map(
+            file => <GenericFiles key={ file.srcUrl } file={ file } isAdminPreview={ isAdminPreview } />
+          ) }
         </DownloadItem>
       )
     },
@@ -194,7 +194,9 @@ const GraphicProject = props => {
         >
           { !selectedUnitOtherFiles.length
             && <p className="download-item__noContent">There are no other files available for download at this time.</p>}
-          { selectedUnitOtherFiles.map( file => <OtherFiles key={ file.srcUrl } file={ file } isAdminPreview={ isAdminPreview } /> ) }
+          { selectedUnitOtherFiles.map(
+            file => <GenericFiles key={ file.srcUrl } file={ file } isAdminPreview={ isAdminPreview } />
+          ) }
         </DownloadItem>
       )
     },
@@ -214,10 +216,10 @@ const GraphicProject = props => {
 
   return (
     <ModalItem
-      headline={ title }
-      textDirection={ selectedUnitLanguage.text_direction }
-      lang={ selectedUnitLanguage.language_code }
       className={ isAdminPreview ? 'graphic-project adminPreview' : 'graphic-project' }
+      headline={ title }
+      lang={ selectedUnitLanguage.language_code }
+      textDirection={ selectedUnitLanguage.text_direction }
     >
       { isAdminPreview && (
         <Notification

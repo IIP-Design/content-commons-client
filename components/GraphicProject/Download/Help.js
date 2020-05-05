@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+
 import './Help.scss';
 
 const Help = () => (
@@ -12,8 +13,7 @@ const Help = () => (
       <li>Double click the .zip file to unbundle and access files.</li>
     </ol>
     <p>
-      Having issues downloading, locating or unzipping your files? Check out our
-      {' '}
+      {'Having issues downloading, locating or unzipping your files? Check out our '}
       <Link href="/help"><a>Help page</a></Link>
       .
     </p>

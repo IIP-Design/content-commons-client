@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { capitalizeFirst } from 'lib/utils';
-import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
 
-const OtherFiles = ( { file, isAdminPreview } ) => {
+import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
+import { capitalizeFirst } from 'lib/utils';
+
+const GenericFiles = ( { file, isAdminPreview } ) => {
   const {
     srcUrl,
     filename
@@ -24,22 +25,17 @@ const OtherFiles = ( { file, isAdminPreview } ) => {
       <div className="item-content">
         <p className="item-content__title">
           <strong>Download </strong>
-          { `"${fileName}"`}
-          <strong>
-            {' '}
-            (
-            { fileType }
-            )
-          </strong>
+          { `"${fileName}"` }
+          <strong>{` (${fileType})`}</strong>
         </p>
       </div>
     </DownloadItemContent>
   );
 };
 
-OtherFiles.propTypes = {
+GenericFiles.propTypes = {
   file: PropTypes.object,
   isAdminPreview: PropTypes.bool
 };
 
-export default OtherFiles;
+export default GenericFiles;

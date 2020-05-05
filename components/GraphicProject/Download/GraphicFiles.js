@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
 
 const GraphicFiles = ( { file, isAdminPreview } ) => {
@@ -25,13 +26,8 @@ const GraphicFiles = ( { file, isAdminPreview } ) => {
       <div className="item-content">
         <p className="item-content__title">
           <strong>Download </strong>
-          { `"${title}" `}
-          <strong>
-            {' '}
-            for
-            {' '}
-            { social }
-          </strong>
+          { `"${title}"` }
+          <strong>{` for ${social}`}</strong>
         </p>
         <p className="item-content__meta">{ `File type: ${fileType}` }</p>
         <p className="item-content__meta">{ `File size: ${filesize}` }</p>
