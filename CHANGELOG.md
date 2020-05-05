@@ -22,6 +22,12 @@ _This sections lists changes committed since most recent release_
 **Fixed:**
 - Fixed width in files popover menu
 
+# [4.1.0](2020-05-05)
+
+**Changed:**
+- Packages on landing page now sort by `created` date
+- Removed Faceboo and Twitter sharing options for video
+
 # [4.0.0](https://github.com/IIP-Design/content-commons-client/compare/v3.1.1...v4.0.0)
 
 **Added:**
