@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Loader, Dimmer, Segment } from 'semantic-ui-react';
+
 import './FileListDisplay.scss';
 
 const FileListDisplay = ( { files, fileType, error } ) => (
@@ -21,9 +22,9 @@ const FileListDisplay = ( { files, fileType, error } ) => (
 );
 
 FileListDisplay.propTypes = {
+  error: PropTypes.object,
   files: PropTypes.array,
-  fileType: PropTypes.string,
-  error: PropTypes.object
+  fileType: PropTypes.string
 };
 
 export default FileListDisplay;
