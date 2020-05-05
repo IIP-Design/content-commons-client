@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
 import TabTitle from './TabTitle/TabTitle';
 import TabPanel from './TabPanel/TabPanel';
+
 import './TabLayout.scss';
 
 const TabLayout = ( { headline, tabs } ) => {
