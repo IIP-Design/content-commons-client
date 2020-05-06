@@ -1,0 +1,14 @@
+@import "styles/colors.scss";
+
+.tab-layout {  
+  width: 540px;
+  min-height: 360px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px 0px $shuttle-grey;  
+
+  &__headline {
+    font-weight: normal;
+    color: $blue;
+  }  
+}
