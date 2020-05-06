@@ -1,17 +1,16 @@
 import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+
 import './Popover.scss';
 
-const Popover = props => {
-  const {
-    id,
-    className,
-    expandFromRight,
-    trigger,
-    children,
-    toolTip
-  } = props;
-
+const Popover = ( {
+  children,
+  className,
+  expandFromRight,
+  id,
+  toolTip,
+  trigger
+} ) => {
   const popoverNode = useRef();
 
   const [active, setActive] = useState( false );

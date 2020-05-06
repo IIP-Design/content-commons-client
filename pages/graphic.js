@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { getItemRequest } from 'lib/elastic/api';
+import Head from 'next/head';
+
 import GraphicProject from 'components/GraphicProject/GraphicProject';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
-import { populateMetaArray } from 'lib/socialHeaders';
 import { fetchUser } from 'context/authContext';
-import Head from 'next/head';
+import { getItemRequest } from 'lib/elastic/api';
+import { populateMetaArray } from 'lib/socialHeaders';
 
 /** For Preview Graphic Modal Testing on line 47-59 - REMOVE */
 import { Modal } from 'semantic-ui-react';
@@ -23,9 +24,7 @@ const styles = {
   }
 };
 
-const GraphicPage = props => {
-  const { item, url } = props;
-
+const GraphicPage = ( { item, url } ) => {
   if ( !item ) {
     return (
       <section className="max_width_1200" style={ styles.page }>
@@ -39,7 +38,9 @@ const GraphicPage = props => {
   return (
     <Fragment>
       <Head>
-        { metaTags && metaTags.map( tag => <meta key={ tag.property } property={ tag.property } content={ tag.content } /> ) }
+        { metaTags && metaTags.map(
+          tag => <meta key={ tag.property } property={ tag.property } content={ tag.content } />
+        ) }
       </Head>
       <section className="max_width_1200" style={ styles.page }>
         <GraphicProject item={ item } />
