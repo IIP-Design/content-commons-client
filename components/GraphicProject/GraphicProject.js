@@ -30,8 +30,7 @@ import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 
 import './GraphicProject.scss';
 
-/* eslint-disable-next-line import/no-unresolved */
-import tempSrcUrl from 'components/download/DownloadItem/graphicPlaceHolderImg.png';
+import tempSrcUrl from 'components/download/DownloadItem/graphicPlaceholderImg.png';
 
 const GraphicProject = ( {
   displayAsModal,
