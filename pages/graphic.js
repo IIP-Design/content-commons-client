@@ -8,12 +8,6 @@ import { fetchUser } from 'context/authContext';
 import { getItemRequest } from 'lib/elastic/api';
 import { populateMetaArray } from 'lib/socialHeaders';
 
-/** For Preview Graphic Modal Testing on line 47-59 - REMOVE */
-import { Modal } from 'semantic-ui-react';
-import { graphicElasticMock } from 'components/GraphicProject/graphicElasticMock';
-import { graphicGraphqlMock } from 'components/GraphicProject/graphicGraphqlMock';
-/** END MODAL TESTING */
-
 const styles = {
   page: {
     marginTop: '90px'
@@ -46,20 +40,6 @@ const GraphicPage = ( { item, url } ) => {
         <GraphicProject item={ item } />
       </section>
 
-      {/* TESTING */}
-      <section style={ { marginTop: '50px' } }>
-        <h3>TEST GRAPHIC PREVIEW MODAL</h3>
-        <Modal
-          closeIcon
-          trigger={ <p>Preview</p> }
-        >
-          <Modal.Content>
-            <GraphicProject item={ graphicGraphqlMock } displayAsModal isAdminPreview useGraphQl />
-          </Modal.Content>
-        </Modal>
-      </section>
-      {/* END TESTING */}
-
     </Fragment>
   );
 };
@@ -73,12 +53,8 @@ GraphicPage.getInitialProps = async ctx => {
     : '';
 
   if ( query && query.site && query.id ) {
-    // const response = await getItemRequest( query.site, query.id, user );
-    // const item = getDataFromHits( response );
-
-    /** * TESTING - REMOVE ** */
-    const item = { ...graphicElasticMock };
-    /** END TESTING * */
+    const response = await getItemRequest( query.site, query.id, user );
+    const item = getDataFromHits( response );
 
     if ( item && item[0] ) {
       return {
