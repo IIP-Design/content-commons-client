@@ -1,12 +1,7 @@
 @import "styles/colors.scss";
 
-a.ui.card.project-unit-item:hover {
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.12);
-  transform: translateY(-1px);
-  //transform: none;
-}
-
 .project-unit-item {
+
   &.ui.card {
     border-radius: 0;
     border: none;
@@ -14,6 +9,12 @@ a.ui.card.project-unit-item:hover {
     width: 100%;
     @media screen and (min-width: 685px) {
       width: 260px;
+    }
+
+    &:hover {
+      box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.12);
+      transform: translateY(-1px);
+      cursor: pointer;
     }
 
     .image-wrapper {
