@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import downloadIcon from 'static/icons/icon_download.svg';
-/* eslint-disable-next-line import/no-unresolved */
-import tempSrcUrl from './graphicPlaceHolderImg.png';
+import tempSrcUrl from './graphicPlaceholderImg.png';
 
 import './DownloadItemContent.scss';
 
