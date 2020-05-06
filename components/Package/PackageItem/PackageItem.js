@@ -9,7 +9,7 @@ const PackageItem = props => {
   if ( !file || !getCount( file ) ) return null;
 
   return (
-    <DocumentCard file={ file } displayAsModal isAdminPreview={ isAdminPreview } />
+    <DocumentCard file={ file } isAdminPreview={ isAdminPreview } />
   );
 };
 

@@ -152,7 +152,8 @@
   &--article,
   &--image,
   &--document,
-  &--package {
+  &--package,
+  &--graphic {
     header {
       @media screen and (max-width: 767px) {
         text-align: left;
@@ -196,6 +197,7 @@
   &--article,
   &--document,
   &--package,
+  &--graphic,
   &--image,
   &--login,
   &--register,

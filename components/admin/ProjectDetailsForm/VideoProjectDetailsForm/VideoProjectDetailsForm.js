@@ -36,7 +36,6 @@ const VideoProjectDetailsForm = props => {
     setShowNotification( false );
   };
 
-  // const { startTimeout } = useTimeout( hideNotification, 2000 );
   const { startTimeout } = useTimeout( hideNotification, 1000 );
 
   const update = async ( values, prevValues ) => {

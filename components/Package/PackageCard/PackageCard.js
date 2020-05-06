@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getPluralStringOrNot } from 'lib/utils';
-import useAPIRequest from 'lib/hooks/useAPIRequest';
-import {
-  Modal, Card, Loader, Dimmer, Segment
-} from 'semantic-ui-react';
+import { Modal, Card } from 'semantic-ui-react';
+
 import Package from 'components/Package/Package';
 import Popover from 'components/popups/Popover/Popover';
+import FileListDisplay from 'components/FileListDisplay/FileListDisplay';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import MediaObject from 'components/MediaObject/MediaObject';
+import { getPluralStringOrNot } from 'lib/utils';
+import useAPIRequest from 'lib/hooks/useAPIRequest';
 import DosSeal from 'static/images/dos_seal.svg';
 import { getDateTimeTerms, getElasticPkgDocs } from '../utils';
+
 import './PackageCard.scss';
 
 const PackageCard = ( { item, stretch } ) => {
@@ -22,7 +23,6 @@ const PackageCard = ( { item, stretch } ) => {
     title,
     documents
   } = item;
-
 
   const { response: fetchedDocs, error } = useAPIRequest( getElasticPkgDocs, [documents] );
   const documentFilesCountDisplay = `${documents.length} ${getPluralStringOrNot( documents, 'file' )}`;
@@ -50,23 +50,8 @@ const PackageCard = ( { item, stretch } ) => {
           </Modal.Content>
         </Modal>
         <Card.Meta className="meta--popup">
-          <Popover className="fileList" trigger={ documentFilesCountDisplay }>
-            <ul>
-              { !fetchedDocs && (
-                <Segment>
-                  <Dimmer active inverted>
-                    <Loader>Loading...</Loader>
-                  </Dimmer>
-                </Segment>
-              ) }
-              { !fetchedDocs?.length && <li>There are no documents for this package.</li> }
-              { fetchedDocs?.map( doc => (
-                <li key={ doc.id }>{ doc.filename }</li>
-              ) ) }
-              { error && (
-                <li className="error-message">Error occurred with package documents request.</li>
-              ) }
-            </ul>
+          <Popover id={ id } trigger={ documentFilesCountDisplay }>
+            <FileListDisplay files={ fetchedDocs } fileType="document" error={ error } />
           </Popover>
         </Card.Meta>
         <Card.Meta>
@@ -94,7 +79,7 @@ const PackageCard = ( { item, stretch } ) => {
 
 PackageCard.propTypes = {
   stretch: PropTypes.bool,
-  item: PropTypes.object,
+  item: PropTypes.object
 };
 
 export default PackageCard;

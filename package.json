@@ -72,7 +72,6 @@
     "subscriptions-transport-ws": "^0.9.16",
     "url-loader": "^2.2.0",
     "uuid": "^3.3.3",
-    "webpack-filter-warnings-plugin": "^1.2.1",
     "yup": "^0.27.0"
   },
   "devDependencies": {
@@ -80,7 +79,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.7.5",
     "@babel/traverse": "^7.7.2",
     "@babel/types": "^7.7.2",
-    "@gpa-lab/eslint-config": "^1.1.2",
+    "@gpa-lab/eslint-config": "^1.2.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^25.3.0",
     "babel-plugin-graphql-tag": "^2.5.0",
@@ -90,9 +89,10 @@
     "eslint-config-prettier": "6.6.0",
     "eslint-import-resolver-babel-module": "^5.1.0",
     "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jest": "^23.9.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-react-hooks": "^2.3.0",
+    "eslint-plugin-react-hooks": "^4.0.0",
     "graphql-tools": "^4.0.6",
     "husky": "^3.1.0",
     "identity-obj-proxy": "^3.0.0",
