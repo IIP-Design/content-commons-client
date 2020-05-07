@@ -9,24 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 _This sections lists changes committed since most recent release_
 
 **Added:**
+- A graphic project page type and preview modal
 - Added countries filter to frontend search
-- Added scss module support to next config
+- Added SCSS module support to next config
+- New Popover component to be used as replacement for SemanticUI popup
 
 **Changed:**
 - Use component state instead of props for checkboxes in filter menus
-- Swap out airbnb eslint config for custom GPA/LAB shared config
+- Swap out Airbnb ESLint config for custom GPA/LAB shared config
 - Paginate and sort Dashboard on the server and not the client
 - Removed subscription data from TableBody & updated test
 - Sort packages on the home page by creation date
+- Centralize dashboard data management using at context object to store loading/error states, relevant queries, row and column selections, etc.
+- Simplify table components, for the most part removing the GraphQL queries therein and instead passing in data
+- Consolidate redundant components including table body messages and preview pop-ups
 
 **Fixed:**
 - Fixed width in files popover menu
+- Hide the "saving changes" growl notification upon initial load of the project details form
 
 # [4.1.0](2020-05-05)
 
 **Changed:**
 - Packages on landing page now sort by `created` date
-- Removed Faceboo and Twitter sharing options for video
+- Removed Facebook and Twitter sharing options for video
 
 # [4.0.0](https://github.com/IIP-Design/content-commons-client/compare/v3.1.1...v4.0.0)
 
@@ -47,7 +53,7 @@ _This sections lists changes committed since most recent release_
 **Changed:**
 
 - Replaced h1 elements in the footer with divs in the interest of improved accessibility
-- Replaced GTM implemenation with React app
+- Replaced GTM implementation with React app
 - Google authentication thru CloudFlare access
 - State.gov authentication thru CloudFlare access using one time pin
 
@@ -110,12 +116,12 @@ _This sections lists changes committed since most recent release_
   - graphql: 14.5.8
   - next.js: 9.12
 
-- Store full path to elastic search asset to accomodate sharing on external sites
-- Update help text on project detials screen
+- Store full path to elastic search asset to accommodate sharing on external sites
+- Update help text on project details screen
 
 **Fixed:**
 
-- Bulk project Unpublish now removes assets for S3
+- Bulk project unpublish now removes assets for S3
 - SRT filename adjusted to support Facebook upload
 - Turned server side render off for user queries to fix cache issue
 
@@ -126,11 +132,11 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 **Added:**
 
 - Next.js integration and code restructure for Server Side rendering (SSR)
-- React apollo intergation for communication with the server and database
+- React apollo integration for communication with the server and database
 - AWS integration for secure uploads to S3 via signed urls
 - Websocket integration for automatic page updates
 - Authentication, login and logout
-- User account creation annd registration
+- User account creation and registration
 - Authoring interface to create, update, delete, publish and unpublish video projects
 - Formik form validation
 - Ability to share search results
@@ -183,7 +189,7 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 **Changed:**
 
 - Style updates to accommodate the Department Priority section
-- Text updates in the Recents section to maintain consistancy with the Department Priority section
+- Text updates in the Recents section to maintain consistency with the Department Priority section
 
 # [1.7.1](2019-6-26)
 
@@ -202,7 +208,7 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 
 **Fixed:**
 
-- Resolved an issue wherein languages were not being loaded for the searchbar menu on certain pages
+- Resolved an issue wherein languages were not being loaded for the search bar menu on certain pages
 
 # [1.6.7](2019-3-08)
 
@@ -247,7 +253,7 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 **Changed:**
 
 - Downloaded files now follow the - [filename]‌.[language code]‌\_[country code].[ext] naming convention
-- Search results are now displayed by relevacy when a search term is used. Title field is given precedence and a boost is given to newer items
+- Search results are now displayed by relevancy when a search term is used. Title field is given precedence and a boost is given to newer items
 - Alter sub-heading text in the site header
 
 # [1.6.3](2018-11-07)
@@ -275,8 +281,8 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 - Integrate Google Translate API for language detection. Search results will now reflect search term in language
 - Redirect to 404 page when a route is not found
 - Help content added to embed article and video modal windows
-- Message will be shown when no videos are avaialble for download
-- Mesaage will be shown when search does not return any results
+- Message will be shown when no videos are available for download
+- Message will be shown when search does not return any results
 
 **Changed:**
 
@@ -356,7 +362,7 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 
 **Added:**
 
-- Enhanced footer to inlude additional links and information
+- Enhanced footer to include additional links and information
 - Added embed code generation to enable sharing off posts
 - Updated direct link for posts to point to original source
 
@@ -368,7 +374,7 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 
 **Added:**
 
-- Embed code to display to embed both youtube and vimeo videos now active
+- Embed code to display to embed both YouTube and vimeo videos now active
 - Share windows now are either a popup for desktop or a new page for mobile
 
 **Fixed:**
@@ -395,7 +401,7 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 **Added:**
 
 - Added Contact Us page
-- Added Browse all [type] link above each recents section on Landing page
+- Added Browse all [type] link above each Recents section on Landing page
 - Updated help text for video downloads
 - Source action creator now accepts an array of owners and not a string as it's search key
 - Created owners mappings in source action to (1) support inconsistent owner names and (2) assign a custom name
@@ -407,7 +413,7 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 - Global search bar
 - Feedback form
 - About, Help, Privacy Policy pages
-- Filter search by Date, Forat, Source, Language and Category
+- Filter search by Date, Format, Source, Language and Category
 - Display search results in either gallery or list formats
 - Closable filter selections bubbles
 - Contextual number of results
