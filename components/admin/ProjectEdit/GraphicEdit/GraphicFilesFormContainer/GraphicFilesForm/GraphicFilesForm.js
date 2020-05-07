@@ -22,8 +22,9 @@ const GraphicFilesForm = props => {
     save,
     setFieldValue,
     setFieldTouched,
+    dirty,
     touched,
-    values
+    values,
   } = props;
 
   const [fileIdToDelete, setFileIdToDelete] = useState( '' );
@@ -41,14 +42,14 @@ const GraphicFilesForm = props => {
         data: {
           images: {
             'delete': {
-              id
-            }
-          }
+              id,
+            },
+          },
         },
         where: {
-          id: projectId
-        }
-      }
+          id: projectId,
+        },
+      },
     } )
       .then( handleReset )
       .catch( err => console.dir( err ) );
@@ -93,7 +94,7 @@ const GraphicFilesForm = props => {
 
   return (
     <div className="graphic-project-graphic-files">
-      { projectId && <FormikAutoSave save={ save } /> }
+      { projectId && dirty && <FormikAutoSave save={ save } /> }
 
       <Confirm
         className="delete"
@@ -271,8 +272,9 @@ GraphicFilesForm.propTypes = {
   save: PropTypes.func,
   setFieldValue: PropTypes.func,
   setFieldTouched: PropTypes.func,
+  dirty: PropTypes.bool,
   touched: PropTypes.object,
-  values: PropTypes.object
+  values: PropTypes.object,
 };
 
 export default GraphicFilesForm;
