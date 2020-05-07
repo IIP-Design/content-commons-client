@@ -65,12 +65,12 @@ const TableItemsDisplay = ( {
         { count > 0 ? (
           <span>
             {`${firstPageItem} - ${lastPageItem} of ${count}`}
-            { searchTerm && ` for &ldquo; ${searchTerm} &rdquo`}
+            { searchTerm && ` for "${searchTerm}"`}
           </span>
         ) : (
           <span>
             {`No ${searchTerm ? 'results' : 'projects'}` }
-            { searchTerm && ` for &ldquo; ${searchTerm} &rdquo;` }
+            { searchTerm && ` for "${searchTerm}"` }
           </span>
         ) }
       </span>
