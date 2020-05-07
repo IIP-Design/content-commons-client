@@ -1,0 +1,4 @@
+{
+  "extends": ["@gpa-lab/eslint-config/cypress"],
+  "root": true
+}
