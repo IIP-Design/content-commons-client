@@ -6,7 +6,7 @@ import TableRow from './TableRow';
  * Need to mock Next.js dynamic imports
  * in order for this test suite to run.
  */
-jest.mock( 'next-server/dynamic', () => () => 'VideoDetailsPopup' );
+jest.mock( 'next/dynamic', () => () => 'VideoDetailsPopup' );
 
 const myProjectsProps = {
   d: {
@@ -22,28 +22,26 @@ const myProjectsProps = {
       url: 'https://thumbnailurl.com',
       alt: 'some alt text',
     },
-    categories: 'about america'
+    categories: 'about america',
   },
-  selectedItems: new Map(),
   tableHeaders: [
     { name: 'projectTitle', label: 'PROJECT TITLE' },
     { name: 'updatedAt', label: 'CREATED' },
     { name: 'visibility', label: 'VISIBILITY' },
-    { name: 'author', label: 'AUTHOR' }
+    { name: 'author', label: 'AUTHOR' },
   ],
-  toggleItemSelection: jest.fn(),
-  projectTab: 'myProjects'
+  projectTab: 'myProjects',
 };
 
 const teamProjectsProps = {
   ...myProjectsProps,
-  projectTab: 'teamProjects'
+  projectTab: 'teamProjects',
 };
 
 const menuItems = [
   { name: 'team', label: 'TEAM' },
   { name: 'categories', label: 'CATEGORIES' },
-  { name: 'updatedAt', label: 'MODIFIED DATE' }
+  { name: 'updatedAt', label: 'MODIFIED DATE' },
 ];
 
 const MyProjectsComponent = <TableRow { ...myProjectsProps } />;
@@ -52,6 +50,7 @@ const TeamProjectsComponent = <TableRow { ...teamProjectsProps } />;
 describe( '<TableRow />', () => {
   it( 'renders without crashing', () => {
     const wrapper = shallow( MyProjectsComponent );
+
     expect( wrapper.exists() ).toEqual( true );
   } );
 
@@ -80,8 +79,8 @@ describe( '<TableRow />', () => {
       ...myProjectsProps,
       tableHeaders: [
         ...myProjectsProps.tableHeaders,
-        ...menuItems
-      ]
+        ...menuItems,
+      ],
     };
 
     const wrapper = shallow( <TableRow { ...newProps } /> );

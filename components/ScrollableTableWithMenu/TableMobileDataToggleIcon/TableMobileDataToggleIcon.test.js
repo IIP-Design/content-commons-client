@@ -3,7 +3,7 @@ import TableMobileDataToggleIcon from './TableMobileDataToggleIcon';
 
 const props = {
   isOpen: false,
-  toggleDisplay: jest.fn()
+  toggleDisplay: jest.fn(),
 };
 
 const Component = <TableMobileDataToggleIcon { ...props } />;
@@ -20,6 +20,7 @@ describe( '<TableMobileDataToggleIcon />', () => {
 
     expect( wrapper.prop( 'name' ) ).toEqual( 'chevron down' );
     wrapper.setProps( { isOpen: true } );
+
     expect( wrapper.prop( 'name' ) ).toEqual( 'chevron up' );
   } );
 
@@ -27,6 +28,6 @@ describe( '<TableMobileDataToggleIcon />', () => {
     const wrapper = shallow( Component );
 
     wrapper.simulate( 'click' );
-    expect( props.toggleDisplay ).toHaveBeenCalled();
+    expect( props.toggleDisplay ).toHaveBeenCalledTimes( 1 );
   } );
 } );

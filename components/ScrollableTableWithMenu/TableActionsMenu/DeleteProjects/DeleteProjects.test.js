@@ -1,21 +1,17 @@
+import React from 'react';
 import { mount } from 'enzyme';
 import { MockedProvider, wait } from '@apollo/react-testing';
-// import wait from 'waait';
 import toJSON from 'enzyme-to-json';
 // import { MockedProvider } from 'react-apollo/test-utils';
 import { getPluralStringOrNot } from 'lib/utils';
 import DeleteProjects from './DeleteProjects';
+import { DashboardContext } from 'context/dashboardContext';
+
 import {
   mocks, drafts, nonDrafts, draftMocks
 } from './mocks';
 
 const props = {
-  team: {
-    id: 'cjrkzhvku000f0756l44blw33',
-    name: 'IIP Video Production',
-    organization: 'Department of State',
-    contentTypes: ['VIDEO', 'PACKAGES']
-  },
   deleteConfirmOpen: false,
   handleActionResult: jest.fn(),
   handleDeleteCancel: jest.fn(),
@@ -29,6 +25,7 @@ const props = {
 const displayProjectTypeText = () => {
   if ( props.team.contentTypes.includes( 'VIDEO' ) ) return 'video';
   if ( props.team.contentTypes.includes( 'PACKAGE' ) ) return 'package';
+
   return '';
 };
 
@@ -45,26 +42,44 @@ const nonDraftsProps = {
   }
 };
 
+jest.mock( 'react', () => ( {
+  ...jest.requireActual( 'react' ),
+  useContext: () => ( {
+    dispatch: jest.fn(),
+    state: {
+      queries: { remove: jest.fn() },
+      team: { contentTypes: ['VIDEO', 'PACKAGES'] }
+    }
+  } )
+} ) );
+
 const Component = (
-  <MockedProvider mocks={ mocks } addTypename={ false }>
-    <DeleteProjects { ...props } />
-  </MockedProvider>
+  <DashboardContext.Provider>
+    <MockedProvider mocks={ mocks } addTypename={ false }>
+      <DeleteProjects { ...props } />
+    </MockedProvider>
+  </DashboardContext.Provider>
 );
 
 const OpenConfirmComponent = (
-  <MockedProvider mocks={ mocks } addTypename={ false }>
-    <DeleteProjects { ...openConfirmProps } />
-  </MockedProvider>
+  <DashboardContext.Provider>
+    <MockedProvider mocks={ mocks } addTypename={ false }>
+      <DeleteProjects { ...openConfirmProps } />
+    </MockedProvider>
+  </DashboardContext.Provider>
 );
 
 const NonDraftsComponent = (
-  <MockedProvider mocks={ mocks } addTypename={ false }>
-    <DeleteProjects { ...nonDraftsProps } />
-  </MockedProvider>
+  <DashboardContext.Provider>
+    <MockedProvider mocks={ mocks } addTypename={ false }>
+      <DeleteProjects { ...nonDraftsProps } />
+    </MockedProvider>
+  </DashboardContext.Provider>
 );
 
 const suppressActWarning = consoleError => {
   const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+
   jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
     if ( !args[0].includes( actMsg ) ) {
       consoleError( ...args );
@@ -79,6 +94,7 @@ describe( '<DeleteProjects />', () => {
    * @see https://github.com/facebook/react/issues/14769
    */
   const consoleError = console.error;
+
   beforeAll( () => suppressActWarning( consoleError ) );
 
   afterAll( () => {
@@ -144,7 +160,7 @@ describe( '<DeleteProjects />', () => {
     expect( props.handleDeleteCancel ).toHaveBeenCalled();
   } );
 
-  it( 'clicking the confirm button calls handleActionResult with the appropriate results', async () => {
+  it( 'clicking the confirm button calls handleActionResult with the appropriate results', async() => {
     const wrapper = mount( OpenConfirmComponent );
     const deleteProjects = wrapper.find( 'DeleteProjects' );
     const confirm = deleteProjects.find( 'Modal.delete' );
@@ -156,12 +172,13 @@ describe( '<DeleteProjects />', () => {
 
     expect( props.handleActionResult ).toHaveBeenCalledTimes( drafts.length );
     const mockResults = draftMocks.map( mock => [mock.result] );
+
     mockResults.forEach( result => {
       expect( props.handleActionResult ).toHaveBeenCalledWith( result[0] );
     } );
   } );
 
-  it( 'clicking the confirm button calls handleDeleteConfirm and handleDeleteCancel when completed', async () => {
+  it( 'clicking the confirm button calls handleDeleteConfirm and handleDeleteCancel when completed', async() => {
     const wrapper = mount( OpenConfirmComponent );
     const deleteProjects = wrapper.find( 'DeleteProjects' );
     const confirm = deleteProjects.find( 'Modal.delete' );

@@ -7,6 +7,7 @@ import './DetailsPopup.scss';
 
 const VideoDetailsPopup = dynamic( () => import( './VideoDetailsPopup' ) );
 const PackageDetailsPopup = dynamic( () => import( './PackageDetailsPopup' ) );
+const GraphicDetailsPopup = dynamic( () => import( './GraphicDetailsPopup' ) );
 
 const DetailsPopup = props => {
   const { id, team } = props;
@@ -18,7 +19,9 @@ const DetailsPopup = props => {
    */
   useEffect( () => {
     const handlePopupScroll = () => setDetailsPopupOpen( false );
+
     window.addEventListener( 'scroll', handlePopupScroll );
+
     return () => window.removeEventListener( 'scroll', handlePopupScroll );
   }, [] );
 
@@ -27,6 +30,7 @@ const DetailsPopup = props => {
    * (i.e., setDetailsPopupOpen) on unmounted component.
    */
   let isMounted = true;
+
   useEffect( () => () => { isMounted = false; }, [] );
 
   const handleResize = debounce( () => {
@@ -42,6 +46,7 @@ const DetailsPopup = props => {
   const handleClose = () => {
     window.removeEventListener( 'resize', handleResize );
     const itemsTable = document.querySelector( '.items_table' );
+
     if ( itemsTable && isMounted ) {
       setDetailsPopupOpen( false );
     }
@@ -49,8 +54,10 @@ const DetailsPopup = props => {
 
   const renderPopup = () => {
     const { contentTypes } = team;
+
     if ( contentTypes.includes( 'VIDEO' ) ) return <VideoDetailsPopup id={ id } />;
     if ( contentTypes.includes( 'PACKAGE' ) ) return <PackageDetailsPopup id={ id } />;
+    if ( contentTypes.includes( 'GRAPHIC' ) ) return <GraphicDetailsPopup id={ id } />;
   };
 
   return (
@@ -81,7 +88,7 @@ const DetailsPopup = props => {
 
 DetailsPopup.propTypes = {
   id: PropTypes.string,
-  team: PropTypes.object,
+  team: PropTypes.object
 };
 
 export default DetailsPopup;

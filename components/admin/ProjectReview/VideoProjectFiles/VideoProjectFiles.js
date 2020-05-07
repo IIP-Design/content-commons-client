@@ -9,7 +9,7 @@ import Router from 'next/router';
 import { graphql } from 'react-apollo';
 import { Button, Grid, Loader } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
-import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
+import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/Previews/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
 import { getPluralStringOrNot } from 'lib/utils';
 import VideoProjectFile from './VideoProjectFile/VideoProjectFile';
 
@@ -21,13 +21,14 @@ const VideoProjectFiles = props => {
 
   if ( loading ) {
     return (
-      <div style={ {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '200px'
-      } }
+      <div
+        style={ {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '200px'
+        } }
       >
         <Loader
           active
@@ -44,26 +45,21 @@ const VideoProjectFiles = props => {
 
   const { units } = project;
 
-  if ( !units || ( units && units.length === 0 ) ) return null;
+  if ( !units || units.length === 0 ) return null;
 
   const getTag = ( tag, unit ) => {
-    const translation = tag.translations.find( t => (
-      t.language.locale === unit.language.locale
-    ) );
+    const translation = tag.translations.find( t => t.language.locale === unit.language.locale );
 
     if ( translation && translation.name ) {
       return translation.name;
     }
   };
 
-  const getTags = ( tags, unit ) => (
-    tags.reduce( ( acc, curr ) => (
-      `${acc ? `${acc}, ` : ''}${getTag( curr, unit )}`
-    ), '' )
-  );
-
+  const getTags = ( tags, unit ) => tags.reduce( ( acc, curr ) => `${acc ? `${acc}, ` : ''}${getTag( curr, unit )}`
+    , '' );
   const handleEdit = () => {
     const { id } = props;
+
     Router.push( {
       pathname: '/admin/project',
       query: {
@@ -88,9 +84,7 @@ const VideoProjectFiles = props => {
           <div key={ unit.id } className="project_unit">
             <Grid>
               <Grid.Row
-                className={
-                  `project_unit_header ${unit.language.textDirection}`
-                }
+                className={ `project_unit_header ${unit.language.textDirection}` }
               >
                 <Grid.Column floated="left" mobile={ 8 }>
                   <h4 className="title">{ unit.title }</h4>
@@ -106,7 +100,11 @@ const VideoProjectFiles = props => {
 
               <Grid.Row className="project_unit_meta language">
                 <Grid.Column width={ 16 }>
-                  <p><b className="label">Language:</b> { language.displayName }</p>
+                  <p>
+                    <b className="label">Language:</b>
+                    {' '}
+                    { language.displayName }
+                  </p>
                 </Grid.Column>
               </Grid.Row>
 
@@ -115,9 +113,7 @@ const VideoProjectFiles = props => {
                   <p className="public_description">
                     <b className="label">Public Description:</b>
                     <span
-                      className={
-                        `content ${language.textDirection}`
-                      }
+                      className={ `content ${language.textDirection}` }
                       style={
                         language.textDirection === 'RTL'
                           ? { display: 'block' }
@@ -133,8 +129,9 @@ const VideoProjectFiles = props => {
 
               <Grid.Row className="project_unit_meta tags">
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 }>
-                  <p><b className="label">Additional Keywords:</b>
-                    { ` ${( tags && tags.length > 0 )
+                  <p>
+                    <b className="label">Additional Keywords:</b>
+                    { ` ${tags && tags.length > 0
                       ? getTags( tags, unit )
                       : ''}` }
                   </p>
@@ -143,7 +140,12 @@ const VideoProjectFiles = props => {
 
               <Grid.Row className="project_unit_meta file-count">
                 <Grid.Column width={ 16 }>
-                  <p><b className="label">Files:</b> { ( files && files.length ) || 0 } </p>
+                  <p>
+                    <b className="label">Files:</b>
+                    {' '}
+                    { files?.length || 0 }
+                    {' '}
+                  </p>
                 </Grid.Column>
               </Grid.Row>
 
@@ -151,9 +153,7 @@ const VideoProjectFiles = props => {
                 <VideoProjectFile
                   key={ file.id }
                   file={ file }
-                  thumbnail={
-                    thumbnails && thumbnails.length > 0 && thumbnails[0]
-                  }
+                  thumbnail={ thumbnails && thumbnails.length > 0 && thumbnails[0] }
                 />
               ) ) }
             </Grid>
@@ -171,6 +171,6 @@ VideoProjectFiles.propTypes = {
 
 export default graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
   options: props => ( {
-    variables: { id: props.id },
+    variables: { id: props.id }
   } )
 } )( VideoProjectFiles );

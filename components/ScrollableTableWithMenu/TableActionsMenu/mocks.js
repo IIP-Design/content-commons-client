@@ -1,23 +1,53 @@
-import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
-import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
+// import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
+// import { TEAM_VIDEO_PROJECTS_COUNT_QUERY } from '../TablePagination/TablePagination';
 
 export const props = {
-  displayActionsMenu: true,
+  data: [
+    {
+      author: 'Marek',
+      categories: '',
+      createdAt: '2020-04-22T13:22:08.848Z',
+      id: 'ck9bd9hsh06bc07882icvx8e0',
+      projectTitle: 'Guidance Package 04-22-20',
+      status: 'PUBLISHED',
+      team: 'GPA Press Office',
+      thumbnail: {},
+      updatedAt: '2020-04-22T13:22:42.672Z',
+      visibility: 'INTERNAL',
+      __typename: 'Package'
+    },
+    {
+      author: 'Marek',
+      categories: '',
+      createdAt: '2020-04-20T16:30:48.298Z',
+      id: 'ck98p4elp02i20788l3lxq5gt',
+      projectTitle: 'Guidance Package 04-20-20',
+      status: 'PUBLISHED',
+      team: 'GPA Press Office',
+      thumbnail: {},
+      updatedAt: '2020-04-20T16:31:14.936Z',
+      visibility: 'INTERNAL',
+      __typename: 'Package'
+    }
+  ],
+  error: null,
+  handleResetSelections: jest.fn(),
+  refetch: jest.fn(),
+  refetchCount: jest.fn(),
+  loading: false,
+  toggleAllItemsSelection: jest.fn(),
   variables: {
     team: 'IIP Video Production',
     searchTerm: '',
     first: 4,
     skip: 0
-  },
-  selectedItems: new Map( [['ud78', true], ['ud98', true]] ),
-  handleResetSelections: jest.fn(),
-  toggleAllItemsSelection: jest.fn()
+  }
 };
 
 export const mocks = [
   {
     request: {
-      query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
+      // query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
       variables: {
         team: props.variables.team,
         searchTerm: props.variables.searchTerm
@@ -37,7 +67,7 @@ export const mocks = [
   },
   {
     request: {
-      query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
+      // query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
       variables: {
         team: props.variables.team,
         searchTerm: props.variables.searchTerm
@@ -54,7 +84,7 @@ export const mocks = [
   },
   {
     request: {
-      query: TEAM_VIDEO_PROJECTS_QUERY,
+      // query: TEAM_VIDEO_PROJECTS_QUERY,
       variables: { ...props.variables }
     },
     result: {
@@ -80,7 +110,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
+              alt: 'some alt text'
             },
             categories: [
               {
@@ -118,7 +148,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
+              alt: 'some alt text'
             },
             categories: [
               {
@@ -156,7 +186,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
+              alt: 'some alt text'
             },
             categories: [
               {
@@ -194,7 +224,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
+              alt: 'some alt text'
             },
             categories: [
               {
@@ -232,7 +262,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
+              alt: 'some alt text'
             },
             categories: [
               {
@@ -256,7 +286,7 @@ export const mocks = [
   },
   {
     request: {
-      query: TEAM_VIDEO_PROJECTS_QUERY,
+      // query: TEAM_VIDEO_PROJECTS_QUERY,
       variables: { ...props.variables }
     },
     result: {
@@ -282,7 +312,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
+              alt: 'some alt text'
             },
             categories: [
               {
@@ -320,7 +350,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
+              alt: 'some alt text'
             },
             categories: [
               {
@@ -358,7 +388,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
+              alt: 'some alt text'
             },
             categories: [
               {
@@ -396,7 +426,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text',
+              alt: 'some alt text'
             },
             categories: [
               {

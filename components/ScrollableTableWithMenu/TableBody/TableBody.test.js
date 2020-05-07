@@ -1,319 +1,134 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
-import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
-import { Loader, Table } from 'semantic-ui-react';
-import { TEAM_VIDEO_PROJECTS_QUERY } from 'lib/graphql/queries/video';
-import { TEAM_PACKAGES_QUERY } from 'lib/graphql/queries/package';
+
 import TableBody from './TableBody';
-import { videoProjects, mocks } from './mocks';
 
 /**
  * Use custom element to avoid "incorrect casing" error msg
  * @see https://jestjs.io/docs/en/tutorial-react.html#snapshot-testing-with-mocks-enzyme-and-react-16
  */
-// jest.mock( 'next/dynamic', () => () => 'VideoDetailsPopup' );
-jest.mock( 'next/dynamic', () => () => 'video-details-popup' );
-
-// Mock DetailsPopup component since it's tested elsewhere
-jest.mock( 'components/admin/Dashboard/TeamProjects/DetailsPopup/DetailsPopup', () => () => 'DetailsPopup' );
+jest.mock( 'next/dynamic', () => () => 'my-project-primary-col' );
 
 const props = {
+  bodyPaginationVars: {
+    first: 2,
+    orderBy: 'createdAt_DESC',
+    skip: 0,
+  },
+  column: 'createdAt',
+  data: [
+    {
+      author: 'Marek',
+      categories: '',
+      createdAt: '2020-04-22T13:22:08.848Z',
+      id: 'ck9bd9hsh06bc07882icvx8e0',
+      projectTitle: 'Guidance Package 04-22-20',
+      status: 'PUBLISHED',
+      team: 'GPA Press Office',
+      thumbnail: {},
+      updatedAt: '2020-04-22T13:22:42.672Z',
+      visibility: 'INTERNAL',
+      __typename: 'Package',
+    },
+    {
+      author: 'Marek',
+      categories: '',
+      createdAt: '2020-04-20T16:30:48.298Z',
+      id: 'ck98p4elp02i20788l3lxq5gt',
+      projectTitle: 'Guidance Package 04-20-20',
+      status: 'PUBLISHED',
+      team: 'GPA Press Office',
+      thumbnail: {},
+      updatedAt: '2020-04-20T16:31:14.936Z',
+      visibility: 'INTERNAL',
+      __typename: 'Package',
+    },
+  ],
+  direction: 'descending',
+  error: null,
+  loading: false,
+  projectTab: 'teamProjects',
   searchTerm: '',
-  selectedItems: new Map(),
   tableHeaders: [
     { name: 'projectTitle', label: 'PROJECT TITLE' },
     { name: 'visibility', label: 'VISIBILITY' },
     { name: 'updatedAt', label: 'MODIFIED' },
-    { name: 'team', label: 'TEAM' }
+    { name: 'author', label: 'AUTHOR' },
   ],
-  toggleItemSelection: jest.fn(),
-  bodyPaginationVars: {
-    first: 4,
-    skip: 0
-  },
-  variables: {
-    team: 'GPA Video',
-    searchTerm: '',
-    first: 4,
-    skip: 0
-  },
-  direction: 'descending',
-  projectTab: 'teamProjects',
-  team: {
-    contentTypes: [
-      'VIDEO'
-      // 'PACKAGE'
-    ]
-  }
 };
 
-const Component = (
-  <MockedProvider mocks={ mocks } addTypename={ false }>
-    <Table>
-      <TableBody { ...props } />
-    </Table>
-  </MockedProvider>
+// Wrap TableBody in a table component to avoid warning message about invalid nesting of a <tbody>
+const createTable = tableProps => (
+  <table>
+    <TableBody { ...tableProps } />
+  </table>
 );
 
 describe( '<TableBody />', () => {
-  /**
-   * @todo Suppress React 16.8 `act()` warnings globally.
-   * The React team's fix won't be out of alpha until 16.9.0.
-   * @see https://github.com/facebook/react/issues/14769
-   */
-  const consoleError = console.error;
-
-  beforeAll( () => {
-    const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-    jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-      if ( !args[0].includes( actMsg ) ) {
-        consoleError( ...args );
-      }
-    } );
-  } );
-
-  afterAll( () => {
-    // restore console.error
-    console.error = consoleError;
-  } );
-
   it( 'renders initial loading state without crashing', () => {
-    const wrapper = mount( Component );
-    const tableBody = wrapper.find( TableBody );
-    const loader = <Loader active inline size="small" />;
+    const newProps = { ...props, data: undefined, loading: true };
 
-    expect( tableBody.exists() ).toEqual( true );
-    expect( tableBody.contains( loader ) ).toEqual( true );
-    expect( tableBody.contains( 'Loading...' ) ).toEqual( true );
+    const wrapper = mount( createTable( newProps ) );
+
+    const message = wrapper.find( 'TableBodyMessage' );
+
+    expect( message.exists() ).toEqual( true );
+    expect( message.prop( 'type' ) ).toEqual( 'loading' );
   } );
 
-  it( 'renders error message if an error is returned', async() => {
-    const errorMocks = [
-      {
-        request: {
-          query: TEAM_VIDEO_PROJECTS_QUERY,
-          variables: { ...props.variables }
-        },
-        result: {
-          errors: [{ message: 'There was an error.' }]
-        }
-      },
-      {
-        request: {
-          query: TEAM_PACKAGES_QUERY,
-          variables: { ...props.variables }
-        },
-        result: {
-          errors: [{ message: 'There was an error.' }]
-        }
-      }
-    ];
+  it( 'renders error message if an error is returned', () => {
+    const newProps = { ...props, error: { message: 'There was an error.' } };
 
-    const wrapper = mount(
-      <MockedProvider mocks={ errorMocks } addTypename={ false }>
-        <Table>
-          <TableBody { ...props } />
-        </Table>
-      </MockedProvider>
-    );
+    const wrapper = mount( createTable( newProps ) );
 
-    // wait for the data and !loading
-    await wait( 0 );
-    wrapper.update();
+    const message = wrapper.find( 'TableBodyMessage' );
 
-    const tableBody = wrapper.find( TableBody );
-    const errorComponent = tableBody.find( 'TableBodyError ApolloError' );
-
-    expect( errorComponent.exists() ).toEqual( true );
-    expect( errorComponent.contains( 'There was an error.' ) )
-      .toEqual( true );
+    expect( message.exists() ).toEqual( true );
+    expect( message.prop( 'type' ) ).toEqual( 'error' );
+    // expect( errorComponent.contains( 'There was an error.' ) )
+    // .toEqual( true );
   } );
 
-  it( 'renders null if videoProjects or packages are null', async() => {
-    const nullMocks = [
-      {
-        request: {
-          query: TEAM_VIDEO_PROJECTS_QUERY,
-          variables: { ...props.variables }
-        },
-        result: {
-          data: { videoProjects: null }
-        }
-      },
-      {
-        request: {
-          query: TEAM_PACKAGES_QUERY,
-          variables: { ...props.variables }
-        },
-        result: {
-          data: { packages: null }
-        }
-      }
-    ];
+  it( 'renders null if videoProjects or packages are null', () => {
+    const newProps = { ...props, data: null };
 
-    const wrapper = mount(
-      <MockedProvider mocks={ nullMocks } addTypename={ false }>
-        <Table>
-          <TableBody { ...props } />
-        </Table>
-      </MockedProvider>
-    );
-
-    // wait for the data and !loading
-    await wait( 0 );
-    wrapper.update();
+    const wrapper = mount( createTable( newProps ) );
 
     const tableBody = wrapper.find( TableBody );
 
     expect( tableBody.html() ).toEqual( null );
   } );
 
-  it( 'renders a "No projects" message if there are no video or package projects', async() => {
-    const emptyMocks = [
-      {
-        request: {
-          query: TEAM_VIDEO_PROJECTS_QUERY,
-          variables: { ...props.variables }
-        },
-        result: {
-          data: { videoProjects: [] }
-        }
-      },
-      {
-        request: {
-          query: TEAM_PACKAGES_QUERY,
-          variables: { ...props.variables }
-        },
-        result: {
-          data: { packages: [] }
-        }
-      }
-    ];
+  it( 'renders a no projects message if there are no projects', () => {
+    const newProps = { ...props, data: [] };
+    const wrapper = mount( createTable( newProps ) );
 
-    const wrapper = mount(
-      <MockedProvider mocks={ emptyMocks } addTypename={ false }>
-        <Table>
-          <TableBody { ...props } />
-        </Table>
-      </MockedProvider>
-    );
+    const message = wrapper.find( 'TableBodyMessage' );
 
-    // wait for the data and !loading
-    await wait( 0 );
-    wrapper.update();
-
-    const tableBody = wrapper.find( TableBody );
-
-    expect( tableBody.contains( 'No projects' ) ).toEqual( true );
+    expect( message.exists() ).toEqual( true );
+    expect( message.prop( 'type' ) ).toEqual( 'no-projects' );
   } );
 
-  it( 'renders a "No results" message if there are no search results', async() => {
-    const newSearchTerm = 'new term';
+  it( 'renders a no results message if there are no search results', () => {
+    const newProps = { ...props, data: [], searchTerm: 'new term' };
 
-    const newProps = {
-      ...{ ...props },
-      ...{
-        searchTerm: newSearchTerm,
-        variables: {
-          ...props.variables,
-          searchTerm: newSearchTerm
-        }
-      }
-    };
+    const wrapper = mount( createTable( newProps ) );
 
-    const noSearchResultsMocks = [
-      {
-        request: {
-          query: TEAM_VIDEO_PROJECTS_QUERY,
-          variables: { ...newProps.variables }
-        },
-        result: {
-          data: { videoProjects: [] }
-        }
-      },
-      {
-        request: {
-          query: TEAM_PACKAGES_QUERY,
-          variables: { ...newProps.variables }
-        },
-        result: {
-          data: { packages: [] }
-        }
-      }
-    ];
+    const message = wrapper.find( 'TableBodyMessage' );
 
-    const wrapper = mount(
-      <MockedProvider mocks={ noSearchResultsMocks } addTypename={ false }>
-        <Table>
-          <TableBody { ...newProps } />
-        </Table>
-      </MockedProvider>
-    );
-
-    // wait for the data and !loading
-    await wait( 0 );
-    wrapper.update();
-
-    const tableBody = wrapper.find( TableBody );
-    const noResultsMsg = (
-      <Table.Cell>
-        No results for &ldquo;
-        { newProps.searchTerm }
-        &rdquo;
-      </Table.Cell>
-    );
-
-    expect( tableBody.contains( noResultsMsg ) ).toEqual( true );
+    expect( message.exists() ).toEqual( true );
+    expect( message.prop( 'type' ) ).toEqual( 'no-results' );
   } );
 
-  it( 'renders the correct table row(s)', async() => {
-    const wrapper = mount( Component );
+  it( 'renders the correct table row(s)', () => {
+    const wrapper = mount( createTable( props ) );
 
-    /**
-     * Used w/ packages b/c of typename error
-     * Stille receiving error, 'cannot read locale of undefined' when running test on packages mock
-     */
-    // const wrapper = mount(
-    //   <MockedProvider mocks={ mocks } addTypename={ true }>
-    //     <Table>
-    //       <TableBody { ...props } />
-    //     </Table>
-    //   </MockedProvider>
-    // );
-
-    await wait( 0 );
-    wrapper.update();
-
-    const tableBody = wrapper.find( TableBody );
-    const tableRows = tableBody.find( 'tr' );
+    const tableRows = wrapper.find( 'tr' );
     const rowCount = tableRows.length;
-    const expectedRowCount = mocks[0].result.data.videoProjects.length;
-    // const expectedRowCount = mocks[2].result.data.packages.length;
+
+    const expectedRowCount = props.data.length;
 
     expect( rowCount ).toEqual( expectedRowCount );
-    // expect( toJSON( tableRows ) ).toMatchSnapshot();
+    expect( toJSON( tableRows ) ).toMatchSnapshot();
   } );
-
-  /**
-   * Commented out since subscribeToStatuses defined in useEffect hook
-   */
-  // it( 'subscribes to status updates', async () => {
-  //   const spy = jest.fn();
-  //   const TableBodyMock = teamProjectsQuery( wrapProps => (
-  //     <TableBodyRaw { ...wrapProps } subscribeToStatuses={ spy } />
-  //   ) );
-  //   const Comp = (
-  //     <MockedProvider mocks={ mocks } addTypename={ false }>
-  //       <Table>
-  //         <TableBodyMock { ...props } />
-  //       </Table>
-  //     </MockedProvider>
-  //   );
-
-  //   await wait( 0 );
-  //   wrapper.update();
-  //   expect( spy ).toHaveBeenCalled();
-  // } );
 } );

@@ -1,23 +1,21 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
-import { formatDate } from 'lib/utils';
 import { Table } from 'semantic-ui-react';
+
+import { formatDate } from 'lib/utils';
 import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon/TableMobileDataToggleIcon';
 
-const MyProjectPrimaryCol = dynamic( () => import( 'components/admin/Dashboard/MyProjects/MyProjectPrimaryCol/MyProjectPrimaryCol' ) );
-const TeamProjectPrimaryCol = dynamic( () => import( 'components/admin/Dashboard/TeamProjects/TeamProjectPrimaryCol/TeamProjectPrimaryCol' ) );
+const MyProjectPrimaryCol = dynamic( () => import( /* webpackChunkName: "myProjectPrimaryCol" */ 'components/admin/Dashboard/MyProjects/MyProjectPrimaryCol/MyProjectPrimaryCol' ) );
 
-const TableRow = props => {
+const TeamProjectPrimaryCol = dynamic( () => import( /* webpackChunkName: "teamProjectPrimaryCol" */ 'components/admin/Dashboard/TeamProjects/TeamProjectPrimaryCol/TeamProjectPrimaryCol' ) );
+
+const TableRow = ( { d, tableHeaders, projectTab } ) => {
   const [displayMobileData, setDisplayMobileData] = useState( false );
 
   const handleDisplayMobileData = () => {
     setDisplayMobileData( prevDisplayMobileData => !prevDisplayMobileData );
   };
-
-  const {
-    d, selectedItems, tableHeaders, toggleItemSelection, projectTab, team
-  } = props;
 
   if ( !d ) return null;
 
@@ -40,17 +38,12 @@ const TableRow = props => {
                     <MyProjectPrimaryCol
                       d={ d }
                       header={ header }
-                      selectedItems={ selectedItems }
-                      toggleItemSelection={ toggleItemSelection }
                     />
                   ) }
                   { projectTab === 'teamProjects' && (
                     <TeamProjectPrimaryCol
                       d={ d }
                       header={ header }
-                      team={ team }
-                      selectedItems={ selectedItems }
-                      toggleItemSelection={ toggleItemSelection }
                     />
                   ) }
                 </div>
@@ -84,11 +77,8 @@ const TableRow = props => {
 
 TableRow.propTypes = {
   d: PropTypes.object,
-  selectedItems: PropTypes.object,
   tableHeaders: PropTypes.array,
-  toggleItemSelection: PropTypes.func,
   projectTab: PropTypes.string,
-  team: PropTypes.object,
 };
 
 export default TableRow;

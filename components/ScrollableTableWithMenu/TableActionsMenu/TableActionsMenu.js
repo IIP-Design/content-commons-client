@@ -1,21 +1,19 @@
-/* eslint-disable react/destructuring-assignment */
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
-import useTimeout from 'lib/hooks/useTimeout';
 import { Button, Checkbox, Modal } from 'semantic-ui-react';
+
 import ApolloError from 'components/errors/ApolloError';
 import editIcon from 'static/images/dashboard/edit.svg';
 import createIcon from 'static/images/dashboard/create.svg';
 import archiveIcon from 'static/images/dashboard/archive.svg';
+import useTimeout from 'lib/hooks/useTimeout';
 import { getCount } from 'lib/utils';
-import { getProjectsType, setProjectsQueries } from 'lib/graphql/util';
-import { TEAM_VIDEO_PROJECTS_QUERY, TEAM_VIDEO_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/video';
-import { TEAM_PACKAGES_QUERY, TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
 import DeleteIconButton from './DeleteIconButton/DeleteIconButton';
 import DeleteProjects from './DeleteProjects/DeleteProjects';
 import UnpublishProjects from './UnpublishProjects/UnpublishProjects';
 import ActionResults from './ActionResults/ActionResults';
+import { DashboardContext } from 'context/dashboardContext';
+
 import './TableActionsMenu.scss';
 
 const CONFIRMATION_MSG_DELAY = 3000;
@@ -32,39 +30,21 @@ const getDraftProjects = projects => {
   }, [] );
 };
 
-const TableActionsMenu = props => {
-  const { team } = props;
+const TableActionsMenu = ( {
+  data,
+  error,
+  handleResetSelections,
+  loading,
+  refetch,
+  refetchCount,
+  toggleAllItemsSelection,
+  variables
+} ) => {
+  const { state } = useContext( DashboardContext );
 
-  // Determine type of dashboard projects
-  const dashboardProjectsType = getProjectsType( team );
-
-  // Determine which queries to run
-  const graphQueries = setProjectsQueries( team, {
-    videoProjects: TEAM_VIDEO_PROJECTS_QUERY,
-    videoProjectsCount: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
-    packages: TEAM_PACKAGES_QUERY,
-    packagesCount: TEAM_PACKAGES_COUNT_QUERY
-  } );
-
-  // Run queries
-  const {
-    loading,
-    error,
-    data: dashboardProjects,
-    refetch: dashboardProjectsRefetch
-  } = useQuery( graphQueries.projectsQuery, {
-    variables: { ...props.variables },
-    notifyOnNetworkStatusChange: true
-  } );
-
-  const {
-    refetch: dashboardProjectsCountRefetch
-  } = useQuery( graphQueries.projectsCount, {
-    variables: {
-      team: props.variables.team,
-      searchTerm: props.variables.searchTerm
-    }
-  } );
+  const selectedItems = state?.selected?.selectedItems ? state.selected.selectedItems : new Map();
+  const displayActionsMenu = state?.selected?.displayActionsMenu ? state.selected.displayActionsMenu : false;
+  const { team } = state;
 
   const [displayConfirmationMsg, setDisplayConfirmationMsg] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
@@ -97,13 +77,8 @@ const TableActionsMenu = props => {
     }
   } );
 
-
-  if ( loading ) return 'Loading....';
+  if ( loading && !data ) return 'Loading....';
   if ( error ) return <ApolloError error={ error } />;
-
-  // Dashboard Projects Data
-  const dashboardData = dashboardProjects[dashboardProjectsType];
-
 
   const handleActionResult = result => {
     if ( result.error ) {
@@ -116,10 +91,8 @@ const TableActionsMenu = props => {
   };
 
   const handleActionCompleted = () => {
-    const { variables } = props;
-
-    dashboardProjectsRefetch( { ...variables } );
-    dashboardProjectsCountRefetch( {
+    refetch( { ...variables } );
+    refetchCount( {
       team: variables.team,
       searchTerm: variables.searchTerm
     } );
@@ -127,8 +100,6 @@ const TableActionsMenu = props => {
   };
 
   const transformSelectedItemsMap = () => {
-    const { selectedItems } = props;
-
     if ( selectedItems.size === 0 ) return [];
     const arr = [];
 
@@ -157,7 +128,13 @@ const TableActionsMenu = props => {
     const projectIds = getSelectedProjectsIds();
 
     if ( projects && projects.length ) {
-      const selections = projectIds.map( s => projects.find( p => s === p.id ) );
+      const selections = [];
+
+      projectIds.map( s => projects.map( p => {
+        if ( s === p.id ) selections.push( p );
+
+        return null;
+      } ) );
 
       return selections;
     }
@@ -166,7 +143,7 @@ const TableActionsMenu = props => {
   };
 
   const hasSelectedAllDrafts = () => {
-    const draftProjects = getDraftProjects( dashboardData || null );
+    const draftProjects = getDraftProjects( data || null );
     const selections = getSelectedProjectsIds();
 
     if ( selections.length > 0 ) {
@@ -182,26 +159,19 @@ const TableActionsMenu = props => {
   };
 
   const getProjectsOnPage = projects => {
-    const { first, skip } = props.variables;
+    const { first, skip } = variables;
 
     return projects && projects.slice( skip, skip + first );
   };
 
-  const {
-    displayActionsMenu,
-    toggleAllItemsSelection,
-    handleResetSelections
-  } = props;
-
-
   const renderMenu = () => {
-    if ( !dashboardData ) return null;
+    if ( !data ) return null;
 
-    const projectsOnPage = getProjectsOnPage( dashboardData );
+    const projectsOnPage = getProjectsOnPage( data );
     const projectsOnPageCount = getCount( projectsOnPage );
-    const selections = getSelectedProjects( dashboardData );
+    const selections = getSelectedProjects( data );
     const selectionsCount = getCount( selections );
-    const isDisabled = dashboardData && !dashboardData.length;
+    const isDisabled = data && !data.length;
     const isChecked = projectsOnPageCount === selectionsCount && selectionsCount > 0;
     const isIndeterminate = projectsOnPageCount > selectionsCount && selectionsCount > 0;
 
@@ -241,7 +211,6 @@ const TableActionsMenu = props => {
           <DeleteIconButton displayConfirmDelete={ displayConfirmDelete } />
 
           <DeleteProjects
-            team={ team }
             deleteConfirmOpen={ deleteConfirmOpen }
             handleDeleteCancel={ handleDeleteCancel }
             handleDeleteConfirm={ handleActionCompleted }
@@ -267,7 +236,7 @@ const TableActionsMenu = props => {
                 handleActionResult={ handleActionResult }
                 showConfirmationMsg={ showConfirmationMsg }
                 selections={ selections }
-                variables={ props.variables }
+                variables={ variables }
               />
             </>
           ) }
@@ -280,12 +249,14 @@ const TableActionsMenu = props => {
 };
 
 TableActionsMenu.propTypes = {
-  team: PropTypes.object,
-  displayActionsMenu: PropTypes.bool,
-  variables: PropTypes.object,
-  selectedItems: PropTypes.object,
+  data: PropTypes.array,
+  error: PropTypes.object,
+  loading: PropTypes.bool,
   handleResetSelections: PropTypes.func,
-  toggleAllItemsSelection: PropTypes.func
+  refetch: PropTypes.func,
+  refetchCount: PropTypes.func,
+  toggleAllItemsSelection: PropTypes.func,
+  variables: PropTypes.object
 };
 
 export default TableActionsMenu;

@@ -18,9 +18,11 @@ import {
 jest.mock( 'lib/utils', () => ( {
   getStreamData: jest.fn( ( stream, site = 'youtube', field = 'url' ) => {
     const uri = stream.find( s => s.site.toLowerCase() === site );
+
     if ( uri && Object.keys( uri ).length > 0 ) {
       return uri[field];
     }
+
     return null;
   } ),
   getVimeoId: jest.fn( () => '340239507' ),
@@ -29,11 +31,13 @@ jest.mock( 'lib/utils', () => ( {
   getApolloErrors: jest.fn( error => {
     let errs = [];
     const { graphQLErrors, networkError, otherError } = error;
+
     if ( graphQLErrors ) {
       errs = graphQLErrors.map( error => error.message );
     }
     if ( networkError ) errs.push( networkError );
     if ( otherError ) errs.push( otherError );
+
     return errs;
   } )
 } ) );
@@ -66,12 +70,13 @@ describe( '<ProjectPreviewContent />', () => {
     expect( preview.contains( msg ) ).toEqual( true );
   } );
 
-  it( 'renders error message if error is thrown', async () => {
+  it( 'renders error message if error is thrown', async() => {
     const wrapper = mount(
       <MockedProvider mocks={ errorMocks } addTypename={ false }>
         <ProjectPreviewContent { ...props } />
       </MockedProvider>
     );
+
     // wait for the data and !loading
     await wait( 0 );
     wrapper.update();
@@ -84,8 +89,9 @@ describe( '<ProjectPreviewContent />', () => {
       .toEqual( true );
   } );
 
-  it( 'renders final state without crashing', async () => {
+  it( 'renders final state without crashing', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -94,8 +100,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( toJSON( preview ) ).toMatchSnapshot();
   } );
 
-  it( 'sets dropDownIsOpen and selectedLanguage in initial state', async () => {
+  it( 'sets dropDownIsOpen and selectedLanguage in initial state', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -108,8 +115,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( selectedLanguage ).toEqual( language.displayName );
   } );
 
-  it( 'sets language in state when mounted', async () => {
+  it( 'sets language in state when mounted', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -121,8 +129,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( selectedLanguage ).toEqual( language.displayName );
   } );
 
-  it( 'calling getLanguages gets the unit language(s)', async () => {
+  it( 'calling getLanguages gets the unit language(s)', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -140,8 +149,9 @@ describe( '<ProjectPreviewContent />', () => {
     ] );
   } );
 
-  it( 'getUnitsWithFiles returns an array of units with files', async () => {
+  it( 'getUnitsWithFiles returns an array of units with files', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -157,8 +167,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( unitsWithFiles[0] ).toEqual( units[1] );
   } );
 
-  it( 'calling getProjectUnits gets the projectUnits', async () => {
+  it( 'calling getProjectUnits gets the projectUnits', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -174,12 +185,14 @@ describe( '<ProjectPreviewContent />', () => {
     expect( Object.keys( projectUnits ).length ).toEqual( units.length );
     units.forEach( unit => {
       const { language: { displayName } } = unit;
+
       expect( projectUnits[displayName] ).toEqual( unit );
     } );
   } );
 
-  it( 'handleChange updates selectedLanguage and selectedItem in state', async () => {
+  it( 'handleChange updates selectedLanguage and selectedItem in state', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -208,8 +221,9 @@ describe( '<ProjectPreviewContent />', () => {
     );
   } );
 
-  it( 'toggleArrow updates dropDownIsOpen in state & updates dropdown icon', async () => {
+  it( 'toggleArrow updates dropDownIsOpen in state & updates dropdown icon', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -234,8 +248,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( dropdown().prop( 'icon' ) ).toEqual( 'chevron down' );
   } );
 
-  it( 'selectLanguage updates selectedLanguage in state', async () => {
+  it( 'selectLanguage updates selectedLanguage in state', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -257,8 +272,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( selectedLanguage() ).toEqual( initialLang.displayName );
   } );
 
-  it( 'getEnglishIndex returns the index for the English language unit', async () => {
+  it( 'getEnglishIndex returns the index for the English language unit', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -272,8 +288,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( englishIndex ).toEqual( units.length - 1 );
   } );
 
-  it( 'getFilesCount returns the correct number of unit files', async () => {
+  it( 'getFilesCount returns the correct number of unit files', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -288,8 +305,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( count ).toEqual( units[currentUnitIndex].files.length );
   } );
 
-  it( 'getCurrUnitIndex returns the correct index', async () => {
+  it( 'getCurrUnitIndex returns the correct index', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -302,8 +320,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( inst.getCurrUnitIndex( 2 ) ).toEqual( 0 );
   } );
 
-  it( 'getUnitLanguage returns the unit language object', async () => {
+  it( 'getUnitLanguage returns the unit language object', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -320,8 +339,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( english ).toEqual( units[1].language );
   } );
 
-  it( 'getContentType returns the correct content type', async () => {
+  it( 'getContentType returns the correct content type', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -336,8 +356,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( noType ).toEqual( '' );
   } );
 
-  it( 'renders the share icon and PopupTrigger', async () => {
+  it( 'renders the share icon and PopupTrigger', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -347,8 +368,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( sharePopup.exists() ).toEqual( true );
   } );
 
-  it( 'renders the embed icon and PopupTrigger', async () => {
+  it( 'renders the embed icon and PopupTrigger', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -358,12 +380,13 @@ describe( '<ProjectPreviewContent />', () => {
     expect( embedPopup.exists() ).toEqual( true );
   } );
 
-  it( 'does not render the embed icon and PopupTrigger if there are no YouTube and Vimeo urls', async () => {
+  it( 'does not render the embed icon and PopupTrigger if there are no YouTube and Vimeo urls', async() => {
     const wrapper = mount(
       <MockedProvider mocks={ noStreamsMocks } addTypename>
         <ProjectPreviewContent { ...props } />
       </MockedProvider>
     );
+
     await wait( 0 );
     wrapper.update();
 
@@ -373,8 +396,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( embedPopup.exists() ).toEqual( false );
   } );
 
-  it( 'renders the download icon and PopupTrigger', async () => {
+  it( 'renders the download icon and PopupTrigger', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -384,8 +408,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( downloadPopup.exists() ).toEqual( true );
   } );
 
-  it( 'renders an embedded YouTube video', async () => {
+  it( 'renders an embedded YouTube video', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -399,12 +424,13 @@ describe( '<ProjectPreviewContent />', () => {
     expect( embed.prop( 'placeholder' ) ).toEqual( signedUrl );
   } );
 
-  it( 'renders an embedded Vimeo video if there is no YouTube url', async () => {
+  it( 'renders an embedded Vimeo video if there is no YouTube url', async() => {
     const wrapper = mount(
       <MockedProvider mocks={ vimeoMocks } addTypename>
         <ProjectPreviewContent { ...props } />
       </MockedProvider>
     );
+
     await wait( 0 );
     wrapper.update();
 
@@ -418,12 +444,13 @@ describe( '<ProjectPreviewContent />', () => {
     expect( embed.prop( 'placeholder' ) ).toEqual( signedUrl );
   } );
 
-  it( 'renders a project thumbnail if there are no YouTube or Vimeo urls', async () => {
+  it( 'renders a project thumbnail if there are no YouTube or Vimeo urls', async() => {
     const wrapper = mount(
       <MockedProvider mocks={ noStreamsMocks } addTypename>
         <ProjectPreviewContent { ...props } />
       </MockedProvider>
     );
+
     await wait( 0 );
     wrapper.update();
 
@@ -439,12 +466,13 @@ describe( '<ProjectPreviewContent />', () => {
     expect( img.prop( 'alt' ) ).toEqual( alt );
   } );
 
-  it( 'renders a "no files message" if there are no files in the selected unit', async () => {
+  it( 'renders a "no files message" if there are no files in the selected unit', async() => {
     const wrapper = mount(
       <MockedProvider mocks={ noFilesMocks } addTypename>
         <ProjectPreviewContent { ...props } />
       </MockedProvider>
     );
+
     await wait( 0 );
     wrapper.update();
 
@@ -455,12 +483,13 @@ describe( '<ProjectPreviewContent />', () => {
     expect( preview.text() ).toEqual( noFilesMsg );
   } );
 
-  it( 'renders a "no units message" if there are no units in the project', async () => {
+  it( 'renders a "no units message" if there are no units in the project', async() => {
     const wrapper = mount(
       <MockedProvider mocks={ noUnitsMocks } addTypename>
         <ProjectPreviewContent { ...props } />
       </MockedProvider>
     );
+
     await wait( 0 );
     wrapper.update();
 
@@ -470,13 +499,14 @@ describe( '<ProjectPreviewContent />', () => {
     expect( preview.contains( noUnitsMsg ) ).toEqual( true );
   } );
 
-  it( 'renders a single language but not a language dropdown if there is only one unit', async () => {
+  it( 'renders a single language but not a language dropdown if there is only one unit', async() => {
     // use vimeoMocks since it has a single unit
     const wrapper = mount(
       <MockedProvider mocks={ vimeoMocks } addTypename>
         <ProjectPreviewContent { ...props } />
       </MockedProvider>
     );
+
     await wait( 0 );
     wrapper.update();
 
@@ -490,8 +520,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( singleLanguage.exists() ).toEqual( true );
   } );
 
-  it( 'getTag returns the correct translation tag name', async () => {
+  it( 'getTag returns the correct translation tag name', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -505,8 +536,9 @@ describe( '<ProjectPreviewContent />', () => {
     expect( tagName ).toEqual( 'american culture' );
   } );
 
-  it( 'getTags returns an array of translation tag name(s)', async () => {
+  it( 'getTags returns an array of translation tag name(s)', async() => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -525,12 +557,13 @@ describe( '<ProjectPreviewContent />', () => {
     expect( tagNames ).toEqual( ret );
   } );
 
-  it( 'does not render a tags section if the selected unit has no tags', async () => {
+  it( 'does not render a tags section if the selected unit has no tags', async() => {
     const wrapper = mount(
       <MockedProvider mocks={ noTagsMocks } addTypename>
         <ProjectPreviewContent { ...props } />
       </MockedProvider>
     );
+
     await wait( 0 );
     wrapper.update();
 

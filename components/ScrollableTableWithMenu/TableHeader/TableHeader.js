@@ -3,20 +3,17 @@
  * TableHeader
  *
  */
-
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'semantic-ui-react';
+
+import { DashboardContext } from 'context/dashboardContext';
+
 import './TableHeader.scss';
 
-const TableHeader = props => {
-  const {
-    tableHeaders,
-    column,
-    direction,
-    handleSort,
-    displayActionsMenu
-  } = props;
+const TableHeader = ( { handleSort, tableHeaders } ) => {
+  const { state: { column, direction, selected } } = useContext( DashboardContext );
+  const displayActionsMenu = selected?.displayActionsMenu ? selected.displayActionsMenu : false;
 
   return (
     <Table.Header>
@@ -38,10 +35,7 @@ const TableHeader = props => {
 
 TableHeader.propTypes = {
   tableHeaders: PropTypes.array.isRequired,
-  column: PropTypes.string,
-  direction: PropTypes.string,
-  handleSort: PropTypes.func,
-  displayActionsMenu: PropTypes.bool
+  handleSort: PropTypes.func
 };
 
 export default TableHeader;
