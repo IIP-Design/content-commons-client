@@ -46,7 +46,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
    */
   const countData = useQuery( state.queries.count, {
     variables: { ...variables },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network'
   } );
 
   // The data for following columns cannot by sort within the GraphQL query
@@ -54,12 +54,12 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
 
   /**
    * Get data for each project from GraphQL, if can be sorted by the GraphQL query send pagination vars
-   * Otherwise, return all results for client-side soriting within the TableBody Component
+   * Otherwise, return all results for client-side sorting within the TableBody Component
    */
   const contentData = useQuery( state.queries.content, {
     variables: isLegacySort ? { ...variables } : { ...variables, ...bodyPaginationVars },
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network'
   } );
 
   useEffect( () => {
@@ -143,7 +143,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   };
 
   /**
-   * Saves the submitted search term to state intiating a new filtered query
+   * Saves the submitted search term to state initiating a new filtered query
    *
    * @param {Object} e Synthetic click event object
    * @param {string} term Term on which to filter search results
@@ -166,11 +166,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     // Reset to first page of results after sort
     const direction = state.direction === 'ascending' ? 'descending' : 'ascending';
 
-    if ( state.column !== clickedColumn ) {
-      dispatch( { type: 'UPDATE_COLUMN', payload: { column: clickedColumn, direction } } );
-    } else {
-      dispatch( { type: 'UPDATE_COLUMN', payload: { column: clickedColumn, direction } } );
-    }
+    dispatch( { type: 'UPDATE_COLUMN', payload: { column: clickedColumn, direction } } );
 
     const isVideo = team?.contentTypes && team.contentTypes.includes( 'VIDEO' );
     const columnName = !isVideo && clickedColumn === 'projectTitle'
@@ -191,7 +187,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     e.persist();
     const menuItem = {
       name: e.target.parentNode.dataset.propname,
-      label: e.target.parentNode.dataset.proplabel,
+      label: e.target.parentNode.dataset.proplabel
     };
 
     if ( tableHeaders.map( h => h.name ).includes( menuItem.name ) ) {
@@ -300,7 +296,7 @@ ScrollableTableWithMenu.propTypes = {
   persistentTableHeaders: PropTypes.array,
   columnMenu: PropTypes.array,
   team: PropTypes.object,
-  projectTab: PropTypes.string,
+  projectTab: PropTypes.string
 };
 
 export default ScrollableTableWithMenu;
