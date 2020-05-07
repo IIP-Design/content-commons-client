@@ -1,10 +1,21 @@
 @import "../../styles/colors.scss";
 
-.popup_share .ui.header {
-  margin: 0;
-  font-size: 1.2em;
-  font-weight: bold;
-  color: $medium-grey;
+.popup_share {
+  min-width: 540px;
+  min-height: 360px;
+  padding: 1em;
+  background-color: #fff;
+
+  .ui.header {
+    // margin: 0;
+    // font-size: 1.2em;
+    // font-weight: bold;
+    // color: $medium-grey;
+    margin-bottom: .77em;
+    font-size: 1.4em;
+    font-weight: 400;
+    color: $blue;
+  }
 }
 
 .ui.list.share_list {

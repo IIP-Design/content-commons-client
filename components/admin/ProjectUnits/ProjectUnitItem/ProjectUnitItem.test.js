@@ -3,9 +3,8 @@ import { UploadContext } from '../../ProjectEdit/VideoEdit/UploadContext';
 import ProjectUnitItem from './ProjectUnitItem';
 import { filesToUpload, postUploadUnit, preUploadUnit } from './mocks';
 
-jest.mock( 'next-server/dynamic', () => () => 'Dynamic' );
-
-jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
+jest.mock( 'next/dynamic', () => () => 'Dynamic' );
+jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
 jest.mock(
   'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem',

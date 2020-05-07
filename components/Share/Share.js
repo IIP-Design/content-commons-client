@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'semantic-ui-react';
+
 import { stringifyQueryString } from 'lib/browser';
 import { contentRegExp, getVimeoId, getYouTubeId } from 'lib/utils';
 import ClipboardCopy from '../ClipboardCopy';
@@ -8,12 +9,11 @@ import ShareButton from './ShareButton';
 
 import './Share.scss';
 
-const Share = props => {
-  const {
-    id, isPreview, site, language, title, link, type
-  } = props;
-
+const Share = ( {
+  id, isPreview, language, link, site, title, type
+} ) => {
   const internalOnly = type === 'document' || type === 'package';
+  const video = type === 'video';
 
   const queryStr = ( type === 'post' )
     ? stringifyQueryString( { id, site } )
@@ -48,7 +48,7 @@ const Share = props => {
 
   return (
     <div>
-      { shareLink && !internalOnly && (
+      { shareLink && !internalOnly && !video && (
         <List className="share_list">
           <ShareButton
             url={ facebookURL }
