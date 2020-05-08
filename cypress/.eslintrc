@@ -1,4 +1,12 @@
 {
   "extends": ["@gpa-lab/eslint-config/cypress"],
-  "root": true
+  "root": true,
+  "rules": {
+    "import/no-unassigned-import": [
+      "error",
+      {
+        "allow": ["**/commands", "@testing-library/cypress/add-commands"]
+      }
+    ]
+  }
 }
