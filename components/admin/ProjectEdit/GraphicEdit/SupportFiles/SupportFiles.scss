@@ -1,0 +1,13 @@
+@import "styles/colors.scss";
+
+.support-files-container {
+  @media screen and (min-width: 992px) {
+    display: grid;
+    grid-template-columns: 0.5fr 1px 0.5fr;
+    gap: 1rem;
+
+    > .separator {
+      border-right: 1px solid $light-grey;
+    }
+  }
+}

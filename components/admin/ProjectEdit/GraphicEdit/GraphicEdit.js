@@ -4,12 +4,13 @@ import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Loader } from 'semantic-ui-react';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
+import AddFilesSectionHeading from 'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading';
 import ApolloError from 'components/errors/ApolloError';
 import GraphicProjectDetailsFormContainer from 'components/admin/ProjectDetailsForm/GraphicProjectDetailsFormContainer/GraphicProjectDetailsFormContainer';
-import GraphicSupportFilesContainer from 'components/admin/ProjectEdit/GraphicEdit/GraphicSupportFilesContainer/GraphicSupportFilesContainer';
 import GraphicFilesFormContainer from 'components/admin/ProjectEdit/GraphicEdit/GraphicFilesFormContainer/GraphicFilesFormContainer';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
+import SupportFiles from 'components/admin/ProjectEdit/GraphicEdit/SupportFiles/SupportFiles';
 import UploadProgress from 'components/admin/ProjectEdit/UploadProgress/UploadProgress';
 // import withFileUpload from 'hocs/withFileUpload/withFileUpload';
 import { DELETE_GRAPHIC_PROJECT_MUTATION, GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
@@ -26,12 +27,12 @@ const GraphicEdit = props => {
   let saveMsgTimer = null;
 
   const {
-    loading, error: queryError, data
+    loading, error: queryError, data,
   } = useQuery( GRAPHIC_PROJECT_QUERY, {
     partialRefetch: true,
     variables: { id: props.id },
     displayName: 'GraphicProjectQuery',
-    skip: !props.id
+    skip: !props.id,
   } );
   const [deleteGraphicProject] = useMutation( DELETE_GRAPHIC_PROJECT_MUTATION );
 
@@ -44,7 +45,7 @@ const GraphicEdit = props => {
   const [isFormValid, setIsFormValid] = useState( true );
   const [notification, setNotification] = useState( {
     notificationMessage: '',
-    showNotification: false
+    showNotification: false,
   } );
 
   useEffect( () => {
@@ -60,7 +61,7 @@ const GraphicEdit = props => {
   const updateNotification = msg => {
     setNotification( {
       notificationMessage: msg,
-      showNotification: !!msg
+      showNotification: !!msg,
     } );
   };
 
@@ -203,7 +204,7 @@ const GraphicEdit = props => {
 
   const getSupportFiles = type => {
     const editableExtensions = [
-      '.psd', '.ai', '.ae', '.eps', '.jpg', '.jpeg', '.png'
+      '.psd', '.ai', '.ae', '.eps', '.jpg', '.jpeg', '.png',
     ];
     const editableFiles = [];
     const additionalFiles = [];
@@ -230,20 +231,20 @@ const GraphicEdit = props => {
     {
       headline: 'editable files',
       helperText: 'Original files that may be edited and adapted as needed for reuse.',
-      files: getSupportFiles( 'editable' )
+      files: getSupportFiles( 'editable' ),
     },
     {
       headline: 'additional files',
       helperText: 'Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics.',
-      files: getSupportFiles( 'additional' )
-    }
+      files: getSupportFiles( 'additional' ),
+    },
   ];
 
   const centeredStyles = {
     position: 'absolute',
     top: '9em',
     left: '50%',
-    transform: 'translateX(-50%)'
+    transform: 'translateX(-50%)',
   };
 
   if ( loading ) {
@@ -254,7 +255,7 @@ const GraphicEdit = props => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          minHeight: '200px'
+          minHeight: '200px',
         } }
       >
         <Loader
@@ -282,7 +283,7 @@ const GraphicEdit = props => {
   const filesToUpload = []; // temp
   // const { upload: { isUploading, filesToUpload } } = props;
   const contentStyle = {
-    border: `3px solid ${projectId ? 'transparent' : '#02bfe7'}`
+    border: `3px solid ${projectId ? 'transparent' : '#02bfe7'}`,
   };
 
   return (
@@ -364,27 +365,45 @@ const GraphicEdit = props => {
       />
 
       { /* project support files */ }
-      <GraphicSupportFilesContainer
-        projectId={ projectId }
-        handleAddFiles={ handleAddFiles }
-        updateNotification={ updateNotification }
-        fileTypes={ supportFilesConfig }
-      />
+      <div className="support-files">
+        <AddFilesSectionHeading
+          projectId={ projectId }
+          title="Support Files"
+          acceptedFileTypes="image/*, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc"
+          handleAddFiles={ handleAddFiles }
+        />
+
+        <SupportFiles
+          projectId={ projectId }
+          handleAddFiles={ handleAddFiles }
+          updateNotification={ updateNotification }
+          fileTypes={ supportFilesConfig }
+        />
+      </div>
 
       { /* project graphic files */ }
-      <GraphicFilesFormContainer
-        projectId={ projectId }
-        files={ graphicFiles }
-        handleAddFiles={ handleAddFiles }
-        setIsFormValid={ setIsFormValid }
-        updateNotification={ updateNotification }
-      />
+      <div className="graphic-files">
+        <AddFilesSectionHeading
+          projectId={ projectId }
+          title="Graphics in Project"
+          acceptedFileTypes="image/gif, image/jpeg, image/png"
+          handleAddFiles={ handleAddFiles }
+        />
+
+        <GraphicFilesFormContainer
+          projectId={ projectId }
+          files={ graphicFiles }
+          handleAddFiles={ handleAddFiles }
+          setIsFormValid={ setIsFormValid }
+          updateNotification={ updateNotification }
+        />
+      </div>
     </div>
   );
 };
 
 GraphicEdit.propTypes = {
-  id: PropTypes.string
+  id: PropTypes.string,
 };
 
 export default GraphicEdit;

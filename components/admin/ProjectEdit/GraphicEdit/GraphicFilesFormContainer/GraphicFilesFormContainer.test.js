@@ -1,16 +1,10 @@
 import { mount } from 'enzyme';
-import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import GraphicFilesFormContainer from './GraphicFilesFormContainer';
 
 jest.mock(
-  'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading',
-  () => function AddFilesSectionHeading() { return ''; }
-);
-
-jest.mock(
   'components/admin/ProjectEdit/GraphicEdit/GraphicFilesFormContainer/GraphicFilesForm/GraphicFilesForm',
-  () => function GraphicFilesForm() { return ''; }
+  () => function GraphicFilesForm() { return ''; },
 );
 
 const props = {
@@ -29,7 +23,7 @@ const props = {
       use: {
         id: 'ck2lzfx510hhj07205mal3e4l',
         name: 'Thumbnail/Cover Image',
-        __typename: 'ImageUse'
+        __typename: 'ImageUse',
       },
       language: {
         id: 'ck2lzfx710hkq07206thus6pt',
@@ -38,7 +32,7 @@ const props = {
         displayName: 'English',
         textDirection: 'LTR',
         nativeName: 'English',
-        __typename: 'Language'
+        __typename: 'Language',
       },
       __typename: 'ImageFile',
       title: 'Mexico_City_long_long_asiasd_lasdf_kljiemx_iskei_jlks_askljdf_asdiweoncx_xzxziwe.jpg',
@@ -46,14 +40,14 @@ const props = {
         {
           id: 'ck9h3meu626bw07201o36tapc',
           name: 'Instagram',
-          __typename: 'SocialPlatform'
-        }
+          __typename: 'SocialPlatform',
+        },
       ],
       style: {
         id: 'ck9h3l7zn26au0720ialhqtg4',
         name: 'Quote',
-        __typename: 'GraphicStyle'
-      }
+        __typename: 'GraphicStyle',
+      },
     },
     {
       id: 'ck2maluky0s5z0720a2dgkisd',
@@ -68,7 +62,7 @@ const props = {
       use: {
         id: 'ck2lzfx510hhj07205mal3e4l',
         name: 'Thumbnail/Cover Image',
-        __typename: 'ImageUse'
+        __typename: 'ImageUse',
       },
       language: {
         id: 'ck2lzfx7m0hl50720y9oqzyqz',
@@ -77,7 +71,7 @@ const props = {
         displayName: 'Japanese',
         textDirection: 'LTR',
         nativeName: '日本語',
-        __typename: 'Language'
+        __typename: 'Language',
       },
       __typename: 'ImageFile',
       title: 'Mexico City 1.jpg',
@@ -85,19 +79,18 @@ const props = {
         {
           id: 'ck9h3naq526cp0720i4u3uqlv',
           name: 'WhatsApp',
-          __typename: 'SocialPlatform'
-        }
+          __typename: 'SocialPlatform',
+        },
       ],
       style: {
         id: 'ck9h3kyb326ak0720wkbk01q6',
         name: 'Info/Stat',
-        __typename: 'GraphicStyle'
-      }
-    }
+        __typename: 'GraphicStyle',
+      },
+    },
   ],
-  handleAddFiles: jest.fn(),
   setIsFormValid: jest.fn(),
-  updateNotification: jest.fn()
+  updateNotification: jest.fn(),
 };
 
 describe( '<GraphicFilesFormContainer />', () => {
@@ -117,7 +110,7 @@ describe( '<GraphicFilesFormContainer />', () => {
 
   const initialValues = props.files.reduce( ( acc, file ) => {
     const {
-      id, filename, language, social, style, title
+      id, filename, language, social, style, title,
     } = file;
 
     const socialPlatforms = social
@@ -129,7 +122,7 @@ describe( '<GraphicFilesFormContainer />', () => {
       title: title || filename,
       language: language?.id || '',
       social: socialPlatforms,
-      style: style?.id || ''
+      style: style?.id || '',
     };
 
     return acc;
@@ -151,16 +144,6 @@ describe( '<GraphicFilesFormContainer />', () => {
     const div = wrapper.find( 'div.graphic-files-form-container' );
 
     expect( div.exists() ).toEqual( true );
-  } );
-
-  it( 'renders the AddFilesSectionHeading', () => {
-    const heading = wrapper.find( 'AddFilesSectionHeading' );
-
-    expect( heading.exists() ).toEqual( true );
-    expect( heading.prop( 'projectId' ) ).toEqual( props.projectId );
-    expect( heading.prop( 'title' ) ).toEqual( 'Graphics in Project' );
-    expect( heading.prop( 'acceptedFileTypes' ) )
-      .toEqual( 'image/gif, image/jpeg, image/png' );
   } );
 
   it( 'renders the Formik component', () => {

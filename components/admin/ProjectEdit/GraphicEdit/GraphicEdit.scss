@@ -13,4 +13,21 @@
   .ui.button {
     @include base-button;
   }
+
+  .support-files {
+    border-top: 1px solid $light-grey;
+    padding: 1.75em 0;
+
+    @media screen and (min-width: 768px) {
+      padding: 1.75em;
+    }
+  }
+
+  .graphic-files {
+    border-top: 1px solid $light-grey;
+
+    @media screen and (min-width: 768px) {
+      padding: 1.75em;
+    }
+  }
 }

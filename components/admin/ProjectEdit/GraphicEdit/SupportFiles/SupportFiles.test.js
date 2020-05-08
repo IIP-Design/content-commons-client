@@ -1,19 +1,13 @@
 import { mount } from 'enzyme';
-import GraphicSupportFilesContainer from './GraphicSupportFilesContainer';
-
-jest.mock(
-  'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading',
-  () => function AddFilesSectionHeading() { return ''; }
-);
+import SupportFiles from './SupportFiles';
 
 jest.mock(
   'components/admin/ProjectEdit/GraphicEdit/GraphicSupportFiles/GraphicSupportFiles',
-  () => function GraphicSupportFiles() { return ''; }
+  () => function GraphicSupportFiles() { return ''; },
 );
 
 const props = {
   projectId: 'project-123',
-  handleAddFiles: jest.fn(),
   updateNotification: jest.fn(),
   fileTypes: [
     {
@@ -35,10 +29,10 @@ const props = {
             displayName: 'English',
             textDirection: 'LTR',
             nativeName: 'English',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           use: null,
-          __typename: 'SupportFile'
+          __typename: 'SupportFile',
         },
         {
           id: 'ck9jtuqhy292w07200tfpbkju',
@@ -55,12 +49,12 @@ const props = {
             displayName: 'English',
             textDirection: 'LTR',
             nativeName: 'English',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           use: null,
-          __typename: 'SupportFile'
-        }
-      ]
+          __typename: 'SupportFile',
+        },
+      ],
     },
     {
       headline: 'additional files',
@@ -81,10 +75,10 @@ const props = {
             displayName: 'English',
             textDirection: 'LTR',
             nativeName: 'English',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           use: null,
-          __typename: 'SupportFile'
+          __typename: 'SupportFile',
         },
         {
           id: 'ck9ld2skk2cjn0720d5s33uxo',
@@ -101,22 +95,22 @@ const props = {
             displayName: 'English',
             textDirection: 'LTR',
             nativeName: 'English',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           use: null,
-          __typename: 'SupportFile'
-        }
-      ]
-    }
-  ]
+          __typename: 'SupportFile',
+        },
+      ],
+    },
+  ],
 };
 
-describe( '<GraphicSupportFilesContainer />', () => {
+describe( '<SupportFiles />', () => {
   let Component;
   let wrapper;
 
   beforeEach( () => {
-    Component = <GraphicSupportFilesContainer { ...props } />;
+    Component = <SupportFiles { ...props } />;
     wrapper = mount( Component );
   } );
 
@@ -126,16 +120,6 @@ describe( '<GraphicSupportFilesContainer />', () => {
 
   it( 'renders receives the correct props', () => {
     expect( wrapper.props() ).toEqual( props );
-  } );
-
-  it( 'renders receives the AddFilesSectionHeading', () => {
-    const headingSection = wrapper.find( 'AddFilesSectionHeading' );
-
-    expect( headingSection.exists() ).toEqual( true );
-    expect( headingSection.prop( 'projectId' ) ).toEqual( props.projectId );
-    expect( headingSection.prop( 'title' ) ).toEqual( 'Support Files' );
-    expect( headingSection.prop( 'acceptedFileTypes' ) )
-      .toEqual( 'image/*, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc' );
   } );
 
   it( 'renders receives the GraphicSupportFiles', () => {

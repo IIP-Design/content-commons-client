@@ -22,7 +22,6 @@ const GraphicFilesForm = props => {
     save,
     setFieldValue,
     setFieldTouched,
-    dirty,
     touched,
     values,
   } = props;
@@ -92,9 +91,11 @@ const GraphicFilesForm = props => {
     );
   }
 
+  const hasFormBeenUpdated = !!Object.keys( touched ).length;
+
   return (
     <div className="graphic-project-graphic-files">
-      { projectId && dirty && <FormikAutoSave save={ save } /> }
+      { projectId && hasFormBeenUpdated && <FormikAutoSave save={ save } /> }
 
       <Confirm
         className="delete"
@@ -272,7 +273,6 @@ GraphicFilesForm.propTypes = {
   save: PropTypes.func,
   setFieldValue: PropTypes.func,
   setFieldTouched: PropTypes.func,
-  dirty: PropTypes.bool,
   touched: PropTypes.object,
   values: PropTypes.object,
 };

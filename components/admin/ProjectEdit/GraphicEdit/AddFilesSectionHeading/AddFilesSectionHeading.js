@@ -9,7 +9,7 @@ const AddFilesSectionHeading = props => {
     el: HeadlineElement,
     title,
     acceptedFileTypes,
-    handleAddFiles
+    handleAddFiles,
   } = props;
 
   return (
@@ -32,7 +32,7 @@ const AddFilesSectionHeading = props => {
 };
 
 AddFilesSectionHeading.defaultProps = {
-  el: 'h2'
+  el: 'h2',
 };
 
 AddFilesSectionHeading.propTypes = {
@@ -40,7 +40,7 @@ AddFilesSectionHeading.propTypes = {
   el: PropTypes.string,
   title: PropTypes.string,
   acceptedFileTypes: PropTypes.string,
-  handleAddFiles: PropTypes.func
+  handleAddFiles: PropTypes.func,
 };
 
 export default AddFilesSectionHeading;
