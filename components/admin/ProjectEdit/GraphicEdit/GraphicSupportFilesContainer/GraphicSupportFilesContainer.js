@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AddFilesSectionHeading from 'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading';
-import GraphicSupportFiles from 'components/admin/ProjectSupportFiles/GraphicSupportFiles/GraphicSupportFiles';
+import GraphicSupportFiles from 'components/admin/ProjectEdit/GraphicEdit/GraphicSupportFiles/GraphicSupportFiles';
 import './GraphicSupportFilesContainer.scss';
 
 const GraphicSupportFilesContainer = props => {

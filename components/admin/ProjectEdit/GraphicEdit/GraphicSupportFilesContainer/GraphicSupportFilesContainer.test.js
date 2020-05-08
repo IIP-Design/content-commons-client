@@ -7,7 +7,7 @@ jest.mock(
 );
 
 jest.mock(
-  'components/admin/ProjectSupportFiles/GraphicSupportFiles/GraphicSupportFiles',
+  'components/admin/ProjectEdit/GraphicEdit/GraphicSupportFiles/GraphicSupportFiles',
   () => function GraphicSupportFiles() { return ''; }
 );
 
