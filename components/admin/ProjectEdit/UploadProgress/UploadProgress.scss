@@ -1,0 +1,43 @@
+@import "styles/colors.scss";
+
+.upload-progress-status {
+  font-size: 0.875em;
+
+  &.beta {
+    > .ui.progress {
+      margin-bottom: 4.75em;
+    }
+  }
+
+  > .ui.progress {
+    border-radius: 0;
+    margin-bottom: 3em;
+    font-size: 0.875em;
+    background-color: $light-grey;
+
+    .bar {
+      border-radius: 0;
+      &::after {
+        border-radius: 0;
+      }
+    }
+
+    .label {
+      font-weight: normal;
+    }
+  }
+
+  .ui.active.progress {
+    .bar {
+      &::after {
+        background: repeating-linear-gradient(
+          45deg,
+          #ffffff,
+          #ffffff 1em,
+          $curious-blue 1em,
+          $curious-blue 2em
+        );
+      }
+    }
+  }
+}

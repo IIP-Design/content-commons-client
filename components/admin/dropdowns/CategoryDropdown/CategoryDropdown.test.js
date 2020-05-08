@@ -1,11 +1,11 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from 'react-apollo/test-utils';
+import { MockedProvider } from '@apollo/react-testing';
 import { titleCase } from 'lib/utils';
 import CategoryDropdown, { CATEGORIES_QUERY } from './CategoryDropdown';
 import { categories } from './mocks';
 
-jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
+jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
 const props = {
   id: '123xyz',
@@ -76,7 +76,24 @@ const EmptyComponent = (
   </MockedProvider>
 );
 
+const suppressActWarning = consoleError => {
+  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+
+  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
+    if ( !args[0].includes( actMsg ) ) {
+      consoleError( ...args );
+    }
+  } );
+};
+
 describe( '<CategoryDropdown />', () => {
+  const consoleError = console.error;
+
+  beforeAll( () => suppressActWarning( consoleError ) );
+  afterAll( () => {
+    console.error = consoleError;
+  } );
+
   it( 'renders loading state without crashing', () => {
     const wrapper = mount( Component );
     const catDropdown = wrapper.find( 'CategoryDropdown' );
@@ -88,6 +105,7 @@ describe( '<CategoryDropdown />', () => {
 
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
+
     await wait( 0 );
     wrapper.update();
     const catDropdown = wrapper.find( 'CategoryDropdown' );
@@ -99,6 +117,7 @@ describe( '<CategoryDropdown />', () => {
 
   it( 'does not crash if categories is null', async () => {
     const wrapper = mount( NullComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -108,6 +127,7 @@ describe( '<CategoryDropdown />', () => {
 
   it( 'does not crash if categories is []', async () => {
     const wrapper = mount( EmptyComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -117,6 +137,7 @@ describe( '<CategoryDropdown />', () => {
 
   it( 'renders the final state without crashing', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -135,9 +156,10 @@ describe( '<CategoryDropdown />', () => {
 
   it( 'assigns a matching id & htmlFor value to the Dropdown and label, respectively', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
-    const dropdown = wrapper.find( 'Dropdown > div' );
+    const dropdown = wrapper.find( 'Dropdown div[name="categories"]' );
     const label = wrapper.find( 'label' );
 
     expect( dropdown.prop( 'id' ) ).toEqual( props.id );

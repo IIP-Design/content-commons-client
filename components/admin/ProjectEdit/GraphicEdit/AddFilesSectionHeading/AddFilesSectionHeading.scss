@@ -1,0 +1,20 @@
+@import "styles/mixins.scss";
+
+.add-files-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1.5rem;
+
+  > .headline {
+    margin-bottom: 0;
+  }
+
+  .ui.button {
+    &.primary {
+      @include ghost-button;
+      padding-left: 1.5em;
+      padding-right: 1.5em;
+    }
+  }
+}

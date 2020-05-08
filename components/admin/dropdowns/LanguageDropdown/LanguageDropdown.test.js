@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from 'react-apollo/test-utils';
+import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
 import { addEmptyOption } from 'lib/utils';
 import LanguageDropdown, { LANGUAGES_QUERY } from './LanguageDropdown';
@@ -84,7 +84,24 @@ const EmptyComponent = (
   </MockedProvider>
 );
 
+const suppressActWarning = consoleError => {
+  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+
+  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
+    if ( !args[0].includes( actMsg ) ) {
+      consoleError( ...args );
+    }
+  } );
+};
+
 describe( '<LanguageDropdown />', () => {
+  const consoleError = console.error;
+
+  beforeAll( () => suppressActWarning( consoleError ) );
+  afterAll( () => {
+    console.error = consoleError;
+  } );
+
   it( 'renders loading state without crashing', () => {
     const wrapper = mount( Component );
     const dropdown = wrapper.find( 'LanguageDropdown' );
@@ -96,6 +113,7 @@ describe( '<LanguageDropdown />', () => {
 
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
+
     await wait( 0 );
     wrapper.update();
     const dropdown = wrapper.find( 'LanguageDropdown' );
@@ -107,34 +125,41 @@ describe( '<LanguageDropdown />', () => {
 
   it( 'does not crash if languages is null', async () => {
     const wrapper = mount( NullComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
-    const emptyOption = [{
-      key: '-',
-      text: '-',
-      value: null
-    }];
+    const emptyOption = [
+      {
+        key: '-',
+        text: '-',
+        value: null
+      }
+    ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
   } );
 
   it( 'does not crash if languages is []', async () => {
     const wrapper = mount( EmptyComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
-    const emptyOption = [{
-      key: '-',
-      text: '-',
-      value: null
-    }];
+    const emptyOption = [
+      {
+        key: '-',
+        text: '-',
+        value: null
+      }
+    ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
   } );
 
   it( 'renders the final state without crashing', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -153,12 +178,14 @@ describe( '<LanguageDropdown />', () => {
 
   it( 'renders the final state without crashing when there are multiple locales', async () => {
     const wrapper = mount( LocalesComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
     const dropdownItems = wrapper.find( 'DropdownItem' );
     const filteredLangs = languages.filter( lang => {
       const { locale } = lang;
+
       return localesProps.locales.includes( locale );
     } );
     const semanticUILangs = sortBy( filteredLangs, lang => lang.displayName )
@@ -175,9 +202,10 @@ describe( '<LanguageDropdown />', () => {
 
   it( 'assigns a matching id & htmlFor value to the Dropdown and label, respectively', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
-    const dropdown = wrapper.find( 'Dropdown > div' );
+    const dropdown = wrapper.find( 'Dropdown div[name="language"]' );
     const label = wrapper.find( 'label' );
 
     expect( dropdown.prop( 'id' ) ).toEqual( props.id );

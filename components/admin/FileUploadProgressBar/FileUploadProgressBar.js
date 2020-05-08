@@ -24,12 +24,13 @@ const FileUploadProgressBar = props => {
   useEffect( () => {
     const loaded = filesToUpload.reduce( ( acc, curr ) => acc + curr.loaded, 0 );
     const completed = filesToUpload.filter( file => file.loaded === file.input.size );
+
     setUploadCompleted( loaded );
     setNumCompleted( completed.length );
   }, [filesToUpload] );
 
   useEffect( () => {
-    if ( ( uploadCount ) === numCompleted ) {
+    if ( uploadCount === numCompleted ) {
       if ( onComplete ) {
         onComplete();
       }
@@ -41,6 +42,7 @@ const FileUploadProgressBar = props => {
     if ( numCompleted === uploadCount ) {
       return <b>Saving file metadata</b>;
     }
+
     return <div style={ { marginTop: '2px' } }><b>Uploading files:</b> { numCompleted + 1 } of { uploadCount }</div>;
   };
 
@@ -61,12 +63,9 @@ const FileUploadProgressBar = props => {
         size={ barSize }
         active
       >
-        <div className={ `file-progress--label ${labelAlign}` }>{ renderLabel() }</div>
+        { label && <div className={ `file-progress--label ${labelAlign}` }>{ renderLabel() }</div> }
       </Progress>
-      { showPercent && (
-      <span>{ percentComplete() }</span>
-      ) }
-
+      { showPercent && <span>{ percentComplete() }</span> }
     </div>
   );
 };

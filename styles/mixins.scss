@@ -1,5 +1,10 @@
 @import "styles/colors.scss";
 
+@mixin focus-styling {
+  outline: 2px dotted $medium-grey;
+  outline-offset: 2px;
+}
+
 // base button styles to override Semantic
 @mixin base-button {
   padding-top: 0.785714em;
@@ -10,8 +15,7 @@
   &:focus,
   &.basic.buttons .button:focus,
   &.basic:focus {
-    outline: 2px dotted $medium-grey;
-    outline-offset: 2px;
+    @include focus-styling;
   }
 
   &.disabled,
@@ -126,4 +130,20 @@
   .uppercase {
     text-transform: uppercase;
   }
+}
+
+@mixin button-style-reset(
+  $font-family: inherit,
+  $font-size: 1rem,
+  $color: inherit,
+  $text-align: left
+) {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  font-family: $font-family;
+  font-size: $font-size;
+  color: $color;
+  text-align: $text-align;
+  background-color: transparent;
 }

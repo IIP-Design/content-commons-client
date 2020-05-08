@@ -5,13 +5,15 @@ import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import trim from 'lodash/trim';
 import isEmpty from 'lodash/isEmpty';
+import { GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
 import { VIDEO_PROJECT_QUERY } from 'lib/graphql/queries/video';
 
 // using dynamic import so that components load when they are needed, or rendered
+const GraphicEdit = dynamic( () => import( /* webpackChunkName: "graphicEdit" */ 'components/admin/ProjectEdit/GraphicEdit/GraphicEdit' ) );
 const VideoEdit = dynamic( () => import( /* webpackChunkName: "videoEdit" */ 'components/admin/ProjectEdit/VideoEdit/VideoEdit' ) );
 const VideoReview = dynamic( () => import( /* webpackChunkName: "videoReview" */ 'components/admin/ProjectReview/VideoReview/VideoReview' ) );
 
-const CONTENT_TYPES = ['video'];
+const CONTENT_TYPES = ['graphic', 'video'];
 
 const allowedContentTypes = content => content && CONTENT_TYPES.includes( trim( content ) );
 
@@ -21,6 +23,9 @@ const allowedContentTypes = content => content && CONTENT_TYPES.includes( trim( 
  */
 const getProjectQuery = content => {
   switch ( content ) {
+    case 'graphic':
+      return GRAPHIC_PROJECT_QUERY;
+
     case 'video':
       return VIDEO_PROJECT_QUERY;
 
@@ -34,9 +39,19 @@ const ProjectPage = props => {
   const isValidPath = query => query && allowedContentTypes( query.content );
 
   const loadEditComponent = () => {
-    if ( props.query.content === 'video' ) {
-      return <VideoEdit id={ props.query.id } />;
+    switch ( props.query.content ) {
+      case 'video':
+        return <VideoEdit id={ props.query.id } />;
+
+      case 'graphic':
+        return <GraphicEdit id={ props.query.id } />;
+
+      default:
+        return null;
     }
+    // if ( props.query.content === 'video' ) {
+    //   return <VideoEdit id={ props.query.id } />;
+    // }
   };
 
   const loadReviewComponent = () => {

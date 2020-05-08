@@ -125,6 +125,42 @@ const VideoProjectDetailsForm = props => {
 
   const renderContent = formikProps => {
     setIsFormValid( formikProps.isValid );
+    const config = {
+      headline: 'Project Data',
+      projectTitle: {
+        label: 'Project Title',
+        required: true
+      },
+      visibility: {
+        label: 'Visibility Setting',
+        required: true
+      },
+      author: {
+        label: 'Author',
+        required: false
+      },
+      team: {
+        label: 'Team',
+        required: false
+      },
+      categories: {
+        label: 'Categories',
+        required: true
+      },
+      tags: {
+        label: 'Tags',
+        required: false
+      },
+      descPublic: {
+        label: 'Public Description',
+        required: false
+      },
+      descInternal: {
+        label: 'Internal Description',
+        required: false
+      }
+    };
+
     return (
       <>
         <Notification
@@ -138,7 +174,12 @@ const VideoProjectDetailsForm = props => {
           show={ showNotification }
           msg="Changes saved"
         />
-        <ProjectDetailsForm { ...formikProps } { ...props } save={ save } />
+        <ProjectDetailsForm
+          { ...formikProps }
+          { ...props }
+          config={ config }
+          save={ save }
+        />
       </>
     );
   };
