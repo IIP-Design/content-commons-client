@@ -18,7 +18,7 @@
     }
   }
 
-  &.hidden {
+  &.unavailable {
     .ui.button {
       &.primary {
         visibility: hidden;

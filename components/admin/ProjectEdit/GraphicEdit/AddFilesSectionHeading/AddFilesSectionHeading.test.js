@@ -31,7 +31,7 @@ describe( '<AddFilesSectionHeading />', () => {
 
     expect( div.exists() ).toEqual( true );
     expect( wrapper.prop( 'projectId' ) ).toEqual( props.projectId );
-    expect( div.hasClass( 'display' ) ).toEqual( true );
+    expect( div.hasClass( 'available' ) ).toEqual( true );
   } );
 
   it( 'renders the correct div wrapper className value if !projectId', () => {
@@ -41,7 +41,7 @@ describe( '<AddFilesSectionHeading />', () => {
 
     expect( div.exists() ).toEqual( true );
     expect( wrapper.prop( 'projectId' ) ).toEqual( '' );
-    expect( div.hasClass( 'hidden' ) ).toEqual( true );
+    expect( div.hasClass( 'unavailable' ) ).toEqual( true );
   } );
 
   it( 'renders the correct HeadlineElement', () => {
