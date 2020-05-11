@@ -13,20 +13,18 @@ const AddFilesSectionHeading = props => {
   } = props;
 
   return (
-    <div className="add-files-section-heading">
+    <div className={ `add-files-section-heading ${projectId ? 'display' : 'hidden'}` }>
       <HeadlineElement className="headline uppercase">
         { title }
       </HeadlineElement>
-      { projectId
-        && (
-          <ButtonAddFiles
-            accept={ acceptedFileTypes }
-            onChange={ handleAddFiles }
-            multiple
-          >
-            + Add Files
-          </ButtonAddFiles>
-        ) }
+
+      <ButtonAddFiles
+        accept={ acceptedFileTypes }
+        onChange={ handleAddFiles }
+        multiple
+      >
+        + Add Files
+      </ButtonAddFiles>
     </div>
   );
 };

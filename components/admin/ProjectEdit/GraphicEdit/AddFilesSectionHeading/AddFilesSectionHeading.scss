@@ -17,4 +17,12 @@
       padding-right: 1.5em;
     }
   }
+
+  &.hidden {
+    .ui.button {
+      &.primary {
+        visibility: hidden;
+      }
+    }
+  }
 }
