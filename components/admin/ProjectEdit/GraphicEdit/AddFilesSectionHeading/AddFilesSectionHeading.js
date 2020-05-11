@@ -13,7 +13,7 @@ const AddFilesSectionHeading = props => {
   } = props;
 
   return (
-    <div className={ `add-files-section-heading ${projectId ? 'display' : 'hidden'}` }>
+    <div className={ `add-files-section-heading ${projectId ? 'available' : 'unavailable'}` }>
       <HeadlineElement className="headline uppercase">
         { title }
       </HeadlineElement>
