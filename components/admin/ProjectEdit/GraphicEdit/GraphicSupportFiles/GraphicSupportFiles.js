@@ -14,7 +14,7 @@ import './GraphicSupportFiles.scss';
 
 const GraphicSupportFiles = props => {
   const {
-    projectId, headline, helperText, files, updateNotification
+    projectId, headline, helperText, files, updateNotification,
   } = props;
   const [fileIdToDelete, setFileIdToDelete] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
@@ -36,14 +36,14 @@ const GraphicSupportFiles = props => {
         data: {
           supportFiles: {
             'delete': {
-              id
-            }
-          }
+              id,
+            },
+          },
         },
         where: {
-          id: projectId
-        }
-      }
+          id: projectId,
+        },
+      },
     } )
       .then( showNotification )
       .then( handleReset )
@@ -60,20 +60,20 @@ const GraphicSupportFiles = props => {
               data: {
                 language: {
                   connect: {
-                    id: value
-                  }
-                }
+                    id: value,
+                  },
+                },
               },
               where: {
-                id
-              }
-            }
-          }
+                id,
+              },
+            },
+          },
         },
         where: {
-          id: projectId
-        }
-      }
+          id: projectId,
+        },
+      },
     } )
       .then( showNotification )
       .then( handleReset )
@@ -116,6 +116,7 @@ const GraphicSupportFiles = props => {
                     className="language"
                     value={ file.language.id }
                     onChange={ handleLanguageChange }
+                    disabled={ !projectId }
                     required
                   />
                 ) }
@@ -172,7 +173,7 @@ GraphicSupportFiles.propTypes = {
   headline: PropTypes.string,
   helperText: PropTypes.string,
   files: PropTypes.array,
-  updateNotification: PropTypes.func
+  updateNotification: PropTypes.func,
 };
 
 export default GraphicSupportFiles;
