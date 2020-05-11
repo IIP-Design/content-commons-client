@@ -8,10 +8,11 @@ const buildFileSchema = value => {
         .ensure()
         .required( 'A language is required' ),
       style: Yup.string()
+        .ensure()
         .required( 'A graphic style is required.' ),
       social: Yup.array()
         .min( 1, 'At least 1 social platform is required.' )
-        .required( 'A social platform is required.' )
+        .required( 'A social platform is required.' ),
     } )
   ) );
 
