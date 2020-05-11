@@ -202,6 +202,7 @@ const GraphicFilesForm = props => {
                   value={ value.title || '' }
                   onChange={ handleOnChange }
                   className={ language.textDirection }
+                  disabled={ !projectId }
                 />
               </div>
 
@@ -215,6 +216,7 @@ const GraphicFilesForm = props => {
                     value={ value.language || '' }
                     error={ isTouched( id, 'language' ) && !value.language }
                     onChange={ handleOnChange }
+                    disabled={ !projectId }
                     required
                   />
                   <p className="error-message">
@@ -231,6 +233,7 @@ const GraphicFilesForm = props => {
                     value={ value.style || '' }
                     error={ isTouched( id, 'style' ) && !value.style }
                     onChange={ handleOnChange }
+                    disabled={ !projectId }
                     required
                   />
                   <p className="error-message">
@@ -248,6 +251,7 @@ const GraphicFilesForm = props => {
                   value={ value.social || '' }
                   error={ isTouched( id, 'social' ) && !value.social }
                   onChange={ handleOnChange }
+                  disabled={ !projectId }
                   multiple
                   search
                   closeOnBlur
