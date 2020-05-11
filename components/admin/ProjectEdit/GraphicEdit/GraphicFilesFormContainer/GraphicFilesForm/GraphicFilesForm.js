@@ -123,7 +123,7 @@ const GraphicFilesForm = props => {
             : filename;
           const intrinsicRatio = dimensions
             ? ( dimensions.height / dimensions.width ) * 100
-            : 56.25;
+            : 66.67; // standard 3:2 aspect ratio for most photographs
 
           return (
             <fieldset
