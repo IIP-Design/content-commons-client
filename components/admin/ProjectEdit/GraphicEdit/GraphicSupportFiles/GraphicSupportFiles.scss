@@ -28,6 +28,16 @@
       align-items: center;
       justify-content: space-between;
 
+      &.unavailable {
+        .filename {
+          color: $medium-grey;
+        }
+
+        .FileRemoveReplaceButtonGroup__btn-group {
+          visibility: hidden;
+        }
+      }
+
       .filename {
         padding-top: 0.625rem;
         padding-bottom: 0.625rem;
