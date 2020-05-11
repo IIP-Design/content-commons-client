@@ -39,17 +39,26 @@
     .image-wrapper {
       position: relative;
       margin-bottom: 1rem;
+      height: 0;
 
       > .thumbnail {
+        position: absolute;
+        top: 0;
+        left: 0;
         display: block;
+        font-size: 0.777777778rem;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        word-break: break-word;
+
+        &.fluid {
+          height: auto;
+          width: 100%;
+          max-width: 100%;
+        }
       }
 
-      .fluid {
-        height: auto;
-        width: 100%;
-        max-width: 100%;
-      }
-
+      // trash can overlay
       &::before {
         content: '';
         display: block;
@@ -62,11 +71,18 @@
         transition: all 200ms linear;
       }
 
+      // hide the trash can if no projectId
+      &.unavailable {
+        .ui.basic.buttons.FileRemoveReplaceButtonGroup__btn-group {
+          display: none;
+        }
+      }
+
       .ui.basic.buttons.FileRemoveReplaceButtonGroup__btn-group {
         position: absolute;
         top: 0;
         right: 0;
-        z-index: 10;
+        z-index: 50;
         height: 44px;
         width: 44px;
 
@@ -102,20 +118,22 @@
         }
       }
 
-      &:hover {
-        &::before {
-          opacity: 1;
-        }
-
-        .ui.basic.buttons.FileRemoveReplaceButtonGroup__btn-group {
-          > .ui.button {
+      &.available {
+        &:hover {
+          &::before {
             opacity: 1;
           }
-        }
 
-        // .meta-wrap {
-        //   background-color: transparent;
-        // }
+          .ui.basic.buttons.FileRemoveReplaceButtonGroup__btn-group {
+            > .ui.button {
+              opacity: 1;
+            }
+          }
+
+          // .meta-wrap {
+          //   background-color: transparent;
+          // }
+        }
       }
 
       .meta-wrap {
@@ -138,6 +156,7 @@
           .filename {
             .truncated {
               @include button-style-reset($font-size: inherit);
+              text-shadow: 0px 0px 4px #000;
 
               &:focus {
                 @include focus-styling;
@@ -161,14 +180,20 @@
         display: block;
         height: 100%;
         width: 100%;
-        background-image: linear-gradient(transparent 50%, $grey-medium-transparent 90%);
+        background-image: linear-gradient(
+          rgba(0, 0, 0, 0.05) 0%,
+          rgba(0, 0, 0, 0.10) 55%,
+          $grey-medium-transparent 90%
+        );
       }
 
-      .placeholder {
-        position: relative;
-        width: 260px;
-        height: 120px;
-        background-color: $light-grey; //$ice-blue;
+      &.unavailable {
+        &::after {
+          background-image: linear-gradient(
+            rgba(0, 0, 0, 0.05) 0%,
+            $grey-medium-transparent 90%
+          );
+        }
       }
     }
 

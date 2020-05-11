@@ -67,18 +67,18 @@ const GraphicFilesForm = props => {
     isTouched( id, field ) ? errors?.[id] && errors[id][field] : ''
   );
 
-  const renderThumbnail = image => {
-    if ( image ) {
+  const renderThumbnail = ( image, filename ) => {
+    if ( image?.signedUrl ) {
       return (
         <img
           src={ image.signedUrl }
-          alt={ image.alt }
+          alt={ image.alt || filename }
           className="thumbnail fluid"
         />
       );
     }
 
-    return <div className="placeholder" />;
+    return <div className="thumbnail placeholder" />;
   };
 
   const uploadInProgress = false; // temp
@@ -116,11 +116,14 @@ const GraphicFilesForm = props => {
 
       <Form className="form-fields">
         { files.map( file => {
-          const { id, filename, filesize, language } = file;
+          const { id, dimensions, filename, filesize, language } = file;
           const value = values[id];
           const name = filename?.length > 30
             ? truncateAndReplaceStr( filename, 20, 10 )
             : filename;
+          const intrinsicRatio = dimensions
+            ? ( dimensions.height / dimensions.width ) * 100
+            : 56.25;
 
           return (
             <fieldset
@@ -132,8 +135,13 @@ const GraphicFilesForm = props => {
                 { `edit fields for ${filename}` }
               </VisuallyHidden>
 
-              <div className="image-wrapper">
-                { renderThumbnail( file ) }
+              <div
+                className={ `image-wrapper ${projectId ? 'available' : 'unavailable'}` }
+                style={ {
+                  paddingTop: `${intrinsicRatio}%`,
+                } }
+              >
+                { renderThumbnail( file, filename ) }
 
                 <FileRemoveReplaceButtonGroup
                   onRemove={ () => {
