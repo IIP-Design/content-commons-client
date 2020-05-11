@@ -12,25 +12,36 @@ import makeStore from 'lib/redux/store';
 import 'styles/styles.scss';
 
 class Commons extends App {
-  static async getInitialProps( { Component, ctx } ) {
+  componentDidMount() {
+    const noscript = document.createElement("noscript"); // Create the noscript element
+
+    const ga = document.createTextNode(`<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTQJVZD&gtm_auth=l-Fvm9iNgppOq80TmTKskg&gtm_preview=env-2&gtm_cookies_win=x"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe>`); // Create the iframe snippet
+
+    noscript.appendChild(ga); // Append the ga iframe snippet to the noscript element
+
+    document.body.appendChild(noscript); // Add the noscript to the body
+  }
+
+  static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
 
     // if user does not have appropriate page permissions redirect 
-    if ( !( await canAccessPage( ctx ) ) ) {
+    if (!(await canAccessPage(ctx))) {
       // only redirect if we are going to login
-      if ( ctx.pathname !== '/login' ) {  
+      if (ctx.pathname !== '/login') {
         // add redirect url as a query param
         // cannot use client side storage or libraries as this is executing on the server 
-        redirectTo( `/login?return=${ctx.asPath}`, ctx );
+        redirectTo(`/login?return=${ctx.asPath}`, ctx);
       }
     }
 
-    if ( Component.getInitialProps ) {
-      pageProps = await Component.getInitialProps( ctx );
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx);
     }
 
     // exposes apollo query to component
-    if ( !isEmpty( ctx.query ) ) {
+    if (!isEmpty(ctx.query)) {
       pageProps.query = ctx.query;
     }
 
@@ -43,11 +54,11 @@ class Commons extends App {
     } = this.props;
 
     return (
-      <ApolloProvider client={ apollo }>
+      <ApolloProvider client={apollo}>
         <AuthProvider>
-          <Provider store={ store }>
+          <Provider store={store}>
             <Page>
-              <Component { ...pageProps } />
+              <Component {...pageProps} />
             </Page>
           </Provider>
         </AuthProvider>
@@ -56,4 +67,4 @@ class Commons extends App {
   }
 }
 
-export default withApollo( withRedux( makeStore )( Commons ) );
+export default withApollo(withRedux(makeStore)(Commons));
