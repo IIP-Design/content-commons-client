@@ -6,9 +6,8 @@ import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import sortBy from 'lodash/sortBy';
 import gql from 'graphql-tag';
-
-import '../dropdown.scss';
 import { addEmptyOption } from 'lib/utils';
+import '../dropdown.scss';
 
 const GRAPHIC_STYLES_QUERY = gql`
   query GRAPHIC_STYLES_QUERY {
