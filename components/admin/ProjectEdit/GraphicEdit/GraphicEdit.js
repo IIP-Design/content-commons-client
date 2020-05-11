@@ -227,6 +227,24 @@ const GraphicEdit = props => {
     //   addProjectIdToUrl( id );
   };
 
+  const getInitialFiles = type => {
+    const initialSupportFiles = [];
+    const initialGraphicFiles = [];
+
+    if ( initialData?.data?.files ) {
+      initialData.data.files.forEach( file => {
+        // can also use __typename if provided
+        if ( file.style && file.social ) {
+          initialGraphicFiles.push( file );
+        } else {
+          initialSupportFiles.push( file );
+        }
+      } );
+    }
+
+    return type === 'graphicFiles' ? initialGraphicFiles : initialSupportFiles;
+  };
+
   const getSupportFiles = type => {
     const editableExtensions = [
       '.psd', '.ai', '.ae', '.eps', '.jpg', '.jpeg', '.png',
@@ -234,9 +252,13 @@ const GraphicEdit = props => {
     const editableFiles = [];
     const additionalFiles = [];
 
-    if ( data?.graphicProject?.supportFiles ) {
-      const { supportFiles } = data.graphicProject;
+    const initialFiles = getInitialFiles( 'supportFiles' );
 
+    const supportFiles = ( projectId && data?.graphicProject?.supportFiles
+      ? data.graphicProject.supportFiles
+      : initialFiles ) || [];
+
+    if ( supportFiles.length > 0 ) {
       supportFiles.forEach( file => {
         const extension = getFileExt( file.filename );
 
