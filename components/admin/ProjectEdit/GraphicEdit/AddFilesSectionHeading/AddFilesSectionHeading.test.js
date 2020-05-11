@@ -3,14 +3,14 @@ import AddFilesSectionHeading from './AddFilesSectionHeading';
 
 jest.mock(
   'components/ButtonAddFiles/ButtonAddFiles',
-  () => function ButtonAddFiles() { return ''; }
+  () => function ButtonAddFiles() { return ''; },
 );
 
 const props = {
   projectId: 'project-123',
   title: 'Graphics in Project',
   acceptedFileTypes: 'image/gif, image/jpeg, image/png',
-  handleAddFiles: jest.fn()
+  handleAddFiles: jest.fn(),
 };
 
 describe( '<AddFilesSectionHeading />', () => {
@@ -26,10 +26,22 @@ describe( '<AddFilesSectionHeading />', () => {
     expect( wrapper.exists() ).toEqual( true );
   } );
 
-  it( 'renders the correct div wrapper className value', () => {
+  it( 'renders the correct div wrapper className value if projectId', () => {
     const div = wrapper.find( 'div.add-files-section-heading' );
 
     expect( div.exists() ).toEqual( true );
+    expect( wrapper.prop( 'projectId' ) ).toEqual( props.projectId );
+    expect( div.hasClass( 'display' ) ).toEqual( true );
+  } );
+
+  it( 'renders the correct div wrapper className value if !projectId', () => {
+    wrapper.setProps( { projectId: '' } );
+    wrapper.update();
+    const div = wrapper.find( 'div.add-files-section-heading' );
+
+    expect( div.exists() ).toEqual( true );
+    expect( wrapper.prop( 'projectId' ) ).toEqual( '' );
+    expect( div.hasClass( 'hidden' ) ).toEqual( true );
   } );
 
   it( 'renders the correct HeadlineElement', () => {
