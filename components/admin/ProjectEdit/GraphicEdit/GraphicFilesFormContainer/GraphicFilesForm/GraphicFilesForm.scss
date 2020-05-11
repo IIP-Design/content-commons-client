@@ -218,5 +218,15 @@
         }
       }
     }
+
+    &.ui.form {
+      .disabled.field {
+        opacity: 1;
+
+        // > label {
+        //   opacity: 1;
+        // }
+      }
+    }
   }
 }
