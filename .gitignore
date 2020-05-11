@@ -9,7 +9,8 @@ node_modules
 .next
 .vscode
 
-#testing
+# testing
+coverage/
 cypress/screenshots/
 cypress/videos/
 pages/admin/test.js
