@@ -89,7 +89,7 @@ const GraphicSupportFiles = props => {
           : filename;
 
         return (
-          <li key={ id } className="support-file-item">
+          <li key={ id } className={ `support-file-item ${projectId ? 'available' : 'unavailable'}` }>
             <span className="filename">
               { filename !== name
                 ? (
