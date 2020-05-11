@@ -273,7 +273,10 @@ const GraphicEdit = props => {
     return type === 'editable' ? editableFiles : additionalFiles;
   };
 
-  const graphicFiles = data?.graphicProject?.images || [];
+  const graphicFiles = projectId
+    ? data?.graphicProject?.images || []
+    : getInitialFiles( 'graphicFiles' );
+
   const supportFilesConfig = [
     {
       headline: 'editable files',
