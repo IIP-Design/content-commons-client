@@ -4,7 +4,7 @@
 .edit-package {
   @media screen and (max-width: 550px) {
     .project_buttons {
-      @include two-column-layout;
+      @include multi-column-layout;
     }
   }
 
