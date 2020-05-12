@@ -73,12 +73,12 @@ const GraphicFilesForm = props => {
         <img
           src={ image.signedUrl }
           alt={ image.alt || filename }
-          className="thumbnail fluid"
+          className="thumbnail"
         />
       );
     }
 
-    return <div className="thumbnail placeholder" />;
+    return null;
   };
 
   const uploadInProgress = false; // temp
@@ -116,14 +116,11 @@ const GraphicFilesForm = props => {
 
       <Form className="form-fields">
         { files.map( file => {
-          const { id, dimensions, filename, filesize, language } = file;
+          const { id, filename, filesize, language } = file;
           const value = values[id];
           const name = filename?.length > 30
             ? truncateAndReplaceStr( filename, 20, 10 )
             : filename;
-          const intrinsicRatio = dimensions
-            ? ( dimensions.height / dimensions.width ) * 100
-            : 66.67; // standard 3:2 aspect ratio for most photographs
 
           return (
             <fieldset
@@ -137,9 +134,6 @@ const GraphicFilesForm = props => {
 
               <div
                 className={ `image-wrapper ${projectId ? 'available' : 'unavailable'}` }
-                style={ {
-                  paddingTop: `${intrinsicRatio}%`,
-                } }
               >
                 { renderThumbnail( file, filename ) }
 

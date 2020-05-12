@@ -1,15 +1,19 @@
 @import "styles/colors.scss";
 @import "styles/mixins.scss";
 
+$image-height: 12rem;
+
 .graphic-project-graphic-files {
   .no-files {
-    font-size: 0.888888889rem
+    font-size: 0.888888889rem;
   }
 
   .form-fields {
-    display: grid;
-    grid-template-columns: repeat( auto-fill, minmax( 300px, 0.5fr ) );
-    gap: 2rem;
+    @include multi-column-layout(
+      $length: auto-fill,
+      $flex: minmax( 300px, 0.5fr ),
+      $gap: 2rem
+    );
 
     fieldset {
       &[class^="graphic-file"] {
@@ -27,9 +31,11 @@
     }
 
     .two-col {
-      display: grid;
-      grid-template-columns: repeat( auto-fill, minmax( 150px, 1fr ) );
-      grid-column-gap: 1rem;
+      @include multi-column-layout(
+        $length: auto-fill,
+        $flex: minmax( 150px, 1fr ),
+        $gap: 1rem
+      );
     }
 
     .error-message {
@@ -38,43 +44,44 @@
 
     .image-wrapper {
       position: relative;
+      display: grid;
+      align-items: center;
+      grid-template-areas: 'card';
+      height: $image-height;
       margin-bottom: 1rem;
-      height: 0;
-      // overflow: hidden;
+      background-image: linear-gradient(
+        rgba(0, 0, 0, 0.05) 0%,
+        $grey-medium-transparent 90%
+      );
 
       > .thumbnail {
-        position: absolute;
-        top: 0;
-        left: 0;
+        grid-area: card;
         display: block;
+        height: auto;
+        max-height: $image-height;
+        width: 100%;
+        object-fit: contain;
         font-size: 0.777777778rem;
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-        word-break: break-word;
-
-        &.fluid {
-          height: auto;
-          width: 100%;
-          max-width: 100%;
-        }
+        @include wrap-text;
       }
 
       // trash can overlay
-      &::before {
-        content: '';
-        display: block;
+      &.available::before {
         position: absolute;
         top: 0;
         bottom: 0;
-        z-index: 50;
+        content: '';
+        display: block;
         width: 100%;
         background-color: $grey-medium-transparent;
         opacity: 0;
         transition: all 200ms linear;
       }
 
-      // hide the trash can if no projectId
       &.unavailable {
+        height: $image-height;
+
+        // hide the trash can if no projectId
         .ui.basic.buttons.FileRemoveReplaceButtonGroup__btn-group {
           display: none;
         }
@@ -122,6 +129,7 @@
 
       &.available {
         &:hover {
+          // display the trash can overlay
           &::before {
             opacity: 1;
           }
@@ -131,21 +139,16 @@
               opacity: 1;
             }
           }
-
-          // .meta-wrap {
-          //   background-color: transparent;
-          // }
         }
       }
 
       .meta-wrap {
         position: absolute;
         bottom: 0;
-        z-index: 100;
+        z-index: 10;
         padding: 0.5rem;
         width: 100%;
-        // background-color: $grey-medium-transparent;
-        // transition: all 200ms linear;
+        background-color: $grey-medium-transparent;
 
         > .meta {
           display: flex;
@@ -153,48 +156,23 @@
           justify-content: space-between;
           font-size: 0.666666667rem;
           color: #fff;
-          text-shadow: 0px 0px 4px #000;
+          @include text-shadow;
 
           .filename {
             .truncated {
               @include button-style-reset($font-size: inherit);
-              text-shadow: 0px 0px 4px #000;
+              @include text-shadow;
 
               &:focus {
                 @include focus-styling;
               }
 
               &::after {
-                overflow-wrap: break-word;
-                word-wrap: break-word;
-                word-break: break-word;
+                @include wrap-text;
                 width: 12rem;
               }
             }
           }
-        }
-      }
-
-      &::after {
-        position: absolute;
-        bottom: 0;
-        content: '';
-        display: block;
-        height: 100%;
-        width: 100%;
-        background-image: linear-gradient(
-          rgba(0, 0, 0, 0.05) 0%,
-          rgba(0, 0, 0, 0.10) 55%,
-          $grey-medium-transparent 90%
-        );
-      }
-
-      &.unavailable {
-        &::after {
-          background-image: linear-gradient(
-            rgba(0, 0, 0, 0.05) 0%,
-            $grey-medium-transparent 90%
-          );
         }
       }
     }
@@ -215,8 +193,8 @@
 
       .file-progress--wrapper {
         .ui.progress.active {
-          margin-bottom: 0;
           margin-top: 7px;
+          margin-bottom: 0;
         }
       }
     }
