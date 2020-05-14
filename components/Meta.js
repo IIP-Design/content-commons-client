@@ -1,6 +1,13 @@
 import Head from 'next/head';
 import React from 'react';
 import PropTypes from 'prop-types';
+import getConfig from 'next/config';
+
+const {
+  publicRuntimeConfig: {
+    REACT_APP_GOOGLE_ANALYTICS_ID
+  }
+} = getConfig();
 
 const Meta = props => (
   <Head>
@@ -9,7 +16,7 @@ const Meta = props => (
       (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
       j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl+ '&gtm_auth=l-Fvm9iNgppOq80TmTKskg&gtm_preview=env-2&gtm_cookies_win=x';f.parentNode.insertBefore(j,f);
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl+ '&gtm_auth=${REACT_APP_GOOGLE_ANALYTICS_ID}&gtm_cookies_win=x';f.parentNode.insertBefore(j,f);
       })(window,document,'script','dataLayer','GTM-NTQJVZD');
         `
     }}
