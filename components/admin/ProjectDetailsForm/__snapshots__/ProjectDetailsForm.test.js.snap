@@ -336,7 +336,7 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                     id="descPublic"
                     label="Public Description"
                     name="descPublic"
-                    onChange={[MockFunction]}
+                    onChange={[Function]}
                     value="public description"
                   >
                     <div
@@ -351,7 +351,7 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                         as="textarea"
                         id="descPublic"
                         name="descPublic"
-                        onChange={[MockFunction]}
+                        onChange={[Function]}
                         rows={3}
                         value="public description"
                       >
@@ -403,7 +403,7 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                       id="descInternal"
                       label="Internal Description"
                       name="descInternal"
-                      onChange={[MockFunction]}
+                      onChange={[Function]}
                       value="internal description"
                     >
                       <div
@@ -418,7 +418,7 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                           as="textarea"
                           id="descInternal"
                           name="descInternal"
-                          onChange={[MockFunction]}
+                          onChange={[Function]}
                           rows={3}
                           value="internal description"
                         >
@@ -476,7 +476,7 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                       id="alt"
                       label="Alt (Alternative) Text"
                       name="alt"
-                      onChange={[MockFunction]}
+                      onChange={[Function]}
                       value="some alt text"
                     >
                       <div
@@ -491,7 +491,7 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                           as="textarea"
                           id="alt"
                           name="alt"
-                          onChange={[MockFunction]}
+                          onChange={[Function]}
                           rows={3}
                           value="some alt text"
                         >
