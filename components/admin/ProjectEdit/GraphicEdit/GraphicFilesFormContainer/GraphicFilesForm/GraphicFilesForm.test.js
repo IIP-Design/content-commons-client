@@ -500,3 +500,52 @@ describe( '<GraphicFilesForm />, when a projectId does not exist', () => {
     expect( imgWrapper.hasClass( 'unavailable' ) ).toEqual( true );
   } );
 } );
+
+describe( '<GraphicFilesForm />, when there is a long file name', () => {
+  const consoleError = console.error;
+
+  beforeAll( () => suppressActWarning( consoleError ) );
+  afterAll( () => {
+    console.error = consoleError;
+  } );
+
+  let Component;
+  let wrapper;
+  let graphicsForm;
+  let fieldsets;
+
+
+  const newProps = {
+    ...props,
+    files: [
+      {
+        ...props.files[0],
+        filename: '4_3_Serious_aieaue_kaienwiz_ke8akcua_aeicaie_eiamwyz_TW.jpg',
+      },
+    ],
+  };
+
+  const { id: fileId, filename } = newProps.files[0];
+
+  beforeEach( () => {
+    Component = (
+      <MockedProvider mocks={ [] } addTypename>
+        <GraphicFilesForm { ...newProps } />
+      </MockedProvider>
+    );
+
+    wrapper = mount( Component );
+    graphicsForm = wrapper.find( 'GraphicFilesForm' );
+    fieldsets = graphicsForm.find( 'fieldset' );
+  } );
+
+  it( 'renders a truncated filename with the full filename visually hidden', () => {
+    const imgWrapper = fieldsets.find( `.graphic-file-${fileId} > .image-wrapper` );
+    const btn = imgWrapper.find( '.filename.truncated' );
+    const visuallyHidden = imgWrapper.find( '.hide-visually' );
+
+    expect( btn.prop( 'tooltip' ) ).toEqual( filename );
+    expect( btn.text() ).toEqual( '4_3_Serious_aieaue_k...wyz_TW.jpg' );
+    expect( visuallyHidden.text() ).toEqual( filename );
+  } );
+} );
