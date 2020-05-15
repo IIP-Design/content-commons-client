@@ -140,12 +140,6 @@ describe( '<GraphicFilesFormContainer />', () => {
     expect( formContainer.prop( 'files' ) ).toEqual( props.files );
   } );
 
-  it( 'renders the correct div className value', () => {
-    const div = wrapper.find( 'div.graphic-files-form-container' );
-
-    expect( div.exists() ).toEqual( true );
-  } );
-
   it( 'renders the Formik component', () => {
     const formik = wrapper.find( 'Formik' );
 
