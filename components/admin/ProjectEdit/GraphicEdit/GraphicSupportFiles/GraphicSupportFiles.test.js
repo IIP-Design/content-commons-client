@@ -406,3 +406,80 @@ describe( '<GraphicSupportFiles />, when no files are received', () => {
     expect( noFilesWrapper.contains( msg ) ).toEqual( true );
   } );
 } );
+
+describe( '<GraphicSupportFiles />, when a projectId does not exist', () => {
+  let Component;
+  let wrapper;
+  let listContainer;
+
+  const newProps = {
+    ...props,
+    projectId: undefined,
+  };
+
+  beforeEach( () => {
+    Component = (
+      <MockedProvider mocks={ [] } addTypename>
+        <GraphicSupportFiles { ...newProps } />
+      </MockedProvider>
+    );
+
+    wrapper = mount( Component );
+    listContainer = wrapper.find( 'GraphicSupportFiles' );
+  } );
+
+  it( 'renders the correct list className value', () => {
+    const listItems = listContainer.find( '.support-file-item' );
+
+    listItems.forEach( item => {
+      expect( item.hasClass( 'unavailable' ) ).toEqual( true );
+    } );
+  } );
+
+  it( 'renders a disabled language dropdown', () => {
+    const langDropdowns = listContainer.find( 'LanguageDropdown' );
+
+    langDropdowns.forEach( dropdown => {
+      expect( dropdown.prop( 'disabled' ) ).toEqual( true );
+    } );
+  } );
+} );
+
+describe( '<GraphicSupportFiles />, when there is a long file name', () => {
+  let Component;
+  let wrapper;
+  let listContainer;
+
+  const newProps = {
+    ...props,
+    files: [
+      {
+        ...props.files[0],
+        filename: 's-secure-rights_aieaue_kaienwiz_ke8akcua_aeicaie_eiamwyz_shell.png',
+      },
+    ],
+  };
+
+  const { filename } = newProps.files[0];
+
+  beforeEach( () => {
+    Component = (
+      <MockedProvider mocks={ [] } addTypename>
+        <GraphicSupportFiles { ...newProps } />
+      </MockedProvider>
+    );
+
+    wrapper = mount( Component );
+    listContainer = wrapper.find( 'GraphicSupportFiles' );
+  } );
+
+  it( 'renders a truncated filename with the full filename visually hidden', () => {
+    const listItem = listContainer.find( '.support-file-item' );
+    const btn = listItem.find( '.truncated' );
+    const visuallyHidden = listItem.find( '.hide-visually' );
+
+    expect( btn.prop( 'tooltip' ) ).toEqual( filename );
+    expect( btn.text() ).toEqual( 's-secure-rights_aieaue_k...yz_shell.png' );
+    expect( visuallyHidden.text() ).toEqual( filename );
+  } );
+} );
