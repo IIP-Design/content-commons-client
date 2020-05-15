@@ -35,8 +35,8 @@ const GraphicProjectDetailsFormContainer = props => {
       await updateGraphicProject( {
         variables: {
           data: buildFormTree( values, prevValues ),
-          where: { id }
-        }
+          where: { id },
+        },
       } ).catch( err => console.dir( err ) );
     }
   };
@@ -69,7 +69,7 @@ const GraphicProjectDetailsFormContainer = props => {
       tags,
       descPublic: graphicProject.descPublic || '',
       descInternal: graphicProject.descInternal || '',
-      alt: graphicProject.alt || ''
+      alt: graphicProject.alt || '',
     };
 
     return initialValues;
@@ -86,8 +86,8 @@ const GraphicProjectDetailsFormContainer = props => {
     try {
       const res = await createGraphicProject( {
         variables: {
-          data: buildCreateGraphicProjectTree( user, values )
-        }
+          data: buildCreateGraphicProjectTree( user, values ),
+        },
       } );
 
       // 3. Use formik handled to update status to hide submit button upon project creation
@@ -98,7 +98,7 @@ const GraphicProjectDetailsFormContainer = props => {
       handleUpload( res.data.createGraphicProject, values.tags );
     } catch ( err ) {
       setErrors( {
-        submit: err
+        submit: err,
       } );
     }
 
@@ -111,40 +111,40 @@ const GraphicProjectDetailsFormContainer = props => {
       headline: 'Social Media Graphics Project Data',
       projectTitle: {
         label: 'Project Name',
-        required: true
+        required: true,
       },
       visibility: {
         label: 'Visibility Setting',
-        required: true
+        required: true,
       },
       team: {
         label: 'Source',
-        required: false
+        required: false,
       },
       copyright: {
         label: 'Copyright',
-        required: true
+        required: true,
       },
       categories: {
         label: 'Categories',
-        required: true
+        required: true,
       },
       tags: {
         label: 'Tags',
-        required: false
+        required: false,
       },
       descPublic: {
         label: 'Public Description',
-        required: false
+        required: false,
       },
       descInternal: {
         label: 'Internal Description',
-        required: false
+        required: false,
       },
       alt: {
         label: 'Alt (Alternative) Text',
-        required: false
-      }
+        required: false,
+      },
     };
 
     return (
@@ -155,7 +155,7 @@ const GraphicProjectDetailsFormContainer = props => {
             position: 'absolute',
             top: '9em',
             left: '50%',
-            transform: 'translateX(-50%)'
+            transform: 'translateX(-50%)',
           } }
           show={ showNotification }
           msg="Changes saved"
@@ -189,7 +189,7 @@ GraphicProjectDetailsFormContainer.propTypes = {
   data: PropTypes.object,
   updateNotification: PropTypes.func,
   handleUpload: PropTypes.func,
-  setIsFormValid: PropTypes.func
+  setIsFormValid: PropTypes.func,
 };
 
 export default GraphicProjectDetailsFormContainer;
