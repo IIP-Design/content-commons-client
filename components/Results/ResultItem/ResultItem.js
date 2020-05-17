@@ -1,38 +1,46 @@
-import React, { Component } from 'react';
-import { object } from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Card, Image, Modal } from 'semantic-ui-react';
-import { contentRegExp } from 'lib/utils';
-import Video from 'components/Video/Video';
-import Post from 'components/Post/Post';
+
 import PackageCard from 'components/Package/PackageCard/PackageCard';
 import DocumentCard from 'components/Document/DocumentCard/DocumentCard';
-import './ResultItem.scss';
-import './ResultItemRTL.scss';
+import useSignedUrl from 'lib/hooks/useSignedUrl';
+import Video from 'components/Video/Video';
+import Post from 'components/Post/Post';
+import { contentRegExp } from 'lib/utils';
+
 import logoDos from 'static/images/dos_seal.svg';
 
-class ResultItem extends Component {
-  getModalContent = item => {
-    const noContent = <div>No content currently avaialble</div>;
-    if ( item ) {
-      switch ( item.type ) {
+import './ResultItem.scss';
+import './ResultItemRTL.scss';
+
+const ResultItem = ( { item } ) => {
+  const { signedUrl } = useSignedUrl( item.thumbnail );
+
+  const getModalContent = data => {
+    const noContent = <div>No content currently available</div>;
+
+    if ( data ) {
+      switch ( data.type ) {
         case 'video':
-          return <Video item={ item } />;
+          return <Video item={ data } />;
 
         case 'post':
-          return <Post item={ item } />;
+          return <Post item={ data } />;
 
         default:
           return noContent;
       }
     }
-    return noContent;
-  }
 
-  getItemSource( textDirection ) {
-    const { item } = this.props;
+    return noContent;
+  };
+
+  const getItemSource = direction => {
     let source;
-    const textDir = textDirection === 'ltr' ? 'left' : 'right';
+    const textDir = direction === 'ltr' ? 'left' : 'right';
+
     if ( item.logo ) {
       source = (
         <div
@@ -41,7 +49,7 @@ class ResultItem extends Component {
             backgroundSize: 'contain',
             height: '20px',
             margin: '6px 0 0',
-            marginLeft: '-1px'
+            marginLeft: '-1px',
           } }
           alt={ item.site }
         />
@@ -62,27 +70,28 @@ class ResultItem extends Component {
               background: `url( ${logoDos} ) no-repeat`,
               height: '16px',
               width: '16px',
-              float: textDir,
-              marginLeft: textDir === 'left' ? '0' : '0.3em'
+              'float': textDir,
+              marginLeft: textDir === 'left' ? '0' : '0.3em',
             } }
             alt={ item.owner }
           />
-          <span style={ { marginTop: '1px', float: textDir } }>{ item.owner }</span>
+          <span style={ { marginTop: '1px', 'float': textDir } }>{ item.owner }</span>
         </div>
       );
     }
     if ( !source && item.type === 'video' ) source = item.owner;
     if ( !source && contentRegExp( item.site ) ) source = item.owner;
     if ( !source ) source = item.site;
+
     return item.type === 'video' || contentRegExp( item.site )
       ? source
       : <a target="_blank" rel="noopener noreferrer" href={ item.sourcelink }>{ source }</a>;
-  }
+  };
 
-  // eslint-disable-next-line class-methods-use-this
-  renderCategory( category, index, arr ) {
+  const renderCategory = ( category, index, arr ) => {
     let { name } = category;
     const key = `cat_${index}`;
+
     if ( index > 2 ) {
       return undefined;
     }
@@ -91,64 +100,62 @@ class ResultItem extends Component {
     }
 
     return <span key={ key }>{ name.toLowerCase() }</span>;
+  };
+
+  let textDirection = 'ltr';
+
+  if ( item.selectedLanguageUnit ) {
+    textDirection = item.selectedLanguageUnit.language.text_direction;
+  } else if ( item.language && item.language.text_direction ) {
+    textDirection = item.language.text_direction;
   }
 
-  render() {
-    const { item } = this.props;
-    let textDirection = 'ltr';
-    if ( item.selectedLanguageUnit ) {
-      textDirection = item.selectedLanguageUnit.language.text_direction;
-    } else if ( item.language && item.language.text_direction ) {
-      textDirection = item.language.text_direction;
-    }
+  const action = `openModal - ${item.title}`;
 
-    const action = `openModal - ${item.title}`;
+  if ( item.type === 'package' ) {
+    return <PackageCard item={ item } stretch />;
+  }
 
-    if ( item.type === 'package' ) {
-      return <PackageCard item={ item } stretch />;
-    }
+  if ( item.type === 'document' ) {
+    return <DocumentCard file={ item } />;
+  }
 
-    if ( item.type === 'document' ) {
-      return <DocumentCard file={ item } />;
-    }
-
-    return (
-      <Card>
-        <Modal
-          closeIcon
-          trigger={ (
-            <div className="card_imgWrapper">
-              <Image data-action={ action } src={ item.thumbnail } width="100%" height="100%" />
-              <Image data-action={ action } src={ item.icon } className="card_postIcon" />
-            </div>
-          ) }
-        >
-          <Modal.Content>
-            { this.getModalContent( item ) }
-          </Modal.Content>
-        </Modal>
-        <Card.Content className={ textDirection }>
-          <Card.Header className="card_header">
-            <Modal closeIcon trigger={ <p data-action={ action }>{ item.title }</p> }>
-              <Modal.Content>
-                { this.getModalContent( item ) }
-              </Modal.Content>
-            </Modal>
-          </Card.Header>
-          <Card.Description className="card_excerpt">{ item.description }</Card.Description>
-          <div className="card_metadata">
-            <Card.Meta>{ moment( item.published ).format( 'MMMM DD, YYYY' ) }</Card.Meta>
-            <Card.Meta>{ item.categories && item.categories.map( this.renderCategory ) }</Card.Meta>
-            <Card.Meta>{ this.getItemSource( textDirection ) }</Card.Meta>
+  return (
+    <Card>
+      <Modal
+        closeIcon
+        trigger={ (
+          <div className="card_imgWrapper">
+            <Image data-action={ action } src={ signedUrl } width="100%" height="100%" />
+            <Image data-action={ action } src={ item.icon } className="card_postIcon" />
           </div>
-        </Card.Content>
-      </Card>
-    );
-  }
-}
+        ) }
+      >
+        <Modal.Content>
+          { getModalContent( item ) }
+        </Modal.Content>
+      </Modal>
+      <Card.Content className={ textDirection }>
+        <Card.Header className="card_header">
+          <Modal closeIcon trigger={ <p data-action={ action }>{ item.title }</p> }>
+            <Modal.Content>
+              { getModalContent( item ) }
+            </Modal.Content>
+          </Modal>
+        </Card.Header>
+        <Card.Description className="card_excerpt">{ item.description }</Card.Description>
+        <div className="card_metadata">
+          <Card.Meta>{ moment( item.published ).format( 'MMMM DD, YYYY' ) }</Card.Meta>
+          <Card.Meta>{ item.categories && item.categories.map( renderCategory ) }</Card.Meta>
+          <Card.Meta>{ getItemSource( textDirection ) }</Card.Meta>
+        </div>
+      </Card.Content>
+    </Card>
+  );
+};
 
 ResultItem.propTypes = {
-  item: object
+  item: PropTypes.object,
 };
 
 export default ResultItem;
@@ -163,5 +170,5 @@ NO
   original =  eng video + french SRT file"
   with Subtitles = eng video w/burned in french captions + french SRT file"
 
-More = all avaialable SRT files
+More = all available SRT files
 */
