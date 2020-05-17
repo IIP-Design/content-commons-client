@@ -8,32 +8,12 @@ import {
   Grid, Header, Item, Modal, Message,
 } from 'semantic-ui-react';
 
-import Video from 'components/Video/Video';
-import Post from 'components/Post/Post';
 import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
+import { getModalContent } from 'components/modals/utils';
 
 import './Recents.scss';
 
 const Recents = ( { postType, recents, postTypeLabels, featured } ) => {
-  const getModalContent = item => {
-    const noContent = <div>No content currently available</div>;
-
-    if ( item ) {
-      switch ( item.type ) {
-        case 'video':
-          return <Video item={ item } />;
-
-        case 'post':
-          return <Post item={ item } />;
-
-        default:
-          return noContent;
-      }
-    }
-
-    return noContent;
-  };
-
   const getCategories = item => {
     const categories = item.categories.slice( 0, 3 ).reduce( ( acc, cat, index, arr ) => {
       const c = acc + cat.name.toLowerCase();

@@ -6,8 +6,7 @@ import { Card, Image, Modal } from 'semantic-ui-react';
 import PackageCard from 'components/Package/PackageCard/PackageCard';
 import DocumentCard from 'components/Document/DocumentCard/DocumentCard';
 import useSignedUrl from 'lib/hooks/useSignedUrl';
-import Video from 'components/Video/Video';
-import Post from 'components/Post/Post';
+import { getModalContent } from 'components/modals/utils';
 import { contentRegExp } from 'lib/utils';
 
 import logoDos from 'static/images/dos_seal.svg';
@@ -17,25 +16,6 @@ import './ResultItemRTL.scss';
 
 const ResultItem = ( { item } ) => {
   const { signedUrl } = useSignedUrl( item.thumbnail );
-
-  const getModalContent = data => {
-    const noContent = <div>No content currently available</div>;
-
-    if ( data ) {
-      switch ( data.type ) {
-        case 'video':
-          return <Video item={ data } />;
-
-        case 'post':
-          return <Post item={ data } />;
-
-        default:
-          return noContent;
-      }
-    }
-
-    return noContent;
-  };
 
   const getItemSource = direction => {
     let source;
