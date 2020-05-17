@@ -10,6 +10,7 @@ import {
 
 import Video from 'components/Video/Video';
 import Post from 'components/Post/Post';
+import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
 
 import './Priorities.scss';
 
@@ -49,12 +50,9 @@ const Priorities = ( { categories, featured, label, priorities, term } ) => {
       closeIcon
       trigger={ (
         <Item className="prioritiesItem">
-          <div
-            className="prioritiesItem_img"
-            style={ { backgroundImage: `url( ${priority.thumbnail} )` } }
-          >
+          <SignedUrlImage className="prioritiesItem_img" url={ priority.thumbnail }>
             <img src={ priority.icon } className="metaicon" alt="icon" />
-          </div>
+          </SignedUrlImage>
           <Item.Content>
             <Item.Header>{ priority.title }</Item.Header>
             <div className="meta">
@@ -105,7 +103,7 @@ const Priorities = ( { categories, featured, label, priorities, term } ) => {
               <Modal
                 closeIcon
                 trigger={ (
-                  <div className="prioritiesleft" style={ { backgroundImage: `url( ${priorities[0].thumbnail} )` } }>
+                  <SignedUrlImage className="prioritiesleft" url={ priorities[0].thumbnail }>
                     <div className="prioritiesoverlay">
                       <div className="prioritiesoverlay_title">{ priorities[0].title }</div>
                       <img
@@ -114,7 +112,7 @@ const Priorities = ( { categories, featured, label, priorities, term } ) => {
                         alt="icon"
                       />
                     </div>
-                  </div>
+                  </SignedUrlImage>
                 ) }
               >
                 <Modal.Content>

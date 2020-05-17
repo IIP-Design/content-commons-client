@@ -1,15 +1,16 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 import moment from 'moment';
+import { connect } from 'react-redux';
 import { v4 } from 'uuid';
 import {
   Grid, Header, Item, Modal, Message,
 } from 'semantic-ui-react';
+
 import Video from 'components/Video/Video';
 import Post from 'components/Post/Post';
-import SignedUrlImage from '../SignedUrlImage';
+import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
 
 import './Recents.scss';
 
@@ -42,29 +43,6 @@ const Recents = ( { postType, recents, postTypeLabels, featured } ) => {
 
     return categories;
   };
-
-  const renderRecentsWithMeta = () => recents.slice( 1 ).map( recent => (
-    <Modal
-      key={ v4() }
-      closeIcon
-      trigger={ (
-        <Item className="recentsItem">
-          <SignedUrlImage classes="recentsItem_img" url={ recent.thumbnail }>
-            <img src={ recent.icon } className="metaicon" alt={ `${postType} icon` } />
-          </SignedUrlImage>
-          <Item.Content>
-            <Item.Header>{ recent.title }</Item.Header>
-            <div className="meta">
-              <span className="date">{ moment( recent.published ).format( 'MMMM DD, YYYY' ) }</span>
-              <span className="categories">{ getCategories( recent ) }</span>
-            </div>
-          </Item.Content>
-        </Item>
-      ) }
-    >
-      <Modal.Content>{ getModalContent( recent ) }</Modal.Content>
-    </Modal>
-  ) );
 
   const postTypeLabel = postTypeLabels.find( type => type.key === postType );
 
@@ -103,7 +81,7 @@ const Recents = ( { postType, recents, postTypeLabels, featured } ) => {
               <Modal
                 closeIcon
                 trigger={ (
-                  <SignedUrlImage classes="recentsleft" url={ recents[0].thumbnail }>
+                  <SignedUrlImage className="recentsleft" url={ recents[0].thumbnail }>
                     <div className="recentsoverlay">
                       <div className="recentsoverlay_title">{ recents[0].title }</div>
                       <img
@@ -120,7 +98,30 @@ const Recents = ( { postType, recents, postTypeLabels, featured } ) => {
             ) }
           </Grid.Column>
           <Grid.Column width={ 8 } className="recentsgridright">
-            <Item.Group>{ recents && renderRecentsWithMeta() }</Item.Group>
+            <Item.Group>
+              { recents && recents.slice( 1 ).map( recent => (
+                <Modal
+                  key={ v4() }
+                  closeIcon
+                  trigger={ (
+                    <Item className="recentsItem">
+                      <SignedUrlImage className="recentsItem_img" url={ recent.thumbnail }>
+                        <img src={ recent.icon } className="metaicon" alt={ `${postType} icon` } />
+                      </SignedUrlImage>
+                      <Item.Content>
+                        <Item.Header>{ recent.title }</Item.Header>
+                        <div className="meta">
+                          <span className="date">{ moment( recent.published ).format( 'MMMM DD, YYYY' ) }</span>
+                          <span className="categories">{ getCategories( recent ) }</span>
+                        </div>
+                      </Item.Content>
+                    </Item>
+                  ) }
+                >
+                  <Modal.Content>{ getModalContent( recent ) }</Modal.Content>
+                </Modal>
+              ) ) }
+            </Item.Group>
           </Grid.Column>
         </Grid>
       </div>
