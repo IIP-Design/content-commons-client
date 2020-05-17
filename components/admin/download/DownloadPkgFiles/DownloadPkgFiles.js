@@ -15,7 +15,10 @@ const DownloadPkgFiles = ( { files, instructions, isPreview } ) => {
   return (
     <Fragment>
       <p className="form-group_instructions">{ instructions }</p>
-      { items.length && items.map( item => <SignedUrlLink key={ item.id } file={ item } isPreview={ isPreview } /> ) }
+      { ( !items || items.length < 1 ) && 'There are no files available for download at this time.' }
+      { items && items.length > 0 && items.map(
+        item => <SignedUrlLink key={ item.id } file={ item } isPreview={ isPreview } />,
+      ) }
     </Fragment>
   );
 };
