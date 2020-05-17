@@ -5,6 +5,7 @@ import SignedUrlLink from './SignedUrlLink';
 const mockSignedUrl = 'https://example.jpg';
 
 jest.mock( 'lib/hooks/useSignedUrl', () => jest.fn( () => ( { signedUrl: mockSignedUrl } ) ) );
+jest.mock( 'static/icons/icon_download.svg', () => 'download-icon-svg' );
 
 const props = {
   file: {
@@ -46,20 +47,65 @@ describe( '<SignedUrlLink />', () => {
     expect( item.prop( 'as' ) ).toEqual( 'a' );
     expect( item.prop( 'href' ) ).toEqual( mockSignedUrl );
     expect( item.prop( 'download' ) ).toEqual( props.file.filename );
+
+    const itemHeader = wrapper.find( 'ItemHeader' );
+
+    expect( itemHeader.contains( `Download ${props.file.filename}` ) ).toEqual( true );
+  } );
+
+  it( 'renders an <img /> for each item', () => {
+    const wrapper = mount( <SignedUrlLink { ...props } /> );
+
+    const itemsImage = wrapper.find( 'ItemImage' );
+    const img = itemsImage.find( 'img' );
+
+    expect( img.exists() ).toEqual( true );
+    expect( img.props() ).toEqual( {
+      src: 'download-icon-svg',
+      alt: 'download icon',
+    } );
   } );
 
   it( 'renders preview version without links', () => {
     const newProps = { ...props, isPreview: true };
     const wrapper = mount( <SignedUrlLink { ...newProps } /> );
 
-    const previewText = wrapper.find( '.preview-text' );
-
-    expect( previewText.exists() ).toEqual( true );
-
     const item = wrapper.find( 'Item' );
 
     expect( item.prop( 'as' ) ).toEqual( 'span' );
     expect( item.prop( 'href' ) ).toEqual( null );
     expect( item.prop( 'download' ) ).toEqual( null );
+  } );
+
+  it( 'shows preview text only when isPreview is set to true', () => {
+    const wrapper = mount( <SignedUrlLink { ...props } /> );
+
+    const previewText = wrapper.find( '.preview-text' );
+
+    expect( previewText.exists() ).toEqual( false );
+
+    wrapper.setProps( { isPreview: true } );
+
+    const newPreviewText = wrapper.find( 'ItemGroup' );
+
+    expect( newPreviewText.exists() ).toEqual( true );
+  } );
+
+  it( 'adds the preview className when isPreview is set to true', () => {
+    const wrapper = mount( <SignedUrlLink { ...props } /> );
+
+    const itemsGroups = wrapper.find( 'ItemGroup' );
+
+    itemsGroups.forEach( group => {
+      expect( group.prop( 'className' ) ).toEqual( 'download-item' );
+    } );
+
+    wrapper.setProps( { isPreview: true } );
+
+    const newItemsGroups = wrapper.find( 'ItemGroup' );
+
+    newItemsGroups.forEach( group => {
+      expect( group.prop( 'className' ) ).toEqual( 'download-item preview' );
+    } );
   } );
 } );
