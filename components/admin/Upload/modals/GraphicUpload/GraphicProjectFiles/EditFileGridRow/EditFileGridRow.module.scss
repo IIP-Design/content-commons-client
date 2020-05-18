@@ -1,0 +1,85 @@
+@import 'styles/colors.scss';
+@import 'styles/tooltip.scss';
+
+.grid {
+  display: grid;
+  grid-template-columns: 220px auto 30px;  
+  grid-gap: 15px;  
+  color: $dark-grey;
+  justify-items: start;
+  align-items: center; 
+  margin-bottom: 1rem;  
+  
+  &.completion {  
+    grid-template-columns: 30px 220px auto 30px;  
+  }
+
+  &.header {  
+    border-bottom: 1px solid $light-grey; 
+    margin-top: .5rem; 
+    margin-bottom: .75rem;  
+    padding-bottom: .75rem; 
+  } 
+}
+
+.selectBoxesContainer {  
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.selectBox {
+  width: 200px !important;  
+
+  &.marginRight {
+    margin-right: 15px;
+  }  
+
+  &.notApplicable {
+    font-size: 0.77rem;
+    color: $grey; 
+    padding-top: 4px;
+  }
+}
+
+.label {  
+  width: 100%;
+  display: flex;  
+  justify-content: flex-end;
+  color: $blue;
+}
+
+
+.filename {
+  justify-self: start;
+  color: $blue;
+}
+
+.indicator { 
+  align-items: center;
+  justify-content: center;
+  background-color: $red;
+  color: #fff;
+  width: 1.5em;
+  height: 1.5em;
+  font-size: 14px;
+  border-radius: 50%; 
+}
+
+// Setting all rules to important to override semantic 
+.cancel {
+  padding: 0 !important;
+  background-color: transparent !important;
+}
+
+.required {
+  display: inline-block;
+  margin-left: 2px;
+  color: $red;
+}
+
+// button {
+//   background-color: transparent;
+//   border: none;  
+//   cursor: pointer; 
+// }

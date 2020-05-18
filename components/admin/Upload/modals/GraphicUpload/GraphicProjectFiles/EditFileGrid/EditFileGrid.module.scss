@@ -1,0 +1,78 @@
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
+
+.secondary {
+  margin-left: 45px !important;
+  margin-top: 1rem !important;
+}
+
+// Setting all rules to important to override semantic 
+.link {
+  color: $grey !important;
+  font-weight: normal !important;
+  background-color: transparent !important; 
+
+   &:hover,
+    &:active,
+    &:focus {
+      border-color: $grey !important;
+      color: #fff !important;
+      background-color: $grey !important;
+    }
+
+    &.disabled,
+    &.disabled:hover,
+    &:disabled {
+      cursor: not-allowed;
+      color: $medium-grey !important;
+      background-color: transparent !important;
+      border: none !important;
+    }
+}
+
+.actions {
+  width: 100%;
+  margin-top: 2rem; 
+  display: flex;
+  justify-content: center;
+
+  button[type]:not(:last-child) {
+    margin-right: .5rem;
+  }
+}
+
+.steps {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+
+  .arrow {
+    display: inline-block;
+    font-weight: bold;
+    padding-left: 1rem;
+    padding-right: .8rem;
+  }
+}
+
+.step {
+  display: inline-block;
+  font-size: 20px;
+  color: $alt-grey;
+  padding-bottom: 5px;
+
+ 
+  &.active {
+    color: $blue;
+    font-weight: bold;
+    border-bottom: 4px solid $light-blue;
+  } 
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: grid;
+}
+
