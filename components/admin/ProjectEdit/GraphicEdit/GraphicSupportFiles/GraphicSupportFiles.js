@@ -83,29 +83,30 @@ const GraphicSupportFiles = props => {
   const renderList = () => (
     <ul className="support-files-list">
       { files.map( file => {
-        const { id, filename } = file;
-        const name = filename?.length > 36
-          ? truncateAndReplaceStr( filename, 24, 12 )
-          : filename;
+        const { id, filename, input, language } = file;
+        const _filename = projectId ? filename : input?.name;
+        const shortName = _filename?.length > 36
+          ? truncateAndReplaceStr( _filename, 24, 12 )
+          : _filename;
 
         return (
           <li key={ id } className={ `support-file-item ${projectId ? 'available' : 'unavailable'}` }>
             <span className="filename">
-              { filename !== name
+              { _filename !== shortName
                 ? (
                   <Fragment>
                     <button
-                      tooltip={ filename }
+                      tooltip={ _filename }
                       type="button"
                       aria-hidden="true"
                       className="truncated"
                     >
-                      { name }
+                      { shortName }
                     </button>
-                    <VisuallyHidden el="span">{ filename }</VisuallyHidden>
+                    <VisuallyHidden el="span">{ _filename }</VisuallyHidden>
                   </Fragment>
                 )
-                : name }
+                : shortName }
             </span>
 
             <span className="actions">
@@ -114,7 +115,7 @@ const GraphicSupportFiles = props => {
                   <LanguageDropdown
                     id={ id }
                     className="language"
-                    value={ file.language.id }
+                    value={ language?.id || language }
                     onChange={ handleLanguageChange }
                     disabled={ !projectId }
                     required
