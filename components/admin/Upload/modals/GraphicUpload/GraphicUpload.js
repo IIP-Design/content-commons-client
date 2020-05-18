@@ -54,7 +54,7 @@ const GraphicUpload = ( { files, closeModal } ) => {
   */
   const create = async () => {
     // Loop thru files, serialize File Object and create object
-    const images = await Promise.all( state.files.map( async file => {
+    const fileList = await Promise.all( state.files.map( async file => {
       // File Object must be serialized for Apollo cache store
       const dataUrl = await serializeFile( file.input );
 
@@ -72,16 +72,15 @@ const GraphicUpload = ( { files, closeModal } ) => {
     } );
 
     // If there are images, Write files to apollo cache
-    if ( images?.length ) {
+    if ( fileList?.length ) {
       client.writeData( {
         data: {
           localGraphicProject: {
             __typename: 'LocalGraphicProject',
-            images,
+            files: fileList,
           },
         },
       } );
-
 
       // Go to GraphicEdit page
       router.push( {
@@ -101,8 +100,8 @@ const GraphicUpload = ( { files, closeModal } ) => {
       <p className={ styles.files }>{`Preparing ${state.files.length} files for upload...`}</p>
 
       <EditFileGrid
-        screens={ screens }
         files={ state.files }
+        screens={ screens }
         allowedFiles={ ALLOWED_FILES }
         duplicateConfirm
         removeConfirm
