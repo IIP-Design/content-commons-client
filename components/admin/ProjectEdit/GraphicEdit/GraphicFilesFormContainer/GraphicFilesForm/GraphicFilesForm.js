@@ -59,20 +59,21 @@ const GraphicFilesForm = props => {
     setFieldTouched( name, true, false );
   };
 
-  const isTouched = ( id, field ) => (
-    touched?.[id] && touched[id][field]
-  );
+  const isTouched = ( id, field ) => touched?.[id] && touched[id][field];
 
   const showErrorMsg = ( id, field ) => (
     isTouched( id, field ) ? errors?.[id] && errors[id][field] : ''
   );
 
   const renderThumbnail = ( image, filename ) => {
-    if ( image?.signedUrl ) {
+    const imgSrc = image.signedUrl || image?.input?.dataUrl;
+    const imgAlt = image.alt || filename;
+
+    if ( imgSrc ) {
       return (
         <img
-          src={ image.signedUrl }
-          alt={ image.alt || filename }
+          src={ imgSrc }
+          alt={ imgAlt }
           className="thumbnail"
         />
       );
@@ -116,26 +117,35 @@ const GraphicFilesForm = props => {
 
       <Form className="form-fields">
         { files.map( file => {
-          const { id, filename, filesize, language } = file;
-          const value = values[id];
-          const name = filename?.length > 30
-            ? truncateAndReplaceStr( filename, 20, 10 )
-            : filename;
+          const { id, filename, filesize, input, language, title } = file;
+          const _filename = projectId ? filename : input?.name;
+          const shortName = _filename?.length > 30
+            ? truncateAndReplaceStr( _filename, 20, 10 )
+            : _filename;
+
+          const value = projectId
+            ? values[id]
+            : {
+              title: title || _filename,
+              language,
+              style: file.style,
+              social: file.social,
+            };
 
           return (
             <fieldset
               key={ id }
               className={ `graphic-file-${id}` }
-              name={ filename }
+              name={ _filename }
             >
               <VisuallyHidden el="legend">
-                { `edit fields for ${filename}` }
+                { `edit fields for ${_filename}` }
               </VisuallyHidden>
 
               <div
                 className={ `image-wrapper ${projectId ? 'available' : 'unavailable'}` }
               >
-                { renderThumbnail( file, filename ) }
+                { renderThumbnail( file, value.title ) }
 
                 <FileRemoveReplaceButtonGroup
                   onRemove={ () => {
@@ -150,23 +160,23 @@ const GraphicFilesForm = props => {
                 <div className="meta-wrap">
                   <div className="meta">
                     <span className="filename">
-                      { filename !== name
+                      { _filename !== shortName
                         ? (
                           <Fragment>
                             <button
-                              tooltip={ filename }
+                              tooltip={ _filename }
                               type="button"
                               aria-hidden="true"
                               className="filename truncated"
                             >
-                              { name }
+                              { shortName }
                             </button>
                             <VisuallyHidden el="span">
-                              { filename }
+                              { _filename }
                             </VisuallyHidden>
                           </Fragment>
                         )
-                        : filename }
+                        : _filename }
                     </span>
 
                     <span className="filesize">
