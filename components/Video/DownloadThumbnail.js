@@ -5,12 +5,12 @@ import DownloadItem from './DownloadItem';
 import { maybeGetUrlToProdS3 } from 'lib/utils';
 
 const DownloadThumbnail = ( { instructions, units } ) => {
-  const renderFormItem = ( unit, i ) => (
+  const renderFormItem = unit => (
     <DownloadItem
       download={ `${unit.language.display_name}_thumbnail` }
       header={ `Download ${unit.language.display_name} Thumbnail` }
       hover={ `Download ${unit.language.display_name} Thumbnail` }
-      key={ i }
+      key={ unit.thumbnail }
       url={ maybeGetUrlToProdS3( unit.thumbnail ) }
     />
   );

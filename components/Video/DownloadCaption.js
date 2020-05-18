@@ -5,7 +5,7 @@ import DownloadItem from './DownloadItem';
 import { maybeGetUrlToProdS3 } from 'lib/utils';
 
 const DownloadCaption = ( { instructions, item } ) => {
-  const renderFormItem = ( file, i ) => {
+  const renderFormItem = file => {
     const downloadFileText = `Download ${file.language.display_name} ${file.srcUrl.includes( '.vtt' ) ? 'VTT' : 'SRT'}`;
 
     return (
@@ -13,7 +13,7 @@ const DownloadCaption = ( { instructions, item } ) => {
         download={ `${file.language.display_name}_${file.srcUrl.includes( '.vtt' ) ? 'VTT' : 'SRT'}` }
         header={ downloadFileText }
         hover={ downloadFileText }
-        key={ i }
+        key={ file.srcUrl }
         url={ maybeGetUrlToProdS3( file.srcUrl ) }
       />
     );

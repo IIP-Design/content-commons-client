@@ -80,20 +80,6 @@ const Video = ( { item, router } ) => {
     willFetchVideoPlayer();
   }, [unit, captions] );
 
-  useEffect( () => {
-    // shouldComponentUpdate( nextProps, nextState ) {
-    //   const { selectedLanguageUnit } = nextProps.item;
-
-    //   if ( selectedLanguageUnit.language.locale !== nextState.selectedLanguage.locale
-    //     || this.state.videoProps !== nextState.videoProps
-    //     || this.state.captions !== nextState.captions ) {
-    //     return true;
-    //   }
-
-    //   return false;
-    // }
-  }, [] );
-
   /**
    * Get the video data associated with currently selected language
    */

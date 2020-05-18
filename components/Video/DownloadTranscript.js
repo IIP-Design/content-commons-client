@@ -5,12 +5,12 @@ import DownloadItem from './DownloadItem';
 import { maybeGetUrlToProdS3 } from 'lib/utils';
 
 const DownloadTranscript = ( { instructions, item } ) => {
-  const renderFormItem = ( file, i ) => (
+  const renderFormItem = file => (
     <DownloadItem
       download={ `${file.language.display_name}_Transcript` }
       header={ `Download ${file.language.display_name} Transcript` }
       hover={ `Download ${file.language.display_name} Transcript` }
-      key={ i }
+      key={ file.srcUrl }
       url={ maybeGetUrlToProdS3( file.srcUrl ) }
     />
   );

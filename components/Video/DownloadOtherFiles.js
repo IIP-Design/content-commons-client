@@ -14,7 +14,7 @@ const DownloadOtherFiles = ( { instructions, units } ) => {
         download={ fileName }
         header={ `Download ${language.display_name} ${fileType} file` }
         hover={ `Download ${language.display_name} ${fileType} file` }
-        key={ i }
+        key={ srcUrl }
         url={ maybeGetUrlToProdS3( srcUrl ) }
       />
     );

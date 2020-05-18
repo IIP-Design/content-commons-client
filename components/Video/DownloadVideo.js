@@ -43,7 +43,7 @@ const DownloadVideo = ( { burnedInCaptions, instructions, selectedLanguageUnit }
     return true;
   };
 
-  const renderFormItem = ( video, index ) => {
+  const renderFormItem = video => {
     const { title } = selectedLanguageUnit;
     const size = getSizeInfo( video.size );
     const fn = `${title.replace( /\s/g, '_' )}_${video.size.width}.${getFnExt( video.downloadUrl )}`;
@@ -59,7 +59,7 @@ const DownloadVideo = ( { burnedInCaptions, instructions, selectedLanguageUnit }
         download={ fn }
         header={ header }
         hover={ `Download for ${videoQuality}` }
-        key={ index }
+        key={ video.downloadUrl }
         url={ downloadLink }
       >
         <Item.Meta>
