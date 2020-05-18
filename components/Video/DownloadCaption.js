@@ -1,26 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Item } from 'semantic-ui-react';
-import { object, string } from 'prop-types';
+
+import { maybeGetUrlToProdS3 } from 'lib/utils';
 import downloadIcon from 'static/icons/icon_download.svg';
-import { maybeGetUrlToProdS3 } from '../../lib/utils';
 
-class DownloadCaption extends Component {
-  renderFormItems( item ) {
-    const files = item.supportFiles.filter( f => f.supportFileType === 'srt' || f.supportFileType === 'vtt' );
-    item.units.forEach( unit => {
-      if ( !unit.srt || !unit.srt.srcUrl ) return;
-      if ( files.find( f => f.srcUrl === unit.srt.srcUrl ) ) return;
-      files.push( {
-        ...unit.srt,
-        language: unit.language
-      } );
-    } );
-    const srts = files.map( ( file, i ) => this.renderFormItem( file, i ) );
-    return srts.length ? srts : 'There are no caption files available for download at this time';
-  }
-
-  renderFormItem = ( file, i ) => {
+const DownloadCaption = ( { instructions, item } ) => {
+  const renderFormItem = ( file, i ) => {
     const downloadFileText = `Download ${file.language.display_name} ${file.srcUrl.includes( '.vtt' ) ? 'VTT' : 'SRT'}`;
+
     return (
       <Item.Group key={ `fs_${i}` } className="download-item">
         <Item
@@ -36,22 +24,36 @@ class DownloadCaption extends Component {
         </Item>
       </Item.Group>
     );
-  }
+  };
 
-  render() {
-    const { item } = this.props;
-    return (
-      <div>
-        <div className="form-group_instructions">{ this.props.instructions }</div>
-        { item && this.renderFormItems( item ) }
-      </div>
-    );
-  }
-}
+  const renderFormItems = formItem => {
+    const files = formItem.supportFiles.filter( f => f.supportFileType === 'srt' || f.supportFileType === 'vtt' );
+
+    formItem.units.forEach( unit => {
+      if ( !unit.srt || !unit.srt.srcUrl ) return;
+      if ( files.find( f => f.srcUrl === unit.srt.srcUrl ) ) return;
+      files.push( {
+        ...unit.srt,
+        language: unit.language,
+      } );
+    } );
+
+    const srts = files.map( ( file, i ) => renderFormItem( file, i ) );
+
+    return srts.length ? srts : 'There are no caption files available for download at this time';
+  };
+
+  return (
+    <div>
+      <div className="form-group_instructions">{ instructions }</div>
+      { item && renderFormItems( item ) }
+    </div>
+  );
+};
 
 DownloadCaption.propTypes = {
-  item: object,
-  instructions: string
+  item: PropTypes.object,
+  instructions: PropTypes.string,
 };
 
 export default DownloadCaption;

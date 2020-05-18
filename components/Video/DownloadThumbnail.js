@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { Item } from 'semantic-ui-react';
-import { array, string } from 'prop-types';
-import downloadIcon from 'static/icons/icon_download.svg';
-import { maybeGetUrlToProdS3 } from '../../lib/utils';
 
+import { maybeGetUrlToProdS3 } from 'lib/utils';
+
+import downloadIcon from 'static/icons/icon_download.svg';
 
 const DownloadThumbnail = ( { instructions, units } ) => {
   const renderFormItem = ( unit, i ) => (
@@ -26,6 +27,7 @@ const DownloadThumbnail = ( { instructions, units } ) => {
     const thumbnail = units
       .filter( unit => unit.thumbnail )
       .map( ( unit, i ) => renderFormItem( unit, i ) );
+
     return thumbnail.length ? thumbnail : 'There are no thumbnails available for download at this time';
   };
 
@@ -38,8 +40,8 @@ const DownloadThumbnail = ( { instructions, units } ) => {
 };
 
 DownloadThumbnail.propTypes = {
-  units: array,
-  instructions: string
+  units: PropTypes.array,
+  instructions: PropTypes.string,
 };
 
 export default DownloadThumbnail;
