@@ -21,13 +21,13 @@ import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
 import Popup from 'components/popups/Popup';
 
-import DownloadVideo from './DownloadVideo';
-import DownloadCaption from './DownloadCaption';
-import DownloadTranscript from './DownloadTranscript';
-import DownloadHelp from './DownloadHelp';
+import DownloadVideo from './Download/DownloadVideo';
+import DownloadCaption from './Download/DownloadCaption';
+import DownloadTranscript from './Download/DownloadTranscript';
+import DownloadHelp from './Download/DownloadHelp';
 import Share from '../Share/Share';
 import EmbedVideo from '../Embed';
-import EmbedHelp from './EmbedHelp';
+import EmbedHelp from './Download/EmbedHelp';
 import useSignedUrl from 'lib/hooks/useSignedUrl';
 import { fetchVideoPlayer, getCaptions, getLanguage, getVideoTranscript } from './utils';
 
