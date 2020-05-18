@@ -12,17 +12,6 @@ import makeStore from 'lib/redux/store';
 import 'styles/styles.scss';
 
 class Commons extends App {
-  componentDidMount() {
-    const noscript = document.createElement("noscript"); // Create the noscript element
-
-    const ga = document.createTextNode(`<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTQJVZD&gtm_auth=l-Fvm9iNgppOq80TmTKskg&gtm_preview=env-2&gtm_cookies_win=x"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe>`); // Create the iframe snippet
-
-    noscript.appendChild(ga); // Append the ga iframe snippet to the noscript element
-
-    document.body.appendChild(noscript); // Add the noscript to the body
-  }
-
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
 
