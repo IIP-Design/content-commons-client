@@ -12,10 +12,15 @@ import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import SupportFiles from 'components/admin/ProjectEdit/GraphicEdit/SupportFiles/SupportFiles';
 import UploadProgress from 'components/admin/ProjectEdit/UploadProgress/UploadProgress';
-// import withFileUpload from 'hocs/withFileUpload/withFileUpload';
-import { DELETE_GRAPHIC_PROJECT_MUTATION, GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
+// import { useFileUpload } from 'lib/hooks/useFileUpload';
+import {
+  DELETE_GRAPHIC_PROJECT_MUTATION,
+  GRAPHIC_PROJECT_QUERY,
+  LOCAL_GRAPHIC_FILES,
+} from 'lib/graphql/queries/graphic';
 import { getFileExt } from 'lib/utils';
 import './GraphicEdit.scss';
+
 
 const GraphicEdit = props => {
   const router = useRouter();
@@ -25,6 +30,9 @@ const GraphicEdit = props => {
 
   let uploadSuccessTimer = null;
   let saveMsgTimer = null;
+
+  // Local graphic query
+  const { data: localData, client } = useQuery( LOCAL_GRAPHIC_FILES );
 
   const {
     loading, error: queryError, data,
@@ -48,7 +56,22 @@ const GraphicEdit = props => {
     showNotification: false,
   } );
 
+  const clearLocalGraphicFiles = () => {
+    client.writeData( {
+      data: {
+        localGraphicProject: null,
+      },
+    } );
+  };
+
+
   useEffect( () => {
+    // test
+    if ( localData?.localGraphicProject ) {
+      console.dir( localData?.localGraphicProject );
+    }
+
+
     if ( data?.graphicProject ) {
       const { images } = data.graphicProject;
 
@@ -56,6 +79,10 @@ const GraphicEdit = props => {
         setDisableBtns( true );
       }
     }
+
+    return () => {
+      clearLocalGraphicFiles();
+    };
   }, [] );
 
   const updateNotification = msg => {
@@ -71,14 +98,12 @@ const GraphicEdit = props => {
     router.replace( router.asPath, path, { shallow: true } );
   };
 
-  const deleteProjectEnabled = () => (
+  const deleteProjectEnabled = () =>
     /**
      * disable delete project button if either there
      * is no project id OR project has been published
      */
-    !projectId || ( data?.graphicProject && !!data.graphicProject.publishedAt )
-  );
-
+    !projectId || data?.graphicProject && !!data.graphicProject.publishedAt;
   const delayUnmount = ( fn, timer, delay ) => {
     if ( timer ) clearTimeout( timer );
     /* eslint-disable no-param-reassign */
@@ -95,7 +120,7 @@ const GraphicEdit = props => {
 
   const handleDeleteConfirm = async () => {
     const deletedProjectId = await deleteGraphicProject( {
-      variables: { id: projectId }
+      variables: { id: projectId },
     } ).catch( err => { setError( err ); } );
 
     if ( deletedProjectId ) {
@@ -294,30 +319,30 @@ const GraphicEdit = props => {
             deleteConfirmOpen={ deleteConfirmOpen }
             setDeleteConfirmOpen={ setDeleteConfirmOpen }
             disabled={ {
-              delete: deleteProjectEnabled(),
+              'delete': deleteProjectEnabled(),
               save: !projectId || disableBtns || !isFormValid,
               preview: !projectId || disableBtns || !isFormValid,
               publish: !projectId || disableBtns || !isFormValid,
-              publishChanges: !projectId || disableBtns || !isFormValid
+              publishChanges: !projectId || disableBtns || !isFormValid,
             } }
             handle={ {
               deleteConfirm: handleDeleteConfirm,
               save: handleExit,
               publish: handlePublish,
               publishChanges: handlePublishChanges,
-              unpublish: handleUnPublish
+              unpublish: handleUnPublish,
             } }
             show={ {
-              delete: true,
+              'delete': true,
               save: true,
               preview: true,
               publish: true, // temp
-              unpublish: false // temp
+              unpublish: false, // temp
             } }
             loading={ {
               publish: false, // temp
               publishChanges: false, // temp
-              unpublish: false // temp
+              unpublish: false, // temp
             } }
           />
         </ProjectHeader>
@@ -327,7 +352,7 @@ const GraphicEdit = props => {
         <ApolloError error={ error } />
       </div>
 
-      { /* Form data saved notification */ }
+      {/* Form data saved notification */}
       <Notification
         el="p"
         customStyles={ centeredStyles }
@@ -335,7 +360,7 @@ const GraphicEdit = props => {
         msg={ notificationMessage }
       />
 
-      { /* upload progress  */ }
+      {/* upload progress  */}
       <UploadProgress
         className="alpha"
         projectId={ projectId }
@@ -344,7 +369,7 @@ const GraphicEdit = props => {
         isUploading={ isUploading }
       />
 
-      { /* project details form */ }
+      {/* project details form */}
       <GraphicProjectDetailsFormContainer
         id={ projectId }
         contentStyle={ contentStyle }
@@ -355,7 +380,7 @@ const GraphicEdit = props => {
         setIsFormValid={ setIsFormValid }
       />
 
-      { /* upload progress */ }
+      {/* upload progress */}
       <UploadProgress
         className="beta"
         projectId={ projectId }
@@ -364,7 +389,7 @@ const GraphicEdit = props => {
         isUploading={ isUploading }
       />
 
-      { /* project support files */ }
+      {/* project support files */}
       <div className="support-files">
         <AddFilesSectionHeading
           projectId={ projectId }
@@ -381,7 +406,7 @@ const GraphicEdit = props => {
         />
       </div>
 
-      { /* project graphic files */ }
+      {/* project graphic files */}
       <div className="graphic-files">
         <AddFilesSectionHeading
           projectId={ projectId }
