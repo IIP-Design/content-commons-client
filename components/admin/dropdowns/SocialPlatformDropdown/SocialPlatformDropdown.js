@@ -34,7 +34,7 @@ const getSocialPlatform = filename => {
   let social = [];
 
   if ( ~filename.indexOf( 'Twitter' ) || ~filename.indexOf( 'twitter' ) || ~filename.indexOf( 'TW' ) ) {
-    social = 'twitter';
+    social = ['twitter'];
   }
 
   if ( ~filename.indexOf( 'Facebook' ) || ~filename.indexOf( 'facebook' ) || ~filename.indexOf( 'FB' ) ) {
