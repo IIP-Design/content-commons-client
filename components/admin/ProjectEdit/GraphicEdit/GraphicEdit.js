@@ -18,7 +18,7 @@ import {
   GRAPHIC_PROJECT_QUERY,
   LOCAL_GRAPHIC_FILES,
 } from 'lib/graphql/queries/graphic';
-import { getFileExt } from 'lib/utils';
+import { getCount, getFileExt } from 'lib/utils';
 import './GraphicEdit.scss';
 
 
@@ -98,12 +98,16 @@ const GraphicEdit = props => {
     router.replace( router.asPath, path, { shallow: true } );
   };
 
-  const deleteProjectEnabled = () =>
+  const deleteProjectEnabled = () => {
     /**
      * disable delete project button if either there
      * is no project id OR project has been published
      */
-    !projectId || data?.graphicProject && !!data.graphicProject.publishedAt;
+    const isPublished = data?.graphicProject && !!data.graphicProject.publishedAt;
+
+    return !projectId || isPublished;
+  };
+
   const delayUnmount = ( fn, timer, delay ) => {
     if ( timer ) clearTimeout( timer );
     /* eslint-disable no-param-reassign */
@@ -231,10 +235,9 @@ const GraphicEdit = props => {
     const initialSupportFiles = [];
     const initialGraphicFiles = [];
 
-    if ( initialData?.data?.files ) {
-      initialData.data.files.forEach( file => {
-        // can also use __typename if provided
-        if ( file.style && file.social ) {
+    if ( localData?.localGraphicProject?.files ) {
+      localData.localGraphicProject.files.forEach( file => {
+        if ( getCount( file.style ) && getCount( file.social ) ) {
           initialGraphicFiles.push( file );
         } else {
           initialSupportFiles.push( file );
@@ -247,7 +250,7 @@ const GraphicEdit = props => {
 
   const getSupportFiles = type => {
     const editableExtensions = [
-      '.psd', '.ai', '.ae', '.eps', '.jpg', '.jpeg', '.png',
+      '.psd', '.ai', '.ae', '.eps',
     ];
     const editableFiles = [];
     const additionalFiles = [];
@@ -258,9 +261,10 @@ const GraphicEdit = props => {
       ? data.graphicProject.supportFiles
       : initialFiles ) || [];
 
-    if ( supportFiles.length > 0 ) {
+    if ( getCount( supportFiles ) ) {
       supportFiles.forEach( file => {
-        const extension = getFileExt( file.filename );
+        const _filename = projectId ? file.filename : file.name;
+        const extension = getFileExt( _filename );
 
         if ( editableExtensions.includes( extension ) ) {
           editableFiles.push( file );
