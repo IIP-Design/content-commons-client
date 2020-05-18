@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Item } from 'semantic-ui-react';
 
+import DownloadItem from './DownloadItem';
 import { formatBytes, getVideoDownloadLink } from 'lib/utils';
-
-import downloadIcon from 'static/icons/icon_download.svg';
 
 // NOTE: Using the 'download' attribute to trigger downloads
 // Need to research more robust options depending on browser support
@@ -51,26 +50,25 @@ const DownloadVideo = ( { burnedInCaptions, instructions, selectedLanguageUnit }
     const videoQuality = `${video.video_quality && video.video_quality.toLowerCase() === 'broadcast' ? 'broadcast' : 'web'}`;
     const downloadLink = getVideoDownloadLink( video.downloadUrl, fn );
 
+    const header = [
+      'Download ', <span key={ title } className="lightweight">{ `"${title}"` }</span>, ` for ${videoQuality}`,
+    ];
+
     return (
-      <Item.Group key={ `fs_${index}` } className="download-item">
-        <Item as="a" href={ downloadLink } download={ fn }>
-          <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
-          <Item.Content>
-            <Item.Header className="download-header">
-              { 'Download '}
-              <span className="lightweight">{ `"${title}"` }</span>
-              { ` for ' ${videoQuality}` }
-            </Item.Header>
-            <Item.Meta>
-              { ` File size: ${size.weight} ` }
-            </Item.Meta>
-            <Item.Meta>
-              { ` Dimensions: ${size.label}` }
-            </Item.Meta>
-            <span className="item_hover">{ `Download for ${videoQuality}` }</span>
-          </Item.Content>
-        </Item>
-      </Item.Group>
+      <DownloadItem
+        download={ fn }
+        header={ header }
+        hover={ `Download for ${videoQuality}` }
+        key={ index }
+        url={ downloadLink }
+      >
+        <Item.Meta>
+          { ` File size: ${size.weight} ` }
+        </Item.Meta>
+        <Item.Meta>
+          { ` Dimensions: ${size.label}` }
+        </Item.Meta>
+      </DownloadItem>
     );
   };
 

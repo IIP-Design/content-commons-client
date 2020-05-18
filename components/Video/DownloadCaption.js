@@ -1,28 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Item } from 'semantic-ui-react';
 
+import DownloadItem from './DownloadItem';
 import { maybeGetUrlToProdS3 } from 'lib/utils';
-import downloadIcon from 'static/icons/icon_download.svg';
 
 const DownloadCaption = ( { instructions, item } ) => {
   const renderFormItem = ( file, i ) => {
     const downloadFileText = `Download ${file.language.display_name} ${file.srcUrl.includes( '.vtt' ) ? 'VTT' : 'SRT'}`;
 
     return (
-      <Item.Group key={ `fs_${i}` } className="download-item">
-        <Item
-          as="a"
-          href={ maybeGetUrlToProdS3( file.srcUrl ) }
-          download={ `${file.language.display_name}_${file.srcUrl.includes( '.vtt' ) ? 'VTT' : 'SRT'}` }
-        >
-          <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
-          <Item.Content>
-            <Item.Header className="download-header">{ downloadFileText }</Item.Header>
-            <span className="item_hover">{ downloadFileText }</span>
-          </Item.Content>
-        </Item>
-      </Item.Group>
+      <DownloadItem
+        download={ `${file.language.display_name}_${file.srcUrl.includes( '.vtt' ) ? 'VTT' : 'SRT'}` }
+        header={ downloadFileText }
+        hover={ downloadFileText }
+        key={ i }
+        url={ maybeGetUrlToProdS3( file.srcUrl ) }
+      />
     );
   };
 

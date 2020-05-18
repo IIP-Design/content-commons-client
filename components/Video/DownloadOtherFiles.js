@@ -1,10 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Item } from 'semantic-ui-react';
 
+import DownloadItem from './DownloadItem';
 import { maybeGetUrlToProdS3 } from 'lib/utils';
-
-import downloadIcon from 'static/icons/icon_download.svg';
 
 const DownloadOtherFiles = ( { instructions, units } ) => {
   const renderFormItem = ( unit, i ) => {
@@ -12,19 +10,13 @@ const DownloadOtherFiles = ( { instructions, units } ) => {
     const { language } = unit;
 
     return (
-      <Item.Group key={ `fs_${i}` } className="download-item">
-        <Item as="a" href={ maybeGetUrlToProdS3( srcUrl ) } download={ fileName }>
-          <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
-          <Item.Content>
-            <Item.Header className="download-header">
-              { `Download ${language.display_name} ${fileType} file` }
-            </Item.Header>
-            <span className="item_hover">
-              { `Download ${language.display_name} ${fileType} file` }
-            </span>
-          </Item.Content>
-        </Item>
-      </Item.Group>
+      <DownloadItem
+        download={ fileName }
+        header={ `Download ${language.display_name} ${fileType} file` }
+        hover={ `Download ${language.display_name} ${fileType} file` }
+        key={ i }
+        url={ maybeGetUrlToProdS3( srcUrl ) }
+      />
     );
   };
 

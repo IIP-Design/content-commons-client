@@ -1,22 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Item } from 'semantic-ui-react';
 
+import DownloadItem from './DownloadItem';
 import { maybeGetUrlToProdS3 } from 'lib/utils';
-
-import downloadIcon from 'static/icons/icon_download.svg';
 
 const DownloadTranscript = ( { instructions, item } ) => {
   const renderFormItem = ( file, i ) => (
-    <Item.Group key={ `fs_${i}` } className="download-item">
-      <Item as="a" href={ maybeGetUrlToProdS3( file.srcUrl ) } download={ `${file.language.display_name}_Transcript` }>
-        <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
-        <Item.Content>
-          <Item.Header className="download-header">{ `Download ${file.language.display_name} Transcript` }</Item.Header>
-          <span className="item_hover">{ `Download ${file.language.display_name} Transcript` }</span>
-        </Item.Content>
-      </Item>
-    </Item.Group>
+    <DownloadItem
+      download={ `${file.language.display_name}_Transcript` }
+      header={ `Download ${file.language.display_name} Transcript` }
+      hover={ `Download ${file.language.display_name} Transcript` }
+      key={ i }
+      url={ maybeGetUrlToProdS3( file.srcUrl ) }
+    />
   );
 
   const renderFormItems = formItem => {
