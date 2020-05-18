@@ -6,64 +6,64 @@ import GraphicStyleDropdown, { GRAPHIC_STYLES_QUERY } from './GraphicStyleDropdo
 
 const props = {
   id: '123xyz',
-  label: 'Style'
+  label: 'Style',
 };
 
 const mocks = [
   {
     request: {
-      query: GRAPHIC_STYLES_QUERY
+      query: GRAPHIC_STYLES_QUERY,
     },
     result: {
       data: {
         graphicStyles: [
           {
             id: 'ck9h3ka3o269y0720t7wzp5uq',
-            name: 'Gif'
+            name: 'Gif',
           },
           {
             id: 'ck9h3koe426aa0720y421wmk3',
-            name: 'Clean'
+            name: 'Clean',
           },
           {
             id: 'ck9h3kyb326ak0720wkbk01q6',
-            name: 'Info/Stat'
+            name: 'Info/Stat',
           },
           {
             id: 'ck9h3l7zn26au0720ialhqtg4',
-            name: 'Quote'
-          }
-        ]
-      }
-    }
-  }
+            name: 'Quote',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 const nullMocks = [
   {
     ...mocks[0],
     result: {
-      data: { graphicStyles: null }
-    }
-  }
+      data: { graphicStyles: null },
+    },
+  },
 ];
 
 const emptyMocks = [
   {
     ...mocks[0],
     result: {
-      data: { graphicStyles: [] }
-    }
-  }
+      data: { graphicStyles: [] },
+    },
+  },
 ];
 
 const Component = (
@@ -121,7 +121,7 @@ describe( '<GraphicStyleDropdown />', () => {
     expect( formDropdown.prop( 'loading' ) ).toEqual( true );
   } );
 
-  it( 'renders an error message if there is a GraphQL error', async() => {
+  it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
 
     await wait( 0 );
@@ -133,7 +133,7 @@ describe( '<GraphicStyleDropdown />', () => {
     expect( dropdown.contains( errorMsg ) ).toEqual( true );
   } );
 
-  it( 'does not crash if graphicStyles is null', async() => {
+  it( 'does not crash if graphicStyles is null', async () => {
     const wrapper = mount( NullComponent );
 
     await wait( 0 );
@@ -143,7 +143,7 @@ describe( '<GraphicStyleDropdown />', () => {
     expect( formDropdown.prop( 'options' ) ).toEqual( [] );
   } );
 
-  it( 'does not crash if graphicStyles is []', async() => {
+  it( 'does not crash if graphicStyles is []', async () => {
     const wrapper = mount( EmptyComponent );
 
     await wait( 0 );
@@ -153,7 +153,7 @@ describe( '<GraphicStyleDropdown />', () => {
     expect( formDropdown.prop( 'options' ) ).toEqual( [] );
   } );
 
-  it( 'renders the final state without crashing', async() => {
+  it( 'renders the final state without crashing', async () => {
     const wrapper = mount( Component );
 
     await wait( 0 );
@@ -165,14 +165,14 @@ describe( '<GraphicStyleDropdown />', () => {
       .map( style => ( {
         key: style.id,
         text: style.name,
-        value: style.id
+        value: style.id,
       } ) );
 
     expect( formDropdown.prop( 'options' ) ).toEqual( options );
     expect( dropdownItems.length ).toEqual( graphicStyles.length );
   } );
 
-  it( 'assigns a matching id & htmlFor value to the Dropdown and label, respectively', async() => {
+  it( 'assigns a matching id & htmlFor value to the Dropdown and label, respectively', async () => {
     const wrapper = mount( Component );
 
     await wait( 0 );

@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
@@ -7,6 +8,7 @@ import sortBy from 'lodash/sortBy';
 import gql from 'graphql-tag';
 
 import '../dropdown.scss';
+import { addEmptyOption } from 'lib/utils';
 
 const SOCIAL_PLATFORMS_QUERY = gql`
   query SOCIAL_PLATFORMS_QUERY {
@@ -17,60 +19,105 @@ const SOCIAL_PLATFORMS_QUERY = gql`
   }
 `;
 
-
 const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
-const SocialPlatformDropdown = props => (
-  <Query query={ SOCIAL_PLATFORMS_QUERY }>
-    { ( { data, loading, error } ) => {
-      if ( error ) return `Error! ${error.message}`;
+const getSocialPlatformId = ( platforms = [], selected ) => {
+  const _platforms = selected.map( _selected => {
+    const _platform = platforms.find( platform => platform.name.toLowerCase() === _selected );
 
-      let options = [];
+    return _platform?.id;
+  } );
 
-      if ( data && data.socialPlatforms ) {
-        options = sortBy( data.socialPlatforms, platform => platform.name ).map( platform => ( {
-          key: platform.id,
-          text: platform.name,
-          value: platform.id
-        } ) );
-      }
+  return _platforms.length ? _platforms : [];
+};
 
-      return (
-        <Fragment>
-          { !props.label && (
+const getSocialPlatform = filename => {
+  let social = [];
 
-            <VisuallyHidden>
-              <label htmlFor={ props.id }>
-                { `${props.id} social platforms` }
-              </label>
-            </VisuallyHidden>
-          ) }
+  if ( ~filename.indexOf( 'Twitter' ) || ~filename.indexOf( 'twitter' ) || ~filename.indexOf( 'TW' ) ) {
+    social = 'twitter';
+  }
 
-          <Form.Dropdown
-            id={ props.id }
-            name="platform"
-            options={ options }
-            placeholder="–"
-            loading={ loading }
-            fluid
-            selection
-            { ...props }
-          />
-        </Fragment>
-      );
-    } }
+  if ( ~filename.indexOf( 'Facebook' ) || ~filename.indexOf( 'facebook' ) || ~filename.indexOf( 'FB' ) ) {
+    social = ['facebook', 'instagram'];
+  }
 
-  </Query>
-);
+  return {
+    social,
+    ids: platforms => getSocialPlatformId( platforms, social ),
+  };
+};
+
+
+const SocialPlatformDropdown = props => {
+  const { filename, onChange } = props;
+
+  return (
+    <Query
+      query={ SOCIAL_PLATFORMS_QUERY }
+      onCompleted={ data => {
+        // if filename present, attempt to autoselect based on filename
+        if ( filename ) {
+          const value = getSocialPlatform( filename ).ids( data.socialPlatforms );
+
+          // select the value
+          if ( typeof onChange === 'function' ) {
+            onChange( null, { id: props.id, name: 'social', value } );
+          }
+        }
+      } }
+    >
+      {( { data, loading, error } ) => {
+        if ( error ) return `Error! ${error.message}`;
+
+        let options = [];
+
+        if ( data && data.socialPlatforms ) {
+          options = sortBy( data.socialPlatforms, platform => platform.name ).map( platform => ( {
+            key: platform.id,
+            text: platform.name,
+            value: platform.id,
+          } ) );
+        }
+
+        addEmptyOption( options );
+
+        return (
+          <Fragment>
+            {!props.label && (
+              <VisuallyHidden>
+                <label htmlFor={ props.id }>{`${props.id} social platforms`}</label>
+              </VisuallyHidden>
+            )}
+
+            <Form.Dropdown
+              id={ props.id }
+              name="social"
+              options={ options }
+              placeholder="–"
+              loading={ loading }
+              fluid
+              selection
+              multiple  // hardocded here as facebook selection returns both fb and instagram
+              { ...props }
+            />
+          </Fragment>
+        );
+      }}
+    </Query>
+  );
+};
 
 
 SocialPlatformDropdown.defaultProps = {
-  id: ''
+  id: '',
 };
 
 SocialPlatformDropdown.propTypes = {
   id: PropTypes.string,
-  label: PropTypes.string
+  label: PropTypes.string,
+  onChange: PropTypes.func,
+  filename: PropTypes.string,
 };
 
 export default React.memo( SocialPlatformDropdown, areEqual );
