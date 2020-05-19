@@ -16,8 +16,8 @@ const { publicRuntimeConfig } = getConfig();
    * @return true (format to load video with captions) or false (clean file)
    */
 export const getCaptions = unit => {
-  if ( unit && unit.source && unit.source[0] ) {
-    return unit.source[0].burnedInCaptions === 'true'; // coerce to a boolean
+  if ( unit?.source && unit.source.find( source => source.burnedInCaptions === 'true' ) ) {
+    return true;
   }
 
   return false;

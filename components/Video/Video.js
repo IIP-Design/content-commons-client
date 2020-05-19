@@ -148,7 +148,7 @@ const Video = ( { item, router } ) => {
                 className="modal_captions"
                 checked={ captions }
                 toggle
-                label="Video with captions"
+                label="Video with subtitles"
                 onChange={ handleCaptionChange }
               />
             ) }
