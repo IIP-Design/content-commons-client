@@ -85,14 +85,14 @@ const GraphicSupportFiles = props => {
       { files.map( file => {
         const { id, filename, input, language } = file;
         const _filename = projectId ? filename : input?.name;
-        const shortName = _filename?.length > 36
+        const displayName = _filename?.length > 36
           ? truncateAndReplaceStr( _filename, 24, 12 )
           : _filename;
 
         return (
           <li key={ id } className={ `support-file-item ${projectId ? 'available' : 'unavailable'}` }>
             <span className="filename">
-              { _filename !== shortName
+              { _filename !== displayName
                 ? (
                   <Fragment>
                     <button
@@ -101,12 +101,12 @@ const GraphicSupportFiles = props => {
                       aria-hidden="true"
                       className="truncated"
                     >
-                      { shortName }
+                      { displayName }
                     </button>
                     <VisuallyHidden el="span">{ _filename }</VisuallyHidden>
                   </Fragment>
                 )
-                : shortName }
+                : displayName }
             </span>
 
             <span className="actions">
