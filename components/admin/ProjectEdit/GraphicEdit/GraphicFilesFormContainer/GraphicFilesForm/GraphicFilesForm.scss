@@ -66,7 +66,7 @@ $image-height: 12rem;
       }
 
       // trash can overlay
-      &.available::before {
+      &::before {
         position: absolute;
         top: 0;
         bottom: 0;
@@ -79,11 +79,14 @@ $image-height: 12rem;
       }
 
       &.unavailable {
-        height: $image-height;
-
         // hide the trash can if no projectId
         .ui.basic.buttons.FileRemoveReplaceButtonGroup__btn-group {
           display: none;
+        }
+
+        &::before {
+          background-color: rgba(0, 0, 0, 0.2);
+          opacity: 1;
         }
       }
 
