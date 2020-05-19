@@ -10,9 +10,9 @@ const props = {
     { name: 'projectTitle', label: 'PROJECT TITLE' },
     { name: 'createdAt', label: 'CREATED' },
     { name: 'visibility', label: 'VISIBILITY' },
-    { name: 'author', label: 'AUTHOR' }
+    { name: 'author', label: 'AUTHOR' },
   ],
-  handleSort: jest.fn()
+  handleSort: jest.fn(),
 };
 
 jest.mock( 'react', () => ( {
@@ -20,8 +20,8 @@ jest.mock( 'react', () => ( {
   useContext: () => ( { state: {
     column: 'author',
     direction: 'descending',
-    selected: { displayActionsMenu: true }
-  } } )
+    selected: { displayActionsMenu: true },
+  } } ),
 } ) );
 
 const createTable = tableProps => (

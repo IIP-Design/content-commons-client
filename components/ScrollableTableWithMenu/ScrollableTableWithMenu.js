@@ -6,6 +6,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
+import gql from 'graphql-tag';
 import { Table, Grid } from 'semantic-ui-react';
 import { useQuery } from '@apollo/react-hooks';
 
@@ -35,6 +36,16 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   const _breakpoint = 767;
 
   const { dispatch, state } = useContext( DashboardContext );
+  const projectType = state?.projectType ? state.projectType : '';
+  const column = state?.column ? state.column : 'createdAt';
+  const direction = state?.direction ? state.direction : 'descending';
+
+  // No-op query is never called, but added to avoid reference error in cases where context has not yet loaded
+  const noopQuery = gql`query{ NOOP { noop } }`;
+
+  // Get the content data
+  const contentQuery = state?.queries?.content ? state.queries.content : noopQuery;
+  const countQuery = state?.queries?.count ? state.queries.count : noopQuery;
 
   // Set GraphQL query variables
   const variables = { team: team.name, searchTerm };
@@ -44,37 +55,41 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   /**
    * Get count of projects from GraphQL
    */
-  const countData = useQuery( state.queries.count, {
+  const countData = useQuery( countQuery, {
     variables: { ...variables },
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'cache-and-network',
   } );
 
   // The data for following columns cannot by sort within the GraphQL query
-  const isLegacySort = state.column === 'author' || state.column === 'categories' || state.column === 'team';
+  const isLegacySort = column === 'author' || column === 'categories' || column === 'team';
 
   /**
    * Get data for each project from GraphQL, if can be sorted by the GraphQL query send pagination vars
    * Otherwise, return all results for client-side sorting within the TableBody Component
    */
-  const contentData = useQuery( state.queries.content, {
+  const contentData = useQuery( contentQuery, {
     variables: isLegacySort ? { ...variables } : { ...variables, ...bodyPaginationVars },
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'cache-and-network',
   } );
 
   useEffect( () => {
     const { data, error, loading, refetch } = countData;
 
     // Save project count in context
-    dispatch( { type: 'UPDATE_COUNT', payload: { count: { data, error, loading, refetch }, team, type: state.projectType } } );
-  }, [countData] );
+    dispatch( { type: 'UPDATE_COUNT', payload: { count: { data, error, loading, refetch }, team, type: projectType } } );
+  }, [
+    countData, dispatch, projectType, team,
+  ] );
 
   useEffect( () => {
     const { data, error, loading, refetch } = contentData;
 
     // Save project data in context
-    dispatch( { type: 'UPDATE_CONTENT', payload: { data, error, loading, refetch, type: state.projectType } } );
-  }, [contentData] );
+    dispatch( { type: 'UPDATE_CONTENT', payload: { data, error, loading, refetch, type: projectType } } );
+  }, [
+    contentData, dispatch, projectType,
+  ] );
 
   /**
    * Set the table headers on mobile
@@ -164,16 +179,16 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
 
     // Pass column, direction to TableBody so re-rendered on TableHeader click
     // Reset to first page of results after sort
-    const direction = state.direction === 'ascending' ? 'descending' : 'ascending';
+    const dir = direction === 'ascending' ? 'descending' : 'ascending';
 
-    dispatch( { type: 'UPDATE_COLUMN', payload: { column: clickedColumn, direction } } );
+    dispatch( { type: 'UPDATE_COLUMN', payload: { column: clickedColumn, direction: dir } } );
 
     const isVideo = team?.contentTypes && team.contentTypes.includes( 'VIDEO' );
     const columnName = !isVideo && clickedColumn === 'projectTitle'
       ? 'title'
       : clickedColumn;
 
-    setOrderBy( `${columnName}_${direction === 'ascending' ? 'ASC' : 'DESC'}` );
+    setOrderBy( `${columnName}_${dir === 'ascending' ? 'ASC' : 'DESC'}` );
 
     handleResetActivePage();
   };
@@ -187,7 +202,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     e.persist();
     const menuItem = {
       name: e.target.parentNode.dataset.propname,
-      label: e.target.parentNode.dataset.proplabel
+      label: e.target.parentNode.dataset.proplabel,
     };
 
     if ( tableHeaders.map( h => h.name ).includes( menuItem.name ) ) {
@@ -263,9 +278,9 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
               />
               <TableBody
                 bodyPaginationVars={ { ...bodyPaginationVars } }
-                column={ state.column }
+                column={ column }
                 data={ projectData }
-                direction={ state.direction }
+                direction={ direction }
                 error={ projectError }
                 loading={ projectLoading }
                 projectTab={ projectTab }
@@ -296,7 +311,7 @@ ScrollableTableWithMenu.propTypes = {
   persistentTableHeaders: PropTypes.array,
   columnMenu: PropTypes.array,
   team: PropTypes.object,
-  projectTab: PropTypes.string
+  projectTab: PropTypes.string,
 };
 
 export default ScrollableTableWithMenu;
