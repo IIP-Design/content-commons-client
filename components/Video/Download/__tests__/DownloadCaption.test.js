@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 
 import DownloadCaption from '../DownloadCaption';
-import { mockItem } from '../mocks';
+import { mockItem } from '../../mocks';
 
 jest.mock( '../DownloadItem', () => 'download-item' );
 

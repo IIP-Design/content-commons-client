@@ -44,8 +44,8 @@ const Video = ( { item, router } ) => {
   const [videoProps, setVideoProps] = useState( null );
   const [shareLink, setShareLink] = useState( '' );
 
-  const { signedUrl: unitThumb } = useSignedUrl( unit.thumbnail );
-  const { signedUrl: itemThumb } = useSignedUrl( item.thumbnail );
+  const { signedUrl: unitThumb } = useSignedUrl( unit?.thumbnail ? unit.thumbnail : '' );
+  const { signedUrl: itemThumb } = useSignedUrl( item?.thumbnail ? item.thumbnail : '' );
 
   /**
    * Update the location url the direct link to selected video
@@ -66,8 +66,13 @@ const Video = ( { item, router } ) => {
   const willFetchVideoPlayer = async () => {
     const video = await fetchVideoPlayer( unit, captions );
 
-    setVideoProps( video.props );
-    setShareLink( video.shareLink );
+    if ( video.props ) {
+      setVideoProps( video.props );
+    }
+
+    if ( video.shareLink ) {
+      setShareLink( video.shareLink );
+    }
   };
 
   /**
@@ -97,8 +102,12 @@ const Video = ( { item, router } ) => {
         if ( selected ) {
           setUnit( selected );
           setSelectedLanguage( getLanguage( selected ) );
-          setVideoProps( video.props );
-          setShareLink( video.shareLink );
+          if ( video.props ) {
+            setVideoProps( video.props );
+          }
+          if ( video.shareLink ) {
+            setShareLink( video.shareLink );
+          }
         }
       };
 
@@ -114,12 +123,13 @@ const Video = ( { item, router } ) => {
     willFetchVideoPlayer();
   };
 
-  const toggleCaptions = [...new Set( unit.source.map( u => u.burnedInCaptions ) )];
   const embedItem = shareLink
     ? `<iframe src="${shareLink}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`
     : '';
 
   if ( unit && selectedLanguage ) {
+    const toggleCaptions = [...new Set( unit.source.map( u => u.burnedInCaptions ) )];
+
     return (
       <ModalItem
         headline={ unit.title }
