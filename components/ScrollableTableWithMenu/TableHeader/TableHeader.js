@@ -12,7 +12,12 @@ import { DashboardContext } from 'context/dashboardContext';
 import './TableHeader.scss';
 
 const TableHeader = ( { handleSort, tableHeaders } ) => {
-  const { state: { column, direction, selected } } = useContext( DashboardContext );
+  const { state } = useContext( DashboardContext );
+
+  const column = state?.column ? state.column : 'createdAt';
+  const direction = state?.direction ? state.direction : 'descending';
+  const selected = state?.selected ? state.selected : null;
+
   const displayActionsMenu = selected?.displayActionsMenu ? selected.displayActionsMenu : false;
 
   return (
@@ -35,7 +40,7 @@ const TableHeader = ( { handleSort, tableHeaders } ) => {
 
 TableHeader.propTypes = {
   tableHeaders: PropTypes.array.isRequired,
-  handleSort: PropTypes.func
+  handleSort: PropTypes.func,
 };
 
 export default TableHeader;
