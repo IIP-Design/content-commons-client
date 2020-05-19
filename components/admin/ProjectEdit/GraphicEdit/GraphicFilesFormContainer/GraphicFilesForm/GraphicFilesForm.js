@@ -117,8 +117,9 @@ const GraphicFilesForm = props => {
 
       <Form className="form-fields">
         { files.map( file => {
-          const { id, filename, filesize, input, language, title } = file;
+          const { id, filename, filesize, input, language } = file;
           const _filename = projectId ? filename : input?.name;
+          const _filesize = projectId ? filesize : input?.size;
           const shortName = _filename?.length > 30
             ? truncateAndReplaceStr( _filename, 20, 10 )
             : _filename;
@@ -126,7 +127,7 @@ const GraphicFilesForm = props => {
           const value = projectId
             ? values[id]
             : {
-              title: title || _filename,
+              title: input.name || '',
               language,
               style: file.style,
               social: file.social,
@@ -180,7 +181,7 @@ const GraphicFilesForm = props => {
                     </span>
 
                     <span className="filesize">
-                      { formatBytes( filesize, 1 ) }
+                      { formatBytes( _filesize || 0, 1 ) }
                     </span>
                   </div>
                 </div>
