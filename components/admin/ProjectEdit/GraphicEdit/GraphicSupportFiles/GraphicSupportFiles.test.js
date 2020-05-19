@@ -120,6 +120,19 @@ describe( '<GraphicSupportFiles />, for editable files', () => {
     expect( title.text() ).toEqual( props.headline );
   } );
 
+  it( 'renders the LanguageDropdown', () => {
+    const langDropdowns = listContainer.find( 'LanguageDropdown' );
+
+    expect( langDropdowns.exists() ).toEqual( true );
+    langDropdowns.forEach( ( dropdown, i ) => {
+      const { id, language } = props.files[i];
+
+      expect( dropdown.prop( 'id' ) ).toEqual( id );
+      expect( dropdown.prop( 'value' ) ).toEqual( language.id );
+      expect( dropdown.prop( 'disabled' ) ).toEqual( false );
+    } );
+  } );
+
   it( 'renders the IconPopup', () => {
     const iconPopup = listContainer.find( '.list-heading > IconPopup' );
 
@@ -293,6 +306,12 @@ describe( '<GraphicSupportFiles />, for additional files', () => {
     expect( title.text() ).toEqual( newProps.headline );
   } );
 
+  it( 'does not render the LanguageDropdown', () => {
+    const langDropdowns = listContainer.find( 'LanguageDropdown' );
+
+    expect( langDropdowns.exists() ).toEqual( false );
+  } );
+
   it( 'renders the IconPopup', () => {
     const iconPopup = listContainer.find( '.list-heading > IconPopup' );
 
@@ -415,6 +434,68 @@ describe( '<GraphicSupportFiles />, when a projectId does not exist', () => {
   const newProps = {
     ...props,
     projectId: undefined,
+    files: [
+      {
+        id: 'c9f7158c-a222-47a6-bb74-5e3d3a21d532',
+        name: 'askja-asdfjk-qeowiz-zxwe82-mzurjq-duzmwuq-acwac_TW.psd',
+        loaded: 0,
+        input: {
+          dataUrl: 'the-data-url',
+          name: 'askja-asdfjk-qeowiz-zxwe82-mzurjq-duzmwuq-acwac_TW.psd',
+          size: 509000,
+          __typename: 'LocalInputFile',
+        },
+        language: 'ck2lzfx710hkq07206thus6pt',
+        style: '',
+        social: [],
+        __typename: 'LocalImageFile',
+      },
+      {
+        id: 'f88fe3a6-f328-46b4-b902-fcdf1f483097',
+        name: 'test-file-FB.psd',
+        loaded: 0,
+        input: {
+          dataUrl: 'the-data-url',
+          name: 'test-file-FB.psd',
+          size: 297343,
+          __typename: 'LocalInputFile',
+        },
+        language: 'ck2lzfx710hkq07206thus6pt',
+        style: '',
+        social: [],
+        __typename: 'LocalImageFile',
+      },
+      // {
+      //   id: 'd2dcba4b-9d72-4533-b8fe-e90469ccf870',
+      //   name: 'OpenSans-regular.ttf',
+      //   loaded: 0,
+      //   input: {
+      //     dataUrl: 'the-data-url',
+      //     name: 'OpenSans-regular.ttf',
+      //     size: 217360,
+      //     __typename: 'LocalInputFile',
+      //   },
+      //   language: 'ck2lzfx710hkq07206thus6pt',
+      //   style: '',
+      //   social: [],
+      //   __typename: 'LocalImageFile',
+      // },
+      // {
+      //   id: '47b1c17d-41c2-4f5e-a2a8-914f8e31c106',
+      //   name: 'transcript.docx',
+      //   loaded: 0,
+      //   input: {
+      //     dataUrl: 'the-data-url',
+      //     name: 'transcript.docx',
+      //     size: 9000,
+      //     __typename: 'LocalInputFile',
+      //   },
+      //   language: 'ck2lzfx710hkq07206thus6pt',
+      //   style: '',
+      //   social: [],
+      //   __typename: 'LocalImageFile',
+      // },
+    ],
   };
 
   beforeEach( () => {
@@ -439,8 +520,22 @@ describe( '<GraphicSupportFiles />, when a projectId does not exist', () => {
   it( 'renders a disabled language dropdown', () => {
     const langDropdowns = listContainer.find( 'LanguageDropdown' );
 
-    langDropdowns.forEach( dropdown => {
+    langDropdowns.forEach( ( dropdown, i ) => {
+      const { id, language } = newProps.files[i];
+
+      expect( dropdown.prop( 'id' ) ).toEqual( id );
+      expect( dropdown.prop( 'value' ) ).toEqual( language );
       expect( dropdown.prop( 'disabled' ) ).toEqual( true );
+    } );
+  } );
+
+  it( 'renders the filename', () => {
+    const filenames = listContainer.find( '.filename' );
+
+    filenames.forEach( ( filename, i ) => {
+      const inputName = newProps.files[i].input.name;
+
+      expect( filename.contains( inputName ) ).toEqual( true );
     } );
   } );
 } );
