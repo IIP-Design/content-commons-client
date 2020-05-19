@@ -120,7 +120,7 @@ const GraphicFilesForm = props => {
           const { id, filename, filesize, input, language } = file;
           const _filename = projectId ? filename : input?.name;
           const _filesize = projectId ? filesize : input?.size;
-          const shortName = _filename?.length > 30
+          const displayName = _filename?.length > 30
             ? truncateAndReplaceStr( _filename, 20, 10 )
             : _filename;
 
@@ -161,7 +161,7 @@ const GraphicFilesForm = props => {
                 <div className="meta-wrap">
                   <div className="meta">
                     <span className="filename">
-                      { _filename !== shortName
+                      { _filename !== displayName
                         ? (
                           <Fragment>
                             <button
@@ -170,7 +170,7 @@ const GraphicFilesForm = props => {
                               aria-hidden="true"
                               className="filename truncated"
                             >
-                              { shortName }
+                              { displayName }
                             </button>
                             <VisuallyHidden el="span">
                               { _filename }
