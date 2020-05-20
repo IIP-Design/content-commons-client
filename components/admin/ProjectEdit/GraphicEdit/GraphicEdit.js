@@ -18,6 +18,7 @@ import {
   GRAPHIC_PROJECT_QUERY,
   LOCAL_GRAPHIC_FILES,
 } from 'lib/graphql/queries/graphic';
+import { GRAPHIC_STYLES_QUERY } from 'components/admin/dropdowns/GraphicStyleDropdown/GraphicStyleDropdown';
 import { getCount, getFileExt } from 'lib/utils';
 import './GraphicEdit.scss';
 
@@ -231,13 +232,34 @@ const GraphicEdit = props => {
     //   addProjectIdToUrl( id );
   };
 
+  const getStyleId = name => {
+    const { graphicStyles: styles } = client.readQuery( {
+      query: GRAPHIC_STYLES_QUERY,
+    } );
+
+    const styleObj = styles && styles.find( style => style.name === name );
+
+    return styleObj?.id || '';
+  };
+
+  const getIsPngShell = filename => {
+    const isPng = getFileExt( filename ) === '.png';
+    const hasShellInName = filename.toLowerCase().includes( 'shell' );
+
+    return isPng && hasShellInName;
+  };
+
   const getInitialFiles = type => {
     const initialSupportFiles = [];
     const initialGraphicFiles = [];
 
     if ( localData?.localGraphicProject?.files ) {
       localData.localGraphicProject.files.forEach( file => {
-        if ( getCount( file.style ) && getCount( file.social ) ) {
+        const isClean = file.style === getStyleId( 'Clean' );
+        const isCleanShell = isClean && getIsPngShell( file.name );
+        const hasStyleAndSocial = getCount( file.style ) && getCount( file.social );
+
+        if ( hasStyleAndSocial && !isCleanShell ) {
           initialGraphicFiles.push( file );
         } else {
           initialSupportFiles.push( file );
@@ -255,18 +277,22 @@ const GraphicEdit = props => {
     const editableFiles = [];
     const additionalFiles = [];
 
-    const initialFiles = getInitialFiles( 'supportFiles' );
+    const existingSupportFiles = data?.graphicProject?.supportFiles || [];
+    const existingGraphicFiles = data?.graphicProject?.images || [];
 
-    const supportFiles = ( projectId && data?.graphicProject?.supportFiles
-      ? data.graphicProject.supportFiles
-      : initialFiles ) || [];
+    const shellFile = existingGraphicFiles.filter( img => getIsPngShell( img.filename ) );
+    const existingFilesPlusShell = existingSupportFiles.concat( shellFile );
+    const initialFiles = getInitialFiles( 'supportFiles' );
+    const supportFiles = projectId ? existingFilesPlusShell : initialFiles;
 
     if ( getCount( supportFiles ) ) {
       supportFiles.forEach( file => {
         const _filename = projectId ? file.filename : file.name;
         const extension = getFileExt( _filename );
+        const hasEditableExt = editableExtensions.includes( extension );
+        const isShell = getIsPngShell( _filename );
 
-        if ( editableExtensions.includes( extension ) ) {
+        if ( hasEditableExt || isShell ) {
           editableFiles.push( file );
         } else {
           additionalFiles.push( file );
@@ -277,9 +303,18 @@ const GraphicEdit = props => {
     return type === 'editable' ? editableFiles : additionalFiles;
   };
 
-  const graphicFiles = projectId
-    ? data?.graphicProject?.images || []
-    : getInitialFiles( 'graphicFiles' );
+  const getGraphicFiles = () => {
+    const existingFiles = data?.graphicProject?.images || [];
+    let files = [];
+
+    if ( projectId ) {
+      files = existingFiles.filter( img => !getIsPngShell( img.filename ) );
+    } else {
+      files = getInitialFiles( 'graphicFiles' );
+    }
+
+    return files;
+  };
 
   const supportFilesConfig = [
     {
@@ -446,7 +481,7 @@ const GraphicEdit = props => {
 
         <GraphicFilesFormContainer
           projectId={ projectId }
-          files={ graphicFiles }
+          files={ getGraphicFiles() }
           handleAddFiles={ handleAddFiles }
           setIsFormValid={ setIsFormValid }
           updateNotification={ updateNotification }
