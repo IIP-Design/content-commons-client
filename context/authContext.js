@@ -1,27 +1,30 @@
 import React, { useState } from 'react';
+import cookie from 'js-cookie';
+import cookies from 'next-cookies';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
+import { useRouter } from 'next/router';
+
 import {
   CLOUDFLARE_SIGNIN_MUTATION,
   USER_SIGN_OUT_MUTATION,
-  CURRENT_USER_QUERY
+  CURRENT_USER_QUERY,
 } from 'lib/graphql/queries/user';
-import { useRouter } from 'next/router';
 import { isDevEnvironment } from 'lib/browser';
 import { isRestrictedPage } from 'lib/authentication';
-import cookie from 'js-cookie';
-import cookies from 'next-cookies';
 
 const AuthContext = React.createContext();
 const allowedRolesForRestrictedPages = [
-  'EDITOR', 'TEAM_ADMIN', 'ADMIN'
+  'EDITOR', 'TEAM_ADMIN', 'ADMIN',
 ];
 
 /**
  * Check user page permissions
- * Exported to make avaiale for SSR
+ * Exported to make available for SSR
  * @param {object} user graphQL user
  */
-export const hasPagePermissions = user => user.permissions.some( permission => allowedRolesForRestrictedPages.includes( permission ) );
+export const hasPagePermissions = user => user.permissions.some(
+  permission => allowedRolesForRestrictedPages.includes( permission ),
+);
 
 /**
  * Return the cookie that CloudFlare sets upon successful sign in to
@@ -44,7 +47,7 @@ const getCloudFlareToken = ctx => {
 /**
  * Returns a user if both a CloudFlare token AND
  * valid user exist, else return null
- * Exported to make avaiale for SSR and outside
+ * Exported to make available for SSR and outside
  * of react components
  * @param {obj} ctx next.js context object
  */
@@ -58,7 +61,7 @@ export const fetchUser = async ctx => {
 
   try {
     const {
-      data: { user }
+      data: { user },
     } = await ctx.apolloClient.query( { query: CURRENT_USER_QUERY, fetchPolicy: 'network-only' } );
 
     if ( user ) {
@@ -77,7 +80,7 @@ export const fetchUser = async ctx => {
 /**
  * Checks to see if on a protected page and if so
  * verify a logged user with applicable permissions
- * Exported to make avaiale for SSR
+ * Exported to make available for SSR
  * @param {*} ctx next.js context object
  */
 export const canAccessPage = async ctx => {
@@ -105,7 +108,7 @@ export const canAccessPage = async ctx => {
 };
 
 
-function AuthProvider( props ) {
+const AuthProvider = props => {
   const client = useApolloClient();
   const router = useRouter();
 
@@ -115,14 +118,14 @@ function AuthProvider( props ) {
   // Attempt to fetch user
   const { data, loading: userLoading } = useQuery( CURRENT_USER_QUERY, {
     ssr: false,
-    fetchPolicy: 'network-only'
+    fetchPolicy: 'network-only',
   } );
 
   // Sign in mutation
   const [signIn] = useMutation(
     CLOUDFLARE_SIGNIN_MUTATION, {
-      refetchQueries: [{ query: CURRENT_USER_QUERY }]
-    }
+      refetchQueries: [{ query: CURRENT_USER_QUERY }],
+    },
   );
 
   // Sign out mutation
@@ -133,7 +136,7 @@ function AuthProvider( props ) {
 
       // sign out of CF
       const {
-        location: { protocol, hostname, port }
+        location: { protocol, hostname, port },
       } = window;
 
       // Only do CloudFlare logout if on staging, beta or prod
@@ -145,11 +148,11 @@ function AuthProvider( props ) {
       cookie.remove( 'CF_Authorization' );
       cookie.remove( 'ES_TOKEN' );
       router.push( '/' );
-    }
+    },
   } );
 
 
-  const login = async() => {
+  const login = async () => {
     // do we have a CloudFlare token?
     const cfAuth = cookie.get( 'CF_Authorization' );
 
@@ -162,7 +165,7 @@ function AuthProvider( props ) {
     }
   };
 
-  const logout = async() => signOut();
+  const logout = async () => signOut();
   const register = () => {};
 
   if ( data?.user ) {
@@ -176,12 +179,12 @@ function AuthProvider( props ) {
         loading: userLoading,
         login,
         logout,
-        register
+        register,
       } }
       { ...props }
     />
   );
-}
+};
 
 
 function useAuth() {
