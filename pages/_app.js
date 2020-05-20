@@ -12,25 +12,25 @@ import makeStore from 'lib/redux/store';
 import 'styles/styles.scss';
 
 class Commons extends App {
-  static async getInitialProps({ Component, ctx }) {
+  static async getInitialProps( { Component, ctx } ) {
     let pageProps = {};
 
     // if user does not have appropriate page permissions redirect 
-    if (!(await canAccessPage(ctx))) {
+    if ( !( await canAccessPage( ctx ) ) ) {
       // only redirect if we are going to login
-      if (ctx.pathname !== '/login') {
+      if ( ctx.pathname !== '/login' ) {
         // add redirect url as a query param
         // cannot use client side storage or libraries as this is executing on the server 
-        redirectTo(`/login?return=${ctx.asPath}`, ctx);
+        redirectTo( `/login?return=${ctx.asPath}`, ctx );
       }
     }
 
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
+    if ( Component.getInitialProps ) {
+      pageProps = await Component.getInitialProps( ctx );
     }
 
     // exposes apollo query to component
-    if (!isEmpty(ctx.query)) {
+    if ( !isEmpty( ctx.query ) ) {
       pageProps.query = ctx.query;
     }
 
@@ -39,7 +39,7 @@ class Commons extends App {
 
   render() {
     const {
-      Component, apollo, store, pageProps
+      Component, apollo, store, pageProps,
     } = this.props;
 
     return (
@@ -56,4 +56,4 @@ class Commons extends App {
   }
 }
 
-export default withApollo(withRedux(makeStore)(Commons));
+export default withApollo( withRedux( makeStore )( Commons ) );
