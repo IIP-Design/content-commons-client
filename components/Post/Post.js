@@ -124,7 +124,7 @@ const Post = ( { item, router } ) => {
             />
           </div>
         </div>
-        <ModalImage thumbnail={ signedUrl } thumbnailMeta={ signedUrl } />
+        <ModalImage thumbnail={ signedUrl } thumbnailMeta={ selectedItem.thumbnailMeta } />
         <ModalContentMeta type={ selectedItem.type } dateUpdated={ selectedItem.modified } />
         <ModalText textContent={ selectedItem.content } />
         <ModalPostMeta
