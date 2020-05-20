@@ -129,8 +129,8 @@ describe( '<FileUploadProgressBar /> at upload start', () => {
 
   it( 'renders with the percentage if props.showPercent', () => {
     const wrapper = mount( StartUploadComponent );
-    wrapper.setProps( { showPercent: true } );
 
+    wrapper.setProps( { showPercent: true } );
     const { filesToUpload } = startUploadProps;
     const size = filesToUpload.reduce(
       // 1030591 + 15829673 + 5000 = 16865264
@@ -203,8 +203,8 @@ describe( '<FileUploadProgressBar /> during upload', () => {
 
   it( 'renders with the percentage if props.showPercent', () => {
     const wrapper = mount( PartialUploadComponent );
-    wrapper.setProps( { showPercent: true } );
 
+    wrapper.setProps( { showPercent: true } );
     const { filesToUpload } = partialUploadProps;
     const size = filesToUpload.reduce(
       // 1030591 + 15829673 + 5000 = 16865264
@@ -259,8 +259,8 @@ describe( '<FileUploadProgressBar /> after completed upload', () => {
 
   it( 'renders with the percentage if props.showPercent', () => {
     const wrapper = mount( CompletedUploadComponent );
-    wrapper.setProps( { showPercent: true } );
 
+    wrapper.setProps( { showPercent: true } );
     const { filesToUpload } = completedUploadProps;
     const size = filesToUpload.reduce(
       // 1030591 + 15829673 + 5000 = 16865264

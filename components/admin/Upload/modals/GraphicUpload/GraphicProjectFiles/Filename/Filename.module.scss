@@ -1,0 +1,25 @@
+ @import 'styles/colors.scss';
+
+.filename {
+  position: relative; 
+  font-size: .888888889rem;
+  color: $dark-grey;
+  overflow-wrap: anywhere;
+  word-wrap: anywhere; 
+  hyphens: auto;
+
+  span {
+    display: inline-block
+  }
+
+  // Override rules coming from styles/tooltip.scss
+  [tooltip] {
+    margin: 0 !important;
+  }
+
+  [tooltip]::after {
+    min-width: 220px; 
+    z-index: 100;
+  }
+}
+

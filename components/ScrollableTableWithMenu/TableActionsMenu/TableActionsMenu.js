@@ -38,13 +38,13 @@ const TableActionsMenu = ( {
   refetch,
   refetchCount,
   toggleAllItemsSelection,
-  variables
+  variables,
 } ) => {
   const { state } = useContext( DashboardContext );
 
   const selectedItems = state?.selected?.selectedItems ? state.selected.selectedItems : new Map();
   const displayActionsMenu = state?.selected?.displayActionsMenu ? state.selected.displayActionsMenu : false;
-  const { team } = state;
+  const team = state?.team ? state.team : { contentTypes: null };
 
   const [displayConfirmationMsg, setDisplayConfirmationMsg] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
@@ -94,7 +94,7 @@ const TableActionsMenu = ( {
     refetch( { ...variables } );
     refetchCount( {
       team: variables.team,
-      searchTerm: variables.searchTerm
+      searchTerm: variables.searchTerm,
     } );
     showConfirmationMsg();
   };
@@ -256,7 +256,7 @@ TableActionsMenu.propTypes = {
   refetch: PropTypes.func,
   refetchCount: PropTypes.func,
   toggleAllItemsSelection: PropTypes.func,
-  variables: PropTypes.object
+  variables: PropTypes.object,
 };
 
 export default TableActionsMenu;

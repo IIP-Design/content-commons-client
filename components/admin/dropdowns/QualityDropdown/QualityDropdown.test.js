@@ -1,11 +1,11 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from 'react-apollo/test-utils';
+import { MockedProvider } from '@apollo/react-testing';
 import { addEmptyOption } from 'lib/utils';
 import QualityDropdown, { VIDEO_QUALITY_QUERY, IMAGE_QUALITY_QUERY } from './QualityDropdown';
 
 const props = {
-  id: '',
+  id: 'q123',
   label: 'Quality',
   infotip: 'tooltip message',
   type: 'Video'
@@ -38,7 +38,12 @@ const mocks = [
     },
     result: {
       data: {
-        __type: null
+        __type: {
+          enumValues: [
+            { name: 'WEB' },
+            { name: 'PRINT' }
+          ]
+        }
       }
     }
   }
@@ -72,7 +77,7 @@ const nullMocks = [
     ...mocks[1],
     result: {
       data: {
-        __type: null
+        __type: { enumValues: null }
       }
     }
   }
@@ -97,7 +102,24 @@ const emptyMocks = [
   }
 ];
 
+const suppressActWarning = consoleError => {
+  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+
+  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
+    if ( !args[0].includes( actMsg ) ) {
+      consoleError( ...args );
+    }
+  } );
+};
+
 describe( '<QualityDropdown /> for video type', () => {
+  const consoleError = console.error;
+
+  beforeAll( () => suppressActWarning( consoleError ) );
+  afterAll( () => {
+    console.error = consoleError;
+  } );
+
   const Component = (
     <MockedProvider mocks={ mocks } addTypename={ false }>
       <QualityDropdown { ...props } />
@@ -133,6 +155,7 @@ describe( '<QualityDropdown /> for video type', () => {
 
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
+
     await wait( 0 );
     wrapper.update();
     const dropdown = wrapper.find( 'QualityDropdown' );
@@ -144,34 +167,41 @@ describe( '<QualityDropdown /> for video type', () => {
 
   it( 'does not crash if enumValues is null', async () => {
     const wrapper = mount( NullComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
-    const emptyOption = [{
-      key: '-',
-      text: '-',
-      value: null
-    }];
+    const emptyOption = [
+      {
+        key: '-',
+        text: '-',
+        value: null
+      }
+    ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
   } );
 
   it( 'does not crash if enumValues is []', async () => {
     const wrapper = mount( EmptyComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
-    const emptyOption = [{
-      key: '-',
-      text: '-',
-      value: null
-    }];
+    const emptyOption = [
+      {
+        key: '-',
+        text: '-',
+        value: null
+      }
+    ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
   } );
 
   it( 'renders the final state without crashing', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -179,6 +209,7 @@ describe( '<QualityDropdown /> for video type', () => {
     const { enumValues } = mocks[0].result.data.__type;
     const semanticUIValues = enumValues.map( quality => {
       const { name } = quality;
+
       return {
         key: name,
         text: `For ${name.toLowerCase()}`,
@@ -193,9 +224,10 @@ describe( '<QualityDropdown /> for video type', () => {
 
   it( 'assigns a matching id & htmlFor value to the Dropdown and label, respectively', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
-    const dropdown = wrapper.find( 'Dropdown > div' );
+    const dropdown = wrapper.find( 'Dropdown div[name="quality"]' );
     const label = wrapper.find( 'label' );
 
     expect( dropdown.prop( 'id' ) ).toEqual( props.id );
@@ -204,6 +236,13 @@ describe( '<QualityDropdown /> for video type', () => {
 } );
 
 describe( '<QualityDropdown /> for image type', () => {
+  const consoleError = console.error;
+
+  beforeAll( () => suppressActWarning( consoleError ) );
+  afterAll( () => {
+    console.error = consoleError;
+  } );
+
   const Component = (
     <MockedProvider mocks={ mocks } addTypename={ false }>
       <QualityDropdown { ...imageProps } />
@@ -239,6 +278,7 @@ describe( '<QualityDropdown /> for image type', () => {
 
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
+
     await wait( 0 );
     wrapper.update();
     const dropdown = wrapper.find( 'QualityDropdown' );
@@ -251,35 +291,42 @@ describe( '<QualityDropdown /> for image type', () => {
   it( 'does not crash if enumValues (or __type for now) is null', async () => {
     // Will need to update mocks after image enums are added to model
     const wrapper = mount( NullComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
-    const emptyOption = [{
-      key: '-',
-      text: '-',
-      value: null
-    }];
+    const emptyOption = [
+      {
+        key: '-',
+        text: '-',
+        value: null
+      }
+    ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
   } );
 
   it( 'does not crash if enumValues is []', async () => {
     const wrapper = mount( EmptyComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
-    const emptyOption = [{
-      key: '-',
-      text: '-',
-      value: null
-    }];
+    const emptyOption = [
+      {
+        key: '-',
+        text: '-',
+        value: null
+      }
+    ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
   } );
 
-  it.skip( 'renders the final state without crashing', async () => {
+  it( 'renders the final state without crashing', async () => {
     // remove skip after image enums are added to model
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -287,6 +334,7 @@ describe( '<QualityDropdown /> for image type', () => {
     const { enumValues } = mocks[1].result.data.__type;
     const semanticUIValues = enumValues.map( quality => {
       const { name } = quality;
+
       return {
         key: name,
         text: `For ${name.toLowerCase()}`,
@@ -301,9 +349,10 @@ describe( '<QualityDropdown /> for image type', () => {
 
   it( 'assigns a matching id & htmlFor value to the Dropdown and label, respectively', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
-    const dropdown = wrapper.find( 'Dropdown > div' );
+    const dropdown = wrapper.find( 'Dropdown div[name="quality"]' );
     const label = wrapper.find( 'label' );
 
     expect( dropdown.prop( 'id' ) ).toEqual( props.id );

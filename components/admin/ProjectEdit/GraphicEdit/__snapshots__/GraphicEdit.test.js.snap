@@ -1,0 +1,847 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GraphicEdit /> renders renders the final state 1`] = `
+<GraphicEdit
+  id="ck9b9n8kw1x720720sjwwl1g7"
+>
+  <div
+    className="edit-graphic-project"
+  >
+    <div
+      className="header"
+    >
+      <ProjectHeader
+        icon="images outline"
+        text="Project Details"
+      >
+        <header
+          className="section section--project_header"
+        >
+          <div
+            className="project_header"
+          >
+            <h2
+              className="headline"
+            >
+              <Icon
+                as="i"
+                circular={true}
+                inverted={true}
+                name="images outline"
+                size="tiny"
+              >
+                <i
+                  aria-hidden="true"
+                  className="images outline tiny circular inverted icon"
+                  onClick={[Function]}
+                />
+              </Icon>
+              <span
+                className="project_header_text"
+              >
+                Project Details
+              </span>
+            </h2>
+          </div>
+          <div
+            className="project_buttons"
+          >
+            <ActionButtons
+              deleteConfirmOpen={false}
+              disabled={
+                Object {
+                  "delete": false,
+                  "preview": false,
+                  "publish": false,
+                  "publishChanges": false,
+                  "save": false,
+                }
+              }
+              handle={
+                Object {
+                  "deleteConfirm": [Function],
+                  "publish": [Function],
+                  "publishChanges": [Function],
+                  "save": [Function],
+                  "unpublish": [Function],
+                }
+              }
+              loading={
+                Object {
+                  "publish": false,
+                  "publishChanges": false,
+                  "unpublish": false,
+                }
+              }
+              setDeleteConfirmOpen={[Function]}
+              show={
+                Object {
+                  "delete": true,
+                  "preview": true,
+                  "publish": true,
+                  "save": true,
+                  "unpublish": false,
+                }
+              }
+            />
+          </div>
+        </header>
+      </ProjectHeader>
+    </div>
+    <div
+      style={
+        Object {
+          "left": "50%",
+          "position": "absolute",
+          "top": "9em",
+          "transform": "translateX(-50%)",
+        }
+      }
+    >
+      <ApolloError
+        error={Object {}}
+      >
+        <div
+          style={
+            Object {
+              "color": "red",
+              "fontSize": "14px",
+              "marginBottom": "1rem",
+              "marginTop": ".5rem",
+            }
+          }
+        />
+      </ApolloError>
+    </div>
+    <Notification
+      customStyles={
+        Object {
+          "left": "50%",
+          "position": "absolute",
+          "top": "9em",
+          "transform": "translateX(-50%)",
+        }
+      }
+      el="p"
+      msg=""
+      show={false}
+    />
+    <UploadProgress
+      className="alpha"
+      displayTheUploadSuccessMsg={false}
+      filesToUpload={Array []}
+      isUploading={false}
+      projectId="ck9b9n8kw1x720720sjwwl1g7"
+    />
+    <GraphicProjectDetailsFormContainer
+      contentStyle={
+        Object {
+          "border": "3px solid transparent",
+        }
+      }
+      data={
+        Object {
+          "graphicProject": Object {
+            "__typename": "GraphicProject",
+            "alt": "some alt text",
+            "assetPath": null,
+            "author": Object {
+              "__typename": "User",
+              "email": "mahe@america.gov",
+              "firstName": "Edwin",
+              "id": "ck2m042xo0rnp0720nb4gxjix",
+              "lastName": "Mah",
+            },
+            "categories": Array [
+              Object {
+                "__typename": "Category",
+                "id": "ck2lzgu1c0re307202dlrnue2",
+                "translations": Array [
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "ck2lzfxab0hls0720o2sjmoqw",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "English",
+                      "id": "ck2lzfx710hkq07206thus6pt",
+                      "languageCode": "en",
+                      "locale": "en-us",
+                      "nativeName": "English",
+                      "textDirection": "LTR",
+                    },
+                    "name": "about america",
+                  },
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "ck2lzfxbe0hlz0720qou6kr5x",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "Spanish",
+                      "id": "ck2lzfx7o0hl707205uteku77",
+                      "languageCode": "es",
+                      "locale": "es-es",
+                      "nativeName": "Español",
+                      "textDirection": "LTR",
+                    },
+                    "name": "conozca Estados Unidos",
+                  },
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "ck2lzfxc90hm60720onv6tbro",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "French",
+                      "id": "ck2lzfx710hkp07206oo0icbv",
+                      "languageCode": "fr",
+                      "locale": "fr-fr",
+                      "nativeName": "Français",
+                      "textDirection": "LTR",
+                    },
+                    "name": "Amérique",
+                  },
+                ],
+              },
+              Object {
+                "__typename": "Category",
+                "id": "ck2lzgu1e0re90720th24sglh",
+                "translations": Array [
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "ck2lzfye00hxg0720djwj20fs",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "English",
+                      "id": "ck2lzfx710hkq07206thus6pt",
+                      "languageCode": "en",
+                      "locale": "en-us",
+                      "nativeName": "English",
+                      "textDirection": "LTR",
+                    },
+                    "name": "geography",
+                  },
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "ck2lzfyej0hxn0720fwm4ior3",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "Spanish",
+                      "id": "ck2lzfx7o0hl707205uteku77",
+                      "languageCode": "es",
+                      "locale": "es-es",
+                      "nativeName": "Español",
+                      "textDirection": "LTR",
+                    },
+                    "name": "Geografía",
+                  },
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "ck2lzfyf10hxu072065vqpr38",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "French",
+                      "id": "ck2lzfx710hkp07206oo0icbv",
+                      "languageCode": "fr",
+                      "locale": "fr-fr",
+                      "nativeName": "Français",
+                      "textDirection": "LTR",
+                    },
+                    "name": "Géographie",
+                  },
+                ],
+              },
+            ],
+            "copyright": "NO_COPYRIGHT",
+            "createdAt": "2020-04-22T11:40:51.599Z",
+            "descInternal": "the internal description",
+            "descPublic": "the public description",
+            "id": "ck9b9n8kw1x720720sjwwl1g7",
+            "images": Array [
+              Object {
+                "__typename": "ImageFile",
+                "alt": null,
+                "createdAt": "2019-11-05T15:25:30.462Z",
+                "filename": "Mexico_City_long_long_asiasd_lasdf_kljiemx_iskei_jlks_askljdf_asdiweoncx_xzxziwe.jpg",
+                "filesize": 1030591,
+                "filetype": "image/jpeg",
+                "id": "ck2m096f80rq70720nsnylh27",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "English",
+                  "id": "ck2lzfx710hkq07206thus6pt",
+                  "languageCode": "en",
+                  "locale": "en-us",
+                  "nativeName": "English",
+                  "textDirection": "LTR",
+                },
+                "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/mexico_city_1.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+                "social": Array [
+                  Object {
+                    "__typename": "SocialPlatform",
+                    "id": "ck9h3meu626bw07201o36tapc",
+                    "name": "Instagram",
+                  },
+                ],
+                "style": Object {
+                  "__typename": "GraphicStyle",
+                  "id": "ck9h3l7zn26au0720ialhqtg4",
+                  "name": "Quote",
+                },
+                "title": "Mexico_City_long_long_asiasd_lasdf_kljiemx_iskei_jlks_askljdf_asdiweoncx_xzxziwe.jpg",
+                "updatedAt": "2020-05-04T17:16:53.930Z",
+                "url": "2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/mexico_city_1.jpg",
+                "use": Object {
+                  "__typename": "ImageUse",
+                  "id": "ck2lzfx510hhj07205mal3e4l",
+                  "name": "Thumbnail/Cover Image",
+                },
+              },
+              Object {
+                "__typename": "ImageFile",
+                "alt": null,
+                "createdAt": "2019-11-05T20:15:17.892Z",
+                "filename": "Mexico City 1.jpg",
+                "filesize": 1030591,
+                "filetype": "image/jpeg",
+                "id": "ck2maluky0s5z0720a2dgkisd",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "Japanese",
+                  "id": "ck2lzfx7m0hl50720y9oqzyqz",
+                  "languageCode": "ja",
+                  "locale": "ja",
+                  "nativeName": "日本語",
+                  "textDirection": "LTR",
+                },
+                "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/mexico_city_1.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+                "social": Array [
+                  Object {
+                    "__typename": "SocialPlatform",
+                    "id": "ck9h3naq526cp0720i4u3uqlv",
+                    "name": "WhatsApp",
+                  },
+                ],
+                "style": Object {
+                  "__typename": "GraphicStyle",
+                  "id": "ck9h3kyb326ak0720wkbk01q6",
+                  "name": "Info/Stat",
+                },
+                "title": "Mexico City 1.jpg",
+                "updatedAt": "2020-05-04T17:16:55.720Z",
+                "url": "2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/mexico_city_1.jpg",
+                "use": Object {
+                  "__typename": "ImageUse",
+                  "id": "ck2lzfx510hhj07205mal3e4l",
+                  "name": "Thumbnail/Cover Image",
+                },
+              },
+              Object {
+                "__typename": "ImageFile",
+                "alt": null,
+                "createdAt": "2019-11-15T20:42:07.165Z",
+                "filename": "Mexico City 1.jpg",
+                "filesize": 1030591,
+                "filetype": "image/jpeg",
+                "id": "ck30lyuxm15px0720dkd7hodl",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "English",
+                  "id": "ck2lzfx710hkq07206thus6pt",
+                  "languageCode": "en",
+                  "locale": "en-us",
+                  "nativeName": "English",
+                  "textDirection": "LTR",
+                },
+                "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/mexico_city_1.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+                "social": Array [
+                  Object {
+                    "__typename": "SocialPlatform",
+                    "id": "ck9h3m3g626bd07201gh712vk",
+                    "name": "Twitter",
+                  },
+                ],
+                "style": Object {
+                  "__typename": "GraphicStyle",
+                  "id": "ck9h3ka3o269y0720t7wzp5uq",
+                  "name": "GIF",
+                },
+                "title": "Mexico City 1.jpg",
+                "updatedAt": "2020-05-04T17:16:57.512Z",
+                "url": "2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/mexico_city_1.jpg",
+                "use": Object {
+                  "__typename": "ImageUse",
+                  "id": "ck2lzfx510hhj07205mal3e4l",
+                  "name": "Thumbnail/Cover Image",
+                },
+              },
+              Object {
+                "__typename": "ImageFile",
+                "alt": null,
+                "createdAt": "2019-11-20T19:48:21.415Z",
+                "filename": "erwan-hesry-Q34YB7yjAxA-unsplash-1.png",
+                "filesize": 42093736,
+                "filetype": "image/png",
+                "id": "ck37p8z731vim0720nrlespm1",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "Bahasa Indonesia",
+                  "id": "ck2lzfx7g0hl10720vfyiek0q",
+                  "languageCode": "id",
+                  "locale": "id-id",
+                  "nativeName": "Bahasa Indonesia",
+                  "textDirection": "LTR",
+                },
+                "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/erwan-hesry-q34yb7yjaxa-unsplash-1.png?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+                "social": Array [
+                  Object {
+                    "__typename": "SocialPlatform",
+                    "id": "ck9h3m9bl26bm0720rm69c60s",
+                    "name": "Facebook",
+                  },
+                ],
+                "style": Object {
+                  "__typename": "GraphicStyle",
+                  "id": "ck9h3koe426aa0720y421wmk3",
+                  "name": "Clean",
+                },
+                "title": "erwan-hesry-Q34YB7yjAxA-unsplash-1.png",
+                "updatedAt": "2020-05-04T17:17:01.227Z",
+                "url": "2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/erwan-hesry-q34yb7yjaxa-unsplash-1.png",
+                "use": Object {
+                  "__typename": "ImageUse",
+                  "id": "ck2lzfx510hhj07205mal3e4l",
+                  "name": "Thumbnail/Cover Image",
+                },
+              },
+            ],
+            "publishedAt": null,
+            "status": "DRAFT",
+            "supportFiles": Array [
+              Object {
+                "__typename": "SupportFile",
+                "createdAt": "2020-04-28T11:26:50.874Z",
+                "filename": "s-secure-rights_shell.png",
+                "filesize": 29000,
+                "filetype": "image/png",
+                "id": "ck9jtsbvz291i0720by3crdcc",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "English",
+                  "id": "ck2lzfx710hkq07206thus6pt",
+                  "languageCode": "en",
+                  "locale": "en-us",
+                  "nativeName": "English",
+                  "textDirection": "LTR",
+                },
+                "updatedAt": "2020-04-28T14:33:38.016Z",
+                "url": null,
+                "use": null,
+              },
+              Object {
+                "__typename": "SupportFile",
+                "createdAt": "2020-04-28T11:28:43.173Z",
+                "filename": "s-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd",
+                "filesize": 509000,
+                "filetype": "image/vnd.adobe.photoshop",
+                "id": "ck9jtuqhy292w07200tfpbkju",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "English",
+                  "id": "ck2lzfx710hkq07206thus6pt",
+                  "languageCode": "en",
+                  "locale": "en-us",
+                  "nativeName": "English",
+                  "textDirection": "LTR",
+                },
+                "updatedAt": "2020-05-01T14:05:55.765Z",
+                "url": null,
+                "use": null,
+              },
+              Object {
+                "__typename": "SupportFile",
+                "createdAt": "2020-04-28T11:29:55.168Z",
+                "filename": "s-secure-rights_transcript.docx",
+                "filesize": 9000,
+                "filetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "id": "ck9jtwa1v293h0720rbd1vdjr",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "English",
+                  "id": "ck2lzfx710hkq07206thus6pt",
+                  "languageCode": "en",
+                  "locale": "en-us",
+                  "nativeName": "English",
+                  "textDirection": "LTR",
+                },
+                "updatedAt": "2020-04-28T11:29:55.168Z",
+                "url": null,
+                "use": null,
+              },
+              Object {
+                "__typename": "SupportFile",
+                "createdAt": "2020-04-29T13:14:37.942Z",
+                "filename": "OpenSans-regular.ttf",
+                "filesize": null,
+                "filetype": "font/ttf",
+                "id": "ck9ld2skk2cjn0720d5s33uxo",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "English",
+                  "id": "ck2lzfx710hkq07206thus6pt",
+                  "languageCode": "en",
+                  "locale": "en-us",
+                  "nativeName": "English",
+                  "textDirection": "LTR",
+                },
+                "updatedAt": "2020-04-29T13:14:37.942Z",
+                "url": null,
+                "use": null,
+              },
+            ],
+            "tags": Array [
+              Object {
+                "__typename": "Tag",
+                "id": "ck2lzgu5e0rhu07207x85lxmb",
+                "translations": Array [
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "ck2lzgiwy0nx40720sedxm612",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "English",
+                      "id": "ck2lzfx710hkq07206thus6pt",
+                      "languageCode": "en",
+                      "locale": "en-us",
+                      "nativeName": "English",
+                      "textDirection": "LTR",
+                    },
+                    "name": "biomedical science",
+                  },
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "ck2lzgixn0nxb072018rszcc5",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "Spanish",
+                      "id": "ck2lzfx7o0hl707205uteku77",
+                      "languageCode": "es",
+                      "locale": "es-es",
+                      "nativeName": "Español",
+                      "textDirection": "LTR",
+                    },
+                    "name": "ciencia Biomedica",
+                  },
+                  Object {
+                    "__typename": "LanguageTranslation",
+                    "id": "ck2lzgiy90nxi0720u91l9paa",
+                    "language": Object {
+                      "__typename": "Language",
+                      "displayName": "French",
+                      "id": "ck2lzfx710hkp07206oo0icbv",
+                      "languageCode": "fr",
+                      "locale": "fr-fr",
+                      "nativeName": "Français",
+                      "textDirection": "LTR",
+                    },
+                    "name": "science biomédicale",
+                  },
+                ],
+              },
+            ],
+            "team": Object {
+              "__typename": "Team",
+              "contentTypes": Array [
+                "GRAPHIC",
+              ],
+              "id": "ck2qgfbku0ubh0720iwhkvuyn",
+              "name": "GPA Press Office",
+            },
+            "title": "Just another graphic project",
+            "type": "SOCIAL_MEDIA",
+            "updatedAt": "2020-05-04T17:17:30.316Z",
+            "visibility": "PUBLIC",
+          },
+        }
+      }
+      handleUpload={[Function]}
+      id="ck9b9n8kw1x720720sjwwl1g7"
+      maxCategories={2}
+      setIsFormValid={[Function]}
+      updateNotification={[Function]}
+    />
+    <UploadProgress
+      className="beta"
+      displayTheUploadSuccessMsg={false}
+      filesToUpload={Array []}
+      isUploading={false}
+      projectId="ck9b9n8kw1x720720sjwwl1g7"
+    />
+    <GraphicSupportFilesContainer
+      fileTypes={
+        Array [
+          Object {
+            "files": Array [
+              Object {
+                "__typename": "SupportFile",
+                "createdAt": "2020-04-28T11:26:50.874Z",
+                "filename": "s-secure-rights_shell.png",
+                "filesize": 29000,
+                "filetype": "image/png",
+                "id": "ck9jtsbvz291i0720by3crdcc",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "English",
+                  "id": "ck2lzfx710hkq07206thus6pt",
+                  "languageCode": "en",
+                  "locale": "en-us",
+                  "nativeName": "English",
+                  "textDirection": "LTR",
+                },
+                "updatedAt": "2020-04-28T14:33:38.016Z",
+                "url": null,
+                "use": null,
+              },
+              Object {
+                "__typename": "SupportFile",
+                "createdAt": "2020-04-28T11:28:43.173Z",
+                "filename": "s-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd",
+                "filesize": 509000,
+                "filetype": "image/vnd.adobe.photoshop",
+                "id": "ck9jtuqhy292w07200tfpbkju",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "English",
+                  "id": "ck2lzfx710hkq07206thus6pt",
+                  "languageCode": "en",
+                  "locale": "en-us",
+                  "nativeName": "English",
+                  "textDirection": "LTR",
+                },
+                "updatedAt": "2020-05-01T14:05:55.765Z",
+                "url": null,
+                "use": null,
+              },
+            ],
+            "headline": "editable files",
+            "helperText": "Original files that may be edited and adapted as needed for reuse.",
+          },
+          Object {
+            "files": Array [
+              Object {
+                "__typename": "SupportFile",
+                "createdAt": "2020-04-28T11:29:55.168Z",
+                "filename": "s-secure-rights_transcript.docx",
+                "filesize": 9000,
+                "filetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "id": "ck9jtwa1v293h0720rbd1vdjr",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "English",
+                  "id": "ck2lzfx710hkq07206thus6pt",
+                  "languageCode": "en",
+                  "locale": "en-us",
+                  "nativeName": "English",
+                  "textDirection": "LTR",
+                },
+                "updatedAt": "2020-04-28T11:29:55.168Z",
+                "url": null,
+                "use": null,
+              },
+              Object {
+                "__typename": "SupportFile",
+                "createdAt": "2020-04-29T13:14:37.942Z",
+                "filename": "OpenSans-regular.ttf",
+                "filesize": null,
+                "filetype": "font/ttf",
+                "id": "ck9ld2skk2cjn0720d5s33uxo",
+                "language": Object {
+                  "__typename": "Language",
+                  "displayName": "English",
+                  "id": "ck2lzfx710hkq07206thus6pt",
+                  "languageCode": "en",
+                  "locale": "en-us",
+                  "nativeName": "English",
+                  "textDirection": "LTR",
+                },
+                "updatedAt": "2020-04-29T13:14:37.942Z",
+                "url": null,
+                "use": null,
+              },
+            ],
+            "headline": "additional files",
+            "helperText": "Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics.",
+          },
+        ]
+      }
+      handleAddFiles={[Function]}
+      projectId="ck9b9n8kw1x720720sjwwl1g7"
+      updateNotification={[Function]}
+    />
+    <GraphicFilesFormContainer
+      files={
+        Array [
+          Object {
+            "__typename": "ImageFile",
+            "alt": null,
+            "createdAt": "2019-11-05T15:25:30.462Z",
+            "filename": "Mexico_City_long_long_asiasd_lasdf_kljiemx_iskei_jlks_askljdf_asdiweoncx_xzxziwe.jpg",
+            "filesize": 1030591,
+            "filetype": "image/jpeg",
+            "id": "ck2m096f80rq70720nsnylh27",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "English",
+              "id": "ck2lzfx710hkq07206thus6pt",
+              "languageCode": "en",
+              "locale": "en-us",
+              "nativeName": "English",
+              "textDirection": "LTR",
+            },
+            "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/mexico_city_1.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+            "social": Array [
+              Object {
+                "__typename": "SocialPlatform",
+                "id": "ck9h3meu626bw07201o36tapc",
+                "name": "Instagram",
+              },
+            ],
+            "style": Object {
+              "__typename": "GraphicStyle",
+              "id": "ck9h3l7zn26au0720ialhqtg4",
+              "name": "Quote",
+            },
+            "title": "Mexico_City_long_long_asiasd_lasdf_kljiemx_iskei_jlks_askljdf_asdiweoncx_xzxziwe.jpg",
+            "updatedAt": "2020-05-04T17:16:53.930Z",
+            "url": "2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/mexico_city_1.jpg",
+            "use": Object {
+              "__typename": "ImageUse",
+              "id": "ck2lzfx510hhj07205mal3e4l",
+              "name": "Thumbnail/Cover Image",
+            },
+          },
+          Object {
+            "__typename": "ImageFile",
+            "alt": null,
+            "createdAt": "2019-11-05T20:15:17.892Z",
+            "filename": "Mexico City 1.jpg",
+            "filesize": 1030591,
+            "filetype": "image/jpeg",
+            "id": "ck2maluky0s5z0720a2dgkisd",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "Japanese",
+              "id": "ck2lzfx7m0hl50720y9oqzyqz",
+              "languageCode": "ja",
+              "locale": "ja",
+              "nativeName": "日本語",
+              "textDirection": "LTR",
+            },
+            "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/mexico_city_1.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+            "social": Array [
+              Object {
+                "__typename": "SocialPlatform",
+                "id": "ck9h3naq526cp0720i4u3uqlv",
+                "name": "WhatsApp",
+              },
+            ],
+            "style": Object {
+              "__typename": "GraphicStyle",
+              "id": "ck9h3kyb326ak0720wkbk01q6",
+              "name": "Info/Stat",
+            },
+            "title": "Mexico City 1.jpg",
+            "updatedAt": "2020-05-04T17:16:55.720Z",
+            "url": "2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/mexico_city_1.jpg",
+            "use": Object {
+              "__typename": "ImageUse",
+              "id": "ck2lzfx510hhj07205mal3e4l",
+              "name": "Thumbnail/Cover Image",
+            },
+          },
+          Object {
+            "__typename": "ImageFile",
+            "alt": null,
+            "createdAt": "2019-11-15T20:42:07.165Z",
+            "filename": "Mexico City 1.jpg",
+            "filesize": 1030591,
+            "filetype": "image/jpeg",
+            "id": "ck30lyuxm15px0720dkd7hodl",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "English",
+              "id": "ck2lzfx710hkq07206thus6pt",
+              "languageCode": "en",
+              "locale": "en-us",
+              "nativeName": "English",
+              "textDirection": "LTR",
+            },
+            "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/mexico_city_1.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+            "social": Array [
+              Object {
+                "__typename": "SocialPlatform",
+                "id": "ck9h3m3g626bd07201gh712vk",
+                "name": "Twitter",
+              },
+            ],
+            "style": Object {
+              "__typename": "GraphicStyle",
+              "id": "ck9h3ka3o269y0720t7wzp5uq",
+              "name": "GIF",
+            },
+            "title": "Mexico City 1.jpg",
+            "updatedAt": "2020-05-04T17:16:57.512Z",
+            "url": "2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/mexico_city_1.jpg",
+            "use": Object {
+              "__typename": "ImageUse",
+              "id": "ck2lzfx510hhj07205mal3e4l",
+              "name": "Thumbnail/Cover Image",
+            },
+          },
+          Object {
+            "__typename": "ImageFile",
+            "alt": null,
+            "createdAt": "2019-11-20T19:48:21.415Z",
+            "filename": "erwan-hesry-Q34YB7yjAxA-unsplash-1.png",
+            "filesize": 42093736,
+            "filetype": "image/png",
+            "id": "ck37p8z731vim0720nrlespm1",
+            "language": Object {
+              "__typename": "Language",
+              "displayName": "Bahasa Indonesia",
+              "id": "ck2lzfx7g0hl10720vfyiek0q",
+              "languageCode": "id",
+              "locale": "id-id",
+              "nativeName": "Bahasa Indonesia",
+              "textDirection": "LTR",
+            },
+            "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/erwan-hesry-q34yb7yjaxa-unsplash-1.png?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+            "social": Array [
+              Object {
+                "__typename": "SocialPlatform",
+                "id": "ck9h3m9bl26bm0720rm69c60s",
+                "name": "Facebook",
+              },
+            ],
+            "style": Object {
+              "__typename": "GraphicStyle",
+              "id": "ck9h3koe426aa0720y421wmk3",
+              "name": "Clean",
+            },
+            "title": "erwan-hesry-Q34YB7yjAxA-unsplash-1.png",
+            "updatedAt": "2020-05-04T17:17:01.227Z",
+            "url": "2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/erwan-hesry-q34yb7yjaxa-unsplash-1.png",
+            "use": Object {
+              "__typename": "ImageUse",
+              "id": "ck2lzfx510hhj07205mal3e4l",
+              "name": "Thumbnail/Cover Image",
+            },
+          },
+        ]
+      }
+      handleAddFiles={[Function]}
+      projectId="ck9b9n8kw1x720720sjwwl1g7"
+      setIsFormValid={[Function]}
+      updateNotification={[Function]}
+    />
+  </div>
+</GraphicEdit>
+`;

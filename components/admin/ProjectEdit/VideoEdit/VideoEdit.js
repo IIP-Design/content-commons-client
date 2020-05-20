@@ -28,11 +28,9 @@ import ApolloError from 'components/errors/ApolloError';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import ProjectUnits from 'components/admin/ProjectUnits/ProjectUnits';
-import FormInstructions from 'components/admin/FormInstructions/FormInstructions';
 import VideoProjectDetailsForm from 'components/admin/ProjectDetailsForm/VideoProjectDetailsForm/VideoProjectDetailsForm';
 import VideoProjectSupportFiles from 'components/admin/ProjectSupportFiles/VideoProjectSupportFiles/VideoProjectSupportFiles';
-import UploadSuccessMsg from 'components/admin/UploadSuccessMsg/UploadSuccessMsg';
-import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
+import UploadProgress from 'components/admin/ProjectEdit/UploadProgress/UploadProgress';
 import withFileUpload from 'hocs/withFileUpload/withFileUpload';
 import { UploadContext } from './UploadContext';
 import './VideoEdit.scss';
@@ -307,19 +305,13 @@ const VideoEdit = props => {
       ) }
 
       { /* upload progress  */ }
-      <div className="edit-project__status alpha">
-        { !projectId && !isUploading && <FormInstructions /> }
-        { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
-
-        { isUploading
-          && (
-          <FileUploadProgressBar
-            filesToUpload={ filesToUpload }
-            label="Please keep this page open until upload is complete"
-            fileProgressMessage
-          />
-          ) }
-      </div>
+      <UploadProgress
+        className="edit-project__status alpha"
+        projectId={ projectId }
+        filesToUpload={ filesToUpload }
+        displayTheUploadSuccessMsg={ displayTheUploadSuccessMsg }
+        isUploading={ isUploading }
+      />
 
       { /* project details form */ }
       <div className="edit-project__content" style={ contentStyle }>
@@ -333,19 +325,13 @@ const VideoEdit = props => {
       </div>
 
       { /* upload progress */ }
-      <div className="edit-project__status beta">
-        { !projectId && !isUploading && <FormInstructions /> }
-        { displayTheUploadSuccessMsg && <UploadSuccessMsg /> }
-
-        { isUploading
-          && (
-          <FileUploadProgressBar
-            filesToUpload={ filesToUpload }
-            label="Please keep this page open until upload is complete"
-            fileProgressMessage
-          />
-          ) }
-      </div>
+      <UploadProgress
+        className="edit-project__status beta"
+        projectId={ projectId }
+        filesToUpload={ filesToUpload }
+        displayTheUploadSuccessMsg={ displayTheUploadSuccessMsg }
+        isUploading={ isUploading }
+      />
 
       <UploadContext.Provider value={ isUploading }>
         { /* support files */ }

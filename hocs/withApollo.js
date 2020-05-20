@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
@@ -13,7 +14,7 @@ const { publicRuntimeConfig } = getConfig();
 
 const request = async ( headers, operation ) => {
   operation.setContext( {
-    headers
+    headers,
   } );
 };
 
@@ -26,13 +27,15 @@ const request = async ( headers, operation ) => {
 const getWsLink = () => {
   const client = new SubscriptionClient( publicRuntimeConfig.REACT_APP_APOLLO_SUBSCRIPTIONS_ENDPOINT, {
     reconnect: true,
-    lazy: true
+    lazy: true,
   } );
 
   const _wsLink = new WebSocketLink( client );
 
   // fixes the intial disconnection issue
+  // eslint-disable-next-line max-len
   _wsLink.subscriptionClient.maxConnectTimeGenerator.duration = () => _wsLink.subscriptionClient.maxConnectTimeGenerator.max;
+
   return _wsLink;
 };
 
@@ -42,7 +45,7 @@ const wsLink = process.browser ? getWsLink() : null;
 // Apollo Link that sends HTTP requests.
 const httpLink = new HttpLink( {
   uri: publicRuntimeConfig.REACT_APP_APOLLO_ENDPOINT,
-  credentials: 'include' // send any logged in browser cookies w/each request
+  credentials: 'include', // send any logged in browser cookies w/each request
 } );
 
 // Default error handler
@@ -52,7 +55,7 @@ const errorLink = onError( ( { graphQLErrors, networkError } ) => {
       // sendToLoggingService( graphQLErrors );
       graphQLErrors.map( ( { message, locations, path } ) => console.log(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-      ), );
+      ) );
     }
     if ( networkError ) {
       // take another action if we have a network error?
@@ -64,15 +67,18 @@ const errorLink = onError( ( { graphQLErrors, networkError } ) => {
 
 // only create the split in the browser
 /* eslint-disable no-unused-vars */
-const link = process.browser ? split(
-  // split based on operation type
-  ( { query } ) => {
-    const { kind, operation } = getMainDefinition( query );
-    return kind === 'OperationDefinition' && operation === 'subscription';
-  },
-  wsLink,
-  httpLink,
-) : httpLink;
+const link = process.browser
+  ? split(
+    // split based on operation type
+    ( { query } ) => {
+      const { kind, operation } = getMainDefinition( query );
+
+      return kind === 'OperationDefinition' && operation === 'subscription';
+    },
+    wsLink,
+    httpLink,
+  )
+  : httpLink;
 
 
 const createClient = ( { headers, initialState } ) => new ApolloClient( {
@@ -82,13 +88,14 @@ const createClient = ( { headers, initialState } ) => new ApolloClient( {
     new ApolloLink(
       ( operation, forward ) => new Observable( observer => {
         let handle;
+
         Promise.resolve( operation )
           .then( oper => request( headers, oper ) )
           .then( () => {
             handle = forward( operation ).subscribe( {
               next: observer.next.bind( observer ),
               error: observer.error.bind( observer ),
-              complete: observer.complete.bind( observer )
+              complete: observer.complete.bind( observer ),
             } );
           } )
           .catch( observer.error.bind( observer ) );
@@ -96,13 +103,14 @@ const createClient = ( { headers, initialState } ) => new ApolloClient( {
         return () => {
           if ( handle ) handle.unsubscribe();
         };
-      } )
+      } ),
     ),
 
-    httpLink // link  - disable web socket link for now
+    httpLink, // link  - disable web socket link for now
   ] ),
 
-  cache: new InMemoryCache().restore( initialState || {} )
+  cache: new InMemoryCache().restore( initialState || {} ),
+  resolvers: {},
 } );
 
 // Second argument: { getDataFromTree: 'ssr' } : should the apollo store be hydrated before the first render ?,

@@ -16,6 +16,7 @@ import docIcon from 'static/icons/icon_150px_document_blue.png';
 import eduIcon from 'static/icons/icon_150px_edu_blue.png';
 import videoIcon from 'static/icons/icon_150px_video_blue.png';
 import audioIcon from 'static/icons/icon_150px_audio_blue.png';
+import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import { CREATE_PACKAGE_MUTATION, PACKAGE_EXISTS_QUERY } from 'lib/graphql/queries/package';
 import { buildCreatePackageTree } from 'lib/graphql/builders/package';
 import { useAuth } from 'context/authContext';
@@ -34,34 +35,32 @@ const Upload = () => {
     const key = action.contentType.toLowerCase();
 
     switch ( action.type ) {
-    case 'open':
-      return { ..._state, [key]: true };
+      case 'open':
+        return { ..._state, [key]: { open: true, files: action.files } };
 
-    case 'close':
-      return { ..._state, [key]: false };
+      case 'close':
+        return { ..._state, [key]: { open: false, files: null } };
 
-    default:
-      return {};
+      default:
+        return {};
     }
   };
 
   const [state, dispatch] = useReducer( reducer, {
-    video: false,
-    graphic: false
+    video: { open: false, files: null },
+    graphic: { open: false, files: null },
   } );
 
   const [modalClassname, setModalClassname] = useState( 'upload_modal' );
 
   const handleModalClassname = updatedModalClassname => setModalClassname( updatedModalClassname );
 
-
   const [creationError, setCreationError] = useState( '' );
   const [createPackage, { loading: createPackageLoading }] = useMutation(
-    CREATE_PACKAGE_MUTATION
+    CREATE_PACKAGE_MUTATION,
   );
 
   const [packageExists] = useMutation( PACKAGE_EXISTS_QUERY );
-
 
   /**
    * Checks whether a package exists with the supplied field name and values
@@ -70,8 +69,8 @@ const Upload = () => {
   const doesPackageExist = async where => {
     const res = await packageExists( {
       variables: {
-        where
-      }
+        where,
+      },
     } );
 
     return res.data.packageExists;
@@ -81,7 +80,7 @@ const Upload = () => {
   * Create dauly guidance packages and sends user to
   * package details screen on success
   */
-  const createPressOfficePackage = async() => {
+  const createPressOfficePackage = async () => {
     // to do: verify that user is on press team
     const title = `Guidance Package ${moment().format( 'MM-D-YY' )}`;
 
@@ -100,9 +99,9 @@ const Upload = () => {
         variables: {
           data: buildCreatePackageTree( user, {
             type: 'DAILY_GUIDANCE',
-            title
-          } )
-        }
+            title,
+          } ),
+        },
       } );
 
       const { id } = res.data.createPackage;
@@ -151,19 +150,20 @@ const Upload = () => {
   * Wrapper function that farms out package creation to a
   * function that handles specifc team's use case
   */
-  const handleCreateNewPackage = async() => {
+  const handleCreateNewPackage = async () => {
     const { team } = user;
 
     if ( team ) {
       switch ( team.name ) {
-      case 'GPA Press Office':
-        createPressOfficePackage();
-        break;
+        case 'GPA Press Office':
+          createPressOfficePackage();
+          break;
 
-      default:
+        default:
       }
     }
   };
+
 
   /**
    * Renders button and only adds click handler if user is a member of the allowed team
@@ -171,17 +171,39 @@ const Upload = () => {
    */
   const renderButton = options => {
     const {
-      contentType, icon, label, alt
+      contentType, icon, label, alt,
     } = options;
 
+    // enable button by adding click handler as opposed to simply setting 'disabled' attr as this could be easily changed
     const onClick = teamCanCreateContentType( contentType ) ? () => dispatch( { type: 'open', contentType } ) : null;
 
     return (
-      <Button className={ `type ${setButtonState( contentType )}` } aria-label={ alt } onClick={ onClick }>
+      <Button
+        className={ `type ${setButtonState( contentType )}` }
+        aria-label={ alt }
+        onClick={ onClick }
+      >
         <img src={ icon } alt={ alt } />
-        <span>{ label }</span>
+        <span>{label}</span>
       </Button>
     );
+  };
+
+  /**
+   * Handles processing files before modal is opened.
+   * For modals that are expecting incoming files props
+   * @param {object} event oject
+   */
+  const handleAddFiles = e => {
+    const files = Array.from( e.target.files );
+
+    if ( files.length ) {
+      // check permissions again before opening
+      // (i.e. putting another check here as enabling a button in source code is easier )
+      if ( teamCanCreateContentType( 'GRAPHIC' ) ) {
+        dispatch( { type: 'open', contentType: 'GRAPHIC', files } );
+      }
+    }
   };
 
   return (
@@ -198,12 +220,12 @@ const Upload = () => {
           {/* Videos */}
           <Modal
             className={ modalClassname }
-            open={ state.video }
+            open={ state.video.open }
             trigger={ renderButton( {
               contentType: 'VIDEO',
               label: 'Videos',
               icon: videoIcon,
-              alt: 'Upload video content'
+              alt: 'Upload video content',
             } ) }
             content={ (
               <VideoUpload
@@ -216,15 +238,23 @@ const Upload = () => {
           {/* Graphics */}
           <Modal
             className={ modalClassname }
-            open={ state.graphic }
-            trigger={ renderButton( {
-              contentType: 'GRAPHIC',
-              label: 'Graphics',
-              icon: imageIcon,
-              alt: 'Upload graphics content'
-            } ) }
+            open={ state.graphic.open }
+            style={ { width: '820px' } }
+            trigger={ (
+              <ButtonAddFiles
+                className={ `type ${setButtonState( 'GRAPHIC' )}` }
+                aria-label="Upload graphics content"
+                multiple
+                accept=".png,.jpg,.jpeg,.psd,.ai,.ae,.pdf,.doc,.docx,.ttf"
+                onChange={ handleAddFiles }
+              >
+                <img src={ imageIcon } alt="Upload graphics content" />
+                <span>Graphics</span>
+              </ButtonAddFiles>
+            ) }
             content={ (
               <GraphicUpload
+                files={ state.graphic.files }
                 closeModal={ () => dispatch( { type: 'close', contentType: 'graphic' } ) }
                 updateModalClassname={ handleModalClassname }
               />
