@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import getConfig from 'next/config';
+
 import { getItemRequest } from 'lib/elastic/api';
 import { normalizeItem } from 'lib/elastic/parser';
 import { updateUrl } from 'lib/browser';
@@ -25,25 +26,31 @@ import Popup from '../popups/Popup';
 import Share from '../Share/Share';
 import EmbedPost from './EmbedPost';
 import EmbedHelp from './EmbedHelp';
+import useSignedUrl from 'lib/hooks/useSignedUrl';
 
-const Post = props => {
+const Post = ( { item, router } ) => {
   const { publicRuntimeConfig } = getConfig();
-  const [item, setItem] = useState( props.item );
+  const [selectedItem, setSelectedItem] = useState( item );
   const [selectedLanguage, setSelectedLanguage] = useState( () => {
-    const { language } = props.item;
+    const { language } = item;
+
     if ( !language ) return 'English';
+
     return language.display_name;
   } );
-  const [textDirection, setTextDirection] = useState( props.item.language.text_direction );
+  const [textDirection, setTextDirection] = useState( item.language.text_direction );
+
+  const { signedUrl } = useSignedUrl( selectedItem?.thumbnail ? selectedItem.thumbnail : '' );
 
   useEffect( () => {
-    if ( item ) {
-      const language = item.languages.find( lang => lang.language.display_name === selectedLanguage );
+    if ( selectedItem ) {
+      const language = selectedItem.languages.find( lang => lang.language.display_name === selectedLanguage );
+
       if ( language && language.post_id ) {
-        getItemRequest( item.site, language.post_id )
+        getItemRequest( selectedItem.site, language.post_id )
           .then( response => {
             if ( response && response.hits.total > 0 ) {
-              setItem( normalizeItem( response.hits.hits[0] ) );
+              setSelectedItem( normalizeItem( response.hits.hits[0] ) );
             }
           } );
       }
@@ -51,26 +58,26 @@ const Post = props => {
   }, [selectedLanguage] );
 
   useEffect( () => {
-    const { pathname } = props.router;
-    const { id, site, language } = item;
+    const { pathname } = router;
+    const { id, site, language } = selectedItem;
+
     setTextDirection( language.text_direction );
     if ( id && site && pathname === '/article' ) {
       updateUrl( `/article?id=${id}&site=${site}` );
     }
-  }, [item] );
+  }, [selectedItem, router] );
 
-  const embedItem = (
+  const embedItem
     // eslint-disable-next-line max-len
-    `<div id="cdp-article-embed"></div><script async id="cdpArticle" data-id="${item.id}" data-site="${item.site}" src="${publicRuntimeConfig.REACT_APP_CDP_MODULES_URL}${publicRuntimeConfig.REACT_APP_SINGLE_ARTICLE_MODULE}"></script>`
-  );
+    = `<div id="cdp-article-embed"></div><script async id="cdpArticle" data-id="${selectedItem.id}" data-site="${selectedItem.site}" src="${publicRuntimeConfig.REACT_APP_CDP_MODULES_URL}${publicRuntimeConfig.REACT_APP_SINGLE_ARTICLE_MODULE}"></script>`;
 
-  if ( item ) {
+  if ( selectedItem ) {
     return (
-      <ModalItem headline={ item.title } textDirection={ textDirection }>
+      <ModalItem headline={ selectedItem.title } textDirection={ textDirection }>
         <div className="modal_options">
           <div className="modal_options_left">
             <ModalLangDropdown
-              item={ item }
+              item={ selectedItem }
               selected={ selectedLanguage }
               handleLanguageChange={ value => setSelectedLanguage( value ) }
             />
@@ -91,9 +98,9 @@ const Post = props => {
                           instructions="Copy and paste the code below to embed article on your site"
                           embedItem={ embedItem }
                         />
-                      )
+                      ),
                     },
-                    { title: 'Help', component: <EmbedHelp /> }
+                    { title: 'Help', component: <EmbedHelp /> },
                   ] }
                 />
               ) }
@@ -105,39 +112,40 @@ const Post = props => {
               content={ (
                 <Popup title="Share this article.">
                   <Share
-                    id={ item.id }
-                    language={ item.language.locale }
-                    link={ item.link }
-                    site={ item.site }
-                    title={ item.title }
-                    type={ item.type }
+                    id={ selectedItem.id }
+                    language={ selectedItem.language.locale }
+                    link={ selectedItem.link }
+                    site={ selectedItem.site }
+                    title={ selectedItem.title }
+                    type={ selectedItem.type }
                   />
                 </Popup>
               ) }
             />
           </div>
         </div>
-        <ModalImage thumbnail={ item.thumbnail } thumbnailMeta={ item.thumbnailMeta } />
-        <ModalContentMeta type={ item.type } dateUpdated={ item.modified } />
-        <ModalText textContent={ item.content } />
+        <ModalImage thumbnail={ signedUrl } thumbnailMeta={ signedUrl } />
+        <ModalContentMeta type={ selectedItem.type } dateUpdated={ selectedItem.modified } />
+        <ModalText textContent={ selectedItem.content } />
         <ModalPostMeta
-          type={ item.type }
-          sourcelink={ item.sourcelink }
-          logo={ item.logo }
-          source={ item.site }
-          datePublished={ item.published }
-          originalLink={ item.link }
+          type={ selectedItem.type }
+          sourcelink={ selectedItem.sourcelink }
+          logo={ selectedItem.logo }
+          source={ selectedItem.site }
+          datePublished={ selectedItem.published }
+          originalLink={ selectedItem.link }
         />
-        <ModalPostTags tags={ item.categories } />
+        <ModalPostTags tags={ selectedItem.categories } />
       </ModalItem>
     );
   }
+
   return <ModalItem headline="Content Unavailable" />;
 };
 
 Post.propTypes = {
   router: PropTypes.object,
-  item: PropTypes.object
+  item: PropTypes.object,
 };
 
 export default withRouter( Post );
