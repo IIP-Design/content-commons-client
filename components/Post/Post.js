@@ -10,20 +10,20 @@ import { withRouter } from 'next/router';
 import embedIcon from 'static/icons/icon_embed.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
-import ModalItem from '../modals/ModalItem';
-import ModalLangDropdown from '../modals/ModalLangDropdown/ModalLangDropdown';
-import ModalContentMeta from '../modals/ModalContentMeta/ModalContentMeta';
-import ModalImage from '../modals/ModalImage/ModalImage';
-import ModalPostMeta from '../modals/ModalPostMeta/ModalPostMeta';
-import ModalPostTags from '../modals/ModalPostTags/ModalPostTags';
-import ModalText from '../modals/ModalText/ModalText';
+import ModalItem from 'components/modals/ModalItem';
+import ModalLangDropdown from 'components/modals/ModalLangDropdown/ModalLangDropdown';
+import ModalContentMeta from 'components/modals/ModalContentMeta/ModalContentMeta';
+import ModalImage from 'components/modals/ModalImage/ModalImage';
+import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
+import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
+import ModalText from 'components/modals/ModalText/ModalText';
 
 
-import PopupTrigger from '../popups/PopupTrigger';
-import PopupTabbed from '../popups/PopupTabbed';
-import Popup from '../popups/Popup';
+import PopupTrigger from 'components/popups/PopupTrigger';
+import PopupTabbed from 'components/popups/PopupTabbed';
+import Popup from 'components/popups/Popup';
 
-import Share from '../Share/Share';
+import Share from 'components/Share/Share';
 import EmbedPost from './EmbedPost';
 import EmbedHelp from './EmbedHelp';
 import useSignedUrl from 'lib/hooks/useSignedUrl';
