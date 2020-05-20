@@ -13,8 +13,9 @@ const LoginPage = ( { redirect } ) => {
   const { user, login, loading } = useAuth();
 
   // if we have a user, redirect
-  if ( user ) {  
-    const _redirect = redirect ? redirect : '/';  
+  if ( user && user.id !== 'public' ) {
+    const _redirect = redirect || '/';
+
     router.push( _redirect );
   }
 

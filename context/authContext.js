@@ -64,7 +64,7 @@ export const fetchUser = async ctx => {
       data: { user },
     } = await ctx.apolloClient.query( { query: CURRENT_USER_QUERY, fetchPolicy: 'network-only' } );
 
-    if ( user ) {
+    if ( user && user.id !== 'public' ) {
       // add token to authenticate to elastic api to user
       const { ES_TOKEN } = cookies( ctx );
 
@@ -168,7 +168,7 @@ const AuthProvider = props => {
   const logout = async () => signOut();
   const register = () => {};
 
-  if ( data?.user ) {
+  if ( data?.user && data.user.id !== 'public' ) {
     data.user.esToken = cookie.get( 'ES_TOKEN' );
   }
 
