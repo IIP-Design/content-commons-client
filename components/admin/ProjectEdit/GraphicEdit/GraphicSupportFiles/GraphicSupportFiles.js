@@ -7,7 +7,13 @@ import IconPopup from 'components/popups/IconPopup/IconPopup';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
+import {
+  DELETE_IMAGE_FILE_MUTATION,
+  DELETE_SUPPORT_FILE_MUTATION,
+  UPDATE_IMAGE_FILE_MUTATION,
+  UPDATE_SUPPORT_FILE_MUTATION,
+} from 'lib/graphql/queries/common';
+import { GRAPHIC_PROJECT_QUERY, UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import useTimeout from 'lib/hooks/useTimeout';
 import { getCount, truncateAndReplaceStr } from 'lib/utils';
 import './GraphicSupportFiles.scss';
@@ -19,10 +25,25 @@ const GraphicSupportFiles = props => {
   const [fileIdToDelete, setFileIdToDelete] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
+  const [deleteImageFile] = useMutation( DELETE_IMAGE_FILE_MUTATION );
+  const [deleteSupportFile] = useMutation( DELETE_SUPPORT_FILE_MUTATION );
+  const [updateImageFile] = useMutation( UPDATE_IMAGE_FILE_MUTATION );
+  const [updateSupportFile] = useMutation( UPDATE_SUPPORT_FILE_MUTATION );
 
   const showNotification = () => updateNotification( 'Changes saved' );
   const hideNotification = () => updateNotification( '' );
   const { startTimeout } = useTimeout( hideNotification, 2000 );
+
+  const getMutation = ( { id, action } ) => {
+    const _fileToUpdate = files.find( file => file.id === id );
+
+    switch ( _fileToUpdate.__typename ) {
+      case 'ImageFile':
+        return action === 'update' ? updateImageFile : deleteImageFile;
+      default:
+        return action === 'update' ? updateSupportFile : deleteSupportFile;
+    }
+  };
 
   const handleReset = () => {
     setDeleteConfirmOpen( false );
@@ -31,19 +52,20 @@ const GraphicSupportFiles = props => {
   };
 
   const handleDelete = async id => {
-    await updateGraphicProject( {
+    const deleteMutation = getMutation( { id, action: 'delete' } );
+
+    await deleteMutation( {
       variables: {
-        data: {
-          supportFiles: {
-            'delete': {
-              id,
-            },
+        id,
+      },
+      refetchQueries: [
+        {
+          query: GRAPHIC_PROJECT_QUERY,
+          variables: {
+            id: projectId,
           },
         },
-        where: {
-          id: projectId,
-        },
-      },
+      ],
     } )
       .then( showNotification )
       .then( handleReset )
@@ -51,29 +73,29 @@ const GraphicSupportFiles = props => {
   };
 
   const handleLanguageChange = async ( e, { id, value } ) => {
-    await updateGraphicProject( {
+    const updateMutation = getMutation( { id, action: 'update' } );
+
+    await updateMutation( {
       variables: {
         data: {
-          supportFiles: {
-            // pull out to builder fn?
-            update: {
-              data: {
-                language: {
-                  connect: {
-                    id: value,
-                  },
-                },
-              },
-              where: {
-                id,
-              },
+          language: {
+            connect: {
+              id: value,
             },
           },
         },
         where: {
-          id: projectId,
+          id,
         },
       },
+      refetchQueries: [
+        {
+          query: GRAPHIC_PROJECT_QUERY,
+          variables: {
+            id: projectId,
+          },
+        },
+      ],
     } )
       .then( showNotification )
       .then( handleReset )
