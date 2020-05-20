@@ -18,7 +18,7 @@ class Commons extends App {
     // if user does not have appropriate page permissions redirect 
     if ( !( await canAccessPage( ctx ) ) ) {
       // only redirect if we are going to login
-      if ( ctx.pathname !== '/login' ) {  
+      if ( ctx.pathname !== '/login' ) {
         // add redirect url as a query param
         // cannot use client side storage or libraries as this is executing on the server 
         redirectTo( `/login?return=${ctx.asPath}`, ctx );
@@ -39,15 +39,15 @@ class Commons extends App {
 
   render() {
     const {
-      Component, apollo, store, pageProps
+      Component, apollo, store, pageProps,
     } = this.props;
 
     return (
-      <ApolloProvider client={ apollo }>
+      <ApolloProvider client={apollo}>
         <AuthProvider>
-          <Provider store={ store }>
+          <Provider store={store}>
             <Page>
-              <Component { ...pageProps } />
+              <Component {...pageProps} />
             </Page>
           </Provider>
         </AuthProvider>
