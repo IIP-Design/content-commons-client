@@ -13,7 +13,7 @@ const EmbedHelp = () => (
       website administrator or check out our
       { ' ' }
       <Link href="help"><a>Help page</a></Link>
-.
+      .
     </p>
   </div>
 );

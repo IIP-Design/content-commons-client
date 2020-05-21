@@ -31,14 +31,14 @@ import useSignedUrl from 'lib/hooks/useSignedUrl';
 const Post = ( { item, router } ) => {
   const { publicRuntimeConfig } = getConfig();
   const [selectedItem, setSelectedItem] = useState( item );
-  const [selectedLanguage, setSelectedLanguage] = useState( () => {
-    const { language } = item;
-
-    if ( !language ) return 'English';
-
-    return language.display_name;
-  } );
-  const [textDirection, setTextDirection] = useState( item.language.text_direction );
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    // eslint-disable-next-line camelcase
+    item?.language?.display_name ? item.language.display_name : 'English',
+  );
+  const [textDirection, setTextDirection] = useState(
+    // eslint-disable-next-line camelcase
+    item?.language?.text_direction ? item.language.text_direction : 'ltr',
+  );
 
   const { signedUrl } = useSignedUrl( selectedItem?.thumbnail ? selectedItem.thumbnail : '' );
 
@@ -59,19 +59,22 @@ const Post = ( { item, router } ) => {
 
   useEffect( () => {
     const { pathname } = router;
-    const { id, site, language } = selectedItem;
 
-    setTextDirection( language.text_direction );
-    if ( id && site && pathname === '/article' ) {
-      updateUrl( `/article?id=${id}&site=${site}` );
+    if ( selectedItem ) {
+      const { id, site, language } = selectedItem;
+
+      setTextDirection( language.text_direction );
+      if ( id && site && pathname === '/article' ) {
+        updateUrl( `/article?id=${id}&site=${site}` );
+      }
     }
   }, [selectedItem, router] );
 
-  const embedItem
+  if ( selectedItem ) {
+    const embedItem
     // eslint-disable-next-line max-len
     = `<div id="cdp-article-embed"></div><script async id="cdpArticle" data-id="${selectedItem.id}" data-site="${selectedItem.site}" src="${publicRuntimeConfig.REACT_APP_CDP_MODULES_URL}${publicRuntimeConfig.REACT_APP_SINGLE_ARTICLE_MODULE}"></script>`;
 
-  if ( selectedItem ) {
     return (
       <ModalItem headline={ selectedItem.title } textDirection={ textDirection }>
         <div className="modal_options">

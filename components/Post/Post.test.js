@@ -27,6 +27,8 @@ jest.mock( 'components/popups/PopupTabbed', () => 'popup-tabbed' );
 jest.mock( 'components/popups/Popup', () => 'popup' );
 jest.mock( 'components/Share/Share', () => 'share' );
 
+afterAll( () => { jest.restoreAllMocks(); } );
+
 describe( '<Post />', () => {
   const wrapper = mount( <Post item={ mockItem } router={ mockRouter } /> );
 
@@ -68,5 +70,13 @@ describe( '<Post />', () => {
     expect( postMeta.prop( 'originalLink' ) ).toEqual( mockItem.link );
     expect( postMeta.prop( 'sourceLink' ) ).toEqual( mockItem.sourceLink );
     expect( postMeta.prop( 'type' ) ).toEqual( mockItem.type );
+  } );
+
+  it( 'renders the "Content Unavailable" message when no item is passed in', () => {
+    const noItemWrapper = mount( <Post item={ null } router={ mockRouter } /> );
+
+    const modalItem = noItemWrapper.find( 'modal-item' );
+
+    expect( modalItem.prop( 'headline' ) ).toEqual( 'Content Unavailable' );
   } );
 } );

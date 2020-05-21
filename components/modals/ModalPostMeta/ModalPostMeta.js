@@ -1,25 +1,25 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
-import PropTypes, { string, object } from 'prop-types';
+
 import { contentRegExp } from 'lib/utils';
 import PressSourceMeta from 'components/PressSourceMeta/PressSourceMeta';
+
 import './ModalPostMeta.scss';
 
-const ModalPostMeta = props => {
-  const {
-    type,
-    author,
-    sourcelink,
-    logo,
-    source,
-    datePublished,
-    originalLink,
-    releaseType,
-    textDirection,
-  } = props;
-
-  const isRTL = textDirection === 'RTL';
-  const isDocument = type && ( type === 'document' );
+const ModalPostMeta = ( {
+  type,
+  author,
+  sourcelink,
+  logo,
+  source,
+  datePublished,
+  originalLink,
+  releaseType,
+  textDirection,
+} ) => {
+  const isRTL = textDirection === 'rtl';
+  const isDocument = type && type === 'document';
   const contentSite = contentRegExp( sourcelink );
 
   const renderSourceItem = () => {
@@ -32,57 +32,61 @@ const ModalPostMeta = props => {
     // check if content from content*.america.gov
     if ( contentSite ) return null;
 
-    const logoOnlySources = [
-      'VOA Editorials',
-    ];
+    const logoOnlySources = ['VOA Editorials'];
 
-    let sourceItem = <div />;
+    let sourceItem = null;
 
-    // logo w/ sourcelink
-    const logoAndSourcelink = logo && sourcelink;
-    // logo w/ source name
-    const logoWithSourceName = logo && source && !logoOnlySources.includes( source ) && !sourcelink;
-    // only logo
-    const onlyLogo = logo && ( !source || logoOnlySources.includes( source ) ) && !sourcelink;
-    // only sourcelink
-    const onlySourceLink = !logo && sourcelink;
-    // only source name
-    const onlySourceName = !logo && source && !sourcelink;
+    const onlyLogo = !source || logoOnlySources.includes( source );
+    const withSourceName = source && !logoOnlySources.includes( source ) && !sourcelink;
 
-    if ( logoAndSourcelink ) {
-      sourceItem = (
-        <a href={ sourcelink } target="_blank" rel="noopener noreferrer">
-          <img src={ logo } alt={ source } className="modal_postmeta_logo" />
-        </a>
-      );
+    const logoImg = (
+      <img
+        src={ logo }
+        alt={ source || '' }
+        className={ `modal_postmeta_logo${withSourceName ? '--withSource_img' : ''}` }
+        style={ withSourceName ? { [isRTL ? 'marginLeft' : 'marginRight']: '6px' } : {} }
+      />
+    );
+
+    // Logo (with or without source and sourcelink)
+    if ( logo ) {
+      if ( sourcelink ) { // Logo and sourcelink (with or without source)
+        sourceItem = (
+          <a href={ sourcelink } target="_blank" rel="noopener noreferrer">
+            { logoImg }
+          </a>
+        );
+      } else if ( !onlyLogo ) { // Logo and source, no sourcelink
+        sourceItem = (
+          <span className="modal_postmeta_logo--withSource">
+            { logoImg }
+            <span className="modal_postmeta_logo--withSource_source">{ source }</span>
+          </span>
+        );
+      } else {
+        sourceItem = logoImg; // Logo, no source or sourcelink
+      }
     }
-    if ( logoWithSourceName ) {
-      sourceItem = (
-        <span className="modal_postmeta_logo--withSource">
-          <img
-            src={ logo }
-            alt={ source }
-            className="modal_postmeta_logo--withSource_img"
-            style={ { [isRTL ? 'marginLeft' : 'marginRight']: '6px' } }
-          />
-          <span className="modal_postmeta_logo--withSource_source">{ source }</span>
-        </span>
-      );
-    }
-    if ( onlyLogo ) {
-      sourceItem = <img src={ logo } alt={ source } className="modal_postmeta_logo" />;
-    }
-    if ( onlySourceLink ) {
+
+    // No logo
+    if ( !logo ) {
       sourceItem = (
         <span className="modal_postmeta_content">
-          Source:
-          { ' ' }
-          <a href={ sourcelink } target="_blank" rel="noopener noreferrer">{ source }</a>
+          { sourcelink && source && ( // No logo, source & sourcelink
+            <Fragment>
+              { 'Source: ' }
+              <a href={ sourcelink } target="_blank" rel="noopener noreferrer">{ source }</a>
+            </Fragment>
+          ) }
+          { sourcelink && !source && ( // No logo or source, sourcelink
+            <Fragment>
+              { 'Source: ' }
+              <a href={ sourcelink } target="_blank" rel="noopener noreferrer">{ sourcelink }</a>
+            </Fragment>
+          ) }
+          { !sourcelink && source && `Source: ${source}` /* No logo or sourcelink, source */ }
         </span>
       );
-    }
-    if ( onlySourceName ) {
-      sourceItem = <span className="modal_postmeta_content">Source: { source }</span>;
     }
 
     return sourceItem;
@@ -92,13 +96,15 @@ const ModalPostMeta = props => {
     <section className="modal_section modal_section--postMeta">
       { renderSourceItem() }
       { /* Author displayed only on Dashboard */ }
-      { author && (
-        <span className="modal_postmeta_content">{ `Author: ${author.firstName} ${author.lastName}` }</span>
+      { author?.firstName && author?.lastName && (
+        <span className="modal_postmeta_content">
+          { `Author: ${author.firstName} ${author.lastName}` }
+        </span>
       ) }
       <span className="modal_postmeta_content">
         { datePublished
           ? `Date Published: ${moment( datePublished ).format( 'MMMM DD, YYYY' )}`
-          : 'Date Published: ' }
+          : 'Date Published: '}
       </span>
       {
         originalLink
@@ -110,18 +116,18 @@ const ModalPostMeta = props => {
 };
 
 ModalPostMeta.propTypes = {
-  textDirection: string,
-  type: string,
-  releaseType: string,
-  sourcelink: string,
+  textDirection: PropTypes.string,
+  type: PropTypes.string,
+  releaseType: PropTypes.string,
+  sourcelink: PropTypes.string,
   author: PropTypes.oneOfType( [
-    string,
-    object
+    PropTypes.string,
+    PropTypes.object,
   ] ),
-  logo: string,
-  source: string,
-  datePublished: string,
-  originalLink: string,
+  logo: PropTypes.string,
+  source: PropTypes.string,
+  datePublished: PropTypes.string,
+  originalLink: PropTypes.string,
 };
 
 export default ModalPostMeta;
