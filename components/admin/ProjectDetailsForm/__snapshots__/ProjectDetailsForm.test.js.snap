@@ -294,7 +294,7 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                         <p
                           className="field__helper-text"
                         >
-                          Select up to 
+                          Select up to
                           2
                           .
                         </p>
@@ -474,7 +474,19 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                       className="with-helper-text"
                       control={[Function]}
                       id="alt"
-                      label="Alt (Alternative) Text"
+                      label={
+                        <label
+                          htmlFor="alt"
+                        >
+                          Alt (Alternative) Text
+                          <IconPopup
+                            iconSize="small"
+                            iconType="info circle"
+                            message="This text helps screen-reading tools describe images to visually impaired readers."
+                            popupSize="mini"
+                          />
+                        </label>
+                      }
                       name="alt"
                       onChange={[Function]}
                       value="some alt text"
@@ -486,6 +498,126 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                           htmlFor="alt"
                         >
                           Alt (Alternative) Text
+                          <IconPopup
+                            iconSize="small"
+                            iconType="info circle"
+                            message="This text helps screen-reading tools describe images to visually impaired readers."
+                            popupSize="mini"
+                          >
+                            <Popup
+                              content="This text helps screen-reading tools describe images to visually impaired readers."
+                              disabled={false}
+                              eventsEnabled={true}
+                              inverted={true}
+                              offset={0}
+                              on={
+                                Array [
+                                  "hover",
+                                  "click",
+                                  "focus",
+                                ]
+                              }
+                              pinned={false}
+                              position="top left"
+                              size="mini"
+                              trigger={
+                                <span>
+                                  <Focusable
+                                    order={0}
+                                  >
+                                    <Icon
+                                      as="i"
+                                      name="info circle"
+                                      size="small"
+                                    />
+                                  </Focusable>
+                                </span>
+                              }
+                            >
+                              <Portal
+                                closeOnDocumentClick={true}
+                                closeOnEscape={true}
+                                closeOnTriggerBlur={true}
+                                closeOnTriggerClick={true}
+                                closeOnTriggerMouseLeave={true}
+                                eventPool="default"
+                                mouseEnterDelay={50}
+                                mouseLeaveDelay={70}
+                                onClose={[Function]}
+                                onMount={[Function]}
+                                onOpen={[Function]}
+                                onUnmount={[Function]}
+                                openOnTriggerClick={true}
+                                openOnTriggerFocus={true}
+                                openOnTriggerMouseEnter={true}
+                                trigger={
+                                  <span>
+                                    <Focusable
+                                      order={0}
+                                    >
+                                      <Icon
+                                        as="i"
+                                        name="info circle"
+                                        size="small"
+                                      />
+                                    </Focusable>
+                                  </span>
+                                }
+                                triggerRef={
+                                  Object {
+                                    "current": <span>
+                                      <span
+                                        class="focusable"
+                                        tabindex="0"
+                                      >
+                                        <i
+                                          aria-hidden="true"
+                                          class="info circle small icon"
+                                        />
+                                      </span>
+                                    </span>,
+                                  }
+                                }
+                              >
+                                <Ref
+                                  innerRef={[Function]}
+                                >
+                                  <RefFindNode
+                                    innerRef={[Function]}
+                                  >
+                                    <span
+                                      onBlur={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onMouseEnter={[Function]}
+                                      onMouseLeave={[Function]}
+                                    >
+                                      <Focusable
+                                        order={0}
+                                      >
+                                        <span
+                                          className="focusable"
+                                          tabIndex={0}
+                                        >
+                                          <Icon
+                                            as="i"
+                                            name="info circle"
+                                            size="small"
+                                          >
+                                            <i
+                                              aria-hidden="true"
+                                              className="info circle small icon"
+                                              onClick={[Function]}
+                                            />
+                                          </Icon>
+                                        </span>
+                                      </Focusable>
+                                    </span>
+                                  </RefFindNode>
+                                </Ref>
+                              </Portal>
+                            </Popup>
+                          </IconPopup>
                         </label>
                         <TextArea
                           as="textarea"
@@ -534,11 +666,6 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                         </TextArea>
                       </div>
                     </FormField>
-                    <p
-                      className="field__helper-text"
-                    >
-                      This text helps screen-reading tools describe images to visually impaired readers.
-                    </p>
                   </div>
                 </div>
               </GridColumn>
