@@ -161,12 +161,15 @@ const GraphicSupportFiles = props => {
     <div className={ `graphic-project-support-files ${headline.replace( ' ', '-' )}` }>
       <div className="list-heading">
         <h3 className="title">{ headline }</h3>
-        <IconPopup
-          message={ helperText }
-          iconSize="small"
-          iconType="info circle"
-          popupSize="mini"
-        />
+        { projectId
+          && (
+            <IconPopup
+              message={ helperText }
+              iconSize="small"
+              iconType="info circle"
+              popupSize="mini"
+            />
+          ) }
       </div>
 
       <Confirm
