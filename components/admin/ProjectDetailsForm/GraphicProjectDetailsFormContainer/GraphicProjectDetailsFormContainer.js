@@ -13,7 +13,7 @@ import { initialSchema, baseSchema } from './validationSchema';
 import './GraphicProjectDetailsFormContainer.scss';
 
 const GraphicProjectDetailsFormContainer = props => {
-  const { contentStyle, setIsFormValid } = props;
+  const { contentStyle, data, setIsFormValid } = props;
   const { user } = useAuth();
 
   const [createGraphicProject] = useMutation( CREATE_GRAPHIC_PROJECT_MUTATION );
@@ -27,32 +27,8 @@ const GraphicProjectDetailsFormContainer = props => {
 
   const { startTimeout } = useTimeout( hideNotification, 1000 );
 
-  const update = async ( values, prevValues ) => {
-    const { id } = props;
-
-    if ( id ) {
-      // ensure we have a project
-      await updateGraphicProject( {
-        variables: {
-          data: buildFormTree( values, prevValues ),
-          where: { id },
-        },
-      } ).catch( err => console.dir( err ) );
-    }
-  };
-
-  const save = async ( values, prevValues ) => {
-    await update( values, prevValues );
-
-    if ( !showNotification ) {
-      setShowNotification( true );
-    }
-
-    startTimeout();
-  };
-
   const getInitialValues = () => {
-    const graphicProject = props?.data?.graphicProject || {};
+    const graphicProject = data?.graphicProject || {};
 
     const categories = graphicProject.categories
       ? graphicProject.categories.map( category => category.id )
@@ -73,6 +49,32 @@ const GraphicProjectDetailsFormContainer = props => {
     };
 
     return initialValues;
+  };
+
+  const update = async ( values, prevValues ) => {
+    const { id } = props;
+
+    if ( id ) {
+      // ensure we have a project
+      await updateGraphicProject( {
+        variables: {
+          data: buildFormTree( values, prevValues ),
+          where: { id },
+        },
+      } ).catch( err => console.dir( err ) );
+    }
+  };
+
+  const save = async values => {
+    const prevValues = getInitialValues();
+
+    await update( values, prevValues );
+
+    if ( !showNotification ) {
+      setShowNotification( true );
+    }
+
+    startTimeout();
   };
 
   const onHandleSubmit = async ( values, actions ) => {
