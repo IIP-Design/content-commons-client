@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [4.1.1](2020-05-22)
+**Added:**
+- Added Google Tag Manager Containers
+
+**Changed:**
+- Videos with subtitles now display by default if present
+
+**Fixed:**
+- Login now properly redirects to CloudFlare on mobile
+- Escape special characters when setting AWS S3 key for upload to address issues with download and display
+- Added 'name' property to elastic tag to ensure 'Coronavirus' surfaces in search
+
 # [4.1.0](2020-05-05)
 
 **Changed:**
