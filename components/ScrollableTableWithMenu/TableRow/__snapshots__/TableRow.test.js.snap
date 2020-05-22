@@ -11,7 +11,7 @@ Array [
     <div
       className="primary_col"
     >
-      <VideoDetailsPopup
+      <dynamic-component
         d={
           Object {
             "author": "Jane Doe",
@@ -155,7 +155,7 @@ Array [
     <div
       className="primary_col"
     >
-      <VideoDetailsPopup
+      <dynamic-component
         d={
           Object {
             "author": "Jane Doe",
@@ -251,7 +251,7 @@ Array [
     <div
       className="primary_col"
     >
-      <VideoDetailsPopup
+      <dynamic-component
         d={
           Object {
             "author": "Jane Doe",
