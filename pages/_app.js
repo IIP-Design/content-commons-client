@@ -39,7 +39,7 @@ class Commons extends App {
 
   render() {
     const {
-      Component, apollo, store, pageProps
+      Component, apollo, store, pageProps,
     } = this.props;
 
     return (
