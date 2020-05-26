@@ -96,23 +96,21 @@ const LoggedOutNav = props => {
         />
       );
     }
-
+ 
     return (
       <ul>
         <li>
-          <Icon name="close" onClick={ () => toggleMobileMenu( false ) } onKeyUp={ keyUp } tabIndex={ 0 } />
+          <Icon name="close" onClick={() => toggleMobileMenu(false)} onKeyUp={keyUp} tabIndex={0} />
         </li>
-        { items.map( item => renderListItem( item ) ) }
-        <li>
-          <Link href="/login">
-            <a>
-              <span onClick={ () => toggleMobileMenu( false ) } onKeyUp={ keyUp } role="presentation">
-                Login
-              </span>
-            </a>
-          </Link>
+        {items.map((item) => renderListItem(item))}
+        <li> 
+          <a href="/login">
+            <span onClick={() => toggleMobileMenu(false)} onKeyUp={keyUp} role="presentation">
+              Login
+            </span>
+          </a> 
         </li>
-        { renderFeedbackButton() }
+        {renderFeedbackButton()}
       </ul>
     );
   };
