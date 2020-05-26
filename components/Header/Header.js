@@ -37,7 +37,7 @@ const HeaderGlobal = ( { router } ) => {
             </div>
             <Header.Subheader className="subtitle">Making it easier to find public diplomacy content</Header.Subheader>
             <Header.Subheader className="subtext">
-            Content Commons is a U.S. Department of State portal helping public diplomacy practitioners find what they need.
+              Content Commons is a U.S. Department of State portal helping public diplomacy practitioners find what they need.
             </Header.Subheader>
           </Header>
           <SearchInput />
@@ -49,7 +49,7 @@ const HeaderGlobal = ( { router } ) => {
 };
 
 HeaderGlobal.propTypes = {
-  router: PropTypes.object
+  router: PropTypes.object,
 };
 
 export default withRouter( HeaderGlobal );
