@@ -5,7 +5,6 @@ import { Confirm } from 'semantic-ui-react';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import IconPopup from 'components/popups/IconPopup/IconPopup';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
-import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import {
   DELETE_IMAGE_FILE_MUTATION,
@@ -13,7 +12,7 @@ import {
   UPDATE_IMAGE_FILE_MUTATION,
   UPDATE_SUPPORT_FILE_MUTATION,
 } from 'lib/graphql/queries/common';
-import { GRAPHIC_PROJECT_QUERY, UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
+import { GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
 import useTimeout from 'lib/hooks/useTimeout';
 import { getCount, truncateAndReplaceStr } from 'lib/utils';
 import './GraphicSupportFiles.scss';
@@ -24,7 +23,6 @@ const GraphicSupportFiles = props => {
   } = props;
   const [fileIdToDelete, setFileIdToDelete] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
-  const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
   const [deleteImageFile] = useMutation( DELETE_IMAGE_FILE_MUTATION );
   const [deleteSupportFile] = useMutation( DELETE_SUPPORT_FILE_MUTATION );
   const [updateImageFile] = useMutation( UPDATE_IMAGE_FILE_MUTATION );
@@ -72,40 +70,10 @@ const GraphicSupportFiles = props => {
       .catch( err => console.dir( err ) );
   };
 
-  const handleLanguageChange = async ( e, { id, value } ) => {
-    const updateMutation = getMutation( { id, action: 'update' } );
-
-    await updateMutation( {
-      variables: {
-        data: {
-          language: {
-            connect: {
-              id: value,
-            },
-          },
-        },
-        where: {
-          id,
-        },
-      },
-      refetchQueries: [
-        {
-          query: GRAPHIC_PROJECT_QUERY,
-          variables: {
-            id: projectId,
-          },
-        },
-      ],
-    } )
-      .then( showNotification )
-      .then( handleReset )
-      .catch( err => console.dir( err ) );
-  };
-
   const renderList = () => (
     <ul className="support-files-list">
       { files.map( file => {
-        const { id, filename, input, language } = file;
+        const { id, filename, input } = file;
         const _filename = projectId ? filename : input?.name;
         const displayName = _filename?.length > 36
           ? truncateAndReplaceStr( _filename, 24, 12 )
@@ -131,26 +99,12 @@ const GraphicSupportFiles = props => {
                 : displayName }
             </span>
 
-            <span className="actions">
-              { headline.includes( 'editable' )
-                && (
-                  <LanguageDropdown
-                    id={ id }
-                    className="language"
-                    value={ language?.id || language }
-                    onChange={ handleLanguageChange }
-                    disabled={ !projectId }
-                    required
-                  />
-                ) }
-
-              <FileRemoveReplaceButtonGroup
-                onRemove={ () => {
-                  setDeleteConfirmOpen( true );
-                  setFileIdToDelete( id );
-                } }
-              />
-            </span>
+            <FileRemoveReplaceButtonGroup
+              onRemove={ () => {
+                setDeleteConfirmOpen( true );
+                setFileIdToDelete( id );
+              } }
+            />
           </li>
         );
       } ) }

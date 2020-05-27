@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Loader } from 'semantic-ui-react';
+import sortBy from 'lodash/sortBy';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import AddFilesSectionHeading from 'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading';
 import ApolloError from 'components/errors/ApolloError';
@@ -284,9 +285,10 @@ const GraphicEdit = props => {
     const existingFilesPlusShell = existingSupportFiles.concat( shellFile );
     const initialFiles = getInitialFiles( 'supportFiles' );
     const supportFiles = projectId ? existingFilesPlusShell : initialFiles;
+    const sortedFiles = sortBy( supportFiles, file => file.filename );
 
     if ( getCount( supportFiles ) ) {
-      supportFiles.forEach( file => {
+      sortedFiles.forEach( file => {
         const _filename = projectId ? file.filename : file.name;
         const extension = getFileExt( _filename );
         const hasEditableExt = editableExtensions.includes( extension );
@@ -305,12 +307,13 @@ const GraphicEdit = props => {
 
   const getGraphicFiles = () => {
     const existingFiles = data?.graphicProject?.images || [];
+    const initialFiles = getInitialFiles( 'graphicFiles' );
     let files = [];
 
     if ( projectId ) {
       files = existingFiles.filter( img => !getIsPngShell( img.filename ) );
     } else {
-      files = getInitialFiles( 'graphicFiles' );
+      files = sortBy( initialFiles, file => file.filename );
     }
 
     return files;

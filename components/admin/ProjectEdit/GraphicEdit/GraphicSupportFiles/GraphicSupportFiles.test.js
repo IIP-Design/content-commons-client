@@ -18,36 +18,11 @@ jest.mock(
   () => function IconPopup() { return ''; },
 );
 
-jest.mock(
-  'components/admin/dropdowns/LanguageDropdown/LanguageDropdown',
-  () => function LanguageDropdown() { return ''; },
-);
-
 const props = {
   projectId: 'project-123',
   headline: 'editable files',
   helperText: 'Original files that may be edited and adapted as needed for reuse.',
   files: [
-    {
-      id: 'ck9jtsbvz291i0720by3crdcc',
-      createdAt: '2020-04-28T11:26:50.874Z',
-      updatedAt: '2020-05-06T12:04:52.123Z',
-      filename: 's-secure-rights_shell.png',
-      filetype: 'image/png',
-      filesize: 29000,
-      url: null,
-      language: {
-        id: 'ck2lzfx710hkq07206thus6pt',
-        locale: 'en-us',
-        languageCode: 'en',
-        displayName: 'English',
-        textDirection: 'LTR',
-        nativeName: 'English',
-        __typename: 'Language',
-      },
-      use: null,
-      __typename: 'SupportFile',
-    },
     {
       id: 'ck9jtuqhy292w07200tfpbkju',
       createdAt: '2020-04-28T11:28:43.173Z',
@@ -68,18 +43,28 @@ const props = {
       use: null,
       __typename: 'SupportFile',
     },
+    {
+      id: 'ck9jtsbvz291i0720by3crdcc',
+      createdAt: '2020-04-28T11:26:50.874Z',
+      updatedAt: '2020-05-06T12:04:52.123Z',
+      filename: 's-secure-rights_shell.png',
+      filetype: 'image/png',
+      filesize: 29000,
+      url: null,
+      language: {
+        id: 'ck2lzfx710hkq07206thus6pt',
+        locale: 'en-us',
+        languageCode: 'en',
+        displayName: 'English',
+        textDirection: 'LTR',
+        nativeName: 'English',
+        __typename: 'Language',
+      },
+      use: null,
+      __typename: 'SupportFile',
+    },
   ],
   updateNotification: jest.fn(),
-};
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
 };
 
 describe( '<GraphicSupportFiles />, for editable files', () => {
@@ -89,7 +74,7 @@ describe( '<GraphicSupportFiles />, for editable files', () => {
 
   beforeEach( () => {
     Component = (
-      <MockedProvider mocks={ [] } addTypename>
+      <MockedProvider mocks={ [] } addTypename={ false }>
         <GraphicSupportFiles { ...props } />
       </MockedProvider>
     );
@@ -118,19 +103,6 @@ describe( '<GraphicSupportFiles />, for editable files', () => {
     expect( title.exists() ).toEqual( true );
     expect( title.name() ).toEqual( 'h3' );
     expect( title.text() ).toEqual( props.headline );
-  } );
-
-  it( 'renders the LanguageDropdown', () => {
-    const langDropdowns = listContainer.find( 'LanguageDropdown' );
-
-    expect( langDropdowns.exists() ).toEqual( true );
-    langDropdowns.forEach( ( dropdown, i ) => {
-      const { id, language } = props.files[i];
-
-      expect( dropdown.prop( 'id' ) ).toEqual( id );
-      expect( dropdown.prop( 'value' ) ).toEqual( language.id );
-      expect( dropdown.prop( 'disabled' ) ).toEqual( false );
-    } );
   } );
 
   it( 'renders the IconPopup', () => {
@@ -201,21 +173,10 @@ describe( '<GraphicSupportFiles />, for editable files', () => {
     listItems.forEach( ( item, i ) => {
       const file = props.files[i];
       const filename = item.find( 'span.filename' );
-      const actions = item.find( 'span.actions' );
-      const language = item.find( 'span.actions > LanguageDropdown' );
-      const removeBtn = item.find( 'span.actions > FileRemoveReplaceButtonGroup' );
+      const removeBtn = item.find( 'FileRemoveReplaceButtonGroup' );
 
       expect( item.hasClass( 'available' ) ).toEqual( true );
       expect( filename.text() ).toEqual( file.filename );
-      expect( actions.exists() ).toEqual( true );
-      expect( language.exists() ).toEqual( true );
-      expect( language.prop( 'id' ) ).toEqual( file.id );
-      expect( language.prop( 'value' ) ).toEqual( file.language.id );
-      expect( typeof language.prop( 'onChange' ) ).toEqual( 'function' );
-      expect( language.prop( 'onChange' ).name )
-        .toEqual( 'handleLanguageChange' );
-      expect( language.prop( 'disabled' ) ).toEqual( false );
-      expect( language.prop( 'required' ) ).toEqual( true );
       expect( removeBtn.exists() ).toEqual( true );
     } );
   } );
@@ -231,12 +192,12 @@ describe( '<GraphicSupportFiles />, for additional files', () => {
     headline: 'additional files',
     files: [
       {
-        id: 'ck9jtwa1v293h0720rbd1vdjr',
-        createdAt: '2020-04-28T11:29:55.168Z',
-        updatedAt: '2020-05-06T12:04:01.749Z',
-        filename: 's-secure-rights_transcript.docx',
-        filetype: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        filesize: 9000,
+        id: 'ck9ld2skk2cjn0720d5s33uxo',
+        createdAt: '2020-04-29T13:14:37.942Z',
+        updatedAt: '2020-05-06T12:03:29.748Z',
+        filename: 'OpenSans-regular.ttf',
+        filetype: 'font/ttf',
+        filesize: null,
         url: null,
         language: {
           id: 'ck2lzfx710hkq07206thus6pt',
@@ -251,12 +212,12 @@ describe( '<GraphicSupportFiles />, for additional files', () => {
         __typename: 'SupportFile',
       },
       {
-        id: 'ck9ld2skk2cjn0720d5s33uxo',
-        createdAt: '2020-04-29T13:14:37.942Z',
-        updatedAt: '2020-05-06T12:03:29.748Z',
-        filename: 'OpenSans-regular.ttf',
-        filetype: 'font/ttf',
-        filesize: null,
+        id: 'ck9jtwa1v293h0720rbd1vdjr',
+        createdAt: '2020-04-28T11:29:55.168Z',
+        updatedAt: '2020-05-06T12:04:01.749Z',
+        filename: 's-secure-rights_transcript.docx',
+        filetype: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        filesize: 9000,
         url: null,
         language: {
           id: 'ck2lzfx710hkq07206thus6pt',
@@ -380,14 +341,10 @@ describe( '<GraphicSupportFiles />, for additional files', () => {
     listItems.forEach( ( item, i ) => {
       const file = newProps.files[i];
       const filename = item.find( 'span.filename' );
-      const actions = item.find( 'span.actions' );
-      const language = item.find( 'span.actions > LanguageDropdown' );
-      const removeBtn = item.find( 'span.actions > FileRemoveReplaceButtonGroup' );
+      const removeBtn = item.find( 'FileRemoveReplaceButtonGroup' );
 
       expect( item.hasClass( 'available' ) ).toEqual( true );
       expect( filename.text() ).toEqual( file.filename );
-      expect( actions.exists() ).toEqual( true );
-      expect( language.exists() ).toEqual( false );
       expect( removeBtn.exists() ).toEqual( true );
     } );
   } );
@@ -426,7 +383,7 @@ describe( '<GraphicSupportFiles />, when no files are received', () => {
   } );
 } );
 
-describe( '<GraphicSupportFiles />, when a projectId does not exist', () => {
+describe( '<GraphicSupportFiles />, when a projectId does not exist & local files have been selected for uploading', () => {
   let Component;
   let wrapper;
   let listContainer;
@@ -514,18 +471,6 @@ describe( '<GraphicSupportFiles />, when a projectId does not exist', () => {
 
     listItems.forEach( item => {
       expect( item.hasClass( 'unavailable' ) ).toEqual( true );
-    } );
-  } );
-
-  it( 'renders a disabled language dropdown', () => {
-    const langDropdowns = listContainer.find( 'LanguageDropdown' );
-
-    langDropdowns.forEach( ( dropdown, i ) => {
-      const { id, language } = newProps.files[i];
-
-      expect( dropdown.prop( 'id' ) ).toEqual( id );
-      expect( dropdown.prop( 'value' ) ).toEqual( language );
-      expect( dropdown.prop( 'disabled' ) ).toEqual( true );
     } );
   } );
 
