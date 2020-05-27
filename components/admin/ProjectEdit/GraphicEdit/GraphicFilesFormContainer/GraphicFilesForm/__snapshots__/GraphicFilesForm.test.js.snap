@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<GraphicFileForm /> renders the correct fieldsets 1`] = `
+exports[`<GraphicFilesForm /> renders the correct fieldsets 1`] = `
 Array [
   <fieldset
     className="graphic-file-cka5di41430i10720v06c52ic"
