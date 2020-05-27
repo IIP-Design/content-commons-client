@@ -75,8 +75,8 @@ const GraphicSupportFiles = props => {
       { files.map( file => {
         const { id, filename, input } = file;
         const _filename = projectId ? filename : input?.name;
-        const displayName = _filename?.length > 36
-          ? truncateAndReplaceStr( _filename, 24, 12 )
+        const displayName = _filename?.length > 48
+          ? truncateAndReplaceStr( _filename, 24, 24 )
           : _filename;
 
         return (

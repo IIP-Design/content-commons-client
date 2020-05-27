@@ -2,6 +2,7 @@ import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/react-testing';
 import { act } from 'react-dom/test-utils';
 import GraphicSupportFiles from './GraphicSupportFiles';
+import { truncateAndReplaceStr } from 'lib/utils';
 
 jest.mock(
   'components/admin/ConfirmModalContent/ConfirmModalContent',
@@ -393,13 +394,13 @@ describe( '<GraphicSupportFiles />, when a projectId does not exist & local file
     projectId: undefined,
     files: [
       {
-        id: 'c9f7158c-a222-47a6-bb74-5e3d3a21d532',
-        name: 'askja-asdfjk-qeowiz-zxwe82-mzurjq-duzmwuq-acwac_TW.psd',
+        id: 'd2dcba4b-9d72-4533-b8fe-e90469ccf870',
+        name: 'OpenSans-regular.ttf',
         loaded: 0,
         input: {
           dataUrl: 'the-data-url',
-          name: 'askja-asdfjk-qeowiz-zxwe82-mzurjq-duzmwuq-acwac_TW.psd',
-          size: 509000,
+          name: 'OpenSans-regular.ttf',
+          size: 217360,
           __typename: 'LocalInputFile',
         },
         language: 'ck2lzfx710hkq07206thus6pt',
@@ -408,13 +409,13 @@ describe( '<GraphicSupportFiles />, when a projectId does not exist & local file
         __typename: 'LocalImageFile',
       },
       {
-        id: 'f88fe3a6-f328-46b4-b902-fcdf1f483097',
-        name: 'test-file-FB.psd',
+        id: '47b1c17d-41c2-4f5e-a2a8-914f8e31c106',
+        name: 'transcript.docx',
         loaded: 0,
         input: {
           dataUrl: 'the-data-url',
-          name: 'test-file-FB.psd',
-          size: 297343,
+          name: 'transcript.docx',
+          size: 9000,
           __typename: 'LocalInputFile',
         },
         language: 'ck2lzfx710hkq07206thus6pt',
@@ -422,36 +423,6 @@ describe( '<GraphicSupportFiles />, when a projectId does not exist & local file
         social: [],
         __typename: 'LocalImageFile',
       },
-      // {
-      //   id: 'd2dcba4b-9d72-4533-b8fe-e90469ccf870',
-      //   name: 'OpenSans-regular.ttf',
-      //   loaded: 0,
-      //   input: {
-      //     dataUrl: 'the-data-url',
-      //     name: 'OpenSans-regular.ttf',
-      //     size: 217360,
-      //     __typename: 'LocalInputFile',
-      //   },
-      //   language: 'ck2lzfx710hkq07206thus6pt',
-      //   style: '',
-      //   social: [],
-      //   __typename: 'LocalImageFile',
-      // },
-      // {
-      //   id: '47b1c17d-41c2-4f5e-a2a8-914f8e31c106',
-      //   name: 'transcript.docx',
-      //   loaded: 0,
-      //   input: {
-      //     dataUrl: 'the-data-url',
-      //     name: 'transcript.docx',
-      //     size: 9000,
-      //     __typename: 'LocalInputFile',
-      //   },
-      //   language: 'ck2lzfx710hkq07206thus6pt',
-      //   style: '',
-      //   social: [],
-      //   __typename: 'LocalImageFile',
-      // },
     ],
   };
 
@@ -517,9 +488,10 @@ describe( '<GraphicSupportFiles />, when there is a long file name', () => {
     const listItem = listContainer.find( '.support-file-item' );
     const btn = listItem.find( '.truncated' );
     const visuallyHidden = listItem.find( '.hide-visually' );
+    const shortName = truncateAndReplaceStr( filename, 24, 24 );
 
     expect( btn.prop( 'tooltip' ) ).toEqual( filename );
-    expect( btn.text() ).toEqual( 's-secure-rights_aieaue_k...yz_shell.png' );
+    expect( btn.text() ).toEqual( shortName );
     expect( visuallyHidden.text() ).toEqual( filename );
   } );
 } );
