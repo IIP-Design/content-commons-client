@@ -6,17 +6,23 @@ import {
   GRAPHIC_PROJECT_SUPPORT_FILES_QUERY,
   TEAM_GRAPHIC_PROJECTS_QUERY,
   TEAM_GRAPHIC_PROJECTS_COUNT_QUERY,
+  UNPUBLISH_GRAPHIC_PROJECT_MUTATION,
+  UPDATE_GRAPHIC_STATUS_MUTATION,
 } from 'lib/graphql/queries/graphic';
 import {
   DELETE_PACKAGE_MUTATION,
   PACKAGE_FILES_QUERY,
   TEAM_PACKAGES_COUNT_QUERY,
   TEAM_PACKAGES_QUERY,
+  UNPUBLISH_PACKAGE_MUTATION,
+  UPDATE_PACKAGE_STATUS_MUTATION,
 } from 'lib/graphql/queries/package';
 import {
   DELETE_VIDEO_PROJECT_MUTATION,
   TEAM_VIDEO_PROJECTS_COUNT_QUERY,
   TEAM_VIDEO_PROJECTS_QUERY,
+  UNPUBLISH_VIDEO_PROJECT_MUTATION,
+  UPDATE_VIDEO_STATUS_MUTATION,
   VIDEO_PROJECT_FILES_QUERY,
 } from 'lib/graphql/queries/video';
 
@@ -31,6 +37,8 @@ const initialState = {
     count: null,
     files: null,
     remove: null,
+    status: null,
+    unpublish: null,
   },
   selected: {
     displayActionsMenu: false,
@@ -127,6 +135,8 @@ export const setQueries = team => {
       queries.count = TEAM_GRAPHIC_PROJECTS_COUNT_QUERY;
       queries.files = GRAPHIC_PROJECT_SUPPORT_FILES_QUERY;
       queries.remove = DELETE_GRAPHIC_PROJECT_MUTATION;
+      queries.status = UPDATE_GRAPHIC_STATUS_MUTATION;
+      queries.unpublish = UNPUBLISH_GRAPHIC_PROJECT_MUTATION;
 
       return queries;
     case 'videoProjects':
@@ -134,6 +144,8 @@ export const setQueries = team => {
       queries.count = TEAM_VIDEO_PROJECTS_COUNT_QUERY;
       queries.files = VIDEO_PROJECT_FILES_QUERY;
       queries.remove = DELETE_VIDEO_PROJECT_MUTATION;
+      queries.status = UPDATE_VIDEO_STATUS_MUTATION;
+      queries.unpublish = UNPUBLISH_VIDEO_PROJECT_MUTATION;
 
       return queries;
     case 'packages':
@@ -141,6 +153,8 @@ export const setQueries = team => {
       queries.count = TEAM_PACKAGES_COUNT_QUERY;
       queries.files = PACKAGE_FILES_QUERY;
       queries.remove = DELETE_PACKAGE_MUTATION;
+      queries.status = UPDATE_PACKAGE_STATUS_MUTATION;
+      queries.unpublish = UNPUBLISH_PACKAGE_MUTATION;
 
       return queries;
     default:

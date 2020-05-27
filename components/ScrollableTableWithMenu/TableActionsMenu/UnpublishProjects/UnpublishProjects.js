@@ -1,107 +1,78 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useMutation, useQuery } from '@apollo/react-hooks';
-import useIsMounted from 'lib/hooks/useIsMounted';
 import { Button, Popup } from 'semantic-ui-react';
-import {
-  UNPUBLISH_VIDEO_PROJECT_MUTATION,
-  TEAM_VIDEO_PROJECTS_QUERY,
-  UPDATE_VIDEO_STATUS_MUTATION
-} from 'lib/graphql/queries/video';
-import {
-  UNPUBLISH_PACKAGE_MUTATION,
-  TEAM_PACKAGES_QUERY,
-  UPDATE_PACKAGE_STATUS_MUTATION
-} from 'lib/graphql/queries/package';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 
+import useIsMounted from 'lib/hooks/useIsMounted';
+import { DashboardContext } from 'context/dashboardContext';
 
-const UnpublishProjects = props => {
-  const {
-    team,
-    handleResetSelections,
-    handleActionResult,
-    showConfirmationMsg,
-    selections,
-    variables
-  } = props;
+const UnpublishProjects = ( {
+  handleResetSelections,
+  handleActionResult,
+  showConfirmationMsg,
+  selections,
+  variables,
+} ) => {
+  const { state } = useContext( DashboardContext );
 
   const isMounted = useIsMounted();
 
-  // This following if statements assume that we have a video content type if
-  // contentTypes do not contain PACKAGE.
-  // This solution is not scalable and will need to be revisited when time permits
-  const isPackage = team?.contentTypes?.includes( 'PACKAGE' );
-
-  // qry to poll when bulk unpublish starts
-  const pollQry = isPackage
-    ? TEAM_PACKAGES_QUERY
-    : TEAM_VIDEO_PROJECTS_QUERY;
-
-  const unpublishMutation = isPackage
-    ? UNPUBLISH_PACKAGE_MUTATION
-    : UNPUBLISH_VIDEO_PROJECT_MUTATION;
-
-  // after bulk unpublish completes, each the status of each item
-  // will need to be updated to reflect success/ failure
-  const statusUpdateMutation = isPackage
-    ? UPDATE_PACKAGE_STATUS_MUTATION
-    : UPDATE_VIDEO_STATUS_MUTATION;
-
-  // Used to track number of items that need to be unpublished
-  // Cannot use 'published' as this changes with each render
+  /**
+   * Used to track number of items that need to be unpublished
+   * Cannot use 'published' as this changes with each render
+   */
   const [numToUnpublish, setNumToUnpublish] = useState( 0 );
 
-  const [bulkUnpublish] = useMutation( unpublishMutation );
-  const [bulkStatusUpdate] = useMutation( statusUpdateMutation );
+  const [bulkUnpublish] = useMutation( state.queries.unpublish );
+  const [bulkStatusUpdate] = useMutation( state.queries.status );
 
-  const { data, startPolling, stopPolling } = useQuery( pollQry, {
-    variables: { ...variables }
+  const { data, startPolling, stopPolling } = useQuery( state.queries.content, {
+    variables: { ...variables },
   } );
 
   const published = selections.filter( p => p.status === 'PUBLISHED' );
 
   /**
-   * Sends mutation to server to update status based on
-   * whether operation was a success or failure
+   * Sends mutation to server to update status based on whether operation was a success or failure
    * If success, mark as 'DRAFT'
-   * If failtue, reset to 'PUBLISHED'
+   * If failure, reset to 'PUBLISHED'
    * @param {array} items array of items that need status updates
    */
   const updateStatus = items => Promise.all( items.map( item => {
     const { id, status, publishedAt } = item;
-    const updatedStatus = status === 'UNPUBLISH_SUCCESS' ? 'DRAFT' : 'PUBLISHED';
-    const updatedPublishedAt = status === 'UNPUBLISH_SUCCESS' ? null : publishedAt;
+
     return bulkStatusUpdate( {
       variables: {
         data: {
-          status: updatedStatus,
-          publishedAt: updatedPublishedAt
+          status: status === 'UNPUBLISH_SUCCESS' ? 'DRAFT' : 'PUBLISHED',
+          publishedAt: status === 'UNPUBLISH_SUCCESS' ? null : publishedAt,
         },
-        where: { id }
-      }
+        where: { id },
+      },
     } );
   } ) );
 
   /**
    * Called when poll query changes. A change to the status of each item
-   * that is unpublished will trigger this check.  The server will mark
+   * that is unpublished will trigger this check. The server will mark
    * each items as a 'UNPUBLISH_SUCCESS' or 'UNPUBLISH_FAILURE
    */
   const checkUnpublishStatus = () => {
     const items = data?.packages ? data.packages : data.videoProjects;
+
     if ( items ) {
-      // Determine how many items have completed (weither success or failure)
+      // Determine how many items have completed (either success or failure)
       const updates = items.filter(
-        item => item.status === 'UNPUBLISH_SUCCESS' || item.status === 'UNPUBLISH_FAILURE'
+        item => item.status === 'UNPUBLISH_SUCCESS' || item.status === 'UNPUBLISH_FAILURE',
       );
 
       // Compare the number of completed items against the number of operation requested
-      // to determine if the bulk operation is cokplete
+      // to determine if the bulk operation is complete
       // If it is, stop polling
       if ( numToUnpublish === updates.length ) {
         updateStatus( updates ).finally( () => {
           // Finally executes for both success and failure
-          // This will ensure polling is stoppped
+          // This will ensure polling is stopped
           stopPolling();
           if ( isMounted ) {
             setNumToUnpublish( 0 );
@@ -118,12 +89,12 @@ const UnpublishProjects = props => {
     if ( data ) {
       checkUnpublishStatus();
     }
-  }, [data] );
 
-  // Enusre polling does not continue on unmount
-  useEffect( () => () => {
-    stopPolling();
-  }, [] );
+    // Ensure polling does not continue on unmount
+    return () => {
+      stopPolling();
+    };
+  }, [data] );
 
 
   const unpublishProject = async project => {
@@ -134,7 +105,7 @@ const UnpublishProjects = props => {
     const result = await bulkUnpublish( { variables: { id: project.id } } ).catch( error => ( {
       error,
       project,
-      action: 'unpublish'
+      action: 'unpublish',
     } ) );
 
     handleActionResult( result );
@@ -171,12 +142,11 @@ const UnpublishProjects = props => {
 };
 
 UnpublishProjects.propTypes = {
-  team: PropTypes.object,
   handleActionResult: PropTypes.func,
   handleResetSelections: PropTypes.func,
   showConfirmationMsg: PropTypes.func,
   selections: PropTypes.array,
-  variables: PropTypes.object
+  variables: PropTypes.object,
 };
 
 export default UnpublishProjects;
