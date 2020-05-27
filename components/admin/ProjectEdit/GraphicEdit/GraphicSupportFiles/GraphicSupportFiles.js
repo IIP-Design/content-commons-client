@@ -9,8 +9,6 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import {
   DELETE_IMAGE_FILE_MUTATION,
   DELETE_SUPPORT_FILE_MUTATION,
-  UPDATE_IMAGE_FILE_MUTATION,
-  UPDATE_SUPPORT_FILE_MUTATION,
 } from 'lib/graphql/queries/common';
 import { GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
 import useTimeout from 'lib/hooks/useTimeout';
@@ -25,21 +23,19 @@ const GraphicSupportFiles = props => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [deleteImageFile] = useMutation( DELETE_IMAGE_FILE_MUTATION );
   const [deleteSupportFile] = useMutation( DELETE_SUPPORT_FILE_MUTATION );
-  const [updateImageFile] = useMutation( UPDATE_IMAGE_FILE_MUTATION );
-  const [updateSupportFile] = useMutation( UPDATE_SUPPORT_FILE_MUTATION );
 
   const showNotification = () => updateNotification( 'Changes saved' );
   const hideNotification = () => updateNotification( '' );
   const { startTimeout } = useTimeout( hideNotification, 2000 );
 
-  const getMutation = ( { id, action } ) => {
+  const getMutation = id => {
     const _fileToUpdate = files.find( file => file.id === id );
 
     switch ( _fileToUpdate.__typename ) {
       case 'ImageFile':
-        return action === 'update' ? updateImageFile : deleteImageFile;
+        return deleteImageFile;
       default:
-        return action === 'update' ? updateSupportFile : deleteSupportFile;
+        return deleteSupportFile;
     }
   };
 
@@ -50,7 +46,7 @@ const GraphicSupportFiles = props => {
   };
 
   const handleDelete = async id => {
-    const deleteMutation = getMutation( { id, action: 'delete' } );
+    const deleteMutation = getMutation( id );
 
     await deleteMutation( {
       variables: {
