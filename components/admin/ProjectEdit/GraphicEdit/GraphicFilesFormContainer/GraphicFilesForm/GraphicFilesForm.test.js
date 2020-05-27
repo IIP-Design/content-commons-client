@@ -1,8 +1,10 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
+import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
-import GraphicFilesForm from './GraphicFilesForm';
 import { formatBytes, truncateAndReplaceStr } from 'lib/utils';
+import { mocks, props } from './mocks';
+import GraphicFilesForm from './GraphicFilesForm';
 
 jest.mock(
   'components/admin/ConfirmModalContent/ConfirmModalContent',
@@ -39,123 +41,6 @@ jest.mock(
   () => function SocialPlatformDropdown() { return ''; },
 );
 
-const props = {
-  errors: {},
-  files: [
-    {
-      id: 'cka5di41430i10720v06c52ic',
-      createdAt: '2020-05-13T13:21:56.183Z',
-      updatedAt: '2020-05-13T13:25:12.933Z',
-      filename: '4_3_Serious_TW.jpg',
-      filetype: 'image/jpeg',
-      filesize: 297343,
-      url: '2020/04/commons.america.gov_ck9laaua62c2o0720577s3jto/4_3_Serious_TW.jpg',
-      signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2020/04/commons.america.gov_ck9laaua62c2o0720577s3jto/4_3_Serious_TW.jpg?AWSAccessKeyId=someaccesskey&Expires=1589466970&Signature=thesignature',
-      alt: null,
-      language: {
-        id: 'ck2lzfx710hkq07206thus6pt',
-        locale: 'en-us',
-        languageCode: 'en',
-        displayName: 'English',
-        textDirection: 'LTR',
-        nativeName: 'English',
-        __typename: 'Language',
-      },
-      dimensions: {
-        id: 'cka5di41m30i20720rvqjahzy',
-        height: 675,
-        width: 1200,
-        __typename: 'Dimensions',
-      },
-      __typename: 'ImageFile',
-      title: '4_3_Serious_TW.jpg',
-      style: {
-        id: 'ck9h3koe426aa0720y421wmk3',
-        name: 'Clean',
-        __typename: 'GraphicStyle',
-      },
-      social: [
-        {
-          id: 'ck9h3m3g626bd07201gh712vk',
-          name: 'Twitter',
-          __typename: 'SocialPlatform',
-        },
-      ],
-      use: {
-        id: 'ck2lzfx510hhj07205mal3e4l',
-        name: 'Thumbnail/Cover Image',
-        __typename: 'ImageUse',
-      },
-    },
-    {
-      id: 'cka5di48r30ig072003dqjffb',
-      createdAt: '2020-05-13T13:21:56.467Z',
-      updatedAt: '2020-05-13T13:25:12.937Z',
-      filename: '4_3_Serious_FB.jpg',
-      filetype: 'image/jpeg',
-      filesize: 433851,
-      url: '2020/04/commons.america.gov_ck9laaua62c2o0720577s3jto/4_3_Serious_FB.jpg',
-      signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2020/04/commons.america.gov_ck9laaua62c2o0720577s3jto/4_3_Serious_FB.jpg?AWSAccessKeyId=someaccesskey&Expires=1589466970&Signature=thesignature',
-      alt: null,
-      language: {
-        id: 'ck2lzfx710hkq07206thus6pt',
-        locale: 'en-us',
-        languageCode: 'en',
-        displayName: 'English',
-        textDirection: 'LTR',
-        nativeName: 'English',
-        __typename: 'Language',
-      },
-      dimensions: {
-        id: 'cka5di49730ih0720o1u2m49y',
-        height: 1200,
-        width: 1200,
-        __typename: 'Dimensions',
-      },
-      __typename: 'ImageFile',
-      title: '4_3_Serious_FB.jpg',
-      style: {
-        id: 'ck9h3kyb326ak0720wkbk01q6',
-        name: 'Info/Stat',
-        __typename: 'GraphicStyle',
-      },
-      social: [
-        {
-          id: 'ck9h3m9bl26bm0720rm69c60s',
-          name: 'Facebook',
-          __typename: 'SocialPlatform',
-        },
-      ],
-      use: {
-        id: 'ck2lzfx510hhj07205mal3e4l',
-        name: 'Thumbnail/Cover Image',
-        __typename: 'ImageUse',
-      },
-    },
-  ],
-  projectId: 'project-123',
-  save: jest.fn(),
-  setFieldValue: jest.fn(),
-  setFieldTouched: jest.fn(),
-  touched: {},
-  values: {
-    cka5di41430i10720v06c52ic: {
-      id: 'cka5di41430i10720v06c52ic',
-      title: '4_3_Serious_TW.jpg',
-      language: 'ck2lzfx710hkq07206thus6pt',
-      social: ['ck9h3m3g626bd07201gh712vk'],
-      style: 'ck9h3koe426aa0720y421wmk3',
-    },
-    cka5di48r30ig072003dqjffb: {
-      id: 'cka5di48r30ig072003dqjffb',
-      title: '4_3_Serious_FB.jpg',
-      language: 'ck2lzfx710hkq07206thus6pt',
-      social: ['ck9h3m9bl26bm0720rm69c60s'],
-      style: 'ck9h3kyb326ak0720wkbk01q6',
-    },
-  },
-};
-
 const suppressActWarning = consoleError => {
   const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
 
@@ -166,7 +51,7 @@ const suppressActWarning = consoleError => {
   } );
 };
 
-describe( '<GraphicFileForm />', () => {
+describe( '<GraphicFilesForm />', () => {
   const consoleError = console.error;
 
   beforeAll( () => suppressActWarning( consoleError ) );
@@ -181,7 +66,7 @@ describe( '<GraphicFileForm />', () => {
 
   beforeEach( () => {
     Component = (
-      <MockedProvider mocks={ [] } addTypename>
+      <MockedProvider mocks={ mocks } addTypename>
         <GraphicFilesForm { ...props } />
       </MockedProvider>
     );
@@ -250,6 +135,30 @@ describe( '<GraphicFileForm />', () => {
     wrapper.update();
 
     expect( confirm().prop( 'open' ) ).toEqual( false );
+  } );
+
+  it( 'clicking the Confirm modal "Yes, delete forever" button', () => {
+    const replaceBtn = fieldsets.first().find( 'FileRemoveReplaceButtonGroup' );
+
+    // open the modal
+    replaceBtn.prop( 'onRemove' )();
+    wrapper.update();
+    const confirm = () => wrapper.find( 'Confirm' );
+
+    expect( confirm().prop( 'open' ) ).toEqual( true );
+
+    // confirm deletion
+    const deleteConfirmTest = async done => {
+      confirm().prop( 'onConfirm' )();
+      await wait( 4 ); // wait for mutation to resolve
+      wrapper.update();
+
+      // handleReset is called upon successful deletion
+      expect( confirm().prop( 'open' ) ).toEqual( false );
+      done();
+    };
+
+    deleteConfirmTest();
   } );
 
   it( 'renders the correct fieldsets', () => {
@@ -341,7 +250,7 @@ describe( '<GraphicFilesForm />, when no files are received', () => {
 
   beforeEach( () => {
     Component = (
-      <MockedProvider mocks={ [] } addTypename>
+      <MockedProvider mocks={ mocks } addTypename>
         <GraphicFilesForm { ...newProps } />
       </MockedProvider>
     );
@@ -405,13 +314,20 @@ describe( '<GraphicFilesForm />, when a required field value is missing', () => 
 
   beforeEach( () => {
     Component = (
-      <MockedProvider mocks={ [] } addTypename>
+      <MockedProvider mocks={ mocks } addTypename>
         <GraphicFilesForm { ...newProps } />
       </MockedProvider>
     );
 
     wrapper = mount( Component );
     graphicsForm = wrapper.find( 'GraphicFilesForm' );
+  } );
+
+  it( 'renders FormikAutoSave since fields are touched', () => {
+    const formikAutoSave = graphicsForm.find( 'FormikAutoSave' );
+
+    expect( formikAutoSave.exists() ).toEqual( true );
+    expect( typeof formikAutoSave.prop( 'save' ) ).toEqual( 'function' );
   } );
 
   it( 'renders an error message if there is no language value', () => {
@@ -610,7 +526,7 @@ describe( '<GraphicFilesForm />, when there is a long file name', () => {
 
   beforeEach( () => {
     Component = (
-      <MockedProvider mocks={ [] } addTypename>
+      <MockedProvider mocks={ mocks } addTypename>
         <GraphicFilesForm { ...newProps } />
       </MockedProvider>
     );
