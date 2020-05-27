@@ -187,9 +187,7 @@ const ProjectDetailsForm = props => {
                         ? <p className="error-message">{ touched.categories ? errors.categories : '' }</p>
                         : (
                           <p className="field__helper-text">
-                            Select up to
-                            { maxCategories }
-                            .
+                            Select up to { maxCategories }.
                           </p>
                         ) }
                     </div>
