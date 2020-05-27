@@ -15,10 +15,10 @@ import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo
 import DownloadCaption from 'components/admin/download/DownloadCaption/DownloadCaption';
 import DownloadThumbnail from 'components/admin/download/DownloadThumbnail/DownloadThumbnail';
 import DownloadOtherFiles from 'components/admin/download/DownloadOtherFiles/DownloadOtherFiles';
-import DownloadHelp from 'components/Video/DownloadHelp';
+import DownloadHelp from 'components/Video/Download/DownloadHelp';
 
 import EmbedVideo from 'components/Embed';
-import EmbedHelp from 'components/Video/EmbedHelp';
+import EmbedHelp from 'components/Video/Download/EmbedHelp';
 
 import ModalItem from 'components/modals/ModalItem/ModalItem';
 import ModalContentMeta from 'components/modals/ModalContentMeta/ModalContentMeta';
@@ -37,7 +37,7 @@ import downloadIcon from 'static/icons/icon_download.svg';
 import embedIcon from 'static/icons/icon_embed.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 import {
-  getPreviewNotificationStyles, getStreamData, getVimeoId, getYouTubeId
+  getPreviewNotificationStyles, getStreamData, getVimeoId, getYouTubeId,
 } from 'lib/utils';
 import { displayDOSLogo } from 'lib/sourceLogoUtils';
 import { UNIT_DETAILS_FRAGMENT } from 'lib/graphql/queries/video';
@@ -51,7 +51,7 @@ class ProjectPreviewContent extends React.PureComponent {
 
     this.state = {
       dropDownIsOpen: false,
-      selectedLanguage: ''
+      selectedLanguage: '',
     };
   }
 
@@ -98,13 +98,13 @@ class ProjectPreviewContent extends React.PureComponent {
     .map( unit => ( {
       key: unit.language.languageCode,
       value: unit.language.displayName,
-      text: unit.language.displayName
+      text: unit.language.displayName,
     } ) )
   ;
 
   getProjectUnits = units => units.reduce( ( acc, unit ) => ( {
     ...acc,
-    [unit.language.displayName]: unit
+    [unit.language.displayName]: unit,
   } ), {} )
   ;
 
@@ -180,13 +180,13 @@ class ProjectPreviewContent extends React.PureComponent {
 
   getTags = ( tags, unit ) => tags.reduce( ( acc, curr ) => [
     ...acc,
-    { name: this.getTag( curr, unit ) }
+    { name: this.getTag( curr, unit ) },
   ], [] )
   ;
 
   toggleArrow = () => {
     this.setState( prevState => ( {
-      dropDownIsOpen: !prevState.dropDownIsOpen
+      dropDownIsOpen: !prevState.dropDownIsOpen,
     } ) );
   }
 
@@ -208,7 +208,7 @@ class ProjectPreviewContent extends React.PureComponent {
     if ( !project || !Object.keys( project ).length ) return null;
 
     const {
-      __typename, team, author, units
+      __typename, team, author, units,
     } = project;
     const { dropDownIsOpen, selectedLanguage } = this.state;
 
@@ -224,7 +224,7 @@ class ProjectPreviewContent extends React.PureComponent {
     }
 
     const {
-      title, language, descPublic, files, categories
+      title, language, descPublic, files, categories,
     } = selectedUnit;
     const contentType = this.getContentType( __typename );
 
@@ -241,7 +241,7 @@ class ProjectPreviewContent extends React.PureComponent {
     }
 
     const {
-      createdAt, updatedAt, stream, videoBurnedInStatus
+      createdAt, updatedAt, stream, videoBurnedInStatus,
     } = files[0];
 
     const youTubeUrl = getStreamData( stream, 'youtube', 'url' );
@@ -316,9 +316,9 @@ class ProjectPreviewContent extends React.PureComponent {
                             embedItem="The video embed code will appear here."
                             isPreview
                           />
-                        )
+                        ),
                       },
-                      { title: 'Help', component: <EmbedHelp /> }
+                      { title: 'Help', component: <EmbedHelp /> },
                     ] }
                   />
                 ) }
@@ -363,7 +363,7 @@ class ProjectPreviewContent extends React.PureComponent {
                           burnedInCaptions={ videoBurnedInStatus === 'CAPTIONED' }
                           isPreview
                         />
-                      )
+                      ),
                     },
                     {
                       title: 'Caption File',
@@ -373,7 +373,7 @@ class ProjectPreviewContent extends React.PureComponent {
                           instructions="Download caption file(s) for this video."
                           isPreview
                         />
-                      )
+                      ),
                     },
                     {
                       title: 'Thumbnail',
@@ -383,7 +383,7 @@ class ProjectPreviewContent extends React.PureComponent {
                           instructions="Download Thumbnail(s)"
                           isPreview
                         />
-                      )
+                      ),
                     },
                     {
                       title: 'Other',
@@ -393,9 +393,9 @@ class ProjectPreviewContent extends React.PureComponent {
                           instructions="Download Other File(s)"
                           isPreview
                         />
-                      )
+                      ),
                     },
-                    { title: 'Help', component: <DownloadHelp /> }
+                    { title: 'Help', component: <DownloadHelp /> },
                   ] }
                 />
               ) }
@@ -449,7 +449,7 @@ class ProjectPreviewContent extends React.PureComponent {
 
 ProjectPreviewContent.propTypes = {
   id: PropTypes.string,
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
 };
 
 const VIDEO_PROJECT_PREVIEW_QUERY = gql`
@@ -480,8 +480,8 @@ const VIDEO_PROJECT_PREVIEW_QUERY = gql`
 
 export default graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
   options: props => ( {
-    variables: { id: props.id }
-  } )
+    variables: { id: props.id },
+  } ),
 } )( ProjectPreviewContent );
 
 export { VIDEO_PROJECT_PREVIEW_QUERY };

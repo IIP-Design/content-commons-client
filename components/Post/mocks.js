@@ -1,0 +1,55 @@
+export const mockItem = {
+  author: 'Christopher Connell',
+  categories: [
+    { id: 'poriF2MBR4UFGCthKODu', name: 'good governance' },
+    { id: 'JoriF2MBR4UFGCthEuAL', name: 'about america' },
+    { id: 'NoriF2MBR4UFGCthFeCX', name: 'u.s. government' },
+  ],
+  content: '<p>Jerome &#8220;Jay&#8221; Powell is taking the helm of the Federal Reserve System. The job of Fed chair is often called the second most powerful in the United States, since board actions on interest rates and money supply affect the health of the world’s largest economy.</p> <p>The Senate approved President Trump’s nominee by an 84–13 vote. Powell, an attorney and former investment banker who is already a Federal Reserve governor, will succeed Janet Yellen on February 3, when her four-year ter...',
+  description: 'President Trump says Jerome Powell, his choice for chair of the Federal Reserve, will help the U.S. build on its recent economic progress.',
+  icon: 'data:image/png;base64,icon',
+  id: '27172',
+  indexId: 'ey_zL2YBpMwOWxw2u3px',
+  language: {
+    display_name: 'English',
+    language_code: 'en',
+    locale: 'en-us',
+    native_name: 'English',
+    text_direction: 'ltr',
+  },
+  languages: [
+    {
+      language: {
+        display_name: 'Arabic',
+        language_code: 'ar',
+        locale: 'ar',
+        native_name: 'العربية',
+        text_direction: 'rtl',
+      },
+      post_id: 511522,
+    }, {
+      language: {
+        display_name: 'Spanish',
+        language_code: 'es',
+        locale: 'es-es',
+        native_name: 'Español',
+        text_direction: 'ltr',
+      },
+      post_id: 511490,
+    },
+  ],
+  link: 'http://share.dev.america.gov/trump-nominates-new-central-banker/',
+  logo: 'data:image/svg+xml;base64,logo-file',
+  modified: '2018-04-30T11:55:45+00:00',
+  owner: 'ShareAmerica',
+  published: '2018-01-24T12:05:09+00:00',
+  site: 'share.dev.america.gov',
+  sourcelink: 'https://share.dev.america.gov',
+  thumbnail: 'https://sharedevstatic.s3.amazonaws.com/uploads/2017/10/GettyImages-869350132-768x512.jpg',
+  thumbnailMeta: {
+    alt: 'Jerome Powell (© T.J. Kirkpatrick/Bloomberg/Getty Images)',
+    caption: "Federal Reserve Board governor Jerome Powell is in line to chair America's central bank. (© T.J. Kirkpatrick/Bloomberg/Getty Images)",
+  },
+  title: "Meet Jerome Powell, America's new top banker",
+  type: 'post',
+};

@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 const EmbedHelp = () => (
   <div>
     <h4>Embed Help</h4>

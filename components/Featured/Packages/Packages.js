@@ -11,12 +11,13 @@ import './Packages.scss';
 
 const renderError = () => (
   <section className="latestPackages_section">
-    <Message>Oops, something went wrong.  We are unable to load the most recent guidance packages.</Message>
+    <Message>Oops, something went wrong. We are unable to load the most recent guidance packages.</Message>
   </section>
 );
 
-const Packages = props => {
-  const { featured, packages } = props;
+const archiveLink = () => <a href={ config.PRESS_GUIDANCE_DB_URL } rel="noopener noreferrer" target="_blank">archived press guidance database</a>;
+
+const Packages = ( { featured, packages } ) => {
   if ( featured?.error ) {
     return renderError();
   }
@@ -31,7 +32,7 @@ const Packages = props => {
           <Link
             href={ {
               pathname: '/results',
-              query: { language: 'en-us', sortBy: 'created', postTypes: ['package'] }
+              query: { language: 'en-us', sortBy: 'created', postTypes: ['package'] },
             } }
           >
             <a className="latestPackages_header_link">Browse All</a>
@@ -47,7 +48,11 @@ const Packages = props => {
             </Grid.Column>
           ) ) }
         </Grid>
-        <p className="latestPackages_guidance_link">For press guidance and releases from before 04/27/2020, please visit the <a href={ config.PRESS_GUIDANCE_DB_URL } rel="noopener noreferrer" target="_blank">archived press guidance database</a>.</p>
+        <p className="latestPackages_guidance_link">
+          { 'For press guidance and releases from before 04/27/2020, please visit the ' }
+          { archiveLink() }
+          { '.' }
+        </p>
       </div>
     </section>
   );
@@ -55,7 +60,7 @@ const Packages = props => {
 
 Packages.propTypes = {
   featured: PropTypes.object,
-  packages: PropTypes.array
+  packages: PropTypes.array,
 };
 
 const mapStateToProps = ( state, props ) => ( {

@@ -3,7 +3,7 @@ import App from 'next/app';
 import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
 import { AuthProvider, canAccessPage } from 'context/authContext';
-import { redirectTo, parseObjectToQueryParams } from 'lib/browser';
+import { redirectTo } from 'lib/browser';
 import withRedux from 'next-redux-wrapper';
 import isEmpty from 'lodash/isEmpty';
 import withApollo from 'hocs/withApollo';

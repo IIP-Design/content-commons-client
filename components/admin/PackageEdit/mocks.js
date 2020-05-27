@@ -4,7 +4,7 @@ export const AWS_URL = 'https://s3-bucket-url.s3.amazonaws.com';
 export const AWS_SIGNED_URL_QUERY_STRING = '?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE';
 
 export const props = {
-  id: 'test-123'
+  id: 'test-123',
 };
 
 const english = {
@@ -14,7 +14,7 @@ const english = {
   locale: 'en-us',
   textDirection: 'LTR',
   displayName: 'English',
-  nativeName: 'English'
+  nativeName: 'English',
 };
 
 const tag1 = {
@@ -25,9 +25,9 @@ const tag1 = {
       __typename: 'LanguageTranslation',
       id: 'ck2lzfzwr0iey0720hrigffxo',
       name: 'american culture',
-      language: english
-    }
-  ]
+      language: english,
+    },
+  ],
 };
 
 const tag2 = {
@@ -38,9 +38,9 @@ const tag2 = {
       __typename: 'LanguageTranslation',
       id: 'ck2lzg1900iui0720q28le4rs',
       name: 'leadership',
-      language: english
-    }
-  ]
+      language: english,
+    },
+  ],
 };
 
 const image = {
@@ -53,7 +53,7 @@ const image = {
   use: {
     __typename: 'ImageUse',
     id: 'ck2lzfx510hhj07205mal3e4l',
-    name: 'Thumbnail/Cover Image'
+    name: 'Thumbnail/Cover Image',
   },
   alt: 'thumbnail of guidance document',
 };
@@ -69,94 +69,91 @@ const bureaus = [
         __typename: 'Office',
         id: 'kglf',
         name: 'Press Office',
-        abbr: 'PO'
-      }
-    ]
-  }
+        abbr: 'PO',
+      },
+    ],
+  },
 ];
 
 const documentUses = [
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj5h10kq0720hr0nkfgz',
-    name: 'Background Briefing'
+    name: 'Background Briefing',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj6010kz0720c358mbrt',
-    name: 'Department Press Briefing'
+    name: 'Department Press Briefing',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj6w10l80720gzhwlr9s',
-    name: 'Fact Sheet'
+    name: 'Fact Sheet',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj7b10lg0720htdvmgru',
-    name: 'Interview'
+    name: 'Interview',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj7u10lo07207aa55qmz',
-    name: 'Media Note'
+    name: 'Media Note',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj8810lx0720ruj5eylz',
-    name: 'Notice to the Press'
+    name: 'Notice to the Press',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj8n10m50720eu2ob3pq',
-    name: 'On-the-record Briefing'
+    name: 'On-the-record Briefing',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj8y10md0720vsuqxq87',
-    name: 'Press Guidance'
+    name: 'Press Guidance',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj9b10ml0720245vk3uy',
-    name: 'Remarks'
+    name: 'Remarks',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj9v10mt0720hwq7013q',
-    name: 'Speeches'
+    name: 'Speeches',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvjaa10n20720fg5ayhn9',
-    name: 'Statement'
+    name: 'Statement',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvjao10na0720ncwefnm6',
-    name: 'Taken Questions'
+    name: 'Taken Questions',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvjb210nj07205m16k3xx',
-    name: 'Travel Alert'
+    name: 'Travel Alert',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvjbf10nr0720o6zpopyt',
-    name: 'Readout'
+    name: 'Readout',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvjbu10nz072060p67wk5',
-    name: 'Travel Warning'
-  }
+    name: 'Travel Warning',
+  },
 ];
 
-const getDocumentUseObj = ( val, property = 'name' ) => (
-  documentUses.find( u => u[property] === val )
-);
-
+const getDocumentUseObj = ( val, property = 'name' ) => documentUses.find( u => u[property] === val );
 const documents = [
   {
     __typename: 'DocumentFile',
@@ -175,7 +172,7 @@ const documents = [
       __typename: 'DocumentConversionFormat',
       id: 'ccc1',
       rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
-      html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>'
+      html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
     },
     url: `2019/11/${props.id}/lesotho_national_day.docx`,
     signedUrl: `${AWS_URL}/2019/11/${props.id}/lesotho_national_day.docx${AWS_SIGNED_URL_QUERY_STRING}`,
@@ -186,8 +183,8 @@ const documents = [
         id: 'th1',
         filename: 'lesotho_national_day.png',
         url: `2019/11/${props.id}/lesotho_national_day.png`,
-        signedUrl: `${AWS_URL}/2019/11/${props.id}/lesotho_national_day.png${AWS_SIGNED_URL_QUERY_STRING}`
-      }
+        signedUrl: `${AWS_URL}/2019/11/${props.id}/lesotho_national_day.png${AWS_SIGNED_URL_QUERY_STRING}`,
+      },
     ],
     use: getDocumentUseObj( 'Statement' ),
     bureaus,
@@ -203,10 +200,10 @@ const documents = [
           __typename: 'Region',
           id: 'ck6krp96o3f3i07201zo5ai59',
           name: 'Bureau of Near Eastern Affairs',
-          abbr: 'NEA'
-        }
-      }
-    ]
+          abbr: 'NEA',
+        },
+      },
+    ],
   },
   {
     __typename: 'DocumentFile',
@@ -225,7 +222,7 @@ const documents = [
       __typename: 'DocumentConversionFormat',
       id: 'ccc1',
       rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
-      html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>'
+      html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
     },
     url: `2019/11/${props.id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx`,
     signedUrl: `${AWS_URL}/2019/11/${props.id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx${AWS_SIGNED_URL_QUERY_STRING}`,
@@ -236,8 +233,8 @@ const documents = [
         id: 'th2',
         filename: 'us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png',
         url: `2019/11/${props.id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png`,
-        signedUrl: `${AWS_URL}/2019/11/${props.id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png${AWS_SIGNED_URL_QUERY_STRING}`
-      }
+        signedUrl: `${AWS_URL}/2019/11/${props.id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png${AWS_SIGNED_URL_QUERY_STRING}`,
+      },
     ],
     use: getDocumentUseObj( 'Media Note' ),
     bureaus,
@@ -253,8 +250,8 @@ const documents = [
           __typename: 'Region',
           id: 'ck6krp96g3f3c0720c1w09bx1',
           name: 'Bureau of African Affairs',
-          abbr: 'AF'
-        }
+          abbr: 'AF',
+        },
       },
       {
         __typename: 'Country',
@@ -265,10 +262,10 @@ const documents = [
           __typename: 'Region',
           id: 'ck6krp96g3f3c0720c1w09bx1',
           name: 'Bureau of African Affairs',
-          abbr: 'AF'
-        }
-      }
-    ]
+          abbr: 'AF',
+        },
+      },
+    ],
   },
   {
     __typename: 'DocumentFile',
@@ -287,7 +284,7 @@ const documents = [
       __typename: 'DocumentConversionFormat',
       id: 'ccc1',
       rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
-      html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>'
+      html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
     },
     url: `2019/11/${props.id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.docx`,
     signedUrl: `${AWS_URL}/2019/11/${props.id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.docx${AWS_SIGNED_URL_QUERY_STRING}`,
@@ -298,8 +295,8 @@ const documents = [
         id: 'th3',
         filename: 'rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png',
         url: `2019/11/${props.id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png`,
-        signedUrl: `${AWS_URL}/2019/11/${props.id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png${AWS_SIGNED_URL_QUERY_STRING}`
-      }
+        signedUrl: `${AWS_URL}/2019/11/${props.id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png${AWS_SIGNED_URL_QUERY_STRING}`,
+      },
     ],
     use: getDocumentUseObj( 'Media Note' ),
     bureaus,
@@ -315,8 +312,8 @@ const documents = [
           __typename: 'Region',
           id: 'ck6krp96g3f3c0720c1w09bx1',
           name: 'Bureau of African Affairs',
-          abbr: 'AF'
-        }
+          abbr: 'AF',
+        },
       },
       {
         __typename: 'Country',
@@ -327,18 +324,18 @@ const documents = [
           __typename: 'Region',
           id: 'ck6krp96g3f3c0720c1w09bx1',
           name: 'Bureau of African Affairs',
-          abbr: 'AF'
-        }
-      }
-    ]
-  }
+          abbr: 'AF',
+        },
+      },
+    ],
+  },
 ];
 
 export const mocks = [
   {
     request: {
       query: PACKAGE_QUERY,
-      variables: { id: props.id }
+      variables: { id: props.id },
     },
     result: {
       data: {
@@ -354,12 +351,12 @@ export const mocks = [
             __typename: 'User',
             id: 'ck2m042xo0rnp0720nb4gxjix',
             firstName: 'First',
-            lastName: 'Last'
+            lastName: 'Last',
           },
           team: {
             __typename: 'Team',
             id: 'ck2qgfbku0ubh0720iwhkvuyn',
-            name: 'GPA Press Office'
+            name: 'GPA Press Office',
           },
           title: 'Final Guidance mm-dd-yy',
           desc: '',
@@ -374,9 +371,9 @@ export const mocks = [
                 {
                   __typename: 'LanguageTranslation',
                   id: 'ck2lzfzwr0iey0720hrigffxo',
-                  name: 'american culture'
-                }
-              ]
+                  name: 'american culture',
+                },
+              ],
             },
             {
               __typename: 'Tag',
@@ -385,34 +382,34 @@ export const mocks = [
                 {
                   __typename: 'LanguageTranslation',
                   id: 'ck2lzg1900iui0720q28le4rs',
-                  name: 'leadership'
-                }
-              ]
-            }
+                  name: 'leadership',
+                },
+              ],
+            },
           ],
-          documents
-        }
-      }
-    }
+          documents,
+        },
+      },
+    },
   },
   {
     request: {
       query: DELETE_PACKAGE_MUTATION,
-      variables: { id: props.id }
+      variables: { id: props.id },
     },
     result: {
       data: {
         deletePackage: {
           __typename: 'Package',
-          id: props.id
-        }
-      }
-    }
+          id: props.id,
+        },
+      },
+    },
   },
   {
     request: {
       query: PACKAGE_QUERY,
-      variables: { id: 'new-pkg-id-xyz' }
+      variables: { id: 'new-pkg-id-xyz' },
     },
     result: {
       data: {
@@ -428,12 +425,12 @@ export const mocks = [
             __typename: 'User',
             id: 'ck2m042xo0rnp0720nb4gxjix',
             firstName: 'First',
-            lastName: 'Last'
+            lastName: 'Last',
           },
           team: {
             __typename: 'Team',
             id: 'ck2qgfbku0ubh0720iwhkvuyn',
-            name: 'GPA Press Office'
+            name: 'GPA Press Office',
           },
           title: 'Final Guidance mm-dd-yy',
           desc: '',
@@ -441,31 +438,31 @@ export const mocks = [
           visibility: 'INTERNAL',
           categories: [],
           tags: [tag1, tag2],
-          documents
-        }
-      }
-    }
-  }
+          documents,
+        },
+      },
+    },
+  },
 ];
 
 export const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
+      errors: [{ message: 'There was an error.' }],
+    },
   },
-  { ...mocks[1] }
+  { ...mocks[1] },
 ];
 
 export const undefinedDataMocks = [
   {
     ...mocks[0],
     result: {
-      data: undefined
-    }
+      data: undefined,
+    },
   },
-  { ...mocks[1] }
+  { ...mocks[1] },
 ];
 
 export const publishedMocks = [
@@ -473,27 +470,27 @@ export const publishedMocks = [
     ...mocks[0],
     result: {
       data: {
-        package: {
+        'package': {
           ...mocks[0].result.data.package,
-          publishedAt: '2019-11-13T13:08:28.830Z'
-        }
-      }
-    }
+          publishedAt: '2019-11-13T13:08:28.830Z',
+        },
+      },
+    },
   },
   {
     request: {
       query: 'DELETE_PACKAGE_MUTATION',
-      variables: { id: props.id }
+      variables: { id: props.id },
     },
     result: {
       data: {
         deletePackage: {
           __typename: 'Package',
-          id: props.id
-        }
-      }
-    }
-  }
+          id: props.id,
+        },
+      },
+    },
+  },
 ];
 
 export const noDocumentsMocks = [
@@ -503,10 +500,10 @@ export const noDocumentsMocks = [
       data: {
         pkg: {
           ...mocks[0].result.data.pkg,
-          documents: []
-        }
-      }
-    }
+          documents: [],
+        },
+      },
+    },
   },
-  { ...mocks[1] }
+  { ...mocks[1] },
 ];
