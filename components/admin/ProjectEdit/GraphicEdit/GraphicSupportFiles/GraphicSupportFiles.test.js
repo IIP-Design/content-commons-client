@@ -1,6 +1,11 @@
 import { mount } from 'enzyme';
+import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import { act } from 'react-dom/test-utils';
+import {
+  DELETE_IMAGE_FILE_MUTATION,
+  DELETE_SUPPORT_FILE_MUTATION,
+} from 'lib/graphql/queries/common';
 import GraphicSupportFiles from './GraphicSupportFiles';
 import { truncateAndReplaceStr } from 'lib/utils';
 
@@ -62,20 +67,49 @@ const props = {
         __typename: 'Language',
       },
       use: null,
-      __typename: 'SupportFile',
+      __typename: 'ImageFile',
     },
   ],
   updateNotification: jest.fn(),
 };
 
 describe( '<GraphicSupportFiles />, for editable files', () => {
+  const mocks = [
+    {
+      request: {
+        query: DELETE_SUPPORT_FILE_MUTATION,
+        variables: {
+          id: props.files[0].id,
+        },
+      },
+      result: {
+        deleteSupportFile: {
+          id: props.files[0].id,
+        },
+      },
+    },
+    {
+      request: {
+        query: DELETE_IMAGE_FILE_MUTATION,
+        variables: {
+          id: props.files[1].id,
+        },
+      },
+      result: {
+        deleteImageFile: {
+          id: props.files[1].id,
+        },
+      },
+    },
+  ];
+
   let Component;
   let wrapper;
   let listContainer;
 
   beforeEach( () => {
     Component = (
-      <MockedProvider mocks={ [] } addTypename={ false }>
+      <MockedProvider mocks={ mocks } addTypename={ false }>
         <GraphicSupportFiles { ...props } />
       </MockedProvider>
     );
@@ -166,6 +200,35 @@ describe( '<GraphicSupportFiles />, for editable files', () => {
     expect( confirm().prop( 'open' ) ).toEqual( false );
   } );
 
+  it( 'clicking the Confirm modal "Yes, delete forever" button', () => {
+    const replaceBtn = listContainer
+      .find( 'FileRemoveReplaceButtonGroup' ).first();
+
+    // open the modal
+    act( () => {
+      replaceBtn.prop( 'onRemove' )();
+    } );
+    wrapper.update();
+    const confirm = () => wrapper.find( 'Confirm' );
+
+    expect( confirm().prop( 'open' ) ).toEqual( true );
+
+    // confirm deletion
+    const deleteConfirmTest = async done => {
+      act( () => {
+        confirm().prop( 'onConfirm' )();
+      } );
+      await wait( 4 ); // wait for mutation to resolve
+      wrapper.update();
+
+      // handleReset is called upon successful deletion
+      expect( confirm().prop( 'open' ) ).toEqual( false );
+      done();
+    };
+
+    deleteConfirmTest();
+  } );
+
   it( 'renders the correct file list items', () => {
     const list = listContainer.find( '.support-files-list' );
     const listItems = list.find( '.support-file-item' );
@@ -235,9 +298,25 @@ describe( '<GraphicSupportFiles />, for additional files', () => {
     ],
   };
 
+  const mocks = [
+    {
+      request: {
+        query: DELETE_SUPPORT_FILE_MUTATION,
+        variables: {
+          id: newProps.files[0].id,
+        },
+      },
+      result: {
+        deleteSupportFile: {
+          id: newProps.files[0].id,
+        },
+      },
+    },
+  ];
+
   beforeEach( () => {
     Component = (
-      <MockedProvider mocks={ [] } addTypename>
+      <MockedProvider mocks={ mocks } addTypename>
         <GraphicSupportFiles { ...newProps } />
       </MockedProvider>
     );
@@ -266,12 +345,6 @@ describe( '<GraphicSupportFiles />, for additional files', () => {
     expect( title.exists() ).toEqual( true );
     expect( title.name() ).toEqual( 'h3' );
     expect( title.text() ).toEqual( newProps.headline );
-  } );
-
-  it( 'does not render the LanguageDropdown', () => {
-    const langDropdowns = listContainer.find( 'LanguageDropdown' );
-
-    expect( langDropdowns.exists() ).toEqual( false );
   } );
 
   it( 'renders the IconPopup', () => {
@@ -332,6 +405,35 @@ describe( '<GraphicSupportFiles />, for additional files', () => {
     wrapper.update();
 
     expect( confirm().prop( 'open' ) ).toEqual( false );
+  } );
+
+  it( 'clicking the Confirm modal "Yes, delete forever" button', () => {
+    const replaceBtn = listContainer
+      .find( 'FileRemoveReplaceButtonGroup' ).first();
+
+    // open the modal
+    act( () => {
+      replaceBtn.prop( 'onRemove' )();
+    } );
+    wrapper.update();
+    const confirm = () => wrapper.find( 'Confirm' );
+
+    expect( confirm().prop( 'open' ) ).toEqual( true );
+
+    // confirm deletion
+    const deleteConfirmTest = async done => {
+      act( () => {
+        confirm().prop( 'onConfirm' )();
+      } );
+      await wait( 4 ); // wait for mutation to resolve
+      wrapper.update();
+
+      // handleReset is called upon successful deletion
+      expect( confirm().prop( 'open' ) ).toEqual( false );
+      done();
+    };
+
+    deleteConfirmTest();
   } );
 
   it( 'renders the correct file list items', () => {
