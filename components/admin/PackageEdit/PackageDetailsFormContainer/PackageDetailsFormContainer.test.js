@@ -6,7 +6,7 @@ import PackageDetailsFormContainer from './PackageDetailsFormContainer';
 
 jest.mock(
   'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsForm/PackageDetailsForm',
-  () => function PackageDetailsForm() { return ''; }
+  () => function PackageDetailsForm() { return ''; },
 );
 
 const id = 'test-123';
@@ -17,7 +17,7 @@ const english = {
   locale: 'en-us',
   textDirection: 'LTR',
   displayName: 'English',
-  nativeName: 'English'
+  nativeName: 'English',
 };
 
 const image = {
@@ -35,8 +35,14 @@ const image = {
   use: {
     __typename: 'ImageUse',
     id: 'ck2lzfx510hhj07205mal3e4l',
-    name: 'Thumbnail/Cover Image'
-  }
+    name: 'Thumbnail/Cover Image',
+  },
+  dimensions: {
+    __typename: 'Dimensions',
+    id: 'd28ska0d',
+    height: 1200,
+    width: 1200,
+  },
 };
 
 const documents = [
@@ -58,7 +64,7 @@ const documents = [
       id: 'ccc1',
       rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
       html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
-      markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
+      markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
     },
     url: `2019/11/${id}/lesotho_national_day.docx`,
     signedUrl: `${AWS_URL}/2019/11/${id}/lesotho_national_day.docx${AWS_SIGNED_URL_QUERY_STRING}`,
@@ -69,13 +75,13 @@ const documents = [
         id: 'th1',
         filename: 'lesotho_national_day.png',
         url: `2019/11/${id}/lesotho_national_day.png`,
-        signedUrl: `${AWS_URL}/2019/11/${id}/lesotho_national_day.png${AWS_SIGNED_URL_QUERY_STRING}`
-      }
+        signedUrl: `${AWS_URL}/2019/11/${id}/lesotho_national_day.png${AWS_SIGNED_URL_QUERY_STRING}`,
+      },
     ],
     use: {
       __typename: 'DocumentUse',
       id: 'ck2wbvj7u10lo07207aa55qmz',
-      name: 'Media Note'
+      name: 'Media Note',
     },
     bureaus: [],
     categories: [],
@@ -90,10 +96,10 @@ const documents = [
           __typename: 'Region',
           id: 'ck6krp96o3f3i07201zo5ai59',
           name: 'Bureau of Near Eastern Affairs',
-          abbr: 'NEA'
-        }
-      }
-    ]
+          abbr: 'NEA',
+        },
+      },
+    ],
   },
   {
     __typename: 'DocumentFile',
@@ -113,7 +119,7 @@ const documents = [
       id: 'ccc1',
       rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
       html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
-      markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
+      markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
     },
     url: `2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx`,
     signedUrl: `${AWS_URL}/2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx${AWS_SIGNED_URL_QUERY_STRING}`,
@@ -124,13 +130,13 @@ const documents = [
         id: 'th2',
         filename: 'us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png',
         url: `2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png`,
-        signedUrl: `${AWS_URL}/2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png${AWS_SIGNED_URL_QUERY_STRING}`
-      }
+        signedUrl: `${AWS_URL}/2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png${AWS_SIGNED_URL_QUERY_STRING}`,
+      },
     ],
     use: {
       __typename: 'DocumentUse',
       id: 'ck2wbvj7u10lo07207aa55qmz',
-      name: 'Media Note'
+      name: 'Media Note',
     },
     bureaus: [],
     categories: [],
@@ -145,8 +151,8 @@ const documents = [
           __typename: 'Region',
           id: 'ck6krp96g3f3c0720c1w09bx1',
           name: 'Bureau of African Affairs',
-          abbr: 'AF'
-        }
+          abbr: 'AF',
+        },
       },
       {
         __typename: 'Country',
@@ -157,10 +163,10 @@ const documents = [
           __typename: 'Region',
           id: 'ck6krp96g3f3c0720c1w09bx1',
           name: 'Bureau of African Affairs',
-          abbr: 'AF'
-        }
-      }
-    ]
+          abbr: 'AF',
+        },
+      },
+    ],
   },
 ];
 
@@ -263,8 +269,9 @@ const props = {
     id,
     title: 'Guidance Package 01-28-20',
     type: 'DAILY_GUIDANCE',
-    documents
-  }
+    documents,
+  },
+  setIsFormValid: jest.fn(),
 };
 
 const Component = (
@@ -280,8 +287,10 @@ describe( '<PackageDetailsFormContainer />', () => {
    * @see https://github.com/facebook/react/issues/14769
    */
   const consoleError = console.error;
+
   beforeAll( () => {
     const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+
     jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
       if ( !args[0].includes( actMsg ) ) {
         consoleError( ...args );
@@ -313,8 +322,9 @@ describe( '<PackageDetailsFormContainer />', () => {
     const { pkg } = props;
     const fileValues = pkg.documents.reduce( ( acc, file ) => {
       const {
-        bureaus, title, countries, use, visibility
+        bureaus, title, countries, use, visibility,
       } = file;
+
       return {
         ...acc,
         [file.id]: {
@@ -323,8 +333,8 @@ describe( '<PackageDetailsFormContainer />', () => {
           bureaus: bureaus.map( p => p.id ),
           countries: countries.map( p => p.id ),
           use: use.id,
-          visibility
-        }
+          visibility,
+        },
       };
     }, {} );
 
@@ -332,17 +342,17 @@ describe( '<PackageDetailsFormContainer />', () => {
       title: pkg.title || '',
       type: pkg.type || '',
       termsConditions: false,
-      ...fileValues
+      ...fileValues,
     };
 
     expect( formik.prop( 'initialValues' ) ).toEqual( initialValues );
   } );
 
-  it( 'Formik has enableReinitialize prop', () => {
+  it( 'Formik does not have enableReinitialize prop', () => {
     const wrapper = mount( Component );
     const formik = wrapper.find( 'Formik' );
 
-    expect( formik.prop( 'enableReinitialize' ) ).toEqual( true );
+    expect( formik.prop( 'enableReinitialize' ) ).toEqual( false );
   } );
 
   it( 'renders PackageDetailsForm and passes correct props', () => {
@@ -383,6 +393,7 @@ describe( '<PackageDetailsFormContainer />', () => {
       'registerField',
       'getFieldProps',
       'getFieldMeta',
+      'getFieldHelpers',
       'validateOnBlur',
       'validateOnChange',
       'validateOnMount',
@@ -390,7 +401,8 @@ describe( '<PackageDetailsFormContainer />', () => {
       'children',
       'setIsDirty',
       'pkg',
-      'save'
+      'setIsFormValid',
+      'save',
     ];
 
     expect( detailsForm.exists() ).toEqual( true );
@@ -401,6 +413,7 @@ describe( '<PackageDetailsFormContainer />', () => {
 
   it( 'renders Notification but is not shown initially', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
     const notification = wrapper.find( 'Notification' );
@@ -431,9 +444,7 @@ describe( '<PackageDetailsFormContainer />', () => {
           visibility: 'INTERNAL',
           use: 'ck2wbvj7u10lo07207aa55qmz',
           bureaus: [],
-          countries: [
-            'ck6krp9723f3y0720dfzwzv9f'
-          ]
+          countries: ['ck6krp9723f3y0720dfzwzv9f'],
         },
         '2sdf': {
           id: '2sdf',
@@ -443,9 +454,9 @@ describe( '<PackageDetailsFormContainer />', () => {
           bureaus: [],
           countries: [
             'ck6krp9773f420720i7aesohq',
-            'ck6krp97d3f470720osba7g4m'
-          ]
-        }
+            'ck6krp97d3f470720osba7g4m',
+          ],
+        },
       };
       const prevValues = {
         title: 'Guidance Package 01-28-20',
@@ -457,7 +468,7 @@ describe( '<PackageDetailsFormContainer />', () => {
           visibility: 'INTERNAL',
           use: 'ck2wbvj7u10lo07207aa55qmz',
           bureaus: [],
-          countries: []
+          countries: [],
         },
         '2sdf': {
           id: '2sdf',
@@ -465,15 +476,14 @@ describe( '<PackageDetailsFormContainer />', () => {
           visibility: 'INTERNAL',
           use: 'ck2wbvj7u10lo07207aa55qmz',
           bureaus: [],
-          countries: []
-        }
+          countries: [],
+        },
       };
 
       await detailsForm.prop( 'save' )( values, prevValues );
       wrapper.update();
 
       // shown
-      expect( props.setIsDirty ).toHaveBeenCalledWith( true );
       expect( notification().prop( 'show' ) ).toEqual( true );
       done();
     };
