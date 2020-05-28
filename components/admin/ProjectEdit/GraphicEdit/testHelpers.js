@@ -1,4 +1,11 @@
-import { DELETE_GRAPHIC_PROJECT_MUTATION, GRAPHIC_PROJECT_QUERY, LOCAL_GRAPHIC_FILES } from 'lib/graphql/queries/graphic';
+import sortBy from 'lodash/sortBy';
+import { getCount, getFileExt } from 'lib/utils';
+import {
+  DELETE_GRAPHIC_PROJECT_MUTATION,
+  GRAPHIC_PROJECT_QUERY,
+  LOCAL_GRAPHIC_FILES,
+} from 'lib/graphql/queries/graphic';
+import { GRAPHIC_STYLES_QUERY } from 'components/admin/dropdowns/GraphicStyleDropdown/GraphicStyleDropdown';
 
 const props = {
   id: 'ck9b9n8kw1x720720sjwwl1g7',
@@ -423,7 +430,10 @@ const mocks = [
     },
     result: {
       data: {
-        id: props.id,
+        deleteGraphicProject: {
+          __typename: 'GraphicProject',
+          id: props.id,
+        },
       },
     },
   },
@@ -512,7 +522,7 @@ const mocks = [
               name: 's-secure-rights_shell.png',
               language: 'ck2lzfx710hkq07206thus6pt',
               social: ['ck9h3naq526cp0720i4u3uqlv'],
-              style: 'ck9h3kyb326ak0720wkbk01q6',
+              style: 'ck9h3koe426aa0720y421wmk3',
               loaded: 0,
               input: {
                 __typename: 'LocalInputFile',
@@ -539,6 +549,37 @@ const mocks = [
       },
     },
   },
+  {
+    request: {
+      query: GRAPHIC_STYLES_QUERY,
+    },
+    result: {
+      data: {
+        graphicStyles: [
+          {
+            __typename: 'GraphicStyle',
+            id: 'ck9h3ka3o269y0720t7wzp5uq',
+            name: 'GIF',
+          },
+          {
+            __typename: 'GraphicStyle',
+            id: 'ck9h3koe426aa0720y421wmk3',
+            name: 'Clean',
+          },
+          {
+            __typename: 'GraphicStyle',
+            id: 'ck9h3kyb326ak0720wkbk01q6',
+            name: 'Info/Stat',
+          },
+          {
+            __typename: 'GraphicStyle',
+            id: 'ck9h3l7zn26au0720ialhqtg4',
+            name: 'Quote',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 const errorMocks = [
@@ -553,4 +594,115 @@ const errorMocks = [
   },
 ];
 
-export { errorMocks, mocks, props };
+const getStyleId = ( name, styles = [] ) => {
+  const styleObj = styles.find( style => style.name === name );
+
+  return styleObj?.id || '';
+};
+
+const getIsShell = filename => {
+  const shellExtensions = [
+    '.jpg', '.jpeg', '.png',
+  ];
+  const extension = getFileExt( filename );
+  const isJpgOrPng = shellExtensions.includes( extension );
+  const hasShellInName = filename.toLowerCase().includes( 'shell' );
+
+  return isJpgOrPng && hasShellInName;
+};
+
+const getInitialFiles = ( files, type ) => {
+  const initialSupportFiles = [];
+  const initialGraphicFiles = [];
+
+  if ( files ) {
+    files.forEach( file => {
+      const isClean = file.style === getStyleId( 'Clean', mocks[3].result.data.graphicStyles );
+      const isCleanShell = isClean && getIsShell( file.name );
+      const hasStyleAndSocial = getCount( file.style ) && getCount( file.social );
+
+      if ( hasStyleAndSocial && !isCleanShell ) {
+        initialGraphicFiles.push( file );
+      } else {
+        initialSupportFiles.push( file );
+      }
+    } );
+  }
+
+  return type === 'graphicFiles' ? initialGraphicFiles : initialSupportFiles;
+};
+
+const getSupportFiles = ( { data, type, projectId } ) => {
+  const editableExtensions = [
+    '.psd', '.ai', '.ae', '.eps',
+  ];
+  const editableFiles = [];
+  const additionalFiles = [];
+
+  const existingSupportFiles = data.graphicProject?.supportFiles || [];
+  const existingGraphicFiles = data.graphicProject?.images || [];
+
+  const shellFile = existingGraphicFiles.filter( img => getIsShell( img.filename ) );
+  const existingFilesPlusShell = existingSupportFiles.concat( shellFile );
+
+  const initialFiles = getInitialFiles( mocks[2].result.data.localGraphicProject.files, 'supportFiles' );
+  const supportFiles = projectId ? existingFilesPlusShell : initialFiles;
+  const sortedFiles = sortBy( supportFiles, file => {
+    if ( projectId ) {
+      return file.filename;
+    }
+
+    return file.name;
+  } );
+
+  if ( getCount( supportFiles ) ) {
+    sortedFiles.forEach( file => {
+      const _filename = projectId ? file.filename : file.name;
+      const extension = getFileExt( _filename );
+
+      const hasEditableExt = editableExtensions.includes( extension );
+      const isShell = getIsShell( _filename );
+
+      if ( hasEditableExt || isShell ) {
+        editableFiles.push( file );
+      } else {
+        additionalFiles.push( file );
+      }
+    } );
+  }
+
+  return type === 'editable' ? editableFiles : additionalFiles;
+};
+
+const getGraphicFiles = ( { images, localFiles, projectId } ) => {
+  const existingFiles = images || [];
+  const initialFiles = getInitialFiles( localFiles, 'graphicFiles' );
+  let files = [];
+
+  if ( projectId ) {
+    files = existingFiles.filter( img => !getIsShell( img.filename ) );
+  } else {
+    files = initialFiles;
+  }
+
+  return files;
+};
+
+const suppressActWarning = consoleError => {
+  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+
+  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
+    if ( !args[0].includes( actMsg ) ) {
+      consoleError( ...args );
+    }
+  } );
+};
+
+export {
+  errorMocks,
+  mocks,
+  props,
+  getGraphicFiles,
+  getSupportFiles,
+  suppressActWarning,
+};
