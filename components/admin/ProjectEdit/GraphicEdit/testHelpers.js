@@ -346,6 +346,7 @@ const mocks = [
               filetype: 'image/vnd.adobe.photoshop',
               filesize: 509000,
               url: null,
+              signedUrl: 'https://the-signed-url.com',
               language: {
                 id: 'ck2lzfx710hkq07206thus6pt',
                 locale: 'en-us',
@@ -366,6 +367,7 @@ const mocks = [
               filetype: 'image/vnd.adobe.photoshop',
               filesize: 509000,
               url: null,
+              signedUrl: 'https://the-signed-url.com',
               language: {
                 id: 'ck2lzfx710hkq07206thus6pt',
                 locale: 'en-us',
@@ -386,6 +388,7 @@ const mocks = [
               filetype: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
               filesize: 9000,
               url: null,
+              signedUrl: 'https://the-signed-url.com',
               language: {
                 id: 'ck2lzfx710hkq07206thus6pt',
                 locale: 'en-us',
@@ -406,6 +409,7 @@ const mocks = [
               filetype: 'font/ttf',
               filesize: null,
               url: null,
+              signedUrl: 'https://the-signed-url.com',
               language: {
                 id: 'ck2lzfx710hkq07206thus6pt',
                 locale: 'en-us',
