@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
-import { connect } from 'react-redux';
 import { v4 } from 'uuid';
 import {
   Grid, Header, Item, Modal, Message,
@@ -10,10 +9,13 @@ import {
 
 import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
 import { getModalContent } from 'components/modals/utils';
+import { FeaturedContext } from 'context/featuredContext';
 
 import './Recents.scss';
 
-const Recents = ( { postType, recents, postTypeLabels, featured } ) => {
+const Recents = ( { postType } ) => {
+  const { state } = useContext( FeaturedContext );
+
   const getCategories = item => {
     const categories = item.categories.slice( 0, 3 ).reduce( ( acc, cat, index, arr ) => {
       const c = acc + cat.name.toLowerCase();
@@ -24,16 +26,18 @@ const Recents = ( { postType, recents, postTypeLabels, featured } ) => {
     return categories;
   };
 
-  const postTypeLabel = postTypeLabels.find( type => type.key === postType );
+  // const postTypeLabel = postTypeLabels.find( type => type.key === postType );
 
-  if ( recents && recents.length < 3 ) return <div />;
+  const recents = state?.recents?.[postType] ? state.recents[postType] : [];
+
+  if ( recents.length < 3 ) return <div />;
 
   return (
     <section className="ui container recents">
       <div className="recentswrapper">
         <div className="recentstitle">
           <Header as="h1" size="large">
-            { postTypeLabel && `Latest ${postTypeLabel.display_name}s` }
+            {/* { postTypeLabel && `Latest ${postTypeLabel.display_name}s` } */}
           </Header>
           <Link
             href={ {
@@ -48,13 +52,13 @@ const Recents = ( { postType, recents, postTypeLabels, featured } ) => {
             <a className="browseAll">Browse All</a>
           </Link>
         </div>
-        { featured.error && (
+        {/* { state.error && (
           <Message>
             { `Oops, something went wrong.  We are unable to load the most recent ${
               postTypeLabel ? `${postTypeLabel.display_name.toLowerCase()}s` : ''
             }.` }
           </Message>
-        ) }
+        ) } */}
         <Grid columns="equal" stackable stretched>
           <Grid.Column width={ 8 } className="recentsgridleft">
             { recents && recents[0] && (
@@ -110,17 +114,8 @@ const Recents = ( { postType, recents, postTypeLabels, featured } ) => {
 };
 
 Recents.propTypes = {
-  featured: PropTypes.object,
-  recents: PropTypes.array,
   postType: PropTypes.string,
-  postTypeLabels: PropTypes.array,
+  // postTypeLabels: PropTypes.array,
 };
 
-const mapStateToProps = ( state, props ) => ( {
-  featured: state.featured,
-  recents: state.featured.recents[props.postType],
-  postTypeLabels: state.global.postTypes.list,
-} );
-
-export const RecentsUnconnected = Recents; // used for testing; 1/2/20 - resolves import/no-named-as-default lint error
-export default connect( mapStateToProps )( Recents );
+export default Recents;

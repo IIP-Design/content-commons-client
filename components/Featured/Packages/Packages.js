@@ -1,28 +1,29 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 import { Grid, Message } from 'semantic-ui-react';
 
 import config from 'config';
 import PackageCard from 'components/Package/PackageCard/PackageCard';
+import { FeaturedContext } from 'context/featuredContext';
 
 import './Packages.scss';
 
-const renderError = () => (
-  <section className="latestPackages_section">
-    <Message>Oops, something went wrong. We are unable to load the most recent guidance packages.</Message>
-  </section>
-);
-
 const archiveLink = () => <a href={ config.PRESS_GUIDANCE_DB_URL } rel="noopener noreferrer" target="_blank">archived press guidance database</a>;
 
-const Packages = ( { featured, packages } ) => {
-  if ( featured?.error ) {
-    return renderError();
+const Packages = () => {
+  const { state } = useContext( FeaturedContext );
+
+  if ( state?.error ) {
+    return (
+      <section className="latestPackages_section">
+        <Message>Oops, something went wrong. We are unable to load the most recent guidance packages.</Message>
+      </section>
+    );
   }
 
-  if ( !packages?.length ) return null;
+  const packages = state?.recents?.packages ? state.recents.packages : [];
+
+  if ( !packages.length ) return null;
 
   return (
     <section className="latestPackages_section">
@@ -58,14 +59,4 @@ const Packages = ( { featured, packages } ) => {
   );
 };
 
-Packages.propTypes = {
-  featured: PropTypes.object,
-  packages: PropTypes.array,
-};
-
-const mapStateToProps = ( state, props ) => ( {
-  featured: state.featured,
-  packages: state.featured.recents[props.postType],
-} );
-
-export default connect( mapStateToProps )( Packages );
+export default Packages;

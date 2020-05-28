@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
-import { connect } from 'react-redux';
 import { v4 } from 'uuid';
 import {
   Grid, Header, Item, Modal, Loader, Message,
@@ -10,10 +9,13 @@ import {
 
 import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
 import { getModalContent } from 'components/modals/utils';
+import { FeaturedContext } from 'context/featuredContext';
 
 import './Priorities.scss';
 
-const Priorities = ( { categories, featured, label, priorities, term } ) => {
+const Priorities = ( { categories, featured, label, term } ) => {
+  const { state } = useContext( FeaturedContext );
+
   const getCategories = item => {
     const cats = item?.categories?.slice( 0, 3 ).reduce( ( acc, cat, index, arr ) => {
       const c = acc + cat.name.toLowerCase();
@@ -24,7 +26,7 @@ const Priorities = ( { categories, featured, label, priorities, term } ) => {
     return cats;
   };
 
-  const renderPrioritiesWithMeta = () => priorities.slice( 1 ).map( priority => (
+  const renderPrioritiesWithMeta = ps => ps.slice( 1 ).map( priority => (
     <Modal
       key={ v4() }
       closeIcon
@@ -49,7 +51,10 @@ const Priorities = ( { categories, featured, label, priorities, term } ) => {
     </Modal>
   ) );
 
-  if ( priorities && priorities.length < 3 ) return <div />;
+  const priorities = state?.priorities?.term ? state.priorities.term : [];
+
+  if ( priorities.length < 3 ) return <div />;
+
   const categoryIds = categories?.map( cat => cat.key );
 
   return (
@@ -102,7 +107,7 @@ const Priorities = ( { categories, featured, label, priorities, term } ) => {
             ) }
           </Grid.Column>
           <Grid.Column width={ 8 } className="prioritiesgridright">
-            <Item.Group>{ priorities && renderPrioritiesWithMeta() }</Item.Group>
+            <Item.Group>{ priorities && renderPrioritiesWithMeta( priorities ) }</Item.Group>
           </Grid.Column>
         </Grid>
       </div>
@@ -113,17 +118,9 @@ const Priorities = ( { categories, featured, label, priorities, term } ) => {
 
 Priorities.propTypes = {
   featured: PropTypes.object,
-  priorities: PropTypes.array,
   term: PropTypes.string,
   label: PropTypes.string,
   categories: PropTypes.array,
 };
 
-
-const mapStateToProps = ( state, props ) => ( {
-  featured: state.featured,
-  priorities: state.featured.priorities[props.term],
-} );
-
-export const PrioritiesUnconnected = Priorities; // used for testing; 1/2/20 - resolves import/no-named-as-default lint error
-export default connect( mapStateToProps )( Priorities );
+export default Priorities;
