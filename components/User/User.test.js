@@ -1,16 +1,16 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from 'react-apollo/test-utils';
+import { MockedProvider } from '@apollo/react-testing';
 import User, { CURRENT_USER_QUERY } from './User';
 
 const props = {
-  children: jest.fn( () => <div>child component</div> )
+  children: jest.fn( () => <div>child component</div> ),
 };
 
 const mocks = [
   {
     request: {
-      query: CURRENT_USER_QUERY
+      query: CURRENT_USER_QUERY,
     },
     result: {
       data: {
@@ -23,17 +23,16 @@ const mocks = [
           country: 'United States',
           city: 'Washington, DC',
           howHeard: '',
-          permissions: [
-            'TEAM_ADMIN'
-          ],
+          permissions: ['TEAM_ADMIN'],
           team: {
             id: 'cjrkzhvku000f0756l44blw33',
-            name: 'GPA Video Production'
-          }
-        }
-      }
-    }
-  }
+            name: 'GPA Video Production',
+            contentTypes: ['VIDEO'],
+          },
+        },
+      },
+    },
+  },
 ];
 
 const Component = (
@@ -42,13 +41,33 @@ const Component = (
   </MockedProvider>
 );
 
+const suppressActWarning = consoleError => {
+  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+
+  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
+    if ( !args[0].includes( actMsg ) ) {
+      consoleError( ...args );
+    }
+  } );
+};
+
 describe( '<User />', () => {
+  const consoleError = console.error;
+
+  beforeAll( () => suppressActWarning( consoleError ) );
+  afterAll( () => {
+    console.error = consoleError;
+  } );
+
   it( 'renders final state without crashing', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
-    const child = wrapper.find( 'div' );
+    const user = wrapper.find( 'User' );
+    const child = wrapper.find( 'User div' );
 
+    expect( user.exists() ).toEqual( true );
     expect( child.text() ).toEqual( 'child component' );
   } );
 } );
