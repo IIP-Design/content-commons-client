@@ -1,25 +1,109 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import sortBy from 'lodash/sortBy';
-import { createStructuredSelector } from 'reselect';
 import { v4 } from 'uuid';
-import {
-  makeFeatured,
-  makeFeaturedLoading,
-  makeFeaturedError
-} from './selectors';
 
 import Packages from './Packages/Packages';
 import Recents from './Recents/Recents';
 import Priorities from './Priorities/Priorities';
 
-const Featured = ( { data } ) => {
+import { FeaturedContext, featuredReducer } from 'context/featuredContext';
+import { isDataStale } from 'lib/utils';
+import { normalizeItem } from 'lib/elastic/parser';
+import { typePrioritiesRequest, typeRecentsRequest, typeRequestDesc } from 'lib/elastic/api';
+
+const Featured = ( { data, user } ) => {
   const sorted = sortBy( data, 'order' );
   const featuredComponents = [];
 
+  const [state, dispatch] = useReducer( featuredReducer );
+
+  const isStale = state?.featured?.lastLoad ? isDataStale( state.featured.lastLoad ) : true;
+
+  useEffect( () => {
+    const getFeatured = async array => {
+      await Promise.all( array )
+        .then( resArr => {
+          const priorities = {};
+          const recents = {};
+          let items;
+
+          resArr.forEach( res => {
+            if ( res?.data?.hits?.hits ) {
+              items = res.data.hits.hits.map( item => normalizeItem( item, res.locale ) );
+              switch ( res.component ) {
+                case 'priorities':
+                  priorities[res.term] = items;
+                  break;
+                case 'packages':
+                case 'recents':
+                  recents[res.postType] = items;
+                  break;
+                default:
+                  break;
+              }
+            }
+          } );
+
+          dispatch( {
+            type: 'LOAD_FEATURED_SUCCESS',
+            payload: {
+              priorities,
+              recents,
+            },
+          } );
+        } )
+        .catch( err => {
+          dispatch( {
+            type: 'LOAD_FEATURED_FAILED',
+          } );
+        } );
+    };
+
+    if ( data && isStale ) {
+      dispatch( { type: 'LOAD_FEATURED_PENDING' } );
+
+      const promiseArr = data.map( async d => {
+        const { component, props: p } = d;
+
+        switch ( component ) {
+          case 'priorities':
+            return typePrioritiesRequest( p.term, p.categories, p.locale, user ).then(
+              res => ( {
+                component,
+                ...p,
+                data: res,
+                key: v4(),
+              } ),
+            );
+          case 'packages':
+            return typeRequestDesc( p.postType, user ).then( res => ( {
+              component,
+              ...p,
+              data: res,
+              key: v4(),
+            } ) );
+          case 'recents':
+            return typeRecentsRequest( p.postType, p.locale, user ).then( res => ( {
+              component,
+              ...p,
+              data: res,
+              key: v4(),
+            } ) );
+          default:
+            return {};
+        }
+      } );
+
+      getFeatured( promiseArr );
+    }
+  }, [
+    data, isStale, user,
+  ] );
+
   sorted.forEach( d => {
     const { component, props } = d;
+
     switch ( component ) {
       case 'priorities':
         featuredComponents.push( <Priorities key={ v4() } { ...props } /> );
@@ -38,23 +122,16 @@ const Featured = ( { data } ) => {
   if ( !featuredComponents.length ) return <div />;
   return (
     <div className="featured">
-      { featuredComponents }
+      <FeaturedContext.Provider value={ { dispatch, state } }>
+        { featuredComponents }
+      </FeaturedContext.Provider>
     </div>
   );
 };
 
 Featured.propTypes = {
   data: PropTypes.array,
-  featured: PropTypes.object,
-  loading: PropTypes.bool,
-  error: PropTypes.bool
+  user: PropTypes.object,
 };
 
-const mapStateToProps = () => createStructuredSelector( {
-  featured: makeFeatured(),
-  loading: makeFeaturedLoading(),
-  error: makeFeaturedError()
-} );
-
-export const FeaturedUnconnected = Featured; // For test purposes // 1/2/20 - resolves import/no-named-as-default lint error
-export default connect( mapStateToProps )( Featured );
+export default Featured;

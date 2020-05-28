@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import Featured from 'components/Featured/Featured';
 import { clearFilters } from 'lib/redux/actions/filter';
-import { loadFeatured } from 'components/Featured/actions';
 import { loadPostTypes } from 'lib/redux/actions/postType';
 import { v4 } from 'uuid';
 import { fetchUser } from 'context/authContext';
@@ -15,8 +14,8 @@ const featuredData = [
     order: 1,
     props: {
       postType: 'package',
-      locale: 'en-us'
-    }
+      locale: 'en-us',
+    },
   },
   {
     key: v4(),
@@ -26,8 +25,8 @@ const featuredData = [
       term: 'coronavirus covid',
       label: 'Coronavirus (COVID-19)',
       categories: [],
-      locale: 'en-us'
-    }
+      locale: 'en-us',
+    },
   },
   {
     key: v4(),
@@ -39,10 +38,10 @@ const featuredData = [
       categories: [
         { key: 'dLWWJ2MBCLPpGnLD3D-N', display_name: 'Economic Opportunity' },
         { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' },
-        { key: 'JFqWJ2MBNxuyMP4E5Cgn', display_name: 'Global Issues' }
+        { key: 'JFqWJ2MBNxuyMP4E5Cgn', display_name: 'Global Issues' },
       ],
-      locale: 'en-us'
-    }
+      locale: 'en-us',
+    },
   },
   {
     key: v4(),
@@ -52,8 +51,8 @@ const featuredData = [
       term: '5G',
       label: '5G',
       categories: [],
-      locale: 'en-us'
-    }
+      locale: 'en-us',
+    },
   },
   {
     key: v4(),
@@ -65,10 +64,10 @@ const featuredData = [
       categories: [
         { key: 'JFqWJ2MBNxuyMP4E5Cgn', display_name: 'Global Issues' },
         { key: 'MVqWJ2MBNxuyMP4E6Ci0', display_name: 'Good Governance' },
-        { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' }
+        { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' },
       ],
-      locale: 'en-us'
-    }
+      locale: 'en-us',
+    },
   },
   {
     key: v4(),
@@ -76,8 +75,8 @@ const featuredData = [
     order: 6,
     props: {
       postType: 'video',
-      locale: 'en-us'
-    }
+      locale: 'en-us',
+    },
   },
   {
     key: v4(),
@@ -85,51 +84,50 @@ const featuredData = [
     order: 7,
     props: {
       postType: 'post',
-      locale: 'en-us'
-    }
-  }
+      locale: 'en-us',
+    },
+  },
 ];
 
 class Landing extends Component {
-  static async getInitialProps ( ctx ) {
+  static async getInitialProps( ctx ) {
     const { store } = ctx;
     const featuredDataForLanding = [...featuredData];
 
     const user = await fetchUser( ctx );
 
     if ( !user ) {
-      // remove internal packages (internal conent) from query if user is not present
+      // remove internal packages (internal content) from query if user is not present
       featuredDataForLanding.shift();
     }
 
     // trigger parellel loading calls
     const resetFilters = store.dispatch( clearFilters() );
-    const featured = store.dispatch( loadFeatured( featuredDataForLanding, user ) );
     const postTypes = store.dispatch( loadPostTypes( user ) );
 
     // await completion
     await Promise.all( [
       resetFilters,
-      featured,
-      postTypes
+      postTypes,
     ] );
 
     return { featuredDataForLanding };
   }
 
   render() {
-    const { featuredDataForLanding } = this.props;
+    const { featuredDataForLanding, user } = this.props;
 
     return (
       <section>
-        <Featured data={ featuredDataForLanding } />
+        <Featured data={ featuredDataForLanding } user={ user } />
       </section>
     );
   }
 }
 
 Landing.propTypes = {
-  featuredDataForLanding: PropTypes.array
+  featuredDataForLanding: PropTypes.array,
+  user: PropTypes.object,
 };
 
 export default Landing;
