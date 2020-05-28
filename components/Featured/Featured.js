@@ -32,6 +32,7 @@ const Featured = ( { data, user } ) => {
           resArr.forEach( res => {
             if ( res?.data?.hits?.hits ) {
               items = res.data.hits.hits.map( item => normalizeItem( item, res.locale ) );
+
               switch ( res.component ) {
                 case 'priorities':
                   priorities[res.term] = items;
@@ -69,28 +70,32 @@ const Featured = ( { data, user } ) => {
 
         switch ( component ) {
           case 'priorities':
-            return typePrioritiesRequest( p.term, p.categories, p.locale, user ).then(
-              res => ( {
+            return typePrioritiesRequest( p.term, p.categories, p.locale, user )
+              .then( res => ( {
                 component,
                 ...p,
                 data: res,
                 key: v4(),
-              } ),
-            );
+              } ) );
+
           case 'packages':
-            return typeRequestDesc( p.postType, user ).then( res => ( {
-              component,
-              ...p,
-              data: res,
-              key: v4(),
-            } ) );
+            return typeRequestDesc( p.postType, user )
+              .then( res => ( {
+                component,
+                ...p,
+                data: res,
+                key: v4(),
+              } ) );
+
           case 'recents':
-            return typeRecentsRequest( p.postType, p.locale, user ).then( res => ( {
-              component,
-              ...p,
-              data: res,
-              key: v4(),
-            } ) );
+            return typeRecentsRequest( p.postType, p.locale, user )
+              .then( res => ( {
+                component,
+                ...p,
+                data: res,
+                key: v4(),
+              } ) );
+
           default:
             return {};
         }

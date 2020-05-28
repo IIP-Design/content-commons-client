@@ -51,7 +51,7 @@ const Priorities = ( { categories, label, term } ) => {
     </Modal>
   ) );
 
-  const priorities = state?.priorities?.term ? state.priorities.term : [];
+  const priorities = state?.priorities?.[term] ? state.priorities[term] : [];
 
   if ( priorities.length < 3 ) return <div />;
 

@@ -13,7 +13,7 @@ const archiveLink = () => <a href={ config.PRESS_GUIDANCE_DB_URL } rel="noopener
 const Packages = () => {
   const { state } = useContext( FeaturedContext );
 
-  const packages = state?.recents?.packages ? state.recents.packages : [];
+  const packages = state?.recents?.package ? state.recents.package : [];
 
   if ( !packages.length ) return null;
 
