@@ -9,6 +9,7 @@ export const props = {
     filetype: 'image/png',
     filesize: 42093736,
     url: '2019/08/cjzts3ele1ahx0720t7u9hf9i/image-1.png',
+    signedUrl: 'https://thesignedurl.com',
     alt: null,
     language: {
       id: 'cjsq439dz005607560gwe7k3m',
@@ -17,10 +18,10 @@ export const props = {
       displayName: 'English',
       textDirection: 'LTR',
       nativeName: 'English',
-      __typename: 'Language'
+      __typename: 'Language',
     },
-    __typename: 'ImageFile'
-  }
+    __typename: 'ImageFile',
+  },
 };
 
 export const preUploadProps = {
@@ -35,34 +36,34 @@ export const preUploadProps = {
       name: 'image-1.png',
       size: 42093736,
       type: 'image/png',
-      webkitRelativePath: ''
+      webkitRelativePath: '',
     },
     id: '6ec96575-03e7-4575-af94-05003ddf28ba',
     loaded: 0,
-    error: false
-  }
+    error: false,
+  },
 };
 
 export const uploadErrorProps = {
   item: {
     ...preUploadProps.item,
-    error: true
-  }
+    error: true,
+  },
 };
 
 export const postUploadProps = {
   item: {
     ...preUploadProps.item,
-    loaded: props.item.filesize
-  }
+    loaded: props.item.filesize,
+  },
 };
 
 export const longFileNameProps = {
   item: {
     ...props.item,
     filename: 'image-image-image-image-image-image-image-1.png',
-    url: '2019/08/cjzts3ele1ahx0720t7u9hf9i/image-image-image-image-image-image-image-1.png'
-  }
+    url: '2019/08/cjzts3ele1ahx0720t7u9hf9i/image-image-image-image-image-image-image-1.png',
+  },
 };
 
 export const longLangNameProps = {
@@ -70,23 +71,23 @@ export const longLangNameProps = {
     ...props.item,
     language: {
       ...props.item.language,
-      displayName: 'English-English-English-English-English-English'
-    }
-  }
+      displayName: 'English-English-English-English-English-English',
+    },
+  },
 };
 
 export const emptyItemProps = {
-  item: {}
+  item: {},
 };
 
 export const nullItemProps = {
-  item: null
+  item: null,
 };
 
 export const mocks = [
   {
     request: {
-      query: LANGUAGES_QUERY
+      query: LANGUAGES_QUERY,
     },
     result: {
       data: {
@@ -95,127 +96,127 @@ export const mocks = [
             id: 'cjsq439dz005607560gwe7k3m',
             displayName: 'English',
             locale: 'en-us',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           {
             id: 'cjsq4565v005c0756f0lqbfe4',
             displayName: 'French',
             locale: 'fr-fr',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           {
             id: 'cjsq47fum005i0756qlhc0wta',
             displayName: 'Arabic',
             locale: 'ar',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           {
             id: 'cjsq4967o005o0756gvpl1f5k',
             displayName: 'Chinese (Simplified)',
             locale: 'zh-cn',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           {
             id: 'cjsuxnpv700dl0756wg4adr6k',
             displayName: 'Spanish',
             locale: 'es-es',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           {
             id: 'cjt06xh0e02q70756dnuo3g8e',
             displayName: 'Russian',
             locale: 'ru-ru',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           {
             id: 'cjt5qc65o04020756oius55mh',
             displayName: 'Portuguese (Brazil)',
             locale: 'pt-br',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           {
             id: 'cjt5qmm4504090756sy269uhs',
             displayName: 'Vietnamese',
             locale: 'vi-vn',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           {
             id: 'cjt5qnpem040e07567msmql7j',
             displayName: 'Urdu',
             locale: 'ur',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           {
             id: 'cjt5qp676040j07560v969u9p',
             displayName: 'Korean',
             locale: 'ko-kr',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           {
             id: 'cjt5qq47h040p0756fjlu2dvy',
             displayName: 'Japanese',
             locale: 'ja-jp',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           {
             id: 'cjt5qviod040v0756m5yhxs05',
             displayName: 'Bahasa Indonesia',
             locale: 'id-id',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           {
             id: 'cjt5r1hpl0411075624l76vvy',
             displayName: 'Persian',
             locale: 'fa',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           {
             id: 'cjubbldh20uqa07560u70yc0k',
             displayName: 'Japanese',
             locale: 'ja',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           {
             id: 'cjubbldhj0uqh0756pco0zk2r',
             displayName: 'Persian',
             locale: 'fa-ir',
-            __typename: 'Language'
+            __typename: 'Language',
           },
           {
             id: 'cjubbldi10uqj0756oxctum4f',
             displayName: 'Vietnamese',
             locale: 'vi',
-            __typename: 'Language'
-          }
-        ]
-      }
-    }
-  }
+            __typename: 'Language',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 export const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 export const emptyMocks = [
   {
     ...mocks[0],
     result: {
-      data: { languages: [] }
-    }
-  }
+      data: { languages: [] },
+    },
+  },
 ];
 
 export const nullMocks = [
   {
     ...mocks[0],
     result: {
-      data: { languages: null }
-    }
-  }
+      data: { languages: null },
+    },
+  },
 ];
