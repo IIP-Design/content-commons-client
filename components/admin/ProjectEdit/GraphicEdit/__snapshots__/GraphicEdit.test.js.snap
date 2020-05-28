@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<GraphicEdit /> renders renders the final state 1`] = `
+exports[`<GraphicEdit />, when there is an existing graphic project renders the final state 1`] = `
 <GraphicEdit
   id="ck9b9n8kw1x720720sjwwl1g7"
 >
@@ -259,49 +259,16 @@ exports[`<GraphicEdit /> renders renders the final state 1`] = `
               Object {
                 "__typename": "ImageFile",
                 "alt": null,
-                "createdAt": "2019-11-05T15:25:30.462Z",
-                "filename": "Mexico_City_long_long_asiasd_lasdf_kljiemx_iskei_jlks_askljdf_asdiweoncx_xzxziwe.jpg",
-                "filesize": 1030591,
-                "filetype": "image/jpeg",
-                "id": "ck2m096f80rq70720nsnylh27",
-                "language": Object {
-                  "__typename": "Language",
-                  "displayName": "English",
-                  "id": "ck2lzfx710hkq07206thus6pt",
-                  "languageCode": "en",
-                  "locale": "en-us",
-                  "nativeName": "English",
-                  "textDirection": "LTR",
-                },
-                "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/mexico_city_1.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
-                "social": Array [
-                  Object {
-                    "__typename": "SocialPlatform",
-                    "id": "ck9h3meu626bw07201o36tapc",
-                    "name": "Instagram",
-                  },
-                ],
-                "style": Object {
-                  "__typename": "GraphicStyle",
-                  "id": "ck9h3l7zn26au0720ialhqtg4",
-                  "name": "Quote",
-                },
-                "title": "Mexico_City_long_long_asiasd_lasdf_kljiemx_iskei_jlks_askljdf_asdiweoncx_xzxziwe.jpg",
-                "updatedAt": "2020-05-04T17:16:53.930Z",
-                "url": "2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/mexico_city_1.jpg",
-                "use": Object {
-                  "__typename": "ImageUse",
-                  "id": "ck2lzfx510hhj07205mal3e4l",
-                  "name": "Thumbnail/Cover Image",
-                },
-              },
-              Object {
-                "__typename": "ImageFile",
-                "alt": null,
                 "createdAt": "2019-11-05T20:15:17.892Z",
-                "filename": "Mexico City 1.jpg",
-                "filesize": 1030591,
-                "filetype": "image/jpeg",
+                "dimensions": Object {
+                  "__typename": "Dimensions",
+                  "height": 512,
+                  "id": "cka3w01q530230720aqrt4h2n",
+                  "width": 1024,
+                },
+                "filename": "s-secure-rights_shell.png",
+                "filesize": 29000,
+                "filetype": "image/png",
                 "id": "ck2maluky0s5z0720a2dgkisd",
                 "language": Object {
                   "__typename": "Language",
@@ -312,7 +279,7 @@ exports[`<GraphicEdit /> renders renders the final state 1`] = `
                   "nativeName": "日本語",
                   "textDirection": "LTR",
                 },
-                "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/mexico_city_1.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+                "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_shell.png?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
                 "social": Array [
                   Object {
                     "__typename": "SocialPlatform",
@@ -323,11 +290,11 @@ exports[`<GraphicEdit /> renders renders the final state 1`] = `
                 "style": Object {
                   "__typename": "GraphicStyle",
                   "id": "ck9h3kyb326ak0720wkbk01q6",
-                  "name": "Info/Stat",
+                  "name": "Clean",
                 },
-                "title": "Mexico City 1.jpg",
+                "title": "s-secure-rights_shell.png",
                 "updatedAt": "2020-05-04T17:16:55.720Z",
-                "url": "2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/mexico_city_1.jpg",
+                "url": "2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_shell.png",
                 "use": Object {
                   "__typename": "ImageUse",
                   "id": "ck2lzfx510hhj07205mal3e4l",
@@ -338,7 +305,13 @@ exports[`<GraphicEdit /> renders renders the final state 1`] = `
                 "__typename": "ImageFile",
                 "alt": null,
                 "createdAt": "2019-11-15T20:42:07.165Z",
-                "filename": "Mexico City 1.jpg",
+                "dimensions": Object {
+                  "__typename": "Dimensions",
+                  "height": 675,
+                  "id": "cka3w01q530230720kasdk2ia",
+                  "width": 1200,
+                },
+                "filename": "4_3_Serious_TW.jpg",
                 "filesize": 1030591,
                 "filetype": "image/jpeg",
                 "id": "ck30lyuxm15px0720dkd7hodl",
@@ -351,7 +324,7 @@ exports[`<GraphicEdit /> renders renders the final state 1`] = `
                   "nativeName": "English",
                   "textDirection": "LTR",
                 },
-                "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/mexico_city_1.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+                "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/4_3_Serious_TW.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
                 "social": Array [
                   Object {
                     "__typename": "SocialPlatform",
@@ -362,11 +335,11 @@ exports[`<GraphicEdit /> renders renders the final state 1`] = `
                 "style": Object {
                   "__typename": "GraphicStyle",
                   "id": "ck9h3ka3o269y0720t7wzp5uq",
-                  "name": "GIF",
+                  "name": "Quote",
                 },
-                "title": "Mexico City 1.jpg",
+                "title": "4_3_Serious_TW.jpg",
                 "updatedAt": "2020-05-04T17:16:57.512Z",
-                "url": "2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/mexico_city_1.jpg",
+                "url": "2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/4_3_Serious_TW.jpg",
                 "use": Object {
                   "__typename": "ImageUse",
                   "id": "ck2lzfx510hhj07205mal3e4l",
@@ -377,9 +350,15 @@ exports[`<GraphicEdit /> renders renders the final state 1`] = `
                 "__typename": "ImageFile",
                 "alt": null,
                 "createdAt": "2019-11-20T19:48:21.415Z",
-                "filename": "erwan-hesry-Q34YB7yjAxA-unsplash-1.png",
+                "dimensions": Object {
+                  "__typename": "Dimensions",
+                  "height": 1200,
+                  "id": "cka3w01q530230720quz8k2s",
+                  "width": 1200,
+                },
+                "filename": "4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg",
                 "filesize": 42093736,
-                "filetype": "image/png",
+                "filetype": "image/jpeg",
                 "id": "ck37p8z731vim0720nrlespm1",
                 "language": Object {
                   "__typename": "Language",
@@ -390,22 +369,27 @@ exports[`<GraphicEdit /> renders renders the final state 1`] = `
                   "nativeName": "Bahasa Indonesia",
                   "textDirection": "LTR",
                 },
-                "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/erwan-hesry-q34yb7yjaxa-unsplash-1.png?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+                "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
                 "social": Array [
                   Object {
                     "__typename": "SocialPlatform",
                     "id": "ck9h3m9bl26bm0720rm69c60s",
                     "name": "Facebook",
                   },
+                  Object {
+                    "__typename": "SocialPlatform",
+                    "id": "ck9h3meu626bw07201o36tapc",
+                    "name": "Instagram",
+                  },
                 ],
                 "style": Object {
                   "__typename": "GraphicStyle",
                   "id": "ck9h3koe426aa0720y421wmk3",
-                  "name": "Clean",
+                  "name": "Info/Stat",
                 },
-                "title": "erwan-hesry-Q34YB7yjAxA-unsplash-1.png",
+                "title": "4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg",
                 "updatedAt": "2020-05-04T17:17:01.227Z",
-                "url": "2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/erwan-hesry-q34yb7yjaxa-unsplash-1.png",
+                "url": "2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg",
                 "use": Object {
                   "__typename": "ImageUse",
                   "id": "ck2lzfx510hhj07205mal3e4l",
@@ -418,11 +402,11 @@ exports[`<GraphicEdit /> renders renders the final state 1`] = `
             "supportFiles": Array [
               Object {
                 "__typename": "SupportFile",
-                "createdAt": "2020-04-28T11:26:50.874Z",
-                "filename": "s-secure-rights_shell.png",
-                "filesize": 29000,
-                "filetype": "image/png",
-                "id": "ck9jtsbvz291i0720by3crdcc",
+                "createdAt": "2020-04-28T11:28:43.173Z",
+                "filename": "s-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd",
+                "filesize": 509000,
+                "filetype": "image/vnd.adobe.photoshop",
+                "id": "ck9jtuqhy292w07200tfpbkju",
                 "language": Object {
                   "__typename": "Language",
                   "displayName": "English",
@@ -432,17 +416,17 @@ exports[`<GraphicEdit /> renders renders the final state 1`] = `
                   "nativeName": "English",
                   "textDirection": "LTR",
                 },
-                "updatedAt": "2020-04-28T14:33:38.016Z",
+                "updatedAt": "2020-05-01T14:05:55.765Z",
                 "url": null,
                 "use": null,
               },
               Object {
                 "__typename": "SupportFile",
                 "createdAt": "2020-04-28T11:28:43.173Z",
-                "filename": "s-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd",
+                "filename": "test-file-FB.psd",
                 "filesize": 509000,
                 "filetype": "image/vnd.adobe.photoshop",
-                "id": "ck9jtuqhy292w07200tfpbkju",
+                "id": "ck9jtuqhy29kakd92ka92kd92",
                 "language": Object {
                   "__typename": "Language",
                   "displayName": "English",
@@ -575,273 +559,415 @@ exports[`<GraphicEdit /> renders renders the final state 1`] = `
       isUploading={false}
       projectId="ck9b9n8kw1x720720sjwwl1g7"
     />
-    <GraphicSupportFilesContainer
-      fileTypes={
-        Array [
-          Object {
-            "files": Array [
-              Object {
-                "__typename": "SupportFile",
-                "createdAt": "2020-04-28T11:26:50.874Z",
-                "filename": "s-secure-rights_shell.png",
-                "filesize": 29000,
-                "filetype": "image/png",
-                "id": "ck9jtsbvz291i0720by3crdcc",
-                "language": Object {
-                  "__typename": "Language",
-                  "displayName": "English",
-                  "id": "ck2lzfx710hkq07206thus6pt",
-                  "languageCode": "en",
-                  "locale": "en-us",
-                  "nativeName": "English",
-                  "textDirection": "LTR",
+    <div
+      className="support-files"
+    >
+      <AddFilesSectionHeading
+        acceptedFileTypes="image/*, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc"
+        el="h2"
+        handleAddFiles={[Function]}
+        projectId="ck9b9n8kw1x720720sjwwl1g7"
+        title="Support Files"
+      >
+        <div
+          className="add-files-section-heading available"
+        >
+          <h2
+            className="headline uppercase"
+          >
+            Support Files
+          </h2>
+          <ButtonAddFiles
+            accept="image/*, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc"
+            disabled={false}
+            fluid={false}
+            multiple={true}
+            onChange={[Function]}
+          >
+            <Button
+              as="button"
+              className="primary"
+              disabled={false}
+              fluid={false}
+              onClick={[Function]}
+              type="button"
+            >
+              <Ref
+                innerRef={
+                  Object {
+                    "current": <button
+                      class="ui button primary"
+                      type="button"
+                    >
+                      + Add Files
+                    </button>,
+                  }
+                }
+              >
+                <RefFindNode
+                  innerRef={
+                    Object {
+                      "current": <button
+                        class="ui button primary"
+                        type="button"
+                      >
+                        + Add Files
+                      </button>,
+                    }
+                  }
+                >
+                  <button
+                    className="ui button primary"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    + Add Files
+                  </button>
+                </RefFindNode>
+              </Ref>
+            </Button>
+            <input
+              accept="image/*, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc"
+              className="visibly-hidden"
+              multiple={true}
+              onChange={[Function]}
+              tabIndex={-1}
+              type="file"
+            />
+          </ButtonAddFiles>
+        </div>
+      </AddFilesSectionHeading>
+      <SupportFiles
+        fileTypes={
+          Array [
+            Object {
+              "files": Array [
+                Object {
+                  "__typename": "SupportFile",
+                  "createdAt": "2020-04-28T11:28:43.173Z",
+                  "filename": "s-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd",
+                  "filesize": 509000,
+                  "filetype": "image/vnd.adobe.photoshop",
+                  "id": "ck9jtuqhy292w07200tfpbkju",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "English",
+                    "id": "ck2lzfx710hkq07206thus6pt",
+                    "languageCode": "en",
+                    "locale": "en-us",
+                    "nativeName": "English",
+                    "textDirection": "LTR",
+                  },
+                  "updatedAt": "2020-05-01T14:05:55.765Z",
+                  "url": null,
+                  "use": null,
                 },
-                "updatedAt": "2020-04-28T14:33:38.016Z",
-                "url": null,
-                "use": null,
-              },
-              Object {
-                "__typename": "SupportFile",
-                "createdAt": "2020-04-28T11:28:43.173Z",
-                "filename": "s-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd",
-                "filesize": 509000,
-                "filetype": "image/vnd.adobe.photoshop",
-                "id": "ck9jtuqhy292w07200tfpbkju",
-                "language": Object {
-                  "__typename": "Language",
-                  "displayName": "English",
-                  "id": "ck2lzfx710hkq07206thus6pt",
-                  "languageCode": "en",
-                  "locale": "en-us",
-                  "nativeName": "English",
-                  "textDirection": "LTR",
+                Object {
+                  "__typename": "ImageFile",
+                  "alt": null,
+                  "createdAt": "2019-11-05T20:15:17.892Z",
+                  "dimensions": Object {
+                    "__typename": "Dimensions",
+                    "height": 512,
+                    "id": "cka3w01q530230720aqrt4h2n",
+                    "width": 1024,
+                  },
+                  "filename": "s-secure-rights_shell.png",
+                  "filesize": 29000,
+                  "filetype": "image/png",
+                  "id": "ck2maluky0s5z0720a2dgkisd",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Japanese",
+                    "id": "ck2lzfx7m0hl50720y9oqzyqz",
+                    "languageCode": "ja",
+                    "locale": "ja",
+                    "nativeName": "日本語",
+                    "textDirection": "LTR",
+                  },
+                  "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_shell.png?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+                  "social": Array [
+                    Object {
+                      "__typename": "SocialPlatform",
+                      "id": "ck9h3naq526cp0720i4u3uqlv",
+                      "name": "WhatsApp",
+                    },
+                  ],
+                  "style": Object {
+                    "__typename": "GraphicStyle",
+                    "id": "ck9h3kyb326ak0720wkbk01q6",
+                    "name": "Clean",
+                  },
+                  "title": "s-secure-rights_shell.png",
+                  "updatedAt": "2020-05-04T17:16:55.720Z",
+                  "url": "2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_shell.png",
+                  "use": Object {
+                    "__typename": "ImageUse",
+                    "id": "ck2lzfx510hhj07205mal3e4l",
+                    "name": "Thumbnail/Cover Image",
+                  },
                 },
-                "updatedAt": "2020-05-01T14:05:55.765Z",
-                "url": null,
-                "use": null,
-              },
-            ],
-            "headline": "editable files",
-            "helperText": "Original files that may be edited and adapted as needed for reuse.",
-          },
-          Object {
-            "files": Array [
-              Object {
-                "__typename": "SupportFile",
-                "createdAt": "2020-04-28T11:29:55.168Z",
-                "filename": "s-secure-rights_transcript.docx",
-                "filesize": 9000,
-                "filetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                "id": "ck9jtwa1v293h0720rbd1vdjr",
-                "language": Object {
-                  "__typename": "Language",
-                  "displayName": "English",
-                  "id": "ck2lzfx710hkq07206thus6pt",
-                  "languageCode": "en",
-                  "locale": "en-us",
-                  "nativeName": "English",
-                  "textDirection": "LTR",
+                Object {
+                  "__typename": "SupportFile",
+                  "createdAt": "2020-04-28T11:28:43.173Z",
+                  "filename": "test-file-FB.psd",
+                  "filesize": 509000,
+                  "filetype": "image/vnd.adobe.photoshop",
+                  "id": "ck9jtuqhy29kakd92ka92kd92",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "English",
+                    "id": "ck2lzfx710hkq07206thus6pt",
+                    "languageCode": "en",
+                    "locale": "en-us",
+                    "nativeName": "English",
+                    "textDirection": "LTR",
+                  },
+                  "updatedAt": "2020-05-01T14:05:55.765Z",
+                  "url": null,
+                  "use": null,
                 },
-                "updatedAt": "2020-04-28T11:29:55.168Z",
-                "url": null,
-                "use": null,
-              },
-              Object {
-                "__typename": "SupportFile",
-                "createdAt": "2020-04-29T13:14:37.942Z",
-                "filename": "OpenSans-regular.ttf",
-                "filesize": null,
-                "filetype": "font/ttf",
-                "id": "ck9ld2skk2cjn0720d5s33uxo",
-                "language": Object {
-                  "__typename": "Language",
-                  "displayName": "English",
-                  "id": "ck2lzfx710hkq07206thus6pt",
-                  "languageCode": "en",
-                  "locale": "en-us",
-                  "nativeName": "English",
-                  "textDirection": "LTR",
+              ],
+              "headline": "editable files",
+              "helperText": "Original files that may be edited and adapted as needed for reuse.",
+            },
+            Object {
+              "files": Array [
+                Object {
+                  "__typename": "SupportFile",
+                  "createdAt": "2020-04-29T13:14:37.942Z",
+                  "filename": "OpenSans-regular.ttf",
+                  "filesize": null,
+                  "filetype": "font/ttf",
+                  "id": "ck9ld2skk2cjn0720d5s33uxo",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "English",
+                    "id": "ck2lzfx710hkq07206thus6pt",
+                    "languageCode": "en",
+                    "locale": "en-us",
+                    "nativeName": "English",
+                    "textDirection": "LTR",
+                  },
+                  "updatedAt": "2020-04-29T13:14:37.942Z",
+                  "url": null,
+                  "use": null,
                 },
-                "updatedAt": "2020-04-29T13:14:37.942Z",
-                "url": null,
-                "use": null,
+                Object {
+                  "__typename": "SupportFile",
+                  "createdAt": "2020-04-28T11:29:55.168Z",
+                  "filename": "s-secure-rights_transcript.docx",
+                  "filesize": 9000,
+                  "filetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                  "id": "ck9jtwa1v293h0720rbd1vdjr",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "English",
+                    "id": "ck2lzfx710hkq07206thus6pt",
+                    "languageCode": "en",
+                    "locale": "en-us",
+                    "nativeName": "English",
+                    "textDirection": "LTR",
+                  },
+                  "updatedAt": "2020-04-28T11:29:55.168Z",
+                  "url": null,
+                  "use": null,
+                },
+              ],
+              "headline": "additional files",
+              "helperText": "Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics.",
+            },
+          ]
+        }
+        handleAddFiles={[Function]}
+        projectId="ck9b9n8kw1x720720sjwwl1g7"
+        updateNotification={[Function]}
+      />
+    </div>
+    <div
+      className="graphic-files"
+    >
+      <AddFilesSectionHeading
+        acceptedFileTypes="image/gif, image/jpeg, image/png"
+        el="h2"
+        handleAddFiles={[Function]}
+        projectId="ck9b9n8kw1x720720sjwwl1g7"
+        title="Graphics in Project"
+      >
+        <div
+          className="add-files-section-heading available"
+        >
+          <h2
+            className="headline uppercase"
+          >
+            Graphics in Project
+          </h2>
+          <ButtonAddFiles
+            accept="image/gif, image/jpeg, image/png"
+            disabled={false}
+            fluid={false}
+            multiple={true}
+            onChange={[Function]}
+          >
+            <Button
+              as="button"
+              className="primary"
+              disabled={false}
+              fluid={false}
+              onClick={[Function]}
+              type="button"
+            >
+              <Ref
+                innerRef={
+                  Object {
+                    "current": <button
+                      class="ui button primary"
+                      type="button"
+                    >
+                      + Add Files
+                    </button>,
+                  }
+                }
+              >
+                <RefFindNode
+                  innerRef={
+                    Object {
+                      "current": <button
+                        class="ui button primary"
+                        type="button"
+                      >
+                        + Add Files
+                      </button>,
+                    }
+                  }
+                >
+                  <button
+                    className="ui button primary"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    + Add Files
+                  </button>
+                </RefFindNode>
+              </Ref>
+            </Button>
+            <input
+              accept="image/gif, image/jpeg, image/png"
+              className="visibly-hidden"
+              multiple={true}
+              onChange={[Function]}
+              tabIndex={-1}
+              type="file"
+            />
+          </ButtonAddFiles>
+        </div>
+      </AddFilesSectionHeading>
+      <GraphicFilesFormContainer
+        files={
+          Array [
+            Object {
+              "__typename": "ImageFile",
+              "alt": null,
+              "createdAt": "2019-11-15T20:42:07.165Z",
+              "dimensions": Object {
+                "__typename": "Dimensions",
+                "height": 675,
+                "id": "cka3w01q530230720kasdk2ia",
+                "width": 1200,
               },
-            ],
-            "headline": "additional files",
-            "helperText": "Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics.",
-          },
-        ]
-      }
-      handleAddFiles={[Function]}
-      projectId="ck9b9n8kw1x720720sjwwl1g7"
-      updateNotification={[Function]}
-    />
-    <GraphicFilesFormContainer
-      files={
-        Array [
-          Object {
-            "__typename": "ImageFile",
-            "alt": null,
-            "createdAt": "2019-11-05T15:25:30.462Z",
-            "filename": "Mexico_City_long_long_asiasd_lasdf_kljiemx_iskei_jlks_askljdf_asdiweoncx_xzxziwe.jpg",
-            "filesize": 1030591,
-            "filetype": "image/jpeg",
-            "id": "ck2m096f80rq70720nsnylh27",
-            "language": Object {
-              "__typename": "Language",
-              "displayName": "English",
-              "id": "ck2lzfx710hkq07206thus6pt",
-              "languageCode": "en",
-              "locale": "en-us",
-              "nativeName": "English",
-              "textDirection": "LTR",
-            },
-            "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/mexico_city_1.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
-            "social": Array [
-              Object {
-                "__typename": "SocialPlatform",
-                "id": "ck9h3meu626bw07201o36tapc",
-                "name": "Instagram",
+              "filename": "4_3_Serious_TW.jpg",
+              "filesize": 1030591,
+              "filetype": "image/jpeg",
+              "id": "ck30lyuxm15px0720dkd7hodl",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "English",
+                "id": "ck2lzfx710hkq07206thus6pt",
+                "languageCode": "en",
+                "locale": "en-us",
+                "nativeName": "English",
+                "textDirection": "LTR",
               },
-            ],
-            "style": Object {
-              "__typename": "GraphicStyle",
-              "id": "ck9h3l7zn26au0720ialhqtg4",
-              "name": "Quote",
-            },
-            "title": "Mexico_City_long_long_asiasd_lasdf_kljiemx_iskei_jlks_askljdf_asdiweoncx_xzxziwe.jpg",
-            "updatedAt": "2020-05-04T17:16:53.930Z",
-            "url": "2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/mexico_city_1.jpg",
-            "use": Object {
-              "__typename": "ImageUse",
-              "id": "ck2lzfx510hhj07205mal3e4l",
-              "name": "Thumbnail/Cover Image",
-            },
-          },
-          Object {
-            "__typename": "ImageFile",
-            "alt": null,
-            "createdAt": "2019-11-05T20:15:17.892Z",
-            "filename": "Mexico City 1.jpg",
-            "filesize": 1030591,
-            "filetype": "image/jpeg",
-            "id": "ck2maluky0s5z0720a2dgkisd",
-            "language": Object {
-              "__typename": "Language",
-              "displayName": "Japanese",
-              "id": "ck2lzfx7m0hl50720y9oqzyqz",
-              "languageCode": "ja",
-              "locale": "ja",
-              "nativeName": "日本語",
-              "textDirection": "LTR",
-            },
-            "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/mexico_city_1.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
-            "social": Array [
-              Object {
-                "__typename": "SocialPlatform",
-                "id": "ck9h3naq526cp0720i4u3uqlv",
-                "name": "WhatsApp",
+              "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/4_3_Serious_TW.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+              "social": Array [
+                Object {
+                  "__typename": "SocialPlatform",
+                  "id": "ck9h3m3g626bd07201gh712vk",
+                  "name": "Twitter",
+                },
+              ],
+              "style": Object {
+                "__typename": "GraphicStyle",
+                "id": "ck9h3ka3o269y0720t7wzp5uq",
+                "name": "Quote",
               },
-            ],
-            "style": Object {
-              "__typename": "GraphicStyle",
-              "id": "ck9h3kyb326ak0720wkbk01q6",
-              "name": "Info/Stat",
-            },
-            "title": "Mexico City 1.jpg",
-            "updatedAt": "2020-05-04T17:16:55.720Z",
-            "url": "2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/mexico_city_1.jpg",
-            "use": Object {
-              "__typename": "ImageUse",
-              "id": "ck2lzfx510hhj07205mal3e4l",
-              "name": "Thumbnail/Cover Image",
-            },
-          },
-          Object {
-            "__typename": "ImageFile",
-            "alt": null,
-            "createdAt": "2019-11-15T20:42:07.165Z",
-            "filename": "Mexico City 1.jpg",
-            "filesize": 1030591,
-            "filetype": "image/jpeg",
-            "id": "ck30lyuxm15px0720dkd7hodl",
-            "language": Object {
-              "__typename": "Language",
-              "displayName": "English",
-              "id": "ck2lzfx710hkq07206thus6pt",
-              "languageCode": "en",
-              "locale": "en-us",
-              "nativeName": "English",
-              "textDirection": "LTR",
-            },
-            "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/mexico_city_1.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
-            "social": Array [
-              Object {
-                "__typename": "SocialPlatform",
-                "id": "ck9h3m3g626bd07201gh712vk",
-                "name": "Twitter",
+              "title": "4_3_Serious_TW.jpg",
+              "updatedAt": "2020-05-04T17:16:57.512Z",
+              "url": "2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/4_3_Serious_TW.jpg",
+              "use": Object {
+                "__typename": "ImageUse",
+                "id": "ck2lzfx510hhj07205mal3e4l",
+                "name": "Thumbnail/Cover Image",
               },
-            ],
-            "style": Object {
-              "__typename": "GraphicStyle",
-              "id": "ck9h3ka3o269y0720t7wzp5uq",
-              "name": "GIF",
             },
-            "title": "Mexico City 1.jpg",
-            "updatedAt": "2020-05-04T17:16:57.512Z",
-            "url": "2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/mexico_city_1.jpg",
-            "use": Object {
-              "__typename": "ImageUse",
-              "id": "ck2lzfx510hhj07205mal3e4l",
-              "name": "Thumbnail/Cover Image",
-            },
-          },
-          Object {
-            "__typename": "ImageFile",
-            "alt": null,
-            "createdAt": "2019-11-20T19:48:21.415Z",
-            "filename": "erwan-hesry-Q34YB7yjAxA-unsplash-1.png",
-            "filesize": 42093736,
-            "filetype": "image/png",
-            "id": "ck37p8z731vim0720nrlespm1",
-            "language": Object {
-              "__typename": "Language",
-              "displayName": "Bahasa Indonesia",
-              "id": "ck2lzfx7g0hl10720vfyiek0q",
-              "languageCode": "id",
-              "locale": "id-id",
-              "nativeName": "Bahasa Indonesia",
-              "textDirection": "LTR",
-            },
-            "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/erwan-hesry-q34yb7yjaxa-unsplash-1.png?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
-            "social": Array [
-              Object {
-                "__typename": "SocialPlatform",
-                "id": "ck9h3m9bl26bm0720rm69c60s",
-                "name": "Facebook",
+            Object {
+              "__typename": "ImageFile",
+              "alt": null,
+              "createdAt": "2019-11-20T19:48:21.415Z",
+              "dimensions": Object {
+                "__typename": "Dimensions",
+                "height": 1200,
+                "id": "cka3w01q530230720quz8k2s",
+                "width": 1200,
               },
-            ],
-            "style": Object {
-              "__typename": "GraphicStyle",
-              "id": "ck9h3koe426aa0720y421wmk3",
-              "name": "Clean",
+              "filename": "4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg",
+              "filesize": 42093736,
+              "filetype": "image/jpeg",
+              "id": "ck37p8z731vim0720nrlespm1",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "Bahasa Indonesia",
+                "id": "ck2lzfx7g0hl10720vfyiek0q",
+                "languageCode": "id",
+                "locale": "id-id",
+                "nativeName": "Bahasa Indonesia",
+                "textDirection": "LTR",
+              },
+              "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+              "social": Array [
+                Object {
+                  "__typename": "SocialPlatform",
+                  "id": "ck9h3m9bl26bm0720rm69c60s",
+                  "name": "Facebook",
+                },
+                Object {
+                  "__typename": "SocialPlatform",
+                  "id": "ck9h3meu626bw07201o36tapc",
+                  "name": "Instagram",
+                },
+              ],
+              "style": Object {
+                "__typename": "GraphicStyle",
+                "id": "ck9h3koe426aa0720y421wmk3",
+                "name": "Info/Stat",
+              },
+              "title": "4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg",
+              "updatedAt": "2020-05-04T17:17:01.227Z",
+              "url": "2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg",
+              "use": Object {
+                "__typename": "ImageUse",
+                "id": "ck2lzfx510hhj07205mal3e4l",
+                "name": "Thumbnail/Cover Image",
+              },
             },
-            "title": "erwan-hesry-Q34YB7yjAxA-unsplash-1.png",
-            "updatedAt": "2020-05-04T17:17:01.227Z",
-            "url": "2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/erwan-hesry-q34yb7yjaxa-unsplash-1.png",
-            "use": Object {
-              "__typename": "ImageUse",
-              "id": "ck2lzfx510hhj07205mal3e4l",
-              "name": "Thumbnail/Cover Image",
-            },
-          },
-        ]
-      }
-      handleAddFiles={[Function]}
-      projectId="ck9b9n8kw1x720720sjwwl1g7"
-      setIsFormValid={[Function]}
-      updateNotification={[Function]}
-    />
+          ]
+        }
+        handleAddFiles={[Function]}
+        projectId="ck9b9n8kw1x720720sjwwl1g7"
+        setIsFormValid={[Function]}
+        updateNotification={[Function]}
+      />
+    </div>
   </div>
 </GraphicEdit>
 `;

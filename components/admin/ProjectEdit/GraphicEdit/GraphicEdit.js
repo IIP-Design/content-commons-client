@@ -36,6 +36,16 @@ const GraphicEdit = props => {
   // Local graphic query
   const { data: localData, client } = useQuery( LOCAL_GRAPHIC_FILES );
 
+  /**
+   * Reading graphic styles directly from cache can throw an
+   * error: `Invariant Violation: Can't find field
+   * graphicStyles on object { "localGraphicProject" }`. This
+   * can occur if graphicStyles are not already in cache for
+   * some reason. So get the styles with useQuery, which has a
+   * default fetchPolicy of cache-first and won't throw the error.
+   */
+  const { data: stylesData } = useQuery( GRAPHIC_STYLES_QUERY );
+
   const {
     loading, error: queryError, data,
   } = useQuery( GRAPHIC_PROJECT_QUERY, {
@@ -234,20 +244,21 @@ const GraphicEdit = props => {
   };
 
   const getStyleId = name => {
-    const { graphicStyles: styles } = client.readQuery( {
-      query: GRAPHIC_STYLES_QUERY,
-    } );
-
+    const styles = stylesData?.graphicStyles;
     const styleObj = styles && styles.find( style => style.name === name );
 
     return styleObj?.id || '';
   };
 
-  const getIsPngShell = filename => {
-    const isPng = getFileExt( filename ) === '.png';
+  const getIsShell = filename => {
+    const shellExtensions = [
+      '.jpg', '.jpeg', '.png',
+    ];
+    const extension = getFileExt( filename );
+    const isJpgOrPng = shellExtensions.includes( extension );
     const hasShellInName = filename.toLowerCase().includes( 'shell' );
 
-    return isPng && hasShellInName;
+    return isJpgOrPng && hasShellInName;
   };
 
   const getInitialFiles = type => {
@@ -257,7 +268,7 @@ const GraphicEdit = props => {
     if ( localData?.localGraphicProject?.files ) {
       localData.localGraphicProject.files.forEach( file => {
         const isClean = file.style === getStyleId( 'Clean' );
-        const isCleanShell = isClean && getIsPngShell( file.name );
+        const isCleanShell = isClean && getIsShell( file.name );
         const hasStyleAndSocial = getCount( file.style ) && getCount( file.social );
 
         if ( hasStyleAndSocial && !isCleanShell ) {
@@ -281,18 +292,26 @@ const GraphicEdit = props => {
     const existingSupportFiles = data?.graphicProject?.supportFiles || [];
     const existingGraphicFiles = data?.graphicProject?.images || [];
 
-    const shellFile = existingGraphicFiles.filter( img => getIsPngShell( img.filename ) );
+    const shellFile = existingGraphicFiles.filter( img => getIsShell( img.filename ) );
     const existingFilesPlusShell = existingSupportFiles.concat( shellFile );
+
     const initialFiles = getInitialFiles( 'supportFiles' );
     const supportFiles = projectId ? existingFilesPlusShell : initialFiles;
-    const sortedFiles = sortBy( supportFiles, file => file.filename );
+    const sortedFiles = sortBy( supportFiles, file => {
+      if ( projectId ) {
+        return file.filename;
+      }
+
+      return file.name;
+    } );
 
     if ( getCount( supportFiles ) ) {
       sortedFiles.forEach( file => {
         const _filename = projectId ? file.filename : file.name;
         const extension = getFileExt( _filename );
+
         const hasEditableExt = editableExtensions.includes( extension );
-        const isShell = getIsPngShell( _filename );
+        const isShell = getIsShell( _filename );
 
         if ( hasEditableExt || isShell ) {
           editableFiles.push( file );
@@ -311,9 +330,9 @@ const GraphicEdit = props => {
     let files = [];
 
     if ( projectId ) {
-      files = existingFiles.filter( img => !getIsPngShell( img.filename ) );
+      files = existingFiles.filter( img => !getIsShell( img.filename ) );
     } else {
-      files = sortBy( initialFiles, file => file.filename );
+      files = initialFiles;
     }
 
     return files;
