@@ -4,7 +4,7 @@ import Link from 'next/link';
 import moment from 'moment';
 import { v4 } from 'uuid';
 import {
-  Grid, Header, Item, Modal, Message,
+  Grid, Header, Item, Modal,
 } from 'semantic-ui-react';
 
 import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
@@ -52,13 +52,6 @@ const Recents = ( { postType } ) => {
             <a className="browseAll">Browse All</a>
           </Link>
         </div>
-        {/* { state.error && (
-          <Message>
-            { `Oops, something went wrong.  We are unable to load the most recent ${
-              postTypeLabel ? `${postTypeLabel.display_name.toLowerCase()}s` : ''
-            }.` }
-          </Message>
-        ) } */}
         <Grid columns="equal" stackable stretched>
           <Grid.Column width={ 8 } className="recentsgridleft">
             { recents && recents[0] && (

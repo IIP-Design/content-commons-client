@@ -4,7 +4,7 @@ import Link from 'next/link';
 import moment from 'moment';
 import { v4 } from 'uuid';
 import {
-  Grid, Header, Item, Modal, Loader, Message,
+  Grid, Header, Item, Modal,
 } from 'semantic-ui-react';
 
 import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
@@ -13,7 +13,7 @@ import { FeaturedContext } from 'context/featuredContext';
 
 import './Priorities.scss';
 
-const Priorities = ( { categories, featured, label, term } ) => {
+const Priorities = ( { categories, label, term } ) => {
   const { state } = useContext( FeaturedContext );
 
   const getCategories = item => {
@@ -68,7 +68,10 @@ const Priorities = ( { categories, featured, label, term } ) => {
             href={ {
               pathname: '/results',
               query: {
-                language: 'en-us', term, categories: categoryIds, sortBy: 'relevance',
+                language: 'en-us',
+                term,
+                categories: categoryIds,
+                sortBy: 'relevance',
               },
             } }
           >
@@ -76,12 +79,6 @@ const Priorities = ( { categories, featured, label, term } ) => {
           </Link>
 
         </div>
-        <Loader active={ featured?.loading } />
-        { featured?.error && (
-          <Message>
-            Oops, something went wrong.  We are unable to load the department priority section.
-          </Message>
-        ) }
         <Grid columns="equal" stackable stretched>
           <Grid.Column width={ 8 } className="prioritiesgridleft">
             { priorities && priorities[0] && (
@@ -117,7 +114,6 @@ const Priorities = ( { categories, featured, label, term } ) => {
 };
 
 Priorities.propTypes = {
-  featured: PropTypes.object,
   term: PropTypes.string,
   label: PropTypes.string,
   categories: PropTypes.array,

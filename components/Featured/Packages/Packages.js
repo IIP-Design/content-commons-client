@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Link from 'next/link';
-import { Grid, Message } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 
 import config from 'config';
 import PackageCard from 'components/Package/PackageCard/PackageCard';
@@ -12,14 +12,6 @@ const archiveLink = () => <a href={ config.PRESS_GUIDANCE_DB_URL } rel="noopener
 
 const Packages = () => {
   const { state } = useContext( FeaturedContext );
-
-  if ( state?.error ) {
-    return (
-      <section className="latestPackages_section">
-        <Message>Oops, something went wrong. We are unable to load the most recent guidance packages.</Message>
-      </section>
-    );
-  }
 
   const packages = state?.recents?.packages ? state.recents.packages : [];
 
@@ -33,7 +25,11 @@ const Packages = () => {
           <Link
             href={ {
               pathname: '/results',
-              query: { language: 'en-us', sortBy: 'created', postTypes: ['package'] },
+              query: {
+                language: 'en-us',
+                sortBy: 'created',
+                postTypes: ['package'],
+              },
             } }
           >
             <a className="latestPackages_header_link">Browse All</a>

@@ -2,6 +2,7 @@ import React, { useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import sortBy from 'lodash/sortBy';
 import { v4 } from 'uuid';
+import { Loader, Message } from 'semantic-ui-react';
 
 import Packages from './Packages/Packages';
 import Recents from './Recents/Recents';
@@ -119,7 +120,24 @@ const Featured = ( { data, user } ) => {
     }
   } );
 
-  if ( !featuredComponents.length ) return <div />;
+  if ( state?.error ) {
+    return (
+      <div style={ { padding: '5rem 2rem', textAlign: 'center' } }>
+        <Message>
+          Oops, something went wrong. We are unable to load the most recent content.
+        </Message>
+      </div>
+    );
+  }
+
+  if ( state?.loading ) {
+    return (
+      <Loader active={ state?.loading } />
+    );
+  }
+
+  if ( !featuredComponents.length ) return null;
+
   return (
     <div className="featured">
       <FeaturedContext.Provider value={ { dispatch, state } }>
