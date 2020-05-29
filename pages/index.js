@@ -101,7 +101,7 @@ class Landing extends Component {
       featuredDataForLanding.shift();
     }
 
-    // trigger parellel loading calls
+    // trigger parallel loading calls
     const resetFilters = store.dispatch( clearFilters() );
     const postTypes = store.dispatch( loadPostTypes( user ) );
 
@@ -111,7 +111,7 @@ class Landing extends Component {
       postTypes,
     ] );
 
-    return { featuredDataForLanding };
+    return { featuredDataForLanding, user };
   }
 
   render() {

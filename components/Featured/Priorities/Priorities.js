@@ -10,21 +10,12 @@ import {
 import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
 import { getModalContent } from 'components/modals/utils';
 import { FeaturedContext } from 'context/featuredContext';
+import { getCategories } from '../utils';
 
 import './Priorities.scss';
 
 const Priorities = ( { categories, label, term } ) => {
   const { state } = useContext( FeaturedContext );
-
-  const getCategories = item => {
-    const cats = item?.categories?.slice( 0, 3 ).reduce( ( acc, cat, index, arr ) => {
-      const c = acc + cat.name.toLowerCase();
-
-      return index < arr.length - 1 && index < 2 ? `${c} · ` : c;
-    }, '' );
-
-    return cats;
-  };
 
   const renderPrioritiesWithMeta = ps => ps.slice( 1 ).map( priority => (
     <Modal

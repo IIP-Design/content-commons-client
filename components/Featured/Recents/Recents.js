@@ -3,28 +3,17 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
 import { v4 } from 'uuid';
-import {
-  Grid, Header, Item, Modal,
-} from 'semantic-ui-react';
+import { Grid, Header, Item, Modal } from 'semantic-ui-react';
 
 import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
 import { getModalContent } from 'components/modals/utils';
 import { FeaturedContext } from 'context/featuredContext';
+import { getCategories } from '../utils';
 
 import './Recents.scss';
 
 const Recents = ( { postType } ) => {
   const { state } = useContext( FeaturedContext );
-
-  const getCategories = item => {
-    const categories = item.categories.slice( 0, 3 ).reduce( ( acc, cat, index, arr ) => {
-      const c = acc + cat.name.toLowerCase();
-
-      return index < arr.length - 1 ? `${c} · ` : c;
-    }, '' );
-
-    return categories;
-  };
 
   // const postTypeLabel = postTypeLabels.find( type => type.key === postType );
 
