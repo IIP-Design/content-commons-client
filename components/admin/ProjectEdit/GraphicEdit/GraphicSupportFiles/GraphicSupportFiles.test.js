@@ -548,7 +548,7 @@ describe( '<GraphicSupportFiles />, when a projectId does not exist & local file
   } );
 
   it( 'renders the filename', () => {
-    const filenames = listContainer.find( '.filename' );
+    const filenames = listContainer.find( 'Filename > .filename' );
 
     filenames.forEach( ( filename, i ) => {
       const inputName = newProps.files[i].input.name;
@@ -588,12 +588,12 @@ describe( '<GraphicSupportFiles />, when there is a long file name', () => {
 
   it( 'renders a truncated filename with the full filename visually hidden', () => {
     const listItem = listContainer.find( '.support-file-item' );
-    const btn = listItem.find( '.truncated' );
+    const focusable = listItem.find( '[tooltip]' );
     const visuallyHidden = listItem.find( '.hide-visually' );
-    const shortName = truncateAndReplaceStr( filename, 24, 24 );
+    const shortName = truncateAndReplaceStr( filename, 20, 28 );
 
-    expect( btn.prop( 'tooltip' ) ).toEqual( filename );
-    expect( btn.text() ).toEqual( shortName );
+    expect( focusable.prop( 'tooltip' ) ).toEqual( filename );
+    expect( focusable.text() ).toEqual( shortName );
     expect( visuallyHidden.text() ).toEqual( filename );
   } );
 } );

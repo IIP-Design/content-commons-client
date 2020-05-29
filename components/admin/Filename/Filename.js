@@ -19,11 +19,17 @@ const Filename = ( { children: filename, filenameLength, numCharsBeforeBreak, nu
       { filename !== truncatedFilename
         ? (
           <Fragment>
-            <span tooltip={ filename }>{ truncatedFilename }</span>
+            <span
+              tooltip={ filename }
+              aria-hidden="true"
+              tabIndex={ 0 }
+            >
+              { truncatedFilename }
+            </span>
             <VisuallyHidden el="span">{ filename }</VisuallyHidden>
           </Fragment>
         )
-        : <span>{ filename }</span>}
+        : <span>{ filename }</span> }
     </div>
   );
 };

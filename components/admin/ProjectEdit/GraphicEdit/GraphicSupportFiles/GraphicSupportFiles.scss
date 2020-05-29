@@ -30,7 +30,10 @@
 
       &.unavailable {
         .filename {
-          color: $medium-grey;
+          span,
+          [tooltip] {
+            color: $medium-grey;
+          }
         }
 
         .FileRemoveReplaceButtonGroup__btn-group {
@@ -38,18 +41,9 @@
         }
       }
 
-      .filename {
-        .truncated {
-          @include button-style-reset($font-size: 0.888888889rem);
-
-          &:focus {
-            @include focus-styling;
-          }
-
-          &::after {
-            @include wrap-text;
-            width: 12rem;
-          }
+      [tooltip] {
+        &:focus {
+          @include focus-styling;
         }
       }
     }

@@ -480,7 +480,7 @@ describe( '<GraphicFilesForm />, when a projectId does not exist', () => {
   } );
 
   it( 'renders the filename correctly', () => {
-    const filenames = graphicsForm.find( '.filename' );
+    const filenames = graphicsForm.find( 'Filename > .filename' );
 
     filenames.forEach( ( filename, i ) => {
       const inputName = newProps.files[i].input.name;
@@ -540,14 +540,14 @@ describe( '<GraphicFilesForm />, when there is a long file name', () => {
     fieldsets.forEach( ( fieldset, i ) => {
       const { filename } = newProps.files[i];
       const imgWrapper = fieldset.find( '.image-wrapper' );
-      const btn = imgWrapper.find( '.filename.truncated' );
+      const focusable = imgWrapper.find( '[tooltip]' );
       const visuallyHidden = imgWrapper.find( '.hide-visually' );
       const displayName = filename?.length > 30
         ? truncateAndReplaceStr( filename, 20, 10 )
         : filename;
 
-      expect( btn.prop( 'tooltip' ) ).toEqual( filename );
-      expect( btn.text() ).toEqual( displayName );
+      expect( focusable.prop( 'tooltip' ) ).toEqual( filename );
+      expect( focusable.text() ).toEqual( displayName );
       expect( visuallyHidden.text() ).toEqual( filename );
     } );
   } );

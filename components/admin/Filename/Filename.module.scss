@@ -1,4 +1,5 @@
  @import 'styles/colors.scss';
+ @import "styles/mixins.scss";
 
 .filename {
   position: relative; 
@@ -15,6 +16,11 @@
   // Override rules coming from styles/tooltip.scss
   [tooltip] {
     margin: 0 !important;
+    @include button-style-reset($font-size: 0.888888889rem);
+
+    &:focus {
+      @include focus-styling;
+    }
   }
 
   [tooltip]::after {
