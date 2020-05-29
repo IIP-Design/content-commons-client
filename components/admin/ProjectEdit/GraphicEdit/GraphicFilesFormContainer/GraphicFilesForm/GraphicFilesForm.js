@@ -1,8 +1,9 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { Confirm, Form, Input, Loader } from 'semantic-ui-react';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
+import Filename from 'components/admin/Filename/Filename';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
@@ -11,7 +12,7 @@ import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/Langua
 import SocialPlatformDropdown from 'components/admin/dropdowns/SocialPlatformDropdown/SocialPlatformDropdown';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
-import { formatBytes, getCount, truncateAndReplaceStr } from 'lib/utils';
+import { formatBytes, getCount } from 'lib/utils';
 import './GraphicFilesForm.scss';
 
 const GraphicFilesForm = props => {
@@ -120,9 +121,6 @@ const GraphicFilesForm = props => {
           const { id, filename, filesize, input, language } = file;
           const _filename = projectId ? filename : input?.name;
           const _filesize = projectId ? filesize : input?.size;
-          const displayName = _filename?.length > 30
-            ? truncateAndReplaceStr( _filename, 20, 10 )
-            : _filename;
 
           const value = projectId
             ? values[id]
@@ -161,23 +159,12 @@ const GraphicFilesForm = props => {
                 <div className="meta-wrap">
                   <div className="meta">
                     <span className="filename">
-                      { _filename !== displayName
-                        ? (
-                          <Fragment>
-                            <button
-                              tooltip={ _filename }
-                              type="button"
-                              aria-hidden="true"
-                              className="filename truncated"
-                            >
-                              { displayName }
-                            </button>
-                            <VisuallyHidden el="span">
-                              { _filename }
-                            </VisuallyHidden>
-                          </Fragment>
-                        )
-                        : _filename }
+                      <Filename
+                        children={ _filename }
+                        filenameLength={ 30 }
+                        numCharsBeforeBreak={ 20 }
+                        numCharsAfterBreak={ 10 }
+                      />
                     </span>
 
                     <span className="filesize">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from 'semantic-ui-react';
-import Filename from '../Filename/Filename';
+import Filename from 'components/admin/Filename/Filename';
 import { getFileExt } from 'lib/utils';
 import removeIcon from 'static/icons/icon_remove.svg';
 import styles from './EditFileGridRow.module.scss';

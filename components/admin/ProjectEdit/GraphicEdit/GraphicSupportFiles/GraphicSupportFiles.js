@@ -1,18 +1,18 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { Confirm } from 'semantic-ui-react';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import IconPopup from 'components/popups/IconPopup/IconPopup';
+import Filename from 'components/admin/Filename/Filename';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import {
   DELETE_IMAGE_FILE_MUTATION,
   DELETE_SUPPORT_FILE_MUTATION,
 } from 'lib/graphql/queries/common';
 import { GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
 import useTimeout from 'lib/hooks/useTimeout';
-import { getCount, truncateAndReplaceStr } from 'lib/utils';
+import { getCount } from 'lib/utils';
 import './GraphicSupportFiles.scss';
 
 const GraphicSupportFiles = props => {
@@ -71,28 +71,16 @@ const GraphicSupportFiles = props => {
       { files.map( file => {
         const { id, filename, input } = file;
         const _filename = projectId ? filename : input?.name;
-        const displayName = _filename?.length > 48
-          ? truncateAndReplaceStr( _filename, 24, 24 )
-          : _filename;
 
         return (
           <li key={ id } className={ `support-file-item ${projectId ? 'available' : 'unavailable'}` }>
             <span className="filename">
-              { _filename !== displayName
-                ? (
-                  <Fragment>
-                    <button
-                      tooltip={ _filename }
-                      type="button"
-                      aria-hidden="true"
-                      className="truncated"
-                    >
-                      { displayName }
-                    </button>
-                    <VisuallyHidden el="span">{ _filename }</VisuallyHidden>
-                  </Fragment>
-                )
-                : displayName }
+              <Filename
+                children={ _filename }
+                filenameLength={ 48 }
+                numCharsBeforeBreak={ 20 }
+                numCharsAfterBreak={ 28 }
+              />
             </span>
 
             <FileRemoveReplaceButtonGroup

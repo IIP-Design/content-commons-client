@@ -37,7 +37,19 @@ Array [
           <span
             className="filename"
           >
-            4_3_Serious_TW.jpg
+            <Filename
+              filenameLength={30}
+              numCharsAfterBreak={10}
+              numCharsBeforeBreak={20}
+            >
+              <div
+                className="filename"
+              >
+                <span>
+                  4_3_Serious_TW.jpg
+                </span>
+              </div>
+            </Filename>
           </span>
           <span
             className="filesize"
@@ -191,7 +203,19 @@ Array [
           <span
             className="filename"
           >
-            4_3_Serious_FB.jpg
+            <Filename
+              filenameLength={30}
+              numCharsAfterBreak={10}
+              numCharsBeforeBreak={20}
+            >
+              <div
+                className="filename"
+              >
+                <span>
+                  4_3_Serious_FB.jpg
+                </span>
+              </div>
+            </Filename>
           </span>
           <span
             className="filesize"
