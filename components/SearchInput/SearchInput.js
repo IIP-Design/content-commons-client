@@ -12,7 +12,6 @@ import * as actions from 'lib/redux/actions';
 import './SearchInput.scss';
 
 const multipleTypes = ['video', 'post'];
-const isUser = true;
 
 class Search extends Component {
   constructor( props ) {
@@ -27,28 +26,20 @@ class Search extends Component {
     };
   }
 
-  initialRadio() {
-    if ( isUser === true ) {
-      this.setState( {
-        selectedRadio: multipleTypes,
-      } );
-    }
-  }
 
   displayRadio() {
     const {
       router: { pathname },
+      isUser,
     } = this.props;
 
-    if ( pathname === '/' ) {
-      this.setState( { displayRadioGroup: true } );
-      this.initialRadio();
+    if ( pathname === '/' && isUser ) {
+      this.setState( { displayRadioGroup: true, selectedRadio: multipleTypes } );
     } else this.setState( { displayRadioGroup: false, selectedRadio: '' } );
   }
 
   componentDidMount() {
     this.maybeLoadLanguages();
-    this.initialRadio();
     this.displayRadio();
   }
 
@@ -158,7 +149,7 @@ class Search extends Component {
     return (
       <section className="search_bar">
         <Form onSubmit={ this.handleSubmit }>
-          {isUser === true && this.state.displayRadioGroup === true && (
+          {this.props.isUser && this.state.displayRadioGroup && (
             <Form.Group inline>
               <div className="radio-flex">
                 <Radio
@@ -218,6 +209,7 @@ const mapStateToProps = state => ( {
 Search.propTypes = {
   router: PropTypes.object,
   filter: PropTypes.object,
+  isUser: PropTypes.object,
   search: PropTypes.object,
   languages: PropTypes.object,
   loadLanguages: PropTypes.func,
