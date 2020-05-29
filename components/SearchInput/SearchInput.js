@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import {
-  Form, Input, Icon, Dropdown
+  Form, Input, Icon, Dropdown, Radio,
 } from 'semantic-ui-react';
 // import { detectLanguage } from 'lib/language';
 import { getDirection } from 'lib/language';
@@ -11,22 +11,50 @@ import { fetchQueryString } from 'lib/searchQueryString';
 import * as actions from 'lib/redux/actions';
 import './SearchInput.scss';
 
+const multipleTypes = ['video', 'post'];
+const isUser = true;
+
 class Search extends Component {
   constructor( props ) {
     super( props );
     const { search } = this.props;
+
     this.state = {
       locale: search.language,
-      direction: 'left'
+      direction: 'left',
+      selectedRadio: '',
+      displayRadioGroup: '',
     };
+  }
+
+  initialRadio() {
+    if ( isUser === true ) {
+      this.setState( {
+        selectedRadio: multipleTypes,
+      } );
+    }
+  }
+
+  displayRadio() {
+    const {
+      router: { pathname },
+    } = this.props;
+
+    if ( pathname === '/' ) {
+      this.setState( { displayRadioGroup: true } );
+      this.initialRadio();
+    } else this.setState( { displayRadioGroup: false, selectedRadio: '' } );
   }
 
   componentDidMount() {
     this.maybeLoadLanguages();
+    this.initialRadio();
+    this.displayRadio();
   }
 
   componentDidUpdate( prevProps ) {
     const { router } = this.props;
+
     if ( router.pathname !== prevProps.router.pathname ) {
       this.onRouteChanged( router.pathname );
     }
@@ -34,12 +62,14 @@ class Search extends Component {
 
   onRouteChanged( pathname ) {
     this.maybeLoadLanguages();
+    this.displayRadio();
 
     if ( pathname === '/' ) {
       this.setState( { locale: 'en-us', direction: 'left' } );
       this.props.updateSearchTerm( '' );
     } else {
       const { language } = this.props.search;
+
       this.setState( { locale: language, direction: getDirection( language ) } );
     }
   }
@@ -61,7 +91,7 @@ class Search extends Component {
   handleLangOnChange = ( e, { value } ) => {
     this.setState( {
       locale: value,
-      direction: getDirection( value )
+      direction: getDirection( value ),
     } );
   };
 
@@ -70,12 +100,19 @@ class Search extends Component {
     this.props.updateSearchTerm( value );
   };
 
+  handleRadioChange = ( e, { value } ) => {
+    this.setState( {
+      selectedRadio: value,
+    } );
+  };
+
   handleSubmit = async () => {
     const { filter, search } = this.props;
-    const query = fetchQueryString( { ...filter, term: search.term, language: this.state.locale } );
+    const query = fetchQueryString( { ...filter, term: search.term, language: this.state.locale, postTypes: this.state.selectedRadio } );
+
     this.props.router.push( {
       pathname: '/results',
-      query
+      query,
     } );
   };
 
@@ -93,7 +130,7 @@ class Search extends Component {
   maybeLoadLanguages() {
     const {
       router: { pathname },
-      languages: { list }
+      languages: { list },
     } = this.props;
 
     if ( pathname.indexOf( 'admin' ) === -1 && !list.length ) {
@@ -103,6 +140,7 @@ class Search extends Component {
 
   render() {
     let inputProps = {};
+
     if ( this.state.direction === 'left' ) {
       inputProps = { className: 'search_input' };
     } else {
@@ -112,7 +150,7 @@ class Search extends Component {
     let langOptions = this.props.languages.list.map( l => ( {
       key: l.key,
       text: l.display_name,
-      value: l.key
+      value: l.key,
     } ) );
 
     if ( langOptions.length === 0 ) langOptions = [{ key: 'en-us', text: 'English', value: 'en-us' }];
@@ -120,6 +158,26 @@ class Search extends Component {
     return (
       <section className="search_bar">
         <Form onSubmit={ this.handleSubmit }>
+          {isUser === true && this.state.displayRadioGroup === true && (
+            <Form.Group inline>
+              <div className="radio-flex">
+                <Radio
+                  label="Articles and Videos"
+                  name="radioGroup"
+                  value={ multipleTypes }
+                  checked={ this.state.selectedRadio === multipleTypes }
+                  onChange={ this.handleRadioChange }
+                />
+                <Radio
+                  label="Press Materials"
+                  name="radioGroup"
+                  value="document"
+                  checked={ this.state.selectedRadio === 'document' }
+                  onChange={ this.handleRadioChange }
+                />
+              </div>
+            </Form.Group>
+          )}
           <Input
             label={ (
               <Dropdown
@@ -152,7 +210,9 @@ class Search extends Component {
 const mapStateToProps = state => ( {
   search: state.search,
   languages: state.global.languages,
-  filter: state.filter
+  filter: state.filter,
+  selectedRadio: state.selectedRadio,
+  displayRadioGroup: state.displayRadioGroup,
 } );
 
 Search.propTypes = {
@@ -161,7 +221,7 @@ Search.propTypes = {
   search: PropTypes.object,
   languages: PropTypes.object,
   loadLanguages: PropTypes.func,
-  updateSearchTerm: PropTypes.func
+  updateSearchTerm: PropTypes.func,
 };
 
 export default withRouter( connect( mapStateToProps, actions )( Search ) );
