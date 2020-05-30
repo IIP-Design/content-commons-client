@@ -7,10 +7,10 @@ import { Loader, Message } from 'semantic-ui-react';
 import Packages from './Packages/Packages';
 import Recents from './Recents/Recents';
 import Priorities from './Priorities/Priorities';
+import { getFeatured } from './utils';
 
 import { FeaturedContext, featuredReducer } from 'context/featuredContext';
 import { isDataStale } from 'lib/utils';
-import { normalizeItem } from 'lib/elastic/parser';
 import { typePrioritiesRequest, typeRecentsRequest, typeRequestDesc } from 'lib/elastic/api';
 
 const Featured = ( { data, user } ) => {
@@ -22,46 +22,6 @@ const Featured = ( { data, user } ) => {
   const isStale = state?.featured?.lastLoad ? isDataStale( state.featured.lastLoad ) : true;
 
   useEffect( () => {
-    const getFeatured = async array => {
-      await Promise.all( array )
-        .then( resArr => {
-          const priorities = {};
-          const recents = {};
-          let items;
-
-          resArr.forEach( res => {
-            if ( res?.data?.hits?.hits ) {
-              items = res.data.hits.hits.map( item => normalizeItem( item, res.locale ) );
-
-              switch ( res.component ) {
-                case 'priorities':
-                  priorities[res.term] = items;
-                  break;
-                case 'packages':
-                case 'recents':
-                  recents[res.postType] = items;
-                  break;
-                default:
-                  break;
-              }
-            }
-          } );
-
-          dispatch( {
-            type: 'LOAD_FEATURED_SUCCESS',
-            payload: {
-              priorities,
-              recents,
-            },
-          } );
-        } )
-        .catch( err => {
-          dispatch( {
-            type: 'LOAD_FEATURED_FAILED',
-          } );
-        } );
-    };
-
     if ( data && isStale ) {
       dispatch( { type: 'LOAD_FEATURED_PENDING' } );
 
@@ -101,7 +61,7 @@ const Featured = ( { data, user } ) => {
         }
       } );
 
-      getFeatured( promiseArr );
+      getFeatured( promiseArr, dispatch );
     }
   }, [
     data, isStale, user,
@@ -137,7 +97,9 @@ const Featured = ( { data, user } ) => {
 
   if ( state?.loading ) {
     return (
-      <Loader active={ state?.loading } />
+      <div style={ { padding: '5rem 2rem', textAlign: 'center' } }>
+        <Loader active={ state?.loading } />
+      </div>
     );
   }
 
