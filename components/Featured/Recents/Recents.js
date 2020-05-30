@@ -19,7 +19,7 @@ const Recents = ( { postType } ) => {
 
   const recents = state?.recents?.[postType] ? state.recents[postType] : [];
 
-  if ( recents.length < 3 ) return <div />;
+  if ( recents.length < 3 ) return null;
 
   return (
     <section className="ui container recents">

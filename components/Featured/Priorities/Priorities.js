@@ -44,7 +44,7 @@ const Priorities = ( { categories, label, term } ) => {
 
   const priorities = state?.priorities?.[term] ? state.priorities[term] : [];
 
-  if ( priorities.length < 3 ) return <div />;
+  if ( priorities.length < 3 ) return null;
 
   const categoryIds = categories?.map( cat => cat.key );
 
@@ -68,7 +68,6 @@ const Priorities = ( { categories, label, term } ) => {
           >
             <a className="browseAll">Browse All</a>
           </Link>
-
         </div>
         <Grid columns="equal" stackable stretched>
           <Grid.Column width={ 8 } className="prioritiesgridleft">
