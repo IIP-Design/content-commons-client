@@ -1,4 +1,4 @@
-import { getCategories } from './utils';
+import { getFeatured, getCategories } from './utils';
 import { manyCategoriesItem, oneCategoriesItem, twoCategoriesItem } from './mocks';
 
 describe( 'getCategories', () => {
@@ -20,6 +20,21 @@ describe( 'getCategories', () => {
     const categories = getCategories( manyCategoriesItem );
 
     expect( manyCategoriesItem.categories.length ).toEqual( 4 );
+    expect( categories.split( ' · ' ).length ).toEqual( 3 );
     expect( categories ).toEqual( 'geography · global issues · democracy & civil society' );
+  } );
+} );
+
+describe( 'getFeatured', () => {
+  const promise1 = new Promise( ( resolve, reject ) => { setTimeout( () => { resolve( [{ data: { hits: { hits: [] } } }] ); } ); }, 0 );
+  const promise2 = new Promise( ( resolve, reject ) => { setTimeout( () => { resolve( [{ data: { hits: { hits: [] } } }] ); } ); }, 0 );
+
+  it( '', () => {
+    const promises = [promise1, promise2];
+    const dispatch = jest.fn();
+
+    getFeatured( promises, dispatch );
+
+    expect( dispatch ).toHaveBeenCalledTimes( 1 );
   } );
 } );

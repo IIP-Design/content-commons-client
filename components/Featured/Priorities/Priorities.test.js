@@ -1,286 +1,120 @@
-import { shallow } from 'enzyme';
-import { PrioritiesUnconnected } from './Priorities';
+import { mount } from 'enzyme';
 
-const propsArray = [
-  {
-    featured: {
-      loading: false,
-      error: false
-    },
-    priorities: [
-      {
-        thumbnail: 'https://www.thumbnail.com/image1.jpg',
-        icon: 'https://www.icon.com/image1.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The First Title',
-        type: 'video',
-      },
-      {
-        thumbnail: 'https://www.thumbnail.com/image2.jpg',
-        icon: 'https://www.icon.com/image2.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The Second Title',
-        type: 'post'
-      },
-      {
-        thumbnail: 'https://www.thumbnail.com/image3.jpg',
-        icon: 'https://www.icon.com/image3.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' }
-        ],
-        title: 'The Third Title',
-        type: 'video'
-      }
-    ],
-    categories: [
-      { key: 'MlqWJ2MBNxuyMP4E6Cj2', display_name: 'Democracy' },
-      { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' }
-    ],
-    term: 'test',
-    label: 'Test Label',
-    locale: 'en-us'
-  },
-  {
-    featured: {
-      loading: false,
-      error: false
-    },
-    priorities: [
-      {
-        thumbnail: 'https://www.thumbnail.com/image1.jpg',
-        icon: 'https://www.icon.com/image1.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The First Title',
-        type: 'post'
-      },
-      {
-        thumbnail: 'https://www.thumbnail.com/image2.jpg',
-        icon: 'https://www.icon.com/image2.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The Second Title',
-        type: 'video'
-      },
-      {
-        thumbnail: 'https://www.thumbnail.com/image3.jpg',
-        icon: 'https://www.icon.com/image3.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' }
-        ],
-        title: 'The Third Title',
-        type: 'post'
-      }
-    ],
-    categories: [
-      { key: 'MlqWJ2MBNxuyMP4E6Cj2', display_name: 'Democracy' },
-      { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' }
-    ],
-    term: 'test',
-    label: 'Test Label',
-    locale: 'en-us'
-  },
-  {
-    featured: {
-      loading: false,
-      error: true
-    },
-    priorities: [
-      {
-        thumbnail: 'https://www.thumbnail.com/image1.jpg',
-        icon: 'https://www.icon.com/image1.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The First Title',
-        type: 'post'
-      },
-      {
-        thumbnail: 'https://www.thumbnail.com/image2.jpg',
-        icon: 'https://www.icon.com/image2.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The Second Title',
-        type: 'video'
-      },
-      {
-        thumbnail: 'https://www.thumbnail.com/image3.jpg',
-        icon: 'https://www.icon.com/image3.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' }
-        ],
-        title: 'The Third Title',
-        type: 'post'
-      }
-    ],
-    categories: [
-      { key: 'MlqWJ2MBNxuyMP4E6Cj2', display_name: 'Democracy' },
-      { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' }
-    ],
-    term: 'test',
-    label: 'Test Label',
-    locale: 'en-us'
-  },
-  {
-    featured: {
-      loading: false,
-      error: false
-    },
-    priorities: [
-      {
-        thumbnail: 'https://www.thumbnail.com/image1.jpg',
-        icon: 'https://www.icon.com/image1.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The First Title',
-        type: 'post'
-      },
-      {
-        thumbnail: 'https://www.thumbnail.com/image2.jpg',
-        icon: 'https://www.icon.com/image2.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The Second Title',
-        type: 'video'
-      }
-    ],
-    categories: [
-      { key: 'MlqWJ2MBNxuyMP4E6Cj2', display_name: 'Democracy' },
-      { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' }
-    ],
-    term: 'test',
-    label: 'Test Label',
-    locale: 'en-us'
-  }
-];
+import Priorities from './Priorities';
+import { FeaturedContext } from 'context/featuredContext';
 
-jest.mock( 'components/Video/Video', () => 'Video' );
-jest.mock( 'components/Post/Post', () => 'Post' );
+import { mockFeaturedContext, mockNoFeaturedContext, mockPrioritiesProps } from '../mocks';
 
-propsArray.forEach( props => {
-  const Component = <PrioritiesUnconnected { ...props } />;
+jest.mock( 'components/SignedUrlImage/SignedUrlImage', () => 'signed-url-image' );
+jest.mock( 'next/config', () => () => ( {
+  publicRuntimeConfig: {},
+} ) );
 
-  describe( '<PrioritiesUnconnected />', () => {
-    it( 'renders without crashing', () => {
-      const wrapper = shallow( Component );
-      expect( wrapper.exists() ).toEqual( true );
+describe( '<Priorities />', () => {
+  const Component = (
+    <FeaturedContext.Provider value={ { state: mockFeaturedContext } }>
+      <Priorities { ...mockPrioritiesProps } />
+    </FeaturedContext.Provider>
+  );
+
+  it( 'renders a priorities section without crashing', () => {
+    const wrapper = mount( Component );
+    const section = wrapper.find( 'section.priorities' );
+
+    expect( wrapper.exists() ).toEqual( true );
+    expect( section.exists() ).toEqual( true );
+  } );
+
+  it( 'has a header that reads "Department Priority: [Term]"', () => {
+    const wrapper = mount( Component );
+    const header = wrapper.find( 'Header' );
+
+    expect( header.exists() ).toEqual( true );
+    expect( header.find( 'h1' ).text() )
+      .toEqual( `Department Priority: ${mockPrioritiesProps.label}` );
+  } );
+
+  it( 'includes a Browse All link with a link to the search results for the provided term', () => {
+    const wrapper = mount( Component );
+    const link = wrapper.find( 'Link' );
+
+    expect( link.exists() ).toEqual( true );
+    expect( link.find( 'a' ).text() ).toBe( 'Browse All' );
+    expect( link.find( 'a' ).hasClass( 'browseAll' ) ).toEqual( true );
+    expect( link.prop( 'href' ).pathname ).toBe( '/results' );
+    expect( link.prop( 'href' ).query.sortBy ).toEqual( 'relevance' );
+    expect( link.prop( 'href' ).query.term ).toEqual( mockPrioritiesProps.term );
+    expect( link.prop( 'href' ).query.categories ).toEqual( mockPrioritiesProps.categories.map( cat => cat.key ) );
+  } );
+
+  it( 'renders an image for the initial item next to two items with metadata', () => {
+    const wrapper = mount( Component );
+    const gridColumns = wrapper.find( 'GridColumn' );
+
+    expect( gridColumns.length ).toEqual( 2 );
+
+    const primary = gridColumns.first().find( 'Modal' );
+
+    expect( primary.find( 'signed-url-image' ).exists() ).toEqual( true );
+    expect( primary.find( 'signed-url-image' ).prop( 'url' ) )
+      .toEqual( mockFeaturedContext.priorities[mockPrioritiesProps.term][0].thumbnail );
+
+    const itemGroup = gridColumns.at( 1 ).find( 'ItemGroup Modal' );
+
+    expect( itemGroup.exists() ).toEqual( true );
+    expect( itemGroup.length ).toEqual( 2 );
+
+    itemGroup.forEach( ( item, i ) => {
+      expect( item.find( 'signed-url-image' ).prop( 'url' ) )
+        .toEqual( mockFeaturedContext.priorities[mockPrioritiesProps.term][i + 1].thumbnail );
+
+      const header = item.find( 'div.header' );
+
+      expect( header.text() ).toEqual( mockFeaturedContext.priorities[mockPrioritiesProps.term][i + 1].title );
+      expect( item.find( 'span.categories' ).exists() ).toEqual( true );
+      expect( item.find( 'span.date' ).exists() ).toEqual( true );
     } );
-    it( 'correctly displays error message if one exists', () => {
-      const wrapper = shallow( Component );
-      const errorText = wrapper.find( 'Message' );
-      if ( props.featured.error ) {
-        expect( errorText.exists() ).toEqual( true );
-      } else {
-        expect( errorText.exists() ).toEqual( false );
-      }
-    } );
-    if ( props.priorities.length < 3 ) {
-      it( 'renders an empty div when less than 3 entries', () => {
-        const wrapper = shallow( Component );
-        expect( wrapper.html() ).toBe( '<div></div>' );
-      } );
-    } else if ( props.priorities.length >= 3 ) {
-      it( 'renders component as a section', () => {
-        const wrapper = shallow( Component );
-        expect( wrapper.name() ).toEqual( 'section' );
-      } );
-      it( 'renders a section with classname priorities', () => {
-        const wrapper = shallow( Component );
-        expect( wrapper.hasClass( 'priorities' ) ).toEqual( true );
-      } );
-      it( 'renders the correct postType component', () => {
-        const wrapper = shallow( Component );
-        const modalContent = wrapper.find( 'ModalContent' );
+  } );
 
-        modalContent.forEach( ( mc, i ) => {
-          const component = mc.find( props.priorities[i].type.charAt( 0 ).toUpperCase() + props.priorities[i].type.slice( 1 ) );
+  it( 'does not render a priorities section when the provided term is not included the prioritie context item', () => {
+    const newProps = {
+      ...mockPrioritiesProps,
+      term: 'invalid',
+    };
 
-          expect( mc.exists() ).toEqual( true );
-          expect( component.exists() ).toEqual( true );
-          expect( mc.childAt( 0 ) ).toEqual( component );
-        } );
-      } );
-      it( 'renders the correct header', () => {
-        const wrapper = shallow( Component );
-        const header = wrapper.find( 'Header' );
+    const wrapper = mount(
+      <FeaturedContext.Provider value={ { state: mockNoFeaturedContext } }>
+        <Priorities { ... newProps } />
+      </FeaturedContext.Provider>,
+    );
 
-        expect( header.exists() ).toEqual( true );
-        expect( header.childAt( 0 ).text() ).toBe( `Department Priority: ${props.label}` );
-      } );
-      it( 'renders two items on the right starting at index 1', () => {
-        const wrapper = shallow( Component );
-        const items = wrapper.find( 'ItemGroup Modal' );
+    const section = wrapper.find( 'section' );
 
-        expect( items.exists() ).toEqual( true );
-        expect( items.length ).toEqual( 2 );
-        items.forEach( ( item, i ) => {
-          const trigger = item.prop( 'trigger' );
-          if ( i === 0 ) {
-            expect( shallow( trigger ).contains( 'The Second Title' ) ).toEqual( true );
-          } else {
-            expect( shallow( trigger ).contains( 'The Third Title' ) ).toEqual( true );
-          }
-        } );
-      } );
-      it( 'renders no more than 3 categories', () => {
-        const wrapper = shallow( Component );
-        const items = wrapper.find( 'ItemGroup Modal' );
+    expect( wrapper.exists() ).toEqual( true );
+    expect( wrapper.children().length ).toEqual( 0 );
+    expect( section.exists() ).toEqual( false );
+  } );
+} );
 
-        expect( items.exists() ).toEqual( true );
-        items.forEach( item => {
-          const trigger = item.prop( 'trigger' );
-          expect( shallow( trigger ).find( 'span.categories' ).exists() ).toEqual( true );
-          expect( shallow( trigger ).find( 'span.categories' ).text().split( ' · ' ).length ).toBeLessThanOrEqual( 3 );
-        } );
-      } );
-      it( 'renders the Browse All link and the correct href', () => {
-        const wrapper = shallow( Component );
-        const link = wrapper.find( 'Link' );
+describe( '<Priorities /> with insufficient items', () => {
+  const Component = (
+    <FeaturedContext.Provider value={ { state: mockNoFeaturedContext } }>
+      <Priorities { ...mockPrioritiesProps } />
+    </FeaturedContext.Provider>
+  );
 
-        expect( link.exists() ).toEqual( true );
-        expect( link.find( 'a' ).text() ).toBe( 'Browse All' );
-        expect( link.find( 'a' ).hasClass( 'browseAll' ) ).toEqual( true );
-        expect( link.prop( 'href' ).pathname ).toBe( '/results' );
-        link.prop( 'href' ).query.term.forEach( t => {
-          expect( t ).toBe( props.term );
-        } );
-      } );
-    }
+  it( 'does not crash when there are insufficient items', () => {
+    const wrapper = mount( Component );
+
+    expect( wrapper.exists() ).toEqual( true );
+  } );
+
+  it( 'does not render a priorities section when when a priority contains fewer than three items', () => {
+    const wrapper = mount( Component );
+
+    const section = wrapper.find( 'section.priorities' );
+
+    expect( wrapper.children().length ).toEqual( 0 );
+    expect( section.exists() ).toEqual( false );
   } );
 } );

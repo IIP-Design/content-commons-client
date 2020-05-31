@@ -1,288 +1,136 @@
-import { shallow } from 'enzyme';
-import { RecentsUnconnected } from './Recents';
+import { mount } from 'enzyme';
 
-const propsArray = [
-  {
-    featured: {
-      loading: false,
-      error: false
-    },
-    recents: [
-      {
-        thumbnail: 'https://www.thumbnail.com/image1.jpg',
-        icon: 'https://www.icon.com/image1.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The First Title',
-        type: 'video'
-      },
-      {
-        thumbnail: 'https://www.thumbnail.com/image2.jpg',
-        icon: 'https://www.icon.com/image2.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The Second Title',
-        type: 'video'
-      },
-      {
-        thumbnail: 'https://www.thumbnail.com/image3.jpg',
-        icon: 'https://www.icon.com/image3.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' }
-        ],
-        title: 'The Third Title',
-        type: 'video'
-      }
-    ],
-    postType: 'video',
-    postTypeLabels: [
-      { key: 'video', display_name: 'Video' },
-      { key: 'post', display_name: 'Article' }
-    ],
-    label: 'Test Label'
-  },
-  {
-    featured: {
-      loading: false,
-      error: false
-    },
-    recents: [
-      {
-        thumbnail: 'https://www.thumbnail.com/image1.jpg',
-        icon: 'https://www.icon.com/image1.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The First Title',
-        type: 'post'
-      },
-      {
-        thumbnail: 'https://www.thumbnail.com/image2.jpg',
-        icon: 'https://www.icon.com/image2.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The Second Title',
-        type: 'post'
-      },
-      {
-        thumbnail: 'https://www.thumbnail.com/image3.jpg',
-        icon: 'https://www.icon.com/image3.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' }
-        ],
-        title: 'The Third Title',
-        type: 'post'
-      }
-    ],
-    postType: 'post',
-    postTypeLabels: [
-      { key: 'video', display_name: 'Video' },
-      { key: 'post', display_name: 'Article' }
-    ],
-    label: 'Test Label'
-  },
-  {
-    featured: {
-      loading: false,
-      error: true
-    },
-    recents: [
-      {
-        thumbnail: 'https://www.thumbnail.com/image1.jpg',
-        icon: 'https://www.icon.com/image1.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The First Title',
-        type: 'post'
-      },
-      {
-        thumbnail: 'https://www.thumbnail.com/image2.jpg',
-        icon: 'https://www.icon.com/image2.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The Second Title',
-        type: 'post'
-      },
-      {
-        thumbnail: 'https://www.thumbnail.com/image3.jpg',
-        icon: 'https://www.icon.com/image3.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' }
-        ],
-        title: 'The Third Title',
-        type: 'post'
-      }
-    ],
-    postType: 'post',
-    postTypeLabels: [
-      { key: 'video', display_name: 'Video' },
-      { key: 'post', display_name: 'Article' }
-    ],
-    label: 'Test Label'
-  },
-  {
-    featured: {
-      loading: false,
-      error: false
-    },
-    recents: [
-      {
-        thumbnail: 'https://www.thumbnail.com/image1.jpg',
-        icon: 'https://www.icon.com/image1.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The First Title',
-        type: 'post'
-      },
-      {
-        thumbnail: 'https://www.thumbnail.com/image2.jpg',
-        icon: 'https://www.icon.com/image2.jpg',
-        categories: [
-          { id: 'MlqWJ2MBNxuyMP4E6Cj2', name: 'democracy' },
-          { id: 'lLWWJ2MBCLPpGnLD5z8X', name: 'human rights' },
-          { id: 'crWWJ2MBCLPpGnLD3D8Y', name: 'transparency' },
-          { id: 'mbWWJ2MBCLPpGnLD6D-X', name: 'media & press' }
-        ],
-        title: 'The Second Title',
-        type: 'post'
-      }
-    ],
-    postType: 'post',
-    postTypeLabels: [
-      { key: 'video', display_name: 'Video' },
-      { key: 'post', display_name: 'Article' }
-    ],
-    label: 'Test Label'
-  },
-];
+import Recents from './Recents';
+import { FeaturedContext } from 'context/featuredContext';
+import { capitalizeFirst } from 'lib/utils';
 
-jest.mock( 'components/Video/Video', () => 'Video' );
-jest.mock( 'components/Post/Post', () => 'Post' );
+import { mockFeaturedContext, mockNoFeaturedContext } from '../mocks';
 
-propsArray.forEach( props => {
-  const Component = <RecentsUnconnected { ...props } />;
+jest.mock( 'components/SignedUrlImage/SignedUrlImage', () => 'signed-url-image' );
+jest.mock( 'next/config', () => () => ( {
+  publicRuntimeConfig: {},
+} ) );
 
-  describe( '<RecentsUnconnected />', () => {
-    it( 'renders without crashing', () => {
-      const wrapper = shallow( Component );
+const getPostLabel = type => {
+  switch ( type ) {
+    case 'courses':
+    case 'page':
+    case 'package':
+      return '';
+    case 'post':
+      return 'Article';
+    case 'document':
+      return 'Press Releases and Guidance';
+    default:
+      return typeof type === 'string' ? capitalizeFirst( type ) : '';
+  }
+};
+
+describe( '<Recents />', () => {
+  const returnComponent = type => (
+    <FeaturedContext.Provider value={ { state: mockFeaturedContext } }>
+      <Recents postType={ type } />
+    </FeaturedContext.Provider>
+  );
+
+  const types = [
+    'graphic', 'post', 'video',
+  ];
+
+  it( 'renders a recents section without crashing', () => {
+    types.forEach( type => {
+      const wrapper = mount( returnComponent( type ) );
+
+      const section = wrapper.find( 'section.recents' );
+
+      expect( wrapper.exists() ).toEqual( true );
+      expect( section.exists() ).toEqual( true );
+    } );
+  } );
+
+  it.skip( 'the header reads "Latest [Content Type]"', () => {
+    types.forEach( type => {
+      const wrapper = mount( returnComponent( type ) );
+      const header = wrapper.find( 'Header' );
+
+      expect( header.exists() ).toEqual( true );
+      expect( header.find( 'h1' ).text() ).toEqual( `Latest ${getPostLabel( type )}s` );
+    } );
+  } );
+
+  it( 'includes a Browse All link with a link to the provided content type search results', () => {
+    types.forEach( type => {
+      const wrapper = mount( returnComponent( type ) );
+      const link = wrapper.find( 'Link' );
+
+      expect( link.exists() ).toEqual( true );
+      expect( link.find( 'a' ).text() ).toBe( 'Browse All' );
+      expect( link.find( 'a' ).hasClass( 'browseAll' ) ).toEqual( true );
+      expect( link.prop( 'href' ).pathname ).toBe( '/results' );
+      expect( link.prop( 'href' ).query.postTypes[0] ).toEqual( type );
+      expect( link.prop( 'href' ).query.sortBy ).toEqual( 'published' );
+    } );
+  } );
+
+  it( 'renders an image for the initial item next to two items with metadata', () => {
+    types.forEach( type => {
+      const wrapper = mount( returnComponent( type ) );
+      const gridColumns = wrapper.find( 'GridColumn' );
+
+      expect( gridColumns.length ).toEqual( 2 );
+
+      const primary = gridColumns.first().find( 'Modal' );
+
+      expect( primary.find( 'signed-url-image' ).exists() ).toEqual( true );
+      expect( primary.find( 'signed-url-image' ).prop( 'url' ) )
+        .toEqual( mockFeaturedContext.recents[type][0].thumbnail );
+
+      const itemGroup = gridColumns.at( 1 ).find( 'ItemGroup Modal' );
+
+      expect( itemGroup.exists() ).toEqual( true );
+      expect( itemGroup.length ).toEqual( 2 );
+
+      itemGroup.forEach( ( item, i ) => {
+        expect( item.find( 'signed-url-image' ).prop( 'url' ) )
+          .toEqual( mockFeaturedContext.recents[type][i + 1].thumbnail );
+
+        const header = item.find( 'div.header' );
+
+        expect( header.text() ).toEqual( mockFeaturedContext.recents[type][i + 1].title );
+        expect( item.find( 'span.categories' ).exists() ).toEqual( true );
+        expect( item.find( 'span.date' ).exists() ).toEqual( true );
+      } );
+    } );
+  } );
+} );
+
+describe( '<Recents /> with insufficient items', () => {
+  const returnComponent = type => (
+    <FeaturedContext.Provider value={ { state: mockNoFeaturedContext } }>
+      <Recents postType={ type } />
+    </FeaturedContext.Provider>
+  );
+
+  const types = [
+    'graphic', 'post', 'video',
+  ];
+
+  it( 'does not crash when there are insufficient items', () => {
+    types.forEach( type => {
+      const wrapper = mount( returnComponent( type ) );
 
       expect( wrapper.exists() ).toEqual( true );
     } );
-    it( 'correctly displays error message if one exists', () => {
-      const wrapper = shallow( Component );
-      const errorText = wrapper.find( 'Message' );
+  } );
 
-      if ( props.featured.error ) {
-        expect( errorText.exists() ).toEqual( true );
-      } else {
-        expect( errorText.exists() ).toEqual( false );
-      }
+  it( 'does not render a recents section when specified type does not exist or contains fewer than three items', () => {
+    types.forEach( type => {
+      const wrapper = mount( returnComponent( type ) );
+
+      const section = wrapper.find( 'section.recents' );
+
+      expect( wrapper.children().length ).toEqual( 0 );
+      expect( section.exists() ).toEqual( false );
     } );
-    if ( props.recents.length < 3 ) {
-      it( 'renders an empty div when less than 3 entries', () => {
-        const wrapper = shallow( Component );
-
-        expect( wrapper.html() ).toBe( '<div></div>' );
-      } );
-    } else if ( props.recents.length >= 3 ) {
-      it( 'renders component as a section', () => {
-        const wrapper = shallow( Component );
-
-        expect( wrapper.name() ).toEqual( 'section' );
-      } );
-      it( 'renders a section with classname recents', () => {
-        const wrapper = shallow( Component );
-
-        expect( wrapper.hasClass( 'recents' ) ).toEqual( true );
-      } );
-      it( 'renders the correct postType component', () => {
-        const wrapper = shallow( Component );
-        const modalContent = wrapper.find( 'ModalContent' );
-
-        modalContent.forEach( mc => {
-          const component = mc.find( props.postType.charAt( 0 ).toUpperCase() + props.postType.slice( 1 ) );
-
-          expect( mc.exists() ).toEqual( true );
-          expect( component.exists() ).toEqual( true );
-          expect( mc.childAt( 0 ) ).toEqual( component );
-        } );
-      } );
-      it( 'renders the correct header', () => {
-        const wrapper = shallow( Component );
-        const header = wrapper.find( 'Header' );
-        const postTypeLabel = props.postTypeLabels.find( type => type.key === props.postType );
-
-        expect( header.exists() ).toEqual( true );
-        expect( header.childAt( 0 ).text() ).toBe( `Latest ${postTypeLabel.display_name}s` );
-      } );
-      it( 'renders two items on the right starting at index 1', () => {
-        const wrapper = shallow( Component );
-        const items = wrapper.find( 'ItemGroup Modal' );
-
-        expect( items.exists() ).toEqual( true );
-        expect( items.length ).toEqual( 2 );
-        items.forEach( ( item, i ) => {
-          const trigger = item.prop( 'trigger' );
-          if ( i === 0 ) {
-            expect( shallow( trigger ).contains( 'The Second Title' ) ).toEqual( true );
-          } else {
-            expect( shallow( trigger ).contains( 'The Third Title' ) ).toEqual( true );
-          }
-        } );
-      } );
-      it( 'renders no more than 3 categories', () => {
-        const wrapper = shallow( Component );
-        const items = wrapper.find( 'ItemGroup Modal' );
-
-        expect( items.exists() ).toEqual( true );
-        items.forEach( item => {
-          const trigger = item.prop( 'trigger' );
-          expect( shallow( trigger ).find( 'span.categories' ).exists() ).toEqual( true );
-          expect( shallow( trigger ).find( 'span.categories' ).text().split( ' · ' ).length ).toBeLessThanOrEqual( 3 );
-        } );
-      } );
-      it( 'renders the Browse All link and the correct href', () => {
-        const wrapper = shallow( Component );
-        const link = wrapper.find( 'Link' );
-
-        expect( link.exists() ).toEqual( true );
-        expect( link.find( 'a' ).text() ).toBe( 'Browse All' );
-        expect( link.find( 'a' ).hasClass( 'browseAll' ) ).toEqual( true );
-        expect( link.prop( 'href' ).pathname ).toBe( '/results' );
-        link.prop( 'href' ).query.postTypes.forEach( postType => {
-          expect( postType ).toBe( props.postType );
-        } );
-      } );
-    }
   } );
 } );

@@ -19,7 +19,7 @@ const Featured = ( { data, user } ) => {
 
   const [state, dispatch] = useReducer( featuredReducer );
 
-  const isStale = state?.featured?.lastLoad ? isDataStale( state.featured.lastLoad ) : true;
+  const isStale = state?.lastLoad ? isDataStale( state.lastLoad ) : true;
 
   useEffect( () => {
     if ( data && isStale ) {
