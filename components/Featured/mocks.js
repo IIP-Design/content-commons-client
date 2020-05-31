@@ -390,45 +390,82 @@ export const mockFeaturedData = [
   },
 ];
 
-export const oneCategoriesItem = {
-  categories: [
-    {
-      id: 'Rgay9HABowNfX05-obIk',
-      name: 'geography',
-    },
-  ],
+// Mock data for getCategories util
+
+const category1 = {
+  id: 'Rgay9HABowNfX05-obIk',
+  name: 'geography',
 };
 
-export const twoCategoriesItem = {
-  categories: [
-    {
-      id: 'Rgay9HABowNfX05-obIk',
-      name: 'geography',
-    },
-    {
-      id: 'Sway9HABowNfX05-obJg',
-      name: 'global issues',
-    },
-  ],
+const category2 = {
+  id: 'Sway9HABowNfX05-obJg',
+  name: 'global issues',
 };
 
-export const manyCategoriesItem = {
-  categories: [
-    {
-      id: 'Rgay9HABowNfX05-obIk',
-      name: 'geography',
-    },
-    {
-      id: 'Sway9HABowNfX05-obJg',
-      name: 'global issues',
-    },
-    {
-      id: 'nn029dqwnU1dbl-ops2s',
-      name: 'democracy & civil society',
-    },
-    {
-      id: '79HABshsowNfHABowNbJg',
-      name: 'animals',
-    },
-  ],
+const category34 = [
+  {
+    id: 'nn029dqwnU1dbl-ops2s',
+    name: 'democracy & civil society',
+  },
+  {
+    id: '79HABshsowNfHABowNbJg',
+    name: 'animals',
+  },
+];
+
+export const oneCategoriesItem = { categories: [category1] };
+
+export const twoCategoriesItem = { categories: [category1, category2] };
+
+export const manyCategoriesItem = { categories: [
+  category1, category2, ...category34,
+] };
+
+// Mock data for getFeatured util
+const mockPromiseData1 = {
+  categories: [],
+  component: 'priorities',
+  data: { hits: { hits: [{}] } },
+  key: '7b50429f-0f4a-4bc2-945a-ea31c794b779',
+  label: 'Coronavirus (COVID-19)',
+  locale: 'en-us',
+  term: 'coronavirus covid',
+};
+
+const mockPromiseData2 = {
+  component: 'recents',
+  data: { hits: { hits: [{}] } },
+  key: 'eb3b4db7-d200-4814-a13c-4fd569ba2a4d',
+  locale: 'en-us',
+  postType: 'video',
+};
+
+const mockPromiseData3 = {
+  component: 'packages',
+  data: { hits: { hits: [{}] } },
+  key: '6ca03be8-37ef-4be8-8156-824120f61b57',
+  locale: 'en-us',
+  postType: 'package',
+};
+
+const mockPromiseData4 = {
+  component: 'inValidRequest',
+  data: { hits: { hits: [{}] } },
+  key: '6cef-4be8-815a0573be8-376-824120f61b',
+  locale: 'en-us',
+  postType: 'invalid',
+};
+
+const promise1 = new Promise( ( resolve, reject ) => { setTimeout( () => { resolve( mockPromiseData1 ); } ); }, 0 );
+const promise2 = new Promise( ( resolve, reject ) => { setTimeout( () => { resolve( mockPromiseData2 ); } ); }, 0 );
+const promise3 = new Promise( ( resolve, reject ) => { setTimeout( () => { resolve( mockPromiseData3 ); } ); }, 0 );
+const promise4 = new Promise( ( resolve, reject ) => { setTimeout( () => { resolve( mockPromiseData4 ); } ); }, 0 );
+const promise5 = new Promise( ( resolve, reject ) => { setTimeout( () => { reject( new Error( 'error' ) ); } ); }, 0 );
+
+export const mockPromises = {
+  promise1,
+  promise2,
+  promise3,
+  promise4,
+  promise5,
 };
