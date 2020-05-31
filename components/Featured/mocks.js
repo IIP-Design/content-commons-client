@@ -456,10 +456,10 @@ const mockPromiseData4 = {
   postType: 'invalid',
 };
 
-const promise1 = new Promise( ( resolve, reject ) => { setTimeout( () => { resolve( mockPromiseData1 ); } ); }, 0 );
-const promise2 = new Promise( ( resolve, reject ) => { setTimeout( () => { resolve( mockPromiseData2 ); } ); }, 0 );
-const promise3 = new Promise( ( resolve, reject ) => { setTimeout( () => { resolve( mockPromiseData3 ); } ); }, 0 );
-const promise4 = new Promise( ( resolve, reject ) => { setTimeout( () => { resolve( mockPromiseData4 ); } ); }, 0 );
+const promise1 = new Promise( resolve => { setTimeout( () => { resolve( mockPromiseData1 ); } ); }, 0 );
+const promise2 = new Promise( resolve => { setTimeout( () => { resolve( mockPromiseData2 ); } ); }, 0 );
+const promise3 = new Promise( resolve => { setTimeout( () => { resolve( mockPromiseData3 ); } ); }, 0 );
+const promise4 = new Promise( resolve => { setTimeout( () => { resolve( mockPromiseData4 ); } ); }, 0 );
 const promise5 = new Promise( ( resolve, reject ) => { setTimeout( () => { reject( new Error( 'error' ) ); } ); }, 0 );
 
 export const mockPromises = {
