@@ -1,5 +1,6 @@
-import Video from 'components/Video/Video';
+import GraphicProject from 'components/GraphicProject/GraphicProject';
 import Post from 'components/Post/Post';
+import Video from 'components/Video/Video';
 
 /**
  * Check content type of an item and passes in the correct component to the modal
@@ -10,6 +11,9 @@ export const getModalContent = item => {
 
   if ( item ) {
     switch ( item.type ) {
+      case 'graphic':
+        return <GraphicProject item={ item } />;
+
       case 'video':
         return <Video item={ item } />;
 

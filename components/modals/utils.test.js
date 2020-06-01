@@ -1,7 +1,12 @@
 import { getModalContent } from './utils';
 
-jest.mock( 'components/Video/Video', () => 'video' );
+jest.mock( 'components/GraphicProject/GraphicProject', () => 'graphic' );
 jest.mock( 'components/Post/Post', () => 'post' );
+jest.mock( 'components/Video/Video', () => 'video' );
+
+jest.mock( 'next/config', () => () => ( {
+  publicRuntimeConfig: {},
+} ) );
 
 afterAll( () => { jest.restoreAllMocks(); } );
 
@@ -24,7 +29,16 @@ describe( 'getModalContent', () => {
     expect( result.props ).toEqual( { item } );
   } );
 
-  it( 'returns the no content message when item type is neither "post" nor "video"', () => {
+  it( 'returns a GraphicProject components when the item type is "graphic"', () => {
+    const item = { type: 'graphic' };
+
+    const result = getModalContent( item );
+
+    expect( result.type ).toEqual( 'graphic' );
+    expect( result.props ).toEqual( { item } );
+  } );
+
+  it( 'returns the no content message when item type is an unexpected type', () => {
     const item = { type: 'test' };
 
     const result = getModalContent( item );
