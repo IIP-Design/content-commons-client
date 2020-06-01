@@ -101,13 +101,15 @@ const featuredData = [
 class Landing extends Component {
   static async getInitialProps( ctx ) {
     const { store } = ctx;
-    const featuredDataForLanding = [...featuredData];
+    let featuredDataForLanding;
 
     const user = await fetchUser( ctx );
 
     if ( !user ) {
       // remove internal packages (internal content) from query if user is not present
-      featuredDataForLanding.shift();
+      featuredDataForLanding = featuredData.filter( item => item.component !== 'packages' );
+    } else {
+      featuredDataForLanding = [...featuredData];
     }
 
     // trigger parallel loading calls
