@@ -87,6 +87,15 @@ const featuredData = [
       locale: 'en-us',
     },
   },
+  {
+    key: v4(),
+    component: 'recents',
+    order: 8,
+    props: {
+      postType: 'graphic',
+      locale: 'en-us',
+    },
+  },
 ];
 
 class Landing extends Component {
