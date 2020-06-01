@@ -282,13 +282,7 @@ const GraphicEdit = props => {
     return type === 'graphicFiles' ? initialGraphicFiles : initialSupportFiles;
   };
 
-  const getSupportFiles = type => {
-    const editableExtensions = [
-      '.psd', '.ai', '.ae', '.eps',
-    ];
-    const editableFiles = [];
-    const additionalFiles = [];
-
+  const getSortedFiles = () => {
     const existingSupportFiles = data?.graphicProject?.supportFiles || [];
     const existingGraphicFiles = data?.graphicProject?.images || [];
 
@@ -305,7 +299,18 @@ const GraphicEdit = props => {
       return file.name;
     } );
 
-    if ( getCount( supportFiles ) ) {
+    return sortedFiles;
+  };
+
+  const getSupportFiles = type => {
+    const editableExtensions = [
+      '.psd', '.ai', '.ae', '.eps',
+    ];
+    const editableFiles = [];
+    const additionalFiles = [];
+    const sortedFiles = getSortedFiles();
+
+    if ( getCount( sortedFiles ) ) {
       sortedFiles.forEach( file => {
         const _filename = projectId ? file.filename : file.name;
         const extension = getFileExt( _filename );
