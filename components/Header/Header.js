@@ -4,10 +4,10 @@ import Link from 'next/link';
 import Router, { withRouter } from 'next/router';
 import { Header, Image } from 'semantic-ui-react';
 import NProgress from 'nprogress';
+
 import DosSeal from 'static/images/dos_seal.svg';
 import SearchInput from 'components/SearchInput/SearchInput';
 import GlobalNav from '../navs/global';
-import { useAuth } from 'context/authContext';
 
 import './Header.scss';
 
@@ -27,7 +27,6 @@ const HeaderGlobal = ( { router } ) => {
   const pagePath = router.pathname.split( '/' ).slice( 1 );
   const isHome = pagePath[0] === '';
   const barClass = `bar ${isHome ? 'bar--home' : pagePath.map( path => `bar--${path}` ).join( ' ' )}`;
-  const { user } = useAuth();
 
   return (
     <div className={ barClass }>
@@ -43,7 +42,7 @@ const HeaderGlobal = ( { router } ) => {
               Content Commons is a U.S. Department of State portal helping public diplomacy practitioners find what they need.
             </Header.Subheader>
           </Header>
-          <SearchInput isUser={ user?.id && user.id !== 'public' } />
+          <SearchInput />
           <GlobalNav />
         </header>
       </div>
