@@ -147,8 +147,6 @@ const mapStateToProps = state => ( {
   search: state.search,
   languages: state.global.languages,
   filter: state.filter,
-  selectedRadio: state.selectedRadio,
-  displayRadioGroup: state.displayRadioGroup,
 } );
 
 SearchInput.propTypes = {
