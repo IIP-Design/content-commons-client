@@ -15,6 +15,7 @@ _This sections lists changes committed since most recent release_
 - Added countries filter to frontend search
 - Added SCSS module support to next config
 - New Popover component to be used as replacement for SemanticUI popup
+- Support for Cypress end-to-end testing
 - A recent graphics section to the featured section on the homepage
 
 **Changed:**
