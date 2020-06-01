@@ -6,15 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v4.0.0...HEAD)
+
 _This sections lists changes committed since most recent release_
 
 **Added:**
+
 - A graphic project page type and preview modal
 - Added countries filter to frontend search
 - Added SCSS module support to next config
 - New Popover component to be used as replacement for SemanticUI popup
+- Support for Cypress end-to-end testing
 
 **Changed:**
+
 - Use component state instead of props for checkboxes in filter menus
 - Swap out Airbnb ESLint config for custom GPA/LAB shared config
 - Paginate and sort Dashboard on the server and not the client
@@ -25,6 +29,7 @@ _This sections lists changes committed since most recent release_
 - Consolidate redundant components including table body messages and preview pop-ups
 
 **Fixed:**
+
 - Fixed width in files popover menu
 - Hide the "saving changes" growl notification upon initial load of the project details form
 
@@ -43,12 +48,14 @@ _This sections lists changes committed since most recent release_
 # [4.1.0](2020-05-05)
 
 **Changed:**
+
 - Packages on landing page now sort by `created` date
 - Removed Facebook and Twitter sharing options for video
 
 # [4.0.0](https://github.com/IIP-Design/content-commons-client/compare/v3.1.1...v4.0.0)
 
 **Added:**
+
 - Add redirect to previous url on successful login.
 - Add ability for subscriber to see restricted content.
 - Add uploading documentation for press guidance.
