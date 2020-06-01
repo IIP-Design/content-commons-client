@@ -11,6 +11,8 @@ node_modules
 
 # testing
 coverage/
+cypress/screenshots/
+cypress/videos/
 pages/admin/test.js
 
 TODO

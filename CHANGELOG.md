@@ -16,6 +16,7 @@ _This sections lists changes committed since most recent release_
 - Added SCSS module support to next config
 - New Popover component to be used as replacement for SemanticUI popup
 - Content type search filter option on the homepage for logged in users
+- Support for Cypress end-to-end testing
 
 **Changed:**
 
