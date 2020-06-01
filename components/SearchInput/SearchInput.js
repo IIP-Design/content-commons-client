@@ -16,7 +16,7 @@ import './SearchInput.scss';
 const SearchInput = ( { filter, languages, loadLanguages, search, router, updateSearchTerm } ) => {
   const [locale, setLocale] = useState( search.language );
   const [direction, setDirection] = useState( 'left' );
-  const [selectedRadio, setSelectedRadio] = useState( 'multiple' );
+  const [selectedRadio, setSelectedRadio] = useState( '' );
 
   // Get current user
   const { user } = useAuth();
@@ -27,7 +27,7 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
   const { language } = search?.language ? search.language : {};
 
   useEffect( () => {
-    setSelectedRadio( 'multiple' );
+    isUser ? setSelectedRadio( 'multiple' ) : setSelectedRadio( '' );
 
     if ( pathname.indexOf( 'admin' ) === -1 && !langList.length ) {
       loadLanguages();
@@ -42,7 +42,7 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
       setDirection( getDirection( language ) );
     }
   }, [
-    pathname, langList, language, loadLanguages, updateSearchTerm,
+    isUser, langList, language, loadLanguages, pathname, updateSearchTerm,
   ] );
 
   const handleLangOnChange = ( e, { value } ) => {
@@ -59,7 +59,10 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
   };
 
   const handleSubmit = async () => {
-    const postTypes = selectedRadio === 'multiple' ? ['video', 'post'] : 'document';
+    let postTypes = '';
+
+    if ( selectedRadio === 'multiple' ) postTypes = ['video', 'post'];
+    if ( selectedRadio === 'document' ) postTypes = 'document';
 
     const query = fetchQueryString( { ...filter, term: search.term, language: locale, postTypes } );
 
