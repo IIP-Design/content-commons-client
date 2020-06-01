@@ -390,8 +390,35 @@ export const mockFeaturedData = [
   },
 ];
 
-// Mock data for getCategories util
+// Mock state from postTypeContext
+export const mockPostTypeContext = {
+  loading: false,
+  error: false,
+  list: [
+    {
+      key: 'document',
+      display_name: 'Press Releases and Guidance',
+      count: 7,
+    },
+    {
+      key: 'video',
+      display_name: 'Video',
+      count: 4,
+    },
+    {
+      key: 'graphic',
+      display_name: 'Graphic',
+      count: 3,
+    },
+    {
+      key: 'post',
+      display_name: 'Article',
+      count: 6,
+    },
+  ],
+};
 
+// Mock data for getCategories util
 const category1 = {
   id: 'Rgay9HABowNfX05-obIk',
   name: 'geography',

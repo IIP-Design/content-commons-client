@@ -2,9 +2,10 @@ import { mount } from 'enzyme';
 
 import Recents from './Recents';
 import { FeaturedContext } from 'context/featuredContext';
+import { PostTypeContext } from 'context/postTypeContext';
 import { capitalizeFirst } from 'lib/utils';
 
-import { mockFeaturedContext, mockNoFeaturedContext } from '../mocks';
+import { mockFeaturedContext, mockNoFeaturedContext, mockPostTypeContext } from '../mocks';
 
 jest.mock( 'components/SignedUrlImage/SignedUrlImage', () => 'signed-url-image' );
 jest.mock( 'next/config', () => () => ( {
@@ -29,7 +30,9 @@ const getPostLabel = type => {
 describe( '<Recents />', () => {
   const returnComponent = type => (
     <FeaturedContext.Provider value={ { state: mockFeaturedContext } }>
-      <Recents postType={ type } />
+      <PostTypeContext.Provider value={ { state: mockPostTypeContext } }>
+        <Recents postType={ type } />
+      </PostTypeContext.Provider>
     </FeaturedContext.Provider>
   );
 
@@ -48,7 +51,7 @@ describe( '<Recents />', () => {
     } );
   } );
 
-  it.skip( 'the header reads "Latest [Content Type]"', () => {
+  it( 'the header reads "Latest [Content Type]"', () => {
     types.forEach( type => {
       const wrapper = mount( returnComponent( type ) );
       const header = wrapper.find( 'Header' );

@@ -8,16 +8,18 @@ import { Grid, Header, Item, Modal } from 'semantic-ui-react';
 import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
 import { getModalContent } from 'components/modals/utils';
 import { FeaturedContext } from 'context/featuredContext';
+import { PostTypeContext } from 'context/postTypeContext';
 import { getCategories } from '../utils';
 
 import './Recents.scss';
 
 const Recents = ( { postType } ) => {
   const { state } = useContext( FeaturedContext );
-
-  // const postTypeLabel = postTypeLabels.find( type => type.key === postType );
+  const { state: postTypes } = useContext( PostTypeContext );
 
   const recents = state?.recents?.[postType] ? state.recents[postType] : [];
+
+  const postTypeLabel = postTypes?.list ? postTypes.list.find( type => type.key === postType ) : '';
 
   if ( recents.length < 3 ) return null;
 
@@ -26,7 +28,7 @@ const Recents = ( { postType } ) => {
       <div className="recentswrapper">
         <div className="recentstitle">
           <Header as="h1" size="large">
-            {/* { postTypeLabel && `Latest ${postTypeLabel.display_name}s` } */}
+            { postTypeLabel && `Latest ${postTypeLabel.display_name}s` }
           </Header>
           <Link
             href={ {
@@ -97,7 +99,6 @@ const Recents = ( { postType } ) => {
 
 Recents.propTypes = {
   postType: PropTypes.string,
-  // postTypeLabels: PropTypes.array,
 };
 
 export default Recents;

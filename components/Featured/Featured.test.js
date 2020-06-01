@@ -5,7 +5,7 @@ import Featured from './Featured';
 import * as api from 'lib/elastic/api';
 import * as utils from './utils';
 
-import { mockFeaturedData, mockFeaturedContext } from './mocks';
+import { mockFeaturedData, mockFeaturedContext, mockPostTypeContext } from './mocks';
 
 const mockProps = {
   data: mockFeaturedData,
@@ -40,11 +40,17 @@ const mockErrorContext = [
   dispatch,
 ];
 
+const mockPostTypes = [
+  mockPostTypeContext,
+  dispatch,
+];
+
 jest.mock( './Packages/Packages', () => 'packages-mock' );
 jest.mock( './Priorities/Priorities', () => 'priorities-mock' );
 jest.mock( './Recents/Recents', () => 'recents-mock' );
 jest.mock( './utils', () => ( {
   getFeatured: jest.fn(),
+  loadPostTypes: jest.fn(),
 } ) );
 
 jest.mock( 'next/config', () => () => ( {
@@ -55,9 +61,17 @@ jest.mock( 'react', () => ( {
   ...jest.requireActual( 'react' ),
   useReducer: jest.fn()
     .mockImplementationOnce( () => mockErrorContext )
+    .mockImplementationOnce( () => mockPostTypes )
     .mockImplementationOnce( () => mockLoadingContext )
+    .mockImplementationOnce( () => mockPostTypes )
     .mockImplementationOnce( () => mockNotStaleContext )
-    .mockImplementation( () => mockContext ),
+    .mockImplementationOnce( () => mockPostTypes )
+    .mockImplementationOnce( () => mockContext )
+    .mockImplementationOnce( () => mockPostTypes )
+    .mockImplementationOnce( () => mockContext )
+    .mockImplementationOnce( () => mockPostTypes )
+    .mockImplementationOnce( () => mockContext )
+    .mockImplementationOnce( () => mockPostTypes ),
 } ) );
 
 const createApiSpy = func => jest
@@ -134,7 +148,8 @@ describe( '<Featured />', () => {
     const recents = wrapper.find( 'recents-mock' );
 
     expect( wrapper.exists() ).toEqual( true );
-    expect( wrapper.find( 'ContextProvider' ).children().length ).toEqual( 3 );
+    expect( wrapper.find( 'ContextProvider' ).at( 1 )
+      .children().length ).toEqual( 3 );
     expect( packages.exists() ).toEqual( true );
     expect( priorities.exists() ).toEqual( true );
     expect( recents.exists() ).toEqual( true );

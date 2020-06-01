@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { v4 } from 'uuid';
 
 import Featured from 'components/Featured/Featured';
 import { clearFilters } from 'lib/redux/actions/filter';
-import { loadPostTypes } from 'lib/redux/actions/postType';
-import { v4 } from 'uuid';
 import { fetchUser } from 'context/authContext';
 
 const featuredData = [
@@ -114,13 +113,9 @@ class Landing extends Component {
 
     // trigger parallel loading calls
     const resetFilters = store.dispatch( clearFilters() );
-    const postTypes = store.dispatch( loadPostTypes( user ) );
 
     // await completion
-    await Promise.all( [
-      resetFilters,
-      postTypes,
-    ] );
+    await Promise.all( [resetFilters] );
 
     return { featuredDataForLanding, user };
   }

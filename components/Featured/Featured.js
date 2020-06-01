@@ -7,9 +7,10 @@ import { Loader, Message } from 'semantic-ui-react';
 import Packages from './Packages/Packages';
 import Recents from './Recents/Recents';
 import Priorities from './Priorities/Priorities';
-import { getFeatured } from './utils';
+import { getFeatured, loadPostTypes } from './utils';
 
 import { FeaturedContext, featuredReducer } from 'context/featuredContext';
+import { PostTypeContext, postTypeReducer } from 'context/postTypeContext';
 import { isDataStale } from 'lib/utils';
 import { typePrioritiesRequest, typeRecentsRequest, typeRequestDesc } from 'lib/elastic/api';
 
@@ -18,6 +19,7 @@ const Featured = ( { data, user } ) => {
   const featuredComponents = [];
 
   const [state, dispatch] = useReducer( featuredReducer );
+  const [postTypeState, postTypeDispatch] = useReducer( postTypeReducer );
 
   const isStale = state?.lastLoad ? isDataStale( state.lastLoad ) : true;
 
@@ -67,6 +69,10 @@ const Featured = ( { data, user } ) => {
     data, isStale, user,
   ] );
 
+  useEffect( () => {
+    loadPostTypes( postTypeDispatch, user );
+  }, [postTypeDispatch, user] );
+
   sorted.forEach( d => {
     const { component, props } = d;
 
@@ -108,7 +114,9 @@ const Featured = ( { data, user } ) => {
   return (
     <div className="featured">
       <FeaturedContext.Provider value={ { dispatch, state } }>
-        { featuredComponents }
+        <PostTypeContext.Provider value={ { dispatch: postTypeDispatch, state: postTypeState } }>
+          { featuredComponents }
+        </PostTypeContext.Provider>
       </FeaturedContext.Provider>
     </div>
   );
