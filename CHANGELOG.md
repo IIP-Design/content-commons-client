@@ -6,15 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v4.0.0...HEAD)
+
 _This sections lists changes committed since most recent release_
 
 **Added:**
+
 - A graphic project page type and preview modal
 - Added countries filter to frontend search
 - Added SCSS module support to next config
 - New Popover component to be used as replacement for SemanticUI popup
+- Content type search filter option on the homepage for logged in users
 
 **Changed:**
+
 - Use component state instead of props for checkboxes in filter menus
 - Swap out Airbnb ESLint config for custom GPA/LAB shared config
 - Paginate and sort Dashboard on the server and not the client
@@ -25,17 +29,22 @@ _This sections lists changes committed since most recent release_
 - Consolidate redundant components including table body messages and preview pop-ups
 
 **Fixed:**
+
 - Fixed width in files popover menu
 - Hide the "saving changes" growl notification upon initial load of the project details form
 
 # [4.1.1](2020-05-22)
+
 **Added:**
+
 - Added Google Tag Manager Containers
 
 **Changed:**
+
 - Videos with subtitles now display by default if present
 
 **Fixed:**
+
 - Login now properly redirects to CloudFlare on mobile
 - Escape special characters when setting AWS S3 key for upload to address issues with download and display
 - Added 'name' property to elastic tag to ensure 'Coronavirus' surfaces in search
@@ -43,12 +52,14 @@ _This sections lists changes committed since most recent release_
 # [4.1.0](2020-05-05)
 
 **Changed:**
+
 - Packages on landing page now sort by `created` date
 - Removed Facebook and Twitter sharing options for video
 
 # [4.0.0](https://github.com/IIP-Design/content-commons-client/compare/v3.1.1...v4.0.0)
 
 **Added:**
+
 - Add redirect to previous url on successful login.
 - Add ability for subscriber to see restricted content.
 - Add uploading documentation for press guidance.
