@@ -1,31 +1,28 @@
 /* eslint-disable react/destructuring-assignment */
-import React, { Fragment, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { useAuth } from 'context/authContext';
 import { CREATE_GRAPHIC_PROJECT_MUTATION, UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import { buildCreateGraphicProjectTree, buildFormTree } from 'lib/graphql/builders/graphic';
 import { Formik } from 'formik';
-import Notification from 'components/Notification/Notification';
 import ProjectDetailsForm from 'components/admin/ProjectDetailsForm/ProjectDetailsForm';
-import useTimeout from 'lib/hooks/useTimeout';
 import { initialSchema, baseSchema } from './validationSchema';
 import './GraphicProjectDetailsFormContainer.scss';
 
 const GraphicProjectDetailsFormContainer = props => {
-  const { contentStyle, data, setIsFormValid } = props;
+  const {
+    contentStyle,
+    data,
+    setIsFormValid,
+    startTimeout,
+    updateNotification,
+    handleUpload,
+  } = props;
   const { user } = useAuth();
 
   const [createGraphicProject] = useMutation( CREATE_GRAPHIC_PROJECT_MUTATION );
   const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
-
-  const [showNotification, setShowNotification] = useState( false );
-
-  const hideNotification = () => {
-    setShowNotification( false );
-  };
-
-  const { startTimeout } = useTimeout( hideNotification, 1000 );
 
   const getInitialValues = () => {
     const graphicProject = data?.graphicProject || {};
@@ -70,15 +67,11 @@ const GraphicProjectDetailsFormContainer = props => {
 
     await update( values, prevValues );
 
-    if ( !showNotification ) {
-      setShowNotification( true );
-    }
-
+    updateNotification( 'Changes saved' );
     startTimeout();
   };
 
   const onHandleSubmit = async ( values, actions ) => {
-    const { updateNotification, handleUpload } = props;
     const { setStatus, setErrors, setSubmitting } = actions;
 
     // 1. let user know system is saving
@@ -150,25 +143,12 @@ const GraphicProjectDetailsFormContainer = props => {
     };
 
     return (
-      <Fragment>
-        <Notification
-          el="p"
-          customStyles={ {
-            position: 'absolute',
-            top: '9em',
-            left: '50%',
-            transform: 'translateX(-50%)',
-          } }
-          show={ showNotification }
-          msg="Changes saved"
-        />
-        <ProjectDetailsForm
-          { ...formikProps }
-          { ...props }
-          config={ config }
-          save={ save }
-        />
-      </Fragment>
+      <ProjectDetailsForm
+        { ...formikProps }
+        { ...props }
+        config={ config }
+        save={ save }
+      />
     );
   };
 
@@ -192,6 +172,7 @@ GraphicProjectDetailsFormContainer.propTypes = {
   updateNotification: PropTypes.func,
   handleUpload: PropTypes.func,
   setIsFormValid: PropTypes.func,
+  startTimeout: PropTypes.func,
 };
 
 export default GraphicProjectDetailsFormContainer;
