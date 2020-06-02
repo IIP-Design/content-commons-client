@@ -62,10 +62,7 @@ const GraphicFilesForm = props => {
 
   const isTouched = ( id, field ) => touched?.[id] && touched[id][field];
 
-  const showErrorMsg = ( id, field ) => (
-    isTouched( id, field ) ? errors?.[id] && errors[id][field] : ''
-  );
-
+  const showErrorMsg = ( id, field ) => (isTouched( id, field ) ? errors?.[id] && errors[id][field] : '');
   const renderThumbnail = ( image, filename ) => {
     const imgSrc = image.signedUrl || image?.input?.dataUrl;
     const imgAlt = image.alt || filename;
@@ -144,7 +141,7 @@ const GraphicFilesForm = props => {
               <div
                 className={ `image-wrapper ${projectId ? 'available' : 'unavailable'}` }
               >
-                { renderThumbnail( file, value.title ) }
+                { renderThumbnail( file, value?.title ) }
 
                 <FileRemoveReplaceButtonGroup
                   onRemove={ () => {
@@ -199,7 +196,7 @@ const GraphicFilesForm = props => {
                   name={ `${id}.title` }
                   control={ Input }
                   label="Graphic Title"
-                  value={ value.title || '' }
+                  value={ value?.title || '' }
                   onChange={ handleOnChange }
                   className={ language.textDirection }
                   disabled={ !projectId }
@@ -213,7 +210,7 @@ const GraphicFilesForm = props => {
                     name={ `${id}.language` }
                     className="language"
                     label="Language"
-                    value={ value.language || '' }
+                    value={ value?.language || '' }
                     error={ isTouched( id, 'language' ) && !value.language }
                     onChange={ handleOnChange }
                     disabled={ !projectId }
@@ -230,7 +227,7 @@ const GraphicFilesForm = props => {
                     name={ `${id}.style` }
                     className="graphic-style"
                     label="Style"
-                    value={ value.style || '' }
+                    value={ value?.style || '' }
                     error={ isTouched( id, 'style' ) && !value.style }
                     onChange={ handleOnChange }
                     disabled={ !projectId }
@@ -248,7 +245,7 @@ const GraphicFilesForm = props => {
                   name={ `${id}.social` }
                   className="social-platform"
                   label="Platform"
-                  value={ value.social || '' }
+                  value={ value?.social || '' }
                   error={ isTouched( id, 'social' ) && !value.social }
                   onChange={ handleOnChange }
                   disabled={ !projectId }
