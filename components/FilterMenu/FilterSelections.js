@@ -22,7 +22,7 @@ class FilterSelections extends Component {
   }
 
   /**
-   * Removes slected filter item
+   * Removes selected filter item
    * @param {object} item
    */
   handleOnClick = item => {
@@ -33,7 +33,7 @@ class FilterSelections extends Component {
     const selectedItemsFromSpecificFilter = filter[item.name].slice( 0 );
     const filterItemList = global[item.name].list;
     const itemToRemove = filterItemList.find( l => l.key.indexOf( item.value ) !== -1 );
-    // Some values have mutliple search terms within the input value
+    // Some values have multiple search terms within the input value
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
     // so we split the value into array and to remove all
     const values = itemToRemove.key.split( '|' );
@@ -50,7 +50,7 @@ class FilterSelections extends Component {
   }
 
   /**
-   * Reset all filter to intial values
+   * Reset all filter to initial values
    */
   handleClearAllFilters = async () => {
     await this.props.clearFilters();
@@ -70,7 +70,10 @@ class FilterSelections extends Component {
    * @param {bool} isRadio - Does this filter allow multiple selections
    */
   getSelection = ( values, name, list, isRadio = false ) => {
-    let selections = values.map( value => {
+    // Filter out packages from the filter selections
+    const filtered = values.filter(val => val !== 'package');
+
+    let selections = filtered.map( value => {
       const label = list.find( item => item.key.indexOf( value ) !== -1 );
       return ( {
         value,
@@ -100,7 +103,7 @@ class FilterSelections extends Component {
     // loop thru filters to build selection list
     filterOrder.forEach( key => {
       const value = filter[key];
-
+      
       const isCheckbox = Array.isArray( value );
       const values = isCheckbox ? value : [value];
 
