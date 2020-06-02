@@ -14,7 +14,7 @@ const FilterMenuItem = props => {
   const [selected, setSelected] = useState( [] );
 
   /**
-   * Format data into state that dopdowns will use
+   * Format data into state that dropdowns will use
    */
   const formatOptions = ( opts, filterName ) => {
     let filterOptions = opts.map( option => ( {
@@ -58,10 +58,12 @@ const FilterMenuItem = props => {
    * @param {array|string} value - updated filter value
    */
   const executeQuery = value => {
+    const filtered = props.name === 'postTypes' ? value.filter( val => val !== 'package') : value;
+
     // Add term from search reducer to ensure that it does not get removed from the query string
     const query = fetchQueryString( {
       ...props.filterStore,
-      [props.name]: value,
+      [props.name]: filtered,
       term: props.term,
       language: props.language
     } );
@@ -82,7 +84,7 @@ const FilterMenuItem = props => {
     // make copy of selected filter array, i.e. categories
     const arr = props.filterStore[props.name].slice( 0 );
 
-    // Some values have mutliple search terms within the input value
+    // Some values have multiple search terms within the input value
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
     // so we split the value into array and add/remove each to search array
     const values = value.split( '|' );
@@ -117,7 +119,7 @@ const FilterMenuItem = props => {
   );
 
   const renderCheckbox = option => {
-    // Some values have mutliple search terms within the input value
+    // Some values have multiple search terms within the input value
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
     // so we split the value into array and add/remove each to search array
     const values = option.value.split( '|' );
@@ -145,7 +147,7 @@ const FilterMenuItem = props => {
   };
 
   useEffect( () => {
-    // togglel listener won menu show/hide
+    // toggle listener won menu show/hide
     toggleEventListener( filterItemOpen );
 
     // Clean up the listener on unmount
@@ -158,11 +160,9 @@ const FilterMenuItem = props => {
     setSelected( props.selected );
   }, [props.selected] );
 
-
   const {
     formItem, options, filter
   } = props;
-
 
   return (
     <div
