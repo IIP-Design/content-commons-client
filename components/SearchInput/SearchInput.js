@@ -13,10 +13,10 @@ import * as actions from 'lib/redux/actions';
 
 import './SearchInput.scss';
 
-const SearchInput = ( { filter, languages, loadLanguages, search, router, updateSearchTerm } ) => {
+const SearchInput = ( { filter, languages, loadLanguages, search, router, updateSearchTerm, postTypeUpdate } ) => {
   const [locale, setLocale] = useState( search.language );
   const [direction, setDirection] = useState( 'left' );
-  const [selectedRadio, setSelectedRadio] = useState( '' );
+  const [selectedRadio, setSelectedRadio] = useState( 'multiple' );
 
   // Get current user
   const { user } = useAuth();
@@ -27,13 +27,12 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
   const { language } = search?.language ? search.language : {};
 
   useEffect( () => {
-    isUser ? setSelectedRadio( 'multiple' ) : setSelectedRadio( '' );
-
     if ( pathname.indexOf( 'admin' ) === -1 && !langList.length ) {
       loadLanguages();
     }
 
     if ( pathname === '/' ) {
+      isUser ? postTypeUpdate( ['video', 'post'] ) : postTypeUpdate( '' );
       setLocale( 'en-us' );
       setDirection( 'left' );
       updateSearchTerm( '' );
@@ -42,7 +41,7 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
       setDirection( getDirection( language ) );
     }
   }, [
-    isUser, langList, language, loadLanguages, pathname, updateSearchTerm,
+    isUser, langList, language, loadLanguages, pathname, postTypeUpdate, updateSearchTerm,
   ] );
 
   const handleLangOnChange = ( e, { value } ) => {
@@ -56,15 +55,13 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
 
   const handleRadioChange = ( e, { value } ) => {
     setSelectedRadio( value );
+
+    if ( value === 'multiple' ) postTypeUpdate( ['video', 'post'] );
+    if ( value === 'document' ) postTypeUpdate( 'document' );
   };
 
   const handleSubmit = async () => {
-    let postTypes = '';
-
-    if ( selectedRadio === 'multiple' ) postTypes = ['video', 'post'];
-    if ( selectedRadio === 'document' ) postTypes = 'document';
-
-    const query = fetchQueryString( { ...filter, term: search.term, language: locale, postTypes } );
+    const query = fetchQueryString( { ...filter, term: search.term, language: locale } );
 
     router.push( {
       pathname: '/results',
@@ -159,6 +156,7 @@ SearchInput.propTypes = {
   search: PropTypes.object,
   languages: PropTypes.object,
   loadLanguages: PropTypes.func,
+  postTypeUpdate: PropTypes.func,
   updateSearchTerm: PropTypes.func,
 };
 
