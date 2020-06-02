@@ -9,64 +9,83 @@ import './FileUploadProgressBar.scss';
  */
 const FileUploadProgressBar = props => {
   const {
-    filesToUpload, fileProgressMessage, onComplete, label, labelAlign, showPercent, barSize, customStyles
+    filesToUpload,
+    fileProgressMessage,
+    onComplete,
+    label,
+    labelAlign,
+    showPercent,
+    barSize,
+    customStyles,
   } = props;
 
-
-  const size = filesToUpload.reduce( ( acc, curr ) => acc + curr.input.size, 0 );
-  const uploadCount = filesToUpload.length;
+  const size = filesToUpload?.reduce( ( acc, curr ) => acc + curr.input.size, 0 );
+  const uploadCount = filesToUpload?.length;
 
   const [uploadCompleted, setUploadCompleted] = useState( -1 );
   const [numCompleted, setNumCompleted] = useState( 0 );
 
-  const percentComplete = () => `${Math.round( ( uploadCompleted / size ) * 100 )}%`;
+  const percentComplete = () => `${Math.round( uploadCompleted / size * 100 )}%`;
 
   useEffect( () => {
-    const loaded = filesToUpload.reduce( ( acc, curr ) => acc + curr.loaded, 0 );
-    const completed = filesToUpload.filter( file => file.loaded === file.input.size );
+    const loaded = filesToUpload?.reduce( ( acc, curr ) => acc + curr.loaded, 0 );
+    const completed = filesToUpload?.filter( file => file.loaded === file.input.size );
 
     setUploadCompleted( loaded );
-    setNumCompleted( completed.length );
+    setNumCompleted( completed?.length );
   }, [filesToUpload] );
 
   useEffect( () => {
     if ( uploadCount === numCompleted ) {
-      if ( onComplete ) {
+      if ( onComplete && typeof onComplete === 'function' ) {
         onComplete();
       }
     }
-  }, [numCompleted] );
-
+  }, [
+    numCompleted, uploadCount, onComplete,
+  ] );
 
   const renderFileOnProgress = () => {
     if ( numCompleted === uploadCount ) {
       return <b>Saving file metadata</b>;
     }
 
-    return <div style={ { marginTop: '2px' } }><b>Uploading files:</b> { numCompleted + 1 } of { uploadCount }</div>;
+    return (
+      <div style={ { marginTop: '15px' } }>
+        <b>Uploading files:</b>
+        {' '}
+        {numCompleted + 1}
+        {' '}
+        of
+        {' '}
+        {uploadCount}
+      </div>
+    );
   };
 
   const renderLabel = () => (
     <Fragment>
-      { fileProgressMessage && renderFileOnProgress() }
-      <div style={ { marginTop: '5px' } }>{ label }</div>
+      {fileProgressMessage && renderFileOnProgress()}
+      <div>{label}</div>
     </Fragment>
-
   );
 
   return (
-    <div className="file-progress--wrapper" style={ customStyles }>
-      <Progress
-        value={ uploadCompleted }
-        total={ size }
-        color="blue"
-        size={ barSize }
-        active
-      >
-        { label && <div className={ `file-progress--label ${labelAlign}` }>{ renderLabel() }</div> }
-      </Progress>
-      { showPercent && <span>{ percentComplete() }</span> }
-    </div>
+    <>
+      <div className="file-progress--wrapper" style={ customStyles }>
+        <Progress
+          value={ uploadCompleted }
+          total={ size }
+          color="blue"
+          size={ barSize }
+          active
+        />
+      </div>
+      <div className={ `file-progress--label ${labelAlign}` }>
+        {showPercent && <span>{percentComplete()}</span>}
+        {label && <div>{renderLabel()}</div>}
+      </div>
+    </>
   );
 };
 
@@ -74,7 +93,7 @@ FileUploadProgressBar.defaultProps = {
   barSize: 'medium',
   showPercent: false,
   labelAlign: 'center',
-  fileProgressMessage: false
+  fileProgressMessage: false,
 };
 
 FileUploadProgressBar.propTypes = {
@@ -85,7 +104,7 @@ FileUploadProgressBar.propTypes = {
   labelAlign: PropTypes.string,
   barSize: PropTypes.string,
   onComplete: PropTypes.func,
-  customStyles: PropTypes.object
+  customStyles: PropTypes.object,
 };
 
 export default FileUploadProgressBar;
