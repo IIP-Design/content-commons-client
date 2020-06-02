@@ -15,6 +15,7 @@ _This sections lists changes committed since most recent release_
 - Added countries filter to frontend search
 - Added SCSS module support to next config
 - New Popover component to be used as replacement for SemanticUI popup
+- Content type search filter option on the homepage for logged in users
 - Support for Cypress end-to-end testing
 
 **Changed:**
@@ -34,13 +35,17 @@ _This sections lists changes committed since most recent release_
 - Hide the "saving changes" growl notification upon initial load of the project details form
 
 # [4.1.1](2020-05-22)
+
 **Added:**
+
 - Added Google Tag Manager Containers
 
 **Changed:**
+
 - Videos with subtitles now display by default if present
 
 **Fixed:**
+
 - Login now properly redirects to CloudFlare on mobile
 - Escape special characters when setting AWS S3 key for upload to address issues with download and display
 - Added 'name' property to elastic tag to ensure 'Coronavirus' surfaces in search

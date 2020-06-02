@@ -1,167 +1,163 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
-import PropTypes from 'prop-types';
 import {
-  Form, Input, Icon, Dropdown
+  Form, Input, Icon, Dropdown, Radio,
 } from 'semantic-ui-react';
-// import { detectLanguage } from 'lib/language';
+
 import { getDirection } from 'lib/language';
 import { fetchQueryString } from 'lib/searchQueryString';
+import { useAuth } from 'context/authContext';
 import * as actions from 'lib/redux/actions';
+
 import './SearchInput.scss';
 
-class Search extends Component {
-  constructor( props ) {
-    super( props );
-    const { search } = this.props;
-    this.state = {
-      locale: search.language,
-      direction: 'left'
-    };
-  }
+const SearchInput = ( { filter, languages, loadLanguages, search, router, updateSearchTerm, postTypeUpdate } ) => {
+  const [locale, setLocale] = useState( search.language );
+  const [direction, setDirection] = useState( 'left' );
+  const [selectedRadio, setSelectedRadio] = useState( 'multiple' );
 
-  componentDidMount() {
-    this.maybeLoadLanguages();
-  }
+  // Get current user
+  const { user } = useAuth();
 
-  componentDidUpdate( prevProps ) {
-    const { router } = this.props;
-    if ( router.pathname !== prevProps.router.pathname ) {
-      this.onRouteChanged( router.pathname );
+  const isUser = user?.id && user.id !== 'public';
+  const pathname = router?.pathname ? router.pathname : '';
+  const langList = languages?.list ? languages.list : [];
+  const { language } = search?.language ? search.language : {};
+
+  useEffect( () => {
+    if ( pathname.indexOf( 'admin' ) === -1 && !langList.length ) {
+      loadLanguages();
     }
-  }
-
-  onRouteChanged( pathname ) {
-    this.maybeLoadLanguages();
 
     if ( pathname === '/' ) {
-      this.setState( { locale: 'en-us', direction: 'left' } );
-      this.props.updateSearchTerm( '' );
+      isUser ? postTypeUpdate( ['video', 'post'] ) : postTypeUpdate( '' );
+      setLocale( 'en-us' );
+      setDirection( 'left' );
+      updateSearchTerm( '' );
     } else {
-      const { language } = this.props.search;
-      this.setState( { locale: language, direction: getDirection( language ) } );
+      setLocale( language );
+      setDirection( getDirection( language ) );
     }
-  }
+  }, [
+    isUser, langList, language, loadLanguages, pathname, postTypeUpdate, updateSearchTerm,
+  ] );
 
-  /**
-   * Send term to Google API to determine language
-   * Update state if valid language detected
-   */
-  // getLanguage = async term => {
-  //   const detected = await detectLanguage( term );
-  //   if ( detected ) {
-  //     this.setState( {
-  //       locale: detected.language.key,
-  //       direction: detected.direction,
-  //     } );
-  //   }
-  // };
-
-  handleLangOnChange = ( e, { value } ) => {
-    this.setState( {
-      locale: value,
-      direction: getDirection( value )
-    } );
+  const handleLangOnChange = ( e, { value } ) => {
+    setLocale( value );
+    setDirection( getDirection( value ) );
   };
 
-  handleQueryOnChange = ( e, { value } ) => {
-    // this.getLanguage( value );
-    this.props.updateSearchTerm( value );
+  const handleQueryOnChange = ( e, { value } ) => {
+    updateSearchTerm( value );
   };
 
-  handleSubmit = async () => {
-    const { filter, search } = this.props;
-    const query = fetchQueryString( { ...filter, term: search.term, language: this.state.locale } );
-    this.props.router.push( {
+  const handleRadioChange = ( e, { value } ) => {
+    setSelectedRadio( value );
+
+    if ( value === 'multiple' ) postTypeUpdate( ['video', 'post'] );
+    if ( value === 'document' ) postTypeUpdate( 'document' );
+  };
+
+  const handleSubmit = async () => {
+    const query = fetchQueryString( { ...filter, term: search.term, language: locale } );
+
+    router.push( {
       pathname: '/results',
-      query
+      query,
     } );
   };
 
-  handleSearchClick = e => {
+  const handleSearchClick = e => {
     e.preventDefault();
-    this.handleSubmit();
+    handleSubmit();
   };
 
-  handleSearchKeyUp = e => {
+  const handleSearchKeyUp = e => {
     if ( e.key === 'Enter' ) {
-      this.handleSubmit();
+      handleSubmit();
     }
   };
 
-  maybeLoadLanguages() {
-    const {
-      router: { pathname },
-      languages: { list }
-    } = this.props;
+  const inputProps = {
+    className: `search_input${direction === 'right' ? ' right' : ''}`,
+  };
 
-    if ( pathname.indexOf( 'admin' ) === -1 && !list.length ) {
-      this.props.loadLanguages();
-    }
-  }
+  const getLangOptions = () => langList.map( l => ( {
+    key: l.key,
+    text: l.display_name,
+    value: l.key,
+  } ) );
 
-  render() {
-    let inputProps = {};
-    if ( this.state.direction === 'left' ) {
-      inputProps = { className: 'search_input' };
-    } else {
-      inputProps = { className: 'search_input right' };
-    }
+  const langOptions = langList.length === 0 ? [{ key: 'en-us', text: 'English', value: 'en-us' }] : getLangOptions();
 
-    let langOptions = this.props.languages.list.map( l => ( {
-      key: l.key,
-      text: l.display_name,
-      value: l.key
-    } ) );
-
-    if ( langOptions.length === 0 ) langOptions = [{ key: 'en-us', text: 'English', value: 'en-us' }];
-
-    return (
-      <section className="search_bar">
-        <Form onSubmit={ this.handleSubmit }>
-          <Input
-            label={ (
-              <Dropdown
-                value={ this.state.locale }
-                options={ langOptions }
-                onChange={ this.handleLangOnChange }
+  return (
+    <section className="search_bar">
+      <Form onSubmit={ handleSubmit }>
+        {isUser && pathname === '/' && (
+          <Form.Group inline>
+            <div className="radio-flex">
+              <Radio
+                label="Articles and Videos"
+                name="radioGroup"
+                value="multiple"
+                checked={ selectedRadio === 'multiple' }
+                onChange={ handleRadioChange }
               />
-            ) }
-            labelPosition="left"
-            onChange={ this.handleQueryOnChange }
-            value={ this.props.search.term ? this.props.search.term : '' }
-            size="large"
-            icon={ (
-              <Icon
-                tabIndex="0"
-                name="search"
-                onClick={ this.handleSearchClick }
-                onKeyUp={ this.handleSearchKeyUp }
+              <Radio
+                label="Press Materials"
+                name="radioGroup"
+                value="document"
+                checked={ selectedRadio === 'document' }
+                onChange={ handleRadioChange }
               />
-            ) }
-            placeholder="Type in keywords to search"
-            { ...inputProps }
-          />
-        </Form>
-      </section>
-    );
-  }
-}
+            </div>
+          </Form.Group>
+        )}
+        <Input
+          label={ (
+            <Dropdown
+              value={ locale }
+              options={ langOptions }
+              onChange={ handleLangOnChange }
+            />
+          ) }
+          labelPosition="left"
+          onChange={ handleQueryOnChange }
+          value={ search?.term ? search.term : '' }
+          size="large"
+          icon={ (
+            <Icon
+              tabIndex="0"
+              name="search"
+              onClick={ handleSearchClick }
+              onKeyUp={ handleSearchKeyUp }
+            />
+          ) }
+          placeholder="Type in keywords to search"
+          { ...inputProps }
+        />
+      </Form>
+    </section>
+  );
+};
 
 const mapStateToProps = state => ( {
   search: state.search,
   languages: state.global.languages,
-  filter: state.filter
+  filter: state.filter,
 } );
 
-Search.propTypes = {
+SearchInput.propTypes = {
   router: PropTypes.object,
   filter: PropTypes.object,
+  isUser: PropTypes.bool,
   search: PropTypes.object,
   languages: PropTypes.object,
   loadLanguages: PropTypes.func,
-  updateSearchTerm: PropTypes.func
+  postTypeUpdate: PropTypes.func,
+  updateSearchTerm: PropTypes.func,
 };
 
-export default withRouter( connect( mapStateToProps, actions )( Search ) );
+export default withRouter( connect( mapStateToProps, actions )( SearchInput ) );
