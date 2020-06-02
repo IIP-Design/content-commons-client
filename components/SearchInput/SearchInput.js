@@ -72,7 +72,12 @@ class Search extends Component {
 
   handleSubmit = async () => {
     const { filter, search } = this.props;
-    const query = fetchQueryString( { ...filter, term: search.term, language: this.state.locale } );
+
+    const postTypesClone = filter?.postTypes ? [...filter.postTypes] : [];
+
+    const filteredPostTypes = postTypesClone.map(type => type === 'package' ? 'document' : type)
+
+    const query = fetchQueryString( { ...filter, term: search.term, language: this.state.locale, postTypes: filteredPostTypes } );
     this.props.router.push( {
       pathname: '/results',
       query
