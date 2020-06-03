@@ -1,24 +1,21 @@
 import { mount } from 'enzyme';
 import ActionButtons from './ActionButtons';
 
-jest.mock( 'next/config', () => () => ( {
-  publicRuntimeConfig: {
-    REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url'
-  }
-} ) );
+jest.mock( 'next/config', () => ( { publicRuntimeConfig: {} } ) );
 
 const props = {
   type: 'package',
   deleteConfirmOpen: false,
   setDeleteConfirmOpen: jest.fn( bool => bool ),
+  previewNode: <p>project preview</p>,
   disabled: {
-    delete: false,
+    'delete': false,
     save: false,
     preview: false,
     publish: false,
     publishChanges: false,
     unpublish: false,
-    review: false
+    review: false,
   },
   handle: {
     deleteConfirm: jest.fn(),
@@ -26,22 +23,22 @@ const props = {
     publish: jest.fn(),
     publishChanges: jest.fn(),
     unpublish: jest.fn(),
-    review: jest.fn()
+    review: jest.fn(),
   },
   show: {
-    delete: true,
+    'delete': true,
     save: true,
     preview: true,
     publish: true,
     publishChanges: true,
     unpublish: true,
-    review: true
+    review: true,
   },
   loading: {
     publish: false,
     publishChanges: false,
-    unpublish: false
-  }
+    unpublish: false,
+  },
 };
 
 const getBtn = ( str, buttons ) => (
@@ -49,17 +46,21 @@ const getBtn = ( str, buttons ) => (
 );
 
 describe( '<ActionButtons />, if not disabled', () => {
-  const Component = <ActionButtons { ...props } />;
+  let Component;
+  let wrapper;
+  let btns;
+
+  beforeEach( () => {
+    Component = <ActionButtons { ...props } />;
+    wrapper = mount( Component );
+    btns = wrapper.find( 'Button' );
+  } );
 
   it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
-
     expect( wrapper.exists() ).toEqual( true );
   } );
 
   it( 'renders the correct buttons', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const btnTxt = [
       'Delete Package',
       'Save & Exit',
@@ -67,7 +68,7 @@ describe( '<ActionButtons />, if not disabled', () => {
       'Publish Changes',
       'Publish',
       'Unpublish',
-      'Final Review'
+      'Final Review',
     ];
 
     btns.forEach( ( btn, i ) => {
@@ -78,79 +79,97 @@ describe( '<ActionButtons />, if not disabled', () => {
     } );
   } );
 
-  it( 'renders the className values for the Delete button', () => {
-    const wrapper = mount( Component );
-
-    const btns = wrapper.find( 'Button' );
+  it( 'renders the Delete button', () => {
     const deleteBtn = getBtn( 'Delete Package', btns );
-    const { className } = deleteBtn.props();
+    const val = 'action-btn btn--delete';
 
-    expect( className.includes( 'action-btn btn--delete' ) ).toEqual( true );
+    expect( deleteBtn.hasClass( val ) ).toEqual( true );
   } );
 
   it( 'clicking the Delete button calls setDeleteConfirmOpen', () => {
-    const wrapper = mount( Component );
-
-    const btns = wrapper.find( 'Button' );
     const deleteBtn = getBtn( 'Delete Package', btns );
 
     deleteBtn.simulate( 'click' );
     expect( props.setDeleteConfirmOpen ).toHaveBeenCalledWith( true );
   } );
 
-  it( 'renders the className values for the Save & Exit button', () => {
-    const wrapper = mount( Component );
-
-    const btns = wrapper.find( 'Button' );
+  it( 'renders the Save & Exit button', () => {
     const saveBtn = getBtn( 'Save & Exit', btns );
-    const { className } = saveBtn.props();
+    const val = 'action-btn btn--save-draft';
 
-    expect( className.includes( 'action-btn btn--save-draft' ) )
-      .toEqual( true );
+    expect( saveBtn.hasClass( val ) ).toEqual( true );
   } );
 
   it( 'clicking the Save & Exit button calls handle.save', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const saveBtn = getBtn( 'Save & Exit', btns );
 
     saveBtn.simulate( 'click' );
     expect( props.handle.save ).toHaveBeenCalled();
   } );
 
-  it( 'renders the className values for the Publish button', () => {
-    const wrapper = mount( Component );
+  it( 'renders the Preview button', () => {
+    const modal = wrapper.find( 'Modal[trigger]' );
+    const previewBtn = mount( modal.prop( 'trigger' ) );
+    const modalContent = mount( modal.prop( 'children' ) );
+    const content = <div className="content">{ props.previewNode }</div>;
+    const val = 'action-btn btn--preview';
 
-    const btns = wrapper.find( 'Button' );
+    expect( previewBtn.hasClass( val ) ).toEqual( true );
+    expect( previewBtn.prop( 'primary' ) ).toEqual( true );
+    expect( modal.prop( 'closeIcon' ) ).toEqual( true );
+    expect( modalContent.contains( content ) ).toEqual( true );
+  } );
+
+  it( 'renders the Publish Changes button', () => {
+    const publishChangesBtn = getBtn( 'Publish Changes', btns );
+    const val = 'action-btn btn--publish-changes';
+
+    expect( publishChangesBtn.hasClass( val ) ).toEqual( true );
+  } );
+
+  it( 'clicking the Publish Changes Button calls handle.publishChanges', () => {
+    const publishChangesBtn = getBtn( 'Publish Changes', btns );
+
+    publishChangesBtn.simulate( 'click' );
+    expect( props.handle.publishChanges ).toHaveBeenCalled();
+  } );
+
+  it( 'renders the Publish button', () => {
     const publishBtn = getBtn( 'Publish', btns );
-    const { className } = publishBtn.props();
+    const val = 'action-btn btn--publish';
 
-    expect( className.includes( 'action-btn btn--publish' ) ).toEqual( true );
+    expect( publishBtn.hasClass( val ) ).toEqual( true );
   } );
 
   it( 'clicking the Publish Button calls handle.publish', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const publishBtn = getBtn( 'Publish', btns );
 
     publishBtn.simulate( 'click' );
     expect( props.handle.publish ).toHaveBeenCalled();
   } );
 
-  it( 'renders the className values for the Final Review button', () => {
-    const wrapper = mount( Component );
+  it( 'renders the Unpublish button', () => {
+    const unPublishBtn = getBtn( 'Unpublish', btns );
+    const val = 'action-btn btn--publish';
 
-    const btns = wrapper.find( 'Button' );
+    expect( unPublishBtn.hasClass( val ) ).toEqual( true );
+  } );
+
+  it( 'clicking the Unpublish Button calls handle.unpublish', () => {
+    const unPublishBtn = getBtn( 'Unpublish', btns );
+
+    unPublishBtn.simulate( 'click' );
+    expect( props.handle.unpublish ).toHaveBeenCalled();
+  } );
+
+  it( 'renders the Final Review button', () => {
     const reviewBtn = getBtn( 'Final Review', btns );
-    const { className } = reviewBtn.props();
+    const val = 'action-btn btn--final-review';
 
-    expect( className.includes( 'action-btn btn--final-review' ) )
-      .toEqual( true );
+    expect( reviewBtn.hasClass( val ) ).toEqual( true );
   } );
 
   it( 'clicking the Final Review Button calls handle.review', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const reviewBtn = getBtn( 'Final Review', btns );
 
     reviewBtn.simulate( 'click' );
@@ -158,31 +177,26 @@ describe( '<ActionButtons />, if not disabled', () => {
   } );
 
   it( 'clicking the "Yes, delete forever" button calls handle.deleteConfirm', () => {
-    const wrapper = mount( Component );
     // open the Confirm modal
     wrapper.setProps( { deleteConfirmOpen: true } );
-
-    const btns = wrapper.find( 'Button' );
-    const confirmDeleteBtn = getBtn( 'Yes, delete forever', btns );
+    const updatedBtns = wrapper.find( 'Button' );
+    const confirmDeleteBtn = getBtn( 'Yes, delete forever', updatedBtns );
 
     confirmDeleteBtn.simulate( 'click' );
     expect( props.handle.deleteConfirm ).toHaveBeenCalled();
   } );
 
   it( 'clicking the "No, take me back" button calls setDeleteConfirmOpen', () => {
-    const wrapper = mount( Component );
     // open the Confirm modal
     wrapper.setProps( { deleteConfirmOpen: true } );
-
-    const btns = wrapper.find( 'Button' );
-    const cancelDeleteBtn = getBtn( 'No, take me back', btns );
+    const updatedBtns = wrapper.find( 'Button' );
+    const cancelDeleteBtn = getBtn( 'No, take me back', updatedBtns );
 
     cancelDeleteBtn.simulate( 'click' );
     expect( props.setDeleteConfirmOpen ).toHaveBeenCalledWith( false );
   } );
 
   it( 'renders the ConfirmModalContent headline and message', () => {
-    const wrapper = mount( Component );
     const confirmModal = wrapper.find( 'Confirm' );
     const confirmModalContent = mount( confirmModal.prop( 'content' ) );
     const headline = 'Are you sure you want to delete this package?';
@@ -197,26 +211,31 @@ describe( '<ActionButtons />, if disabled', () => {
   const newProps = {
     ...props,
     disabled: {
-      delete: true,
+      'delete': true,
       save: true,
       preview: true,
       publish: true,
       publishChanges: true,
       unpublish: true,
-      review: true
-    }
+      review: true,
+    },
   };
-  const Component = <ActionButtons { ...newProps } />;
+
+  let Component;
+  let wrapper;
+  let btns;
+
+  beforeEach( () => {
+    Component = <ActionButtons { ...newProps } />;
+    wrapper = mount( Component );
+    btns = wrapper.find( 'Button' );
+  } );
 
   it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
-
     expect( wrapper.exists() ).toEqual( true );
   } );
 
   it( 'renders the correct buttons', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
     const btnTxt = [
       'Delete Package',
       'Save & Exit',
@@ -224,7 +243,7 @@ describe( '<ActionButtons />, if disabled', () => {
       'Publish Changes',
       'Publish',
       'Unpublish',
-      'Final Review'
+      'Final Review',
     ];
 
     btns.forEach( ( btn, i ) => {
@@ -240,24 +259,75 @@ describe( '<ActionButtons />, if no buttons are shown', () => {
   const newProps = {
     ...props,
     show: {
-      delete: false,
+      'delete': false,
       save: false,
       publish: false,
-      review: false
-    }
+      review: false,
+    },
   };
-  const Component = <ActionButtons { ...newProps } />;
+
+  let Component;
+  let wrapper;
+  let btns;
+
+  beforeEach( () => {
+    Component = <ActionButtons { ...newProps } />;
+    wrapper = mount( Component );
+    btns = wrapper.find( 'Button' );
+  } );
 
   it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
     expect( wrapper.exists() ).toEqual( true );
   } );
 
   it( 'does not render buttons', () => {
-    const wrapper = mount( Component );
-    const btns = wrapper.find( 'Button' );
-
     expect( btns.length ).toEqual( 0 );
     expect( btns.exists() ).toEqual( false );
+  } );
+} );
+
+describe( '<ActionButtons />, if publish, publish changes, and unpublish are loading', () => {
+  const newProps = {
+    ...props,
+    loading: {
+      publishChanges: true,
+      publish: true,
+      unpublish: true,
+    },
+  };
+
+  let Component;
+  let wrapper;
+  let btns;
+
+  beforeEach( () => {
+    Component = <ActionButtons { ...newProps } />;
+    wrapper = mount( Component );
+    btns = wrapper.find( 'Button' );
+  } );
+
+  it( 'renders without crashing', () => {
+    expect( wrapper.exists() ).toEqual( true );
+  } );
+
+  it( 'renders the Publish Changes button', () => {
+    const publishChangesBtn = getBtn( 'Publish Changes', btns );
+    const val = 'action-btn btn--publish-changes loading';
+
+    expect( publishChangesBtn.hasClass( val ) ).toEqual( true );
+  } );
+
+  it( 'renders the Publish button', () => {
+    const publishBtn = getBtn( 'Publish', btns );
+    const val = 'action-btn btn--publish loading';
+
+    expect( publishBtn.hasClass( val ) ).toEqual( true );
+  } );
+
+  it( 'renders the Unpublish button', () => {
+    const unPublishBtn = getBtn( 'Unpublish', btns );
+    const val = 'action-btn btn--publish loading';
+
+    expect( unPublishBtn.hasClass( val ) ).toEqual( true );
   } );
 } );
