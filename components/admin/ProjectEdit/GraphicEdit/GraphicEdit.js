@@ -269,6 +269,12 @@ const GraphicEdit = ( { id } ) => {
     return !projectId || isPublished;
   };
 
+  const delayUnmount = ( fn, timer, delay ) => {
+    if ( timer ) clearTimeout( timer );
+    /* eslint-disable no-param-reassign */
+    timer = setTimeout( fn, delay );
+  };
+
   const saveGraphicFile = async ( pId, file ) => updateProject( pId, {
     images: {
       create: buildImageFile( file ),
@@ -655,6 +661,7 @@ const GraphicEdit = ( { id } ) => {
           <ActionButtons
             deleteConfirmOpen={ deleteConfirmOpen }
             setDeleteConfirmOpen={ setDeleteConfirmOpen }
+            previewNode={ <p>project preview</p> }
             disabled={ {
               'delete': deleteProjectEnabled(),
               save: !projectId || disableBtns || !isFormValid,
