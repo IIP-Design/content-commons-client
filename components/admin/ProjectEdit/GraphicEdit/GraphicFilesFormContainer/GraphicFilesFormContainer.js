@@ -81,6 +81,7 @@ const GraphicFilesFormContainer = props => {
   return (
     <Formik
       initialValues={ getInitialValues() }
+      enableReinitialize
       validationSchema={ baseSchema }
     >
       { formikProps => {

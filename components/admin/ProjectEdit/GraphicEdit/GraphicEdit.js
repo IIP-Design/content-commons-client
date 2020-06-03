@@ -2,19 +2,22 @@ import React, { useEffect, useState, useReducer, useCallback, useRef } from 'rea
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { Loader } from 'semantic-ui-react';
+import { Loader, Modal } from 'semantic-ui-react';
 import sortBy from 'lodash/sortBy';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import AddFilesSectionHeading from 'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading';
 import ApolloError from 'components/errors/ApolloError';
 import GraphicProjectDetailsFormContainer from 'components/admin/ProjectDetailsForm/GraphicProjectDetailsFormContainer/GraphicProjectDetailsFormContainer';
 import GraphicFilesFormContainer from 'components/admin/ProjectEdit/GraphicEdit/GraphicFilesFormContainer/GraphicFilesFormContainer';
+import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import SupportFiles from 'components/admin/ProjectEdit/GraphicEdit/SupportFiles/SupportFiles';
+import AddGraphicFiles from 'components/admin/ProjectEdit/GraphicEdit/AddGraphicFiles/AddGraphicFiles';
 import UploadProgress from 'components/admin/ProjectEdit/UploadProgress/UploadProgress';
 import { useFileUpload } from 'lib/hooks/useFileUpload';
 import useTimeout from 'lib/hooks/useTimeout';
+import useToggleModal from 'lib/hooks/useToggleModal';
 import {
   DELETE_GRAPHIC_PROJECT_MUTATION,
   UPDATE_GRAPHIC_PROJECT_MUTATION,
@@ -27,18 +30,42 @@ import { LANGUAGE_BY_NAME_QUERY } from 'components/admin/dropdowns/LanguageDropd
 import { getCount, getFileExt } from 'lib/utils';
 import './GraphicEdit.scss';
 
-const uploadProgessReducer = ( state, action ) => {
+/**
+ * Tracks initial and added files
+ * @param {object} state
+ * @param {object} action
+ */
+const addFilesReducer = ( state, action ) => {
   switch ( action.type ) {
     case 'PROGRESS':
       return {
         ...state,
-        filesToUpload: state.filesToUpload.map( file => {
+        isUploading: true,
+        filesToAdd: state.filesToAdd.map( file => {
           if ( file.id === action.id ) {
             return { ...file, loaded: action.loaded };
           }
 
           return file;
         } ),
+      };
+
+    case 'PROGRESS_COMPLETE':
+      return {
+        ...state,
+        isUploading: false,
+      };
+
+    case 'ADD':
+      return {
+        ...state,
+        filesToAdd: action.filesToAdd,
+      };
+
+    case 'RESET':
+      return {
+        filesToAdd: [],
+        isUploading: false,
       };
 
     default:
@@ -91,7 +118,6 @@ const GraphicEdit = ( { id } ) => {
   const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
 
   const [error, setError] = useState( {} );
-  const [isUploading, setIsUploading] = useState( false );
   const [mounted, setMounted] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [disableBtns, setDisableBtns] = useState( false );
@@ -99,6 +125,13 @@ const GraphicEdit = ( { id } ) => {
   const [notification, setNotification] = useState( {
     notificationMessage: '',
     showNotification: false,
+  } );
+
+  const { modalOpen, handleOpenModel, handleCloseModal } = useToggleModal();
+
+  const [state, dispatch] = useReducer( addFilesReducer, {
+    filesToAdd: localData?.localGraphicProject?.files,
+    isUploading: false,
   } );
 
   const updateNotification = msg => {
@@ -128,7 +161,8 @@ const GraphicEdit = ( { id } ) => {
    */
   const addProjectIdToUrl = useCallback(
     pId => {
-      const path = `${router.asPath}&id=${pId}`;
+      // Don't add id if it is aleady present
+      const path = router.asPath.includes( '&id=' ) ? router.asPath : `${router.asPath}&id=${pId}`;
 
       router.replace( router.asPath, path, { shallow: true } );
     },
@@ -161,11 +195,6 @@ const GraphicEdit = ( { id } ) => {
       clearLocalGraphicFiles();
     }
   }, SAVE_MSG_DELAY );
-
-  const [state, dispatch] = useReducer( uploadProgessReducer, {
-    filesToUpload: localData?.localGraphicProject?.files,
-    complete: false,
-  } );
 
   const { uploadFile } = useFileUpload();
 
@@ -204,8 +233,11 @@ const GraphicEdit = ( { id } ) => {
     return !projectId || isPublished;
   };
 
-  const saveGraphicFile = async ( pId, file ) => {
-  };
+  const saveGraphicFile = async ( pId, file ) => updateProject( pId, {
+    images: {
+      create: buildImageFile( file ),
+    },
+  } );
 
   /**
    * Save support file
@@ -234,10 +266,6 @@ const GraphicEdit = ( { id } ) => {
         create: buildSupportFile( _file ),
       },
     } );
-  };
-
-  const handleAddGraphicFiles = e => {
-    console.log( 'handleAddGraphicFiles' );
   };
 
   const handleExit = () => {
@@ -293,7 +321,7 @@ const GraphicEdit = ( { id } ) => {
    * Starts timeer to display upload success message
    */
   const handleUploadComplete = () => {
-    setIsUploading( false );
+    dispatch( { type: 'PROGRESS_COMPLETE' } );
     updateNotification( 'Project saved as draft' );
     startTimeout();
   };
@@ -312,19 +340,47 @@ const GraphicEdit = ( { id } ) => {
       const _file = await uploadFile( savePath, file, progress );
 
       if ( _file.error ) {
-        return Promise.resolve( { ..._file, error: true } );
+        return Promise.resolve( { ...file, error: true } );
       }
 
       return saveFn( pId, _file );
     } ),
   );
 
+  const handleOpenAddGraphicFilesModal = e => {
+    dispatch( { type: 'ADD', filesToAdd: Array.from( e.target.files ) } );
+    handleOpenModel();
+  };
+
+  const saveGraphicFiles = async files => {
+    const { graphicProject } = data;
+
+    handleCloseModal();
+
+    updateNotification( 'Saving files...' );
+
+    const filesSaved = await uploadAndSaveFiles(
+      projectId,
+      files,
+      graphicProject.assetPath,
+      saveGraphicFile,
+    );
+
+    updateNotification( '' );
+    // clear state
+    dispatch( { type: 'RESET' } );
+
+    // alert if any files failed to upload/save
+    // will return with error prop set to true
+    // console.dir( filesSaved );
+  };
+
   /**
    * Saves support files. Executed 'Add Files' is clicked
    * and files are selected
    * @param {object} e Event object
    */
-  const handleSaveSupportFiles = async e => {
+  const handleAddSupportFiles = async e => {
     updateNotification( 'Saving files...' );
     const { graphicProject } = data;
     const files = Array.from( e.target.files ).map( file => ( { input: file } ) );
@@ -385,11 +441,10 @@ const GraphicEdit = ( { id } ) => {
     // store project id for use in cleanup
     localProjectId.current = project.id;
     updateNotification( 'Saving project...' );
-    setIsUploading( true );
 
     const filesSaved = await uploadAndSaveFiles(
       project.id,
-      state.filesToUpload,
+      state.filesToAdd,
       project.assetPath,
       handleIntialSave,
       handleUploadProgress,
@@ -434,13 +489,7 @@ const GraphicEdit = ( { id } ) => {
     return type === 'graphicFiles' ? initialGraphicFiles : initialSupportFiles;
   };
 
-  const getSupportFiles = type => {
-    const editableExtensions = [
-      '.psd', '.ai', '.ae', '.eps',
-    ];
-    const editableFiles = [];
-    const additionalFiles = [];
-
+  const getSortedFiles = () => {
     const existingSupportFiles = data?.graphicProject?.supportFiles || [];
     const existingGraphicFiles = data?.graphicProject?.images || [];
 
@@ -457,7 +506,18 @@ const GraphicEdit = ( { id } ) => {
       return file.name;
     } );
 
-    if ( getCount( supportFiles ) ) {
+    return sortedFiles;
+  };
+
+  const getSupportFiles = type => {
+    const editableExtensions = [
+      '.psd', '.ai', '.ae', '.eps',
+    ];
+    const editableFiles = [];
+    const additionalFiles = [];
+    const sortedFiles = getSortedFiles();
+
+    if ( getCount( sortedFiles ) ) {
       sortedFiles.forEach( file => {
         const _filename = projectId ? file.filename : file.name;
         const extension = getFileExt( _filename );
@@ -478,6 +538,7 @@ const GraphicEdit = ( { id } ) => {
 
   const getGraphicFiles = () => {
     const existingFiles = data?.graphicProject?.images || [];
+
     const initialFiles = getInitialFiles( 'graphicFiles' );
     let files = [];
 
@@ -510,7 +571,14 @@ const GraphicEdit = ( { id } ) => {
     transform: 'translateX(-50%)',
   };
 
-  if ( loading ) {
+  /**
+   * Do not show loading if this is an initial
+   * remote graphicProject fetch as it clears the
+   * screen.  This happens when going from local data
+   * to remote date. Add local resolver to remote resolver
+   * to avoid this going forward
+   */
+  if ( loading && !localProjectId.current ) {
     return (
       <div
         style={ {
@@ -590,14 +658,16 @@ const GraphicEdit = ( { id } ) => {
         show={ showNotification }
         msg={ notificationMessage }
       />
+
       {/* upload progress  */}
       <UploadProgress
         className="alpha"
         projectId={ projectId }
-        filesToUpload={ state.filesToUpload }
-        isUploading={ isUploading }
+        filesToUpload={ state.filesToAdd }
+        isUploading={ state.isUploading }
         uploadComplete={ handleUploadComplete }
       />
+
       {/* project details form */}
       <GraphicProjectDetailsFormContainer
         id={ projectId }
@@ -614,16 +684,17 @@ const GraphicEdit = ( { id } ) => {
       <UploadProgress
         className="beta"
         projectId={ projectId }
-        filesToUpload={ state.filesToUpload }
-        isUploading={ isUploading }
+        filesToUpload={ state.filesToAdd }
+        isUploading={ state.isUploading }
       />
+
       {/* project support files */}
       <div className="support-files">
         <AddFilesSectionHeading
           projectId={ projectId }
           title="Support Files"
-          acceptedFileTypes="image/*, image/vnd.adobe.photoshop, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc"
-          handleAddFiles={ handleSaveSupportFiles }
+          acceptedFileTypes="image/*, image/vnd.adobe.photoshop, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc, .ttf"
+          handleAddFiles={ handleAddSupportFiles }
         />
 
         <SupportFiles
@@ -632,14 +703,32 @@ const GraphicEdit = ( { id } ) => {
           fileTypes={ supportFilesConfig }
         />
       </div>
+
       {/* project graphic files */}
       <div className="graphic-files">
-        <AddFilesSectionHeading
-          projectId={ projectId }
-          title="Graphics in Project"
-          acceptedFileTypes="image/gif, image/jpeg, image/png"
-          handleAddFiles={ handleAddGraphicFiles }
-        />
+        <AddFilesSectionHeading projectId={ projectId } title="Graphics in Project">
+          <Modal
+            open={ modalOpen }
+            style={ { width: '820px' } }
+            trigger={ (
+              <ButtonAddFiles
+                aria-label="Add files"
+                multiple
+                accept="image/gif, image/jpeg,image/jpg, image/png"
+                onChange={ handleOpenAddGraphicFilesModal }
+              >
+                + Add Files
+              </ButtonAddFiles>
+            ) }
+            content={ (
+              <AddGraphicFiles
+                files={ state.filesToAdd }
+                closeModal={ handleCloseModal }
+                save={ saveGraphicFiles }
+              />
+            ) }
+          />
+        </AddFilesSectionHeading>
 
         <GraphicFilesFormContainer
           projectId={ projectId }
