@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { useFileStateManger } from 'lib/hooks/useFileStateManger';
 import { normalize } from 'lib/graphql/normalizers/graphic';
 import { serializeFile } from 'lib/utils';
-import EditFileGrid from './GraphicProjectFiles/EditFileGrid/EditFileGrid';
+import EditFileGrid from 'components/admin/EditFileGrid/EditFileGrid';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import GraphicStyleDropdown from 'components/admin/dropdowns/GraphicStyleDropdown/GraphicStyleDropdown';
 import SocialPlatformDropdown from 'components/admin/dropdowns/SocialPlatformDropdown/SocialPlatformDropdown';
