@@ -16,11 +16,21 @@ const GraphicFiles = ( { file, isAdminPreview } ) => {
 
   const fileType = getFileExt( filename );
 
+  const getSocialPlatform = () => {
+    if ( isAdminPreview ) {
+      const platforms = social.map( platform => platform.name );
+
+      return platforms.join( '/' );
+    }
+
+    return social;
+  };
+
   return (
     <DownloadItemContent
       key={ srcUrl }
       srcUrl={ srcUrl }
-      hoverText={ `Download for ${social}` }
+      hoverText={ `Download for ${getSocialPlatform()}` }
       isAdminPreview={ isAdminPreview }
     >
       <div className="item-content">
@@ -28,7 +38,7 @@ const GraphicFiles = ( { file, isAdminPreview } ) => {
           <strong>
             Download
             { ` "${title}"` }
-            { ` for ${social}`}
+            { ` for ${getSocialPlatform()}`}
           </strong>
         </p>
         <p className="item-content__meta">{ `File type: ${fileType}` }</p>
