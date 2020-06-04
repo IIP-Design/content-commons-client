@@ -325,6 +325,7 @@ const GraphicProject = ( {
       </section>
 
       <ModalPostMeta
+        type={ projectType }
         logo={ displayDOSLogo( owner ) }
         source={ owner }
         datePublished={ published }

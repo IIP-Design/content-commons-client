@@ -20,6 +20,7 @@ const ModalPostMeta = ( {
 } ) => {
   const isRTL = textDirection === 'rtl';
   const isDocument = type && type === 'document';
+  const isSocialGraphic = type && type === 'SOCIAL_MEDIA';
   const contentSite = contentRegExp( sourcelink );
 
   const renderSourceItem = () => {
@@ -95,22 +96,26 @@ const ModalPostMeta = ( {
   return (
     <section className="modal_section modal_section--postMeta">
       { renderSourceItem() }
+
       { /* Author displayed only on Dashboard */ }
       { author?.firstName && author?.lastName && (
         <span className="modal_postmeta_content">
           { `Author: ${author.firstName} ${author.lastName}` }
         </span>
       ) }
-      <span className="modal_postmeta_content">
-        { datePublished
-          ? `Date Published: ${moment( datePublished ).format( 'MMMM DD, YYYY' )}`
-          : 'Date Published: '}
-      </span>
-      {
-        originalLink
+
+      { !isSocialGraphic
+        && (
+          <span className="modal_postmeta_content">
+            { datePublished
+              ? `Date Published: ${moment( datePublished ).format( 'MMMM DD, YYYY' )}`
+              : 'Date Published: ' }
+          </span>
+        ) }
+
+      { originalLink
         && !contentSite
-        && <a href={ originalLink } target="_blank" rel="noopener noreferrer">View Original</a>
-      }
+        && <a href={ originalLink } target="_blank" rel="noopener noreferrer">View Original</a> }
     </section>
   );
 };
