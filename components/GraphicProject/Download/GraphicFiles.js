@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
+import { formatBytes, getFileExt } from 'lib/utils';
 
 const GraphicFiles = ( { file, isAdminPreview } ) => {
   const {
@@ -11,10 +11,10 @@ const GraphicFiles = ( { file, isAdminPreview } ) => {
     filename,
     filesize,
     width,
-    height
+    height,
   } = file;
 
-  const fileType = filename.slice( filename.lastIndexOf( '.' ) );
+  const fileType = getFileExt( filename );
 
   return (
     <DownloadItemContent
@@ -25,12 +25,14 @@ const GraphicFiles = ( { file, isAdminPreview } ) => {
     >
       <div className="item-content">
         <p className="item-content__title">
-          <strong>Download </strong>
-          { `"${title}"` }
-          <strong>{` for ${social}`}</strong>
+          <strong>
+            Download
+            { ` "${title}"` }
+            { ` for ${social}`}
+          </strong>
         </p>
         <p className="item-content__meta">{ `File type: ${fileType}` }</p>
-        <p className="item-content__meta">{ `File size: ${filesize}` }</p>
+        <p className="item-content__meta">{ `File size: ${formatBytes( filesize )}` }</p>
         <p className="item-content__meta">{ `Dimensions: ${width} x ${height}` }</p>
       </div>
     </DownloadItemContent>
@@ -39,7 +41,7 @@ const GraphicFiles = ( { file, isAdminPreview } ) => {
 
 GraphicFiles.propTypes = {
   file: PropTypes.object,
-  isAdminPreview: PropTypes.bool
+  isAdminPreview: PropTypes.bool,
 };
 
 export default GraphicFiles;
