@@ -272,7 +272,7 @@ const GraphicProject = ( {
                 type={ type }
                 isPreview={ isAdminPreview }
                 { ...( isAdminPreview
-                  ? { link: 'The direct link to the package will appear here.' }
+                  ? { link: 'The direct link to the project will appear here.' }
                   : null
                 ) }
               />
