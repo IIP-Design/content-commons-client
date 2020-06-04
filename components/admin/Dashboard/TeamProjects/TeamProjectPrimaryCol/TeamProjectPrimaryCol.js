@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import truncate from 'lodash/truncate';
 import {
-  Checkbox, Icon, Modal, Popup
+  Checkbox, Icon, Modal, Popup,
 } from 'semantic-ui-react';
 
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
@@ -19,20 +19,11 @@ import { DashboardContext } from 'context/dashboardContext';
 
 import './TeamProjectPrimaryCol.scss';
 
-const GraphicPreview = dynamic( () => import(
-  /* webpackChunkName: "graphicPreview" */
-  'components/admin/Previews/GraphicPreview/GraphicPreview'
-) );
+const GraphicPreview = dynamic( () => import( /* webpackChunkName: "graphicPreview" */ 'components/admin/Previews/GraphicPreview/GraphicPreview' ) );
 
-const PackagePreview = dynamic( () => import(
-  /* webpackChunkName: "packagePreview" */
-  'components/admin/Previews/PackagePreview/PackagePreview'
-) );
+const PackagePreview = dynamic( () => import( /* webpackChunkName: "packagePreview" */ 'components/admin/Previews/PackagePreview/PackagePreview' ) );
 
-const ProjectPreviewContent = dynamic( () => import(
-  /* webpackChunkName: "projectPreviewContent" */
-  'components/admin/Previews/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent'
-) );
+const ProjectPreviewContent = dynamic( () => import( /* webpackChunkName: "projectPreviewContent" */ 'components/admin/Previews/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent' ) );
 
 const handleDataActionsOffClick = e => {
   // Check if click target is a data actions menu link
@@ -86,7 +77,7 @@ const TeamProjectPrimaryCol = ( { d, header } ) => {
   const isPublishing = d.status === 'PUBLISHING';
 
   const actions = [
-    'Edit', 'Preview', 'Files'
+    'Edit', 'Preview', 'Files',
   ];
   const Trigger = isPublishing ? 'span' : 'a';
   const Title = isPublishing ? 'span' : Link;
@@ -137,10 +128,8 @@ const TeamProjectPrimaryCol = ( { d, header } ) => {
   const getEditUrl = ( format = '' ) => {
     if ( isPublishing || !format ) return null;
 
-    // TEMP Package || DocumentFile url
     if ( d.__typename === 'Package' ) return `/admin/package/${id}`;
     if ( d.__typename === 'DocumentFile' ) return `/admin/document/${id}`;
-    if ( d.__typename === 'GraphicProject' ) return `/admin/project/graphic/${id}`;
 
     if ( format === 'pretty' ) {
       if ( d.__typename === 'GraphicProject' ) return `/admin/project/graphic/${id}/edit`;
@@ -286,7 +275,7 @@ TeamProjectPrimaryCol.propTypes = {
   header: PropTypes.object,
   selectedItems: PropTypes.instanceOf( Map ),
   toggleItemSelection: PropTypes.func,
-  team: PropTypes.object
+  team: PropTypes.object,
 };
 
 export default TeamProjectPrimaryCol;

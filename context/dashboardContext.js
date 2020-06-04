@@ -1,17 +1,21 @@
 import React from 'react';
-import gql from 'graphql-tag';
-
 import { getProjectsType, normalizeDashboardData } from 'lib/graphql/util';
-// import { DELETE_GRAPHIC_PROJECT_MUTATION, TEAM_GRAPHIC_PROJECTS_QUERY, TEAM_GRAPHIC_PROJECTS_COUNT_QUERY } from 'lib/graphql/queries/graphic';
-import { DELETE_PACKAGE_MUTATION, PACKAGE_FILES_QUERY, TEAM_PACKAGES_QUERY, TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
-import { DELETE_VIDEO_PROJECT_MUTATION, TEAM_VIDEO_PROJECTS_QUERY, TEAM_VIDEO_PROJECTS_COUNT_QUERY, VIDEO_PROJECT_FILES_QUERY } from 'lib/graphql/queries/video';
+import {
+  DELETE_GRAPHIC_PROJECT_MUTATION,
+  TEAM_GRAPHIC_PROJECTS_QUERY,
+  TEAM_GRAPHIC_PROJECTS_COUNT_QUERY,
+  GRAPHIC_PROJECT_SUPPORT_FILES_QUERY,
+} from 'lib/graphql/queries/graphic';
 
-import { graphicMock } from './mocks';
-// Use dummy queries instead of actual graphic, not yet written queries, to suppress errors
-const DELETE_GRAPHIC_PROJECT_MUTATION = gql`mutation { deleteUser(where: { id: "1234" }) { id } }`;
-const TEAM_GRAPHIC_PROJECTS_QUERY = gql`query { users { lastName } }`;
-const TEAM_GRAPHIC_PROJECTS_COUNT_QUERY = gql`query { users { lastName } }`;
-const GRAPHIC_PROJECT_FILES_QUERY = gql`query { users { lastName } }`;
+import { DELETE_PACKAGE_MUTATION,
+  PACKAGE_FILES_QUERY,
+  TEAM_PACKAGES_QUERY,
+  TEAM_PACKAGES_COUNT_QUERY } from 'lib/graphql/queries/package';
+
+import { DELETE_VIDEO_PROJECT_MUTATION,
+  TEAM_VIDEO_PROJECTS_QUERY,
+  TEAM_VIDEO_PROJECTS_COUNT_QUERY,
+  VIDEO_PROJECT_FILES_QUERY } from 'lib/graphql/queries/video';
 
 // Sets default values before any GraphQL query is executed
 const initialState = {
@@ -118,7 +122,7 @@ export const setQueries = team => {
     case 'graphicProjects':
       queries.content = TEAM_GRAPHIC_PROJECTS_QUERY;
       queries.count = TEAM_GRAPHIC_PROJECTS_COUNT_QUERY;
-      queries.files = GRAPHIC_PROJECT_FILES_QUERY;
+      queries.files = GRAPHIC_PROJECT_SUPPORT_FILES_QUERY;
       queries.remove = DELETE_GRAPHIC_PROJECT_MUTATION;
 
       return queries;
@@ -156,7 +160,7 @@ export const dashboardReducer = ( state, action ) => {
       return {
         ...state,
         count: {
-          count: payload.type === 'graphicProjects' ? parseCount( graphicMock, payload.team ) : parseCount( payload.count.data, payload.team ),
+          count: parseCount( payload.count.data, payload.team ),
           error: payload.type === 'graphicProjects' ? null : payload.count.error,
           loading: payload.count.loading,
           refetch: payload.count.refetch,
@@ -167,7 +171,7 @@ export const dashboardReducer = ( state, action ) => {
       return {
         ...state,
         content: {
-          data: payload.type === 'graphicProjects' ? normalizeDashboardData( graphicMock, payload.type ) : normalizeDashboardData( payload.data, payload.type ),
+          data: normalizeDashboardData( payload.data, payload.type ),
           error: payload.type === 'graphicProjects' ? null : payload.error,
           loading: payload.loading,
           refetch: payload.refetch,
