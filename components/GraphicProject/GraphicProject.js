@@ -139,7 +139,7 @@ const GraphicProject = ( {
 
   const copyrightMsg = copyright === 'COPYRIGHT'
     ? 'Copyright terms outlined in internal description'
-    : 'No copyright beyond provided watermarked attribution';
+    : '';
 
   const tabs = [
     {
@@ -167,7 +167,7 @@ const GraphicProject = ( {
                 { ' ' }
                 <Link href="/about"><a>Terms of Use</a></Link>
               </p>
-              <p><strong>{ copyrightMsg }</strong></p>
+              { copyrightMsg && <p><strong>{ copyrightMsg }</strong></p> }
             </Fragment>
           ) }
         >
