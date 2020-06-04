@@ -148,11 +148,15 @@ const GraphicProject = ( {
         <DownloadItem
           instructions={ `Download the graphic files in ${selectedUnitLanguage.display_name}. This download option is best for uploading this graphic to web pages and social media.` }
         >
-          { !selectedUnitImages.length
-            && <p className="download-item__noContent">There are no graphic files available for download at this time.</p>}
-          { selectedUnitImages.map(
-            img => <GraphicFiles key={ img.srcUrl } file={ img } isAdminPreview={ isAdminPreview } />
-          ) }
+          { selectedUnitImages.length
+            ? selectedUnitImages.map( img => (
+              <GraphicFiles
+                key={ img.srcUrl }
+                file={ img }
+                isAdminPreview={ isAdminPreview }
+              />
+            ) )
+            : <p className="download-item__noContent">There are no graphic files available for download at this time.</p> }
         </DownloadItem>
       ),
     },
@@ -171,11 +175,15 @@ const GraphicProject = ( {
             </Fragment>
           ) }
         >
-          { !selectedUnitSupportFiles.length
-            && <p className="download-item__noContent">There are no editable files available for download at this time.</p>}
-          { selectedUnitSupportFiles.map(
-            file => <GenericFiles key={ file.id } file={ file } isAdminPreview={ isAdminPreview } />
-          ) }
+          { selectedUnitSupportFiles.length
+            ? selectedUnitSupportFiles.map( file => (
+              <GenericFiles
+                key={ file.id }
+                file={ file }
+                isAdminPreview={ isAdminPreview }
+              />
+            ) )
+            : <p className="download-item__noContent">There are no editable files available for download at this time.</p> }
         </DownloadItem>
       ),
     },
@@ -191,11 +199,15 @@ const GraphicProject = ( {
             </p>
           ) }
         >
-          { !selectedUnitOtherFiles.length
-            && <p className="download-item__noContent">There are no other files available for download at this time.</p>}
-          { selectedUnitOtherFiles.map(
-            file => <GenericFiles key={ file.id } file={ file } isAdminPreview={ isAdminPreview } />
-          ) }
+          { selectedUnitOtherFiles.length
+            ? selectedUnitOtherFiles.map( file => (
+              <GenericFiles
+                key={ file.id }
+                file={ file }
+                isAdminPreview={ isAdminPreview }
+              />
+            ) )
+            : <p className="download-item__noContent">There are no other files available for download at this time.</p> }
         </DownloadItem>
       ),
     },
@@ -240,7 +252,13 @@ const GraphicProject = ( {
           <Popover
             id={ `${id}_graphic-share` }
             className="graphic-project__popover graphic-project__popover--share"
-            trigger={ <img src={ shareIcon } style={ { width: '20px', height: '20px' } } alt="share icon" /> }
+            trigger={ (
+              <img
+                src={ shareIcon }
+                style={ { width: '20px', height: '20px' } }
+                alt="share icon"
+              />
+            ) }
             expandFromRight
             toolTip="Share graphic"
           >
