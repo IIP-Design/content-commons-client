@@ -36,7 +36,7 @@ const GraphicProject = ( {
   displayAsModal,
   isAdminPreview,
   item,
-  useGraphQl
+  useGraphQl,
 } ) => {
   const { user } = useAuth();
   const router = useRouter();
@@ -56,7 +56,7 @@ const GraphicProject = ( {
     copyright,
     images,
     supportFiles,
-    categories
+    categories,
   } = normalizedGraphicData;
 
   // Use Twitter graphics as default for display otherwise whatever graphic image is available
@@ -101,7 +101,7 @@ const GraphicProject = ( {
   const {
     title,
     language: selectedUnitLanguage,
-    alt
+    alt,
   } = selectedUnit;
 
   useEffect( () => {
@@ -116,7 +116,7 @@ const GraphicProject = ( {
 
   // Editable support files by language
   const editableFileTypes = [
-    '.psd', '.ai', '.eps', '.ae', '.jpg', '.jpeg', '.png'
+    '.psd', '.ai', '.eps', '.ae', '.jpg', '.jpeg', '.png',
   ];
   const selectedUnitSupportFiles = supportFiles
     .filter( file => {
@@ -154,7 +154,7 @@ const GraphicProject = ( {
             img => <GraphicFiles key={ img.srcUrl } file={ img } isAdminPreview={ isAdminPreview } />
           ) }
         </DownloadItem>
-      )
+      ),
     },
     {
       title: 'Editable Files',
@@ -174,10 +174,10 @@ const GraphicProject = ( {
           { !selectedUnitSupportFiles.length
             && <p className="download-item__noContent">There are no editable files available for download at this time.</p>}
           { selectedUnitSupportFiles.map(
-            file => <GenericFiles key={ file.srcUrl } file={ file } isAdminPreview={ isAdminPreview } />
+            file => <GenericFiles key={ file.id } file={ file } isAdminPreview={ isAdminPreview } />
           ) }
         </DownloadItem>
-      )
+      ),
     },
     {
       title: 'Other',
@@ -194,15 +194,15 @@ const GraphicProject = ( {
           { !selectedUnitOtherFiles.length
             && <p className="download-item__noContent">There are no other files available for download at this time.</p>}
           { selectedUnitOtherFiles.map(
-            file => <GenericFiles key={ file.srcUrl } file={ file } isAdminPreview={ isAdminPreview } />
+            file => <GenericFiles key={ file.id } file={ file } isAdminPreview={ isAdminPreview } />
           ) }
         </DownloadItem>
-      )
+      ),
     },
     {
       title: 'Help',
-      content: <Help />
-    }
+      content: <Help />,
+    },
   ];
 
   const authFilterTabs = () => {
@@ -313,11 +313,11 @@ GraphicProject.propTypes = {
     copyright: PropTypes.string,
     images: PropTypes.array,
     supportFiles: PropTypes.array,
-    categories: PropTypes.array
+    categories: PropTypes.array,
   } ),
   displayAsModal: PropTypes.bool,
   isAdminPreview: PropTypes.bool,
-  useGraphQl: PropTypes.bool
+  useGraphQl: PropTypes.bool,
 };
 
 export default GraphicProject;

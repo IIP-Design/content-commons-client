@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useReducer, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Loader, Modal } from 'semantic-ui-react';
@@ -34,6 +35,11 @@ import { GRAPHIC_STYLES_QUERY } from 'components/admin/dropdowns/GraphicStyleDro
 import { LANGUAGE_BY_NAME_QUERY } from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import { getCount, getFileExt } from 'lib/utils';
 import './GraphicEdit.scss';
+
+const GraphicProject = dynamic( () => import(
+  /* webpackChunkName: "graphicProject" */
+  'components/GraphicProject/GraphicProject'
+) );
 
 /**
  * Tracks initial and added files
@@ -652,6 +658,17 @@ const GraphicEdit = ( { id } ) => {
     );
   }
 
+  const getPreview = () => (
+    <GraphicProject
+      item={ data?.graphicProject || {} }
+      displayAsModal
+      isAdminPreview
+      useGraphQl
+    />
+  );
+
+  // if ( !data ) return null;
+
   const { showNotification, notificationMessage } = notification;
 
   return (
@@ -661,7 +678,7 @@ const GraphicEdit = ( { id } ) => {
           <ActionButtons
             deleteConfirmOpen={ deleteConfirmOpen }
             setDeleteConfirmOpen={ setDeleteConfirmOpen }
-            previewNode={ <p>project preview</p> }
+            previewNode={ getPreview() }
             disabled={ {
               'delete': deleteProjectEnabled(),
               save: !projectId || disableBtns || !isFormValid,

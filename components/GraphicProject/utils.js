@@ -6,8 +6,8 @@ const structureLangObj = item => ( {
     text_direction: item.language.textDirection,
     locale: item.language.locale,
     display_name: item.language.displayName,
-    native_name: item.language.nativeName
-  }
+    native_name: item.language.nativeName,
+  },
 } );
 
 export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => {
@@ -24,14 +24,14 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
     copyright: file.copyright || '',
     images: file.images || [],
     supportFiles: file.supportFiles || [],
-    categories: file.categories || ''
+    categories: file.categories || '',
   };
 
   // Elastic API
   if ( !useGraphQl ) {
     const imagesWithFileNameProp = file.images.map( img => ( {
       ...img,
-      filename: img.name
+      filename: img.name,
     } ) );
 
     const supportFilesWithFileNameProp = file.supportFiles.map( supFile => {
@@ -39,13 +39,13 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
 
       return {
         ...supFile,
-        filename: filenameFromSrc
+        filename: filenameFromSrc,
       };
     } );
 
     const esObj = {
       images: imagesWithFileNameProp || [],
-      supportFiles: supportFilesWithFileNameProp || []
+      supportFiles: supportFilesWithFileNameProp || [],
     };
 
     return { ...graphicObj, ...esObj };
@@ -61,14 +61,14 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
         ...structureLangObj( img ),
         srcUrl: img.signedUrl,
         width: dimensions.width,
-        height: dimensions.height
+        height: dimensions.height,
       };
     } );
 
     const structuredSupportFiles = file.supportFiles.map( supFile => ( {
       ...supFile,
       ...structureLangObj( supFile ),
-      srcUrl: supFile.signedUrl
+      srcUrl: supFile.signedUrl,
     } ) );
 
     const gqlObj = {
@@ -79,7 +79,7 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
       desc: file.descPublic || '',
       images: structuredImages || [],
       supportFiles: structuredSupportFiles || [],
-      categories: getTransformedLangTaxArray( file.categories ) || []
+      categories: getTransformedLangTaxArray( file.categories ) || [],
     };
 
     return { ...graphicObj, ...gqlObj };
