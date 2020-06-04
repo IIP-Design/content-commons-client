@@ -275,18 +275,25 @@ const GraphicProject = ( {
           </Popover>
         </div>
       </div>
+
       {/* TO DO: Update thumbnail to use srcUrl */}
       <ModalImage thumbnail={ tempSrcUrl } thumbnailMeta={ { alt } } />
       <ModalContentMeta type={ projectType } dateUpdated={ modified } />
       <ModalDescription description={ desc } />
-      <section className="graphic-project__content">
-        <p className="graphic-project__content__title">Internal Description:</p>
-        { descInternal }
-      </section>
+
+      { user
+        && (
+          <section className="graphic-project__content">
+            <p className="graphic-project__content__title">Internal Description:</p>
+            { descInternal }
+          </section>
+        ) }
+
       <section className="graphic-project__content">
         <p className="graphic-project__content__title">Alt (Alternative) Text:</p>
         { alt }
       </section>
+
       <ModalPostMeta
         logo={ displayDOSLogo( owner ) }
         source={ owner }
