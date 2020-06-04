@@ -278,7 +278,12 @@ const GraphicProject = ( {
 
       {/* TO DO: Update thumbnail to use srcUrl */}
       <ModalImage thumbnail={ tempSrcUrl } thumbnailMeta={ { alt } } />
-      <ModalContentMeta type={ projectType } dateUpdated={ modified } />
+
+      <ModalContentMeta
+        type={ `${projectType.toLowerCase().replace( '_', ' ' )} graphic` }
+        dateUpdated={ modified }
+      />
+
       <ModalDescription description={ desc } />
 
       { user
