@@ -30,7 +30,7 @@ import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 
 import './GraphicProject.scss';
 
-import tempSrcUrl from 'components/download/DownloadItem/graphicPlaceholderImg.png';
+// import tempSrcUrl from 'components/download/DownloadItem/graphicPlaceholderImg.png';
 
 const GraphicProject = ( {
   displayAsModal,
@@ -276,8 +276,15 @@ const GraphicProject = ( {
         </div>
       </div>
 
-      {/* TO DO: Update thumbnail to use srcUrl */}
-      <ModalImage thumbnail={ tempSrcUrl } thumbnailMeta={ { alt } } />
+      { selectedUnit?.srcUrl
+        && (
+          <ModalImage
+            thumbnail={ selectedUnit.srcUrl }
+            thumbnailMeta={ {
+              alt: alt || title || selectedUnit?.filename || '',
+            } }
+          />
+        ) }
 
       <ModalContentMeta
         type={ `${projectType.toLowerCase().replace( '_', ' ' )} graphic` }
