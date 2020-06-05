@@ -8,6 +8,7 @@ import { buildCreateGraphicProjectTree, buildFormTree } from 'lib/graphql/builde
 import { Formik } from 'formik';
 import ProjectDetailsForm from 'components/admin/ProjectDetailsForm/ProjectDetailsForm';
 import { initialSchema, baseSchema } from './validationSchema';
+import useTimeout from 'lib/hooks/useTimeout';
 import './GraphicProjectDetailsFormContainer.scss';
 
 const GraphicProjectDetailsFormContainer = props => {
@@ -15,7 +16,6 @@ const GraphicProjectDetailsFormContainer = props => {
     contentStyle,
     data,
     setIsFormValid,
-    startTimeout,
     updateNotification,
     handleUpload,
   } = props;
@@ -23,6 +23,10 @@ const GraphicProjectDetailsFormContainer = props => {
 
   const [createGraphicProject] = useMutation( CREATE_GRAPHIC_PROJECT_MUTATION );
   const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
+
+  const { startTimeout } = useTimeout( () => {
+    updateNotification( '' );
+  }, 1000 );
 
   const getInitialValues = () => {
     const graphicProject = data?.graphicProject || {};
@@ -172,7 +176,6 @@ GraphicProjectDetailsFormContainer.propTypes = {
   updateNotification: PropTypes.func,
   handleUpload: PropTypes.func,
   setIsFormValid: PropTypes.func,
-  startTimeout: PropTypes.func,
 };
 
 export default GraphicProjectDetailsFormContainer;

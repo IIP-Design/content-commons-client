@@ -42,6 +42,7 @@ const GraphicUpload = ( { files, closeModal } ) => {
         name: 'social',
         component: SocialPlatformDropdown,
         allowedFiles: '.png,.jpg,.jpeg,.gif',
+        props: { closeOnChange: true },
       },
     ],
   ];
