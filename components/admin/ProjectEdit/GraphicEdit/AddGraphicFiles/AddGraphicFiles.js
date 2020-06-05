@@ -35,6 +35,7 @@ const AddGraphicFiles = ( { files, closeModal, save } ) => {
         name: 'social',
         component: SocialPlatformDropdown,
         allowedFiles: ALLOWED_FILES,
+        props: { closeOnChange: true },
       },
     ],
   ];

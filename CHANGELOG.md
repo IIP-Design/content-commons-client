@@ -24,6 +24,8 @@ _This sections lists changes committed since most recent release_
 - A tabIndex property to the Filename tooltip element for keyboard accessibility
 - The aria-hidden property to the Filename tooltip element to prevent the filename from being read twice by screen readers
 - Unit tests for Filename, GraphicSupportFiles, and GraphicFilesForm
+- Functionality to add support and graphic files to exisiting project
+- EditGrid component to handle file creation management for both new and exisiting projects
 
 **Changed:**
 
@@ -51,6 +53,7 @@ _This sections lists changes committed since most recent release_
 - Display information icons next to headings for graphic support files existing projects only
 - Display alt helper text next to the label rather under its textarea field
 - The validationSchema for GraphicFilesFormContainer to handle empty options
+ 
 
 **Fixed:**
 

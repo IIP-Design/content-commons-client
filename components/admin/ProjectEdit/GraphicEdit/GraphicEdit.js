@@ -18,11 +18,16 @@ import UploadProgress from 'components/admin/ProjectEdit/UploadProgress/UploadPr
 import { useFileUpload } from 'lib/hooks/useFileUpload';
 import useTimeout from 'lib/hooks/useTimeout';
 import useToggleModal from 'lib/hooks/useToggleModal';
+import usePublish from 'lib/hooks/usePublish';
+// import useIsDirty from 'lib/hooks/useIsDirty';
 import {
   DELETE_GRAPHIC_PROJECT_MUTATION,
   UPDATE_GRAPHIC_PROJECT_MUTATION,
   GRAPHIC_PROJECT_QUERY,
   LOCAL_GRAPHIC_FILES,
+  PUBLISH_GRAPHIC_PROJECT_MUTATION,
+  UNPUBLISH_GRAPHIC_PROJECT_MUTATION,
+  UPDATE_GRAPHIC_PROJECT_STATUS_MUTATION,
 } from 'lib/graphql/queries/graphic';
 import { buildImageFile, buildSupportFile } from 'lib/graphql/builders/common';
 import { GRAPHIC_STYLES_QUERY } from 'components/admin/dropdowns/GraphicStyleDropdown/GraphicStyleDropdown';
@@ -107,16 +112,25 @@ const GraphicEdit = ( { id } ) => {
     variables: { displayName: 'English' },
   } );
 
-  const { loading, error: queryError, data } = useQuery( GRAPHIC_PROJECT_QUERY, {
-    partialRefetch: true,
-    variables: { id: projectId },
-    displayName: 'GraphicProjectQuery',
-    skip: !projectId,
-  } );
+  const { loading, error: queryError, data, startPolling, stopPolling } = useQuery(
+    GRAPHIC_PROJECT_QUERY,
+    {
+      partialRefetch: true,
+      variables: { id: projectId },
+      displayName: 'GraphicProjectQuery',
+      skip: !projectId,
+    },
+  );
 
   const [deleteGraphicProject] = useMutation( DELETE_GRAPHIC_PROJECT_MUTATION );
   const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
+  const [publishGraphicProject] = useMutation( PUBLISH_GRAPHIC_PROJECT_MUTATION );
+  const [unpublishGraphicProject] = useMutation( UNPUBLISH_GRAPHIC_PROJECT_MUTATION );
+  const [updateGraphicProjectStatus] = useMutation( UPDATE_GRAPHIC_PROJECT_STATUS_MUTATION );
 
+  // publishOperation tells the action buttons which operation is excuting so that it can
+  // set its loading indcator on the right button
+  const [publishOperation, setPublishOperation] = useState( '' );
   const [error, setError] = useState( {} );
   const [mounted, setMounted] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
@@ -127,7 +141,20 @@ const GraphicEdit = ( { id } ) => {
     showNotification: false,
   } );
 
+
   const { modalOpen, handleOpenModel, handleCloseModal } = useToggleModal();
+
+  const {
+    publishing,
+    // publishError,
+    executePublishOperation,
+    handleStatusChange,
+  } = usePublish(
+    startPolling,
+    stopPolling,
+    updateGraphicProjectStatus,
+    data,
+  );
 
   const [state, dispatch] = useReducer( addFilesReducer, {
     filesToAdd: localData?.localGraphicProject?.files,
@@ -213,7 +240,16 @@ const GraphicEdit = ( { id } ) => {
       clearLocalGraphicFiles();
       setMounted( false );
     };
-  }, [clearLocalGraphicFiles, data] );
+  }, [data, clearLocalGraphicFiles] );
+
+  // const isDirty = useIsDirty( data?.graphicProject );
+
+  useEffect( () => {
+    if ( data?.graphicProject ) {
+      // To do : move to usePublish func
+      handleStatusChange( data.graphicProject );
+    }
+  }, [data] );
 
 
   const getStyleId = name => {
@@ -283,27 +319,18 @@ const GraphicEdit = ( { id } ) => {
   };
 
   const handlePublish = async () => {
-    console.log( `publish project ${projectId}` );
-
-    return null;
-    // setPublishOperation( 'publish' );
-    // executePublishOperation( projectId, publishProject );
+    setPublishOperation( 'publish' );
+    executePublishOperation( projectId, publishGraphicProject );
   };
 
   const handlePublishChanges = async () => {
-    console.log( `publishChanges for project ${projectId}` );
-
-    return null;
-    // setPublishOperation( 'publishChanges' );
-    // executePublishOperation( projectId, publishProject );
+    setPublishOperation( 'publishChanges' );
+    executePublishOperation( projectId, publishGraphicProject );
   };
 
   const handleUnPublish = async () => {
-    console.log( `unpublish project ${projectId}` );
-
-    return null;
-    // setPublishOperation( 'unpublish' );
-    // executePublishOperation( projectId, unPublishProject );
+    setPublishOperation( 'unpublish' );
+    executePublishOperation( projectId, unpublishGraphicProject );
   };
 
   /**
@@ -359,7 +386,7 @@ const GraphicEdit = ( { id } ) => {
 
     updateNotification( 'Saving files...' );
 
-    const filesSaved = await uploadAndSaveFiles(
+    await uploadAndSaveFiles(
       projectId,
       files,
       graphicProject.assetPath,
@@ -370,9 +397,11 @@ const GraphicEdit = ( { id } ) => {
     // clear state
     dispatch( { type: 'RESET' } );
 
-    // alert if any files failed to upload/save
-    // will return with error prop set to true
-    // console.dir( filesSaved );
+    /**
+     * TO Do - alert if any files failed to upload/save
+     * will return with error prop set to true
+     * console.dir( filesSaved );
+     */
   };
 
   /**
@@ -385,7 +414,7 @@ const GraphicEdit = ( { id } ) => {
     const { graphicProject } = data;
     const files = Array.from( e.target.files ).map( file => ( { input: file } ) );
 
-    const filesSaved = await uploadAndSaveFiles(
+    await uploadAndSaveFiles(
       projectId,
       files,
       graphicProject.assetPath,
@@ -394,8 +423,11 @@ const GraphicEdit = ( { id } ) => {
 
     updateNotification( '' );
 
-    // alert if any files failed to upload/save
-    console.dir( filesSaved );
+    /**
+     * TO Do - alert if any files failed to upload/save
+     * will return with error prop set to true
+     * console.dir( filesSaved );
+     */
   };
 
 
@@ -442,7 +474,7 @@ const GraphicEdit = ( { id } ) => {
     localProjectId.current = project.id;
     updateNotification( 'Saving project...' );
 
-    const filesSaved = await uploadAndSaveFiles(
+    await uploadAndSaveFiles(
       project.id,
       state.filesToAdd,
       project.assetPath,
@@ -452,8 +484,11 @@ const GraphicEdit = ( { id } ) => {
 
     handleUploadComplete( project.id );
 
-    // alert if any files failed to upload/save
-    // console.dir( filesSaved );
+    /**
+     * TO Do - alert if any files failed to upload/save
+     * will return with error prop set to true
+     * console.dir( filesSaved );
+     */
   };
 
 
@@ -571,12 +606,16 @@ const GraphicEdit = ( { id } ) => {
     transform: 'translateX(-50%)',
   };
 
+  const contentStyle = {
+    border: `3px solid ${projectId ? 'transparent' : '#02bfe7'}`,
+  };
+
   /**
    * Do not show loading if this is an initial
    * remote graphicProject fetch as it clears the
    * screen.  This happens when going from local data
    * to remote date. Add local resolver to remote resolver
-   * to avoid this going forward
+   * to avoid this going forward.
    */
   if ( loading && !localProjectId.current ) {
     return (
@@ -608,9 +647,6 @@ const GraphicEdit = ( { id } ) => {
   }
 
   const { showNotification, notificationMessage } = notification;
-  const contentStyle = {
-    border: `3px solid ${projectId ? 'transparent' : '#02bfe7'}`,
-  };
 
   return (
     <div className="edit-graphic-project">
@@ -623,7 +659,7 @@ const GraphicEdit = ( { id } ) => {
               'delete': deleteProjectEnabled(),
               save: !projectId || disableBtns || !isFormValid,
               preview: !projectId || disableBtns || !isFormValid,
-              publish: !projectId || disableBtns || !isFormValid,
+              publish: !projectId || disableBtns || !isFormValid, // having graphics required?
               publishChanges: !projectId || disableBtns || !isFormValid,
             } }
             handle={ {
@@ -637,13 +673,15 @@ const GraphicEdit = ( { id } ) => {
               'delete': true,
               save: true,
               preview: true,
-              publish: true, // temp
-              unpublish: false, // temp
+              publish: data?.graphicProject?.status === 'DRAFT',
+              // publishChanges: data?.graphicProject?.publishedAt && isDirty,
+              publishChanges: false,
+              unpublish: data?.graphicProject?.status === 'PUBLISHED',
             } }
             loading={ {
-              publish: false, // temp
-              publishChanges: false, // temp
-              unpublish: false, // temp
+              publish: publishing && publishOperation === 'publish',
+              publishChanges: publishing && publishOperation === 'publishChanges',
+              unpublish: publishing && publishOperation === 'unpublish',
             } }
           />
         </ProjectHeader>
@@ -677,7 +715,6 @@ const GraphicEdit = ( { id } ) => {
         handleUpload={ handleUpload }
         maxCategories={ MAX_CATEGORY_COUNT }
         setIsFormValid={ setIsFormValid }
-        startTimeout={ startTimeout }
       />
 
       {/* upload progress */}
