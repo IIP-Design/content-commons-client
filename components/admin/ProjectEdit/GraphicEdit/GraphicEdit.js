@@ -288,13 +288,12 @@ const GraphicEdit = ( { id } ) => {
     _file.name = file.name;
     _file.language = languageData.languages[0].id;
 
-    if ( EDITABLE_EXTS.includes( fileExt ) ) {
-      _file.visibility = 'INTERNAL';
-    }
+    const exts = [...EDITABLE_EXTS, ...IMAGE_EXTS];
 
-    if ( IMAGE_EXTS.includes( fileExt ) ) {
-      _file.style = getStyleId( 'Clean' );
+    // Mark image files added via Support as editable
+    if ( exts.includes( fileExt ) ) {
       _file.visibility = 'INTERNAL';
+      _file.editable = true;
     }
 
     return updateProject( projectId, {
@@ -443,6 +442,7 @@ const GraphicEdit = ( { id } ) => {
 
     if ( EDITABLE_EXTS.includes( fileExt ) || isClean ) {
       file.visibility = 'INTERNAL';
+      file.editable = true;
     }
 
     let _data;
