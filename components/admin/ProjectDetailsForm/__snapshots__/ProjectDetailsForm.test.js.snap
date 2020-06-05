@@ -155,7 +155,6 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                               Project Name
                             </label>
                             <Input
-                              aria-describedby={null}
                               autoFocus={true}
                               id="projectTitle"
                               name="projectTitle"
@@ -168,7 +167,6 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                                 className="ui input"
                               >
                                 <input
-                                  aria-describedby={null}
                                   autoFocus={true}
                                   id="projectTitle"
                                   name="projectTitle"
@@ -230,7 +228,6 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                             Source
                           </label>
                           <Input
-                            aria-describedby={null}
                             id="team"
                             name="team"
                             placeholder=""
@@ -241,7 +238,6 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                               className="ui input"
                             >
                               <input
-                                aria-describedby={null}
                                 id="team"
                                 name="team"
                                 onChange={[Function]}
@@ -352,7 +348,6 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                         Public Description
                       </label>
                       <TextArea
-                        aria-describedby={null}
                         as="textarea"
                         id="descPublic"
                         name="descPublic"
@@ -387,7 +382,6 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                             }
                           >
                             <textarea
-                              aria-describedby={null}
                               id="descPublic"
                               name="descPublic"
                               onChange={[Function]}
@@ -421,7 +415,6 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                           Internal Description
                         </label>
                         <TextArea
-                          aria-describedby={null}
                           as="textarea"
                           id="descInternal"
                           name="descInternal"
@@ -456,7 +449,6 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                               }
                             >
                               <textarea
-                                aria-describedby={null}
                                 id="descInternal"
                                 name="descInternal"
                                 onChange={[Function]}
@@ -628,7 +620,6 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                           </IconPopup>
                         </label>
                         <TextArea
-                          aria-describedby={null}
                           as="textarea"
                           id="alt"
                           name="alt"
@@ -663,7 +654,6 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                               }
                             >
                               <textarea
-                                aria-describedby={null}
                                 id="alt"
                                 name="alt"
                                 onChange={[Function]}

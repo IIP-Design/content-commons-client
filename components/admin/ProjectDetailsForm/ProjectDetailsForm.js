@@ -157,7 +157,7 @@ const ProjectDetailsForm = props => {
                         label={ config.copyright?.label || 'Copyright' }
                         value={ values.copyright }
                         onChange={ handleOnChange }
-                        error={ touched.copyright && !!errors.copyright }
+                        error={ touched.copyright && !values.copyright }
                         { ...( config.copyright?.required && { required: true } ) }
                       />
                       <p className="error-message">{ touched.copyright ? errors.copyright : '' }</p>
@@ -187,7 +187,10 @@ const ProjectDetailsForm = props => {
                         ? <p className="error-message">{ touched.categories ? errors.categories : '' }</p>
                         : (
                           <p className="field__helper-text">
-                            Select up to { maxCategories }.
+                            Select up to
+                            {' '}
+                            { maxCategories }
+                            .
                           </p>
                         ) }
                     </div>
