@@ -114,7 +114,7 @@ const GraphicProject = ( {
   // Image files by language
   const selectedUnitImages = images.filter( img => img.language.display_name === selectedUnitLanguage.display_name );
 
-  // Editable support files by language
+  // Editable support files
   const editableFileTypes = [
     '.psd', '.ai', '.eps', '.ae', '.jpg', '.jpeg', '.png',
   ];
@@ -124,18 +124,16 @@ const GraphicProject = ( {
       const fileType = filename.slice( filename.lastIndexOf( '.' ) );
 
       return editableFileTypes.includes( fileType );
-    } )
-    .filter( file => file.language.display_name === selectedUnitLanguage.display_name );
+    } );
 
-  // Non-editable files by language
+  // Non-editable support files
   const selectedUnitOtherFiles = supportFiles
     .filter( file => {
       const { filename } = file;
       const fileType = filename.slice( filename.lastIndexOf( '.' ) );
 
       return !editableFileTypes.includes( fileType );
-    } )
-    .filter( file => file.language.display_name === selectedUnitLanguage.display_name );
+    } );
 
   const copyrightMsg = copyright === 'COPYRIGHT'
     ? 'Copyright terms outlined in internal description'
