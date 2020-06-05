@@ -19,7 +19,7 @@ import {
   DELETE_PACKAGE_MUTATION,
   PUBLISH_PACKAGE_MUTATION,
   UNPUBLISH_PACKAGE_MUTATION,
-  UPDATE_PACKAGE_STATUS_MUTATION
+  UPDATE_PACKAGE_STATUS_MUTATION,
 } from 'lib/graphql/queries/package';
 import PackageDetailsFormContainer from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsFormContainer';
 import PackageFiles from 'components/admin/PackageEdit/PackageFiles/PackageFiles';
@@ -30,17 +30,17 @@ const PackageEdit = props => {
   const router = useRouter();
 
   const {
-    loading, error: queryError, data, startPolling, stopPolling
+    loading, error: queryError, data, startPolling, stopPolling,
   } = useQuery( PACKAGE_QUERY, {
     partialRefetch: true,
     variables: { id: packageId },
     displayName: 'PackageQuery',
-    skip: !packageId
+    skip: !packageId,
   } );
 
   const { saveFiles } = useCrudActionsDocument( {
     pollQuery: PACKAGE_QUERY,
-    variables: { id: packageId }
+    variables: { id: packageId },
   } );
 
   const { modalOpen, handleOpenModel, handleCloseModal } = useToggleModal();
@@ -63,18 +63,18 @@ const PackageEdit = props => {
 
   const [notification, setNotification] = useState( {
     notificationMessage: '',
-    showNotification: false
+    showNotification: false,
   } );
 
   const {
     publishing,
     publishError,
     executePublishOperation,
-    handleStatusChange
+    handleStatusChange,
   } = usePublish(
     startPolling,
     stopPolling,
-    updatePackageStatus
+    updatePackageStatus,
   );
 
   const isDirty = useIsDirty( data?.pkg );
@@ -101,7 +101,7 @@ const PackageEdit = props => {
   const updateNotification = msg => {
     setNotification( {
       notificationMessage: msg,
-      showNotification: !!msg
+      showNotification: !!msg,
     } );
   };
 
@@ -120,7 +120,7 @@ const PackageEdit = props => {
 
   const handleDeleteConfirm = async () => {
     const deletedPackageId = await deletePackage( {
-      variables: { id: packageId }
+      variables: { id: packageId },
     } ).catch( err => { setError( err ); } );
 
     if ( deletedPackageId ) {
@@ -150,6 +150,7 @@ const PackageEdit = props => {
 
   const handleSave = async ( toSave, toRemove ) => {
     const files = { toSave, toRemove };
+
     saveFiles( data.pkg, files, handleUploadProgress );
   };
 
@@ -157,20 +158,21 @@ const PackageEdit = props => {
     position: 'absolute',
     top: '9em',
     left: '50%',
-    transform: 'translateX(-50%)'
+    transform: 'translateX(-50%)',
   };
 
   const { showNotification, notificationMessage } = notification;
 
   if ( loading ) {
     return (
-      <div style={ {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '200px'
-      } }
+      <div
+        style={ {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '200px',
+        } }
       >
         <Loader
           active
@@ -202,29 +204,29 @@ const PackageEdit = props => {
             deleteConfirmOpen={ deleteConfirmOpen }
             setDeleteConfirmOpen={ setDeleteConfirmOpen }
             disabled={ {
-              delete: deletePackageEnabled(),
+              'delete': deletePackageEnabled(),
               save: !packageId || !isFormValid,
               publishChanges: !packageId || !pkg?.documents?.length,
-              publish: !packageId || !pkg?.documents?.length
+              publish: !packageId || !pkg?.documents?.length,
             } }
             handle={ {
               deleteConfirm: handleDeleteConfirm,
               save: handleExit,
               publish: handlePublish,
               publishChanges: handlePublishChanges,
-              unpublish: handleUnPublish
+              unpublish: handleUnPublish,
             } }
             show={ {
-              delete: true, // package has been completed, show delete in the event user wants to delete instead of uploading files
+              'delete': true, // package has been completed, show delete in the event user wants to delete instead of uploading files
               save: hasInitialUploadCompleted,
               publish: hasInitialUploadCompleted && pkg?.status === 'DRAFT',
               publishChanges: pkg?.publishedAt && isDirty,
-              unpublish: pkg?.status === 'PUBLISHED'
+              unpublish: pkg?.status === 'PUBLISHED',
             } }
             loading={ {
               publish: publishing && publishOperation === 'publish',
               publishChanges: publishing && publishOperation === 'publishChanges',
-              unpublish: publishing && publishOperation === 'unpublish'
+              unpublish: publishing && publishOperation === 'unpublish',
             } }
           />
         </ProjectHeader>
@@ -296,7 +298,7 @@ const PackageEdit = props => {
 };
 
 PackageEdit.propTypes = {
-  id: PropTypes.string
+  id: PropTypes.string,
 };
 
 export default PackageEdit;

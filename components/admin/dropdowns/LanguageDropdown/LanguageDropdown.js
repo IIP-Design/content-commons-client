@@ -20,6 +20,16 @@ const LANGUAGES_QUERY = gql`
   }
 `;
 
+const LANGUAGE_BY_NAME_QUERY = gql`
+  query LANGUAGE_BY_NAME_QUERY($displayName: String!) {
+    languages(where: { displayName: $displayName }) {
+      id
+      displayName
+      locale
+    }
+  }
+`;
+
 const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
 const getIds = ( languages, selected ) => {
@@ -202,4 +212,4 @@ LanguageDropdown.propTypes = {
 };
 
 export default React.memo( LanguageDropdown, areEqual );
-export { LANGUAGES_QUERY };
+export { LANGUAGES_QUERY, LANGUAGE_BY_NAME_QUERY };

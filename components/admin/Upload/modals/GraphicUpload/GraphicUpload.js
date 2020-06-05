@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { useFileStateManger } from 'lib/hooks/useFileStateManger';
 import { normalize } from 'lib/graphql/normalizers/graphic';
 import { serializeFile } from 'lib/utils';
-import EditFileGrid from './GraphicProjectFiles/EditFileGrid/EditFileGrid';
+import EditFileGrid from 'components/admin/EditFileGrid/EditFileGrid';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import GraphicStyleDropdown from 'components/admin/dropdowns/GraphicStyleDropdown/GraphicStyleDropdown';
 import SocialPlatformDropdown from 'components/admin/dropdowns/SocialPlatformDropdown/SocialPlatformDropdown';
@@ -17,7 +17,7 @@ const GraphicUpload = ( { files, closeModal } ) => {
   const router = useRouter();
 
   // What files does this modal accept?
-  const ALLOWED_FILES = '.png,.jpg,.jpeg,.psd,.ai,.ae,.pdf,.doc,.docx,.ttf';
+  const ALLOWED_FILES = '.png,.jpg,.jpeg,.gif,.psd,.ai,.ae,.pdf,.doc,.docx,.ttf';
 
   // Defines how may "tabs" appear and which components, e.g dropdowns that they container
   const screens = [
@@ -26,7 +26,7 @@ const GraphicUpload = ( { files, closeModal } ) => {
         label: 'Language',
         name: 'language',
         component: LanguageDropdown,
-        allowedFiles: '.png,.jpg,.jpeg,.pdf,.doc,.docx,.ttf', // What files does this dropdown accept?
+        allowedFiles: '.png,.jpg,.jpeg,.gif,.pdf,.doc,.docx,.ttf', // What files does this dropdown accept?
         props: { search: true },
       },
     ],
@@ -35,13 +35,13 @@ const GraphicUpload = ( { files, closeModal } ) => {
         label: 'Style',
         name: 'style',
         component: GraphicStyleDropdown,
-        allowedFiles: '.png,.jpg,.jpeg',
+        allowedFiles: '.png,.jpg,.jpeg,.gif',
       },
       {
         label: 'Platform',
         name: 'social',
         component: SocialPlatformDropdown,
-        allowedFiles: '.png,.jpg,.jpeg',
+        allowedFiles: '.png,.jpg,.jpeg,.gif',
       },
     ],
   ];
@@ -50,24 +50,27 @@ const GraphicUpload = ( { files, closeModal } ) => {
   const { state, dispatch } = useFileStateManger( null, normalize( files ) );
 
   /**
-  * Serialize File Objects, write local object to Apollo cache, go to graphic eit page
-  */
+   * Serialize File Objects, write local object to Apollo cache, go to graphic eit page
+   */
   const create = async () => {
     // Loop thru files, serialize File Object and create object
-    const fileList = await Promise.all( state.files.map( async file => {
-      // File Object must be serialized for Apollo cache store
-      const dataUrl = await serializeFile( file.input );
+    const fileList = await Promise.all(
+      state.files.map( async file => {
+        // File Object must be serialized for Apollo cache store
+        const dataUrl = await serializeFile( file.input );
 
-      return {
-        __typename: 'LocalImageFile',
-        ...file,
-        input: {
-          __typename: 'LocalInputFile',
-          dataUrl,
-          name: file.input.name,
-        },
-      };
-    } ) ).catch( err => {
+        return {
+          __typename: 'LocalImageFile',
+          ...file,
+          input: {
+            __typename: 'LocalInputFile',
+            dataUrl,
+            name: file.input.name,
+            size: file.input.size,
+          },
+        };
+      } ),
+    ).catch( err => {
       // console.log( `Unable to process files ${err.toString()}` );
     } );
 
@@ -92,7 +95,6 @@ const GraphicUpload = ( { files, closeModal } ) => {
       } );
     }
   };
-
 
   return (
     <div className={ styles.container }>
@@ -119,11 +121,9 @@ const GraphicUpload = ( { files, closeModal } ) => {
   );
 };
 
-
 GraphicUpload.propTypes = {
   closeModal: PropTypes.func,
   files: PropTypes.array,
 };
 
 export default GraphicUpload;
-

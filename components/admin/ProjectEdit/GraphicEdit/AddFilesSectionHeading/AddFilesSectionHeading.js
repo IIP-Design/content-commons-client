@@ -10,23 +10,22 @@ const AddFilesSectionHeading = props => {
     title,
     acceptedFileTypes,
     handleAddFiles,
+    children,
   } = props;
 
   return (
-    <div className="add-files-section-heading">
-      <HeadlineElement className="headline uppercase">
-        { title }
-      </HeadlineElement>
-      { projectId
-        && (
-          <ButtonAddFiles
-            accept={ acceptedFileTypes }
-            onChange={ handleAddFiles }
-            multiple
-          >
-            + Add Files
-          </ButtonAddFiles>
-        ) }
+    <div className={ `add-files-section-heading ${projectId ? 'available' : 'unavailable'}` }>
+      <HeadlineElement className="headline uppercase">{title}</HeadlineElement>
+
+      { children || (
+        <ButtonAddFiles
+          accept={ acceptedFileTypes }
+          onChange={ handleAddFiles }
+          multiple
+        >
+          + Add Files
+        </ButtonAddFiles>
+      )}
     </div>
   );
 };
@@ -41,6 +40,7 @@ AddFilesSectionHeading.propTypes = {
   title: PropTypes.string,
   acceptedFileTypes: PropTypes.string,
   handleAddFiles: PropTypes.func,
+  children: PropTypes.node,
 };
 
 export default AddFilesSectionHeading;

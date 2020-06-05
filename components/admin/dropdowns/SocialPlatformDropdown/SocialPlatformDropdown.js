@@ -6,9 +6,8 @@ import { Form } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 import sortBy from 'lodash/sortBy';
 import gql from 'graphql-tag';
-
-import '../dropdown.scss';
 import { addEmptyOption } from 'lib/utils';
+import '../dropdown.scss';
 
 const SOCIAL_PLATFORMS_QUERY = gql`
   query SOCIAL_PLATFORMS_QUERY {
@@ -35,7 +34,7 @@ const getSocialPlatform = filename => {
   let social = [];
 
   if ( ~filename.indexOf( 'Twitter' ) || ~filename.indexOf( 'twitter' ) || ~filename.indexOf( 'TW' ) ) {
-    social = 'twitter';
+    social = ['twitter'];
   }
 
   if ( ~filename.indexOf( 'Facebook' ) || ~filename.indexOf( 'facebook' ) || ~filename.indexOf( 'FB' ) ) {

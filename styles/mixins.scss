@@ -94,11 +94,11 @@
   }
 }
 
-// creates a 2 column grid
-@mixin two-column-layout {
+// creates a multicolumn grid
+@mixin multi-column-layout($length: 2, $flex: 0.5fr, $gap: 1em) {
   display: grid;
-  grid-template-columns: repeat(2, 0.5fr);
-  grid-gap: 1em;
+  grid-template-columns: repeat($length, $flex);
+  gap: $gap;
 }
 
 // Remove outline for non-keyboard :focus
@@ -146,4 +146,25 @@
   color: $color;
   text-align: $text-align;
   background-color: transparent;
+}
+
+@mixin text-shadow(
+  $x-offset: 0,
+  $y-offset: 0,
+  $blur-radius: 0.222222222rem,
+  $color: #000
+) {
+  text-shadow: $x-offset $y-offset $blur-radius $color;
+}
+
+@mixin overlay-text {
+  font-size: 0.666666667rem;
+  color: #fff;
+  @include text-shadow;
+}
+
+@mixin wrap-text {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }

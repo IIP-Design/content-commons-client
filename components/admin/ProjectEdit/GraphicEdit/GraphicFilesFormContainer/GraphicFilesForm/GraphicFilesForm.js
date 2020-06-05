@@ -1,8 +1,9 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { Confirm, Form, Input, Loader } from 'semantic-ui-react';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
+import Filename from 'components/admin/Filename/Filename';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import FileUploadProgressBar from 'components/admin/FileUploadProgressBar/FileUploadProgressBar';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
@@ -11,7 +12,7 @@ import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/Langua
 import SocialPlatformDropdown from 'components/admin/dropdowns/SocialPlatformDropdown/SocialPlatformDropdown';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
-import { formatBytes, getCount, truncateAndReplaceStr } from 'lib/utils';
+import { formatBytes, getCount } from 'lib/utils';
 import './GraphicFilesForm.scss';
 
 const GraphicFilesForm = props => {
@@ -59,26 +60,24 @@ const GraphicFilesForm = props => {
     setFieldTouched( name, true, false );
   };
 
-  const isTouched = ( id, field ) => (
-    touched?.[id] && touched[id][field]
-  );
+  const isTouched = ( id, field ) => touched?.[id] && touched[id][field];
 
-  const showErrorMsg = ( id, field ) => (
-    isTouched( id, field ) ? errors?.[id] && errors[id][field] : ''
-  );
+  const showErrorMsg = ( id, field ) => (isTouched( id, field ) ? errors?.[id] && errors[id][field] : '');
+  const renderThumbnail = ( image, filename ) => {
+    const imgSrc = image.signedUrl || image?.input?.dataUrl;
+    const imgAlt = image.alt || filename;
 
-  const renderThumbnail = image => {
-    if ( image ) {
+    if ( imgSrc ) {
       return (
         <img
-          src={ image.signedUrl }
-          alt={ image.alt }
-          className="thumbnail fluid"
+          src={ imgSrc }
+          alt={ imgAlt }
+          className="thumbnail"
         />
       );
     }
 
-    return <div className="placeholder" />;
+    return null;
   };
 
   const uploadInProgress = false; // temp
@@ -116,24 +115,33 @@ const GraphicFilesForm = props => {
 
       <Form className="form-fields">
         { files.map( file => {
-          const { id, filename, filesize, language } = file;
-          const value = values[id];
-          const name = filename?.length > 30
-            ? truncateAndReplaceStr( filename, 20, 10 )
-            : filename;
+          const { id, filename, filesize, input, language } = file;
+          const _filename = projectId ? filename : input?.name;
+          const _filesize = projectId ? filesize : input?.size;
+
+          const value = projectId
+            ? values[id]
+            : {
+              title: input.name || '',
+              language,
+              style: file.style,
+              social: file.social,
+            };
 
           return (
             <fieldset
               key={ id }
               className={ `graphic-file-${id}` }
-              name={ filename }
+              name={ _filename }
             >
               <VisuallyHidden el="legend">
-                { `edit fields for ${filename}` }
+                { `edit fields for ${_filename}` }
               </VisuallyHidden>
 
-              <div className="image-wrapper">
-                { renderThumbnail( file ) }
+              <div
+                className={ `image-wrapper ${projectId ? 'available' : 'unavailable'}` }
+              >
+                { renderThumbnail( file, value?.title ) }
 
                 <FileRemoveReplaceButtonGroup
                   onRemove={ () => {
@@ -148,27 +156,16 @@ const GraphicFilesForm = props => {
                 <div className="meta-wrap">
                   <div className="meta">
                     <span className="filename">
-                      { filename !== name
-                        ? (
-                          <Fragment>
-                            <button
-                              tooltip={ filename }
-                              type="button"
-                              aria-hidden="true"
-                              className="filename truncated"
-                            >
-                              { name }
-                            </button>
-                            <VisuallyHidden el="span">
-                              { filename }
-                            </VisuallyHidden>
-                          </Fragment>
-                        )
-                        : filename }
+                      <Filename
+                        children={ _filename }
+                        filenameLength={ 30 }
+                        numCharsBeforeBreak={ 20 }
+                        numCharsAfterBreak={ 10 }
+                      />
                     </span>
 
                     <span className="filesize">
-                      { formatBytes( filesize, 1 ) }
+                      { formatBytes( _filesize || 0, 1 ) }
                     </span>
                   </div>
                 </div>
@@ -199,9 +196,10 @@ const GraphicFilesForm = props => {
                   name={ `${id}.title` }
                   control={ Input }
                   label="Graphic Title"
-                  value={ value.title || '' }
+                  value={ value?.title || '' }
                   onChange={ handleOnChange }
                   className={ language.textDirection }
+                  disabled={ !projectId }
                 />
               </div>
 
@@ -212,9 +210,10 @@ const GraphicFilesForm = props => {
                     name={ `${id}.language` }
                     className="language"
                     label="Language"
-                    value={ value.language || '' }
+                    value={ value?.language || '' }
                     error={ isTouched( id, 'language' ) && !value.language }
                     onChange={ handleOnChange }
+                    disabled={ !projectId }
                     required
                   />
                   <p className="error-message">
@@ -228,9 +227,10 @@ const GraphicFilesForm = props => {
                     name={ `${id}.style` }
                     className="graphic-style"
                     label="Style"
-                    value={ value.style || '' }
+                    value={ value?.style || '' }
                     error={ isTouched( id, 'style' ) && !value.style }
                     onChange={ handleOnChange }
+                    disabled={ !projectId }
                     required
                   />
                   <p className="error-message">
@@ -245,9 +245,10 @@ const GraphicFilesForm = props => {
                   name={ `${id}.social` }
                   className="social-platform"
                   label="Platform"
-                  value={ value.social || '' }
+                  value={ value?.social || '' }
                   error={ isTouched( id, 'social' ) && !value.social }
                   onChange={ handleOnChange }
+                  disabled={ !projectId }
                   multiple
                   search
                   closeOnBlur

@@ -3,7 +3,7 @@ import { MockedProvider, wait } from '@apollo/react-testing';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import PackageEdit from './PackageEdit';
 import {
-  errorMocks, mocks, noDocumentsMocks, props, undefinedDataMocks
+  errorMocks, mocks, noDocumentsMocks, props, undefinedDataMocks,
 } from './mocks';
 
 jest.mock( 'next/dynamic', () => () => 'Press-Package-File' );
@@ -11,15 +11,15 @@ jest.mock(
   'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsFormContainer',
   () => function PackageDetailsFormContainer() {
     return 'PackageFiles';
-  }
+  },
 );
 jest.mock(
   'components/admin/ActionHeadline/ActionHeadline',
-  () => function ActionHeadline() { return ''; }
+  () => function ActionHeadline() { return ''; },
 );
 jest.mock(
   'components/admin/ButtonPublish/ButtonPublish',
-  () => function ButtonPublish() { return ''; }
+  () => function ButtonPublish() { return ''; },
 );
 jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
@@ -29,6 +29,7 @@ const getBtn = ( str, buttons ) => (
 
 const suppressActWarning = consoleError => {
   const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+
   jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
     if ( !args[0].includes( actMsg ) ) {
       consoleError( ...args );
@@ -40,8 +41,8 @@ describe( '<PackageEdit />, if DRAFT status', () => {
   const router = {
     push: jest.fn(),
     query: {
-      id: 'test-123'
-    }
+      id: 'test-123',
+    },
   };
 
   const Component = (
@@ -60,12 +61,8 @@ describe( '<PackageEdit />, if DRAFT status', () => {
     </MockedProvider>
   );
 
-  /**
-   * @todo Suppress React 16.8 `act()` warnings globally.
-   * The React team's fix won't be out of alpha until 16.9.0.
-   * @see https://github.com/facebook/react/issues/14769
-   */
   const consoleError = console.error;
+
   beforeAll( () => suppressActWarning( consoleError ) );
 
   afterAll( () => {
@@ -90,6 +87,7 @@ describe( '<PackageEdit />, if DRAFT status', () => {
 
   it( 'renders error message if a queryError is returned', async () => {
     const errorWrapper = mount( ErrorComponent );
+
     await wait( 0 );
     errorWrapper.update();
 
@@ -126,9 +124,15 @@ describe( '<PackageEdit />, if DRAFT status', () => {
     wrapper.update();
 
     const actionButtons = wrapper.find( 'ActionButtons' );
-    const btns = ['delete', 'save', 'publish'];
-    const handleKeys = ['deleteConfirm', 'save', 'publish'];
-    const handleFns = ['handleDeleteConfirm', 'handleExit', 'handlePublish'];
+    const btns = [
+      'delete', 'save', 'publish',
+    ];
+    const handleKeys = [
+      'deleteConfirm', 'save', 'publish',
+    ];
+    const handleFns = [
+      'handleDeleteConfirm', 'handleExit', 'handlePublish',
+    ];
 
     expect( actionButtons.exists() ).toEqual( true );
     expect( actionButtons.prop( 'type' ) ).toEqual( 'package' );
@@ -159,6 +163,7 @@ describe( '<PackageEdit />, if DRAFT status', () => {
 
     // open the modal
     const deleteBtn = getBtn( 'Delete Package', btns );
+
     deleteBtn.simulate( 'click' );
     expect( actionButtons().prop( 'deleteConfirmOpen' ) ).toEqual( true );
     expect( confirm().prop( 'open' ) ).toEqual( true );
@@ -178,12 +183,14 @@ describe( '<PackageEdit />, if DRAFT status', () => {
 
     // open the modal
     const deleteBtn = getBtn( 'Delete Package', btns );
+
     deleteBtn.simulate( 'click' );
     expect( actionButtons().prop( 'deleteConfirmOpen' ) ).toEqual( true );
     expect( confirm().prop( 'open' ) ).toEqual( true );
 
     // cancel delete and close modal
     const cancelBtn = getBtn( 'No, take me back', confirm().find( 'button' ) );
+
     cancelBtn.simulate( 'click' );
     expect( actionButtons().prop( 'deleteConfirmOpen' ) ).toEqual( false );
     expect( confirm().prop( 'open' ) ).toEqual( false );
@@ -203,6 +210,7 @@ describe( '<PackageEdit />, if DRAFT status', () => {
 
     // open the modal
     const deleteBtn = getBtn( 'Delete Package', btns );
+
     deleteBtn.simulate( 'click' );
     expect( actionButtons().prop( 'deleteConfirmOpen' ) ).toEqual( true );
     expect( confirm().prop( 'open' ) ).toEqual( true );
@@ -210,12 +218,13 @@ describe( '<PackageEdit />, if DRAFT status', () => {
     // Redirect is a side effect of package deletion.
     const confirmBtnTest = async () => {
       const confirmBtn = getBtn( 'Yes, delete forever', confirm().find( 'button' ) );
+
       confirmBtn.simulate( 'click' );
       await wait( 0 );
       wrapper.update();
 
       expect( router.push ).toHaveBeenCalledWith( {
-        pathname: '/admin/dashboard'
+        pathname: '/admin/dashboard',
       } );
       done();
     };
@@ -233,7 +242,7 @@ describe( '<PackageEdit />, if DRAFT status', () => {
 
     saveBtn.simulate( 'click' );
     expect( router.push ).toHaveBeenCalledWith( {
-      pathname: '/admin/dashboard'
+      pathname: '/admin/dashboard',
     } );
   } );
 
@@ -294,7 +303,7 @@ describe( '<PackageEdit />, if DRAFT status', () => {
       className: 'headline',
       type: 'package',
       published: isPublished,
-      updated: isPublished
+      updated: isPublished,
     } );
   } );
 
@@ -342,10 +351,10 @@ describe( '<PackageEdit />, if DRAFT status', () => {
         position: 'absolute',
         top: '9em',
         left: '50%',
-        transform: 'translateX(-50%)'
+        transform: 'translateX(-50%)',
       },
       show: false,
-      msg: ''
+      msg: '',
     } );
   } );
 } );
@@ -354,8 +363,8 @@ describe( '<PackageEdit />, if there are no documents & router.query.action !== 
   const router = {
     push: jest.fn(),
     query: {
-      id: 'test-123'
-    }
+      id: 'test-123',
+    },
   };
 
   const Component = (
@@ -375,6 +384,7 @@ describe( '<PackageEdit />, if there are no documents & router.query.action !== 
   );
 
   const consoleError = console.error;
+
   beforeAll( () => suppressActWarning( consoleError ) );
 
   afterAll( () => {
@@ -399,6 +409,7 @@ describe( '<PackageEdit />, if there are no documents & router.query.action !== 
 
   it( 'renders error message if a queryError is returned', async () => {
     const errorWrapper = mount( ErrorComponent );
+
     await wait( 0 );
     errorWrapper.update();
 
@@ -422,10 +433,15 @@ describe( '<PackageEdit />, if there are no documents & router.query.action !== 
     wrapper.update();
 
     const actionButtons = wrapper.find( 'ActionButtons' );
-    const btns = ['Delete Package', 'Save & Exit', 'Publish'];
+    const btns = [
+      'Delete Package',
+      'Save & Exit',
+      'Publish',
+    ];
 
     btns.forEach( b => {
       const btn = getBtn( b, actionButtons );
+
       expect( btn.exists() ).toEqual( true );
       if ( b === 'Publish' ) {
         expect( btn.prop( 'disabled' ) ).toEqual( true );
@@ -499,10 +515,10 @@ describe( '<PackageEdit />, if there are no documents & router.query.action !== 
         position: 'absolute',
         top: '9em',
         left: '50%',
-        transform: 'translateX(-50%)'
+        transform: 'translateX(-50%)',
       },
       show: false,
-      msg: ''
+      msg: '',
     } );
   } );
 } );
@@ -512,8 +528,8 @@ describe( '<PackageEdit />, if there are no documents', () => {
     push: jest.fn(),
     query: {
       id: 'test-123',
-      action: 'create'
-    }
+      action: 'create',
+    },
   };
 
   const Component = (
@@ -533,6 +549,7 @@ describe( '<PackageEdit />, if there are no documents', () => {
   );
 
   const consoleError = console.error;
+
   beforeAll( () => suppressActWarning( consoleError ) );
 
   afterAll( () => {
@@ -557,6 +574,7 @@ describe( '<PackageEdit />, if there are no documents', () => {
 
   it( 'renders error message if a queryError is returned', async () => {
     const errorWrapper = mount( ErrorComponent );
+
     await wait( 0 );
     errorWrapper.update();
 
@@ -604,10 +622,16 @@ describe( '<PackageEdit />, if there are no documents', () => {
     wrapper.update();
 
     const actionButtons = wrapper.find( 'ActionButtons' );
-    const unrenderedBtns = ['Save & Exit', 'Publish Changes', 'Publish', 'Unpublish'];
+    const unrenderedBtns = [
+      'Save & Exit',
+      'Publish Changes',
+      'Publish',
+      'Unpublish',
+    ];
 
     unrenderedBtns.forEach( b => {
       const btn = getBtn( b, actionButtons );
+
       expect( btn.exists() ).toEqual( false );
     } );
   } );
@@ -656,10 +680,10 @@ describe( '<PackageEdit />, if there are no documents', () => {
         position: 'absolute',
         top: '9em',
         left: '50%',
-        transform: 'translateX(-50%)'
+        transform: 'translateX(-50%)',
       },
       show: false,
-      msg: ''
+      msg: '',
     } );
   } );
 } );
@@ -669,8 +693,8 @@ describe( '<PackageEdit />, if data === undefined is returned', () => {
     push: jest.fn(),
     query: {
       id: 'test-123',
-      action: 'create'
-    }
+      action: 'create',
+    },
   };
 
   const Component = (
@@ -682,6 +706,7 @@ describe( '<PackageEdit />, if data === undefined is returned', () => {
   );
 
   const consoleError = console.error;
+
   beforeAll( () => suppressActWarning( consoleError ) );
 
   afterAll( () => {
@@ -690,6 +715,7 @@ describe( '<PackageEdit />, if data === undefined is returned', () => {
 
   it( 'renders ApolloError', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
     const apolloError = wrapper.find( 'ApolloError' );

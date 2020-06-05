@@ -3,6 +3,7 @@ import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
 import GraphicStyleDropdown, { GRAPHIC_STYLES_QUERY } from './GraphicStyleDropdown';
+import { addEmptyOption } from 'lib/utils';
 
 const props = {
   id: '123xyz',
@@ -19,7 +20,7 @@ const mocks = [
         graphicStyles: [
           {
             id: 'ck9h3ka3o269y0720t7wzp5uq',
-            name: 'Gif',
+            name: 'GIF',
           },
           {
             id: 'ck9h3koe426aa0720y421wmk3',
@@ -139,8 +140,9 @@ describe( '<GraphicStyleDropdown />', () => {
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
+    const options = addEmptyOption( [] );
 
-    expect( formDropdown.prop( 'options' ) ).toEqual( [] );
+    expect( formDropdown.prop( 'options' ) ).toEqual( options );
   } );
 
   it( 'does not crash if graphicStyles is []', async () => {
@@ -149,8 +151,9 @@ describe( '<GraphicStyleDropdown />', () => {
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
+    const options = addEmptyOption( [] );
 
-    expect( formDropdown.prop( 'options' ) ).toEqual( [] );
+    expect( formDropdown.prop( 'options' ) ).toEqual( options );
   } );
 
   it( 'renders the final state without crashing', async () => {
@@ -168,8 +171,9 @@ describe( '<GraphicStyleDropdown />', () => {
         value: style.id,
       } ) );
 
-    expect( formDropdown.prop( 'options' ) ).toEqual( options );
-    expect( dropdownItems.length ).toEqual( graphicStyles.length );
+    expect( formDropdown.prop( 'options' ) )
+      .toEqual( addEmptyOption( options ) );
+    expect( dropdownItems.length ).toEqual( graphicStyles.length + 1 );
   } );
 
   it( 'assigns a matching id & htmlFor value to the Dropdown and label, respectively', async () => {
