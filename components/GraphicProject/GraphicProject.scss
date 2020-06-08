@@ -1,4 +1,7 @@
 @import "styles/colors.scss";
+@import "styles/mixins.scss";
+
+$image-height: 25rem;
 
 .graphic-project {
 
@@ -38,6 +41,27 @@
       .popover_content {
         font-size: 1rem;        
       }
+    }
+  }
+
+  .modal_thumbnail {
+    position: relative;
+    display: grid;
+    align-items: center;
+    grid-template-areas: 'thumbnail';
+    height: $image-height;
+    background-image: linear-gradient(
+      rgba(0, 0, 0, 0.05) 0%,
+      $grey-medium-transparent 90%
+    );
+
+    > img {
+      grid-area: thumbnail;
+      display: block;
+      height: auto;
+      max-height: $image-height;
+      width: 100%;
+      object-fit: contain;
     }
   }
 
