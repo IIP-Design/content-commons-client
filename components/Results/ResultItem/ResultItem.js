@@ -5,6 +5,7 @@ import { Card, Image, Modal } from 'semantic-ui-react';
 
 import PackageCard from 'components/Package/PackageCard/PackageCard';
 import DocumentCard from 'components/Document/DocumentCard/DocumentCard';
+import GraphicCard from 'components/GraphicProject/GraphicCard/GraphicCard';
 import useSignedUrl from 'lib/hooks/useSignedUrl';
 import { getModalContent } from 'components/modals/utils';
 import { contentRegExp } from 'lib/utils';
@@ -98,6 +99,10 @@ const ResultItem = ( { item } ) => {
 
   if ( item.type === 'document' ) {
     return <DocumentCard file={ item } />;
+  }
+
+  if ( item.type === 'graphic' ) {
+    return <GraphicCard item={ item } />;
   }
 
   return (

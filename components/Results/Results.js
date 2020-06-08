@@ -14,6 +14,8 @@ import ResultsPagination from './ResultsPagination/ResultsPagination';
 
 import './Results.scss';
 
+import { graphicElasticMock } from 'components/GraphicProject/graphicElasticMock';
+
 /**
  * NOTE: Getting error: chunk styles [mini-css-extract-plugin] Conflicting order between:
  * Seems to occurs when the same styles are re imported, i.e modal styles imported in recents
@@ -29,6 +31,12 @@ const Results = ( { search } ) => {
 
   const items = getDataFromHits( search.response );
 
+  /** * TEMP ** */
+  const itemsWithGraphic = [
+    { _id: '121ojsf', _source: graphicElasticMock[0]._source },
+    ...items,
+  ];
+
   return (
     <section className="results">
       { search.currentPage !== -1 && (
@@ -41,7 +49,18 @@ const Results = ( { search } ) => {
             <ResultsHeader toggleView={ toggleView } currentView={ view } />
           </section>
           <Grid className="results_wrapper">
-            { items.map( item => (
+            {/* { items.map( item => (
+              <Grid.Column
+                mobile={ 16 }
+                tablet={ view === 'gallery' ? 8 : 16 }
+                computer={ view === 'gallery' ? 4 : 16 }
+                className={ view === 'gallery' ? 'card_wrapper card_wrapper--gallery' : 'card_wrapper card_wrapper--list' }
+                key={ item._id }
+              >
+                <ResultItem key={ item._id } item={ normalizeItem( item, search.language ) } />
+              </Grid.Column>
+            ) ) } */}
+            { itemsWithGraphic.map( item => (
               <Grid.Column
                 mobile={ 16 }
                 tablet={ view === 'gallery' ? 8 : 16 }

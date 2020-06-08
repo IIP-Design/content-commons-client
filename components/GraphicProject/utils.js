@@ -88,3 +88,14 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
 
   return graphicObj;
 };
+
+// Use Twitter graphics as default for display otherwise whatever graphic image is available
+export const filterGraphicImgs = images => {
+  const containsTwitterImgs = images.some( img => img.social.includes( 'Twitter' ) );
+
+  if ( containsTwitterImgs ) {
+    return images.filter( img => img.social.includes( 'Twitter' ) );
+  }
+
+  return images;
+};
