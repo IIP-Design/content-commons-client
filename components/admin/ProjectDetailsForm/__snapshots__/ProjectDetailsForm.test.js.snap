@@ -294,7 +294,8 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                         <p
                           className="field__helper-text"
                         >
-                          Select up to 
+                          Select up to
+                           
                           2
                           .
                         </p>

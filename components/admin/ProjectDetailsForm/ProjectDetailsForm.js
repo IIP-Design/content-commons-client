@@ -157,7 +157,7 @@ const ProjectDetailsForm = props => {
                         label={ config.copyright?.label || 'Copyright' }
                         value={ values.copyright }
                         onChange={ handleOnChange }
-                        error={ touched.copyright && !values.copyright }
+                        error={ touched.copyright && !!errors.copyright }
                         { ...( config.copyright?.required && { required: true } ) }
                       />
                       <p className="error-message">{ touched.copyright ? errors.copyright : '' }</p>
