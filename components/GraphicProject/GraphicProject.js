@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { updateUrl } from 'lib/browser';
 import { displayDOSLogo } from 'lib/sourceLogoUtils';
-import { getPreviewNotificationStyles } from 'lib/utils';
+import { getCount, getFileExt, getPreviewNotificationStyles } from 'lib/utils';
 import { useAuth } from 'context/authContext';
 import { normalizeGraphicProjectByAPI } from './utils';
 
@@ -29,8 +29,6 @@ import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
 import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 
 import './GraphicProject.scss';
-
-// import tempSrcUrl from 'components/download/DownloadItem/graphicPlaceholderImg.png';
 
 const GraphicProject = ( {
   displayAsModal,
@@ -61,32 +59,37 @@ const GraphicProject = ( {
   } = normalizedGraphicData;
 
   // Use Twitter graphics as default for display otherwise whatever graphic image is available
-  const filterGraphicImgs = () => {
-    const containsTwitterImgs = images.some( img => img.social === 'Twitter' );
+  const getGraphicImgsBySocial = platform => {
+    if ( !getCount( images ) ) return [];
 
-    if ( containsTwitterImgs ) {
-      return images.filter( img => img.social === 'Twitter' );
-    }
+    const filteredImgs = images.reduce( ( allImgs, img ) => {
+      let platformImgs = [];
+      let condition = img.social === platform;
 
-    return images;
+      if ( useGraphQl ) {
+        platformImgs = img.social.filter( s => s.name === platform );
+        condition = getCount( platformImgs );
+      }
+
+      if ( condition ) {
+        allImgs.push( img );
+      }
+
+      return allImgs;
+    }, [] );
+
+    return getCount( filteredImgs ) ? filteredImgs : images;
   };
-  const graphicUnits = filterGraphicImgs();
+  const graphicUnits = getGraphicImgsBySocial( 'Twitter' );
 
   // Set default unit to English lang version if available
   // unless path is for specific lang or no english version
   const setDefaultSelectedUnit = () => {
-    // If displaying as page then check query language
-    if ( !displayAsModal ) {
-      const { language } = router.query;
+    const qryLocale = router?.query?.language || '';
+    const locale = displayAsModal ? 'en-us' : qryLocale;
+    const languageUnit = graphicUnits.find( unit => unit.language.locale === locale );
 
-      return graphicUnits.find( unit => unit.language.locale === language );
-    }
-
-    const englishUnit = graphicUnits.find( unit => unit.language.display_name === 'English' );
-
-    if ( englishUnit ) return englishUnit;
-
-    return graphicUnits[0];
+    return languageUnit || graphicUnits[0];
   };
 
   // Selected Unit State
@@ -95,7 +98,9 @@ const GraphicProject = ( {
   // Update selected unit on language change
   const handleLanguageChange = lang => {
     if ( lang !== selectedUnit.language.display_name ) {
-      setSelectedUnit( graphicUnits.filter( unit => unit.language.display_name === lang )[0] );
+      const newSelection = images.find( unit => unit.language.display_name === lang );
+
+      setSelectedUnit( newSelection );
     }
   };
 
@@ -122,7 +127,7 @@ const GraphicProject = ( {
   const selectedUnitSupportFiles = supportFiles
     .filter( file => {
       const { filename } = file;
-      const fileType = filename.slice( filename.lastIndexOf( '.' ) );
+      const fileType = getFileExt( filename );
 
       return editableFileTypes.includes( fileType );
     } );
@@ -131,7 +136,7 @@ const GraphicProject = ( {
   const selectedUnitOtherFiles = supportFiles
     .filter( file => {
       const { filename } = file;
-      const fileType = filename.slice( filename.lastIndexOf( '.' ) );
+      const fileType = getFileExt( filename );
 
       return !editableFileTypes.includes( fileType );
     } );
