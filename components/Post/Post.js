@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import getConfig from 'next/config';
+
 import { getItemRequest } from 'lib/elastic/api';
 import { normalizeItem } from 'lib/elastic/parser';
 import { updateUrl } from 'lib/browser';
@@ -9,41 +10,47 @@ import { withRouter } from 'next/router';
 import embedIcon from 'static/icons/icon_embed.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
-import ModalItem from '../modals/ModalItem';
-import ModalLangDropdown from '../modals/ModalLangDropdown/ModalLangDropdown';
-import ModalContentMeta from '../modals/ModalContentMeta/ModalContentMeta';
-import ModalImage from '../modals/ModalImage/ModalImage';
-import ModalPostMeta from '../modals/ModalPostMeta/ModalPostMeta';
-import ModalPostTags from '../modals/ModalPostTags/ModalPostTags';
-import ModalText from '../modals/ModalText/ModalText';
+import ModalItem from 'components/modals/ModalItem';
+import ModalLangDropdown from 'components/modals/ModalLangDropdown/ModalLangDropdown';
+import ModalContentMeta from 'components/modals/ModalContentMeta/ModalContentMeta';
+import ModalImage from 'components/modals/ModalImage/ModalImage';
+import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
+import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
+import ModalText from 'components/modals/ModalText/ModalText';
 
 
-import PopupTrigger from '../popups/PopupTrigger';
-import PopupTabbed from '../popups/PopupTabbed';
-import Popup from '../popups/Popup';
+import PopupTrigger from 'components/popups/PopupTrigger';
+import PopupTabbed from 'components/popups/PopupTabbed';
+import Popup from 'components/popups/Popup';
 
-import Share from '../Share/Share';
+import Share from 'components/Share/Share';
 import EmbedPost from './EmbedPost';
 import EmbedHelp from './EmbedHelp';
+import useSignedUrl from 'lib/hooks/useSignedUrl';
 
-const Post = props => {
+const Post = ( { item, router } ) => {
   const { publicRuntimeConfig } = getConfig();
-  const [item, setItem] = useState( props.item );
-  const [selectedLanguage, setSelectedLanguage] = useState( () => {
-    const { language } = props.item;
-    if ( !language ) return 'English';
-    return language.display_name;
-  } );
-  const [textDirection, setTextDirection] = useState( props.item.language.text_direction );
+  const [selectedItem, setSelectedItem] = useState( item );
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    // eslint-disable-next-line camelcase
+    item?.language?.display_name ? item.language.display_name : 'English',
+  );
+  const [textDirection, setTextDirection] = useState(
+    // eslint-disable-next-line camelcase
+    item?.language?.text_direction ? item.language.text_direction : 'ltr',
+  );
+
+  const { signedUrl } = useSignedUrl( selectedItem?.thumbnail ? selectedItem.thumbnail : '' );
 
   useEffect( () => {
-    if ( item ) {
-      const language = item.languages.find( lang => lang.language.display_name === selectedLanguage );
+    if ( selectedItem ) {
+      const language = selectedItem.languages.find( lang => lang.language.display_name === selectedLanguage );
+
       if ( language && language.post_id ) {
-        getItemRequest( item.site, language.post_id )
+        getItemRequest( selectedItem.site, language.post_id )
           .then( response => {
             if ( response && response.hits.total > 0 ) {
-              setItem( normalizeItem( response.hits.hits[0] ) );
+              setSelectedItem( normalizeItem( response.hits.hits[0] ) );
             }
           } );
       }
@@ -51,26 +58,29 @@ const Post = props => {
   }, [selectedLanguage] );
 
   useEffect( () => {
-    const { pathname } = props.router;
-    const { id, site, language } = item;
-    setTextDirection( language.text_direction );
-    if ( id && site && pathname === '/article' ) {
-      updateUrl( `/article?id=${id}&site=${site}` );
+    const { pathname } = router;
+
+    if ( selectedItem ) {
+      const { id, site, language } = selectedItem;
+
+      setTextDirection( language.text_direction );
+      if ( id && site && pathname === '/article' ) {
+        updateUrl( `/article?id=${id}&site=${site}` );
+      }
     }
-  }, [item] );
+  }, [selectedItem, router] );
 
-  const embedItem = (
+  if ( selectedItem ) {
+    const embedItem
     // eslint-disable-next-line max-len
-    `<div id="cdp-article-embed"></div><script async id="cdpArticle" data-id="${item.id}" data-site="${item.site}" src="${publicRuntimeConfig.REACT_APP_CDP_MODULES_URL}${publicRuntimeConfig.REACT_APP_SINGLE_ARTICLE_MODULE}"></script>`
-  );
+    = `<div id="cdp-article-embed"></div><script async id="cdpArticle" data-id="${selectedItem.id}" data-site="${selectedItem.site}" src="${publicRuntimeConfig.REACT_APP_CDP_MODULES_URL}${publicRuntimeConfig.REACT_APP_SINGLE_ARTICLE_MODULE}"></script>`;
 
-  if ( item ) {
     return (
-      <ModalItem headline={ item.title } textDirection={ textDirection }>
+      <ModalItem headline={ selectedItem.title } textDirection={ textDirection }>
         <div className="modal_options">
           <div className="modal_options_left">
             <ModalLangDropdown
-              item={ item }
+              item={ selectedItem }
               selected={ selectedLanguage }
               handleLanguageChange={ value => setSelectedLanguage( value ) }
             />
@@ -91,9 +101,9 @@ const Post = props => {
                           instructions="Copy and paste the code below to embed article on your site"
                           embedItem={ embedItem }
                         />
-                      )
+                      ),
                     },
-                    { title: 'Help', component: <EmbedHelp /> }
+                    { title: 'Help', component: <EmbedHelp /> },
                   ] }
                 />
               ) }
@@ -105,39 +115,40 @@ const Post = props => {
               content={ (
                 <Popup title="Share this article.">
                   <Share
-                    id={ item.id }
-                    language={ item.language.locale }
-                    link={ item.link }
-                    site={ item.site }
-                    title={ item.title }
-                    type={ item.type }
+                    id={ selectedItem.id }
+                    language={ selectedItem.language.locale }
+                    link={ selectedItem.link }
+                    site={ selectedItem.site }
+                    title={ selectedItem.title }
+                    type={ selectedItem.type }
                   />
                 </Popup>
               ) }
             />
           </div>
         </div>
-        <ModalImage thumbnail={ item.thumbnail } thumbnailMeta={ item.thumbnailMeta } />
-        <ModalContentMeta type={ item.type } dateUpdated={ item.modified } />
-        <ModalText textContent={ item.content } />
+        <ModalImage thumbnail={ signedUrl } thumbnailMeta={ selectedItem.thumbnailMeta } />
+        <ModalContentMeta type={ selectedItem.type } dateUpdated={ selectedItem.modified } />
+        <ModalText textContent={ selectedItem.content } />
         <ModalPostMeta
-          type={ item.type }
-          sourcelink={ item.sourcelink }
-          logo={ item.logo }
-          source={ item.site }
-          datePublished={ item.published }
-          originalLink={ item.link }
+          type={ selectedItem.type }
+          sourcelink={ selectedItem.sourcelink }
+          logo={ selectedItem.logo }
+          source={ selectedItem.site }
+          datePublished={ selectedItem.published }
+          originalLink={ selectedItem.link }
         />
-        <ModalPostTags tags={ item.categories } />
+        <ModalPostTags tags={ selectedItem.categories } />
       </ModalItem>
     );
   }
+
   return <ModalItem headline="Content Unavailable" />;
 };
 
 Post.propTypes = {
   router: PropTypes.object,
-  item: PropTypes.object
+  item: PropTypes.object,
 };
 
 export default withRouter( Post );

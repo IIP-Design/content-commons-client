@@ -1,0 +1,17 @@
+@import 'styles/colors.scss';
+
+.container {
+  padding: 2rem;
+  min-height: 425px;
+  
+  .header {
+    color: $blue;
+    $font-size: 1rem !important; 
+  }
+
+  .files {
+    color: $blue; 
+    font-weight: 600;
+  }
+}
+

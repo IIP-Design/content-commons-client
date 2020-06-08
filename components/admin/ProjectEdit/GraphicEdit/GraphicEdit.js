@@ -1,54 +1,139 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { Loader } from 'semantic-ui-react';
+import { Loader, Modal } from 'semantic-ui-react';
+import sortBy from 'lodash/sortBy';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import AddFilesSectionHeading from 'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading';
 import ApolloError from 'components/errors/ApolloError';
 import GraphicProjectDetailsFormContainer from 'components/admin/ProjectDetailsForm/GraphicProjectDetailsFormContainer/GraphicProjectDetailsFormContainer';
 import GraphicFilesFormContainer from 'components/admin/ProjectEdit/GraphicEdit/GraphicFilesFormContainer/GraphicFilesFormContainer';
+import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import SupportFiles from 'components/admin/ProjectEdit/GraphicEdit/SupportFiles/SupportFiles';
+import AddGraphicFiles from 'components/admin/ProjectEdit/GraphicEdit/AddGraphicFiles/AddGraphicFiles';
 import UploadProgress from 'components/admin/ProjectEdit/UploadProgress/UploadProgress';
-// import { useFileUpload } from 'lib/hooks/useFileUpload';
+import { useFileUpload } from 'lib/hooks/useFileUpload';
+import useTimeout from 'lib/hooks/useTimeout';
+import useToggleModal from 'lib/hooks/useToggleModal';
+import usePublish from 'lib/hooks/usePublish';
+// import useIsDirty from 'lib/hooks/useIsDirty';
 import {
   DELETE_GRAPHIC_PROJECT_MUTATION,
+  UPDATE_GRAPHIC_PROJECT_MUTATION,
   GRAPHIC_PROJECT_QUERY,
   LOCAL_GRAPHIC_FILES,
+  PUBLISH_GRAPHIC_PROJECT_MUTATION,
+  UNPUBLISH_GRAPHIC_PROJECT_MUTATION,
+  UPDATE_GRAPHIC_PROJECT_STATUS_MUTATION,
 } from 'lib/graphql/queries/graphic';
-import { getFileExt } from 'lib/utils';
+import { buildImageFile, buildSupportFile } from 'lib/graphql/builders/common';
+import { GRAPHIC_STYLES_QUERY } from 'components/admin/dropdowns/GraphicStyleDropdown/GraphicStyleDropdown';
+import { LANGUAGE_BY_NAME_QUERY } from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
+import { getCount, getFileExt } from 'lib/utils';
 import './GraphicEdit.scss';
 
+/**
+ * Tracks initial and added files
+ * @param {object} state
+ * @param {object} action
+ */
+const addFilesReducer = ( state, action ) => {
+  switch ( action.type ) {
+    case 'PROGRESS':
+      return {
+        ...state,
+        isUploading: true,
+        filesToAdd: state.filesToAdd.map( file => {
+          if ( file.id === action.id ) {
+            return { ...file, loaded: action.loaded };
+          }
 
-const GraphicEdit = props => {
+          return file;
+        } ),
+      };
+
+    case 'PROGRESS_COMPLETE':
+      return {
+        ...state,
+        isUploading: false,
+      };
+
+    case 'ADD':
+      return {
+        ...state,
+        filesToAdd: action.filesToAdd,
+      };
+
+    case 'RESET':
+      return {
+        filesToAdd: [],
+        isUploading: false,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const GraphicEdit = ( { id } ) => {
+  const [projectId, setProjectId] = useState( id );
+
   const router = useRouter();
   const MAX_CATEGORY_COUNT = 2;
   const SAVE_MSG_DELAY = 2000;
-  const UPLOAD_SUCCESS_MSG_DELAY = SAVE_MSG_DELAY + 1000;
+  const IMAGE_EXTS = [
+    '.png', '.jpg', '.jpeg', '.gif',
+  ];
+  const EDITABLE_EXTS = [
+    '.psd', '.ai', '.ae',
+  ];
 
-  let uploadSuccessTimer = null;
-  let saveMsgTimer = null;
-
-  // Local graphic query
+  /**
+    * TO DO: Local graphic query -- should probably add local props to
+    * remote query instead of just writing straight to cache.
+    * Would prevent the loading indicator that the remote query causes
+    */
   const { data: localData, client } = useQuery( LOCAL_GRAPHIC_FILES );
+  const localProjectId = useRef();
 
-  const {
-    loading, error: queryError, data,
-  } = useQuery( GRAPHIC_PROJECT_QUERY, {
-    partialRefetch: true,
-    variables: { id: props.id },
-    displayName: 'GraphicProjectQuery',
-    skip: !props.id,
+  /**
+   * Reading graphic styles directly from cache can throw an
+   * error: `Invariant Violation: Can't find field
+   * graphicStyles on object { "localGraphicProject" }`. This
+   * can occur if graphicStyles are not already in cache for
+   * some reason. So get the styles with useQuery, which has a
+   * default fetchPolicy of cache-first and won't throw the error.
+   */
+  const { data: stylesData } = useQuery( GRAPHIC_STYLES_QUERY );
+  const { data: languageData } = useQuery( LANGUAGE_BY_NAME_QUERY, {
+    variables: { displayName: 'English' },
   } );
-  const [deleteGraphicProject] = useMutation( DELETE_GRAPHIC_PROJECT_MUTATION );
 
+  const { loading, error: queryError, data, startPolling, stopPolling } = useQuery(
+    GRAPHIC_PROJECT_QUERY,
+    {
+      partialRefetch: true,
+      variables: { id: projectId },
+      displayName: 'GraphicProjectQuery',
+      skip: !projectId,
+    },
+  );
+
+  const [deleteGraphicProject] = useMutation( DELETE_GRAPHIC_PROJECT_MUTATION );
+  const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
+  const [publishGraphicProject] = useMutation( PUBLISH_GRAPHIC_PROJECT_MUTATION );
+  const [unpublishGraphicProject] = useMutation( UNPUBLISH_GRAPHIC_PROJECT_MUTATION );
+  const [updateGraphicProjectStatus] = useMutation( UPDATE_GRAPHIC_PROJECT_STATUS_MUTATION );
+
+  // publishOperation tells the action buttons which operation is excuting so that it can
+  // set its loading indcator on the right button
+  const [publishOperation, setPublishOperation] = useState( '' );
   const [error, setError] = useState( {} );
   const [mounted, setMounted] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
-  const [displayTheUploadSuccessMsg, setDisplayTheUploadSuccessMsg] = useState( false );
-  const [projectId, setProjectId] = useState( props.id );
   const [disableBtns, setDisableBtns] = useState( false );
   const [isFormValid, setIsFormValid] = useState( true );
   const [notification, setNotification] = useState( {
@@ -56,21 +141,92 @@ const GraphicEdit = props => {
     showNotification: false,
   } );
 
-  const clearLocalGraphicFiles = () => {
+
+  const { modalOpen, handleOpenModel, handleCloseModal } = useToggleModal();
+
+  const {
+    publishing,
+    // publishError,
+    executePublishOperation,
+    handleStatusChange,
+  } = usePublish(
+    startPolling,
+    stopPolling,
+    updateGraphicProjectStatus,
+    data,
+  );
+
+  const [state, dispatch] = useReducer( addFilesReducer, {
+    filesToAdd: localData?.localGraphicProject?.files,
+    isUploading: false,
+  } );
+
+  const updateNotification = msg => {
+    setNotification( {
+      notificationMessage: msg,
+      showNotification: !!msg,
+    } );
+  };
+
+  /**
+   * Utility method to execute update mutation
+   * @param {string} pId project id
+   * @param {object} _data data to save
+   */
+  const updateProject = async ( pId, _data ) => updateGraphicProject( {
+    variables: {
+      data: _data,
+      where: {
+        id: pId,
+      },
+    },
+  } ).catch( err => console.dir( err ) );
+
+  /**
+   * Adds project id to url to ensure proper display
+   * on paghe referesg
+   */
+  const addProjectIdToUrl = useCallback(
+    pId => {
+      // Don't add id if it is aleady present
+      const path = router.asPath.includes( '&id=' ) ? router.asPath : `${router.asPath}&id=${pId}`;
+
+      router.replace( router.asPath, path, { shallow: true } );
+    },
+    [router],
+  );
+
+  /**
+   * Clears local data cache
+   */
+  const clearLocalGraphicFiles = useCallback( () => {
     client.writeData( {
       data: {
         localGraphicProject: null,
       },
     } );
-  };
+  }, [client] );
 
+  const { startTimeout } = useTimeout( () => {
+    if ( mounted ) {
+      /**
+       * After upload/save set project id which will trigger a re render
+       * and popluate data.graphicProject object. Project id was stored
+       * via ref
+       */
+      const pId = localProjectId.current;
+
+      updateNotification( '' );
+      setProjectId( pId );
+      addProjectIdToUrl( pId );
+      clearLocalGraphicFiles();
+    }
+  }, SAVE_MSG_DELAY );
+
+  const { uploadFile } = useFileUpload();
 
   useEffect( () => {
-    // test
-    if ( localData?.localGraphicProject ) {
-      console.dir( localData?.localGraphicProject );
-    }
-
+    setMounted( true );
 
     if ( data?.graphicProject ) {
       const { images } = data.graphicProject;
@@ -82,36 +238,70 @@ const GraphicEdit = props => {
 
     return () => {
       clearLocalGraphicFiles();
+      setMounted( false );
     };
-  }, [] );
+  }, [data, clearLocalGraphicFiles] );
 
-  const updateNotification = msg => {
-    setNotification( {
-      notificationMessage: msg,
-      showNotification: !!msg,
-    } );
+  // const isDirty = useIsDirty( data?.graphicProject );
+
+  useEffect( () => {
+    if ( data?.graphicProject ) {
+      // To do : move to usePublish func
+      handleStatusChange( data.graphicProject );
+    }
+  }, [data] );
+
+
+  const getStyleId = name => {
+    const styles = stylesData?.graphicStyles;
+    const styleObj = styles && styles.find( style => style.name === name );
+
+    return styleObj?.id || '';
   };
 
-  const addProjectIdToUrl = id => {
-    const path = `${router.asPath}&id=${id}`;
-
-    router.replace( router.asPath, path, { shallow: true } );
-  };
-
-  const deleteProjectEnabled = () =>
+  const deleteProjectEnabled = () => {
     /**
      * disable delete project button if either there
      * is no project id OR project has been published
      */
-    !projectId || data?.graphicProject && !!data.graphicProject.publishedAt;
-  const delayUnmount = ( fn, timer, delay ) => {
-    if ( timer ) clearTimeout( timer );
-    /* eslint-disable no-param-reassign */
-    timer = setTimeout( fn, delay );
+    const isPublished = data?.graphicProject && !!data.graphicProject.publishedAt;
+
+    return !projectId || isPublished;
   };
 
-  const handleAddFiles = () => {
-    console.log( 'add files' );
+  const saveGraphicFile = async ( pId, file ) => updateProject( pId, {
+    images: {
+      create: buildImageFile( file ),
+    },
+  } );
+
+  /**
+   * Save support file
+   * @param {string} pId project id
+   * @param {object} file file to save
+   * @return <Promise>
+   */
+  const saveSupportFile = async ( pId, file ) => {
+    const _file = { ...file };
+    const fileExt = getFileExt( file.input.name );
+
+    _file.name = file.name;
+    _file.language = languageData.languages[0].id;
+
+    if ( EDITABLE_EXTS.includes( fileExt ) ) {
+      _file.visibility = 'INTERNAL';
+    }
+
+    if ( IMAGE_EXTS.includes( fileExt ) ) {
+      _file.style = getStyleId( 'Clean' );
+      _file.visibility = 'INTERNAL';
+    }
+
+    return updateProject( projectId, {
+      supportFiles: {
+        create: buildSupportFile( _file ),
+      },
+    } );
   };
 
   const handleExit = () => {
@@ -129,118 +319,248 @@ const GraphicEdit = props => {
   };
 
   const handlePublish = async () => {
-    console.log( `publish project ${projectId}` );
-
-    return null;
-    // setPublishOperation( 'publish' );
-    // executePublishOperation( projectId, publishProject );
+    setPublishOperation( 'publish' );
+    executePublishOperation( projectId, publishGraphicProject );
   };
 
   const handlePublishChanges = async () => {
-    console.log( `publishChanges for project ${projectId}` );
-
-    return null;
-    // setPublishOperation( 'publishChanges' );
-    // executePublishOperation( projectId, publishProject );
+    setPublishOperation( 'publishChanges' );
+    executePublishOperation( projectId, publishGraphicProject );
   };
 
   const handleUnPublish = async () => {
-    console.log( `unpublish project ${projectId}` );
-
-    return null;
-    // setPublishOperation( 'unpublish' );
-    // executePublishOperation( projectId, unPublishProject );
+    setPublishOperation( 'unpublish' );
+    executePublishOperation( projectId, unpublishGraphicProject );
   };
 
-  const handleSaveDraft = async ( id, projectTitle, tags ) => {
-    console.log( 'handleSaveDraft' );
-
-    return null;
-    // const dataObj = buildUpdateGraphicProjectTree( filesToUpload, imageUses[0].id, projectTitle, tags );
-
-    // await updateGraphicProject( {
-    //   variables: {
-    //     data: dataObj,
-    //     where: {
-    //       id
-    //     }
-    //   }
-    // } ).catch( err => console.dir( err ) );
+  /**
+   * Tracks upload progress of each file
+   * @param {object} e ProgressEvent obj
+   * @param {object} file file being tracked
+   */
+  const handleUploadProgress = async ( e, file ) => {
+    dispatch( { type: 'PROGRESS', id: file.id, loaded: e.loaded } );
   };
 
-  const handleUploadProgress = async ( progressEvent, file ) => {
-    console.log( 'handleUploadProgress' );
-    // props.uploadProgress( file.id, progressEvent );
-  };
-
-  const handleDisplayUploadSuccessMsg = () => {
-    if ( mounted ) {
-      setDisplayTheUploadSuccessMsg( false );
-    }
-    uploadSuccessTimer = null;
-  };
-
-  const handleDisplaySaveMsg = () => {
-    if ( mounted ) {
-      updateNotification( '' );
-    }
-    saveMsgTimer = null;
-  };
-
+  /**
+   * Executes clean up functions after all
+   * initial files have been uplaoded and saved
+   * Starts timeer to display upload success message
+   */
   const handleUploadComplete = () => {
-    console.log( 'handleUploadComplete' );
-    // const { setIsUploading, uploadReset } = props;
-    // const { uploadReset } = props;
-
-    // setIsUploading( false );
-    // uploadReset(); // reset upload redux store
-    // setDisplayTheUploadSuccessMsg( true );
-    // updateNotification( 'Project saved as draft' );
-    // delayUnmount( handleDisplaySaveMsg, saveMsgTimer, SAVE_MSG_DELAY );
-    // delayUnmount( handleDisplayUploadSuccessMsg, uploadSuccessTimer, UPLOAD_SUCCESS_MSG_DELAY );
+    dispatch( { type: 'PROGRESS_COMPLETE' } );
+    updateNotification( 'Project saved as draft' );
+    startTimeout();
   };
 
-  const handleUpload = async ( project, tags ) => {
-    console.log( 'handleUpload' );
+  /**
+   * UUploads and saves files. If error occurrs set 'error' prop on file object
+   * @param {string} pId project id
+   * @param {array} files files to save
+   * @param {string} savePath path to S3 directory to save
+   * @param {func} saveFn save function
+   * @param {func} progress progress callback function
+   * @return <Promise>
+   */
+  const uploadAndSaveFiles = ( pId, files, savePath, saveFn, progress ) => Promise.all(
+    files.map( async file => {
+      const _file = await uploadFile( savePath, file, progress );
 
-    return null;
-    // const { id, projectTitle } = project;
-    // const { uploadExecute, updateFile } = props;
+      if ( _file.error ) {
+        return Promise.resolve( { ...file, error: true } );
+      }
 
-    // // If there are files to upload, upload them
-    // if ( filesToUpload && filesToUpload.length ) {
-    //   setIsUploading( true );
+      return saveFn( pId, _file );
+    } ),
+  );
 
-    //   // 1. Upload files to S3 & Vimeo and fetch file meta data
-    //   await uploadExecute( id, filesToUpload, handleUploadProgress, updateFile );
+  const handleOpenAddGraphicFilesModal = e => {
+    dispatch( { type: 'ADD', filesToAdd: Array.from( e.target.files ) } );
+    handleOpenModel();
+  };
 
-    //   // 2. once all files have been uploaded, create and save new project (only new)
-    //   handleSaveDraft( id, projectTitle, tags );
+  const saveGraphicFiles = async files => {
+    const { graphicProject } = data;
 
-    //   // 3. clean up upload process
-    //   handleUploadComplete();
+    handleCloseModal();
 
-    //   // 4. set project id to newly created project (what if exsiting project?)
-    //   setProjectId( id );
+    updateNotification( 'Saving files...' );
 
-    //   // 5. update url to reflect a new project (only new)
-    //   addProjectIdToUrl( id );
+    await uploadAndSaveFiles(
+      projectId,
+      files,
+      graphicProject.assetPath,
+      saveGraphicFile,
+    );
+
+    updateNotification( '' );
+    // clear state
+    dispatch( { type: 'RESET' } );
+
+    /**
+     * TO Do - alert if any files failed to upload/save
+     * will return with error prop set to true
+     * console.dir( filesSaved );
+     */
+  };
+
+  /**
+   * Saves support files. Executed 'Add Files' is clicked
+   * and files are selected
+   * @param {object} e Event object
+   */
+  const handleAddSupportFiles = async e => {
+    updateNotification( 'Saving files...' );
+    const { graphicProject } = data;
+    const files = Array.from( e.target.files ).map( file => ( { input: file } ) );
+
+    await uploadAndSaveFiles(
+      projectId,
+      files,
+      graphicProject.assetPath,
+      saveSupportFile,
+    );
+
+    updateNotification( '' );
+
+    /**
+     * TO Do - alert if any files failed to upload/save
+     * will return with error prop set to true
+     * console.dir( filesSaved );
+     */
+  };
+
+
+  /**
+   * Initial file save
+   * @param {*} pId  project id
+   * @param {*} file file to save
+   * @return <Promise>
+   */
+  const handleIntialSave = async ( pId, file ) => {
+    const fileExt = getFileExt( file.input.name );
+    const isClean = file.style === getStyleId( 'Clean' );
+
+    if ( EDITABLE_EXTS.includes( fileExt ) || isClean ) {
+      file.visibility = 'INTERNAL';
+    }
+
+    let _data;
+
+    if ( IMAGE_EXTS.includes( getFileExt( file.input.name ) ) && !isClean ) {
+      _data = {
+        images: {
+          create: buildImageFile( file ),
+        },
+      };
+    } else {
+      _data = {
+        supportFiles: {
+          create: buildSupportFile( { ...file, language: languageData.languages[0].id } ),
+        },
+      };
+    }
+
+    return updateProject( pId, _data );
+  };
+
+  /**
+   * Called from Start upload and save process. Call cleanup
+   * functions on completion
+   * @param {object} initial project
+   */
+  const handleUpload = async project => {
+    // store project id for use in cleanup
+    localProjectId.current = project.id;
+    updateNotification( 'Saving project...' );
+
+    await uploadAndSaveFiles(
+      project.id,
+      state.filesToAdd,
+      project.assetPath,
+      handleIntialSave,
+      handleUploadProgress,
+    );
+
+    handleUploadComplete( project.id );
+
+    /**
+     * TO Do - alert if any files failed to upload/save
+     * will return with error prop set to true
+     * console.dir( filesSaved );
+     */
+  };
+
+
+  const getIsShell = filename => {
+    const shellExtensions = [
+      '.jpg', '.jpeg', '.png',
+    ];
+    const extension = getFileExt( filename );
+    const isJpgOrPng = shellExtensions.includes( extension );
+    const hasShellInName = filename.toLowerCase().includes( 'shell' );
+
+    return isJpgOrPng && hasShellInName;
+  };
+
+  const getInitialFiles = type => {
+    const initialSupportFiles = [];
+    const initialGraphicFiles = [];
+
+    if ( localData?.localGraphicProject?.files ) {
+      localData.localGraphicProject.files.forEach( file => {
+        const isClean = file.style === getStyleId( 'Clean' );
+        const isCleanShell = isClean && getIsShell( file.name );
+        const hasStyleAndSocial = getCount( file.style ) && getCount( file.social );
+
+        if ( hasStyleAndSocial && !isCleanShell ) {
+          initialGraphicFiles.push( file );
+        } else {
+          initialSupportFiles.push( file );
+        }
+      } );
+    }
+
+    return type === 'graphicFiles' ? initialGraphicFiles : initialSupportFiles;
+  };
+
+  const getSortedFiles = () => {
+    const existingSupportFiles = data?.graphicProject?.supportFiles || [];
+    const existingGraphicFiles = data?.graphicProject?.images || [];
+
+    const shellFile = existingGraphicFiles.filter( img => getIsShell( img.filename ) );
+    const existingFilesPlusShell = existingSupportFiles.concat( shellFile );
+
+    const initialFiles = getInitialFiles( 'supportFiles' );
+    const supportFiles = projectId ? existingFilesPlusShell : initialFiles;
+    const sortedFiles = sortBy( supportFiles, file => {
+      if ( projectId ) {
+        return file.filename;
+      }
+
+      return file.name;
+    } );
+
+    return sortedFiles;
   };
 
   const getSupportFiles = type => {
     const editableExtensions = [
-      '.psd', '.ai', '.ae', '.eps', '.jpg', '.jpeg', '.png',
+      '.psd', '.ai', '.ae', '.eps',
     ];
     const editableFiles = [];
     const additionalFiles = [];
+    const sortedFiles = getSortedFiles();
 
-    if ( data?.graphicProject?.supportFiles ) {
-      const { supportFiles } = data.graphicProject;
+    if ( getCount( sortedFiles ) ) {
+      sortedFiles.forEach( file => {
+        const _filename = projectId ? file.filename : file.name;
+        const extension = getFileExt( _filename );
 
-      supportFiles.forEach( file => {
-        const extension = getFileExt( file.filename );
+        const hasEditableExt = editableExtensions.includes( extension );
+        const isShell = getIsShell( _filename );
 
-        if ( editableExtensions.includes( extension ) ) {
+        if ( hasEditableExt || isShell ) {
           editableFiles.push( file );
         } else {
           additionalFiles.push( file );
@@ -251,7 +571,21 @@ const GraphicEdit = props => {
     return type === 'editable' ? editableFiles : additionalFiles;
   };
 
-  const graphicFiles = data?.graphicProject?.images || [];
+  const getGraphicFiles = () => {
+    const existingFiles = data?.graphicProject?.images || [];
+
+    const initialFiles = getInitialFiles( 'graphicFiles' );
+    let files = [];
+
+    if ( projectId ) {
+      files = existingFiles.filter( img => !getIsShell( img.filename ) );
+    } else {
+      files = initialFiles;
+    }
+
+    return files;
+  };
+
   const supportFilesConfig = [
     {
       headline: 'editable files',
@@ -267,12 +601,23 @@ const GraphicEdit = props => {
 
   const centeredStyles = {
     position: 'absolute',
-    top: '9em',
+    top: '1em',
     left: '50%',
     transform: 'translateX(-50%)',
   };
 
-  if ( loading ) {
+  const contentStyle = {
+    border: `3px solid ${projectId ? 'transparent' : '#02bfe7'}`,
+  };
+
+  /**
+   * Do not show loading if this is an initial
+   * remote graphicProject fetch as it clears the
+   * screen.  This happens when going from local data
+   * to remote date. Add local resolver to remote resolver
+   * to avoid this going forward.
+   */
+  if ( loading && !localProjectId.current ) {
     return (
       <div
         style={ {
@@ -301,15 +646,7 @@ const GraphicEdit = props => {
     );
   }
 
-  // if ( !data ) return null;
-
   const { showNotification, notificationMessage } = notification;
-  const isUploading = false; // temp
-  const filesToUpload = []; // temp
-  // const { upload: { isUploading, filesToUpload } } = props;
-  const contentStyle = {
-    border: `3px solid ${projectId ? 'transparent' : '#02bfe7'}`,
-  };
 
   return (
     <div className="edit-graphic-project">
@@ -322,7 +659,7 @@ const GraphicEdit = props => {
               'delete': deleteProjectEnabled(),
               save: !projectId || disableBtns || !isFormValid,
               preview: !projectId || disableBtns || !isFormValid,
-              publish: !projectId || disableBtns || !isFormValid,
+              publish: !projectId || disableBtns || !isFormValid, // having graphics required?
               publishChanges: !projectId || disableBtns || !isFormValid,
             } }
             handle={ {
@@ -336,22 +673,22 @@ const GraphicEdit = props => {
               'delete': true,
               save: true,
               preview: true,
-              publish: true, // temp
-              unpublish: false, // temp
+              publish: data?.graphicProject?.status === 'DRAFT',
+              // publishChanges: data?.graphicProject?.publishedAt && isDirty,
+              publishChanges: false,
+              unpublish: data?.graphicProject?.status === 'PUBLISHED',
             } }
             loading={ {
-              publish: false, // temp
-              publishChanges: false, // temp
-              unpublish: false, // temp
+              publish: publishing && publishOperation === 'publish',
+              publishChanges: publishing && publishOperation === 'publishChanges',
+              unpublish: publishing && publishOperation === 'unpublish',
             } }
           />
         </ProjectHeader>
       </div>
-
       <div style={ centeredStyles }>
         <ApolloError error={ error } />
       </div>
-
       {/* Form data saved notification */}
       <Notification
         el="p"
@@ -364,9 +701,9 @@ const GraphicEdit = props => {
       <UploadProgress
         className="alpha"
         projectId={ projectId }
-        filesToUpload={ filesToUpload }
-        displayTheUploadSuccessMsg={ displayTheUploadSuccessMsg }
-        isUploading={ isUploading }
+        filesToUpload={ state.filesToAdd }
+        isUploading={ state.isUploading }
+        uploadComplete={ handleUploadComplete }
       />
 
       {/* project details form */}
@@ -384,9 +721,8 @@ const GraphicEdit = props => {
       <UploadProgress
         className="beta"
         projectId={ projectId }
-        filesToUpload={ filesToUpload }
-        displayTheUploadSuccessMsg={ displayTheUploadSuccessMsg }
-        isUploading={ isUploading }
+        filesToUpload={ state.filesToAdd }
+        isUploading={ state.isUploading }
       />
 
       {/* project support files */}
@@ -394,13 +730,12 @@ const GraphicEdit = props => {
         <AddFilesSectionHeading
           projectId={ projectId }
           title="Support Files"
-          acceptedFileTypes="image/*, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc"
-          handleAddFiles={ handleAddFiles }
+          acceptedFileTypes="image/*, image/vnd.adobe.photoshop, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc, .ttf"
+          handleAddFiles={ handleAddSupportFiles }
         />
 
         <SupportFiles
           projectId={ projectId }
-          handleAddFiles={ handleAddFiles }
           updateNotification={ updateNotification }
           fileTypes={ supportFilesConfig }
         />
@@ -408,17 +743,33 @@ const GraphicEdit = props => {
 
       {/* project graphic files */}
       <div className="graphic-files">
-        <AddFilesSectionHeading
-          projectId={ projectId }
-          title="Graphics in Project"
-          acceptedFileTypes="image/gif, image/jpeg, image/png"
-          handleAddFiles={ handleAddFiles }
-        />
+        <AddFilesSectionHeading projectId={ projectId } title="Graphics in Project">
+          <Modal
+            open={ modalOpen }
+            style={ { width: '820px' } }
+            trigger={ (
+              <ButtonAddFiles
+                aria-label="Add files"
+                multiple
+                accept="image/gif, image/jpeg,image/jpg, image/png"
+                onChange={ handleOpenAddGraphicFilesModal }
+              >
+                + Add Files
+              </ButtonAddFiles>
+            ) }
+            content={ (
+              <AddGraphicFiles
+                files={ state.filesToAdd }
+                closeModal={ handleCloseModal }
+                save={ saveGraphicFiles }
+              />
+            ) }
+          />
+        </AddFilesSectionHeading>
 
         <GraphicFilesFormContainer
           projectId={ projectId }
-          files={ graphicFiles }
-          handleAddFiles={ handleAddFiles }
+          files={ getGraphicFiles() }
           setIsFormValid={ setIsFormValid }
           updateNotification={ updateNotification }
         />

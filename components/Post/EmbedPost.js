@@ -1,5 +1,5 @@
 import React from 'react';
-import { string } from 'prop-types';
+import PropTypes from 'prop-types';
 import Embed from '../Embed';
 // import { Checkbox, Icon, Popup } from 'semantic-ui-react';
 // import colors from '../../../utils/colors';
@@ -10,9 +10,9 @@ import Embed from '../Embed';
 //   backgroundColor: colors.lightGrey
 // };
 
-const PostEmbed = props => (
+const PostEmbed = ( { embedItem, instructions } ) => (
   <div>
-    <Embed instructions={ props.instructions } embedItem={ props.embedItem }>
+    <Embed instructions={ instructions } embedItem={ embedItem }>
       { /* <Checkbox className="embed_keepStyles" label="Maintain original page styling" />
       <Popup
         trigger={ <Icon name="info circle" className="embed_tooltip" /> }
@@ -27,8 +27,8 @@ const PostEmbed = props => (
 );
 
 PostEmbed.propTypes = {
-  embedItem: string,
-  instructions: string
+  embedItem: PropTypes.string,
+  instructions: PropTypes.string,
 };
 
 export default PostEmbed;

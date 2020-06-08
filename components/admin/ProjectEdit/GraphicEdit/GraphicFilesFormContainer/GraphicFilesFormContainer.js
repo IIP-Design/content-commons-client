@@ -50,7 +50,15 @@ const GraphicFilesFormContainer = props => {
     return initialValues;
   };
 
-  const save = async ( values, prevValues ) => {
+  const save = async values => {
+    /**
+     * Send transformed files instead of formik prevValues
+     * as the second param for the build fn to
+     * address a bug where prevValues are equal to
+     * values on the *first* call of this save fn.
+     */
+    const prevValues = getInitialValues();
+
     if ( projectId ) {
       await updateGraphicProject( {
         variables: {
@@ -73,6 +81,7 @@ const GraphicFilesFormContainer = props => {
   return (
     <Formik
       initialValues={ getInitialValues() }
+      enableReinitialize
       validationSchema={ baseSchema }
     >
       { formikProps => {

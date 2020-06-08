@@ -1,58 +1,35 @@
 /* eslint-disable react/destructuring-assignment */
-import React, { Fragment, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { useAuth } from 'context/authContext';
 import { CREATE_GRAPHIC_PROJECT_MUTATION, UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import { buildCreateGraphicProjectTree, buildFormTree } from 'lib/graphql/builders/graphic';
 import { Formik } from 'formik';
-import Notification from 'components/Notification/Notification';
 import ProjectDetailsForm from 'components/admin/ProjectDetailsForm/ProjectDetailsForm';
-import useTimeout from 'lib/hooks/useTimeout';
 import { initialSchema, baseSchema } from './validationSchema';
+import useTimeout from 'lib/hooks/useTimeout';
 import './GraphicProjectDetailsFormContainer.scss';
 
 const GraphicProjectDetailsFormContainer = props => {
-  const { contentStyle, setIsFormValid } = props;
+  const {
+    contentStyle,
+    data,
+    setIsFormValid,
+    updateNotification,
+    handleUpload,
+  } = props;
   const { user } = useAuth();
 
   const [createGraphicProject] = useMutation( CREATE_GRAPHIC_PROJECT_MUTATION );
   const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
 
-  const [showNotification, setShowNotification] = useState( false );
-
-  const hideNotification = () => {
-    setShowNotification( false );
-  };
-
-  const { startTimeout } = useTimeout( hideNotification, 1000 );
-
-  const update = async ( values, prevValues ) => {
-    const { id } = props;
-
-    if ( id ) {
-      // ensure we have a project
-      await updateGraphicProject( {
-        variables: {
-          data: buildFormTree( values, prevValues ),
-          where: { id }
-        }
-      } ).catch( err => console.dir( err ) );
-    }
-  };
-
-  const save = async ( values, prevValues ) => {
-    await update( values, prevValues );
-
-    if ( !showNotification ) {
-      setShowNotification( true );
-    }
-
-    startTimeout();
-  };
+  const { startTimeout } = useTimeout( () => {
+    updateNotification( '' );
+  }, 1000 );
 
   const getInitialValues = () => {
-    const graphicProject = props?.data?.graphicProject || {};
+    const graphicProject = data?.graphicProject || {};
 
     const categories = graphicProject.categories
       ? graphicProject.categories.map( category => category.id )
@@ -69,14 +46,36 @@ const GraphicProjectDetailsFormContainer = props => {
       tags,
       descPublic: graphicProject.descPublic || '',
       descInternal: graphicProject.descInternal || '',
-      alt: graphicProject.alt || ''
+      alt: graphicProject.alt || '',
     };
 
     return initialValues;
   };
 
+  const update = async ( values, prevValues ) => {
+    const { id } = props;
+
+    if ( id ) {
+      // ensure we have a project
+      await updateGraphicProject( {
+        variables: {
+          data: buildFormTree( values, prevValues ),
+          where: { id },
+        },
+      } ).catch( err => console.dir( err ) );
+    }
+  };
+
+  const save = async values => {
+    const prevValues = getInitialValues();
+
+    await update( values, prevValues );
+
+    updateNotification( 'Changes saved' );
+    startTimeout();
+  };
+
   const onHandleSubmit = async ( values, actions ) => {
-    const { updateNotification, handleUpload } = props;
     const { setStatus, setErrors, setSubmitting } = actions;
 
     // 1. let user know system is saving
@@ -86,8 +85,8 @@ const GraphicProjectDetailsFormContainer = props => {
     try {
       const res = await createGraphicProject( {
         variables: {
-          data: buildCreateGraphicProjectTree( user, values )
-        }
+          data: buildCreateGraphicProjectTree( user, values ),
+        },
       } );
 
       // 3. Use formik handled to update status to hide submit button upon project creation
@@ -98,7 +97,7 @@ const GraphicProjectDetailsFormContainer = props => {
       handleUpload( res.data.createGraphicProject, values.tags );
     } catch ( err ) {
       setErrors( {
-        submit: err
+        submit: err,
       } );
     }
 
@@ -111,62 +110,49 @@ const GraphicProjectDetailsFormContainer = props => {
       headline: 'Social Media Graphics Project Data',
       projectTitle: {
         label: 'Project Name',
-        required: true
+        required: true,
       },
       visibility: {
         label: 'Visibility Setting',
-        required: true
+        required: true,
       },
       team: {
         label: 'Source',
-        required: false
+        required: false,
       },
       copyright: {
         label: 'Copyright',
-        required: true
+        required: true,
       },
       categories: {
         label: 'Categories',
-        required: true
+        required: true,
       },
       tags: {
         label: 'Tags',
-        required: false
+        required: false,
       },
       descPublic: {
         label: 'Public Description',
-        required: false
+        required: false,
       },
       descInternal: {
         label: 'Internal Description',
-        required: false
+        required: false,
       },
       alt: {
         label: 'Alt (Alternative) Text',
-        required: false
-      }
+        required: false,
+      },
     };
 
     return (
-      <Fragment>
-        <Notification
-          el="p"
-          customStyles={ {
-            position: 'absolute',
-            top: '9em',
-            left: '50%',
-            transform: 'translateX(-50%)'
-          } }
-          show={ showNotification }
-          msg="Changes saved"
-        />
-        <ProjectDetailsForm
-          { ...formikProps }
-          { ...props }
-          config={ config }
-          save={ save }
-        />
-      </Fragment>
+      <ProjectDetailsForm
+        { ...formikProps }
+        { ...props }
+        config={ config }
+        save={ save }
+      />
     );
   };
 
@@ -189,7 +175,7 @@ GraphicProjectDetailsFormContainer.propTypes = {
   data: PropTypes.object,
   updateNotification: PropTypes.func,
   handleUpload: PropTypes.func,
-  setIsFormValid: PropTypes.func
+  setIsFormValid: PropTypes.func,
 };
 
 export default GraphicProjectDetailsFormContainer;

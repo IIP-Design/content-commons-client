@@ -1,6 +1,5 @@
 .ui.progress {
-  border-radius: 0;
-  //margin: 0.5em 0 0;
+  border-radius: 0; 
 
   .bar {
     border-radius: 0;
@@ -15,8 +14,7 @@
 }
 
 .ui.progress.active {
-  margin-bottom: 20px;
-  margin-top: 5px;
+  margin-bottom: 5px;
   flex-grow: 1;
   .bar {
     min-width: 0;
@@ -36,6 +34,9 @@
 .file-progress--label {
   font-size: 0.777rem;
   font-weight: normal;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
 
   &.left {
     text-align: left;

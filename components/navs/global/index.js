@@ -37,7 +37,7 @@ const GlobalNav = () => {
 
   return (
     <nav>
-      { user ? (
+      { user && user.id !== 'public' ? (
         <LoggedInNav
           mobileMenuVisible={ mobileMenuVisible }
           toggleMobileMenu={ toggleMobileMenu }

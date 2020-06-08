@@ -4,7 +4,7 @@
  * VideoProjectDetailsForm
  *
  */
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
@@ -13,7 +13,7 @@ import { useAuth } from 'context/authContext';
 import {
   CREATE_VIDEO_PROJECT_MUTATION,
   UPDATE_VIDEO_PROJECT_MUTATION,
-  VIDEO_PROJECT_FORM_QUERY
+  VIDEO_PROJECT_FORM_QUERY,
 } from 'lib/graphql/queries/video';
 import { graphql } from 'react-apollo';
 import compose from 'lodash.flowright';
@@ -21,32 +21,29 @@ import { buildCreateVideoProjectTree, buildFormTree } from 'lib/graphql/builders
 import { Formik } from 'formik';
 
 import ProjectDetailsForm from 'components/admin/ProjectDetailsForm/ProjectDetailsForm';
-import Notification from 'components/Notification/Notification';
 
-import useTimeout from 'lib/hooks/useTimeout';
 import { initialSchema, baseSchema } from './validationSchema';
 
 const VideoProjectDetailsForm = props => {
-  const { setIsFormValid } = props;
+  const {
+    setIsFormValid,
+    updateNotification,
+    startTimeout,
+    createVideoProject,
+    handleUpload,
+  } = props;
   const { user } = useAuth();
-
-  const [showNotification, setShowNotification] = useState( false );
-
-  const hideNotification = () => {
-    setShowNotification( false );
-  };
-
-  const { startTimeout } = useTimeout( hideNotification, 1000 );
 
   const update = async ( values, prevValues ) => {
     const { id, updateVideoProject } = props;
+
     if ( id ) {
       // ensure we have a project
       await updateVideoProject( {
         variables: {
           data: buildFormTree( values, prevValues ),
-          where: { id }
-        }
+          where: { id },
+        },
       } ).catch( err => console.dir( err ) );
     }
   };
@@ -54,16 +51,14 @@ const VideoProjectDetailsForm = props => {
   const save = async ( values, prevValues ) => {
     await update( values, prevValues );
 
-    if ( !showNotification ) {
-      setShowNotification( true );
-    }
+    updateNotification( 'Changes saved' );
+    startTimeout();
 
     // Notify redux state that Project updated, indexed by project id
     // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
     const { id, projectUpdated } = props;
-    projectUpdated( id, true );
 
-    startTimeout();
+    projectUpdated( id, true );
   };
 
   const getInitialValues = () => {
@@ -87,14 +82,13 @@ const VideoProjectDetailsForm = props => {
       tags,
       descPublic: videoProject.descPublic || '',
       descInternal: videoProject.descInternal || '',
-      termsConditions: false
+      termsConditions: false,
     };
 
     return initialValues;
   };
 
   const onHandleSubmit = async ( values, actions ) => {
-    const { createVideoProject, updateNotification, handleUpload } = props;
     const { setStatus, setErrors, setSubmitting } = actions;
 
     // 1. let user know system is saving
@@ -104,8 +98,8 @@ const VideoProjectDetailsForm = props => {
     try {
       const res = await createVideoProject( {
         variables: {
-          data: buildCreateVideoProjectTree( user, values )
-        }
+          data: buildCreateVideoProjectTree( user, values ),
+        },
       } );
 
       // 3. Use formik handled to update status to hide submit button upon project creation
@@ -116,7 +110,7 @@ const VideoProjectDetailsForm = props => {
       handleUpload( res.data.createVideoProject, values.tags );
     } catch ( err ) {
       setErrors( {
-        submit: err
+        submit: err,
       } );
     }
 
@@ -129,59 +123,39 @@ const VideoProjectDetailsForm = props => {
       headline: 'Project Data',
       projectTitle: {
         label: 'Project Title',
-        required: true
+        required: true,
       },
       visibility: {
         label: 'Visibility Setting',
-        required: true
+        required: true,
       },
       author: {
         label: 'Author',
-        required: false
+        required: false,
       },
       team: {
         label: 'Team',
-        required: false
+        required: false,
       },
       categories: {
         label: 'Categories',
-        required: true
+        required: true,
       },
       tags: {
         label: 'Tags',
-        required: false
+        required: false,
       },
       descPublic: {
         label: 'Public Description',
-        required: false
+        required: false,
       },
       descInternal: {
         label: 'Internal Description',
-        required: false
-      }
+        required: false,
+      },
     };
 
-    return (
-      <>
-        <Notification
-          el="p"
-          customStyles={ {
-            position: 'absolute',
-            top: '9em',
-            left: '50%',
-            transform: 'translateX(-50%)'
-          } }
-          show={ showNotification }
-          msg="Changes saved"
-        />
-        <ProjectDetailsForm
-          { ...formikProps }
-          { ...props }
-          config={ config }
-          save={ save }
-        />
-      </>
-    );
+    return <ProjectDetailsForm { ...formikProps } { ...props } config={ config } save={ save } />;
   };
 
   return (
@@ -190,7 +164,7 @@ const VideoProjectDetailsForm = props => {
       validationSchema={ props.id ? baseSchema : initialSchema }
       onSubmit={ onHandleSubmit }
     >
-      { renderContent }
+      {renderContent}
     </Formik>
   );
 };
@@ -203,7 +177,8 @@ VideoProjectDetailsForm.propTypes = {
   handleUpload: PropTypes.func,
   updateVideoProject: PropTypes.func,
   projectUpdated: PropTypes.func,
-  setIsFormValid: PropTypes.func
+  setIsFormValid: PropTypes.func,
+  startTimeout: PropTypes.func,
 };
 
 export default compose(
@@ -213,6 +188,6 @@ export default compose(
   graphql( UPDATE_VIDEO_PROJECT_MUTATION, { name: 'updateVideoProject' } ),
   graphql( VIDEO_PROJECT_FORM_QUERY, {
     partialRefetch: true,
-    skip: props => !props.id
-  } )
+    skip: props => !props.id,
+  } ),
 )( VideoProjectDetailsForm );
