@@ -47,6 +47,7 @@ const GraphicProject = ( {
     id,
     site,
     type,
+    alt: projectAlt,
     projectType,
     published,
     modified,
@@ -101,7 +102,7 @@ const GraphicProject = ( {
   const {
     title,
     language: selectedUnitLanguage,
-    alt,
+    alt: unitAlt,
   } = selectedUnit;
 
   useEffect( () => {
@@ -223,6 +224,10 @@ const GraphicProject = ( {
     return tabs.filter( tab => tab.title !== 'Editable Files' );
   };
 
+  const getAlt = () => (
+    unitAlt || projectAlt || title || selectedUnit?.filename || ''
+  );
+
   return (
     <ModalItem
       className={ isAdminPreview ? 'graphic-project adminPreview' : 'graphic-project' }
@@ -296,9 +301,7 @@ const GraphicProject = ( {
         && (
           <ModalImage
             thumbnail={ selectedUnit.srcUrl }
-            thumbnailMeta={ {
-              alt: alt || title || selectedUnit?.filename || '',
-            } }
+            thumbnailMeta={ { alt: getAlt() } }
           />
         ) }
 
@@ -319,7 +322,7 @@ const GraphicProject = ( {
 
       <section className="graphic-project__content">
         <p className="graphic-project__content__title">Alt (Alternative) Text:</p>
-        { alt }
+        { getAlt() }
       </section>
 
       <ModalPostMeta
