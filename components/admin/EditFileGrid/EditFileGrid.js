@@ -3,9 +3,8 @@ import PropTypes from 'prop-types'; import { getFileExt } from 'lib/utils';
 import { Button } from 'semantic-ui-react';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
-import EditFileGridRow from '../EditFileGridRow/EditFileGridRow';
+import EditFileGridRow from 'components/admin/EditFileGridRow/EditFileGridRow';
 import styles from './EditFileGrid.module.scss';
-
 
 const EditFileGrid = ( {
   screens,
@@ -25,7 +24,6 @@ const EditFileGrid = ( {
 } ) => {
   const [activeScreen, setActiveScreen] = useState( 0 );
   const [confirm, setConfirm] = useState( {} );
-
 
   const checkForDuplicateFiles = filesToAdd => {
     const duplicates = filesToAdd.filter( file => {

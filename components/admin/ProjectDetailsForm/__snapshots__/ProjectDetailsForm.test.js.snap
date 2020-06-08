@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
+exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1`] = `
 <ProjectDetailsForm
   config={
     Object {
@@ -155,6 +155,7 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                               Project Name
                             </label>
                             <Input
+                              aria-describedby={null}
                               autoFocus={true}
                               id="projectTitle"
                               name="projectTitle"
@@ -167,6 +168,7 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                                 className="ui input"
                               >
                                 <input
+                                  aria-describedby={null}
                                   autoFocus={true}
                                   id="projectTitle"
                                   name="projectTitle"
@@ -228,6 +230,7 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                             Source
                           </label>
                           <Input
+                            aria-describedby={null}
                             id="team"
                             name="team"
                             placeholder=""
@@ -238,6 +241,7 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                               className="ui input"
                             >
                               <input
+                                aria-describedby={null}
                                 id="team"
                                 name="team"
                                 onChange={[Function]}
@@ -336,7 +340,7 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                     id="descPublic"
                     label="Public Description"
                     name="descPublic"
-                    onChange={[MockFunction]}
+                    onChange={[Function]}
                     value="public description"
                   >
                     <div
@@ -348,10 +352,11 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                         Public Description
                       </label>
                       <TextArea
+                        aria-describedby={null}
                         as="textarea"
                         id="descPublic"
                         name="descPublic"
-                        onChange={[MockFunction]}
+                        onChange={[Function]}
                         rows={3}
                         value="public description"
                       >
@@ -382,6 +387,7 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                             }
                           >
                             <textarea
+                              aria-describedby={null}
                               id="descPublic"
                               name="descPublic"
                               onChange={[Function]}
@@ -403,7 +409,7 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                       id="descInternal"
                       label="Internal Description"
                       name="descInternal"
-                      onChange={[MockFunction]}
+                      onChange={[Function]}
                       value="internal description"
                     >
                       <div
@@ -415,10 +421,11 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                           Internal Description
                         </label>
                         <TextArea
+                          aria-describedby={null}
                           as="textarea"
                           id="descInternal"
                           name="descInternal"
-                          onChange={[MockFunction]}
+                          onChange={[Function]}
                           rows={3}
                           value="internal description"
                         >
@@ -449,6 +456,7 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                               }
                             >
                               <textarea
+                                aria-describedby={null}
                                 id="descInternal"
                                 name="descInternal"
                                 onChange={[Function]}
@@ -474,9 +482,21 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                       className="with-helper-text"
                       control={[Function]}
                       id="alt"
-                      label="Alt (Alternative) Text"
+                      label={
+                        <label
+                          htmlFor="alt"
+                        >
+                          Alt (Alternative) Text
+                          <IconPopup
+                            iconSize="small"
+                            iconType="info circle"
+                            message="This text helps screen-reading tools describe images to visually impaired readers."
+                            popupSize="mini"
+                          />
+                        </label>
+                      }
                       name="alt"
-                      onChange={[MockFunction]}
+                      onChange={[Function]}
                       value="some alt text"
                     >
                       <div
@@ -486,12 +506,133 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                           htmlFor="alt"
                         >
                           Alt (Alternative) Text
+                          <IconPopup
+                            iconSize="small"
+                            iconType="info circle"
+                            message="This text helps screen-reading tools describe images to visually impaired readers."
+                            popupSize="mini"
+                          >
+                            <Popup
+                              content="This text helps screen-reading tools describe images to visually impaired readers."
+                              disabled={false}
+                              eventsEnabled={true}
+                              inverted={true}
+                              offset={0}
+                              on={
+                                Array [
+                                  "hover",
+                                  "click",
+                                  "focus",
+                                ]
+                              }
+                              pinned={false}
+                              position="top left"
+                              size="mini"
+                              trigger={
+                                <span>
+                                  <Focusable
+                                    order={0}
+                                  >
+                                    <Icon
+                                      as="i"
+                                      name="info circle"
+                                      size="small"
+                                    />
+                                  </Focusable>
+                                </span>
+                              }
+                            >
+                              <Portal
+                                closeOnDocumentClick={true}
+                                closeOnEscape={true}
+                                closeOnTriggerBlur={true}
+                                closeOnTriggerClick={true}
+                                closeOnTriggerMouseLeave={true}
+                                eventPool="default"
+                                mouseEnterDelay={50}
+                                mouseLeaveDelay={70}
+                                onClose={[Function]}
+                                onMount={[Function]}
+                                onOpen={[Function]}
+                                onUnmount={[Function]}
+                                openOnTriggerClick={true}
+                                openOnTriggerFocus={true}
+                                openOnTriggerMouseEnter={true}
+                                trigger={
+                                  <span>
+                                    <Focusable
+                                      order={0}
+                                    >
+                                      <Icon
+                                        as="i"
+                                        name="info circle"
+                                        size="small"
+                                      />
+                                    </Focusable>
+                                  </span>
+                                }
+                                triggerRef={
+                                  Object {
+                                    "current": <span>
+                                      <span
+                                        class="focusable"
+                                        tabindex="0"
+                                      >
+                                        <i
+                                          aria-hidden="true"
+                                          class="info circle small icon"
+                                        />
+                                      </span>
+                                    </span>,
+                                  }
+                                }
+                              >
+                                <Ref
+                                  innerRef={[Function]}
+                                >
+                                  <RefFindNode
+                                    innerRef={[Function]}
+                                  >
+                                    <span
+                                      onBlur={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onMouseEnter={[Function]}
+                                      onMouseLeave={[Function]}
+                                    >
+                                      <Focusable
+                                        order={0}
+                                      >
+                                        <span
+                                          className="focusable"
+                                          tabIndex={0}
+                                        >
+                                          <Icon
+                                            as="i"
+                                            name="info circle"
+                                            size="small"
+                                          >
+                                            <i
+                                              aria-hidden="true"
+                                              className="info circle small icon"
+                                              onClick={[Function]}
+                                            />
+                                          </Icon>
+                                        </span>
+                                      </Focusable>
+                                    </span>
+                                  </RefFindNode>
+                                </Ref>
+                              </Portal>
+                            </Popup>
+                          </IconPopup>
                         </label>
                         <TextArea
+                          aria-describedby={null}
                           as="textarea"
                           id="alt"
                           name="alt"
-                          onChange={[MockFunction]}
+                          onChange={[Function]}
                           rows={3}
                           value="some alt text"
                         >
@@ -522,6 +663,7 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                               }
                             >
                               <textarea
+                                aria-describedby={null}
                                 id="alt"
                                 name="alt"
                                 onChange={[Function]}
@@ -534,11 +676,6 @@ exports[`<ProjectDetailsForm /> renders without crashing 1`] = `
                         </TextArea>
                       </div>
                     </FormField>
-                    <p
-                      className="field__helper-text"
-                    >
-                      This text helps screen-reading tools describe images to visually impaired readers.
-                    </p>
                   </div>
                 </div>
               </GridColumn>

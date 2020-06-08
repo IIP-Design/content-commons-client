@@ -3,75 +3,76 @@ import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
 import SocialPlatformDropdown, { SOCIAL_PLATFORMS_QUERY } from './SocialPlatformDropdown';
+import { addEmptyOption } from 'lib/utils';
 
 const props = {
   id: '123xyz',
-  label: 'Platform'
+  label: 'Platform',
 };
 
 const mocks = [
   {
     request: {
-      query: SOCIAL_PLATFORMS_QUERY
+      query: SOCIAL_PLATFORMS_QUERY,
     },
     result: {
       data: {
         socialPlatforms: [
           {
             id: 'ck9h3m3g626bd07201gh712vk',
-            name: 'Twitter'
+            name: 'Twitter',
           },
           {
             id: 'ck9h3m9bl26bm0720rm69c60s',
-            name: 'Facebook'
+            name: 'Facebook',
           },
           {
             id: 'ck9h3meu626bw07201o36tapc',
-            name: 'Instagram'
+            name: 'Instagram',
           },
           {
             id: 'ck9h3mpap26c40720mzobnbgm',
-            name: 'Instagram Story'
+            name: 'Instagram Story',
           },
           {
             id: 'ck9h3mzx026ce0720dp1f0ue8',
-            name: 'Snapchat'
+            name: 'Snapchat',
           },
           {
             id: 'ck9h3naq526cp0720i4u3uqlv',
-            name: 'WhatsApp'
-          }
-        ]
-      }
-    }
-  }
+            name: 'WhatsApp',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 const nullMocks = [
   {
     ...mocks[0],
     result: {
-      data: { socialPlatforms: null }
-    }
-  }
+      data: { socialPlatforms: null },
+    },
+  },
 ];
 
 const emptyMocks = [
   {
     ...mocks[0],
     result: {
-      data: { socialPlatforms: [] }
-    }
-  }
+      data: { socialPlatforms: [] },
+    },
+  },
 ];
 
 const Component = (
@@ -147,8 +148,9 @@ describe( '<SocialPlatformDropdown />', () => {
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
+    const options = addEmptyOption( [] );
 
-    expect( formDropdown.prop( 'options' ) ).toEqual( [] );
+    expect( formDropdown.prop( 'options' ) ).toEqual( options );
   } );
 
   it( 'does not crash if socialPlatforms is []', async () => {
@@ -157,8 +159,9 @@ describe( '<SocialPlatformDropdown />', () => {
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
+    const options = addEmptyOption( [] );
 
-    expect( formDropdown.prop( 'options' ) ).toEqual( [] );
+    expect( formDropdown.prop( 'options' ) ).toEqual( options );
   } );
 
   it( 'renders the final state without crashing', async () => {
@@ -173,11 +176,12 @@ describe( '<SocialPlatformDropdown />', () => {
       .map( platform => ( {
         key: platform.id,
         text: platform.name,
-        value: platform.id
+        value: platform.id,
       } ) );
 
-    expect( formDropdown.prop( 'options' ) ).toEqual( options );
-    expect( dropdownItems.length ).toEqual( socialPlatforms.length );
+    expect( formDropdown.prop( 'options' ) )
+      .toEqual( addEmptyOption( options ) );
+    expect( dropdownItems.length ).toEqual( socialPlatforms.length + 1 );
   } );
 
   it( 'assigns a matching id & htmlFor value to the Dropdown and label, respectively', async () => {
@@ -185,7 +189,7 @@ describe( '<SocialPlatformDropdown />', () => {
 
     await wait( 0 );
     wrapper.update();
-    const dropdown = wrapper.find( 'Dropdown div[name="platform"]' );
+    const dropdown = wrapper.find( 'Dropdown div[name="social"]' );
     const label = wrapper.find( 'label' );
 
     expect( dropdown.prop( 'id' ) ).toEqual( props.id );

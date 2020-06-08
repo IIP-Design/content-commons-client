@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useFormikContext } from 'formik';
 import {
-  Form, Grid, Input
+  Form, Grid, Input,
 } from 'semantic-ui-react';
 import { getCount } from 'lib/utils';
 import thumbnailUnavailable from 'static/images/thumbnail_document_unavailable.png';
@@ -38,13 +38,13 @@ const PressPackageFile = props => {
     {
       name: 'file-name',
       displayName: 'File Name',
-      definition: filename || ''
+      definition: filename || '',
     },
     {
       name: 'pages',
       displayName: 'Pages',
-      definition: 'TBD'
-    }
+      definition: 'TBD',
+    },
   ];
 
   const isTouched = field => (
@@ -186,8 +186,8 @@ PressPackageFile.propTypes = {
     id: PropTypes.string,
     filename: PropTypes.string,
     image: PropTypes.array,
-    language: PropTypes.object
-  } )
+    language: PropTypes.object,
+  } ),
 };
 
 // export default React.memo( PressPackageFile, areEqual );

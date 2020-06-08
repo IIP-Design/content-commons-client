@@ -15,7 +15,17 @@ _This sections lists changes committed since most recent release_
 - Added countries filter to frontend search
 - Added SCSS module support to next config
 - New Popover component to be used as replacement for SemanticUI popup
+- Content type search filter option on the homepage for logged in users
 - Support for Cypress end-to-end testing
+- Handling for displaying grayed-out localGraphicProject data, i.e., pre-upload of selected graphic files
+- Handling for disabled graphic file form fields if localGraphicProject data has been selected for uploading
+- Handling of graphic file form values for localGraphicProject data
+- Display of graphic files fieldset thumbnail overlay, filesize, trash icon, and title for localGraphicProject data
+- A tabIndex property to the Filename tooltip element for keyboard accessibility
+- The aria-hidden property to the Filename tooltip element to prevent the filename from being read twice by screen readers
+- Unit tests for Filename, GraphicSupportFiles, and GraphicFilesForm
+- Functionality to add support and graphic files to exisiting project
+- EditGrid component to handle file creation management for both new and exisiting projects
 - A recent graphics section to the featured section on the homepage
 
 **Changed:**
@@ -28,12 +38,29 @@ _This sections lists changes committed since most recent release_
 - Centralize dashboard data management using at context object to store loading/error states, relevant queries, row and column selections, etc.
 - Simplify table components, for the most part removing the GraphQL queries therein and instead passing in data
 - Consolidate redundant components including table body messages and preview pop-ups
+- Move AddFilesSectionHeading to the GraphicEdit component
+- Move GraphicSupportFiles to the GraphicEdit directory
+- Move Filename component up to components/admin directory for better sharing
+- Use Filename component to handle truncated filenames in GraphicSupportFiles and GraphicFilesForm components
+- The imageDetails fragment to return dimensions
+- The getCount util function to handle strings
+- Unit tests for GraphicEdit, PackageDetailsFormContainer, PackageEdit, PressPackageFile, SupportItem, and User components
+- Remove LanguageDropdown from GraphicSupportFiles
+- Remove the update mutation from GraphicSupportFiles since the LanguageDropdown is no longer needed for editable support files
+- Display graphic support and image files by filename
+- Display graphic project shell files as editable support files rather than graphic files
+- The GraphicSupportFiles delete mutation to handle both graphic and support files since shell files are now listed as editable support files
+- Place "twitter" in an array in SocialPlatformDropdown since the dropdown has the multiple prop
+- Display information icons next to headings for graphic support files existing projects only
+- Display alt helper text next to the label rather under its textarea field
+- The validationSchema for GraphicFilesFormContainer to handle empty options
 - Move the fetching of featured item results and post types from Redux to Context
 
 **Fixed:**
 
 - Fixed width in files popover menu
 - Hide the "saving changes" growl notification upon initial load of the project details form
+- The Formik initial save bug for GraphicProjectDetailsFormContainer and GraphicFilesFormContainer
 - Change way packages are removed from featured data list so that it doesn't have to be the first group listed
 
 # [4.1.1](2020-05-22)

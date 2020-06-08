@@ -4,9 +4,11 @@ import Link from 'next/link';
 import Router, { withRouter } from 'next/router';
 import { Header, Image } from 'semantic-ui-react';
 import NProgress from 'nprogress';
+
 import DosSeal from 'static/images/dos_seal.svg';
 import SearchInput from 'components/SearchInput/SearchInput';
 import GlobalNav from '../navs/global';
+
 import './Header.scss';
 
 Router.onRouteChangeStart = () => {

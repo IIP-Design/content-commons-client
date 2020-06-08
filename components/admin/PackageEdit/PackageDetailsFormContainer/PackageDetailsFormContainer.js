@@ -43,7 +43,7 @@ const PackageDetailsFormContainer = props => {
       await updatePackage( {
         variables: {
           data: buildUpdatePackageTree( values, prevValues ),
-          where: { id }
+          where: { id },
         },
       } ).catch( err => console.dir( err ) );
     }
@@ -70,10 +70,13 @@ const PackageDetailsFormContainer = props => {
         }
         if ( Array.isArray( updatedDoc[key] ) ) {
           const flattened = document[key].map( item => item.id );
+
           return JSON.stringify( flattened ) === JSON.stringify( updatedDoc[key] );
         }
+
         return updatedDoc[key] === document[key];
       } );
+
       return documentChanged.every( currentValue => currentValue );
     } );
 
@@ -95,14 +98,16 @@ const PackageDetailsFormContainer = props => {
     if ( _pkg ) {
       return _pkg.documents || [];
     }
+
     return [];
   };
 
   const getFileValues = array => (
     array.reduce( ( acc, file ) => {
       const {
-        id, bureaus, filename, countries, title, use, visibility
+        id, bureaus, filename, countries, title, use, visibility,
       } = file;
+
       return {
         ...acc,
         [id]: {
@@ -111,8 +116,8 @@ const PackageDetailsFormContainer = props => {
           bureaus: getDropdownIds( bureaus ),
           countries: getDropdownIds( countries ),
           use: use?.id || '',
-          visibility
-        }
+          visibility,
+        },
       };
     }, {} )
   );
@@ -127,7 +132,7 @@ const PackageDetailsFormContainer = props => {
         title: pkg.title || '',
         type: pkg.type || '',
         termsConditions: false,
-        ...getFileValues( files )
+        ...getFileValues( files ),
       };
     }
 
@@ -136,6 +141,7 @@ const PackageDetailsFormContainer = props => {
 
   const renderContent = formikProps => {
     setIsFormValid( formikProps.isValid );
+
     return (
       <div className="edit-package__form">
         <Notification
@@ -144,7 +150,7 @@ const PackageDetailsFormContainer = props => {
             position: 'absolute',
             top: '9em',
             left: '50%',
-            transform: 'translateX(-50%)'
+            transform: 'translateX(-50%)',
           } }
           show={ showNotification }
           msg="Changes saved"
@@ -178,9 +184,9 @@ PackageDetailsFormContainer.propTypes = {
     id: PropTypes.string,
     title: PropTypes.string,
     type: PropTypes.string,
-    documents: PropTypes.array
+    documents: PropTypes.array,
   } ),
-  setIsFormValid: PropTypes.func
+  setIsFormValid: PropTypes.func,
 };
 
 export default PackageDetailsFormContainer;

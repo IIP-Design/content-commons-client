@@ -4,7 +4,7 @@
  *
  */
 import React, {
-  useState, useEffect, useRef, useContext
+  useState, useEffect, useRef, useContext,
 } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -40,7 +40,7 @@ const SupportItem = props => {
   const [error, setError] = useState( false );
   const [widths, setWidths] = useState( {
     listItem: 0,
-    itemLang: 0
+    itemLang: 0,
   } );
 
   const { item } = props;
@@ -64,8 +64,8 @@ const SupportItem = props => {
           headers: {
             Pragma: 'no-cache',
             'Cache-Control': 'no-cache',
-            Range: 'bytes=0-0'
-          }
+            Range: 'bytes=0-0',
+          },
         };
 
         // the head req was not working with the signed url so using get and
@@ -85,6 +85,7 @@ const SupportItem = props => {
   const hasError = () => {
     if ( item && typeof item.error !== 'undefined' ) {
       setError( item.error );
+
       return;
     }
     checkFileUrlStatus();
@@ -137,6 +138,7 @@ const SupportItem = props => {
     if ( name && typeof name === 'string' ) {
       return name.length > Math.abs( maxLength );
     }
+
     return false;
   };
 
@@ -149,6 +151,7 @@ const SupportItem = props => {
     if ( typeof ( lang ) === 'string' ) { // will be object if coming from graphql
       return props.data.languages.filter( l => l.id === lang )[0];
     }
+
     return lang;
   };
 
@@ -160,6 +163,7 @@ const SupportItem = props => {
     } if ( item.input ) {
       return item.input[prop.replace( 'file', '' )];
     }
+
     return defaultValue;
   };
 
@@ -176,7 +180,7 @@ const SupportItem = props => {
     overflowWrap: 'break-word',
     wordWrap: 'break-word',
     msWordBreak: 'break-all',
-    wordBreak: 'break-word'
+    wordBreak: 'break-word',
   };
 
   const renderName = ( str = '', isLang = false ) => {
@@ -188,7 +192,7 @@ const SupportItem = props => {
           inverted
           on={ [
             'hover',
-            'focus'
+            'focus',
           ] }
           trigger={ (
             <span>
@@ -196,18 +200,19 @@ const SupportItem = props => {
                 { isLang ? str : shortFileName }
               </Focusable>
             </span>
-            ) }
+          ) }
           style={ popupStyle }
         />
       );
     }
+
     return str;
   };
 
   return (
     <li
       key={ `${item.id}-${language.id}` }
-      className={ `support-item ${( item.loaded < filesize ) ? 'new' : ''}` }
+      className={ `support-item ${item.loaded < filesize ? 'new' : ''}` }
       ref={ listEl }
     >
       <span className="item-name" style={ error ? { color: '#cd2026' } : {} }>
@@ -253,9 +258,9 @@ const SupportItem = props => {
 
 SupportItem.propTypes = {
   item: PropTypes.object,
-  data: PropTypes.object
+  data: PropTypes.object,
 };
 
 export default compose(
-  graphql( LANGUAGES_QUERY )
+  graphql( LANGUAGES_QUERY ),
 )( SupportItem );

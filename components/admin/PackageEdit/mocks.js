@@ -56,6 +56,12 @@ const image = {
     name: 'Thumbnail/Cover Image',
   },
   alt: 'thumbnail of guidance document',
+  dimensions: {
+    __typename: 'Dimensions',
+    id: 'da8dasd',
+    height: 1200,
+    width: 1200,
+  },
 };
 
 const bureaus = [

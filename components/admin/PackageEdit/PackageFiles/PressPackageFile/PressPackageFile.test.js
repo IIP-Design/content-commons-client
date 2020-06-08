@@ -5,27 +5,31 @@ import PressPackageFile from './PressPackageFile';
 
 jest.mock(
   'components/admin/dropdowns/CountriesRegionsDropdown/CountriesRegionsDropdown',
-  () => function CountriesRegionsDropdown() { return ''; }
+  () => function CountriesRegionsDropdown() { return ''; },
+);
+jest.mock(
+  'components/Placeholder/DocumentPaceholder',
+  () => function DocumentPaceholder() { return ''; },
 );
 jest.mock(
   'components/admin/dropdowns/UseDropdown/UseDropdown',
-  () => function UseDropdown() { return ''; }
+  () => function UseDropdown() { return ''; },
 );
 jest.mock(
   'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown',
-  () => function VisibilityDropdown() { return ''; }
+  () => function VisibilityDropdown() { return ''; },
 );
 jest.mock(
   'components/admin/dropdowns/BureauOfficesDropdown/BureauOfficesDropdown',
-  () => function BureauOfficesDropdown() { return ''; }
+  () => function BureauOfficesDropdown() { return ''; },
 );
 jest.mock(
   'components/admin/MetaTerms/MetaTerms',
-  () => function MetaTerms() { return ''; }
+  () => function MetaTerms() { return ''; },
 );
 jest.mock(
   'components/admin/FormikAutoSave/FormikAutoSave',
-  () => function FormikAutoSave() { return ''; }
+  () => function FormikAutoSave() { return ''; },
 );
 jest.mock( 'next/dynamic', () => () => 'Dynamic' );
 jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
@@ -42,11 +46,11 @@ jest.mock(
           bureaus: [],
           countries: ['ck2lzgu5b0rho07207cqfeya0'],
           use: 'ck2wbvjaa10n20720fg5ayhn9',
-          visibility: 'INTERNAL'
-        }
-      }
-    } ) )
-  } )
+          visibility: 'INTERNAL',
+        },
+      },
+    } ) ),
+  } ),
 );
 
 const id = 'test-123';
@@ -75,16 +79,25 @@ const props = {
           locale: 'en-us',
           textDirection: 'LTR',
           displayName: 'English',
-          nativeName: 'English'
+          nativeName: 'English',
         },
         use: {
           __typename: 'ImageUse',
           id: 'ck2lzfx510hhj07205mal3e4l',
-          name: 'Thumbnail/Cover Image'
-        }
-      }
-    ]
-  }
+          name: 'Thumbnail/Cover Image',
+        },
+      },
+    ],
+    language: {
+      __typename: 'Language',
+      id: 'ck2lzfx710hkq07206thus6pt',
+      languageCode: 'en',
+      locale: 'en-us',
+      textDirection: 'LTR',
+      displayName: 'English',
+      nativeName: 'English',
+    },
+  },
 };
 
 const handleOnChange = jest.fn().mockName( 'handleOnChange' );
@@ -102,8 +115,10 @@ describe( '<PressPackageFile />', () => {
    * @see https://github.com/facebook/react/issues/14769
    */
   const consoleError = console.error;
+
   beforeAll( () => {
     const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+
     jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
       if ( !args[0].includes( actMsg ) ) {
         consoleError( ...args );
@@ -142,7 +157,7 @@ describe( '<PressPackageFile />', () => {
     const data = {
       name: '1asd.title',
       value: 'Lesotho National Day',
-      type: 'text'
+      type: 'text',
     };
 
     onChange( e, data );
@@ -152,7 +167,7 @@ describe( '<PressPackageFile />', () => {
 
   it( 'renders the Bureaus dropdown', () => {
     const wrapper = mount( Component );
-    const dropdown = wrapper.find( `BureauOfficesDropdown` );
+    const dropdown = wrapper.find( 'BureauOfficesDropdown' );
     const helperTxt = wrapper.find( 'BureauOfficesDropdown + [className="field__helper-text"]' );
     const { document } = props;
 
@@ -166,7 +181,7 @@ describe( '<PressPackageFile />', () => {
 
   it( 'changing the Bureaus dropdown calls handleOnChange', () => {
     const wrapper = mount( Component );
-    const dropdown = wrapper.find( `BureauOfficesDropdown` );
+    const dropdown = wrapper.find( 'BureauOfficesDropdown' );
     const { onChange } = dropdown.props();
     const e = {};
     const data = {
@@ -182,7 +197,7 @@ describe( '<PressPackageFile />', () => {
   it( 'renders the Release Type (Use) dropdown', () => {
     const wrapper = mount( Component );
     const { document } = props;
-    const dropdown = wrapper.find( `UseDropdown` );
+    const dropdown = wrapper.find( 'UseDropdown' );
 
     expect( dropdown.exists() ).toEqual( true );
     expect( dropdown.prop( 'id' ) ).toEqual( `use-${document.id}` );
@@ -210,7 +225,7 @@ describe( '<PressPackageFile />', () => {
   it( 'renders the Visibility dropdown', () => {
     const wrapper = mount( Component );
     const { document } = props;
-    const dropdown = wrapper.find( `VisibilityDropdown` );
+    const dropdown = wrapper.find( 'VisibilityDropdown' );
 
     expect( dropdown.exists() ).toEqual( true );
     expect( dropdown.prop( 'id' ) ).toEqual( `visibility-${document.id}` );
@@ -270,13 +285,13 @@ describe( '<PressPackageFile />', () => {
       {
         name: 'file-name',
         displayName: 'File Name',
-        definition: document.filename || ''
+        definition: document.filename || '',
       },
       {
         name: 'pages',
         displayName: 'Pages',
-        definition: 'TBD'
-      }
+        definition: 'TBD',
+      },
     ];
 
     expect( meta.exists() ).toEqual( true );
@@ -312,7 +327,7 @@ describe( '<PressPackageFile />', () => {
   it( 'renders null if !document', () => {
     const nullProps = {
       ...props,
-      document: null
+      document: null,
     };
     const NullComponent = (
       <HandleOnChangeContext.Provider value={ handleOnChange }>
@@ -327,7 +342,7 @@ describe( '<PressPackageFile />', () => {
   it( 'renders null if document === {}', () => {
     const emptyProps = {
       ...props,
-      document: {}
+      document: {},
     };
     const EmptyComponent = (
       <HandleOnChangeContext.Provider value={ handleOnChange }>
@@ -339,13 +354,13 @@ describe( '<PressPackageFile />', () => {
     expect( wrapper.html() ).toEqual( null );
   } );
 
-  it( 'renders a thumbnail placeholder if !props.image', () => {
+  it( 'renders a <DocumentPaceholder /> if !props.image', () => {
     const nullImgProps = {
       ...props,
       document: {
         ...props.document,
-        image: null
-      }
+        image: null,
+      },
     };
     const NullImgComponent = (
       <HandleOnChangeContext.Provider value={ handleOnChange }>
@@ -353,24 +368,18 @@ describe( '<PressPackageFile />', () => {
       </HandleOnChangeContext.Provider>
     );
     const wrapper = mount( NullImgComponent );
-    const placeholderOuter = wrapper.find( '.placeholder.outer' );
-    const placeholderInner = wrapper.find( '.placeholder.inner' );
-    const loader = wrapper.find( 'Loader' );
+    const placeholder = wrapper.find( 'DocumentPaceholder' );
 
-    expect( placeholderOuter.exists() ).toEqual( true );
-    expect( placeholderInner.exists() ).toEqual( true );
-    expect( loader.exists() ).toEqual( true );
-    expect( loader.prop( 'active' ) ).toEqual( true );
-    expect( loader.prop( 'size' ) ).toEqual( 'small' );
+    expect( placeholder.exists() ).toEqual( true );
   } );
 
-  it( 'renders a thumbnail placeholder if props.image === []', () => {
+  it( 'renders a <DocumentPaceholder /> if props.image === []', () => {
     const emptyImgProps = {
       ...props,
       document: {
         ...props.document,
-        image: []
-      }
+        image: [],
+      },
     };
     const EmptyImgComponent = (
       <HandleOnChangeContext.Provider value={ handleOnChange }>
@@ -378,15 +387,9 @@ describe( '<PressPackageFile />', () => {
       </HandleOnChangeContext.Provider>
     );
     const wrapper = mount( EmptyImgComponent );
-    const placeholderOuter = wrapper.find( '.placeholder.outer' );
-    const placeholderInner = wrapper.find( '.placeholder.inner' );
-    const loader = wrapper.find( 'Loader' );
+    const placeholder = wrapper.find( 'DocumentPaceholder' );
 
-    expect( placeholderOuter.exists() ).toEqual( true );
-    expect( placeholderInner.exists() ).toEqual( true );
-    expect( loader.exists() ).toEqual( true );
-    expect( loader.prop( 'active' ) ).toEqual( true );
-    expect( loader.prop( 'size' ) ).toEqual( 'small' );
+    expect( placeholder.exists() ).toEqual( true );
   } );
 
   /**

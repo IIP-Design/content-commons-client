@@ -23,8 +23,12 @@
       }
 
       &.with-helper-text {
-        > textarea {
+        > textarea:not(#alt) {
           margin-bottom: -1em;
+        }
+
+        > label[for="alt"] > span {
+          margin-left: 0.625rem;
         }
       }
 

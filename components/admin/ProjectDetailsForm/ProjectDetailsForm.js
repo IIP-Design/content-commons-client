@@ -10,11 +10,12 @@ import {
   Form,
   Grid,
   Input,
-  TextArea
+  TextArea,
 } from 'semantic-ui-react';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import CopyrightDropdown from 'components/admin/dropdowns/CopyrightDropdown/CopyrightDropdown';
+import IconPopup from 'components/popups/IconPopup/IconPopup';
 import UserDropdown from 'components/admin/dropdowns/UserDropdown/UserDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
 import TermsConditions from 'components/admin/TermsConditions/TermsConditions';
@@ -40,7 +41,7 @@ const ProjectDetailsForm = props => {
     maxCategories,
     status,
     save,
-    config
+    config,
   } = props;
 
   // If form values have been updated then touched obj will have props
@@ -51,7 +52,7 @@ const ProjectDetailsForm = props => {
   const initProjectCreation = isEmpty( touched );
 
   const handleOnChange = ( e, {
-    name, value, type, checked
+    name, value, type, checked,
   } ) => {
     if ( type === 'checkbox' ) {
       setFieldValue( name, checked );
@@ -184,7 +185,11 @@ const ProjectDetailsForm = props => {
 
                       { errors.categories
                         ? <p className="error-message">{ touched.categories ? errors.categories : '' }</p>
-                        : <p className="field__helper-text">Select up to { maxCategories }.</p> }
+                        : (
+                          <p className="field__helper-text">
+                            Select up to { maxCategories }.
+                          </p>
+                        ) }
                     </div>
                   ) }
 
@@ -248,14 +253,21 @@ const ProjectDetailsForm = props => {
                       id="alt"
                       name="alt"
                       control={ TextArea }
-                      label={ config.alt?.label || 'Alt (Alternative) Text' }
+                      label={ (
+                        <label htmlFor="alt">
+                          { config.alt?.label || 'Alt (Alternative) Text' }
+                          <IconPopup
+                            message="This text helps screen-reading tools describe images to visually impaired readers."
+                            iconSize="small"
+                            iconType="info circle"
+                            popupSize="mini"
+                          />
+                        </label>
+                      ) }
                       value={ values.alt }
                       onChange={ handleOnChange }
                       { ...( config.alt?.required && { required: true } ) }
                     />
-                    <p className="field__helper-text">
-                      This text helps screen-reading tools describe images to visually impaired readers.
-                    </p>
                   </div>
                 ) }
             </Grid.Column>
@@ -299,7 +311,7 @@ ProjectDetailsForm.propTypes = {
   isValid: PropTypes.bool,
   setFieldTouched: PropTypes.func,
   maxCategories: PropTypes.number,
-  save: PropTypes.func
+  save: PropTypes.func,
 };
 
 export default ProjectDetailsForm;

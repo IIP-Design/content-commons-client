@@ -1,28 +1,43 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { Confirm } from 'semantic-ui-react';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import IconPopup from 'components/popups/IconPopup/IconPopup';
+import Filename from 'components/admin/Filename/Filename';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
-import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
+import {
+  DELETE_IMAGE_FILE_MUTATION,
+  DELETE_SUPPORT_FILE_MUTATION,
+} from 'lib/graphql/queries/common';
+import { GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
 import useTimeout from 'lib/hooks/useTimeout';
-import { getCount, truncateAndReplaceStr } from 'lib/utils';
+import { getCount } from 'lib/utils';
 import './GraphicSupportFiles.scss';
 
 const GraphicSupportFiles = props => {
   const {
-    projectId, headline, helperText, files, updateNotification
+    projectId, headline, helperText, files, updateNotification,
   } = props;
   const [fileIdToDelete, setFileIdToDelete] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
-  const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
+  const [deleteImageFile] = useMutation( DELETE_IMAGE_FILE_MUTATION );
+  const [deleteSupportFile] = useMutation( DELETE_SUPPORT_FILE_MUTATION );
 
   const showNotification = () => updateNotification( 'Changes saved' );
   const hideNotification = () => updateNotification( '' );
   const { startTimeout } = useTimeout( hideNotification, 2000 );
+
+  const getMutation = id => {
+    const _fileToUpdate = files.find( file => file.id === id );
+
+    switch ( _fileToUpdate.__typename ) {
+      case 'ImageFile':
+        return deleteImageFile;
+      default:
+        return deleteSupportFile;
+    }
+  };
 
   const handleReset = () => {
     setDeleteConfirmOpen( false );
@@ -31,49 +46,20 @@ const GraphicSupportFiles = props => {
   };
 
   const handleDelete = async id => {
-    await updateGraphicProject( {
-      variables: {
-        data: {
-          supportFiles: {
-            'delete': {
-              id
-            }
-          }
-        },
-        where: {
-          id: projectId
-        }
-      }
-    } )
-      .then( showNotification )
-      .then( handleReset )
-      .catch( err => console.dir( err ) );
-  };
+    const deleteMutation = getMutation( id );
 
-  const handleLanguageChange = async ( e, { id, value } ) => {
-    await updateGraphicProject( {
+    await deleteMutation( {
       variables: {
-        data: {
-          supportFiles: {
-            // pull out to builder fn?
-            update: {
-              data: {
-                language: {
-                  connect: {
-                    id: value
-                  }
-                }
-              },
-              where: {
-                id
-              }
-            }
-          }
+        id,
+      },
+      refetchQueries: [
+        {
+          query: GRAPHIC_PROJECT_QUERY,
+          variables: {
+            id: projectId,
+          },
         },
-        where: {
-          id: projectId
-        }
-      }
+      ],
     } )
       .then( showNotification )
       .then( handleReset )
@@ -83,50 +69,26 @@ const GraphicSupportFiles = props => {
   const renderList = () => (
     <ul className="support-files-list">
       { files.map( file => {
-        const { id, filename } = file;
-        const name = filename?.length > 36
-          ? truncateAndReplaceStr( filename, 24, 12 )
-          : filename;
+        const { id, filename, input } = file;
+        const _filename = projectId ? filename : input?.name;
 
         return (
-          <li key={ id } className="support-file-item">
+          <li key={ id } className={ `support-file-item ${projectId ? 'available' : 'unavailable'}` }>
             <span className="filename">
-              { filename !== name
-                ? (
-                  <Fragment>
-                    <button
-                      tooltip={ filename }
-                      type="button"
-                      aria-hidden="true"
-                      className="truncated"
-                    >
-                      { name }
-                    </button>
-                    <VisuallyHidden el="span">{ filename }</VisuallyHidden>
-                  </Fragment>
-                )
-                : name }
-            </span>
-
-            <span className="actions">
-              { headline.includes( 'editable' )
-                && (
-                  <LanguageDropdown
-                    id={ id }
-                    className="language"
-                    value={ file.language.id }
-                    onChange={ handleLanguageChange }
-                    required
-                  />
-                ) }
-
-              <FileRemoveReplaceButtonGroup
-                onRemove={ () => {
-                  setDeleteConfirmOpen( true );
-                  setFileIdToDelete( id );
-                } }
+              <Filename
+                children={ _filename }
+                filenameLength={ 48 }
+                numCharsBeforeBreak={ 20 }
+                numCharsAfterBreak={ 28 }
               />
             </span>
+
+            <FileRemoveReplaceButtonGroup
+              onRemove={ () => {
+                setDeleteConfirmOpen( true );
+                setFileIdToDelete( id );
+              } }
+            />
           </li>
         );
       } ) }
@@ -137,12 +99,15 @@ const GraphicSupportFiles = props => {
     <div className={ `graphic-project-support-files ${headline.replace( ' ', '-' )}` }>
       <div className="list-heading">
         <h3 className="title">{ headline }</h3>
-        <IconPopup
-          message={ helperText }
-          iconSize="small"
-          iconType="info circle"
-          popupSize="mini"
-        />
+        { projectId
+          && (
+            <IconPopup
+              message={ helperText }
+              iconSize="small"
+              iconType="info circle"
+              popupSize="mini"
+            />
+          ) }
       </div>
 
       <Confirm
@@ -172,7 +137,7 @@ GraphicSupportFiles.propTypes = {
   headline: PropTypes.string,
   helperText: PropTypes.string,
   files: PropTypes.array,
-  updateNotification: PropTypes.func
+  updateNotification: PropTypes.func,
 };
 
 export default GraphicSupportFiles;
