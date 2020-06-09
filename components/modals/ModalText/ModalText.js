@@ -16,7 +16,7 @@ const ModalText = props => {
 };
 
 ModalText.propTypes = {
-  textContent: string
+  textContent: string,
 };
 
 export default ModalText;
