@@ -4,7 +4,7 @@ export const graphicGraphqlMock = {
   updatedAt: '2020-04-13T14:54:40.647Z',
   publishedAt: '2020-03-30T15:44:51.511Z',
   title: 'Coffee Growers',
-  type: 'Social Media Graphic',
+  type: 'SOCIAL_MEDIA',
   copyright: 'NO_COPYRIGHT',
   alt: 'Alt text...',
   descPublic: 'Public description',
@@ -28,8 +28,8 @@ export const graphicGraphqlMock = {
       organization: 'Department of State',
       members: null,
       contentTypes: ['GRAPHIC'],
-      isConfirmed: true
-    }
+      isConfirmed: true,
+    },
   },
   team: {
     id: 'ck8em6gwa004p0765q6mjvh5f',
@@ -37,7 +37,7 @@ export const graphicGraphqlMock = {
     organization: 'Department of State',
     members: null,
     contentTypes: ['GRAPHIC'],
-    isConfirmed: true
+    isConfirmed: true,
   },
   images: [
     {
@@ -52,7 +52,7 @@ export const graphicGraphqlMock = {
         languageCode: 'en',
         textDirection: 'LTR',
         displayName: 'English',
-        nativeName: 'English'
+        nativeName: 'English',
       },
       alt: 'Will be populated from project level',
       url: '2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_ENGLISH_Output.jpg',
@@ -63,10 +63,18 @@ export const graphicGraphqlMock = {
       dimensions: {
         id: '123',
         width: '800',
-        height: '600'
+        height: '600',
       },
-      style: 'Clean',
-      social: 'Twitter'
+      style: {
+        id: 'ck9h3koe426aa0720y421wmk3',
+        name: 'Clean',
+      },
+      social: [
+        {
+          id: 'ck9h3m3g626bd07201gh712vk',
+          name: 'Twitter',
+        },
+      ],
     },
     {
       id: 'ck8en85go0b820765gcv0kgrq',
@@ -80,7 +88,7 @@ export const graphicGraphqlMock = {
         languageCode: 'fr',
         textDirection: 'LTR',
         displayName: 'French',
-        nativeName: 'French'
+        nativeName: 'French',
       },
       alt: 'Will be populated from project level',
       url: '2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_FRENCH_Output.jpg',
@@ -91,11 +99,23 @@ export const graphicGraphqlMock = {
       dimensions: {
         id: '1234',
         width: '800',
-        height: '600'
+        height: '600',
       },
-      style: 'Clean',
-      social: 'Twitter'
-    }
+      style: {
+        id: 'ck9h3l7zn26au0720ialhqtg4',
+        name: 'Quote',
+      },
+      social: [
+        {
+          id: 'ck9h3m9bl26bm0720rm69c60s',
+          name: 'Facebook',
+        },
+        {
+          id: 'ck9h3meu626bw07201o36tapc',
+          name: 'Instagram',
+        },
+      ],
+    },
   ],
   supportFiles: [
     {
@@ -108,14 +128,14 @@ export const graphicGraphqlMock = {
         languageCode: 'en',
         textDirection: 'LTR',
         displayName: 'English',
-        nativeName: 'English'
+        nativeName: 'English',
       },
       url: '2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_ENGLISH_Output.srt',
       signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_ENGLISH_Output.srt?AWSAccessKeyId=AKIAJ7VASWQMY6B7CH7A&Expires=1587475657&Signature=ONFhAwXKyGmKQ4tzZb%2FxA8rN6m8%3D',
       filename: 'CAPTIONS Made in America ENGLISH_Output.srt',
       filetype: 'application/x-subrip',
       filesize: 3193,
-      visibility: 'PUBLIC'
+      visibility: 'PUBLIC',
     },
     {
       id: 'ck8en85go0b820765gcv0kgry',
@@ -127,14 +147,14 @@ export const graphicGraphqlMock = {
         languageCode: 'en',
         textDirection: 'LTR',
         displayName: 'English',
-        nativeName: 'English'
+        nativeName: 'English',
       },
       url: '2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_ENGLISH_Output.psd',
       signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_ENGLISH_Output.psd?AWSAccessKeyId=AKIAJ7VASWQMY6B7CH7A&Expires=1587475657&Signature=ONFhAwXKyGmKQ4tzZb%2FxA8rN6m8%3D',
       filename: 'CAPTIONS Made in America ENGLISH_Output.psd',
       filetype: 'psd',
       filesize: 3193,
-      visibility: 'PUBLIC'
+      visibility: 'PUBLIC',
     },
     {
       id: 'ck8en85go0b820765gcv0kgrf',
@@ -146,15 +166,15 @@ export const graphicGraphqlMock = {
         languageCode: 'en',
         textDirection: 'LTR',
         displayName: 'English',
-        nativeName: 'English'
+        nativeName: 'English',
       },
       url: '2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_ENGLISH_Output.jpg',
       signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_ENGLISH_Output.jpg?AWSAccessKeyId=AKIAJ7VASWQMY6B7CH7A&Expires=1587475657&Signature=ONFhAwXKyGmKQ4tzZb%2FxA8rN6m8%3D',
       filename: 'CAPTIONS Made in America ENGLISH_Output.jpg',
       filetype: 'jpg',
       filesize: 3193,
-      visibility: 'PUBLIC'
-    }
+      visibility: 'PUBLIC',
+    },
   ],
   categories: [
     {
@@ -170,9 +190,9 @@ export const graphicGraphqlMock = {
             displayName: 'English',
             textDirection: 'LTR',
             nativeName: 'English',
-            __typename: 'Language'
+            __typename: 'Language',
           },
-          __typename: 'LanguageTranslation'
+          __typename: 'LanguageTranslation',
         },
         {
           id: 'ck8em6j8s01cx0765zhy1517b',
@@ -184,9 +204,9 @@ export const graphicGraphqlMock = {
             displayName: 'Spanish',
             textDirection: 'LTR',
             nativeName: 'Español',
-            __typename: 'Language'
+            __typename: 'Language',
           },
-          __typename: 'LanguageTranslation'
+          __typename: 'LanguageTranslation',
         },
         {
           id: 'ck8em6j9k01d40765nhcjpfci',
@@ -198,9 +218,9 @@ export const graphicGraphqlMock = {
             displayName: 'Spanish',
             textDirection: 'LTR',
             nativeName: 'Español',
-            __typename: 'Language'
+            __typename: 'Language',
           },
-          __typename: 'LanguageTranslation'
+          __typename: 'LanguageTranslation',
         },
         {
           id: 'ck8em6jaf01db07651bfmjm9c',
@@ -212,9 +232,9 @@ export const graphicGraphqlMock = {
             displayName: 'Spanish',
             textDirection: 'LTR',
             nativeName: 'Español',
-            __typename: 'Language'
+            __typename: 'Language',
           },
-          __typename: 'LanguageTranslation'
+          __typename: 'LanguageTranslation',
         },
         {
           id: 'ck2lzghwb0nns07207xjmveqe',
@@ -226,12 +246,12 @@ export const graphicGraphqlMock = {
             displayName: 'French',
             textDirection: 'LTR',
             nativeName: 'Français',
-            __typename: 'Language'
+            __typename: 'Language',
           },
-          __typename: 'LanguageTranslation'
-        }
-      ]
-    }
+          __typename: 'LanguageTranslation',
+        },
+      ],
+    },
   ],
   tags: [
     {
@@ -241,73 +261,73 @@ export const graphicGraphqlMock = {
           id: 'ck8em6t7j04dg0765hwrdmh5h',
           name: 'agriculture',
           language: {
-            id: 'ck8em6gw9004n07653maurqwc'
-          }
+            id: 'ck8em6gw9004n07653maurqwc',
+          },
         },
         {
           id: 'ck8em6t8304dn0765nhrhysfo',
           name: 'agricultura',
           language: {
-            id: 'ck8em6gyq005x0765tf5gfcdo'
-          }
+            id: 'ck8em6gyq005x0765tf5gfcdo',
+          },
         },
         {
           id: 'ck8em6t8o04du0765ycoeq4sj',
           name: 'agriculture',
           language: {
-            id: 'ck8em6gwb004q0765aeozhhrx'
-          }
+            id: 'ck8em6gwb004q0765aeozhhrx',
+          },
         },
         {
           id: 'ck8em6t9704e10765q0s3msnp',
           name: 'agricultura',
           language: {
-            id: 'ck8em6gy4005g076525h11w7s'
-          }
+            id: 'ck8em6gy4005g076525h11w7s',
+          },
         },
         {
           id: 'ck8em6t9s04e80765085ydhcm',
           name: 'الزراعة',
           language: {
-            id: 'ck8em6gwh004s0765zz4sk01a'
-          }
+            id: 'ck8em6gwh004s0765zz4sk01a',
+          },
         },
         {
           id: 'ck8em6tad04ef0765mifg0q25',
           name: 'کشاورزی',
           language: {
-            id: 'ck8em6gy6005k0765hpstlk8b'
-          }
+            id: 'ck8em6gy6005k0765hpstlk8b',
+          },
         },
         {
           id: 'ck8em6tax04em0765ho5t9f45',
           name: '農業',
           language: {
-            id: 'ck8em6gwa004o0765ggxu56er'
-          }
+            id: 'ck8em6gwa004o0765ggxu56er',
+          },
         },
         {
           id: 'ck8em6tbh04et0765lea4bab4',
           name: 'сельское хозяйство',
           language: {
-            id: 'ck8em6gyf005r0765w761manj'
-          }
+            id: 'ck8em6gyf005r0765w761manj',
+          },
         },
         {
           id: 'ck8em6tc104f00765jab19apr',
           name: 'pertanian',
           language: {
-            id: 'ck8em6gx5004v0765lyp07s9x'
-          }
+            id: 'ck8em6gx5004v0765lyp07s9x',
+          },
         },
         {
           id: 'ck8em6tcs04f70765xcnl74gx',
           name: 'زراعت',
           language: {
-            id: 'ck8em6gyn005t0765zgetgcsq'
-          }
-        }
-      ]
-    }
-  ]
+            id: 'ck8em6gyn005t0765zgetgcsq',
+          },
+        },
+      ],
+    },
+  ],
 };

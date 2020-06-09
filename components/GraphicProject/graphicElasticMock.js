@@ -23,15 +23,15 @@ export const graphicElasticMock = [
             text_direction: 'ltr',
             locale: 'fr-fr',
             display_name: 'French',
-            native_name: 'French'
+            native_name: 'French',
           },
           name: 'CAPTIONS_Made_in_America_FRENCH_Twitter_Output.png',
           alt: 'Texte alternatif français',
           filesize: '600 MB',
           width: 800,
           height: 600,
-          social: 'Twitter',
-          style: 'Quote'
+          social: ['Twitter'],
+          style: 'Quote',
         },
         {
           title: 'Mon titre graphique FACEBOOK',
@@ -42,15 +42,15 @@ export const graphicElasticMock = [
             text_direction: 'ltr',
             locale: 'fr-fr',
             display_name: 'French',
-            native_name: 'French'
+            native_name: 'French',
           },
           name: 'CAPTIONS_Made_in_America_FRENCH_Facebook_Output.png',
           alt: 'Texte alternatif français',
           filesize: '600 MB',
           width: 800,
           height: 600,
-          social: 'Facebook',
-          style: 'Quote'
+          social: ['Facebook', 'Instagram'],
+          style: 'Quote',
         },
         {
           title: 'My graphic title',
@@ -61,16 +61,16 @@ export const graphicElasticMock = [
             text_direction: 'ltr',
             locale: 'en-us',
             display_name: 'English',
-            native_name: 'English'
+            native_name: 'English',
           },
           name: 'CAPTIONS_Made_in_America_English_Output.png',
           alt: 'English alt text',
           filesize: '600 MB',
           width: 800,
           height: 600,
-          social: 'Twitter',
-          style: 'Quote'
-        }
+          social: ['Twitter'],
+          style: 'Quote',
+        },
       ],
       supportFiles: [
         {
@@ -82,8 +82,8 @@ export const graphicElasticMock = [
             text_direction: 'ltr',
             locale: 'en-us',
             display_name: 'English',
-            native_name: 'English'
-          }
+            native_name: 'English',
+          },
         },
         {
           visibility: 'INTERNAL',
@@ -94,8 +94,8 @@ export const graphicElasticMock = [
             text_direction: 'ltr',
             locale: 'en-us',
             display_name: 'English',
-            native_name: 'English'
-          }
+            native_name: 'English',
+          },
         },
         {
           visibility: 'INTERNAL',
@@ -106,8 +106,8 @@ export const graphicElasticMock = [
             text_direction: 'ltr',
             locale: 'en-us',
             display_name: 'English',
-            native_name: 'English'
-          }
+            native_name: 'English',
+          },
         },
         {
           visibility: 'INTERNAL',
@@ -118,8 +118,8 @@ export const graphicElasticMock = [
             text_direction: 'ltr',
             locale: 'fr-fr',
             display_name: 'French',
-            native_name: 'French'
-          }
+            native_name: 'French',
+          },
         },
         {
           visibility: 'INTERNAL',
@@ -130,8 +130,8 @@ export const graphicElasticMock = [
             text_direction: 'ltr',
             locale: 'fr-fr',
             display_name: 'French',
-            native_name: 'French'
-          }
+            native_name: 'French',
+          },
         },
         {
           visibility: 'INTERNAL',
@@ -142,8 +142,8 @@ export const graphicElasticMock = [
             text_direction: 'ltr',
             locale: 'fr-fr',
             display_name: 'French',
-            native_name: 'French'
-          }
+            native_name: 'French',
+          },
         },
         {
           visibility: 'INTERNAL',
@@ -154,8 +154,8 @@ export const graphicElasticMock = [
             text_direction: 'ltr',
             locale: 'fr-fr',
             display_name: 'French',
-            native_name: 'French'
-          }
+            native_name: 'French',
+          },
         },
         {
           visibility: 'INTERNAL',
@@ -166,8 +166,8 @@ export const graphicElasticMock = [
             text_direction: 'ltr',
             locale: 'en-us',
             display_name: 'English',
-            native_name: 'English'
-          }
+            native_name: 'English',
+          },
         },
         {
           visibility: 'INTERNAL',
@@ -178,22 +178,22 @@ export const graphicElasticMock = [
             text_direction: 'ltr',
             locale: 'en-us',
             display_name: 'English',
-            native_name: 'English'
-          }
-        }
+            native_name: 'English',
+          },
+        },
       ],
       tags: [
         {
           name: 'biomedical science',
-          id: 'KBb5K3EB-L8EaltkVCV8'
-        }
+          id: 'KBb5K3EB-L8EaltkVCV8',
+        },
       ],
       categories: [
         {
           name: 'science & technology',
-          id: 'TBb5K3EB-L8EaltkViXQ'
-        }
-      ]
-    }
-  }
+          id: 'TBb5K3EB-L8EaltkViXQ',
+        },
+      ],
+    },
+  },
 ];

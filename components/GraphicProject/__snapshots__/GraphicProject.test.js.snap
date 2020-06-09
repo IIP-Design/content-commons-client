@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GraphicProject />, for ElasticSearch data renders the trigger container and its child components 1`] = `
+<div
+  className="trigger-container"
+>
+  <Popover
+    className="graphic-project__popover graphic-project__popover--share"
+    expandFromRight={true}
+    id="ck8h90w6x030l0765onryiqdt_graphic-share"
+    toolTip="Share graphic"
+    trigger={
+      <img
+        alt="share icon"
+        src="image-stub"
+        style={
+          Object {
+            "height": "20px",
+            "width": "20px",
+          }
+        }
+      />
+    }
+  >
+    <span
+      className="popover graphic-project__popover graphic-project__popover--share"
+    >
+      <button
+        aria-controls="popoverContent"
+        aria-expanded={false}
+        aria-haspopup="true"
+        className="popover_trigger"
+        id="popoverButton_ck8h90w6x030l0765onryiqdt_graphic-share"
+        onClick={[Function]}
+        tooltip="Share graphic"
+        type="button"
+      >
+        <img
+          alt="share icon"
+          src="image-stub"
+          style={
+            Object {
+              "height": "20px",
+              "width": "20px",
+            }
+          }
+        />
+      </button>
+    </span>
+  </Popover>
+  <Popover
+    className="graphic-project__popover graphic-project__popover--download"
+    expandFromRight={true}
+    id="ck8h90w6x030l0765onryiqdt_graphic-download"
+    toolTip="Download graphic"
+    trigger={
+      <img
+        alt="download icon"
+        src="image-stub"
+        style={
+          Object {
+            "height": "20px",
+            "width": "20px",
+          }
+        }
+      />
+    }
+  >
+    <span
+      className="popover graphic-project__popover graphic-project__popover--download"
+    >
+      <button
+        aria-controls="popoverContent"
+        aria-expanded={false}
+        aria-haspopup="true"
+        className="popover_trigger"
+        id="popoverButton_ck8h90w6x030l0765onryiqdt_graphic-download"
+        onClick={[Function]}
+        tooltip="Download graphic"
+        type="button"
+      >
+        <img
+          alt="download icon"
+          src="image-stub"
+          style={
+            Object {
+              "height": "20px",
+              "width": "20px",
+            }
+          }
+        />
+      </button>
+    </span>
+  </Popover>
+</div>
+`;
+
+exports[`<GraphicProject />, for GraphQL data renders the trigger container and its child components 1`] = `
+<div
+  className="trigger-container"
+>
+  <Popover
+    className="graphic-project__popover graphic-project__popover--share"
+    expandFromRight={true}
+    id="ck8en7r8x0b7007652jpf9a59_graphic-share"
+    toolTip="Share graphic"
+    trigger={
+      <img
+        alt="share icon"
+        src="image-stub"
+        style={
+          Object {
+            "height": "20px",
+            "width": "20px",
+          }
+        }
+      />
+    }
+  >
+    <span
+      className="popover graphic-project__popover graphic-project__popover--share"
+    >
+      <button
+        aria-controls="popoverContent"
+        aria-expanded={false}
+        aria-haspopup="true"
+        className="popover_trigger"
+        id="popoverButton_ck8en7r8x0b7007652jpf9a59_graphic-share"
+        onClick={[Function]}
+        tooltip="Share graphic"
+        type="button"
+      >
+        <img
+          alt="share icon"
+          src="image-stub"
+          style={
+            Object {
+              "height": "20px",
+              "width": "20px",
+            }
+          }
+        />
+      </button>
+    </span>
+  </Popover>
+  <Popover
+    className="graphic-project__popover graphic-project__popover--download"
+    expandFromRight={true}
+    id="ck8en7r8x0b7007652jpf9a59_graphic-download"
+    toolTip="Download graphic"
+    trigger={
+      <img
+        alt="download icon"
+        src="image-stub"
+        style={
+          Object {
+            "height": "20px",
+            "width": "20px",
+          }
+        }
+      />
+    }
+  >
+    <span
+      className="popover graphic-project__popover graphic-project__popover--download"
+    >
+      <button
+        aria-controls="popoverContent"
+        aria-expanded={false}
+        aria-haspopup="true"
+        className="popover_trigger"
+        id="popoverButton_ck8en7r8x0b7007652jpf9a59_graphic-download"
+        onClick={[Function]}
+        tooltip="Download graphic"
+        type="button"
+      >
+        <img
+          alt="download icon"
+          src="image-stub"
+          style={
+            Object {
+              "height": "20px",
+              "width": "20px",
+            }
+          }
+        />
+      </button>
+    </span>
+  </Popover>
+</div>
+`;

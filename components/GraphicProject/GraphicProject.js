@@ -182,7 +182,7 @@ const GraphicProject = ( {
           { selectedUnitSupportFiles.length
             ? selectedUnitSupportFiles.map( file => (
               <GenericFiles
-                key={ file.id }
+                key={ file.srcUrl }
                 file={ file }
                 isAdminPreview={ isAdminPreview }
               />
@@ -206,7 +206,7 @@ const GraphicProject = ( {
           { selectedUnitOtherFiles.length
             ? selectedUnitOtherFiles.map( file => (
               <GenericFiles
-                key={ file.id }
+                key={ file.srcUrl }
                 file={ file }
                 isAdminPreview={ isAdminPreview }
               />
@@ -319,13 +319,13 @@ const GraphicProject = ( {
 
       { user
         && (
-          <section className="graphic-project__content">
+          <section className="graphic-project__content internal-desc">
             <p className="graphic-project__content__title">Internal Description:</p>
             { descInternal }
           </section>
         ) }
 
-      <section className="graphic-project__content">
+      <section className="graphic-project__content alt">
         <p className="graphic-project__content__title">Alt (Alternative) Text:</p>
         { getAlt() }
       </section>

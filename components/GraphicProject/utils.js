@@ -34,7 +34,7 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
       filename: img.name,
     } ) );
 
-    const supportFilesWithFileNameProp = file.supportFiles.map( supFile => {
+    const supportFilesWithFileNameProp = Array.isArray( file.supportFiles ) && file.supportFiles.map( supFile => {
       const filenameFromSrc = supFile.srcUrl.slice( supFile.srcUrl.lastIndexOf( '/' ) + 1 );
 
       return {
@@ -65,7 +65,7 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
       };
     } );
 
-    const structuredSupportFiles = file.supportFiles.map( supFile => ( {
+    const structuredSupportFiles = Array.isArray( file.supportFiles ) && file.supportFiles.map( supFile => ( {
       ...supFile,
       ...structureLangObj( supFile ),
       srcUrl: supFile.signedUrl,
