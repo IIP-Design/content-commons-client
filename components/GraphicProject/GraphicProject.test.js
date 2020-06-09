@@ -16,6 +16,8 @@ jest.mock(
   } ),
 );
 
+jest.mock( 'lib/browser', () => ( { updateUrl: jest.fn() } ) );
+
 jest.mock(
   'next/router',
   () => ( {
@@ -101,6 +103,9 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   let wrapper;
   const selectedUnit = normalizedData.images.find( img => img.language.locale === 'en-us' );
 
+  /* eslint-disable global-require */
+  const { updateUrl } = require( 'lib/browser' );
+
   beforeEach( () => {
     Component = <GraphicProject { ...props } />;
     wrapper = mount( Component );
@@ -170,6 +175,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
     expect( langDropdown().prop( 'selected' ) )
       .toEqual( newSelectedUnit.language.display_name );
     expect( modalHeadline.text() ).toEqual( newSelectedUnit.title );
+    expect( updateUrl ).not.toHaveBeenCalled();
   } );
 
   it( 'renders the trigger container and its child components', () => {
@@ -317,6 +323,8 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   let wrapper;
   const selectedUnit = normalizedData.images.find( img => img.language.locale === 'en-us' );
 
+  const { updateUrl } = require( 'lib/browser' );
+
   beforeEach( () => {
     Component = <GraphicProject { ...props } />;
     wrapper = mount( Component );
@@ -366,10 +374,14 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
 
     const newSelectedUnit = normalizedData.images.find( img => img.language.display_name === newLangSelection );
     const modalHeadline = wrapper.find( '.modal_headline' );
+    const { id, site, type } = props.item;
+    const { language, title } = newSelectedUnit;
+    const newUrl = `/${type}?id=${id}&site=${site}&language=${language.locale}`;
 
     expect( langDropdown().prop( 'selected' ) )
-      .toEqual( newSelectedUnit.language.display_name );
-    expect( modalHeadline.text() ).toEqual( newSelectedUnit.title );
+      .toEqual( language.display_name );
+    expect( modalHeadline.text() ).toEqual( title );
+    expect( updateUrl ).toHaveBeenCalledWith( newUrl );
   } );
 
   it( 'renders the trigger container and its child components', () => {
