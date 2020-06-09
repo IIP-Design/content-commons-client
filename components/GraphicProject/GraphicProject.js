@@ -120,26 +120,32 @@ const GraphicProject = ( {
   // Image files by language
   const selectedUnitImages = images.filter( img => img.language.display_name === selectedUnitLanguage.display_name );
 
-  // Editable support files
-  const editableFileTypes = [
-    '.psd', '.ai', '.eps', '.ae', '.jpg', '.jpeg', '.png',
-  ];
-  const selectedUnitSupportFiles = supportFiles
-    .filter( file => {
-      const { filename } = file;
-      const fileType = getFileExt( filename );
+  const getSupportFiles = supportFileType => {
+    const editableExtensions = [
+      '.psd', '.ai', '.eps', '.ae', '.jpg', '.jpeg', '.png',
+    ];
+    const editableFiles = [];
+    const additionalFiles = [];
 
-      return editableFileTypes.includes( fileType );
-    } );
+    if ( getCount( supportFiles ) ) {
+      supportFiles.forEach( file => {
+        const extension = getFileExt( file.filename );
 
-  // Non-editable support files
-  const selectedUnitOtherFiles = supportFiles
-    .filter( file => {
-      const { filename } = file;
-      const fileType = getFileExt( filename );
+        const hasEditableExt = editableExtensions.includes( extension );
 
-      return !editableFileTypes.includes( fileType );
-    } );
+        if ( hasEditableExt ) {
+          editableFiles.push( file );
+        } else {
+          additionalFiles.push( file );
+        }
+      } );
+    }
+
+    return supportFileType === 'editable' ? editableFiles : additionalFiles;
+  };
+
+  const selectedUnitSupportFiles = getSupportFiles( 'editable' );
+  const selectedUnitOtherFiles = getSupportFiles( 'other' );
 
   const copyrightMsg = copyright === 'COPYRIGHT'
     ? 'Copyright terms outlined in internal description'
