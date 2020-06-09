@@ -5,6 +5,7 @@ import './ModalPostTags.scss';
 const renderCategory = ( category, index, arr ) => {
   let { name } = category;
   const key = `cat_${index}`;
+
   if ( index > 2 ) {
     return undefined;
   }
@@ -24,6 +25,7 @@ const renderCategory = ( category, index, arr ) => {
 const ModalPostTags = props => {
   const { tags } = props;
   let postTags = '';
+
   if ( typeof tags === 'string' ) {
     postTags = tags;
   } else {
@@ -38,7 +40,7 @@ const ModalPostTags = props => {
 };
 
 ModalPostTags.propTypes = {
-  tags: PropTypes.oneOfType( [PropTypes.array, PropTypes.string] )
+  tags: PropTypes.oneOfType( [PropTypes.array, PropTypes.string] ),
 };
 
 export default ModalPostTags;
