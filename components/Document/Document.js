@@ -21,6 +21,8 @@ import ModalDescription from 'components/modals/ModalDescription/ModalDescriptio
 import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
 import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 
+import useSignedUrl from 'lib/hooks/useSignedUrl';
+
 import './Document.scss';
 
 // disallow <script></script> tags
@@ -28,9 +30,7 @@ import './Document.scss';
 //   isValidNode: node => node.type !== 'script'
 // } );
 
-const Document = props => {
-  const { isAdminPreview, displayAsModal, item } = props;
-
+const Document = ( { isAdminPreview, displayAsModal, item } ) => {
   const {
     id,
     published,
@@ -46,6 +46,8 @@ const Document = props => {
     type,
   } = item;
 
+  const { signedUrl } = useSignedUrl( documentUrl || '' );
+
   useEffect( () => {
     if ( !displayAsModal ) {
       updateUrl( `/document?id=${id}&site=${site}&language=${language.locale}` );
@@ -57,6 +59,7 @@ const Document = props => {
   const setLangAttr = () => {
     if ( language.languageCode ) return language.languageCode;
     if ( language.language_code ) return language.language_code;
+
     return 'en';
   };
 
@@ -89,7 +92,7 @@ const Document = props => {
                   ...( isAdminPreview
                     ? { isPreview: true, link: 'The direct link to the package will appear here.' }
                     : {}
-                ) }
+                  ) }
               />
             </Popup>
           ) }
@@ -99,11 +102,10 @@ const Document = props => {
             { ...( isAdminPreview
               ? {}
               : {
-                href: documentUrl,
+                href: signedUrl,
                 className: 'trigger',
                 download: true,
-                target: '_blank',
-                rel: 'noopener noreferrer'
+                rel: 'noopener noreferrer',
               }
             ) }
           >
