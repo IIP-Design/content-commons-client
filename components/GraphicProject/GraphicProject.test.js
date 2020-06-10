@@ -185,6 +185,22 @@ describe( '<GraphicProject />, for GraphQL data', () => {
     expect( toJSON( triggerContainer ) ).toMatchSnapshot();
   } );
 
+  it( 'renders the correct download tabs', () => {
+    const { id } = props.item;
+    const triggerContainer = wrapper.find( '.trigger-container' );
+    const popover = triggerContainer.find( `[id="${id}_graphic-download"]` );
+    const tabLayout = mount( popover.prop( 'children' ) );
+    const { tabs } = tabLayout.props();
+    const tabTitles = [
+      'Graphic Files', 'Editable Files', 'Other', 'Help',
+    ];
+
+    expect( tabs.length ).toEqual( tabTitles.length );
+    tabs.forEach( ( tab, i ) => {
+      expect( tab.title ).toEqual( tabTitles[i] );
+    } );
+  } );
+
   it( 'renders the ModalImage thumbnail', () => {
     const modalImage = wrapper.find( 'ModalImage' );
 
@@ -389,6 +405,22 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
     // use snapshot since child components are nested so deeply.
 
     expect( toJSON( triggerContainer ) ).toMatchSnapshot();
+  } );
+
+  it( 'renders the correct download tabs', () => {
+    const { id } = props.item;
+    const triggerContainer = wrapper.find( '.trigger-container' );
+    const popover = triggerContainer.find( `[id="${id}_graphic-download"]` );
+    const tabLayout = mount( popover.prop( 'children' ) );
+    const { tabs } = tabLayout.props();
+    const tabTitles = [
+      'Graphic Files', 'Editable Files', 'Other', 'Help',
+    ];
+
+    expect( tabs.length ).toEqual( tabTitles.length );
+    tabs.forEach( ( tab, i ) => {
+      expect( tab.title ).toEqual( tabTitles[i] );
+    } );
   } );
 
   it( 'renders the ModalImage thumbnail', () => {
