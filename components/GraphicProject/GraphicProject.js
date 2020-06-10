@@ -326,14 +326,18 @@ const GraphicProject = ( {
       { user
         && (
           <section className="graphic-project__content internal-desc">
-            <p className="graphic-project__content__title">Internal Description:</p>
-            { descInternal }
+            <h2 className="graphic-project__content__title">
+              Internal Description:
+            </h2>
+            <p>{ descInternal }</p>
           </section>
         ) }
 
       <section className="graphic-project__content alt">
-        <p className="graphic-project__content__title">Alt (Alternative) Text:</p>
-        { getAlt() }
+        <h2 className="graphic-project__content__title">
+          Alt (Alternative) Text:
+        </h2>
+        <p>{ getAlt() }</p>
       </section>
 
       <ModalPostMeta

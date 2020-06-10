@@ -70,8 +70,13 @@ $image-height: 25rem;
     
     &__title {
       margin-bottom: 3px;
-      font-size: 12px;
-      color: $shuttle-grey;
+      color: $grey;
+      font-size: 0.666666667rem;
+      font-weight: 400;
+    }
+
+    > p {
+      font-size: 1rem;
     }
   }  
 }
