@@ -31,11 +31,11 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
   if ( !useGraphQl ) {
     const imagesWithFileNameProp = file.images.map( img => ( {
       ...img,
-      filename: img.name,
+      filename: img.filename,
     } ) );
 
     const supportFilesWithFileNameProp = Array.isArray( file.supportFiles ) && file.supportFiles.map( supFile => {
-      const filenameFromSrc = supFile.srcUrl.slice( supFile.srcUrl.lastIndexOf( '/' ) + 1 );
+      const filenameFromSrc = supFile.url.slice( supFile.url.lastIndexOf( '/' ) + 1 );
 
       return {
         ...supFile,
@@ -59,7 +59,7 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
       return {
         ...img,
         ...structureLangObj( img ),
-        srcUrl: img.signedUrl,
+        url: img.signedUrl,
         width: dimensions.width,
         height: dimensions.height,
       };

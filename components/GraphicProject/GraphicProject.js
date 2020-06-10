@@ -161,7 +161,7 @@ const GraphicProject = ( {
           { selectedUnitImages.length
             ? selectedUnitImages.map( img => (
               <GraphicFiles
-                key={ img.srcUrl }
+                key={ img.url }
                 file={ img }
                 isAdminPreview={ isAdminPreview }
               />
@@ -188,7 +188,7 @@ const GraphicProject = ( {
           { selectedUnitSupportFiles.length
             ? selectedUnitSupportFiles.map( file => (
               <GenericFiles
-                key={ file.srcUrl }
+                key={ file.url }
                 file={ file }
                 isAdminPreview={ isAdminPreview }
               />
@@ -212,7 +212,7 @@ const GraphicProject = ( {
           { selectedUnitOtherFiles.length
             ? selectedUnitOtherFiles.map( file => (
               <GenericFiles
-                key={ file.srcUrl }
+                key={ file.url }
                 file={ file }
                 isAdminPreview={ isAdminPreview }
               />
@@ -308,10 +308,10 @@ const GraphicProject = ( {
         </div>
       </div>
 
-      { selectedUnit?.srcUrl
+      { selectedUnit?.url
         && (
           <ModalImage
-            thumbnail={ selectedUnit.srcUrl }
+            thumbnail={ selectedUnit.url }
             thumbnailMeta={ { alt: getAlt() } }
           />
         ) }

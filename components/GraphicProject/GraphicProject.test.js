@@ -206,7 +206,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
 
     expect( modalImage.exists() ).toEqual( true );
     expect( modalImage.props() ).toEqual( {
-      thumbnail: selectedUnit.srcUrl,
+      thumbnail: selectedUnit.url,
       thumbnailMeta: { alt: selectedUnit.alt },
     } );
   } );
@@ -428,7 +428,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
 
     expect( modalImage.exists() ).toEqual( true );
     expect( modalImage.props() ).toEqual( {
-      thumbnail: selectedUnit.srcUrl,
+      thumbnail: selectedUnit.url,
       thumbnailMeta: { alt: selectedUnit.alt },
     } );
   } );
