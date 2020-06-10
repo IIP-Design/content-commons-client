@@ -134,7 +134,7 @@ const GraphicEdit = ( { id } ) => {
   const [updateGraphicProjectStatus] = useMutation( UPDATE_GRAPHIC_PROJECT_STATUS_MUTATION );
 
   // publishOperation tells the action buttons which operation is executing so that it can
-  // set its loading indcator on the right button
+  // set its loading indicator on the right button
   const [publishOperation, setPublishOperation] = useState( '' );
   const [error, setError] = useState( {} );
   const [mounted, setMounted] = useState( false );
