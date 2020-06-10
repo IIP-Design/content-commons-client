@@ -24,8 +24,10 @@ _This sections lists changes committed since most recent release_
 - A tabIndex property to the Filename tooltip element for keyboard accessibility
 - The aria-hidden property to the Filename tooltip element to prevent the filename from being read twice by screen readers
 - Unit tests for Filename, GraphicSupportFiles, and GraphicFilesForm
-- Functionality to add support and graphic files to exisiting project
-- EditGrid component to handle file creation management for both new and exisiting projects
+- Functionality to add support and graphic files to existing project
+- EditGrid component to handle file creation management for both new and existing projects
+- GraphicProject as the preview node for ActionButtons in GraphicEdit
+- Unit tests for ModalDescription, ModalItem, ModalPostTags, ModalText, ModalTranscript, Popover, and Popup
 
 **Changed:**
 
@@ -53,6 +55,16 @@ _This sections lists changes committed since most recent release_
 - Display information icons next to headings for graphic support files existing projects only
 - Display alt helper text next to the label rather under its textarea field
 - The validationSchema for GraphicFilesFormContainer to handle empty options
+- Display of copyright message, internal description, alt text, social platforms, and file type meta data in social graphics preview
+- Hide display of published date for social graphics preview
+- Social graphics download placeholder text to display social platform(s)
+- Remove unneeded getMutation function in GraphicSupportFiles since the shell file is saved as a SupportFile instead of ImageFile
+- Style social graphic preview thumbnail to maintain its aspect ratio
+- Use heading elements for internal description & alt titles for better semantics in GraphicProject
+- Refactor the filter for Twitter images to support the ImageFile social field array return value
+- Refactor ModalContentMeta as functional component
+- Adjust modal stylesheets for consistency
+- Update unit tests for ActionButtons, GraphicEdit, GraphicProject, and ModalContentMeta
  
 
 **Fixed:**
@@ -60,6 +72,7 @@ _This sections lists changes committed since most recent release_
 - Fixed width in files popover menu
 - Hide the "saving changes" growl notification upon initial load of the project details form
 - The Formik initial save bug for GraphicProjectDetailsFormContainer and GraphicFilesFormContainer
+- Copyright dropdown validation for ProjectDetailsForm
 
 # [4.1.1](2020-05-22)
 
