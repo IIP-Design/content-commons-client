@@ -49,18 +49,7 @@ const Results = ( { search } ) => {
             <ResultsHeader toggleView={ toggleView } currentView={ view } />
           </section>
           <Grid className="results_wrapper">
-            {/* { items.map( item => (
-              <Grid.Column
-                mobile={ 16 }
-                tablet={ view === 'gallery' ? 8 : 16 }
-                computer={ view === 'gallery' ? 4 : 16 }
-                className={ view === 'gallery' ? 'card_wrapper card_wrapper--gallery' : 'card_wrapper card_wrapper--list' }
-                key={ item._id }
-              >
-                <ResultItem key={ item._id } item={ normalizeItem( item, search.language ) } />
-              </Grid.Column>
-            ) ) } */}
-            { itemsWithGraphic.map( item => (
+            { items.map( item => (
               <Grid.Column
                 mobile={ 16 }
                 tablet={ view === 'gallery' ? 8 : 16 }
@@ -71,6 +60,17 @@ const Results = ( { search } ) => {
                 <ResultItem key={ item._id } item={ normalizeItem( item, search.language ) } />
               </Grid.Column>
             ) ) }
+            {/* { itemsWithGraphic.map( item => (
+              <Grid.Column
+                mobile={ 16 }
+                tablet={ view === 'gallery' ? 8 : 16 }
+                computer={ view === 'gallery' ? 4 : 16 }
+                className={ view === 'gallery' ? 'card_wrapper card_wrapper--gallery' : 'card_wrapper card_wrapper--list' }
+                key={ item._id }
+              >
+                <ResultItem key={ item._id } item={ normalizeItem( item, search.language ) } />
+              </Grid.Column>
+            ) ) } */}
           </Grid>
           <ResultsPagination />
         </div>

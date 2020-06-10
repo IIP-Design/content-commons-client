@@ -23,6 +23,10 @@ GraphicPage.getInitialProps = async ctx => {
   if ( query && query.site && query.id ) {
     const response = await getItemRequest( query.site, query.id, user );
     const item = getDataFromHits( response );
+<<<<<<< HEAD
+=======
+    // const item = graphicElasticMock;
+>>>>>>> CDP-1988 - edit elastic fn's for adding graphic to search results, add GraphicCard tests
 
     if ( item && item[0] ) {
       return {

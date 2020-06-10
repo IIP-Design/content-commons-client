@@ -34,16 +34,16 @@ const GraphicCard = ( { item } ) => {
   // Filter for first English img || first img
   const setDefaultImg = () => {
     const englishImg = filteredGraphicImgs.find( img => img.language.display_name === 'English' );
-
     if ( englishImg ) return englishImg;
-
     return filteredGraphicImgs[0];
   };
   const thumbnailImg = setDefaultImg();
 
   return (
     <article className="graphic_card">
-      <img src={ tempSrcUrl } alt={ thumbnailImg.alt } />
+      {/* REMOVE TEMP SRC URL */}
+      {/* <img src={ tempSrcUrl } alt={ thumbnailImg.alt } /> */}      
+      <img src={ thumbnailImg.srcUrl } alt={ thumbnailImg.alt } />
       <Modal
         open={ isOpen }
         onOpen={ handleOpen }

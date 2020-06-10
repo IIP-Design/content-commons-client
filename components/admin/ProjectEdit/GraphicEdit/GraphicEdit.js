@@ -366,6 +366,7 @@ const GraphicEdit = ( { id } ) => {
    */
   const uploadAndSaveFiles = ( pId, files, savePath, saveFn, progress ) => Promise.all(
     files.map( async file => {
+
       const _file = await uploadFile( savePath, file, progress );
 
       if ( _file.error ) {
