@@ -42,6 +42,7 @@
       }
 
       [tooltip] {
+        margin: 0;
         &:focus {
           @include focus-styling;
         }

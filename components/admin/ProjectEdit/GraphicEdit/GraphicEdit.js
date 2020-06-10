@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Loader, Modal } from 'semantic-ui-react';
-import sortBy from 'lodash/sortBy';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import AddFilesSectionHeading from 'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading';
 import ApolloError from 'components/errors/ApolloError';
@@ -536,18 +535,11 @@ const GraphicEdit = ( { id } ) => {
     return type === 'images' ? initialGraphicFiles : initialSupportFiles;
   };
 
-  const getSortedFiles = type => {
+  const getFiles = type => {
     const existingFiles = data?.graphicProject?.[type] || [];
     const files = projectId ? existingFiles : getInitialFiles( type );
-    // sort by file extension
-    const sortedFiles = sortBy( files, file => {
-      const fileName = projectId ? file.filename : file.name;
-      const fileExt = getFileExt( fileName );
 
-      return fileExt;
-    } );
-
-    return sortedFiles;
+    return files;
   };
 
   const getSupportFiles = type => {
@@ -556,10 +548,10 @@ const GraphicEdit = ( { id } ) => {
     ];
     const editableFiles = [];
     const additionalFiles = [];
-    const sortedFiles = getSortedFiles( 'supportFiles' );
+    const supportFiles = getFiles( 'supportFiles' );
 
-    if ( getCount( sortedFiles ) ) {
-      sortedFiles.forEach( file => {
+    if ( getCount( supportFiles ) ) {
+      supportFiles.forEach( file => {
         const _filename = projectId ? file.filename : file.name;
         const extension = getFileExt( _filename );
 
@@ -579,7 +571,7 @@ const GraphicEdit = ( { id } ) => {
 
   const editableSupportFiles = getSupportFiles( 'editable' );
   const additionalSupportFiles = getSupportFiles( 'additional' );
-  const graphicImageFiles = getSortedFiles( 'images' );
+  const graphicImageFiles = getFiles( 'images' );
 
   const supportFilesConfig = [
     {
@@ -788,7 +780,7 @@ const GraphicEdit = ( { id } ) => {
 
         <GraphicFilesFormContainer
           projectId={ projectId }
-          files={ getSortedFiles( 'images' ) }
+          files={ graphicImageFiles }
           setIsFormValid={ setIsFormValid }
           updateNotification={ updateNotification }
         />
