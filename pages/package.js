@@ -1,41 +1,18 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
+import ContentPage from 'components/PageTypes/ContentPage/ContentPage';
 import Package from 'components/Package/Package';
-import PageMeta from 'components/Meta/PageMeta';
 import { fetchUser } from 'context/authContext';
 import { getElasticPkgDocs } from 'components/Package/utils';
 import { getItemRequest } from 'lib/elastic/api';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
 
-const styles = {
-  page: {
-    marginTop: '90px',
-  },
-  paragraph: {
-    fontSize: '2em',
-    fontWeight: 700,
-  },
-};
-
-const PackagePage = ( { item, url } ) => {
-  if ( !item ) {
-    return (
-      <section className="max_width_1200" style={ styles.page }>
-        <p style={ styles.paragraph }>Content Unavailable</p>
-      </section>
-    );
-  }
-
-  return (
-    <Fragment>
-      <PageMeta item={ item } url={ url } />
-      <section className="max_width_1200" style={ styles.page }>
-        <Package item={ item } />
-      </section>
-    </Fragment>
-  );
-};
+const PackagePage = ( { item, url } ) => (
+  <ContentPage item={ item } url={ url }>
+    <Package item={ item } />
+  </ContentPage>
+);
 
 PackagePage.getInitialProps = async ctx => {
   const { req, query, asPath } = ctx;

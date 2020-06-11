@@ -1,40 +1,17 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
+import ContentPage from 'components/PageTypes/ContentPage/ContentPage';
 import GraphicProject from 'components/GraphicProject/GraphicProject';
-import PageMeta from 'components/Meta/PageMeta';
 import { fetchUser } from 'context/authContext';
 import { getItemRequest } from 'lib/elastic/api';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
 
-const styles = {
-  page: {
-    marginTop: '90px',
-  },
-  paragraph: {
-    fontSize: '2em',
-    fontWeight: 700,
-  },
-};
-
-const GraphicPage = ( { item, url } ) => {
-  if ( !item ) {
-    return (
-      <section className="max_width_1200" style={ styles.page }>
-        <p style={ styles.paragraph }>Content Unavailable</p>
-      </section>
-    );
-  }
-
-  return (
-    <Fragment>
-      <PageMeta item={ item } url={ url } />
-      <section className="max_width_1200" style={ styles.page }>
-        <GraphicProject item={ item } />
-      </section>
-    </Fragment>
-  );
-};
+const GraphicPage = ( { item, url } ) => (
+  <ContentPage item={ item } url={ url }>
+    <GraphicProject item={ item } />
+  </ContentPage>
+);
 
 GraphicPage.getInitialProps = async ctx => {
   const { req, query, asPath } = ctx;
