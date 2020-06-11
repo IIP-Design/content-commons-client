@@ -1,21 +1,20 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import Head from 'next/head';
 
 import GraphicProject from 'components/GraphicProject/GraphicProject';
-import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
+import PageMeta from 'components/Meta/PageMeta';
 import { fetchUser } from 'context/authContext';
 import { getItemRequest } from 'lib/elastic/api';
-import { populateMetaArray } from 'lib/socialHeaders';
+import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
 
 const styles = {
   page: {
-    marginTop: '90px'
+    marginTop: '90px',
   },
   paragraph: {
     fontSize: '2em',
-    fontWeight: 700
-  }
+    fontWeight: 700,
+  },
 };
 
 const GraphicPage = ( { item, url } ) => {
@@ -27,19 +26,12 @@ const GraphicPage = ( { item, url } ) => {
     );
   }
 
-  const metaTags = populateMetaArray( item, url );
-
   return (
     <Fragment>
-      <Head>
-        { metaTags && metaTags.map(
-          tag => <meta key={ tag.property } property={ tag.property } content={ tag.content } />
-        ) }
-      </Head>
+      <PageMeta item={ item } url={ url } />
       <section className="max_width_1200" style={ styles.page }>
         <GraphicProject item={ item } />
       </section>
-
     </Fragment>
   );
 };
@@ -59,7 +51,7 @@ GraphicPage.getInitialProps = async ctx => {
     if ( item && item[0] ) {
       return {
         item: normalizeItem( item[0], query.language ),
-        url
+        url,
       };
     }
   }
@@ -69,7 +61,7 @@ GraphicPage.getInitialProps = async ctx => {
 
 GraphicPage.propTypes = {
   item: PropTypes.object,
-  url: PropTypes.string
+  url: PropTypes.string,
 };
 
 export default GraphicPage;

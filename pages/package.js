@@ -1,25 +1,24 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import Head from 'next/head';
-import { getItemRequest } from 'lib/elastic/api';
-import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
-import { populateMetaArray } from 'lib/socialHeaders.js';
+
 import Package from 'components/Package/Package';
+import PageMeta from 'components/Meta/PageMeta';
 import { fetchUser } from 'context/authContext';
 import { getElasticPkgDocs } from 'components/Package/utils';
+import { getItemRequest } from 'lib/elastic/api';
+import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
 
 const styles = {
   page: {
-    marginTop: '90px'
+    marginTop: '90px',
   },
   paragraph: {
     fontSize: '2em',
-    fontWeight: 700
-  }
+    fontWeight: 700,
+  },
 };
 
-const PackagePage = props => {
-  const { item, url } = props;
+const PackagePage = ( { item, url } ) => {
   if ( !item ) {
     return (
       <section className="max_width_1200" style={ styles.page }>
@@ -28,15 +27,9 @@ const PackagePage = props => {
     );
   }
 
-  const metaTags = populateMetaArray( item, url );
-
   return (
     <Fragment>
-      <Head>
-        { metaTags && metaTags.map( tag => (
-          <meta key={ tag.property } property={ tag.property } content={ tag.content } />
-        ) ) }
-      </Head>
+      <PageMeta item={ item } url={ url } />
       <section className="max_width_1200" style={ styles.page }>
         <Package item={ item } />
       </section>
@@ -48,7 +41,7 @@ PackagePage.getInitialProps = async ctx => {
   const { req, query, asPath } = ctx;
   const user = await fetchUser( ctx );
 
-  const url = ( req && req.headers && req.headers.host && asPath )
+  const url = req && req.headers && req.headers.host && asPath
     ? `https://${req.headers.host}${asPath}`
     : '';
 
@@ -64,16 +57,17 @@ PackagePage.getInitialProps = async ctx => {
 
       return {
         item: { ..._item, documents },
-        url
+        url,
       };
     }
   }
+
   return {};
 };
 
 PackagePage.propTypes = {
   item: PropTypes.object,
-  url: PropTypes.string
+  url: PropTypes.string,
 };
 
 export default PackagePage;
