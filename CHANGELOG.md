@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [4.2.0](2020-06-11)
+**Added:**
+- Functionality to download all documents in a package to a zip file
+
+**Changed:**
+- Doucments Format filter label to "Press Releases and Guidance”
+- Package search to include documents so Package search returns results
+  
+**Removed:**
+- Guidance Packages as an option in Format filter options
+
 # [4.1.1](2020-05-22)
 **Added:**
 - Added Google Tag Manager Containers
