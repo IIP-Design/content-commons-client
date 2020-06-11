@@ -3,13 +3,21 @@ import PropTypes from 'prop-types';
 
 import PageMeta from 'components/Meta/PageMeta';
 
-import './ContentPage.module.scss';
+const style = {
+  page: {
+    marginTop: '90px',
+  },
+  paragraph: {
+    fontSize: '2em',
+    fontWeight: '700',
+  },
+};
 
 const ContentPage = ( { children, item, url } ) => {
   if ( !item ) {
     return (
-      <section className="max_width_1200" styleName="page">
-        <p styleName="paragraph">Content Unavailable</p>
+      <section className="max_width_1200" style={ style.page }>
+        <p style={ style.paragraph }>Content Unavailable</p>
       </section>
     );
   }
@@ -17,7 +25,7 @@ const ContentPage = ( { children, item, url } ) => {
   return (
     <Fragment>
       <PageMeta item={ item } url={ url } />
-      <section className="max_width_1200" styleName="page">
+      <section className="max_width_1200" style={ style.page }>
         { children }
       </section>
     </Fragment>
