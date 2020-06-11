@@ -52,18 +52,17 @@
     text-align: left;
     background: transparent;
 
-    > .date-time {
+    .publishedDate {
       color: $grey;
-      font-size: 12px; // match size of tags
-
-      > div > dt {
-        margin-right: 0;
-        font-weight: 400;
-      }
+      font-size: 12px;
+      line-height: 1.428;
     }
 
     > .modal_section--postTags {
-      margin-top: -0.75em;
+      
+      .modal_postTag {
+        font-style: normal;
+      }      
     }
 
     > .seal {
