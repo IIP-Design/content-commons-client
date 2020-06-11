@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Head from 'next/head';
 
 import useSignedUrl from 'lib/hooks/useSignedUrl';
-import { getOgTags } from './socialHeaders';
+import { getOgTags } from './utils';
 
 const PageMeta = ( { item, url } ) => {
   const { signedUrl } = useSignedUrl( item.thumbnail || '' );
