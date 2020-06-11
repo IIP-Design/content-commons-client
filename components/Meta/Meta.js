@@ -1,6 +1,6 @@
-import Head from 'next/head';
 import React from 'react';
 import PropTypes from 'prop-types';
+import Head from 'next/head';
 import getConfig from 'next/config';
 
 const {
