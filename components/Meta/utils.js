@@ -5,7 +5,7 @@
  * @param {Object} meta All possible meta tags
  * @returns {Object} Only those meta tags for which there is content
  */
-const filterEmpty = meta => {
+const _filterEmpty = meta => {
   const filteredMeta = {};
   const metaArr = Object.entries( meta );
 
@@ -41,22 +41,22 @@ export const getOgTags = ( item, url ) => {
   const trimContent = item.content && item.content.rawText && `${item.content.rawText.substring( 0, 152 )}...`;
   const description = item.description || trimContent;
 
-  const videoSrc = selectedLanguageUnit && selectedLanguageUnit.source && selectedLanguageUnit.source[0]
-    ? selectedLanguageUnit.source[0]
-    : {};
-  const streamSrc = videoSrc.stream && videoSrc.stream.link ? videoSrc.stream.link : '';
+  const stream = selectedLanguageUnit?.source?.[0]?.stream ? selectedLanguageUnit.source[0].stream : {};
+  const streamSrc = stream.link ? stream.link : '';
+
+  const usePlayer = isVideo && streamSrc;
 
   const meta = {
     'og:type': isVideo ? 'video.other' : 'article',
     'og:url': url,
-    'twitter:card': isVideo ? 'player' : 'summary',
+    'twitter:card': usePlayer ? 'player' : 'summary',
     'og:description': description,
     'og:title': title,
-    'og:video:url': isVideo ? streamSrc : '',
-    'twitter:player': isVideo ? streamSrc : '',
-    'twitter:player:height': isVideo ? '196px' : '',
-    'twitter:player:width': isVideo ? '350px' : '',
+    'og:video:url': usePlayer ? streamSrc : '',
+    'twitter:player': usePlayer ? streamSrc : '',
+    'twitter:player:height': usePlayer ? '196px' : '',
+    'twitter:player:width': usePlayer ? '350px' : '',
   };
 
-  return filterEmpty( meta );
+  return _filterEmpty( meta );
 };
