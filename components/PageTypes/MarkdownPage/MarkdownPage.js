@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactMarkdown from 'react-markdown';
 import Error from 'next/error';
+import ReactMarkdown from 'react-markdown';
+
 import 'styles/static-page.scss';
 
 const MarkdownPage = ( { data, error, pageTitle, pageSubTitle, children } ) => {

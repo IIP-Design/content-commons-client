@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import config from 'config';
 
 import withCachedFetch from 'hocs/withCachedFetch/withCachedFetch';
-import MarkdownPage from 'components/PageTypes/MarkdownPage';
+import MarkdownPage from 'components/PageTypes/MarkdownPage/MarkdownPage';
 
 const Contact = ( { data, error } ) => <MarkdownPage pageTitle="Contact Us" data={ data } error={ error } />;
 

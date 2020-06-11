@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import config from 'config';
 
 import DocumentationMenu from 'components/DocumentationMenu/DocumentationMenu';
-import MarkdownPage from 'components/PageTypes/MarkdownPage';
+import MarkdownPage from 'components/PageTypes/MarkdownPage/MarkdownPage';
 import withCachedFetch from 'hocs/withCachedFetch/withCachedFetch';
 
 const UploadingGuidance = ( { data, error } ) => (

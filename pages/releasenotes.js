@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import config from 'config';
 
-import MarkdownPage from 'components/PageTypes/MarkdownPage';
+import MarkdownPage from 'components/PageTypes/MarkdownPage/MarkdownPage';
 import withCachedFetch from 'hocs/withCachedFetch/withCachedFetch';
 
 const ReleaseNotes = ( { data, error } ) => <MarkdownPage pageTitle="Content Commons Release Notes" data={ data } error={ error } />;
