@@ -1,29 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import './ModalPostTags.scss';
 
 const renderCategory = ( category, index, arr ) => {
   let { name } = category;
   const key = `cat_${index}`;
+
   if ( index > 2 ) {
     return undefined;
   }
+
   if ( arr.length - 1 !== index && index < 2 ) {
     name += '  · ';
   }
 
   return (
     <span key={ key } className="modal_postTag">
-      { ' ' }
-      { name.toLowerCase() }
-      { ' ' }
+      { ` ${name.toLowerCase()} ` }
     </span>
   );
 };
 
-const ModalPostTags = props => {
-  const { tags } = props;
+const ModalPostTags = ( { tags } ) => {
   let postTags = '';
+
   if ( typeof tags === 'string' ) {
     postTags = tags;
   } else {
@@ -38,7 +39,7 @@ const ModalPostTags = props => {
 };
 
 ModalPostTags.propTypes = {
-  tags: PropTypes.oneOfType( [PropTypes.array, PropTypes.string] )
+  tags: PropTypes.oneOfType( [PropTypes.array, PropTypes.string] ),
 };
 
 export default ModalPostTags;
