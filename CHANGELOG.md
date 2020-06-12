@@ -24,10 +24,11 @@ _This sections lists changes committed since most recent release_
 - A tabIndex property to the Filename tooltip element for keyboard accessibility
 - The aria-hidden property to the Filename tooltip element to prevent the filename from being read twice by screen readers
 - Unit tests for Filename, GraphicSupportFiles, and GraphicFilesForm
-- Functionality to add support and graphic files to existing project
-- EditGrid component to handle file creation management for both new and existing projects
+- Functionality to add support and graphic files to exisiting project
+- EditGrid component to handle file creation management for both new and exisiting projects
 - GraphicProject as the preview node for ActionButtons in GraphicEdit
 - Unit tests for ModalDescription, ModalItem, ModalPostTags, ModalText, ModalTranscript, Popover, and Popup
+- A recent graphics section to the featured section on the homepage
 
 **Changed:**
 
@@ -65,7 +66,7 @@ _This sections lists changes committed since most recent release_
 - Refactor ModalContentMeta as functional component
 - Adjust modal stylesheets for consistency
 - Update unit tests for ActionButtons, GraphicEdit, GraphicProject, and ModalContentMeta
- 
+- Move the fetching of featured item results and post types from Redux to Context
 
 **Fixed:**
 
@@ -73,6 +74,7 @@ _This sections lists changes committed since most recent release_
 - Hide the "saving changes" growl notification upon initial load of the project details form
 - The Formik initial save bug for GraphicProjectDetailsFormContainer and GraphicFilesFormContainer
 - Copyright dropdown validation for ProjectDetailsForm
+- Change way packages are removed from featured data list so that it doesn't have to be the first group listed
 
 # [4.1.1](2020-05-22)
 
