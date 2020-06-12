@@ -26,6 +26,7 @@ _This sections lists changes committed since most recent release_
 - Unit tests for Filename, GraphicSupportFiles, and GraphicFilesForm
 - Functionality to add support and graphic files to exisiting project
 - EditGrid component to handle file creation management for both new and exisiting projects
+- A recent graphics section to the featured section on the homepage
 
 **Changed:**
 
@@ -53,13 +54,14 @@ _This sections lists changes committed since most recent release_
 - Display information icons next to headings for graphic support files existing projects only
 - Display alt helper text next to the label rather under its textarea field
 - The validationSchema for GraphicFilesFormContainer to handle empty options
- 
+- Move the fetching of featured item results and post types from Redux to Context
 
 **Fixed:**
 
 - Fixed width in files popover menu
 - Hide the "saving changes" growl notification upon initial load of the project details form
 - The Formik initial save bug for GraphicProjectDetailsFormContainer and GraphicFilesFormContainer
+- Change way packages are removed from featured data list so that it doesn't have to be the first group listed
 
 # [4.1.1](2020-05-22)
 
