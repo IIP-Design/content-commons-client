@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import ApolloError from 'components/errors/ApolloError';
+import GraphicProject from 'components/GraphicProject/GraphicProject';
 import PreviewLoader from 'components/admin/Previews/PreviewLoader/PreviewLoader';
 import { DashboardContext } from 'context/dashboardContext';
 
@@ -15,11 +16,19 @@ const GraphicPreview = ( { data } ) => {
 
   if ( !data ) return null;
 
-  return <p>{`Placeholder for ${data.projectTitle}`}</p>;
+  const graphicItem = {
+    ...data,
+    type: data.__typename,
+    published: data.createdAt,
+    modified: data.updatedAt,
+    owner: data.team,
+  };
+
+  return <GraphicProject displayAsModal isAdminPreview item={ graphicItem } />;
 };
 
 GraphicPreview.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.object,
 };
 
 export default GraphicPreview;
