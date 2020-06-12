@@ -4,7 +4,7 @@ import {
   DELETE_GRAPHIC_PROJECT_MUTATION,
   TEAM_GRAPHIC_PROJECTS_QUERY,
   TEAM_GRAPHIC_PROJECTS_COUNT_QUERY,
-  GRAPHIC_PROJECT_SUPPORT_FILES_QUERY,
+  GRAPHIC_PROJECT_IMAGE_FILES_QUERY,
 } from 'lib/graphql/queries/graphic';
 
 import { DELETE_PACKAGE_MUTATION,
@@ -23,6 +23,7 @@ const initialState = {
   content: {},
   count: {},
   direction: 'descending',
+  files: {},
   queries: {
     content: null,
     count: null,
@@ -122,7 +123,7 @@ export const setQueries = team => {
     case 'graphicProjects':
       queries.content = TEAM_GRAPHIC_PROJECTS_QUERY;
       queries.count = TEAM_GRAPHIC_PROJECTS_COUNT_QUERY;
-      queries.files = GRAPHIC_PROJECT_SUPPORT_FILES_QUERY;
+      queries.files = GRAPHIC_PROJECT_IMAGE_FILES_QUERY;
       queries.remove = DELETE_GRAPHIC_PROJECT_MUTATION;
 
       return queries;
@@ -175,6 +176,15 @@ export const dashboardReducer = ( state, action ) => {
           error: payload.type === 'graphicProjects' ? null : payload.error,
           loading: payload.loading,
           refetch: payload.refetch,
+        },
+      };
+    case 'UPDATE_FILES':
+      return {
+        ...state,
+        files: {
+          files: payload.files,
+          error: payload.error,
+          loading: payload.loading,
         },
       };
     case 'UPDATE_SELECTED':

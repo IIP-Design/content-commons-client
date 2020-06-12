@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 
 import ApolloError from 'components/errors/ApolloError';
-import { formatBytes, getS3Url } from 'lib/utils';
+import { formatBytes } from 'lib/utils';
 import { DashboardContext } from 'context/dashboardContext';
 
 const GraphicDetailsPopup = ( { id } ) => {
@@ -20,44 +20,41 @@ const GraphicDetailsPopup = ( { id } ) => {
   useEffect( () => {
     const { data, error, loading } = fileData;
 
-    const supportFiles = data?.graphicProject?.supportFiles ? data.graphicProject.supportFiles : [];
+    const images = data?.graphicProject?.images ? data.graphicProject.images : [];
 
     // Save project count in context
-    dispatch( { type: 'UPDATE_FILES', payload: { files: { supportFiles, error, loading } } } );
+    dispatch( { type: 'UPDATE_FILES', payload: { files: images, error, loading } } );
   }, [fileData] );
 
   const files = state?.files?.files ? state.files.files : [];
   const filesError = state?.files?.error ? state.files.error : null;
   const filesLoading = state?.files?.loading ? state.files.loading : false;
 
-  if ( filesLoading ) return 'Loading....';
+  if ( filesLoading ) return <div className="details-files"><p>Loading....</p></div>;
+
   if ( filesError ) return <ApolloError error={ filesError } />;
 
   if ( files.length ) {
     return (
-      <div>
-        <p>Files:</p>
+      <div className="details-files">
         <ul>
           { files.map( file => {
             if ( !file ) return null;
             const {
               id: fileId,
-              url,
+              filename,
               filetype,
               filesize,
               language: { displayName },
-              use,
             } = file;
 
             return (
               <li key={ fileId }>
-                { use && use.name }
-                {' | '}
-                <a href={ getS3Url( url ) }>{ filetype }</a>
-                {' | '}
-                <a href={ getS3Url( url ) }>
-                  { `${displayName} ${formatBytes( filesize )}` }
-                </a>
+                { filename && filename }
+                {'  |  '}
+                { filetype && filetype }
+                {'  |  '}
+                { `${displayName} ${formatBytes( filesize )}` }
               </li>
             );
           } ) }
