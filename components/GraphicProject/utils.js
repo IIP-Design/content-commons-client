@@ -15,6 +15,7 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
     id: file.id || '',
     type: 'graphic',
     site: file.site || '',
+    title: file.title || '',
     projectType: file.projectType || '',
     published: file.published || '',
     modified: file.modified || '',

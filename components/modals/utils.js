@@ -2,6 +2,8 @@ import GraphicProject from 'components/GraphicProject/GraphicProject';
 import Post from 'components/Post/Post';
 import Video from 'components/Video/Video';
 
+import { graphicElasticMock } from 'components/GraphicProject/graphicElasticMock';
+
 /**
  * Check content type of an item and passes in the correct component to the modal
  * @param {Object} item data from the selected item
@@ -12,7 +14,8 @@ export const getModalContent = item => {
   if ( item ) {
     switch ( item.type ) {
       case 'graphic':
-        return <GraphicProject item={ item } />;
+        // return <GraphicProject item={ item } displayAsModal />;
+        return <GraphicProject item={ graphicElasticMock[0]._source } displayAsModal />;
 
       case 'video':
         return <Video item={ item } />;

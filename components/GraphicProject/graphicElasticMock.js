@@ -4,6 +4,7 @@ export const graphicElasticMock = [
       id: 'ck8h90w6x030l0765onryiqdt',
       site: 'commons.america.gov',
       type: 'graphic',
+      title: 'Graphic Elastic Mock Data',
       projectType: 'Social Media Graphic',
       published: '2020-03-22T15:15:00.074Z',
       modified: '2020-04-02T15:15:00.074Z',
