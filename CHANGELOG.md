@@ -5,38 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-# [4.2.0](2020-06-11)
+# [4.2.0](https://github.com/IIP-Design/content-commons-client/compare/v4.1.1...v4.2.0)(2020-06-11)
+
 **Added:**
+
 - Functionality to download all documents in a package to a zip file
 
 **Changed:**
-- Doucments Format filter label to "Press Releases and Guidance”
+
+- Documents Format filter label to "Press Releases and Guidance”
 - Package search to include documents so Package search returns results
-  
+
 **Removed:**
+
 - Guidance Packages as an option in Format filter options
 
-# [4.1.1](2020-05-22)
+# [4.1.1](https://github.com/IIP-Design/content-commons-client/compare/v4.1.0...v4.1.1)(2020-05-22)
+
 **Added:**
+
 - Added Google Tag Manager Containers
 
 **Changed:**
+
 - Videos with subtitles now display by default if present
 
 **Fixed:**
+
 - Login now properly redirects to CloudFlare on mobile
 - Escape special characters when setting AWS S3 key for upload to address issues with download and display
 - Added 'name' property to elastic tag to ensure 'Coronavirus' surfaces in search
 
-# [4.1.0](2020-05-05)
+# [4.1.0](https://github.com/IIP-Design/content-commons-client/compare/v4.0.0...v4.1.0)(2020-05-05)
 
 **Changed:**
-- Packages on landing page now sort by `created` date
-- Removed Faceboo and Twitter sharing options for video
 
-# [4.0.0](https://github.com/IIP-Design/content-commons-client/compare/v3.1.1...v4.0.0)
+- Packages on landing page now sort by `created` date
+- Removed Facebook and Twitter sharing options for video
+
+# [4.0.0](https://github.com/IIP-Design/content-commons-client/compare/v3.1.5...v4.0.0)
 
 **Added:**
+
 - Add redirect to previous url on successful login.
 - Add ability for subscriber to see restricted content.
 - Add uploading documentation for press guidance.
@@ -53,7 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Changed:**
 
 - Replaced h1 elements in the footer with divs in the interest of improved accessibility
-- Replaced GTM implemenation with React app
+- Replaced GTM implementation with React app
 - Google authentication thru CloudFlare access
 - State.gov authentication thru CloudFlare access using one time pin
 
@@ -61,25 +71,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed the broken feedback link in the user profile dropdown and added feedback link as variable in config file.
 
-# [3.1.5](2020-03-25)
+# [3.1.5](https://github.com/IIP-Design/content-commons-client/compare/v3.1.4...v3.1.5)(2020-03-25)
 
 **Added:**
 
 - Coronavirus (COVID-19) priorities section to homepage
 
-# [3.1.4](2020-03-20)
+# [3.1.4](https://github.com/IIP-Design/content-commons-client/compare/v3.1.3...v3.1.4)(2020-03-20)
 
 **Fixed:**
 
 - Hide internal-only visibility option for videos until that view is made available.
 
-# [3.1.3](2020-02-11)
+# [3.1.3](https://github.com/IIP-Design/content-commons-client/compare/v3.1.2...v3.1.3)(2020-02-11)
 
 **Fixed:**
 
 - Re-order priorities section on homepage
 
-# [3.1.2](2020-02-03)
+# [3.1.2](https://github.com/IIP-Design/content-commons-client/compare/v3.1.1...v3.1.2)(2020-02-03)
 
 **Added:**
 
@@ -90,13 +100,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Registration issue throwing a type error on form submission
 - Twitter share did not take user to the applicable video or post
 
-# [3.1.1](2020-01-13)
+# [3.1.1](https://github.com/IIP-Design/content-commons-client/compare/v3.1.0...v3.1.1)(2020-01-13)
 
 **Fixed:**
 
 - Suppress mock data
 
-# [3.1.0](2020-01-13)
+# [3.1.0](https://github.com/IIP-Design/content-commons-client/compare/v3.0.0...v3.1.0)(2020-01-13)
 
 **Added:**
 
@@ -116,8 +126,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - graphql: 14.5.8
   - next.js: 9.12
 
-- Store full path to elastic search asset to accomodate sharing on external sites
-- Update help text on project detials screen
+- Store full path to elastic search asset to accommodate sharing on external sites
+- Update help text on project details screen
 
 **Fixed:**
 
@@ -125,18 +135,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - SRT filename adjusted to support Facebook upload
 - Turned server side render off for user queries to fix cache issue
 
-# [3.0.0](2019-12-02)
+# [3.0.0](https://github.com/IIP-Design/content-commons-client/compare/v1.8.4...v3.0.0)(2019-12-02)
 
 Version 3 is a complete rewrite with focus on the authoring platform. A jump is made to version 3 from 1.8.4 as v2 was an extension of v1 that did not include SSR.
 
 **Added:**
 
 - Next.js integration and code restructure for Server Side rendering (SSR)
-- React apollo intergation for communication with the server and database
+- React apollo integration for communication with the server and database
 - AWS integration for secure uploads to S3 via signed urls
 - Websocket integration for automatic page updates
 - Authentication, login and logout
-- User account creation annd registration
+- User account creation and registration
 - Authoring interface to create, update, delete, publish and unpublish video projects
 - Formik form validation
 - Ability to share search results
@@ -151,13 +161,13 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 
 - Language detection on search keystroke
 
-# [1.8.4](2019-10-31)
+# [1.8.4](https://github.com/IIP-Design/content-commons-client/compare/v1.8.3...v1.8.4)(2019-10-31)
 
 **Added:**
 
 - Added a '5G' department priority section to the front page
 
-# [1.8.3](2019-10-02)
+# [1.8.3](https://github.com/IIP-Design/content-commons-client/compare/v1.8.2...v1.8.3)(2019-10-02)
 
 **Added:**
 
@@ -167,19 +177,19 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 
 - Updated IIP properties to GPA
 
-# [1.8.2](2019-8-21)
+# [1.8.2](https://github.com/IIP-Design/content-commons-client/compare/v1.8.1...v1.8.2)(2019-8-21)
 
 **Fixed:**
 
 - Limited categories to three items in the Latest and Priority sections to resolve a display issue
 
-# [1.8.1](2019-7-24)
+# [1.8.1](https://github.com/IIP-Design/content-commons-client/compare/v1.8.0...v1.8.1)(2019-7-24)
 
 **Fixed:**
 
 - Resolved bug with Recents section
 
-# [1.8.0](2019-7-24)
+# [1.8.0](https://github.com/IIP-Design/content-commons-client/compare/v1.7.1...v1.8.0)(2019-7-24)
 
 **Added:**
 
@@ -189,28 +199,28 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 **Changed:**
 
 - Style updates to accommodate the Department Priority section
-- Text updates in the Recents section to maintain consistancy with the Department Priority section
+- Text updates in the Recents section to maintain consistency with the Department Priority section
 
-# [1.7.1](2019-6-26)
+# [1.7.1](https://github.com/IIP-Design/content-commons-client/compare/v1.7.0...v1.7.1)(2019-6-26)
 
 **Changed:**
 
 - Updated IIP language to GPA in the footer
 
-# [1.7.0](2019-5-24)
+# [1.7.0](https://github.com/IIP-Design/content-commons-client/compare/v1.6.8...v1.7.0)(2019-5-24)
 
 **Added:**
 
 - Articles now have a direct page in Commons similar to videos
 - The article display will utilize this direct link if the original source is content.america.gov
 
-# [1.6.8](2019-3-11)
+# [1.6.8](https://github.com/IIP-Design/content-commons-client/compare/v1.6.7...v1.6.8)(2019-3-11)
 
 **Fixed:**
 
 - Resolved an issue wherein languages were not being loaded for the searchbar menu on certain pages
 
-# [1.6.7](2019-3-08)
+# [1.6.7](https://github.com/IIP-Design/content-commons-client/compare/v1.6.6...v1.6.7)(2019-3-08)
 
 **Changed:**
 
@@ -223,13 +233,13 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 - Open Graph tags have been added
 - A logo has been added for DoS properties
 
-# [1.6.6](2019-1-30)
+# [1.6.6](https://github.com/IIP-Design/content-commons-client/compare/v1.6.5...v1.6.6)(2019-1-30)
 
 **Changed:**
 
 - Update filename convention for Transcripts like Video and SRT
 
-# [1.6.5](2019-1-18)
+# [1.6.5](https://github.com/IIP-Design/content-commons-client/compare/v1.6.4...v1.6.5)(2019-1-18)
 
 **Added:**
 
@@ -240,7 +250,7 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 - Update Slack logo in footer
 - Filenames for SRT and Videos will always be the English title or 'commons-video' if not available
 
-# [1.6.4](2019-1-08)
+# [1.6.4](https://github.com/IIP-Design/content-commons-client/compare/v1.6.3...v1.6.4)(2019-1-08)
 
 **Fixed:**
 
@@ -253,36 +263,36 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 **Changed:**
 
 - Downloaded files now follow the - [filename]‌.[language code]‌\_[country code].[ext] naming convention
-- Search results are now displayed by relevacy when a search term is used. Title field is given precedence and a boost is given to newer items
+- Search results are now displayed by relevancy when a search term is used. Title field is given precedence and a boost is given to newer items
 - Alter sub-heading text in the site header
 
-# [1.6.3](2018-11-07)
+# [1.6.3](https://github.com/IIP-Design/content-commons-client/compare/v1.6.2...v1.6.3)(2018-11-07)
 
 **Fixed:**
 
 - Disable service worker due to caching issues.
 
-# [1.6.2](2018-11-07)
+# [1.6.2](https://github.com/IIP-Design/content-commons-client/compare/v1.6.1...v1.6.2)(2018-11-07)
 
 **Fixed:**
 
 - Resolved an issue with transcript text not displaying
 
-# [1.6.1](2018-11-01)
+# [1.6.1](https://github.com/IIP-Design/content-commons-client/compare/v1.6.0...v1.6.1)(2018-11-01)
 
 **Fixed:**
 
 - Resolved an issue with right-to-left languages after latest update
 
-# [1.6.0](2018-11-01)
+# [1.6.0](https://github.com/IIP-Design/content-commons-client/compare/v1.5.2...v1.6.0)(2018-11-01)
 
 **Added:**
 
 - Integrate Google Translate API for language detection. Search results will now reflect search term in language
 - Redirect to 404 page when a route is not found
 - Help content added to embed article and video modal windows
-- Message will be shown when no videos are avaialble for download
-- Mesaage will be shown when search does not return any results
+- Message will be shown when no videos are available for download
+- Message will be shown when search does not return any results
 
 **Changed:**
 
@@ -313,20 +323,20 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 - Edge [v40][9] Copy Button is Outside Image Area on Share of Video/Article
 - FF [Win10][15] Copy Button Partially Displayed and Scroll Bar Displayed on Articles and Videos
 
-# [1.5.2](2018-10-18)
+# [1.5.2](https://github.com/IIP-Design/content-commons-client/compare/v1.5.1...v1.5.2)(2018-10-18)
 
 **Changed:**
 
 - DOS seal now using svg; removed multiple png instances
 
-# [1.5.1](2018-10-17)
+# [1.5.1](https://github.com/IIP-Design/content-commons-client/compare/v1.5.0...v1.5.1)(2018-10-17)
 
 **Added:**
 
 - Make search icon clickable
 - Remove BETA tag and add DOS Seal
 
-# [1.5.0]
+# [1.5.0](https://github.com/IIP-Design/content-commons-client/compare/v1.4.3...v1.5.0)(2018-10-05)
 
 **Added:**
 
@@ -340,29 +350,29 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 
 - Use locale rather than language code to maintain project-wide consistency
 
-# [1.4.3](2018-09-20)
+# [1.4.3](https://github.com/IIP-Design/content-commons-client/compare/v1.4.2...v1.4.3)(2018-09-20)
 
 **Changed:**
 
 - Set single article module portion of embed URL to an environmental variable
 
-# [1.4.2](2018-09-12)
+# [1.4.2](https://github.com/IIP-Design/content-commons-client/compare/v1.4.1...v1.4.2)(2018-09-12)
 
 **Fixed:**
 
 - Languages will only be displayed in the video language dropdown if a source exists in the language unit
 
-# [1.4.1](2018-09-10)
+# [1.4.1](https://github.com/IIP-Design/content-commons-client/compare/v1.4.0...v1.4.1)(2018-09-10)
 
 **Fixed:**
 
 - Fixed difficulty selecting icon links in popups
 
-# [1.4.0](2018-09-08)
+# [1.4.0](https://github.com/IIP-Design/content-commons-client/compare/v1.3.0...v1.4.0)(2018-09-08)
 
 **Added:**
 
-- Enhanced footer to inlude additional links and information
+- Enhanced footer to include additional links and information
 - Added embed code generation to enable sharing off posts
 - Updated direct link for posts to point to original source
 
@@ -370,11 +380,11 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 
 - Fixed tabbed underline on video popups
 
-# [1.3.0](2018-08-08)
+# [1.3.0](https://github.com/IIP-Design/content-commons-client/compare/v1.2.0...v1.3.0)(2018-08-08)
 
 **Added:**
 
-- Embed code to display to embed both youtube and vimeo videos now active
+- Embed code to display to embed both YouTube and vimeo videos now active
 - Share windows now are either a popup for desktop or a new page for mobile
 
 **Fixed:**
@@ -382,7 +392,7 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 - Caption toggle now operates correctly and loads correct video based on caption selection
 - Fixed direct link UI display
 
-# [1.2.0](2018-07-18)
+# [1.2.0](https://github.com/IIP-Design/content-commons-client/compare/v1.1.0...v1.2.0)(2018-07-18)
 
 **Added:**
 
@@ -396,7 +406,7 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 
 - Sources dropdown now sorted alphabetically
 
-# [1.1.0](2018-06-15)
+# [1.1.0](https://github.com/IIP-Design/content-commons-client/compare/v1.0.0...v1.1.0)(2018-06-15)
 
 **Added:**
 
@@ -413,7 +423,7 @@ Version 3 is a complete rewrite with focus on the authoring platform. A jump is 
 - Global search bar
 - Feedback form
 - About, Help, Privacy Policy pages
-- Filter search by Date, Forat, Source, Language and Category
+- Filter search by Date, Format, Source, Language and Category
 - Display search results in either gallery or list formats
 - Closable filter selections bubbles
 - Contextual number of results
