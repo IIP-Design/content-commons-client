@@ -9,7 +9,7 @@ const Popover = ( {
   expandFromRight,
   id,
   toolTip,
-  trigger
+  trigger,
 } ) => {
   const popoverNode = useRef();
 
@@ -72,10 +72,10 @@ Popover.propTypes = {
   expandFromRight: PropTypes.bool,
   trigger: PropTypes.oneOfType( [
     PropTypes.object,
-    PropTypes.string
+    PropTypes.string,
   ] ),
   children: PropTypes.object,
-  toolTip: PropTypes.string
+  toolTip: PropTypes.string,
 };
 
 export default Popover;

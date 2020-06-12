@@ -2,10 +2,7 @@ import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import { act } from 'react-dom/test-utils';
-import {
-  DELETE_IMAGE_FILE_MUTATION,
-  DELETE_SUPPORT_FILE_MUTATION,
-} from 'lib/graphql/queries/common';
+import { DELETE_SUPPORT_FILE_MUTATION } from 'lib/graphql/queries/common';
 import GraphicSupportFiles from './GraphicSupportFiles';
 import { truncateAndReplaceStr } from 'lib/utils';
 
@@ -67,7 +64,7 @@ const props = {
         __typename: 'Language',
       },
       use: null,
-      __typename: 'ImageFile',
+      __typename: 'SupportFile',
     },
   ],
   updateNotification: jest.fn(),
@@ -85,19 +82,6 @@ describe( '<GraphicSupportFiles />, for editable files', () => {
       result: {
         deleteSupportFile: {
           id: props.files[0].id,
-        },
-      },
-    },
-    {
-      request: {
-        query: DELETE_IMAGE_FILE_MUTATION,
-        variables: {
-          id: props.files[1].id,
-        },
-      },
-      result: {
-        deleteImageFile: {
-          id: props.files[1].id,
         },
       },
     },
@@ -200,7 +184,7 @@ describe( '<GraphicSupportFiles />, for editable files', () => {
     expect( confirm().prop( 'open' ) ).toEqual( false );
   } );
 
-  it( 'clicking the Confirm modal "Yes, delete forever" button', () => {
+  it( 'clicking the Confirm modal "Yes, delete forever" button results in a successful deletion', () => {
     const replaceBtn = listContainer
       .find( 'FileRemoveReplaceButtonGroup' ).first();
 
@@ -407,7 +391,7 @@ describe( '<GraphicSupportFiles />, for additional files', () => {
     expect( confirm().prop( 'open' ) ).toEqual( false );
   } );
 
-  it( 'clicking the Confirm modal "Yes, delete forever" button', () => {
+  it( 'clicking the Confirm modal "Yes, delete forever" button results in a successful deletion', () => {
     const replaceBtn = listContainer
       .find( 'FileRemoveReplaceButtonGroup' ).first();
 

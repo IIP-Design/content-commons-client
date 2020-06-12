@@ -161,6 +161,18 @@ describe( '<ModalPostMeta />', () => {
     expect( postMeta.text() ).toEqual( 'Date Published: ' );
   } );
 
+  it( 'does not render the published date when the type is SOCIAL_MEDIA', () => {
+    const newProps = {
+      ...props,
+      type: 'SOCIAL_MEDIA',
+    };
+    const wrapper = mount( <ModalPostMeta { ...newProps } /> );
+
+    const postMeta = wrapper.find( '.modal_postmeta_content' );
+
+    expect( postMeta.exists() ).toEqual( false );
+  } );
+
   it( 'renders the original link if present and source is not the content site', () => {
     const wrapper = mount( <ModalPostMeta { ...props } /> );
 

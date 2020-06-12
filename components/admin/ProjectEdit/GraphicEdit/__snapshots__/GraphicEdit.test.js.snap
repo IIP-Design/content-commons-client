@@ -1,658 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<GraphicEdit />, when there is an existing graphic project renders the final state 1`] = `
-<GraphicEdit
-  id="ck9b9n8kw1x720720sjwwl1g7"
->
-  <div
-    className="edit-graphic-project"
-  >
-    <div
-      className="header"
-    >
-      <ProjectHeader
-        icon="images outline"
-        text="Project Details"
-      >
-        <header
-          className="section section--project_header"
-        >
-          <div
-            className="project_header"
-          >
-            <h2
-              className="headline"
-            >
-              <Icon
-                as="i"
-                circular={true}
-                inverted={true}
-                name="images outline"
-                size="tiny"
-              >
-                <i
-                  aria-hidden="true"
-                  className="images outline tiny circular inverted icon"
-                  onClick={[Function]}
-                />
-              </Icon>
-              <span
-                className="project_header_text"
-              >
-                Project Details
-              </span>
-            </h2>
-          </div>
-          <div
-            className="project_buttons"
-          >
-            <ActionButtons
-              deleteConfirmOpen={false}
-              disabled={
-                Object {
-                  "delete": false,
-                  "preview": false,
-                  "publish": false,
-                  "publishChanges": false,
-                  "save": false,
-                }
-              }
-              handle={
-                Object {
-                  "deleteConfirm": [Function],
-                  "publish": [Function],
-                  "publishChanges": [Function],
-                  "save": [Function],
-                  "unpublish": [Function],
-                }
-              }
-              loading={
-                Object {
-                  "publish": false,
-                  "publishChanges": false,
-                  "unpublish": false,
-                }
-              }
-              setDeleteConfirmOpen={[Function]}
-              show={
-                Object {
-                  "delete": true,
-                  "preview": true,
-                  "publish": true,
-                  "save": true,
-                  "unpublish": false,
-                }
-              }
-            />
-          </div>
-        </header>
-      </ProjectHeader>
-    </div>
-    <div
-      style={
+exports[`<GraphicEdit />, when there is an existing DRAFT graphic project renders the ActionButtons 1`] = `
+<ActionButtons
+  deleteConfirmOpen={false}
+  disabled={
+    Object {
+      "delete": false,
+      "preview": false,
+      "publish": false,
+      "publishChanges": false,
+      "save": false,
+    }
+  }
+  handle={
+    Object {
+      "deleteConfirm": [Function],
+      "publish": [Function],
+      "publishChanges": [Function],
+      "save": [Function],
+      "unpublish": [Function],
+    }
+  }
+  loading={
+    Object {
+      "publish": false,
+      "publishChanges": false,
+      "unpublish": false,
+    }
+  }
+  previewNode={
+    <GraphicProject
+      displayAsModal={true}
+      isAdminPreview={true}
+      item={
         Object {
-          "left": "50%",
-          "position": "absolute",
-          "top": "9em",
-          "transform": "translateX(-50%)",
-        }
-      }
-    >
-      <ApolloError
-        error={Object {}}
-      >
-        <div
-          style={
-            Object {
-              "color": "red",
-              "fontSize": "14px",
-              "marginBottom": "1rem",
-              "marginTop": ".5rem",
-            }
-          }
-        />
-      </ApolloError>
-    </div>
-    <Notification
-      customStyles={
-        Object {
-          "left": "50%",
-          "position": "absolute",
-          "top": "9em",
-          "transform": "translateX(-50%)",
-        }
-      }
-      el="p"
-      msg=""
-      show={false}
-    />
-    <UploadProgress
-      className="alpha"
-      displayTheUploadSuccessMsg={false}
-      filesToUpload={Array []}
-      isUploading={false}
-      projectId="ck9b9n8kw1x720720sjwwl1g7"
-    />
-    <GraphicProjectDetailsFormContainer
-      contentStyle={
-        Object {
-          "border": "3px solid transparent",
-        }
-      }
-      data={
-        Object {
-          "graphicProject": Object {
-            "__typename": "GraphicProject",
-            "alt": "some alt text",
-            "assetPath": null,
-            "author": Object {
-              "__typename": "User",
-              "email": "mahe@america.gov",
-              "firstName": "Edwin",
-              "id": "ck2m042xo0rnp0720nb4gxjix",
-              "lastName": "Mah",
-            },
-            "categories": Array [
-              Object {
-                "__typename": "Category",
-                "id": "ck2lzgu1c0re307202dlrnue2",
-                "translations": Array [
-                  Object {
-                    "__typename": "LanguageTranslation",
-                    "id": "ck2lzfxab0hls0720o2sjmoqw",
-                    "language": Object {
-                      "__typename": "Language",
-                      "displayName": "English",
-                      "id": "ck2lzfx710hkq07206thus6pt",
-                      "languageCode": "en",
-                      "locale": "en-us",
-                      "nativeName": "English",
-                      "textDirection": "LTR",
-                    },
-                    "name": "about america",
-                  },
-                  Object {
-                    "__typename": "LanguageTranslation",
-                    "id": "ck2lzfxbe0hlz0720qou6kr5x",
-                    "language": Object {
-                      "__typename": "Language",
-                      "displayName": "Spanish",
-                      "id": "ck2lzfx7o0hl707205uteku77",
-                      "languageCode": "es",
-                      "locale": "es-es",
-                      "nativeName": "Español",
-                      "textDirection": "LTR",
-                    },
-                    "name": "conozca Estados Unidos",
-                  },
-                  Object {
-                    "__typename": "LanguageTranslation",
-                    "id": "ck2lzfxc90hm60720onv6tbro",
-                    "language": Object {
-                      "__typename": "Language",
-                      "displayName": "French",
-                      "id": "ck2lzfx710hkp07206oo0icbv",
-                      "languageCode": "fr",
-                      "locale": "fr-fr",
-                      "nativeName": "Français",
-                      "textDirection": "LTR",
-                    },
-                    "name": "Amérique",
-                  },
-                ],
-              },
-              Object {
-                "__typename": "Category",
-                "id": "ck2lzgu1e0re90720th24sglh",
-                "translations": Array [
-                  Object {
-                    "__typename": "LanguageTranslation",
-                    "id": "ck2lzfye00hxg0720djwj20fs",
-                    "language": Object {
-                      "__typename": "Language",
-                      "displayName": "English",
-                      "id": "ck2lzfx710hkq07206thus6pt",
-                      "languageCode": "en",
-                      "locale": "en-us",
-                      "nativeName": "English",
-                      "textDirection": "LTR",
-                    },
-                    "name": "geography",
-                  },
-                  Object {
-                    "__typename": "LanguageTranslation",
-                    "id": "ck2lzfyej0hxn0720fwm4ior3",
-                    "language": Object {
-                      "__typename": "Language",
-                      "displayName": "Spanish",
-                      "id": "ck2lzfx7o0hl707205uteku77",
-                      "languageCode": "es",
-                      "locale": "es-es",
-                      "nativeName": "Español",
-                      "textDirection": "LTR",
-                    },
-                    "name": "Geografía",
-                  },
-                  Object {
-                    "__typename": "LanguageTranslation",
-                    "id": "ck2lzfyf10hxu072065vqpr38",
-                    "language": Object {
-                      "__typename": "Language",
-                      "displayName": "French",
-                      "id": "ck2lzfx710hkp07206oo0icbv",
-                      "languageCode": "fr",
-                      "locale": "fr-fr",
-                      "nativeName": "Français",
-                      "textDirection": "LTR",
-                    },
-                    "name": "Géographie",
-                  },
-                ],
-              },
-            ],
-            "copyright": "NO_COPYRIGHT",
-            "createdAt": "2020-04-22T11:40:51.599Z",
-            "descInternal": "the internal description",
-            "descPublic": "the public description",
-            "id": "ck9b9n8kw1x720720sjwwl1g7",
-            "images": Array [
-              Object {
-                "__typename": "ImageFile",
-                "alt": null,
-                "createdAt": "2019-11-05T20:15:17.892Z",
-                "dimensions": Object {
-                  "__typename": "Dimensions",
-                  "height": 512,
-                  "id": "cka3w01q530230720aqrt4h2n",
-                  "width": 1024,
-                },
-                "filename": "s-secure-rights_shell.png",
-                "filesize": 29000,
-                "filetype": "image/png",
-                "id": "ck2maluky0s5z0720a2dgkisd",
-                "language": Object {
-                  "__typename": "Language",
-                  "displayName": "Japanese",
-                  "id": "ck2lzfx7m0hl50720y9oqzyqz",
-                  "languageCode": "ja",
-                  "locale": "ja",
-                  "nativeName": "日本語",
-                  "textDirection": "LTR",
-                },
-                "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_shell.png?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
-                "social": Array [
-                  Object {
-                    "__typename": "SocialPlatform",
-                    "id": "ck9h3naq526cp0720i4u3uqlv",
-                    "name": "WhatsApp",
-                  },
-                ],
-                "style": Object {
-                  "__typename": "GraphicStyle",
-                  "id": "ck9h3kyb326ak0720wkbk01q6",
-                  "name": "Clean",
-                },
-                "title": "s-secure-rights_shell.png",
-                "updatedAt": "2020-05-04T17:16:55.720Z",
-                "url": "2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_shell.png",
-                "use": Object {
-                  "__typename": "ImageUse",
-                  "id": "ck2lzfx510hhj07205mal3e4l",
-                  "name": "Thumbnail/Cover Image",
-                },
-              },
-              Object {
-                "__typename": "ImageFile",
-                "alt": null,
-                "createdAt": "2019-11-15T20:42:07.165Z",
-                "dimensions": Object {
-                  "__typename": "Dimensions",
-                  "height": 675,
-                  "id": "cka3w01q530230720kasdk2ia",
-                  "width": 1200,
-                },
-                "filename": "4_3_Serious_TW.jpg",
-                "filesize": 1030591,
-                "filetype": "image/jpeg",
-                "id": "ck30lyuxm15px0720dkd7hodl",
-                "language": Object {
-                  "__typename": "Language",
-                  "displayName": "English",
-                  "id": "ck2lzfx710hkq07206thus6pt",
-                  "languageCode": "en",
-                  "locale": "en-us",
-                  "nativeName": "English",
-                  "textDirection": "LTR",
-                },
-                "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/4_3_Serious_TW.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
-                "social": Array [
-                  Object {
-                    "__typename": "SocialPlatform",
-                    "id": "ck9h3m3g626bd07201gh712vk",
-                    "name": "Twitter",
-                  },
-                ],
-                "style": Object {
-                  "__typename": "GraphicStyle",
-                  "id": "ck9h3ka3o269y0720t7wzp5uq",
-                  "name": "Quote",
-                },
-                "title": "4_3_Serious_TW.jpg",
-                "updatedAt": "2020-05-04T17:16:57.512Z",
-                "url": "2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/4_3_Serious_TW.jpg",
-                "use": Object {
-                  "__typename": "ImageUse",
-                  "id": "ck2lzfx510hhj07205mal3e4l",
-                  "name": "Thumbnail/Cover Image",
-                },
-              },
-              Object {
-                "__typename": "ImageFile",
-                "alt": null,
-                "createdAt": "2019-11-20T19:48:21.415Z",
-                "dimensions": Object {
-                  "__typename": "Dimensions",
-                  "height": 1200,
-                  "id": "cka3w01q530230720quz8k2s",
-                  "width": 1200,
-                },
-                "filename": "4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg",
-                "filesize": 42093736,
-                "filetype": "image/jpeg",
-                "id": "ck37p8z731vim0720nrlespm1",
-                "language": Object {
-                  "__typename": "Language",
-                  "displayName": "Bahasa Indonesia",
-                  "id": "ck2lzfx7g0hl10720vfyiek0q",
-                  "languageCode": "id",
-                  "locale": "id-id",
-                  "nativeName": "Bahasa Indonesia",
-                  "textDirection": "LTR",
-                },
-                "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
-                "social": Array [
-                  Object {
-                    "__typename": "SocialPlatform",
-                    "id": "ck9h3m9bl26bm0720rm69c60s",
-                    "name": "Facebook",
-                  },
-                  Object {
-                    "__typename": "SocialPlatform",
-                    "id": "ck9h3meu626bw07201o36tapc",
-                    "name": "Instagram",
-                  },
-                ],
-                "style": Object {
-                  "__typename": "GraphicStyle",
-                  "id": "ck9h3koe426aa0720y421wmk3",
-                  "name": "Info/Stat",
-                },
-                "title": "4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg",
-                "updatedAt": "2020-05-04T17:17:01.227Z",
-                "url": "2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg",
-                "use": Object {
-                  "__typename": "ImageUse",
-                  "id": "ck2lzfx510hhj07205mal3e4l",
-                  "name": "Thumbnail/Cover Image",
-                },
-              },
-            ],
-            "publishedAt": null,
-            "status": "DRAFT",
-            "supportFiles": Array [
-              Object {
-                "__typename": "SupportFile",
-                "createdAt": "2020-04-28T11:28:43.173Z",
-                "filename": "s-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd",
-                "filesize": 509000,
-                "filetype": "image/vnd.adobe.photoshop",
-                "id": "ck9jtuqhy292w07200tfpbkju",
-                "language": Object {
-                  "__typename": "Language",
-                  "displayName": "English",
-                  "id": "ck2lzfx710hkq07206thus6pt",
-                  "languageCode": "en",
-                  "locale": "en-us",
-                  "nativeName": "English",
-                  "textDirection": "LTR",
-                },
-                "signedUrl": "https://the-signed-url.com",
-                "updatedAt": "2020-05-01T14:05:55.765Z",
-                "url": null,
-                "use": null,
-              },
-              Object {
-                "__typename": "SupportFile",
-                "createdAt": "2020-04-28T11:28:43.173Z",
-                "filename": "test-file-FB.psd",
-                "filesize": 509000,
-                "filetype": "image/vnd.adobe.photoshop",
-                "id": "ck9jtuqhy29kakd92ka92kd92",
-                "language": Object {
-                  "__typename": "Language",
-                  "displayName": "English",
-                  "id": "ck2lzfx710hkq07206thus6pt",
-                  "languageCode": "en",
-                  "locale": "en-us",
-                  "nativeName": "English",
-                  "textDirection": "LTR",
-                },
-                "signedUrl": "https://the-signed-url.com",
-                "updatedAt": "2020-05-01T14:05:55.765Z",
-                "url": null,
-                "use": null,
-              },
-              Object {
-                "__typename": "SupportFile",
-                "createdAt": "2020-04-28T11:29:55.168Z",
-                "filename": "s-secure-rights_transcript.docx",
-                "filesize": 9000,
-                "filetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                "id": "ck9jtwa1v293h0720rbd1vdjr",
-                "language": Object {
-                  "__typename": "Language",
-                  "displayName": "English",
-                  "id": "ck2lzfx710hkq07206thus6pt",
-                  "languageCode": "en",
-                  "locale": "en-us",
-                  "nativeName": "English",
-                  "textDirection": "LTR",
-                },
-                "signedUrl": "https://the-signed-url.com",
-                "updatedAt": "2020-04-28T11:29:55.168Z",
-                "url": null,
-                "use": null,
-              },
-              Object {
-                "__typename": "SupportFile",
-                "createdAt": "2020-04-29T13:14:37.942Z",
-                "filename": "OpenSans-regular.ttf",
-                "filesize": null,
-                "filetype": "font/ttf",
-                "id": "ck9ld2skk2cjn0720d5s33uxo",
-                "language": Object {
-                  "__typename": "Language",
-                  "displayName": "English",
-                  "id": "ck2lzfx710hkq07206thus6pt",
-                  "languageCode": "en",
-                  "locale": "en-us",
-                  "nativeName": "English",
-                  "textDirection": "LTR",
-                },
-                "signedUrl": "https://the-signed-url.com",
-                "updatedAt": "2020-04-29T13:14:37.942Z",
-                "url": null,
-                "use": null,
-              },
-            ],
-            "tags": Array [
-              Object {
-                "__typename": "Tag",
-                "id": "ck2lzgu5e0rhu07207x85lxmb",
-                "translations": Array [
-                  Object {
-                    "__typename": "LanguageTranslation",
-                    "id": "ck2lzgiwy0nx40720sedxm612",
-                    "language": Object {
-                      "__typename": "Language",
-                      "displayName": "English",
-                      "id": "ck2lzfx710hkq07206thus6pt",
-                      "languageCode": "en",
-                      "locale": "en-us",
-                      "nativeName": "English",
-                      "textDirection": "LTR",
-                    },
-                    "name": "biomedical science",
-                  },
-                  Object {
-                    "__typename": "LanguageTranslation",
-                    "id": "ck2lzgixn0nxb072018rszcc5",
-                    "language": Object {
-                      "__typename": "Language",
-                      "displayName": "Spanish",
-                      "id": "ck2lzfx7o0hl707205uteku77",
-                      "languageCode": "es",
-                      "locale": "es-es",
-                      "nativeName": "Español",
-                      "textDirection": "LTR",
-                    },
-                    "name": "ciencia Biomedica",
-                  },
-                  Object {
-                    "__typename": "LanguageTranslation",
-                    "id": "ck2lzgiy90nxi0720u91l9paa",
-                    "language": Object {
-                      "__typename": "Language",
-                      "displayName": "French",
-                      "id": "ck2lzfx710hkp07206oo0icbv",
-                      "languageCode": "fr",
-                      "locale": "fr-fr",
-                      "nativeName": "Français",
-                      "textDirection": "LTR",
-                    },
-                    "name": "science biomédicale",
-                  },
-                ],
-              },
-            ],
-            "team": Object {
-              "__typename": "Team",
-              "contentTypes": Array [
-                "GRAPHIC",
-              ],
-              "id": "ck2qgfbku0ubh0720iwhkvuyn",
-              "name": "GPA Press Office",
-            },
-            "title": "Just another graphic project",
-            "type": "SOCIAL_MEDIA",
-            "updatedAt": "2020-05-04T17:17:30.316Z",
-            "visibility": "PUBLIC",
+          "__typename": "GraphicProject",
+          "alt": "some alt text",
+          "assetPath": null,
+          "author": Object {
+            "__typename": "User",
+            "email": "mahe@america.gov",
+            "firstName": "Edwin",
+            "id": "ck2m042xo0rnp0720nb4gxjix",
+            "lastName": "Mah",
           },
-        }
-      }
-      handleUpload={[Function]}
-      id="ck9b9n8kw1x720720sjwwl1g7"
-      maxCategories={2}
-      setIsFormValid={[Function]}
-      updateNotification={[Function]}
-    />
-    <UploadProgress
-      className="beta"
-      displayTheUploadSuccessMsg={false}
-      filesToUpload={Array []}
-      isUploading={false}
-      projectId="ck9b9n8kw1x720720sjwwl1g7"
-    />
-    <div
-      className="support-files"
-    >
-      <AddFilesSectionHeading
-        acceptedFileTypes="image/*, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc"
-        el="h2"
-        handleAddFiles={[Function]}
-        projectId="ck9b9n8kw1x720720sjwwl1g7"
-        title="Support Files"
-      >
-        <div
-          className="add-files-section-heading available"
-        >
-          <h2
-            className="headline uppercase"
-          >
-            Support Files
-          </h2>
-          <ButtonAddFiles
-            accept="image/*, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc"
-            disabled={false}
-            fluid={false}
-            multiple={true}
-            onChange={[Function]}
-          >
-            <Button
-              as="button"
-              className="primary"
-              disabled={false}
-              fluid={false}
-              onClick={[Function]}
-              type="button"
-            >
-              <Ref
-                innerRef={
-                  Object {
-                    "current": <button
-                      class="ui button primary"
-                      type="button"
-                    >
-                      + Add Files
-                    </button>,
-                  }
-                }
-              >
-                <RefFindNode
-                  innerRef={
-                    Object {
-                      "current": <button
-                        class="ui button primary"
-                        type="button"
-                      >
-                        + Add Files
-                      </button>,
-                    }
-                  }
-                >
-                  <button
-                    className="ui button primary"
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    + Add Files
-                  </button>
-                </RefFindNode>
-              </Ref>
-            </Button>
-            <input
-              accept="image/*, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc"
-              className="visibly-hidden"
-              multiple={true}
-              onChange={[Function]}
-              tabIndex={-1}
-              type="file"
-            />
-          </ButtonAddFiles>
-        </div>
-      </AddFilesSectionHeading>
-      <SupportFiles
-        fileTypes={
-          Array [
+          "categories": Array [
             Object {
-              "files": Array [
+              "__typename": "Category",
+              "id": "ck2lzgu1c0re307202dlrnue2",
+              "translations": Array [
                 Object {
-                  "__typename": "SupportFile",
-                  "createdAt": "2020-04-28T11:28:43.173Z",
-                  "filename": "s-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd",
-                  "filesize": 509000,
-                  "filetype": "image/vnd.adobe.photoshop",
-                  "id": "ck9jtuqhy292w07200tfpbkju",
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzfxab0hls0720o2sjmoqw",
                   "language": Object {
                     "__typename": "Language",
                     "displayName": "English",
@@ -662,90 +61,45 @@ exports[`<GraphicEdit />, when there is an existing graphic project renders the 
                     "nativeName": "English",
                     "textDirection": "LTR",
                   },
-                  "signedUrl": "https://the-signed-url.com",
-                  "updatedAt": "2020-05-01T14:05:55.765Z",
-                  "url": null,
-                  "use": null,
+                  "name": "about america",
                 },
                 Object {
-                  "__typename": "ImageFile",
-                  "alt": null,
-                  "createdAt": "2019-11-05T20:15:17.892Z",
-                  "dimensions": Object {
-                    "__typename": "Dimensions",
-                    "height": 512,
-                    "id": "cka3w01q530230720aqrt4h2n",
-                    "width": 1024,
-                  },
-                  "filename": "s-secure-rights_shell.png",
-                  "filesize": 29000,
-                  "filetype": "image/png",
-                  "id": "ck2maluky0s5z0720a2dgkisd",
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzfxbe0hlz0720qou6kr5x",
                   "language": Object {
                     "__typename": "Language",
-                    "displayName": "Japanese",
-                    "id": "ck2lzfx7m0hl50720y9oqzyqz",
-                    "languageCode": "ja",
-                    "locale": "ja",
-                    "nativeName": "日本語",
+                    "displayName": "Spanish",
+                    "id": "ck2lzfx7o0hl707205uteku77",
+                    "languageCode": "es",
+                    "locale": "es-es",
+                    "nativeName": "Español",
                     "textDirection": "LTR",
                   },
-                  "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_shell.png?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
-                  "social": Array [
-                    Object {
-                      "__typename": "SocialPlatform",
-                      "id": "ck9h3naq526cp0720i4u3uqlv",
-                      "name": "WhatsApp",
-                    },
-                  ],
-                  "style": Object {
-                    "__typename": "GraphicStyle",
-                    "id": "ck9h3kyb326ak0720wkbk01q6",
-                    "name": "Clean",
-                  },
-                  "title": "s-secure-rights_shell.png",
-                  "updatedAt": "2020-05-04T17:16:55.720Z",
-                  "url": "2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_shell.png",
-                  "use": Object {
-                    "__typename": "ImageUse",
-                    "id": "ck2lzfx510hhj07205mal3e4l",
-                    "name": "Thumbnail/Cover Image",
-                  },
+                  "name": "conozca Estados Unidos",
                 },
                 Object {
-                  "__typename": "SupportFile",
-                  "createdAt": "2020-04-28T11:28:43.173Z",
-                  "filename": "test-file-FB.psd",
-                  "filesize": 509000,
-                  "filetype": "image/vnd.adobe.photoshop",
-                  "id": "ck9jtuqhy29kakd92ka92kd92",
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzfxc90hm60720onv6tbro",
                   "language": Object {
                     "__typename": "Language",
-                    "displayName": "English",
-                    "id": "ck2lzfx710hkq07206thus6pt",
-                    "languageCode": "en",
-                    "locale": "en-us",
-                    "nativeName": "English",
+                    "displayName": "French",
+                    "id": "ck2lzfx710hkp07206oo0icbv",
+                    "languageCode": "fr",
+                    "locale": "fr-fr",
+                    "nativeName": "Français",
                     "textDirection": "LTR",
                   },
-                  "signedUrl": "https://the-signed-url.com",
-                  "updatedAt": "2020-05-01T14:05:55.765Z",
-                  "url": null,
-                  "use": null,
+                  "name": "Amérique",
                 },
               ],
-              "headline": "editable files",
-              "helperText": "Original files that may be edited and adapted as needed for reuse.",
             },
             Object {
-              "files": Array [
+              "__typename": "Category",
+              "id": "ck2lzgu1e0re90720th24sglh",
+              "translations": Array [
                 Object {
-                  "__typename": "SupportFile",
-                  "createdAt": "2020-04-29T13:14:37.942Z",
-                  "filename": "OpenSans-regular.ttf",
-                  "filesize": null,
-                  "filetype": "font/ttf",
-                  "id": "ck9ld2skk2cjn0720d5s33uxo",
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzfye00hxg0720djwj20fs",
                   "language": Object {
                     "__typename": "Language",
                     "displayName": "English",
@@ -755,124 +109,90 @@ exports[`<GraphicEdit />, when there is an existing graphic project renders the 
                     "nativeName": "English",
                     "textDirection": "LTR",
                   },
-                  "signedUrl": "https://the-signed-url.com",
-                  "updatedAt": "2020-04-29T13:14:37.942Z",
-                  "url": null,
-                  "use": null,
+                  "name": "geography",
                 },
                 Object {
-                  "__typename": "SupportFile",
-                  "createdAt": "2020-04-28T11:29:55.168Z",
-                  "filename": "s-secure-rights_transcript.docx",
-                  "filesize": 9000,
-                  "filetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                  "id": "ck9jtwa1v293h0720rbd1vdjr",
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzfyej0hxn0720fwm4ior3",
                   "language": Object {
                     "__typename": "Language",
-                    "displayName": "English",
-                    "id": "ck2lzfx710hkq07206thus6pt",
-                    "languageCode": "en",
-                    "locale": "en-us",
-                    "nativeName": "English",
+                    "displayName": "Spanish",
+                    "id": "ck2lzfx7o0hl707205uteku77",
+                    "languageCode": "es",
+                    "locale": "es-es",
+                    "nativeName": "Español",
                     "textDirection": "LTR",
                   },
-                  "signedUrl": "https://the-signed-url.com",
-                  "updatedAt": "2020-04-28T11:29:55.168Z",
-                  "url": null,
-                  "use": null,
+                  "name": "Geografía",
+                },
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzfyf10hxu072065vqpr38",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "French",
+                    "id": "ck2lzfx710hkp07206oo0icbv",
+                    "languageCode": "fr",
+                    "locale": "fr-fr",
+                    "nativeName": "Français",
+                    "textDirection": "LTR",
+                  },
+                  "name": "Géographie",
                 },
               ],
-              "headline": "additional files",
-              "helperText": "Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics.",
             },
-          ]
-        }
-        handleAddFiles={[Function]}
-        projectId="ck9b9n8kw1x720720sjwwl1g7"
-        updateNotification={[Function]}
-      />
-    </div>
-    <div
-      className="graphic-files"
-    >
-      <AddFilesSectionHeading
-        acceptedFileTypes="image/gif, image/jpeg, image/png"
-        el="h2"
-        handleAddFiles={[Function]}
-        projectId="ck9b9n8kw1x720720sjwwl1g7"
-        title="Graphics in Project"
-      >
-        <div
-          className="add-files-section-heading available"
-        >
-          <h2
-            className="headline uppercase"
-          >
-            Graphics in Project
-          </h2>
-          <ButtonAddFiles
-            accept="image/gif, image/jpeg, image/png"
-            disabled={false}
-            fluid={false}
-            multiple={true}
-            onChange={[Function]}
-          >
-            <Button
-              as="button"
-              className="primary"
-              disabled={false}
-              fluid={false}
-              onClick={[Function]}
-              type="button"
-            >
-              <Ref
-                innerRef={
-                  Object {
-                    "current": <button
-                      class="ui button primary"
-                      type="button"
-                    >
-                      + Add Files
-                    </button>,
-                  }
-                }
-              >
-                <RefFindNode
-                  innerRef={
-                    Object {
-                      "current": <button
-                        class="ui button primary"
-                        type="button"
-                      >
-                        + Add Files
-                      </button>,
-                    }
-                  }
-                >
-                  <button
-                    className="ui button primary"
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    + Add Files
-                  </button>
-                </RefFindNode>
-              </Ref>
-            </Button>
-            <input
-              accept="image/gif, image/jpeg, image/png"
-              className="visibly-hidden"
-              multiple={true}
-              onChange={[Function]}
-              tabIndex={-1}
-              type="file"
-            />
-          </ButtonAddFiles>
-        </div>
-      </AddFilesSectionHeading>
-      <GraphicFilesFormContainer
-        files={
-          Array [
+          ],
+          "copyright": "NO_COPYRIGHT",
+          "createdAt": "2020-04-22T11:40:51.599Z",
+          "descInternal": "the internal description",
+          "descPublic": "the public description",
+          "id": "ck9b9n8kw1x720720sjwwl1g7",
+          "images": Array [
+            Object {
+              "__typename": "ImageFile",
+              "alt": null,
+              "createdAt": "2019-11-05T20:15:17.892Z",
+              "dimensions": Object {
+                "__typename": "Dimensions",
+                "height": 512,
+                "id": "cka3w01q530230720aqrt4h2n",
+                "width": 1024,
+              },
+              "filename": "s-secure-rights_shell.png",
+              "filesize": 29000,
+              "filetype": "image/png",
+              "id": "ck2maluky0s5z0720a2dgkisd",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "Japanese",
+                "id": "ck2lzfx7m0hl50720y9oqzyqz",
+                "languageCode": "ja",
+                "locale": "ja",
+                "nativeName": "日本語",
+                "textDirection": "LTR",
+              },
+              "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_shell.png?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+              "social": Array [
+                Object {
+                  "__typename": "SocialPlatform",
+                  "id": "ck9h3naq526cp0720i4u3uqlv",
+                  "name": "WhatsApp",
+                },
+              ],
+              "style": Object {
+                "__typename": "GraphicStyle",
+                "id": "ck9h3kyb326ak0720wkbk01q6",
+                "name": "Clean",
+              },
+              "title": "s-secure-rights_shell.png",
+              "updatedAt": "2020-05-04T17:16:55.720Z",
+              "url": "2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_shell.png",
+              "use": Object {
+                "__typename": "ImageUse",
+                "id": "ck2lzfx510hhj07205mal3e4l",
+                "name": "Thumbnail/Cover Image",
+              },
+            },
             Object {
               "__typename": "ImageFile",
               "alt": null,
@@ -968,14 +288,799 @@ exports[`<GraphicEdit />, when there is an existing graphic project renders the 
                 "name": "Thumbnail/Cover Image",
               },
             },
-          ]
+          ],
+          "publishedAt": null,
+          "status": "DRAFT",
+          "supportFiles": Array [
+            Object {
+              "__typename": "SupportFile",
+              "createdAt": "2020-04-28T11:28:43.173Z",
+              "filename": "s-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd",
+              "filesize": 509000,
+              "filetype": "image/vnd.adobe.photoshop",
+              "id": "ck9jtuqhy292w07200tfpbkju",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "English",
+                "id": "ck2lzfx710hkq07206thus6pt",
+                "languageCode": "en",
+                "locale": "en-us",
+                "nativeName": "English",
+                "textDirection": "LTR",
+              },
+              "signedUrl": "https://the-signed-url.com",
+              "updatedAt": "2020-05-01T14:05:55.765Z",
+              "url": null,
+              "use": null,
+            },
+            Object {
+              "__typename": "SupportFile",
+              "createdAt": "2020-04-28T11:28:43.173Z",
+              "filename": "test-file-FB.psd",
+              "filesize": 509000,
+              "filetype": "image/vnd.adobe.photoshop",
+              "id": "ck9jtuqhy29kakd92ka92kd92",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "English",
+                "id": "ck2lzfx710hkq07206thus6pt",
+                "languageCode": "en",
+                "locale": "en-us",
+                "nativeName": "English",
+                "textDirection": "LTR",
+              },
+              "signedUrl": "https://the-signed-url.com",
+              "updatedAt": "2020-05-01T14:05:55.765Z",
+              "url": null,
+              "use": null,
+            },
+            Object {
+              "__typename": "SupportFile",
+              "createdAt": "2020-04-28T11:29:55.168Z",
+              "filename": "s-secure-rights_transcript.docx",
+              "filesize": 9000,
+              "filetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "id": "ck9jtwa1v293h0720rbd1vdjr",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "English",
+                "id": "ck2lzfx710hkq07206thus6pt",
+                "languageCode": "en",
+                "locale": "en-us",
+                "nativeName": "English",
+                "textDirection": "LTR",
+              },
+              "signedUrl": "https://the-signed-url.com",
+              "updatedAt": "2020-04-28T11:29:55.168Z",
+              "url": null,
+              "use": null,
+            },
+            Object {
+              "__typename": "SupportFile",
+              "createdAt": "2020-04-29T13:14:37.942Z",
+              "filename": "OpenSans-regular.ttf",
+              "filesize": null,
+              "filetype": "font/ttf",
+              "id": "ck9ld2skk2cjn0720d5s33uxo",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "English",
+                "id": "ck2lzfx710hkq07206thus6pt",
+                "languageCode": "en",
+                "locale": "en-us",
+                "nativeName": "English",
+                "textDirection": "LTR",
+              },
+              "signedUrl": "https://the-signed-url.com",
+              "updatedAt": "2020-04-29T13:14:37.942Z",
+              "url": null,
+              "use": null,
+            },
+          ],
+          "tags": Array [
+            Object {
+              "__typename": "Tag",
+              "id": "ck2lzgu5e0rhu07207x85lxmb",
+              "translations": Array [
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzgiwy0nx40720sedxm612",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "English",
+                    "id": "ck2lzfx710hkq07206thus6pt",
+                    "languageCode": "en",
+                    "locale": "en-us",
+                    "nativeName": "English",
+                    "textDirection": "LTR",
+                  },
+                  "name": "biomedical science",
+                },
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzgixn0nxb072018rszcc5",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Spanish",
+                    "id": "ck2lzfx7o0hl707205uteku77",
+                    "languageCode": "es",
+                    "locale": "es-es",
+                    "nativeName": "Español",
+                    "textDirection": "LTR",
+                  },
+                  "name": "ciencia Biomedica",
+                },
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzgiy90nxi0720u91l9paa",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "French",
+                    "id": "ck2lzfx710hkp07206oo0icbv",
+                    "languageCode": "fr",
+                    "locale": "fr-fr",
+                    "nativeName": "Français",
+                    "textDirection": "LTR",
+                  },
+                  "name": "science biomédicale",
+                },
+              ],
+            },
+          ],
+          "team": Object {
+            "__typename": "Team",
+            "contentTypes": Array [
+              "GRAPHIC",
+            ],
+            "id": "ck2qgfbku0ubh0720iwhkvuyn",
+            "name": "GPA Press Office",
+          },
+          "title": "Just another graphic project",
+          "type": "SOCIAL_MEDIA",
+          "updatedAt": "2020-05-04T17:17:30.316Z",
+          "visibility": "PUBLIC",
         }
-        handleAddFiles={[Function]}
-        projectId="ck9b9n8kw1x720720sjwwl1g7"
-        setIsFormValid={[Function]}
-        updateNotification={[Function]}
-      />
-    </div>
-  </div>
-</GraphicEdit>
+      }
+      useGraphQl={true}
+    />
+  }
+  setDeleteConfirmOpen={[Function]}
+  show={
+    Object {
+      "delete": true,
+      "preview": true,
+      "publish": true,
+      "publishChanges": false,
+      "save": true,
+      "unpublish": false,
+    }
+  }
+/>
+`;
+
+exports[`<GraphicEdit />, when there is an existing PUBLISHED graphic project renders the ActionButtons 1`] = `
+<ActionButtons
+  deleteConfirmOpen={false}
+  disabled={
+    Object {
+      "delete": false,
+      "preview": false,
+      "publish": false,
+      "publishChanges": false,
+      "save": false,
+    }
+  }
+  handle={
+    Object {
+      "deleteConfirm": [Function],
+      "publish": [Function],
+      "publishChanges": [Function],
+      "save": [Function],
+      "unpublish": [Function],
+    }
+  }
+  loading={
+    Object {
+      "publish": false,
+      "publishChanges": false,
+      "unpublish": false,
+    }
+  }
+  previewNode={
+    <GraphicProject
+      displayAsModal={true}
+      isAdminPreview={true}
+      item={
+        Object {
+          "__typename": "GraphicProject",
+          "alt": "some alt text",
+          "assetPath": null,
+          "author": Object {
+            "__typename": "User",
+            "email": "mahe@america.gov",
+            "firstName": "Edwin",
+            "id": "ck2m042xo0rnp0720nb4gxjix",
+            "lastName": "Mah",
+          },
+          "categories": Array [
+            Object {
+              "__typename": "Category",
+              "id": "ck2lzgu1c0re307202dlrnue2",
+              "translations": Array [
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzfxab0hls0720o2sjmoqw",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "English",
+                    "id": "ck2lzfx710hkq07206thus6pt",
+                    "languageCode": "en",
+                    "locale": "en-us",
+                    "nativeName": "English",
+                    "textDirection": "LTR",
+                  },
+                  "name": "about america",
+                },
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzfxbe0hlz0720qou6kr5x",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Spanish",
+                    "id": "ck2lzfx7o0hl707205uteku77",
+                    "languageCode": "es",
+                    "locale": "es-es",
+                    "nativeName": "Español",
+                    "textDirection": "LTR",
+                  },
+                  "name": "conozca Estados Unidos",
+                },
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzfxc90hm60720onv6tbro",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "French",
+                    "id": "ck2lzfx710hkp07206oo0icbv",
+                    "languageCode": "fr",
+                    "locale": "fr-fr",
+                    "nativeName": "Français",
+                    "textDirection": "LTR",
+                  },
+                  "name": "Amérique",
+                },
+              ],
+            },
+            Object {
+              "__typename": "Category",
+              "id": "ck2lzgu1e0re90720th24sglh",
+              "translations": Array [
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzfye00hxg0720djwj20fs",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "English",
+                    "id": "ck2lzfx710hkq07206thus6pt",
+                    "languageCode": "en",
+                    "locale": "en-us",
+                    "nativeName": "English",
+                    "textDirection": "LTR",
+                  },
+                  "name": "geography",
+                },
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzfyej0hxn0720fwm4ior3",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Spanish",
+                    "id": "ck2lzfx7o0hl707205uteku77",
+                    "languageCode": "es",
+                    "locale": "es-es",
+                    "nativeName": "Español",
+                    "textDirection": "LTR",
+                  },
+                  "name": "Geografía",
+                },
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzfyf10hxu072065vqpr38",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "French",
+                    "id": "ck2lzfx710hkp07206oo0icbv",
+                    "languageCode": "fr",
+                    "locale": "fr-fr",
+                    "nativeName": "Français",
+                    "textDirection": "LTR",
+                  },
+                  "name": "Géographie",
+                },
+              ],
+            },
+          ],
+          "copyright": "NO_COPYRIGHT",
+          "createdAt": "2020-04-22T11:40:51.599Z",
+          "descInternal": "the internal description",
+          "descPublic": "the public description",
+          "id": "ck9b9n8kw1x720720sjwwl1g7",
+          "images": Array [
+            Object {
+              "__typename": "ImageFile",
+              "alt": null,
+              "createdAt": "2019-11-05T20:15:17.892Z",
+              "dimensions": Object {
+                "__typename": "Dimensions",
+                "height": 512,
+                "id": "cka3w01q530230720aqrt4h2n",
+                "width": 1024,
+              },
+              "filename": "s-secure-rights_shell.png",
+              "filesize": 29000,
+              "filetype": "image/png",
+              "id": "ck2maluky0s5z0720a2dgkisd",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "Japanese",
+                "id": "ck2lzfx7m0hl50720y9oqzyqz",
+                "languageCode": "ja",
+                "locale": "ja",
+                "nativeName": "日本語",
+                "textDirection": "LTR",
+              },
+              "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_shell.png?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+              "social": Array [
+                Object {
+                  "__typename": "SocialPlatform",
+                  "id": "ck9h3naq526cp0720i4u3uqlv",
+                  "name": "WhatsApp",
+                },
+              ],
+              "style": Object {
+                "__typename": "GraphicStyle",
+                "id": "ck9h3kyb326ak0720wkbk01q6",
+                "name": "Clean",
+              },
+              "title": "s-secure-rights_shell.png",
+              "updatedAt": "2020-05-04T17:16:55.720Z",
+              "url": "2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_shell.png",
+              "use": Object {
+                "__typename": "ImageUse",
+                "id": "ck2lzfx510hhj07205mal3e4l",
+                "name": "Thumbnail/Cover Image",
+              },
+            },
+            Object {
+              "__typename": "ImageFile",
+              "alt": null,
+              "createdAt": "2019-11-15T20:42:07.165Z",
+              "dimensions": Object {
+                "__typename": "Dimensions",
+                "height": 675,
+                "id": "cka3w01q530230720kasdk2ia",
+                "width": 1200,
+              },
+              "filename": "4_3_Serious_TW.jpg",
+              "filesize": 1030591,
+              "filetype": "image/jpeg",
+              "id": "ck30lyuxm15px0720dkd7hodl",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "English",
+                "id": "ck2lzfx710hkq07206thus6pt",
+                "languageCode": "en",
+                "locale": "en-us",
+                "nativeName": "English",
+                "textDirection": "LTR",
+              },
+              "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/4_3_Serious_TW.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+              "social": Array [
+                Object {
+                  "__typename": "SocialPlatform",
+                  "id": "ck9h3m3g626bd07201gh712vk",
+                  "name": "Twitter",
+                },
+              ],
+              "style": Object {
+                "__typename": "GraphicStyle",
+                "id": "ck9h3ka3o269y0720t7wzp5uq",
+                "name": "Quote",
+              },
+              "title": "4_3_Serious_TW.jpg",
+              "updatedAt": "2020-05-04T17:16:57.512Z",
+              "url": "2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/4_3_Serious_TW.jpg",
+              "use": Object {
+                "__typename": "ImageUse",
+                "id": "ck2lzfx510hhj07205mal3e4l",
+                "name": "Thumbnail/Cover Image",
+              },
+            },
+            Object {
+              "__typename": "ImageFile",
+              "alt": null,
+              "createdAt": "2019-11-20T19:48:21.415Z",
+              "dimensions": Object {
+                "__typename": "Dimensions",
+                "height": 1200,
+                "id": "cka3w01q530230720quz8k2s",
+                "width": 1200,
+              },
+              "filename": "4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg",
+              "filesize": 42093736,
+              "filetype": "image/jpeg",
+              "id": "ck37p8z731vim0720nrlespm1",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "Bahasa Indonesia",
+                "id": "ck2lzfx7g0hl10720vfyiek0q",
+                "languageCode": "id",
+                "locale": "id-id",
+                "nativeName": "Bahasa Indonesia",
+                "textDirection": "LTR",
+              },
+              "signedUrl": "https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature",
+              "social": Array [
+                Object {
+                  "__typename": "SocialPlatform",
+                  "id": "ck9h3m9bl26bm0720rm69c60s",
+                  "name": "Facebook",
+                },
+                Object {
+                  "__typename": "SocialPlatform",
+                  "id": "ck9h3meu626bw07201o36tapc",
+                  "name": "Instagram",
+                },
+              ],
+              "style": Object {
+                "__typename": "GraphicStyle",
+                "id": "ck9h3koe426aa0720y421wmk3",
+                "name": "Info/Stat",
+              },
+              "title": "4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg",
+              "updatedAt": "2020-05-04T17:17:01.227Z",
+              "url": "2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg",
+              "use": Object {
+                "__typename": "ImageUse",
+                "id": "ck2lzfx510hhj07205mal3e4l",
+                "name": "Thumbnail/Cover Image",
+              },
+            },
+          ],
+          "publishedAt": null,
+          "status": "PUBLISHED",
+          "supportFiles": Array [
+            Object {
+              "__typename": "SupportFile",
+              "createdAt": "2020-04-28T11:28:43.173Z",
+              "filename": "s-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd",
+              "filesize": 509000,
+              "filetype": "image/vnd.adobe.photoshop",
+              "id": "ck9jtuqhy292w07200tfpbkju",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "English",
+                "id": "ck2lzfx710hkq07206thus6pt",
+                "languageCode": "en",
+                "locale": "en-us",
+                "nativeName": "English",
+                "textDirection": "LTR",
+              },
+              "signedUrl": "https://the-signed-url.com",
+              "updatedAt": "2020-05-01T14:05:55.765Z",
+              "url": null,
+              "use": null,
+            },
+            Object {
+              "__typename": "SupportFile",
+              "createdAt": "2020-04-28T11:28:43.173Z",
+              "filename": "test-file-FB.psd",
+              "filesize": 509000,
+              "filetype": "image/vnd.adobe.photoshop",
+              "id": "ck9jtuqhy29kakd92ka92kd92",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "English",
+                "id": "ck2lzfx710hkq07206thus6pt",
+                "languageCode": "en",
+                "locale": "en-us",
+                "nativeName": "English",
+                "textDirection": "LTR",
+              },
+              "signedUrl": "https://the-signed-url.com",
+              "updatedAt": "2020-05-01T14:05:55.765Z",
+              "url": null,
+              "use": null,
+            },
+            Object {
+              "__typename": "SupportFile",
+              "createdAt": "2020-04-28T11:29:55.168Z",
+              "filename": "s-secure-rights_transcript.docx",
+              "filesize": 9000,
+              "filetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "id": "ck9jtwa1v293h0720rbd1vdjr",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "English",
+                "id": "ck2lzfx710hkq07206thus6pt",
+                "languageCode": "en",
+                "locale": "en-us",
+                "nativeName": "English",
+                "textDirection": "LTR",
+              },
+              "signedUrl": "https://the-signed-url.com",
+              "updatedAt": "2020-04-28T11:29:55.168Z",
+              "url": null,
+              "use": null,
+            },
+            Object {
+              "__typename": "SupportFile",
+              "createdAt": "2020-04-29T13:14:37.942Z",
+              "filename": "OpenSans-regular.ttf",
+              "filesize": null,
+              "filetype": "font/ttf",
+              "id": "ck9ld2skk2cjn0720d5s33uxo",
+              "language": Object {
+                "__typename": "Language",
+                "displayName": "English",
+                "id": "ck2lzfx710hkq07206thus6pt",
+                "languageCode": "en",
+                "locale": "en-us",
+                "nativeName": "English",
+                "textDirection": "LTR",
+              },
+              "signedUrl": "https://the-signed-url.com",
+              "updatedAt": "2020-04-29T13:14:37.942Z",
+              "url": null,
+              "use": null,
+            },
+          ],
+          "tags": Array [
+            Object {
+              "__typename": "Tag",
+              "id": "ck2lzgu5e0rhu07207x85lxmb",
+              "translations": Array [
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzgiwy0nx40720sedxm612",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "English",
+                    "id": "ck2lzfx710hkq07206thus6pt",
+                    "languageCode": "en",
+                    "locale": "en-us",
+                    "nativeName": "English",
+                    "textDirection": "LTR",
+                  },
+                  "name": "biomedical science",
+                },
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzgixn0nxb072018rszcc5",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "Spanish",
+                    "id": "ck2lzfx7o0hl707205uteku77",
+                    "languageCode": "es",
+                    "locale": "es-es",
+                    "nativeName": "Español",
+                    "textDirection": "LTR",
+                  },
+                  "name": "ciencia Biomedica",
+                },
+                Object {
+                  "__typename": "LanguageTranslation",
+                  "id": "ck2lzgiy90nxi0720u91l9paa",
+                  "language": Object {
+                    "__typename": "Language",
+                    "displayName": "French",
+                    "id": "ck2lzfx710hkp07206oo0icbv",
+                    "languageCode": "fr",
+                    "locale": "fr-fr",
+                    "nativeName": "Français",
+                    "textDirection": "LTR",
+                  },
+                  "name": "science biomédicale",
+                },
+              ],
+            },
+          ],
+          "team": Object {
+            "__typename": "Team",
+            "contentTypes": Array [
+              "GRAPHIC",
+            ],
+            "id": "ck2qgfbku0ubh0720iwhkvuyn",
+            "name": "GPA Press Office",
+          },
+          "title": "Just another graphic project",
+          "type": "SOCIAL_MEDIA",
+          "updatedAt": "2020-05-04T17:17:30.316Z",
+          "visibility": "PUBLIC",
+        }
+      }
+      useGraphQl={true}
+    />
+  }
+  setDeleteConfirmOpen={[Function]}
+  show={
+    Object {
+      "delete": true,
+      "preview": true,
+      "publish": false,
+      "publishChanges": false,
+      "save": true,
+      "unpublish": true,
+    }
+  }
+/>
+`;
+
+exports[`<GraphicEdit />, when there is no props.id and local files have been selected for upload renders the ActionButtons 1`] = `
+<ActionButtons
+  deleteConfirmOpen={false}
+  disabled={
+    Object {
+      "delete": true,
+      "preview": true,
+      "publish": true,
+      "publishChanges": true,
+      "save": true,
+    }
+  }
+  handle={
+    Object {
+      "deleteConfirm": [Function],
+      "publish": [Function],
+      "publishChanges": [Function],
+      "save": [Function],
+      "unpublish": [Function],
+    }
+  }
+  loading={
+    Object {
+      "publish": false,
+      "publishChanges": false,
+      "unpublish": false,
+    }
+  }
+  previewNode={
+    <GraphicProject
+      displayAsModal={true}
+      isAdminPreview={true}
+      item={
+        Object {
+          "images": Array [
+            Object {
+              "__typename": "LocalImageFile",
+              "id": "51ccb5dc-9961-4880-b385-89142cbc1c38",
+              "input": Object {
+                "__typename": "LocalInputFile",
+                "dataUrl": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ",
+                "name": "4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg",
+                "size": 9999,
+              },
+              "language": "ck2lzfx710hkq07206thus6pt",
+              "loaded": 0,
+              "name": "4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg",
+              "social": Array [
+                "ck9h3m9bl26bm0720rm69c60s",
+                "ck9h3meu626bw07201o36tapc",
+              ],
+              "style": "ck9h3kyb326ak0720wkbk01q6",
+            },
+            Object {
+              "__typename": "LocalImageFile",
+              "id": "5114e689-7c8c-4566-ac0f-baa2008d6e2d",
+              "input": Object {
+                "__typename": "LocalInputFile",
+                "dataUrl": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ",
+                "name": "4_3_Serious_TW.jpg",
+                "size": 9999,
+              },
+              "language": "ck2lzfx710hkq07206thus6pt",
+              "loaded": 0,
+              "name": "4_3_Serious_TW.jpg",
+              "social": Array [
+                "ck9h3m3g626bd07201gh712vk",
+              ],
+              "style": "ck9h3l7zn26au0720ialhqtg4",
+            },
+          ],
+          "supportFiles": Array [
+            Object {
+              "__typename": "LocalImageFile",
+              "id": "db6086b2-bc52-4cc2-8133-6accc96ba3df",
+              "input": Object {
+                "__typename": "LocalInputFile",
+                "dataUrl": "data:image/vnd.adobe.photoshop;base64,OEJQUwABAAAA",
+                "name": "s-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd",
+                "size": 999999,
+              },
+              "language": "ck2lzfx710hkq07206thus6pt",
+              "loaded": 0,
+              "name": "s-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd",
+              "social": Array [],
+              "style": "",
+            },
+            Object {
+              "__typename": "LocalImageFile",
+              "id": "5b2f9140-96ba-4e44-aff1-e74dd51cdadc",
+              "input": Object {
+                "__typename": "LocalInputFile",
+                "dataUrl": "data:image/vnd.adobe.photoshop;base64,OEJQUwABAAAA",
+                "name": "test-file-FB.psd",
+                "size": 999999,
+              },
+              "language": "ck2lzfx710hkq07206thus6pt",
+              "loaded": 0,
+              "name": "test-file-FB.psd",
+              "social": Array [],
+              "style": "",
+            },
+            Object {
+              "__typename": "LocalImageFile",
+              "id": "ec7d934a-dd82-4923-a4c6-4245afa56256",
+              "input": Object {
+                "__typename": "LocalInputFile",
+                "dataUrl": "data:image/png;base64,iVBORw0KGgoAAAANS",
+                "name": "s-secure-rights_shell.png",
+                "size": 9999,
+              },
+              "language": "ck2lzfx710hkq07206thus6pt",
+              "loaded": 0,
+              "name": "s-secure-rights_shell.png",
+              "social": Array [
+                "ck9h3naq526cp0720i4u3uqlv",
+              ],
+              "style": "ck9h3koe426aa0720y421wmk3",
+            },
+            Object {
+              "__typename": "LocalImageFile",
+              "id": "bfadfcaf-e82c-436c-9c85-f635ea930ba4",
+              "input": Object {
+                "__typename": "LocalInputFile",
+                "dataUrl": "data:application/octet-stream;base64,AAEAAAATAQAAB",
+                "name": "OpenSans-Regular.ttf",
+                "size": 999,
+              },
+              "language": "ck2lzfx710hkq07206thus6pt",
+              "loaded": 0,
+              "name": "OpenSans-Regular.ttf",
+              "social": Array [],
+              "style": "",
+            },
+            Object {
+              "__typename": "LocalImageFile",
+              "id": "42bae4ac-eb21-4c22-98c0-d3af045d456c",
+              "input": Object {
+                "__typename": "LocalInputFile",
+                "dataUrl": "data:application/vnd.openxmlformats-officedocument;base64,asdfEACGAE",
+                "name": "s-secure-rights_transcript.docx",
+                "size": 99,
+              },
+              "language": "ck2lzfx710hkq07206thus6pt",
+              "loaded": 0,
+              "name": "s-secure-rights_transcript.docx",
+              "social": Array [],
+              "style": "",
+            },
+          ],
+        }
+      }
+      useGraphQl={true}
+    />
+  }
+  setDeleteConfirmOpen={[Function]}
+  show={
+    Object {
+      "delete": true,
+      "preview": true,
+      "publish": false,
+      "publishChanges": false,
+      "save": true,
+      "unpublish": false,
+    }
+  }
+/>
 `;

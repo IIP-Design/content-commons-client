@@ -1,20 +1,21 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Confirm } from 'semantic-ui-react';
+import { Button, Confirm, Modal } from 'semantic-ui-react';
+
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
+
 import './ActionButtons.scss';
 
-const ActionButtons = props => {
-  const {
-    type,
-    deleteConfirmOpen,
-    setDeleteConfirmOpen,
-    disabled,
-    handle,
-    show,
-    loading
-  } = props;
-
+const ActionButtons = ( {
+  type,
+  deleteConfirmOpen,
+  setDeleteConfirmOpen,
+  previewNode,
+  disabled,
+  handle,
+  show,
+  loading,
+} ) => {
   const isPackage = type.toLowerCase() === 'package';
   const contentType = isPackage ? type : 'project';
 
@@ -39,8 +40,7 @@ const ActionButtons = props => {
                 headline={ `Are you sure you want to delete this ${contentType}?` }
               >
                 <p>
-                  This { contentType } will be removed permanently from the Content Cloud. Any files
-                  uploaded in this { contentType } will also be removed permanently.
+                  {`This ${contentType} will be removed permanently from the Content Cloud. Any files uploaded in this ${contentType} will also be removed permanently.`}
                 </p>
               </ConfirmModalContent>
             ) }
@@ -62,15 +62,20 @@ const ActionButtons = props => {
         />
       ) }
 
-      { /* will need to complete/fix later */ }
       { show.preview && (
-        <Button
-          className="action-btn btn--preview"
-          content="Preview"
-          primary
-          onClick={ () => { console.log( 'preview' ) } }
-          disabled={ disabled.preview }
-        />
+        <Modal
+          trigger={ (
+            <Button
+              className="action-btn btn--preview"
+              content="Preview"
+              primary
+              disabled={ disabled.preview }
+            />
+          ) }
+          closeIcon
+        >
+          <Modal.Content>{ previewNode }</Modal.Content>
+        </Modal>
       ) }
 
       { show.publishChanges && (
@@ -119,17 +124,18 @@ ActionButtons.defaultProps = {
   setDeleteConfirmOpen: () => {},
   disabled: {},
   handle: {},
-  show: {}
+  show: {},
 };
 
 ActionButtons.propTypes = {
   type: PropTypes.string,
   deleteConfirmOpen: PropTypes.bool,
   setDeleteConfirmOpen: PropTypes.func,
+  previewNode: PropTypes.node,
   disabled: PropTypes.object,
   handle: PropTypes.object,
   show: PropTypes.object,
-  loading: PropTypes.object
+  loading: PropTypes.object,
 };
 
 export default ActionButtons;

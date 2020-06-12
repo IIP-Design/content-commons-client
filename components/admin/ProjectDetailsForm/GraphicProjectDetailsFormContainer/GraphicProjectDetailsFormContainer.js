@@ -41,7 +41,7 @@ const GraphicProjectDetailsFormContainer = props => {
       projectTitle: graphicProject.title || '',
       visibility: graphicProject.visibility || 'PUBLIC',
       team: graphicProject.team ? graphicProject.team.name : user?.team?.name,
-      copyright: graphicProject.copyright || '',
+      copyright: graphicProject.copyright || 'COPYRIGHT',
       categories,
       tags,
       descPublic: graphicProject.descPublic || '',

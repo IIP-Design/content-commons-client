@@ -6,8 +6,8 @@ const structureLangObj = item => ( {
     text_direction: item.language.textDirection,
     locale: item.language.locale,
     display_name: item.language.displayName,
-    native_name: item.language.nativeName
-  }
+    native_name: item.language.nativeName,
+  },
 } );
 
 export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => {
@@ -24,28 +24,28 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
     copyright: file.copyright || '',
     images: file.images || [],
     supportFiles: file.supportFiles || [],
-    categories: file.categories || ''
+    categories: file.categories || '',
   };
 
   // Elastic API
   if ( !useGraphQl ) {
     const imagesWithFileNameProp = file.images.map( img => ( {
       ...img,
-      filename: img.name
+      filename: img.filename,
     } ) );
 
-    const supportFilesWithFileNameProp = file.supportFiles.map( supFile => {
-      const filenameFromSrc = supFile.srcUrl.slice( supFile.srcUrl.lastIndexOf( '/' ) + 1 );
+    const supportFilesWithFileNameProp = Array.isArray( file.supportFiles ) && file.supportFiles.map( supFile => {
+      const filenameFromSrc = supFile.url.slice( supFile.url.lastIndexOf( '/' ) + 1 );
 
       return {
         ...supFile,
-        filename: filenameFromSrc
+        filename: filenameFromSrc,
       };
     } );
 
     const esObj = {
       images: imagesWithFileNameProp || [],
-      supportFiles: supportFilesWithFileNameProp || []
+      supportFiles: supportFilesWithFileNameProp || [],
     };
 
     return { ...graphicObj, ...esObj };
@@ -59,19 +59,20 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
       return {
         ...img,
         ...structureLangObj( img ),
-        srcUrl: img.signedUrl,
+        url: img.signedUrl,
         width: dimensions.width,
-        height: dimensions.height
+        height: dimensions.height,
       };
     } );
 
-    const structuredSupportFiles = file.supportFiles.map( supFile => ( {
+    const structuredSupportFiles = Array.isArray( file.supportFiles ) && file.supportFiles.map( supFile => ( {
       ...supFile,
       ...structureLangObj( supFile ),
-      srcUrl: supFile.signedUrl
+      srcUrl: supFile.signedUrl,
     } ) );
 
     const gqlObj = {
+      alt: file.alt || '',
       projectType: file.type || '',
       published: file.publishedAt || '',
       modified: file.updatedAt || '',
@@ -79,7 +80,7 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
       desc: file.descPublic || '',
       images: structuredImages || [],
       supportFiles: structuredSupportFiles || [],
-      categories: getTransformedLangTaxArray( file.categories ) || []
+      categories: getTransformedLangTaxArray( file.categories ) || [],
     };
 
     return { ...graphicObj, ...gqlObj };
