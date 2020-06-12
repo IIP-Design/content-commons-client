@@ -235,9 +235,7 @@ const GraphicProject = ( {
     return tabs.filter( tab => tab.title !== 'Editable Files' );
   };
 
-  const getAlt = () => (
-    unitAlt || projectAlt || title || selectedUnit?.filename || ''
-  );
+  const getAlt = () => unitAlt || projectAlt || title || selectedUnit?.filename || '';
 
   return (
     <ModalItem
@@ -323,15 +321,14 @@ const GraphicProject = ( {
 
       <ModalDescription description={ desc } />
 
-      { user
-        && (
-          <section className="graphic-project__content internal-desc">
-            <h2 className="graphic-project__content__title">
-              Internal Description:
-            </h2>
-            <p>{ descInternal }</p>
-          </section>
-        ) }
+      { user && descInternal && (
+        <section className="graphic-project__content internal-desc">
+          <h2 className="graphic-project__content__title">
+            Internal Description:
+          </h2>
+          <p>{ descInternal }</p>
+        </section>
+      ) }
 
       <section className="graphic-project__content alt">
         <h2 className="graphic-project__content__title">
