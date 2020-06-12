@@ -1,34 +1,111 @@
-import React, { Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Item } from 'semantic-ui-react';
-import downloadIcon from 'static/icons/icon_download.svg';
+import { Item, Dimmer, Loader } from 'semantic-ui-react';
 
-const DownloadPkgFiles = props => {
-  const { files, instructions, isPreview } = props;
+import downloadIcon from 'static/icons/icon_download.svg';
+import { downloadPackage } from 'lib/utils';
+import { useAuth } from 'context/authContext';
+
+const DownloadPkgFiles = ( { id, title, files, instructions, isPreview } ) => {
+  const [loading, setLoading] = useState( false );
+  const { user } = useAuth();
+
+  const styles = {
+    text: {
+      fontSize: '0.75rem',
+      fontWeight: 'normal',
+      fontStyle: 'italic',
+      color: '#5b616b',
+    },
+    dotWrapper: {
+      marginTop: '-15px',
+      marginBottom: '-15px',
+      textAlign: 'center',
+    },
+    dot: {
+      height: '7px',
+      width: '7px',
+      backgroundColor: '#ccc',
+      borderRadius: '50%',
+      display: 'inline-block',
+      marginRight: '10px',
+    },
+  };
+
+  const downloadAll = async () => {
+    // Loading flag ensure only one download if one is in progress
+    if ( !loading ) {
+      setLoading( true );
+      const response = await downloadPackage( title, files, user?.esToken, ['docx', 'doc'] );
+
+      setLoading( false );
+    }
+  };
+
+  const renderDownloadAllItem = () => (
+    <Item.Group key={ `fs_${id}` } className={ `download-item${isPreview ? ' preview' : ''}` }>
+      <Item
+        as={ isPreview ? 'span' : 'a' }
+        onClick={ isPreview ? null : downloadAll }
+      >
+        <Item.Image
+          size="mini"
+          src={ downloadIcon }
+          alt="download icon"
+          className="download-icon"
+        />
+        <Item.Content>
+          <Item.Header className="download-header">
+            { loading && (
+              <Dimmer active inverted>
+                <Loader size="small" />
+              </Dimmer>
+            )}
+            {'Download All '}
+            <span style={ { fontWeight: 'normal' } }>{title}</span>
+            <div style={ styles.text }>
+              {/* <div style={{ lineHeight: 1 }}>Zip file size: </div> */}
+              <div>
+                Files:
+                {files.length}
+              </div>
+            </div>
+          </Item.Header>
+          <span className="item_hover">
+            {`Download ${title}`}
+            {isPreview
+                && <span className="preview-text">The link will be active after publishing.</span>}
+          </span>
+        </Item.Content>
+      </Item>
+    </Item.Group>
+  );
 
   const renderFormItem = file => {
-    const { id, filename, url } = file;
+    const { id: fileId, filename, url } = file;
 
     return (
-      <Item.Group key={ `fs_${id}` } className={ `download-item${isPreview ? ' preview' : ''}` }>
+      <Item.Group key={ `fs_${fileId}` } className={ `download-item${isPreview ? ' preview' : ''}` }>
         <Item
           as={ isPreview ? 'span' : 'a' }
           href={ isPreview ? null : url }
           download={ isPreview ? null : filename }
         >
-          <Item.Image size="mini" src={ downloadIcon } alt="download icon" className="download-icon" />
+          <Item.Image
+            size="mini"
+            src={ downloadIcon }
+            alt="download icon"
+            className="download-icon"
+          />
           <Item.Content>
             <Item.Header className="download-header">
-              { `Download ${filename}` }
+              { 'Download ' }
+              <span style={ { fontWeight: 'normal' } }>{filename}</span>
             </Item.Header>
             <span className="item_hover">
-              { `Download ${filename}` }
+              {`Download ${filename}`}
               { isPreview
-                && (
-                  <span className="preview-text">
-                    The link will be active after publishing.
-                  </span>
-                ) }
+                && <span className="preview-text">The link will be active after publishing.</span>}
             </span>
           </Item.Content>
         </Item>
@@ -41,6 +118,7 @@ const DownloadPkgFiles = props => {
       if ( file && file.url ) {
         acc.push( renderFormItem( file ) );
       }
+
       return acc;
     }, [] );
 
@@ -51,7 +129,18 @@ const DownloadPkgFiles = props => {
 
   return (
     <Fragment>
-      <p className="form-group_instructions">{ instructions }</p>
+      <p className="form-group_instructions">{instructions}</p>
+      {/* If more than one file exists, provide download all option */}
+      { files?.length > 1 && (
+        <>
+          { renderDownloadAllItem() }
+          <div style={ styles.dotWrapper }>
+            <span style={ styles.dot } />
+            <span style={ styles.dot } />
+            <span style={ styles.dot } />
+          </div>
+        </>
+      )}
       { files && renderFormItems() }
     </Fragment>
   );
@@ -59,8 +148,10 @@ const DownloadPkgFiles = props => {
 
 DownloadPkgFiles.propTypes = {
   files: PropTypes.array,
+  id: PropTypes.string,
   instructions: PropTypes.string,
-  isPreview: PropTypes.bool
+  isPreview: PropTypes.bool,
+  title: PropTypes.string,
 };
 
 export default DownloadPkgFiles;

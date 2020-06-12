@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import {
-  Form, Input, Icon, Dropdown
+  Form, Input, Icon, Dropdown,
 } from 'semantic-ui-react';
 // import { detectLanguage } from 'lib/language';
 import { getDirection } from 'lib/language';
@@ -15,9 +15,10 @@ class Search extends Component {
   constructor( props ) {
     super( props );
     const { search } = this.props;
+
     this.state = {
       locale: search.language,
-      direction: 'left'
+      direction: 'left',
     };
   }
 
@@ -27,6 +28,7 @@ class Search extends Component {
 
   componentDidUpdate( prevProps ) {
     const { router } = this.props;
+
     if ( router.pathname !== prevProps.router.pathname ) {
       this.onRouteChanged( router.pathname );
     }
@@ -40,6 +42,7 @@ class Search extends Component {
       this.props.updateSearchTerm( '' );
     } else {
       const { language } = this.props.search;
+
       this.setState( { locale: language, direction: getDirection( language ) } );
     }
   }
@@ -61,7 +64,7 @@ class Search extends Component {
   handleLangOnChange = ( e, { value } ) => {
     this.setState( {
       locale: value,
-      direction: getDirection( value )
+      direction: getDirection( value ),
     } );
   };
 
@@ -72,10 +75,16 @@ class Search extends Component {
 
   handleSubmit = async () => {
     const { filter, search } = this.props;
-    const query = fetchQueryString( { ...filter, term: search.term, language: this.state.locale } );
+
+    const postTypesClone = filter?.postTypes ? [...filter.postTypes] : [];
+
+    const filteredPostTypes = postTypesClone.map( type => (type === 'package' ? 'document' : type) );
+
+    const query = fetchQueryString( { ...filter, term: search.term, language: this.state.locale, postTypes: filteredPostTypes } );
+
     this.props.router.push( {
       pathname: '/results',
-      query
+      query,
     } );
   };
 
@@ -93,7 +102,7 @@ class Search extends Component {
   maybeLoadLanguages() {
     const {
       router: { pathname },
-      languages: { list }
+      languages: { list },
     } = this.props;
 
     if ( pathname.indexOf( 'admin' ) === -1 && !list.length ) {
@@ -103,6 +112,7 @@ class Search extends Component {
 
   render() {
     let inputProps = {};
+
     if ( this.state.direction === 'left' ) {
       inputProps = { className: 'search_input' };
     } else {
@@ -112,7 +122,7 @@ class Search extends Component {
     let langOptions = this.props.languages.list.map( l => ( {
       key: l.key,
       text: l.display_name,
-      value: l.key
+      value: l.key,
     } ) );
 
     if ( langOptions.length === 0 ) langOptions = [{ key: 'en-us', text: 'English', value: 'en-us' }];
@@ -152,7 +162,7 @@ class Search extends Component {
 const mapStateToProps = state => ( {
   search: state.search,
   languages: state.global.languages,
-  filter: state.filter
+  filter: state.filter,
 } );
 
 Search.propTypes = {
@@ -161,7 +171,7 @@ Search.propTypes = {
   search: PropTypes.object,
   languages: PropTypes.object,
   loadLanguages: PropTypes.func,
-  updateSearchTerm: PropTypes.func
+  updateSearchTerm: PropTypes.func,
 };
 
 export default withRouter( connect( mapStateToProps, actions )( Search ) );

@@ -20,18 +20,18 @@ import './FilterSelections.scss';
 const getSelection = ( values, name, list, isRadio = false ) => {
   let filterSelections = values.map( value => {
     const label = list.find( item => item.key.indexOf( value ) !== -1 );
-    return ( {
+
+    return {
       value,
       label: label ? label.display_name : '',
       name,
-      single: isRadio
-    } );
+      single: isRadio,
+    };
   } );
 
   // remove any possible duplicates (needed as some filters have multiple values, i.e YALI or YLAI)
-  filterSelections = filterSelections.reduce( ( acc, val ) => (
-    acc.findIndex( sel => sel.label === val.label ) < 0 ? [...acc, val] : acc
-  ), [] );
+  filterSelections = filterSelections.reduce( ( acc, val ) => acc.findIndex( sel => sel.label === val.label ) < 0 ? [...acc, val] : acc
+    , [] );
 
   return filterSelections;
 };
@@ -43,7 +43,9 @@ const getAllSelections = ( filter, global ) => {
   let selectedFilters = [];
 
   // manually set filter order due to Safari issue
-  const filterOrder = ['date', 'postTypes', 'sources', 'categories', 'countries'];
+  const filterOrder = [
+    'date', 'postTypes', 'sources', 'categories', 'countries',
+  ];
 
   // loop thru filters to build selection list
   filterOrder.forEach( key => {
@@ -52,7 +54,7 @@ const getAllSelections = ( filter, global ) => {
     const values = isCheckbox ? value : [value];
 
     // Single select filter props need to be made plural to match their global list name
-    const listName = ( key === 'date' ) ? `${key}s` : key;
+    const listName = key === 'date' ? `${key}s` : key;
     const { list } = global[listName];
 
     // generate selection object
@@ -76,6 +78,7 @@ const FilterSelections = props => {
   } = props;
 
   const [selections, setSelections] = useState( [] );
+
   useEffect( () => {
     setSelections( [...getAllSelections( filter, global )] );
   }, [filter] );
@@ -87,16 +90,17 @@ const FilterSelections = props => {
   const executeQuery = query => {
     router.replace( {
       pathname: '/results',
-      query
+      query,
     } );
   };
 
   /**
-   * Reset all filter to intial values
+   * Reset all filter to initial values
    */
   const handleClearAllFilters = async () => {
     await clearFilters();
     const query = fetchQueryString( { term, language } );
+
     executeQuery( query );
   };
 
@@ -107,13 +111,13 @@ const FilterSelections = props => {
   const handleOnClick = item => {
     // Update state selections instead of waiting for router update which updates redux store
     const updatedSelections = selections.filter( sel => sel.value !== item.value );
+
     setSelections( [...updatedSelections] );
 
     const selectedItemsFromSpecificFilter = filter[item.name].slice( 0 );
     const filterItemList = global[item.name].list;
     const itemToRemove = filterItemList.find( l => l.key.indexOf( item.value ) !== -1 );
-
-    // Some values have mutliple search terms within the input value
+    // Some values have multiple search terms within the input value
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
     // so we split the value into array and to remove all
     const values = itemToRemove.key.split( '|' );
@@ -123,15 +127,17 @@ const FilterSelections = props => {
 
     // generate updated query string
     const query = fetchQueryString( {
-      ...filter, [item.name]: updatedArr, term, language
+      ...filter, [item.name]: updatedArr, term, language,
     } );
 
     executeQuery( query );
   };
 
+  if ( selections.length === 0 ) return null;
+
   return (
     <div className="filterMenu_selections">
-      { selections?.map( selection => (
+      { selections.map( selection => (
         <FilterSelectionItem
           key={ v4() }
           value={ selection.value }
@@ -162,14 +168,14 @@ FilterSelections.propTypes = {
   global: PropTypes.object,
   term: PropTypes.string,
   language: PropTypes.string,
-  clearFilters: PropTypes.func
+  clearFilters: PropTypes.func,
 };
 
 const mapStateToProps = state => ( {
   filter: state.filter,
   global: state.global,
   term: state.search.term,
-  language: state.search.language
+  language: state.search.language,
 } );
 
 export default withRouter( connect( mapStateToProps, actions )( FilterSelections ) );

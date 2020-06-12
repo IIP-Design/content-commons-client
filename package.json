@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "description": "Content Commons Client",
   "main": "index.js",
   "scripts": {
