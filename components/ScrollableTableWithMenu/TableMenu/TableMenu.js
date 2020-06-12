@@ -35,7 +35,7 @@ const TableMenu = ( { columnMenu, tableMenuOnChange } ) => {
   const handleCloseMenu = () => setDisplayTableMenu( false );
 
   const handleKbdAccess = e => {
-    console.log( displayTableMenu );
+    // console.log( displayTableMenu );
     if ( !displayTableMenu ) return;
 
     if ( [
@@ -104,8 +104,8 @@ const TableMenu = ( { columnMenu, tableMenuOnChange } ) => {
     const isTableMenuItem = parentNode && ( !!parentNode.dataset.tablemenuitem || !!dataset.tablemenuitem );
     const isShowMoreColumns = id === 'show-more-columns';
 
-    console.log( dataset, id, parentNode );
-    console.log( 'table menu: ', isTableMenu );
+    // console.log( dataset, id, parentNode );
+    // console.log( 'table menu: ', isTableMenu );
 
     if ( isTableMenu ) {
       const displayState = displayTableMenu;
