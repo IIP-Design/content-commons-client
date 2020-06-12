@@ -17,14 +17,14 @@ import shareIcon from 'static/icons/icon_share.svg';
 
 import PackageItem from './PackageItem/PackageItem';
 import {
-  normalizeDocumentItemByAPI, getDateTimeTerms
+  normalizeDocumentItemByAPI, getDateTimeTerms,
 } from './utils';
 
 import './Package.scss';
 
 const Package = props => {
   const {
-    displayAsModal, isAdminPreview, useGraphQl
+    displayAsModal, isAdminPreview, useGraphQl,
   } = props;
 
   const {
@@ -34,7 +34,7 @@ const Package = props => {
     type,
     title,
     site,
-    documents
+    documents,
   } = props.item;
 
   useEffect( () => {
@@ -43,21 +43,20 @@ const Package = props => {
     }
   }, [] );
 
-
   return (
     <ModalItem
       className={ isAdminPreview ? 'package package--preview' : 'package' }
       headline={ title }
       textDirection="LTR" // use LTR since pkg have no lang field
     >
-      { isAdminPreview && (
+      {isAdminPreview && (
         <Notification
           el="p"
           show
           customStyles={ getPreviewNotificationStyles() }
           msg="This is a preview of your package on Content Commons."
         />
-      ) }
+      )}
       <MetaTerms
         className="date-time"
         unitId={ id }
@@ -98,18 +97,24 @@ const Package = props => {
                     title: getPluralStringOrNot( documents, 'Document' ),
                     component: (
                       <DownloadPkgFiles
+                        id={ id }
+                        title={ title }
                         files={ documents }
                         isPreview={ isAdminPreview }
-                        instructions={ getPluralStringOrNot( documents, 'Download Package File' ) }
+                        instructions={
+                          documents.length > 1
+                            ? 'Download full press guidance package as zip file or individual Word documents.'
+                            : getPluralStringOrNot( documents, 'Download Package File' )
+                        }
                       />
-                    )
-                  }
+                    ),
+                  },
                 ] }
               />
             ) }
           />
           <span className="file-count">
-            { `(${getCount( documents )})` }
+            {`(${getCount( documents )})`}
             <VisuallyHidden> documents in this package</VisuallyHidden>
           </span>
         </div>
@@ -117,7 +122,7 @@ const Package = props => {
 
       <div className="package-items">
         <Card.Group>
-          { getCount( documents )
+          {getCount( documents )
             ? documents.map( file => (
               <PackageItem
                 key={ file.id }
@@ -126,7 +131,7 @@ const Package = props => {
                 isAdminPreview={ isAdminPreview }
               />
             ) )
-            : 'There are no files associated with this package.' }
+            : 'There are no files associated with this package.'}
         </Card.Group>
       </div>
     </ModalItem>
@@ -137,7 +142,7 @@ Package.propTypes = {
   displayAsModal: PropTypes.bool,
   isAdminPreview: PropTypes.bool,
   useGraphQl: PropTypes.bool,
-  item: PropTypes.object
+  item: PropTypes.object,
 };
 
 export default Package;
