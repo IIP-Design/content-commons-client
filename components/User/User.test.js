@@ -1,6 +1,7 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
+
 import User, { CURRENT_USER_QUERY } from './User';
 
 const props = {

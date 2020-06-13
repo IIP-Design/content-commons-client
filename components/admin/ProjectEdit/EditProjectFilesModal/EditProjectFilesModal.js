@@ -1,18 +1,19 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import dynamic from 'next/dynamic';
-import {
-  Form, Button, Modal, Header, Dimmer
-} from 'semantic-ui-react';
-import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
-import { useFileStateManger } from 'lib/hooks/useFileStateManger';
-import Notification from 'components/Notification/Notification';
-import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
-import { graphql } from 'react-apollo';
 import compose from 'lodash.flowright';
-import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown/UseDropdown';
-import { normalize } from 'lib/graphql/normalizers/video';
+import dynamic from 'next/dynamic';
+import { graphql } from 'react-apollo';
+import {
+  Form, Button, Modal, Header, Dimmer,
+} from 'semantic-ui-react';
+
+import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
+import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
 import FileUploadProgressBar from '../../FileUploadProgressBar/FileUploadProgressBar';
+import Notification from 'components/Notification/Notification';
+import { normalize } from 'lib/graphql/normalizers/video';
+import { useFileStateManger } from 'lib/hooks/useFileStateManger';
+import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import { FilesContext } from './FilesContext';
 
 import './EditProjectFilesModal.scss';
@@ -22,7 +23,7 @@ const EditVideoFilesGrid = dynamic( () => import( /* webpackChunkName: "editVide
 
 const EditProjectFilesModal = ( {
   title, type, filesToEdit, extensions,
-  save, videoUses: { videoUses }
+  save, videoUses: { videoUses },
 } ) => {
   const [open, setOpen] = useState( false );
   const [saving, setSaving] = useState( false );
@@ -36,7 +37,7 @@ const EditProjectFilesModal = ( {
     reset,
     updateFileField,
     addFiles,
-    removeFile
+    removeFile,
   } = useFileStateManger( normalize );
 
   const allowedExtensions = extensions.join( ',' );
@@ -44,11 +45,11 @@ const EditProjectFilesModal = ( {
   const notificationStyles = {
     position: 'absolute',
     top: '15px',
-    right: '40px'
+    right: '40px',
   };
 
   const uploadProgessStyles = {
-    margin: '-10px 15px 15px 15px'
+    margin: '-10px 15px 15px 15px',
   };
 
   /*
@@ -58,16 +59,16 @@ const EditProjectFilesModal = ( {
   not applicable. Save button becomes active when all
   complete
   */
-  // checl allowed extensionx
+  // check allowed extensions
   const isComplete = () => {
     if ( type === 'support' ) {
       return files.every( file => !!file.language );
     }
-    return files.every( file => (
-      !!file.language
+
+    return files.every( file => !!file.language
       && !!file.videoBurnedInStatus
       && !!file.use
-      && !!file.quality ) );
+      && !!file.quality );
   };
 
   useEffect( () => {
@@ -76,6 +77,7 @@ const EditProjectFilesModal = ( {
 
   const _addFiles = filesToAdd => {
     let defaultUse = '';
+
     if ( type === 'video' ) {
       defaultUse = videoUses.find( u => u.name === 'Full Video' );
     }
@@ -92,7 +94,7 @@ const EditProjectFilesModal = ( {
   };
 
   const toggleStep = () => {
-    setStep( s => ( s === 1 ? 2 : 1 ) );
+    setStep( s => (s === 1 ? 2 : 1) );
   };
 
   const closeConfirm = () => {
@@ -106,6 +108,7 @@ const EditProjectFilesModal = ( {
       // if duplicates are present, ask user if they are indeed duplicates
       if ( duplicates.length ) {
         const dups = duplicates.reduce( ( acc, cur ) => `${acc} ${cur.name}\n`, '' );
+
         setConfirm( {
           open: true,
           headline: 'It appears that duplicate files are being added.',
@@ -119,7 +122,7 @@ const EditProjectFilesModal = ( {
           onConfirm: () => {
             _addFiles( filesToAdd );
             closeConfirm();
-          }
+          },
         } );
       } else {
         _addFiles( filesToAdd );
@@ -146,7 +149,8 @@ const EditProjectFilesModal = ( {
 
   const showFileErrors = uploadedFileErrors => {
     const errors = uploadedFileErrors.reduce( ( acc, cur ) => `${acc} ${cur.name}\n`, '' );
-    const multiple = ( uploadedFileErrors.length > 1 );
+    const multiple = uploadedFileErrors.length > 1;
+
     setConfirm( {
       open: true,
       headline: `There was an error processing the following file ${multiple ? 's' : ''}`,
@@ -160,22 +164,23 @@ const EditProjectFilesModal = ( {
       onConfirm: () => {
         closeConfirm();
         closeModal();
-      }
+      },
     } );
   };
 
 
   /**
    * Puts file in queue to remove
-   * Only show confirm dialgue for files that have already been saved to db
+   * Only show confirm dialogue for files that have already been saved to db
    * For new files, the id is generated using uuid and therefore will
-   * have the '-' character in it. Ff '-' exists, assume new file and do not show dialgue
+   * have the '-' character in it. Ff '-' exists, assume new file and do not show dialogue
    *
-   * @param {string} id id of fiile
+   * @param {string} id id of file
    * @param {string} name name of file
    */
   const handleRemove = ( id, name ) => {
     const matches = id.match( /-/gi );
+
     if ( !matches ) {
       setConfirm( {
         open: true,
@@ -187,7 +192,7 @@ const EditProjectFilesModal = ( {
         onConfirm: () => {
           removeFile( id );
           closeConfirm();
-        }
+        },
       } );
     } else {
       removeFile( id );
@@ -196,8 +201,10 @@ const EditProjectFilesModal = ( {
 
   const handleAddFiles = e => {
     const filesToAdd = Array.from( e.target.files );
+
     if ( files.length ) {
       const currentFiles = files.map( file => file.name );
+
       checkForDuplicates( currentFiles, filesToAdd );
     } else {
       _addFiles( filesToAdd );
@@ -207,7 +214,7 @@ const EditProjectFilesModal = ( {
   const handleSave = async () => {
     setSaving( true );
 
-    const uploadedFiles = files.filter( file => ( file.input ) );
+    const uploadedFiles = files.filter( file => file.input );
 
     // if there are files to upload, show progress bar
     setUpload( uploadedFiles.length );
@@ -217,6 +224,7 @@ const EditProjectFilesModal = ( {
     setSaving( false );
 
     const uploadedFileErrors = uploadedFiles.filter( file => file.error );
+
     if ( uploadedFileErrors.length ) {
       showFileErrors( uploadedFileErrors );
     } else {
@@ -273,12 +281,12 @@ const EditProjectFilesModal = ( {
 
             { !!upload
             && (
-            <FileUploadProgressBar
-              filesToUpload={ files.filter( file => ( file.input ) ) }
-              fileProgressMessage
-              barSize="small"
-              customStyles={ uploadProgessStyles }
-            />
+              <FileUploadProgressBar
+                filesToUpload={ files.filter( file => file.input ) }
+                fileProgressMessage
+                barSize="small"
+                customStyles={ uploadProgessStyles }
+              />
             ) }
           </Fragment>
         ) }
@@ -288,7 +296,11 @@ const EditProjectFilesModal = ( {
 
         <Modal.Content>
           <FilesContext.Provider value={ files }>
-            <Form> { renderGrid() } </Form>
+            <Form>
+              {' '}
+              { renderGrid() }
+              {' '}
+            </Form>
           </FilesContext.Provider>
         </Modal.Content>
         <Modal.Actions>
@@ -303,16 +315,17 @@ const EditProjectFilesModal = ( {
             multiple
             accept={ allowedExtensions }
             className="secondary"
-          >Add Files
+          >
+            Add Files
           </ButtonAddFiles>
 
           { type === 'video' && (
-          <Button
-            className="secondary"
-            type="button"
-            content={ step === 1 ? 'Next' : 'Previous' }
-            onClick={ toggleStep }
-          />
+            <Button
+              className="secondary"
+              type="button"
+              content={ step === 1 ? 'Next' : 'Previous' }
+              onClick={ toggleStep }
+            />
           ) }
 
           <Button
@@ -337,10 +350,10 @@ EditProjectFilesModal.propTypes = {
   extensions: PropTypes.array,
   videoUses: PropTypes.object,
   imageUses: PropTypes.object,
-  save: PropTypes.func
+  save: PropTypes.func,
 };
 
 export default compose(
   graphql( VIDEO_USE_QUERY, { name: 'videoUses' } ),
-  graphql( IMAGE_USE_QUERY, { name: 'imageUses' } )
+  graphql( IMAGE_USE_QUERY, { name: 'imageUses' } ),
 )( EditProjectFilesModal );

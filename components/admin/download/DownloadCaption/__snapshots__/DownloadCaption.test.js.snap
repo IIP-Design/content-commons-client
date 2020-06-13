@@ -4,6 +4,7 @@ exports[`<DownloadCaption /> renders final state without crashing 1`] = `
 <DownloadCaption
   data={
     Object {
+      "called": true,
       "error": undefined,
       "fetchMore": [Function],
       "loading": false,
@@ -181,6 +182,7 @@ exports[`<DownloadCaption /> renders initial loading state without crashing 1`] 
 <DownloadCaption
   data={
     Object {
+      "called": true,
       "error": undefined,
       "fetchMore": [Function],
       "loading": true,

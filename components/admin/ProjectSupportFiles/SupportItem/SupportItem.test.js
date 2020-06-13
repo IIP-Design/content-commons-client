@@ -2,8 +2,11 @@ import { mount } from 'enzyme';
 import mockAxios from 'axios';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
+
 import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import { UploadContext } from '../../ProjectEdit/VideoEdit/UploadContext';
+import SupportItem from './SupportItem';
+
 import {
   emptyItemProps,
   emptyMocks,
@@ -17,7 +20,6 @@ import {
   props,
   uploadErrorProps,
 } from './mocks';
-import SupportItem from './SupportItem';
 
 jest.mock( 'next/dynamic', () => () => 'Dynamic' );
 jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );

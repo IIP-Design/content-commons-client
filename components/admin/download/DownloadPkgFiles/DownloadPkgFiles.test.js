@@ -4,6 +4,12 @@ import { mocks } from 'components/admin/PackageEdit/mocks';
 import DownloadPkgFiles from './DownloadPkgFiles';
 
 jest.mock( './SignedUrlLink/SignedUrlLink', () => 'signed-url-link' );
+jest.mock( 'next/config', () => () => ( {
+  publicRuntimeConfig: {},
+} ) );
+jest.mock( 'context/authContext', () => ( {
+  useAuth: jest.fn( () => true ),
+} ) );
 
 const props = {
   files: mocks[0].result.data.pkg.documents,

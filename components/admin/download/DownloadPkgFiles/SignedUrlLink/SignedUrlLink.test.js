@@ -50,7 +50,7 @@ describe( '<SignedUrlLink />', () => {
 
     const itemHeader = wrapper.find( 'ItemHeader' );
 
-    expect( itemHeader.contains( `Download ${props.file.filename}` ) ).toEqual( true );
+    expect( itemHeader.text() ).toEqual( `Download ${props.file.filename}` );
   } );
 
   it( 'renders an <img /> for each item', () => {

@@ -72,8 +72,9 @@ exports[`<VideoProjectFile /> renders without crashing 1`] = `
           "nativeName": "English",
           "textDirection": "LTR",
         },
+        "signedUrl": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
         "updatedAt": "2019-06-18T14:58:10.024Z",
-        "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE",
+        "url": "https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg",
       },
       "size": "FULL",
     }
@@ -96,6 +97,7 @@ exports[`<VideoProjectFile /> renders without crashing 1`] = `
         >
           <Embed
             id="1evw4fRu3bo"
+            placeholder="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE"
             source="youtube"
           >
             <div
@@ -112,6 +114,10 @@ exports[`<VideoProjectFile /> renders without crashing 1`] = `
                   onClick={[Function]}
                 />
               </Icon>
+              <img
+                className="placeholder"
+                src="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/image-1.jpg?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE"
+              />
             </div>
           </Embed>
         </div>
@@ -131,8 +137,7 @@ exports[`<VideoProjectFile /> renders without crashing 1`] = `
             >
               File Name:
             </b>
-             
-            video-file-1.mp4
+             video-file-1.mp4
           </p>
           <p>
             <b
@@ -140,8 +145,7 @@ exports[`<VideoProjectFile /> renders without crashing 1`] = `
             >
               Filesize:
             </b>
-             
-            631.9 MB
+             631.9 MB
           </p>
           <p>
             <b
@@ -149,8 +153,7 @@ exports[`<VideoProjectFile /> renders without crashing 1`] = `
             >
               Dimensions:
             </b>
-             
-            1920 x 1080
+             1920 x 1080
           </p>
           <p>
             <b
@@ -171,8 +174,7 @@ exports[`<VideoProjectFile /> renders without crashing 1`] = `
             >
               Duration:
             </b>
-             
-            9:16
+             9:16
           </p>
           <p>
             <b
@@ -180,8 +182,7 @@ exports[`<VideoProjectFile /> renders without crashing 1`] = `
             >
               Subtitles & Captions:
             </b>
-             
-            CLEAN - No Captions
+             CLEAN - No Captions
           </p>
           <p>
             <b
@@ -189,8 +190,7 @@ exports[`<VideoProjectFile /> renders without crashing 1`] = `
             >
               Video Type:
             </b>
-             
-            Full Video
+             Full Video
           </p>
           <p>
             <b
@@ -198,18 +198,15 @@ exports[`<VideoProjectFile /> renders without crashing 1`] = `
             >
               Quality:
             </b>
-             
-            WEB
+             WEB
           </p>
           <p>
             <b
               className="label"
             >
-              YouTube
-               URL:
+               YouTube URL:
             </b>
-             
-            https://www.youtube.com/watch?v=1evw4fRu3bo
+             https://www.youtube.com/watch?v=1evw4fRu3bo
           </p>
         </div>
       </GridColumn>

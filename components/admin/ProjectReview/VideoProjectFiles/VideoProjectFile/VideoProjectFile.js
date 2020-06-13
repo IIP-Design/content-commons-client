@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Embed, Grid } from 'semantic-ui-react';
-import moment from 'moment'; // already benig used so import here
+import moment from 'moment'; // already being used so import here
+
 import {
   formatBytes,
   getStreamData,
   getYouTubeId,
   getVimeoId,
-  secondsToHMS
+  secondsToHMS,
 } from 'lib/utils';
 
-const VideoProjectFile = props => {
-  const { file, thumbnail } = props;
-
+const VideoProjectFile = ( { file, thumbnail } ) => {
   const [thumbnailProps, setThumbnailProps] = useState( { signedUrl: '', alt: '' } );
 
   useEffect( () => {
     if ( thumbnail && thumbnail.image ) {
       const { signedUrl } = thumbnail.image;
-      const alt = ( file && file.language ) ? `a thumbnail image for this file in ${file.language.displayName}` : '';
+      const alt = file && file.language ? `a thumbnail image for this file in ${file.language.displayName}` : '';
+
       setThumbnailProps( { signedUrl, alt } );
     }
-  }, [] );
+  }, [file, thumbnail] );
 
   if ( !file || Object.keys( file ).length === 0 ) return null;
 
@@ -34,9 +34,8 @@ const VideoProjectFile = props => {
     quality,
     stream,
     use: { name: videoType },
-    videoBurnedInStatus
+    videoBurnedInStatus,
   } = file;
-
 
   const youTubeUrl = getStreamData( stream, 'youtube', 'url' );
   const vimeoUrl = getStreamData( stream, 'vimeo', 'url' );
@@ -51,14 +50,14 @@ const VideoProjectFile = props => {
             source="youtube"
           />
         ) }
-        { ( !youTubeUrl && vimeoUrl ) && (
+        { !youTubeUrl && vimeoUrl && (
           <Embed
             id={ getVimeoId( vimeoUrl ) }
             placeholder={ thumbnailProps.signedUrl }
             source="vimeo"
           />
         ) }
-        { ( !youTubeUrl && !vimeoUrl && thumbnailProps.signedUrl ) && (
+        { !youTubeUrl && !vimeoUrl && thumbnailProps.signedUrl && (
           <figure className="thumbnail overlay">
             <img
               className="thumbnail-image"
@@ -70,16 +69,45 @@ const VideoProjectFile = props => {
       </Grid.Column>
 
       <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_meta">
-        <p><b className="label">File Name:</b> { filename }</p>
-        <p><b className="label">Filesize:</b> { formatBytes( filesize ) }</p>
-        <p><b className="label">Dimensions:</b> { `${width} x ${height}` }</p>
-        <p><b className="label">Uploaded:</b> <time dateTime={ createdAt }>{ `${moment( createdAt ).format( 'LL' )}` }</time>
+        <p>
+          <b className="label">File Name:</b>
+          { ` ${filename}`}
         </p>
-        <p><b className="label">Duration:</b> { secondsToHMS( duration ) }</p>
-        <p><b className="label">Subtitles & Captions:</b> { `${videoBurnedInStatus}${videoBurnedInStatus === 'CLEAN' ? ' - No Captions' : ''}` }</p>
-        <p><b className="label">Video Type:</b> { videoType }</p>
-        <p><b className="label">Quality:</b> { quality }</p>
-        <p><b className="label">{ youTubeUrl ? 'YouTube' : 'Vimeo' } URL:</b> { youTubeUrl || vimeoUrl }</p>
+        <p>
+          <b className="label">Filesize:</b>
+          { ` ${formatBytes( filesize )}` }
+        </p>
+        <p>
+          <b className="label">Dimensions:</b>
+          { ` ${width} x ${height}` }
+        </p>
+        <p>
+          <b className="label">Uploaded:</b>
+          {' '}
+          <time dateTime={ createdAt }>{ `${moment( createdAt ).format( 'LL' )}` }</time>
+        </p>
+        <p>
+          <b className="label">Duration:</b>
+          { ` ${secondsToHMS( duration )}` }
+        </p>
+        <p>
+          <b className="label">Subtitles & Captions:</b>
+          { ` ${videoBurnedInStatus}${videoBurnedInStatus === 'CLEAN' ? ' - No Captions' : ''}` }
+        </p>
+        <p>
+          <b className="label">Video Type:</b>
+          { ` ${videoType}` }
+        </p>
+        <p>
+          <b className="label">Quality:</b>
+          { ` ${quality}` }
+        </p>
+        <p>
+          <b className="label">
+            { ` ${youTubeUrl ? 'YouTube' : 'Vimeo'} URL:`}
+          </b>
+          { ` ${youTubeUrl || vimeoUrl}`}
+        </p>
       </Grid.Column>
     </Grid.Row>
   );
@@ -90,12 +118,12 @@ VideoProjectFile.propTypes = {
   thumbnail: PropTypes.oneOfType( [
     PropTypes.object,
     PropTypes.bool,
-  ] )
+  ] ),
 };
 
 VideoProjectFile.defaultProps = {
   file: {},
-  thumbnail: {}
+  thumbnail: {},
 };
 
 export default VideoProjectFile;

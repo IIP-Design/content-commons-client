@@ -3,11 +3,16 @@ import toJSON from 'enzyme-to-json';
 import { Checkbox, Popup } from 'semantic-ui-react';
 import TeamProjectPrimaryCol from './TeamProjectPrimaryCol';
 
-/**
- * Need to mock Next.js dynamic imports
- * in order for this test suite to run.
- */
-jest.mock( 'next-server/dynamic', () => () => 'VideoDetailsPopup' );
+jest.mock( 'next/dynamic', () => () => 'dynamically-imported' );
+jest.mock( 'react', () => ( {
+  ...jest.requireActual( 'react' ),
+  useContext: () => ( { state: {
+    selected: {
+      selectedItems: new Map( [['999', true]] ),
+    },
+    team: 'Press Office',
+  } } ),
+} ) );
 
 const props = {
   d: {
@@ -20,15 +25,13 @@ const props = {
     visibility: 'PUBLIC',
     thumbnail: {
       alt: 'the alt text',
-      url: 'https://website.com'
-    }
+      url: 'https://website.com',
+    },
   },
   header: {
     label: 'PROJECT TITLE',
-    name: 'projectTitle'
+    name: 'projectTitle',
   },
-  selectedItems: new Map( [['999', true]] ),
-  toggleItemSelection: jest.fn()
 };
 
 const Component = <TeamProjectPrimaryCol { ...props } />;
@@ -50,6 +53,7 @@ describe( '<TeamProjectPrimaryCol />', () => {
 
   it( 'renders a checked Checkbox if item is selected', () => {
     const wrapper = shallow( Component );
+
     wrapper.setProps( { selectedItems: new Map( [[props.d.id, true]] ) } );
 
     const checkbox = wrapper.find( Checkbox );
@@ -75,11 +79,12 @@ describe( '<TeamProjectPrimaryCol />', () => {
 
   it( 'renders a Popup with a truncated project title if it is over 35 characters', () => {
     const wrapper = shallow( Component );
+
     wrapper.setProps( {
       d: {
         ...props.d,
-        projectTitle: 'Test Project Test Project Test Project Test Project'
-      }
+        projectTitle: 'Test Project Test Project Test Project Test Project',
+      },
     } );
     const popup = wrapper.find( Popup );
 
@@ -124,8 +129,8 @@ describe( '<TeamProjectPrimaryCol />', () => {
     wrapper.setProps( {
       d: {
         ...props.d,
-        thumbnail: { url: '', alt: '' }
-      }
+        thumbnail: { url: '', alt: '' },
+      },
     } );
     expect( placeholder().exists() ).toEqual( true );
     expect( placeholder().contains( innerPlaceholder ) )
@@ -134,9 +139,12 @@ describe( '<TeamProjectPrimaryCol />', () => {
 
   it( 'renders spans for actions if status is PUBLISHING', () => {
     const wrapper = shallow( Component );
+
     wrapper.setProps( { d: { ...props.d, status: 'PUBLISHING' } } );
 
-    const actions = ['Edit', 'Preview', 'Files'];
+    const actions = [
+      'Edit', 'Preview', 'Files',
+    ];
     const spans = wrapper.find( '.projects_data_actions_action' );
 
     spans.forEach( ( span, i ) => {
@@ -148,6 +156,7 @@ describe( '<TeamProjectPrimaryCol />', () => {
 
   it( 'renders a span for the project title if status is PUBLISHING', () => {
     const wrapper = shallow( Component );
+
     wrapper.setProps( { d: { ...props.d, status: 'PUBLISHING' } } );
 
     const title = wrapper.find( '.projects_data_title' );
@@ -158,12 +167,13 @@ describe( '<TeamProjectPrimaryCol />', () => {
 
   it( 'renders a span for the Popup trigger if status is PUBLISHING & the project title is over 35 characters', () => {
     const wrapper = shallow( Component );
+
     wrapper.setProps( {
       d: {
         ...props.d,
         projectTitle: 'Test Project Test Project Test Project Test Project',
-        status: 'PUBLISHING'
-      }
+        status: 'PUBLISHING',
+      },
     } );
 
     const popup = wrapper.find( Popup );
@@ -176,6 +186,7 @@ describe( '<TeamProjectPrimaryCol />', () => {
 
   it( 'renders a disabled checkbox if status is PUBLISHING', () => {
     const wrapper = shallow( Component );
+
     wrapper.setProps( { d: { ...props.d, status: 'PUBLISHING' } } );
     const checkbox = wrapper.find( Checkbox );
 
@@ -184,6 +195,7 @@ describe( '<TeamProjectPrimaryCol />', () => {
 
   it( 'does not render a data-label checkbox attribute if status is PUBLISHING', () => {
     const wrapper = shallow( Component );
+
     wrapper.setProps( { d: { ...props.d, status: 'PUBLISHING' } } );
     const checkbox = wrapper.find( Checkbox );
     const attrs = Object.keys( checkbox.props() );

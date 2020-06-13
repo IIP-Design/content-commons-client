@@ -4,6 +4,7 @@ exports[`<DownloadOtherFiles /> renders final state without crashing 1`] = `
 <DownloadOtherFiles
   data={
     Object {
+      "called": true,
       "error": undefined,
       "fetchMore": [Function],
       "loading": false,
@@ -185,6 +186,7 @@ exports[`<DownloadOtherFiles /> renders initial loading state without crashing 1
 <DownloadOtherFiles
   data={
     Object {
+      "called": true,
       "error": undefined,
       "fetchMore": [Function],
       "loading": true,
