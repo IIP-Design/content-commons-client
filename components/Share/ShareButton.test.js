@@ -2,11 +2,15 @@ import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import ShareButton from './ShareButton';
 
+jest.mock( 'next/config', () => () => ( {
+  publicRuntimeConfig: {},
+} ) );
+
 const props = {
   url: 'https://the-url.com',
   icon: 'twitter',
   isPreview: false,
-  label: 'Share on Twitter'
+  label: 'Share on Twitter',
 };
 
 const Component = <ShareButton { ...props } />;
@@ -23,10 +27,12 @@ describe( '<ShareButton />', () => {
     const wrapper = mount( Component );
     const listItem = wrapper.find( 'ListItem' );
     const libBrowser = require( 'lib/browser' ); // eslint-disable-line
+
     libBrowser.openWindow = jest.fn();
     libBrowser.isMobile = jest.fn( () => false );
 
     const e = { preventDefault: jest.fn() };
+
     listItem.simulate( 'click', e );
 
     expect( wrapper.prop( 'isPreview' ) ).toEqual( props.isPreview );
@@ -38,10 +44,12 @@ describe( '<ShareButton />', () => {
     const wrapper = mount( Component );
     const listItem = wrapper.find( 'ListItem' );
     const libBrowser = require( 'lib/browser' ); // eslint-disable-line
+
     libBrowser.openWindow = jest.fn();
     libBrowser.isMobile = jest.fn( () => false );
 
     const e = { preventDefault: jest.fn() };
+
     listItem.simulate( 'keypress', e );
 
     expect( wrapper.prop( 'isPreview' ) ).toEqual( props.isPreview );
@@ -53,10 +61,12 @@ describe( '<ShareButton />', () => {
     const wrapper = mount( Component );
     const listItem = wrapper.find( 'ListItem' );
     const libBrowser = require( 'lib/browser' ); // eslint-disable-line
+
     libBrowser.openWindow = jest.fn();
     libBrowser.isMobile = jest.fn( () => true );
 
     const e = { preventDefault: jest.fn() };
+
     listItem.simulate( 'click', e );
 
     expect( wrapper.prop( 'isPreview' ) ).toEqual( props.isPreview );
@@ -68,10 +78,12 @@ describe( '<ShareButton />', () => {
     const wrapper = mount( Component );
     const listItem = wrapper.find( 'ListItem' );
     const libBrowser = require( 'lib/browser' ); // eslint-disable-line
+
     libBrowser.openWindow = jest.fn();
     libBrowser.isMobile = jest.fn( () => true );
 
     const e = { preventDefault: jest.fn() };
+
     listItem.simulate( 'keypress', e );
 
     expect( wrapper.prop( 'isPreview' ) ).toEqual( props.isPreview );
@@ -83,11 +95,13 @@ describe( '<ShareButton />', () => {
     const wrapper = mount( Component );
     const listItem = wrapper.find( 'ListItem' );
     const libBrowser = require( 'lib/browser' ); // eslint-disable-line
+
     libBrowser.openWindow = jest.fn();
     libBrowser.isMobile = jest.fn( () => false );
 
     wrapper.setProps( { isPreview: true } );
     const e = { preventDefault: jest.fn() };
+
     listItem.simulate( 'click', e );
 
     expect( wrapper.prop( 'isPreview' ) ).toEqual( !props.isPreview );
@@ -99,11 +113,13 @@ describe( '<ShareButton />', () => {
     const wrapper = mount( Component );
     const listItem = wrapper.find( 'ListItem' );
     const libBrowser = require( 'lib/browser' ); // eslint-disable-line
+
     libBrowser.openWindow = jest.fn();
     libBrowser.isMobile = jest.fn( () => false );
 
     wrapper.setProps( { isPreview: true } );
     const e = { preventDefault: jest.fn() };
+
     listItem.simulate( 'keypress', e );
 
     expect( wrapper.prop( 'isPreview' ) ).toEqual( !props.isPreview );

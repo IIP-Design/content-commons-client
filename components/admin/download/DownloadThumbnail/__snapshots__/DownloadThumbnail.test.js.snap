@@ -4,6 +4,7 @@ exports[`<DownloadThumbnail /> renders final state without crashing 1`] = `
 <DownloadThumbnail
   data={
     Object {
+      "called": true,
       "error": undefined,
       "fetchMore": [Function],
       "loading": false,
@@ -181,6 +182,7 @@ exports[`<DownloadThumbnail /> renders initial loading state without crashing 1`
 <DownloadThumbnail
   data={
     Object {
+      "called": true,
       "error": undefined,
       "fetchMore": [Function],
       "loading": true,

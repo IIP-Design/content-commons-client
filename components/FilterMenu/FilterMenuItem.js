@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'next/router';
-import { Form, Icon } from 'semantic-ui-react';
-import { fetchQueryString } from 'lib/searchQueryString';
 import difference from 'lodash/difference';
-import union from 'lodash/union';
 import intersection from 'lodash/intersection';
+import union from 'lodash/union';
 import { connect } from 'react-redux';
+import { Form, Icon } from 'semantic-ui-react';
+import { withRouter } from 'next/router';
+
+import { fetchQueryString } from 'lib/searchQueryString';
+
 import './FilterMenuItem.scss';
 
 const FilterMenuItem = props => {
@@ -14,13 +16,13 @@ const FilterMenuItem = props => {
   const [selected, setSelected] = useState( [] );
 
   /**
-   * Format data into state that dopdowns will use
+   * Format data into state that drop-downs will use
    */
   const formatOptions = ( opts, filterName ) => {
     let filterOptions = opts.map( option => ( {
       label: option.display_name,
       value: option.key,
-      count: option.count
+      count: option.count,
     } ) );
 
     /* Sort Source filter alphabetically */
@@ -35,6 +37,7 @@ const FilterMenuItem = props => {
   const hideFilterMenu = e => {
     if ( e && e.target ) {
       const menu = document.querySelector( `[data-menuname='menu-${props.name}']` );
+
       if ( !menu.contains( e.target ) ) {
         setFilterItemOpen( false );
       }
@@ -58,17 +61,19 @@ const FilterMenuItem = props => {
    * @param {array|string} value - updated filter value
    */
   const executeQuery = value => {
+    const filtered = props.name === 'postTypes' ? value.filter( val => val !== 'package' ) : value;
+
     // Add term from search reducer to ensure that it does not get removed from the query string
     const query = fetchQueryString( {
       ...props.filterStore,
-      [props.name]: value,
+      [props.name]: filtered,
       term: props.term,
-      language: props.language
+      language: props.language,
     } );
 
     props.router.replace( {
       pathname: '/results',
-      query
+      query,
     } );
   };
 
@@ -82,12 +87,13 @@ const FilterMenuItem = props => {
     // make copy of selected filter array, i.e. categories
     const arr = props.filterStore[props.name]?.slice( 0 );
 
-    // Some values have mutliple search terms within the input value
+    // Some values have multiple search terms within the input value
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
     // so we split the value into array and add/remove each to search array
     const values = value.split( '|' );
 
     let updatedArr;
+
     if ( checked ) {
       // create array of unique values within arr & values
       updatedArr = union( arr, values );
@@ -117,11 +123,11 @@ const FilterMenuItem = props => {
   );
 
   const renderCheckbox = option => {
-    // Some values have mutliple search terms within the input value
+    // Some values have multiple search terms within the input value
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
     // so we split the value into array and add/remove each to search array
     const values = option?.value?.split( '|' );
-    const checked = !!( intersection( selected, values ).length );
+    const checked = !!intersection( selected, values ).length;
 
     return (
       <Form.Checkbox
@@ -145,7 +151,7 @@ const FilterMenuItem = props => {
   };
 
   useEffect( () => {
-    // togglel listener won menu show/hide
+    // toggle listener won menu show/hide
     toggleEventListener( filterItemOpen );
 
     // Clean up the listener on unmount
@@ -158,11 +164,9 @@ const FilterMenuItem = props => {
     setSelected( props.selected );
   }, [props.selected] );
 
-
   const {
-    className, formItem, options, filter, searchInput
+    className, formItem, options, filter, searchInput,
   } = props;
-
 
   return (
     <div
@@ -176,28 +180,33 @@ const FilterMenuItem = props => {
         role="menuitem"
         tabIndex={ 0 }
       >
-        { filter } <Icon name={ filterItemOpen ? 'chevron up' : 'chevron down' } />
+        { filter }
+        {' '}
+        <Icon name={ filterItemOpen ? 'chevron up' : 'chevron down' } />
       </span>
       <Form className={ `${filterItemOpen ? 'filterMenu_options show' : 'filterMenu_options'} ${className}` }>
 
         { searchInput }
 
         <Form.Group>
-          { formatOptions( options, filter ).map( option => ( ( formItem === 'checkbox' )
-            ? renderCheckbox( option )
-            : renderRadio( option ) ) ) }
+          { formatOptions( options, filter ).map(
+            option => (formItem === 'checkbox'
+              ? renderCheckbox( option )
+              : renderRadio( option )),
+          )}
 
           { options.length === 0
             && (
-            <span style={ {
-              paddingTop: '3px',
-              color: '#112e51',
-              fontSize: '0.77rem',
-              textAlign: 'center'
-            } }
-            >
-              None Available
-            </span>
+              <span
+                style={ {
+                  paddingTop: '3px',
+                  color: '#112e51',
+                  fontSize: '0.77rem',
+                  textAlign: 'center',
+                } }
+              >
+                None Available
+              </span>
             ) }
         </Form.Group>
       </Form>
@@ -207,7 +216,7 @@ const FilterMenuItem = props => {
 
 FilterMenuItem.defaultProps = {
   className: '',
-  searchInput: null
+  searchInput: null,
 };
 
 FilterMenuItem.propTypes = {
@@ -222,13 +231,13 @@ FilterMenuItem.propTypes = {
   language: PropTypes.string,
   searchInput: PropTypes.oneOfType( [PropTypes.node, () => null] ),
   /* eslint-disable-next-line react/no-unused-prop-types */
-  selected: PropTypes.oneOfType( [PropTypes.string, PropTypes.array] )
+  selected: PropTypes.oneOfType( [PropTypes.string, PropTypes.array] ),
 };
 
 const mapStateToProps = state => ( {
   filterStore: state.filter,
   term: state.search.term,
-  language: state.search.language
+  language: state.search.language,
 } );
 
 export default withRouter( connect( mapStateToProps )( FilterMenuItem ) );

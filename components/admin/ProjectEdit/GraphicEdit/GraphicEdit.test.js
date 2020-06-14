@@ -3,21 +3,28 @@ import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
+
+import GraphicEdit from './GraphicEdit';
+
 import {
   errorMocks,
   mocks,
+  publishedMocks,
   props,
-  getGraphicFiles,
+  getFiles,
   getSupportFiles,
   suppressActWarning,
 } from './testHelpers';
-import GraphicEdit from './GraphicEdit';
 
 const router = {
   asPath: 'the-asPath',
   push: jest.fn(),
   replace: jest.fn(),
 };
+
+jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: {} } ) );
+
+jest.mock( 'next/dynamic', () => () => 'GraphicProject' );
 
 jest.mock(
   'components/admin/ActionButtons/ActionButtons',
@@ -49,7 +56,7 @@ jest.mock(
   () => function UploadProgress() { return ''; },
 );
 
-describe( '<GraphicEdit />, when there is an existing graphic project', () => {
+describe( '<GraphicEdit />, when there is an existing DRAFT graphic project', () => {
   const consoleError = console.error;
 
   beforeAll( () => suppressActWarning( consoleError ) );
@@ -104,12 +111,11 @@ describe( '<GraphicEdit />, when there is an existing graphic project', () => {
     expect( apolloError.contains( msg ) ).toEqual( true );
   } );
 
-  it( 'renders the final state', async () => {
+  it( 'renders the final state without crashing', async () => {
     await wait( 0 );
     wrapper.update();
 
     expect( graphicEdit().exists() ).toEqual( true );
-    expect( toJSON( graphicEdit() ) ).toMatchSnapshot();
   } );
 
   it( 'renders ProjectHeader', async () => {
@@ -128,9 +134,10 @@ describe( '<GraphicEdit />, when there is an existing graphic project', () => {
     const actionButtons = wrapper.find( 'ActionButtons' );
 
     expect( actionButtons.exists() ).toEqual( true );
+    expect( toJSON( actionButtons ) ).toMatchSnapshot();
   } );
 
-  it( 'calling ActionButtons handle.deleteConfirm calls handleDeleteConfirm', async done => {
+  it.skip( 'calling ActionButtons handle.deleteConfirm calls handleDeleteConfirm', async done => {
     await wait( 0 );
     wrapper.update();
     const actionButtons = wrapper.find( 'ActionButtons' );
@@ -171,7 +178,7 @@ describe( '<GraphicEdit />, when there is an existing graphic project', () => {
       el: 'p',
       customStyles: {
         position: 'absolute',
-        top: '9em',
+        top: '1em',
         left: '50%',
         transform: 'translateX(-50%)',
       },
@@ -239,15 +246,219 @@ describe( '<GraphicEdit />, when there is an existing graphic project', () => {
     await wait( 0 );
     wrapper.update();
     const graphicFiles = wrapper.find( 'GraphicFilesFormContainer' );
-    const { images } = mocks[0].result.data.graphicProject;
+    const { data } = mocks[0].result;
     const projectId = props.id;
 
     expect( graphicFiles.exists() ).toEqual( true );
     expect( graphicFiles.prop( 'projectId' ) ).toEqual( props.id );
     expect( graphicFiles.prop( 'files' ) )
-      .toEqual( getGraphicFiles( {
-        images,
-        localFiles: undefined,
+      .toEqual( getFiles( {
+        data,
+        type: 'images',
+        projectId,
+      } ) );
+  } );
+} );
+
+describe( '<GraphicEdit />, when there is an existing PUBLISHED graphic project', () => {
+  const consoleError = console.error;
+
+  beforeAll( () => suppressActWarning( consoleError ) );
+  afterAll( () => {
+    console.error = consoleError;
+  } );
+
+  let Component;
+  let ErrorComponent;
+  let wrapper;
+  let graphicEdit;
+
+  beforeEach( () => {
+    Component = (
+      <MockedProvider mocks={ publishedMocks } resolvers={ {} } addTypename>
+        <RouterContext.Provider value={ router }>
+          <GraphicEdit { ...props } />
+        </RouterContext.Provider>
+      </MockedProvider>
+    );
+
+    ErrorComponent = (
+      <MockedProvider mocks={ errorMocks } resolvers={ {} } addTypename>
+        <RouterContext.Provider value={ router }>
+          <GraphicEdit { ...props } />
+        </RouterContext.Provider>
+      </MockedProvider>
+    );
+    wrapper = mount( Component );
+    graphicEdit = () => wrapper.find( 'GraphicEdit' );
+  } );
+
+  it( 'renders initial loading state without crashing', () => {
+    const loader = wrapper.find( 'Loader' );
+    const msg = 'Loading project details page...';
+
+    expect( wrapper.exists() ).toEqual( true );
+    expect( loader.exists() ).toEqual( true );
+    expect( loader.contains( msg ) ).toEqual( true );
+  } );
+
+  it( 'renders error message if a queryError is returned', async () => {
+    const errorWrapper = mount( ErrorComponent );
+
+    await wait( 0 );
+    errorWrapper.update();
+
+    const apolloError = errorWrapper.find( 'ApolloError' );
+    const msg = 'There was an error.';
+
+    expect( apolloError.exists() ).toEqual( true );
+    expect( apolloError.contains( msg ) ).toEqual( true );
+  } );
+
+  it( 'renders the final state without crashing', async () => {
+    await wait( 0 );
+    wrapper.update();
+
+    expect( graphicEdit().exists() ).toEqual( true );
+  } );
+
+  it( 'renders ProjectHeader', async () => {
+    await wait( 0 );
+    wrapper.update();
+    const projectHeader = wrapper.find( 'ProjectHeader' );
+
+    expect( projectHeader.exists() ).toEqual( true );
+    expect( projectHeader.prop( 'icon' ) ).toEqual( 'images outline' );
+    expect( projectHeader.prop( 'text' ) ).toEqual( 'Project Details' );
+  } );
+
+  it( 'renders the ActionButtons', async () => {
+    await wait( 0 );
+    wrapper.update();
+    const actionButtons = wrapper.find( 'ActionButtons' );
+
+    expect( actionButtons.exists() ).toEqual( true );
+    expect( toJSON( actionButtons ) ).toMatchSnapshot();
+  } );
+
+  it( 'calling ActionButtons handle.deleteConfirm calls handleDeleteConfirm', async done => {
+    await wait( 0 );
+    wrapper.update();
+    const actionButtons = wrapper.find( 'ActionButtons' );
+
+    // Redirect is a side effect of project deletion.
+    const deleteConfirmTest = async () => {
+      actionButtons.prop( 'handle' ).deleteConfirm();
+      await wait( 4 ); // wait for mutation to resolve
+      wrapper.update();
+
+      expect( router.push ).toHaveBeenCalledWith( {
+        pathname: '/admin/dashboard',
+      } );
+      done();
+    };
+
+    deleteConfirmTest();
+  } );
+
+  it( 'calling ActionButtons handle.save calls handleExit', async () => {
+    await wait( 0 );
+    wrapper.update();
+    const actionButtons = wrapper.find( 'ActionButtons' );
+
+    actionButtons.prop( 'handle' ).save();
+    expect( router.push ).toHaveBeenCalledWith( {
+      pathname: '/admin/dashboard',
+    } );
+  } );
+
+  it( 'renders the Notification', async () => {
+    await wait( 0 );
+    wrapper.update();
+    const notification = wrapper.find( 'Notification' );
+
+    expect( notification.exists() ).toEqual( true );
+    expect( notification.props() ).toEqual( {
+      el: 'p',
+      customStyles: {
+        position: 'absolute',
+        top: '1em',
+        left: '50%',
+        transform: 'translateX(-50%)',
+      },
+      show: false,
+      msg: '',
+    } );
+  } );
+
+  it( 'renders the UploadProgress', async () => {
+    await wait( 0 );
+    wrapper.update();
+    const uploadProgress = wrapper.find( 'UploadProgress' );
+
+    expect( uploadProgress.exists() ).toEqual( true );
+    expect( uploadProgress.length ).toEqual( 2 );
+  } );
+
+  it( 'renders the GraphicProjectDetailsFormContainer', async () => {
+    await wait( 0 );
+    wrapper.update();
+    const detailsForm = wrapper.find( 'GraphicProjectDetailsFormContainer' );
+
+    expect( detailsForm.exists() ).toEqual( true );
+    expect( detailsForm.prop( 'id' ) ).toEqual( props.id );
+    expect( detailsForm.prop( 'contentStyle' ) ).toEqual( {
+      border: '3px solid transparent',
+    } );
+  } );
+
+  it( 'renders the SupportFiles', async () => {
+    await wait( 0 );
+    wrapper.update();
+    const supportFiles = wrapper.find( 'SupportFiles' );
+    const { data } = mocks[0].result;
+    const projectId = props.id;
+    const supportFilesConfig = [
+      {
+        headline: 'editable files',
+        helperText: 'Original files that may be edited and adapted as needed for reuse.',
+        files: getSupportFiles( {
+          data,
+          type: 'editable',
+          projectId,
+        } ),
+      },
+      {
+        headline: 'additional files',
+        helperText: 'Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics.',
+        files: getSupportFiles( {
+          data,
+          type: 'additional',
+          projectId,
+        } ),
+      },
+    ];
+
+    expect( supportFiles.exists() ).toEqual( true );
+    expect( supportFiles.prop( 'projectId' ) ).toEqual( props.id );
+    supportFilesConfig.forEach( ( config, i ) => {
+      expect( supportFiles.prop( 'fileTypes' )[i] ).toEqual( config );
+    } );
+  } );
+
+  it( 'renders the GraphicFilesFormContainer', async () => {
+    await wait( 0 );
+    wrapper.update();
+    const graphicFiles = wrapper.find( 'GraphicFilesFormContainer' );
+    const { data } = mocks[0].result;
+    const projectId = props.id;
+
+    expect( graphicFiles.exists() ).toEqual( true );
+    expect( graphicFiles.prop( 'projectId' ) ).toEqual( props.id );
+    expect( graphicFiles.prop( 'files' ) )
+      .toEqual( getFiles( {
+        data,
+        type: 'images',
         projectId,
       } ) );
   } );
@@ -299,7 +510,7 @@ describe( '<GraphicEdit />, when there is no props.id and local files have been 
     graphicEdit = () => wrapper.find( 'GraphicEdit' );
   } );
 
-  it( 'renders the final state', async () => {
+  it( 'renders without crashing', async () => {
     await wait( 0 );
     wrapper.update();
 
@@ -322,6 +533,7 @@ describe( '<GraphicEdit />, when there is no props.id and local files have been 
     const actionButtons = wrapper.find( 'ActionButtons' );
 
     expect( actionButtons.exists() ).toEqual( true );
+    expect( toJSON( actionButtons ) ).toMatchSnapshot();
   } );
 
   it( 'renders the Notification', async () => {
@@ -334,7 +546,7 @@ describe( '<GraphicEdit />, when there is no props.id and local files have been 
       el: 'p',
       customStyles: {
         position: 'absolute',
-        top: '9em',
+        top: '1em',
         left: '50%',
         transform: 'translateX(-50%)',
       },
@@ -402,15 +614,15 @@ describe( '<GraphicEdit />, when there is no props.id and local files have been 
     await wait( 0 );
     wrapper.update();
     const graphicFiles = wrapper.find( 'GraphicFilesFormContainer' );
-    const { files: localFiles } = mocks[2].result.data.localGraphicProject;
+    const { data } = mocks[2].result;
     const projectId = newProps.id;
 
     expect( graphicFiles.exists() ).toEqual( true );
     expect( graphicFiles.prop( 'projectId' ) ).toEqual( newProps.id );
     expect( graphicFiles.prop( 'files' ) )
-      .toEqual( getGraphicFiles( {
-        images: undefined,
-        localFiles,
+      .toEqual( getFiles( {
+        data,
+        type: 'images',
         projectId,
       } ) );
   } );

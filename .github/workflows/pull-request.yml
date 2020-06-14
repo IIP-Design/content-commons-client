@@ -1,0 +1,22 @@
+name: Pull Request Test Runner
+on:
+  pull_request:
+    branches:
+      - develop
+    types: [opened, reopened, synchronize]
+
+jobs:
+  build_and_test:
+    name: Run Jest test suites
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.15.1'
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm run test -- --coverage

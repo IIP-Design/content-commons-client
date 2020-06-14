@@ -1,4 +1,3 @@
-import sortBy from 'lodash/sortBy';
 import { getCount, getFileExt } from 'lib/utils';
 import {
   DELETE_GRAPHIC_PROJECT_MUTATION,
@@ -462,6 +461,7 @@ const mocks = [
                 __typename: 'LocalInputFile',
                 dataUrl: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ',
                 name: '4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg',
+                size: 9999,
               },
             },
             {
@@ -476,6 +476,7 @@ const mocks = [
                 __typename: 'LocalInputFile',
                 dataUrl: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ',
                 name: '4_3_Serious_TW.jpg',
+                size: 9999,
               },
             },
             {
@@ -490,6 +491,7 @@ const mocks = [
                 __typename: 'LocalInputFile',
                 dataUrl: 'data:image/vnd.adobe.photoshop;base64,OEJQUwABAAAA',
                 name: 's-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd',
+                size: 999999,
               },
             },
             {
@@ -504,6 +506,7 @@ const mocks = [
                 __typename: 'LocalInputFile',
                 dataUrl: 'data:application/octet-stream;base64,AAEAAAATAQAAB',
                 name: 'OpenSans-Regular.ttf',
+                size: 999,
               },
             },
             {
@@ -518,6 +521,7 @@ const mocks = [
                 __typename: 'LocalInputFile',
                 dataUrl: 'data:image/vnd.adobe.photoshop;base64,OEJQUwABAAAA',
                 name: 'test-file-FB.psd',
+                size: 999999,
               },
             },
             {
@@ -532,6 +536,7 @@ const mocks = [
                 __typename: 'LocalInputFile',
                 dataUrl: 'data:image/png;base64,iVBORw0KGgoAAAANS',
                 name: 's-secure-rights_shell.png',
+                size: 9999,
               },
             },
             {
@@ -546,6 +551,7 @@ const mocks = [
                 __typename: 'LocalInputFile',
                 dataUrl: 'data:application/vnd.openxmlformats-officedocument;base64,asdfEACGAE',
                 name: 's-secure-rights_transcript.docx',
+                size: 99,
               },
             },
           ],
@@ -583,6 +589,29 @@ const mocks = [
         ],
       },
     },
+  },
+];
+
+const publishedMocks = [
+  {
+    ...mocks[0],
+    result: {
+      data: {
+        graphicProject: {
+          ...mocks[0].result.data.graphicProject,
+          status: 'PUBLISHED',
+        },
+      },
+    },
+  },
+  {
+    ...mocks[1],
+  },
+  {
+    ...mocks[2],
+  },
+  {
+    ...mocks[3],
   },
 ];
 
@@ -633,7 +662,15 @@ const getInitialFiles = ( files, type ) => {
     } );
   }
 
-  return type === 'graphicFiles' ? initialGraphicFiles : initialSupportFiles;
+  return type === 'images' ? initialGraphicFiles : initialSupportFiles;
+};
+
+const getFiles = ( { data, type, projectId } ) => {
+  const existingFiles = data?.graphicProject?.[type] || [];
+  const localFiles = mocks[2].result.data.localGraphicProject.files;
+  const files = projectId ? existingFiles : getInitialFiles( localFiles, type );
+
+  return files;
 };
 
 const getSupportFiles = ( { data, type, projectId } ) => {
@@ -642,25 +679,10 @@ const getSupportFiles = ( { data, type, projectId } ) => {
   ];
   const editableFiles = [];
   const additionalFiles = [];
-
-  const existingSupportFiles = data.graphicProject?.supportFiles || [];
-  const existingGraphicFiles = data.graphicProject?.images || [];
-
-  const shellFile = existingGraphicFiles.filter( img => getIsShell( img.filename ) );
-  const existingFilesPlusShell = existingSupportFiles.concat( shellFile );
-
-  const initialFiles = getInitialFiles( mocks[2].result.data.localGraphicProject.files, 'supportFiles' );
-  const supportFiles = projectId ? existingFilesPlusShell : initialFiles;
-  const sortedFiles = sortBy( supportFiles, file => {
-    if ( projectId ) {
-      return file.filename;
-    }
-
-    return file.name;
-  } );
+  const supportFiles = getFiles( { data, type: 'supportFiles', projectId } );
 
   if ( getCount( supportFiles ) ) {
-    sortedFiles.forEach( file => {
+    supportFiles.forEach( file => {
       const _filename = projectId ? file.filename : file.name;
       const extension = getFileExt( _filename );
 
@@ -678,20 +700,6 @@ const getSupportFiles = ( { data, type, projectId } ) => {
   return type === 'editable' ? editableFiles : additionalFiles;
 };
 
-const getGraphicFiles = ( { images, localFiles, projectId } ) => {
-  const existingFiles = images || [];
-  const initialFiles = getInitialFiles( localFiles, 'graphicFiles' );
-  let files = [];
-
-  if ( projectId ) {
-    files = existingFiles.filter( img => !getIsShell( img.filename ) );
-  } else {
-    files = initialFiles;
-  }
-
-  return files;
-};
-
 const suppressActWarning = consoleError => {
   const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
 
@@ -705,8 +713,9 @@ const suppressActWarning = consoleError => {
 export {
   errorMocks,
   mocks,
+  publishedMocks,
   props,
-  getGraphicFiles,
+  getFiles,
   getSupportFiles,
   suppressActWarning,
 };

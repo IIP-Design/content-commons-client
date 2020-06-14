@@ -11,8 +11,8 @@ const props = {
   modalContent: Content,
   options: {
     one: 'option1',
-    two: 'option2'
-  }
+    two: 'option2',
+  },
 };
 
 const Component = <ProjectPreview { ...props } />;

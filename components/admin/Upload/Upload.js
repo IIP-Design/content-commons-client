@@ -4,23 +4,25 @@
  *
  */
 import React, { useState, useReducer } from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { useMutation } from '@apollo/react-hooks';
 import Link from 'next/link';
-import { Button, Modal, Icon } from 'semantic-ui-react';
 import dynamic from 'next/dynamic';
+import moment from 'moment';
 import Router from 'next/router';
+import { Button, Modal, Icon } from 'semantic-ui-react';
+import { useMutation } from '@apollo/react-hooks';
+
 import ApolloError from 'components/errors/ApolloError';
+import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
+import { CREATE_PACKAGE_MUTATION, PACKAGE_EXISTS_QUERY } from 'lib/graphql/queries/package';
+import { buildCreatePackageTree } from 'lib/graphql/builders/package';
+import { useAuth } from 'context/authContext';
+
 import imageIcon from 'static/icons/icon_150px_images_blue.png';
 import docIcon from 'static/icons/icon_150px_document_blue.png';
 import eduIcon from 'static/icons/icon_150px_edu_blue.png';
 import videoIcon from 'static/icons/icon_150px_video_blue.png';
 import audioIcon from 'static/icons/icon_150px_audio_blue.png';
-import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
-import { CREATE_PACKAGE_MUTATION, PACKAGE_EXISTS_QUERY } from 'lib/graphql/queries/package';
-import { buildCreatePackageTree } from 'lib/graphql/builders/package';
-import { useAuth } from 'context/authContext';
-import moment from 'moment';
+
 import './Upload.scss';
 
 const VideoUpload = dynamic( () => import( /* webpackChunkName: "videoUpload" */ './modals/VideoUpload/VideoUpload' ) );
@@ -64,7 +66,7 @@ const Upload = () => {
 
   /**
    * Checks whether a package exists with the supplied field name and values
-   * @param {object} where clause containing fields to test existance agaist, i.e. { title: Daily Guidance }
+   * @param {object} where clause containing fields to test existence against, i.e. { title: Daily Guidance }
    */
   const doesPackageExist = async where => {
     const res = await packageExists( {
@@ -77,7 +79,7 @@ const Upload = () => {
   };
 
   /**
-  * Create dauly guidance packages and sends user to
+  * Create daily guidance packages and sends user to
   * package details screen on success
   */
   const createPressOfficePackage = async () => {
@@ -85,7 +87,7 @@ const Upload = () => {
     const title = `Guidance Package ${moment().format( 'MM-D-YY' )}`;
 
     // One Daily Guidance package is created for each day
-    // to do: since pacakges can be renamed, using the title is not
+    // to do: since packages can be renamed, using the title is not
     // a full proof way to check to ensure only 1 package is created/per day
     if ( await doesPackageExist( { title } ) ) {
       setCreationError( `A Guidance Package with the name "${title}" already exists.` );
@@ -114,7 +116,7 @@ const Upload = () => {
 
   /**
  * Checks whether team has permission to create provided content type
- * @param {string} contentType content type to verifu, i.e. VIDEO
+ * @param {string} contentType content type to verify, i.e. VIDEO
  */
   const teamCanCreateContentType = contentType => {
     const team = user?.team;
@@ -148,7 +150,7 @@ const Upload = () => {
 
   /**
   * Wrapper function that farms out package creation to a
-  * function that handles specifc team's use case
+  * function that handles specific team's use case
   */
   const handleCreateNewPackage = async () => {
     const { team } = user;
@@ -192,7 +194,7 @@ const Upload = () => {
   /**
    * Handles processing files before modal is opened.
    * For modals that are expecting incoming files props
-   * @param {object} event oject
+   * @param {object} event object
    */
   const handleAddFiles = e => {
     const files = Array.from( e.target.files );

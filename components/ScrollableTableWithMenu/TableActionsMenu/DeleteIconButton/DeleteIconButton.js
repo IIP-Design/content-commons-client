@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
+
 import deleteIcon from 'static/images/dashboard/delete.svg';
 
-const DeleteIconButton = props => (
+const DeleteIconButton = ( { displayConfirmDelete } ) => (
   <Popup
     trigger={ (
       <Button
         size="mini"
         basic
-        onClick={ props.displayConfirmDelete }
+        onClick={ displayConfirmDelete }
       >
         <img src={ deleteIcon } alt="Delete Selection(s)" />
       </Button>
@@ -23,7 +24,7 @@ const DeleteIconButton = props => (
 );
 
 DeleteIconButton.propTypes = {
-  displayConfirmDelete: PropTypes.func
+  displayConfirmDelete: PropTypes.func,
 };
 
 export default DeleteIconButton;

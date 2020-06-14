@@ -57,7 +57,7 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          height: '100vh'
+          height: '100vh',
         } }
       >
         <Loader active inline="centered" style={ { marginBottom: '1em' } } />
@@ -80,15 +80,13 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
         setShowNotification,
         showNotication,
         startTimeout,
-        updateSelectedUnit
+        updateSelectedUnit,
       } }
     >
       <ModalItem
         customClassName="edit-project-item"
         headline={ project.projectTitle }
-        subHeadline={
-          language && language.displayName ? ` | ${language.displayName}` : ''
-        }
+        subHeadline={ language && language.displayName ? ` | ${language.displayName}` : '' }
         textDirection="ltr"
       >
         <EditVideoModal unitId={ selectedUnit } />
@@ -100,12 +98,12 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
 EditSingleProjectItem.propTypes = {
   itemId: propTypes.string,
   projectId: propTypes.string,
-  videoProjectQuery: propTypes.object
+  videoProjectQuery: propTypes.object,
 };
 
 export default graphql( VIDEO_PROJECT_QUERY, {
   name: 'videoProjectQuery',
   options: props => ( {
-    variables: { id: props.projectId }
-  } )
+    variables: { id: props.projectId },
+  } ),
 } )( EditSingleProjectItem );

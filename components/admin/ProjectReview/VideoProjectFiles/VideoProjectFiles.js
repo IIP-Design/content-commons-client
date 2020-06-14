@@ -4,20 +4,21 @@
  *
  */
 import React from 'react';
-import { object, string } from 'prop-types';
+import PropTypes from 'prop-types';
 import Router from 'next/router';
 import { graphql } from 'react-apollo';
 import { Button, Grid, Loader } from 'semantic-ui-react';
+
 import ApolloError from 'components/errors/ApolloError';
-import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/Previews/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
-import { getPluralStringOrNot } from 'lib/utils';
 import VideoProjectFile from './VideoProjectFile/VideoProjectFile';
+import { getPluralStringOrNot } from 'lib/utils';
+import { VIDEO_PROJECT_PREVIEW_QUERY } from 'components/admin/Previews/ProjectPreview/ProjectPreviewContent/ProjectPreviewContent';
 
 import './VideoProjectFiles.scss';
 
 
-const VideoProjectFiles = props => {
-  const { error, loading, project } = props.data;
+const VideoProjectFiles = ( { data, id } ) => {
+  const { error, loading, project } = data;
 
   if ( loading ) {
     return (
@@ -27,7 +28,7 @@ const VideoProjectFiles = props => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          minHeight: '200px'
+          minHeight: '200px',
         } }
       >
         <Loader
@@ -58,15 +59,13 @@ const VideoProjectFiles = props => {
   const getTags = ( tags, unit ) => tags.reduce( ( acc, curr ) => `${acc ? `${acc}, ` : ''}${getTag( curr, unit )}`
     , '' );
   const handleEdit = () => {
-    const { id } = props;
-
     Router.push( {
       pathname: '/admin/project',
       query: {
         id,
         content: 'video',
-        action: 'edit'
-      }
+        action: 'edit',
+      },
     }, `/admin/project/video/${id}/edit` );
   };
 
@@ -77,7 +76,7 @@ const VideoProjectFiles = props => {
       </h3>
       { units.map( unit => {
         const {
-          files, language, tags, thumbnails
+          files, language, tags, thumbnails,
         } = unit;
 
         return (
@@ -102,8 +101,7 @@ const VideoProjectFiles = props => {
                 <Grid.Column width={ 16 }>
                   <p>
                     <b className="label">Language:</b>
-                    {' '}
-                    { language.displayName }
+                    { ` ${language.displayName} `}
                   </p>
                 </Grid.Column>
               </Grid.Row>
@@ -120,8 +118,7 @@ const VideoProjectFiles = props => {
                           : {}
                       }
                     >
-                      { ' ' }
-                      { unit.descPublic || project.descPublic }
+                      { ` ${unit.descPublic || project.descPublic} ` }
                     </span>
                   </p>
                 </Grid.Column>
@@ -142,9 +139,7 @@ const VideoProjectFiles = props => {
                 <Grid.Column width={ 16 }>
                   <p>
                     <b className="label">Files:</b>
-                    {' '}
-                    { files?.length || 0 }
-                    {' '}
+                    { ` ${files?.length || 0} ` }
                   </p>
                 </Grid.Column>
               </Grid.Row>
@@ -165,12 +160,12 @@ const VideoProjectFiles = props => {
 };
 
 VideoProjectFiles.propTypes = {
-  id: string,
-  data: object
+  id: PropTypes.string,
+  data: PropTypes.object,
 };
 
 export default graphql( VIDEO_PROJECT_PREVIEW_QUERY, {
   options: props => ( {
-    variables: { id: props.id }
-  } )
+    variables: { id: props.id },
+  } ),
 } )( VideoProjectFiles );

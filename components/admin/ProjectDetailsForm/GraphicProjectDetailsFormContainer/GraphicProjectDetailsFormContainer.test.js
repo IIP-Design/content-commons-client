@@ -83,7 +83,7 @@ const getInitialValues = () => {
     projectTitle: title || '',
     visibility: visibility || 'PUBLIC',
     team: team.name,
-    copyright: copyright || '',
+    copyright: copyright || 'COPYRIGHT',
     categories: categories.map( category => category.id ),
     tags: tags.map( tag => tag.id ),
     descPublic: descPublic || '',
@@ -121,23 +121,6 @@ describe( '<GraphicProjectDetailsFormContainer />', () => {
 
     expect( contentDiv.exists() ).toEqual( true );
     expect( contentDiv.prop( 'style' ) ).toEqual( props.contentStyle );
-  } );
-
-  it( 'renders the Notification', () => {
-    const notification = formContainer.find( 'Notification' );
-
-    expect( notification.exists() ).toEqual( true );
-    expect( notification.props() ).toEqual( {
-      el: 'p',
-      customStyles: {
-        position: 'absolute',
-        top: '9em',
-        left: '50%',
-        transform: 'translateX(-50%)',
-      },
-      show: false,
-      msg: 'Changes saved',
-    } );
   } );
 
   it( 'renders the Formik component', () => {
