@@ -6,7 +6,7 @@ import TableRow from './TableRow';
  * Need to mock Next.js dynamic imports
  * in order for this test suite to run.
  */
-jest.mock( 'next/dynamic', () => () => 'VideoDetailsPopup' );
+jest.mock( 'next/dynamic', () => () => 'dynamic-component' );
 
 const myProjectsProps = {
   d: {

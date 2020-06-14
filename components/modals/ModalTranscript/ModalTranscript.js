@@ -17,7 +17,7 @@ const ModalTranscript = props => {
 
 ModalTranscript.propTypes = {
   transcript: string,
-  classes: string
+  classes: string,
 };
 
 export default ModalTranscript;

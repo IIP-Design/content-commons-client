@@ -1,9 +1,10 @@
 import { mount } from 'enzyme';
 import { Button, Popup } from 'semantic-ui-react';
+
 import DeleteIconButton from './DeleteIconButton';
 
 const props = {
-  displayConfirmDelete: jest.fn()
+  displayConfirmDelete: jest.fn(),
 };
 
 const Component = <DeleteIconButton { ...props } />;

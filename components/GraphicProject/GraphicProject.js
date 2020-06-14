@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { updateUrl } from 'lib/browser';
 import { displayDOSLogo } from 'lib/sourceLogoUtils';
-import { getPreviewNotificationStyles } from 'lib/utils';
+import { getCount, getFileExt, getPreviewNotificationStyles } from 'lib/utils';
 import { useAuth } from 'context/authContext';
 import { normalizeGraphicProjectByAPI } from './utils';
 
@@ -30,13 +30,11 @@ import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 
 import './GraphicProject.scss';
 
-import tempSrcUrl from 'components/download/DownloadItem/graphicPlaceholderImg.png';
-
 const GraphicProject = ( {
   displayAsModal,
   isAdminPreview,
   item,
-  useGraphQl
+  useGraphQl,
 } ) => {
   const { user } = useAuth();
   const router = useRouter();
@@ -47,6 +45,7 @@ const GraphicProject = ( {
     id,
     site,
     type,
+    alt: projectAlt,
     projectType,
     published,
     modified,
@@ -56,36 +55,41 @@ const GraphicProject = ( {
     copyright,
     images,
     supportFiles,
-    categories
+    categories,
   } = normalizedGraphicData;
 
   // Use Twitter graphics as default for display otherwise whatever graphic image is available
-  const filterGraphicImgs = () => {
-    const containsTwitterImgs = images.some( img => img.social === 'Twitter' );
+  const getGraphicImgsBySocial = platform => {
+    if ( !getCount( images ) ) return [];
 
-    if ( containsTwitterImgs ) {
-      return images.filter( img => img.social === 'Twitter' );
-    }
+    const filteredImgs = images.reduce( ( allImgs, img ) => {
+      let platformImgs = [];
+      let condition = img.social === platform;
 
-    return images;
+      if ( useGraphQl ) {
+        platformImgs = img.social.filter( s => s.name === platform );
+        condition = getCount( platformImgs );
+      }
+
+      if ( condition ) {
+        allImgs.push( img );
+      }
+
+      return allImgs;
+    }, [] );
+
+    return getCount( filteredImgs ) ? filteredImgs : images;
   };
-  const graphicUnits = filterGraphicImgs();
+  const graphicUnits = getGraphicImgsBySocial( 'Twitter' );
 
   // Set default unit to English lang version if available
   // unless path is for specific lang or no english version
   const setDefaultSelectedUnit = () => {
-    // If displaying as page then check query language
-    if ( !displayAsModal ) {
-      const { language } = router.query;
+    const qryLocale = router?.query?.language || '';
+    const locale = displayAsModal ? 'en-us' : qryLocale;
+    const languageUnit = graphicUnits.find( unit => unit.language.locale === locale );
 
-      return graphicUnits.find( unit => unit.language.locale === language );
-    }
-
-    const englishUnit = graphicUnits.find( unit => unit.language.display_name === 'English' );
-
-    if ( englishUnit ) return englishUnit;
-
-    return graphicUnits[0];
+    return languageUnit || graphicUnits[0];
   };
 
   // Selected Unit State
@@ -94,14 +98,16 @@ const GraphicProject = ( {
   // Update selected unit on language change
   const handleLanguageChange = lang => {
     if ( lang !== selectedUnit.language.display_name ) {
-      setSelectedUnit( graphicUnits.filter( unit => unit.language.display_name === lang )[0] );
+      const newSelection = images.find( unit => unit.language.display_name === lang );
+
+      setSelectedUnit( newSelection );
     }
   };
 
   const {
     title,
     language: selectedUnitLanguage,
-    alt
+    alt: unitAlt,
   } = selectedUnit;
 
   useEffect( () => {
@@ -114,32 +120,36 @@ const GraphicProject = ( {
   // Image files by language
   const selectedUnitImages = images.filter( img => img.language.display_name === selectedUnitLanguage.display_name );
 
-  // Editable support files by language
-  const editableFileTypes = [
-    '.psd', '.ai', '.eps', '.ae', '.jpg', '.jpeg', '.png'
-  ];
-  const selectedUnitSupportFiles = supportFiles
-    .filter( file => {
-      const { filename } = file;
-      const fileType = filename.slice( filename.lastIndexOf( '.' ) );
+  const getSupportFiles = supportFileType => {
+    const editableExtensions = [
+      '.psd', '.ai', '.eps', '.ae', '.jpg', '.jpeg', '.png',
+    ];
+    const editableFiles = [];
+    const additionalFiles = [];
 
-      return editableFileTypes.includes( fileType );
-    } )
-    .filter( file => file.language.display_name === selectedUnitLanguage.display_name );
+    if ( getCount( supportFiles ) ) {
+      supportFiles.forEach( file => {
+        const extension = getFileExt( file.filename );
 
-  // Non-editable files by language
-  const selectedUnitOtherFiles = supportFiles
-    .filter( file => {
-      const { filename } = file;
-      const fileType = filename.slice( filename.lastIndexOf( '.' ) );
+        const hasEditableExt = editableExtensions.includes( extension );
 
-      return !editableFileTypes.includes( fileType );
-    } )
-    .filter( file => file.language.display_name === selectedUnitLanguage.display_name );
+        if ( hasEditableExt ) {
+          editableFiles.push( file );
+        } else {
+          additionalFiles.push( file );
+        }
+      } );
+    }
+
+    return supportFileType === 'editable' ? editableFiles : additionalFiles;
+  };
+
+  const selectedUnitSupportFiles = getSupportFiles( 'editable' );
+  const selectedUnitOtherFiles = getSupportFiles( 'other' );
 
   const copyrightMsg = copyright === 'COPYRIGHT'
     ? 'Copyright terms outlined in internal description'
-    : 'No copyright beyond provided watermarked attribution';
+    : '';
 
   const tabs = [
     {
@@ -148,13 +158,17 @@ const GraphicProject = ( {
         <DownloadItem
           instructions={ `Download the graphic files in ${selectedUnitLanguage.display_name}. This download option is best for uploading this graphic to web pages and social media.` }
         >
-          { !selectedUnitImages.length
-            && <p className="download-item__noContent">There are no graphic files available for download at this time.</p>}
-          { selectedUnitImages.map(
-            img => <GraphicFiles key={ img.srcUrl } file={ img } isAdminPreview={ isAdminPreview } />
-          ) }
+          { selectedUnitImages.length
+            ? selectedUnitImages.map( img => (
+              <GraphicFiles
+                key={ img.url }
+                file={ img }
+                isAdminPreview={ isAdminPreview }
+              />
+            ) )
+            : <p className="download-item__noContent">There are no graphic files available for download at this time.</p> }
         </DownloadItem>
-      )
+      ),
     },
     {
       title: 'Editable Files',
@@ -167,17 +181,21 @@ const GraphicProject = ( {
                 { ' ' }
                 <Link href="/about"><a>Terms of Use</a></Link>
               </p>
-              <p><strong>{ copyrightMsg }</strong></p>
+              { copyrightMsg && <p><strong>{ copyrightMsg }</strong></p> }
             </Fragment>
           ) }
         >
-          { !selectedUnitSupportFiles.length
-            && <p className="download-item__noContent">There are no editable files available for download at this time.</p>}
-          { selectedUnitSupportFiles.map(
-            file => <GenericFiles key={ file.srcUrl } file={ file } isAdminPreview={ isAdminPreview } />
-          ) }
+          { selectedUnitSupportFiles.length
+            ? selectedUnitSupportFiles.map( file => (
+              <GenericFiles
+                key={ file.url }
+                file={ file }
+                isAdminPreview={ isAdminPreview }
+              />
+            ) )
+            : <p className="download-item__noContent">There are no editable files available for download at this time.</p> }
         </DownloadItem>
-      )
+      ),
     },
     {
       title: 'Other',
@@ -191,18 +209,22 @@ const GraphicProject = ( {
             </p>
           ) }
         >
-          { !selectedUnitOtherFiles.length
-            && <p className="download-item__noContent">There are no other files available for download at this time.</p>}
-          { selectedUnitOtherFiles.map(
-            file => <GenericFiles key={ file.srcUrl } file={ file } isAdminPreview={ isAdminPreview } />
-          ) }
+          { selectedUnitOtherFiles.length
+            ? selectedUnitOtherFiles.map( file => (
+              <GenericFiles
+                key={ file.url }
+                file={ file }
+                isAdminPreview={ isAdminPreview }
+              />
+            ) )
+            : <p className="download-item__noContent">There are no other files available for download at this time.</p> }
         </DownloadItem>
-      )
+      ),
     },
     {
       title: 'Help',
-      content: <Help />
-    }
+      content: <Help />,
+    },
   ];
 
   const authFilterTabs = () => {
@@ -212,6 +234,8 @@ const GraphicProject = ( {
 
     return tabs.filter( tab => tab.title !== 'Editable Files' );
   };
+
+  const getAlt = () => unitAlt || projectAlt || title || selectedUnit?.filename || '';
 
   return (
     <ModalItem
@@ -240,7 +264,13 @@ const GraphicProject = ( {
           <Popover
             id={ `${id}_graphic-share` }
             className="graphic-project__popover graphic-project__popover--share"
-            trigger={ <img src={ shareIcon } style={ { width: '20px', height: '20px' } } alt="share icon" /> }
+            trigger={ (
+              <img
+                src={ shareIcon }
+                style={ { width: '20px', height: '20px' } }
+                alt="share icon"
+              />
+            ) }
             expandFromRight
             toolTip="Share graphic"
           >
@@ -254,7 +284,7 @@ const GraphicProject = ( {
                 type={ type }
                 isPreview={ isAdminPreview }
                 { ...( isAdminPreview
-                  ? { link: 'The direct link to the package will appear here.' }
+                  ? { link: 'The direct link to the project will appear here.' }
                   : null
                 ) }
               />
@@ -275,19 +305,40 @@ const GraphicProject = ( {
           </Popover>
         </div>
       </div>
-      {/* TO DO: Update thumbnail to use srcUrl */}
-      <ModalImage thumbnail={ tempSrcUrl } thumbnailMeta={ { alt } } />
-      <ModalContentMeta type={ projectType } dateUpdated={ modified } />
+
+      { selectedUnit?.url
+        && (
+          <ModalImage
+            thumbnail={ selectedUnit.url }
+            thumbnailMeta={ { alt: getAlt() } }
+          />
+        ) }
+
+      <ModalContentMeta
+        type={ `${projectType.toLowerCase().replace( '_', ' ' )} graphic` }
+        dateUpdated={ modified }
+      />
+
       <ModalDescription description={ desc } />
-      <section className="graphic-project__content">
-        <p className="graphic-project__content__title">Internal Description:</p>
-        { descInternal }
+
+      { user && descInternal && (
+        <section className="graphic-project__content internal-desc">
+          <h2 className="graphic-project__content__title">
+            Internal Description:
+          </h2>
+          <p>{ descInternal }</p>
+        </section>
+      ) }
+
+      <section className="graphic-project__content alt">
+        <h2 className="graphic-project__content__title">
+          Alt (Alternative) Text:
+        </h2>
+        <p>{ getAlt() }</p>
       </section>
-      <section className="graphic-project__content">
-        <p className="graphic-project__content__title">Alt (Alternative) Text:</p>
-        { alt }
-      </section>
+
       <ModalPostMeta
+        type={ projectType }
         logo={ displayDOSLogo( owner ) }
         source={ owner }
         datePublished={ published }
@@ -313,11 +364,11 @@ GraphicProject.propTypes = {
     copyright: PropTypes.string,
     images: PropTypes.array,
     supportFiles: PropTypes.array,
-    categories: PropTypes.array
+    categories: PropTypes.array,
   } ),
   displayAsModal: PropTypes.bool,
   isAdminPreview: PropTypes.bool,
-  useGraphQl: PropTypes.bool
+  useGraphQl: PropTypes.bool,
 };
 
 export default GraphicProject;

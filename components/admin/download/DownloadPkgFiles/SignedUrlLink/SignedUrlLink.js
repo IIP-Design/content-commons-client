@@ -16,10 +16,16 @@ const SignedUrlLink = ( { file, isPreview } ) => {
         href={ isPreview ? null : signedUrl }
         download={ isPreview ? null : filename }
       >
-        <Item.Image size="mini" src={ downloadIcon } alt="download icon" className="download-icon" />
+        <Item.Image
+          alt="download icon"
+          className="download-icon"
+          size="mini"
+          src={ downloadIcon }
+        />
         <Item.Content>
           <Item.Header className="download-header">
-            { `Download ${filename}` }
+            { 'Download ' }
+            <span style={ { fontWeight: 'normal' } }>{filename}</span>
           </Item.Header>
           <span className="item_hover">
             { `Download ${filename}` }

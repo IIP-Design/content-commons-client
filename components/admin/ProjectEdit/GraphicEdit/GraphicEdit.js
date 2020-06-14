@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useReducer, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Loader, Modal } from 'semantic-ui-react';
-import sortBy from 'lodash/sortBy';
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import AddFilesSectionHeading from 'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading';
 import ApolloError from 'components/errors/ApolloError';
@@ -34,6 +34,11 @@ import { GRAPHIC_STYLES_QUERY } from 'components/admin/dropdowns/GraphicStyleDro
 import { LANGUAGE_BY_NAME_QUERY } from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import { getCount, getFileExt } from 'lib/utils';
 import './GraphicEdit.scss';
+
+const GraphicProject = dynamic( () => import(
+  /* webpackChunkName: "graphicProject" */
+  'components/GraphicProject/GraphicProject'
+) );
 
 /**
  * Tracks initial and added files
@@ -128,8 +133,8 @@ const GraphicEdit = ( { id } ) => {
   const [unpublishGraphicProject] = useMutation( UNPUBLISH_GRAPHIC_PROJECT_MUTATION );
   const [updateGraphicProjectStatus] = useMutation( UPDATE_GRAPHIC_PROJECT_STATUS_MUTATION );
 
-  // publishOperation tells the action buttons which operation is excuting so that it can
-  // set its loading indcator on the right button
+  // publishOperation tells the action buttons which operation is executing so that it can
+  // set its loading indicator on the right button
   const [publishOperation, setPublishOperation] = useState( '' );
   const [error, setError] = useState( {} );
   const [mounted, setMounted] = useState( false );
@@ -184,7 +189,7 @@ const GraphicEdit = ( { id } ) => {
 
   /**
    * Adds project id to url to ensure proper display
-   * on paghe referesg
+   * on page refresh
    */
   const addProjectIdToUrl = useCallback(
     pId => {
@@ -211,7 +216,7 @@ const GraphicEdit = ( { id } ) => {
     if ( mounted ) {
       /**
        * After upload/save set project id which will trigger a re render
-       * and popluate data.graphicProject object. Project id was stored
+       * and populate data.graphicProject object. Project id was stored
        * via ref
        */
       const pId = localProjectId.current;
@@ -267,6 +272,12 @@ const GraphicEdit = ( { id } ) => {
     const isPublished = data?.graphicProject && !!data.graphicProject.publishedAt;
 
     return !projectId || isPublished;
+  };
+
+  const delayUnmount = ( fn, timer, delay ) => {
+    if ( timer ) clearTimeout( timer );
+    /* eslint-disable no-param-reassign */
+    timer = setTimeout( fn, delay );
   };
 
   const saveGraphicFile = async ( pId, file ) => updateProject( pId, {
@@ -343,8 +354,8 @@ const GraphicEdit = ( { id } ) => {
 
   /**
    * Executes clean up functions after all
-   * initial files have been uplaoded and saved
-   * Starts timeer to display upload success message
+   * initial files have been uploaded and saved
+   * Starts timer to display upload success message
    */
   const handleUploadComplete = () => {
     dispatch( { type: 'PROGRESS_COMPLETE' } );
@@ -353,7 +364,7 @@ const GraphicEdit = ( { id } ) => {
   };
 
   /**
-   * UUploads and saves files. If error occurrs set 'error' prop on file object
+   * Uploads and saves files. If error occurs, set 'error' prop on file object
    * @param {string} pId project id
    * @param {array} files files to save
    * @param {string} savePath path to S3 directory to save
@@ -521,27 +532,14 @@ const GraphicEdit = ( { id } ) => {
       } );
     }
 
-    return type === 'graphicFiles' ? initialGraphicFiles : initialSupportFiles;
+    return type === 'images' ? initialGraphicFiles : initialSupportFiles;
   };
 
-  const getSortedFiles = () => {
-    const existingSupportFiles = data?.graphicProject?.supportFiles || [];
-    const existingGraphicFiles = data?.graphicProject?.images || [];
+  const getFiles = type => {
+    const existingFiles = data?.graphicProject?.[type] || [];
+    const files = projectId ? existingFiles : getInitialFiles( type );
 
-    const shellFile = existingGraphicFiles.filter( img => getIsShell( img.filename ) );
-    const existingFilesPlusShell = existingSupportFiles.concat( shellFile );
-
-    const initialFiles = getInitialFiles( 'supportFiles' );
-    const supportFiles = projectId ? existingFilesPlusShell : initialFiles;
-    const sortedFiles = sortBy( supportFiles, file => {
-      if ( projectId ) {
-        return file.filename;
-      }
-
-      return file.name;
-    } );
-
-    return sortedFiles;
+    return files;
   };
 
   const getSupportFiles = type => {
@@ -550,10 +548,10 @@ const GraphicEdit = ( { id } ) => {
     ];
     const editableFiles = [];
     const additionalFiles = [];
-    const sortedFiles = getSortedFiles();
+    const supportFiles = getFiles( 'supportFiles' );
 
-    if ( getCount( sortedFiles ) ) {
-      sortedFiles.forEach( file => {
+    if ( getCount( supportFiles ) ) {
+      supportFiles.forEach( file => {
         const _filename = projectId ? file.filename : file.name;
         const extension = getFileExt( _filename );
 
@@ -571,31 +569,20 @@ const GraphicEdit = ( { id } ) => {
     return type === 'editable' ? editableFiles : additionalFiles;
   };
 
-  const getGraphicFiles = () => {
-    const existingFiles = data?.graphicProject?.images || [];
-
-    const initialFiles = getInitialFiles( 'graphicFiles' );
-    let files = [];
-
-    if ( projectId ) {
-      files = existingFiles.filter( img => !getIsShell( img.filename ) );
-    } else {
-      files = initialFiles;
-    }
-
-    return files;
-  };
+  const editableSupportFiles = getSupportFiles( 'editable' );
+  const additionalSupportFiles = getSupportFiles( 'additional' );
+  const graphicImageFiles = getFiles( 'images' );
 
   const supportFilesConfig = [
     {
       headline: 'editable files',
       helperText: 'Original files that may be edited and adapted as needed for reuse.',
-      files: getSupportFiles( 'editable' ),
+      files: editableSupportFiles,
     },
     {
       headline: 'additional files',
       helperText: 'Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics.',
-      files: getSupportFiles( 'additional' ),
+      files: additionalSupportFiles,
     },
   ];
 
@@ -646,6 +633,29 @@ const GraphicEdit = ( { id } ) => {
     );
   }
 
+  const getPreview = () => {
+    const project = data?.graphicProject || {};
+    const previewObj = {
+      ...project,
+      images: graphicImageFiles,
+      supportFiles: [
+        ...editableSupportFiles,
+        ...additionalSupportFiles,
+      ],
+    };
+
+    return (
+      <GraphicProject
+        item={ previewObj }
+        displayAsModal
+        isAdminPreview
+        useGraphQl
+      />
+    );
+  };
+
+  // if ( !data ) return null;
+
   const { showNotification, notificationMessage } = notification;
 
   return (
@@ -655,6 +665,7 @@ const GraphicEdit = ( { id } ) => {
           <ActionButtons
             deleteConfirmOpen={ deleteConfirmOpen }
             setDeleteConfirmOpen={ setDeleteConfirmOpen }
+            previewNode={ getPreview() }
             disabled={ {
               'delete': deleteProjectEnabled(),
               save: !projectId || disableBtns || !isFormValid,
@@ -769,7 +780,7 @@ const GraphicEdit = ( { id } ) => {
 
         <GraphicFilesFormContainer
           projectId={ projectId }
-          files={ getGraphicFiles() }
+          files={ graphicImageFiles }
           setIsFormValid={ setIsFormValid }
           updateNotification={ updateNotification }
         />

@@ -33,7 +33,7 @@ const TeamProjects = () => {
 
   useEffect( () => {
     dispatch( { type: 'UPDATE_TEAM', payload: { team } } );
-  }, [user] );
+  }, [user, team] );
 
   if ( !team ) return null;
 

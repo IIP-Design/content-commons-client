@@ -1,13 +1,18 @@
 import React from 'react';
 import {
-  Grid, Tab, Popup, Image
+  Grid, Tab, Popup, Image,
 } from 'semantic-ui-react';
+
 import UserAdmin from 'components/User/UserAdmin'; // for testing purposes, allows changing of user props
-import userIcon from 'static/icons/icon_user_profile_dark.svg';
 import TeamProjects from './TeamProjects/TeamProjects';
+import userIcon from 'static/icons/icon_user_profile_dark.svg';
+
 import './Dashboard.scss';
 
 const Dashboard = () => {
+  // Returns the provided component wrapped by a tab pane
+  const wrapInPane = component => <Tab.Pane>{ component }</Tab.Pane>;
+
   const renderPanes = () => [
     {
       menuItem: {
@@ -18,9 +23,9 @@ const Dashboard = () => {
           inverted
           position="bottom left"
         />,
-        disabled: true
+        disabled: true,
       },
-      render: function OverviewTab() { return <Tab.Pane />; }
+      render: () => wrapInPane(),
     },
     {
       menuItem: {
@@ -31,22 +36,16 @@ const Dashboard = () => {
           inverted
           position="bottom left"
         />,
-        disabled: true
+        disabled: true,
       },
-      render: function MyProjectsTab() { return <Tab.Pane />; }
+      render: () => wrapInPane(),
     },
     {
       menuItem: {
         key: '3',
-        name: 'Team Projects'
+        name: 'Team Projects',
       },
-      render: function TeamProjectsTab() {
-        return (
-          <Tab.Pane>
-            <TeamProjects />
-          </Tab.Pane>
-        );
-      }
+      render: () => wrapInPane( <TeamProjects /> ),
     },
     {
       menuItem: {
@@ -57,9 +56,9 @@ const Dashboard = () => {
           inverted
           position="bottom left"
         />,
-        disabled: true
+        disabled: true,
       },
-      render: function FavoritesTab() { return <Tab.Pane />; }
+      render: () => wrapInPane(),
     },
     {
       menuItem: {
@@ -70,10 +69,10 @@ const Dashboard = () => {
           inverted
           position="bottom left"
         />,
-        disabled: true
+        disabled: true,
       },
-      render: function CollectionsTab() { return <Tab.Pane />; }
-    }
+      render: () => wrapInPane(),
+    },
   ];
 
   return (

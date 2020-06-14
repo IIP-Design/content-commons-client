@@ -228,7 +228,7 @@ const TableActionsMenu = ( {
           </Button>
 
           { !hasSelectedAllDrafts() && (
-            <>
+            <Fragment>
               <span className="separator">|</span>
               <UnpublishProjects
                 team={ team }
@@ -238,7 +238,7 @@ const TableActionsMenu = ( {
                 selections={ selections }
                 variables={ variables }
               />
-            </>
+            </Fragment>
           ) }
         </div>
       </Fragment>

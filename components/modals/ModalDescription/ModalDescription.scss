@@ -1,4 +1,4 @@
-@import "../../../styles/colors.scss";
+@import "styles/colors.scss";
 
 .modal_section--description {
   margin-top: 1em;
@@ -12,7 +12,7 @@
 
   &_text {
     padding: 0;
-    font-size: 18px;
-    color: #000;
+    font-size: 1rem;
+    color: inherit;
   }
 }

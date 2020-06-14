@@ -6,10 +6,7 @@ import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmMod
 import IconPopup from 'components/popups/IconPopup/IconPopup';
 import Filename from 'components/admin/Filename/Filename';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
-import {
-  DELETE_IMAGE_FILE_MUTATION,
-  DELETE_SUPPORT_FILE_MUTATION,
-} from 'lib/graphql/queries/common';
+import { DELETE_SUPPORT_FILE_MUTATION } from 'lib/graphql/queries/common';
 import { GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
 import useTimeout from 'lib/hooks/useTimeout';
 import { getCount } from 'lib/utils';
@@ -21,23 +18,11 @@ const GraphicSupportFiles = props => {
   } = props;
   const [fileIdToDelete, setFileIdToDelete] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
-  const [deleteImageFile] = useMutation( DELETE_IMAGE_FILE_MUTATION );
   const [deleteSupportFile] = useMutation( DELETE_SUPPORT_FILE_MUTATION );
 
   const showNotification = () => updateNotification( 'Changes saved' );
   const hideNotification = () => updateNotification( '' );
   const { startTimeout } = useTimeout( hideNotification, 2000 );
-
-  const getMutation = id => {
-    const _fileToUpdate = files.find( file => file.id === id );
-
-    switch ( _fileToUpdate.__typename ) {
-      case 'ImageFile':
-        return deleteImageFile;
-      default:
-        return deleteSupportFile;
-    }
-  };
 
   const handleReset = () => {
     setDeleteConfirmOpen( false );
@@ -46,9 +31,7 @@ const GraphicSupportFiles = props => {
   };
 
   const handleDelete = async id => {
-    const deleteMutation = getMutation( id );
-
-    await deleteMutation( {
+    await deleteSupportFile( {
       variables: {
         id,
       },

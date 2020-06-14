@@ -19,6 +19,7 @@ const ModalDescription = props => {
         />
       );
     }
+
     return <p className="modal_description_text">{ description }</p>;
   };
 
@@ -32,7 +33,7 @@ const ModalDescription = props => {
 ModalDescription.propTypes = {
   description: PropTypes.oneOfType( [
     PropTypes.string,
-    PropTypes.object
+    PropTypes.object,
   ] ),
 };
 
