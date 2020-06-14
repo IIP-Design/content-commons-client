@@ -62,7 +62,8 @@ const GraphicFilesForm = props => {
 
   const isTouched = ( id, field ) => touched?.[id] && touched[id][field];
 
-  const showErrorMsg = ( id, field ) => (isTouched( id, field ) ? errors?.[id] && errors[id][field] : '');
+  // eslint-disable-next-line no-extra-parens
+  const showErrorMsg = ( id, field ) => ( isTouched( id, field ) ? errors?.[id] && errors[id][field] : '' );
   const renderThumbnail = ( image, filename ) => {
     const imgSrc = image.signedUrl || image?.input?.dataUrl;
     const imgAlt = image.alt || filename;
@@ -114,6 +115,9 @@ const GraphicFilesForm = props => {
       />
 
       <Form className="form-fields">
+        {/* We may have to pull the fieldset into a separate component and memoize it
+        as all forms are rendered on each keystroke when updating the title
+        Check perfomance before optimizing */}
         { files.map( file => {
           const { id, filename, filesize, input, language } = file;
           const _filename = projectId ? filename : input?.name;
