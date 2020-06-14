@@ -19,7 +19,7 @@ jest.mock( 'next/config', () => () => (
   }
 ) );
 
-jest.mock( 'next/dynamic', () => () => 'edit-single-projectItem' );
+jest.mock( 'next/dynamic', () => () => 'edit-single-project-item' );
 
 const TEST_ID = '234';
 

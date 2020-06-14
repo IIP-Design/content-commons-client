@@ -1,18 +1,19 @@
 import { shallow } from 'enzyme';
+
 import EditSingleProjectItem from './EditSingleProjectItem';
 
-jest.mock( 'next/dynamic', () => 'dynamically-imported-component' );
+jest.mock( 'next/dynamic', () => () => 'dynamically-imported-component' );
 
 const Component = <EditSingleProjectItem />;
 
-describe.skip( '<EditSingleProjectItem />', () => {
+describe( '<EditSingleProjectItem />', () => {
   it( 'renders without crashing', () => {
     const wrapper = shallow( Component );
 
     expect( wrapper.exists() ).toEqual( true );
   } );
 
-  it( 'renders children', () => {
+  it.skip( 'renders children', () => {
     const wrapper = shallow( Component );
 
     expect( wrapper.children()

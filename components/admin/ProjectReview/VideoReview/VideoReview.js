@@ -5,7 +5,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import usePublish from 'lib/hooks/usePublish';
 import useIsDirty from 'lib/hooks/useIsDirty';
 import {
-  Button, Confirm, Grid, Icon, Loader
+  Button, Confirm, Grid, Icon, Loader,
 } from 'semantic-ui-react';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import VideoProjectData from 'components/admin/ProjectReview/VideoProjectData/VideoProjectData';
@@ -21,7 +21,7 @@ import {
   UNPUBLISH_VIDEO_PROJECT_MUTATION,
   DELETE_VIDEO_PROJECT_MUTATION,
   UPDATE_VIDEO_PROJECT_MUTATION,
-  VIDEO_PROJECT_QUERY
+  VIDEO_PROJECT_QUERY,
 } from 'lib/graphql/queries/video';
 
 import './VideoReview.scss';
@@ -31,14 +31,14 @@ const VideoReview = props => {
   const { id } = props;
 
   const {
-    loading, error, data, startPolling, stopPolling
+    loading, error, data, startPolling, stopPolling,
   } = useQuery( VIDEO_PROJECT_QUERY, {
     variables: { id: props.id },
     // using network-only here to ensure that we have the latest to determine
     // if the project has unpublished changes
     // todo - verify update mutation is returning necessary data to avoid
     // using network policy
-    fetchPolicy: 'network-only'
+    fetchPolicy: 'network-only',
   } );
 
   const [updateProjectStatus] = useMutation( UPDATE_VIDEO_PROJECT_MUTATION );
@@ -50,17 +50,17 @@ const VideoReview = props => {
     publishing,
     publishError,
     executePublishOperation,
-    handleStatusChange
+    handleStatusChange,
   } = usePublish(
     startPolling,
     stopPolling,
-    updateProjectStatus
+    updateProjectStatus,
   );
 
   const isDirty = useIsDirty( data?.project );
 
   useEffect( () => {
-    if ( data && data.project ) {
+    if ( data?.project ) {
       // When the data changes, check status
       handleStatusChange( data.project );
     }
@@ -75,7 +75,7 @@ const VideoReview = props => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          minHeight: '200px'
+          minHeight: '200px',
         } }
       >
         <Loader
@@ -99,15 +99,14 @@ const VideoReview = props => {
     );
   }
 
-  if ( !data.project ) return <ProjectNotFound />;
-
+  if ( !data?.project ) return <ProjectNotFound />;
 
   const displayConfirmDelete = () => setDeleteConfirmOpen( true );
   const handleDeleteCancel = () => setDeleteConfirmOpen( false );
 
   const setButtonState = btn => `project_button project_button--${btn} ${publishing ? 'loading' : ''}`;
 
-  const handleDeleteProject = async() => {
+  const handleDeleteProject = async () => {
     try {
       await deleteProject( { variables: { id } } );
       Router.push( { pathname: '/admin/dashboard' } );
@@ -122,16 +121,16 @@ const VideoReview = props => {
       query: {
         id,
         content: 'video',
-        action: 'edit'
-      }
+        action: 'edit',
+      },
     }, `/admin/project/video/${id}/edit` );
   };
 
-  const handlePublish = async() => {
+  const handlePublish = async () => {
     executePublishOperation( id, publishProject );
   };
 
-  const handleUnPublish = async() => {
+  const handleUnPublish = async () => {
     executePublishOperation( id, unPublishProject );
   };
 
@@ -189,7 +188,7 @@ const VideoReview = props => {
         <ProjectPreview
           triggerProps={ {
             className: 'project_button project_button--preview',
-            content: 'Preview Project'
+            content: 'Preview Project',
           } }
           contentProps={ { id } }
           modalTrigger={ Button }
@@ -267,7 +266,7 @@ const VideoReview = props => {
 };
 
 VideoReview.propTypes = {
-  id: PropTypes.string
+  id: PropTypes.string,
 };
 
 
