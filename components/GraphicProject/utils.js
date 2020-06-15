@@ -1,4 +1,4 @@
-import { getTransformedLangTaxArray } from 'lib/utils';
+import { getTransformedLangTaxArray, getCount } from 'lib/utils';
 
 const structureLangObj = item => ( {
   language: {
@@ -92,11 +92,33 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
 
 // Use Twitter graphics as default for display otherwise whatever graphic image is available
 export const filterGraphicImgs = images => {
-  const containsTwitterImgs = images.some( img => img.social.includes( 'Twitter' ) );
+  const containsTwitterImgs = images.some( img => img.social.includes( 'Twitter' ) );  
 
   if ( containsTwitterImgs ) {
     return images.filter( img => img.social.includes( 'Twitter' ) );
   }
 
   return images;
+};
+
+export const getGraphicImgsBySocial = ( images, platform, useGraphQl = false ) => {
+  if ( !getCount( images ) ) return [];
+
+  const filteredImgs = images.reduce( ( allImgs, img ) => {
+    let platformImgs = [];
+    let condition = img.social.includes( platform );
+
+    if ( useGraphQl ) {
+      platformImgs = img.social.filter( s => s.name === platform );
+      condition = getCount( platformImgs );
+    }
+
+    if ( condition ) {
+      allImgs.push( img );
+    }
+
+    return allImgs;
+  }, [] );
+
+  return getCount( filteredImgs ) ? filteredImgs : images;
 };

@@ -6,7 +6,7 @@ import { Modal } from 'semantic-ui-react';
 import MediaObject from 'components/MediaObject/MediaObject';
 import TagsList from 'components/modals/ModalPostTags/ModalPostTags';
 import DosSeal from 'static/images/dos_seal.svg';
-import { filterGraphicImgs } from '../utils';
+import { getGraphicImgsBySocial } from '../utils';
 import GraphicProject from '../GraphicProject';
 import './GraphicCard.scss';
 
@@ -27,14 +27,12 @@ const GraphicCard = ( { item } ) => {
   } = item;
 
   // Filter for Twitter imgs if available || return all imgs
-  const filteredGraphicImgs = filterGraphicImgs( images );
+  const filteredGraphicImgs = getGraphicImgsBySocial( images, 'Twitter' );
 
   // Filter for first English img || first img
   const setDefaultImg = () => {
     const englishImg = filteredGraphicImgs.find( img => img.language.display_name === 'English' );
-
     if ( englishImg ) return englishImg;
-
     return filteredGraphicImgs[0];
   };
   const thumbnailImg = setDefaultImg();

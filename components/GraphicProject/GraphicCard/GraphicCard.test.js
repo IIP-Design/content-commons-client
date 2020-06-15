@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import moment from 'moment';
 import { graphicElasticMock } from '../graphicElasticMock';
-import { filterGraphicImgs } from '../utils';
+import { getGraphicImgsBySocial } from '../utils';
 import { normalizeItem } from 'lib/elastic/parser';
 import GraphicCard from './GraphicCard';
 
@@ -17,12 +17,10 @@ const props = {
 };
 
 // Set default thumbnail img
-const filteredGraphicImgs = filterGraphicImgs( props.item.images );
+const filteredGraphicImgs = getGraphicImgsBySocial( props.item.images, 'Twitter' );
 const setDefaultImg = () => {
   const englishImg = filteredGraphicImgs.find( img => img.language.display_name === 'English' );
-
   if ( englishImg ) return englishImg;
-
   return filteredGraphicImgs[0];
 };
 const thumbnailImg = setDefaultImg();
