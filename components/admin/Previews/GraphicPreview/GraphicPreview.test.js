@@ -52,10 +52,7 @@ describe( '<GraphicPreview />', () => {
 
     expect( graphicProject.exists() ).toEqual( true );
     expect( graphicProject.prop( 'item' ) ).toEqual( mockGraphicItem );
-    expect( graphicProject.prop( 'item' ).type ).toEqual( mockData.__typename );
-    expect( graphicProject.prop( 'item' ).published ).toEqual( mockData.createdAt );
-    expect( graphicProject.prop( 'item' ).modified ).toEqual( mockData.updatedAt );
-    expect( graphicProject.prop( 'item' ).owner ).toEqual( mockData.team );
+    expect( graphicProject.prop( 'item' ).team.name ).toEqual( mockData.team );
   } );
 
   it( 'does not render anything when no data is provided', () => {

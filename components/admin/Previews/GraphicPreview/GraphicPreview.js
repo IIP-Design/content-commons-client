@@ -16,15 +16,13 @@ const GraphicPreview = ( { data } ) => {
 
   if ( !data ) return null;
 
+  // Convert the team value from a string to an object to facilitate data normalization
   const graphicItem = {
     ...data,
-    type: data.__typename,
-    published: data.createdAt,
-    modified: data.updatedAt,
-    owner: data.team,
+    team: { name: data.team },
   };
 
-  return <GraphicProject displayAsModal isAdminPreview item={ graphicItem } />;
+  return <GraphicProject displayAsModal isAdminPreview item={ graphicItem } useGraphQl />;
 };
 
 GraphicPreview.propTypes = {
