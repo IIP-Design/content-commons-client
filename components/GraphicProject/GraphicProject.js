@@ -292,10 +292,10 @@ const GraphicProject = ( {
         </div>
       </div>
 
-      { selectedUnit?.url
+      { selectedUnit?.signedUrl
         && (
           <ModalImage
-            thumbnail={ selectedUnit.url }
+            thumbnail={ selectedUnit.signedUrl }
             thumbnailMeta={ { alt: getAlt() } }
           />
         ) }
