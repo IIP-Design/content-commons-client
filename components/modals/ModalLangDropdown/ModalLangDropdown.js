@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { object, string, func } from 'prop-types';
 import { Dropdown } from 'semantic-ui-react';
+
 import { getAvailableLanguages } from 'lib/elastic/query';
+
 import './ModalLangDropdown.scss';
 
-const ModalLangDropdown = props => {
-  const { item, selected, handleLanguageChange } = props;
+const ModalLangDropdown = ( { item, selected, handleLanguageChange } ) => {
   const [languages] = useState( item ? getAvailableLanguages( item ) : null );
   const [isOpen, setIsOpen] = useState( false );
 
@@ -24,13 +25,14 @@ const ModalLangDropdown = props => {
       />
     );
   }
+
   return <div className="modal_languages_single">{ selected }</div>;
 };
 
 ModalLangDropdown.propTypes = {
   item: object,
   selected: string,
-  handleLanguageChange: func
+  handleLanguageChange: func,
 };
 
 export default ModalLangDropdown;

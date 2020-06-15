@@ -33,58 +33,19 @@ jest.mock(
   } ),
 );
 
-jest.mock(
-  'components/Notification/Notification',
-  () => function Notification() { return ''; },
-);
-jest.mock(
-  'components/Share/Share',
-  () => function Share() { return ''; },
-);
-jest.mock(
-  'components/TabLayout/TabLayout',
-  () => function TabLayout() { return ''; },
-);
-jest.mock(
-  'components/download/DownloadItem/DownloadItem',
-  () => function DownloadItem() { return ''; },
-);
-jest.mock(
-  './Download/GraphicFiles',
-  () => function GraphicFiles() { return ''; },
-);
-jest.mock(
-  './Download/GenericFiles',
-  () => function GenericFiles() { return ''; },
-);
-jest.mock(
-  './Download/Help',
-  () => function Help() { return ''; },
-);
-jest.mock(
-  'components/modals/ModalLangDropdown/ModalLangDropdown',
-  () => function ModalLangDropdown() { return ''; },
-);
-jest.mock(
-  '../modals/ModalImage/ModalImage',
-  () => function ModalImage() { return ''; },
-);
-jest.mock(
-  '../modals/ModalContentMeta/ModalContentMeta',
-  () => function ModalContentMeta() { return ''; },
-);
-jest.mock(
-  'components/modals/ModalDescription/ModalDescription',
-  () => function ModalDescription() { return ''; },
-);
-jest.mock(
-  'components/modals/ModalPostMeta/ModalPostMeta',
-  () => function ModalPostMeta() { return ''; },
-);
-jest.mock(
-  'components/modals/ModalPostTags/ModalPostTags',
-  () => function ModalPostTags() { return ''; },
-);
+jest.mock( 'components/Notification/Notification', () => 'mock-notification' );
+jest.mock( 'components/Share/Share', () => 'mock-share' );
+jest.mock( 'components/TabLayout/TabLayout', () => 'tab-layout' );
+jest.mock( 'components/download/DownloadItem/DownloadItem', () => 'download-item' );
+jest.mock( './Download/GraphicFiles', () => 'graphic-files' );
+jest.mock( './Download/GenericFiles', () => 'generic-files' );
+jest.mock( './Download/Help', () => 'help' );
+jest.mock( 'components/modals/ModalLangDropdown/ModalLangDropdown', () => 'modal-lang-dropdown' );
+jest.mock( '../modals/ModalImage/ModalImage', () => 'modal-image' );
+jest.mock( '../modals/ModalContentMeta/ModalContentMeta', () => 'modal-content-meta' );
+jest.mock( 'components/modals/ModalDescription/ModalDescription', () => 'modal-description' );
+jest.mock( 'components/modals/ModalPostMeta/ModalPostMeta', () => 'modal-post-meta' );
+jest.mock( 'components/modals/ModalPostTags/ModalPostTags', () => 'modal-post-tags' );
 
 describe( '<GraphicProject />, for GraphQL data', () => {
   const props = {
@@ -130,7 +91,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'renders the preview Notification', () => {
-    const notification = wrapper.find( 'Notification' );
+    const notification = wrapper.find( 'mock-notification' );
     const notificationProps = {
       el: 'p',
       show: true,
@@ -151,7 +112,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'renders the ModalLanguageDropdown', () => {
-    const langDropdown = wrapper.find( '.modal_options_left > ModalLangDropdown' );
+    const langDropdown = wrapper.find( '.modal_options_left > modal-lang-dropdown' );
 
     expect( langDropdown.exists() ).toEqual( true );
     expect( langDropdown.prop( 'item' ) ).toEqual( normalizedData );
@@ -161,7 +122,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'calling handleLanguageChange selects a new language unit', () => {
-    const langDropdown = () => wrapper.find( '.modal_options_left > ModalLangDropdown' );
+    const langDropdown = () => wrapper.find( '.modal_options_left > modal-lang-dropdown' );
     const newLangSelection = 'French';
 
     act( () => {
@@ -202,7 +163,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'renders the ModalImage thumbnail', () => {
-    const modalImage = wrapper.find( 'ModalImage' );
+    const modalImage = wrapper.find( 'modal-image' );
 
     expect( modalImage.exists() ).toEqual( true );
     expect( modalImage.props() ).toEqual( {
@@ -212,7 +173,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'renders the ModalContentMeta', () => {
-    const contentMeta = wrapper.find( 'ModalContentMeta' );
+    const contentMeta = wrapper.find( 'modal-content-meta' );
     const { modified, projectType } = normalizedData;
 
     expect( contentMeta.exists() ).toEqual( true );
@@ -223,7 +184,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'renders the ModalDescription', () => {
-    const contentDesc = wrapper.find( 'ModalDescription' );
+    const contentDesc = wrapper.find( 'modal-description' );
 
     expect( contentDesc.exists() ).toEqual( true );
     expect( contentDesc.props() ).toEqual( {
@@ -252,7 +213,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'renders the ModalPostMeta', () => {
-    const postMeta = wrapper.find( 'ModalPostMeta' );
+    const postMeta = wrapper.find( 'modal-post-meta' );
     const { owner, projectType, published } = normalizedData;
 
     expect( postMeta.exists() ).toEqual( true );
@@ -265,7 +226,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'renders the ModalPostTags', () => {
-    const postTags = wrapper.find( 'ModalPostTags' );
+    const postTags = wrapper.find( 'modal-post-tags' );
 
     expect( postTags.exists() ).toEqual( true );
     expect( postTags.props() ).toEqual( {
@@ -370,7 +331,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   } );
 
   it( 'renders the ModalLanguageDropdown', () => {
-    const langDropdown = wrapper.find( '.modal_options_left > ModalLangDropdown' );
+    const langDropdown = wrapper.find( '.modal_options_left > modal-lang-dropdown' );
 
     expect( langDropdown.exists() ).toEqual( true );
     expect( langDropdown.prop( 'item' ) ).toEqual( normalizedData );
@@ -380,7 +341,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   } );
 
   it( 'calling handleLanguageChange selects a new language unit', () => {
-    const langDropdown = () => wrapper.find( '.modal_options_left > ModalLangDropdown' );
+    const langDropdown = () => wrapper.find( '.modal_options_left > modal-lang-dropdown' );
     const newLangSelection = 'French';
 
     act( () => {
@@ -424,17 +385,17 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   } );
 
   it( 'renders the ModalImage thumbnail', () => {
-    const modalImage = wrapper.find( 'ModalImage' );
+    const modalImage = wrapper.find( 'modal-image' );
 
     expect( modalImage.exists() ).toEqual( true );
     expect( modalImage.props() ).toEqual( {
-      thumbnail: selectedUnit.url,
+      thumbnail: selectedUnit.signedUrl,
       thumbnailMeta: { alt: selectedUnit.alt },
     } );
   } );
 
   it( 'renders the ModalContentMeta', () => {
-    const contentMeta = wrapper.find( 'ModalContentMeta' );
+    const contentMeta = wrapper.find( 'modal-content-meta' );
     const { modified, projectType } = normalizedData;
 
     expect( contentMeta.exists() ).toEqual( true );
@@ -445,7 +406,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   } );
 
   it( 'renders the ModalDescription', () => {
-    const contentDesc = wrapper.find( 'ModalDescription' );
+    const contentDesc = wrapper.find( 'modal-description' );
 
     expect( contentDesc.exists() ).toEqual( true );
     expect( contentDesc.props() ).toEqual( {
@@ -474,7 +435,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   } );
 
   it( 'renders the ModalPostMeta', () => {
-    const postMeta = wrapper.find( 'ModalPostMeta' );
+    const postMeta = wrapper.find( 'modal-post-meta' );
     const { owner, projectType, published } = normalizedData;
 
     expect( postMeta.exists() ).toEqual( true );
@@ -487,7 +448,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   } );
 
   it( 'renders the ModalPostTags', () => {
-    const postTags = wrapper.find( 'ModalPostTags' );
+    const postTags = wrapper.find( 'modal-post-tags' );
 
     expect( postTags.exists() ).toEqual( true );
     expect( postTags.props() ).toEqual( {
