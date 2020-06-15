@@ -292,13 +292,12 @@ const GraphicProject = ( {
         </div>
       </div>
 
-      { selectedUnit?.signedUrl
-        && (
-          <ModalImage
-            thumbnail={ selectedUnit.signedUrl }
-            thumbnailMeta={ { alt: getAlt() } }
-          />
-        ) }
+      { ( selectedUnit.signedUrl || selectedUnit.url ) && (
+        <ModalImage
+          thumbnail={ selectedUnit.signedUrl || selectedUnit.url }
+          thumbnailMeta={ { alt: getAlt() } }
+        />
+      ) }
 
       <ModalContentMeta
         type={ `${projectType.toLowerCase().replace( '_', ' ' )} graphic` }
