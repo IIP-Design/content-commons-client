@@ -19,7 +19,7 @@ import { useFileUpload } from 'lib/hooks/useFileUpload';
 import useTimeout from 'lib/hooks/useTimeout';
 import useToggleModal from 'lib/hooks/useToggleModal';
 import usePublish from 'lib/hooks/usePublish';
-// import useIsDirty from 'lib/hooks/useIsDirty';
+import useIsDirty from 'lib/hooks/useIsDirty';
 import {
   DELETE_GRAPHIC_PROJECT_MUTATION,
   UPDATE_GRAPHIC_PROJECT_MUTATION,
@@ -35,10 +35,7 @@ import { LANGUAGE_BY_NAME_QUERY } from 'components/admin/dropdowns/LanguageDropd
 import { getCount, getFileExt } from 'lib/utils';
 import './GraphicEdit.scss';
 
-const GraphicProject = dynamic( () => import(
-  /* webpackChunkName: "graphicProject" */
-  'components/GraphicProject/GraphicProject'
-) );
+const GraphicProject = dynamic( () => import( /* webpackChunkName: "graphicProject" */ 'components/GraphicProject/GraphicProject' ) );
 
 /**
  * Tracks initial and added files
@@ -247,7 +244,8 @@ const GraphicEdit = ( { id } ) => {
     };
   }, [data, clearLocalGraphicFiles] );
 
-  // const isDirty = useIsDirty( data?.graphicProject );
+  // Check for changes since last publish
+  const isDirty = useIsDirty( data?.graphicProject );
 
   useEffect( () => {
     if ( data?.graphicProject ) {
@@ -272,12 +270,6 @@ const GraphicEdit = ( { id } ) => {
     const isPublished = data?.graphicProject && !!data.graphicProject.publishedAt;
 
     return !projectId || isPublished;
-  };
-
-  const delayUnmount = ( fn, timer, delay ) => {
-    if ( timer ) clearTimeout( timer );
-    /* eslint-disable no-param-reassign */
-    timer = setTimeout( fn, delay );
   };
 
   const saveGraphicFile = async ( pId, file ) => updateProject( pId, {
@@ -685,8 +677,7 @@ const GraphicEdit = ( { id } ) => {
               save: true,
               preview: true,
               publish: data?.graphicProject?.status === 'DRAFT',
-              // publishChanges: data?.graphicProject?.publishedAt && isDirty,
-              publishChanges: false,
+              publishChanges: data?.graphicProject?.publishedAt && isDirty,
               unpublish: data?.graphicProject?.status === 'PUBLISHED',
             } }
             loading={ {

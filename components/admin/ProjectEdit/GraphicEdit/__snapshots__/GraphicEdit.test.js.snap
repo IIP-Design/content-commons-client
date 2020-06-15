@@ -450,7 +450,7 @@ exports[`<GraphicEdit />, when there is an existing DRAFT graphic project render
       "delete": true,
       "preview": true,
       "publish": true,
-      "publishChanges": false,
+      "publishChanges": null,
       "save": true,
       "unpublish": false,
     }
@@ -908,7 +908,7 @@ exports[`<GraphicEdit />, when there is an existing PUBLISHED graphic project re
       "delete": true,
       "preview": true,
       "publish": false,
-      "publishChanges": false,
+      "publishChanges": null,
       "save": true,
       "unpublish": true,
     }
@@ -1077,7 +1077,7 @@ exports[`<GraphicEdit />, when there is no props.id and local files have been se
       "delete": true,
       "preview": true,
       "publish": false,
-      "publishChanges": false,
+      "publishChanges": undefined,
       "save": true,
       "unpublish": false,
     }
