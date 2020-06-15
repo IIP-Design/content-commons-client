@@ -34,11 +34,120 @@ exports[`<TeamProjectPrimaryCol /> renders a Popup with a truncated project titl
       </VisuallyHidden>
     </a>
   }
-/>
+>
+  <Portal
+    closeOnDocumentClick={true}
+    closeOnEscape={true}
+    closeOnTriggerBlur={true}
+    closeOnTriggerClick={false}
+    closeOnTriggerMouseLeave={true}
+    eventPool="default"
+    mouseEnterDelay={50}
+    mouseLeaveDelay={70}
+    onClose={[Function]}
+    onMount={[Function]}
+    onOpen={[Function]}
+    onUnmount={[Function]}
+    openOnTriggerClick={false}
+    openOnTriggerFocus={true}
+    openOnTriggerMouseEnter={true}
+    trigger={
+      <a
+        className="projects_data_title"
+        href="/admin/project/video/111/edit"
+      >
+        <span
+          aria-hidden={true}
+        >
+          Test Project Test Project Test P...
+        </span>
+        <VisuallyHidden
+          el="span"
+        >
+          Test Project Test Project Test Project Test Project
+        </VisuallyHidden>
+      </a>
+    }
+    triggerRef={
+      Object {
+        "current": <a
+          class="projects_data_title"
+          href="/admin/project/video/111/edit"
+        >
+          <span
+            aria-hidden="true"
+          >
+            Test Project Test Project Test P...
+          </span>
+          <span
+            class="hide-visually"
+          >
+            Test Project Test Project Test Project Test Project
+          </span>
+        </a>,
+      }
+    }
+  >
+    <Ref
+      innerRef={[Function]}
+    >
+      <RefFindNode
+        innerRef={[Function]}
+      >
+        <a
+          className="projects_data_title"
+          href="/admin/project/video/111/edit"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          <span
+            aria-hidden={true}
+          >
+            Test Project Test Project Test P...
+          </span>
+          <VisuallyHidden
+            el="span"
+          >
+            <span
+              className="hide-visually"
+            >
+              Test Project Test Project Test Project Test Project
+            </span>
+          </VisuallyHidden>
+        </a>
+      </RefFindNode>
+    </Ref>
+  </Portal>
+</Popup>
 `;
 
 exports[`<TeamProjectPrimaryCol /> renders without crashing 1`] = `
-<Fragment>
+<TeamProjectPrimaryCol
+  d={
+    Object {
+      "author": "Jane Doe",
+      "createdAt": "May 9, 2019",
+      "id": "111",
+      "projectTitle": "Test Project",
+      "status": "PUBLISHED",
+      "thumbnail": Object {
+        "alt": "the alt text",
+        "url": "https://website.com",
+      },
+      "updatedAt": "May 9, 2019",
+      "visibility": "PUBLIC",
+    }
+  }
+  header={
+    Object {
+      "label": "PROJECT TITLE",
+      "name": "projectTitle",
+    }
+  }
+>
   <div
     className="projects_actions"
   >
@@ -46,9 +155,72 @@ exports[`<TeamProjectPrimaryCol /> renders without crashing 1`] = `
       checked={false}
       data-label="111"
       disabled={false}
-      onChange={[MockFunction]}
+      onChange={[Function]}
       type="checkbox"
-    />
+    >
+      <div
+        className="ui fitted checkbox"
+        data-label="111"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseDown={[Function]}
+        onMouseUp={[Function]}
+      >
+        <Ref
+          innerRef={
+            Object {
+              "current": <input
+                class="hidden"
+                readonly=""
+                tabindex="0"
+                type="checkbox"
+                value=""
+              />,
+            }
+          }
+        >
+          <RefFindNode
+            innerRef={
+              Object {
+                "current": <input
+                  class="hidden"
+                  readonly=""
+                  tabindex="0"
+                  type="checkbox"
+                  value=""
+                />,
+              }
+            }
+          >
+            <input
+              checked={false}
+              className="hidden"
+              disabled={false}
+              readOnly={true}
+              tabIndex={0}
+              type="checkbox"
+            />
+          </RefFindNode>
+        </Ref>
+        <Ref
+          innerRef={
+            Object {
+              "current": <label />,
+            }
+          }
+        >
+          <RefFindNode
+            innerRef={
+              Object {
+                "current": <label />,
+              }
+            }
+          >
+            <label />
+          </RefFindNode>
+        </Ref>
+      </div>
+    </Checkbox>
   </div>
   <div
     className="projects_thumbnail"
@@ -71,9 +243,13 @@ exports[`<TeamProjectPrimaryCol /> renders without crashing 1`] = `
     <Link
       as="/admin/project/video/111/edit"
       href="/admin/project?content=video&id=111&action=edit"
+      prefetch={false}
     >
       <a
         className="projects_data_title"
+        href="/admin/project/video/111/edit"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
       >
         Test Project
       </a>
@@ -87,9 +263,13 @@ exports[`<TeamProjectPrimaryCol /> renders without crashing 1`] = `
         <Link
           as="/admin/project/video/111/edit"
           href="/admin/project?content=video&id=111&action=edit"
+          prefetch={false}
         >
           <a
             className="linkStyle projects_data_actions_action"
+            href="/admin/project/video/111/edit"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
           >
             Edit
           </a>
@@ -101,6 +281,7 @@ exports[`<TeamProjectPrimaryCol /> renders without crashing 1`] = `
         </span>
         <Modal
           centered={true}
+          className="undefined-preview"
           closeIcon={true}
           closeOnDimmerClick={true}
           closeOnDocumentClick={false}
@@ -115,19 +296,54 @@ exports[`<TeamProjectPrimaryCol /> renders without crashing 1`] = `
             </button>
           }
         >
-          <ModalContent>
-            <Apollo(ProjectPreviewContent)
-              id="111"
-            />
-          </ModalContent>
+          <Portal
+            closeOnDocumentClick={false}
+            closeOnEscape={true}
+            eventPool="Modal"
+            mountNode={<body />}
+            onClose={[Function]}
+            onMount={[Function]}
+            onOpen={[Function]}
+            onUnmount={[Function]}
+            openOnTriggerClick={true}
+            trigger={
+              <button
+                className="linkStyle projects_data_actions_action"
+                type="button"
+              >
+                Preview
+              </button>
+            }
+          >
+            <Ref
+              innerRef={[Function]}
+            >
+              <RefFindNode
+                innerRef={[Function]}
+              >
+                <button
+                  className="linkStyle projects_data_actions_action"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                  type="button"
+                >
+                  Preview
+                </button>
+              </RefFindNode>
+            </Ref>
+          </Portal>
         </Modal>
         <span
           className="separator"
         >
           |
         </span>
-        <DetailsPopup
+        <details-popup
           id="111"
+          team="Press Office"
         />
       </div>
       <button
@@ -138,9 +354,15 @@ exports[`<TeamProjectPrimaryCol /> renders without crashing 1`] = `
         <Icon
           as="i"
           name="ellipsis vertical"
-        />
+        >
+          <i
+            aria-hidden="true"
+            className="ellipsis vertical icon"
+            onClick={[Function]}
+          />
+        </Icon>
       </button>
     </div>
   </div>
-</Fragment>
+</TeamProjectPrimaryCol>
 `;

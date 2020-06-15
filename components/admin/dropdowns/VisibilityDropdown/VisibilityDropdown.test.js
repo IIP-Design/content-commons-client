@@ -5,34 +5,34 @@ import VisibilityDropdown, { VISIBILITY_QUERY } from './VisibilityDropdown';
 
 const props = {
   id: 'v123',
-  label: 'Visibility Setting'
+  label: 'Visibility Setting',
 };
 
 const mocks = [
   {
     request: {
-      query: VISIBILITY_QUERY
+      query: VISIBILITY_QUERY,
     },
     result: {
       data: {
         __type: {
           enumValues: [
             { name: 'INTERNAL' },
-            { name: 'PUBLIC' }
-          ]
-        }
-      }
-    }
-  }
+            { name: 'PUBLIC' },
+          ],
+        },
+      },
+    },
+  },
 ];
 
 const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 const nullMocks = [
@@ -40,10 +40,10 @@ const nullMocks = [
     ...mocks[0],
     result: {
       data: {
-        __type: { enumValues: null }
-      }
-    }
-  }
+        __type: { enumValues: null },
+      },
+    },
+  },
 ];
 
 const emptyMocks = [
@@ -51,10 +51,10 @@ const emptyMocks = [
     ...mocks[0],
     result: {
       data: {
-        __type: { enumValues: [] }
-      }
-    }
-  }
+        __type: { enumValues: [] },
+      },
+    },
+  },
 ];
 
 const Component = (
@@ -156,7 +156,7 @@ describe( '<VisibilityDropdown />', () => {
       return {
         key: enumValue.name,
         text,
-        value: enumValue.name
+        value: enumValue.name,
       };
     } );
 

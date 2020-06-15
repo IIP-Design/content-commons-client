@@ -1,12 +1,11 @@
 import { shallow } from 'enzyme';
+
 import MyProjects from './MyProjects';
 
-/**
- * Need to mock Next.js dynamic imports
- * in order for this test suite to run.
- */
-jest.mock( 'next-server/dynamic', () => () => 'VideoDetailsPopup' );
-jest.mock( 'next-server/dynamic', () => () => 'ImageDetailsPopup' );
+jest.mock( 'next/config', () => () => ( {
+  publicRuntimeConfig: {},
+} ) );
+jest.mock( 'next/dynamic', () => () => 'dynamically-imported-component' );
 
 const props = {
   columnMenu: [
@@ -18,15 +17,15 @@ const props = {
     { name: 'projectTitle', label: 'PROJECT TITLE' },
     { name: 'visibility', label: 'VISIBILITY' },
     { name: 'updatedAt', label: 'MODIFIED' },
-    { name: 'team', label: 'TEAM' }
+    { name: 'team', label: 'TEAM' },
   ],
-  user: { team: { name: 'IIP Video Production' } }
+  user: { team: { name: 'IIP Video Production' } },
 };
 
 const Component = <MyProjects { ...props } />;
 
 describe( '<MyProjects />', () => {
-  it.only( 'renders without crashing', () => {
+  it( 'renders without crashing', () => {
     const wrapper = shallow( Component );
 
     expect( wrapper.exists() ).toEqual( true );

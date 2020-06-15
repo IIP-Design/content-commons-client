@@ -5,7 +5,7 @@
  */
 
 import React, {
-  Fragment, useState, useEffect
+  Fragment, useState, useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -23,14 +23,14 @@ import SupportItem from '../SupportItem/SupportItem';
 
 const SupportFileTypeList = props => {
   const {
-    projectId, save, config: { types }
+    projectId, save, config: { types },
   } = props;
 
   // eslint-disable-next-line react/destructuring-assignment
   const type = types[props.type];
 
   const {
-    headline, popupMsg, editTitle
+    headline, popupMsg, editTitle,
   } = type;
 
   const handleSave = async ( files, filesToRemove ) => {
@@ -41,15 +41,17 @@ const SupportFileTypeList = props => {
 
   const getFilesForNewProject = filesToUpload => {
     const { extensions } = type;
+
     return filesToUpload.filter( file => extensions.includes( getFileExt( file.input.name ) ) );
   };
 
   const getFilesForExistingProject = files => {
     const { extensions } = type;
+
     return files.filter( file => extensions.includes( getFileExt( file.filename ) ) );
   };
 
-  const getNoFilesMessage = ( hl = 'files' ) => ( projectId ? `Click the 'Edit' link to add ${hl.toLowerCase()}` : 'No files to upload' );
+  const getNoFilesMessage = ( hl = 'files' ) => (projectId ? `Click the 'Edit' link to add ${hl.toLowerCase()}` : 'No files to upload');
 
   const fetchFiles = data => {
     const { filesToUpload } = props;
@@ -57,6 +59,7 @@ const SupportFileTypeList = props => {
     if ( !isEmpty( data ) && data.projectFiles ) {
       const { supportFiles, thumbnails } = data.projectFiles;
       const files = [...supportFiles, ...thumbnails];
+
       return getFilesForExistingProject( files );
     }
 
@@ -88,7 +91,8 @@ const SupportFileTypeList = props => {
 
   return (
     <Fragment>
-      <h3>{ `${headline}` }
+      <h3>
+        { `${headline}` }
         <IconPopup
           message={ popupMsg }
           iconSize="small"
@@ -109,7 +113,7 @@ const SupportFileTypeList = props => {
       <ul>
         { supFiles.length
           ? sortBy( supFiles, file => file.language.displayName ).map( renderSupportItem )
-          : ( <li style={ { fontSize: '0.875em' } }>{ getNoFilesMessage( headline ) }</li> ) }
+          : <li style={ { fontSize: '0.875em' } }>{ getNoFilesMessage( headline ) }</li> }
       </ul>
     </Fragment>
   );
@@ -126,7 +130,7 @@ SupportFileTypeList.propTypes = {
 };
 
 const mapStateToProps = state => ( {
-  filesToUpload: state.upload.filesToUpload
+  filesToUpload: state.upload.filesToUpload,
 } );
 
 // todo: video specific code needs to be removed
@@ -136,11 +140,11 @@ export default compose(
     partialRefetch: true,
     options: props => ( {
       variables: {
-        id: props.projectId
-      }
+        id: props.projectId,
+      },
     } ),
-    skip: props => !props.projectId
-  } )
+    skip: props => !props.projectId,
+  } ),
 )( SupportFileTypeList );
 
 // export unconnected component to test in isolation

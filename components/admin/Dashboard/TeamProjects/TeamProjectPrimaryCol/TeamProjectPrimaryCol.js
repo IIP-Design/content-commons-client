@@ -273,9 +273,6 @@ const TeamProjectPrimaryCol = ( { d, header } ) => {
 TeamProjectPrimaryCol.propTypes = {
   d: PropTypes.object,
   header: PropTypes.object,
-  selectedItems: PropTypes.instanceOf( Map ),
-  toggleItemSelection: PropTypes.func,
-  team: PropTypes.object,
 };
 
 export default TeamProjectPrimaryCol;

@@ -2,8 +2,11 @@ import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import Router from 'next/router';
-import { MockedProvider } from 'react-apollo/test-utils';
+import { MockedProvider } from '@apollo/react-testing';
 import { Loader } from 'semantic-ui-react';
+
+import VideoProjectFiles from './VideoProjectFiles';
+
 import {
   errorMocks,
   mocks,
@@ -12,32 +15,28 @@ import {
   nullFilesMocks,
   nullMocks,
   nullUnitsMocks,
-  props
-} from 'components/admin/ProjectEdit/ProjectPreviewContent/mocks';
-import VideoProjectFiles from './VideoProjectFiles';
+  props,
+} from 'components/admin/Previews/ProjectPreview/ProjectPreviewContent/mocks';
 
-jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
+jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
 jest.mock( 'lib/utils', () => ( {
-  getPluralStringOrNot: jest.fn( ( array, string ) => (
-    `${string}${array && array.length > 1 ? 's' : ''}`
-  ) ),
+  getPluralStringOrNot: jest.fn( ( array, string ) => `${string}${array && array.length > 1 ? 's' : ''}` ),
   getApolloErrors: jest.fn( error => {
     let errs = [];
     const { graphQLErrors, networkError, otherError } = error;
+
     if ( graphQLErrors ) {
       errs = graphQLErrors.map( error => error.message );
     }
     if ( networkError ) errs.push( networkError );
     if ( otherError ) errs.push( otherError );
+
     return errs;
-  } )
+  } ),
 } ) );
 
-jest.mock(
-  './VideoProjectFile/VideoProjectFile',
-  () => function VideoProjectFile() { return ''; }
-);
+jest.mock( './VideoProjectFile/VideoProjectFile', () => 'video-project-file' );
 
 const Component = (
   <MockedProvider mocks={ mocks } addTypename>
@@ -66,8 +65,9 @@ describe( '<VideoProjectFiles />', () => {
     const wrapper = mount(
       <MockedProvider mocks={ errorMocks } addTypename>
         <VideoProjectFiles { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
+
     // wait for the data and !loading
     await wait( 0 );
     wrapper.update();
@@ -84,8 +84,9 @@ describe( '<VideoProjectFiles />', () => {
     const wrapper = mount(
       <MockedProvider mocks={ nullMocks } addTypename>
         <VideoProjectFiles { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
+
     await wait( 0 );
     wrapper.update();
 
@@ -96,6 +97,7 @@ describe( '<VideoProjectFiles />', () => {
 
   it( 'renders the final state', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -106,24 +108,27 @@ describe( '<VideoProjectFiles />', () => {
 
   it( 'clicking the Edit button redirects to <VideoEdit />', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
     const videoProjectFiles = wrapper.find( 'VideoProjectFiles' );
     const header = videoProjectFiles.find( '.project_file_header' );
     const editBtns = header.find( 'Button.project_button--edit' );
+
     Router.push = jest.fn();
 
     editBtns.forEach( btn => {
       const { id } = props;
+
       btn.simulate( 'click' );
       expect( Router.push ).toHaveBeenCalledWith( {
         pathname: '/admin/project',
         query: {
           id,
           content: 'video',
-          action: 'edit'
-        }
+          action: 'edit',
+        },
       }, `/admin/project/video/${id}/edit` );
     } );
   } );
@@ -132,8 +137,9 @@ describe( '<VideoProjectFiles />', () => {
     const wrapper = mount(
       <MockedProvider mocks={ nullUnitsMocks } addTypename>
         <VideoProjectFiles { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
+
     await wait( 0 );
     wrapper.update();
 
@@ -147,8 +153,9 @@ describe( '<VideoProjectFiles />', () => {
     const wrapper = mount(
       <MockedProvider mocks={ noUnitsMocks } addTypename>
         <VideoProjectFiles { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
+
     await wait( 0 );
     wrapper.update();
 
@@ -162,8 +169,9 @@ describe( '<VideoProjectFiles />', () => {
     const wrapper = mount(
       <MockedProvider mocks={ nullFilesMocks } addTypename>
         <VideoProjectFiles { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
+
     await wait( 0 );
     wrapper.update();
 
@@ -178,8 +186,9 @@ describe( '<VideoProjectFiles />', () => {
     const wrapper = mount(
       <MockedProvider mocks={ noFilesMocks }>
         <VideoProjectFiles { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
+
     await wait( 0 );
     wrapper.update();
 

@@ -1,25 +1,26 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
-import { MockedProvider } from 'react-apollo/test-utils';
+import { MockedProvider } from '@apollo/react-testing';
 import { Loader } from 'semantic-ui-react';
+
 import DownloadOtherFiles from './DownloadOtherFiles';
+
 import {
   emptyProjectMocks,
   errorMocks,
   mocks,
   noFilesMocks,
   nullProjectMocks,
-  props
+  props,
 } from './mocks';
 
 jest.mock( 'lib/utils', () => ( {
-  getS3Url: jest.fn( assetPath => (
-    `https://s3-url.com/${assetPath}`
-  ) ),
+  getS3Url: jest.fn( assetPath => `https://s3-url.com/${assetPath}` ),
   getApolloErrors: error => {
     let errs = [];
     const { graphQLErrors, networkError, otherError } = error;
+
     if ( graphQLErrors ) {
       errs = graphQLErrors.map( error => error.message );
     }
@@ -30,8 +31,9 @@ jest.mock( 'lib/utils', () => ( {
     if ( otherError ) {
       errs.push( otherError );
     }
+
     return errs;
-  }
+  },
 } ) );
 
 jest.mock( 'static/icons/icon_download.svg', () => 'downloadIconSVG' );
@@ -64,8 +66,9 @@ describe( '<DownloadOtherFiles />', () => {
     const wrapper = mount(
       <MockedProvider mocks={ errorMocks } addTypename={ false }>
         <DownloadOtherFiles { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
+
     // wait for the data and !loading
     await wait( 0 );
     wrapper.update();
@@ -80,6 +83,7 @@ describe( '<DownloadOtherFiles />', () => {
 
   it( 'renders final state without crashing', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -92,7 +96,7 @@ describe( '<DownloadOtherFiles />', () => {
     const wrapper = mount(
       <MockedProvider mocks={ nullProjectMocks } addTypename={ false }>
         <DownloadOtherFiles { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
 
     await wait( 0 );
@@ -106,12 +110,13 @@ describe( '<DownloadOtherFiles />', () => {
   it( 'renders null if project is {}', async () => {
     // ignore console.warn about missing field `id` and `files`
     const consoleWarn = console.warn;
+
     console.warn = jest.fn();
 
     const wrapper = mount(
       <MockedProvider mocks={ emptyProjectMocks } addTypename={ false }>
         <DownloadOtherFiles { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
 
     await wait( 0 );
@@ -127,7 +132,7 @@ describe( '<DownloadOtherFiles />', () => {
     const wrapper = mount(
       <MockedProvider mocks={ noFilesMocks } addTypename={ false }>
         <DownloadOtherFiles { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
 
     await wait( 0 );
@@ -145,6 +150,7 @@ describe( '<DownloadOtherFiles />', () => {
 
   it( 'renders <a> tags with the correct href and download attribute values', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -155,6 +161,7 @@ describe( '<DownloadOtherFiles />', () => {
     expect( items.length ).toEqual( files.length );
     items.forEach( ( item, i ) => {
       const { url: assetPath, filename } = files[i];
+
       expect( item.name() ).toEqual( 'a' );
       expect( item.prop( 'href' ) ).toEqual( `${s3Bucket}/${assetPath}` );
       expect( item.prop( 'download' ) ).toEqual( filename );
@@ -166,8 +173,9 @@ describe( '<DownloadOtherFiles />', () => {
     const wrapper = mount(
       <MockedProvider mocks={ mocks } addTypename={ false }>
         <DownloadOtherFiles { ...newProps } />
-      </MockedProvider>
+      </MockedProvider>,
     );
+
     await wait( 0 );
     wrapper.update();
 
@@ -187,8 +195,9 @@ describe( '<DownloadOtherFiles />', () => {
     const wrapper = mount(
       <MockedProvider mocks={ mocks } addTypename={ false }>
         <DownloadOtherFiles { ...newProps } />
-      </MockedProvider>
+      </MockedProvider>,
     );
+
     await wait( 0 );
     wrapper.update();
 
@@ -208,6 +217,7 @@ describe( '<DownloadOtherFiles />', () => {
 
   it( 'does not render preview text if !isPreview', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 

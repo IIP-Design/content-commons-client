@@ -1,14 +1,16 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
-import { MockedProvider } from 'react-apollo/test-utils';
+import { MockedProvider } from '@apollo/react-testing';
 import ApolloError from 'components/errors/ApolloError';
 import { formatBytes, getCount } from 'lib/utils';
 import VideoDetailsPopup, {
-  getValidFiles, getVideoFiles, VIDEO_PROJECT_FILES_QUERY
+  getValidFiles, getVideoFiles, VIDEO_PROJECT_FILES_QUERY,
 } from './VideoDetailsPopup';
 
-jest.mock( 'next-server/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
+jest.mock( 'next/config', () => () => ( {
+  publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' },
+} ) );
 
 const props = { id: '123' };
 
@@ -16,7 +18,7 @@ const mocks = [
   {
     request: {
       query: VIDEO_PROJECT_FILES_QUERY,
-      variables: { ...props }
+      variables: { ...props },
     },
     result: {
       data: {
@@ -34,12 +36,12 @@ const mocks = [
                   url: `2019/06/${props.id}/video-1.mp4`,
                   language: {
                     id: 'en33',
-                    displayName: 'English'
+                    displayName: 'English',
                   },
                   use: {
                     id: 'u382',
-                    name: 'Full Video'
-                  }
+                    name: 'Full Video',
+                  },
                 },
                 {
                   id: 'f294',
@@ -48,15 +50,15 @@ const mocks = [
                   url: `2019/06/${props.id}/video-2.mp4`,
                   language: {
                     id: 'fr533',
-                    displayName: 'French'
+                    displayName: 'French',
                   },
                   use: {
                     id: 'u382',
-                    name: 'Full Video'
-                  }
-                }
-              ]
-            }
+                    name: 'Full Video',
+                  },
+                },
+              ],
+            },
           ],
           supportFiles: [
             {
@@ -65,8 +67,8 @@ const mocks = [
               filesize: 6424,
               language: {
                 id: 'en33',
-                displayName: 'English'
-              }
+                displayName: 'English',
+              },
             },
             {
               id: 'v238',
@@ -74,14 +76,14 @@ const mocks = [
               filesize: 6424,
               language: {
                 id: 'fr533',
-                displayName: 'French'
-              }
-            }
-          ]
-        }
-      }
-    }
-  }
+                displayName: 'French',
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
 ];
 
 const noFilesMocks = [
@@ -94,14 +96,14 @@ const noFilesMocks = [
           units: [
             {
               ...mocks[0].result.data.videoProject.units[0],
-              files: []
-            }
+              files: [],
+            },
           ],
-          supportFiles: []
-        }
-      }
-    }
-  }
+          supportFiles: [],
+        },
+      },
+    },
+  },
 ];
 
 const noUnitsMocks = [
@@ -111,11 +113,11 @@ const noUnitsMocks = [
       data: {
         videoProject: {
           ...mocks[0].result.data.videoProject,
-          units: []
-        }
-      }
-    }
-  }
+          units: [],
+        },
+      },
+    },
+  },
 ];
 
 const nullFilesMocks = [
@@ -128,14 +130,14 @@ const nullFilesMocks = [
           units: [
             {
               ...mocks[0].result.data.videoProject.units[0],
-              files: null
-            }
+              files: null,
+            },
           ],
-          supportFiles: null
-        }
-      }
-    }
-  }
+          supportFiles: null,
+        },
+      },
+    },
+  },
 ];
 
 const nullFileMocks = [
@@ -150,18 +152,18 @@ const nullFileMocks = [
               ...mocks[0].result.data.videoProject.units[0],
               files: [
                 ...mocks[0].result.data.videoProject.units[0].files,
-                null
-              ]
-            }
+                null,
+              ],
+            },
           ],
           supportFiles: [
             ...mocks[0].result.data.videoProject.supportFiles,
-            null
-          ]
-        }
-      }
-    }
-  }
+            null,
+          ],
+        },
+      },
+    },
+  },
 ];
 
 const Component = (
@@ -185,18 +187,18 @@ describe( '<VideoDetailsPopup />', () => {
       {
         request: {
           query: VIDEO_PROJECT_FILES_QUERY,
-          variables: { ...props }
+          variables: { ...props },
         },
         result: {
-          errors: [{ message: 'There was an error.' }]
-        }
-      }
+          errors: [{ message: 'There was an error.' }],
+        },
+      },
     ];
 
     const wrapper = mount(
       <MockedProvider mocks={ errorMocks } addTypename={ false }>
         <VideoDetailsPopup { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
 
     // wait for the data and !loading
@@ -213,6 +215,7 @@ describe( '<VideoDetailsPopup />', () => {
 
   it( 'renders the final state', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -226,17 +229,17 @@ describe( '<VideoDetailsPopup />', () => {
       {
         request: {
           query: VIDEO_PROJECT_FILES_QUERY,
-          variables: { ...props }
+          variables: { ...props },
         },
         result: {
-          data: { videoProject: null }
-        }
-      }
+          data: { videoProject: null },
+        },
+      },
     ];
     const wrapper = mount(
       <MockedProvider mocks={ nullMocks } addTypename={ false }>
         <VideoDetailsPopup { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
 
     // wait for the data and !loading
@@ -252,8 +255,9 @@ describe( '<VideoDetailsPopup />', () => {
     const wrapper = mount(
       <MockedProvider mocks={ noFilesMocks } addTypename={ false }>
         <VideoDetailsPopup { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
+
     await wait( 0 );
     wrapper.update();
 
@@ -267,8 +271,9 @@ describe( '<VideoDetailsPopup />', () => {
     const wrapper = mount(
       <MockedProvider mocks={ nullFilesMocks } addTypename={ false }>
         <VideoDetailsPopup { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
+
     await wait( 0 );
     wrapper.update();
 
@@ -282,8 +287,9 @@ describe( '<VideoDetailsPopup />', () => {
     const wrapper = mount(
       <MockedProvider mocks={ noUnitsMocks } addTypename={ false }>
         <VideoDetailsPopup { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
+
     await wait( 0 );
     wrapper.update();
 
@@ -295,6 +301,7 @@ describe( '<VideoDetailsPopup />', () => {
     expect( files.length ).toEqual( supportFilesCount );
     files.forEach( ( file, i ) => {
       const { language: { displayName }, filesize } = supportFiles[i];
+
       expect( file.text() )
         .toEqual( `SRT | ${displayName} | ${formatBytes( filesize )}` );
     } );
@@ -302,6 +309,7 @@ describe( '<VideoDetailsPopup />', () => {
 
   it( 'renders the correct number of files', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
 
@@ -320,8 +328,9 @@ describe( '<VideoDetailsPopup />', () => {
     const wrapper = mount(
       <MockedProvider mocks={ nullFileMocks } addTypename={ false }>
         <VideoDetailsPopup { ...props } />
-      </MockedProvider>
+      </MockedProvider>,
     );
+
     await wait( 0 );
     wrapper.update();
 

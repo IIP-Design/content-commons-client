@@ -1,54 +1,55 @@
 import { mount } from 'enzyme';
-import { UploadContext } from '../../ProjectEdit/VideoEdit/UploadContext';
+
 import ProjectUnitItem from './ProjectUnitItem';
+import { UploadContext } from '../../ProjectEdit/VideoEdit/UploadContext';
 import { filesToUpload, postUploadUnit, preUploadUnit } from './mocks';
 
 jest.mock( 'next/dynamic', () => () => 'Dynamic' );
-jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
+jest.mock( 'next/config', () => () => ( {
+  publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' },
+} ) );
 
 jest.mock(
   'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem',
-  () => function EditSingleProjectItem() { return ''; }
+  () => function EditSingleProjectItem() { return ''; },
 );
 
 jest.mock(
   'components/admin/FileUploadProgressBar/FileUploadProgressBar',
-  () => function FileUploadProgressBar() { return ''; }
+  () => function FileUploadProgressBar() { return ''; },
 );
 
 jest.mock(
   'static/icons/icon_32px_videoCamera.png',
-  () => 'iconVideoCamera'
+  () => 'iconVideoCamera',
 );
 
 const uploadingProps = {
   projectId: undefined,
   filesToUpload,
-  unit: preUploadUnit
+  unit: preUploadUnit,
 };
 
 const postUploadProps = {
   projectId: '123',
   filesToUpload: [],
-  unit: postUploadUnit
+  unit: postUploadUnit,
 };
 
 const updateTitleProps = {
   ...postUploadProps,
   unit: {
     ...postUploadUnit,
-    title: 'the project title'
-  }
+    title: 'the project title',
+  },
 };
 
 const uploadingErrorProps = {
   ...uploadingProps,
   unit: {
     ...uploadingProps.unit,
-    files: [
-      { ...uploadingProps.unit.files[0], error: true },
-    ]
-  }
+    files: [{ ...uploadingProps.unit.files[0], error: true }],
+  },
 };
 
 const postUploadErrorProps = {
@@ -62,17 +63,17 @@ const postUploadErrorProps = {
         dimensions: {
           ...postUploadProps.unit.files[0].dimensions,
           width: null,
-          height: null
+          height: null,
         },
         stream: [
           {
             ...postUploadProps.unit.files[0].stream[0],
-            url: null
-          }
-        ]
-      }
-    ]
-  }
+            url: null,
+          },
+        ],
+      },
+    ],
+  },
 };
 
 const UploadingComponent = (
@@ -138,6 +139,7 @@ describe( '<ProjectUnitItem /> during uploading', () => {
     expect( fileList.length ).toEqual( files.length );
     fileList.forEach( ( file, i ) => {
       const { name } = files[i].input;
+
       expect( file.contains( name ) ).toEqual( true );
     } );
   } );

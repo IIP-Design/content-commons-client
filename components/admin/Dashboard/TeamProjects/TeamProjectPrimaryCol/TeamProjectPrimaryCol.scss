@@ -1,11 +1,10 @@
-@import "../../../../../styles/colors.scss";
+@import 'styles/colors.scss';
 
 .projects {
-
   .isPublishing {
     cursor: default;
   }
-  
+
   &_actions {
     margin-right: 15px;
     @media screen and (max-width: 767px) {
@@ -104,12 +103,11 @@
     }
 
     &_actions {
-
       button {
         -webkit-appearance: none;
         padding: 0;
         border: none;
-        background-color: transparent; 
+        background-color: transparent;
       }
 
       &_wrapper {
@@ -124,7 +122,7 @@
           top: 0;
           right: 8px;
           z-index: 2;
-          padding: 10px;          
+          padding: 10px;
           background-color: #fff;
           box-shadow: 1px 1px 1px 1px $medium-grey;
 
