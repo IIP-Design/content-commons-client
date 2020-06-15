@@ -353,7 +353,7 @@ GraphicProject.propTypes = {
     copyright: PropTypes.string,
     images: PropTypes.array,
     supportFiles: PropTypes.array,
-    categories: PropTypes.array,
+    categories: PropTypes.oneOfType( [PropTypes.array, PropTypes.string] ),
   } ),
   displayAsModal: PropTypes.bool,
   isAdminPreview: PropTypes.bool,
