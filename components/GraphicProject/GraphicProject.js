@@ -107,7 +107,6 @@ const GraphicProject = ( {
   const {
     title,
     language: selectedUnitLanguage,
-    alt,
     alt: unitAlt,
   } = selectedUnit;
 
@@ -174,8 +173,7 @@ const GraphicProject = ( {
           instructions={ (
             <Fragment>
               <p>
-                By downloading these editable files you agree to the
-                { ' ' }
+                { 'By downloading these editable files you agree to the ' }
                 <Link href="/about"><a>Terms of Use</a></Link>
               </p>
               { copyrightMsg && <p><strong>{ copyrightMsg }</strong></p> }
@@ -185,7 +183,7 @@ const GraphicProject = ( {
           { !selectedUnitSupportFiles.length
             && <p className="download-item__noContent">There are no editable files available for download at this time.</p>}
           { selectedUnitSupportFiles.map(
-            file => <GenericFiles key={ file.srcUrl } file={ file } isAdminPreview={ isAdminPreview } />,
+            file => <GenericFiles key={ file.id } file={ file } isAdminPreview={ isAdminPreview } />,
           ) }
         </DownloadItem>
       ),
@@ -196,8 +194,7 @@ const GraphicProject = ( {
         <DownloadItem
           instructions={ (
             <p>
-              By downloading these files you agree to the
-              { ' ' }
+              { 'By downloading these files you agree to the ' }
               <Link href="/about"><a>Terms of Use</a></Link>
             </p>
           ) }
@@ -205,7 +202,7 @@ const GraphicProject = ( {
           { !selectedUnitOtherFiles.length
             && <p className="download-item__noContent">There are no other files available for download at this time.</p>}
           { selectedUnitOtherFiles.map(
-            file => <GenericFiles key={ file.srcUrl } file={ file } isAdminPreview={ isAdminPreview } />,
+            file => <GenericFiles key={ file.id } file={ file } isAdminPreview={ isAdminPreview } />,
           ) }
         </DownloadItem>
       ),
