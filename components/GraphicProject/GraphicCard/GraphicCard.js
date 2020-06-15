@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import useSignedUrl from 'lib/hooks/useSignedUrl';
 import { getCount } from 'lib/utils';
 import { Modal } from 'semantic-ui-react';
 import MediaObject from 'components/MediaObject/MediaObject';
@@ -9,8 +10,6 @@ import DosSeal from 'static/images/dos_seal.svg';
 import { getGraphicImgsBySocial } from '../utils';
 import GraphicProject from '../GraphicProject';
 import './GraphicCard.scss';
-
-import tempSrcUrl from 'components/download/DownloadItem/graphicPlaceholderImg.png';
 
 const GraphicCard = ( { item } ) => {
   const [isOpen, setIsOpen] = useState( false );
@@ -21,7 +20,8 @@ const GraphicCard = ( { item } ) => {
     id,
     published,
     owner,
-    desc,
+    title,
+    descPublic,
     images,
     categories,
   } = item;
@@ -32,16 +32,19 @@ const GraphicCard = ( { item } ) => {
   // Filter for first English img || first img
   const setDefaultImg = () => {
     const englishImg = filteredGraphicImgs.find( img => img.language.display_name === 'English' );
+
     if ( englishImg ) return englishImg;
+
     return filteredGraphicImgs[0];
   };
   const thumbnailImg = setDefaultImg();
 
+  // Get signed url for image
+  const { signedUrl } = useSignedUrl( thumbnailImg.url );
+
   return (
     <article className="graphic_card">
-      {/* REMOVE TEMP SRC URL */}
-      {/* <img src={ tempSrcUrl } alt={ thumbnailImg.alt } /> */}
-      <img src={ thumbnailImg.srcUrl } alt={ thumbnailImg.alt } />
+      <img src={ signedUrl } alt={ thumbnailImg.alt } />
       <Modal
         open={ isOpen }
         onOpen={ handleOpen }
@@ -53,7 +56,7 @@ const GraphicCard = ( { item } ) => {
               className="title"
               type="button"
             >
-              { thumbnailImg.title }
+              { title }
             </button>
           </h2>
         ) }
@@ -68,8 +71,7 @@ const GraphicCard = ( { item } ) => {
         </Modal.Content>
       </Modal>
       <div className="content">
-        <p className="publicDesc">{ desc }</p>
-        <p>Photo cred: AP Photos</p>
+        <p className="publicDesc">{ descPublic }</p>
       </div>
       <footer className="meta">
         <span className="publishedDate">{ `${moment( published ).format( 'MMMM DD, YYYY' )}` }</span>

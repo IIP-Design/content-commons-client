@@ -6,9 +6,10 @@ import { updateUrl } from 'lib/browser';
 import { displayDOSLogo } from 'lib/sourceLogoUtils';
 import { getCount, getFileExt, getPreviewNotificationStyles } from 'lib/utils';
 import { useAuth } from 'context/authContext';
+import useSignedUrl from 'lib/hooks/useSignedUrl';
 import {
   normalizeGraphicProjectByAPI,
-  getGraphicImgsBySocial
+  getGraphicImgsBySocial,
 } from './utils';
 
 import downloadIcon from 'static/icons/icon_download.svg';
@@ -53,6 +54,7 @@ const GraphicProject = ( {
     published,
     modified,
     owner,
+    title: projectTitle,
     desc,
     descInternal,
     copyright,
@@ -90,14 +92,20 @@ const GraphicProject = ( {
     title,
     language: selectedUnitLanguage,
     alt: unitAlt,
+    url,
   } = selectedUnit;
+
+  // Get signed url of selected image unit
+  const { signedUrl } = useSignedUrl( url );
 
   useEffect( () => {
     // If page display, update url path
     if ( !displayAsModal ) {
       updateUrl( `/graphic?id=${id}&site=${site}&language=${selectedUnitLanguage.locale}` );
     }
-  }, [selectedUnit] );
+  }, [
+    selectedUnit, displayAsModal, id, site, selectedUnitLanguage.locale,
+  ] );
 
   // Image files by language
   const selectedUnitImages = images.filter( img => img.language.display_name === selectedUnitLanguage.display_name );
@@ -208,7 +216,7 @@ const GraphicProject = ( {
   return (
     <ModalItem
       className={ isAdminPreview ? 'graphic-project adminPreview' : 'graphic-project' }
-      headline={ title }
+      headline={ projectTitle }
       lang={ selectedUnitLanguage.language_code }
       textDirection={ selectedUnitLanguage.text_direction }
     >
@@ -274,12 +282,13 @@ const GraphicProject = ( {
         </div>
       </div>
 
-      { ( selectedUnit.signedUrl || selectedUnit.url ) && (
-        <ModalImage
-          thumbnail={ selectedUnit.signedUrl || selectedUnit.url }
-          thumbnailMeta={ { alt: getAlt() } }
-        />
-      ) }
+      { selectedUnit?.url
+        && (
+          <ModalImage
+            thumbnail={ signedUrl }
+            thumbnailMeta={ { alt: getAlt() } }
+          />
+        ) }
 
       <ModalContentMeta
         type={ `${projectType.toLowerCase().replace( '_', ' ' )} graphic` }

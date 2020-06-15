@@ -20,7 +20,9 @@ const props = {
 const filteredGraphicImgs = getGraphicImgsBySocial( props.item.images, 'Twitter' );
 const setDefaultImg = () => {
   const englishImg = filteredGraphicImgs.find( img => img.language.display_name === 'English' );
+
   if ( englishImg ) return englishImg;
+
   return filteredGraphicImgs[0];
 };
 const thumbnailImg = setDefaultImg();
