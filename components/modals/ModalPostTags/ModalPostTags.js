@@ -26,7 +26,7 @@ const ModalPostTags = ( { tags } ) => {
   let postTags = '';
 
   if ( typeof tags === 'string' ) {
-    postTags = tags;
+    postTags = <span className="modal_postTag">{tags}</span>;
   } else {
     postTags = tags.map( renderCategory );
   }
