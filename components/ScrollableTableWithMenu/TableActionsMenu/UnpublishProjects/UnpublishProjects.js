@@ -58,9 +58,11 @@ const UnpublishProjects = ( {
    * each items as a 'UNPUBLISH_SUCCESS' or 'UNPUBLISH_FAILURE
    */
   const checkUnpublishStatus = () => {
-    const items = data?.packages ? data.packages : data.videoProjects;
+    const { projectType } = state;
 
-    if ( items ) {
+    if ( data && projectType ) {
+      const items = data[projectType] || [];
+
       // Determine how many items have completed (either success or failure)
       const updates = items.filter(
         item => item.status === 'UNPUBLISH_SUCCESS' || item.status === 'UNPUBLISH_FAILURE',
