@@ -1,14 +1,18 @@
 import { getTransformedLangTaxArray } from 'lib/utils';
 
-const structureLangObj = item => ( {
-  language: {
-    language_code: item.language.languageCode,
-    text_direction: item.language.textDirection,
-    locale: item.language.locale,
-    display_name: item.language.displayName,
-    native_name: item.language.nativeName,
-  },
-} );
+const structureLangObj = item => {
+  if ( item.language.display_name ) return item.language;
+
+  return {
+    language: {
+      language_code: item.language.languageCode,
+      text_direction: item.language.textDirection,
+      locale: item.language.locale,
+      display_name: item.language.displayName,
+      native_name: item.language.nativeName,
+    },
+  };
+};
 
 export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => {
   const graphicObj = {
@@ -32,6 +36,7 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
     const imagesWithFileNameProp = file.images.map( img => ( {
       ...img,
       filename: img.filename,
+      ...structureLangObj( img ),
     } ) );
 
     const supportFilesWithFileNameProp = Array.isArray( file.supportFiles ) && file.supportFiles.map( supFile => {
