@@ -62,6 +62,11 @@ const GraphicProject = ( {
     categories,
   } = normalizedGraphicData;
 
+  console.log( {
+    item,
+    normalizedGraphicData,
+  } );
+
   // Use Twitter graphics as default for display otherwise whatever graphic image is available
   const graphicUnits = getGraphicImgsBySocial( images, 'Twitter', useGraphQl );
 

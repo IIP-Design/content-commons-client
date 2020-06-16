@@ -1,4 +1,5 @@
 import { getTransformedLangTaxArray, getCount } from 'lib/utils';
+import { arrayExpression } from '@babel/types';
 
 const structureLangObj = item => ( {
   language: {
@@ -73,15 +74,17 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
     } ) );
 
     const gqlObj = {
+      title: file.projectTitle || '',
       alt: file.alt || '',
-      projectType: file.type || '',
-      published: file.publishedAt || '',
+      projectType: file.projectType || '',
+      published: file.createdAt || '',
       modified: file.updatedAt || '',
       owner: file.team?.name || '',
-      desc: file.descPublic || '',
+      desc: file.desc || '',
+      descInternal: file.descInternal || '',
       images: structuredImages || [],
       supportFiles: structuredSupportFiles || [],
-      categories: getTransformedLangTaxArray( file.categories ) || [],
+      categories: Array.isArray( file.categories ) ? getTransformedLangTaxArray( file.categories ) : file.categories,
     };
 
     return { ...graphicObj, ...gqlObj };
