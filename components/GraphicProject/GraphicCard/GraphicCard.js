@@ -46,7 +46,7 @@ const GraphicCard = ( { item } ) => {
   return (
     <article className="graphic_card">
       <div className="graphic_card_thumbnail">
-        <img src={ signedUrl } alt={ thumbnailImg.alt } />
+        <img src={ signedUrl } alt={ thumbnailImg.alt } data-img="graphic_thumbnail" />
         <img src={ icon } className="graphic_icon" alt="graphic card icon" />
       </div>
       <Modal

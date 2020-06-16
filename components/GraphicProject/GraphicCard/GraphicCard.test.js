@@ -10,6 +10,9 @@ jest.mock( 'next/config', () => () => ( {
   publicRuntimeConfig: { REACT_APP_PUBLIC_API: 'http://localhost:8080' },
 } ) );
 
+const mockedSignedUrl = 'https://mockImg.jpg';
+jest.mock( 'lib/hooks/useSignedUrl', () => jest.fn( () => ( { signedUrl: mockedSignedUrl } ) ) );
+
 jest.mock( '../GraphicProject', () => function GraphicProject() { return ''; } );
 
 const props = {
@@ -20,9 +23,7 @@ const props = {
 const filteredGraphicImgs = getGraphicImgsBySocial( props.item.images, 'Twitter' );
 const setDefaultImg = () => {
   const englishImg = filteredGraphicImgs.find( img => img.language.display_name === 'English' );
-
   if ( englishImg ) return englishImg;
-
   return filteredGraphicImgs[0];
 };
 const thumbnailImg = setDefaultImg();
@@ -42,18 +43,17 @@ describe( 'GraphicCard', () => {
     expect( article.exists() ).toEqual( true );
   } );
 
-  it( 'renders the image', () => {
-    const img = wrapper.find( 'article > img' );
-
-    expect( img.exists() ).toEqual( true );
-    expect( img.prop( 'src' ) ).toEqual( thumbnailImg.srcUrl );
+  it( 'renders the thumbnail', () => {
+    const thumbnail = wrapper.find( 'img[data-img="graphic_thumbnail"]' );
+    expect( thumbnail.exists() ).toEqual( true );
+    expect( thumbnail.prop( 'src' ) ).toEqual( mockedSignedUrl );
   } );
 
   it( 'renders the title', () => {
     const buttonTitle = wrapper.find( 'button.title' );
 
     expect( buttonTitle.exists() ).toEqual( true );
-    expect( buttonTitle.text() ).toEqual( thumbnailImg.title );
+    expect( buttonTitle.text() ).toEqual( props.item.title ); 
   } );
 
   it( 'toggles the modal on handleOpen & handleClose', () => {

@@ -35,7 +35,7 @@ describe( 'getModalContent', () => {
     const result = getModalContent( item );
 
     expect( result.type ).toEqual( 'graphic' );
-    expect( result.props ).toEqual( { item } );
+    expect( result.props ).toEqual( { displayAsModal: true, item } );
   } );
 
   it( 'returns the no content message when item type is an unexpected type', () => {
