@@ -30,7 +30,6 @@ const GraphicFiles = ( { file, isAdminPreview } ) => {
 
   return (
     <DownloadItemContent
-      key={ url }
       srcUrl={ signedUrl }
       hoverText={ `Download for ${getSocialPlatform()}` }
       isAdminPreview={ isAdminPreview }

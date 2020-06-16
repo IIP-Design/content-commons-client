@@ -6,7 +6,6 @@ import { updateUrl } from 'lib/browser';
 import { displayDOSLogo } from 'lib/sourceLogoUtils';
 import { getCount, getFileExt, getPreviewNotificationStyles } from 'lib/utils';
 import { useAuth } from 'context/authContext';
-import useSignedUrl from 'lib/hooks/useSignedUrl';
 import {
   normalizeGraphicProjectByAPI,
   getGraphicImgsBySocial,
@@ -92,11 +91,8 @@ const GraphicProject = ( {
     title,
     language: selectedUnitLanguage,
     alt: unitAlt,
-    url,
+    url: selectedUnitURL,
   } = selectedUnit;
-
-  // Get signed url of selected image unit
-  const { signedUrl } = useSignedUrl( url );
 
   useEffect( () => {
     // If page display, update url path
@@ -151,7 +147,7 @@ const GraphicProject = ( {
           { !selectedUnitImages.length
             && <p className="download-item__noContent">There are no graphic files available for download at this time.</p>}
           { selectedUnitImages.map(
-            img => <GraphicFiles key={ img.id } file={ img } isAdminPreview={ isAdminPreview } />,
+            img => <GraphicFiles key={ img.url } file={ img } isAdminPreview={ isAdminPreview } />,
           ) }
         </DownloadItem>
       ),
@@ -173,7 +169,7 @@ const GraphicProject = ( {
           { !selectedUnitSupportFiles.length
             && <p className="download-item__noContent">There are no editable files available for download at this time.</p>}
           { selectedUnitSupportFiles.map(
-            file => <GenericFiles key={ file.id } file={ file } isAdminPreview={ isAdminPreview } />,
+            file => <GenericFiles key={ file.url } file={ file } isAdminPreview={ isAdminPreview } />,
           ) }
         </DownloadItem>
       ),
@@ -192,7 +188,7 @@ const GraphicProject = ( {
           { !selectedUnitOtherFiles.length
             && <p className="download-item__noContent">There are no other files available for download at this time.</p>}
           { selectedUnitOtherFiles.map(
-            file => <GenericFiles key={ file.id } file={ file } isAdminPreview={ isAdminPreview } />,
+            file => <GenericFiles key={ file.url } file={ file } isAdminPreview={ isAdminPreview } />,
           ) }
         </DownloadItem>
       ),
@@ -285,7 +281,7 @@ const GraphicProject = ( {
       { selectedUnit?.url
         && (
           <ModalImage
-            thumbnail={ signedUrl }
+            thumbnail={ selectedUnitURL }
             thumbnailMeta={ { alt: getAlt() } }
           />
         ) }

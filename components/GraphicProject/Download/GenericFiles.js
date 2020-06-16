@@ -18,7 +18,6 @@ const GenericFiles = ( { file, isAdminPreview } ) => {
 
   return (
     <DownloadItemContent
-      key={ url }
       srcUrl={ signedUrl }
       hoverText={ `Download "${fileName}" (${fileType})` }
       isAdminPreview={ isAdminPreview }

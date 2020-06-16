@@ -11,6 +11,18 @@
     width: 100%;
   }
 
+  &_thumbnail {
+    position: relative;
+
+    > .graphic_icon {
+      position: absolute;
+      bottom: 0.8em;
+      right: 0.5em;
+      width: 32px;
+      height: 32px;
+    }
+  }
+
   h2 {
     margin: 0;
     font-size: inherit;    

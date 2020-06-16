@@ -24,6 +24,7 @@ const GraphicCard = ( { item } ) => {
     descPublic,
     images,
     categories,
+    icon,
   } = item;
 
   // Filter for Twitter imgs if available || return all imgs
@@ -44,7 +45,10 @@ const GraphicCard = ( { item } ) => {
 
   return (
     <article className="graphic_card">
-      <img src={ signedUrl } alt={ thumbnailImg.alt } />
+      <div className="graphic_card_thumbnail">
+        <img src={ signedUrl } alt={ thumbnailImg.alt } />
+        <img src={ icon } className="graphic_icon" alt="graphic card icon" />
+      </div>      
       <Modal
         open={ isOpen }
         onOpen={ handleOpen }
