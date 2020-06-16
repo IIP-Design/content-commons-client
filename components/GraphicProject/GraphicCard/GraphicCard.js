@@ -48,7 +48,7 @@ const GraphicCard = ( { item } ) => {
       <div className="graphic_card_thumbnail">
         <img src={ signedUrl } alt={ thumbnailImg.alt } />
         <img src={ icon } className="graphic_icon" alt="graphic card icon" />
-      </div>      
+      </div>
       <Modal
         open={ isOpen }
         onOpen={ handleOpen }
