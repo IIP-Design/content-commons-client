@@ -3,10 +3,13 @@ import { mount } from 'enzyme';
 import ModalImage from './ModalImage';
 
 const thumbnail = 'http://example.com/my.jpg';
+const mockSignedUrl = 'https://example-asset-url-signed.jpg';
 const thumbnailMeta = {
   alt: 'Mock alternative text',
   caption: 'Mock caption text',
 };
+
+jest.mock( 'lib/hooks/useSignedUrl', () => jest.fn( () => ( { signedUrl: mockSignedUrl } ) ) );
 
 describe( '<ModalImage />', () => {
   const wrapper = mount( <ModalImage thumbnail={ thumbnail } thumbnailMeta={ thumbnailMeta } /> );
@@ -19,7 +22,7 @@ describe( '<ModalImage />', () => {
     const img = wrapper.find( 'img' );
 
     expect( img.exists() ).toEqual( true );
-    expect( img.prop( 'src' ) ).toEqual( thumbnail );
+    expect( img.prop( 'src' ) ).toEqual( mockSignedUrl );
     expect( img.prop( 'alt' ) ).toEqual( thumbnailMeta.alt );
   } );
 

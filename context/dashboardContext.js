@@ -6,6 +6,7 @@ import {
   GRAPHIC_PROJECT_SUPPORT_FILES_QUERY,
   TEAM_GRAPHIC_PROJECTS_QUERY,
   TEAM_GRAPHIC_PROJECTS_COUNT_QUERY,
+  GRAPHIC_PROJECT_IMAGE_FILES_QUERY,
   UNPUBLISH_GRAPHIC_PROJECT_MUTATION,
   UPDATE_GRAPHIC_STATUS_MUTATION,
 } from 'lib/graphql/queries/graphic';
@@ -32,6 +33,7 @@ const initialState = {
   content: {},
   count: {},
   direction: 'descending',
+  files: {},
   queries: {
     content: null,
     count: null,
@@ -133,7 +135,7 @@ export const setQueries = team => {
     case 'graphicProjects':
       queries.content = TEAM_GRAPHIC_PROJECTS_QUERY;
       queries.count = TEAM_GRAPHIC_PROJECTS_COUNT_QUERY;
-      queries.files = GRAPHIC_PROJECT_SUPPORT_FILES_QUERY;
+      queries.files = GRAPHIC_PROJECT_IMAGE_FILES_QUERY;
       queries.remove = DELETE_GRAPHIC_PROJECT_MUTATION;
       queries.status = UPDATE_GRAPHIC_STATUS_MUTATION;
       queries.unpublish = UNPUBLISH_GRAPHIC_PROJECT_MUTATION;
@@ -190,6 +192,15 @@ export const dashboardReducer = ( state, action ) => {
           error: payload.error,
           loading: payload.loading,
           refetch: payload.refetch,
+        },
+      };
+    case 'UPDATE_FILES':
+      return {
+        ...state,
+        files: {
+          files: payload.files,
+          error: payload.error,
+          loading: payload.loading,
         },
       };
     case 'UPDATE_SELECTED':

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import './ModalPostTags.scss';
 
 const renderCategory = ( category, index, arr ) => {
@@ -9,25 +10,23 @@ const renderCategory = ( category, index, arr ) => {
   if ( index > 2 ) {
     return undefined;
   }
+
   if ( arr.length - 1 !== index && index < 2 ) {
     name += '  · ';
   }
 
   return (
     <span key={ key } className="modal_postTag">
-      { ' ' }
-      { name.toLowerCase() }
-      { ' ' }
+      { ` ${name.toLowerCase()} ` }
     </span>
   );
 };
 
-const ModalPostTags = props => {
-  const { tags } = props;
+const ModalPostTags = ( { tags } ) => {
   let postTags = '';
 
   if ( typeof tags === 'string' ) {
-    postTags = tags;
+    postTags = <span className="modal_postTag">{tags}</span>;
   } else {
     postTags = tags.map( renderCategory );
   }

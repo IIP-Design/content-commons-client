@@ -158,15 +158,11 @@ const GraphicProject = ( {
         <DownloadItem
           instructions={ `Download the graphic files in ${selectedUnitLanguage.display_name}. This download option is best for uploading this graphic to web pages and social media.` }
         >
-          { selectedUnitImages.length
-            ? selectedUnitImages.map( img => (
-              <GraphicFiles
-                key={ img.url }
-                file={ img }
-                isAdminPreview={ isAdminPreview }
-              />
-            ) )
-            : <p className="download-item__noContent">There are no graphic files available for download at this time.</p> }
+          { !selectedUnitImages.length
+            && <p className="download-item__noContent">There are no graphic files available for download at this time.</p>}
+          { selectedUnitImages.map(
+            img => <GraphicFiles key={ img.id } file={ img } isAdminPreview={ isAdminPreview } />,
+          ) }
         </DownloadItem>
       ),
     },
@@ -177,23 +173,18 @@ const GraphicProject = ( {
           instructions={ (
             <Fragment>
               <p>
-                By downloading these editable files you agree to the
-                { ' ' }
+                { 'By downloading these editable files you agree to the ' }
                 <Link href="/about"><a>Terms of Use</a></Link>
               </p>
               { copyrightMsg && <p><strong>{ copyrightMsg }</strong></p> }
             </Fragment>
           ) }
         >
-          { selectedUnitSupportFiles.length
-            ? selectedUnitSupportFiles.map( file => (
-              <GenericFiles
-                key={ file.url }
-                file={ file }
-                isAdminPreview={ isAdminPreview }
-              />
-            ) )
-            : <p className="download-item__noContent">There are no editable files available for download at this time.</p> }
+          { !selectedUnitSupportFiles.length
+            && <p className="download-item__noContent">There are no editable files available for download at this time.</p>}
+          { selectedUnitSupportFiles.map(
+            file => <GenericFiles key={ file.id } file={ file } isAdminPreview={ isAdminPreview } />,
+          ) }
         </DownloadItem>
       ),
     },
@@ -203,21 +194,16 @@ const GraphicProject = ( {
         <DownloadItem
           instructions={ (
             <p>
-              By downloading these files you agree to the
-              { ' ' }
+              { 'By downloading these files you agree to the ' }
               <Link href="/about"><a>Terms of Use</a></Link>
             </p>
           ) }
         >
-          { selectedUnitOtherFiles.length
-            ? selectedUnitOtherFiles.map( file => (
-              <GenericFiles
-                key={ file.url }
-                file={ file }
-                isAdminPreview={ isAdminPreview }
-              />
-            ) )
-            : <p className="download-item__noContent">There are no other files available for download at this time.</p> }
+          { !selectedUnitOtherFiles.length
+            && <p className="download-item__noContent">There are no other files available for download at this time.</p>}
+          { selectedUnitOtherFiles.map(
+            file => <GenericFiles key={ file.id } file={ file } isAdminPreview={ isAdminPreview } />,
+          ) }
         </DownloadItem>
       ),
     },
@@ -306,13 +292,12 @@ const GraphicProject = ( {
         </div>
       </div>
 
-      { selectedUnit?.url
-        && (
-          <ModalImage
-            thumbnail={ selectedUnit.url }
-            thumbnailMeta={ { alt: getAlt() } }
-          />
-        ) }
+      { ( selectedUnit.signedUrl || selectedUnit.url ) && (
+        <ModalImage
+          thumbnail={ selectedUnit.signedUrl || selectedUnit.url }
+          thumbnailMeta={ { alt: getAlt() } }
+        />
+      ) }
 
       <ModalContentMeta
         type={ `${projectType.toLowerCase().replace( '_', ' ' )} graphic` }
@@ -364,7 +349,7 @@ GraphicProject.propTypes = {
     copyright: PropTypes.string,
     images: PropTypes.array,
     supportFiles: PropTypes.array,
-    categories: PropTypes.array,
+    categories: PropTypes.oneOfType( [PropTypes.array, PropTypes.string] ),
   } ),
   displayAsModal: PropTypes.bool,
   isAdminPreview: PropTypes.bool,

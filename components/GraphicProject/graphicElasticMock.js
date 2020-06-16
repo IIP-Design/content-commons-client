@@ -15,9 +15,11 @@ export const graphicElasticMock = [
       copyright: 'COPYRIGHT',
       images: [
         {
+          id: 'eniebfwkjfenwknfwqjn',
           title: 'Mon titre graphique',
           visibility: 'PUBLIC',
           url: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_FRENCH_Twitter_Output.png',
+          signedUrl: 'https://mock-signed.png',
           language: {
             language_code: 'fr',
             text_direction: 'ltr',
@@ -34,9 +36,11 @@ export const graphicElasticMock = [
           style: 'Quote',
         },
         {
+          id: 'vewjnewjnewnwqfjn',
           title: 'Mon titre graphique FACEBOOK',
           visibility: 'PUBLIC',
           url: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_FRENCH_Facebook_Output.png',
+          signedUrl: 'https://mock-signed.png',
           language: {
             language_code: 'fr',
             text_direction: 'ltr',
@@ -53,9 +57,11 @@ export const graphicElasticMock = [
           style: 'Quote',
         },
         {
+          id: 'dqwkq4dm9qwlknlkwfn',
           title: 'My graphic title',
           visibility: 'PUBLIC',
           url: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_English_Output.png',
+          signedUrl: 'https://mock-signed.png',
           language: {
             language_code: 'en',
             text_direction: 'ltr',
@@ -74,6 +80,7 @@ export const graphicElasticMock = [
       ],
       supportFiles: [
         {
+          id: 'fniuf2iuh3uh123iuh23uh',
           visibility: 'INTERNAL',
           editable: true,
           url: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_English_Output.psd',
@@ -86,6 +93,7 @@ export const graphicElasticMock = [
           },
         },
         {
+          id: 'fnwndf2j3nlkf3n23uh',
           visibility: 'INTERNAL',
           editable: true,
           url: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_English_Output.ai',
@@ -98,6 +106,7 @@ export const graphicElasticMock = [
           },
         },
         {
+          id: '32kbf32kjbk2f3jbf3j2',
           visibility: 'INTERNAL',
           editable: true,
           url: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_English_Output.png',
@@ -110,6 +119,7 @@ export const graphicElasticMock = [
           },
         },
         {
+          id: 'wnljnewln299jnjkwnewef',
           visibility: 'INTERNAL',
           editable: true,
           url: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_French_Output.psd',
@@ -122,6 +132,7 @@ export const graphicElasticMock = [
           },
         },
         {
+          id: 'qewbr438h4398h43bu3feiu',
           visibility: 'INTERNAL',
           editable: true,
           url: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_French_Output.ai',
@@ -134,6 +145,7 @@ export const graphicElasticMock = [
           },
         },
         {
+          id: 'beqwibfu4389h34hh34h43uf',
           visibility: 'INTERNAL',
           editable: false,
           url: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_French_Output.doc',
@@ -146,6 +158,7 @@ export const graphicElasticMock = [
           },
         },
         {
+          id: 'fnu2h348hf4842h8',
           visibility: 'INTERNAL',
           editable: false,
           url: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_French_Output.pdf',
@@ -158,6 +171,7 @@ export const graphicElasticMock = [
           },
         },
         {
+          id: 'f23u4h824f2ewkjnfkjwfnkjn',
           visibility: 'INTERNAL',
           editable: false,
           url: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_English_Output.doc',
@@ -170,6 +184,7 @@ export const graphicElasticMock = [
           },
         },
         {
+          id: '2323uh32uhr328223hfuhb',
           visibility: 'INTERNAL',
           editable: false,
           url: 'https://cdp-video-tst.s3.amazonaws.com/2020/04/commons.america.gov_ck8h90w6x030l0765onryiqdt/CAPTIONS_Made_in_America_English_Output.pdf',
