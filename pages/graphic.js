@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import ContentPage from 'components/PageTypes/ContentPage/ContentPage';
 import GraphicProject from 'components/GraphicProject/GraphicProject';
 import { fetchUser } from 'context/authContext';

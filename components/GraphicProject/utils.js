@@ -1,4 +1,5 @@
-import { getTransformedLangTaxArray } from 'lib/utils';
+import { getTransformedLangTaxArray, getCount } from 'lib/utils';
+import { arrayExpression } from '@babel/types';
 
 const structureLangObj = item => ( {
   language: {
@@ -15,6 +16,7 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
     id: file.id || '',
     type: 'graphic',
     site: file.site || '',
+    title: file.title || '',
     projectType: file.projectType || '',
     published: file.published || '',
     modified: file.modified || '',
@@ -72,19 +74,54 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
     } ) );
 
     const gqlObj = {
+      title: file.projectTitle || '',
       alt: file.alt || '',
-      projectType: file.type || '',
-      published: file.publishedAt || '',
+      projectType: file.projectType || '',
+      published: file.createdAt || '',
       modified: file.updatedAt || '',
       owner: file.team?.name || '',
-      desc: file.descPublic || '',
+      desc: file.desc || '',
+      descInternal: file.descInternal || '',
       images: structuredImages || [],
       supportFiles: structuredSupportFiles || [],
-      categories: getTransformedLangTaxArray( file.categories ) || [],
+      categories: Array.isArray( file.categories ) ? getTransformedLangTaxArray( file.categories ) : file.categories,
     };
 
     return { ...graphicObj, ...gqlObj };
   }
 
   return graphicObj;
+};
+
+// Use Twitter graphics as default for display otherwise whatever graphic image is available
+export const filterGraphicImgs = images => {
+  const containsTwitterImgs = images.some( img => img.social.includes( 'Twitter' ) );
+
+  if ( containsTwitterImgs ) {
+    return images.filter( img => img.social.includes( 'Twitter' ) );
+  }
+
+  return images;
+};
+
+export const getGraphicImgsBySocial = ( images, platform, useGraphQl = false ) => {
+  if ( !getCount( images ) ) return [];
+
+  const filteredImgs = images.reduce( ( allImgs, img ) => {
+    let platformImgs = [];
+    let condition = img.social.includes( platform );
+
+    if ( useGraphQl ) {
+      platformImgs = img.social.filter( s => s.name === platform );
+      condition = getCount( platformImgs );
+    }
+
+    if ( condition ) {
+      allImgs.push( img );
+    }
+
+    return allImgs;
+  }, [] );
+
+  return getCount( filteredImgs ) ? filteredImgs : images;
 };

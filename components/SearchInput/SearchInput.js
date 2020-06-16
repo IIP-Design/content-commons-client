@@ -32,7 +32,11 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
     }
 
     if ( pathname === '/' ) {
-      isUser ? postTypeUpdate( ['video', 'post'] ) : postTypeUpdate( '' );
+      isUser
+        ? postTypeUpdate( [
+          'video', 'post', 'graphic',
+        ] )
+        : postTypeUpdate( '' );
       setLocale( 'en-us' );
       setDirection( 'left' );
       updateSearchTerm( '' );
@@ -56,7 +60,9 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
   const handleRadioChange = ( e, { value } ) => {
     setSelectedRadio( value );
 
-    if ( value === 'multiple' ) postTypeUpdate( ['video', 'post'] );
+    if ( value === 'multiple' ) postTypeUpdate( [
+      'video', 'post', 'graphic',
+    ] );
     if ( value === 'document' ) postTypeUpdate( 'document' );
   };
 
@@ -99,7 +105,7 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
           <Form.Group inline>
             <div className="radio-flex">
               <Radio
-                label="Articles and Videos"
+                label="Articles, Graphics, Videos"
                 name="radioGroup"
                 value="multiple"
                 checked={ selectedRadio === 'multiple' }

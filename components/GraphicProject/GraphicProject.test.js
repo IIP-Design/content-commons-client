@@ -78,12 +78,12 @@ describe( '<GraphicProject />, for GraphQL data', () => {
 
   it( 'renders the ModalItem with correct props', () => {
     const modalItem = wrapper.find( 'ModalItem' );
-    const { title, language } = selectedUnit;
+    const { language } = selectedUnit;
     const className = 'graphic-project adminPreview';
 
     expect( modalItem.exists() ).toEqual( true );
     expect( modalItem.prop( 'className' ) ).toEqual( className );
-    expect( modalItem.prop( 'headline' ) ).toEqual( title );
+    expect( modalItem.prop( 'headline' ) ).toEqual( normalizedData.title ); // title is now project title, not unit level
     expect( modalItem.prop( 'lang' ) ).toEqual( language.language_code );
     expect( modalItem.prop( 'textDirection' ) )
       .toEqual( language.text_direction );
@@ -135,7 +135,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
 
     expect( langDropdown().prop( 'selected' ) )
       .toEqual( newSelectedUnit.language.display_name );
-    expect( modalHeadline.text() ).toEqual( newSelectedUnit.title );
+    expect( modalHeadline.text() ).toEqual( normalizedData.title ); // title is now project title, not unit level
     expect( updateUrl ).not.toHaveBeenCalled();
   } );
 
@@ -313,11 +313,11 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
 
   it( 'renders the ModalItem with correct props', () => {
     const modalItem = wrapper.find( 'ModalItem' );
-    const { title, language } = selectedUnit;
+    const { language } = selectedUnit;
 
     expect( modalItem.exists() ).toEqual( true );
     expect( modalItem.prop( 'className' ) ).toEqual( 'graphic-project' );
-    expect( modalItem.prop( 'headline' ) ).toEqual( title );
+    expect( modalItem.prop( 'headline' ) ).toEqual( normalizedData.title ); // title is now project title, not unit level
     expect( modalItem.prop( 'lang' ) ).toEqual( language.language_code );
     expect( modalItem.prop( 'textDirection' ) )
       .toEqual( language.text_direction );
@@ -352,12 +352,12 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
     const newSelectedUnit = normalizedData.images.find( img => img.language.display_name === newLangSelection );
     const modalHeadline = wrapper.find( '.modal_headline' );
     const { id, site, type } = props.item;
-    const { language, title } = newSelectedUnit;
+    const { language } = newSelectedUnit;
     const newUrl = `/${type}?id=${id}&site=${site}&language=${language.locale}`;
 
     expect( langDropdown().prop( 'selected' ) )
       .toEqual( language.display_name );
-    expect( modalHeadline.text() ).toEqual( title );
+    expect( modalHeadline.text() ).toEqual( normalizedData.title ); // title is now project title, not unit level
     expect( updateUrl ).toHaveBeenCalledWith( newUrl );
   } );
 
@@ -389,7 +389,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
 
     expect( modalImage.exists() ).toEqual( true );
     expect( modalImage.props() ).toEqual( {
-      thumbnail: selectedUnit.signedUrl,
+      thumbnail: selectedUnit.url,
       thumbnailMeta: { alt: selectedUnit.alt },
     } );
   } );

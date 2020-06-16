@@ -6,7 +6,10 @@ import { updateUrl } from 'lib/browser';
 import { displayDOSLogo } from 'lib/sourceLogoUtils';
 import { getCount, getFileExt, getPreviewNotificationStyles } from 'lib/utils';
 import { useAuth } from 'context/authContext';
-import { normalizeGraphicProjectByAPI } from './utils';
+import {
+  normalizeGraphicProjectByAPI,
+  getGraphicImgsBySocial,
+} from './utils';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
@@ -50,6 +53,7 @@ const GraphicProject = ( {
     published,
     modified,
     owner,
+    title: projectTitle,
     desc,
     descInternal,
     copyright,
@@ -59,28 +63,7 @@ const GraphicProject = ( {
   } = normalizedGraphicData;
 
   // Use Twitter graphics as default for display otherwise whatever graphic image is available
-  const getGraphicImgsBySocial = platform => {
-    if ( !getCount( images ) ) return [];
-
-    const filteredImgs = images.reduce( ( allImgs, img ) => {
-      let platformImgs = [];
-      let condition = img.social === platform;
-
-      if ( useGraphQl ) {
-        platformImgs = img.social.filter( s => s.name === platform );
-        condition = getCount( platformImgs );
-      }
-
-      if ( condition ) {
-        allImgs.push( img );
-      }
-
-      return allImgs;
-    }, [] );
-
-    return getCount( filteredImgs ) ? filteredImgs : images;
-  };
-  const graphicUnits = getGraphicImgsBySocial( 'Twitter' );
+  const graphicUnits = getGraphicImgsBySocial( images, 'Twitter', useGraphQl );
 
   // Set default unit to English lang version if available
   // unless path is for specific lang or no english version
@@ -108,6 +91,7 @@ const GraphicProject = ( {
     title,
     language: selectedUnitLanguage,
     alt: unitAlt,
+    url: selectedUnitURL,
   } = selectedUnit;
 
   useEffect( () => {
@@ -115,7 +99,9 @@ const GraphicProject = ( {
     if ( !displayAsModal ) {
       updateUrl( `/graphic?id=${id}&site=${site}&language=${selectedUnitLanguage.locale}` );
     }
-  }, [selectedUnit] );
+  }, [
+    selectedUnit, displayAsModal, id, site, selectedUnitLanguage.locale,
+  ] );
 
   // Image files by language
   const selectedUnitImages = images.filter( img => img.language.display_name === selectedUnitLanguage.display_name );
@@ -161,7 +147,7 @@ const GraphicProject = ( {
           { !selectedUnitImages.length
             && <p className="download-item__noContent">There are no graphic files available for download at this time.</p>}
           { selectedUnitImages.map(
-            img => <GraphicFiles key={ img.id } file={ img } isAdminPreview={ isAdminPreview } />,
+            img => <GraphicFiles key={ img.url } file={ img } isAdminPreview={ isAdminPreview } />,
           ) }
         </DownloadItem>
       ),
@@ -183,7 +169,7 @@ const GraphicProject = ( {
           { !selectedUnitSupportFiles.length
             && <p className="download-item__noContent">There are no editable files available for download at this time.</p>}
           { selectedUnitSupportFiles.map(
-            file => <GenericFiles key={ file.id } file={ file } isAdminPreview={ isAdminPreview } />,
+            file => <GenericFiles key={ file.url } file={ file } isAdminPreview={ isAdminPreview } />,
           ) }
         </DownloadItem>
       ),
@@ -202,7 +188,7 @@ const GraphicProject = ( {
           { !selectedUnitOtherFiles.length
             && <p className="download-item__noContent">There are no other files available for download at this time.</p>}
           { selectedUnitOtherFiles.map(
-            file => <GenericFiles key={ file.id } file={ file } isAdminPreview={ isAdminPreview } />,
+            file => <GenericFiles key={ file.url } file={ file } isAdminPreview={ isAdminPreview } />,
           ) }
         </DownloadItem>
       ),
@@ -226,7 +212,7 @@ const GraphicProject = ( {
   return (
     <ModalItem
       className={ isAdminPreview ? 'graphic-project adminPreview' : 'graphic-project' }
-      headline={ title }
+      headline={ projectTitle }
       lang={ selectedUnitLanguage.language_code }
       textDirection={ selectedUnitLanguage.text_direction }
     >
@@ -292,12 +278,13 @@ const GraphicProject = ( {
         </div>
       </div>
 
-      { ( selectedUnit.signedUrl || selectedUnit.url ) && (
-        <ModalImage
-          thumbnail={ selectedUnit.signedUrl || selectedUnit.url }
-          thumbnailMeta={ { alt: getAlt() } }
-        />
-      ) }
+      { selectedUnit?.url
+        && (
+          <ModalImage
+            thumbnail={ selectedUnitURL }
+            thumbnailMeta={ { alt: getAlt() } }
+          />
+        ) }
 
       <ModalContentMeta
         type={ `${projectType.toLowerCase().replace( '_', ' ' )} graphic` }
