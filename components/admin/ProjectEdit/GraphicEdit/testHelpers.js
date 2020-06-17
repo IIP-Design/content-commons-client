@@ -1,10 +1,13 @@
-import { getCount, getFileExt } from 'lib/utils';
+import sortBy from 'lodash/sortBy';
+
 import {
   DELETE_GRAPHIC_PROJECT_MUTATION,
   GRAPHIC_PROJECT_QUERY,
   LOCAL_GRAPHIC_FILES,
 } from 'lib/graphql/queries/graphic';
 import { GRAPHIC_STYLES_QUERY } from 'components/admin/dropdowns/GraphicStyleDropdown/GraphicStyleDropdown';
+
+import { getFileExt } from 'lib/utils';
 
 const props = {
   id: 'ck9b9n8kw1x720720sjwwl1g7',
@@ -47,59 +50,107 @@ const mocks = [
           visibility: 'PUBLIC',
           images: [
             {
-              id: 'ck2maluky0s5z0720a2dgkisd',
-              createdAt: '2019-11-05T20:15:17.892Z',
-              updatedAt: '2020-05-04T17:16:55.720Z',
-              filename: 's-secure-rights_shell.png',
+              id: 'ckbkr9q4w04mi0720y9vfhlbl',
+              createdAt: '2020-06-18T12:23:34.541Z',
+              updatedAt: '2020-06-18T12:23:49.321Z',
+              title: '1_3_Serious_FB.png',
+              filename: '1_3_Serious_FB.png',
               filetype: 'image/png',
-              filesize: 29000,
-              url: '2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_shell.png',
-              signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_shell.png?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature',
+              filesize: 18986,
+              url: 'social_media/2020/06/commons.america.gov_ckbjexfkf02pv0720g6xjfv3p/1_3_Serious_FB.png',
+              signedUrl: 'https://the-signed-url.com',
               alt: null,
-              use: {
-                id: 'ck2lzfx510hhj07205mal3e4l',
-                name: 'Thumbnail/Cover Image',
-                __typename: 'ImageUse',
-              },
+              use: null,
               language: {
-                id: 'ck2lzfx7m0hl50720y9oqzyqz',
-                locale: 'ja',
-                languageCode: 'ja',
-                displayName: 'Japanese',
+                id: 'ck2lzfx710hkq07206thus6pt',
+                languageCode: 'en',
+                locale: 'en-us',
                 textDirection: 'LTR',
-                nativeName: '日本語',
+                displayName: 'English',
+                nativeName: 'English',
                 __typename: 'Language',
               },
-              __typename: 'ImageFile',
-              title: 's-secure-rights_shell.png',
               social: [
                 {
-                  id: 'ck9h3naq526cp0720i4u3uqlv',
-                  name: 'WhatsApp',
+                  id: 'ck9h3m9bl26bm0720rm69c60s',
+                  name: 'Facebook',
+                  __typename: 'SocialPlatform',
+                },
+                {
+                  id: 'ck9h3meu626bw07201o36tapc',
+                  name: 'Instagram',
                   __typename: 'SocialPlatform',
                 },
               ],
               style: {
                 id: 'ck9h3kyb326ak0720wkbk01q6',
-                name: 'Clean',
+                name: 'Info/Stat',
                 __typename: 'GraphicStyle',
               },
               dimensions: {
-                id: 'cka3w01q530230720aqrt4h2n',
-                width: 1024,
-                height: 512,
+                id: 'ckbkr9q5e04mj0720aqiya19y',
+                width: 2100,
+                height: 1500,
                 __typename: 'Dimensions',
               },
+              __typename: 'ImageFile',
+            },
+            {
+              id: 'ckbkr503z04kh07203yb3q5bf',
+              createdAt: '2020-06-18T12:19:54.186Z',
+              updatedAt: '2020-06-18T12:19:54.186Z',
+              title: '4_16_Vaccines_French_Gif_FB.gif',
+              filename: '4_16_Vaccines_French_Gif_FB.gif',
+              filetype: 'image/gif',
+              filesize: 4687703,
+              url: 'social_media/2020/06/commons.america.gov_ckbjexfkf02pv0720g6xjfv3p/4_16_Vaccines_French_Gif_FB.gif',
+              signedUrl: 'https://the-signed-url.com',
+              alt: null,
+              use: null,
+              language: {
+                id: 'ck2lzfx710hkp07206oo0icbv',
+                languageCode: 'fr',
+                locale: 'fr-fr',
+                textDirection: 'LTR',
+                displayName: 'French',
+                nativeName: 'Français',
+                __typename: 'Language',
+              },
+              social: [
+                {
+                  id: 'ck9h3m9bl26bm0720rm69c60s',
+                  name: 'Facebook',
+                  __typename: 'SocialPlatform',
+                },
+                {
+                  id: 'ck9h3meu626bw07201o36tapc',
+                  name: 'Instagram',
+                  __typename: 'SocialPlatform',
+                },
+              ],
+              style: {
+                id: 'ck9h3ka3o269y0720t7wzp5uq',
+                name: 'GIF',
+                __typename: 'GraphicStyle',
+              },
+              dimensions: {
+                id: 'ckbkr504a04ki07200d43er7e',
+                width: 1200,
+                height: 1200,
+                __typename: 'Dimensions',
+              },
+              __typename: 'ImageFile',
             },
             {
               id: 'ck30lyuxm15px0720dkd7hodl',
               createdAt: '2019-11-15T20:42:07.165Z',
               updatedAt: '2020-05-04T17:16:57.512Z',
+              title: '4_3_Serious_TW.jpg',
               filename: '4_3_Serious_TW.jpg',
               filetype: 'image/jpeg',
               filesize: 1030591,
               url: '2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/4_3_Serious_TW.jpg',
-              signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck30lyah915p50720pw4fbwo1/4_3_Serious_TW.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature',
+              signedUrl: 'https://the-signed-url.com',
               alt: null,
               use: {
                 id: 'ck2lzfx510hhj07205mal3e4l',
@@ -115,8 +166,6 @@ const mocks = [
                 nativeName: 'English',
                 __typename: 'Language',
               },
-              __typename: 'ImageFile',
-              title: '4_3_Serious_TW.jpg',
               social: [
                 {
                   id: 'ck9h3m3g626bd07201gh712vk',
@@ -125,7 +174,7 @@ const mocks = [
                 },
               ],
               style: {
-                id: 'ck9h3ka3o269y0720t7wzp5uq',
+                id: 'ck9h3l7zn26au0720ialhqtg4',
                 name: 'Quote',
                 __typename: 'GraphicStyle',
               },
@@ -135,16 +184,18 @@ const mocks = [
                 height: 675,
                 __typename: 'Dimensions',
               },
+              __typename: 'ImageFile',
             },
             {
               id: 'ck37p8z731vim0720nrlespm1',
               createdAt: '2019-11-20T19:48:21.415Z',
               updatedAt: '2020-05-04T17:17:01.227Z',
+              title: '4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg',
               filename: '4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg',
               filetype: 'image/jpeg',
               filesize: 42093736,
               url: '2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg',
-              signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2019/11/commons.america.gov_ck2m08qbo0rot0720rvz8jwxg/4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg?AWSAccessKeyId=someaccesskeyid&Expires=1588616250&Signature=thesignature',
+              signedUrl: 'https://the-signed-url.com',
               alt: null,
               use: {
                 id: 'ck2lzfx510hhj07205mal3e4l',
@@ -160,8 +211,6 @@ const mocks = [
                 nativeName: 'Bahasa Indonesia',
                 __typename: 'Language',
               },
-              __typename: 'ImageFile',
-              title: '4_3_Serious_asdoij_czxiwa_cxicm38_cmauqo_zoczp_FB.jpg',
               social: [
                 {
                   id: 'ck9h3m9bl26bm0720rm69c60s',
@@ -185,6 +234,7 @@ const mocks = [
                 height: 1200,
                 __typename: 'Dimensions',
               },
+              __typename: 'ImageFile',
             },
           ],
           categories: [
@@ -344,8 +394,9 @@ const mocks = [
               filename: 's-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd',
               filetype: 'image/vnd.adobe.photoshop',
               filesize: 509000,
-              url: null,
+              url: '2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd',
               signedUrl: 'https://the-signed-url.com',
+              editable: true,
               language: {
                 id: 'ck2lzfx710hkq07206thus6pt',
                 locale: 'en-us',
@@ -359,14 +410,81 @@ const mocks = [
               __typename: 'SupportFile',
             },
             {
+              id: 'ck2maluky0s5z0720a2dgkisd',
+              createdAt: '2019-11-05T20:15:17.892Z',
+              updatedAt: '2020-05-04T17:16:55.720Z',
+              filename: 's-secure-rights_shell.png',
+              filetype: 'image/png',
+              filesize: 29000,
+              url: '2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_shell.png',
+              signedUrl: 'https://the-signed-url.com',
+              editable: true,
+              language: {
+                id: 'ck2lzfx7m0hl50720y9oqzyqz',
+                locale: 'ja',
+                languageCode: 'ja',
+                displayName: 'Japanese',
+                textDirection: 'LTR',
+                nativeName: '日本語',
+                __typename: 'Language',
+              },
+              use: null,
+              __typename: 'SupportFile',
+            },
+            {
               id: 'ck9jtuqhy29kakd92ka92kd92',
               createdAt: '2020-04-28T11:28:43.173Z',
               updatedAt: '2020-05-01T14:05:55.765Z',
               filename: 'test-file-FB.psd',
               filetype: 'image/vnd.adobe.photoshop',
               filesize: 509000,
-              url: null,
+              url: '2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/test-file.psd',
               signedUrl: 'https://the-signed-url.com',
+              editable: true,
+              language: {
+                id: 'ck2lzfx710hkq07206thus6pt',
+                locale: 'en-us',
+                languageCode: 'en',
+                displayName: 'English',
+                textDirection: 'LTR',
+                nativeName: 'English',
+                __typename: 'Language',
+              },
+              use: null,
+              __typename: 'SupportFile',
+            },
+            {
+              id: 'ckbjexi0v02s907200vw1cf2s',
+              createdAt: '2020-06-17T13:50:22.589Z',
+              updatedAt: '2020-06-17T13:50:22.589Z',
+              filename: 'test-file-clean.jpg',
+              filetype: 'image/jpeg',
+              filesize: 18986,
+              url: 'social_media/2020/06/commons.america.gov_ckbjexfkf02pv0720g6xjfv3p/test-file-clean.jpg',
+              signedUrl: 'https://the-signed-url.com',
+              editable: true,
+              language: {
+                id: 'ck2lzfx710hkq07206thus6pt',
+                locale: 'en-us',
+                languageCode: 'en',
+                displayName: 'English',
+                textDirection: 'LTR',
+                nativeName: 'English',
+                __typename: 'Language',
+              },
+              use: null,
+              __typename: 'SupportFile',
+            },
+            {
+              id: 'ckbjexhuw02rw0720mbc07dr3',
+              createdAt: '2020-06-17T13:50:22.370Z',
+              updatedAt: '2020-06-17T13:50:22.370Z',
+              filename: 'test-file-shell.png',
+              filetype: 'image/png',
+              filesize: 18986,
+              url: 'social_media/2020/06/commons.america.gov_ckbjexfkf02pv0720g6xjfv3p/test-file-shell.png',
+              signedUrl: 'https://the-signed-url.com',
+              editable: true,
               language: {
                 id: 'ck2lzfx710hkq07206thus6pt',
                 locale: 'en-us',
@@ -386,8 +504,9 @@ const mocks = [
               filename: 's-secure-rights_transcript.docx',
               filetype: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
               filesize: 9000,
-              url: null,
+              url: '2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/s-secure-rights_transcript.docx',
               signedUrl: 'https://the-signed-url.com',
+              editable: false,
               language: {
                 id: 'ck2lzfx710hkq07206thus6pt',
                 locale: 'en-us',
@@ -407,8 +526,9 @@ const mocks = [
               filename: 'OpenSans-regular.ttf',
               filetype: 'font/ttf',
               filesize: null,
-              url: null,
+              url: '2019/11/commons.america.gov_ck2malqe30s4w0720vvjdygjb/OpenSans-regular.ttf',
               signedUrl: 'https://the-signed-url.com',
+              editable: false,
               language: {
                 id: 'ck2lzfx710hkq07206thus6pt',
                 locale: 'en-us',
@@ -449,6 +569,66 @@ const mocks = [
         localGraphicProject: {
           __typename: 'LocalGraphicProject',
           files: [
+            {
+              __typename: 'LocalImageFile',
+              id: 'ckbkr-9q4w04-mi0720y-9vfhlbl',
+              name: '1_3_Serious_FB.png',
+              language: 'ck2lzfx710hkq07206thus6pt',
+              social: ['ck9h3m9bl26bm0720rm69c60s', 'ck9h3meu626bw07201o36tapc'],
+              style: 'ck9h3kyb326ak0720wkbk01q6',
+              loaded: 0,
+              input: {
+                __typename: 'LocalInputFile',
+                dataUrl: 'data:image/png;base64,/9j/4AAQSkZJRgBADAQ',
+                name: '1_3_Serious_FB.png',
+                size: 18986,
+              },
+            },
+            {
+              __typename: 'LocalImageFile',
+              id: 'ckbkr-503z04k-h07203-yb3q5bf',
+              name: '4_16_Vaccines_French_Gif_FB.gif',
+              language: 'ck2lzfx710hkp07206oo0icbv',
+              social: ['ck9h3m9bl26bm0720rm69c60s', 'ck9h3meu626bw07201o36tapc'],
+              style: 'ck9h3ka3o269y0720t7wzp5uq',
+              loaded: 0,
+              input: {
+                __typename: 'LocalInputFile',
+                dataUrl: 'data:image/gif;base64,/9j/4AAQSkZJRgAODAQ',
+                name: '4_16_Vaccines_French_Gif_FB.gif',
+                size: 4687703,
+              },
+            },
+            {
+              __typename: 'LocalImageFile',
+              id: 'ckbjex-i0v02s-907200-vw1cf2s',
+              name: 'test-file-clean.jpg',
+              language: 'ck2lzfx710hkq07206thus6pt',
+              social: ['ck9h3m9bl26bm0720rm69c60s'],
+              style: 'ck9h3koe426aa0720y421wmk3',
+              loaded: 0,
+              input: {
+                __typename: 'LocalInputFile',
+                dataUrl: 'data:image/jpeg;base64,/9j/4AAQSkZJRgPLRAQ',
+                name: 'test-file-shell.jpg',
+                size: 18986,
+              },
+            },
+            {
+              __typename: 'LocalImageFile',
+              id: 'ckbjex-huw02rw-0720mbc-07dr3',
+              name: 'test-file-shell.png',
+              language: 'ck2lzfx710hkq07206thus6pt',
+              social: ['ck9h3naq526cp0720i4u3uqlv'],
+              style: 'ck9h3koe426aa0720y421wmk3',
+              loaded: 0,
+              input: {
+                __typename: 'LocalInputFile',
+                dataUrl: 'data:image/png;base64,/9j/4AAQSkZJRgABAQ',
+                name: 'test-file-shell.png',
+                size: 18986,
+              },
+            },
             {
               __typename: 'LocalImageFile',
               id: '51ccb5dc-9961-4880-b385-89142cbc1c38',
@@ -627,78 +807,76 @@ const errorMocks = [
   },
 ];
 
-const getStyleId = ( name, styles = [] ) => {
-  const styleObj = styles.find( style => style.name === name );
+const EDITABLE_EXTS = [
+  '.psd', '.ai', '.ae', '.eps',
+];
 
-  return styleObj?.id || '';
-};
+const SHELL_EXTS = [
+  '.jpg', '.jpeg', '.png',
+];
 
 const getIsShell = filename => {
-  const shellExtensions = [
-    '.jpg', '.jpeg', '.png',
-  ];
   const extension = getFileExt( filename );
-  const isJpgOrPng = shellExtensions.includes( extension );
+  const isJpgOrPng = SHELL_EXTS.includes( extension );
+  const hasCleanInName = filename.toLowerCase().includes( 'clean' );
   const hasShellInName = filename.toLowerCase().includes( 'shell' );
 
-  return isJpgOrPng && hasShellInName;
+  return isJpgOrPng && ( hasShellInName || hasCleanInName );
 };
 
-const getInitialFiles = ( files, type ) => {
-  const initialSupportFiles = [];
-  const initialGraphicFiles = [];
+const getIsEditable = file => {
+  const extension = getFileExt( file.name );
+  const hasEditableExt = EDITABLE_EXTS.includes( extension );
+  const isShell = getIsShell( file.name );
 
-  if ( files ) {
-    files.forEach( file => {
-      const isClean = file.style === getStyleId( 'Clean', mocks[3].result.data.graphicStyles );
-      const isCleanShell = isClean && getIsShell( file.name );
-      const hasStyleAndSocial = getCount( file.style ) && getCount( file.social );
-
-      if ( hasStyleAndSocial && !isCleanShell ) {
-        initialGraphicFiles.push( file );
-      } else {
-        initialSupportFiles.push( file );
-      }
-    } );
-  }
-
-  return type === 'images' ? initialGraphicFiles : initialSupportFiles;
+  return isShell || hasEditableExt;
 };
 
-const getFiles = ( { data, type, projectId } ) => {
-  const existingFiles = data?.graphicProject?.[type] || [];
-  const localFiles = mocks[2].result.data.localGraphicProject.files;
-  const files = projectId ? existingFiles : getInitialFiles( localFiles, type );
+const localGraphicFiles = mocks[2].result.data.localGraphicProject.files.filter( file => {
+  const isShell = getIsShell( file.name );
 
-  return files;
+  return file.style && !isShell;
+} );
+
+const sortFiles = ( files, field = 'name' ) => (
+  sortBy( files, file => file[field].toLowerCase() )
+);
+
+const getLocalEditableFiles = () => {
+  const { files } = mocks[2].result.data.localGraphicProject;
+  const editableFiles = files.filter( file => getIsEditable( file ) );
+
+  return sortFiles( editableFiles );
 };
 
-const getSupportFiles = ( { data, type, projectId } ) => {
-  const editableExtensions = [
-    '.psd', '.ai', '.ae', '.eps',
-  ];
-  const editableFiles = [];
-  const additionalFiles = [];
-  const supportFiles = getFiles( { data, type: 'supportFiles', projectId } );
+const getLocalAdditionalFiles = () => {
+  const { files } = mocks[2].result.data.localGraphicProject;
+  const additionalFiles = files.filter( file => {
+    const excludedExtensions = [
+      ...EDITABLE_EXTS,
+      ...SHELL_EXTS,
+      '.gif',
+    ];
+    const extension = getFileExt( file.name );
 
-  if ( getCount( supportFiles ) ) {
-    supportFiles.forEach( file => {
-      const _filename = projectId ? file.filename : file.name;
-      const extension = getFileExt( _filename );
+    return !excludedExtensions.includes( extension );
+  } );
 
-      const hasEditableExt = editableExtensions.includes( extension );
-      const isShell = getIsShell( _filename );
-
-      if ( hasEditableExt || isShell ) {
-        editableFiles.push( file );
-      } else {
-        additionalFiles.push( file );
-      }
-    } );
-  }
-
-  return type === 'editable' ? editableFiles : additionalFiles;
+  return sortFiles( additionalFiles );
 };
+
+const supportFilesConfig = [
+  {
+    headline: 'editable files',
+    helperText: 'Original files that may be edited and adapted as needed for reuse.',
+    files: mocks[0].result.data.graphicProject.supportFiles.filter( file => file.editable ),
+  },
+  {
+    headline: 'additional files',
+    helperText: 'Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics.',
+    files: mocks[0].result.data.graphicProject.supportFiles.filter( file => !file.editable ),
+  },
+];
 
 const suppressActWarning = consoleError => {
   const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
@@ -715,7 +893,9 @@ export {
   mocks,
   publishedMocks,
   props,
-  getFiles,
-  getSupportFiles,
+  getLocalAdditionalFiles,
+  getLocalEditableFiles,
+  localGraphicFiles,
+  supportFilesConfig,
   suppressActWarning,
 };

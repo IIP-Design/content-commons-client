@@ -10,8 +10,10 @@ import {
   mocks,
   publishedMocks,
   props,
-  getFiles,
-  getSupportFiles,
+  getLocalAdditionalFiles,
+  getLocalEditableFiles,
+  localGraphicFiles,
+  supportFilesConfig,
   suppressActWarning,
 } from './testHelpers';
 
@@ -221,28 +223,6 @@ describe( '<GraphicEdit />, when there is an existing DRAFT graphic project', ()
     await wait( 0 );
     wrapper.update();
     const supportFiles = wrapper.find( 'SupportFiles' );
-    const { data } = mocks[0].result;
-    const projectId = props.id;
-    const supportFilesConfig = [
-      {
-        headline: 'editable files',
-        helperText: 'Original files that may be edited and adapted as needed for reuse.',
-        files: getSupportFiles( {
-          data,
-          type: 'editable',
-          projectId,
-        } ),
-      },
-      {
-        headline: 'additional files',
-        helperText: 'Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics.',
-        files: getSupportFiles( {
-          data,
-          type: 'additional',
-          projectId,
-        } ),
-      },
-    ];
 
     expect( supportFiles.exists() ).toEqual( true );
     expect( supportFiles.prop( 'projectId' ) ).toEqual( props.id );
@@ -255,17 +235,11 @@ describe( '<GraphicEdit />, when there is an existing DRAFT graphic project', ()
     await wait( 0 );
     wrapper.update();
     const graphicFiles = wrapper.find( 'GraphicFilesFormContainer' );
-    const { data } = mocks[0].result;
-    const projectId = props.id;
+    const { images } = mocks[0].result.data.graphicProject;
 
     expect( graphicFiles.exists() ).toEqual( true );
     expect( graphicFiles.prop( 'projectId' ) ).toEqual( props.id );
-    expect( graphicFiles.prop( 'files' ) )
-      .toEqual( getFiles( {
-        data,
-        type: 'images',
-        projectId,
-      } ) );
+    expect( graphicFiles.prop( 'files' ) ).toEqual( images );
   } );
 
   it( 'renders the bottom of page buttons', async () => {
@@ -295,10 +269,6 @@ describe( '<GraphicEdit />, when there is an existing DRAFT graphic project', ()
     expect( btnPublish.prop( 'status' ) )
       .toEqual( mocks[0].result.data.graphicProject.status );
     expect( btnPublish.prop( 'disabled' ) ).toEqual( !props.id );
-    expect( btnPublish.prop( 'handlePublish' ).name )
-      .toEqual( 'handlePublish' );
-    expect( btnPublish.prop( 'handleUnPublish' ).name )
-      .toEqual( 'handleUnPublish' );
   } );
 } );
 
@@ -458,28 +428,6 @@ describe( '<GraphicEdit />, when there is an existing PUBLISHED graphic project'
     await wait( 0 );
     wrapper.update();
     const supportFiles = wrapper.find( 'SupportFiles' );
-    const { data } = mocks[0].result;
-    const projectId = props.id;
-    const supportFilesConfig = [
-      {
-        headline: 'editable files',
-        helperText: 'Original files that may be edited and adapted as needed for reuse.',
-        files: getSupportFiles( {
-          data,
-          type: 'editable',
-          projectId,
-        } ),
-      },
-      {
-        headline: 'additional files',
-        helperText: 'Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics.',
-        files: getSupportFiles( {
-          data,
-          type: 'additional',
-          projectId,
-        } ),
-      },
-    ];
 
     expect( supportFiles.exists() ).toEqual( true );
     expect( supportFiles.prop( 'projectId' ) ).toEqual( props.id );
@@ -492,17 +440,11 @@ describe( '<GraphicEdit />, when there is an existing PUBLISHED graphic project'
     await wait( 0 );
     wrapper.update();
     const graphicFiles = wrapper.find( 'GraphicFilesFormContainer' );
-    const { data } = mocks[0].result;
-    const projectId = props.id;
+    const { images } = mocks[0].result.data.graphicProject;
 
     expect( graphicFiles.exists() ).toEqual( true );
     expect( graphicFiles.prop( 'projectId' ) ).toEqual( props.id );
-    expect( graphicFiles.prop( 'files' ) )
-      .toEqual( getFiles( {
-        data,
-        type: 'images',
-        projectId,
-      } ) );
+    expect( graphicFiles.prop( 'files' ) ).toEqual( images );
   } );
 
   it( 'renders the bottom of page buttons', async () => {
@@ -532,10 +474,6 @@ describe( '<GraphicEdit />, when there is an existing PUBLISHED graphic project'
     expect( btnPublish.prop( 'status' ) )
       .toEqual( publishedMocks[0].result.data.graphicProject.status );
     expect( btnPublish.prop( 'disabled' ) ).toEqual( !props.id );
-    expect( btnPublish.prop( 'handlePublish' ).name )
-      .toEqual( 'handlePublish' );
-    expect( btnPublish.prop( 'handleUnPublish' ).name )
-      .toEqual( 'handleUnPublish' );
   } );
 } );
 
@@ -590,6 +528,12 @@ describe( '<GraphicEdit />, when there is no props.id and local files have been 
     wrapper.update();
 
     expect( graphicEdit().exists() ).toEqual( true );
+  } );
+
+  it( 'does not render the bottom of page buttons', () => {
+    const actions = wrapper.find( '.actions' );
+
+    expect( actions.exists() ).toEqual( false );
   } );
 
   it( 'renders ProjectHeader', async () => {
@@ -655,33 +599,21 @@ describe( '<GraphicEdit />, when there is no props.id and local files have been 
     await wait( 0 );
     wrapper.update();
     const supportFiles = wrapper.find( 'SupportFiles' );
-    const { data } = mocks[2].result;
-    const projectId = newProps.id;
-    const supportFilesConfig = [
+    const config = [
       {
-        headline: 'editable files',
-        helperText: 'Original files that may be edited and adapted as needed for reuse.',
-        files: getSupportFiles( {
-          data,
-          type: 'editable',
-          projectId,
-        } ),
+        ...supportFilesConfig[0],
+        files: getLocalEditableFiles(),
       },
       {
-        headline: 'additional files',
-        helperText: 'Additional files may include transcript files, style guides, or other support files needed by internal staff in order to properly use these graphics.',
-        files: getSupportFiles( {
-          data,
-          type: 'additional',
-          projectId,
-        } ),
+        ...supportFilesConfig[1],
+        files: getLocalAdditionalFiles(),
       },
     ];
 
     expect( supportFiles.exists() ).toEqual( true );
     expect( supportFiles.prop( 'projectId' ) ).toEqual( newProps.id );
-    supportFilesConfig.forEach( ( config, i ) => {
-      expect( supportFiles.prop( 'fileTypes' )[i] ).toEqual( config );
+    config.forEach( ( obj, i ) => {
+      expect( supportFiles.prop( 'fileTypes' )[i] ).toEqual( obj );
     } );
   } );
 
@@ -689,22 +621,9 @@ describe( '<GraphicEdit />, when there is no props.id and local files have been 
     await wait( 0 );
     wrapper.update();
     const graphicFiles = wrapper.find( 'GraphicFilesFormContainer' );
-    const { data } = mocks[2].result;
-    const projectId = newProps.id;
 
     expect( graphicFiles.exists() ).toEqual( true );
     expect( graphicFiles.prop( 'projectId' ) ).toEqual( newProps.id );
-    expect( graphicFiles.prop( 'files' ) )
-      .toEqual( getFiles( {
-        data,
-        type: 'images',
-        projectId,
-      } ) );
-  } );
-
-  it( 'does not render the bottom of page buttons', () => {
-    const actions = wrapper.find( '.actions' );
-
-    expect( actions.exists() ).toEqual( false );
+    expect( graphicFiles.prop( 'files' ) ).toEqual( localGraphicFiles );
   } );
 } );
