@@ -1,7 +1,6 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
-import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider, wait } from '@apollo/react-testing';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
 import GraphicEdit from './GraphicEdit';
@@ -29,6 +28,16 @@ jest.mock( 'next/dynamic', () => () => 'GraphicProject' );
 jest.mock(
   'components/admin/ActionButtons/ActionButtons',
   () => function ActionButtons() { return ''; },
+);
+
+jest.mock(
+  'components/admin/ActionHeadline/ActionHeadline',
+  () => function ActionHeadline() { return ''; },
+);
+
+jest.mock(
+  'components/admin/ButtonPublish/ButtonPublish',
+  () => function ButtonPublish() { return ''; },
 );
 
 jest.mock(
@@ -258,6 +267,39 @@ describe( '<GraphicEdit />, when there is an existing DRAFT graphic project', ()
         projectId,
       } ) );
   } );
+
+  it( 'renders the bottom of page buttons', async () => {
+    await wait( 0 );
+    wrapper.update();
+    const actions = wrapper.find( '.actions' );
+    const headline = actions.find( '.headline' );
+    const modal = actions.find( 'Modal' );
+    const modalTrigger = mount( modal.prop( 'trigger' ) );
+    const btnPublish = actions.find( 'ButtonPublish' );
+
+    expect( actions.exists() ).toEqual( true );
+    expect( headline.props() ).toEqual( {
+      className: 'headline',
+      type: 'graphic project',
+      published: false,
+      updated: false,
+    } );
+    expect( modal.prop( 'content' ).props.children.type )
+      .toEqual( 'GraphicProject' );
+    expect( modalTrigger.name() ).toEqual( 'Button' );
+    expect( modalTrigger.prop( 'className' ) )
+      .toEqual( 'action-btn btn--preview' );
+    expect( modalTrigger.prop( 'content' ) ).toEqual( 'Preview' );
+    expect( modalTrigger.prop( 'primary' ) ).toEqual( true );
+    expect( modalTrigger.prop( 'disabled' ) ).toEqual( !props.id );
+    expect( btnPublish.prop( 'status' ) )
+      .toEqual( mocks[0].result.data.graphicProject.status );
+    expect( btnPublish.prop( 'disabled' ) ).toEqual( !props.id );
+    expect( btnPublish.prop( 'handlePublish' ).name )
+      .toEqual( 'handlePublish' );
+    expect( btnPublish.prop( 'handleUnPublish' ).name )
+      .toEqual( 'handleUnPublish' );
+  } );
 } );
 
 describe( '<GraphicEdit />, when there is an existing PUBLISHED graphic project', () => {
@@ -462,6 +504,39 @@ describe( '<GraphicEdit />, when there is an existing PUBLISHED graphic project'
         projectId,
       } ) );
   } );
+
+  it( 'renders the bottom of page buttons', async () => {
+    await wait( 0 );
+    wrapper.update();
+    const actions = wrapper.find( '.actions' );
+    const headline = actions.find( '.headline' );
+    const modal = actions.find( 'Modal' );
+    const modalTrigger = mount( modal.prop( 'trigger' ) );
+    const btnPublish = actions.find( 'ButtonPublish' );
+
+    expect( actions.exists() ).toEqual( true );
+    expect( headline.props() ).toEqual( {
+      className: 'headline',
+      type: 'graphic project',
+      published: true,
+      updated: false,
+    } );
+    expect( modal.prop( 'content' ).props.children.type )
+      .toEqual( 'GraphicProject' );
+    expect( modalTrigger.name() ).toEqual( 'Button' );
+    expect( modalTrigger.prop( 'className' ) )
+      .toEqual( 'action-btn btn--preview' );
+    expect( modalTrigger.prop( 'content' ) ).toEqual( 'Preview' );
+    expect( modalTrigger.prop( 'primary' ) ).toEqual( true );
+    expect( modalTrigger.prop( 'disabled' ) ).toEqual( !props.id );
+    expect( btnPublish.prop( 'status' ) )
+      .toEqual( publishedMocks[0].result.data.graphicProject.status );
+    expect( btnPublish.prop( 'disabled' ) ).toEqual( !props.id );
+    expect( btnPublish.prop( 'handlePublish' ).name )
+      .toEqual( 'handlePublish' );
+    expect( btnPublish.prop( 'handleUnPublish' ).name )
+      .toEqual( 'handleUnPublish' );
+  } );
 } );
 
 describe( '<GraphicEdit />, when there is no props.id and local files have been selected for upload', () => {
@@ -625,5 +700,11 @@ describe( '<GraphicEdit />, when there is no props.id and local files have been 
         type: 'images',
         projectId,
       } ) );
+  } );
+
+  it( 'does not render the bottom of page buttons', () => {
+    const actions = wrapper.find( '.actions' );
+
+    expect( actions.exists() ).toEqual( false );
   } );
 } );

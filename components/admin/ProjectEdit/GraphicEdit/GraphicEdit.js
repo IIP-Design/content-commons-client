@@ -3,23 +3,29 @@ import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { Loader, Modal } from 'semantic-ui-react';
+import { Button, Loader, Modal } from 'semantic-ui-react';
+
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
+import ActionHeadline from 'components/admin/ActionHeadline/ActionHeadline';
 import AddFilesSectionHeading from 'components/admin/ProjectEdit/GraphicEdit/AddFilesSectionHeading/AddFilesSectionHeading';
+import AddGraphicFiles from 'components/admin/ProjectEdit/GraphicEdit/AddGraphicFiles/AddGraphicFiles';
 import ApolloError from 'components/errors/ApolloError';
 import GraphicProjectDetailsFormContainer from 'components/admin/ProjectDetailsForm/GraphicProjectDetailsFormContainer/GraphicProjectDetailsFormContainer';
 import GraphicFilesFormContainer from 'components/admin/ProjectEdit/GraphicEdit/GraphicFilesFormContainer/GraphicFilesFormContainer';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
+import ButtonPublish from 'components/admin/ButtonPublish/ButtonPublish';
 import Notification from 'components/Notification/Notification';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import SupportFiles from 'components/admin/ProjectEdit/GraphicEdit/SupportFiles/SupportFiles';
-import AddGraphicFiles from 'components/admin/ProjectEdit/GraphicEdit/AddGraphicFiles/AddGraphicFiles';
 import UploadProgress from 'components/admin/ProjectEdit/UploadProgress/UploadProgress';
+
 import { useFileUpload } from 'lib/hooks/useFileUpload';
+import useIsDirty from 'lib/hooks/useIsDirty';
+import usePublish from 'lib/hooks/usePublish';
 import useTimeout from 'lib/hooks/useTimeout';
 import useToggleModal from 'lib/hooks/useToggleModal';
-import usePublish from 'lib/hooks/usePublish';
-import useIsDirty from 'lib/hooks/useIsDirty';
+
+import { buildImageFile, buildSupportFile } from 'lib/graphql/builders/common';
 import {
   DELETE_GRAPHIC_PROJECT_MUTATION,
   UPDATE_GRAPHIC_PROJECT_MUTATION,
@@ -29,10 +35,11 @@ import {
   UNPUBLISH_GRAPHIC_PROJECT_MUTATION,
   UPDATE_GRAPHIC_PROJECT_STATUS_MUTATION,
 } from 'lib/graphql/queries/graphic';
-import { buildImageFile, buildSupportFile } from 'lib/graphql/builders/common';
 import { GRAPHIC_STYLES_QUERY } from 'components/admin/dropdowns/GraphicStyleDropdown/GraphicStyleDropdown';
 import { LANGUAGE_BY_NAME_QUERY } from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
+
 import { getCount, getFileExt } from 'lib/utils';
+
 import './GraphicEdit.scss';
 
 const GraphicProject = dynamic( () => import( /* webpackChunkName: "graphicProject" */ 'components/GraphicProject/GraphicProject' ) );
@@ -776,6 +783,43 @@ const GraphicEdit = ( { id } ) => {
           updateNotification={ updateNotification }
         />
       </div>
+
+      {/* bottom buttons */}
+      { projectId && (
+        <div className="actions">
+          <ActionHeadline
+            className="headline"
+            type="graphic project"
+            published={ data?.graphicProject?.status === 'PUBLISHED' }
+            updated={ isDirty }
+          />
+
+          <Modal
+            closeIcon
+            trigger={ (
+              <Button
+                className="action-btn btn--preview"
+                content="Preview"
+                disabled={ !projectId || disableBtns || !isFormValid }
+                primary
+              />
+            ) }
+            content={ (
+              <Modal.Content>
+                { getPreview() }
+              </Modal.Content>
+            ) }
+          />
+
+          <ButtonPublish
+            handlePublish={ handlePublish }
+            handleUnPublish={ handleUnPublish }
+            status={ data?.graphicProject?.status || 'DRAFT' }
+            updated={ isDirty }
+            disabled={ !projectId || disableBtns || !isFormValid }
+          />
+        </div>
+      ) }
     </div>
   );
 };
