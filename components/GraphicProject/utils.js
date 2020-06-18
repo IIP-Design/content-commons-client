@@ -1,5 +1,4 @@
 import { getTransformedLangTaxArray, getCount } from 'lib/utils';
-import { arrayExpression } from '@babel/types';
 
 const structureLangObj = item => ( {
   language: {
