@@ -29,6 +29,9 @@ _This sections lists changes committed since most recent release_
 - GraphicProject as the preview node for ActionButtons in GraphicEdit
 - Unit tests for ModalDescription, ModalItem, ModalPostTags, ModalText, ModalTranscript, Popover, and Popup
 - A recent graphics section to the featured section on the homepage
+- Bottom buttons (i.e., Preview, Publish, Publish Changes, Unpublish) to GraphicEdit
+- The editable field to the supportFileDetails fragment
+- A refetch of the GRAPHIC_PROJECT_QUERY in GraphicEdit after adding new support files to an existing project to update the support files UI
 
 **Changed:**
 
@@ -67,11 +70,12 @@ _This sections lists changes committed since most recent release_
 - Adjust modal stylesheets for consistency
 - Update unit tests for ActionButtons, GraphicEdit, GraphicProject, and ModalContentMeta
 - Move the fetching of featured item results and post types from Redux to Context
+- Refactor collating of graphic project files in GraphicEdit to address clean shell files being displayed in the wrong column
+- Refactor tests for GraphicEdit and add additional mock data
 
 **Fixed:**
 
 - Fixed width in files popover menu
-  <<<<<<< HEAD
 - Hide the "saving changes" growl notification upon initial load of the project details form
 - The Formik initial save bug for GraphicProjectDetailsFormContainer and GraphicFilesFormContainer
 - Copyright dropdown validation for ProjectDetailsForm
