@@ -122,7 +122,14 @@ const GraphicEdit = ( { id } ) => {
     variables: { displayName: 'English' },
   } );
 
-  const { loading, error: queryError, data, startPolling, stopPolling } = useQuery(
+  const {
+    loading,
+    error: queryError,
+    data,
+    refetch,
+    startPolling,
+    stopPolling,
+  } = useQuery(
     GRAPHIC_PROJECT_QUERY,
     {
       partialRefetch: true,
@@ -431,6 +438,7 @@ const GraphicEdit = ( { id } ) => {
       saveSupportFile,
     );
 
+    refetch(); // update support files display
     updateNotification( '' );
 
     /**
