@@ -29,6 +29,7 @@ _This sections lists changes committed since most recent release_
 - GraphicProject as the preview node for ActionButtons in GraphicEdit
 - Unit tests for ModalDescription, ModalItem, ModalPostTags, ModalText, ModalTranscript, Popover, and Popup
 - A recent graphics section to the featured section on the homepage
+- Tests for alt text display to GraphicProject
 
 **Changed:**
 
@@ -67,15 +68,16 @@ _This sections lists changes committed since most recent release_
 - Adjust modal stylesheets for consistency
 - Update unit tests for ActionButtons, GraphicEdit, GraphicProject, and ModalContentMeta
 - Move the fetching of featured item results and post types from Redux to Context
+- Update unit tests and mock data to address console messages
 
 **Fixed:**
 
 - Fixed width in files popover menu
-  <<<<<<< HEAD
 - Hide the "saving changes" growl notification upon initial load of the project details form
 - The Formik initial save bug for GraphicProjectDetailsFormContainer and GraphicFilesFormContainer
 - Copyright dropdown validation for ProjectDetailsForm
 - Change way packages are removed from featured data list so that it doesn't have to be the first group listed
+- Display of alt text on GraphicProject
 
 # [4.2.0](https://github.com/IIP-Design/content-commons-client/compare/v4.1.1...v4.2.0)(2020-06-11)
 
