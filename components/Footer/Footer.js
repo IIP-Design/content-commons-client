@@ -18,19 +18,20 @@ const Footer = () => {
     {
       name: 'privacy',
       to: '/privacy',
-      label: 'Privacy Policy'
+      label: 'Privacy Policy',
     },
     {
       name: 'releasenotes',
       to: '/releasenotes',
-      label: 'Release Notes'
+      label: 'Release Notes',
     },
     {
       name: 'documentation',
       to: '/documentation',
-      label: 'Documentation'
-    }
+      label: 'Documentation',
+    },
   ];
+
   return (
     <footer className="ui">
       <div className="footer-feedback">
@@ -75,8 +76,8 @@ const Footer = () => {
         </List>
         <Header as="div">
           <Header.Subheader className="subtext">
-            Can&apos;t find what you are looking for? To ask questions or provide feedback send us
-            an email at <a href="mailto:design@america.gov">design@america.gov</a>.
+            Can&rsquo;t find what you are looking for? To ask questions or provide feedback send us
+            an email at <a href="mailto:gpadigitalhelp@state.gov">gpadigitalhelp@state.gov</a>.
           </Header.Subheader>
           <Header.Subheader className="smalltext">
             This site is managed by the{ ' ' }
@@ -85,7 +86,7 @@ const Footer = () => {
             </a>{ ' ' }
             within the <a href="https://state.gov">U.S. Department of State</a>. External links to
             other Internet sites should not be construed as an endorsement of the views or privacy
-            policies contained therein. GPA © { new Date().getFullYear() }.
+            policies contained therein. GPA &copy; { new Date().getFullYear() }.
           </Header.Subheader>
         </Header>
         <img src={ flagImage } alt="United States Flag" className="footer_img footer_img--usflag" />

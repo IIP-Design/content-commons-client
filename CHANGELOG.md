@@ -67,11 +67,11 @@ _This sections lists changes committed since most recent release_
 - Adjust modal stylesheets for consistency
 - Update unit tests for ActionButtons, GraphicEdit, GraphicProject, and ModalContentMeta
 - Move the fetching of featured item results and post types from Redux to Context
+- The footer questions and feedback link to "gpadigitalhelp@state.gov" from "design@america.gov" 
 
 **Fixed:**
 
 - Fixed width in files popover menu
-  <<<<<<< HEAD
 - Hide the "saving changes" growl notification upon initial load of the project details form
 - The Formik initial save bug for GraphicProjectDetailsFormContainer and GraphicFilesFormContainer
 - Copyright dropdown validation for ProjectDetailsForm
