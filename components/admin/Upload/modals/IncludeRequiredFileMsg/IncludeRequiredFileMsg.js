@@ -5,12 +5,13 @@ import { Modal } from 'semantic-ui-react';
 import './IncludeRequiredFileMsg.scss';
 
 const IncludeRequiredFileMsg = ( {
+  msg,
   includeRequiredFileMsg,
   setIncludeRequiredFileMsg,
 } ) => (
   <Modal
     className="includeRequiredFileMsg"
-    content="Please include at least one video file."
+    content={ msg }
     actions={ ['Close'] }
     open={ includeRequiredFileMsg }
     closeOnDimmerClick={ false }
@@ -20,6 +21,7 @@ const IncludeRequiredFileMsg = ( {
 );
 
 IncludeRequiredFileMsg.propTypes = {
+  msg: PropTypes.string,
   includeRequiredFileMsg: PropTypes.bool,
   setIncludeRequiredFileMsg: PropTypes.func,
 };

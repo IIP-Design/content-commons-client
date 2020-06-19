@@ -127,6 +127,7 @@ const VideoProjectFilesDesktop = () => {
             </Form.Field>
           </Form>
           <IncludeRequiredFileMsg
+            msg="Please include at least one video file."
             includeRequiredFileMsg={ includeRequiredFileMsg }
             setIncludeRequiredFileMsg={ setIncludeRequiredFileMsg }
           />
