@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 // import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
-import { useApolloClient } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { useFileStateManager } from 'lib/hooks/useFileStateManager';
+import { useApolloClient } from '@apollo/react-hooks';
+import { useRouter } from 'next/router';
+
 import { normalize } from 'lib/graphql/normalizers/graphic';
+import { useFileStateManager } from 'lib/hooks/useFileStateManager';
 import { serializeFile } from 'lib/utils';
+
 import EditFileGrid from 'components/admin/EditFileGrid/EditFileGrid';
-import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import GraphicStyleDropdown from 'components/admin/dropdowns/GraphicStyleDropdown/GraphicStyleDropdown';
+import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import SocialPlatformDropdown from 'components/admin/dropdowns/SocialPlatformDropdown/SocialPlatformDropdown';
+import IncludeRequiredFileMsg from 'components/admin/Upload/modals/IncludeRequiredFileMsg/IncludeRequiredFileMsg';
+
 import styles from './GraphicUpload.module.scss';
 
 const GraphicUpload = ( { files, closeModal } ) => {
@@ -49,11 +53,42 @@ const GraphicUpload = ( { files, closeModal } ) => {
 
   // Set state with files normalized for the graphic content type
   const { state, dispatch } = useFileStateManager( null, normalize( files ) );
+  const [hasGraphicFiles, setHasGraphicFiles] = useState( false );
+  const [showRequiredFilesMsg, setShowRequiredFilesMsg] = useState( false );
+
+  const getGraphicFiles = () => {
+    if ( state?.files ) {
+      return state.files.filter( file => {
+        const { input: { type }, name } = file;
+        const filename = name.toLowerCase();
+        const isRequiredFileType = type.includes( 'gif' ) || type.includes( 'jpeg' ) || type.includes( 'png' );
+        const isCleanShell = filename.includes( 'clean' ) || filename.includes( 'shell' );
+
+        return isRequiredFileType && !isCleanShell;
+      } );
+    }
+
+    return [];
+  };
+
+  useEffect( () => {
+    const graphicFiles = getGraphicFiles();
+    const count = graphicFiles.length;
+
+    setHasGraphicFiles( !!count );
+  }, [state.files] );
 
   /**
-   * Serialize File Objects, write local object to Apollo cache, go to graphic eit page
+   * Serialize File Objects, write local object to Apollo cache, go to graphic edit page
    */
   const create = async () => {
+    // display required files message
+    if ( !hasGraphicFiles ) {
+      setShowRequiredFilesMsg( true );
+
+      return null;
+    }
+
     // Loop thru files, serialize File Object and create object
     const fileList = await Promise.all(
       state.files.map( async file => {
@@ -117,6 +152,12 @@ const GraphicUpload = ( { files, closeModal } ) => {
         onAdd={ _files => dispatch( { type: 'ADD', files: normalize( _files ) } ) }
         onUpdate={ data => dispatch( { type: 'UPDATE', data } ) }
         onRemove={ file => dispatch( { type: 'REMOVE', fileId: file.id } ) }
+      />
+
+      <IncludeRequiredFileMsg
+        msg="Please include at least one graphic file."
+        includeRequiredFileMsg={ showRequiredFilesMsg }
+        setIncludeRequiredFileMsg={ setShowRequiredFilesMsg }
       />
     </div>
   );
