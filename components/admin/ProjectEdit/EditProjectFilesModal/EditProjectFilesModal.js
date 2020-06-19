@@ -12,7 +12,7 @@ import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
 import FileUploadProgressBar from '../../FileUploadProgressBar/FileUploadProgressBar';
 import Notification from 'components/Notification/Notification';
 import { normalize } from 'lib/graphql/normalizers/video';
-import { useFileStateManger } from 'lib/hooks/useFileStateManger';
+import { useFileStateManager } from 'lib/hooks/useFileStateManager';
 import { VIDEO_USE_QUERY, IMAGE_USE_QUERY } from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import { FilesContext } from './FilesContext';
 
@@ -38,7 +38,7 @@ const EditProjectFilesModal = ( {
     updateFileField,
     addFiles,
     removeFile,
-  } = useFileStateManger( normalize );
+  } = useFileStateManager( normalize );
 
   const allowedExtensions = extensions.join( ',' );
 

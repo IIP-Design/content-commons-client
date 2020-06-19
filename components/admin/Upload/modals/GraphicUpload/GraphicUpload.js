@@ -3,7 +3,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { useApolloClient } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { useFileStateManger } from 'lib/hooks/useFileStateManger';
+import { useFileStateManager } from 'lib/hooks/useFileStateManager';
 import { normalize } from 'lib/graphql/normalizers/graphic';
 import { serializeFile } from 'lib/utils';
 import EditFileGrid from 'components/admin/EditFileGrid/EditFileGrid';
@@ -48,7 +48,7 @@ const GraphicUpload = ( { files, closeModal } ) => {
   ];
 
   // Set state with files normalized for the graphic content type
-  const { state, dispatch } = useFileStateManger( null, normalize( files ) );
+  const { state, dispatch } = useFileStateManager( null, normalize( files ) );
 
   /**
    * Serialize File Objects, write local object to Apollo cache, go to graphic eit page
