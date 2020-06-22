@@ -72,6 +72,7 @@ _This sections lists changes committed since most recent release_
 - Move the fetching of featured item results and post types from Redux to Context
 - Refactor collating of graphic project files in GraphicEdit to address clean shell files being displayed in the wrong column
 - Refactor tests for GraphicEdit and add additional mock data
+- The footer questions and feedback link to "gpadigitalhelp@state.gov" from "design@america.gov" 
 
 **Fixed:**
 
