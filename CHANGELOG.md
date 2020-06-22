@@ -32,7 +32,8 @@ _This sections lists changes committed since most recent release_
 - Tests for alt text display to GraphicProject
 - Bottom buttons (i.e., Preview, Publish, Publish Changes, Unpublish) to GraphicEdit
 - The editable field to the supportFileDetails fragment
-- A refetch of the GRAPHIC_PROJECT_QUERY in GraphicEdit after adding new support files to an existing project to update the support files UI 
+- A refetch of the GRAPHIC_PROJECT_QUERY in GraphicEdit after adding new support files to an existing project to update the support files UI
+- Additional tests to GraphicProject for users not logged in and the display of editable files and internal description
 
 **Changed:**
 
@@ -74,7 +75,8 @@ _This sections lists changes committed since most recent release_
 - Update unit tests and mock data to address console messages 
 - Refactor collating of graphic project files in GraphicEdit to address clean shell files being displayed in the wrong column
 - Refactor tests for GraphicEdit and add additional mock data
-- The footer questions and feedback link to "gpadigitalhelp@state.gov" from "design@america.gov" 
+- The footer questions and feedback link to "gpadigitalhelp@state.gov" from "design@america.gov"
+- The conditional check in GraphicProject for user logged in status
  
 
 **Fixed:**
