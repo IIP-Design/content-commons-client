@@ -1,9 +1,12 @@
-name: Pull Request Test Runner
+name: Test Runner
 on:
   pull_request:
     branches:
       - develop
     types: [opened, reopened, synchronize]
+  push:
+    branches:
+      - develop
 
 jobs:
   build_and_test:

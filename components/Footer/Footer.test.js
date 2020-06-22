@@ -4,14 +4,14 @@ import Footer from './Footer';
 
 jest.mock( 'next/config', () => () => ( {
   publicRuntimeConfig: {
-    PRESS_GUIDANCE_DB_URL: 'press-guidances'
-  }
+    PRESS_GUIDANCE_DB_URL: 'press-guidances',
+  },
 } ) );
 
 jest.mock( 'context/authContext', () => ( {
   useAuth: jest
     .fn( () => ( { user: null } ) )
-    .mockImplementationOnce( () => ( { user: true } ) )
+    .mockImplementationOnce( () => ( { user: true } ) ),
 } ) );
 
 describe( '<Footer />', () => {
@@ -27,7 +27,7 @@ describe( '<Footer />', () => {
 
     expect( list ).toHaveLength( 4 );
     expect( linkTextArr ).toEqual(
-      expect.arrayContaining( pressLinkText )
+      expect.arrayContaining( pressLinkText ),
     );
   } );
 
@@ -41,7 +41,7 @@ describe( '<Footer />', () => {
 
     expect( list ).toHaveLength( 3 );
     expect( linkTextArr ).toEqual(
-      expect.not.arrayContaining( pressLinkText )
+      expect.not.arrayContaining( pressLinkText ),
     );
   } );
 } );
