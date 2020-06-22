@@ -1,4 +1,5 @@
 export const mockData = {
+  alt: 'some alt text',
   author: 'John Doe',
   categories: 'environment, global issues',
   copyright: 'COPYRIGHT',
@@ -22,6 +23,7 @@ export const mockData = {
 };
 
 export const mockGraphicItem = {
+  alt: 'some alt text',
   author: 'John Doe',
   categories: 'environment, global issues',
   copyright: 'COPYRIGHT',

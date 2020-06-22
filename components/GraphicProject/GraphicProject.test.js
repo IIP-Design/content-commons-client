@@ -168,7 +168,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
     expect( modalImage.exists() ).toEqual( true );
     expect( modalImage.props() ).toEqual( {
       thumbnail: selectedUnit.url,
-      thumbnailMeta: { alt: selectedUnit.alt },
+      thumbnailMeta: { alt: normalizedData.alt },
     } );
   } );
 
@@ -209,7 +209,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
     expect( alt.exists() ).toEqual( true );
     expect( title.exists() ).toEqual( true );
     expect( title.text() ).toEqual( 'Alt (Alternative) Text:' );
-    expect( alt.contains( selectedUnit.alt ) ).toEqual( true );
+    expect( alt.contains( normalizedData.alt ) ).toEqual( true );
   } );
 
   it( 'renders the ModalPostMeta', () => {
@@ -232,6 +232,52 @@ describe( '<GraphicProject />, for GraphQL data', () => {
     expect( postTags.props() ).toEqual( {
       tags: getTransformedLangTaxArray( props.item.categories ),
     } );
+  } );
+} );
+
+describe( '<GraphicProject />, for GraphQL data with no project alt', () => {
+  const props = {
+    displayAsModal: true,
+    isAdminPreview: true,
+    item: {
+      ...graphicGraphqlMock,
+      alt: '',
+    },
+    useGraphQl: true,
+  };
+
+  const normalizedData = normalizeGraphicProjectByAPI( {
+    file: props.item,
+    useGraphQl: props.useGraphQl,
+  } );
+
+  let Component;
+  let wrapper;
+  const selectedUnit = normalizedData.images.find( img => img.language.locale === 'en-us' );
+
+  beforeEach( () => {
+    Component = <GraphicProject { ...props } />;
+    wrapper = mount( Component );
+  } );
+
+  it( 'renders the ModalImage thumbnail', () => {
+    const modalImage = wrapper.find( 'modal-image' );
+
+    expect( modalImage.exists() ).toEqual( true );
+    expect( modalImage.props() ).toEqual( {
+      thumbnail: selectedUnit.url,
+      thumbnailMeta: { alt: normalizedData.title },
+    } );
+  } );
+
+  it( 'renders the alt text', () => {
+    const alt = wrapper.find( '.graphic-project__content.alt' );
+    const title = alt.find( '.graphic-project__content__title' );
+
+    expect( alt.exists() ).toEqual( true );
+    expect( title.exists() ).toEqual( true );
+    expect( title.text() ).toEqual( 'Alt (Alternative) Text:' );
+    expect( alt.contains( normalizedData.title ) ).toEqual( true );
   } );
 } );
 
@@ -454,6 +500,51 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
     expect( postTags.props() ).toEqual( {
       tags: props.item.categories,
     } );
+  } );
+} );
+
+describe( '<GraphicProject />, for ElasticSearch data with no image alts', () => {
+  const props = {
+    item: {
+      ...graphicElasticMock[0]._source,
+      images: graphicElasticMock[0]._source.images.map( img => ( {
+        ...img,
+        alt: '',
+      } ) ),
+    },
+  };
+
+  const normalizedData = normalizeGraphicProjectByAPI( {
+    file: props.item,
+  } );
+
+  let Component;
+  let wrapper;
+  const selectedUnit = normalizedData.images.find( img => img.language.locale === 'en-us' );
+
+  beforeEach( () => {
+    Component = <GraphicProject { ...props } />;
+    wrapper = mount( Component );
+  } );
+
+  it( 'renders the ModalImage thumbnail', () => {
+    const modalImage = wrapper.find( 'modal-image' );
+
+    expect( modalImage.exists() ).toEqual( true );
+    expect( modalImage.props() ).toEqual( {
+      thumbnail: selectedUnit.url,
+      thumbnailMeta: { alt: normalizedData.title },
+    } );
+  } );
+
+  it( 'renders the alt text', () => {
+    const alt = wrapper.find( '.graphic-project__content.alt' );
+    const title = alt.find( '.graphic-project__content__title' );
+
+    expect( alt.exists() ).toEqual( true );
+    expect( title.exists() ).toEqual( true );
+    expect( title.text() ).toEqual( 'Alt (Alternative) Text:' );
+    expect( alt.contains( normalizedData.title ) ).toEqual( true );
   } );
 } );
 

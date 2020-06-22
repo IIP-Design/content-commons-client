@@ -207,7 +207,7 @@ const GraphicProject = ( {
     return tabs.filter( tab => tab.title !== 'Editable Files' );
   };
 
-  const getAlt = () => unitAlt || projectAlt || title || selectedUnit?.filename || '';
+  const getAlt = () => unitAlt || projectAlt || projectTitle;
 
   return (
     <ModalItem

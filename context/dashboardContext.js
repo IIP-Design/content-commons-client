@@ -3,7 +3,6 @@ import React from 'react';
 import { getProjectsType, normalizeDashboardData } from 'lib/graphql/util';
 import {
   DELETE_GRAPHIC_PROJECT_MUTATION,
-  GRAPHIC_PROJECT_SUPPORT_FILES_QUERY,
   TEAM_GRAPHIC_PROJECTS_QUERY,
   TEAM_GRAPHIC_PROJECTS_COUNT_QUERY,
   GRAPHIC_PROJECT_IMAGE_FILES_QUERY,

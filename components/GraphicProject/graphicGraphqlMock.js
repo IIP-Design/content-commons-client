@@ -54,7 +54,7 @@ export const graphicGraphqlMock = {
         displayName: 'English',
         nativeName: 'English',
       },
-      alt: 'Will be populated from project level',
+      alt: '',
       url: '2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_ENGLISH_Output.jpg',
       signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_ENGLISH_Output.jpg?AWSAccessKeyId=AKIAJ7VASWQMY6B7CH7A&Expires=1587475657&Signature=ONFhAwXKyGmKQ4tzZb%2FxA8rN6m8%3D',
       filename: 'CAPTIONS_Made_in_America_ENGLISH_Output.jpg',
@@ -90,7 +90,7 @@ export const graphicGraphqlMock = {
         displayName: 'French',
         nativeName: 'French',
       },
-      alt: 'Will be populated from project level',
+      alt: '',
       url: '2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_FRENCH_Output.jpg',
       signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_FRENCH_Output.jpg?AWSAccessKeyId=AKIAJ7VASWQMY6B7CH7A&Expires=1587475657&Signature=ONFhAwXKyGmKQ4tzZb%2FxA8rN6m8%3D',
       filename: 'CAPTIONS_Made_in_America_FRENCH_Output.jpg',
@@ -330,4 +330,9 @@ export const graphicGraphqlMock = {
       ],
     },
   ],
+};
+
+export const graphicGraphqlMockNoProjectAlt = {
+  ...graphicGraphqlMock,
+  alt: '',
 };

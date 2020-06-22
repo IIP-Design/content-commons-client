@@ -1,5 +1,4 @@
 import { getTransformedLangTaxArray, getCount } from 'lib/utils';
-import { arrayExpression } from '@babel/types';
 
 const structureLangObj = item => ( {
   language: {
@@ -74,7 +73,6 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
     } ) );
 
     const gqlObj = {
-      title: file.projectTitle || '',
       alt: file.alt || '',
       projectType: file.projectType || '',
       published: file.createdAt || '',

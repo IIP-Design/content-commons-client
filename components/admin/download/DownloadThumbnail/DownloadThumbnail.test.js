@@ -44,7 +44,24 @@ const Component = (
   </MockedProvider>
 );
 
+const suppressActWarning = consoleError => {
+  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
+
+  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
+    if ( !args[0].includes( actMsg ) ) {
+      consoleError( ...args );
+    }
+  } );
+};
+
 describe( '<DownloadThumbnail />', () => {
+  const consoleError = console.error;
+
+  beforeAll( () => suppressActWarning( consoleError ) );
+  afterAll( () => {
+    console.error = consoleError;
+  } );
+
   it( 'renders initial loading state without crashing', () => {
     const wrapper = mount( Component );
     const downloadThumb = wrapper.find( 'DownloadThumbnail' );
