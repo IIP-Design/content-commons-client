@@ -30,4 +30,17 @@
       padding: 1.75em;
     }
   }
+
+  > .actions {
+    padding-top: 2em;
+    text-align: center;
+
+    .action-btn {
+      &.btn--edit {
+        &.ui.basic.button {
+          @include ghost-button;
+        }
+      }
+    }
+  }
 }
