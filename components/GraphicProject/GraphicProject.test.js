@@ -1,22 +1,45 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import { act } from 'react-dom/test-utils';
-import GraphicProject from './GraphicProject';
+
+import { useAuth } from 'context/authContext';
+import { updateUrl } from 'lib/browser';
 import { getTransformedLangTaxArray } from 'lib/utils';
 import { normalizeGraphicProjectByAPI } from './utils';
+
 import { graphicElasticMock } from './graphicElasticMock';
 import { graphicGraphqlMock } from './graphicGraphqlMock';
 
-jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: {} } ) );
+import GraphicProject from './GraphicProject';
 
+jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: {} } ) );
+jest.mock( 'lib/browser', () => ( { updateUrl: jest.fn() } ) );
 jest.mock(
   'context/authContext',
   () => ( {
-    useAuth: jest.fn( () => ( { user: { firstName: 'user' } } ) ),
+    useAuth: jest.fn( () => ( {
+      user: {
+        id: 'ck2m042xo0rnp0720nb4gxjix',
+        firstName: 'Joe',
+        lastName: 'Schmoe',
+        email: 'schmoej@america.gov',
+        jobTitle: '',
+        country: 'United States',
+        city: 'Washington, DC',
+        howHeard: '',
+        permissions: ['EDITOR'],
+        team: {
+          id: 'ck2lzfx6u0hkj0720f8n8mtda',
+          name: 'GPA Editorial & Design',
+          contentTypes: ['GRAPHIC'],
+          __typename: 'Team',
+        },
+        __typename: 'User',
+        esToken: 'eyasdljfakljsdfklj',
+      },
+    } ) ),
   } ),
 );
-
-jest.mock( 'lib/browser', () => ( { updateUrl: jest.fn() } ) );
 
 jest.mock(
   'next/router',
@@ -33,19 +56,55 @@ jest.mock(
   } ),
 );
 
-jest.mock( 'components/Notification/Notification', () => 'mock-notification' );
-jest.mock( 'components/Share/Share', () => 'mock-share' );
-jest.mock( 'components/TabLayout/TabLayout', () => 'tab-layout' );
-jest.mock( 'components/download/DownloadItem/DownloadItem', () => 'download-item' );
-jest.mock( './Download/GraphicFiles', () => 'graphic-files' );
-jest.mock( './Download/GenericFiles', () => 'generic-files' );
-jest.mock( './Download/Help', () => 'help' );
-jest.mock( 'components/modals/ModalLangDropdown/ModalLangDropdown', () => 'modal-lang-dropdown' );
-jest.mock( '../modals/ModalImage/ModalImage', () => 'modal-image' );
-jest.mock( '../modals/ModalContentMeta/ModalContentMeta', () => 'modal-content-meta' );
-jest.mock( 'components/modals/ModalDescription/ModalDescription', () => 'modal-description' );
-jest.mock( 'components/modals/ModalPostMeta/ModalPostMeta', () => 'modal-post-meta' );
-jest.mock( 'components/modals/ModalPostTags/ModalPostTags', () => 'modal-post-tags' );
+jest.mock(
+  'components/Notification/Notification',
+  () => function Notification() { return ''; },
+);
+jest.mock(
+  'components/Share/Share',
+  () => function Share() { return ''; },
+);
+jest.mock(
+  'components/TabLayout/TabLayout',
+  () => function TabLayout() { return ''; },
+);
+jest.mock(
+  'components/download/DownloadItem/DownloadItem',
+  () => function DownloadItem() { return ''; },
+);
+jest.mock(
+  './Download/GraphicFiles',
+  () => function GraphicFiles() { return ''; },
+);
+jest.mock(
+  './Download/GenericFiles',
+  () => function GenericFiles() { return ''; },
+);
+jest.mock( './Download/Help', () => function Help() { return ''; } );
+jest.mock(
+  'components/modals/ModalLangDropdown/ModalLangDropdown',
+  () => function ModalLangDropdown() { return ''; },
+);
+jest.mock(
+  '../modals/ModalImage/ModalImage',
+  () => function ModalImage() { return ''; },
+);
+jest.mock(
+  '../modals/ModalContentMeta/ModalContentMeta',
+  () => function ModalContentMeta() { return ''; },
+);
+jest.mock(
+  'components/modals/ModalDescription/ModalDescription',
+  () => function ModalDescription() { return ''; },
+);
+jest.mock(
+  'components/modals/ModalPostMeta/ModalPostMeta',
+  () => function ModalPostMeta() { return ''; },
+);
+jest.mock(
+  'components/modals/ModalPostTags/ModalPostTags',
+  () => function ModalPostTags() { return ''; },
+);
 
 describe( '<GraphicProject />, for GraphQL data', () => {
   const props = {
@@ -63,9 +122,6 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   let Component;
   let wrapper;
   const selectedUnit = normalizedData.images.find( img => img.language.locale === 'en-us' );
-
-  /* eslint-disable global-require */
-  const { updateUrl } = require( 'lib/browser' );
 
   beforeEach( () => {
     Component = <GraphicProject { ...props } />;
@@ -91,7 +147,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'renders the preview Notification', () => {
-    const notification = wrapper.find( 'mock-notification' );
+    const notification = wrapper.find( 'Notification' );
     const notificationProps = {
       el: 'p',
       show: true,
@@ -112,7 +168,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'renders the ModalLanguageDropdown', () => {
-    const langDropdown = wrapper.find( '.modal_options_left > modal-lang-dropdown' );
+    const langDropdown = wrapper.find( '.modal_options_left > ModalLangDropdown' );
 
     expect( langDropdown.exists() ).toEqual( true );
     expect( langDropdown.prop( 'item' ) ).toEqual( normalizedData );
@@ -122,7 +178,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'calling handleLanguageChange selects a new language unit', () => {
-    const langDropdown = () => wrapper.find( '.modal_options_left > modal-lang-dropdown' );
+    const langDropdown = () => wrapper.find( '.modal_options_left > ModalLangDropdown' );
     const newLangSelection = 'French';
 
     act( () => {
@@ -163,7 +219,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'renders the ModalImage thumbnail', () => {
-    const modalImage = wrapper.find( 'modal-image' );
+    const modalImage = wrapper.find( 'ModalImage' );
 
     expect( modalImage.exists() ).toEqual( true );
     expect( modalImage.props() ).toEqual( {
@@ -173,7 +229,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'renders the ModalContentMeta', () => {
-    const contentMeta = wrapper.find( 'modal-content-meta' );
+    const contentMeta = wrapper.find( 'ModalContentMeta' );
     const { modified, projectType } = normalizedData;
 
     expect( contentMeta.exists() ).toEqual( true );
@@ -184,7 +240,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'renders the ModalDescription', () => {
-    const contentDesc = wrapper.find( 'modal-description' );
+    const contentDesc = wrapper.find( 'ModalDescription' );
 
     expect( contentDesc.exists() ).toEqual( true );
     expect( contentDesc.props() ).toEqual( {
@@ -213,7 +269,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'renders the ModalPostMeta', () => {
-    const postMeta = wrapper.find( 'modal-post-meta' );
+    const postMeta = wrapper.find( 'ModalPostMeta' );
     const { owner, projectType, published } = normalizedData;
 
     expect( postMeta.exists() ).toEqual( true );
@@ -226,7 +282,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   } );
 
   it( 'renders the ModalPostTags', () => {
-    const postTags = wrapper.find( 'modal-post-tags' );
+    const postTags = wrapper.find( 'ModalPostTags' );
 
     expect( postTags.exists() ).toEqual( true );
     expect( postTags.props() ).toEqual( {
@@ -261,7 +317,7 @@ describe( '<GraphicProject />, for GraphQL data with no project alt', () => {
   } );
 
   it( 'renders the ModalImage thumbnail', () => {
-    const modalImage = wrapper.find( 'modal-image' );
+    const modalImage = wrapper.find( 'ModalImage' );
 
     expect( modalImage.exists() ).toEqual( true );
     expect( modalImage.props() ).toEqual( {
@@ -346,8 +402,6 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   let wrapper;
   const selectedUnit = normalizedData.images.find( img => img.language.locale === 'en-us' );
 
-  const { updateUrl } = require( 'lib/browser' );
-
   beforeEach( () => {
     Component = <GraphicProject { ...props } />;
     wrapper = mount( Component );
@@ -377,7 +431,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   } );
 
   it( 'renders the ModalLanguageDropdown', () => {
-    const langDropdown = wrapper.find( '.modal_options_left > modal-lang-dropdown' );
+    const langDropdown = wrapper.find( '.modal_options_left > ModalLangDropdown' );
 
     expect( langDropdown.exists() ).toEqual( true );
     expect( langDropdown.prop( 'item' ) ).toEqual( normalizedData );
@@ -387,7 +441,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   } );
 
   it( 'calling handleLanguageChange selects a new language unit', () => {
-    const langDropdown = () => wrapper.find( '.modal_options_left > modal-lang-dropdown' );
+    const langDropdown = () => wrapper.find( '.modal_options_left > ModalLangDropdown' );
     const newLangSelection = 'French';
 
     act( () => {
@@ -431,7 +485,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   } );
 
   it( 'renders the ModalImage thumbnail', () => {
-    const modalImage = wrapper.find( 'modal-image' );
+    const modalImage = wrapper.find( 'ModalImage' );
 
     expect( modalImage.exists() ).toEqual( true );
     expect( modalImage.props() ).toEqual( {
@@ -441,7 +495,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   } );
 
   it( 'renders the ModalContentMeta', () => {
-    const contentMeta = wrapper.find( 'modal-content-meta' );
+    const contentMeta = wrapper.find( 'ModalContentMeta' );
     const { modified, projectType } = normalizedData;
 
     expect( contentMeta.exists() ).toEqual( true );
@@ -452,7 +506,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   } );
 
   it( 'renders the ModalDescription', () => {
-    const contentDesc = wrapper.find( 'modal-description' );
+    const contentDesc = wrapper.find( 'ModalDescription' );
 
     expect( contentDesc.exists() ).toEqual( true );
     expect( contentDesc.props() ).toEqual( {
@@ -481,7 +535,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   } );
 
   it( 'renders the ModalPostMeta', () => {
-    const postMeta = wrapper.find( 'modal-post-meta' );
+    const postMeta = wrapper.find( 'ModalPostMeta' );
     const { owner, projectType, published } = normalizedData;
 
     expect( postMeta.exists() ).toEqual( true );
@@ -494,7 +548,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   } );
 
   it( 'renders the ModalPostTags', () => {
-    const postTags = wrapper.find( 'modal-post-tags' );
+    const postTags = wrapper.find( 'ModalPostTags' );
 
     expect( postTags.exists() ).toEqual( true );
     expect( postTags.props() ).toEqual( {
@@ -528,7 +582,7 @@ describe( '<GraphicProject />, for ElasticSearch data with no image alts', () =>
   } );
 
   it( 'renders the ModalImage thumbnail', () => {
-    const modalImage = wrapper.find( 'modal-image' );
+    const modalImage = wrapper.find( 'ModalImage' );
 
     expect( modalImage.exists() ).toEqual( true );
     expect( modalImage.props() ).toEqual( {
@@ -591,5 +645,60 @@ describe( '<GraphicProject />, for ElasticSearch data with null support files', 
 
   it( 'renders without crashing', () => {
     expect( wrapper.exists() ).toEqual( true );
+  } );
+} );
+
+describe( '<GraphicProject />, for a user not logged in', () => {
+  const props = {
+    item: graphicElasticMock[0]._source,
+  };
+  let Component;
+  let wrapper;
+
+  beforeEach( () => {
+    Component = <GraphicProject { ...props } />;
+    wrapper = mount( Component );
+
+    useAuth.mockImplementation( () => ( {
+      user: {
+        id: 'public',
+        firstName: '',
+        lastName: '',
+        email: '',
+        jobTitle: null,
+        country: null,
+        city: null,
+        howHeard: null,
+        permissions: [],
+        team: null,
+        __typename: 'User',
+      },
+    } ) );
+  } );
+
+  it( 'renders without crashing', () => {
+    expect( wrapper.exists() ).toEqual( true );
+  } );
+
+  it( 'renders the correct download tabs', () => {
+    const { id } = props.item;
+    const triggerContainer = wrapper.find( '.trigger-container' );
+    const popover = triggerContainer.find( `[id="${id}_graphic-download"]` );
+    const tabLayout = mount( popover.prop( 'children' ) );
+    const { tabs } = tabLayout.props();
+    const tabTitles = [
+      'Graphic Files', 'Other', 'Help',
+    ];
+
+    expect( tabs.length ).toEqual( tabTitles.length );
+    tabs.forEach( ( tab, i ) => {
+      expect( tab.title ).toEqual( tabTitles[i] );
+    } );
+  } );
+
+  it( 'does not render the internal description', () => {
+    const internalDesc = wrapper.find( '.graphic-project__content.internal-desc' );
+
+    expect( internalDesc.exists() ).toEqual( false );
   } );
 } );
