@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Item } from 'semantic-ui-react';
 
 import DownloadItem from './DownloadItem';
-import { formatBytes, getVideoDownloadLink } from 'lib/utils';
+import { formatBytes, getFileDownloadUrl } from 'lib/utils';
 
 // NOTE: Using the 'download' attribute to trigger downloads
 // Need to research more robust options depending on browser support
@@ -48,7 +48,7 @@ const DownloadVideo = ( { burnedInCaptions, instructions, selectedLanguageUnit }
     const size = getSizeInfo( video.size );
     const fn = `${title.replace( /\s/g, '_' )}_${video.size.width}.${getFnExt( video.downloadUrl )}`;
     const videoQuality = `${video.video_quality && video.video_quality.toLowerCase() === 'broadcast' ? 'broadcast' : 'web'}`;
-    const downloadLink = getVideoDownloadLink( video.downloadUrl, fn );
+    const downloadLink = getFileDownloadUrl( video.downloadUrl, fn );
 
     const header = [
       'Download ', <span key={ title } className="lightweight">{ `"${title}"` }</span>, ` for ${videoQuality}`,
