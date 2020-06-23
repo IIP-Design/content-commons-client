@@ -314,6 +314,7 @@ const GraphicProject = ( {
         logo={ displayDOSLogo( owner ) }
         source={ owner }
         datePublished={ published }
+        textDirection={ selectedUnitLanguage.text_direction }
       />
       <ModalPostTags tags={ categories } />
     </ModalItem>
