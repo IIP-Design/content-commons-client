@@ -74,7 +74,8 @@ _This sections lists changes committed since most recent release_
 - Update unit tests and mock data to address console messages 
 - Refactor collating of graphic project files in GraphicEdit to address clean shell files being displayed in the wrong column
 - Refactor tests for GraphicEdit and add additional mock data
-- The footer questions and feedback link to "gpadigitalhelp@state.gov" from "design@america.gov" 
+- The footer questions and feedback link to "gpadigitalhelp@state.gov" from "design@america.gov"
+- Enable delete button on GraphicEdit before project creation
  
 
 **Fixed:**

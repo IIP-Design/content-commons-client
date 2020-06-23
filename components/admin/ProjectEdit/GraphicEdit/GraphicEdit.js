@@ -280,11 +280,12 @@ const GraphicEdit = ( { id } ) => {
   const deleteProjectEnabled = () => {
     /**
      * disable delete project button if either there
-     * is no project id OR project has been published
+     * is no localData OR project has been published
      */
     const isPublished = data?.graphicProject && !!data.graphicProject.publishedAt;
+    const hasNoLocalData = !projectId && localData?.localGraphicProject === null;
 
-    return !projectId || isPublished;
+    return hasNoLocalData || isPublished;
   };
 
   const saveGraphicFile = async ( pId, file ) => updateProject( pId, {
@@ -672,14 +673,14 @@ const GraphicEdit = ( { id } ) => {
             setDeleteConfirmOpen={ setDeleteConfirmOpen }
             previewNode={ getPreview() }
             disabled={ {
-              'delete': deleteProjectEnabled(),
+              'delete': !!deleteProjectEnabled(),
               save: !projectId || disableBtns || !isFormValid,
               preview: !projectId || disableBtns || !isFormValid,
               publish: !projectId || disableBtns || !isFormValid, // having graphics required?
               publishChanges: !projectId || disableBtns || !isFormValid,
             } }
             handle={ {
-              deleteConfirm: handleDeleteConfirm,
+              deleteConfirm: projectId ? handleDeleteConfirm : handleExit,
               save: handleExit,
               publish: handlePublish,
               publishChanges: handlePublishChanges,
