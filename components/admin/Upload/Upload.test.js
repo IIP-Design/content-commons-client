@@ -1,19 +1,43 @@
 import { mount } from 'enzyme';
+import { MockedProvider } from '@apollo/react-testing';
 import Upload from './Upload';
 
-/**
- * Use custom element to avoid "incorrect casing" error msg
- * @see https://jestjs.io/docs/en/tutorial-react.html#snapshot-testing-with-mocks-enzyme-and-react-16
- */
-jest.mock( 'next/dynamic', () => () => 'video-upload' );
+jest.mock(
+  'next/dynamic',
+  () => function DynamicComponent() { return ''; },
+);
 jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: {} } ) );
 jest.mock( 'context/authContext', () => ( {
-  useAuth: jest.fn( () => true ),
+  useAuth: jest.fn( () => ( {
+    user: {
+      id: 'ck2m042xo0rnp0720nb4gxjix',
+      firstName: 'Joe',
+      lastName: 'Schmoe',
+      email: 'schmoej@america.gov',
+      jobTitle: '',
+      country: 'United States',
+      city: 'Washington, DC',
+      howHeard: '',
+      permissions: ['EDITOR'],
+      team: {
+        id: 'ck2lzfx6u0hkj0720f8n8mtda',
+        name: 'GPA Editorial & Design',
+        contentTypes: ['GRAPHIC'],
+        __typename: 'Team',
+      },
+      __typename: 'User',
+      esToken: 'eyasdljfakljsdfklj',
+    },
+  } ) ),
 } ) );
 
-const Component = <Upload />;
+const Component = (
+  <MockedProvider mocks={ [] }>
+    <Upload />
+  </MockedProvider>
+);
 
-describe.skip( '<Upload />', () => {
+describe( '<Upload />', () => {
   it( 'renders without crashing', () => {
     const wrapper = mount( Component );
 
@@ -26,9 +50,10 @@ describe.skip( '<Upload />', () => {
     const content = [
       'Audio',
       'Videos',
-      'Images',
+      'Graphics',
       'Documents',
       'Teaching Materials',
+      'Create New Package',
     ];
 
     expect( btns.length ).toEqual( content.length );
@@ -37,40 +62,32 @@ describe.skip( '<Upload />', () => {
     } );
   } );
 
-  it( 'modal trigger opens the modal', () => {
+  it( 'renders the modals', () => {
     const wrapper = mount( Component );
-    const modal = () => wrapper.find( 'Modal' );
-    const triggers = mount( modal().prop( 'trigger' ) );
+    const modals = wrapper.find( 'Modal' );
 
-    triggers.forEach( btn => {
-      btn.simulate( 'click' );
-      wrapper.update();
-      expect( modal().prop( 'open' ) ).toEqual( true );
-    } );
-  } );
+    modals.forEach( ( modal, i ) => {
+      const trigger = mount( modal.prop( 'trigger' ) );
 
-  it( 'modal content closeModal prop closes the modal', () => {
-    const wrapper = mount( Component );
-    const modal = () => wrapper.find( 'Modal' );
-    const uploadComponents = mount( modal().prop( 'content' ) );
+      switch ( i ) {
+        case 0:
+          expect( trigger.name() ).toEqual( 'Button' );
+          expect( trigger.prop( 'aria-label' ) )
+            .toEqual( 'Upload video content' );
+          break;
 
-    uploadComponents.forEach( component => {
-      component.prop( 'closeModal' )();
-      expect( modal().prop( 'open' ) ).toEqual( false );
-    } );
-  } );
+        case 1:
+          expect( trigger.name() ).toEqual( 'ButtonAddFiles' );
+          expect( trigger.prop( 'aria-label' ) )
+            .toEqual( 'Upload graphics content' );
+          expect( trigger.prop( 'multiple' ) ).toEqual( true );
+          expect( trigger.prop( 'accept' ) )
+            .toEqual( '.png,.jpg,.jpeg,.gif,.psd,.ai,.ae,.pdf,.doc,.docx,.ttf,.otf' );
+          break;
 
-  it( 'modal content updateModalClassname prop sets a custom modal className', () => {
-    const wrapper = mount( Component );
-    const modal = () => wrapper.find( 'Modal' );
-    const uploadComponents = mount( modal().prop( 'content' ) );
-
-    uploadComponents.forEach( component => {
-      const customClass = 'some-custom-class-name';
-
-      component.prop( 'updateModalClassname' )( customClass );
-      wrapper.update();
-      expect( modal().prop( 'className' ) ).toEqual( customClass );
+        default:
+          break;
+      }
     } );
   } );
 } );
