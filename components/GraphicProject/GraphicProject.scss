@@ -5,6 +5,13 @@ $image-height: 25rem;
 
 .graphic-project {
 
+  &.rtl, &.RTL {
+    .internal-desc,
+    .alt {
+      text-align: right;
+    }
+  }
+
   &.adminPreview {
     
     > .modal_headline {
