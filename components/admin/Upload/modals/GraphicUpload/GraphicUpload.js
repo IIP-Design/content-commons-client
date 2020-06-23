@@ -16,8 +16,12 @@ const GraphicUpload = ( { files, closeModal } ) => {
   const client = useApolloClient();
   const router = useRouter();
 
+  const IMAGE_EXTS = '.png,.jpg,.jpeg,.gif';
+  const EDITABLE_EXTS = '.psd,.ai,.ae';
+  const OTHER_EXTS = '.pdf,.doc,.docx,.ttf,.otf';
+
   // What files does this modal accept?
-  const ALLOWED_FILES = '.png,.jpg,.jpeg,.gif,.psd,.ai,.ae,.pdf,.doc,.docx,.ttf';
+  const ALLOWED_FILES = `${IMAGE_EXTS},${EDITABLE_EXTS},${OTHER_EXTS}`;
 
   // Defines how may "tabs" appear and which components, e.g dropdowns that they container
   const screens = [
@@ -26,7 +30,8 @@ const GraphicUpload = ( { files, closeModal } ) => {
         label: 'Language',
         name: 'language',
         component: LanguageDropdown,
-        allowedFiles: '.png,.jpg,.jpeg,.gif,.pdf,.doc,.docx,.ttf', // What files does this dropdown accept?
+        // What files does this dropdown accept?
+        allowedFiles: `${IMAGE_EXTS},${OTHER_EXTS}`,
         props: { search: true },
       },
     ],
@@ -35,13 +40,13 @@ const GraphicUpload = ( { files, closeModal } ) => {
         label: 'Style',
         name: 'style',
         component: GraphicStyleDropdown,
-        allowedFiles: '.png,.jpg,.jpeg,.gif',
+        allowedFiles: IMAGE_EXTS,
       },
       {
         label: 'Platform',
         name: 'social',
         component: SocialPlatformDropdown,
-        allowedFiles: '.png,.jpg,.jpeg,.gif',
+        allowedFiles: IMAGE_EXTS,
         props: { closeOnChange: true },
       },
     ],

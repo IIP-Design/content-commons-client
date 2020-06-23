@@ -745,7 +745,7 @@ const GraphicEdit = ( { id } ) => {
         <AddFilesSectionHeading
           projectId={ projectId }
           title="Support Files"
-          acceptedFileTypes="image/*, image/vnd.adobe.photoshop, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc, .ttf"
+          acceptedFileTypes="image/*, image/vnd.adobe.photoshop, font/*, application/postscript, application/pdf, application/rtf, text/plain, .docx, .doc, .ttf, .otf"
           handleAddFiles={ handleAddSupportFiles }
         />
 
