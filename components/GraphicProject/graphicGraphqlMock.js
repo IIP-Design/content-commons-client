@@ -3,7 +3,7 @@ export const graphicGraphqlMock = {
   createdAt: '2020-03-30T15:44:20.145Z',
   updatedAt: '2020-04-13T14:54:40.647Z',
   publishedAt: '2020-03-30T15:44:51.511Z',
-  title: 'Coffee Growers',
+  projectTitle: 'Coffee Growers',
   type: 'SOCIAL_MEDIA',
   copyright: 'NO_COPYRIGHT',
   alt: 'Alt text...',
