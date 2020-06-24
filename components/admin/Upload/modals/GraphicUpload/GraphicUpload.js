@@ -30,7 +30,7 @@ const GraphicUpload = ( { files, closeModal } ) => {
         label: 'Language',
         name: 'language',
         component: LanguageDropdown,
-        allowedFiles: '.png,.jpg,.jpeg,.gif,.pdf,.doc,.docx,.ttf', // What files does this dropdown accept?
+        allowedFiles: '.png,.jpg,.jpeg,.gif,.pdf,.doc,.docx', // What files does this dropdown accept?
         props: { search: true },
       },
     ],
