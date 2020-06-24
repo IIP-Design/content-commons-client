@@ -96,7 +96,7 @@ exports[`<GraphicUpload />, if graphic files have been selected for upload rende
     Array [
       Array [
         Object {
-          "allowedFiles": ".png,.jpg,.jpeg,.gif,.pdf,.doc,.docx,.ttf",
+          "allowedFiles": ".png,.jpg,.jpeg,.gif,.pdf,.doc,.docx",
           "component": [Function],
           "label": "Language",
           "name": "language",
