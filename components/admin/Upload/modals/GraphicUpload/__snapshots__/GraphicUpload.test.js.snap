@@ -95,8 +95,8 @@ exports[`<GraphicUpload />, if graphic files have been selected for upload rende
   screens={
     Array [
       Array [
-        Object {
-          "allowedFiles": ".png,.jpg,.jpeg,.gif,.pdf,.doc,.docx,.ttf,.otf",
+        Object { 
+          "allowedFiles": ".png,.jpg,.jpeg,.gif,.pdf,.doc,.docx,.ttf,.otf", 
           "component": [Function],
           "label": "Language",
           "name": "language",
