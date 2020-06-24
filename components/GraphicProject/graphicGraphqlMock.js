@@ -7,8 +7,16 @@ export const graphicGraphqlMock = {
   type: 'SOCIAL_MEDIA',
   copyright: 'NO_COPYRIGHT',
   alt: 'Alt text...',
-  descPublic: 'Public description',
-  descInternal: 'Internal description',
+  descPublic: {
+    id: 'ckbtc7w3a01eg0720xofdzoxe',
+    visibility: 'PUBLIC',
+    content: 'the public description',
+  },
+  descInternal: {
+    id: 'ckbtc7w3d01eh0720jh940bzv',
+    visibility: 'INTERNAL',
+    content: 'the internal description',
+  },
   assetPath: 'graphic/2020/03/commons.america.gov_ck8enbkxs0bdy076501iy0akv',
   status: 'PUBLISHED',
   visibility: 'PUBLIC',
