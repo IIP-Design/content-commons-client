@@ -3,18 +3,20 @@ import {
   Grid,
   Form,
   Button,
-  Step
+  Step,
 } from 'semantic-ui-react';
+
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import CancelUpload from '../../../CancelUpload/CancelUpload';
-import IncludeVideoFileMsg from '../../../IncludeVideoFileMsg/IncludeVideoFileMsg';
+import IncludeRequiredFileMsg from '../../../IncludeRequiredFileMsg/IncludeRequiredFileMsg';
 import VideoProjectFilesRowDesktop from './VideoProjectFilesRowDesktop';
 import { VideoUploadContext } from '../../VideoUploadContext';
+
 import './VideoProjectFilesDesktop.scss';
 
 const VideoProjectFilesDesktop = () => {
   const [activeStep, setActiveStep] = useState( 1 );
-  const [includeVideoFileMsg, setIncludeVideoFileMsg] = useState( false );
+  const [includeRequiredFileMsg, setIncludeRequiredFileMsg] = useState( false );
 
   /**
    * Toggles columns shown based on active step
@@ -26,17 +28,21 @@ const VideoProjectFilesDesktop = () => {
 
   const stepOneComplete = files => files.every( file => {
     const { input: { type } } = file;
+
     if ( type.includes( 'video' ) ) {
       if ( activeStep === 1 ) {
-        return ( file.language && file.videoBurnedInStatus );
+        return file.language && file.videoBurnedInStatus;
       }
-      return ( file.quality );
+
+      return file.quality;
     }
-    return ( file.language );
+
+    return file.language;
   } );
 
   const stepIncludesVideoFiles = files => files.some( file => {
     const { type } = file.input;
+
     return type === 'video/mp4' || type === 'video/quicktime';
   } );
 
@@ -49,7 +55,7 @@ const VideoProjectFilesDesktop = () => {
         closeModal,
         allFieldsSelected,
         handleAddFilesToUpload,
-        compareFilenames
+        compareFilenames,
       } ) => (
         <div className="videoProjectFilesDesktop__wrapper">
           <div className="videoProjectFilesDesktop__steps">
@@ -84,7 +90,8 @@ const VideoProjectFilesDesktop = () => {
                   multiple
                   className="secondary"
                   accept=".srt, .mov, .mp4, .jpg, .png, .jpeg"
-                > Add Files
+                >
+                  Add Files
                 </ButtonAddFiles>
               </Grid.Row>
 
@@ -112,16 +119,17 @@ const VideoProjectFilesDesktop = () => {
                 style={ show( 2 ) }
                 onClick={ () => {
                   if ( !stepIncludesVideoFiles( files ) ) {
-                    return setIncludeVideoFileMsg( true );
+                    return setIncludeRequiredFileMsg( true );
                   }
                   handleAddFilesToUpload();
                 } }
               />
             </Form.Field>
           </Form>
-          <IncludeVideoFileMsg
-            includeVideoFileMsg={ includeVideoFileMsg }
-            setIncludeVideoFileMsg={ setIncludeVideoFileMsg }
+          <IncludeRequiredFileMsg
+            msg="Please include at least one video file."
+            includeRequiredFileMsg={ includeRequiredFileMsg }
+            setIncludeRequiredFileMsg={ setIncludeRequiredFileMsg }
           />
         </div>
       ) }

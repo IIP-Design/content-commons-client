@@ -44,8 +44,8 @@ const GraphicProjectDetailsFormContainer = props => {
       copyright: graphicProject.copyright || 'COPYRIGHT',
       categories,
       tags,
-      descPublic: graphicProject.descPublic || '',
-      descInternal: graphicProject.descInternal || '',
+      descPublic: graphicProject.descPublic?.content || '',
+      descInternal: graphicProject.descInternal?.content || '',
       alt: graphicProject.alt || '',
     };
 

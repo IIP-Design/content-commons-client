@@ -20,8 +20,8 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
     published: file.published || '',
     modified: file.modified || '',
     owner: file.owner || '',
-    desc: file.desc || '',
-    descInternal: file.descInternal || '',
+    desc: file.descPublic?.content || '',
+    descInternal: file.descInternal?.content || '',
     copyright: file.copyright || '',
     images: file.images || [],
     supportFiles: file.supportFiles || [],
@@ -73,13 +73,14 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
     } ) );
 
     const gqlObj = {
+      title: file.projectTitle || '',
       alt: file.alt || '',
       projectType: file.projectType || '',
       published: file.createdAt || '',
       modified: file.updatedAt || '',
       owner: file.team?.name || '',
-      desc: file.desc || '',
-      descInternal: file.descInternal || '',
+      // desc: file.desc || '',
+      // descInternal: file.descInternal || '',
       images: structuredImages || [],
       supportFiles: structuredSupportFiles || [],
       categories: Array.isArray( file.categories ) ? getTransformedLangTaxArray( file.categories ) : file.categories,
