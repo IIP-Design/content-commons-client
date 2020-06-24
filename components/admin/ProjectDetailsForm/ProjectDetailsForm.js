@@ -18,6 +18,7 @@ import CopyrightDropdown from 'components/admin/dropdowns/CopyrightDropdown/Copy
 import IconPopup from 'components/popups/IconPopup/IconPopup';
 import UserDropdown from 'components/admin/dropdowns/UserDropdown/UserDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
+import TeamDropdown from 'components/admin/dropdowns/TeamDropdown/TeamDropdown';
 import TermsConditions from 'components/admin/TermsConditions/TermsConditions';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 import './ProjectDetailsForm.scss';
@@ -62,9 +63,31 @@ const ProjectDetailsForm = props => {
     setFieldTouched( name, true, false );
   };
 
+  const renderTeamComponent = () => {
+    let TeamComponent = Form.Field;
+    const baseProps = {
+      id: 'team',
+      control: Input,
+      name: 'team',
+      label: config.team?.label || 'Team',
+      value: values.team,
+      error: touched.team && !!errors.visibility,
+      required: config.team?.required || false,
+    };
+
+    if ( config.team.dropdown ) {
+      TeamComponent = TeamDropdown;
+      baseProps.onChange = handleOnChange;
+      baseProps.variables = config.team.variables;
+      delete baseProps.control;
+    }
+
+    return <TeamComponent { ...baseProps } />;
+  };
+
   return (
     <Fragment>
-      { /* Only use autosave with exisiting project */ }
+      { /* Only use autosave with existing project */ }
       { props.id && hasFormBeenUpdated && <FormikAutoSave save={ save } /> }
       <Form className="edit-project__form project-data" onSubmit={ handleSubmit }>
         <Grid stackable>
@@ -135,18 +158,7 @@ const ProjectDetailsForm = props => {
                     />
                   ) }
 
-                { config.team
-                  && (
-                    <Form.Field
-                      id="team"
-                      control={ Input }
-                      label={ config.team?.label || 'Team' }
-                      placeholder=""
-                      name="team"
-                      { ...( config.team?.required && { required: true } ) }
-                      value={ values.team }
-                    />
-                  ) }
+                { config.team && renderTeamComponent() }
 
                 { config.copyright
                   && (
