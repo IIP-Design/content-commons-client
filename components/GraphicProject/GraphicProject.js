@@ -200,7 +200,11 @@ const GraphicProject = ( {
   ];
 
   const authFilterTabs = () => {
-    if ( user ) {
+    /**
+     * Not using user?.id since a falsy value
+     * for user would make the condition true
+     */
+    if ( user && user.id !== 'public' ) {
       return tabs;
     }
 
@@ -293,7 +297,7 @@ const GraphicProject = ( {
 
       <ModalDescription description={ desc } />
 
-      { user && descInternal && (
+      { user && user.id !== 'public' && descInternal && (
         <section className="graphic-project__content internal-desc">
           <h2 className="graphic-project__content__title">
             Internal Description:
