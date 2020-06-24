@@ -2,66 +2,67 @@ import {
   DELETE_VIDEO_PROJECT_MUTATION,
   PUBLISH_VIDEO_PROJECT_MUTATION,
   UNPUBLISH_VIDEO_PROJECT_MUTATION,
-  VIDEO_PROJECT_QUERY
+  VIDEO_PROJECT_QUERY,
 } from 'lib/graphql/queries/video';
 import { PROJECT_STATUS_CHANGE_SUBSCRIPTION } from 'lib/graphql/queries/common';
 
 const id = '234';
+
 export const props = {
   id,
   projectUpdate: {
-    [id]: true
-  }
+    [id]: true,
+  },
 };
 
 export const mocks = [
   {
     request: {
       query: DELETE_VIDEO_PROJECT_MUTATION,
-      variables: { id: props.id }
+      variables: { id: props.id },
     },
     result: {
       data: {
         deleteVideoProject: {
           __typename: 'VideoProject',
-          id: props.id
-        }
-      }
-    }
+          id: props.id,
+        },
+      },
+    },
   },
   {
     request: {
       query: PUBLISH_VIDEO_PROJECT_MUTATION,
-      variables: { id: props.id }
+      variables: { id: props.id },
     },
     result: {
       data: {
         publishVideoProject: {
           __typename: 'VideoProject',
           id: props.id,
-          status: 'PUBLISHED'
-        }
-      }
-    }
+          status: 'PUBLISHED',
+        },
+      },
+    },
   },
   {
     request: {
       query: UNPUBLISH_VIDEO_PROJECT_MUTATION,
-      variables: { id: props.id }
+      variables: { id: props.id },
     },
     result: {
       data: {
         unpublishVideoProject: {
           __typename: 'VideoProject',
-          id: props.id
-        }
-      }
-    }
+          id: props.id,
+        },
+      },
+    },
   },
   {
     request: {
       query: PROJECT_STATUS_CHANGE_SUBSCRIPTION,
-      variables: { id: props.id }
+      variables: { id: props.id },
     },
     result: {
       data: {
@@ -69,15 +70,15 @@ export const mocks = [
           __typename: 'VideoProject',
           id: props.id,
           status: 'PUBLISHED',
-          error: null
-        }
-      }
-    }
+          error: null,
+        },
+      },
+    },
   },
   {
     request: {
       query: VIDEO_PROJECT_QUERY,
-      variables: { id: props.id }
+      variables: { id: props.id },
     },
     result: {
       data: {
@@ -91,12 +92,12 @@ export const mocks = [
             __typename: 'User',
             id: 'u921',
             firstName: 'FirstName',
-            lastName: 'LastName'
+            lastName: 'LastName',
           },
           team: {
             __typename: 'Team',
             id: 't81',
-            name: 'the team name'
+            name: 'the team name',
           },
           projectTitle: 'Test Title',
           descPublic: 'the project public description',
@@ -114,11 +115,11 @@ export const mocks = [
                   name: 'about america',
                   language: {
                     id: 'en23',
-                    locale: 'en-us'
-                  }
-                }
-              ]
-            }
+                    locale: 'en-us',
+                  },
+                },
+              ],
+            },
           ],
           tags: [
             {
@@ -136,8 +137,8 @@ export const mocks = [
                     languageCode: 'en',
                     locale: 'en-us',
                     nativeName: 'English',
-                    textDirection: 'LTR'
-                  }
+                    textDirection: 'LTR',
+                  },
                 },
                 {
                   __typename: 'LanguageTranslation',
@@ -150,10 +151,10 @@ export const mocks = [
                     languageCode: 'fr',
                     locale: 'fr-fr',
                     nativeName: 'French',
-                    textDirection: 'LTR'
-                  }
-                }
-              ]
+                    textDirection: 'LTR',
+                  },
+                },
+              ],
             },
             {
               __typename: 'Tag',
@@ -170,8 +171,8 @@ export const mocks = [
                     languageCode: 'en',
                     locale: 'en-us',
                     nativeName: 'English',
-                    textDirection: 'LTR'
-                  }
+                    textDirection: 'LTR',
+                  },
                 },
                 {
                   __typename: 'LanguageTranslation',
@@ -184,11 +185,11 @@ export const mocks = [
                     languageCode: 'fr',
                     locale: 'fr-fr',
                     nativeName: 'French',
-                    textDirection: 'LTR'
-                  }
-                }
-              ]
-            }
+                    textDirection: 'LTR',
+                  },
+                },
+              ],
+            },
           ],
           thumbnails: [
             {
@@ -205,7 +206,7 @@ export const mocks = [
               use: {
                 __typename: 'ImageUse',
                 id: 'imu33',
-                name: 'Thumbnail/Cover Image'
+                name: 'Thumbnail/Cover Image',
               },
               language: {
                 __typename: 'Language',
@@ -214,9 +215,15 @@ export const mocks = [
                 languageCode: 'en',
                 locale: 'en-us',
                 nativeName: 'English',
-                textDirection: 'LTR'
-              }
-            }
+                textDirection: 'LTR',
+              },
+              dimensions: {
+                __typename: 'Dimensions',
+                id: 'iakew82',
+                height: 1000,
+                width: 1000,
+              },
+            },
           ],
           units: [
             {
@@ -233,8 +240,30 @@ export const mocks = [
                 languageCode: 'ar',
                 locale: 'ar',
                 nativeName: 'العربية',
-                textDirection: 'RTL'
+                textDirection: 'RTL',
               },
+              categories: [
+                {
+                  __typename: 'Category',
+                  id: 'category13',
+                  translations: [
+                    {
+                      __typename: 'LanguageTranslation',
+                      id: 'tradkzd',
+                      name: 'about america',
+                      language: {
+                        __typename: 'Language',
+                        id: 'en2392',
+                        displayName: 'English',
+                        languageCode: 'en',
+                        locale: 'en-us',
+                        nativeName: 'English',
+                        textDirection: 'LTR',
+                      },
+                    },
+                  ],
+                },
+              ],
               tags: [
                 {
                   __typename: 'Tag',
@@ -251,16 +280,16 @@ export const mocks = [
                         languageCode: 'ar',
                         locale: 'ar',
                         nativeName: 'العربية',
-                        textDirection: 'RTL'
-                      }
-                    }
-                  ]
-                }
+                        textDirection: 'RTL',
+                      },
+                    },
+                  ],
+                },
               ],
               thumbnails: [
                 {
                   __typename: 'Thumbnail',
-                  id: 'th11',
+                  id: 'th12o',
                   size: 'FULL',
                   image: {
                     __typename: 'ImageFile',
@@ -276,7 +305,7 @@ export const mocks = [
                     use: {
                       __typename: 'ImageUse',
                       id: 'imu33',
-                      name: 'Thumbnail/Cover Image'
+                      name: 'Thumbnail/Cover Image',
                     },
                     language: {
                       __typename: 'Language',
@@ -285,10 +314,16 @@ export const mocks = [
                       languageCode: 'ar',
                       locale: 'ar',
                       nativeName: 'العربية',
-                      textDirection: 'RTL'
-                    }
-                  }
-                }
+                      textDirection: 'RTL',
+                    },
+                    dimensions: {
+                      __typename: 'Dimensions',
+                      id: 'iakew82',
+                      height: 1000,
+                      width: 1000,
+                    },
+                  },
+                },
               ],
               files: [
                 {
@@ -308,7 +343,7 @@ export const mocks = [
                     __typename: 'Dimensions',
                     id: 'd21',
                     height: '1080',
-                    width: '1920'
+                    width: '1920',
                   },
                   language: {
                     __typename: 'Language',
@@ -317,29 +352,29 @@ export const mocks = [
                     languageCode: 'ar',
                     locale: 'ar',
                     nativeName: 'العربية',
-                    textDirection: 'RTL'
+                    textDirection: 'RTL',
                   },
                   use: {
                     __typename: 'VideoUse',
                     id: 'us31',
-                    name: 'Full Video'
+                    name: 'Full Video',
                   },
                   stream: [
                     {
                       __typename: 'VideoStream',
                       id: 'st93',
                       site: 'YouTube',
-                      url: 'https://www.youtube.com/watch?v=1evw4fRu3bo'
+                      url: 'https://www.youtube.com/watch?v=1evw4fRu3bo',
                     },
                     {
                       __typename: 'VideoStream',
                       id: 'st35',
                       site: 'Vimeo',
-                      url: 'https://vimeo.com/340239507'
-                    }
-                  ]
-                }
-              ]
+                      url: 'https://vimeo.com/340239507',
+                    },
+                  ],
+                },
+              ],
             },
             {
               __typename: 'VideoUnit',
@@ -355,8 +390,30 @@ export const mocks = [
                 languageCode: 'en',
                 locale: 'en-us',
                 nativeName: 'English',
-                textDirection: 'LTR'
+                textDirection: 'LTR',
               },
+              categories: [
+                {
+                  __typename: 'Category',
+                  id: 'category13',
+                  translations: [
+                    {
+                      __typename: 'LanguageTranslation',
+                      id: 'tradkzd',
+                      name: 'about america',
+                      language: {
+                        __typename: 'Language',
+                        id: 'en2392',
+                        displayName: 'English',
+                        languageCode: 'en',
+                        locale: 'en-us',
+                        nativeName: 'English',
+                        textDirection: 'LTR',
+                      },
+                    },
+                  ],
+                },
+              ],
               tags: [
                 {
                   __typename: 'Tag',
@@ -373,8 +430,8 @@ export const mocks = [
                         languageCode: 'en',
                         locale: 'en-us',
                         nativeName: 'English',
-                        textDirection: 'LTR'
-                      }
+                        textDirection: 'LTR',
+                      },
                     },
                     {
                       __typename: 'LanguageTranslation',
@@ -387,10 +444,10 @@ export const mocks = [
                         languageCode: 'fr',
                         locale: 'fr-fr',
                         nativeName: 'French',
-                        textDirection: 'LTR'
-                      }
-                    }
-                  ]
+                        textDirection: 'LTR',
+                      },
+                    },
+                  ],
                 },
                 {
                   __typename: 'Tag',
@@ -407,8 +464,8 @@ export const mocks = [
                         languageCode: 'en',
                         locale: 'en-us',
                         nativeName: 'English',
-                        textDirection: 'LTR'
-                      }
+                        textDirection: 'LTR',
+                      },
                     },
                     {
                       __typename: 'LanguageTranslation',
@@ -421,16 +478,16 @@ export const mocks = [
                         languageCode: 'fr',
                         locale: 'fr-fr',
                         nativeName: 'French',
-                        textDirection: 'LTR'
-                      }
-                    }
-                  ]
-                }
+                        textDirection: 'LTR',
+                      },
+                    },
+                  ],
+                },
               ],
               thumbnails: [
                 {
                   __typename: 'Thumbnail',
-                  id: 'th11',
+                  id: 'th1s8',
                   size: 'FULL',
                   image: {
                     __typename: 'ImageFile',
@@ -446,7 +503,7 @@ export const mocks = [
                     use: {
                       __typename: 'ImageUse',
                       id: 'imu33',
-                      name: 'Thumbnail/Cover Image'
+                      name: 'Thumbnail/Cover Image',
                     },
                     language: {
                       __typename: 'Language',
@@ -455,10 +512,16 @@ export const mocks = [
                       languageCode: 'en',
                       locale: 'en-us',
                       nativeName: 'English',
-                      textDirection: 'LTR'
-                    }
-                  }
-                }
+                      textDirection: 'LTR',
+                    },
+                    dimensions: {
+                      __typename: 'Dimensions',
+                      id: 'iakasi2',
+                      height: 500,
+                      width: 500,
+                    },
+                  },
+                },
               ],
               files: [
                 {
@@ -478,7 +541,7 @@ export const mocks = [
                     __typename: 'Dimensions',
                     id: 'd21',
                     height: '1080',
-                    width: '1920'
+                    width: '1920',
                   },
                   language: {
                     __typename: 'Language',
@@ -487,30 +550,30 @@ export const mocks = [
                     languageCode: 'en',
                     locale: 'en-us',
                     nativeName: 'English',
-                    textDirection: 'LTR'
+                    textDirection: 'LTR',
                   },
                   use: {
                     __typename: 'VideoUse',
                     id: 'us31',
-                    name: 'Full Video'
+                    name: 'Full Video',
                   },
                   stream: [
                     {
                       __typename: 'VideoStream',
                       id: 'st93',
                       site: 'YouTube',
-                      url: 'https://www.youtube.com/watch?v=1evw4fRu3bo'
+                      url: 'https://www.youtube.com/watch?v=1evw4fRu3bo',
                     },
                     {
                       __typename: 'VideoStream',
                       id: 'st35',
                       site: 'Vimeo',
-                      url: 'https://vimeo.com/340239507'
-                    }
-                  ]
-                }
-              ]
-            }
+                      url: 'https://vimeo.com/340239507',
+                    },
+                  ],
+                },
+              ],
+            },
           ],
           supportFiles: [
             {
@@ -531,8 +594,8 @@ export const mocks = [
                 nativeName: 'English',
                 languageCode: 'en',
                 locale: 'en-us',
-                textDirection: 'LTR'
-              }
+                textDirection: 'LTR',
+              },
             },
             {
               __typename: 'SupportFile',
@@ -552,14 +615,14 @@ export const mocks = [
                 nativeName: 'French',
                 languageCode: 'fr',
                 locale: 'fr-fr',
-                textDirection: 'LTR'
-              }
-            }
-          ]
-        }
-      }
-    }
-  }
+                textDirection: 'LTR',
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
 ];
 
 export const draftMocks = [
@@ -572,10 +635,10 @@ export const draftMocks = [
       data: {
         projectStatusChange: {
           ...mocks[3].result.data.projectStatusChange,
-          status: 'DRAFT'
-        }
-      }
-    }
+          status: 'DRAFT',
+        },
+      },
+    },
   },
   {
     ...mocks[4],
@@ -583,11 +646,11 @@ export const draftMocks = [
       data: {
         project: {
           ...mocks[4].result.data.project,
-          status: 'PUBLISHED'
-        }
-      }
-    }
-  }
+          status: 'PUBLISHED',
+        },
+      },
+    },
+  },
 ];
 
 export const unpublishErrorMocks = [
@@ -598,12 +661,14 @@ export const unpublishErrorMocks = [
     result: {
       errors: [
         {
-          graphQLErrors: [{
-            message: 'There was an unpublishing error.'
-          }]
-        }
-      ]
-    }
+          graphQLErrors: [
+            {
+              message: 'There was an unpublishing error.',
+            },
+          ],
+        },
+      ],
+    },
   },
   {
     ...mocks[3],
@@ -612,10 +677,10 @@ export const unpublishErrorMocks = [
         projectStatusChange: {
           ...mocks[3].result.data.projectStatusChange,
           status: 'PUBLISHED',
-          error: 'There was an unpublishing error.'
-        }
-      }
-    }
+          error: 'There was an unpublishing error.',
+        },
+      },
+    },
   },
   {
     ...mocks[4],
@@ -623,11 +688,11 @@ export const unpublishErrorMocks = [
       data: {
         project: {
           ...mocks[4].result.data.project,
-          status: 'DRAFT'
-        }
-      }
-    }
-  }
+          status: 'DRAFT',
+        },
+      },
+    },
+  },
 ];
 
 export const publishErrorMocks = [
@@ -637,12 +702,14 @@ export const publishErrorMocks = [
     result: {
       errors: [
         {
-          graphQLErrors: [{
-            message: 'There was a publishing error.'
-          }]
-        }
-      ]
-    }
+          graphQLErrors: [
+            {
+              message: 'There was a publishing error.',
+            },
+          ],
+        },
+      ],
+    },
   },
   { ...mocks[2] },
   {
@@ -652,10 +719,10 @@ export const publishErrorMocks = [
         projectStatusChange: {
           ...mocks[3].result.data.projectStatusChange,
           status: 'DRAFT',
-          error: 'There was a publishing error.'
-        }
-      }
-    }
+          error: 'There was a publishing error.',
+        },
+      },
+    },
   },
   {
     ...mocks[4],
@@ -663,11 +730,11 @@ export const publishErrorMocks = [
       data: {
         project: {
           ...mocks[4].result.data.project,
-          status: 'DRAFT'
-        }
-      }
-    }
-  }
+          status: 'DRAFT',
+        },
+      },
+    },
+  },
 ];
 
 export const errorMocks = [
@@ -681,13 +748,15 @@ export const errorMocks = [
     result: {
       errors: [
         {
-          graphQLErrors: [{
-            message: 'There was an error.'
-          }]
-        }
-      ]
-    }
-  }
+          graphQLErrors: [
+            {
+              message: 'There was an error.',
+            },
+          ],
+        },
+      ],
+    },
+  },
 ];
 
 export const nullMocks = [
@@ -698,8 +767,8 @@ export const nullMocks = [
   { ...mocks[3] },
   {
     ...mocks[4],
-    result: { data: { project: null } }
-  }
+    result: { data: { project: null } },
+  },
 ];
 
 export const noUpdatesToPublishMocks = [
@@ -716,8 +785,8 @@ export const noUpdatesToPublishMocks = [
           thumbnails: [
             {
               ...mocks[4].result.data.project.thumbnails[0],
-              updatedAt: '2019-03-07T15:11:48.043Z'
-            }
+              updatedAt: '2019-03-07T15:11:48.043Z',
+            },
           ],
           units: [
             {
@@ -729,15 +798,15 @@ export const noUpdatesToPublishMocks = [
                   image: {
                     ...mocks[4].result.data.project.units[0].thumbnails[0].image,
                     updatedAt: '2019-03-07T15:11:48.043Z',
-                  }
-                }
+                  },
+                },
               ],
               files: [
                 {
                   ...mocks[4].result.data.project.units[0].files[0],
                   updatedAt: '2019-03-07T15:11:48.043Z',
-                }
-              ]
+                },
+              ],
             },
             {
               ...mocks[4].result.data.project.units[1],
@@ -748,31 +817,31 @@ export const noUpdatesToPublishMocks = [
                   image: {
                     ...mocks[4].result.data.project.units[1].thumbnails[0].image,
                     updatedAt: '2019-03-07T15:11:48.043Z',
-                  }
-                }
+                  },
+                },
               ],
               files: [
                 {
                   ...mocks[4].result.data.project.units[1].files[0],
                   updatedAt: '2019-03-07T15:11:48.043Z',
-                }
-              ]
-            }
+                },
+              ],
+            },
           ],
           supportFiles: [
             {
               ...mocks[4].result.data.project.supportFiles[0],
               createdAt: '2019-03-07T15:11:48.043Z',
-              updatedAt: '2019-03-07T15:11:48.043Z'
+              updatedAt: '2019-03-07T15:11:48.043Z',
             },
             {
               ...mocks[4].result.data.project.supportFiles[1],
               createdAt: '2019-03-07T15:11:48.043Z',
-              updatedAt: '2019-03-07T15:11:48.043Z'
-            }
-          ]
-        }
-      }
-    }
-  }
+              updatedAt: '2019-03-07T15:11:48.043Z',
+            },
+          ],
+        },
+      },
+    },
+  },
 ];

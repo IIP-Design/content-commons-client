@@ -25,10 +25,22 @@ jest.mock( 'next/config', () => () => ( {
   },
 } ) );
 
-jest.mock( 'components/admin/ProjectUnits/ProjectUnitItem/ProjectUnitItem', () => 'project-unit-item' );
-jest.mock( 'components/admin/ProjectReview/VideoProjectData/VideoProjectData', () => 'video-project-data' );
-jest.mock( 'components/admin/ProjectReview/VideoSupportFiles/VideoSupportFiles', () => 'video-support-files' );
-jest.mock( 'components/admin/ProjectReview/VideoProjectFiles/VideoProjectFiles', () => 'video=project-files' );
+jest.mock(
+  'components/admin/ProjectUnits/ProjectUnitItem/ProjectUnitItem',
+  () => function ProjectUnitItem() { return ''; },
+);
+jest.mock(
+  'components/admin/ProjectReview/VideoProjectData/VideoProjectData',
+  () => function VideoProjectData() { return ''; },
+);
+jest.mock(
+  'components/admin/ProjectReview/VideoSupportFiles/VideoSupportFiles',
+  () => function VideoSupportFiles() { return ''; },
+);
+jest.mock(
+  'components/admin/ProjectReview/VideoProjectFiles/VideoProjectFiles',
+  () => function VideoProjectFiles() { return ''; },
+);
 
 /**
  * Addresses `Error: No router instance found. You should only use "next/router" inside the client side of your app.`

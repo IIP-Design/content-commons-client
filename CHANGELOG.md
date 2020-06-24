@@ -29,9 +29,10 @@ _This sections lists changes committed since most recent release_
 - GraphicProject as the preview node for ActionButtons in GraphicEdit
 - Unit tests for ModalDescription, ModalItem, ModalPostTags, ModalText, ModalTranscript, Popover, and Popup
 - A recent graphics section to the featured section on the homepage
+- Tests for alt text display to GraphicProject
 - Bottom buttons (i.e., Preview, Publish, Publish Changes, Unpublish) to GraphicEdit
 - The editable field to the supportFileDetails fragment
-- A refetch of the GRAPHIC_PROJECT_QUERY in GraphicEdit after adding new support files to an existing project to update the support files UI
+- A refetch of the GRAPHIC_PROJECT_QUERY in GraphicEdit after adding new support files to an existing project to update the support files UI 
 
 **Changed:**
 
@@ -70,9 +71,11 @@ _This sections lists changes committed since most recent release_
 - Adjust modal stylesheets for consistency
 - Update unit tests for ActionButtons, GraphicEdit, GraphicProject, and ModalContentMeta
 - Move the fetching of featured item results and post types from Redux to Context
+- Update unit tests and mock data to address console messages 
 - Refactor collating of graphic project files in GraphicEdit to address clean shell files being displayed in the wrong column
 - Refactor tests for GraphicEdit and add additional mock data
 - The footer questions and feedback link to "gpadigitalhelp@state.gov" from "design@america.gov" 
+ 
 
 **Fixed:**
 
@@ -81,6 +84,7 @@ _This sections lists changes committed since most recent release_
 - The Formik initial save bug for GraphicProjectDetailsFormContainer and GraphicFilesFormContainer
 - Copyright dropdown validation for ProjectDetailsForm
 - Change way packages are removed from featured data list so that it doesn't have to be the first group listed
+- Display of alt text on GraphicProject
 
 # [4.2.0](https://github.com/IIP-Design/content-commons-client/compare/v4.1.1...v4.2.0)(2020-06-11)
 
