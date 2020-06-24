@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GraphicUpload />, if graphic files have been selected for upload renders the EditFileGrid 1`] = `
+<EditFileGrid
+  allowedFiles=".png,.jpg,.jpeg,.gif,.psd,.ai,.ae,.pdf,.doc,.docx,.ttf"
+  cancelConfirm={true}
+  continueBtn="Continue"
+  duplicateConfirm={true}
+  files={
+    Array [
+      Object {
+        "id": "3db9cba0-4e7d-4a6f-aecf-asdfikq8aa",
+        "input": Object {
+          "type": "image/jpeg",
+        },
+        "language": "ck2lzfx710hkq07206thus6pt",
+        "loaded": 0,
+        "name": "4_3_Serious_FB.jpg",
+        "size": 433851,
+        "social": Array [
+          "ck9h3m3g626bd07201gh712vk",
+        ],
+        "style": "",
+      },
+      Object {
+        "id": "3db9cba0-4e7d-4a6f-aecf-e8a3e76b3d13",
+        "input": Object {
+          "type": "image/jpeg",
+        },
+        "language": "ck2lzfx710hkq07206thus6pt",
+        "loaded": 0,
+        "name": "4_3_Serious_TW.jpg",
+        "size": 297343,
+        "social": Array [
+          "ck9h3m3g626bd07201gh712vk",
+        ],
+        "style": "",
+      },
+      Object {
+        "id": "3db9cba0-4e7d-4a6f-aecf-aszia",
+        "input": Object {
+          "type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        },
+        "language": "ck2lzfx710hkq07206thus6pt",
+        "loaded": 0,
+        "name": "transcript.docx",
+        "size": 51893,
+        "social": Array [],
+        "style": "",
+      },
+      Object {
+        "id": "52d247e6-ad4a-4f73-a330-372e33ed585b",
+        "input": Object {
+          "type": "image/png",
+        },
+        "language": "ck2lzfx710hkq07206thus6pt",
+        "loaded": 0,
+        "name": "test-file-shell.png",
+        "size": 18986,
+        "social": Array [],
+        "style": "ck9h3koe426aa0720y421wmk3",
+      },
+      Object {
+        "id": "1731fbb4-d785-40d8-a0b5-ad0a542d9d88",
+        "input": Object {
+          "type": "",
+        },
+        "language": "ck2lzfx710hkq07206thus6pt",
+        "loaded": 0,
+        "name": "OpenSans-Regular.ttf",
+        "size": 217360,
+        "social": Array [],
+        "style": "",
+      },
+      Object {
+        "id": "2ccc920d-f179-4952-8973-de0770297419",
+        "input": Object {
+          "type": "image/vnd.adobe.photoshop",
+        },
+        "language": "",
+        "loaded": 0,
+        "name": "4_3_Serious_English-(Simplified)_TW.psd",
+        "size": 402222,
+        "social": Array [],
+        "style": "",
+      },
+    ]
+  }
+  onAdd={[Function]}
+  onCancel={[MockFunction]}
+  onContinue={[Function]}
+  onRemove={[Function]}
+  onUpdate={[Function]}
+  removeConfirm={true}
+  screens={
+    Array [
+      Array [
+        Object {
+          "allowedFiles": ".png,.jpg,.jpeg,.gif,.pdf,.doc,.docx,.ttf",
+          "component": [Function],
+          "label": "Language",
+          "name": "language",
+          "props": Object {
+            "search": true,
+          },
+        },
+      ],
+      Array [
+        Object {
+          "allowedFiles": ".png,.jpg,.jpeg,.gif",
+          "component": [Function],
+          "label": "Style",
+          "name": "style",
+        },
+        Object {
+          "allowedFiles": ".png,.jpg,.jpeg,.gif",
+          "component": [Function],
+          "label": "Platform",
+          "name": "social",
+          "props": Object {
+            "closeOnChange": true,
+          },
+        },
+      ],
+    ]
+  }
+  showCompletionTracker={true}
+  showHeader={true}
+/>
+`;
