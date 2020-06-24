@@ -11,8 +11,14 @@ export const graphicElasticMock = [
       visibility: 'PUBLIC',
       owner: 'GPA Editorial & Design',
       // alt: 'Some alt text here...',
-      desc: 'Secretary Pompeo outlined 12 requirements for Iran\'s regime to act like a normal state. With the November 4th sanctions deadline, here are reminders for the regime, starting with #12: Declare prior military dimensions of your nuclear program & abandon such work.',
-      descInternal: 'Internal description....',
+      descPublic: {
+        visibility: 'PUBLIC',
+        content: 'Secretary Pompeo outlined 12 requirements for Iran\'s regime to act like a normal state. With the November 4th sanctions deadline, here are reminders for the regime, starting with #12: Declare prior military dimensions of your nuclear program & abandon such work.',
+      },
+      descInternal: {
+        visibility: 'INTERNAL',
+        content: 'Internal description....',
+      },
       copyright: 'COPYRIGHT',
       images: [
         {
