@@ -33,10 +33,12 @@ _This sections lists changes committed since most recent release_
 - Bottom buttons (i.e., Preview, Publish, Publish Changes, Unpublish) to GraphicEdit
 - The editable field to the supportFileDetails fragment
 - A refetch of the GRAPHIC_PROJECT_QUERY in GraphicEdit after adding new support files to an existing project to update the support files UI
+- Additional tests to GraphicProject for users not logged in and the display of editable files and internal description
 - GIF to the list of accepted graphic file types on the initial upload page
 - A msg prop to IncludeRequiredFileMsg (previously named IncludeVideoFileMsg)
 - IncludeRequiredFileMsg to GraphicUpload to display a required file message if no graphic files have been selected for upload
 - Unit tests for IncludeRequiredFileMsg and GraphicUpload
+ 
 
 **Changed:**
 
@@ -77,9 +79,11 @@ _This sections lists changes committed since most recent release_
 - Move the fetching of featured item results and post types from Redux to Context
 - Update unit tests and mock data to address console messages 
 - Refactor collating of graphic project files in GraphicEdit to address clean shell files being displayed in the wrong column
-- Refactor tests for GraphicEdit and add additional mock data
+- The footer questions and feedback link to "gpadigitalhelp@state.gov" from "design@america.gov"
+- The conditional check in GraphicProject for user logged in status
 - The footer questions and feedback link to "gpadigitalhelp@state.gov" from "design@america.gov" 
 - Rename to IncludeRequiredFileMsg from IncludeVideoFileMsg for reusability
+ 
 
 **Fixed:**
 
