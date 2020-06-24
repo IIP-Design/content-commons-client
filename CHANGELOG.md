@@ -32,7 +32,8 @@ _This sections lists changes committed since most recent release_
 - Tests for alt text display to GraphicProject
 - Bottom buttons (i.e., Preview, Publish, Publish Changes, Unpublish) to GraphicEdit
 - The editable field to the supportFileDetails fragment
-- A refetch of the GRAPHIC_PROJECT_QUERY in GraphicEdit after adding new support files to an existing project to update the support files UI 
+- A refetch of the GRAPHIC_PROJECT_QUERY in GraphicEdit after adding new support files to an existing project to update the support files UI
+- A TeamDropdown component
 
 **Changed:**
 
@@ -74,7 +75,10 @@ _This sections lists changes committed since most recent release_
 - Update unit tests and mock data to address console messages 
 - Refactor collating of graphic project files in GraphicEdit to address clean shell files being displayed in the wrong column
 - Refactor tests for GraphicEdit and add additional mock data
-- The footer questions and feedback link to "gpadigitalhelp@state.gov" from "design@america.gov" 
+- The footer questions and feedback link to "gpadigitalhelp@state.gov" from "design@america.gov"
+- Use TeamDropdown instead of an input field in ProjectDetailsForm for graphic projects
+- Connect team.id in the graphic buildFormTree function to allow graphic users to change a graphic project's team
+- Adjust the graphic project team queries to handle GPA Editorial & Design or ShareAmerica, i.e., the two TeamDropdown options for graphic projects
  
 
 **Fixed:**
