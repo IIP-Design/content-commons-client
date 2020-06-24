@@ -271,6 +271,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
   it( 'renders the ModalPostMeta', () => {
     const postMeta = wrapper.find( 'ModalPostMeta' );
     const { owner, projectType, published } = normalizedData;
+    const { language } = selectedUnit;
 
     expect( postMeta.exists() ).toEqual( true );
     expect( postMeta.props() ).toEqual( {
@@ -278,6 +279,7 @@ describe( '<GraphicProject />, for GraphQL data', () => {
       logo: 'image-stub',
       source: owner,
       datePublished: published,
+      textDirection: language.text_direction,
     } );
   } );
 
@@ -537,6 +539,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
   it( 'renders the ModalPostMeta', () => {
     const postMeta = wrapper.find( 'ModalPostMeta' );
     const { owner, projectType, published } = normalizedData;
+    const { language } = selectedUnit;
 
     expect( postMeta.exists() ).toEqual( true );
     expect( postMeta.props() ).toEqual( {
@@ -544,6 +547,7 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
       logo: 'image-stub',
       source: owner,
       datePublished: published,
+      textDirection: language.text_direction,
     } );
   } );
 

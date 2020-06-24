@@ -318,6 +318,7 @@ const GraphicProject = ( {
         logo={ displayDOSLogo( owner ) }
         source={ owner }
         datePublished={ published }
+        textDirection={ selectedUnitLanguage.text_direction }
       />
       <ModalPostTags tags={ categories } />
     </ModalItem>
@@ -335,8 +336,8 @@ GraphicProject.propTypes = {
     visibility: PropTypes.string,
     owner: PropTypes.string,
     alt: PropTypes.string,
-    desc: PropTypes.string,
-    descInternal: PropTypes.string,
+    desc: PropTypes.object,
+    descInternal: PropTypes.object,
     copyright: PropTypes.string,
     images: PropTypes.array,
     supportFiles: PropTypes.array,

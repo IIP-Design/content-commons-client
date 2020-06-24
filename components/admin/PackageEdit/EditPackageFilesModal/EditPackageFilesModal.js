@@ -5,7 +5,7 @@ import {
   Form, Button, Modal, Header, Dimmer
 } from 'semantic-ui-react';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
-import { useFileStateManger } from 'lib/hooks/useFileStateManger';
+import { useFileStateManager } from 'lib/hooks/useFileStateManager';
 import { normalize, isComplete } from 'lib/graphql/normalizers/package';
 import Notification from 'components/Notification/Notification';
 import DynamicConfirm from 'components/admin/DynamicConfirm/DynamicConfirm';
@@ -39,7 +39,7 @@ const EditPackageFilesModal = ( {
     updateFileField,
     addFiles,
     removeFile
-  } = useFileStateManger( normalize );
+  } = useFileStateManager( normalize );
 
   useEffect( () => {
     setOpen( modalOpen );

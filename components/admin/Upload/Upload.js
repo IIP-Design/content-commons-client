@@ -247,7 +247,7 @@ const Upload = () => {
                 className={ `type ${setButtonState( 'GRAPHIC' )}` }
                 aria-label="Upload graphics content"
                 multiple
-                accept=".png,.jpg,.jpeg,.psd,.ai,.ae,.pdf,.doc,.docx,.ttf"
+                accept=".png,.jpg,.jpeg,.gif,.psd,.ai,.ae,.pdf,.doc,.docx,.ttf"
                 onChange={ handleAddFiles }
               >
                 <img src={ imageIcon } alt="Upload graphics content" />

@@ -12,7 +12,6 @@ const DownloadItemContent = ( {
   <a
     key={ srcUrl }
     href={ srcUrl }
-    target="_blank"
     rel="noopener noreferrer"
     download
     className={ isAdminPreview ? 'download-item download-item--preview' : 'download-item' }
