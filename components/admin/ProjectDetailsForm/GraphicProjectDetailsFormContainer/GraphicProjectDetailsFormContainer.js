@@ -40,7 +40,7 @@ const GraphicProjectDetailsFormContainer = props => {
     const initialValues = {
       projectTitle: graphicProject.title || '',
       visibility: graphicProject.visibility || 'PUBLIC',
-      team: graphicProject.team ? graphicProject.team.name : user?.team?.name,
+      team: graphicProject.team?.id || '',
       copyright: graphicProject.copyright || 'COPYRIGHT',
       categories,
       tags,
@@ -117,8 +117,17 @@ const GraphicProjectDetailsFormContainer = props => {
         required: true,
       },
       team: {
+        dropdown: true,
         label: 'Source',
         required: false,
+        variables: {
+          where: {
+            name_in: [
+              'GPA Editorial & Design',
+              'ShareAmerica',
+            ],
+          },
+        },
       },
       copyright: {
         label: 'Copyright',

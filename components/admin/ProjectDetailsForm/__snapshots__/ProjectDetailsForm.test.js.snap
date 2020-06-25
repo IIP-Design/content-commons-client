@@ -34,8 +34,17 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
         "required": false,
       },
       "team": Object {
+        "dropdown": true,
         "label": "Source",
         "required": false,
+        "variables": Object {
+          "where": Object {
+            "name_in": Array [
+              "GPA Editorial & Design",
+              "ShareAmerica",
+            ],
+          },
+        },
       },
       "visibility": Object {
         "label": "Visibility Setting",
@@ -211,44 +220,24 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                     <div
                       className="equal width fields"
                     >
-                      <FormField
-                        control={[Function]}
+                      <TeamDropdown
                         id="team"
                         label="Source"
                         name="team"
-                        placeholder=""
+                        onChange={[Function]}
+                        required={false}
                         value="team-dfiiad"
-                      >
-                        <div
-                          className="field"
-                        >
-                          <label
-                            htmlFor="team"
-                          >
-                            Source
-                          </label>
-                          <Input
-                            id="team"
-                            name="team"
-                            placeholder=""
-                            type="text"
-                            value="team-dfiiad"
-                          >
-                            <div
-                              className="ui input"
-                            >
-                              <input
-                                id="team"
-                                name="team"
-                                onChange={[Function]}
-                                placeholder=""
-                                type="text"
-                                value="team-dfiiad"
-                              />
-                            </div>
-                          </Input>
-                        </div>
-                      </FormField>
+                        variables={
+                          Object {
+                            "where": Object {
+                              "name_in": Array [
+                                "GPA Editorial & Design",
+                                "ShareAmerica",
+                              ],
+                            },
+                          }
+                        }
+                      />
                       <div
                         className="field"
                       >

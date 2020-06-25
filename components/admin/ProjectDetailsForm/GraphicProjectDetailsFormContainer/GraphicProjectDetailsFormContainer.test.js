@@ -44,8 +44,17 @@ const config = {
     required: true,
   },
   team: {
+    dropdown: true,
     label: 'Source',
     required: false,
+    variables: {
+      where: {
+        name_in: [
+          'GPA Editorial & Design',
+          'ShareAmerica',
+        ],
+      },
+    },
   },
   copyright: {
     label: 'Copyright',
@@ -82,7 +91,7 @@ const getInitialValues = () => {
   const initialValues = {
     projectTitle: title || '',
     visibility: visibility || 'PUBLIC',
-    team: team.name,
+    team: team.id,
     copyright: copyright || 'COPYRIGHT',
     categories: categories.map( category => category.id ),
     tags: tags.map( tag => tag.id ),

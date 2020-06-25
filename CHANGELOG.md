@@ -39,7 +39,8 @@ _This sections lists changes committed since most recent release_
 - A msg prop to IncludeRequiredFileMsg (previously named IncludeVideoFileMsg)
 - IncludeRequiredFileMsg to GraphicUpload to display a required file message if no graphic files have been selected for upload
 - Unit tests for IncludeRequiredFileMsg and GraphicUpload
- 
+- A TeamDropdown component
+
 **Changed:**
 
 - Use component state instead of props for checkboxes in filter menus
@@ -85,6 +86,9 @@ _This sections lists changes committed since most recent release_
 - Update unit tests for Upload component
 - The conditional check in GraphicProject for user logged in status
 - Rename to IncludeRequiredFileMsg from IncludeVideoFileMsg for reusability
+- Use TeamDropdown instead of an input field in ProjectDetailsForm for graphic projects
+- Connect team.id in the graphic buildFormTree function to allow graphic users to change a graphic project's team
+- Adjust the graphic project team queries to handle GPA Editorial & Design or ShareAmerica, i.e., the two TeamDropdown options for graphic projects
  
 
 **Fixed:**

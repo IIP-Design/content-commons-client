@@ -24,6 +24,11 @@ jest.mock(
 );
 
 jest.mock(
+  'components/admin/dropdowns/TeamDropdown/TeamDropdown',
+  () => function TeamDropdown() { return ''; },
+);
+
+jest.mock(
   'components/admin/dropdowns/UserDropdown/UserDropdown',
   () => function UserDropdown() { return ''; },
 );
@@ -77,8 +82,17 @@ const props = {
       required: true,
     },
     team: {
+      dropdown: true,
       label: 'Source',
       required: false,
+      variables: {
+        where: {
+          name_in: [
+            'GPA Editorial & Design',
+            'ShareAmerica',
+          ],
+        },
+      },
     },
     copyright: {
       label: 'Copyright',
