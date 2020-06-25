@@ -81,6 +81,7 @@ _This sections lists changes committed since most recent release_
 - Refactor collating of graphic project files in GraphicEdit to address clean shell files being displayed in the wrong column
 - Refactor tests for GraphicEdit and add additional mock data
 - The footer questions and feedback link to "gpadigitalhelp@state.gov" from "design@america.gov"
+- Enable delete button on GraphicEdit before project creation
 - Update unit tests for Upload component
 - The conditional check in GraphicProject for user logged in status
 - Rename to IncludeRequiredFileMsg from IncludeVideoFileMsg for reusability
