@@ -19,6 +19,16 @@ const TableRow = ( { d, tableHeaders, projectTab } ) => {
 
   if ( !d ) return null;
 
+  const statusDisplay = () => {
+    let statusText = d.status;
+
+    if ( d.status === 'UNPUBLISH_SUCCESS' || d.status === 'PUBLISH_SUCCESS' ) {
+      statusText = 'UPDATING PROJECT...';
+    }
+
+    return statusText;
+  };
+
   return (
     <Table.Row
       className={ displayMobileData ? 'activeTableRow' : '' }
@@ -64,9 +74,7 @@ const TableRow = ( { d, tableHeaders, projectTab } ) => {
                   }
                 </span>
                 <br />
-                { header.label === 'CREATED'
-                  ? <span>{ d.status }</span>
-                  : null }
+                { header.label === 'CREATED' && <span>{ statusDisplay() }</span> }
               </Fragment>
             ) }
         </Table.Cell>

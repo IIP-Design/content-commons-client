@@ -36,16 +36,16 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   const _breakpoint = 767;
 
   const { dispatch, state } = useContext( DashboardContext );
-  const projectType = state?.projectType ? state.projectType : '';
-  const column = state?.column ? state.column : 'createdAt';
-  const direction = state?.direction ? state.direction : 'descending';
+  const projectType = state?.projectType || '';
+  const column = state?.column || 'createdAt';
+  const direction = state?.direction || 'descending';
 
   // No-op query is never called, but added to avoid reference error in cases where context has not yet loaded
   const noopQuery = gql`query{ NOOP { noop } }`;
 
   // Get the content data
-  const contentQuery = state?.queries?.content ? state.queries.content : noopQuery;
-  const countQuery = state?.queries?.count ? state.queries.count : noopQuery;
+  const contentQuery = state?.queries?.content || noopQuery;
+  const countQuery = state?.queries?.count || noopQuery;
 
   // Set GraphQL query variables
   const variables = { team: team.name, searchTerm };
@@ -77,7 +77,12 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     const { data, error, loading, refetch } = countData;
 
     // Save project count in context
-    dispatch( { type: 'UPDATE_COUNT', payload: { count: { data, error, loading, refetch }, team, type: projectType } } );
+    dispatch( {
+      type: 'UPDATE_COUNT',
+      payload: {
+        count: { data, error, loading, refetch }, team, type: projectType,
+      },
+    } );
   }, [
     countData, dispatch, projectType, team,
   ] );
@@ -224,15 +229,15 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     dispatch( { type: 'UPDATE_SELECTED_ALL', payload: { selected } } );
   };
 
-  const count = state?.count?.count ? state.count.count : null;
-  const countError = state?.count?.error ? state.count.error : null;
-  const countLoading = state?.count?.loading ? state.count.loading : false;
-  const countRefetch = state?.count?.refetch ? state.count.refetch : () => {};
+  const count = state?.count?.count || null;
+  const countError = state?.count?.error || null;
+  const countLoading = state?.count?.loading || false;
+  const countRefetch = state?.count?.refetch || ( () => {} );
 
-  const projectData = state?.content?.data ? state.content.data : null;
-  const projectError = state?.content?.error ? state.content.error : null;
-  const projectLoading = state?.content?.loading ? state.content.loading : false;
-  const projectRefetch = state?.content?.refetch ? state.content.refetch : () => {};
+  const projectData = state?.content?.data || null;
+  const projectError = state?.content?.error || null;
+  const projectLoading = state?.content?.loading || false;
+  const projectRefetch = state?.content?.refetch || ( () => {} );
 
   return (
     <Grid>

@@ -42,9 +42,9 @@ const TableActionsMenu = ( {
 } ) => {
   const { state } = useContext( DashboardContext );
 
-  const selectedItems = state?.selected?.selectedItems ? state.selected.selectedItems : new Map();
-  const displayActionsMenu = state?.selected?.displayActionsMenu ? state.selected.displayActionsMenu : false;
-  const team = state?.team ? state.team : { contentTypes: null };
+  const selectedItems = state?.selected?.selectedItems || new Map();
+  const displayActionsMenu = state?.selected?.displayActionsMenu || false;
+  const team = state?.team || { contentTypes: null };
 
   const [displayConfirmationMsg, setDisplayConfirmationMsg] = useState( false );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );

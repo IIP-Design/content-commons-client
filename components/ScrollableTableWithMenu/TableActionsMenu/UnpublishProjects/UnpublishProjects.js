@@ -91,11 +91,6 @@ const UnpublishProjects = ( {
     if ( data ) {
       checkUnpublishStatus();
     }
-
-    // Ensure polling does not continue on unmount
-    return () => {
-      stopPolling();
-    };
   }, [data] );
 
 
@@ -115,8 +110,7 @@ const UnpublishProjects = ( {
 
   const handleUnpublishProjects = async () => {
     // watch for status changes as projects are unpublished
-    startPolling( 1000 );
-
+    startPolling( 300 );
     await Promise.all( published.map( unpublishProject ) );
     handleResetSelections();
     showConfirmationMsg();
