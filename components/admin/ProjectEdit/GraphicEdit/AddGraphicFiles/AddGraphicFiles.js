@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useFileStateManger } from 'lib/hooks/useFileStateManger';
+import { useFileStateManager } from 'lib/hooks/useFileStateManager';
 import { normalize } from 'lib/graphql/normalizers/graphic';
 import EditFileGrid from 'components/admin/EditFileGrid/EditFileGrid';
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
@@ -41,7 +41,7 @@ const AddGraphicFiles = ( { files, closeModal, save } ) => {
   ];
 
   // Set state with files normalized for the graphic content type
-  const { state, dispatch } = useFileStateManger( null, normalize( files ) );
+  const { state, dispatch } = useFileStateManager( null, normalize( files ) );
 
   return (
     <div className={ styles.container }>

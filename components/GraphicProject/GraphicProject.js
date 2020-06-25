@@ -200,7 +200,11 @@ const GraphicProject = ( {
   ];
 
   const authFilterTabs = () => {
-    if ( user ) {
+    /**
+     * Not using user?.id since a falsy value
+     * for user would make the condition true
+     */
+    if ( user && user.id !== 'public' ) {
       return tabs;
     }
 
@@ -293,7 +297,7 @@ const GraphicProject = ( {
 
       <ModalDescription description={ desc } />
 
-      { user && descInternal && (
+      { user && user.id !== 'public' && descInternal && (
         <section className="graphic-project__content internal-desc">
           <h2 className="graphic-project__content__title">
             Internal Description:
@@ -314,6 +318,7 @@ const GraphicProject = ( {
         logo={ displayDOSLogo( owner ) }
         source={ owner }
         datePublished={ published }
+        textDirection={ selectedUnitLanguage.text_direction }
       />
       <ModalPostTags tags={ categories } />
     </ModalItem>
@@ -331,8 +336,8 @@ GraphicProject.propTypes = {
     visibility: PropTypes.string,
     owner: PropTypes.string,
     alt: PropTypes.string,
-    desc: PropTypes.string,
-    descInternal: PropTypes.string,
+    desc: PropTypes.object,
+    descInternal: PropTypes.object,
     copyright: PropTypes.string,
     images: PropTypes.array,
     supportFiles: PropTypes.array,

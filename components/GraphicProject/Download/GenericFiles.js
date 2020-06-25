@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import useSignedUrl from 'lib/hooks/useSignedUrl';
 import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
-import { capitalizeFirst } from 'lib/utils';
+import { capitalizeFirst, getFileDownloadUrl } from 'lib/utils';
 
 const GenericFiles = ( { file, isAdminPreview } ) => {
   const {
@@ -10,7 +9,8 @@ const GenericFiles = ( { file, isAdminPreview } ) => {
     filename,
   } = file;
 
-  const { signedUrl } = useSignedUrl( url );
+  const downloadURL = getFileDownloadUrl( url, filename );
+
   const fileName = filename.slice( 0, filename.indexOf( '.' ) );
   let fileType = filename.slice( filename.lastIndexOf( '.' ) + 1 );
 
@@ -18,7 +18,7 @@ const GenericFiles = ( { file, isAdminPreview } ) => {
 
   return (
     <DownloadItemContent
-      srcUrl={ signedUrl }
+      srcUrl={ downloadURL }
       hoverText={ `Download "${fileName}" (${fileType})` }
       isAdminPreview={ isAdminPreview }
     >

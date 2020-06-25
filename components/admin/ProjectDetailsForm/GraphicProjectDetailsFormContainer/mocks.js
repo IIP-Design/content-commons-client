@@ -8,8 +8,14 @@ export const data = {
     title: 'Just another graphic project',
     copyright: 'NO_COPYRIGHT',
     alt: 'some alt text',
-    descPublic: 'the public description',
-    descInternal: 'the internal description',
+    descPublic: {
+      visibility: 'PUBLIC',
+      content: 'the public description',
+    },
+    descInternal: {
+      visibility: 'INTERNAL',
+      content: 'the internal description',
+    },
     images: [
       {
         id: 'cka5di41430i10720v06c52ic',

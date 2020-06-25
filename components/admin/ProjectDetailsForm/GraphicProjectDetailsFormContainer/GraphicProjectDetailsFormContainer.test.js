@@ -86,8 +86,8 @@ const getInitialValues = () => {
     copyright: copyright || 'COPYRIGHT',
     categories: categories.map( category => category.id ),
     tags: tags.map( tag => tag.id ),
-    descPublic: descPublic || '',
-    descInternal: descInternal || '',
+    descPublic: descPublic.content || '',
+    descInternal: descInternal.content || '',
     alt: alt || '',
   };
 

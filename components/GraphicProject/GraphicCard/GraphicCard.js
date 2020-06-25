@@ -75,7 +75,7 @@ const GraphicCard = ( { item } ) => {
         </Modal.Content>
       </Modal>
       <div className="content">
-        <p className="publicDesc">{ descPublic }</p>
+        <p className="publicDesc">{ descPublic?.content || '' }</p>
       </div>
       <footer className="meta">
         <span className="publishedDate">{ `${moment( published ).format( 'MMMM DD, YYYY' )}` }</span>

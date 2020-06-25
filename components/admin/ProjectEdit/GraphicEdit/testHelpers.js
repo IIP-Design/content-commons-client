@@ -30,8 +30,18 @@ const mocks = [
           title: 'Just another graphic project',
           copyright: 'NO_COPYRIGHT',
           alt: 'some alt text',
-          descPublic: 'the public description',
-          descInternal: 'the internal description',
+          descPublic: {
+            __typename: 'ContentField',
+            id: 'ckbtc7w3a01eg0720xofdzoxe',
+            visibility: 'PUBLIC',
+            content: 'the public description',
+          },
+          descInternal: {
+            __typename: 'ContentField',
+            id: 'ckbtc7w3d01eh0720jh940bzv',
+            visibility: 'INTERNAL',
+            content: 'the internal description',
+          },
           assetPath: null,
           author: {
             id: 'ck2m042xo0rnp0720nb4gxjix',

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types'; import { getFileExt } from 'lib/utils';
 import { Button } from 'semantic-ui-react';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
@@ -262,7 +262,7 @@ const EditFileGrid = ( {
             </Button>
           )}
           {screens?.length > 1 && (
-            <>
+            <Fragment>
               <Button
                 className="primary"
                 style={ { display: `${activeScreen ? 'none' : 'flex'}` } }
@@ -278,7 +278,7 @@ const EditFileGrid = ( {
               >
                 Previous
               </Button>
-            </>
+            </Fragment>
           )}
 
           {typeof onContinue === 'function' && (

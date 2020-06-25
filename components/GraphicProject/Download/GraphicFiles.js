@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import useSignedUrl from 'lib/hooks/useSignedUrl';
 import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
-import { formatBytes, getFileExt } from 'lib/utils';
+import { formatBytes, getFileExt, getFileDownloadUrl } from 'lib/utils';
 
 const GraphicFiles = ( { file, isAdminPreview } ) => {
   const {
@@ -15,8 +14,9 @@ const GraphicFiles = ( { file, isAdminPreview } ) => {
     height,
   } = file;
 
+  const downloadURL = getFileDownloadUrl( url, filename );
+
   const fileType = getFileExt( filename );
-  const { signedUrl } = useSignedUrl( url );
 
   const getSocialPlatform = () => {
     if ( isAdminPreview ) {
@@ -30,7 +30,7 @@ const GraphicFiles = ( { file, isAdminPreview } ) => {
 
   return (
     <DownloadItemContent
-      srcUrl={ signedUrl }
+      srcUrl={ downloadURL }
       hoverText={ `Download for ${getSocialPlatform()}` }
       isAdminPreview={ isAdminPreview }
     >

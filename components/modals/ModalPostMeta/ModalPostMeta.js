@@ -18,7 +18,7 @@ const ModalPostMeta = ( {
   releaseType,
   textDirection,
 } ) => {
-  const isRTL = textDirection === 'rtl';
+  const isRTL = textDirection === 'rtl' || textDirection === 'RTL';
   const isDocument = type && type === 'document';
   const isSocialGraphic = type && type === 'SOCIAL_MEDIA';
   const contentSite = contentRegExp( sourcelink );

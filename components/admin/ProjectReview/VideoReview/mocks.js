@@ -586,6 +586,7 @@ export const mocks = [
               filesize: 6424,
               filetype: 'application/x-subrip',
               use: null,
+              editable: false,
               signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
               language: {
                 __typename: 'Language',
@@ -607,6 +608,7 @@ export const mocks = [
               filesize: 6424,
               filetype: 'application/x-subrip',
               use: null,
+              editable: false,
               signedUrl: 'https://s3-bucket-url.s3.amazonaws.com/path-to-the-file?AWSAccessKeyId=SOMEAWSACCESSKEY&Expires=1572028336&Signature=SOMESIGNATURE',
               language: {
                 __typename: 'Language',

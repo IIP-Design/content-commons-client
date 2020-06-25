@@ -144,8 +144,18 @@ exports[`<GraphicEdit />, when there is an existing DRAFT graphic project render
           ],
           "copyright": "NO_COPYRIGHT",
           "createdAt": "2020-04-22T11:40:51.599Z",
-          "descInternal": "the internal description",
-          "descPublic": "the public description",
+          "descInternal": Object {
+            "__typename": "ContentField",
+            "content": "the internal description",
+            "id": "ckbtc7w3d01eh0720jh940bzv",
+            "visibility": "INTERNAL",
+          },
+          "descPublic": Object {
+            "__typename": "ContentField",
+            "content": "the public description",
+            "id": "ckbtc7w3a01eg0720xofdzoxe",
+            "visibility": "PUBLIC",
+          },
           "id": "ck9b9n8kw1x720720sjwwl1g7",
           "images": Array [
             Object {
@@ -719,8 +729,18 @@ exports[`<GraphicEdit />, when there is an existing PUBLISHED graphic project re
           ],
           "copyright": "NO_COPYRIGHT",
           "createdAt": "2020-04-22T11:40:51.599Z",
-          "descInternal": "the internal description",
-          "descPublic": "the public description",
+          "descInternal": Object {
+            "__typename": "ContentField",
+            "content": "the internal description",
+            "id": "ckbtc7w3d01eh0720jh940bzv",
+            "visibility": "INTERNAL",
+          },
+          "descPublic": Object {
+            "__typename": "ContentField",
+            "content": "the public description",
+            "id": "ckbtc7w3a01eg0720xofdzoxe",
+            "visibility": "PUBLIC",
+          },
           "id": "ck9b9n8kw1x720720sjwwl1g7",
           "images": Array [
             Object {
