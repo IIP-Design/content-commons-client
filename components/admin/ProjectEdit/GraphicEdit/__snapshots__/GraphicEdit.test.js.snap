@@ -1175,7 +1175,7 @@ exports[`<GraphicEdit />, when there is no props.id and local files have been se
   deleteConfirmOpen={false}
   disabled={
     Object {
-      "delete": true,
+      "delete": false,
       "preview": true,
       "publish": true,
       "publishChanges": true,

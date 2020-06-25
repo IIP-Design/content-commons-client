@@ -2,7 +2,7 @@
 
 exports[`<GraphicUpload />, if graphic files have been selected for upload renders the EditFileGrid 1`] = `
 <EditFileGrid
-  allowedFiles=".png,.jpg,.jpeg,.gif,.psd,.ai,.ae,.pdf,.doc,.docx,.ttf"
+  allowedFiles=".png,.jpg,.jpeg,.gif,.psd,.ai,.ae,.pdf,.doc,.docx,.ttf,.otf"
   cancelConfirm={true}
   continueBtn="Continue"
   duplicateConfirm={true}
@@ -96,7 +96,7 @@ exports[`<GraphicUpload />, if graphic files have been selected for upload rende
     Array [
       Array [
         Object {
-          "allowedFiles": ".png,.jpg,.jpeg,.gif,.pdf,.doc,.docx,.ttf",
+          "allowedFiles": ".png,.jpg,.jpeg,.gif,.pdf,.doc,.docx,.ttf,.otf",
           "component": [Function],
           "label": "Language",
           "name": "language",

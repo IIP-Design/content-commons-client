@@ -32,6 +32,7 @@ _This sections lists changes committed since most recent release_
 - Tests for alt text display to GraphicProject
 - Bottom buttons (i.e., Preview, Publish, Publish Changes, Unpublish) to GraphicEdit
 - The editable field to the supportFileDetails fragment
+- .gif & .otf to the allowed upload file types for graphic projects
 - A refetch of the GRAPHIC_PROJECT_QUERY in GraphicEdit after adding new support files to an existing project to update the support files UI
 - Additional tests to GraphicProject for users not logged in and the display of editable files and internal description
 - GIF to the list of accepted graphic file types on the initial upload page
@@ -81,8 +82,9 @@ _This sections lists changes committed since most recent release_
 - Refactor collating of graphic project files in GraphicEdit to address clean shell files being displayed in the wrong column
 - Refactor tests for GraphicEdit and add additional mock data
 - The footer questions and feedback link to "gpadigitalhelp@state.gov" from "design@america.gov"
+- Enable delete button on GraphicEdit before project creation
+- Update unit tests for Upload component
 - The conditional check in GraphicProject for user logged in status
-- The footer questions and feedback link to "gpadigitalhelp@state.gov" from "design@america.gov" 
 - Rename to IncludeRequiredFileMsg from IncludeVideoFileMsg for reusability
 - Use TeamDropdown instead of an input field in ProjectDetailsForm for graphic projects
 - Connect team.id in the graphic buildFormTree function to allow graphic users to change a graphic project's team
