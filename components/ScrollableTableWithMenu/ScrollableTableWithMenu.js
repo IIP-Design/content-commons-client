@@ -36,9 +36,6 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   const _breakpoint = 767;
 
   const { dispatch, state } = useContext( DashboardContext );
-  // const projectType = state?.projectType ? state.projectType : '';
-  // const column = state?.column ? state.column : 'createdAt';
-  // const direction = state?.direction ? state.direction : 'descending';
   const projectType = state?.projectType || '';
   const column = state?.column || 'createdAt';
   const direction = state?.direction || 'descending';
@@ -47,8 +44,6 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   const noopQuery = gql`query{ NOOP { noop } }`;
 
   // Get the content data
-  // const contentQuery = state?.queries?.content ? state.queries.content : noopQuery;
-  // const countQuery = state?.queries?.count ? state.queries.count : noopQuery;
   const contentQuery = state?.queries?.content || noopQuery;
   const countQuery = state?.queries?.count || noopQuery;
 
