@@ -1,7 +1,15 @@
 .modal.RTL,
 .modal.rtl {
+  
+  .modal_headline {
+    direction: rtl;
+    text-align: right;
+  }
+}
 
-  .modal_headline,
+.modal.RTL:not(.graphic-project),
+.modal.rtl:not(.graphic-project) {
+  
   .modal_section--description,
   .modal_section--textContent,
   .modal_section--metaContent,
