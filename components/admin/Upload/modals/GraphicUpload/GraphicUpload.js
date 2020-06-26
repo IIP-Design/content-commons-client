@@ -35,6 +35,7 @@ const GraphicUpload = ( { files, closeModal } ) => {
         name: 'language',
         component: LanguageDropdown,
         // What files does this dropdown accept?
+        // do NOT include .ttf, .otf files in lang dropdown
         allowedFiles: `${IMAGE_EXTS},.pdf,.doc,.docx,`,
         props: { search: true },
       },
