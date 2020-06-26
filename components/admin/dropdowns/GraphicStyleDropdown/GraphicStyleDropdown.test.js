@@ -23,10 +23,6 @@ const mocks = [
             name: 'GIF',
           },
           {
-            id: 'ck9h3koe426aa0720y421wmk3',
-            name: 'Clean',
-          },
-          {
             id: 'ck9h3kyb326ak0720wkbk01q6',
             name: 'Info/Stat',
           },
