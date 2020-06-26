@@ -83,7 +83,7 @@ const GraphicStyleDropdown = props => {
         let options = [];
         let _omit;
 
-        // TO DO : use useQuery hook and put this is variables
+        // TO DO : use useQuery hook and put this in variables
         if ( omit?.length ) {
           // faster way to lowercase all items for comparision purposes
           _omit = omit
