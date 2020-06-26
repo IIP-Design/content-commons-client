@@ -29,6 +29,7 @@ const AddGraphicFiles = ( { files, closeModal, save } ) => {
         name: 'style',
         component: GraphicStyleDropdown,
         allowedFiles: ALLOWED_FILES,
+        props: { omit: ['Clean'] },
       },
       {
         label: 'Platform',

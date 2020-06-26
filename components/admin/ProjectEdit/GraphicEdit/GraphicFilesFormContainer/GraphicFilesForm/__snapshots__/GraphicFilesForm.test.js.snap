@@ -133,6 +133,11 @@ Array [
           id="graphic-style-cka5di41430i10720v06c52ic"
           label="Style"
           name="cka5di41430i10720v06c52ic.style"
+          omit={
+            Array [
+              "Clean",
+            ]
+          }
           onChange={[Function]}
           required={true}
           value="ck9h3koe426aa0720y421wmk3"
@@ -299,6 +304,11 @@ Array [
           id="graphic-style-cka5di48r30ig072003dqjffb"
           label="Style"
           name="cka5di48r30ig072003dqjffb.style"
+          omit={
+            Array [
+              "Clean",
+            ]
+          }
           onChange={[Function]}
           required={true}
           value="ck9h3kyb326ak0720wkbk01q6"

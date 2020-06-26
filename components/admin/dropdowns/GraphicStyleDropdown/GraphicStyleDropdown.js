@@ -41,7 +41,7 @@ const getGraphicStyleId = ( styles = [], style ) => {
 };
 
 const GraphicStyleDropdown = props => {
-  const { filename, onChange, multiple } = props;
+  const { filename, onChange, multiple, omit } = props;
 
 
   const getGraphicStyle = fn => {
@@ -81,9 +81,23 @@ const GraphicStyleDropdown = props => {
         if ( error ) return `Error! ${error.message}`;
 
         let options = [];
+        let _omit;
 
-        if ( data && data.graphicStyles ) {
-          options = sortBy( data.graphicStyles, style => style.name ).map( style => ( {
+        // TO DO : use useQuery hook and put this in variables
+        if ( omit?.length ) {
+          // faster way to lowercase all items for comparision purposes
+          _omit = omit
+            .join( '|' )
+            .toLowerCase()
+            .split( '|' );
+        }
+
+        if ( data?.graphicStyles ) {
+          const _graphicStyles = _omit
+            ? data.graphicStyles.filter( style => !_omit.includes( style.name.toLowerCase() ) )
+            : data.graphicStyles;
+
+          options = sortBy( _graphicStyles, style => style.name ).map( style => ( {
             key: style.id,
             text: style.name,
             value: style.id,
@@ -128,6 +142,7 @@ GraphicStyleDropdown.propTypes = {
   onChange: PropTypes.func,
   multiple: PropTypes.bool,
   filename: PropTypes.string,
+  omit: PropTypes.array,
 };
 
 export default React.memo( GraphicStyleDropdown, areEqual );

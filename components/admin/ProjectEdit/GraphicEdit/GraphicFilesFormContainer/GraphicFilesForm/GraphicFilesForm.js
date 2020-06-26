@@ -230,6 +230,7 @@ const GraphicFilesForm = props => {
                     id={ `graphic-style-${id}` }
                     name={ `${id}.style` }
                     className="graphic-style"
+                    omit={ ['Clean'] }
                     label="Style"
                     value={ value?.style || '' }
                     error={ isTouched( id, 'style' ) && !value.style }

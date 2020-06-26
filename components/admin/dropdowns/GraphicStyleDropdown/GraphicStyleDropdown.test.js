@@ -91,12 +91,19 @@ const EmptyComponent = (
   </MockedProvider>
 );
 
+const OmitComponent = (
+  <MockedProvider mocks={ mocks } addTypename={ false }>
+    <GraphicStyleDropdown { ...props } omit={ ['Clean'] } />
+  </MockedProvider>
+);
+
+
 describe( '<GraphicStyleDropdown />', () => {
   /**
-   * @todo Suppress React 16.8 `act()` warnings globally.
-   * The React team's fix won't be out of alpha until 16.9.0.
-   * @see https://github.com/facebook/react/issues/14769
-   */
+      * @todo Suppress React 16.8 `act()` warnings globally.
+      * The React team's fix won't be out of alpha until 16.9.0.
+      * @see https://github.com/facebook/react/issues/14769
+      */
   const consoleError = console.error;
 
   beforeAll( () => {
@@ -164,15 +171,13 @@ describe( '<GraphicStyleDropdown />', () => {
     const formDropdown = wrapper.find( 'FormDropdown' );
     const dropdownItems = wrapper.find( 'DropdownItem' );
     const { graphicStyles } = mocks[0].result.data;
-    const options = sortBy( graphicStyles, style => style.name )
-      .map( style => ( {
-        key: style.id,
-        text: style.name,
-        value: style.id,
-      } ) );
+    const options = sortBy( graphicStyles, style => style.name ).map( style => ( {
+      key: style.id,
+      text: style.name,
+      value: style.id,
+    } ) );
 
-    expect( formDropdown.prop( 'options' ) )
-      .toEqual( addEmptyOption( options ) );
+    expect( formDropdown.prop( 'options' ) ).toEqual( addEmptyOption( options ) );
     expect( dropdownItems.length ).toEqual( graphicStyles.length + 1 );
   } );
 
@@ -186,5 +191,25 @@ describe( '<GraphicStyleDropdown />', () => {
 
     expect( dropdown.prop( 'id' ) ).toEqual( props.id );
     expect( label.prop( 'htmlFor' ) ).toEqual( props.id );
+  } );
+
+  it( 'does not display the omitted option', async () => {
+    const wrapper = mount( OmitComponent );
+
+    await wait( 0 );
+    wrapper.update();
+    const formDropdown = wrapper.find( 'FormDropdown' );
+    const { graphicStyles } = mocks[0].result.data;
+
+    const options = sortBy( graphicStyles, style => style.name )
+      .filter( style => style.name !== 'Clean' )
+      .map( style => ( {
+        key: style.id,
+        text: style.name,
+        value: style.id,
+      } ) );
+
+
+    expect( formDropdown.prop( 'options' ) ).toEqual( addEmptyOption( options ) );
   } );
 } );
