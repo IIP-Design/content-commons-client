@@ -83,7 +83,7 @@ const GraphicStyleDropdown = props => {
         let options = [];
 
         if ( data && data.graphicStyles ) {
-          options = sortBy( data.graphicStyles, style => style.name ).map( style => ( {
+          options = sortBy( data.graphicStyles, style => style.name ).filter(s=>s.name.toLowerCase()!=='clean').map( style => ( {
             key: style.id,
             text: style.name,
             value: style.id,
