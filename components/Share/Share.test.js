@@ -6,37 +6,39 @@ jest.mock( 'next/config', () => () => ( {
   publicRuntimeConfig: {},
 } ) );
 
-const props = {
-  id: 'c888',
-  isPreview: false,
-  site: '',
-  language: 'en-us',
-  link: 'https://player.vimeo.com/video/23729318',
-  title: 'the title',
-  type: 'video'
-};
-
-const Component = <Share { ...props } />;
 
 describe( '<Share />', () => {
-  it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
+  const props = {
+    id: 'c888',
+    isPreview: false,
+    site: '',
+    language: 'en-us',
+    link: 'https://player.vimeo.com/video/23729318',
+    title: 'the title',
+    type: 'video',
+  };
 
+  let Component;
+  let wrapper;
+
+  beforeEach( () => {
+    Component = <Share { ...props } />;
+    wrapper = mount( Component );
+  } );
+
+  it( 'renders without crashing', () => {
     expect( wrapper.exists() ).toEqual( true );
     expect( toJSON( wrapper ) ).toMatchSnapshot();
   } );
 
   it( 'does not render the Facebook and Twitter share links if there is no link prop', () => {
-    const wrapper = mount( Component );
     wrapper.setProps( { link: '', type: 'post' } );
-
     const list = wrapper.find( 'List' );
 
     expect( list.exists() ).toEqual( false );
   } );
 
-  it( 'renders the Facebook and Twitter share links if type is post, but not if type is video, document, or package', () => {
-    const wrapper = mount( Component );
+  it( 'renders the Facebook and Twitter share links if type is post, but not if type is video, document, graphic, or package', () => {
     const list = wrapper.find( '.share_list' );
 
     // Test type video
@@ -53,6 +55,11 @@ describe( '<Share />', () => {
     expect( wrapper.prop( 'type' ) ).toEqual( 'document' );
     expect( list.exists() ).toEqual( false );
 
+    // Test type graphic
+    wrapper.setProps( { type: 'graphic' } );
+    expect( wrapper.prop( 'type' ) ).toEqual( 'graphic' );
+    expect( list.exists() ).toEqual( false );
+
     // Test type package
     wrapper.setProps( { type: 'package' } );
     expect( wrapper.prop( 'type' ) ).toEqual( 'package' );
@@ -61,10 +68,11 @@ describe( '<Share />', () => {
 
   it( 'passes the correct Facebook and Twitter share links if type is post and is from content.america.gov', () => {
     jest.resetModules();
-    const wrapper = mount( Component );
     wrapper.setProps( { link: 'content.america.gov', type: 'post' } );
 
-    const libBrowser = require( 'lib/browser' ); // eslint-disable-line
+    /* eslint-disable global-require */
+    const libBrowser = require( 'lib/browser' );
+
     libBrowser.stringifyQueryString = jest.fn( () => (
       `http://localhost/article?id=${props.id}&site=${props.site}`
     ) );
@@ -83,12 +91,13 @@ describe( '<Share />', () => {
 
   it( 'passes the correct link to ClipboardCopy if type is video & !isPreview', () => {
     jest.resetModules();
-    const wrapper = mount( Component );
     const clipboardCopy = wrapper.find( 'ClipboardCopy' );
+    const type = wrapper.prop( 'type' );
 
-    const libBrowser = require( 'lib/browser' ); // eslint-disable-line
+    const libBrowser = require( 'lib/browser' );
+
     libBrowser.stringifyQueryString = jest.fn( () => (
-      `http://localhost/video?id=${props.id}&site=${props.site}&language=${props.language}`
+      `http://localhost/${type}?id=${props.id}&site=${props.site}&language=${props.language}`
     ) );
     const shareLink = libBrowser.stringifyQueryString();
 
@@ -96,10 +105,9 @@ describe( '<Share />', () => {
   } );
 
   it( 'passes the placeholder text to ClipboardCopy if type is video & isPreview is true', () => {
-    const wrapper = mount( Component );
     wrapper.setProps( {
       isPreview: true,
-      link: 'The direct link to the project will appear here.'
+      link: 'The direct link to the project will appear here.',
     } );
     const clipboardCopy = wrapper.find( 'ClipboardCopy' );
 
@@ -108,11 +116,11 @@ describe( '<Share />', () => {
 
   it( 'passes the correct link to ClipboardCopy if type is post and is from content.america.gov', () => {
     jest.resetModules();
-    const wrapper = mount( Component );
     wrapper.setProps( { link: 'content.america.gov', type: 'post' } );
     const clipboardCopy = wrapper.find( 'ClipboardCopy' );
 
-    const libBrowser = require( 'lib/browser' ); // eslint-disable-line
+    const libBrowser = require( 'lib/browser' );
+
     libBrowser.stringifyQueryString = jest.fn( () => (
       `http://localhost/article?id=${props.id}&site=${props.site}`
     ) );
@@ -125,17 +133,18 @@ describe( '<Share />', () => {
 
   it( 'passes the correct link to ClipboardCopy if type is neither post nor video', () => {
     jest.resetModules();
-    const wrapper = mount( Component );
-    wrapper.setProps( { type: 'image' } );
+    wrapper.setProps( { type: 'graphic' } );
     const clipboardCopy = wrapper.find( 'ClipboardCopy' );
+    const type = wrapper.prop( 'type' );
 
-    const libBrowser = require( 'lib/browser' ); // eslint-disable-line
+    const libBrowser = require( 'lib/browser' );
+
     libBrowser.stringifyQueryString = jest.fn( () => (
-      `http://localhost/image?id=${props.id}&site=${props.site}&language=${props.language}`
+      `http://localhost/${type}?id=${props.id}&site=${props.site}&language=${props.language}`
     ) );
     const shareLink = libBrowser.stringifyQueryString();
 
-    expect( wrapper.prop( 'type' ) ).toEqual( 'image' );
+    expect( wrapper.prop( 'type' ) ).toEqual( type );
     expect( clipboardCopy.prop( 'copyItem' ) ).toEqual( shareLink );
   } );
 } );
