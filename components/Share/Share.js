@@ -10,12 +10,21 @@ import ShareButton from './ShareButton';
 import './Share.scss';
 
 const Share = ( {
-  id, isPreview, language, link, site, title, type
+  id,
+  isPreview,
+  language,
+  link,
+  site,
+  title,
+  type,
 } ) => {
-  const internalOnly = type === 'document' || type === 'package';
+  const internalTypes = [
+    'document', 'graphic', 'package',
+  ];
+  const internalOnly = internalTypes.some( t => t === type );
   const video = type === 'video';
 
-  const queryStr = ( type === 'post' )
+  const queryStr = type === 'post'
     ? stringifyQueryString( { id, site } )
     : stringifyQueryString( { id, site, language } );
 
@@ -46,24 +55,27 @@ const Share = ( {
   const facebookURL = `https://www.facebook.com/sharer/sharer.php?u=${shareLink}`;
   const tweet = `https://twitter.com/intent/tweet?text=${title}&url=${shareLink}`;
 
+  const displaySocialBtns = shareLink && !internalOnly && !video;
+
   return (
     <div>
-      { shareLink && !internalOnly && !video && (
-        <List className="share_list">
-          <ShareButton
-            url={ facebookURL }
-            icon="facebook f"
-            label="Share on Facebook"
-            isPreview={ isPreview }
-          />
-          <ShareButton
-            url={ tweet }
-            icon="twitter"
-            label="Share on Twitter"
-            isPreview={ isPreview }
-          />
-        </List>
-      ) }
+      { displaySocialBtns
+        && (
+          <List className="share_list">
+            <ShareButton
+              url={ facebookURL }
+              icon="facebook f"
+              label="Share on Facebook"
+              isPreview={ isPreview }
+            />
+            <ShareButton
+              url={ tweet }
+              icon="twitter"
+              label="Share on Twitter"
+              isPreview={ isPreview }
+            />
+          </List>
+        ) }
       <ClipboardCopy
         label="Direct Link"
         copyItem={ directLink }
@@ -74,7 +86,7 @@ const Share = ( {
 };
 
 Share.defaultProps = {
-  isPreview: false
+  isPreview: false,
 };
 
 Share.propTypes = {
@@ -87,7 +99,7 @@ Share.propTypes = {
   language: PropTypes.string,
   link: PropTypes.string,
   title: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
 };
 
 export default Share;
