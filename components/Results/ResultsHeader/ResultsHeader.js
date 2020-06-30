@@ -8,25 +8,25 @@ import { useAuth } from 'context/authContext';
 import ResultsToggleView from '../ResultsToggleView/ResultsToggleView';
 import './ResultsHeader.scss';
 
-/** **
-TEMP
-**** */
-const options = [{ key: 1, text: 'Relevance', value: 'relevance' }, { key: 2, text: 'Recent', value: 'published' }];
-/** * */
+const options = [
+  { key: 1, text: 'Relevance', value: 'relevance' },
+  { key: 2, text: 'Recent', value: 'published' },
+];
 
 const ResultsHeader = ( {
   search,
   toggleView,
   currentView,
   sortRequest,
-  updateSizeRequest
+  updateSizeRequest,
 } ) => {
   const { user } = useAuth();
   const searchResponseHits = search.response.took && search.response.hits.hits.length;
+
   if ( !searchResponseHits ) return null;
 
   const {
-    total, startIndex, endIndex, sort, pageSize
+    total, startIndex, endIndex, sort, pageSize,
   } = search;
 
   const resultItemsStart = startIndex + 1;
@@ -46,6 +46,7 @@ const ResultsHeader = ( {
     if ( total > 48 ) {
       pageSizes.push( { text: '96', value: 96 } );
     }
+
     return pageSizes;
   };
 
@@ -67,7 +68,12 @@ const ResultsHeader = ( {
           </Form.Group>
         </Form>
         <div className="results_total">
-          { resultItemsStart }-{ resultItemsEnd } of { numberWithCommas( total ) }
+          { resultItemsStart }
+          -
+          { resultItemsEnd }
+          {' '}
+          of
+          { numberWithCommas( total ) }
           <span style={ total > 12 ? { display: 'inline' } : { display: 'none' } }> | Show: </span>
           <Dropdown
             style={ total > 12 ? { display: 'inline' } : { display: 'none' } }
@@ -83,7 +89,7 @@ const ResultsHeader = ( {
 };
 
 const mapStateToProps = state => ( {
-  search: state.search
+  search: state.search,
 } );
 
 ResultsHeader.propTypes = {
@@ -91,7 +97,7 @@ ResultsHeader.propTypes = {
   sortRequest: func,
   updateSizeRequest: func,
   toggleView: func,
-  currentView: string
+  currentView: string,
 };
 
 export default connect( mapStateToProps, actions )( ResultsHeader );
