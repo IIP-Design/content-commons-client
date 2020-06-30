@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-
-import useIsMounted from 'lib/hooks/useIsMounted';
 import { DashboardContext } from 'context/dashboardContext';
 
 const UnpublishProjects = ( {
@@ -12,21 +10,16 @@ const UnpublishProjects = ( {
   showConfirmationMsg,
   selections,
   variables,
+  hasSelectedAllDrafts,
 } ) => {
   const { state } = useContext( DashboardContext );
-
-  const isMounted = useIsMounted();
-
-  /**
-   * Used to track number of items that need to be unpublished
-   * Cannot use 'published' as this changes with each render
-   */
-  const [numToUnpublish, setNumToUnpublish] = useState( 0 );
-
   const [bulkUnpublish] = useMutation( state.queries.unpublish );
   const [bulkStatusUpdate] = useMutation( state.queries.status );
 
-  const { data, startPolling, stopPolling } = useQuery( state.queries.content, {
+  // 1 - Using new 'metaContent' query - only fetches id, publishedAt & status fields
+  // prior query for all graphic content causes a network strain, browser has to download all img files again which are not needed here
+  // 2 - Not using stopPolling, calling stopPolling doesn not allow bulk unpublishing to finish
+  const { data, startPolling, stopPolling } = useQuery( state.queries.metaContent, {
     variables: { ...variables },
   } );
 
@@ -57,7 +50,7 @@ const UnpublishProjects = ( {
    * that is unpublished will trigger this check. The server will mark
    * each items as a 'UNPUBLISH_SUCCESS' or 'UNPUBLISH_FAILURE
    */
-  const checkUnpublishStatus = () => {
+  const checkUnpublishStatus = async () => {
     const { projectType } = state;
 
     if ( data && projectType ) {
@@ -68,19 +61,7 @@ const UnpublishProjects = ( {
         item => item.status === 'UNPUBLISH_SUCCESS' || item.status === 'UNPUBLISH_FAILURE',
       );
 
-      // Compare the number of completed items against the number of operation requested
-      // to determine if the bulk operation is complete
-      // If it is, stop polling
-      if ( numToUnpublish === updates.length ) {
-        updateStatus( updates ).finally( () => {
-          // Finally executes for both success and failure
-          // This will ensure polling is stopped
-          stopPolling();
-          if ( isMounted ) {
-            setNumToUnpublish( 0 );
-          }
-        } );
-      }
+      await updateStatus( updates );
     }
   };
 
@@ -95,10 +76,6 @@ const UnpublishProjects = ( {
 
 
   const unpublishProject = async project => {
-    // Store the number of projects that need to be unpublished.
-    // Need to do this as published changes
-    setNumToUnpublish( published.length );
-
     const result = await bulkUnpublish( { variables: { id: project.id } } ).catch( error => ( {
       error,
       project,
@@ -115,6 +92,14 @@ const UnpublishProjects = ( {
     handleResetSelections();
     showConfirmationMsg();
   };
+
+  // Display empty span if only drafts selected,
+  // we need UnpublishProjects to remain mounted so polling is not stopped prematurely
+  // instead of only mounting component if there are any published projects selected
+  // see TableActionsMenu - ln. 230
+  if ( hasSelectedAllDrafts ) return (
+    <span />
+  );
 
   return (
     <Popup
@@ -143,6 +128,7 @@ UnpublishProjects.propTypes = {
   showConfirmationMsg: PropTypes.func,
   selections: PropTypes.array,
   variables: PropTypes.object,
+  hasSelectedAllDrafts: PropTypes.bool,
 };
 
 export default UnpublishProjects;

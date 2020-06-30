@@ -227,19 +227,17 @@ const TableActionsMenu = ( {
             <img src={ archiveIcon } alt="Archive Selection(s)" title="Archive Selection(s)" />
           </Button>
 
-          { !hasSelectedAllDrafts() && (
-            <Fragment>
-              <span className="separator">|</span>
-              <UnpublishProjects
-                team={ team }
-                handleResetSelections={ handleResetSelections }
-                handleActionResult={ handleActionResult }
-                showConfirmationMsg={ showConfirmationMsg }
-                selections={ selections }
-                variables={ variables }
-              />
-            </Fragment>
-          ) }
+          {/* Keep UnpublishProjects mounted so polling is not stopped prematurely */}
+          { !hasSelectedAllDrafts() && <span className="separator">|</span> }
+          <UnpublishProjects
+            team={ team }
+            handleResetSelections={ handleResetSelections }
+            handleActionResult={ handleActionResult }
+            showConfirmationMsg={ showConfirmationMsg }
+            selections={ selections }
+            variables={ variables }
+            hasSelectedAllDrafts={ hasSelectedAllDrafts() }
+          />
         </div>
       </Fragment>
     );

@@ -46,6 +46,8 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   // Get the content data
   const contentQuery = state?.queries?.content || noopQuery;
   const countQuery = state?.queries?.count || noopQuery;
+  // const contentQuery = state?.queries?.content;
+  // const countQuery = state?.queries?.count;
 
   // Set GraphQL query variables
   const variables = { team: team.name, searchTerm };
