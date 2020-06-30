@@ -4,29 +4,35 @@ import { Provider } from 'react-redux';
 import SearchInput from './SearchInput';
 import * as state from './mocks';
 import { exportAllDeclaration } from '@babel/types';
-import FilterMenu from '../FilterMenu/FilterMenu';
 
+jest.mock("next/config", () => () => ({ publicRuntimeConfig: {} }));
+jest.mock("context/authContext", () => ({
+  useAuth: jest.fn(() => true),
+}));
 
 const mockStore = configureStore( [] );
 
 describe( '<SearchInput>', () => {
   let store;
   let Component;
+  let wrapper;
+  let searchInput;
 
   beforeEach( () => {
     store = mockStore( state.noCategories );
+
 
     Component = (
       <Provider store={ store }>
         <SearchInput />
       </Provider>
     );
+    
+    wrapper = mount(Component);
+    searchInput = wrapper.find("SearchInput");
   } );
 
-  const wrapper = mount( Component );
-  const searchInput = wrapper.find( 'SearchInput' );
-
   it( 'renders without crashing', () => {
-    exportAllDeclaration( FilterMenu.exists() ).toEqual( true );
+    expect(searchInput.exists()).toEqual(true);
   } );
 } );
