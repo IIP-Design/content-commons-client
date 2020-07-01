@@ -61,7 +61,7 @@ const Footer = () => {
           </Header.Subheader>
         </Header>
         <List horizontal divided className="footer-nav">
-          { user && (
+          { user && user.id !== 'public' && (
             <List.Item>
               <a className="footer_link" href={ config.PRESS_GUIDANCE_DB_URL } rel="noopener noreferrer" target="_blank">Archived Press Guidance</a>
             </List.Item>
