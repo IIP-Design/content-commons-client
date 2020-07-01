@@ -101,6 +101,8 @@ _This sections lists changes committed since most recent release_
 - Change way packages are removed from featured data list so that it doesn't have to be the first group listed
 - Display of alt text on GraphicProject
 - Rename useFileStateManager hook to correct spelling
+- Check for public user.id before displaying press archive footer link
+- Remove duplicate Venezuela priorities object from home page
 
 # [4.2.0](https://github.com/IIP-Design/content-commons-client/compare/v4.1.1...v4.2.0)(2020-06-11)
 
