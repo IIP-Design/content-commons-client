@@ -90,6 +90,7 @@ _This sections lists changes committed since most recent release_
 - Connect team.id in the graphic buildFormTree function to allow graphic users to change a graphic project's team
 - Adjust the graphic project team queries to handle GPA Editorial & Design or ShareAmerica, i.e., the two TeamDropdown options for graphic projects
 - Remove the Social Media Share functionality for Graphics
+- Use API URL to download video caption files
  
 
 **Fixed:**
