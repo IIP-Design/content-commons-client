@@ -58,10 +58,7 @@ const getAllSelections = ( filter, global, paramPostType ) => {
     // Filter redux is updated in SearchInput (ln. 47) to document from pkg
     // if coming from guidance pkg 'Browse All' link
     // console.log(paramPostType)
-    // if ( paramPostType === 'package' ) return;
-    const { postTypes } = filter;
-
-    if ( postTypes.includes( 'package' ) ) return;
+    if ( paramPostType === 'package' ) return;
 
     const isCheckbox = Array.isArray( value );
     const values = isCheckbox ? value : [value];
@@ -99,7 +96,7 @@ const FilterSelections = props => {
 
   useEffect( () => {
     setSelections( [...getAllSelections( filter, global, paramPostType )] );
-  }, [filter] );
+  }, [filter, paramPostType] );
 
   /**
    * Reload results page with updated query params

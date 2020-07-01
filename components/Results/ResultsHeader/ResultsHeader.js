@@ -16,7 +16,6 @@ const options = [
 
 const ResultsHeader = ( {
   search,
-  filter,
   toggleView,
   currentView,
   sortRequest,
@@ -31,14 +30,11 @@ const ResultsHeader = ( {
   // Check if Result page is from Guidance Packages 'Browse All' link on homepage
   // packages not included in search results
   // Sort dropdown menu not relevant to pkgs
-  // const { postTypes } = filter;
-  // const viewingAllPkgs = postTypes.includes( 'package' );
-
   // Check for package postTypes param if coming from pkgs Browse All link
   const {
     query: { postTypes },
   } = router;
-  const viewingAllPkgs = postTypes.includes( 'package' );
+  const viewingAllPkgs = postTypes?.includes( 'package' );
 
   const {
     total, startIndex, endIndex, sort, pageSize,
@@ -112,12 +108,10 @@ const ResultsHeader = ( {
 
 const mapStateToProps = state => ( {
   search: state.search,
-  filter: state.filter,
 } );
 
 ResultsHeader.propTypes = {
   search: object,
-  filter: object,
   sortRequest: func,
   updateSizeRequest: func,
   toggleView: func,
