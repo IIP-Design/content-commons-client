@@ -45,6 +45,14 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
     } else {
       setLocale( language );
       setDirection( getDirection( language ) );
+
+      // Update postType to document if package
+      // If coming from guidance pkg Browse All link, any searches should be on docs
+      const { postTypes } = filter;
+
+      if ( postTypes.includes( 'package' ) ) {
+        postTypeUpdate( 'document' );
+      }
     }
   }, [
     isUser, langList, language, loadLanguages, pathname, postTypeUpdate, updateSearchTerm,

@@ -1,6 +1,7 @@
 import React from 'react';
 import { object, func, string } from 'prop-types';
 import { connect } from 'react-redux';
+import { useRouter } from 'next/router';
 import { Form, Select, Dropdown } from 'semantic-ui-react';
 import { numberWithCommas } from 'lib/utils';
 import * as actions from 'lib/redux/actions/search';
@@ -15,15 +16,29 @@ const options = [
 
 const ResultsHeader = ( {
   search,
+  filter,
   toggleView,
   currentView,
   sortRequest,
   updateSizeRequest,
 } ) => {
   const { user } = useAuth();
+  const router = useRouter();
   const searchResponseHits = search.response.took && search.response.hits.hits.length;
 
   if ( !searchResponseHits ) return null;
+
+  // Check if Result page is from Guidance Packages 'Browse All' link on homepage
+  // packages not included in search results
+  // Sort dropdown menu not relevant to pkgs
+  // const { postTypes } = filter;
+  // const viewingAllPkgs = postTypes.includes( 'package' );
+
+  // Check for package postTypes param if coming from pkgs Browse All link
+  const {
+    query: { postTypes },
+  } = router;
+  const viewingAllPkgs = postTypes.includes( 'package' );
 
   const {
     total, startIndex, endIndex, sort, pageSize,
@@ -64,7 +79,14 @@ const ResultsHeader = ( {
       <div className="results_header">
         <Form className="results_sort">
           <Form.Group>
-            <Form.Field control={ Select } value={ sort } options={ options } onChange={ handleOnChange } />
+            { !viewingAllPkgs && (
+              <Form.Field
+                control={ Select }
+                value={ sort }
+                options={ options }
+                onChange={ handleOnChange }
+              />
+            ) }
           </Form.Group>
         </Form>
         <div className="results_total">
@@ -90,10 +112,12 @@ const ResultsHeader = ( {
 
 const mapStateToProps = state => ( {
   search: state.search,
+  filter: state.filter,
 } );
 
 ResultsHeader.propTypes = {
   search: object,
+  filter: object,
   sortRequest: func,
   updateSizeRequest: func,
   toggleView: func,
