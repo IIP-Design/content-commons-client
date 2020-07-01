@@ -40,6 +40,7 @@ _This sections lists changes committed since most recent release_
 - IncludeRequiredFileMsg to GraphicUpload to display a required file message if no graphic files have been selected for upload
 - Unit tests for IncludeRequiredFileMsg and GraphicUpload
 - A TeamDropdown component
+- Add getFileNameFromUrl utility function
 
 **Changed:**
 
