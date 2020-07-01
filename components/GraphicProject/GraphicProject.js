@@ -316,7 +316,7 @@ const GraphicProject = ( {
       <ModalPostMeta
         type={ projectType }
         logo={ displayDOSLogo( owner ) }
-        source={ owner }
+        source={ owner === 'GPA Editorial & Design' ? owner : '' }
         datePublished={ published }
         textDirection={ selectedUnitLanguage.text_direction }
       />
