@@ -3,13 +3,24 @@ import { mount } from 'enzyme';
 import DownloadCaption from '../DownloadCaption';
 import { mockItem } from '../../mocks';
 
-jest.mock( '../DownloadItem', () => 'download-item' );
+jest.mock(
+  'next/config',
+  () => () => ( {
+    publicRuntimeConfig: {
+      REACT_APP_PUBLIC_API: 'https://amgov-publisher-dev.s3.amazonaws.com',
+    },
+  } ),
+);
+jest.mock(
+  '../DownloadItem',
+  () => function DownloadItem() { return ''; },
+);
 
-const mockIntructions = 'Download caption file(s) for this video.';
+const mockInstructions = 'Download caption file(s) for this video.';
 
 describe( '<DownloadCaption />', () => {
   it( 'renders without crashing', () => {
-    const wrapper = mount( <DownloadCaption instructions={ mockIntructions } item={ mockItem } /> );
+    const wrapper = mount( <DownloadCaption instructions={ mockInstructions } item={ mockItem } /> );
 
     expect( wrapper.exists() ).toEqual( true );
   } );
@@ -21,23 +32,23 @@ describe( '<DownloadCaption />', () => {
 
     expect( instructions.exists() ).toEqual( false );
 
-    wrapper.setProps( { instructions: mockIntructions } );
+    wrapper.setProps( { instructions: mockInstructions } );
 
     const newInstructions = wrapper.find( '.form-group_instructions' );
 
     expect( newInstructions.exists() ).toEqual( true );
-    expect( newInstructions.contains( mockIntructions ) ).toEqual( true );
+    expect( newInstructions.contains( mockInstructions ) ).toEqual( true );
   } );
 
   it( 'passes the correct data to the DownloadItem', () => {
     const expectedDownload = 'English_SRT';
     const expectedHeader = 'Download English SRT';
     const expectedHover = 'Download English SRT';
-    const expectedUrl = 'https://amgov-publisher-dev.s3.amazonaws.com/2020/0788lwfvaep7/c9a4533157a9797a1ecee6ca2d8c382c.srt';
+    const expectedUrl = 'https://amgov-publisher-dev.s3.amazonaws.com/v1/task/download/eyJrZXkiOiJodHRwczovL2FtZ292LXB1Ymxpc2hlci1kZXYuczMuYW1hem9uYXdzLmNvbS8yMDIwLzA3ODhsd2Z2YWVwNy9jOWE0NTMzMTU3YTk3OTdhMWVjZWU2Y2EyZDhjMzgyYy5zcnQiLCJmaWxlbmFtZSI6ImM5YTQ1MzMxNTdhOTc5N2ExZWNlZTZjYTJkOGMzODJjLnNydCJ9';
 
     const wrapper = mount( <DownloadCaption item={ mockItem } /> );
 
-    const downloadItem = wrapper.find( 'download-item' );
+    const downloadItem = wrapper.find( 'DownloadItem' );
 
     expect( downloadItem.exists() ).toEqual( true );
     expect( downloadItem.prop( 'download' ) ).toEqual( expectedDownload );
