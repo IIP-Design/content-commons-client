@@ -137,7 +137,7 @@ const ProjectDetailsForm = props => {
                           onChange={ handleOnChange }
                           error={ touched.visibility && !!errors.visibility }
                           { ...( config.visibility?.required && { required: true } ) }
-                          hide="internal"
+                          { ...( config.visibility?.props && { ...config.visibility.props } ) }
                         />
                       </div>
                       <p className="error-message">{ touched.visibility ? errors.visibility : '' }</p>
