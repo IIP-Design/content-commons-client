@@ -40,6 +40,7 @@ _This sections lists changes committed since most recent release_
 - IncludeRequiredFileMsg to GraphicUpload to display a required file message if no graphic files have been selected for upload
 - Unit tests for IncludeRequiredFileMsg and GraphicUpload
 - A TeamDropdown component
+- Add getFileNameFromUrl utility function
 
 **Changed:**
 
@@ -89,8 +90,10 @@ _This sections lists changes committed since most recent release_
 - Use TeamDropdown instead of an input field in ProjectDetailsForm for graphic projects
 - Connect team.id in the graphic buildFormTree function to allow graphic users to change a graphic project's team
 - Adjust the graphic project team queries to handle GPA Editorial & Design or ShareAmerica, i.e., the two TeamDropdown options for graphic projects
-- Remove the Social Media Share functionality for Graphics
+- Remove the Social Media Share functionality for Graphics 
+- Use API URL to download video caption files 
 - Display the ShareAmerica logo in the graphic project preview and graphic project results card if the project's owner is ShareAmerica
+ 
  
 
 **Fixed:**

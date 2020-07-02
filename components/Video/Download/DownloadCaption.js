@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import DownloadItem from './DownloadItem';
-import { maybeGetUrlToProdS3 } from 'lib/utils';
+import { getFileDownloadUrl, getFileNameFromUrl } from 'lib/utils';
 
 const DownloadCaption = ( { instructions, item } ) => {
   const [srts, setSrts] = useState( [] );
@@ -31,16 +31,18 @@ const DownloadCaption = ( { instructions, item } ) => {
       { instructions && <div className="form-group_instructions">{ instructions }</div> }
       { srts.length < 1 && 'There are no caption files available for download at this time' }
       { srts.length > 0 && srts.map( srt => {
-        const lang = srt?.language?.display_name ? srt.language.display_name : ''; // eslint-disable-line camelcase
-        const src = srt?.srcUrl ? srt.srcUrl : '';
+        const lang = srt?.language?.display_name || ''; // eslint-disable-line camelcase
+        const src = srt?.srcUrl || '';
+        const isVtt = srt?.supportFileType === 'vtt';
+        const filename = getFileNameFromUrl( src ) || `${lang}-caption-file.${isVtt ? 'vtt' : 'srt'}`;
 
         return (
           <DownloadItem
-            download={ `${lang}_${src.includes( '.vtt' ) ? 'VTT' : 'SRT'}` }
-            header={ `Download ${lang} ${src.includes( '.vtt' ) ? 'VTT' : 'SRT'}` }
-            hover={ `Download ${lang} ${src.includes( '.vtt' ) ? 'VTT' : 'SRT'}` }
+            download={ `${lang}_${isVtt ? 'VTT' : 'SRT'}` }
+            header={ `Download ${lang} ${isVtt ? 'VTT' : 'SRT'}` }
+            hover={ `Download ${lang} ${isVtt ? 'VTT' : 'SRT'}` }
             key={ src }
-            url={ maybeGetUrlToProdS3( src ) }
+            url={ getFileDownloadUrl( src, filename ) }
           />
         );
       } ) }
