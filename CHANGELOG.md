@@ -41,6 +41,7 @@ _This sections lists changes committed since most recent release_
 - Unit tests for IncludeRequiredFileMsg and GraphicUpload
 - A TeamDropdown component
 - Add getFileNameFromUrl utility function
+- Internal visibility for Graphic projects
 
 **Changed:**
 

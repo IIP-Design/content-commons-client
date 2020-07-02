@@ -44,14 +44,20 @@ const GraphicSupportFiles = props => {
           id: projectId,
         },
       },
-      refetchQueries: [
-        {
+      update: client => {
+        const { graphicProject } = client.readQuery( {
           query: GRAPHIC_PROJECT_QUERY,
-          variables: {
-            id: projectId,
-          },
-        },
-      ],
+          variables: { id: projectId },
+        } );
+
+        const supportFiles = graphicProject?.supportFiles?.filter( file => file.id !== id );
+        const _graphicProject = { ...graphicProject, supportFiles };
+
+        client.writeQuery( {
+          query: GRAPHIC_PROJECT_QUERY,
+          data: { graphicProject: _graphicProject },
+        } );
+      },
     } )
       .then( showNotification )
       .then( handleReset )
