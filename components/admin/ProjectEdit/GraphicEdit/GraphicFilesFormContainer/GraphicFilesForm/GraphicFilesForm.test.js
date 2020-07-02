@@ -259,15 +259,60 @@ describe( '<GraphicFilesForm />, when no files are received', () => {
     graphicsForm = wrapper.find( 'GraphicFilesForm' );
   } );
 
-  it( 'renders a No Files message', () => {
+  it( 'renders a "Please upload..." message', () => {
     const semanticForm = graphicsForm.find( 'Form' );
     const noFilesWrapper = graphicsForm.find( '.no-files' );
-    const msg = 'No files to upload';
+    const uploadMsg = 'Please upload at least one graphic file.';
+    const noFilesMsg = 'No files to upload';
 
     expect( semanticForm.exists() ).toEqual( false );
     expect( noFilesWrapper.exists() ).toEqual( true );
     expect( noFilesWrapper.name() ).toEqual( 'p' );
-    expect( noFilesWrapper.contains( msg ) ).toEqual( true );
+    expect( noFilesWrapper.contains( uploadMsg ) ).toEqual( true );
+    expect( noFilesWrapper.contains( noFilesMsg ) ).toEqual( false );
+  } );
+} );
+
+describe( '<GraphicFilesForm />, when no files and no projectId', () => {
+  const consoleError = console.error;
+
+  beforeAll( () => suppressActWarning( consoleError ) );
+  afterAll( () => {
+    console.error = consoleError;
+  } );
+
+  let Component;
+  let wrapper;
+  let graphicsForm;
+
+  const newProps = {
+    ...props,
+    projectId: undefined,
+    files: [],
+  };
+
+  beforeEach( () => {
+    Component = (
+      <MockedProvider mocks={ mocks } addTypename>
+        <GraphicFilesForm { ...newProps } />
+      </MockedProvider>
+    );
+
+    wrapper = mount( Component );
+    graphicsForm = wrapper.find( 'GraphicFilesForm' );
+  } );
+
+  it( 'renders a "No files..." message', () => {
+    const semanticForm = graphicsForm.find( 'Form' );
+    const noFilesWrapper = graphicsForm.find( '.no-files' );
+    const uploadMsg = 'Please upload at least one graphic file.';
+    const noFilesMsg = 'No files to upload';
+
+    expect( semanticForm.exists() ).toEqual( false );
+    expect( noFilesWrapper.exists() ).toEqual( true );
+    expect( noFilesWrapper.name() ).toEqual( 'p' );
+    expect( noFilesWrapper.contains( uploadMsg ) ).toEqual( false );
+    expect( noFilesWrapper.contains( noFilesMsg ) ).toEqual( true );
   } );
 } );
 

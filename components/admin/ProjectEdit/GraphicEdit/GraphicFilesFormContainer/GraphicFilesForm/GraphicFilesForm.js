@@ -86,7 +86,11 @@ const GraphicFilesForm = props => {
   if ( !getCount( files ) ) {
     return (
       <div className="graphic-project-graphic-files">
-        <p className="no-files">No files to upload</p>
+        <p className="no-files">
+          { projectId
+            ? 'Please upload at least one graphic file.'
+            : 'No files to upload' }
+        </p>
       </div>
     );
   }
