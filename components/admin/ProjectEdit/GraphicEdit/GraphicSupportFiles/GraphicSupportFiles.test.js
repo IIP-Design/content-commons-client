@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import { act } from 'react-dom/test-utils';
-import { DELETE_SUPPORT_FILE_MUTATION } from 'lib/graphql/queries/common';
+import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import GraphicSupportFiles from './GraphicSupportFiles';
 import { truncateAndReplaceStr } from 'lib/utils';
 
@@ -20,6 +20,98 @@ jest.mock(
   'components/popups/IconPopup/IconPopup',
   () => function IconPopup() { return ''; },
 );
+
+const image1 = {
+  id: 'cka5di41430i10720v06c52ic',
+  createdAt: '2020-05-13T13:21:56.183Z',
+  updatedAt: '2020-05-13T13:25:12.933Z',
+  filename: '4_3_Serious_TW.jpg',
+  filetype: 'image/jpeg',
+  filesize: 297343,
+  url: '2020/04/commons.america.gov_ck9laaua62c2o0720577s3jto/4_3_Serious_TW.jpg',
+  signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2020/04/commons.america.gov_ck9laaua62c2o0720577s3jto/4_3_Serious_TW.jpg?AWSAccessKeyId=someaccesskey&Expires=1589466970&Signature=thesignature',
+  alt: null,
+  language: {
+    id: 'ck2lzfx710hkq07206thus6pt',
+    locale: 'en-us',
+    languageCode: 'en',
+    displayName: 'English',
+    textDirection: 'LTR',
+    nativeName: 'English',
+    __typename: 'Language',
+  },
+  dimensions: {
+    id: 'cka5di41m30i20720rvqjahzy',
+    height: 675,
+    width: 1200,
+    __typename: 'Dimensions',
+  },
+  __typename: 'ImageFile',
+  title: '4_3_Serious_TW.jpg',
+  style: {
+    id: 'ck9h3koe426aa0720y421wmk3',
+    name: 'Clean',
+    __typename: 'GraphicStyle',
+  },
+  social: [
+    {
+      id: 'ck9h3m3g626bd07201gh712vk',
+      name: 'Twitter',
+      __typename: 'SocialPlatform',
+    },
+  ],
+  use: {
+    id: 'ck2lzfx510hhj07205mal3e4l',
+    name: 'Thumbnail/Cover Image',
+    __typename: 'ImageUse',
+  },
+};
+
+const image2 = {
+  id: 'cka5di48r30ig072003dqjffb',
+  createdAt: '2020-05-13T13:21:56.467Z',
+  updatedAt: '2020-05-13T13:25:12.937Z',
+  filename: '4_3_Serious_FB.jpg',
+  filetype: 'image/jpeg',
+  filesize: 433851,
+  url: '2020/04/commons.america.gov_ck9laaua62c2o0720577s3jto/4_3_Serious_FB.jpg',
+  signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2020/04/commons.america.gov_ck9laaua62c2o0720577s3jto/4_3_Serious_FB.jpg?AWSAccessKeyId=someaccesskey&Expires=1589466970&Signature=thesignature',
+  alt: null,
+  language: {
+    id: 'ck2lzfx710hkq07206thus6pt',
+    locale: 'en-us',
+    languageCode: 'en',
+    displayName: 'English',
+    textDirection: 'LTR',
+    nativeName: 'English',
+    __typename: 'Language',
+  },
+  dimensions: {
+    id: 'cka5di49730ih0720o1u2m49y',
+    height: 1200,
+    width: 1200,
+    __typename: 'Dimensions',
+  },
+  __typename: 'ImageFile',
+  title: '4_3_Serious_FB.jpg',
+  style: {
+    id: 'ck9h3kyb326ak0720wkbk01q6',
+    name: 'Info/Stat',
+    __typename: 'GraphicStyle',
+  },
+  social: [
+    {
+      id: 'ck9h3m9bl26bm0720rm69c60s',
+      name: 'Facebook',
+      __typename: 'SocialPlatform',
+    },
+  ],
+  use: {
+    id: 'ck2lzfx510hhj07205mal3e4l',
+    name: 'Thumbnail/Cover Image',
+    __typename: 'ImageUse',
+  },
+};
 
 const props = {
   projectId: 'project-123',
@@ -66,22 +158,214 @@ const props = {
       use: null,
       __typename: 'SupportFile',
     },
+    image1,
+    image2,
   ],
   updateNotification: jest.fn(),
+};
+
+const projectData = {
+  id: props.projectId,
+  createdAt: '2020-04-22T11:40:51.599Z',
+  updatedAt: '2020-05-04T17:17:30.316Z',
+  publishedAt: null,
+  type: 'SOCIAL_MEDIA',
+  title: 'Just another graphic project',
+  copyright: 'NO_COPYRIGHT',
+  alt: 'some alt text',
+  descPublic: 'the public description',
+  descInternal: 'the internal description',
+  assetPath: null,
+  author: {
+    id: 'ck2m042xo0rnp0720nb4gxjix',
+    firstName: 'Edwin',
+    lastName: 'Mah',
+    email: 'mahe@america.gov',
+    __typename: 'User',
+  },
+  team: {
+    id: 'ck2qgfbku0ubh0720iwhkvuyn',
+    name: 'GPA Press Office',
+    contentTypes: ['GRAPHIC'],
+    __typename: 'Team',
+  },
+  status: 'DRAFT',
+  visibility: 'PUBLIC',
+  images: [image1, image2],
+  supportFiles: [props.files[1], props.files[2]],
+  categories: [
+    {
+      id: 'ck2lzgu1c0re307202dlrnue2',
+      translations: [
+        {
+          id: 'ck2lzfxab0hls0720o2sjmoqw',
+          name: 'about america',
+          language: {
+            id: 'ck2lzfx710hkq07206thus6pt',
+            locale: 'en-us',
+            languageCode: 'en',
+            displayName: 'English',
+            textDirection: 'LTR',
+            nativeName: 'English',
+            __typename: 'Language',
+          },
+          __typename: 'LanguageTranslation',
+        },
+        {
+          id: 'ck2lzfxbe0hlz0720qou6kr5x',
+          name: 'conozca Estados Unidos',
+          language: {
+            id: 'ck2lzfx7o0hl707205uteku77',
+            locale: 'es-es',
+            languageCode: 'es',
+            displayName: 'Spanish',
+            textDirection: 'LTR',
+            nativeName: 'Español',
+            __typename: 'Language',
+          },
+          __typename: 'LanguageTranslation',
+        },
+        {
+          id: 'ck2lzfxc90hm60720onv6tbro',
+          name: 'Amérique',
+          language: {
+            id: 'ck2lzfx710hkp07206oo0icbv',
+            locale: 'fr-fr',
+            languageCode: 'fr',
+            displayName: 'French',
+            textDirection: 'LTR',
+            nativeName: 'Français',
+            __typename: 'Language',
+          },
+          __typename: 'LanguageTranslation',
+        },
+      ],
+      __typename: 'Category',
+    },
+    {
+      id: 'ck2lzgu1e0re90720th24sglh',
+      translations: [
+        {
+          id: 'ck2lzfye00hxg0720djwj20fs',
+          name: 'geography',
+          language: {
+            id: 'ck2lzfx710hkq07206thus6pt',
+            locale: 'en-us',
+            languageCode: 'en',
+            displayName: 'English',
+            textDirection: 'LTR',
+            nativeName: 'English',
+            __typename: 'Language',
+          },
+          __typename: 'LanguageTranslation',
+        },
+        {
+          id: 'ck2lzfyej0hxn0720fwm4ior3',
+          name: 'Geografía',
+          language: {
+            id: 'ck2lzfx7o0hl707205uteku77',
+            locale: 'es-es',
+            languageCode: 'es',
+            displayName: 'Spanish',
+            textDirection: 'LTR',
+            nativeName: 'Español',
+            __typename: 'Language',
+          },
+          __typename: 'LanguageTranslation',
+        },
+        {
+          id: 'ck2lzfyf10hxu072065vqpr38',
+          name: 'Géographie',
+          language: {
+            id: 'ck2lzfx710hkp07206oo0icbv',
+            locale: 'fr-fr',
+            languageCode: 'fr',
+            displayName: 'French',
+            textDirection: 'LTR',
+            nativeName: 'Français',
+            __typename: 'Language',
+          },
+          __typename: 'LanguageTranslation',
+        },
+      ],
+      __typename: 'Category',
+    },
+  ],
+  tags: [
+    {
+      id: 'ck2lzgu5e0rhu07207x85lxmb',
+      translations: [
+        {
+          id: 'ck2lzgiwy0nx40720sedxm612',
+          name: 'biomedical science',
+          language: {
+            id: 'ck2lzfx710hkq07206thus6pt',
+            locale: 'en-us',
+            languageCode: 'en',
+            displayName: 'English',
+            textDirection: 'LTR',
+            nativeName: 'English',
+            __typename: 'Language',
+          },
+          __typename: 'LanguageTranslation',
+        },
+        {
+          id: 'ck2lzgixn0nxb072018rszcc5',
+          name: 'ciencia Biomedica',
+          language: {
+            id: 'ck2lzfx7o0hl707205uteku77',
+            locale: 'es-es',
+            languageCode: 'es',
+            displayName: 'Spanish',
+            textDirection: 'LTR',
+            nativeName: 'Español',
+            __typename: 'Language',
+          },
+          __typename: 'LanguageTranslation',
+        },
+        {
+          id: 'ck2lzgiy90nxi0720u91l9paa',
+          name: 'science biomédicale',
+          language: {
+            id: 'ck2lzfx710hkp07206oo0icbv',
+            locale: 'fr-fr',
+            languageCode: 'fr',
+            displayName: 'French',
+            textDirection: 'LTR',
+            nativeName: 'Français',
+            __typename: 'Language',
+          },
+          __typename: 'LanguageTranslation',
+        },
+      ],
+      __typename: 'Tag',
+    },
+  ],
+  __typename: 'GraphicProject',
 };
 
 describe( '<GraphicSupportFiles />, for editable files', () => {
   const mocks = [
     {
       request: {
-        query: DELETE_SUPPORT_FILE_MUTATION,
+        query: UPDATE_GRAPHIC_PROJECT_MUTATION,
         variables: {
-          id: props.files[0].id,
+          data: {
+            type: 'SOCIAL_MEDIA',
+            supportFiles: {
+              'delete': {
+                id: props.files[0].id,
+              },
+            },
+          },
+          where: {
+            id: props.projectId,
+          },
         },
       },
       result: {
-        deleteSupportFile: {
-          id: props.files[0].id,
+        data: {
+          updateGraphicProject: projectData,
         },
       },
     },
@@ -285,14 +569,24 @@ describe( '<GraphicSupportFiles />, for additional files', () => {
   const mocks = [
     {
       request: {
-        query: DELETE_SUPPORT_FILE_MUTATION,
+        query: UPDATE_GRAPHIC_PROJECT_MUTATION,
         variables: {
-          id: newProps.files[0].id,
+          data: {
+            type: 'SOCIAL_MEDIA',
+            supportFiles: {
+              'delete': {
+                id: newProps.files[0].id,
+              },
+            },
+          },
+          where: {
+            id: newProps.projectId,
+          },
         },
       },
       result: {
-        deleteSupportFile: {
-          id: newProps.files[0].id,
+        data: {
+          updateGraphicProject: projectData,
         },
       },
     },
