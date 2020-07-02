@@ -6,8 +6,7 @@ import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmMod
 import IconPopup from 'components/popups/IconPopup/IconPopup';
 import Filename from 'components/admin/Filename/Filename';
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
-import { DELETE_SUPPORT_FILE_MUTATION } from 'lib/graphql/queries/common';
-import { GRAPHIC_PROJECT_QUERY } from 'lib/graphql/queries/graphic';
+import { GRAPHIC_PROJECT_QUERY, UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import useTimeout from 'lib/hooks/useTimeout';
 import { getCount } from 'lib/utils';
 import './GraphicSupportFiles.scss';
@@ -18,7 +17,7 @@ const GraphicSupportFiles = props => {
   } = props;
   const [fileIdToDelete, setFileIdToDelete] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
-  const [deleteSupportFile] = useMutation( DELETE_SUPPORT_FILE_MUTATION );
+  const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
 
   const showNotification = () => updateNotification( 'Changes saved' );
   const hideNotification = () => updateNotification( '' );
@@ -31,18 +30,34 @@ const GraphicSupportFiles = props => {
   };
 
   const handleDelete = async id => {
-    await deleteSupportFile( {
+    await updateGraphicProject( {
       variables: {
-        id,
-      },
-      refetchQueries: [
-        {
-          query: GRAPHIC_PROJECT_QUERY,
-          variables: {
-            id: projectId,
+        data: {
+          type: 'SOCIAL_MEDIA',
+          supportFiles: {
+            'delete': {
+              id,
+            },
           },
         },
-      ],
+        where: {
+          id: projectId,
+        },
+      },
+      update: client => {
+        const { graphicProject } = client.readQuery( {
+          query: GRAPHIC_PROJECT_QUERY,
+          variables: { id: projectId },
+        } );
+
+        const supportFiles = graphicProject?.supportFiles?.filter( file => file.id !== id );
+        const _graphicProject = { ...graphicProject, supportFiles };
+
+        client.writeQuery( {
+          query: GRAPHIC_PROJECT_QUERY,
+          data: { graphicProject: _graphicProject },
+        } );
+      },
     } )
       .then( showNotification )
       .then( handleReset )
