@@ -40,6 +40,8 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
       setLocale( 'en-us' );
       setDirection( 'left' );
       updateSearchTerm( '' );
+      // Reset selected radio btn to default
+      setSelectedRadio( 'multiple' );
     } else {
       setLocale( language );
       setDirection( getDirection( language ) );

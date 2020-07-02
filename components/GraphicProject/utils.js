@@ -73,7 +73,7 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
     } ) );
 
     const gqlObj = {
-      title: file.projectTitle || '',
+      title: file.projectTitle || file.title || '',
       alt: file.alt || '',
       projectType: file.projectType || '',
       published: file.createdAt || '',
