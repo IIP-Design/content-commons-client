@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import moment from 'moment';
 import { graphicElasticMock } from '../graphicElasticMock';
-import { getGraphicImgsBySocial } from '../utils';
+// import { getGraphicImgsBySocial } from '../utils';
 import { normalizeItem } from 'lib/elastic/parser';
 import GraphicCard from './GraphicCard';
 
@@ -11,6 +11,7 @@ jest.mock( 'next/config', () => () => ( {
 } ) );
 
 const mockedSignedUrl = 'https://mockImg.jpg';
+
 jest.mock( 'lib/hooks/useSignedUrl', () => jest.fn( () => ( { signedUrl: mockedSignedUrl } ) ) );
 
 jest.mock( '../GraphicProject', () => function GraphicProject() { return ''; } );
@@ -20,13 +21,17 @@ const props = {
 };
 
 // Set default thumbnail img
-const filteredGraphicImgs = getGraphicImgsBySocial( props.item.images, 'Twitter' );
-const setDefaultImg = () => {
-  const englishImg = filteredGraphicImgs.find( img => img.language.display_name === 'English' );
-  if ( englishImg ) return englishImg;
-  return filteredGraphicImgs[0];
-};
-const thumbnailImg = setDefaultImg();
+// const filteredGraphicImgs = getGraphicImgsBySocial( props.item.images, 'Twitter' );
+// const setDefaultImg = () => {
+//   const englishImg = filteredGraphicImgs.find( img => img.language.display_name === 'English' );
+
+//   if ( englishImg ) {
+//     return englishImg;
+//   }
+
+//   return filteredGraphicImgs[0];
+// };
+// const thumbnailImg = setDefaultImg();
 
 const Component = <GraphicCard { ...props } />;
 
@@ -45,6 +50,7 @@ describe( 'GraphicCard', () => {
 
   it( 'renders the thumbnail', () => {
     const thumbnail = wrapper.find( 'img[data-img="graphic_thumbnail"]' );
+
     expect( thumbnail.exists() ).toEqual( true );
     expect( thumbnail.prop( 'src' ) ).toEqual( mockedSignedUrl );
   } );
@@ -53,7 +59,7 @@ describe( 'GraphicCard', () => {
     const buttonTitle = wrapper.find( 'button.title' );
 
     expect( buttonTitle.exists() ).toEqual( true );
-    expect( buttonTitle.text() ).toEqual( props.item.title ); 
+    expect( buttonTitle.text() ).toEqual( props.item.title );
   } );
 
   it( 'toggles the modal on handleOpen & handleClose', () => {

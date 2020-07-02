@@ -4,6 +4,7 @@ import ContentPage from 'components/PageTypes/ContentPage/ContentPage';
 import GraphicProject from 'components/GraphicProject/GraphicProject';
 import { fetchUser } from 'context/authContext';
 import { getItemRequest } from 'lib/elastic/api';
+import { redirectTo } from 'lib/browser';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
 
 const GraphicPage = ( { item, url } ) => (
@@ -21,7 +22,12 @@ GraphicPage.getInitialProps = async ctx => {
     : '';
 
   if ( query && query.site && query.id ) {
-    const response = await getItemRequest( query.site, query.id, user );
+    const response = await getItemRequest( query.site, query.id, true, user );
+
+    if ( response.internal ) {
+      redirectTo( `/login?return=${ctx.asPath}`, ctx );
+    }
+
     const item = getDataFromHits( response );
 
     if ( item && item[0] ) {
