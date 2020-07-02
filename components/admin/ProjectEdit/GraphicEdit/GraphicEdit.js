@@ -247,10 +247,9 @@ const GraphicEdit = ( { id } ) => {
 
     if ( data?.graphicProject ) {
       const { images } = data.graphicProject;
+      const hasImages = getCount( images ) > 0;
 
-      if ( !images.length ) {
-        setDisableBtns( true );
-      }
+      setDisableBtns( !hasImages );
     }
 
     return () => {
@@ -268,7 +267,6 @@ const GraphicEdit = ( { id } ) => {
       handleStatusChange( data.graphicProject );
     }
   }, [data] );
-
 
   const getStyleId = name => {
     const styles = stylesData?.graphicStyles;
