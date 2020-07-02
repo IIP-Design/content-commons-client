@@ -7,6 +7,7 @@ import { Modal } from 'semantic-ui-react';
 import MediaObject from 'components/MediaObject/MediaObject';
 import TagsList from 'components/modals/ModalPostTags/ModalPostTags';
 import DosSeal from 'static/images/dos_seal.svg';
+import logoShareAmerica from 'static/images/logo_shareamerica.svg';
 import { getGraphicImgsBySocial } from '../utils';
 import GraphicProject from '../GraphicProject';
 import './GraphicCard.scss';
@@ -82,14 +83,30 @@ const GraphicCard = ( { item } ) => {
 
         { getCount( categories ) > 0 && <TagsList tags={ categories } /> }
 
-        <MediaObject
-          body={ <span>{ owner || 'U.S. Department of State' }</span> }
-          className="seal"
-          img={ {
-            src: DosSeal,
-            alt: `${owner || 'U.S. Department of State'} seal`,
-          } }
-        />
+        { owner === 'ShareAmerica'
+          ? (
+            <img
+              src={ logoShareAmerica }
+              alt={ `${owner} logo` }
+              className="ShareAmerica-logo"
+              /**
+               * Set height here instead of in stylesheet
+               * to avoid the logo resizing and layout
+               * shift when the page is loaded
+               */
+              height="20"
+            />
+          )
+          : (
+            <MediaObject
+              body={ <span>{ owner || 'U.S. Department of State' }</span> }
+              className="seal"
+              img={ {
+                src: DosSeal,
+                alt: `${owner || 'U.S. Department of State'} seal`,
+              } }
+            />
+          ) }
       </footer>
     </article>
   );
