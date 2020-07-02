@@ -7,7 +7,7 @@ const props = {
   publishing: false,
   status: 'DRAFT',
   updated: false,
-  disabled: false
+  disabled: false,
 };
 
 const getBtn = ( str, buttons ) => (
@@ -31,6 +31,7 @@ describe( '<ButtonPublish />, for DRAFT status', () => {
 
   it( 'renders the Publish button', () => {
     const publishBtn = getBtn( 'Publish', btns );
+
     expect( publishBtn.exists() ).toEqual( props.status === 'DRAFT' );
   } );
 
@@ -59,6 +60,7 @@ describe( '<ButtonPublish />, for DRAFT status', () => {
 
   it( 'does not render the Unpublish button', () => {
     const unpublishBtn = getBtn( 'Unpublish', btns );
+
     expect( unpublishBtn.exists() ).toEqual( false );
   } );
 } );
@@ -66,7 +68,7 @@ describe( '<ButtonPublish />, for DRAFT status', () => {
 describe( '<ButtonPublish />, for DRAFT status & disabled', () => {
   const newProps = {
     ...props,
-    disabled: true
+    disabled: true,
   };
   let Component;
   let wrapper;
@@ -84,6 +86,7 @@ describe( '<ButtonPublish />, for DRAFT status & disabled', () => {
 
   it( 'renders the disabled Publish button', () => {
     const publishBtn = getBtn( 'Publish', btns );
+
     expect( publishBtn.exists() ).toEqual( props.status === 'DRAFT' );
     expect( publishBtn.prop( 'disabled' ) ).toEqual( true );
   } );
@@ -106,6 +109,7 @@ describe( '<ButtonPublish />, for DRAFT status & disabled', () => {
 
   it( 'does not render the Unpublish button', () => {
     const unpublishBtn = getBtn( 'Unpublish', btns );
+
     expect( unpublishBtn.exists() ).toEqual( false );
   } );
 } );
@@ -113,7 +117,7 @@ describe( '<ButtonPublish />, for DRAFT status & disabled', () => {
 describe( '<ButtonPublish />, for PUBLISHED status', () => {
   const newProps = {
     ...props,
-    status: 'PUBLISHED'
+    status: 'PUBLISHED',
   };
   let Component;
   let wrapper;
@@ -131,6 +135,7 @@ describe( '<ButtonPublish />, for PUBLISHED status', () => {
 
   it( 'does not render the Publish button', () => {
     const publishBtn = getBtn( 'Publish', btns );
+
     expect( publishBtn.exists() ).toEqual( newProps.status === 'DRAFT' );
   } );
 
@@ -166,7 +171,7 @@ describe( '<ButtonPublish />, for PUBLISHED status & updated', () => {
   const newProps = {
     ...props,
     updated: true,
-    status: 'PUBLISHED'
+    status: 'PUBLISHED',
   };
   let Component;
   let wrapper;
@@ -184,6 +189,7 @@ describe( '<ButtonPublish />, for PUBLISHED status & updated', () => {
 
   it( 'does not render the Publish button', () => {
     const publishBtn = getBtn( 'Publish', btns );
+
     expect( publishBtn.exists() ).toEqual( newProps.status === 'DRAFT' );
   } );
 
@@ -212,6 +218,7 @@ describe( '<ButtonPublish />, for PUBLISHED status & updated', () => {
 
   it( 'renders the Unpublish button', () => {
     const unpublishBtn = getBtn( 'Unpublish', btns );
+
     expect( unpublishBtn.exists() ).toEqual( newProps.status !== 'DRAFT' );
   } );
 
@@ -235,7 +242,7 @@ describe( '<ButtonPublish />, for PUBLISHED status, updated, & disabled', () => 
     ...props,
     updated: true,
     status: 'PUBLISHED',
-    disabled: true
+    disabled: true,
   };
   let Component;
   let wrapper;
@@ -253,6 +260,7 @@ describe( '<ButtonPublish />, for PUBLISHED status, updated, & disabled', () => 
 
   it( 'does not render the Publish button', () => {
     const publishBtn = getBtn( 'Publish', btns );
+
     expect( publishBtn.exists() ).toEqual( newProps.status === 'DRAFT' );
   } );
 
@@ -282,6 +290,7 @@ describe( '<ButtonPublish />, for PUBLISHED status, updated, & disabled', () => 
 
   it( 'renders the Unpublish button', () => {
     const unpublishBtn = getBtn( 'Unpublish', btns );
+
     expect( unpublishBtn.exists() ).toEqual( newProps.status !== 'DRAFT' );
   } );
 
@@ -304,7 +313,7 @@ describe( '<ButtonPublish />, for PUBLISHING status, publishing, & not updated',
   const newProps = {
     ...props,
     publishing: true,
-    status: 'PUBLISHING'
+    status: 'PUBLISHING',
   };
   let Component;
   let wrapper;
@@ -322,6 +331,7 @@ describe( '<ButtonPublish />, for PUBLISHING status, publishing, & not updated',
 
   it( 'does not render the Publish button', () => {
     const publishBtn = getBtn( 'Publish', btns );
+
     expect( publishBtn.exists() ).toEqual( newProps.status === 'DRAFT' );
   } );
 
@@ -334,6 +344,7 @@ describe( '<ButtonPublish />, for PUBLISHING status, publishing, & not updated',
 
   it( 'renders the Unpublish button', () => {
     const unpublishBtn = getBtn( 'Unpublish', btns );
+
     expect( unpublishBtn.exists() ).toEqual( newProps.status !== 'DRAFT' );
   } );
 

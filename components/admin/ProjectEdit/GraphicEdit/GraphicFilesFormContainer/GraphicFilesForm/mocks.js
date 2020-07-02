@@ -123,6 +123,7 @@ const mocks = [
       query: UPDATE_GRAPHIC_PROJECT_MUTATION,
       variables: {
         data: {
+          type: 'SOCIAL_MEDIA',
           images: {
             'delete': {
               id: props.files[0].id,

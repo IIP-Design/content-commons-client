@@ -96,7 +96,11 @@ _This sections lists changes committed since most recent release_
 - Remove the Social Media Share functionality for Graphics 
 - Use API URL to download video caption files 
 - Display the ShareAmerica logo in the graphic project preview and graphic project results card if the project's owner is ShareAmerica
-
+- Disable unpublish button on graphic project details page if there are no graphic files
+- Set disableBtns state based on the presence of graphic files
+- Adjust the no files message to instruct the user to upload at least one graphic file (for an existing project)
+- Return the graphic project type when updateGraphicProject is called to delete a graphic file
+ 
  
 
 **Fixed:**
