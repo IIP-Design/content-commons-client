@@ -128,6 +128,7 @@ const VideoProjectDetailsForm = props => {
       visibility: {
         label: 'Visibility Setting',
         required: true,
+        props: { hide: 'internal' },
       },
       author: {
         label: 'Author',
