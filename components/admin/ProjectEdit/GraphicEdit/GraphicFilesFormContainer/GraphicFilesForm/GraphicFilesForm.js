@@ -40,6 +40,7 @@ const GraphicFilesForm = props => {
     await updateGraphicProject( {
       variables: {
         data: {
+          type: 'SOCIAL_MEDIA',
           images: {
             'delete': {
               id,
