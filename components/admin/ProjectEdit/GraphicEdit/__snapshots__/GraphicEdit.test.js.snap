@@ -10,6 +10,7 @@ exports[`<GraphicEdit />, when there is an existing DRAFT graphic project render
       "publish": false,
       "publishChanges": false,
       "save": false,
+      "unpublish": false,
     }
   }
   handle={
@@ -595,6 +596,7 @@ exports[`<GraphicEdit />, when there is an existing PUBLISHED graphic project re
       "publish": false,
       "publishChanges": false,
       "save": false,
+      "unpublish": false,
     }
   }
   handle={
@@ -1180,6 +1182,7 @@ exports[`<GraphicEdit />, when there is no props.id and local files have been se
       "publish": true,
       "publishChanges": true,
       "save": true,
+      "unpublish": true,
     }
   }
   handle={

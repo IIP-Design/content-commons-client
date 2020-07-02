@@ -678,6 +678,7 @@ const GraphicEdit = ( { id } ) => {
               preview: !projectId || disableBtns || !isFormValid,
               publish: !projectId || disableBtns || !isFormValid, // having graphics required?
               publishChanges: !projectId || disableBtns || !isFormValid,
+              unpublish: !projectId || disableBtns || !isFormValid,
             } }
             handle={ {
               deleteConfirm: projectId ? handleDeleteConfirm : handleExit,
