@@ -91,6 +91,8 @@ _This sections lists changes committed since most recent release_
 - Adjust the graphic project team queries to handle GPA Editorial & Design or ShareAmerica, i.e., the two TeamDropdown options for graphic projects
 - Remove the Social Media Share functionality for Graphics
 - Display the ShareAmerica logo in the graphic project preview if the project's owner is ShareAmerica
+- Use updateGraphicProject mutation to handle deletion of graphic support files
+- Update test data for GraphicSupportFiles to use updateGraphicProject
  
 
 **Fixed:**
