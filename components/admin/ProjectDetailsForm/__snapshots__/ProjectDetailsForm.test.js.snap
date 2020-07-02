@@ -199,7 +199,6 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                           className="field"
                         >
                           <VisibilityDropdown
-                            hide="internal"
                             id="visibility"
                             label="Visibility Setting"
                             name="visibility"
