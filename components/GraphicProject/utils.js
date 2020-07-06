@@ -26,6 +26,7 @@ export const normalizeGraphicProjectByAPI = ( { file, useGraphQl = false } ) => 
     images: file.images || [],
     supportFiles: file.supportFiles || [],
     categories: file.categories || '',
+    visibility: file.visibility || 'PUBLIC',
   };
 
   // Elastic API
