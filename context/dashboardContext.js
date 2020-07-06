@@ -8,6 +8,7 @@ import {
   GRAPHIC_PROJECT_IMAGE_FILES_QUERY,
   UNPUBLISH_GRAPHIC_PROJECT_MUTATION,
   UPDATE_GRAPHIC_STATUS_MUTATION,
+  GRAPHIC_PROJECTS_META_QUERY,
 } from 'lib/graphql/queries/graphic';
 import {
   DELETE_PACKAGE_MUTATION,
@@ -135,6 +136,7 @@ export const setQueries = team => {
       queries.content = TEAM_GRAPHIC_PROJECTS_QUERY;
       queries.count = TEAM_GRAPHIC_PROJECTS_COUNT_QUERY;
       queries.files = GRAPHIC_PROJECT_IMAGE_FILES_QUERY;
+      queries.metaContent = GRAPHIC_PROJECTS_META_QUERY;
       queries.remove = DELETE_GRAPHIC_PROJECT_MUTATION;
       queries.status = UPDATE_GRAPHIC_STATUS_MUTATION;
       queries.unpublish = UNPUBLISH_GRAPHIC_PROJECT_MUTATION;
