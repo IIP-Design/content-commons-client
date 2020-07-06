@@ -43,7 +43,6 @@ const getGraphicStyleId = ( styles = [], style ) => {
 const GraphicStyleDropdown = props => {
   const { filename, onChange, multiple, omit } = props;
 
-
   const getGraphicStyle = fn => {
     const file = fn.toLowerCase();
     let style = multiple ? [] : '';

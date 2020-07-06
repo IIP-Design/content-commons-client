@@ -62,6 +62,8 @@ const GraphicUpload = ( { files, closeModal } ) => {
   const [hasGraphicFiles, setHasGraphicFiles] = useState( false );
   const [showRequiredFilesMsg, setShowRequiredFilesMsg] = useState( false );
 
+  console.log( state.files );
+
   const getGraphicFiles = () => {
     if ( state?.files ) {
       return state.files.filter( file => {
