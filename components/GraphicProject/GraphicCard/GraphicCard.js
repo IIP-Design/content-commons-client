@@ -4,10 +4,14 @@ import moment from 'moment';
 import useSignedUrl from 'lib/hooks/useSignedUrl';
 import { getCount } from 'lib/utils';
 import { Modal } from 'semantic-ui-react';
+
+import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 import MediaObject from 'components/MediaObject/MediaObject';
 import TagsList from 'components/modals/ModalPostTags/ModalPostTags';
+
 import DosSeal from 'static/images/dos_seal.svg';
 import logoShareAmerica from 'static/images/logo_shareamerica.svg';
+
 import { getGraphicImgsBySocial } from '../utils';
 import GraphicProject from '../GraphicProject';
 import './GraphicCard.scss';
@@ -26,6 +30,7 @@ const GraphicCard = ( { item } ) => {
     images,
     categories,
     icon,
+    visibility,
   } = item;
 
   // Filter for Twitter imgs if available || return all imgs
@@ -50,6 +55,10 @@ const GraphicCard = ( { item } ) => {
         <img src={ signedUrl } alt={ thumbnailImg.alt } data-img="graphic_thumbnail" />
         <img src={ icon } className="graphic_icon" alt="graphic card icon" />
       </div>
+
+      { visibility === 'INTERNAL'
+          && <InternalUseDisplay style={ { margin: '0.5em auto 0 1em' } } /> }
+
       <Modal
         open={ isOpen }
         onOpen={ handleOpen }
