@@ -43,6 +43,58 @@ const Package = props => {
     }
   }, [] );
 
+  const getCollatedDocuments = () => {
+    /**
+     * Collate in this order:
+     * 1. Releases, 2. Guidances, 3. Transcripts, 4. Other
+     */
+    const releases = [];
+    const guidances = [];
+    const transcripts = [];
+    const otherDocs = [];
+
+    documents.forEach( doc => {
+      const documentUse = useGraphQl ? doc.use.name : doc.use;
+
+      switch ( documentUse ) {
+        case 'Statement':
+        case 'Travel Alert':
+        case 'Travel Warning':
+        case 'Fact Sheet':
+        case 'Media Note':
+        case 'Readout':
+        case 'Notice to the Press':
+        case 'Taken Questions':
+          releases.push( doc );
+          break;
+
+        case 'Press Guidance':
+          guidances.push( doc );
+          break;
+
+        case 'Interview':
+        case 'On-the-record Briefing':
+        case 'Remarks':
+        case 'Background Briefing':
+        case 'Speeches':
+        case 'Department Press Briefing':
+          transcripts.push( doc );
+          break;
+
+        default:
+          otherDocs.push( doc );
+          break;
+      }
+    } );
+
+    return [
+      ...releases,
+      ...guidances,
+      ...transcripts,
+      ...otherDocs,
+    ];
+  };
+
   return (
     <ModalItem
       className={ isAdminPreview ? 'package package--preview' : 'package' }
@@ -122,8 +174,8 @@ const Package = props => {
 
       <div className="package-items">
         <Card.Group>
-          {getCount( documents )
-            ? documents.map( file => (
+          { getCount( documents )
+            ? getCollatedDocuments().map( file => (
               <PackageItem
                 key={ file.id }
                 file={ normalizeDocumentItemByAPI( { file, useGraphQl } ) }
