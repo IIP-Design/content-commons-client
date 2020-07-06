@@ -16,12 +16,14 @@ const UnpublishProjects = ( {
   const [bulkUnpublish] = useMutation( state.queries.unpublish );
   const [bulkStatusUpdate] = useMutation( state.queries.status );
 
-  // 1 - Using new 'metaContent' query - only fetches id, publishedAt & status fields
+  // 1 - Using new 'metaContent' query - only fetches id, publishedAt & status fields for graphic content query
   // prior query for all graphic content causes a network strain, browser has to download all img files again which are not needed here
   // 2 - Not using stopPolling, calling stopPolling doesn not allow bulk unpublishing to finish
-  const { data, startPolling, stopPolling } = useQuery( state.queries.metaContent, {
-    variables: { ...variables },
-  } );
+  const isGraphicType = state.team.contentTypes.includes( 'GRAPHIC' );
+  const { data, startPolling, stopPolling } = useQuery(
+    isGraphicType ? state.queries.metaContent : state.queries.content,
+    { variables: { ...variables } },
+  );
 
   const published = selections.filter( p => p.status === 'PUBLISHED' );
 
