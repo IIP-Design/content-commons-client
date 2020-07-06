@@ -100,6 +100,8 @@ _This sections lists changes committed since most recent release_
 - Set disableBtns state based on the presence of graphic files
 - Adjust the no files message to instruct the user to upload at least one graphic file (for an existing project)
 - Return the graphic project type when updateGraphicProject is called to delete a graphic file
+- Display "Internal Use Only" message in graphic project previews and card if project visibility is INTERNAL
+- Update tests for GraphicProject and GraphicCard
  
  
 
