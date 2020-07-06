@@ -14,11 +14,12 @@ import {
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
+import DownloadItem from 'components/download/DownloadItem/DownloadItem';
+import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 import Notification from 'components/Notification/Notification';
 import Popover from 'components/popups/Popover/Popover';
-import TabLayout from 'components/TabLayout/TabLayout';
-import DownloadItem from 'components/download/DownloadItem/DownloadItem';
 import Share from 'components/Share/Share';
+import TabLayout from 'components/TabLayout/TabLayout';
 import GraphicFiles from './Download/GraphicFiles';
 import GenericFiles from './Download/GenericFiles';
 import Help from './Download/Help';
@@ -52,6 +53,7 @@ const GraphicProject = ( {
     projectType,
     published,
     modified,
+    visibility,
     owner,
     title: projectTitle,
     desc,
@@ -236,6 +238,10 @@ const GraphicProject = ( {
             handleLanguageChange={ handleLanguageChange }
           />
         </div>
+
+        { visibility === 'INTERNAL'
+          && <InternalUseDisplay style={ { marginLeft: 'auto' } } /> }
+
         <div className="trigger-container">
           <Popover
             id={ `${id}_graphic-share` }

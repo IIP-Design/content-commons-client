@@ -57,6 +57,10 @@ jest.mock(
 );
 
 jest.mock(
+  'components/InternalUseDisplay/InternalUseDisplay',
+  () => function InternalUseDisplay() { return ''; },
+);
+jest.mock(
   'components/Notification/Notification',
   () => function Notification() { return ''; },
 );
@@ -291,6 +295,12 @@ describe( '<GraphicProject />, for GraphQL data', () => {
       tags: getTransformedLangTaxArray( props.item.categories ),
     } );
   } );
+
+  it( 'does not render the InternalUseDisplay if visibility is PUBLIC', () => {
+    const internalDisplay = wrapper.find( 'InternalUseDisplay' );
+
+    expect( internalDisplay.exists() ).toEqual( false );
+  } );
 } );
 
 describe( '<GraphicProject />, for GraphQL data with no project alt', () => {
@@ -388,6 +398,35 @@ describe( '<GraphicProject />, for GraphQL data with null support files', () => 
 
   it( 'renders without crashing', () => {
     expect( wrapper.exists() ).toEqual( true );
+  } );
+} );
+
+describe( '<GraphicProject />, for GraphQL data with INTERNAL visibility', () => {
+  const props = {
+    displayAsModal: true,
+    isAdminPreview: true,
+    item: {
+      ...graphicGraphqlMock,
+      visibility: 'INTERNAL',
+    },
+    useGraphQl: true,
+  };
+
+  let Component;
+  let wrapper;
+
+  beforeEach( () => {
+    Component = <GraphicProject { ...props } />;
+    wrapper = mount( Component );
+  } );
+
+  it( 'renders the InternalUseDisplay', () => {
+    const internalDisplay = wrapper.find( 'InternalUseDisplay' );
+
+    expect( internalDisplay.exists() ).toEqual( true );
+    expect( internalDisplay.props() ).toEqual( {
+      style: { marginLeft: 'auto' },
+    } );
   } );
 } );
 
@@ -559,6 +598,12 @@ describe( '<GraphicProject />, for ElasticSearch data', () => {
       tags: props.item.categories,
     } );
   } );
+
+  it( 'does not render the InternalUseDisplay if visibility is PUBLIC', () => {
+    const internalDisplay = wrapper.find( 'InternalUseDisplay' );
+
+    expect( internalDisplay.exists() ).toEqual( false );
+  } );
 } );
 
 describe( '<GraphicProject />, for ElasticSearch data with no image alts', () => {
@@ -649,6 +694,36 @@ describe( '<GraphicProject />, for ElasticSearch data with null support files', 
 
   it( 'renders without crashing', () => {
     expect( wrapper.exists() ).toEqual( true );
+  } );
+} );
+
+describe( '<GraphicProject />, for ElasticSearch data with INTERNAL visibility', () => {
+  const props = {
+    item: {
+      ...graphicElasticMock[0]._source,
+      visibility: 'INTERNAL',
+    },
+  };
+
+  const normalizedData = normalizeGraphicProjectByAPI( {
+    file: props.item,
+  } );
+
+  let Component;
+  let wrapper;
+
+  beforeEach( () => {
+    Component = <GraphicProject { ...props } />;
+    wrapper = mount( Component );
+  } );
+
+  it( 'renders the InternalUseDisplay', () => {
+    const internalDisplay = wrapper.find( 'InternalUseDisplay' );
+
+    expect( internalDisplay.exists() ).toEqual( true );
+    expect( internalDisplay.props() ).toEqual( {
+      style: { marginLeft: 'auto' },
+    } );
   } );
 } );
 

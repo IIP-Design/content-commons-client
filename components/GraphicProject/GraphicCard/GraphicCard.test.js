@@ -14,11 +14,11 @@ const mockedSignedUrl = 'https://mockImg.jpg';
 
 jest.mock( 'lib/hooks/useSignedUrl', () => jest.fn( () => ( { signedUrl: mockedSignedUrl } ) ) );
 
+jest.mock(
+  'components/InternalUseDisplay/InternalUseDisplay',
+  () => function InternalUseDisplay() { return ''; },
+);
 jest.mock( '../GraphicProject', () => function GraphicProject() { return ''; } );
-
-const props = {
-  item: normalizeItem( graphicElasticMock[0], 'en-us' ),
-};
 
 // Set default thumbnail img
 // const filteredGraphicImgs = getGraphicImgsBySocial( props.item.images, 'Twitter' );
@@ -33,10 +33,17 @@ const props = {
 // };
 // const thumbnailImg = setDefaultImg();
 
-const Component = <GraphicCard { ...props } />;
+describe( '<GraphicCard />', () => {
+  const props = {
+    item: normalizeItem( graphicElasticMock[0], 'en-us' ),
+  };
+  let Component;
+  let wrapper;
 
-describe( 'GraphicCard', () => {
-  const wrapper = mount( Component );
+  beforeEach( () => {
+    Component = <GraphicCard { ...props } />;
+    wrapper = mount( Component );
+  } );
 
   it( 'renders without crashing', () => {
     expect( wrapper.exists() ).toEqual( true );
@@ -126,5 +133,36 @@ describe( 'GraphicCard', () => {
 
     expect( mediaObj.find( '.media > span' ).text() ).toEqual( propsOwner );
     expect( mediaObj.find( '.media > img' ).prop( 'src' ) ).toEqual( 'image-stub' );
+  } );
+
+  it( 'does not render the InternalUseDisplay', () => {
+    const internalDisplay = wrapper.find( 'InternalUseDisplay' );
+
+    expect( internalDisplay.exists() ).toEqual( false );
+  } );
+} );
+
+describe( '<GraphicCard />, with INTERNAL visibility', () => {
+  const props = {
+    item: {
+      ...normalizeItem( graphicElasticMock[0], 'en-us' ),
+      visibility: 'INTERNAL',
+    },
+  };
+  let Component;
+  let wrapper;
+
+  beforeEach( () => {
+    Component = <GraphicCard { ...props } />;
+    wrapper = mount( Component );
+  } );
+
+  it( 'renders the InternalUseDisplay', () => {
+    const internalDisplay = wrapper.find( 'InternalUseDisplay' );
+
+    expect( internalDisplay.exists() ).toEqual( true );
+    expect( internalDisplay.props() ).toEqual( {
+      style: { margin: '0.5em auto 0 1em' },
+    } );
   } );
 } );
