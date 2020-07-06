@@ -41,7 +41,7 @@ const getSelection = ( values, name, list, isRadio = false ) => {
 /**
  * Generate a selection array from the selected filters
  */
-const getAllSelections = ( filter, global, paramPostType ) => {
+const getAllSelections = ( filter, global ) => {
   let selectedFilters = [];
 
   // manually set filter order due to Safari issue
@@ -54,11 +54,8 @@ const getAllSelections = ( filter, global, paramPostType ) => {
     const value = filter[key];
 
     // Do not include 'package' postType in filter selections
-    // Checking via router param instead of filter redux prop
-    // Filter redux is updated in SearchInput (ln. 47) to document from pkg
     // if coming from guidance pkg 'Browse All' link
-    // console.log(paramPostType)
-    if ( paramPostType === 'package' ) return;
+    if ( key === 'postTypes' && value.includes( 'package' ) ) return;
 
     const isCheckbox = Array.isArray( value );
     const values = isCheckbox ? value : [value];
@@ -87,16 +84,11 @@ const FilterSelections = props => {
     clearFilters,
   } = props;
 
-  // Check for package postTypes param if coming from pkgs Browse All link
-  const {
-    query: { postTypes: paramPostType },
-  } = router;
-
   const [selections, setSelections] = useState( [] );
 
   useEffect( () => {
-    setSelections( [...getAllSelections( filter, global, paramPostType )] );
-  }, [filter, paramPostType] );
+    setSelections( [...getAllSelections( filter, global )] );
+  }, [filter] );
 
   /**
    * Reload results page with updated query params

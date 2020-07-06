@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { useRouter } from 'next/router';
 import { Grid } from 'semantic-ui-react';
 
-import { postTypeUpdate } from 'lib/redux/actions/filter';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
 import SearchTerm from 'components/SearchTerm/SearchTerm';
 import FilterMenu from 'components/FilterMenu/FilterMenu';
@@ -21,7 +19,7 @@ import './Results.scss';
  * and results - resolved by reordering import statements
 */
 
-const Results = ( { search, filterPostTypeUpdate } ) => {
+const Results = ( { search } ) => {
   const [view, setView] = useState( 'gallery' );
 
   const toggleView = e => {
@@ -29,20 +27,6 @@ const Results = ( { search, filterPostTypeUpdate } ) => {
   };
 
   const items = getDataFromHits( search.response );
-
-  const router = useRouter();
-  const {
-    query: { postTypes },
-  } = router;
-  const viewingAllPkgs = postTypes?.includes( 'package' );
-
-  useEffect( () => {
-    // Update postType to document if package
-    // If coming from guidance pkg Browse All link, any searches should be on docs
-    if ( viewingAllPkgs ) {
-      filterPostTypeUpdate( 'document' );
-    }
-  }, [viewingAllPkgs, filterPostTypeUpdate] );
 
   return (
     <section className="results">
@@ -81,7 +65,6 @@ const mapStateToProps = state => ( {
 
 Results.propTypes = {
   search: PropTypes.object,
-  filterPostTypeUpdate: PropTypes.func,
 };
 
-export default connect( mapStateToProps, { filterPostTypeUpdate: postTypeUpdate } )( Results );
+export default connect( mapStateToProps )( Results );

@@ -1,7 +1,6 @@
 import React from 'react';
 import { object, func, string } from 'prop-types';
 import { connect } from 'react-redux';
-import { useRouter } from 'next/router';
 import { Form, Select, Dropdown } from 'semantic-ui-react';
 import { numberWithCommas } from 'lib/utils';
 import * as actions from 'lib/redux/actions/search';
@@ -16,13 +15,13 @@ const options = [
 
 const ResultsHeader = ( {
   search,
+  filter,
   toggleView,
   currentView,
   sortRequest,
   updateSizeRequest,
 } ) => {
   const { user } = useAuth();
-  const router = useRouter();
   const searchResponseHits = search.response.took && search.response.hits.hits.length;
 
   if ( !searchResponseHits ) return null;
@@ -31,9 +30,7 @@ const ResultsHeader = ( {
   // packages not included in search results
   // Sort dropdown menu not relevant to pkgs
   // Check for package postTypes param if coming from pkgs Browse All link
-  const {
-    query: { postTypes },
-  } = router;
+  const { postTypes } = filter;
   const viewingAllPkgs = postTypes?.includes( 'package' );
 
   const {
@@ -91,6 +88,7 @@ const ResultsHeader = ( {
           { resultItemsEnd }
           {' '}
           of
+          {' '}
           { numberWithCommas( total ) }
           <span style={ total > 12 ? { display: 'inline' } : { display: 'none' } }> | Show: </span>
           <Dropdown
@@ -108,10 +106,12 @@ const ResultsHeader = ( {
 
 const mapStateToProps = state => ( {
   search: state.search,
+  filter: state.filter,
 } );
 
 ResultsHeader.propTypes = {
   search: object,
+  filter: object,
   sortRequest: func,
   updateSizeRequest: func,
   toggleView: func,
