@@ -89,9 +89,7 @@ const EditFileGridRow = ( {
         key={ `selectBox_${select?.label?.toLowerCase()}` }
         id={ file.id }
         className={ `${styles.selectBox} ${isLast( select, i ) ? '' : styles.marginRight}` }
-        // onChange={ ( _, data ) => onChange( data ) }
         onChange={ ( e, data ) => {
-          console.log( e?.target.textContent );
           if ( data.name === 'style' ) {
             const dropdownSelectionText = e?.target.textContent;
             const dataWithSelectionName = {

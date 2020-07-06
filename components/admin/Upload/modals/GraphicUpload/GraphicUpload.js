@@ -62,17 +62,18 @@ const GraphicUpload = ( { files, closeModal } ) => {
   const [hasGraphicFiles, setHasGraphicFiles] = useState( false );
   const [showRequiredFilesMsg, setShowRequiredFilesMsg] = useState( false );
 
-  console.log( state.files );
-
   const getGraphicFiles = () => {
     if ( state?.files ) {
       return state.files.filter( file => {
-        const { input: { type }, name } = file;
+        const { input: { type }, name, styleSelection } = file;
         const filename = name.toLowerCase();
+
         const isRequiredFileType = type.includes( 'gif' ) || type.includes( 'jpeg' ) || type.includes( 'png' );
         const isCleanShell = filename.includes( 'clean' ) || filename.includes( 'shell' );
+        // Do not allow reqd file types with 'Clean' style to be added as graphic files
+        const isReqdFileWithCleanStyle = isRequiredFileType && styleSelection === 'Clean';
 
-        return isRequiredFileType && !isCleanShell;
+        return isRequiredFileType && !isCleanShell && !isReqdFileWithCleanStyle;
       } );
     }
 
