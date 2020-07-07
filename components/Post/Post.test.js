@@ -3,7 +3,6 @@ import { mount } from 'enzyme';
 import Post from './Post';
 import { mockItem } from './mocks';
 
-const mockSignedUrl = 'https://example.jpg';
 const mockRouter = { pathname: '/post' };
 
 jest.mock( 'next/config', () => () => ( {
@@ -12,8 +11,6 @@ jest.mock( 'next/config', () => () => ( {
     REACT_APP_SINGLE_ARTICLE_MODULE: '',
   },
 } ) );
-
-jest.mock( 'lib/hooks/useSignedUrl', () => jest.fn( () => ( { signedUrl: mockSignedUrl } ) ) );
 
 jest.mock( 'components/modals/ModalItem', () => 'modal-item' );
 jest.mock( 'components/modals/ModalLangDropdown/ModalLangDropdown', () => 'modal-lang-dropdown' );
@@ -48,7 +45,7 @@ describe( '<Post />', () => {
     const modalImage = wrapper.find( 'modal-image' );
 
     expect( modalImage.exists() ).toEqual( true );
-    expect( modalImage.prop( 'thumbnail' ) ).toEqual( mockSignedUrl );
+    expect( modalImage.prop( 'thumbnail' ) ).toEqual( mockItem.thumbnail );
     expect( modalImage.prop( 'thumbnailMeta' ) ).toEqual( mockItem.thumbnailMeta );
   } );
 

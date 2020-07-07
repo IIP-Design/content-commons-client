@@ -26,7 +26,6 @@ import Popup from 'components/popups/Popup';
 import Share from 'components/Share/Share';
 import EmbedPost from './EmbedPost';
 import EmbedHelp from './EmbedHelp';
-import useSignedUrl from 'lib/hooks/useSignedUrl';
 
 const Post = ( { item, router } ) => {
   const { publicRuntimeConfig } = getConfig();
@@ -39,8 +38,6 @@ const Post = ( { item, router } ) => {
     // eslint-disable-next-line camelcase
     item?.language?.text_direction ? item.language.text_direction : 'ltr',
   );
-
-  const { signedUrl } = useSignedUrl( selectedItem?.thumbnail ? selectedItem.thumbnail : '' );
 
   useEffect( () => {
     if ( selectedItem ) {
@@ -127,7 +124,7 @@ const Post = ( { item, router } ) => {
             />
           </div>
         </div>
-        <ModalImage thumbnail={ signedUrl } thumbnailMeta={ selectedItem.thumbnailMeta } />
+        <ModalImage thumbnail={ selectedItem?.thumbnail || '' } thumbnailMeta={ selectedItem.thumbnailMeta } />
         <ModalContentMeta type={ selectedItem.type } dateUpdated={ selectedItem.modified } />
         <ModalText textContent={ selectedItem.content } />
         <ModalPostMeta
