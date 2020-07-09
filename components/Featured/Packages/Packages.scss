@@ -15,6 +15,7 @@
     margin: 0 auto;
     padding: 1em;
     background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
   }
 
   &_grid {
@@ -66,14 +67,30 @@
   &_header {
     display: flex;
     justify-content: space-between;
+    @media screen and (max-width: 900px) {
+      flex-direction: column-reverse;
+    }
 
     &_title {
       font-size: 24px;
+      @media screen and (max-width: 900px) {        
+        margin-bottom: 8px;
+        font-size: 20px;
+      }
+      @media screen
+      and (min-width: 768px)
+      and (max-width: 900px) {
+        margin-bottom: 1em;
+      }
     }
 
     &_link {
       font-size: 14px;
       color: $light-blue;
+      @media screen and (max-width: 900px) {
+        margin-bottom: 8px;
+        text-align: right;
+      }
     }
   }
 }

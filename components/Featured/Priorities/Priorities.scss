@@ -1,41 +1,42 @@
 @import "styles/colors.scss";
 
 .priorities {
-  @media screen and (min-width: 1340px) {
-    background: url("../../../static/images/wavy-bg.jpg") repeat;
-    padding: 3em 0;
+  background: url("../../../static/images/wavy-bg.jpg") repeat;
+  padding: 2em;
+  @media screen and (max-width: 767px) {
+    padding: 1em;
   }
 
   &container {
     max-width: 1340px;
+    padding: 1em;
     margin: 0 auto;
-    background: white;
-    padding: 30px 70px 64px;
-    border: 1px solid $light-grey;
-
-    @media screen and (max-width: 1340px) {
-      padding: 60px 2em 0;
-      border: none;
-    }
-    @media screen and (max-width: 767px) {
-      padding-right: 1em;
-      padding-left: 1em;
-    }
+    background: white;    
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
   }
 
   &title {
     display: flex;
     justify-content: space-between;
     position:relative;
+    @media screen and (max-width: 900px) {
+      flex-direction: column-reverse;
+    }
 
     h1.ui.header {
+      position: relative;
+      left: -1rem;
       padding: 0.5em 1em;
       background: $blue;
       color: #fff;
-      position: relative;
-      left: -70px;
-      @media screen and (max-width: 1340px) {
-        left: 0;
+      @media screen and (max-width: 900px) {        
+        margin-bottom: 8px;
+        font-size: 20px;
+      }
+      @media screen
+      and (min-width: 768px)
+      and (max-width: 900px) {
+        margin-bottom: 1em;
       }
     }
 
@@ -44,6 +45,11 @@
       bottom: 0.5em;
       font-size: 0.8em;
       right: 0;
+      @media screen and (max-width: 900px) {
+        position: relative;        
+        margin-bottom: 8px;
+        text-align: right;
+      }
     }
   }
 
@@ -58,6 +64,9 @@
     }
   }
 
+  .ui.stackable.grid {
+    margin-bottom: 0;
+  }
   .ui.stackable.grid > .column.prioritiesgridleft,
   .ui.stackable.grid > .column.prioritiesgridright {
     @media screen and (max-width: 767px) {
@@ -83,7 +92,7 @@
         height: 50%;
         @media screen and (max-width: 767px) {
           height: auto;
-        }
+        }        
       }
     }
   }
@@ -122,7 +131,7 @@
     margin-bottom: 0.7em;
   }
 
-  .ui.large.header {
+  > .ui.large.header {
     font-size: 1.33em;
   }
 }
@@ -131,6 +140,20 @@
   border: 1px solid $light-grey;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  @media only screen 
+  and (min-width: 375px) 
+  and (max-width: 667px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) { 
+    min-height: calc( 100vw - 2em );
+  }
+  @media only screen 
+  and (min-width: 375px) 
+  and (max-width: 667px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape)  { 
+    min-height: calc( 100vh - 2em );
+  }
 
   .prioritiesItem_img {
     position: relative;
