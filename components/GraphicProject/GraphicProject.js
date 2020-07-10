@@ -109,19 +109,12 @@ const GraphicProject = ( {
   const selectedUnitImages = images.filter( img => img.language.display_name === selectedUnitLanguage.display_name );
 
   const getSupportFiles = supportFileType => {
-    const editableExtensions = [
-      '.psd', '.ai', '.eps', '.ae', '.jpg', '.jpeg', '.png',
-    ];
     const editableFiles = [];
     const additionalFiles = [];
 
     if ( getCount( supportFiles ) ) {
       supportFiles.forEach( file => {
-        const extension = getFileExt( file.filename );
-
-        const hasEditableExt = editableExtensions.includes( extension );
-
-        if ( hasEditableExt ) {
+        if ( file.editable ) {
           editableFiles.push( file );
         } else {
           additionalFiles.push( file );
