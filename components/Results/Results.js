@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid } from 'semantic-ui-react';
 
-import * as actions from 'lib/redux/actions/filter';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
 import SearchTerm from 'components/SearchTerm/SearchTerm';
 import FilterMenu from 'components/FilterMenu/FilterMenu';
@@ -68,4 +67,4 @@ Results.propTypes = {
   search: PropTypes.object,
 };
 
-export default connect( mapStateToProps, actions )( Results );
+export default connect( mapStateToProps )( Results );

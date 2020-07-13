@@ -52,6 +52,11 @@ const getAllSelections = ( filter, global ) => {
   // loop thru filters to build selection list
   filterOrder.forEach( key => {
     const value = filter[key];
+
+    // Do not include 'package' postType in filter selections
+    // if coming from guidance pkg 'Browse All' link
+    if ( key === 'postTypes' && value.includes( 'package' ) ) return;
+
     const isCheckbox = Array.isArray( value );
     const values = isCheckbox ? value : [value];
 
