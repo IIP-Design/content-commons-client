@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import {
@@ -85,7 +85,7 @@ const LoggedOutNav = props => {
   );
 
   const renderMenuItem = item => (
-    <Menu.Item key={ item.key } name={ item.name }>
+    <Menu.Item as="li" key={ item.key } name={ item.name }>
       <Link href={ item.to } passHref>
         <a>{ item.label }</a>
       </Link>
@@ -122,26 +122,26 @@ const LoggedOutNav = props => {
   };
 
   const renderDesktopNav = items => (
-    <Menu className="nav_loggedout">
-      {items.map( item => renderMenuItem( item ) )}
-      <Menu.Item key="4" name="login">
+    <Menu as="ul" className="nav_loggedout">
+      { items.map( item => renderMenuItem( item ) ) }
+      <Menu.Item as="li" key="4" name="login">
         <a href="/login">Login</a>
       </Menu.Item>
-      {reminder && (
-        <div className="login_reminder">
+      { reminder && (
+        <li className="login_reminder">
           DOS employees, you can log in to see more content.
-          <a href="/remove-login-reminder" aria-label="Close Login Reminder" className="login_reminder_close" onClick={ e => { e.preventDefault(); setReminder( false ); } }>
+          <button type="button" aria-label="Close Login Reminder" className="login_reminder_close" onClick={ () => setReminder( false ) }>
             Got it
-          </a>
-        </div>
-      )}
-      {renderFeedbackButton()}
+          </button>
+        </li>
+      ) }
+      { renderFeedbackButton() }
     </Menu>
   );
 
 
   return (
-    <>
+    <Fragment>
       { /* Desktop nav */ }
       { !mobileMenuVisible && (
         <div>
@@ -151,7 +151,7 @@ const LoggedOutNav = props => {
 
       { /* Mobile nav */ }
       <div>{ renderMobileNav( menuItems ) }</div>
-    </>
+    </Fragment>
   );
 };
 
