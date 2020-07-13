@@ -11,6 +11,7 @@ import {
   Menu, Icon,
 } from 'semantic-ui-react';
 import config from 'config';
+import useTimeout from 'lib/hooks/useTimeout';
 import HamburgerIcon from '../HamburgerIcon';
 
 const menuItems = [
@@ -46,12 +47,14 @@ const LoggedOutNav = props => {
 
   const [reminder, setReminder] = useState( false );
 
+  const { startTimeout: showReminder } = useTimeout( () => setReminder( true ), 5000 );
+  const { startTimeout: hideReminder } = useTimeout( () => setReminder( false ), 35000 );
 
   useEffect( () => {
     window.addEventListener( 'resize', closeMobileMenu );
 
-    setTimeout( () => setReminder( true ), 5000 );
-    setTimeout( () => setReminder( false ), 35000 );
+    showReminder();
+    hideReminder();
 
     return () => {
       window.removeEventListener( 'resize', closeMobileMenu );
