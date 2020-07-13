@@ -8,25 +8,33 @@ import { useAuth } from 'context/authContext';
 import ResultsToggleView from '../ResultsToggleView/ResultsToggleView';
 import './ResultsHeader.scss';
 
-/** **
-TEMP
-**** */
-const options = [{ key: 1, text: 'Relevance', value: 'relevance' }, { key: 2, text: 'Recent', value: 'published' }];
-/** * */
+const options = [
+  { key: 1, text: 'Relevance', value: 'relevance' },
+  { key: 2, text: 'Recent', value: 'published' },
+];
 
 const ResultsHeader = ( {
   search,
+  filter,
   toggleView,
   currentView,
   sortRequest,
-  updateSizeRequest
+  updateSizeRequest,
 } ) => {
   const { user } = useAuth();
   const searchResponseHits = search.response.took && search.response.hits.hits.length;
+
   if ( !searchResponseHits ) return null;
 
+  // Check if Result page is from Guidance Packages 'Browse All' link on homepage
+  // packages not included in search results
+  // Sort dropdown menu not relevant to pkgs
+  // Check for package postTypes param if coming from pkgs Browse All link
+  const { postTypes } = filter;
+  const viewingAllPkgs = postTypes?.includes( 'package' );
+
   const {
-    total, startIndex, endIndex, sort, pageSize
+    total, startIndex, endIndex, sort, pageSize,
   } = search;
 
   const resultItemsStart = startIndex + 1;
@@ -46,6 +54,7 @@ const ResultsHeader = ( {
     if ( total > 48 ) {
       pageSizes.push( { text: '96', value: 96 } );
     }
+
     return pageSizes;
   };
 
@@ -63,11 +72,24 @@ const ResultsHeader = ( {
       <div className="results_header">
         <Form className="results_sort">
           <Form.Group>
-            <Form.Field control={ Select } value={ sort } options={ options } onChange={ handleOnChange } />
+            { !viewingAllPkgs && (
+              <Form.Field
+                control={ Select }
+                value={ sort }
+                options={ options }
+                onChange={ handleOnChange }
+              />
+            ) }
           </Form.Group>
         </Form>
         <div className="results_total">
-          { resultItemsStart }-{ resultItemsEnd } of { numberWithCommas( total ) }
+          { resultItemsStart }
+          -
+          { resultItemsEnd }
+          {' '}
+          of
+          {' '}
+          { numberWithCommas( total ) }
           <span style={ total > 12 ? { display: 'inline' } : { display: 'none' } }> | Show: </span>
           <Dropdown
             style={ total > 12 ? { display: 'inline' } : { display: 'none' } }
@@ -83,15 +105,17 @@ const ResultsHeader = ( {
 };
 
 const mapStateToProps = state => ( {
-  search: state.search
+  search: state.search,
+  filter: state.filter,
 } );
 
 ResultsHeader.propTypes = {
   search: object,
+  filter: object,
   sortRequest: func,
   updateSizeRequest: func,
   toggleView: func,
-  currentView: string
+  currentView: string,
 };
 
 export default connect( mapStateToProps, actions )( ResultsHeader );

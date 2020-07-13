@@ -26,6 +26,10 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
   const langList = languages?.list ? languages.list : [];
   const { language } = search?.language ? search.language : {};
 
+  // Check if viewing guidance packages 'Browse All' results page
+  const { postTypes } = filter;
+  const viewingAllPkgs = postTypes?.includes( 'package' );
+
   useEffect( () => {
     if ( pathname.indexOf( 'admin' ) === -1 && !langList.length ) {
       loadLanguages();
@@ -69,7 +73,16 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
   };
 
   const handleSubmit = async () => {
-    const query = fetchQueryString( { ...filter, term: search.term, language: locale } );
+    let query;
+
+    // If searching on the 'Browse All' guidance packages result page, search on document type
+    if ( viewingAllPkgs ) {
+      const updatedFilterPostypes = { ...filter, postTypes: ['document'] };
+
+      query = fetchQueryString( { ...updatedFilterPostypes, term: search.term, language: locale } );
+    } else {
+      query = fetchQueryString( { ...filter, term: search.term, language: locale } );
+    }
 
     router.push( {
       pathname: '/results',
