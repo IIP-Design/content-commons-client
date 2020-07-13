@@ -1,24 +1,27 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { updateUrl } from 'lib/browser';
-import { getCount, getPluralStringOrNot, getPreviewNotificationStyles } from 'lib/utils';
+import sortBy from 'lodash/sortBy';
 import { Card } from 'semantic-ui-react';
+
 import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import ModalItem from 'components/modals/ModalItem/ModalItem';
 import Notification from 'components/Notification/Notification';
+import PackageItem from './PackageItem/PackageItem';
 import Popup from 'components/popups/Popup';
 import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
 import Share from 'components/Share/Share';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
-import PackageItem from './PackageItem/PackageItem';
 import {
   normalizeDocumentItemByAPI, getDateTimeTerms,
 } from './utils';
+import { updateUrl } from 'lib/browser';
+import { getCount, getPluralStringOrNot, getPreviewNotificationStyles } from 'lib/utils';
 
 import './Package.scss';
 
@@ -42,6 +45,71 @@ const Package = props => {
       updateUrl( `/package?id=${id}&site=${site}&language=en-us` );
     }
   }, [] );
+
+  const getSortedDocuments = array => {
+    if ( getCount( array ) === 0 ) {
+      return array;
+    }
+
+    const primarySortKey = useGraphQl ? 'use.name' : 'use';
+    const secondarySortKey = 'filename';
+
+    return sortBy( array, [primarySortKey, secondarySortKey] );
+  };
+
+  const getCollatedDocuments = () => {
+    /**
+     * Collate in this order:
+     * 1. Releases, 2. Guidances, 3. Transcripts, 4. Other
+     */
+    const releases = [];
+    const guidances = [];
+    const transcripts = [];
+    const otherDocs = [];
+
+    documents.forEach( doc => {
+      const documentUse = useGraphQl ? doc.use.name : doc.use;
+
+      switch ( documentUse ) {
+        case 'Statement':
+        case 'Travel Alert':
+        case 'Travel Warning':
+        case 'Fact Sheet':
+        case 'Media Note':
+        case 'Readout':
+        case 'Notice to the Press':
+        case 'Taken Questions':
+          releases.push( doc );
+          break;
+
+        case 'Press Guidance':
+          guidances.push( doc );
+          break;
+
+        case 'Interview':
+        case 'On-the-record Briefing':
+        case 'Remarks':
+        case 'Background Briefing':
+        case 'Speeches':
+        case 'Department Press Briefing':
+          transcripts.push( doc );
+          break;
+
+        default:
+          otherDocs.push( doc );
+          break;
+      }
+    } );
+
+    return [
+      ...getSortedDocuments( releases ),
+      ...getSortedDocuments( guidances ),
+      ...getSortedDocuments( transcripts ),
+      ...getSortedDocuments( otherDocs ),
+    ];
+  };
+
+  const collatedDocuments = getCollatedDocuments();
 
   return (
     <ModalItem
@@ -122,8 +190,8 @@ const Package = props => {
 
       <div className="package-items">
         <Card.Group>
-          {getCount( documents )
-            ? documents.map( file => (
+          { getCount( documents )
+            ? collatedDocuments.map( file => (
               <PackageItem
                 key={ file.id }
                 file={ normalizeDocumentItemByAPI( { file, useGraphQl } ) }

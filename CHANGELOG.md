@@ -102,9 +102,8 @@ _This sections lists changes committed since most recent release_
 - Return the graphic project type when updateGraphicProject is called to delete a graphic file
 - Display "Internal Use Only" message in graphic project previews and card if project visibility is INTERNAL
 - Update tests for GraphicProject and GraphicCard
+- Display press guidance package documents in the order of releases, guidances, and transcripts
 - Use editable field to collate graphic project support files
- 
- 
 
 **Fixed:**
 
