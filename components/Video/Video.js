@@ -17,9 +17,9 @@ import ModalDescription from 'components/modals/ModalDescription/ModalDescriptio
 import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
 import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 
-import PopupTrigger from 'components/popups/PopupTrigger';
-import PopupTabbed from 'components/popups/PopupTabbed';
-import Popup from 'components/popups/Popup';
+import Popover from 'components/popups/Popover/Popover';
+import DownloadItem from 'components/download/DownloadItem/DownloadItem';
+import TabLayout from 'components/TabLayout/TabLayout';
 
 import DownloadVideo from './Download/DownloadVideo';
 import DownloadCaption from './Download/DownloadCaption';
@@ -31,13 +31,9 @@ import EmbedHelp from './Download/EmbedHelp';
 import useSignedUrl from 'lib/hooks/useSignedUrl';
 import { fetchVideoPlayer, getCaptions, getLanguage, getVideoTranscript } from './utils';
 
-import Popover from 'components/popups/Popover/Popover';
-import DownloadItem from 'components/download/DownloadItem/DownloadItem';
-import TabLayout from 'components/TabLayout/TabLayout';
-
 import './Video.scss';
 
-const Video = ( { item, router } ) => {
+const Video = ( { item, router, isAdminPreview = false } ) => {
   const {
     id, logo, modified, owner, published, selectedLanguageUnit, site, type,
   } = item;
@@ -168,7 +164,7 @@ const Video = ( { item, router } ) => {
                   <img
                     src={ embedIcon }
                     style={ { width: '20px', height: '20px' } }
-                    alt="share icon"
+                    alt="embed icon"
                   />
                 ) }
               >
@@ -236,9 +232,8 @@ const Video = ( { item, router } ) => {
                       >
                         <DownloadVideo
                           selectedLanguageUnit={ unit }
-                          instructions={ `Download the video and SRT files in ${unit.language.display_name}.
-                              This download option is best for uploading this video to web pages.` }
                           burnedInCaptions={ captions }
+                          isAdminPreview={ isAdminPreview }
                         />
                       </DownloadItem>
                     ),
@@ -296,6 +291,7 @@ const Video = ( { item, router } ) => {
 Video.propTypes = {
   router: PropTypes.object,
   item: PropTypes.object,
+  isAdminPreview: PropTypes.bool,
 };
 
 export default withRouter( Video );

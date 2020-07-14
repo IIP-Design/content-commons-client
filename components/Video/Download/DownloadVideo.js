@@ -7,18 +7,7 @@ import DownloadItemContent from 'components/download/DownloadItem/DownloadItemCo
 
 // NOTE: Using the 'download' attribute to trigger downloads
 // Need to research more robust options depending on browser support
-const DownloadVideo = ( { burnedInCaptions, selectedLanguageUnit } ) => {
-  // const getSrt = () => {
-  //   const arr = [];
-  //   const unit = selectedLanguageUnit;
-
-  //   if ( unit && unit.srt && unit.srt.srcUrl ) {
-  //     arr.push( unit.srt.srcUrl );
-  //   }
-
-  //   return arr;
-  // };
-
+const DownloadVideo = ( { burnedInCaptions, selectedLanguageUnit, isAdminPreview } ) => {
   const getSizeInfo = size => {
     if ( !size ) return null;
 
@@ -55,7 +44,7 @@ const DownloadVideo = ( { burnedInCaptions, selectedLanguageUnit } ) => {
         key={ downloadLink }
         srcUrl={ downloadLink }
         hoverText={ `Download for ${videoQuality}` }
-        // isAdminPreview={ isAdminPreview }
+        isAdminPreview={ isAdminPreview }
       >
         <div className="item-content">
           <p className="item-content__title">
@@ -104,6 +93,7 @@ const DownloadVideo = ( { burnedInCaptions, selectedLanguageUnit } ) => {
 DownloadVideo.propTypes = {
   selectedLanguageUnit: PropTypes.object,
   burnedInCaptions: PropTypes.bool,
+  isAdminPreview: PropTypes.bool,
 };
 
 export default DownloadVideo;

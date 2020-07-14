@@ -7,15 +7,22 @@ import TabPanel from './TabPanel/TabPanel';
 import './TabLayout.scss';
 
 const TabLayout = ( { headline, tabs } ) => {
-  const [active, setActive] = useState( `tab_${tabs[0].title}` );
+  const [active, setActive] = useState( null );
   const [sliderStyle, setSliderStyle] = useState( {} );
 
   useEffect( () => {
-    const activeTab = document.querySelector( '.tab-title.active' );
-    const width = activeTab.clientWidth;
-    const left = activeTab.offsetLeft;
+    setActive( `tab_${tabs[0].title}` );
+  }, [tabs] );
 
-    setSliderStyle( { width, left } );
+  useEffect( () => {
+    const activeTab = document.querySelector( '.tab-title.active' );
+
+    if ( activeTab ) {
+      const width = activeTab.clientWidth;
+      const left = activeTab.offsetLeft;
+
+      setSliderStyle( { width, left } );
+    }
   }, [active] );
 
   const handleOnClick = ( { target } ) => {
@@ -59,7 +66,7 @@ const TabLayout = ( { headline, tabs } ) => {
 
 TabLayout.propTypes = {
   headline: PropTypes.string,
-  tabs: PropTypes.array
+  tabs: PropTypes.array,
 };
 
 export default TabLayout;

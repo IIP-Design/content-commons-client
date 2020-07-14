@@ -1,26 +1,26 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { Item, Loader } from 'semantic-ui-react';
+import { Loader } from 'semantic-ui-react';
+import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
 import { getS3Url } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 
-import downloadIcon from 'static/icons/icon_download.svg';
-
 const DownloadThumbnail = props => {
-  const { data, instructions, isPreview } = props;
+  const { data, isPreview } = props;
   const { error, loading, project } = data;
 
   if ( loading ) {
     return (
-      <div style={ {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '200px'
-      } }
+      <div
+        style={ {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '200px',
+        } }
       >
         <Loader
           active
@@ -39,30 +39,22 @@ const DownloadThumbnail = props => {
 
   const renderFormItem = thumbnail => {
     const { id, url, language: { displayName } } = thumbnail;
+
     return (
-      <Item.Group key={ `fs_${id}` } className={ `download-item${isPreview ? ' preview' : ''}` }>
-        <Item
-          as={ isPreview ? 'span' : 'a' }
-          href={ isPreview ? null : getS3Url( url ) }
-          download={ isPreview ? null : `${displayName}_thumbnail` }
-        >
-          <Item.Image size="mini" src={ downloadIcon } className="download-icon" />
-          <Item.Content>
-            <Item.Header className="download-header">
+      <DownloadItemContent
+        key={ `fs_${id}` }
+        srcUrl={ getS3Url( url ) }
+        hoverText={ `Download ${displayName} Thumbnail` }
+        isAdminPreview={ isPreview }
+      >
+        <div className="item-content">
+          <p className="item-content__title">
+            <strong>
               { `Download ${displayName} Thumbnail` }
-            </Item.Header>
-            <span className="item_hover">
-              { `Download ${displayName} Thumbnail` }
-              { isPreview
-                && (
-                  <span className="preview-text">
-                    The link will be active after publishing.
-                  </span>
-                ) }
-            </span>
-          </Item.Content>
-        </Item>
-      </Item.Group>
+            </strong>
+          </p>
+        </div>
+      </DownloadItemContent>
     );
   };
 
@@ -70,21 +62,17 @@ const DownloadThumbnail = props => {
     const t = thumbnails
       .filter( thumbnail => thumbnail && thumbnail.url )
       .map( thumbnail => renderFormItem( thumbnail ) );
+
     return t.length ? t : 'There are no thumbnails available for download at this time';
   };
 
-  return (
-    <Fragment>
-      <p className="form-group_instructions">{ instructions }</p>
-      { thumbnails && renderFormItems( thumbnails ) }
-    </Fragment>
-  );
+  return thumbnails && renderFormItems( thumbnails );
 };
 
 DownloadThumbnail.propTypes = {
   data: PropTypes.object,
   instructions: PropTypes.string,
-  isPreview: PropTypes.bool
+  isPreview: PropTypes.bool,
 };
 
 const VIDEO_PROJECT_PREVIEW_THUMBNAILS_QUERY = gql`
@@ -119,9 +107,9 @@ const VIDEO_PROJECT_PREVIEW_THUMBNAILS_QUERY = gql`
 export default graphql( VIDEO_PROJECT_PREVIEW_THUMBNAILS_QUERY, {
   options: props => ( {
     variables: {
-      id: props.id
+      id: props.id,
     },
-  } )
+  } ),
 } )( DownloadThumbnail );
 
 export { VIDEO_PROJECT_PREVIEW_THUMBNAILS_QUERY };
