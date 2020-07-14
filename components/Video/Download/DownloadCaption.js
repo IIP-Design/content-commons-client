@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import DownloadItem from './DownloadItem';
 import { getFileDownloadUrl, getFileNameFromUrl } from 'lib/utils';
 
-const DownloadCaption = ( { instructions, item } ) => {
+import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
+
+const DownloadCaption = ( { item } ) => {
   const [srts, setSrts] = useState( [] );
 
   useEffect( () => {
@@ -28,22 +29,29 @@ const DownloadCaption = ( { instructions, item } ) => {
 
   return (
     <div>
-      { instructions && <div className="form-group_instructions">{ instructions }</div> }
-      { srts.length < 1 && 'There are no caption files available for download at this time' }
+      { srts.length < 1
+        && <p className="download-item__noContent">There are no caption files available for download at this time</p>}
+
       { srts.length > 0 && srts.map( srt => {
         const lang = srt?.language?.display_name || ''; // eslint-disable-line camelcase
-        const src = srt?.srcUrl || '';
         const isVtt = srt?.supportFileType === 'vtt';
+        const src = srt?.srcUrl || '';
         const filename = getFileNameFromUrl( src ) || `${lang}-caption-file.${isVtt ? 'vtt' : 'srt'}`;
 
         return (
-          <DownloadItem
-            download={ `${lang}_${isVtt ? 'VTT' : 'SRT'}` }
-            header={ `Download ${lang} ${isVtt ? 'VTT' : 'SRT'}` }
-            hover={ `Download ${lang} ${isVtt ? 'VTT' : 'SRT'}` }
+          <DownloadItemContent
             key={ src }
-            url={ getFileDownloadUrl( src, filename ) }
-          />
+            srcUrl={ getFileDownloadUrl( src, filename ) }
+            hoverText={ `Download ${lang} ${isVtt ? 'VTT' : 'SRT'}` }
+          >
+            <div className="item-content">
+              <p className="item-content__title">
+                <strong>
+                  { `Download ${lang} ${isVtt ? 'VTT' : 'SRT'}` }
+                </strong>
+              </p>
+            </div>
+          </DownloadItemContent>
         );
       } ) }
     </div>
@@ -52,7 +60,6 @@ const DownloadCaption = ( { instructions, item } ) => {
 
 DownloadCaption.propTypes = {
   item: PropTypes.object,
-  instructions: PropTypes.string,
 };
 
 export default DownloadCaption;

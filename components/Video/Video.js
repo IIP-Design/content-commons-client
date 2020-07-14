@@ -31,6 +31,10 @@ import EmbedHelp from './Download/EmbedHelp';
 import useSignedUrl from 'lib/hooks/useSignedUrl';
 import { fetchVideoPlayer, getCaptions, getLanguage, getVideoTranscript } from './utils';
 
+import Popover from 'components/popups/Popover/Popover';
+import DownloadItem from 'components/download/DownloadItem/DownloadItem';
+import TabLayout from 'components/TabLayout/TabLayout';
+
 import './Video.scss';
 
 const Video = ( { item, router } ) => {
@@ -155,86 +159,120 @@ const Video = ( { item, router } ) => {
           </div>
           <div className="trigger-container">
             { embedItem && (
-              <PopupTrigger
+              <Popover
                 toolTip="Embed video"
-                icon={ { img: embedIcon, dim: 24 } }
-                show
-                content={ (
-                  <PopupTabbed
-                    title="Embed this video on your site"
-
-                    panes={ [
-                      {
-                        title: 'Copy Embed Code',
-                        component: (
-                          <EmbedVideo
-                            instructions="Copy and paste the code below to embed video on your site"
-                            embedItem={ embedItem || null }
-                          />
-                        ),
-                      },
-                      { title: 'Help', component: <EmbedHelp /> },
-                    ] }
+                id={ `${id}_video-embed` }
+                className="video-project__popover video-project__popover--embed"
+                expandFromRight
+                trigger={ (
+                  <img
+                    src={ embedIcon }
+                    style={ { width: '20px', height: '20px' } }
+                    alt="share icon"
                   />
                 ) }
-              />
-            ) }
-            <PopupTrigger
-              toolTip="Share video"
-              icon={ { img: shareIcon, dim: 20 } }
-              show={ type === 'video' }
-              content={ (
-                <Popup title="Share this video.">
-                  <Share
-                    link={ shareLink }
-                    id={ id }
-                    site={ site }
-                    title={ unit.title }
-                    language={ selectedLanguage.locale }
-                    type={ item.type }
-                  />
-                </Popup>
-              ) }
-            />
-            <PopupTrigger
-              toolTip="Download video"
-              icon={ { img: downloadIcon, dim: 18 } }
-              position="right"
-              show={ type === 'video' }
-              content={ (
-                <PopupTabbed
-                  title="Download this video."
-                  panes={ [
+              >
+                <TabLayout
+                  headline="Download this video."
+                  tabs={ [
                     {
-                      title: 'Video File',
-                      component: (
+                      title: 'Copy Embed Code',
+                      content: (
+                        <EmbedVideo
+                          instructions="Copy and paste the code below to embed video on your site"
+                          embedItem={ embedItem || null }
+                        />
+                      ),
+                    },
+                    {
+                      title: 'Help',
+                      content: <EmbedHelp />,
+                    },
+                  ] }
+                />
+              </Popover>
+            ) }
+            <Popover
+              toolTip="Share video"
+              id={ `${id}_video-share` }
+              className="video-project__popover video-project__popover--share"
+              trigger={ (
+                <img
+                  src={ shareIcon }
+                  style={ { width: '20px', height: '20px' } }
+                  alt="share icon"
+                />
+              ) }
+              expandFromRight
+            >
+              <div className="popup_share">
+                <h2 className="ui header">Share this video.</h2>
+                <Share
+                  link={ shareLink }
+                  id={ id }
+                  site={ site }
+                  title={ unit.title }
+                  language={ selectedLanguage.locale }
+                  type={ item.type }
+                />
+              </div>
+            </Popover>
+            <Popover
+              toolTip="Download video"
+              id={ `${id}_video-download` }
+              className="video-project__popover video-project__popover--download"
+              trigger={ <img src={ downloadIcon } style={ { width: '18px', height: '18px' } } alt="download icon" /> }
+              expandFromRight
+            >
+              <TabLayout
+                headline="Download this video."
+                tabs={ [
+                  {
+                    title: 'Video File',
+                    content: (
+                      <DownloadItem
+                        instructions={ `Download the video and SRT files in ${unit.language.display_name}.
+                        This download option is best for uploading this video to web pages.` }
+                      >
                         <DownloadVideo
                           selectedLanguageUnit={ unit }
                           instructions={ `Download the video and SRT files in ${unit.language.display_name}.
                               This download option is best for uploading this video to web pages.` }
                           burnedInCaptions={ captions }
                         />
-                      ),
-                    },
-                    {
-                      title: 'Caption File',
-                      component: (
+                      </DownloadItem>
+                    ),
+                  },
+                  {
+                    title: 'Caption File',
+                    content: (
+                      <DownloadItem
+                        instructions="Download caption file(s) for this video."
+                      >
                         <DownloadCaption
                           selectedLanguageUnit={ unit }
-                          instructions="Download caption file(s) for this video."
                           item={ item }
                         />
-                      ),
-                    },
-                    {
-                      title: 'Transcript',
-                      component: <DownloadTranscript item={ item } instructions="Download Transcripts" />,
-                    },
-                    { title: 'Help', component: <DownloadHelp /> },
-                  ] }
-                />
-              ) }
-            />
+                      </DownloadItem>
+                    ),
+                  },
+                  {
+                    title: 'Transcript',
+                    content: (
+                      <DownloadItem
+                        instructions="Download Transcripts"
+                      >
+                        <DownloadTranscript item={ item } />
+                      </DownloadItem>
+                    ),
+                  },
+                  {
+                    title: 'Help',
+                    content: <DownloadHelp />,
+                  },
+                ] }
+              />
+            </Popover>
           </div>
         </div>
 

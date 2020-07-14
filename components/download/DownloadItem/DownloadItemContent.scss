@@ -15,7 +15,7 @@
     
     &:active {
       pointer-events: none;
-    }    
+    }
   }
 
   &:hover {
@@ -42,7 +42,7 @@
       $bright-blue
     );
     opacity: 0;
-    transition: opacity 0.5s linear;
+    transition: opacity 0.3s linear;    
   }
 
   &__wrapper {
@@ -96,7 +96,7 @@
       font-weight: bold;
       text-align: center;
       opacity: 0;
-      transition: opacity 0.5s linear;
+      transition: opacity 0.3s linear;
 
       .preview-text {
         display: block;

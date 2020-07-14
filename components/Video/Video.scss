@@ -6,6 +6,59 @@
   align-items: center;
 }
 
+.video-project__popover {
+
+  &--embed,
+  &--share {
+    margin-right: 5px;    
+  }
+
+  &--share {
+    .popover_content {
+      font-size: 1rem;
+    }
+  }
+  
+  .popover_content {
+    top: calc( 100% + 8px );
+
+    &:before {
+      top: -8px;
+      width: 15px;
+      height: 8px;
+      margin-right: 2px;
+      background: $bright-blue;        
+    }
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding-top: 5px;
+      background-image: linear-gradient(90deg, $light-blue 3%, $bright-blue 100%);
+    }
+
+    .form-group_instructions {
+      font-size: 0.75rem;
+      font-style: italic;
+    }
+
+    .videoDownloadHelp {
+      font-size: .85rem;
+
+      > h4 {
+        font-size: .85rem;
+      }
+    }
+
+    button[aria-controls="panel_Help"] {
+      font-weight: normal;
+    }
+  }
+}
+
 .popupElem_wrapper {
   .form-group_instructions {
     color: $grey;
