@@ -31,7 +31,7 @@
 
   h2 {
     margin: 0;
-    font-size: inherit;    
+    font-size: inherit;
   }
 
   button.title {
@@ -41,8 +41,8 @@
     font-family: inherit;
     font-weight: 700;
     text-align: left;
+    word-break: break-all; // Safari
     overflow-wrap: anywhere;
-    word-wrap: anywhere; // FF won't recognize break-word on buttons
     -webkit-hyphens: auto;
     -ms-hyphens: auto;
     -moz-hyphens: auto;
@@ -61,6 +61,8 @@
     flex: 1;
     padding: 0 0.777777778rem;
     font-size: 0.777777778rem; // 14px
+    word-break: break-all; // Safari
+    overflow-wrap: anywhere;
   }
 
   > .meta {

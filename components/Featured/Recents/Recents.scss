@@ -111,6 +111,12 @@
 
     &_title {
       width: 80%;
+      word-break: break-all; // Safari
+      overflow-wrap: anywhere;
+      -webkit-hyphens: auto;
+      -ms-hyphens: auto;
+      -moz-hyphens: auto;
+      hyphens: auto;
     }
 
     &_icon {
