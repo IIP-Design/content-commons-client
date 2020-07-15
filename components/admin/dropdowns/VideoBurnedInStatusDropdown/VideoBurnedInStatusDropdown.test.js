@@ -1,18 +1,18 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
-import { addEmptyOption, titleCase } from 'lib/utils';
+import { addEmptyOption } from 'lib/utils';
 import VideoBurnedInStatusDropdown, { VIDEO_BURNED_IN_STATUS_QUERY } from './VideoBurnedInStatusDropdown';
 
 const props = {
   id: 's123',
-  label: 'Subtitles'
+  label: 'Subtitles',
 };
 
 const mocks = [
   {
     request: {
-      query: VIDEO_BURNED_IN_STATUS_QUERY
+      query: VIDEO_BURNED_IN_STATUS_QUERY,
     },
     result: {
       data: {
@@ -20,21 +20,21 @@ const mocks = [
           enumValues: [
             { name: 'SUBTITLED' },
             { name: 'CAPTIONED' },
-            { name: 'CLEAN' }
-          ]
-        }
-      }
-    }
-  }
+            { name: 'CLEAN' },
+          ],
+        },
+      },
+    },
+  },
 ];
 
 const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 const nullMocks = [
@@ -42,10 +42,10 @@ const nullMocks = [
     ...mocks[0],
     result: {
       data: {
-        __type: { enumValues: null }
-      }
-    }
-  }
+        __type: { enumValues: null },
+      },
+    },
+  },
 ];
 
 const emptyMocks = [
@@ -53,10 +53,10 @@ const emptyMocks = [
     ...mocks[0],
     result: {
       data: {
-        __type: { enumValues: [] }
-      }
-    }
-  }
+        __type: { enumValues: [] },
+      },
+    },
+  },
 ];
 
 const Component = (
@@ -132,8 +132,8 @@ describe( '<VideoBurnedInStatusDropdown />', () => {
       {
         key: '-',
         text: '-',
-        value: null
-      }
+        value: null,
+      },
     ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
@@ -149,8 +149,8 @@ describe( '<VideoBurnedInStatusDropdown />', () => {
       {
         key: '-',
         text: '-',
-        value: null
-      }
+        value: null,
+      },
     ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
@@ -165,17 +165,11 @@ describe( '<VideoBurnedInStatusDropdown />', () => {
     const dropdownItems = wrapper.find( 'DropdownItem' );
     const { enumValues } = mocks[0].result.data.__type;
     const semanticUIValues = enumValues.filter( enumValue => enumValue.name !== 'CAPTIONED' )
-      .map( enumValue => {
-        let text = titleCase( enumValue.name );
-
-        text = ( text === 'Clean' ) ? `${text} - No captions` : text;
-
-        return {
-          key: enumValue.name,
-          text,
-          value: enumValue.name
-        };
-      } );
+      .map( ( { name } ) => ( {
+        key: name,
+        text: name === 'SUBTITLED' ? 'Yes' : 'No',
+        value: name,
+      } ) );
 
     expect( formDropdown.prop( 'options' ) )
       .toEqual( addEmptyOption( semanticUIValues ) );
