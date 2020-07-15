@@ -15,11 +15,22 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
       - name: Set up environment
         uses: actions/setup-node@v1
         with:
           node-version: '10.15.1'
+
+      - name: Prepare dependency cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
         run: npm install
+
       - name: Run tests
         run: npm run test -- --colors --ci --silent
