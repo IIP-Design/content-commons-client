@@ -44,137 +44,84 @@ exports[`<DownloadThumbnail /> renders final state without crashing 1`] = `
   instructions="Download Thumbnail(s)"
   isPreview={false}
 >
-  <p
-    className="form-group_instructions"
-  >
-    Download Thumbnail(s)
-  </p>
-  <ItemGroup
-    className="download-item"
+  <DownloadItemContent
+    hoverText="Download English Thumbnail"
+    isAdminPreview={false}
     key="fs_th765"
+    srcUrl="https://s3-url.com/2019/06/123/thumbnail-1.jpg"
   >
-    <div
-      className="ui items download-item"
+    <a
+      className="download-item"
+      download={true}
+      href="https://example.jpg"
+      key="https://example.jpg"
+      rel="noopener noreferrer"
     >
-      <Item
-        as="a"
-        download="English_thumbnail"
-        href="https://s3-url.com/2019/06/123/thumbnail-1.jpg"
+      <div
+        className="item-icon"
       >
-        <a
-          className="item"
-          download="English_thumbnail"
-          href="https://s3-url.com/2019/06/123/thumbnail-1.jpg"
+        <img
+          alt="Download English Thumbnail"
+          src="downloadIconSVG"
+        />
+      </div>
+      <div
+        className="item-content"
+      >
+        <p
+          className="item-content__title"
         >
-          <ItemImage
-            className="download-icon"
-            size="mini"
-            src="downloadIconSVG"
-          >
-            <Image
-              as="img"
-              className="download-icon"
-              size="mini"
-              src="downloadIconSVG"
-              ui={true}
-              wrapped={true}
-            >
-              <div
-                className="ui mini image download-icon"
-              >
-                <img
-                  src="downloadIconSVG"
-                />
-              </div>
-            </Image>
-          </ItemImage>
-          <ItemContent>
-            <div
-              className="content"
-            >
-              <ItemHeader
-                className="download-header"
-              >
-                <div
-                  className="header download-header"
-                >
-                  Download English Thumbnail
-                </div>
-              </ItemHeader>
-              <span
-                className="item_hover"
-              >
-                Download English Thumbnail
-              </span>
-            </div>
-          </ItemContent>
-        </a>
-      </Item>
-    </div>
-  </ItemGroup>
-  <ItemGroup
-    className="download-item"
+          <strong>
+            Download English Thumbnail
+          </strong>
+        </p>
+      </div>
+      <span
+        className="item-hover"
+      >
+        Download English Thumbnail
+      </span>
+    </a>
+  </DownloadItemContent>
+  <DownloadItemContent
+    hoverText="Download English Thumbnail"
+    isAdminPreview={false}
     key="fs_th865"
+    srcUrl="https://s3-url.com/2019/06/123/thumbnail-2.jpg"
   >
-    <div
-      className="ui items download-item"
+    <a
+      className="download-item"
+      download={true}
+      href="https://example.jpg"
+      key="https://example.jpg"
+      rel="noopener noreferrer"
     >
-      <Item
-        as="a"
-        download="English_thumbnail"
-        href="https://s3-url.com/2019/06/123/thumbnail-2.jpg"
+      <div
+        className="item-icon"
       >
-        <a
-          className="item"
-          download="English_thumbnail"
-          href="https://s3-url.com/2019/06/123/thumbnail-2.jpg"
+        <img
+          alt="Download English Thumbnail"
+          src="downloadIconSVG"
+        />
+      </div>
+      <div
+        className="item-content"
+      >
+        <p
+          className="item-content__title"
         >
-          <ItemImage
-            className="download-icon"
-            size="mini"
-            src="downloadIconSVG"
-          >
-            <Image
-              as="img"
-              className="download-icon"
-              size="mini"
-              src="downloadIconSVG"
-              ui={true}
-              wrapped={true}
-            >
-              <div
-                className="ui mini image download-icon"
-              >
-                <img
-                  src="downloadIconSVG"
-                />
-              </div>
-            </Image>
-          </ItemImage>
-          <ItemContent>
-            <div
-              className="content"
-            >
-              <ItemHeader
-                className="download-header"
-              >
-                <div
-                  className="header download-header"
-                >
-                  Download English Thumbnail
-                </div>
-              </ItemHeader>
-              <span
-                className="item_hover"
-              >
-                Download English Thumbnail
-              </span>
-            </div>
-          </ItemContent>
-        </a>
-      </Item>
-    </div>
-  </ItemGroup>
+          <strong>
+            Download English Thumbnail
+          </strong>
+        </p>
+      </div>
+      <span
+        className="item-hover"
+      >
+        Download English Thumbnail
+      </span>
+    </a>
+  </DownloadItemContent>
 </DownloadThumbnail>
 `;
 

@@ -48,137 +48,84 @@ exports[`<DownloadOtherFiles /> renders final state without crashing 1`] = `
   instructions="Download Other File(s)"
   isPreview={false}
 >
-  <p
-    className="form-group_instructions"
-  >
-    Download Other File(s)
-  </p>
-  <ItemGroup
-    className="download-item"
+  <DownloadItemContent
+    hoverText="Download English application/pdf file"
+    isAdminPreview={false}
     key="fs_pdf89"
+    srcUrl="https://s3-url.com/2019/06/123/file-1.pdf"
   >
-    <div
-      className="ui items download-item"
+    <a
+      className="download-item"
+      download={true}
+      href="https://example.jpg"
+      key="https://example.jpg"
+      rel="noopener noreferrer"
     >
-      <Item
-        as="a"
-        download="file-1.pdf"
-        href="https://s3-url.com/2019/06/123/file-1.pdf"
+      <div
+        className="item-icon"
       >
-        <a
-          className="item"
-          download="file-1.pdf"
-          href="https://s3-url.com/2019/06/123/file-1.pdf"
+        <img
+          alt="Download English application/pdf file"
+          src="downloadIconSVG"
+        />
+      </div>
+      <div
+        className="item-content"
+      >
+        <p
+          className="item-content__title"
         >
-          <ItemImage
-            className="download-icon"
-            size="mini"
-            src="downloadIconSVG"
-          >
-            <Image
-              as="img"
-              className="download-icon"
-              size="mini"
-              src="downloadIconSVG"
-              ui={true}
-              wrapped={true}
-            >
-              <div
-                className="ui mini image download-icon"
-              >
-                <img
-                  src="downloadIconSVG"
-                />
-              </div>
-            </Image>
-          </ItemImage>
-          <ItemContent>
-            <div
-              className="content"
-            >
-              <ItemHeader
-                className="download-header"
-              >
-                <div
-                  className="header download-header"
-                >
-                  Download English application/pdf file
-                </div>
-              </ItemHeader>
-              <span
-                className="item_hover"
-              >
-                Download English application/pdf file
-              </span>
-            </div>
-          </ItemContent>
-        </a>
-      </Item>
-    </div>
-  </ItemGroup>
-  <ItemGroup
-    className="download-item"
+          <strong>
+            Download English application/pdf file
+          </strong>
+        </p>
+      </div>
+      <span
+        className="item-hover"
+      >
+        Download English application/pdf file
+      </span>
+    </a>
+  </DownloadItemContent>
+  <DownloadItemContent
+    hoverText="Download English audio/x-mpeg-3 file"
+    isAdminPreview={false}
     key="fs_au56"
+    srcUrl="https://s3-url.com/2019/06/123/audio-1.mp3"
   >
-    <div
-      className="ui items download-item"
+    <a
+      className="download-item"
+      download={true}
+      href="https://example.jpg"
+      key="https://example.jpg"
+      rel="noopener noreferrer"
     >
-      <Item
-        as="a"
-        download="audio-1.mp3"
-        href="https://s3-url.com/2019/06/123/audio-1.mp3"
+      <div
+        className="item-icon"
       >
-        <a
-          className="item"
-          download="audio-1.mp3"
-          href="https://s3-url.com/2019/06/123/audio-1.mp3"
+        <img
+          alt="Download English audio/x-mpeg-3 file"
+          src="downloadIconSVG"
+        />
+      </div>
+      <div
+        className="item-content"
+      >
+        <p
+          className="item-content__title"
         >
-          <ItemImage
-            className="download-icon"
-            size="mini"
-            src="downloadIconSVG"
-          >
-            <Image
-              as="img"
-              className="download-icon"
-              size="mini"
-              src="downloadIconSVG"
-              ui={true}
-              wrapped={true}
-            >
-              <div
-                className="ui mini image download-icon"
-              >
-                <img
-                  src="downloadIconSVG"
-                />
-              </div>
-            </Image>
-          </ItemImage>
-          <ItemContent>
-            <div
-              className="content"
-            >
-              <ItemHeader
-                className="download-header"
-              >
-                <div
-                  className="header download-header"
-                >
-                  Download English audio/x-mpeg-3 file
-                </div>
-              </ItemHeader>
-              <span
-                className="item_hover"
-              >
-                Download English audio/x-mpeg-3 file
-              </span>
-            </div>
-          </ItemContent>
-        </a>
-      </Item>
-    </div>
-  </ItemGroup>
+          <strong>
+            Download English audio/x-mpeg-3 file
+          </strong>
+        </p>
+      </div>
+      <span
+        className="item-hover"
+      >
+        Download English audio/x-mpeg-3 file
+      </span>
+    </a>
+  </DownloadItemContent>
 </DownloadOtherFiles>
 `;
 

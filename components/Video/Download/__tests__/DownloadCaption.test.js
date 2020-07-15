@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-
 import DownloadCaption from '../DownloadCaption';
 import { mockItem } from '../../mocks';
 
@@ -11,49 +10,27 @@ jest.mock(
     },
   } ),
 );
-jest.mock(
-  '../DownloadItem',
-  () => function DownloadItem() { return ''; },
-);
 
-const mockInstructions = 'Download caption file(s) for this video.';
+jest.mock( 'lib/hooks/useSignedUrl', () => jest.fn( () => ( { signedUrl: 'https://example.jpg' } ) ) );
 
 describe( '<DownloadCaption />', () => {
   it( 'renders without crashing', () => {
-    const wrapper = mount( <DownloadCaption instructions={ mockInstructions } item={ mockItem } /> );
-
+    const wrapper = mount( <DownloadCaption item={ mockItem } /> );
     expect( wrapper.exists() ).toEqual( true );
   } );
 
-  it( 'renders the instructions if provided', () => {
-    const wrapper = mount( <DownloadCaption item={ mockItem } /> );
-
-    const instructions = wrapper.find( '.form-group_instructions' );
-
-    expect( instructions.exists() ).toEqual( false );
-
-    wrapper.setProps( { instructions: mockInstructions } );
-
-    const newInstructions = wrapper.find( '.form-group_instructions' );
-
-    expect( newInstructions.exists() ).toEqual( true );
-    expect( newInstructions.contains( mockInstructions ) ).toEqual( true );
-  } );
-
   it( 'passes the correct data to the DownloadItem', () => {
-    const expectedDownload = 'English_SRT';
     const expectedHeader = 'Download English SRT';
     const expectedHover = 'Download English SRT';
     const expectedUrl = 'https://amgov-publisher-dev.s3.amazonaws.com/v1/task/download/eyJrZXkiOiJodHRwczovL2FtZ292LXB1Ymxpc2hlci1kZXYuczMuYW1hem9uYXdzLmNvbS8yMDIwLzA3ODhsd2Z2YWVwNy9jOWE0NTMzMTU3YTk3OTdhMWVjZWU2Y2EyZDhjMzgyYy5zcnQiLCJmaWxlbmFtZSI6ImM5YTQ1MzMxNTdhOTc5N2ExZWNlZTZjYTJkOGMzODJjLnNydCJ9';
 
     const wrapper = mount( <DownloadCaption item={ mockItem } /> );
 
-    const downloadItem = wrapper.find( 'DownloadItem' );
+    const downloadItem = wrapper.find( 'DownloadItemContent' );
 
     expect( downloadItem.exists() ).toEqual( true );
-    expect( downloadItem.prop( 'download' ) ).toEqual( expectedDownload );
-    expect( downloadItem.prop( 'header' ) ).toEqual( expectedHeader );
-    expect( downloadItem.prop( 'hover' ) ).toEqual( expectedHover );
-    expect( downloadItem.prop( 'url' ) ).toEqual( expectedUrl );
+    expect( downloadItem.find( '.item-content__title' ).text() ).toEqual( expectedHeader );
+    expect( downloadItem.find( '.item-hover' ).text() ).toEqual( expectedHover );
+    expect( downloadItem.prop( 'srcUrl' ) ).toEqual( expectedUrl );
   } );
 } );
