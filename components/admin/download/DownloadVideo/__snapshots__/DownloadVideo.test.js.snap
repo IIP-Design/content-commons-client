@@ -159,192 +159,109 @@ exports[`<DownloadVideo /> renders without crashing 1`] = `
     }
   }
 >
-  <p
-    className="form-group_instructions"
-  >
-    Download the video file in English
-  </p>
   <div>
-    <ItemGroup
-      className="download-item"
+    <DownloadItemContent
+      hoverText="Download for web"
+      isAdminPreview={false}
       key="fs_un91-f19"
+      srcUrl="https://s3-url.com/2019/06/123/video-file-1.mp4"
     >
-      <div
-        className="ui items download-item"
+      <a
+        className="download-item"
+        download={true}
+        href="https://example.jpg"
+        key="https://example.jpg"
+        rel="noopener noreferrer"
       >
-        <Item
-          as="a"
-          download="test_project_title_1920.mp4"
-          href="https://s3-url.com/2019/06/123/video-file-1.mp4"
+        <div
+          className="item-icon"
         >
-          <a
-            className="item"
-            download="test_project_title_1920.mp4"
-            href="https://s3-url.com/2019/06/123/video-file-1.mp4"
+          <img
+            alt="Download for web"
+            src="downloadIconSVG"
+          />
+        </div>
+        <div
+          className="item-content"
+        >
+          <p
+            className="item-content__title"
           >
-            <ItemImage
-              className="download-icon"
-              size="mini"
-              src="downloadIconSVG"
-            >
-              <Image
-                as="img"
-                className="download-icon"
-                size="mini"
-                src="downloadIconSVG"
-                ui={true}
-                wrapped={true}
-              >
-                <div
-                  className="ui mini image download-icon"
-                >
-                  <img
-                    src="downloadIconSVG"
-                  />
-                </div>
-              </Image>
-            </ItemImage>
-            <ItemContent>
-              <div
-                className="content"
-              >
-                <ItemHeader
-                  className="download-header"
-                >
-                  <div
-                    className="header download-header"
-                  >
-                    Download
-                     
-                    <span
-                      className="lightweight"
-                    >
-                      "test project title"
-                    </span>
-                     
-                    for
-                     
-                    web
-                  </div>
-                </ItemHeader>
-                <ItemMeta>
-                  <div
-                    className="meta"
-                  >
-                     
-                    File size: 631.9 MB
-                     
-                  </div>
-                </ItemMeta>
-                <ItemMeta>
-                  <div
-                    className="meta"
-                  >
-                     
-                    Dimensions: 1920 x 1080
-                  </div>
-                </ItemMeta>
-                <span
-                  className="item_hover"
-                >
-                  Download for web
-                </span>
-              </div>
-            </ItemContent>
-          </a>
-        </Item>
-      </div>
-    </ItemGroup>
-    <ItemGroup
-      className="download-item"
+            <strong>
+              Download
+               "test project title"
+               for web
+            </strong>
+          </p>
+          <p
+            className="item-content__meta"
+          >
+            File size: 631.9 MB
+          </p>
+          <p
+            className="item-content__meta"
+          >
+            Dimensions: 1920 x 1080
+          </p>
+        </div>
+        <span
+          className="item-hover"
+        >
+          Download for web
+        </span>
+      </a>
+    </DownloadItemContent>
+    <DownloadItemContent
+      hoverText="Download for web"
+      isAdminPreview={false}
       key="fs_un91-f20"
+      srcUrl="https://s3-url.com/2019/06/123/video-file-2.mp4"
     >
-      <div
-        className="ui items download-item"
+      <a
+        className="download-item"
+        download={true}
+        href="https://example.jpg"
+        key="https://example.jpg"
+        rel="noopener noreferrer"
       >
-        <Item
-          as="a"
-          download="test_project_title_1920.mp4"
-          href="https://s3-url.com/2019/06/123/video-file-2.mp4"
+        <div
+          className="item-icon"
         >
-          <a
-            className="item"
-            download="test_project_title_1920.mp4"
-            href="https://s3-url.com/2019/06/123/video-file-2.mp4"
+          <img
+            alt="Download for web"
+            src="downloadIconSVG"
+          />
+        </div>
+        <div
+          className="item-content"
+        >
+          <p
+            className="item-content__title"
           >
-            <ItemImage
-              className="download-icon"
-              size="mini"
-              src="downloadIconSVG"
-            >
-              <Image
-                as="img"
-                className="download-icon"
-                size="mini"
-                src="downloadIconSVG"
-                ui={true}
-                wrapped={true}
-              >
-                <div
-                  className="ui mini image download-icon"
-                >
-                  <img
-                    src="downloadIconSVG"
-                  />
-                </div>
-              </Image>
-            </ItemImage>
-            <ItemContent>
-              <div
-                className="content"
-              >
-                <ItemHeader
-                  className="download-header"
-                >
-                  <div
-                    className="header download-header"
-                  >
-                    Download
-                     
-                    <span
-                      className="lightweight"
-                    >
-                      "test project title"
-                    </span>
-                     
-                    for
-                     
-                    web
-                  </div>
-                </ItemHeader>
-                <ItemMeta>
-                  <div
-                    className="meta"
-                  >
-                     
-                    File size: 622.36 MB
-                     
-                  </div>
-                </ItemMeta>
-                <ItemMeta>
-                  <div
-                    className="meta"
-                  >
-                     
-                    Dimensions: 1920 x 1080
-                  </div>
-                </ItemMeta>
-                <span
-                  className="item_hover"
-                >
-                  Download for web
-                </span>
-              </div>
-            </ItemContent>
-          </a>
-        </Item>
-      </div>
-    </ItemGroup>
+            <strong>
+              Download
+               "test project title"
+               for web
+            </strong>
+          </p>
+          <p
+            className="item-content__meta"
+          >
+            File size: 622.36 MB
+          </p>
+          <p
+            className="item-content__meta"
+          >
+            Dimensions: 1920 x 1080
+          </p>
+        </div>
+        <span
+          className="item-hover"
+        >
+          Download for web
+        </span>
+      </a>
+    </DownloadItemContent>
   </div>
 </DownloadVideo>
 `;

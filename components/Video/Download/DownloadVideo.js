@@ -45,6 +45,7 @@ const DownloadVideo = ( { burnedInCaptions, selectedLanguageUnit, isAdminPreview
         srcUrl={ downloadLink }
         hoverText={ `Download for ${videoQuality}` }
         isAdminPreview={ isAdminPreview }
+        downloadFilename={ fn }
       >
         <div className="item-content">
           <p className="item-content__title">

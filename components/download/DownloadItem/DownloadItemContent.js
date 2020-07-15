@@ -9,6 +9,7 @@ const DownloadItemContent = ( {
   srcUrl,
   hoverText,
   children,
+  downloadFilename,
 } ) => {
   const { signedUrl } = useSignedUrl( srcUrl );
 
@@ -17,7 +18,7 @@ const DownloadItemContent = ( {
       key={ signedUrl }
       href={ signedUrl }
       rel="noopener noreferrer"
-      download
+      download={ downloadFilename || true }
       className={ isAdminPreview ? 'download-item download-item--preview' : 'download-item' }
     >
       <div className="item-icon"><img src={ downloadIcon } alt={ hoverText } /></div>
@@ -34,6 +35,7 @@ DownloadItemContent.propTypes = {
   isAdminPreview: PropTypes.bool,
   srcUrl: PropTypes.string,
   hoverText: PropTypes.string,
+  downloadFilename: PropTypes.string,
   children: PropTypes.oneOfType( [
     PropTypes.object,
     PropTypes.array,

@@ -17,6 +17,7 @@ const DownloadVideo = props => {
     };
   };
 
+
   const sortByFilesize = ( a, b ) => {
     if ( a.filesize && b.filesize ) {
       return +a.filesize > +b.filesize;
