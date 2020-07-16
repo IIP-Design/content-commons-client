@@ -355,7 +355,7 @@ const FileDataForm = ( {
 
             <VideoBurnedInStatusDropdown
               id="video-subtitles"
-              label="Subtitles & Captions"
+              label="On-Screen Text"
               name="videoBurnedInStatus"
               onChange={ handleDropdownSave }
               required
