@@ -13,10 +13,10 @@ import { Confirm, Form, Grid } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
-import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
+import LanguageDropdown, { LANGUAGE_BY_NAME_QUERY } from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import Loader from 'components/admin/ProjectEdit/EditVideoModal/Loader/Loader';
 import QualityDropdown from 'components/admin/dropdowns/QualityDropdown/QualityDropdown';
-import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
+import UseDropdown, { VIDEO_USE_QUERY } from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown/VideoBurnedInStatusDropdown';
 import { EditSingleProjectItemContext } from 'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import { formatBytes, formatDate, secondsToHMS } from 'lib/utils';
@@ -27,12 +27,14 @@ import {
   VIDEO_PROJECT_QUERY, VIDEO_FILE_QUERY, VIDEO_FILE_LANG_MUTATION, VIDEO_UNIT_CONNECT_FILE_MUTATION,
   VIDEO_UNIT_DISCONNECT_FILE_MUTATION, VIDEO_FILE_SUBTITLES_MUTATION, VIDEO_FILE_USE_MUTATION,
   VIDEO_FILE_QUALITY_MUTATION, VIDEO_FILE_CREATE_STREAM_MUTATION, VIDEO_FILE_UPDATE_STREAM_MUTATION,
-  VIDEO_FILE_DELETE_STREAM_MUTATION, VIDEO_FILE_DELETE_MUTATION
+  VIDEO_FILE_DELETE_STREAM_MUTATION, VIDEO_FILE_DELETE_MUTATION,
 } from './FileDataFormQueries';
 import './FileDataForm.scss';
 
 const FileDataForm = ( {
+  cleanUseQuery,
   deleteVideoFileMutation,
+  englishLanguageQuery,
   fileCount,
   language,
   languageVideoFileMutation,
@@ -52,7 +54,7 @@ const FileDataForm = ( {
   projectUpdated,
 } ) => {
   const {
-    selectedFile, selectedUnit, setSelectedFile, setShowNotification, startTimeout, updateSelectedUnit
+    selectedFile, selectedUnit, setSelectedFile, setShowNotification, startTimeout, updateSelectedUnit,
   } = useContext( EditSingleProjectItemContext );
 
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
@@ -79,26 +81,27 @@ const FileDataForm = ( {
       languageVideoFileMutation( {
         variables: {
           id,
-          language: value
+          language: value,
         },
         onCompleted: videoUnitDisconnectFileMutation( { // Disconnect File from old language unit
           variables: {
             id: selectedUnit,
-            fileId: id
+            fileId: id,
           },
           update: cache => {
             try {
               const cachedData = cache.readQuery( {
                 query: VIDEO_UNIT_QUERY,
-                variables: { id: selectedUnit }
+                variables: { id: selectedUnit },
               } );
 
               const newFiles = cachedData.unit.files.filter( newFile => newFile.id !== id );
+
               cachedData.unit.files = newFiles;
 
               cache.writeQuery( {
                 query: VIDEO_UNIT_QUERY,
-                data: { unit: cachedData.unit }
+                data: { unit: cachedData.unit },
               } );
             } catch ( error ) {
               console.log( error );
@@ -107,11 +110,11 @@ const FileDataForm = ( {
           onCompleted: videoUnitConnectFileMutation( { // Connect file to new unit
             variables: {
               id: newUnit[0].unitId,
-              fileId: id
+              fileId: id,
             },
-            onCompleted: updateSelectedUnit( newUnit[0].unitId, id ) // Switch view to the new unit
-          } )
-        } )
+            onCompleted: updateSelectedUnit( newUnit[0].unitId, id ), // Switch view to the new unit
+          } ),
+        } ),
       } );
       growl();
     }
@@ -138,6 +141,7 @@ const FileDataForm = ( {
   // Runs GraphQl mutation and updates the cache after a dropdown selection
   const handleDropdownSave = ( e, { name, value } ) => {
     let mutation;
+
     if ( name === 'quality' ) {
       mutation = qualityVideoFileMutation;
     } else if ( name === 'use' ) {
@@ -149,13 +153,13 @@ const FileDataForm = ( {
     mutation( {
       variables: {
         id: selectedFile,
-        [name]: value
+        [name]: value,
       },
       update: cache => {
         try {
           const cachedData = cache.readQuery( {
             query: VIDEO_FILE_QUERY,
-            variables: { id: selectedFile }
+            variables: { id: selectedFile },
           } );
 
           if ( name === 'use' ) {
@@ -166,12 +170,12 @@ const FileDataForm = ( {
 
           cache.writeQuery( {
             query: VIDEO_FILE_QUERY,
-            data: { file: cachedData.file }
+            data: { file: cachedData.file },
           } );
         } catch ( error ) {
           console.log( error );
         }
-      }
+      },
     } );
     growl();
   };
@@ -195,16 +199,16 @@ const FileDataForm = ( {
         streamDeleteVideoFileMutation( {
           variables: {
             id: selectedFile,
-            streamId
-          }
+            streamId,
+          },
         } );
       } else {
         streamUpdateVideoFileMutation( {
           variables: {
             id: selectedFile,
             streamId,
-            url
-          }
+            url,
+          },
         } );
       }
     } else if ( url !== '' ) {
@@ -212,8 +216,8 @@ const FileDataForm = ( {
         variables: {
           id: selectedFile,
           site: name,
-          url
-        }
+          url,
+        },
       } );
     }
 
@@ -240,15 +244,16 @@ const FileDataForm = ( {
         try {
           const cachedData = cache.readQuery( {
             query: VIDEO_UNIT_QUERY,
-            variables: { id: selectedUnit }
+            variables: { id: selectedUnit },
           } );
 
           const newFiles = cachedData.unit.files.filter( newFile => newFile.id !== selectedFile );
+
           cachedData.unit.files = newFiles;
 
           cache.writeQuery( {
             query: VIDEO_UNIT_QUERY,
-            data: { unit: cachedData.unit }
+            data: { unit: cachedData.unit },
           } );
 
           console.log( `Deleted video: ${selectedFile}` );
@@ -256,11 +261,12 @@ const FileDataForm = ( {
           const newSelectedFile = cachedData.unit.files && cachedData.unit.files[0] && cachedData.unit.files[0].id
             ? cachedData.unit.files[0].id
             : '';
+
           setSelectedFile( newSelectedFile );
         } catch ( error ) {
           console.log( error );
         }
-      }
+      },
     } );
     setDeleteConfirmOpen( false );
   };
@@ -392,7 +398,9 @@ const FileDataForm = ( {
 };
 
 FileDataForm.propTypes = {
+  cleanUseQuery: propTypes.object,
   deleteVideoFileMutation: propTypes.func,
+  englishLanguageQuery: propTypes.object,
   fileCount: propTypes.number,
   language: propTypes.object,
   languageVideoFileMutation: propTypes.func,
@@ -414,6 +422,12 @@ FileDataForm.propTypes = {
 
 export default compose(
   connect( null, actions ),
+  graphql( LANGUAGE_BY_NAME_QUERY, {
+    name: 'englishLanguageQuery',
+    options: () => ( {
+      variables: { displayName: 'English' },
+    } ),
+  } ),
   graphql( VIDEO_FILE_DELETE_MUTATION, { name: 'deleteVideoFileMutation' } ),
   graphql( VIDEO_FILE_DELETE_STREAM_MUTATION, { name: 'streamDeleteVideoFileMutation' } ),
   graphql( VIDEO_FILE_UPDATE_STREAM_MUTATION, { name: 'streamUpdateVideoFileMutation' } ),
@@ -428,13 +442,19 @@ export default compose(
     name: 'videoFileQuery',
     options: props => ( {
       variables: { id: props.selectedFile },
-    } )
+    } ),
   } ),
   graphql( VIDEO_PROJECT_QUERY, {
     name: 'videoProjectQuery',
     options: props => ( {
       variables: { id: props.selectedProject },
-    } )
+    } ),
+  } ),
+  graphql( VIDEO_USE_QUERY, {
+    name: 'cleanUseQuery',
+    options: () => ( {
+      variables: { where: { name: 'Clean' } },
+    } ),
   } ),
   withFormik( {
     mapPropsToValues: props => {
@@ -445,6 +465,7 @@ export default compose(
       // Check for and retrieve an existing stream url by site name
       const getStreamUrl = ( streams, site ) => {
         let link = '';
+
         if ( streams && streams.length > 0 ) {
           streams.forEach( stream => {
             if ( stream.site === site ) {
@@ -452,6 +473,7 @@ export default compose(
             }
           } );
         }
+
         return link;
       };
 
@@ -461,9 +483,9 @@ export default compose(
         use,
         videoBurnedInStatus: file.videoBurnedInStatus || '',
         vimeo: getStreamUrl( file.stream, 'vimeo' ),
-        youtube: getStreamUrl( file.stream, 'youtube' )
+        youtube: getStreamUrl( file.stream, 'youtube' ),
       };
     },
-    enableReinitialize: true
-  } )
+    enableReinitialize: true,
+  } ),
 )( FileDataForm );
