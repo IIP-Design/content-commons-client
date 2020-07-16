@@ -1,10 +1,12 @@
 import { mount } from 'enzyme';
 import DownloadItemContent from './DownloadItemContent';
 
+jest.mock( 'lib/hooks/useSignedUrl', () => jest.fn( () => ( { signedUrl: 'https://example.jpg' } ) ) );
+
 const props = {
   isAdminPreview: false,
   srcUrl: '/link/to/download',
-  hoverText: 'Here is text to display on hover'
+  hoverText: 'Here is text to display on hover',
 };
 
 const Component = (

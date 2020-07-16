@@ -1,24 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Item } from 'semantic-ui-react';
 
-import DownloadItem from './DownloadItem';
 import { formatBytes, getFileDownloadUrl } from 'lib/utils';
+
+import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
 
 // NOTE: Using the 'download' attribute to trigger downloads
 // Need to research more robust options depending on browser support
-const DownloadVideo = ( { burnedInCaptions, instructions, selectedLanguageUnit } ) => {
-  const getSrt = () => {
-    const arr = [];
-    const unit = selectedLanguageUnit;
-
-    if ( unit && unit.srt && unit.srt.srcUrl ) {
-      arr.push( unit.srt.srcUrl );
-    }
-
-    return arr;
-  };
-
+const DownloadVideo = ( { burnedInCaptions, selectedLanguageUnit, isAdminPreview } ) => {
   const getSizeInfo = size => {
     if ( !size ) return null;
 
@@ -50,25 +39,26 @@ const DownloadVideo = ( { burnedInCaptions, instructions, selectedLanguageUnit }
     const videoQuality = `${video.video_quality && video.video_quality.toLowerCase() === 'broadcast' ? 'broadcast' : 'web'}`;
     const downloadLink = getFileDownloadUrl( video.downloadUrl, fn );
 
-    const header = [
-      'Download ', <span key={ title } className="lightweight">{ `"${title}"` }</span>, ` for ${videoQuality}`,
-    ];
-
     return (
-      <DownloadItem
-        download={ fn }
-        header={ header }
-        hover={ `Download for ${videoQuality}` }
-        key={ video.downloadUrl }
-        url={ downloadLink }
+      <DownloadItemContent
+        key={ downloadLink }
+        srcUrl={ downloadLink }
+        hoverText={ `Download for ${videoQuality}` }
+        isAdminPreview={ isAdminPreview }
+        downloadFilename={ fn }
       >
-        <Item.Meta>
-          { ` File size: ${size.weight} ` }
-        </Item.Meta>
-        <Item.Meta>
-          { ` Dimensions: ${size.label}` }
-        </Item.Meta>
-      </DownloadItem>
+        <div className="item-content">
+          <p className="item-content__title">
+            <strong>
+              Download
+              { ` "${title}"` }
+              { ` for ${videoQuality}`}
+            </strong>
+          </p>
+          <p className="item-content__meta">{ `File size: ${size.weight}` }</p>
+          <p className="item-content__meta">{ `Dimensions: ${size.label}` }</p>
+        </div>
+      </DownloadItemContent>
     );
   };
 
@@ -85,12 +75,17 @@ const DownloadVideo = ( { burnedInCaptions, instructions, selectedLanguageUnit }
 
     const videosArr = videos.map( ( v, i ) => v.downloadUrl && renderFormItem( v, i ) );
 
-    return <div>{ videosArr.length ? videosArr : 'There are no videos available for download at this time' }</div>;
+    return (
+      <div>
+        { videosArr.length
+          ? videosArr
+          : <p className="download-item__noContent">There are no videos available for download at this time</p>}
+      </div>
+    );
   };
 
   return (
     <div>
-      <div className="form-group_instructions">{ instructions }</div>
       { selectedLanguageUnit && renderFormItems( selectedLanguageUnit, burnedInCaptions ) }
     </div>
   );
@@ -98,8 +93,8 @@ const DownloadVideo = ( { burnedInCaptions, instructions, selectedLanguageUnit }
 
 DownloadVideo.propTypes = {
   selectedLanguageUnit: PropTypes.object,
-  instructions: PropTypes.string,
   burnedInCaptions: PropTypes.bool,
+  isAdminPreview: PropTypes.bool,
 };
 
 export default DownloadVideo;

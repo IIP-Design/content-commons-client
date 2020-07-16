@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import DownloadItem from './DownloadItem';
 import { maybeGetUrlToProdS3 } from 'lib/utils';
 
-const DownloadTranscript = ( { instructions, item } ) => {
+import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
+
+const DownloadTranscript = ( { item } ) => {
   const [transcripts, setTranscripts] = useState( [] );
 
   useEffect( () => {
@@ -28,20 +29,26 @@ const DownloadTranscript = ( { instructions, item } ) => {
 
   return (
     <div>
-      { instructions && <div className="form-group_instructions">{ instructions }</div> }
-      { transcripts.length < 1 && 'There are no transcripts available for download at this time' }
+      { transcripts.length < 1
+        && <p className="download-item__noContent">There are no transcripts available for download at this time</p>}
       { transcripts.length > 0 && transcripts.map( trans => {
         const lang = trans?.language?.display_name ? trans.language.display_name : ''; // eslint-disable-line camelcase
         const src = trans?.srcUrl ? trans.srcUrl : '';
 
         return (
-          <DownloadItem
-            download={ `${lang}_Transcript` }
-            header={ `Download ${lang} Transcript` }
-            hover={ `Download ${lang} Transcript` }
+          <DownloadItemContent
             key={ src }
-            url={ maybeGetUrlToProdS3( src ) }
-          />
+            srcUrl={ maybeGetUrlToProdS3( src ) }
+            hoverText={ `Download ${lang} Transcript` }
+          >
+            <div className="item-content">
+              <p className="item-content__title">
+                <strong>
+                  { `Download ${lang} Transcript` }
+                </strong>
+              </p>
+            </div>
+          </DownloadItemContent>
         );
       } ) }
     </div>
@@ -50,7 +57,6 @@ const DownloadTranscript = ( { instructions, item } ) => {
 
 DownloadTranscript.propTypes = {
   item: PropTypes.object,
-  instructions: PropTypes.string,
 };
 
 export default DownloadTranscript;

@@ -6,7 +6,7 @@ import downloadIcon from 'static/icons/icon_download.svg';
 import './DownloadHelp.scss';
 
 const DownloadHelp = () => (
-  <div>
+  <div className="videoDownloadHelp">
     <h4>Download Video</h4>
     <ol>
       <li>

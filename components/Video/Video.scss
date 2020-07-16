@@ -6,183 +6,56 @@
   align-items: center;
 }
 
-.popupElem_wrapper {
-  .form-group_instructions {
-    color: $grey;
-    font-style: italic;
-    font-size: 0.75rem;
-    line-height: 1.5;
-    margin-bottom: 2em;
+.video-project__popover {
+
+  &--embed,
+  &--share {
+    margin-right: 5px;    
   }
 
-  .ui.segment {
-    font-size: 0.85rem;
-
-    h4 {
-      font-size: 0.85rem;
+  &--share {
+    .popover_content {
+      font-size: 1rem;
     }
   }
+  
+  .popover_content {
+    top: calc( 100% + 8px );
 
-  .ui.items > .item > .content > .header {
-    color: $light-blue;
-    font-size: 0.85rem;
-
-    .lightweight {
-      font-weight: 300;
+    &:before {
+      top: -8px;
+      width: 15px;
+      height: 8px;
+      margin-right: 2px;
+      background: $bright-blue;        
     }
-  }
 
-  .ui.mini.image {
-    width: 20px;
-    height: 20px;
-  }
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding-top: 5px;
+      background-image: linear-gradient(90deg, $light-blue 3%, $bright-blue 100%);
+    }
 
-  .ui.items > .item .meta {
-    font-style: italic;
-  }
+    .form-group_instructions {
+      font-size: 0.75rem;
+      font-style: italic;
+    }
 
-  .download-item {
-    position: relative;
-    padding: 0.8em;
-    border: 1px solid $light-grey;
-    box-shadow: -1px 5px 10px -11px rgba(0, 0, 0, 0.75);
+    .videoDownloadHelp {
+      font-size: .85rem;
 
-    .item {
-      &:hover {
-        .item_hover,
-        &:after {
-          opacity: 1;
-        }
-      }
-
-      &_hover {
-        z-index: 3;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 100%;
-        color: #fff;
-        font-weight: bold;
-        text-align: center;
-        opacity: 0;
-        transition: opacity 0.5s linear;
-
-        .preview-text {
-          display: block;
-          font-size: 0.777777778rem;
-          font-style: italic;
-          font-weight: normal
-        }
-      }
-
-      &:after {
-        z-index: 2;
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        margin-right: -1em;
-        margin-left: -1.2em;
-        visibility: visible;
-        background: linear-gradient(
-          to right,
-          $bright-blue,
-          $light-blue,
-          $bright-blue
-        );
-        opacity: 0;
-        transition: opacity 0.5s linear;
+      > h4 {
+        font-size: .85rem;
       }
     }
-  }
 
-  .ui.form.form-group_tabbed {
-    .hide {
-      display: none !important;
-    }
-
-    .show {
-      display: block;
-    }
-
-    .processing {
-      background: $ice-blue !important;
-    }
-
-    .inline.fields {
-      padding-top: 1em;
-
-      .field {
-        display: flex;
-        flex: 0 1 auto;
-
-        label {
-          margin-top: 0.3em;
-          color: $grey;
-          width: 6.5em;
-          text-align: center;
-          line-height: 1.2;
-
-          span {
-            font-weight: normal;
-            font-size: smaller;
-          }
-        }
-
-        &:first-child {
-          flex: 2 0 auto;
-          padding-right: 0;
-        }
-
-        &:last-child {
-          flex: 0 1 auto;
-          padding-left: 0;
-        }
-
-        .ui.progress {
-          width: 100%;
-          background: $light-grey;
-          border-radius: 0;
-          margin: 0;
-
-          .bar {
-            border-radius: 0;
-            height: 100%;
-            background: $ice-blue;
-            display: none;
-          }
-
-          .label {
-            top: 0.5em;
-            left: 0.5em;
-            text-align: left;
-            font-weight: normal;
-          }
-        }
-
-        .ui.input {
-          width: 100%;
-
-          input {
-            border: 0;
-            background: $light-grey;
-            border-radius: 0;
-          }
-        }
-      }
-
-      .ui.button {
-        border-radius: 0;
-        background: $light-blue;
-        color: #fff;
-        padding-left: 1em;
-        padding-right: 1em;
-
-        &:hover {
-          background: darken($light-blue, 5%);
-        }
-      }
+    button[aria-controls="panel_Help"] {
+      font-weight: normal;
     }
   }
 }
+

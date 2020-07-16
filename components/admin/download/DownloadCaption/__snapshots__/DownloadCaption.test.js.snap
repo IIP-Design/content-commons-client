@@ -44,137 +44,84 @@ exports[`<DownloadCaption /> renders final state without crashing 1`] = `
   instructions="Download SRT(s)"
   isPreview={false}
 >
-  <p
-    className="form-group_instructions"
-  >
-    Download SRT(s)
-  </p>
-  <ItemGroup
-    className="download-item"
+  <DownloadItemContent
+    hoverText="Download English SRT"
+    isAdminPreview={false}
     key="fs_srt89"
+    srcUrl="https://s3-url.com/2019/06/123/srt-1.srt"
   >
-    <div
-      className="ui items download-item"
+    <a
+      className="download-item"
+      download={true}
+      href="https://example.jpg"
+      key="https://example.jpg"
+      rel="noopener noreferrer"
     >
-      <Item
-        as="a"
-        download="English_SRT"
-        href="https://s3-url.com/2019/06/123/srt-1.srt"
+      <div
+        className="item-icon"
       >
-        <a
-          className="item"
-          download="English_SRT"
-          href="https://s3-url.com/2019/06/123/srt-1.srt"
+        <img
+          alt="Download English SRT"
+          src="downloadIconSVG"
+        />
+      </div>
+      <div
+        className="item-content"
+      >
+        <p
+          className="item-content__title"
         >
-          <ItemImage
-            className="download-icon"
-            size="mini"
-            src="downloadIconSVG"
-          >
-            <Image
-              as="img"
-              className="download-icon"
-              size="mini"
-              src="downloadIconSVG"
-              ui={true}
-              wrapped={true}
-            >
-              <div
-                className="ui mini image download-icon"
-              >
-                <img
-                  src="downloadIconSVG"
-                />
-              </div>
-            </Image>
-          </ItemImage>
-          <ItemContent>
-            <div
-              className="content"
-            >
-              <ItemHeader
-                className="download-header"
-              >
-                <div
-                  className="header download-header"
-                >
-                  Download English SRT
-                </div>
-              </ItemHeader>
-              <span
-                className="item_hover"
-              >
-                Download English SRT
-              </span>
-            </div>
-          </ItemContent>
-        </a>
-      </Item>
-    </div>
-  </ItemGroup>
-  <ItemGroup
-    className="download-item"
+          <strong>
+            Download English SRT
+          </strong>
+        </p>
+      </div>
+      <span
+        className="item-hover"
+      >
+        Download English SRT
+      </span>
+    </a>
+  </DownloadItemContent>
+  <DownloadItemContent
+    hoverText="Download English SRT"
+    isAdminPreview={false}
     key="fs_srt99"
+    srcUrl="https://s3-url.com/2019/06/123/srt-2.srt"
   >
-    <div
-      className="ui items download-item"
+    <a
+      className="download-item"
+      download={true}
+      href="https://example.jpg"
+      key="https://example.jpg"
+      rel="noopener noreferrer"
     >
-      <Item
-        as="a"
-        download="English_SRT"
-        href="https://s3-url.com/2019/06/123/srt-2.srt"
+      <div
+        className="item-icon"
       >
-        <a
-          className="item"
-          download="English_SRT"
-          href="https://s3-url.com/2019/06/123/srt-2.srt"
+        <img
+          alt="Download English SRT"
+          src="downloadIconSVG"
+        />
+      </div>
+      <div
+        className="item-content"
+      >
+        <p
+          className="item-content__title"
         >
-          <ItemImage
-            className="download-icon"
-            size="mini"
-            src="downloadIconSVG"
-          >
-            <Image
-              as="img"
-              className="download-icon"
-              size="mini"
-              src="downloadIconSVG"
-              ui={true}
-              wrapped={true}
-            >
-              <div
-                className="ui mini image download-icon"
-              >
-                <img
-                  src="downloadIconSVG"
-                />
-              </div>
-            </Image>
-          </ItemImage>
-          <ItemContent>
-            <div
-              className="content"
-            >
-              <ItemHeader
-                className="download-header"
-              >
-                <div
-                  className="header download-header"
-                >
-                  Download English SRT
-                </div>
-              </ItemHeader>
-              <span
-                className="item_hover"
-              >
-                Download English SRT
-              </span>
-            </div>
-          </ItemContent>
-        </a>
-      </Item>
-    </div>
-  </ItemGroup>
+          <strong>
+            Download English SRT
+          </strong>
+        </p>
+      </div>
+      <span
+        className="item-hover"
+      >
+        Download English SRT
+      </span>
+    </a>
+  </DownloadItemContent>
 </DownloadCaption>
 `;
 

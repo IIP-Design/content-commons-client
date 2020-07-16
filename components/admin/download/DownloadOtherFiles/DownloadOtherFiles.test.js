@@ -15,6 +15,8 @@ import {
   props,
 } from './mocks';
 
+jest.mock( 'lib/hooks/useSignedUrl', () => jest.fn( () => ( { signedUrl: 'https://example.jpg' } ) ) );
+
 jest.mock( 'lib/utils', () => ( {
   getS3Url: jest.fn( assetPath => `https://s3-url.com/${assetPath}` ),
   getApolloErrors: error => {
@@ -171,39 +173,16 @@ describe( '<DownloadOtherFiles />', () => {
     await wait( 0 );
     wrapper.update();
 
-    const items = wrapper.find( '.item' );
+    const items = wrapper.find( 'DownloadItemContent' );
     const { files } = mocks[0].result.data.project;
     const s3Bucket = 'https://s3-url.com';
 
     expect( items.length ).toEqual( files.length );
     items.forEach( ( item, i ) => {
-      const { url: assetPath, filename } = files[i];
-
-      expect( item.name() ).toEqual( 'a' );
-      expect( item.prop( 'href' ) ).toEqual( `${s3Bucket}/${assetPath}` );
-      expect( item.prop( 'download' ) ).toEqual( filename );
-    } );
-  } );
-
-  it( 'renders <span> tags with null href & download attributes if isPreview is true', async () => {
-    const newProps = { ...props, isPreview: true };
-    const wrapper = mount(
-      <MockedProvider mocks={ mocks } addTypename={ false }>
-        <DownloadOtherFiles { ...newProps } />
-      </MockedProvider>,
-    );
-
-    await wait( 0 );
-    wrapper.update();
-
-    const items = wrapper.find( '.item' );
-    const { files } = mocks[0].result.data.project;
-
-    expect( items.length ).toEqual( files.length );
-    items.forEach( item => {
-      expect( item.name() ).toEqual( 'span' );
-      expect( item.prop( 'href' ) ).toEqual( null );
-      expect( item.prop( 'download' ) ).toEqual( null );
+      const { url: assetPath } = files[i];
+      expect( item.prop( 'srcUrl' ) ).toEqual( `${s3Bucket}/${assetPath}` );
+      expect( item.find( '.download-item' ).prop( 'href' ) ).toEqual( 'https://example.jpg' );
+      expect( item.find( '.download-item' ).prop( 'download' ) ).toEqual( true );
     } );
   } );
 

@@ -12,17 +12,17 @@ jest.mock( 'lib/utils', () => ( {
       'KB',
       'MB',
       'GB',
-      'TB'
+      'TB',
     ];
     const i = Math.floor( Math.log( bytes ) / Math.log( k ) );
-    return `${parseFloat( ( bytes / ( k ** i ) ).toFixed( dm ) )} ${sizes[i]}`;
+
+    return `${parseFloat( ( bytes / k ** i ).toFixed( dm ) )} ${sizes[i]}`;
   } ),
-  getS3Url: jest.fn( assetPath => (
-    `https://s3-url.com/${assetPath}`
-  ) )
+  getS3Url: jest.fn( assetPath => `https://s3-url.com/${assetPath}` ),
 } ) );
 
 jest.mock( 'static/icons/icon_download.svg', () => 'downloadIconSVG' );
+jest.mock( 'lib/hooks/useSignedUrl', () => jest.fn( () => ( { signedUrl: 'https://example.jpg' } ) ) );
 
 const projectId = '123';
 
@@ -40,7 +40,7 @@ const props = {
       languageCode: 'en',
       locale: 'en-us',
       nativeName: 'English',
-      textDirection: 'LTR'
+      textDirection: 'LTR',
     },
     tags: [
       {
@@ -50,10 +50,10 @@ const props = {
           {
             __typename: 'LanguageTranslation',
             id: 'tr999',
-            name: 'american culture'
-          }
-        ]
-      }
+            name: 'american culture',
+          },
+        ],
+      },
     ],
     thumbnails: [
       {
@@ -77,10 +77,10 @@ const props = {
             languageCode: 'en',
             locale: 'en-us',
             nativeName: 'English',
-            textDirection: 'LTR'
-          }
-        }
-      }
+            textDirection: 'LTR',
+          },
+        },
+      },
     ],
     files: [
       {
@@ -99,7 +99,7 @@ const props = {
           __typename: 'Dimensions',
           id: 'd21',
           height: '1080',
-          width: '1920'
+          width: '1920',
         },
         language: {
           __typename: 'Language',
@@ -108,27 +108,27 @@ const props = {
           languageCode: 'en',
           locale: 'en-us',
           nativeName: 'English',
-          textDirection: 'LTR'
+          textDirection: 'LTR',
         },
         use: {
           __typename: 'VideoUse',
           id: 'us31',
-          name: 'Full Video'
+          name: 'Full Video',
         },
         stream: [
           {
             __typename: 'VideoStream',
             id: 'st93',
             site: 'YouTube',
-            url: 'https://www.youtube.com/watch?v=1evw4fRu3bo'
+            url: 'https://www.youtube.com/watch?v=1evw4fRu3bo',
           },
           {
             __typename: 'VideoStream',
             id: 'st35',
             site: 'Vimeo',
-            url: 'https://vimeo.com/340239507'
-          }
-        ]
+            url: 'https://vimeo.com/340239507',
+          },
+        ],
       },
       {
         __typename: 'VideoFile',
@@ -146,7 +146,7 @@ const props = {
           __typename: 'Dimensions',
           id: 'd21',
           height: '1080',
-          width: '1920'
+          width: '1920',
         },
         language: {
           __typename: 'Language',
@@ -155,32 +155,32 @@ const props = {
           languageCode: 'en',
           locale: 'en-us',
           nativeName: 'English',
-          textDirection: 'LTR'
+          textDirection: 'LTR',
         },
         use: {
           __typename: 'VideoUse',
           id: 'us31',
-          name: 'Full Video'
+          name: 'Full Video',
         },
         stream: [
           {
             __typename: 'VideoStream',
             id: 'st94',
             site: 'YouTube',
-            url: 'https://www.youtube.com/watch?v=1evw4fRu3bo'
+            url: 'https://www.youtube.com/watch?v=1evw4fRu3bo',
           },
           {
             __typename: 'VideoStream',
             id: 'st36',
             site: 'Vimeo',
-            url: 'https://vimeo.com/340239507'
-          }
-        ]
-      }
-    ]
+            url: 'https://vimeo.com/340239507',
+          },
+        ],
+      },
+    ],
   },
   burnedInCaptions: false,
-  isPreview: false
+  isPreview: false,
 };
 
 const Component = <DownloadVideo { ...props } />;
@@ -195,37 +195,28 @@ describe( '<DownloadVideo />', () => {
 
   it( 'renders <a> tags with the correct href & download values if !isPreview', () => {
     const wrapper = mount( Component );
-    const items = wrapper.find( '.item' );
-    const { files, title } = props.selectedLanguageUnit;
+    const { files } = props.selectedLanguageUnit;
     const s3Bucket = 'https://s3-url.com';
 
-    expect( items.length ).toEqual( files.length );
-    items.forEach( ( item, i ) => {
+    const downloadItems = wrapper.find( 'DownloadItemContent' );
+
+    expect( downloadItems.length ).toEqual( files.length );
+
+    downloadItems.forEach( ( item, i ) => {
       const assetPath = files[i].url;
-      const videoWidth = files[i].dimensions.width;
-      expect( item.name() ).toEqual( 'a' );
-      expect( item.prop( 'href' ) ).toEqual( `${s3Bucket}/${assetPath}` );
-      expect( item.prop( 'download' ) )
-        .toEqual( `${title.replace( /\s/g, '_' )}_${videoWidth}.mp4` );
-    } );
-  } );
 
-  it( 'renders <span> tags with null href & download attributes if isPreview is true', () => {
-    const wrapper = mount( Component );
-    wrapper.setProps( { isPreview: true } );
-    const items = wrapper.find( '.item' );
-    const { files } = props.selectedLanguageUnit;
+      expect( item.prop( 'srcUrl' ) ).toEqual( `${s3Bucket}/${assetPath}` );
 
-    expect( items.length ).toEqual( files.length );
-    items.forEach( item => {
-      expect( item.name() ).toEqual( 'span' );
-      expect( item.prop( 'href' ) ).toEqual( null );
-      expect( item.prop( 'download' ) ).toEqual( null );
+      const anchorLink = item.find( 'a' );
+
+      expect( anchorLink.prop( 'href' ) ).toEqual( 'https://example.jpg' );
+      expect( anchorLink.prop( 'download' ) ).toEqual( true );
     } );
   } );
 
   it( 'renders preview text if isPreview is true', () => {
     const wrapper = mount( Component );
+
     wrapper.setProps( { isPreview: true } );
     const previews = wrapper.find( '.preview-text' );
     const { files } = props.selectedLanguageUnit;
@@ -254,8 +245,8 @@ describe( '<DownloadVideo />', () => {
       ...props,
       selectedLanguageUnit: {
         ...props.selectedLanguageUnit,
-        files: []
-      }
+        files: [],
+      },
     };
     const wrapper = mount( <DownloadVideo { ...noFilesProps } /> );
     const items = wrapper.find( 'a.item' );

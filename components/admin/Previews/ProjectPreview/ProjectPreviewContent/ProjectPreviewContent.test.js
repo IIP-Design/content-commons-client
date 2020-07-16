@@ -386,7 +386,7 @@ describe( '<ProjectPreviewContent />', () => {
     wrapper.update();
 
     const preview = wrapper.find( 'ProjectPreviewContent' );
-    const sharePopup = preview.find( 'PopupTrigger[tooltip="Share project"]' );
+    const sharePopup = preview.find( '.video-project__popover--share' );
 
     expect( sharePopup.exists() ).toEqual( true );
   } );
