@@ -7,8 +7,8 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { addEmptyOption } from 'lib/utils';
 
 const VIDEO_USE_QUERY = gql`
-  query VIDEO_USE_QUERY {
-    videoUses(orderBy: name_ASC) {
+  query VIDEO_USE_QUERY($where: VideoUseWhereInput) {
+    videoUses(orderBy: name_ASC, where: $where) {
       id
       name
     }
@@ -16,8 +16,8 @@ const VIDEO_USE_QUERY = gql`
 `;
 
 const IMAGE_USE_QUERY = gql`
-  query IMAGE_USE_QUERY {
-    imageUses(orderBy: name_ASC) {
+  query IMAGE_USE_QUERY($where: ImageUseWhereInput)  {
+    imageUses(orderBy: name_ASC, where: $where) {
       id
       name
     }
@@ -25,8 +25,8 @@ const IMAGE_USE_QUERY = gql`
 `;
 
 const DOCUMENT_USE_QUERY = gql`
-  query DocumentUses {
-    documentUses(orderBy: name_ASC) {
+  query DocumentUses($where: DocumentUseWhereInput)  {
+    documentUses(orderBy: name_ASC, where: $where) {
       id
       name
     }
@@ -40,6 +40,7 @@ const UseDropdown = ( {
   label,
   name,
   type,
+  variables,
   ...rest
 } ) => {
   let query;
@@ -56,7 +57,7 @@ const UseDropdown = ( {
       break;
   }
 
-  const { data, loading, error } = useQuery( query );
+  const { data, loading, error } = useQuery( query, { variables } );
 
   if ( error ) return `Error! ${error.message}`;
 
@@ -101,6 +102,7 @@ const UseDropdown = ( {
 UseDropdown.defaultProps = {
   id: '',
   name: 'use',
+  variables: {},
 };
 
 UseDropdown.propTypes = {
@@ -108,6 +110,7 @@ UseDropdown.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string,
   type: PropTypes.string,
+  variables: PropTypes.object,
 };
 
 export default React.memo( UseDropdown, areEqual );
