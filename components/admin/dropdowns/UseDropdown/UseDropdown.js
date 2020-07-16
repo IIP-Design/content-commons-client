@@ -1,15 +1,14 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import { useQuery } from 'react-apollo';
 import { Form } from 'semantic-ui-react';
-import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import sortBy from 'lodash/sortBy';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { addEmptyOption } from 'lib/utils';
 
 const VIDEO_USE_QUERY = gql`
   query VIDEO_USE_QUERY {
-    videoUses {
+    videoUses(orderBy: name_ASC) {
       id
       name
     }
@@ -18,7 +17,7 @@ const VIDEO_USE_QUERY = gql`
 
 const IMAGE_USE_QUERY = gql`
   query IMAGE_USE_QUERY {
-    imageUses {
+    imageUses(orderBy: name_ASC) {
       id
       name
     }
@@ -27,7 +26,7 @@ const IMAGE_USE_QUERY = gql`
 
 const DOCUMENT_USE_QUERY = gql`
   query DocumentUses {
-    documentUses {
+    documentUses(orderBy: name_ASC) {
       id
       name
     }
@@ -36,9 +35,16 @@ const DOCUMENT_USE_QUERY = gql`
 
 const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
-const UseDropdown = props => {
+const UseDropdown = ( {
+  id,
+  label,
+  name,
+  type,
+  ...rest
+} ) => {
   let query;
-  switch ( props.type.toLowerCase() ) {
+
+  switch ( type.toLowerCase() ) {
     case 'video':
       query = VIDEO_USE_QUERY;
       break;
@@ -50,61 +56,58 @@ const UseDropdown = props => {
       break;
   }
 
+  const { data, loading, error } = useQuery( query );
+
+  if ( error ) return `Error! ${error.message}`;
+
+  let options = [];
+
+  if ( data ) {
+    const { videoUses, imageUses, documentUses } = data;
+    const uses = videoUses || imageUses || documentUses;
+
+    if ( uses ) { // checks for uses in the event we have neither video or image
+      options = uses.map( u => ( { key: u.id, text: u.name, value: u.id } ) );
+    }
+  }
+
+  addEmptyOption( options );
+
   return (
-    <Query query={ query }>
-      { ( { data, loading, error } ) => {
-        if ( error ) return `Error! ${error.message}`;
+    <Fragment>
+      { !label && (
+        <VisuallyHidden>
+          <label htmlFor={ id }>
+            { `${type} use` }
+          </label>
+        </VisuallyHidden>
+      ) }
 
-        let options = [];
-
-        if ( data ) {
-          const { videoUses, imageUses, documentUses } = data;
-          const uses = videoUses || imageUses || documentUses;
-          if ( uses ) { // checks for uses in the event we have neither video or image
-            options = sortBy( uses, use => use.name ).map( u => ( { key: u.id, text: u.name, value: u.id } ) );
-          }
-        }
-
-        addEmptyOption( options );
-
-        return (
-          <Fragment>
-            { !props.label && (
-
-              <VisuallyHidden>
-                <label htmlFor={ props.id }>
-                  { `${props.id} use` }
-                </label>
-              </VisuallyHidden>
-            ) }
-
-            <Form.Dropdown
-              id={ props.id }
-              name={ props.name }
-              options={ options }
-              placeholder="–"
-              loading={ loading }
-              fluid
-              selection
-              { ...props }
-            />
-          </Fragment>
-        );
-      } }
-    </Query>
+      <Form.Dropdown
+        id={ id }
+        { ...( label && { label } ) }
+        name={ name }
+        options={ options }
+        placeholder="–"
+        loading={ loading }
+        fluid
+        selection
+        { ...rest }
+      />
+    </Fragment>
   );
 };
 
 UseDropdown.defaultProps = {
   id: '',
-  name: 'use'
+  name: 'use',
 };
 
 UseDropdown.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
 };
 
 export default React.memo( UseDropdown, areEqual );
