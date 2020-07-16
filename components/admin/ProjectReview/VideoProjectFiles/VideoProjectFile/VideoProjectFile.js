@@ -91,8 +91,8 @@ const VideoProjectFile = ( { file, thumbnail } ) => {
           { ` ${secondsToHMS( duration )}` }
         </p>
         <p>
-          <b className="label">Subtitles & Captions:</b>
-          { ` ${videoBurnedInStatus}${videoBurnedInStatus === 'CLEAN' ? ' - No Captions' : ''}` }
+          <b className="label">On-Screen Text:</b>
+          { ` ${videoBurnedInStatus === 'SUBTITLED' ? 'Yes' : 'No'}` }
         </p>
         <p>
           <b className="label">Video Type:</b>
