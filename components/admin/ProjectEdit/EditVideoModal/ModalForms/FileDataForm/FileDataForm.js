@@ -63,6 +63,10 @@ const FileDataForm = ( {
   const { project } = videoProjectQuery;
   const units = project && project.units ? project.units : [];
 
+  const cleanUseId = cleanUseQuery?.videoUses?.[0]?.id || '';
+  const englishId = englishLanguageQuery?.languages?.[0]?.id || '';
+  const isClean = values.use === cleanUseId;
+
   const growl = () => {
     // Update projectUpdate Redux state
     projectUpdated( selectedProject, true );
@@ -164,6 +168,9 @@ const FileDataForm = ( {
 
           if ( name === 'use' ) {
             cachedData.file.use.id = value;
+            if ( value === cleanUseId ) {
+              setLangId( englishId );
+            }
           } else {
             cachedData.file[name] = value;
           }
@@ -357,6 +364,7 @@ const FileDataForm = ( {
               onChange={ ( e, { value } ) => handleLanguageChange( value ) }
               required
               value={ values.language }
+              disabled={ isClean }
             />
 
             <VideoBurnedInStatusDropdown

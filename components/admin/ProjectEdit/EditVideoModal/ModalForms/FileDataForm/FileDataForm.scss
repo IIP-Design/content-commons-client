@@ -25,6 +25,14 @@
     flex-direction: column;
     justify-content: space-between;
   }
+
+  &.ui.form .disabled.field {
+    opacity: initial;
+
+    > label {
+      opacity: initial;
+    }
+  }
 }
 
 .video-links {
