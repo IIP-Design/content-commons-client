@@ -2,6 +2,8 @@
 
 .modal_section--description {
   margin-top: 1em;
+  word-break: break-all; // Safari
+  overflow-wrap: anywhere;
 }
 
 .modal_description {
