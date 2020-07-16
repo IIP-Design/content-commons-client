@@ -90,6 +90,7 @@ const addFilesReducer = ( state, action ) => {
 
 const GraphicEdit = ( { id } ) => {
   const [projectId, setProjectId] = useState( id );
+  const [disableDeleteOnSave, setDisableDeleteOnSave] = useState( false );
 
   const router = useRouter();
   const MAX_CATEGORY_COUNT = 2;
@@ -163,7 +164,6 @@ const GraphicEdit = ( { id } ) => {
 
   const {
     publishing,
-    // publishError,
     executePublishOperation,
     handleStatusChange,
   } = usePublish(
@@ -237,6 +237,7 @@ const GraphicEdit = ( { id } ) => {
       setProjectId( pId );
       addProjectIdToUrl( pId );
       clearLocalGraphicFiles();
+      setDisableDeleteOnSave( false );
     }
   }, SAVE_MSG_DELAY );
 
@@ -283,7 +284,10 @@ const GraphicEdit = ( { id } ) => {
     const isPublished = data?.graphicProject && !!data.graphicProject.publishedAt;
     const hasNoLocalData = !projectId && localData?.localGraphicProject === null;
 
-    return hasNoLocalData || isPublished;
+    // return hasNoLocalData || isPublished;
+    if ( hasNoLocalData || isPublished ) {
+      setDisableDeleteOnSave( true );
+    }
   };
 
   const saveGraphicFile = async ( pId, file ) => updateProject( pId, {
@@ -492,6 +496,8 @@ const GraphicEdit = ( { id } ) => {
     localProjectId.current = project.id;
     updateNotification( 'Saving project...' );
 
+    setDisableDeleteOnSave( true );
+
     await uploadAndSaveFiles(
       project.id,
       state.filesToAdd,
@@ -658,8 +664,6 @@ const GraphicEdit = ( { id } ) => {
     );
   }
 
-  // if ( !data ) return null;
-
   const { showNotification, notificationMessage } = notification;
 
   return (
@@ -671,7 +675,7 @@ const GraphicEdit = ( { id } ) => {
             setDeleteConfirmOpen={ setDeleteConfirmOpen }
             previewNode={ getPreview() }
             disabled={ {
-              'delete': !!deleteProjectEnabled(),
+              'delete': disableDeleteOnSave,
               save: !projectId || disableBtns || !isFormValid,
               preview: !projectId || disableBtns || !isFormValid,
               publish: !projectId || disableBtns || !isFormValid, // having graphics required?
