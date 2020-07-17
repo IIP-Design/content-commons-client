@@ -16,7 +16,9 @@ const VIDEO_BURNED_IN_STATUS_QUERY = gql`
   }
 `;
 
-const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
+const areEqual = ( prevProps, nextProps ) => (
+  prevProps.value === nextProps.value && prevProps.disabled === nextProps.disabled
+);
 
 const VideoBurnedInStatusDropdown = ( { id, label, ...rest } ) => {
   const { data, loading, error } = useQuery( VIDEO_BURNED_IN_STATUS_QUERY );

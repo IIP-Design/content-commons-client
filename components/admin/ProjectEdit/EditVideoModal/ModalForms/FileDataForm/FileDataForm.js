@@ -65,7 +65,6 @@ const FileDataForm = ( {
 
   const cleanUseId = cleanUseQuery?.videoUses?.[0]?.id || '';
   const englishId = englishLanguageQuery?.languages?.[0]?.id || '';
-  const isClean = values.use === cleanUseId;
 
   const growl = () => {
     // Update projectUpdate Redux state
@@ -170,6 +169,12 @@ const FileDataForm = ( {
             cachedData.file.use.id = value;
             if ( value === cleanUseId ) {
               setLangId( englishId );
+              videoBurnedInStatusVideoFileMutation( {
+                variables: {
+                  id: selectedFile,
+                  videoBurnedInStatus: 'CLEAN',
+                },
+              } );
             }
           } else {
             cachedData.file[name] = value;
@@ -364,7 +369,7 @@ const FileDataForm = ( {
               onChange={ ( e, { value } ) => handleLanguageChange( value ) }
               required
               value={ values.language }
-              disabled={ isClean }
+              disabled={ values.use === cleanUseId && values.videoBurnedInStatus === 'CLEAN' }
             />
 
             <VideoBurnedInStatusDropdown
@@ -375,6 +380,7 @@ const FileDataForm = ( {
               required
               type="video"
               value={ values.videoBurnedInStatus }
+              disabled={ values.use === cleanUseId }
             />
 
             <UseDropdown
