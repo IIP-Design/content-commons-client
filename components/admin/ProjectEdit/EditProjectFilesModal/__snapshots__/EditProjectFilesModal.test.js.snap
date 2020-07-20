@@ -19,7 +19,33 @@ exports[`<EditSupportFiles /> renders without crashing 1`] = `
             "selections": Array [
               Object {
                 "alias": undefined,
-                "arguments": Array [],
+                "arguments": Array [
+                  Object {
+                    "kind": "Argument",
+                    "name": Object {
+                      "kind": "Name",
+                      "value": "orderBy",
+                    },
+                    "value": Object {
+                      "kind": "EnumValue",
+                      "value": "name_ASC",
+                    },
+                  },
+                  Object {
+                    "kind": "Argument",
+                    "name": Object {
+                      "kind": "Name",
+                      "value": "where",
+                    },
+                    "value": Object {
+                      "kind": "Variable",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "where",
+                      },
+                    },
+                  },
+                ],
                 "directives": Array [],
                 "kind": "Field",
                 "name": Object {
@@ -56,17 +82,42 @@ exports[`<EditSupportFiles /> renders without crashing 1`] = `
               },
             ],
           },
-          "variableDefinitions": Array [],
+          "variableDefinitions": Array [
+            Object {
+              "defaultValue": undefined,
+              "directives": Array [],
+              "kind": "VariableDefinition",
+              "type": Object {
+                "kind": "NamedType",
+                "name": Object {
+                  "kind": "Name",
+                  "value": "VideoUseWhereInput",
+                },
+              },
+              "variable": Object {
+                "kind": "Variable",
+                "name": Object {
+                  "kind": "Name",
+                  "value": "where",
+                },
+              },
+            },
+          ],
         },
       ],
       "kind": "Document",
       "loc": Object {
-        "end": 73,
+        "end": 135,
         "start": 0,
       },
     }
   }
   skip={false}
+  variables={
+    Object {
+      "where": undefined,
+    }
+  }
 >
   <Component />
 </Query>
