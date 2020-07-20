@@ -12,6 +12,7 @@ import * as actions from 'lib/redux/actions/projectUpdate';
 import { Confirm, Form, Grid } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 
+import ApolloError from 'components/errors/ApolloError';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import LanguageDropdown, { LANGUAGE_BY_NAME_QUERY } from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import Loader from 'components/admin/ProjectEdit/EditVideoModal/Loader/Loader';
@@ -128,7 +129,11 @@ const FileDataForm = ( {
     changeLanguage( langId, selectedFile );
   }, [langId] );
 
-  const { file, loading } = videoFileQuery;
+  const { file, error, loading } = videoFileQuery;
+
+  if ( error ) {
+    return <ApolloError error={ error } />;
+  }
 
   if ( !file || loading ) return <Loader height="330px" text="Loading the file data..." />;
 

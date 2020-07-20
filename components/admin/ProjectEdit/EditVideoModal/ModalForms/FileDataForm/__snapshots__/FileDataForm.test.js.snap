@@ -1,0 +1,223 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FileDataForm />, when the video use is Clean renders file meta data 1`] = `
+<div
+  className="file_meta"
+>
+  <span
+    className="file_meta_content file_meta_content--filetype"
+    lang="en"
+  >
+    Mexico City 1.mp4
+  </span>
+  <span
+    className="file_meta_content file_meta_content--filesize"
+  >
+    Filesize: 15.1  MB
+  </span>
+  <span
+    className="file_meta_content file_meta_content--dimensions"
+  >
+    Dimensions: 1920 x 1080
+  </span>
+  <span
+    className="file_meta_content file_meta_content--uploaded"
+  >
+    Uploaded: July 16, 2020
+  </span>
+  <span
+    className="file_meta_content file_meta_content--duration"
+  >
+    Duration: 0:14
+  </span>
+  <span
+    className="delete-file-link"
+    onClick={[Function]}
+    onKeyUp={[Function]}
+    role="button"
+    tabIndex={0}
+  >
+    Delete file from project
+  </span>
+</div>
+`;
+
+exports[`<FileDataForm />, when the video use is Clean renders the Confirm modal 1`] = `
+<Confirm
+  cancelButton="No, take me back"
+  className="delete"
+  confirmButton="Yes, delete forever"
+  content={
+    <ConfirmModalContent
+      className="delete_confirm delete_confirm--video"
+      headline="Are you sure you want to delete this video?"
+    >
+      <p>
+        This video will be permanently removed from the Content Commons and any other projects or collections it appears on.
+      </p>
+    </ConfirmModalContent>
+  }
+  onCancel={[Function]}
+  onConfirm={[Function]}
+  open={false}
+  size="small"
+>
+  <Modal
+    centered={true}
+    className="delete"
+    closeOnDimmerClick={true}
+    closeOnDocumentClick={false}
+    dimmer={true}
+    eventPool="Modal"
+    onClose={[Function]}
+    open={false}
+    size="small"
+  >
+    <Portal
+      closeOnDocumentClick={false}
+      closeOnEscape={true}
+      eventPool="Modal"
+      mountNode={<body />}
+      onClose={[Function]}
+      onMount={[Function]}
+      onOpen={[Function]}
+      onUnmount={[Function]}
+      open={false}
+      openOnTriggerClick={true}
+    />
+  </Modal>
+</Confirm>
+`;
+
+exports[`<FileDataForm />, when the video use is Clean renders video links 1`] = `
+<div
+  className="video-links"
+>
+  <FormInput
+    as={[Function]}
+    control={[Function]}
+    id="video-youtube"
+    label="YouTube URL"
+    name="youtube"
+    onBlur={[Function]}
+    onChange={[Function]}
+    value=""
+  >
+    <FormField
+      control={[Function]}
+      id="video-youtube"
+      label="YouTube URL"
+      name="youtube"
+      onBlur={[Function]}
+      onChange={[Function]}
+      value=""
+    >
+      <div
+        className="field"
+      >
+        <label
+          htmlFor="video-youtube"
+        >
+          YouTube URL
+        </label>
+        <Input
+          id="video-youtube"
+          name="youtube"
+          onBlur={[Function]}
+          onChange={[Function]}
+          type="text"
+          value=""
+        >
+          <div
+            className="ui input"
+          >
+            <input
+              id="video-youtube"
+              name="youtube"
+              onBlur={[Function]}
+              onChange={[Function]}
+              type="text"
+              value=""
+            />
+          </div>
+        </Input>
+      </div>
+    </FormField>
+  </FormInput>
+  <FormInput
+    as={[Function]}
+    control={[Function]}
+    id="video-vimeo"
+    label="Vimeo URL"
+    name="vimeo"
+    onBlur={[Function]}
+    onChange={[Function]}
+    readOnly={true}
+    style={
+      Object {
+        "opacity": "0.45",
+      }
+    }
+    value="https://vimeo.com/438865910"
+  >
+    <FormField
+      control={[Function]}
+      id="video-vimeo"
+      label="Vimeo URL"
+      name="vimeo"
+      onBlur={[Function]}
+      onChange={[Function]}
+      readOnly={true}
+      style={
+        Object {
+          "opacity": "0.45",
+        }
+      }
+      value="https://vimeo.com/438865910"
+    >
+      <div
+        className="field"
+      >
+        <label
+          htmlFor="video-vimeo"
+        >
+          Vimeo URL
+        </label>
+        <Input
+          id="video-vimeo"
+          name="vimeo"
+          onBlur={[Function]}
+          onChange={[Function]}
+          readOnly={true}
+          style={
+            Object {
+              "opacity": "0.45",
+            }
+          }
+          type="text"
+          value="https://vimeo.com/438865910"
+        >
+          <div
+            className="ui input"
+            style={
+              Object {
+                "opacity": "0.45",
+              }
+            }
+          >
+            <input
+              id="video-vimeo"
+              name="vimeo"
+              onBlur={[Function]}
+              onChange={[Function]}
+              readOnly={true}
+              type="text"
+              value="https://vimeo.com/438865910"
+            />
+          </div>
+        </Input>
+      </div>
+    </FormField>
+  </FormInput>
+</div>
+`;
