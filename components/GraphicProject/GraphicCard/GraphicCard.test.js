@@ -69,25 +69,31 @@ describe( '<GraphicCard />', () => {
     expect( buttonTitle.text() ).toEqual( props.item.title );
   } );
 
-  it( 'toggles the modal on handleOpen & handleClose', () => {
-    const modal = () => wrapper.find( 'Modal' );
+  it( 'toggles the modals on handleOpen & handleClose', () => {
+    const thumbnailModal = () => wrapper.find( 'Modal:first-child' );
+    const titleModal = () => wrapper.find( 'Modal' ).last();
 
     // Init state
-    expect( modal().prop( 'open' ) ).toEqual( false );
+    expect( thumbnailModal().prop( 'open' ) ).toEqual( false );
+    expect( titleModal().prop( 'open' ) ).toEqual( false );
 
     // Open modal
     act( () => {
-      modal().prop( 'onOpen' )();
+      thumbnailModal().prop( 'onOpen' )();
+      titleModal().prop( 'onOpen' )();
     } );
     wrapper.update();
-    expect( modal().prop( 'open' ) ).toEqual( true );
+    expect( thumbnailModal().prop( 'open' ) ).toEqual( true );
+    expect( titleModal().prop( 'open' ) ).toEqual( true );
 
     // Close Modal
     act( () => {
-      modal().prop( 'onClose' )();
+      thumbnailModal().prop( 'onClose' )();
+      titleModal().prop( 'onClose' )();
     } );
     wrapper.update();
-    expect( modal().prop( 'open' ) ).toEqual( false );
+    expect( thumbnailModal().prop( 'open' ) ).toEqual( false );
+    expect( titleModal().prop( 'open' ) ).toEqual( false );
   } );
 
   it( 'renders the public description', () => {
