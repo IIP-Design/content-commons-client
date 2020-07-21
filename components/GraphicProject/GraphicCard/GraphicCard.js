@@ -51,13 +51,26 @@ const GraphicCard = ( { item } ) => {
 
   return (
     <article className="graphic_card">
-      <div className="graphic_card_thumbnail">
-        <img src={ signedUrl } alt={ thumbnailImg.alt } data-img="graphic_thumbnail" />
-        <img src={ icon } className="graphic_icon" alt="graphic card icon" />
-      </div>
+      <Modal
+        open={ isOpen }
+        onOpen={ handleOpen }
+        onClose={ handleClose }
+        trigger={ (
+          <div className="graphic_card_thumbnail">
+            <img src={ signedUrl } alt={ thumbnailImg.alt } data-img="graphic_thumbnail" />
+            <img src={ icon } className="graphic_icon" alt="graphic card icon" />
+          </div>
+        ) }
+      >
+        <Modal.Content
+          role="dialog"
+          aria-modal="true"
+        >
+          <GraphicProject item={ item } displayAsModal />
+        </Modal.Content>
+      </Modal>
 
-      { visibility === 'INTERNAL'
-          && <InternalUseDisplay style={ { margin: '0.5em auto 0 1em' } } /> }
+      { visibility === 'INTERNAL' && <InternalUseDisplay style={ { margin: '0.5em auto 0 1em' } } /> }
 
       <Modal
         open={ isOpen }
