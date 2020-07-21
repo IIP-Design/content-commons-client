@@ -6,7 +6,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
-import gql from 'graphql-tag';
 import { Table, Grid } from 'semantic-ui-react';
 import { useQuery } from '@apollo/react-hooks';
 
@@ -36,16 +35,14 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   const _breakpoint = 767;
 
   const { dispatch, state } = useContext( DashboardContext );
+
   const projectType = state?.projectType || '';
   const column = state?.column || 'createdAt';
   const direction = state?.direction || 'descending';
 
-  // No-op query is never called, but added to avoid reference error in cases where context has not yet loaded
-  const noopQuery = gql`query{ NOOP { noop } }`;
-
   // Get the content data
-  const contentQuery = state?.queries?.content || noopQuery;
-  const countQuery = state?.queries?.count || noopQuery;
+  const contentQuery = state.queries.content;
+  const countQuery = state.queries.count;
 
   // Set GraphQL query variables
   const variables = { team: team.name, searchTerm };
