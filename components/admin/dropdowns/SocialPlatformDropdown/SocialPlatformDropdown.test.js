@@ -3,7 +3,7 @@ import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
 import SocialPlatformDropdown, { SOCIAL_PLATFORMS_QUERY } from './SocialPlatformDropdown';
-import { addEmptyOption } from 'lib/utils';
+import { addEmptyOption, suppressActWarning } from 'lib/utils';
 
 const props = {
   id: '123xyz',
@@ -100,23 +100,9 @@ const EmptyComponent = (
 );
 
 describe( '<SocialPlatformDropdown />', () => {
-  /**
-   * @todo Suppress React 16.8 `act()` warnings globally.
-   * The React team's fix won't be out of alpha until 16.9.0.
-   * @see https://github.com/facebook/react/issues/14769
-   */
   const consoleError = console.error;
 
-  beforeAll( () => {
-    const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-    jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-      if ( !args[0].includes( actMsg ) ) {
-        consoleError( ...args );
-      }
-    } );
-  } );
-
+  beforeAll( () => suppressActWarning( consoleError ) );
   afterAll( () => {
     console.error = consoleError;
   } );

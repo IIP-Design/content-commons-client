@@ -3,19 +3,11 @@ import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
 import TeamDropdown from './TeamDropdown';
+
+import { suppressActWarning } from 'lib/utils';
 import {
   emptyMocks, errorMocks, mocks, nullMocks,
 } from './mocks';
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 const getComponent = ( data, props ) => (
   <MockedProvider mocks={ data } addTypename={ false }>

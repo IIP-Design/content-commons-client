@@ -1,67 +1,67 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
-import { addEmptyOption } from 'lib/utils';
+import { addEmptyOption, suppressActWarning } from 'lib/utils';
 import QualityDropdown, { VIDEO_QUALITY_QUERY, IMAGE_QUALITY_QUERY } from './QualityDropdown';
 
 const props = {
   id: 'q123',
   label: 'Quality',
   infotip: 'tooltip message',
-  type: 'Video'
+  type: 'Video',
 };
 
 const imageProps = {
   ...props,
-  type: 'Image'
+  type: 'Image',
 };
 
 const mocks = [
   {
     request: {
-      query: VIDEO_QUALITY_QUERY
+      query: VIDEO_QUALITY_QUERY,
     },
     result: {
       data: {
         __type: {
           enumValues: [
             { name: 'WEB' },
-            { name: 'BROADCAST' }
-          ]
-        }
-      }
-    }
+            { name: 'BROADCAST' },
+          ],
+        },
+      },
+    },
   },
   {
     request: {
-      query: IMAGE_QUALITY_QUERY
+      query: IMAGE_QUALITY_QUERY,
     },
     result: {
       data: {
         __type: {
           enumValues: [
             { name: 'WEB' },
-            { name: 'PRINT' }
-          ]
-        }
-      }
-    }
-  }
+            { name: 'PRINT' },
+          ],
+        },
+      },
+    },
+  },
 ];
 
 const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
+      errors: [{ message: 'There was an error.' }],
+    },
   },
   {
     ...mocks[1],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 const nullMocks = [
@@ -69,18 +69,18 @@ const nullMocks = [
     ...mocks[0],
     result: {
       data: {
-        __type: { enumValues: null }
-      }
-    }
+        __type: { enumValues: null },
+      },
+    },
   },
   {
     ...mocks[1],
     result: {
       data: {
-        __type: { enumValues: null }
-      }
-    }
-  }
+        __type: { enumValues: null },
+      },
+    },
+  },
 ];
 
 const emptyMocks = [
@@ -88,29 +88,19 @@ const emptyMocks = [
     ...mocks[0],
     result: {
       data: {
-        __type: { enumValues: [] }
-      }
-    }
+        __type: { enumValues: [] },
+      },
+    },
   },
   {
     ...mocks[1],
     result: {
       data: {
-        __type: { enumValues: [] }
-      }
-    }
-  }
+        __type: { enumValues: [] },
+      },
+    },
+  },
 ];
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<QualityDropdown /> for video type', () => {
   const consoleError = console.error;
@@ -175,8 +165,8 @@ describe( '<QualityDropdown /> for video type', () => {
       {
         key: '-',
         text: '-',
-        value: null
-      }
+        value: null,
+      },
     ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
@@ -192,8 +182,8 @@ describe( '<QualityDropdown /> for video type', () => {
       {
         key: '-',
         text: '-',
-        value: null
-      }
+        value: null,
+      },
     ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
@@ -213,7 +203,7 @@ describe( '<QualityDropdown /> for video type', () => {
       return {
         key: name,
         text: `For ${name.toLowerCase()}`,
-        value: name
+        value: name,
       };
     } );
     const options = addEmptyOption( semanticUIValues );
@@ -299,8 +289,8 @@ describe( '<QualityDropdown /> for image type', () => {
       {
         key: '-',
         text: '-',
-        value: null
-      }
+        value: null,
+      },
     ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
@@ -316,8 +306,8 @@ describe( '<QualityDropdown /> for image type', () => {
       {
         key: '-',
         text: '-',
-        value: null
-      }
+        value: null,
+      },
     ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
@@ -338,7 +328,7 @@ describe( '<QualityDropdown /> for image type', () => {
       return {
         key: name,
         text: `For ${name.toLowerCase()}`,
-        value: name
+        value: name,
       };
     } );
     const options = addEmptyOption( semanticUIValues );

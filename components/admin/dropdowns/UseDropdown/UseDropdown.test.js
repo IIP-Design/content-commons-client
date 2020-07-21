@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
-import { addEmptyOption } from 'lib/utils';
+import { addEmptyOption, suppressActWarning } from 'lib/utils';
 import UseDropdown from './UseDropdown';
 import {
   emptyMocks, errorMocks, mocks, nullMocks,
@@ -31,16 +31,6 @@ const getComponent = ( data, props ) => (
     <UseDropdown { ...props } />
   </MockedProvider>
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<UseDropdown /> for video type', () => {
   const consoleError = console.error;

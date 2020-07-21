@@ -3,7 +3,7 @@ import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import ApolloError from 'components/errors/ApolloError';
-import { formatBytes, getCount } from 'lib/utils';
+import { formatBytes, getCount, suppressActWarning } from 'lib/utils';
 import VideoDetailsPopup, {
   getValidFiles, getVideoFiles, VIDEO_PROJECT_FILES_QUERY,
 } from './VideoDetailsPopup';
@@ -170,16 +170,6 @@ const Component = (
     <VideoDetailsPopup { ...props } />
   </MockedProvider>
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<VideoDetailsPopup />', () => {
   const consoleError = console.error;

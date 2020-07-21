@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import Router from 'next/router';
 import wait from 'waait';
 import { normalizeItem } from 'lib/elastic/parser';
-import { getPluralStringOrNot } from 'lib/utils';
+import { getPluralStringOrNot, suppressActWarning } from 'lib/utils';
 import DownloadPkgFiles from 'components/admin/download/DownloadPkgFiles/DownloadPkgFiles';
 import { getDateTimeTerms, normalizeDocumentItemByAPI } from './utils';
 import Package from './Package';
@@ -192,16 +192,7 @@ describe( '<Package /> (GraphQL API)', () => {
 describe( '<Package /> (Elastic API)', () => {
   const consoleError = console.error;
 
-  beforeAll( () => {
-    const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-    jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-      if ( !args[0].includes( actMsg ) ) {
-        consoleError( ...args );
-      }
-    } );
-  } );
-
+  beforeAll( () => suppressActWarning( consoleError ) );
   afterAll( () => {
     console.error = consoleError;
   } );

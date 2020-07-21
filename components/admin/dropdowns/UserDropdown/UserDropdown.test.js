@@ -4,15 +4,17 @@ import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
 import UserDropdown, { USERS_QUERY } from './UserDropdown';
 
+import { suppressActWarning } from 'lib/utils';
+
 const props = {
   id: 'abc123',
-  label: 'Users'
+  label: 'Users',
 };
 
 const mocks = [
   {
     request: {
-      query: USERS_QUERY
+      query: USERS_QUERY,
     },
     result: {
       data: {
@@ -25,8 +27,8 @@ const mocks = [
             permissions: ['TEAM_ADMIN'],
             team: {
               id: 'cjrkzhvku000f0756l44blw33',
-              name: 'GPA Video Production'
-            }
+              name: 'GPA Video Production',
+            },
           },
           {
             id: 'cjsbxb5ur00t40756z7bzf706',
@@ -36,40 +38,40 @@ const mocks = [
             permissions: ['EDITOR'],
             team: {
               id: 'cjrkzhvku000f0756l44blw33',
-              name: 'GPA Video Production'
-            }
-          }
-        ]
-      }
-    }
-  }
+              name: 'GPA Video Production',
+            },
+          },
+        ],
+      },
+    },
+  },
 ];
 
 const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 const nullMocks = [
   {
     ...mocks[0],
     result: {
-      data: { users: null }
-    }
-  }
+      data: { users: null },
+    },
+  },
 ];
 
 const emptyMocks = [
   {
     ...mocks[0],
     result: {
-      data: { users: [] }
-    }
-  }
+      data: { users: [] },
+    },
+  },
 ];
 
 const Component = (
@@ -95,16 +97,6 @@ const EmptyComponent = (
     <UserDropdown { ...props } />
   </MockedProvider>
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<UserDropdown />', () => {
   const consoleError = console.error;
@@ -167,7 +159,7 @@ describe( '<UserDropdown />', () => {
     const semanticUIUsers = sortedUsers.map( user => ( {
       key: user.id,
       text: `${user.lastName}, ${user.firstName}`,
-      value: user.id
+      value: user.id,
     } ) );
 
     expect( formDropdown.prop( 'options' ) ).toEqual( semanticUIUsers );

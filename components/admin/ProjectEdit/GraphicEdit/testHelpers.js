@@ -848,10 +848,7 @@ const localGraphicFiles = mocks[2].result.data.localGraphicProject.files.filter(
   return file.style && !isShell;
 } );
 
-const sortFiles = ( files, field = 'name' ) => (
-  sortBy( files, file => file[field].toLowerCase() )
-);
-
+const sortFiles = ( files, field = 'name' ) => sortBy( files, file => file[field].toLowerCase() );
 const getLocalEditableFiles = () => {
   const { files } = mocks[2].result.data.localGraphicProject;
   const editableFiles = files.filter( file => getIsEditable( file ) );
@@ -888,16 +885,6 @@ const supportFilesConfig = [
   },
 ];
 
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
-
 export {
   errorMocks,
   mocks,
@@ -907,5 +894,4 @@ export {
   getLocalEditableFiles,
   localGraphicFiles,
   supportFilesConfig,
-  suppressActWarning,
 };

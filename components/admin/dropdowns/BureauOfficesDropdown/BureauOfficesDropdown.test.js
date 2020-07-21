@@ -3,16 +3,17 @@ import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
 import BureauOfficesDropdown, { BUREAU_OFFICES_QUERY } from './BureauOfficesDropdown';
+import { suppressActWarning } from 'lib/utils';
 
 const props = {
   id: '123xyz',
-  label: 'Bureau/Offices'
+  label: 'Bureau/Offices',
 };
 
 const mocks = [
   {
     request: {
-      query: BUREAU_OFFICES_QUERY
+      query: BUREAU_OFFICES_QUERY,
     },
     result: {
       data: {
@@ -30,9 +31,9 @@ const mocks = [
               {
                 id: 'eiwo',
                 name: 'Office 2',
-                abbr: 'O2'
-              }
-            ]
+                abbr: 'O2',
+              },
+            ],
           },
           {
             id: 'weio',
@@ -42,9 +43,9 @@ const mocks = [
               {
                 id: 'eiwo',
                 name: 'Office 2',
-                abbr: 'O2'
-              }
-            ]
+                abbr: 'O2',
+              },
+            ],
           },
           {
             id: 'xzwi',
@@ -54,9 +55,9 @@ const mocks = [
               {
                 id: 'kglf',
                 name: 'Office 1',
-                abbr: 'O1'
-              }
-            ]
+                abbr: 'O1',
+              },
+            ],
           },
           {
             id: 'zxcw',
@@ -66,46 +67,46 @@ const mocks = [
               {
                 id: 'kglf',
                 name: 'Office 1',
-                abbr: 'O1'
+                abbr: 'O1',
               },
               {
                 id: 'eiwo',
                 name: 'Office 2',
-                abbr: 'O2'
-              }
-            ]
-          }
-        ]
-      }
-    }
-  }
+                abbr: 'O2',
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
 ];
 
 const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 const nullMocks = [
   {
     ...mocks[0],
     result: {
-      data: { bureaus: null }
-    }
-  }
+      data: { bureaus: null },
+    },
+  },
 ];
 
 const emptyMocks = [
   {
     ...mocks[0],
     result: {
-      data: { bureaus: [] }
-    }
-  }
+      data: { bureaus: [] },
+    },
+  },
 ];
 
 const Component = (
@@ -133,21 +134,9 @@ const EmptyComponent = (
 );
 
 describe( '<BureauOfficesDropdown />', () => {
-  /**
-   * @todo Suppress React 16.8 `act()` warnings globally.
-   * The React team's fix won't be out of alpha until 16.9.0.
-   * @see https://github.com/facebook/react/issues/14769
-   */
   const consoleError = console.error;
-  beforeAll( () => {
-    const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-    jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-      if ( !args[0].includes( actMsg ) ) {
-        consoleError( ...args );
-      }
-    } );
-  } );
 
+  beforeAll( () => suppressActWarning( consoleError ) );
   afterAll( () => {
     console.error = consoleError;
   } );
@@ -163,6 +152,7 @@ describe( '<BureauOfficesDropdown />', () => {
 
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
+
     await wait( 0 );
     wrapper.update();
     const dropdown = wrapper.find( 'BureauOfficesDropdown' );
@@ -174,6 +164,7 @@ describe( '<BureauOfficesDropdown />', () => {
 
   it( 'does not crash if bureaus is null', async () => {
     const wrapper = mount( NullComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -183,6 +174,7 @@ describe( '<BureauOfficesDropdown />', () => {
 
   it( 'does not crash if bureaus is []', async () => {
     const wrapper = mount( EmptyComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -192,6 +184,7 @@ describe( '<BureauOfficesDropdown />', () => {
 
   it( 'renders the final state without crashing', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -201,7 +194,7 @@ describe( '<BureauOfficesDropdown />', () => {
       .map( bureau => ( {
         key: bureau.id,
         text: `${bureau.name} (${bureau.abbr})`,
-        value: bureau.id
+        value: bureau.id,
       } ) );
 
     expect( formDropdown.prop( 'options' ) ).toEqual( options );
@@ -210,6 +203,7 @@ describe( '<BureauOfficesDropdown />', () => {
 
   it( 'assigns a matching id & htmlFor value to the Dropdown and label, respectively', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
     const dropdown = wrapper.find( 'Dropdown div[name="bureaus"]' );

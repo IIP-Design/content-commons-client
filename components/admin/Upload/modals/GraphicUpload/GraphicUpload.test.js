@@ -1,6 +1,7 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import { useFileStateManager } from 'lib/hooks/useFileStateManager';
+import { suppressActWarning } from 'lib/utils';
 import GraphicUpload from './GraphicUpload';
 
 jest.mock(
@@ -111,16 +112,6 @@ const files = [
     loaded: 0,
   },
 ];
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<GraphicUpload />, if graphic files have been selected for upload', () => {
   const props = {

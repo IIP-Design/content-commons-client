@@ -1,7 +1,9 @@
 import { mount } from 'enzyme';
 import { MockedProvider, wait } from '@apollo/react-testing';
-import { errorMocks, mocks, undefinedDataMocks } from 'components/admin/PackageEdit/mocks';
 import PackagePreview from './PackagePreview';
+
+import { suppressActWarning } from 'lib/utils';
+import { errorMocks, mocks, undefinedDataMocks } from 'components/admin/PackageEdit/mocks';
 
 jest.mock(
   'components/Package/Package',
@@ -14,22 +16,7 @@ const getComponent = ( data, props = { id: 'test-123' } ) => (
   </MockedProvider>
 );
 
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
-
 describe( '<PackagePreview />', () => {
-  /**
-   * @todo Suppress React 16.8 `act()` warnings globally.
-   * The React team's fix won't be out of alpha until 16.9.0.
-   * @see https://github.com/facebook/react/issues/14769
-   */
   const consoleError = console.error;
 
   beforeAll( () => suppressActWarning( consoleError ) );

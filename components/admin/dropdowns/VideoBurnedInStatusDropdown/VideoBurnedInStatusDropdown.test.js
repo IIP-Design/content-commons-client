@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
-import { addEmptyOption } from 'lib/utils';
+import { addEmptyOption, suppressActWarning } from 'lib/utils';
 import VideoBurnedInStatusDropdown, { VIDEO_BURNED_IN_STATUS_QUERY } from './VideoBurnedInStatusDropdown';
 
 const props = {
@@ -82,16 +82,6 @@ const EmptyComponent = (
     <VideoBurnedInStatusDropdown { ...props } />
   </MockedProvider>
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<VideoBurnedInStatusDropdown />', () => {
   const consoleError = console.error;

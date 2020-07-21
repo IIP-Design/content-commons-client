@@ -1,39 +1,28 @@
 import { mount } from 'enzyme';
+import { suppressActWarning } from 'lib/utils';
 import { props } from './mocks';
 import PackageFiles from './PackageFiles';
 
 jest.mock( 'next/dynamic', () => () => 'Press-Package-File' );
 jest.mock(
   'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal',
-  () => function EditPackageFiles() { return ''; }
+  () => function EditPackageFiles() { return ''; },
 );
 
 jest.mock( 'lib/hooks/useCrudActionsDocument', () => ( {
   useCrudActionsDocument: () => ( {
     createFile: jest.fn(),
     deleteFile: jest.fn(),
-    updateFile: jest.fn()
-  } )
+    updateFile: jest.fn(),
+  } ),
 } ) );
 
 jest.mock( 'next/config', () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
 describe( '<PackageFiles />', () => {
-  /**
-   * @todo Suppress React 16.8 `act()` warnings globally.
-   * The React team's fix won't be out of alpha until 16.9.0.
-   * @see https://github.com/facebook/react/issues/14769
-   */
   const consoleError = console.error;
-  beforeAll( () => {
-    const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-    jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-      if ( !args[0].includes( actMsg ) ) {
-        consoleError( ...args );
-      }
-    } );
-  } );
 
+  beforeAll( () => suppressActWarning( consoleError ) );
   afterAll( () => {
     console.error = consoleError;
   } );
@@ -113,6 +102,7 @@ describe( '<PackageFiles />', () => {
 
   it( 'renders the no files message and heading if there are no package documents', () => {
     const msg = 'This package does not have any uploaded files. Please upload at least one file to publish this package to Content Commons.';
+
     wrapper.setProps( { pkg: { documents: [] } } );
 
     expect( wrapper.contains( 'Uploaded File (0)' ) ).toEqual( true );
