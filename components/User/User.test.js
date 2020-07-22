@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
-
+import { suppressActWarning } from 'lib/utils';
 import User, { CURRENT_USER_QUERY } from './User';
 
 const props = {
@@ -41,16 +41,6 @@ const Component = (
     <User { ...props } />
   </MockedProvider>
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<User />', () => {
   const consoleError = console.error;

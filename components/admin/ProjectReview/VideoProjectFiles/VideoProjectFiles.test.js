@@ -7,6 +7,7 @@ import { Loader } from 'semantic-ui-react';
 
 import VideoProjectFiles from './VideoProjectFiles';
 
+import { suppressActWarning } from 'lib/utils';
 import {
   errorMocks,
   mocks,
@@ -20,21 +21,21 @@ import {
 
 jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
-jest.mock( 'lib/utils', () => ( {
-  getPluralStringOrNot: jest.fn( ( array, string ) => `${string}${array && array.length > 1 ? 's' : ''}` ),
-  getApolloErrors: jest.fn( error => {
-    let errs = [];
-    const { graphQLErrors, networkError, otherError } = error;
+// jest.mock( 'lib/utils', () => ( {
+//   getPluralStringOrNot: jest.fn( ( array, string ) => `${string}${array && array.length > 1 ? 's' : ''}` ),
+//   getApolloErrors: jest.fn( error => {
+//     let errs = [];
+//     const { graphQLErrors, networkError, otherError } = error;
 
-    if ( graphQLErrors ) {
-      errs = graphQLErrors.map( error => error.message );
-    }
-    if ( networkError ) errs.push( networkError );
-    if ( otherError ) errs.push( otherError );
+//     if ( graphQLErrors ) {
+//       errs = graphQLErrors.map( error => error.message );
+//     }
+//     if ( networkError ) errs.push( networkError );
+//     if ( otherError ) errs.push( otherError );
 
-    return errs;
-  } ),
-} ) );
+//     return errs;
+//   } ),
+// } ) );
 
 jest.mock( './VideoProjectFile/VideoProjectFile', () => 'video-project-file' );
 
@@ -43,16 +44,6 @@ const Component = (
     <VideoProjectFiles { ...props } />
   </MockedProvider>
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<VideoProjectFiles />', () => {
   const consoleError = console.error;

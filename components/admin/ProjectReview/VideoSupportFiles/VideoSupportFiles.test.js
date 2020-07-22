@@ -4,7 +4,7 @@ import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import { Icon, Loader } from 'semantic-ui-react';
 
-import { getCount } from 'lib/utils';
+import { getCount, suppressActWarning } from 'lib/utils';
 import VideoSupportFiles, {
   VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
 } from './VideoSupportFiles';
@@ -96,16 +96,6 @@ const Component = (
     <VideoSupportFiles { ...props } />
   </MockedProvider>
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<VideoSupportFiles />', () => {
   const consoleError = console.error;

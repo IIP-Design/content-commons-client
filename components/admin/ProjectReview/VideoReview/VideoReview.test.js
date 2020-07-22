@@ -8,6 +8,7 @@ import { Icon, Loader } from 'semantic-ui-react';
 import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
 import VideoReviewUnitTest from './VideoReview';
 
+import { suppressActWarning } from 'lib/utils';
 import {
   draftMocks,
   errorMocks,
@@ -65,21 +66,11 @@ const DraftComponent = (
 );
 
 describe( '<VideoReview />', () => {
-  /**
-   * @todo Suppress React 16.8 `act()` warnings globally.
-   * The React team's fix won't be out of alpha until 16.9.0.
-   * @see https://github.com/facebook/react/issues/14769
-   */
   const consoleError = console.error;
 
-  beforeAll( () => {
-    const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-    jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-      if ( !args[0].includes( actMsg ) ) {
-        consoleError( ...args );
-      }
-    } );
+  beforeAll( () => suppressActWarning( consoleError ) );
+  afterAll( () => {
+    console.error = consoleError;
   } );
 
   const getBtn = ( buttons, str ) => buttons.filterWhere( btn => btn.text() === str );

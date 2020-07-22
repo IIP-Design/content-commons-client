@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import { useQuery } from 'react-apollo';
 import { Form } from 'semantic-ui-react';
-import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { titleCase, addEmptyOption } from 'lib/utils';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import { addEmptyOption } from 'lib/utils';
 
 const VIDEO_BURNED_IN_STATUS_QUERY = gql`
   query VIDEO_BURNED_IN_STATUS_QUERY {
@@ -14,70 +14,63 @@ const VIDEO_BURNED_IN_STATUS_QUERY = gql`
      }
     }
   }
- `;
+`;
 
-const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
-
-const VideoBurnedInStatusDropdown = props => (
-  <Query query={ VIDEO_BURNED_IN_STATUS_QUERY }>
-    { ( { data, loading, error } ) => {
-      if ( error ) return `Error! ${error.message}`;
-
-      let options = [];
-
-      if ( data && data.__type && data.__type.enumValues ) {
-        options = data.__type.enumValues
-          .filter( enumValue => enumValue.name !== 'CAPTIONED' ) // currently not using CAPTIONED
-          .map( enumValue => {
-            let text = titleCase( enumValue.name );
-            text = ( text === 'Clean' ) ? `${text} - No captions` : text;
-
-            return {
-              key: enumValue.name,
-              text,
-              value: enumValue.name
-            };
-          } );
-      }
-
-      addEmptyOption( options );
-
-      return (
-        <Fragment>
-          { !props.label && (
-
-            <VisuallyHidden>
-              <label htmlFor={ props.id }>
-                { `${props.id} subtitles` }
-              </label>
-            </VisuallyHidden>
-          ) }
-
-          <Form.Dropdown
-            id={ props.id }
-            name="videoBurnedInStatus"
-            options={ options }
-            placeholder="–"
-            loading={ loading }
-            fluid
-            selection
-            { ...props }
-          />
-        </Fragment>
-      );
-    } }
-  </Query>
-
+const areEqual = ( prevProps, nextProps ) => (
+  prevProps.value === nextProps.value && prevProps.disabled === nextProps.disabled
 );
+
+const VideoBurnedInStatusDropdown = ( { id, label, ...rest } ) => {
+  const { data, loading, error } = useQuery( VIDEO_BURNED_IN_STATUS_QUERY );
+
+  if ( error ) return `Error! ${error.message}`;
+
+  let options = [];
+
+  if ( data && data.__type && data.__type.enumValues ) {
+    options = data.__type.enumValues
+      // currently not using CAPTIONED
+      .filter( enumValue => enumValue.name !== 'CAPTIONED' )
+      .map( ( { name } ) => ( {
+        key: name,
+        text: name === 'SUBTITLED' ? 'Yes' : 'No',
+        value: name,
+      } ) );
+  }
+
+  addEmptyOption( options );
+
+  return (
+    <Fragment>
+      { !label && (
+        <VisuallyHidden>
+          <label htmlFor={ id }>on-screen text</label>
+        </VisuallyHidden>
+      ) }
+
+      <Form.Dropdown
+        id={ id }
+        { ...( label && { label } ) }
+        name="videoBurnedInStatus"
+        options={ options }
+        placeholder="–"
+        loading={ loading }
+        fluid
+        selection
+        { ...rest }
+      />
+    </Fragment>
+  );
+};
 
 
 VideoBurnedInStatusDropdown.defaultProps = {
-  id: ''
+  id: '',
 };
 
 VideoBurnedInStatusDropdown.propTypes = {
   id: PropTypes.string,
-  label: PropTypes.string
+  label: PropTypes.string,
 };
 
 export default React.memo( VideoBurnedInStatusDropdown, areEqual );

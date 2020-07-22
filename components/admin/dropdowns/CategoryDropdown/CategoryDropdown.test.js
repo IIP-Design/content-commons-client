@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
-import { titleCase } from 'lib/utils';
+import { suppressActWarning, titleCase } from 'lib/utils';
 import CategoryDropdown, { CATEGORIES_QUERY } from './CategoryDropdown';
 import { categories } from './mocks';
 
@@ -10,46 +10,46 @@ jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S
 const props = {
   id: '123xyz',
   label: 'Categories',
-  locale: 'en-us'
+  locale: 'en-us',
 };
 
 const mocks = [
   {
     request: {
       query: CATEGORIES_QUERY,
-      variables: { locale: props.locale }
+      variables: { locale: props.locale },
     },
     result: {
-      data: { categories }
-    }
-  }
+      data: { categories },
+    },
+  },
 ];
 
 const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 const nullMocks = [
   {
     ...mocks[0],
     result: {
-      data: { categories: null }
-    }
-  }
+      data: { categories: null },
+    },
+  },
 ];
 
 const emptyMocks = [
   {
     ...mocks[0],
     result: {
-      data: { categories: [] }
-    }
-  }
+      data: { categories: [] },
+    },
+  },
 ];
 
 const Component = (
@@ -75,16 +75,6 @@ const EmptyComponent = (
     <CategoryDropdown { ...props } />
   </MockedProvider>
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<CategoryDropdown />', () => {
   const consoleError = console.error;
@@ -147,7 +137,7 @@ describe( '<CategoryDropdown />', () => {
       value: category.id,
       text: category.translations.length
         ? titleCase( category.translations[0].name )
-        : ''
+        : '',
     } ) );
 
     expect( formDropdown.prop( 'options' ) ).toEqual( semanticUICats );

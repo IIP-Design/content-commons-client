@@ -3,17 +3,18 @@ import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
 import { COUNTRIES_REGIONS_QUERY } from 'lib/graphql/queries/document';
+import { suppressActWarning } from 'lib/utils';
 import CountriesRegionsDropdown from './CountriesRegionsDropdown';
 
 const props = {
   id: '123xyz',
-  label: 'Countries/Regions Tags'
+  label: 'Countries/Regions Tags',
 };
 
 const mocks = [
   {
     request: {
-      query: COUNTRIES_REGIONS_QUERY
+      query: COUNTRIES_REGIONS_QUERY,
     },
     result: {
       data: {
@@ -27,8 +28,8 @@ const mocks = [
               __typename: 'Region',
               id: 'ck6krp96o3f3k0720aoufd395',
               name: 'Bureau of Western Hemisphere Affairs',
-              abbr: 'WHA'
-            }
+              abbr: 'WHA',
+            },
           },
           {
             __typename: 'Country',
@@ -39,8 +40,8 @@ const mocks = [
               __typename: 'Region',
               id: 'ck6krp96g3f3c0720c1w09bx1',
               name: 'Bureau of African Affairs',
-              abbr: 'AF'
-            }
+              abbr: 'AF',
+            },
           },
           {
             __typename: 'Country',
@@ -51,8 +52,8 @@ const mocks = [
               __typename: 'Region',
               id: 'ck6krp96o3f3i07201zo5ai59',
               name: 'Bureau of Near Eastern Affairs',
-              abbr: 'NEA'
-            }
+              abbr: 'NEA',
+            },
           },
           {
             __typename: 'Country',
@@ -63,40 +64,40 @@ const mocks = [
               __typename: 'Region',
               id: 'ck6krp96o3f3h07201q3rj4n7',
               name: 'Bureau of European and Eurasian Affairs',
-              abbr: 'EUR'
-            }
-          }
-        ]
-      }
-    }
-  }
+              abbr: 'EUR',
+            },
+          },
+        ],
+      },
+    },
+  },
 ];
 
 const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 const nullMocks = [
   {
     ...mocks[0],
     result: {
-      data: { countries: null }
-    }
-  }
+      data: { countries: null },
+    },
+  },
 ];
 
 const emptyMocks = [
   {
     ...mocks[0],
     result: {
-      data: { countries: [] }
-    }
-  }
+      data: { countries: [] },
+    },
+  },
 ];
 
 const Component = (
@@ -124,21 +125,9 @@ const EmptyComponent = (
 );
 
 describe( '<CountriesRegionsDropdown />', () => {
-  /**
-   * @todo Suppress React 16.8 `act()` warnings globally.
-   * The React team's fix won't be out of alpha until 16.9.0.
-   * @see https://github.com/facebook/react/issues/14769
-   */
   const consoleError = console.error;
-  beforeAll( () => {
-    const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-    jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-      if ( !args[0].includes( actMsg ) ) {
-        consoleError( ...args );
-      }
-    } );
-  } );
 
+  beforeAll( () => suppressActWarning( consoleError ) );
   afterAll( () => {
     console.error = consoleError;
   } );
@@ -154,6 +143,7 @@ describe( '<CountriesRegionsDropdown />', () => {
 
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
+
     await wait( 0 );
     wrapper.update();
     const dropdown = wrapper.find( 'CountriesRegionsDropdown' );
@@ -165,6 +155,7 @@ describe( '<CountriesRegionsDropdown />', () => {
 
   it( 'does not crash if countries is null', async () => {
     const wrapper = mount( NullComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -174,6 +165,7 @@ describe( '<CountriesRegionsDropdown />', () => {
 
   it( 'does not crash if countries is []', async () => {
     const wrapper = mount( EmptyComponent );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -183,6 +175,7 @@ describe( '<CountriesRegionsDropdown />', () => {
 
   it( 'renders the final state without crashing', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
@@ -192,7 +185,7 @@ describe( '<CountriesRegionsDropdown />', () => {
       .map( country => ( {
         key: country.id,
         text: `${country.name} (${country.abbr})`,
-        value: country.id
+        value: country.id,
       } ) );
 
     expect( formDropdown.prop( 'options' ) ).toEqual( options );
@@ -201,6 +194,7 @@ describe( '<CountriesRegionsDropdown />', () => {
 
   it( 'assigns a matching id & htmlFor value to the Dropdown and label, respectively', async () => {
     const wrapper = mount( Component );
+
     await wait( 0 );
     wrapper.update();
     const dropdown = wrapper.find( 'Dropdown div[name="countries"]' );

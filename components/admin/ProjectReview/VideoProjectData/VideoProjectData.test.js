@@ -6,6 +6,7 @@ import { Icon, Loader } from 'semantic-ui-react';
 
 import VideoProjectData from './VideoProjectData';
 
+import { suppressActWarning } from 'lib/utils';
 import {
   emptyAuthorTeamMocks,
   emptyCatTagsMocks,
@@ -22,16 +23,6 @@ const Component = (
     <VideoProjectData { ...props } />
   </MockedProvider>
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<VideoProjectData />', () => {
   const consoleError = console.error;

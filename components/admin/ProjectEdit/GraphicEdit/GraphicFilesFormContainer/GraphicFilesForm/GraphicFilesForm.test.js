@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
-import { formatBytes, truncateAndReplaceStr } from 'lib/utils';
+import { formatBytes, suppressActWarning, truncateAndReplaceStr } from 'lib/utils';
 import { mocks, props } from './mocks';
 import GraphicFilesForm from './GraphicFilesForm';
 
@@ -40,16 +40,6 @@ jest.mock(
   'components/admin/dropdowns/SocialPlatformDropdown/SocialPlatformDropdown',
   () => function SocialPlatformDropdown() { return ''; },
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<GraphicFilesForm />', () => {
   const consoleError = console.error;

@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
-import { titleCase } from 'lib/utils';
+import { titleCase, suppressActWarning } from 'lib/utils';
 import TagDropdown, { TAG_QUERY } from './TagDropdown';
 import { rtlTags, tags } from './mocks';
 
@@ -10,60 +10,60 @@ jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S
 const props = {
   id: '123xyz',
   label: 'Tags',
-  locale: 'en-us'
+  locale: 'en-us',
 };
 
 const rtlProps = {
   ...props,
-  locale: 'fa-ir'
+  locale: 'fa-ir',
 };
 
 const mocks = [
   {
     request: {
       query: TAG_QUERY,
-      variables: { locale: props.locale }
+      variables: { locale: props.locale },
     },
     result: {
-      data: { tags }
-    }
+      data: { tags },
+    },
   },
   {
     request: {
       query: TAG_QUERY,
-      variables: { locale: rtlProps.locale }
+      variables: { locale: rtlProps.locale },
     },
     result: {
-      data: { tags: rtlTags }
-    }
-  }
+      data: { tags: rtlTags },
+    },
+  },
 ];
 
 const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 const nullMocks = [
   {
     ...mocks[0],
     result: {
-      data: { tags: null }
-    }
-  }
+      data: { tags: null },
+    },
+  },
 ];
 
 const emptyMocks = [
   {
     ...mocks[0],
     result: {
-      data: { tags: [] }
-    }
-  }
+      data: { tags: [] },
+    },
+  },
 ];
 
 const Component = (
@@ -95,16 +95,6 @@ const EmptyComponent = (
     <TagDropdown { ...props } />
   </MockedProvider>
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<TagDropdown />', () => {
   const consoleError = console.error;
@@ -166,7 +156,7 @@ describe( '<TagDropdown />', () => {
       value: tag.id,
       text: tag.translations.length
         ? titleCase( tag.translations[0].name )
-        : ''
+        : '',
     } ) )
       .sort( ( tagA, tagB ) => {
         const textA = tagA.text.toLowerCase();

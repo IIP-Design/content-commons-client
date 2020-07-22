@@ -3,36 +3,38 @@ import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import CopyrightDropdown, { COPYRIGHT_QUERY } from './CopyrightDropdown';
 
+import { suppressActWarning } from 'lib/utils';
+
 const props = {
   id: 'copyright',
-  label: 'Copyright'
+  label: 'Copyright',
 };
 
 const mocks = [
   {
     request: {
-      query: COPYRIGHT_QUERY
+      query: COPYRIGHT_QUERY,
     },
     result: {
       data: {
         __type: {
           enumValues: [
             { name: 'COPYRIGHT' },
-            { name: 'NO_COPYRIGHT' }
-          ]
-        }
-      }
-    }
-  }
+            { name: 'NO_COPYRIGHT' },
+          ],
+        },
+      },
+    },
+  },
 ];
 
 const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 const nullMocks = [
@@ -40,10 +42,10 @@ const nullMocks = [
     ...mocks[0],
     result: {
       data: {
-        __type: { enumValues: null }
-      }
-    }
-  }
+        __type: { enumValues: null },
+      },
+    },
+  },
 ];
 
 const emptyMocks = [
@@ -51,21 +53,11 @@ const emptyMocks = [
     ...mocks[0],
     result: {
       data: {
-        __type: { enumValues: [] }
-      }
-    }
-  }
+        __type: { enumValues: [] },
+      },
+    },
+  },
 ];
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<CopyrightDropdown />', () => {
   const consoleError = console.error;
@@ -156,7 +148,7 @@ describe( '<CopyrightDropdown />', () => {
       return {
         key: obj.name,
         text,
-        value: obj.name
+        value: obj.name,
       };
     } );
 

@@ -1,5 +1,5 @@
 /* eslint-disable no-bitwise */
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
@@ -30,7 +30,9 @@ const LANGUAGE_BY_NAME_QUERY = gql`
   }
 `;
 
-const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
+const areEqual = ( prevProps, nextProps ) => (
+  prevProps.value === nextProps.value && prevProps.disabled === nextProps.disabled
+);
 
 const getIds = ( languages, selected ) => {
   const _languages = selected.map( _selected => {

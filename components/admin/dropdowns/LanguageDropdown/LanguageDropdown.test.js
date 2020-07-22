@@ -2,56 +2,58 @@ import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
-import { addEmptyOption } from 'lib/utils';
+import { addEmptyOption, suppressActWarning } from 'lib/utils';
 import LanguageDropdown, { LANGUAGES_QUERY } from './LanguageDropdown';
+
+
 import { languages } from './mocks';
 
 const props = {
   id: '123xyz',
-  label: 'Language'
+  label: 'Language',
 };
 
 const localesProps = {
   ...props,
-  locales: ['en-us', 'fr-fr']
+  locales: ['en-us', 'fr-fr'],
 };
 
 const mocks = [
   {
     request: {
-      query: LANGUAGES_QUERY
+      query: LANGUAGES_QUERY,
     },
     result: {
-      data: { languages }
-    }
-  }
+      data: { languages },
+    },
+  },
 ];
 
 const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 const nullMocks = [
   {
     ...mocks[0],
     result: {
-      data: { languages: null }
-    }
-  }
+      data: { languages: null },
+    },
+  },
 ];
 
 const emptyMocks = [
   {
     ...mocks[0],
     result: {
-      data: { languages: [] }
-    }
-  }
+      data: { languages: [] },
+    },
+  },
 ];
 
 const Component = (
@@ -83,16 +85,6 @@ const EmptyComponent = (
     <LanguageDropdown { ...props } />
   </MockedProvider>
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<LanguageDropdown />', () => {
   const consoleError = console.error;
@@ -133,8 +125,8 @@ describe( '<LanguageDropdown />', () => {
       {
         key: '-',
         text: '-',
-        value: null
-      }
+        value: null,
+      },
     ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
@@ -150,8 +142,8 @@ describe( '<LanguageDropdown />', () => {
       {
         key: '-',
         text: '-',
-        value: null
-      }
+        value: null,
+      },
     ];
 
     expect( formDropdown.prop( 'options' ) ).toEqual( emptyOption );
@@ -168,7 +160,7 @@ describe( '<LanguageDropdown />', () => {
       .map( lang => ( {
         key: lang.id,
         text: lang.displayName,
-        value: lang.id
+        value: lang.id,
       } ) );
     const options = addEmptyOption( semanticUILangs );
 
@@ -192,7 +184,7 @@ describe( '<LanguageDropdown />', () => {
       .map( lang => ( {
         key: lang.id,
         text: lang.displayName,
-        value: lang.id
+        value: lang.id,
       } ) );
     const options = addEmptyOption( semanticUILangs );
 

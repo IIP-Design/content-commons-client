@@ -2,6 +2,8 @@ import { mount } from 'enzyme';
 import { MockedProvider, wait } from '@apollo/react-testing';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import PackageEdit from './PackageEdit';
+
+import { suppressActWarning } from 'lib/utils';
 import {
   errorMocks, mocks, noDocumentsMocks, props, undefinedDataMocks,
 } from './mocks';
@@ -24,15 +26,6 @@ jest.mock(
 jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
 const getBtn = ( str, buttons ) => buttons.findWhere( n => n.text() === str && n.name() === 'button' );
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<PackageEdit />, if DRAFT status', () => {
   const router = {

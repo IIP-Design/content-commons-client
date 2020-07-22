@@ -6,6 +6,7 @@ import { Loader } from 'semantic-ui-react';
 
 import ProjectPreviewContent from './ProjectPreviewContent';
 
+import { suppressActWarning } from 'lib/utils';
 import {
   errorMocks,
   mocks,
@@ -17,32 +18,32 @@ import {
   vimeoMocks,
 } from './mocks';
 
-jest.mock( 'lib/utils', () => ( {
-  getStreamData: jest.fn( ( stream, site = 'youtube', field = 'url' ) => {
-    const uri = stream.find( s => s.site.toLowerCase() === site );
+// jest.mock( 'lib/utils', () => ( {
+//   getStreamData: jest.fn( ( stream, site = 'youtube', field = 'url' ) => {
+//     const uri = stream.find( s => s.site.toLowerCase() === site );
 
-    if ( uri && Object.keys( uri ).length > 0 ) {
-      return uri[field];
-    }
+//     if ( uri && Object.keys( uri ).length > 0 ) {
+//       return uri[field];
+//     }
 
-    return null;
-  } ),
-  getVimeoId: jest.fn( () => '340239507' ),
-  getYouTubeId: jest.fn( () => '1evw4fRu3bo' ),
-  contentRegExp: jest.fn( () => false ),
-  getApolloErrors: jest.fn( error => {
-    let errs = [];
-    const { graphQLErrors, networkError, otherError } = error;
+//     return null;
+//   } ),
+//   getVimeoId: jest.fn( () => '340239507' ),
+//   getYouTubeId: jest.fn( () => '1evw4fRu3bo' ),
+//   contentRegExp: jest.fn( () => false ),
+//   getApolloErrors: jest.fn( error => {
+//     let errs = [];
+//     const { graphQLErrors, networkError, otherError } = error;
 
-    if ( graphQLErrors ) {
-      errs = graphQLErrors.map( error => error.message );
-    }
-    if ( networkError ) errs.push( networkError );
-    if ( otherError ) errs.push( otherError );
+//     if ( graphQLErrors ) {
+//       errs = graphQLErrors.map( error => error.message );
+//     }
+//     if ( networkError ) errs.push( networkError );
+//     if ( otherError ) errs.push( otherError );
 
-    return errs;
-  } ),
-} ) );
+//     return errs;
+//   } ),
+// } ) );
 
 jest.mock( 'next/config', () => () => ( {
   publicRuntimeConfig: {},
@@ -57,16 +58,6 @@ const Component = (
     <ProjectPreviewContent { ...props } />
   </MockedProvider>
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<ProjectPreviewContent />', () => {
   const consoleError = console.error;

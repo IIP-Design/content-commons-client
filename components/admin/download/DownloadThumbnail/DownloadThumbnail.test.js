@@ -6,6 +6,7 @@ import { Loader } from 'semantic-ui-react';
 
 import DownloadThumbnail from './DownloadThumbnail';
 
+import { suppressActWarning } from 'lib/utils';
 import {
   emptyProjectMocks,
   errorMocks,
@@ -16,6 +17,7 @@ import {
 } from './mocks';
 
 jest.mock( 'lib/utils', () => ( {
+  ...jest.requireActual( '../../../../lib/utils' ),
   getS3Url: jest.fn( assetPath => `https://s3-url.com/${assetPath}` ),
   getApolloErrors: error => {
     let errs = [];
@@ -45,16 +47,6 @@ const Component = (
     <DownloadThumbnail { ...props } />
   </MockedProvider>
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<DownloadThumbnail />', () => {
   const consoleError = console.error;
@@ -178,9 +170,10 @@ describe( '<DownloadThumbnail />', () => {
     const s3Bucket = 'https://s3-url.com';
 
     expect( items.length ).toEqual( thumbnails.length );
-    
+
     items.forEach( ( item, i ) => {
       const assetPath = thumbnails[i].url;
+
       expect( item.prop( 'srcUrl' ) ).toEqual( `${s3Bucket}/${assetPath}` );
       expect( item.find( '.download-item' ).prop( 'href' ) ).toEqual( 'https://example.jpg' );
       expect( item.find( '.download-item' ).prop( 'download' ) ).toEqual( true );

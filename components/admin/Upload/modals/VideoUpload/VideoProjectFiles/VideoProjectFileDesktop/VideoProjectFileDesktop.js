@@ -47,7 +47,7 @@ const VideoProjectFilesDesktop = () => {
   } );
 
   return (
-    // Context API is used to avoind having to pass props down multiple levels
+    // Context API is used to avoid having to pass props down multiple levels
     <VideoUploadContext.Consumer>
       { ( {
         files,
@@ -68,11 +68,23 @@ const VideoProjectFilesDesktop = () => {
             <Grid>
               <Grid.Row className="videoProjectFilesDesktop__row-header">
                 <Grid.Column width={ 6 }>Files Selected</Grid.Column>
-                <Grid.Column width={ 4 } style={ show( 1 ) }>Language<span className="required">*</span></Grid.Column>
-                <Grid.Column width={ 4 } style={ show( 1 ) }>Subtitles<span className="required">*</span></Grid.Column>
-                <Grid.Column width={ 4 } style={ show( 2 ) }>Type / Use<span className="required">*</span></Grid.Column>
-                <Grid.Column width={ 4 } style={ show( 2 ) }>Quality<span className="required">*</span></Grid.Column>
-                <Grid.Column width={ 2 }></Grid.Column>
+                <Grid.Column width={ 4 } style={ show( 1 ) }>
+                  Language
+                  <span className="required">*</span>
+                </Grid.Column>
+                <Grid.Column width={ 4 } style={ show( 1 ) }>
+                  On-Screen Text
+                  <span className="required">*</span>
+                </Grid.Column>
+                <Grid.Column width={ 4 } style={ show( 2 ) }>
+                  Type / Use
+                  <span className="required">*</span>
+                </Grid.Column>
+                <Grid.Column width={ 4 } style={ show( 2 ) }>
+                  Quality
+                  <span className="required">*</span>
+                </Grid.Column>
+                <Grid.Column width={ 2 } />
               </Grid.Row>
 
               { files.sort( compareFilenames ).map( file => (

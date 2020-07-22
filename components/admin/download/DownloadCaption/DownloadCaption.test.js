@@ -3,7 +3,10 @@ import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import { Loader } from 'semantic-ui-react';
+
 import DownloadCaption from './DownloadCaption';
+
+import { suppressActWarning } from 'lib/utils';
 import {
   emptyProjectMocks,
   errorMocks,
@@ -16,6 +19,7 @@ import {
 jest.mock( 'lib/hooks/useSignedUrl', () => jest.fn( () => ( { signedUrl: 'https://example.jpg' } ) ) );
 
 jest.mock( 'lib/utils', () => ( {
+  ...jest.requireActual( '../../../../lib/utils' ),
   getS3Url: jest.fn( assetPath => `https://s3-url.com/${assetPath}` ),
   getApolloErrors: error => {
     let errs = [];
@@ -43,16 +47,6 @@ const Component = (
     <DownloadCaption { ...props } />
   </MockedProvider>
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<DownloadCaption />', () => {
   const consoleError = console.error;
@@ -178,6 +172,7 @@ describe( '<DownloadCaption />', () => {
     expect( items.length ).toEqual( files.length );
     items.forEach( ( item, i ) => {
       const assetPath = files[i].url;
+
       expect( item.prop( 'srcUrl' ) ).toEqual( `${s3Bucket}/${assetPath}` );
       expect( item.find( '.download-item' ).prop( 'href' ) ).toEqual( 'https://example.jpg' );
       expect( item.find( '.download-item' ).prop( 'download' ) ).toEqual( true );

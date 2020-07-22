@@ -5,6 +5,7 @@ import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
 import GraphicEdit from './GraphicEdit';
 
+import { suppressActWarning } from 'lib/utils';
 import {
   errorMocks,
   mocks,
@@ -14,7 +15,6 @@ import {
   getLocalEditableFiles,
   localGraphicFiles,
   supportFilesConfig,
-  suppressActWarning,
 } from './testHelpers';
 
 const router = {

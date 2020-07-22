@@ -3,6 +3,8 @@ import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import VisibilityDropdown, { VISIBILITY_QUERY } from './VisibilityDropdown';
 
+import { suppressActWarning } from 'lib/utils';
+
 const props = {
   id: 'v123',
   label: 'Visibility Setting',
@@ -80,16 +82,6 @@ const EmptyComponent = (
     <VisibilityDropdown { ...props } />
   </MockedProvider>
 );
-
-const suppressActWarning = consoleError => {
-  const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-  jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-    if ( !args[0].includes( actMsg ) ) {
-      consoleError( ...args );
-    }
-  } );
-};
 
 describe( '<VisibilityDropdown />', () => {
   const consoleError = console.error;

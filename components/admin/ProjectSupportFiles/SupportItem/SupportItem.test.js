@@ -20,6 +20,7 @@ import {
   props,
   uploadErrorProps,
 } from './mocks';
+import { suppressActWarning } from 'lib/utils';
 
 jest.mock( 'next/dynamic', () => () => 'Dynamic' );
 jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
@@ -107,22 +108,10 @@ const NullItemComponent = (
 describe( '<SupportItem />', () => {
   // store console.dir & mock its call in axios.catch
   const consoleDir = console.dir;
-
-  /**
-   * @todo Suppress React 16.8 `act()` warnings globally.
-   * The React team's fix won't be out of alpha until 16.9.0.
-   * @see https://github.com/facebook/react/issues/14769
-   */
   const consoleError = console.error;
 
   beforeAll( () => {
-    const actMsg = 'Warning: An update to %s inside a test was not wrapped in act';
-
-    jest.spyOn( console, 'error' ).mockImplementation( ( ...args ) => {
-      if ( !args[0].includes( actMsg ) ) {
-        consoleError( ...args );
-      }
-    } );
+    suppressActWarning( consoleError );
 
     const resp = { status: 200 };
 

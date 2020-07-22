@@ -180,9 +180,9 @@ exports[`<VideoProjectFile /> renders without crashing 1`] = `
             <b
               className="label"
             >
-              Subtitles & Captions:
+              On-Screen Text:
             </b>
-             CLEAN - No Captions
+             No
           </p>
           <p>
             <b
