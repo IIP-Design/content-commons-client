@@ -29,8 +29,8 @@ import './EditVideoFileRow.scss';
 const EditVideoFileRow = props => {
   const {
     file: {
-      id, name, language, use, quality, videoBurnedInStatus
-    }, update, removeFile, accept, step
+      id, name, language, use, quality, videoBurnedInStatus,
+    }, update, removeFile, accept, step,
   } = props;
 
   const files = useContext( FilesContext );
@@ -39,7 +39,7 @@ const EditVideoFileRow = props => {
   // item in first index shows the first capturing group in regex
   // let fileType = /(\w+)\/(\w+)/.exec( type );
   // fileType = ( fileType ) ? fileType[1] : '';
-  const filename = ( name && name.length > 25 ) ? truncateAndReplaceStr( name, 20, 8 ) : name;
+  const filename = name && name.length > 25 ? truncateAndReplaceStr( name, 20, 8 ) : name;
 
   return (
     <Grid.Row>
@@ -59,17 +59,17 @@ const EditVideoFileRow = props => {
       </Grid.Column>
 
       { step === 1 && (
-      <Fragment>
-        { /* Language */ }
-        <Grid.Column width={ 4 }>
-          <LanguageDropdown id={ id } value={ language } onChange={ update } required />
-        </Grid.Column>
+        <Fragment>
+          { /* Language */ }
+          <Grid.Column width={ 4 }>
+            <LanguageDropdown id={ id } value={ language } onChange={ update } required />
+          </Grid.Column>
 
-        { /* VideoBurnedInStatus */ }
-        <Grid.Column width={ 4 }>
-          <VideoBurnedInStatusDropdown id={ id } value={ videoBurnedInStatus } onChange={ update } required />
-        </Grid.Column>
-      </Fragment>
+          { /* VideoBurnedInStatus */ }
+          <Grid.Column width={ 4 }>
+            <VideoBurnedInStatusDropdown id={ id } value={ videoBurnedInStatus } onChange={ update } required />
+          </Grid.Column>
+        </Fragment>
       ) }
 
       { step === 2 && (
@@ -108,12 +108,12 @@ EditVideoFileRow.propTypes = {
     language: PropTypes.string,
     use: PropTypes.string,
     quality: PropTypes.string,
-    videoBurnedInStatus: PropTypes.string
+    videoBurnedInStatus: PropTypes.string,
   } ),
   accept: PropTypes.string,
   step: PropTypes.number,
   update: PropTypes.func,
-  removeFile: PropTypes.func
+  removeFile: PropTypes.func,
 };
 
 
