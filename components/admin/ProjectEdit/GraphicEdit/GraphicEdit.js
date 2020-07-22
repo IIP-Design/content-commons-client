@@ -602,6 +602,10 @@ const GraphicEdit = ( { id } ) => {
     />
   );
 
+  const hasProjectStatus = status => data?.graphicProject?.status === status;
+
+  const isDisabled = !projectId || disableBtns || !isFormValid;
+
   const graphicImageFiles = getFiles( 'images' );
 
   const supportFilesConfig = [
@@ -675,12 +679,12 @@ const GraphicEdit = ( { id } ) => {
             setDeleteConfirmOpen={ setDeleteConfirmOpen }
             previewNode={ getPreview() }
             disabled={ {
-              'delete': disableDeleteOnSave,
-              save: !projectId || disableBtns || !isFormValid,
-              preview: !projectId || disableBtns || !isFormValid,
-              publish: !projectId || disableBtns || !isFormValid, // having graphics required?
-              publishChanges: !projectId || disableBtns || !isFormValid,
-              unpublish: !projectId || disableBtns || !isFormValid,
+              'delete': disableDeleteOnSave || hasProjectStatus( 'PUBLISHED' ),
+              save: isDisabled,
+              preview: isDisabled,
+              publish: isDisabled, // having graphics required?
+              publishChanges: isDisabled,
+              unpublish: isDisabled,
             } }
             handle={ {
               deleteConfirm: projectId ? handleDeleteConfirm : handleExit,
@@ -693,9 +697,9 @@ const GraphicEdit = ( { id } ) => {
               'delete': true,
               save: true,
               preview: true,
-              publish: data?.graphicProject?.status === 'DRAFT',
+              publish: hasProjectStatus( 'DRAFT' ),
               publishChanges: data?.graphicProject?.publishedAt && isDirty,
-              unpublish: data?.graphicProject?.status === 'PUBLISHED',
+              unpublish: hasProjectStatus( 'PUBLISHED' ),
             } }
             loading={ {
               publish: publishing && publishOperation === 'publish',
@@ -800,7 +804,7 @@ const GraphicEdit = ( { id } ) => {
           <ActionHeadline
             className="headline"
             type="graphic project"
-            published={ data?.graphicProject?.status === 'PUBLISHED' }
+            published={ hasProjectStatus( 'PUBLISHED' ) }
             updated={ isDirty }
           />
 
@@ -810,7 +814,7 @@ const GraphicEdit = ( { id } ) => {
               <Button
                 className="action-btn btn--preview"
                 content="Preview"
-                disabled={ !projectId || disableBtns || !isFormValid }
+                disabled={ isDisabled }
                 primary
               />
             ) }
@@ -826,7 +830,7 @@ const GraphicEdit = ( { id } ) => {
             handleUnPublish={ handleUnPublish }
             status={ data?.graphicProject?.status || 'DRAFT' }
             updated={ isDirty }
-            disabled={ !projectId || disableBtns || !isFormValid }
+            disabled={ isDisabled }
           />
         </div>
       ) }

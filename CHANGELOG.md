@@ -16,7 +16,8 @@ _This sections lists changes committed since most recent release_
 
 **Changed:**
 - Package 'Browse All' link sorts packages by created date
-- Lists of Documentw within a Package are displayed in the order of releases, guidances, transcripts 
+- Lists of Documents within a Package are displayed in the order of releases, guidances, transcripts
+- Delete button is disabled for published graphic projects
 
 
 # [5.0.0](https://github.com/IIP-Design/content-commons-client/compare/v4.2.0...5.0.0)(2020-07-10)
