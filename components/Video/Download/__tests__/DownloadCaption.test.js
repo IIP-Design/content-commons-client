@@ -22,7 +22,7 @@ describe( '<DownloadCaption />', () => {
   it( 'passes the correct data to the DownloadItem', () => {
     const expectedHeader = 'Download English SRT';
     const expectedHover = 'Download English SRT';
-    const expectedUrl = 'https://amgov-publisher-dev.s3.amazonaws.com/v1/task/download/eyJrZXkiOiJodHRwczovL2FtZ292LXB1Ymxpc2hlci1kZXYuczMuYW1hem9uYXdzLmNvbS8yMDIwLzA3ODhsd2Z2YWVwNy9jOWE0NTMzMTU3YTk3OTdhMWVjZWU2Y2EyZDhjMzgyYy5zcnQiLCJmaWxlbmFtZSI6ImM5YTQ1MzMxNTdhOTc5N2ExZWNlZTZjYTJkOGMzODJjLnNydCJ9';
+    const expectedUrl = 'https://amgov-publisher-dev.s3.amazonaws.com/v1/task/download/eyJrZXkiOiIiLCJmaWxlbmFtZSI6ImM5YTQ1MzMxNTdhOTc5N2ExZWNlZTZjYTJkOGMzODJjLnNydCIsInVybCI6Imh0dHBzOi8vYW1nb3YtcHVibGlzaGVyLWRldi5zMy5hbWF6b25hd3MuY29tLzIwMjAvMDc4OGx3ZnZhZXA3L2M5YTQ1MzMxNTdhOTc5N2ExZWNlZTZjYTJkOGMzODJjLnNydCJ9';
 
     const wrapper = mount( <DownloadCaption item={ mockItem } /> );
 
