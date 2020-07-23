@@ -96,7 +96,8 @@ const LanguageDropdown = props => {
 
     if (
       ~file.indexOf( 'portuguese' )
-      || ~file.indexOf( 'port' )
+      || ~file.indexOf( '_port' )
+      || ~file.indexOf( '-port' )
       || ~file.indexOf( 'pt_br' )
       || ~file.indexOf( 'pt-br' )
     ) {
