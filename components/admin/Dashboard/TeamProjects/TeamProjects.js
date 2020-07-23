@@ -10,6 +10,8 @@ import dynamic from 'next/dynamic';
 import { useAuth } from 'context/authContext';
 import { DashboardContext, dashboardReducer } from 'context/dashboardContext';
 
+import { setQueries } from '../utils';
+
 const ScrollableTableWithMenu = dynamic( () => import( /* webpackChunkName: "ScrollableTableWithMenu" */ 'components/ScrollableTableWithMenu/ScrollableTableWithMenu' ) );
 
 const persistentTableHeaders = [
@@ -29,7 +31,10 @@ const TeamProjects = () => {
   const { user } = useAuth();
   const team = user?.team;
 
-  const [state, dispatch] = useReducer( dashboardReducer );
+  const [state, dispatch] = useReducer( dashboardReducer, {
+    team: { ...team },
+    queries: setQueries( team ),
+  } );
 
   useEffect( () => {
     dispatch( { type: 'UPDATE_TEAM', payload: { team } } );

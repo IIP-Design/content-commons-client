@@ -16,12 +16,12 @@ const UnpublishProjects = ( {
   const [bulkUnpublish] = useMutation( state.queries.unpublish );
   const [bulkStatusUpdate] = useMutation( state.queries.status );
 
-  // 1 - Using new 'metaContent' query - only fetches id, publishedAt & status fields for graphic content query
-  // prior query for all graphic content causes a network strain, browser has to download all img files again which are not needed here
-  // 2 - Not using stopPolling, calling stopPolling doesn not allow bulk unpublishing to finish
-  const isGraphicType = state.team.contentTypes.includes( 'GRAPHIC' );
+  // 1 - Using new 'metaContent' query - only fetches id, publishedAt & status fields
+  // - prior query for all content causes a network strain, browser has to download all content type files again which are not needed here
+  // - Ensures that ScrollableTableWithMenu re-renders
+  // 2 - Not using stopPolling, calling stopPolling does not allow bulk unpublishing to finish
   const { data, startPolling, stopPolling } = useQuery(
-    isGraphicType ? state.queries.metaContent : state.queries.content,
+    state.queries.metaContent,
     { variables: { ...variables } },
   );
 
