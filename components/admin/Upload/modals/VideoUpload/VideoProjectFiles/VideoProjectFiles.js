@@ -6,9 +6,10 @@ import { VideoUploadContext } from '../VideoUploadContext';
 import './VideoProjectFiles.scss';
 
 const VideoProjectFiles = props => {
-  // since we are using a stateless function, use a hook for mouunting/unmouting calls
+  // since we are using a stateless function, use a hook for mounting/unmounting calls
   useEffect( () => {
     props.updateModalClassname( 'upload_modal prepare-files-active' );
+
     return () => {
       props.updateModalClassname( 'upload_modal' );
     };
@@ -36,7 +37,7 @@ const VideoProjectFiles = props => {
 
 
 VideoProjectFiles.propTypes = {
-  updateModalClassname: PropTypes.func
+  updateModalClassname: PropTypes.func,
 };
 
 export default VideoProjectFiles;
