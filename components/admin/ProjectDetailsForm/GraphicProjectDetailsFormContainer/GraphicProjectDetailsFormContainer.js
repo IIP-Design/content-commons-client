@@ -122,10 +122,7 @@ const GraphicProjectDetailsFormContainer = props => {
         required: false,
         variables: {
           where: {
-            name_in: [
-              'GPA Editorial & Design',
-              'ShareAmerica',
-            ],
+            name_in: ['GPA Design & Editorial', 'ShareAmerica'],
           },
         },
       },

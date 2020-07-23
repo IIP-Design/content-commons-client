@@ -39,7 +39,7 @@ const ResultItem = ( { item } ) => {
     const dosOwners = [
       'GPA Video',
       'GPA Media Strategy',
-      'GPA Editorial & Design',
+      'GPA Design & Editorial',
       'U.S. Missions',
     ];
 

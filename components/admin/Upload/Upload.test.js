@@ -21,7 +21,7 @@ jest.mock( 'context/authContext', () => ( {
       permissions: ['EDITOR'],
       team: {
         id: 'ck2lzfx6u0hkj0720f8n8mtda',
-        name: 'GPA Editorial & Design',
+        name: 'GPA Design & Editorial',
         contentTypes: ['GRAPHIC'],
         __typename: 'Team',
       },
