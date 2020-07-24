@@ -53,8 +53,8 @@ const FileSidebar = () => {
         return (
           <div className="edit-video-sidebar">
             <Carousel legend={ false } selectedItem={ selectedFile } vertical>
-              { files && (
-                files.map( file => {
+              { files
+                && files.map( file => {
                   const fileUse = file.use && file.use.name ? file.use.name : '';
                   const captionStatus = file.videoBurnedInStatus === 'SUBTITLED' ? 'On-Screen Text' : 'No On-Screen Text';
 
@@ -77,8 +77,7 @@ const FileSidebar = () => {
                       <p>{ titleCase( fileUse ) }</p>
                     </div>
                   );
-                } )
-              ) }
+                } )}
             </Carousel>
           </div>
         );
