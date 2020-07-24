@@ -377,6 +377,16 @@ const FileDataForm = ( {
               disabled={ values.use === cleanUseId && values.videoBurnedInStatus === 'CLEAN' }
             />
 
+            <UseDropdown
+              id="video-use"
+              label="Video Type"
+              name="use"
+              onChange={ handleDropdownSave }
+              required
+              type="video"
+              value={ values.use }
+            />
+
             <VideoBurnedInStatusDropdown
               id="video-subtitles"
               label="On-Screen Text"
@@ -386,16 +396,6 @@ const FileDataForm = ( {
               type="video"
               value={ values.videoBurnedInStatus }
               disabled={ values.use === cleanUseId }
-            />
-
-            <UseDropdown
-              id="video-use"
-              label="Video Type"
-              name="use"
-              onChange={ handleDropdownSave }
-              required
-              type="video"
-              value={ values.use }
             />
 
             <QualityDropdown
