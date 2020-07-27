@@ -1,20 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
-import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
-import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown/VideoBurnedInStatusDropdown';
-import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
-import QualityDropdown from 'components/admin/dropdowns/QualityDropdown/QualityDropdown';
+
 import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
-import { truncateAndReplaceStr } from 'lib/utils';
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
+import QualityDropdown from 'components/admin/dropdowns/QualityDropdown/QualityDropdown';
 import UploadCompletionTracker from '../UploadCompletionTracker';
+import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
+import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown/VideoBurnedInStatusDropdown';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+
+import { truncateAndReplaceStr } from 'lib/utils';
 import { VideoUploadContext } from '../../VideoUploadContext';
+
 import './VideoProjectFilesRowDesktop.scss';
 
 // Optimize re-renders as component could potentially have many rows
 const areEqual = ( prevProps, nextProps ) => {
-  // if activeStep changes, rerender the row
+  // if activeStep changes, re-render the row
   if ( prevProps.activeStep !== nextProps.activeStep ) {
     return false;
   }
@@ -27,23 +30,26 @@ const areEqual = ( prevProps, nextProps ) => {
     if ( prop === 'id' ) {
       return true;
     }
+
     return nextFile[prop] === value;
   } );
+
   return same;
 };
 
 const VideoProjectFilesDesktopRow = props => {
   const {
     show, activeStep, file: {
-      id, language, videoBurnedInStatus, use, quality, input: { name, type }
-    }
+      id, language, videoBurnedInStatus, use, quality, input: { name, type },
+    },
   } = props;
 
   // extract file type, i.e. get 'image' from the incoming type 'image/*' for example
   // item in first index shows the first capturing group in regex
-  let fileType = /(\w+)\/(\w+)/.exec( type );
-  fileType = ( fileType ) ? fileType[1] : '';
-  const filename = ( name.length > 25 ) ? truncateAndReplaceStr( name, 15, 8 ) : name;
+  let fileType = ( /(\w+)\/(\w+)/ ).exec( type );
+
+  fileType = fileType ? fileType[1] : '';
+  const filename = name.length > 25 ? truncateAndReplaceStr( name, 15, 8 ) : name;
 
   /**
    * Figure out how many dropdowns need to be tracked for completion for each step
@@ -86,7 +92,7 @@ const VideoProjectFilesDesktopRow = props => {
         ( {
           removeAssetFile,
           updateField,
-          accept
+          accept,
         } ) => (
           <Grid.Row className="videoProjectFilesDesktopRow">
 
@@ -105,7 +111,7 @@ const VideoProjectFilesDesktopRow = props => {
 
             { /* Language */ }
             <Grid.Column width={ 4 } style={ show( 1 ) }>
-              <LanguageDropdown id={ id } value={ language } onChange={ updateField } required />
+              <LanguageDropdown filename={ name } id={ id } value={ language } onChange={ updateField } required />
             </Grid.Column>
 
             { /* VideoBurnedInStatus */ }
@@ -117,7 +123,7 @@ const VideoProjectFilesDesktopRow = props => {
 
             { /* Type/Use */ }
             <Grid.Column width={ 4 } style={ show( 2 ) }>
-              { ( fileType === 'video' || fileType === 'image' )
+              { fileType === 'video' || fileType === 'image'
                 ? <UseDropdown id={ id } value={ use } type={ fileType } onChange={ updateField } />
                 : renderNotApplicable() }
             </Grid.Column>
@@ -138,7 +144,7 @@ const VideoProjectFilesDesktopRow = props => {
             </Grid.Column>
           </Grid.Row>
         )
-       }
+      }
     </VideoUploadContext.Consumer>
   );
 };
@@ -151,10 +157,10 @@ VideoProjectFilesDesktopRow.propTypes = {
     videoBurnedInStatus: PropTypes.string,
     use: PropTypes.string,
     quality: PropTypes.string,
-    input: PropTypes.object
+    input: PropTypes.object,
   } ),
   activeStep: PropTypes.number,
-  show: PropTypes.func
+  show: PropTypes.func,
 };
 
 
