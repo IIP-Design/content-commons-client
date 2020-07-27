@@ -160,7 +160,7 @@ describe( '<Package /> (GraphQL API)', () => {
     const visuallyHidden = fileCountElem.find( 'VisuallyHidden' );
 
     expect( fileCountElem.text() )
-      .toEqual( `(${props.item.documents.length}) documents in this package` );
+      .toEqual( ` (${props.item.documents.length}) documents in this package` );
     expect( visuallyHidden.exists() ).toEqual( true );
   } );
 
@@ -307,7 +307,7 @@ describe( '<Package /> (Elastic API)', () => {
     const visuallyHidden = fileCountElem.find( 'VisuallyHidden' );
 
     expect( fileCountElem.text() )
-      .toEqual( `(${props.item.documents.length}) documents in this package` );
+      .toEqual( ` (${props.item.documents.length}) documents in this package` );
     expect( visuallyHidden.exists() ).toEqual( true );
   } );
 

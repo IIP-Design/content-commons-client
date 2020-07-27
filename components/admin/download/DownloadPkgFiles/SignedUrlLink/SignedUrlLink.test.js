@@ -42,27 +42,21 @@ describe( '<SignedUrlLink />', () => {
 
   it( 'renders the download link with signed url and filename', () => {
     const wrapper = mount( <SignedUrlLink { ...props } /> );
-    const item = wrapper.find( 'Item' );
+    const item = wrapper.find( '.download-item' );
 
-    expect( item.prop( 'as' ) ).toEqual( 'a' );
     expect( item.prop( 'href' ) ).toEqual( mockSignedUrl );
     expect( item.prop( 'download' ) ).toEqual( props.file.filename );
-
-    const itemHeader = wrapper.find( 'ItemHeader' );
-
-    expect( itemHeader.text() ).toEqual( `Download ${props.file.filename}` );
+    expect( item.find( '.item-content__title' ).text() ).toEqual( `Download ${props.file.filename}` );
   } );
 
   it( 'renders an <img /> for each item', () => {
     const wrapper = mount( <SignedUrlLink { ...props } /> );
-
-    const itemsImage = wrapper.find( 'ItemImage' );
-    const img = itemsImage.find( 'img' );
+    const img = wrapper.find( 'img' );
 
     expect( img.exists() ).toEqual( true );
     expect( img.props() ).toEqual( {
       src: 'download-icon-svg',
-      alt: 'download icon',
+      alt: `Download ${props.file.filename}`,
     } );
   } );
 
@@ -70,25 +64,8 @@ describe( '<SignedUrlLink />', () => {
     const newProps = { ...props, isPreview: true };
     const wrapper = mount( <SignedUrlLink { ...newProps } /> );
 
-    const item = wrapper.find( 'Item' );
-
-    expect( item.prop( 'as' ) ).toEqual( 'span' );
-    expect( item.prop( 'href' ) ).toEqual( null );
-    expect( item.prop( 'download' ) ).toEqual( null );
-  } );
-
-  it( 'shows preview text only when isPreview is set to true', () => {
-    const wrapper = mount( <SignedUrlLink { ...props } /> );
-
-    const previewText = wrapper.find( '.preview-text' );
-
-    expect( previewText.exists() ).toEqual( false );
-
-    wrapper.setProps( { isPreview: true } );
-
-    const newPreviewText = wrapper.find( 'ItemGroup' );
-
-    expect( newPreviewText.exists() ).toEqual( true );
+    expect( wrapper.prop( 'isPreview' ) ).toEqual( true );
+    expect( wrapper.find( '.preview-text' ).exists() ).toEqual( true );
   } );
 
   it( 'adds the preview className when isPreview is set to true', () => {
