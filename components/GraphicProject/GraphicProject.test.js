@@ -14,32 +14,29 @@ import GraphicProject from './GraphicProject';
 
 jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: {} } ) );
 jest.mock( 'lib/browser', () => ( { updateUrl: jest.fn() } ) );
-jest.mock(
-  'context/authContext',
-  () => ( {
-    useAuth: jest.fn( () => ( {
-      user: {
-        id: 'ck2m042xo0rnp0720nb4gxjix',
-        firstName: 'Joe',
-        lastName: 'Schmoe',
-        email: 'schmoej@america.gov',
-        jobTitle: '',
-        country: 'United States',
-        city: 'Washington, DC',
-        howHeard: '',
-        permissions: ['EDITOR'],
-        team: {
-          id: 'ck2lzfx6u0hkj0720f8n8mtda',
-          name: 'GPA Editorial & Design',
-          contentTypes: ['GRAPHIC'],
-          __typename: 'Team',
-        },
-        __typename: 'User',
-        esToken: 'eyasdljfakljsdfklj',
+jest.mock( 'context/authContext', () => ( {
+  useAuth: jest.fn( () => ( {
+    user: {
+      id: 'ck2m042xo0rnp0720nb4gxjix',
+      firstName: 'Joe',
+      lastName: 'Schmoe',
+      email: 'schmoej@america.gov',
+      jobTitle: '',
+      country: 'United States',
+      city: 'Washington, DC',
+      howHeard: '',
+      permissions: ['EDITOR'],
+      team: {
+        id: 'ck2lzfx6u0hkj0720f8n8mtda',
+        name: 'GPA Design & Editorial',
+        contentTypes: ['GRAPHIC'],
+        __typename: 'Team',
       },
-    } ) ),
-  } ),
-);
+      __typename: 'User',
+      esToken: 'eyasdljfakljsdfklj',
+    },
+  } ) ),
+} ) );
 
 jest.mock(
   'next/router',

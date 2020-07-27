@@ -40,7 +40,7 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
         "variables": Object {
           "where": Object {
             "name_in": Array [
-              "GPA Editorial & Design",
+              "GPA Design & Editorial",
               "ShareAmerica",
             ],
           },
@@ -230,7 +230,7 @@ exports[`<ProjectDetailsForm />, for graphic projects renders without crashing 1
                           Object {
                             "where": Object {
                               "name_in": Array [
-                                "GPA Editorial & Design",
+                                "GPA Design & Editorial",
                                 "ShareAmerica",
                               ],
                             },
