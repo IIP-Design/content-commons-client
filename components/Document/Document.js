@@ -13,8 +13,7 @@ import shareIcon from 'static/icons/icon_share.svg';
 import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 import Notification from 'components/Notification/Notification';
 import Share from 'components/Share/Share';
-import PopupTrigger from 'components/popups/PopupTrigger';
-import Popup from 'components/popups/Popup';
+import Popover from 'components/popups/Popover/Popover';
 
 import ModalItem from 'components/modals/ModalItem';
 import ModalDescription from 'components/modals/ModalDescription/ModalDescription';
@@ -76,27 +75,29 @@ const Document = ( { isAdminPreview, displayAsModal, item } ) => {
             />
           ) }
         <InternalUseDisplay />
-        <PopupTrigger
+        <Popover
+          id={ `${id}_document-share` }
+          className="document-project__popover document-project__popover--share"
+          trigger={ <img src={ shareIcon } style={ { width: '20px', height: '20px' } } alt="share icon" /> }
+          expandFromRight
           toolTip="Share document"
-          icon={ { img: shareIcon, dim: 20 } }
-          show
-          content={ (
-            <Popup title="Copy the link to share internally.">
-              <Share
-                id={ id }
-                site={ site }
-                title={ title }
-                language={ language.locale }
-                type={ type }
-                {
-                  ...( isAdminPreview
-                    ? { isPreview: true, link: 'The direct link to the package will appear here.' }
-                    : {}
-                  ) }
-              />
-            </Popup>
-          ) }
-        />
+        >
+          <div className="popup_share">
+            <h2 className="ui header">Copy the link to share internally.</h2>
+            <Share
+              id={ id }
+              site={ site }
+              title={ title }
+              language={ language.locale }
+              type={ type }
+              {
+                ...( isAdminPreview
+                  ? { isPreview: true, link: 'The direct link to the package will appear here.' }
+                  : {}
+                ) }
+            />
+          </div>
+        </Popover>
         <Button className="trigger" tooltip="Not For Public Distribution">
           <DownloadElement
             { ...( isAdminPreview

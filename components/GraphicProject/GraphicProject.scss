@@ -43,7 +43,8 @@ $image-height: 25rem;
     &--share {
       margin-right: 5px;
       .popover_content {
-        font-size: 1rem;        
+        font-size: 1rem;
+        box-shadow: 0px 2px 4px 0px $shuttle-grey;   
       }
     }
   }

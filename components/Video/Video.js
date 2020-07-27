@@ -169,7 +169,7 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
                 ) }
               >
                 <TabLayout
-                  headline="Download this video."
+                  headline="Embed this video."
                   tabs={ [
                     {
                       title: 'Copy Embed Code',
