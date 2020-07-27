@@ -1,6 +1,6 @@
 @import "styles/colors.scss";
 
-.package {
+.package {  
 
   &--preview {
     
@@ -23,7 +23,8 @@
   }
 
   .file-count {
-    margin-top: -2px;
+    margin-top: -5px;
+    margin-left: 5px;
     font-size: 16px;
   }
 
@@ -74,5 +75,31 @@
         }
       }
     }     
+  }
+
+  // Download popup
+  .package-project__popover {
+    
+    .popover_content {
+      top: calc( 100% + 8px );
+  
+      &:before {
+        top: -8px;
+        width: 15px;
+        height: 8px;
+        margin-right: 2px;
+        background: $bright-blue;        
+      }
+  
+      &:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding-top: 5px;
+        background-image: linear-gradient(90deg, $light-blue 3%, $bright-blue 100%);
+      }
+    }
   }
 }

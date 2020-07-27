@@ -14,6 +14,10 @@ import PopupTabbed from 'components/popups/PopupTabbed';
 import Share from 'components/Share/Share';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
+import Popover from 'components/popups/Popover/Popover';
+import DownloadItem from 'components/download/DownloadItem/DownloadItem';
+import TabLayout from 'components/TabLayout/TabLayout';
+
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
@@ -152,7 +156,7 @@ const Package = props => {
             ) }
           />
 
-          <PopupTrigger
+          {/* <PopupTrigger
             tooltip={ getPluralStringOrNot( documents, 'Download file' ) }
             icon={ { img: downloadIcon, dim: 18 } }
             position="right"
@@ -180,8 +184,41 @@ const Package = props => {
                 ] }
               />
             ) }
-          />
+          /> */}
+          <Popover
+            toolTip={ getPluralStringOrNot( documents, 'Download file' ) }
+            id={ `${id}_package-download` }
+            className="package-project__popover package-project__popover--download"
+            trigger={ <img src={ downloadIcon } style={ { width: '18px', height: '18px' } } alt="download icon" /> }
+            expandFromRight
+          >
+            <TabLayout
+              headline={ getPluralStringOrNot( documents, 'Package File' ) }
+              tabs={ [
+                {
+                  title: getPluralStringOrNot( documents, 'Document' ),
+                  content: (
+                    <DownloadItem
+                      instructions={
+                        documents.length > 1
+                          ? 'Download full press guidance package as zip file or individual Word documents.'
+                          : getPluralStringOrNot( documents, 'Download Package File' )
+                      }
+                    >
+                      <DownloadPkgFiles
+                        id={ id }
+                        title={ title }
+                        files={ documents }
+                        isPreview={ isAdminPreview }
+                      />
+                    </DownloadItem>
+                  ),
+                },
+              ] }
+            />
+          </Popover>
           <span className="file-count">
+            { ' ' }
             {`(${getCount( documents )})`}
             <VisuallyHidden> documents in this package</VisuallyHidden>
           </span>

@@ -1,13 +1,12 @@
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Item, Dimmer, Loader } from 'semantic-ui-react';
-
 import downloadIcon from 'static/icons/icon_download.svg';
 import { downloadPackage } from 'lib/utils';
 import SignedUrlLink from './SignedUrlLink/SignedUrlLink';
 import { useAuth } from 'context/authContext';
 
-const DownloadPkgFiles = ( { files, id, instructions, isPreview, title } ) => {
+const DownloadPkgFiles = ( { files, id, isPreview, title } ) => {
   const [loading, setLoading] = useState( false );
   const { user } = useAuth();
 
@@ -19,8 +18,7 @@ const DownloadPkgFiles = ( { files, id, instructions, isPreview, title } ) => {
       color: '#5b616b',
     },
     dotWrapper: {
-      marginTop: '-15px',
-      marginBottom: '-15px',
+      marginBottom: '5px',
       textAlign: 'center',
     },
     dot: {
@@ -44,40 +42,53 @@ const DownloadPkgFiles = ( { files, id, instructions, isPreview, title } ) => {
   };
 
   const renderDownloadAllItem = () => (
-    <Item.Group key={ `fs_${id}` } className={ `download-item${isPreview ? ' preview' : ''}` }>
-      <Item
-        as={ isPreview ? 'span' : 'a' }
-        onClick={ isPreview ? null : downloadAll }
-      >
-        <Item.Image
-          size="mini"
-          src={ downloadIcon }
-          alt="download icon"
-          className="download-icon"
-        />
-        <Item.Content>
-          <Item.Header className="download-header">
-            { loading && (
-              <Dimmer active inverted>
-                <Loader size="small" />
-              </Dimmer>
-            ) }
-            {'Download All '}
-            <span style={ { fontWeight: 'normal' } }>{ title }</span>
-            <div style={ styles.text }>
-              {/* <div style={{ lineHeight: 1 }}>Zip file size: </div> */}
-              <div>
-                { `Files: ${files.length}` }
-              </div>
-            </div>
-          </Item.Header>
-          <span className="item_hover">
-            { `Download ${title}` }
-            { isPreview && <span className="preview-text">The link will be active after publishing.</span> }
-          </span>
-        </Item.Content>
-      </Item>
-    </Item.Group>
+    <a className="download-item" onClick={ downloadAll } onKeyDown={ downloadAll } role="button" tabIndex="0">
+      <div className="item-icon"><img src={ downloadIcon } alt={ `Download All ${title}` } /></div>
+      <div className="item-content">
+        <p className="item-content__title">
+          <strong>{ `Download All ${title}` }</strong>
+        </p>
+        <p className="item-content__meta">{ `Files: ${files.length}` }</p>
+      </div>
+      <span className="item-hover">
+        { `Download All ${title}` }
+        { isPreview && <span className="preview-text">The link will be active after publishing.</span> }
+      </span>
+    </a>
+    // <Item.Group key={ `fs_${id}` } className={ `download-item${isPreview ? ' preview' : ''}` }>
+    //   <Item
+    //     as={ isPreview ? 'span' : 'a' }
+    //     onClick={ isPreview ? null : downloadAll }
+    //   >
+    //     <Item.Image
+    //       size="mini"
+    //       src={ downloadIcon }
+    //       alt="download icon"
+    //       className="download-icon"
+    //     />
+    //     <Item.Content>
+    //       <Item.Header className="download-header">
+    //         { loading && (
+    //           <Dimmer active inverted>
+    //             <Loader size="small" />
+    //           </Dimmer>
+    //         ) }
+    //         {'Download All '}
+    //         <span style={ { fontWeight: 'normal' } }>{ title }</span>
+    //         <div style={ styles.text }>
+    //           {/* <div style={{ lineHeight: 1 }}>Zip file size: </div> */}
+    //           <div>
+    //             { `Files: ${files.length}` }
+    //           </div>
+    //         </div>
+    //       </Item.Header>
+    //       <span className="item_hover">
+    //         { `Download ${title}` }
+    //         { isPreview && <span className="preview-text">The link will be active after publishing.</span> }
+    //       </span>
+    //     </Item.Content>
+    //   </Item>
+    // </Item.Group>
   );
 
   const items = files.reduce( ( acc, file ) => {
@@ -90,7 +101,6 @@ const DownloadPkgFiles = ( { files, id, instructions, isPreview, title } ) => {
 
   return (
     <Fragment>
-      <p className="form-group_instructions">{ instructions }</p>
       { ( !items || items.length < 1 ) && 'There are no files available for download at this time.' }
       { files?.length > 1 && (
         <Fragment>
@@ -112,7 +122,6 @@ const DownloadPkgFiles = ( { files, id, instructions, isPreview, title } ) => {
 DownloadPkgFiles.propTypes = {
   files: PropTypes.array,
   id: PropTypes.string,
-  instructions: PropTypes.string,
   isPreview: PropTypes.bool,
   title: PropTypes.string,
 };

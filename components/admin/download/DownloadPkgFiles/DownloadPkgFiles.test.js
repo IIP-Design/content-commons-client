@@ -13,7 +13,6 @@ jest.mock( 'context/authContext', () => ( {
 
 const props = {
   files: mocks[0].result.data.pkg.documents,
-  instructions: 'Download Package File(s)',
   isPreview: false,
 };
 
@@ -22,12 +21,6 @@ describe( '<DownloadPkgFiles />', () => {
     const wrapper = mount( <DownloadPkgFiles { ...props } /> );
 
     expect( wrapper.exists() ).toEqual( true );
-  } );
-
-  it( 'renders the instructions', () => {
-    const wrapper = mount( <DownloadPkgFiles { ...props } /> );
-
-    expect( wrapper.contains( props.instructions ) ).toEqual( true );
   } );
 
   it( 'renders a signed url link for each file', () => {
