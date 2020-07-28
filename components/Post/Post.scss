@@ -1,12 +1,6 @@
-@import "../../styles/colors.scss";
+@import "styles/colors.scss";
 
-.trigger-container {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.video-project__popover {
+.article-project__popover {
 
   &--embed,
   &--share {
@@ -40,23 +34,5 @@
       padding-top: 5px;
       background-image: linear-gradient(90deg, $light-blue 3%, $bright-blue 100%);
     }
-
-    .form-group_instructions {
-      font-size: 0.75rem;
-      font-style: italic;
-    }
-
-    .videoDownloadHelp {
-      font-size: .85rem;
-
-      > h4 {
-        font-size: .85rem;
-      }
-    }
-
-    button[aria-controls="panel_Help"] {
-      font-weight: normal;
-    }
   }
 }
-

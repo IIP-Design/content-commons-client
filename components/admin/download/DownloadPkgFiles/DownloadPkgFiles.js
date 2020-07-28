@@ -1,6 +1,5 @@
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Item, Dimmer, Loader } from 'semantic-ui-react';
 import downloadIcon from 'static/icons/icon_download.svg';
 import { downloadPackage } from 'lib/utils';
 import SignedUrlLink from './SignedUrlLink/SignedUrlLink';
@@ -55,40 +54,6 @@ const DownloadPkgFiles = ( { files, id, isPreview, title } ) => {
         { isPreview && <span className="preview-text">The link will be active after publishing.</span> }
       </span>
     </a>
-    // <Item.Group key={ `fs_${id}` } className={ `download-item${isPreview ? ' preview' : ''}` }>
-    //   <Item
-    //     as={ isPreview ? 'span' : 'a' }
-    //     onClick={ isPreview ? null : downloadAll }
-    //   >
-    //     <Item.Image
-    //       size="mini"
-    //       src={ downloadIcon }
-    //       alt="download icon"
-    //       className="download-icon"
-    //     />
-    //     <Item.Content>
-    //       <Item.Header className="download-header">
-    //         { loading && (
-    //           <Dimmer active inverted>
-    //             <Loader size="small" />
-    //           </Dimmer>
-    //         ) }
-    //         {'Download All '}
-    //         <span style={ { fontWeight: 'normal' } }>{ title }</span>
-    //         <div style={ styles.text }>
-    //           {/* <div style={{ lineHeight: 1 }}>Zip file size: </div> */}
-    //           <div>
-    //             { `Files: ${files.length}` }
-    //           </div>
-    //         </div>
-    //       </Item.Header>
-    //       <span className="item_hover">
-    //         { `Download ${title}` }
-    //         { isPreview && <span className="preview-text">The link will be active after publishing.</span> }
-    //       </span>
-    //     </Item.Content>
-    //   </Item>
-    // </Item.Group>
   );
 
   const items = files.reduce( ( acc, file ) => {

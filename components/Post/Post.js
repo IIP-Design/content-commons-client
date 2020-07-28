@@ -18,14 +18,18 @@ import ModalPostMeta from 'components/modals/ModalPostMeta/ModalPostMeta';
 import ModalPostTags from 'components/modals/ModalPostTags/ModalPostTags';
 import ModalText from 'components/modals/ModalText/ModalText';
 
-
 import PopupTrigger from 'components/popups/PopupTrigger';
 import PopupTabbed from 'components/popups/PopupTabbed';
 import Popup from 'components/popups/Popup';
 
+import Popover from 'components/popups/Popover/Popover';
+import TabLayout from 'components/TabLayout/TabLayout';
+
 import Share from 'components/Share/Share';
 import EmbedPost from './EmbedPost';
 import EmbedHelp from './EmbedHelp';
+
+import './Post.scss';
 
 const Post = ( { item, router } ) => {
   const { publicRuntimeConfig } = getConfig();
@@ -83,7 +87,65 @@ const Post = ( { item, router } ) => {
             />
           </div>
           <div className="trigger-container">
-            <PopupTrigger
+            <Popover
+              toolTip="Embed this article"
+              id={ `${selectedItem.id}_article-embed` }
+              className="article-project__popover article-project__popover--embed"
+              expandFromRight
+              trigger={ (
+                <img
+                  src={ embedIcon }
+                  style={ { width: '20px', height: '20px' } }
+                  alt="embed icon"
+                />
+              ) }
+            >
+              <TabLayout
+                headline="Embed this article on your site"
+                tabs={ [
+                  {
+                    title: 'Copy Embed Code',
+                    content: (
+                      <EmbedPost
+                        instructions="Copy and paste the code below to embed article on your site"
+                        embedItem={ embedItem }
+                      />
+                    ),
+                  },
+                  {
+                    title: 'Help',
+                    content: <EmbedHelp />,
+                  },
+                ] }
+              />
+            </Popover>
+            <Popover
+              toolTip="Share article"
+              id={ `${selectedItem.id}_article-share` }
+              className="article-project__popover article-project__popover--share"
+              trigger={ (
+                <img
+                  src={ shareIcon }
+                  style={ { width: '20px', height: '20px' } }
+                  alt="share icon"
+                />
+              ) }
+              expandFromRight
+            >
+              <div className="popup_share">
+                <h2 className="ui header">Share this article.</h2>
+                <Share
+                  id={ selectedItem.id }
+                  language={ selectedItem.language.locale }
+                  link={ selectedItem.link }
+                  site={ selectedItem.site }
+                  title={ selectedItem.title }
+                  type={ selectedItem.type }
+                />
+              </div>
+            </Popover>
+
+            {/* <PopupTrigger
               toolTip="Embed this article"
               icon={ { img: embedIcon, dim: 24 } }
               show
@@ -121,7 +183,7 @@ const Post = ( { item, router } ) => {
                   />
                 </Popup>
               ) }
-            />
+            /> */}
           </div>
         </div>
         <ModalImage thumbnail={ selectedItem?.thumbnail || '' } thumbnailMeta={ selectedItem.thumbnailMeta } />
