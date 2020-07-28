@@ -6,6 +6,10 @@
 
     &--share {
       margin-right: 5px;
+
+      > button {
+        vertical-align: middle;
+      }
       
       .popover_content {
         font-size: 1rem;
