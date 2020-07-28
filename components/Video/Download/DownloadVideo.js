@@ -46,7 +46,10 @@ const DownloadVideo = ( { burnedInCaptions, instructions, selectedLanguageUnit }
   const renderFormItem = video => {
     const { title } = selectedLanguageUnit;
     const size = getSizeInfo( video.size );
-    const fn = `${title.replace( /\s/g, '_' )}_${video.size.width}.${getFnExt( video.downloadUrl )}`;
+
+    // use actual filename and not project title
+    const fn = video.downloadUrl.substr( video.downloadUrl.lastIndexOf( '/' ) + 1 );
+
     const videoQuality = `${video.video_quality && video.video_quality.toLowerCase() === 'broadcast' ? 'broadcast' : 'web'}`;
     const downloadLink = getFileDownloadUrl( video.downloadUrl, fn );
 
