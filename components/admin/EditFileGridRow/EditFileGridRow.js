@@ -90,6 +90,7 @@ const EditFileGridRow = ( {
         id={ file.id }
         className={ `${styles.selectBox} ${isLast( select, i ) ? '' : styles.marginRight}` }
         onChange={ ( e, data ) => {
+          // Include style dropdown selection name for upload validation (GraphicUpload ln.65)
           if ( data.name === 'style' ) {
             const dropdownSelectionText = e?.target.textContent;
             const dataWithSelectionName = {

@@ -71,7 +71,8 @@ const GraphicStyleDropdown = props => {
 
           // select the value
           if ( typeof onChange === 'function' ) {
-            onChange( null, { id: props.id, name: 'style', value } );
+            // Simulate event obj so we can include styleSelection prop w/ data (EditFileGridRow ln.92)
+            onChange( { target: { textContent: value ? 'Clean' : '' } }, { id: props.id, name: 'style', value } );
           }
         }
       } }
