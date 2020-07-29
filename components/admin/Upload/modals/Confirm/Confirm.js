@@ -11,7 +11,7 @@ const FileConfirm = props => {
     cancelButton,
     confirmButton,
     handleOnCancel,
-    handleOnConfirm
+    handleOnConfirm,
   } = props;
 
   const [show, setShow] = useState( false );
@@ -19,7 +19,6 @@ const FileConfirm = props => {
   useEffect( () => {
     setShow( open );
   }, [open] );
-
 
   return (
     <Confirm
@@ -30,9 +29,9 @@ const FileConfirm = props => {
           className="delete_confirm delete_confirm--video"
           headline={ headline }
         >
-          <p style={ { whiteSpace: 'pre-line' } }>{ content }</p>
+          <p>{ content }</p>
         </ConfirmModalContent>
-    ) }
+      ) }
       onCancel={ handleOnCancel }
       onConfirm={ handleOnConfirm }
       cancelButton={ cancelButton }
@@ -48,7 +47,7 @@ FileConfirm.propTypes = {
   cancelButton: PropTypes.string,
   confirmButton: PropTypes.string,
   handleOnCancel: PropTypes.func,
-  handleOnConfirm: PropTypes.func
+  handleOnConfirm: PropTypes.func,
 };
 
 FileConfirm.defaultProps = {
@@ -56,7 +55,7 @@ FileConfirm.defaultProps = {
   headline: 'Are you sure you want to delete this video project?',
   content: 'This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.',
   cancelButton: 'Cancel',
-  confirmButton: 'OK'
+  confirmButton: 'OK',
 };
 
 export default FileConfirm;

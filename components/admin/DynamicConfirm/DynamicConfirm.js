@@ -10,6 +10,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Confirm } from 'semantic-ui-react';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
+import './DynamicConfirm.scss';
 
 const DynamicConfirm = props => {
   const {
@@ -19,7 +20,7 @@ const DynamicConfirm = props => {
     cancelButton,
     confirmButton,
     onCancel,
-    onConfirm
+    onConfirm,
   } = props;
 
   const [show, setShow] = useState( false );
@@ -38,9 +39,9 @@ const DynamicConfirm = props => {
           className="delete_confirm delete_confirm--video"
           headline={ headline }
         >
-          <p style={ { whiteSpace: 'pre-line' } }>{ content }</p>
+          <p>{ content }</p>
         </ConfirmModalContent>
-    ) }
+      ) }
       onCancel={ onCancel }
       onConfirm={ onConfirm }
       cancelButton={ cancelButton }
@@ -56,7 +57,7 @@ DynamicConfirm.propTypes = {
   cancelButton: PropTypes.string,
   confirmButton: PropTypes.string,
   onCancel: PropTypes.func,
-  onConfirm: PropTypes.func
+  onConfirm: PropTypes.func,
 };
 
 DynamicConfirm.defaultProps = {
@@ -64,7 +65,7 @@ DynamicConfirm.defaultProps = {
   headline: '',
   content: '',
   cancelButton: 'Cancel',
-  confirmButton: 'OK'
+  confirmButton: 'OK',
 };
 
 export default DynamicConfirm;
