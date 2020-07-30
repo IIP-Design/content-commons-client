@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _This sections lists changes committed since most recent release_
 
+# [5.1.1](https://github.com/IIP-Design/content-commons-client/compare/v5.1.0...5.1.1)(2020-07-29)
+
+**Fixed:**
+- Issue causing some video downloads to fail. Use filename and not title for download filename  
+
 # [5.1.0](https://github.com/IIP-Design/content-commons-client/compare/v5.0.0...5.1.0)(2020-07-15)
 
 **Added:**
