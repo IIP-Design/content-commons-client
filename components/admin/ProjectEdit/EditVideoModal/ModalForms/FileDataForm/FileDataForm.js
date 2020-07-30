@@ -373,8 +373,8 @@ const FileDataForm = ( {
               label="Language"
               onChange={ ( e, { value } ) => handleLanguageChange( value ) }
               required
-              value={ values.language }
-              disabled={ values.use === cleanUseId && values.videoBurnedInStatus === 'CLEAN' }
+              value={ values.use === cleanUseId ? englishId : values.language }
+              disabled={ values.use === cleanUseId }
             />
 
             <UseDropdown
@@ -394,7 +394,7 @@ const FileDataForm = ( {
               onChange={ handleDropdownSave }
               required
               type="video"
-              value={ values.videoBurnedInStatus }
+              value={ values.use === cleanUseId ? 'CLEAN' : values.videoBurnedInStatus }
               disabled={ values.use === cleanUseId }
             />
 

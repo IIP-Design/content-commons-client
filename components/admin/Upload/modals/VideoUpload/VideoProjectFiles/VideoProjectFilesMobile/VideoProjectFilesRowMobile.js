@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
+
 import LanguageDropdown from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown/VideoBurnedInStatusDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
@@ -9,6 +10,7 @@ import FileRemoveReplaceMenu from 'components/admin/FileRemoveReplaceMenu/FileRe
 import { truncateAndReplaceStr } from 'lib/utils';
 import UploadCompletionTracker from '../UploadCompletionTracker';
 import { VideoUploadContext } from '../../VideoUploadContext';
+
 import './VideoProjectFilesRowMobile.scss';
 
 // Optimize re-renders as component could potentially have many rows
@@ -21,8 +23,10 @@ const areEqual = ( prevProps, nextProps ) => {
     if ( prop === 'id' || prop === 'input' ) {
       return true;
     }
+
     return nextFile[prop] === value;
   } );
+
   return same;
 };
 
@@ -30,13 +34,14 @@ const areEqual = ( prevProps, nextProps ) => {
 const VideoProjectFilesRowMobile = props => {
   const {
     file: {
-      id, language, videoBurnedInStatus, use, quality, input: { name, type }
-    }
+      id, language, videoBurnedInStatus, use, quality, input: { name, type },
+    },
   } = props;
 
-  // extract file type, i.e. get 'image' from the incoming type 'image/*' for exaample
+  // extract file type, i.e. get 'image' from the incoming type 'image/*' for example
   // item in first index shows the first capturing group in regex
-  let fileType = /(\w+)\/(\w+)/.exec( type );
+  let fileType = ( /(\w+)\/(\w+)/ ).exec( type );
+
   fileType = ( fileType ) ? fileType[1] : '';
   const filename = ( name.length > 30 ) ? truncateAndReplaceStr( name, 18, 8 ) : name;
 
@@ -46,7 +51,9 @@ const VideoProjectFilesRowMobile = props => {
   const getFields = () => {
     switch ( fileType ) {
       case 'video':
-        return [language, videoBurnedInStatus, use, quality];
+        return [
+          language, videoBurnedInStatus, use, quality,
+        ];
       case 'image':
         return [language, use];
       default:
@@ -57,7 +64,7 @@ const VideoProjectFilesRowMobile = props => {
   // Are dropdowns showing?
   const [toggleState, setToggleState] = useState( 'hide' );
 
-  // Is chevron up or down based on dropdown visiblity
+  // Is chevron up or down based on dropdown visibility
   const [open, setOpen] = useState( '' );
 
   /**
@@ -69,12 +76,12 @@ const VideoProjectFilesRowMobile = props => {
   };
 
   return (
-    // Context API is used to avoind having to pass props down multiple levels
+    // Context API is used to avoid having to pass props down multiple levels
     <VideoUploadContext.Consumer>
       { ( {
         removeAssetFile,
         updateField,
-        accept
+        accept,
       } ) => (
         <div className="videoProjectFilesRowMobile">
 
@@ -106,16 +113,16 @@ const VideoProjectFilesRowMobile = props => {
             <p className="videoProjectFilesRowMobile__dropdowns--filename-full">{ name }</p>
 
             { /* Language */ }
-            <LanguageDropdown id={ id } label="Language" value={ language } onChange={ updateField } required />
+            <LanguageDropdown filename={ name } id={ id } label="Language" value={ language } onChange={ updateField } required />
 
             { /* VideoBurnedInStatus */ }
             { fileType === 'video' && (
-            <VideoBurnedInStatusDropdown id={ id } label="Subtitles" value={ videoBurnedInStatus } onChange={ updateField } />
+              <VideoBurnedInStatusDropdown id={ id } label="Subtitles" value={ videoBurnedInStatus } onChange={ updateField } />
             ) }
 
             { /* Type/Use */ }
             { ( fileType === 'video' || fileType === 'image' ) && (
-            <UseDropdown id={ id } label="Type/Use" value={ use } type={ fileType } onChange={ updateField } required />
+              <UseDropdown id={ id } label="Type/Use" value={ use } type={ fileType } onChange={ updateField } required />
             ) }
 
             { /* Quality */ }
@@ -144,8 +151,8 @@ VideoProjectFilesRowMobile.propTypes = {
     videoBurnedInStatus: PropTypes.string,
     use: PropTypes.string,
     quality: PropTypes.string,
-    input: PropTypes.object
-  } )
+    input: PropTypes.object,
+  } ),
 };
 
 

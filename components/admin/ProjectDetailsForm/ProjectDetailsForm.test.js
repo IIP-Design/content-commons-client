@@ -88,7 +88,7 @@ const props = {
       variables: {
         where: {
           name_in: [
-            'GPA Editorial & Design',
+            'GPA Design & Editorial',
             'ShareAmerica',
           ],
         },

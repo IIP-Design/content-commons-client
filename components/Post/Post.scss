@@ -1,25 +1,6 @@
 @import "styles/colors.scss";
 
-.project-preview {
-  .modal_headline {
-    margin-top: 1.5em;
-  }
-
-  .modal_languages {
-    > .menu {
-      border-radius: 0;
-    }
-
-    &:hover:after {
-      content: "";
-      display: block;
-      height: 3px;
-      background-color: $light-blue;
-    }
-  }
-}
-
-.video-project__popover {
+.article-project__popover {
 
   &--embed,
   &--share {
@@ -57,18 +38,6 @@
     .form-group_instructions {
       font-size: 0.75rem;
       font-style: italic;
-    }
-
-    .videoDownloadHelp {
-      font-size: .85rem;
-
-      > h4 {
-        font-size: .85rem;
-      }
-    }
-
-    button[aria-controls="panel_Help"] {
-      font-weight: normal;
     }
   }
 }

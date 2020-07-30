@@ -2,8 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 
 const EmbedHelp = () => (
-  <div>
-    <h4>Embed Article</h4>
+  <div style={ { fontSize: '0.75rem' } }>
+    <h4 style={ { fontSize: '0.85rem' } }>Embed Article</h4>
     <ol style={ { paddingLeft: '1.5em' } }>
       <li>Under the Copy Embed Code tab click the Copy icon to copy the embed code.</li>
       <li>Paste the embed code into the text editor of the website page where you want to embed the article.</li>

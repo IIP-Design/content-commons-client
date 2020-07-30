@@ -52,7 +52,7 @@ export const mocks = [
           },
           {
             id: 'ck2lzfx6u0hkj0720f8n8mtda',
-            name: 'GPA Editorial & Design',
+            name: 'GPA Design & Editorial',
             organization: 'Department of State',
             contentTypes: ['GRAPHIC'],
           },
@@ -95,10 +95,7 @@ export const mocks = [
       query: TEAMS_QUERY,
       variables: {
         where: {
-          name_in: [
-            'GPA Editorial & Design',
-            'ShareAmerica',
-          ],
+          name_in: ['GPA Design & Editorial', 'ShareAmerica'],
         },
       },
     },
@@ -113,7 +110,7 @@ export const mocks = [
           },
           {
             id: 'ck2lzfx6u0hkj0720f8n8mtda',
-            name: 'GPA Editorial & Design',
+            name: 'GPA Design & Editorial',
             organization: 'Department of State',
             contentTypes: ['GRAPHIC'],
           },

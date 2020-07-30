@@ -119,7 +119,7 @@ describe( '<TeamDropdown />, when receiving query variables', () => {
     variables: {
       where: {
         name_in: [
-          'GPA Editorial & Design',
+          'GPA Design & Editorial',
           'ShareAmerica',
         ],
       },

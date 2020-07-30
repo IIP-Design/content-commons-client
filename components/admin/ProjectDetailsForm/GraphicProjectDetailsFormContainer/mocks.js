@@ -26,7 +26,8 @@ export const data = {
         filesize: 297343,
         visibility: 'PUBLIC',
         url: '2020/04/commons.america.gov_ck9laaua62c2o0720577s3jto/4_3_Serious_TW.jpg',
-        signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2020/04/commons.america.gov_ck9laaua62c2o0720577s3jto/4_3_Serious_TW.jpg?AWSAccessKeyId=accesskey&Expires=1589468486&Signature=BSnPgB%2FYTX0xmcf%2BFuf30euIczo%3D',
+        signedUrl:
+                 'https://amgov-publisher-dev.s3.amazonaws.com/2020/04/commons.america.gov_ck9laaua62c2o0720577s3jto/4_3_Serious_TW.jpg?AWSAccessKeyId=accesskey&Expires=1589468486&Signature=BSnPgB%2FYTX0xmcf%2BFuf30euIczo%3D',
         style: {
           id: 'ck9h3koe426aa0720y421wmk3',
           name: 'Clean',
@@ -65,7 +66,8 @@ export const data = {
         filesize: 433851,
         visibility: 'PUBLIC',
         url: '2020/04/commons.america.gov_ck9laaua62c2o0720577s3jto/4_3_Serious_FB.jpg',
-        signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/2020/04/commons.america.gov_ck9laaua62c2o0720577s3jto/4_3_Serious_FB.jpg?AWSAccessKeyId=accesskey&Expires=1589468486&Signature=thesignature',
+        signedUrl:
+                 'https://amgov-publisher-dev.s3.amazonaws.com/2020/04/commons.america.gov_ck9laaua62c2o0720577s3jto/4_3_Serious_FB.jpg?AWSAccessKeyId=accesskey&Expires=1589468486&Signature=thesignature',
         style: {
           id: 'ck9h3kyb326ak0720wkbk01q6',
           name: 'Info/Stat',
@@ -105,7 +107,7 @@ export const data = {
     },
     team: {
       id: 'ck2qgfbku0ubh0720iwhkvuyn',
-      name: 'GPA Editorial & Design',
+      name: 'GPA Design & Editorial',
       organization: 'Department of State',
     },
     status: 'DRAFT',
@@ -154,7 +156,8 @@ export const data = {
         createdAt: '2020-04-28T11:28:43.173Z',
         updatedAt: '2020-05-06T12:04:17.325Z',
         url: null,
-        filename: 's-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd',
+        filename:
+                 's-secure-rights_asikaid_ksidn_kaslkdfiwnz_iqmshqusm_kwspamdisa_sucms_english.psd',
         filetype: 'image/vnd.adobe.photoshop',
         filesize: 509000,
         visibility: 'PUBLIC',

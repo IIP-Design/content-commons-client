@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { updateUrl } from 'lib/browser';
 import { displayDOSLogo } from 'lib/sourceLogoUtils';
-import { getCount, getFileExt, getPreviewNotificationStyles } from 'lib/utils';
+import { getCount, getPreviewNotificationStyles } from 'lib/utils';
 import { useAuth } from 'context/authContext';
 import {
   normalizeGraphicProjectByAPI,
@@ -215,14 +215,14 @@ const GraphicProject = ( {
       lang={ selectedUnitLanguage.language_code }
       textDirection={ selectedUnitLanguage.text_direction }
     >
-      { isAdminPreview && (
+      {isAdminPreview && (
         <Notification
           el="p"
           show
           customStyles={ getPreviewNotificationStyles() }
           msg="This is a preview of your graphics project on Content Commons."
         />
-      ) }
+      )}
       <div className="modal_options">
         <div className="modal_options_left">
           <ModalLangDropdown
@@ -232,20 +232,13 @@ const GraphicProject = ( {
           />
         </div>
 
-        { visibility === 'INTERNAL'
-          && <InternalUseDisplay style={ { marginLeft: 'auto' } } /> }
+        {visibility === 'INTERNAL' && <InternalUseDisplay style={ { marginLeft: 'auto' } } />}
 
         <div className="trigger-container">
           <Popover
             id={ `${id}_graphic-share` }
             className="graphic-project__popover graphic-project__popover--share"
-            trigger={ (
-              <img
-                src={ shareIcon }
-                style={ { width: '20px', height: '20px' } }
-                alt="share icon"
-              />
-            ) }
+            trigger={ <img src={ shareIcon } style={ { width: '20px', height: '20px' } } alt="share icon" /> }
             expandFromRight
             toolTip="Share graphic"
           >
@@ -260,8 +253,7 @@ const GraphicProject = ( {
                 isPreview={ isAdminPreview }
                 { ...( isAdminPreview
                   ? { link: 'The direct link to the project will appear here.' }
-                  : null
-                ) }
+                  : null ) }
               />
             </div>
           </Popover>
@@ -269,25 +261,23 @@ const GraphicProject = ( {
           <Popover
             id={ `${id}_graphic-download` }
             className="graphic-project__popover graphic-project__popover--download"
-            trigger={ <img src={ downloadIcon } style={ { width: '20px', height: '20px' } } alt="download icon" /> }
+            trigger={ (
+              <img
+                src={ downloadIcon }
+                style={ { width: '20px', height: '20px' } }
+                alt="download icon"
+              />
+            ) }
             expandFromRight
             toolTip="Download graphic"
           >
-            <TabLayout
-              headline="Download this graphic."
-              tabs={ authFilterTabs() }
-            />
+            <TabLayout headline="Download this graphic." tabs={ authFilterTabs() } />
           </Popover>
         </div>
       </div>
 
-      { selectedUnit?.url
-        && (
-          <ModalImage
-            thumbnail={ selectedUnitURL }
-            thumbnailMeta={ { alt: getAlt() } }
-          />
-        ) }
+      {selectedUnit?.url
+        && <ModalImage thumbnail={ selectedUnitURL } thumbnailMeta={ { alt: getAlt() } } />}
 
       <ModalContentMeta
         type={ `${projectType.toLowerCase().replace( '_', ' ' )} graphic` }
@@ -296,26 +286,22 @@ const GraphicProject = ( {
 
       <ModalDescription description={ desc } />
 
-      { user && user.id !== 'public' && descInternal && (
+      {user && user.id !== 'public' && descInternal && (
         <section className="graphic-project__content internal-desc">
-          <h2 className="graphic-project__content__title">
-            Internal Description:
-          </h2>
-          <p>{ descInternal }</p>
+          <h2 className="graphic-project__content__title">Internal Description:</h2>
+          <p>{descInternal}</p>
         </section>
-      ) }
+      )}
 
       <section className="graphic-project__content alt">
-        <h2 className="graphic-project__content__title">
-          Alt (Alternative) Text:
-        </h2>
-        <p>{ getAlt() }</p>
+        <h2 className="graphic-project__content__title">Alt (Alternative) Text:</h2>
+        <p>{getAlt()}</p>
       </section>
 
       <ModalPostMeta
         type={ projectType }
         logo={ displayDOSLogo( owner ) }
-        source={ owner === 'GPA Editorial & Design' ? owner : '' }
+        source={ owner === 'GPA Design & Editorial' ? owner : '' }
         datePublished={ published }
         textDirection={ selectedUnitLanguage.text_direction }
       />

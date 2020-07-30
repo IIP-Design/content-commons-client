@@ -320,7 +320,7 @@ const mocks = [
     request: {
       query: LANGUAGE_BY_NAME_QUERY,
       variables: {
-        where: { displayName: 'English' },
+        displayName: 'English',
       },
     },
     result: {

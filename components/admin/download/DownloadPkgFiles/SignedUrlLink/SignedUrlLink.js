@@ -1,44 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Item } from 'semantic-ui-react';
-
-import downloadIcon from 'static/icons/icon_download.svg';
+import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
 import useSignedUrl from 'lib/hooks/useSignedUrl';
 
 const SignedUrlLink = ( { file, isPreview } ) => {
-  const { id, filename, url } = file;
+  const { filename, url } = file;
   const { signedUrl } = useSignedUrl( url );
 
   return (
-    <Item.Group key={ `fs_${id}` } className={ `download-item${isPreview ? ' preview' : ''}` }>
-      <Item
-        as={ isPreview ? 'span' : 'a' }
-        href={ isPreview ? null : signedUrl }
-        download={ isPreview ? null : filename }
-      >
-        <Item.Image
-          alt="download icon"
-          className="download-icon"
-          size="mini"
-          src={ downloadIcon }
-        />
-        <Item.Content>
-          <Item.Header className="download-header">
-            { 'Download ' }
-            <span style={ { fontWeight: 'normal' } }>{filename}</span>
-          </Item.Header>
-          <span className="item_hover">
-            { `Download ${filename}` }
-            { isPreview
-                && (
-                  <span className="preview-text">
-                    The link will be active after publishing.
-                  </span>
-                ) }
-          </span>
-        </Item.Content>
-      </Item>
-    </Item.Group>
+    <DownloadItemContent
+      srcUrl={ signedUrl }
+      hoverText={ `Download ${filename}` }
+      isAdminPreview={ isPreview }
+      downloadFilename={ filename }
+    >
+      <div className="item-content">
+        <p className="item-content__title">
+          <strong>{ `Download ${filename}` }</strong>
+        </p>
+      </div>
+    </DownloadItemContent>
   );
 };
 
@@ -48,4 +29,3 @@ SignedUrlLink.propTypes = {
 };
 
 export default SignedUrlLink;
-

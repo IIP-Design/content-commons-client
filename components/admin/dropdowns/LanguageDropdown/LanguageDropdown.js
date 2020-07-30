@@ -70,8 +70,8 @@ const LanguageDropdown = props => {
       language = multiple ? [...language, language] : 'chinese';
     }
 
-    if ( ~file.indexOf( 'indonesian' ) || ~file.indexOf( 'id_id' ) || ~file.indexOf( 'id-id' ) ) {
-      language = multiple ? [...language, language] : 'indonesian';
+    if ( ~file.indexOf( 'indonesia' ) || ~file.indexOf( 'id_id' ) || ~file.indexOf( 'id-id' ) ) {
+      language = multiple ? [...language, language] : 'indonesia';
     }
 
     if ( ~file.indexOf( 'french' ) || ~file.indexOf( 'fr_fr' ) || ~file.indexOf( 'fr-fr' ) ) {
@@ -96,7 +96,8 @@ const LanguageDropdown = props => {
 
     if (
       ~file.indexOf( 'portuguese' )
-      || ~file.indexOf( 'port' )
+      || ~file.indexOf( '_port' )
+      || ~file.indexOf( '-port' )
       || ~file.indexOf( 'pt_br' )
       || ~file.indexOf( 'pt-br' )
     ) {

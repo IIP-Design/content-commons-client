@@ -12,7 +12,7 @@ export const mockData = {
   projectType: 'SOCIAL_MEDIA',
   status: 'PUBLISHED',
   supportFiles: [],
-  team: 'GPA Editorial & Design',
+  team: 'GPA Design & Editorial',
   thumbnail: {
     signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/social&Signature=MHVgP6',
     alt: null,
@@ -37,7 +37,7 @@ export const mockGraphicItem = {
   status: 'PUBLISHED',
   supportFiles: [],
   team: {
-    name: 'GPA Editorial & Design',
+    name: 'GPA Design & Editorial',
   },
   thumbnail: {
     signedUrl: 'https://amgov-publisher-dev.s3.amazonaws.com/social&Signature=MHVgP6',

@@ -8,11 +8,12 @@ import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import ModalItem from 'components/modals/ModalItem/ModalItem';
 import Notification from 'components/Notification/Notification';
 import PackageItem from './PackageItem/PackageItem';
-import Popup from 'components/popups/Popup';
-import PopupTrigger from 'components/popups/PopupTrigger';
-import PopupTabbed from 'components/popups/PopupTabbed';
 import Share from 'components/Share/Share';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+
+import Popover from 'components/popups/Popover/Popover';
+import DownloadItem from 'components/download/DownloadItem/DownloadItem';
+import TabLayout from 'components/TabLayout/TabLayout';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
@@ -133,55 +134,60 @@ const Package = props => {
 
       <div className="modal_options">
         <div className="trigger-container">
-          <PopupTrigger
-            tooltip="Share package"
-            icon={ { img: shareIcon, dim: 18 } }
-            show
-            content={ (
-              <Popup title="Share this package.">
-                <Share
-                  id={ id }
-                  isPreview={ isAdminPreview }
-                  language="en-us" // use en since pkg have no lang field
-                  link="The direct link to the package will appear here."
-                  site={ site }
-                  title={ title }
-                  type="package"
-                />
-              </Popup>
-            ) }
-          />
-
-          <PopupTrigger
-            tooltip={ getPluralStringOrNot( documents, 'Download file' ) }
-            icon={ { img: downloadIcon, dim: 18 } }
-            position="right"
-            show
-            content={ (
-              <PopupTabbed
-                title={ getPluralStringOrNot( documents, 'Package File' ) }
-                panes={ [
-                  {
-                    title: getPluralStringOrNot( documents, 'Document' ),
-                    component: (
+          <Popover
+            id={ `${id}_package-share` }
+            className="package-project__popover package-project__popover--share"
+            trigger={ <img src={ shareIcon } style={ { width: '20px', height: '20px' } } alt="share icon" /> }
+            expandFromRight
+            toolTip="Share package"
+          >
+            <div className="popup_share">
+              <h2 className="ui header">Share this package.</h2>
+              <Share
+                id={ id }
+                isPreview={ isAdminPreview }
+                language="en-us" // use en since pkg have no lang field
+                link="The direct link to the package will appear here."
+                site={ site }
+                title={ title }
+                type="package"
+              />
+            </div>
+          </Popover>
+          <Popover
+            toolTip={ getPluralStringOrNot( documents, 'Download file' ) }
+            id={ `${id}_package-download` }
+            className="package-project__popover package-project__popover--download"
+            trigger={ <img src={ downloadIcon } style={ { width: '18px', height: '18px' } } alt="download icon" /> }
+            expandFromRight
+          >
+            <TabLayout
+              headline={ getPluralStringOrNot( documents, 'Package File' ) }
+              tabs={ [
+                {
+                  title: getPluralStringOrNot( documents, 'Document' ),
+                  content: (
+                    <DownloadItem
+                      instructions={
+                        documents.length > 1
+                          ? 'Download full press guidance package as zip file or individual Word documents.'
+                          : getPluralStringOrNot( documents, 'Download Package File' )
+                      }
+                    >
                       <DownloadPkgFiles
                         id={ id }
                         title={ title }
                         files={ documents }
                         isPreview={ isAdminPreview }
-                        instructions={
-                          documents.length > 1
-                            ? 'Download full press guidance package as zip file or individual Word documents.'
-                            : getPluralStringOrNot( documents, 'Download Package File' )
-                        }
                       />
-                    ),
-                  },
-                ] }
-              />
-            ) }
-          />
+                    </DownloadItem>
+                  ),
+                },
+              ] }
+            />
+          </Popover>
           <span className="file-count">
+            { ' ' }
             {`(${getCount( documents )})`}
             <VisuallyHidden> documents in this package</VisuallyHidden>
           </span>

@@ -32,7 +32,7 @@ export const graphicGraphqlMock = {
     permissions: ['ADMIN'],
     team: {
       id: 'ck8em6gwa004p0765q6mjvh5f',
-      name: 'GPA Editorial & Design',
+      name: 'GPA Design & Editorial',
       organization: 'Department of State',
       members: null,
       contentTypes: ['GRAPHIC'],
@@ -41,7 +41,7 @@ export const graphicGraphqlMock = {
   },
   team: {
     id: 'ck8em6gwa004p0765q6mjvh5f',
-    name: 'GPA Editorial & Design',
+    name: 'GPA Design & Editorial',
     organization: 'Department of State',
     members: null,
     contentTypes: ['GRAPHIC'],

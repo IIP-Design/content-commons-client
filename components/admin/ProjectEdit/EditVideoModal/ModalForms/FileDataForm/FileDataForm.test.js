@@ -291,7 +291,6 @@ describe( '<FileDataForm />, when the video use is not Clean', () => {
     expect( languageDropdown.prop( 'label' ) ).toEqual( 'Language' );
     expect( languageDropdown.prop( 'required' ) ).toEqual( true );
     expect( languageDropdown.prop( 'value' ) ).toEqual( languageId );
-    // disabled since file (i.e., mocks[1]) has Clean video use
     expect( languageDropdown.prop( 'disabled' ) ).toEqual( false );
   } );
 
@@ -308,7 +307,6 @@ describe( '<FileDataForm />, when the video use is not Clean', () => {
       .toEqual( 'video' );
     expect( burnedInStatusDropdown.prop( 'required' ) )
       .toEqual( true );
-    // disabled since file (i.e., mocks[1]) has Clean video use
     expect( burnedInStatusDropdown.prop( 'disabled' ) )
       .toEqual( false );
     expect( burnedInStatusDropdown.prop( 'onChange' ).name )
