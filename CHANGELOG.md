@@ -12,6 +12,12 @@ _This sections lists changes committed since most recent release_
 **Changed:**
 - 'GPA Editorial & Design' team name to 'GPA Design & Editorial'
 
+
+# [5.1.1](https://github.com/IIP-Design/content-commons-client/compare/v5.1.0...5.1.1)(2020-07-29)
+
+**Fixed:**
+- Issue causing some video downloads to fail. Use filename and not title for download filename  
+
 # [5.1.0](https://github.com/IIP-Design/content-commons-client/compare/v5.0.0...5.1.0)(2020-07-15)
 
 **Added:**
