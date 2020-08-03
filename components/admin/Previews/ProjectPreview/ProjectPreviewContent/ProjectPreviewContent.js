@@ -37,7 +37,8 @@ import downloadIcon from 'static/icons/icon_download.svg';
 import embedIcon from 'static/icons/icon_embed.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 import {
-  getPreviewNotificationStyles, getStreamData, getVimeoId, getYouTubeId,
+  getPreviewNotificationStyles, getStreamData, getVimeoId,
+  getYouTubeId, getHasSomeNonCleanVideos, getUnitsWithNonCleanVideos,
 } from 'lib/utils';
 import { displayDOSLogo } from 'lib/sourceLogoUtils';
 import { UNIT_DETAILS_FRAGMENT } from 'lib/graphql/queries/video';
@@ -61,7 +62,8 @@ class ProjectPreviewContent extends React.PureComponent {
 
       if ( !units || units.length === 0 ) return;
 
-      const language = this.getUnitLanguage( units );
+      const unitsWithNonCleanVideos = getUnitsWithNonCleanVideos( units );
+      const language = this.getUnitLanguage( unitsWithNonCleanVideos );
 
       if ( !language && !Object.keys( language ).length ) {
         return;
@@ -74,7 +76,7 @@ class ProjectPreviewContent extends React.PureComponent {
         }
       } );
     }
-  }
+  };
 
   componentDidUpdate = ( _, prevState ) => {
     if ( this.props.data.project ) {
@@ -82,7 +84,8 @@ class ProjectPreviewContent extends React.PureComponent {
 
       if ( !units || units.length === 0 ) return;
 
-      const language = this.getUnitLanguage( units );
+      const unitsWithNonCleanVideos = getUnitsWithNonCleanVideos( units );
+      const language = this.getUnitLanguage( unitsWithNonCleanVideos );
 
       if ( !language || !Object.keys( language ).length ) {
         return;
@@ -92,27 +95,40 @@ class ProjectPreviewContent extends React.PureComponent {
         this.selectLanguage( language.displayName );
       }
     }
-  }
+  };
 
-  getLanguages = units => this.getUnitsWithFiles( units )
-    .map( unit => ( {
-      key: unit.language.languageCode,
-      value: unit.language.displayName,
-      text: unit.language.displayName,
-    } ) )
-  ;
+  getLanguages = units => units.reduce( ( acc, unit ) => {
+    const hasSomeNonCleanVideos = getHasSomeNonCleanVideos( unit );
 
-  getProjectUnits = units => units.reduce( ( acc, unit ) => ( {
-    ...acc,
-    [unit.language.displayName]: unit,
-  } ), {} )
-  ;
+    if ( hasSomeNonCleanVideos ) {
+      acc.push( {
+        key: unit.language.languageCode,
+        value: unit.language.displayName,
+        text: unit.language.displayName,
+      } );
+    }
 
-  getUnitsWithFiles = units => units.filter( u => u.files.length > 0 )
-  ;
+    return acc;
+  }, [] );
 
-  getEnglishIndex = units => units.findIndex( unit => unit.language.displayName === 'English' )
-  ;
+  getProjectUnits = units => units.reduce( ( acc, unit ) => {
+    const hasSomeNonCleanVideos = getHasSomeNonCleanVideos( unit );
+
+    if ( hasSomeNonCleanVideos ) {
+      acc[unit.language.displayName] = unit;
+    }
+
+    return acc;
+  }, {} );
+
+  getUnitsWithFiles = units => units.filter( u => {
+    const { files } = u;
+    const hasSomeNonCleanVideos = getHasSomeNonCleanVideos( u );
+
+    return files.length > 0 && hasSomeNonCleanVideos;
+  } );
+
+  getEnglishIndex = units => units.findIndex( unit => unit.language.displayName === 'English' );
 
   getFilesCount = ( units, i ) => {
     if ( units[i] && units[i].files ) {
@@ -152,7 +168,7 @@ class ProjectPreviewContent extends React.PureComponent {
       default:
         return '';
     }
-  }
+  };
 
   getEmbedUrl = url => {
     if ( !url.includes( 'youtu' ) && !url.includes( 'vimeo' ) ) {
@@ -168,7 +184,7 @@ class ProjectPreviewContent extends React.PureComponent {
     }
 
     return `<iframe src="${embedSrc}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`;
-  }
+  };
 
   getTag = ( tag, unit ) => {
     const translation = tag.translations.find( t => t.language.locale === unit.language.locale );
@@ -181,21 +197,20 @@ class ProjectPreviewContent extends React.PureComponent {
   getTags = ( tags, unit ) => tags.reduce( ( acc, curr ) => [
     ...acc,
     { name: this.getTag( curr, unit ) },
-  ], [] )
-  ;
+  ], [] );
 
   toggleArrow = () => {
     this.setState( prevState => ( {
       dropDownIsOpen: !prevState.dropDownIsOpen,
     } ) );
-  }
+  };
 
-  selectLanguage = language => this.setState( { selectedLanguage: language } )
+  selectLanguage = language => this.setState( { selectedLanguage: language } );
 
   handleChange = ( e, { value } ) => {
     this.toggleArrow();
     this.selectLanguage( value );
-  }
+  };
 
   render() {
     const { id } = this.props;
@@ -230,11 +245,7 @@ class ProjectPreviewContent extends React.PureComponent {
     if ( files && files.length === 0 ) {
       return (
         <p style={ { fontSize: '1rem' } }>
-          This
-          {' '}
-          { language.displayName }
-          {' '}
-          language unit does not have any files to preview.
+          { `This ${language.displayName} language unit does not have any files to preview.` }
         </p>
       );
     }
