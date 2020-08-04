@@ -255,10 +255,7 @@ class ProjectPreviewContent extends React.PureComponent {
       );
     }
 
-    const {
-      createdAt, updatedAt, stream, videoBurnedInStatus,
-    } = files[0];
-
+    const { createdAt, updatedAt, stream } = files[0];
     const youTubeUrl = getStreamData( stream, 'youtube', 'url' );
     const vimeoUrl = getStreamData( stream, 'vimeo', 'url' );
 
@@ -388,7 +385,7 @@ class ProjectPreviewContent extends React.PureComponent {
                 headline="Download this video."
                 tabs={ [
                   {
-                    title: 'Video File',
+                    title: 'Video Files',
                     content: (
                       <DownloadItem
                         instructions={ `Download the video and caption files in ${selectedLanguage}.
@@ -396,14 +393,28 @@ class ProjectPreviewContent extends React.PureComponent {
                       >
                         <DownloadVideo
                           selectedLanguageUnit={ selectedUnit }
-                          burnedInCaptions={ videoBurnedInStatus === 'CAPTIONED' }
+                          burnedInCaptions
                           isPreview
                         />
                       </DownloadItem>
                     ),
                   },
                   {
-                    title: 'Caption File',
+                    title: 'For Translation',
+                    content: (
+                      <DownloadItem
+                        instructions="Download a clean version (no-text version) of the video, for adding translated subtitles."
+                      >
+                        <DownloadVideo
+                          selectedLanguageUnit={ selectedUnit }
+                          burnedInCaptions={ false }
+                          isPreview
+                        />
+                      </DownloadItem>
+                    ),
+                  },
+                  {
+                    title: 'Caption Files',
                     content: (
                       <DownloadItem
                         instructions={ this.getDownloadItemInstructions( { editable: true } ) }
