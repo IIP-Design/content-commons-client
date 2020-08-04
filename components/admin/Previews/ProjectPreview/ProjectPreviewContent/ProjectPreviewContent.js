@@ -6,6 +6,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
+import Link from 'next/link';
 import { graphql } from 'react-apollo';
 import { Dropdown, Embed } from 'semantic-ui-react';
 
@@ -199,6 +200,10 @@ class ProjectPreviewContent extends React.PureComponent {
     { name: this.getTag( curr, unit ) },
   ], [] );
 
+  getDownloadItemInstructions = ( { editable } ) => (
+    <p>By downloading these{editable ? ' editable' : ''} files you agree to the <Link href="/about"><a>Terms of Use</a></Link>.</p>
+  );
+
   toggleArrow = () => {
     this.setState( prevState => ( {
       dropDownIsOpen: !prevState.dropDownIsOpen,
@@ -387,7 +392,7 @@ class ProjectPreviewContent extends React.PureComponent {
                     content: (
                       <DownloadItem
                         instructions={ `Download the video and caption files in ${selectedLanguage}.
-                        This download option is best for uploading this video to web pages.` }
+                        This download option is best for uploading this video to web pages and social media.` }
                       >
                         <DownloadVideo
                           selectedLanguageUnit={ selectedUnit }
@@ -401,7 +406,7 @@ class ProjectPreviewContent extends React.PureComponent {
                     title: 'Caption File',
                     content: (
                       <DownloadItem
-                        instructions="Download caption file(s) for this video."
+                        instructions={ this.getDownloadItemInstructions( { editable: true } ) }
                       >
                         <DownloadCaption
                           id={ id }
@@ -427,7 +432,7 @@ class ProjectPreviewContent extends React.PureComponent {
                     title: 'Other',
                     content: (
                       <DownloadItem
-                        instructions="Download Other File(s)"
+                        instructions={ this.getDownloadItemInstructions( { editable: false } ) }
                       >
                         <DownloadOtherFiles
                           id={ id }

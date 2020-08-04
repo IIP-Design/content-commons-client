@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Embed, Checkbox } from 'semantic-ui-react';
+import Link from 'next/link';
 import { withRouter } from 'next/router';
 
 import { updateUrl } from 'lib/browser';
@@ -227,8 +228,8 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
                     title: 'Video File',
                     content: (
                       <DownloadItem
-                        instructions={ `Download the video and SRT files in ${unit.language.display_name}.
-                        This download option is best for uploading this video to web pages.` }
+                        instructions={ `Download the video and caption files in ${unit.language.display_name}.
+                        This download option is best for uploading this video to web pages and social media.` }
                       >
                         <DownloadVideo
                           selectedLanguageUnit={ unit }
@@ -242,7 +243,7 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
                     title: 'Caption File',
                     content: (
                       <DownloadItem
-                        instructions="Download caption file(s) for this video."
+                        instructions={ <p>By downloading these editable files you agree to the <Link href="/about"><a>Terms of Use</a></Link>.</p> }
                       >
                         <DownloadCaption
                           selectedLanguageUnit={ unit }

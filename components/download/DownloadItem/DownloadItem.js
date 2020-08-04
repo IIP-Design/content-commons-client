@@ -11,12 +11,12 @@ const DownloadItem = ( { instructions, children } ) => (
 DownloadItem.propTypes = {
   children: PropTypes.oneOfType( [
     PropTypes.array,
-    PropTypes.object
+    PropTypes.object,
   ] ),
   instructions: PropTypes.oneOfType( [
     PropTypes.string,
-    PropTypes.object
-  ] )
+    PropTypes.object,
+  ] ),
 };
 
 export default DownloadItem;
