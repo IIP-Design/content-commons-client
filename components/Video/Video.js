@@ -225,7 +225,7 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
                 headline="Download this video."
                 tabs={ [
                   {
-                    title: 'Video File',
+                    title: 'Video Files',
                     content: (
                       <DownloadItem
                         instructions={ `Download the video and caption files in ${unit.language.display_name}.
@@ -233,14 +233,28 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
                       >
                         <DownloadVideo
                           selectedLanguageUnit={ unit }
-                          burnedInCaptions={ captions }
+                          burnedInCaptions
                           isAdminPreview={ isAdminPreview }
                         />
                       </DownloadItem>
                     ),
                   },
                   {
-                    title: 'Caption File',
+                    title: 'For Translation',
+                    content: (
+                      <DownloadItem
+                        instructions="Download a clean version (no-text version) of the video, for adding translated subtitles."
+                      >
+                        <DownloadVideo
+                          selectedLanguageUnit={ unit }
+                          burnedInCaptions={ false }
+                          isAdminPreview={ isAdminPreview }
+                        />
+                      </DownloadItem>
+                    ),
+                  },
+                  {
+                    title: 'Caption Files',
                     content: (
                       <DownloadItem
                         instructions={ <p>By downloading these editable files you agree to the <Link href="/about"><a>Terms of Use</a></Link>.</p> }
