@@ -14,7 +14,6 @@ import ApolloError from 'components/errors/ApolloError';
 
 import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo';
 import DownloadCaption from 'components/admin/download/DownloadCaption/DownloadCaption';
-import DownloadThumbnail from 'components/admin/download/DownloadThumbnail/DownloadThumbnail';
 import DownloadOtherFiles from 'components/admin/download/DownloadOtherFiles/DownloadOtherFiles';
 import DownloadHelp from 'components/Video/Download/DownloadHelp';
 
@@ -420,19 +419,6 @@ class ProjectPreviewContent extends React.PureComponent {
                         instructions={ this.getDownloadItemInstructions( { editable: true } ) }
                       >
                         <DownloadCaption
-                          id={ id }
-                          isPreview
-                        />
-                      </DownloadItem>
-                    ),
-                  },
-                  {
-                    title: 'Thumbnail',
-                    content: (
-                      <DownloadItem
-                        instructions="Download Transcripts"
-                      >
-                        <DownloadThumbnail
                           id={ id }
                           isPreview
                         />
