@@ -53,7 +53,7 @@ const DownloadVideo = ( { burnedInCaptions, selectedLanguageUnit, isAdminPreview
               { `Download "${title}" for ${videoQuality}` }
             </strong>
           </p>
-          <p className="item-content__meta">{ `${video.use} | ${video.videoBurnedInStatus === 'CLEAN' ? 'No subtitles' : 'Subtitles'}` }</p>
+          <p className="item-content__meta">{ `${video.use} | ${video.use === 'Clean' ? 'No subtitles' : 'Subtitles'}` }</p>
           <p className="item-content__meta">{ `File size: ${size.weight}` }</p>
           <p className="item-content__meta">{ `Dimensions: ${size.label}` }</p>
         </div>
