@@ -128,6 +128,8 @@ class ProjectPreviewContent extends React.PureComponent {
     return files.length > 0 && hasSomeNonCleanVideos;
   } );
 
+  getUnitWithCleanVideos = units => units.find( unit => unit.files.some( file => file?.use?.name === 'Clean' ) );
+
   getEnglishIndex = units => units.findIndex( unit => unit.language.displayName === 'English' );
 
   getFilesCount = ( units, i ) => {
@@ -200,7 +202,11 @@ class ProjectPreviewContent extends React.PureComponent {
   ], [] );
 
   getDownloadItemInstructions = ( { editable } ) => (
-    <p>By downloading these{editable ? ' editable' : ''} files you agree to the <Link href="/about"><a>Terms of Use</a></Link>.</p>
+    <p>
+      { `By downloading these ${editable ? 'editable' : ''}files, you agree to the` }
+      <Link href="/about"><a>Terms of Use</a></Link>
+      .
+    </p>
   );
 
   toggleArrow = () => {
@@ -230,6 +236,7 @@ class ProjectPreviewContent extends React.PureComponent {
     } = project;
     const { dropDownIsOpen, selectedLanguage } = this.state;
 
+    const unitWithCleanVideos = this.getUnitWithCleanVideos( units );
     const projectUnits = this.getProjectUnits( units );
     const selectedUnit = projectUnits[String( selectedLanguage )];
 
@@ -405,7 +412,7 @@ class ProjectPreviewContent extends React.PureComponent {
                         instructions="Download a clean version (no-text version) of the video, for adding translated subtitles."
                       >
                         <DownloadVideo
-                          selectedLanguageUnit={ selectedUnit }
+                          selectedLanguageUnit={ unitWithCleanVideos || selectedUnit }
                           burnedInCaptions={ false }
                           isPreview
                         />

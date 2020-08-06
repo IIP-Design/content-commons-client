@@ -86,6 +86,8 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
     willFetchVideoPlayer();
   }, [unit, captions] );
 
+  const getUnitWithCleanVideos = _units => _units.find( u => u.source.some( file => file?.use === 'Clean' ) );
+
   /**
    * Get the video data associated with currently selected language
    */
@@ -127,6 +129,8 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
   const embedItem = shareLink
     ? `<iframe src="${shareLink}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`
     : '';
+
+  const unitWithCleanVideos = getUnitWithCleanVideos( item.units );
 
   if ( unit && selectedLanguage ) {
     const toggleCaptions = [...new Set( unit.source.map( u => u.burnedInCaptions ) )];
@@ -246,7 +250,7 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
                         instructions="Download a clean version (no-text version) of the video, for adding translated subtitles."
                       >
                         <DownloadVideo
-                          selectedLanguageUnit={ unit }
+                          selectedLanguageUnit={ unitWithCleanVideos || unit }
                           burnedInCaptions={ false }
                           isAdminPreview={ isAdminPreview }
                         />
@@ -257,7 +261,13 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
                     title: 'Caption Files',
                     content: (
                       <DownloadItem
-                        instructions={ <p>By downloading these editable files you agree to the <Link href="/about"><a>Terms of Use</a></Link>.</p> }
+                        instructions={ (
+                          <p>
+                            By downloading these editable files, you agree to the
+                            <Link href="/about"><a>Terms of Use</a></Link>
+                            .
+                          </p>
+                        ) }
                       >
                         <DownloadCaption
                           selectedLanguageUnit={ unit }
