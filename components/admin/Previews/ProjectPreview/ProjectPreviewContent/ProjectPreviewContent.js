@@ -203,7 +203,7 @@ class ProjectPreviewContent extends React.PureComponent {
 
   getDownloadItemInstructions = ( { editable } ) => (
     <p>
-      { `By downloading these ${editable ? 'editable' : ''}files, you agree to the` }
+      { `By downloading these${editable ? ' editable' : ''} files, you agree to the ` }
       <Link href="/about"><a>Terms of Use</a></Link>
       .
     </p>
