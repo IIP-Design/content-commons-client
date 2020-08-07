@@ -241,9 +241,13 @@ class ProjectPreviewContent extends React.PureComponent {
     const selectedUnit = projectUnits[String( selectedLanguage )];
 
     if ( !selectedUnit || !Object.keys( selectedUnit ).length ) {
+      const hasOnlyCleanVideos = !!unitWithCleanVideos && unitWithCleanVideos?.files.every( file => file?.use?.name === 'Clean' );
+
       return (
         <p style={ { fontSize: '1rem' } }>
-          This project does not have any units to preview.
+          { hasOnlyCleanVideos
+            ? 'This project consists of Clean videos only. Please upload at least one non-Clean video to preview or publish.'
+            : 'This project does not have any units to preview.' }
         </p>
       );
     }
