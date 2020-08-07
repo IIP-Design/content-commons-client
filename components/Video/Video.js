@@ -22,6 +22,7 @@ import TabLayout from 'components/TabLayout/TabLayout';
 import DownloadVideo from './Download/DownloadVideo';
 import DownloadCaption from './Download/DownloadCaption';
 import DownloadTranscript from './Download/DownloadTranscript';
+import DownloadThumbnailsAndOtherFiles from './Download/DownloadThumbnailsAndOtherFiles';
 import DownloadHelp from './Download/DownloadHelp';
 import Share from '../Share/Share';
 import EmbedVideo from '../Embed';
@@ -182,6 +183,7 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
           instructions={ (
             <p>
               By downloading these editable files, you agree to the
+              { ' ' }
               <Link href="/about"><a>Terms of Use</a></Link>
               .
             </p>
@@ -201,6 +203,23 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
           instructions="Download Transcripts"
         >
           <DownloadTranscript item={ item } />
+        </DownloadItem>
+      ),
+    },
+    {
+      title: 'Other',
+      content: (
+        <DownloadItem
+          instructions={ (
+            <p>
+              By downloading these files, you agree to the
+              { ' ' }
+              <Link href="/about"><a>Terms of Use</a></Link>
+              .
+            </p>
+          ) }
+        >
+          <DownloadThumbnailsAndOtherFiles item={ item } />
         </DownloadItem>
       ),
     },
