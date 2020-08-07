@@ -9,8 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _This sections lists changes committed since most recent release_
 
+**Added:**
+- 'For Translation' tab with 'Clean' use videos to the video download popup on commons and publisher
+- 'Other' tab to the video download popup on commons
+- `DownloadThumbnailsAndOtherFiles` component
+
 **Changed:**
+- Remove English from the language dropdown in the video preview modal and commons page when the English unit consists of *only* 'Clean' use videos
 - 'GPA Editorial & Design' team name to 'GPA Design & Editorial'
+- Include thumbnails in the 'Other' tab in the video download popup
+- Download instructions text to match mockup changes
+
+**Fixed:**
+- Bug where a video unit's thumbnail was not being assigned to `unit.thumbnail` on the results page; This was preventing a video unit's thumbnails from being listed in its download popup.
 
 # [5.1.0](https://github.com/IIP-Design/content-commons-client/compare/v5.0.0...5.1.0)(2020-07-15)
 
