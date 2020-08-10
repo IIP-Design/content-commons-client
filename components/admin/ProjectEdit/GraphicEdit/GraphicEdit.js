@@ -515,19 +515,6 @@ const GraphicEdit = ( { id } ) => {
      */
   };
 
-
-  const getIsShell = filename => {
-    const shellExtensions = [
-      '.jpg', '.jpeg', '.png',
-    ];
-    const extension = getFileExt( filename );
-    const isShellExtension = shellExtensions.includes( extension );
-    const hasCleanInName = filename.toLowerCase().includes( 'clean' );
-    const hasShellInName = filename.toLowerCase().includes( 'shell' );
-
-    return isShellExtension && ( hasShellInName || hasCleanInName );
-  };
-
   const getLocalFiles = type => {
     const localSupportFiles = [];
     const localGraphicFiles = [];
@@ -535,10 +522,9 @@ const GraphicEdit = ( { id } ) => {
     if ( localData?.localGraphicProject?.files ) {
       localData.localGraphicProject.files.forEach( file => {
         const isClean = file.style === getStyleId( 'Clean' );
-        const isCleanShell = isClean && getIsShell( file.name );
         const hasStyleAndSocial = getCount( file.style ) && getCount( file.social );
 
-        if ( hasStyleAndSocial && !isCleanShell ) {
+        if ( hasStyleAndSocial && !isClean ) {
           localGraphicFiles.push( file );
         } else {
           localSupportFiles.push( file );
@@ -567,9 +553,9 @@ const GraphicEdit = ( { id } ) => {
     } else {
       const extension = getFileExt( file.name );
       const hasEditableExt = EDITABLE_EXTS.includes( extension );
-      const isShell = getIsShell( file.name );
+      const isClean = file.style === getStyleId( 'Clean' );
 
-      isEditable = isShell || hasEditableExt;
+      isEditable = isClean || hasEditableExt;
     }
 
     return isEditable;

@@ -81,6 +81,7 @@ const files = [
     size: 18986,
     language: 'ck2lzfx710hkq07206thus6pt',
     style: 'ck9h3koe426aa0720y421wmk3',
+    styleSelection: 'Clean',
     social: [],
     input: {
       type: 'image/png',

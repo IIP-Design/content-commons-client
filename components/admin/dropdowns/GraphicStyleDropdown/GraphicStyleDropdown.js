@@ -43,7 +43,6 @@ const getGraphicStyleId = ( styles = [], style ) => {
 const GraphicStyleDropdown = props => {
   const { filename, onChange, multiple, omit } = props;
 
-
   const getGraphicStyle = fn => {
     const file = fn.toLowerCase();
     let style = multiple ? [] : '';
@@ -72,7 +71,8 @@ const GraphicStyleDropdown = props => {
 
           // select the value
           if ( typeof onChange === 'function' ) {
-            onChange( null, { id: props.id, name: 'style', value } );
+            // Simulate event obj so we can include styleSelection prop w/ data (EditFileGridRow ln.92)
+            onChange( { target: { textContent: value ? 'Clean' : '' } }, { id: props.id, name: 'style', value } );
           }
         }
       } }
