@@ -16,11 +16,13 @@ _This sections lists changes committed since most recent release_
 
 **Added:**
 - A reminder to the Home page to prompt the user to login to see internal content
+- 'Regional Media Hubs' to graphic details form source dropdown and dashboard graphic queries
 
 **Changed:**
 - Package 'Browse All' link sorts packages by created date
 - Lists of Documents within a Package are displayed in the order of releases, guidances, transcripts
 - Delete button is disabled for published graphic projects
+- Display DoS logo and 'Regional Media Hubs' as the source in the graphics card and preview modal
 
 
 # [5.0.0](https://github.com/IIP-Design/content-commons-client/compare/v4.2.0...5.0.0)(2020-07-10)
