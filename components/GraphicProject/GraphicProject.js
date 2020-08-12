@@ -301,7 +301,7 @@ const GraphicProject = ( {
       <ModalPostMeta
         type={ projectType }
         logo={ displayDOSLogo( owner ) }
-        source={ owner === 'GPA Design & Editorial' ? owner : '' }
+        source={ owner !== 'ShareAmerica' ? owner : '' }
         datePublished={ published }
         textDirection={ selectedUnitLanguage.text_direction }
       />
