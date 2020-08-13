@@ -117,7 +117,6 @@ const FilterSelections = props => {
    * @param {object} item
    */
   const handleOnClick = item => {
-    console.log( item );
     // Update state selections instead of waiting for router update which updates redux store
     // Checking selections submenu prop if we need to remove submenu items when parent menu item
     // is clicked to be removed
@@ -126,9 +125,9 @@ const FilterSelections = props => {
 
     setSelections( [...updatedSelections] );
 
-    // Get filter name of submenu item if applicable
-    // const subMenuItems = selections.filter( sel => sel.submenu === item.value );
-    const subMenuItemsFilter = selections
+    // Get filter name of submenu items if applicable
+    // should be same for all submenu items
+    const subMenuItemsFilterName = selections
       .filter( sel => sel.submenu === item.value )
       /* eslint-disable no-param-reassign */
       .reduce( ( filterName, subMenuItem ) => {
@@ -137,22 +136,11 @@ const FilterSelections = props => {
         }
 
         return filterName;
-      }, '' );
-
-    console.log( subMenuItemsFilter );
-
-    // const filtersToRemoveFrom = [ ...filter[item.name], ...filter[subMenuItems[0].name] ];
-    // console.log(filtersToRemoveFrom)
+      }, '' );    
 
     const selectedItemsFromSpecificFilter = filter[item.name].slice( 0 );
     const filterItemList = global[item.name].list;
     const itemToRemove = filterItemList.find( l => l.key.indexOf( item.value ) !== -1 );
-
-    console.log( {
-      selectedItemsFromSpecificFilter,
-      filterItemList,
-      itemToRemove,
-    } );
 
     // Some values have multiple search terms within the input value
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
@@ -162,9 +150,13 @@ const FilterSelections = props => {
     // remove selected values
     const updatedArr = difference( selectedItemsFromSpecificFilter, values );
 
-    // generate updated query string
+    // generate updated query string, removing submenu items
     const query = fetchQueryString( {
-      ...filter, [item.name]: updatedArr, term, language,
+      ...filter,
+      [item.name]: updatedArr,
+      [subMenuItemsFilterName]: [],
+      term,
+      language,
     } );
 
     executeQuery( query );
