@@ -23,6 +23,7 @@ const FilterMenuItem = props => {
       label: option.display_name,
       value: option.key,
       count: option.count,
+      ...option.submenu ? { submenu: option.submenu } : {},
     } ) );
 
     /* Sort Source filter alphabetically */
@@ -59,14 +60,16 @@ const FilterMenuItem = props => {
   /**
    * Reload results page with updated query params
    * @param {array|string} value - updated filter value
+   * @param {string} submenu - submenu filter value to update
    */
-  const executeQuery = value => {
+  const executeQuery = ( value, submenu = false ) => {
     const filtered = props.name === 'postTypes' ? value.filter( val => val !== 'package' ) : value;
 
     // Add term from search reducer to ensure that it does not get removed from the query string
     const query = fetchQueryString( {
       ...props.filterStore,
       [props.name]: filtered,
+      ...submenu ? { [submenu]: [] } : {},
       term: props.term,
       language: props.language,
     } );
@@ -77,7 +80,7 @@ const FilterMenuItem = props => {
     } );
   };
 
-  const handleCheckboxChange = async ( e, { value, checked } ) => {
+  const handleCheckboxChange = async ( e, { value, checked, submenu } ) => {
     if ( selected.includes( value ) ) {
       setSelected( selected.filter( s => s !== value ) );
     } else {
@@ -102,13 +105,12 @@ const FilterMenuItem = props => {
       updatedArr = difference( arr, values );
     }
 
-    executeQuery( updatedArr );
+    executeQuery( updatedArr, submenu );
   };
 
   const handleRadioChange = async ( e, { value } ) => {
     executeQuery( value );
   };
-
 
   const renderRadio = option => (
     <Form.Radio
@@ -137,6 +139,7 @@ const FilterMenuItem = props => {
         value={ option.value }
         count={ option.count }
         checked={ checked }
+        { ...( option.submenu ? { submenu: option.submenu } : {} ) }
         onChange={ handleCheckboxChange }
       />
     );

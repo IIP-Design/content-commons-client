@@ -136,7 +136,7 @@ const FilterSelections = props => {
         }
 
         return filterName;
-      }, '' );    
+      }, '' );
 
     const selectedItemsFromSpecificFilter = filter[item.name].slice( 0 );
     const filterItemList = global[item.name].list;
