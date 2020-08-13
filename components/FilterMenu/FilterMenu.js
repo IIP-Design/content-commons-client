@@ -5,7 +5,7 @@ import * as actions from 'lib/redux/actions/filter';
 import { getCount } from 'lib/utils';
 import FilterMenuItem from './FilterMenuItem';
 import FilterSelections from './FilterSelections';
-import FilterMenuCountries from './FilterMenuCountries';
+import FilterSubMenu from './FilterSubMenu/FilterSubMenu';
 
 import './FilterMenu.scss';
 
@@ -16,6 +16,7 @@ const FilterMenu = props => {
     if ( item === 'document' ) {
       return global?.postTypes?.list.some( type => type.key === item ) || false;
     }
+
     return getCount( global?.[item].list ) > 0;
   };
 
@@ -61,22 +62,21 @@ const FilterMenu = props => {
               formItem="checkbox"
             />
           ) }
-        { /* Countries */ }
-        { showMenuItem( 'document' ) && <FilterMenuCountries selected={ filter.countries } /> }
       </div>
+
+      <FilterSubMenu />
     </section>
   );
 };
 
 FilterMenu.propTypes = {
   filter: PropTypes.object,
-  global: PropTypes.object
+  global: PropTypes.object,
 };
 
 const mapStateToProps = state => ( {
-  search: state.search,
   filter: state.filter,
-  global: state.global
+  global: state.global,
 } );
 
 export default connect( mapStateToProps, actions )( FilterMenu );

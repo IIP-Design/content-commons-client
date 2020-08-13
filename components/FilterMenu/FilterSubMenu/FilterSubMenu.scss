@@ -1,0 +1,30 @@
+@import "styles/colors.scss";
+
+.filterSubMenu {
+  --smallerFont: 14px;
+  font-size: var(--smallerFont);
+
+  &_label {
+    margin-right: 1rem;
+    color: $blue;
+  }
+
+  .filterMenu {
+    display: inline-block;
+    min-width: auto;
+
+    > span {
+      padding: 8px 8px 0 8px;
+      font-size: var(--smallerFont);
+
+      &:hover,
+      &.active {
+        font-weight: normal;
+
+        &:after {
+          border-bottom: 2px solid $light-blue;
+        }
+      }
+    }
+  }
+}

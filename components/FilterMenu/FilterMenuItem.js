@@ -190,10 +190,14 @@ const FilterMenuItem = props => {
 
         <Form.Group>
           { formatOptions( options, filter ).map(
-            option => (formItem === 'checkbox'
-              ? renderCheckbox( option )
-              : renderRadio( option )),
-          )}
+            option => {
+              if ( formItem === 'checkbox' ) {
+                return renderCheckbox( option );
+              }
+
+              return renderRadio( option );
+            },
+          ) }
 
           { options.length === 0
             && (

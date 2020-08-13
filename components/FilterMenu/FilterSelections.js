@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { v4 } from 'uuid';
@@ -26,6 +26,7 @@ const getSelection = ( values, name, list, isRadio = false ) => {
       label: label ? label.display_name : '',
       name,
       single: isRadio,
+      submenu: label?.submenu || false,
     };
   } );
 
@@ -116,14 +117,43 @@ const FilterSelections = props => {
    * @param {object} item
    */
   const handleOnClick = item => {
+    console.log( item );
     // Update state selections instead of waiting for router update which updates redux store
-    const updatedSelections = selections.filter( sel => sel.value !== item.value );
+    // Checking selections submenu prop if we need to remove submenu items when parent menu item
+    // is clicked to be removed
+    const updatedSelections = selections
+      .filter( sel => sel.value !== item.value && sel.submenu !== item.value );
 
     setSelections( [...updatedSelections] );
+
+    // Get filter name of submenu item if applicable
+    // const subMenuItems = selections.filter( sel => sel.submenu === item.value );
+    const subMenuItemsFilter = selections
+      .filter( sel => sel.submenu === item.value )
+      /* eslint-disable no-param-reassign */
+      .reduce( ( filterName, subMenuItem ) => {
+        if ( filterName !== subMenuItem.name ) {
+          filterName += subMenuItem.name;
+        }
+
+        return filterName;
+      }, '' );
+
+    console.log( subMenuItemsFilter );
+
+    // const filtersToRemoveFrom = [ ...filter[item.name], ...filter[subMenuItems[0].name] ];
+    // console.log(filtersToRemoveFrom)
 
     const selectedItemsFromSpecificFilter = filter[item.name].slice( 0 );
     const filterItemList = global[item.name].list;
     const itemToRemove = filterItemList.find( l => l.key.indexOf( item.value ) !== -1 );
+
+    console.log( {
+      selectedItemsFromSpecificFilter,
+      filterItemList,
+      itemToRemove,
+    } );
+
     // Some values have multiple search terms within the input value
     // i.e. YALI appears as Young African Leaders Initiative|Young African Leaders Initiative Network
     // so we split the value into array and to remove all
@@ -143,29 +173,32 @@ const FilterSelections = props => {
   if ( selections.length === 0 ) return null;
 
   return (
-    <div className="filterMenu_selections">
-      { selections.map( selection => (
-        <FilterSelectionItem
-          key={ v4() }
-          value={ selection.value }
-          label={ selection.label }
-          name={ selection.name }
-          single={ selection.single }
-          onClick={ handleOnClick }
-        />
-      ) ) }
-      { selections.length > 1 && ( // need to update to > 2 as defaults to 2
-        <div
-          className="ui label clear_filter"
-          onClick={ handleClearAllFilters }
-          onKeyDown={ handleClearAllFilters }
-          role="button"
-          tabIndex={ 0 }
-        >
-          CLEAR ALL
-        </div>
-      ) }
-    </div>
+    <Fragment>
+      <div className="filterMenu_selections">
+        { selections.map( selection => (
+          <FilterSelectionItem
+            key={ v4() }
+            value={ selection.value }
+            label={ selection.label }
+            name={ selection.name }
+            single={ selection.single }
+            onClick={ handleOnClick }
+          />
+        ) ) }
+        { selections.length > 1 && ( // need to update to > 2 as defaults to 2
+          <div
+            className="ui label clear_filter"
+            onClick={ handleClearAllFilters }
+            onKeyDown={ handleClearAllFilters }
+            role="button"
+            tabIndex={ 0 }
+          >
+            CLEAR ALL
+          </div>
+        ) }
+      </div>
+      <hr />
+    </Fragment>
   );
 };
 

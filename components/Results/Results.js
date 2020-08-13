@@ -34,7 +34,6 @@ const Results = ( { search } ) => {
         <div>
           <SearchTerm />
           { !items.length && <NoResults searchTerm={ search.currentTerm } /> }
-          <hr />
           <FilterMenu />
           <section>
             <ResultsHeader toggleView={ toggleView } currentView={ view } />

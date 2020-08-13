@@ -3,21 +3,6 @@
 .results {
   margin-top: 0;
 
-  hr {
-    height: 1px;
-    color: $light-grey;
-    background-color: $light-grey;
-    border: none;
-    margin-top: 0;
-    margin-left: -1em;
-    margin-right: -1em;
-
-    @media screen and (min-width: 768px) {
-      margin-left: -2em;
-      margin-right: -2em;
-    }
-  }
-
   &_wrapper {
     &.ui.grid {
       @media screen and (max-width: 425px) {
