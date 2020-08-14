@@ -49,7 +49,11 @@ const config = {
     required: false,
     variables: {
       where: {
-        name_in: ['GPA Design & Editorial', 'ShareAmerica'],
+        name_in: [
+          'GPA Design & Editorial',
+          'Regional Media Hubs',
+          'ShareAmerica',
+        ],
       },
     },
   },
