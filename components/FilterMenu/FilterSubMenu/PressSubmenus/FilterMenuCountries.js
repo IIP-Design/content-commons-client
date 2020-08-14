@@ -34,6 +34,7 @@ const FilterMenuCountries = props => {
 
     return acc;
   }, [] );
+
   const handleChange = ( e, { value } ) => {
     setSearchedCountry( value );
   };

@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import FilterMenuCountries from './FilterMenuCountries';
+import FilterMenuCountries from './PressSubmenus/FilterMenuCountries';
+import ReleaseTypeSubmenu from './PressSubmenus/ReleaseTypeSubmenu';
 
 import './FilterSubMenu.scss';
 
 const FilterSubMenu = props => {
   const {
-    filter,
-    filter: { postTypes },
+    filter: { postTypes, countries, documentUses },
   } = props;
 
   const renderSubMenu = () => {
@@ -17,7 +17,8 @@ const FilterSubMenu = props => {
         <section className="filterSubMenu">
           <hr />
           <span className="filterSubMenu_label"><b>Press Releases & Guidance: </b></span>
-          <FilterMenuCountries selected={ filter.countries } />
+          <FilterMenuCountries selected={ countries } />
+          <ReleaseTypeSubmenu selected={ documentUses } />
         </section>
       );
     }
