@@ -21,7 +21,6 @@ const ReleaseTypeSubmenu = ( { selected } ) => {
   return (
     <FilterMenuItem
       selected={ selected }
-      className="clamped"
       filter="Release Type"
       name="documentUses"
       options={ releaseTypeOptions }

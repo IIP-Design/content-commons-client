@@ -41,7 +41,6 @@ const FilterMenuCountries = props => {
 
   return (
     <FilterMenuItem
-      className="clamped"
       filter="Countries & Areas"
       name="countries"
       selected={ props.selected }

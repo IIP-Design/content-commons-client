@@ -21,7 +21,6 @@ const BureausOfficesSubmenu = ( { selected } ) => {
   return (
     <FilterMenuItem
       selected={ selected }
-      className="clamped"
       filter="Bureaus & Offices"
       name="bureausOffices"
       options={ bureauOfficesOptions }

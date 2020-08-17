@@ -70,7 +70,7 @@ const FilterMenu = props => {
             />
           ) } */}
       </div>
-
+      <hr />
       <FilterSubMenu />
     </section>
   );

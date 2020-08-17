@@ -2,16 +2,23 @@
 
 .filterSubMenu {
   --smallerFont: 14px;
+  display: flex;
+  justify-content: space-evenly;
   font-size: var(--smallerFont);
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+  }
 
   &_label {
-    margin-right: 1rem;
+    align-self: flex-end;
+    font-weight: bold;
     color: $blue;
+    @media screen and (max-width: 767px) {
+      align-self: center;
+    }
   }
 
   .filterMenu {
-    display: inline-block;
-    min-width: auto;
 
     > span {
       padding: 8px 8px 0 8px;
@@ -25,6 +32,11 @@
           border-bottom: 2px solid $light-blue;
         }
       }
+    }
+
+    .fields {
+      max-height: 16.667rem;
+      overflow-y: auto;
     }
   }
 }

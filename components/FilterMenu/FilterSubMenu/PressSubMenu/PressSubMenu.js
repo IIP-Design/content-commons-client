@@ -12,8 +12,7 @@ const PressSubMenu = props => {
 
   return (
     <section className="filterSubMenu">
-      <hr />
-      <span className="filterSubMenu_label"><b>Press Releases & Guidance: </b></span>
+      <span className="filterSubMenu_label">Press Releases & Guidance: </span>
       <ReleaseTypeSubmenu selected={ documentUses } />
       <BureausOfficesSubmenu selected={ bureausOffices } />
       <FilterMenuCountries selected={ countries } />
