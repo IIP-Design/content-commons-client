@@ -47,7 +47,13 @@ const getAllSelections = ( filter, global ) => {
 
   // manually set filter order due to Safari issue
   const filterOrder = [
-    'date', 'postTypes', 'sources', 'categories', 'countries',
+    'date',
+    'postTypes',
+    'sources',
+    'categories',
+    'documentUses',
+    'bureausOffices',
+    'countries',
   ];
 
   // loop thru filters to build selection list
@@ -126,17 +132,21 @@ const FilterSelections = props => {
     setSelections( [...updatedSelections] );
 
     // Get filter name of submenu items if applicable
-    // should be same for all submenu items
     const subMenuItemsFilterName = selections
       .filter( sel => sel.submenu === item.value )
-      /* eslint-disable no-param-reassign */
       .reduce( ( filterName, subMenuItem ) => {
-        if ( filterName !== subMenuItem.name ) {
-          filterName += subMenuItem.name;
+        if ( !filterName.includes( subMenuItem.name ) ) {
+          filterName.push( subMenuItem.name );
         }
 
         return filterName;
-      }, '' );
+      }, [] );
+
+    const clearSubmenuFiltersObj = subMenuItemsFilterName.reduce( ( filterObj, subFilter ) => {
+      filterObj[subFilter] = [];
+
+      return filterObj;
+    }, {} );
 
     const selectedItemsFromSpecificFilter = filter[item.name].slice( 0 );
     const filterItemList = global[item.name].list;
@@ -154,7 +164,7 @@ const FilterSelections = props => {
     const query = fetchQueryString( {
       ...filter,
       [item.name]: updatedArr,
-      [subMenuItemsFilterName]: [],
+      ...clearSubmenuFiltersObj,
       term,
       language,
     } );

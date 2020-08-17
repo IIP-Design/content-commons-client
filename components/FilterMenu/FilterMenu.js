@@ -52,7 +52,14 @@ const FilterMenu = props => {
           formItem="checkbox"
         />
         { /* Category */ }
-        { showMenuItem( 'categories' )
+        <FilterMenuItem
+          filter="Category"
+          name="categories"
+          selected={ filter.categories }
+          options={ global.categories.list }
+          formItem="checkbox"
+        />
+        {/* { showMenuItem( 'categories' )
           && (
             <FilterMenuItem
               filter="Category"
@@ -61,7 +68,7 @@ const FilterMenu = props => {
               options={ global.categories.list }
               formItem="checkbox"
             />
-          ) }
+          ) } */}
       </div>
 
       <FilterSubMenu />
