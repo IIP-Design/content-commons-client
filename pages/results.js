@@ -6,22 +6,42 @@ import {
   updateLanguage, updateSort, updateSearchTerm, createRequest,
 } from 'lib/redux/actions/search';
 import {
-  postTypeUpdate, dateUpdate, categoryUpdate, countryUpdate, documentUseUpdate, sourceUpdate,
+  postTypeUpdate,
+  dateUpdate,
+  categoryUpdate,
+  countryUpdate,
+  documentUseUpdate,
+  bureauOfficeUpdate,
+  sourceUpdate,
 } from 'lib/redux/actions/filter';
 import { loadPostTypes } from 'lib/redux/actions/postType';
 import { loadSources } from 'lib/redux/actions/source';
 import { loadCategories } from 'lib/redux/actions/category';
 import { loadCountries } from 'lib/redux/actions/country';
 import { loadDocumentUses } from 'lib/redux/actions/documentUses';
+import { loadBureausOffices } from 'lib/redux/actions/bureausOffices';
 import { loadLanguages } from 'lib/redux/actions/language';
-import { COUNTRIES_REGIONS_QUERY, DOCUMENT_USE_QUERY } from 'lib/graphql/queries/document';
+import {
+  COUNTRIES_REGIONS_QUERY,
+  DOCUMENT_USE_QUERY,
+  BUREAUS_OFFICES_QUERY,
+} from 'lib/graphql/queries/document';
 
 class ResultsPage extends Component {
   // Get search params from url
   static async getInitialProps( ctx ) {
     const {
       query: {
-        language, term, sortBy, postTypes, date, categories, sources, countries, documentUses,
+        language,
+        term,
+        sortBy,
+        postTypes,
+        date,
+        categories,
+        sources,
+        countries,
+        documentUses,
+        bureausOffices,
       }, store,
     } = ctx;
 
@@ -36,6 +56,7 @@ class ResultsPage extends Component {
     const categoryChange = store.dispatch( categoryUpdate( categories ) );
     const countryChange = store.dispatch( countryUpdate( countries ) );
     const documentUseChange = store.dispatch( documentUseUpdate( documentUses ) );
+    const bureauOfficeChange = store.dispatch( bureauOfficeUpdate( bureausOffices ) );
     const sourceChange = store.dispatch( sourceUpdate( sources ) );
 
     await languageUpdate;
@@ -46,6 +67,7 @@ class ResultsPage extends Component {
     await categoryChange;
     await countryChange;
     await documentUseChange;
+    await bureauOfficeChange;
     await sourceChange;
 
     // after all search values are updated, execute search request
@@ -58,6 +80,7 @@ class ResultsPage extends Component {
     const srcs = store.dispatch( loadSources() );
     const cats = store.dispatch( loadCategories() );
 
+    // Press Guidance (document type) submenu queries
     const gqlCountries = ctx.apolloClient.query( {
       query: COUNTRIES_REGIONS_QUERY,
     } );
@@ -67,6 +90,11 @@ class ResultsPage extends Component {
       query: DOCUMENT_USE_QUERY,
     } );
     const documentUsesCollection = store.dispatch( loadDocumentUses( gqlDocumentUses ) );
+
+    const gqlBureausOffices = ctx.apolloClient.query( {
+      query: BUREAUS_OFFICES_QUERY,
+    } );
+    const bureausOfficesCollection = store.dispatch( loadBureausOffices( gqlBureausOffices ) );
 
     let types;
     let langs;
@@ -85,6 +113,7 @@ class ResultsPage extends Component {
     if ( langs ) await langs;
     if ( countrieses ) await countrieses;
     if ( documentUsesCollection ) await documentUsesCollection;
+    if ( bureausOfficesCollection ) await bureausOfficesCollection;
 
     return {};
   }
