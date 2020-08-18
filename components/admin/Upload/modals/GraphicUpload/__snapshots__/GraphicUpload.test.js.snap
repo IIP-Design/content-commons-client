@@ -59,6 +59,7 @@ exports[`<GraphicUpload />, if graphic files have been selected for upload rende
         "size": 18986,
         "social": Array [],
         "style": "ck9h3koe426aa0720y421wmk3",
+        "styleSelection": "Clean",
       },
       Object {
         "id": "1731fbb4-d785-40d8-a0b5-ad0a542d9d88",
