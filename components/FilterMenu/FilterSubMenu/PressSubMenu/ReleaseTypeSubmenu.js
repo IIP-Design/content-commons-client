@@ -20,6 +20,7 @@ const ReleaseTypeSubmenu = ( { selected } ) => {
 
   return (
     <FilterMenuItem
+      className="subfilter"
       selected={ selected }
       filter="Release Type"
       name="documentUses"

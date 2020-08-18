@@ -20,6 +20,7 @@ const BureausOfficesSubmenu = ( { selected } ) => {
 
   return (
     <FilterMenuItem
+      className="subfilter"
       selected={ selected }
       filter="Bureaus & Offices"
       name="bureausOffices"

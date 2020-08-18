@@ -34,9 +34,11 @@
       }
     }
 
-    .fields {
+    .subfilter > .fields {
       max-height: 16.667rem;
       overflow-y: auto;
+      margin-top: -2px;
+      border-top: 2px solid $light-blue;
     }
   }
 }
