@@ -49,7 +49,6 @@ const FilterMenuCountries = props => {
       options={ getMenuOptions() }
       formItem="checkbox"
       searchInput={ (
-        // <div style={ { margin: 0, padding: '0.5em 1em' } }>
         <div>
           <VisuallyHidden>
             {/* eslint-disable jsx-a11y/label-has-associated-control */}
@@ -60,7 +59,6 @@ const FilterMenuCountries = props => {
             placeholder="Search countries"
             name="countries"
             icon="search"
-            iconPosition="right"
             value={ searchedCountry }
             onChange={ handleChange }
           />
