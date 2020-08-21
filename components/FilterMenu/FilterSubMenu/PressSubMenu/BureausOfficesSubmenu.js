@@ -16,7 +16,6 @@ const BureausOfficesSubmenu = ( { selected } ) => {
   const bureausCollection = bureaus.map( bureau => ( {
     key: bureau.name,
     display_name: bureau.name,
-    submenu: 'document'
   } ) );
 
   const officesCollection = bureaus
@@ -25,7 +24,6 @@ const BureausOfficesSubmenu = ( { selected } ) => {
       const formatOffices = bureau.offices.map( office => ( {
         key: office.name,
         display_name: office.name,
-        submenu: 'document'
       } ) );
 
       return [...offices, ...formatOffices];

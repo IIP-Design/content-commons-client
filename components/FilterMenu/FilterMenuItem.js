@@ -23,7 +23,7 @@ const FilterMenuItem = props => {
       label: option.display_name,
       value: option.key,
       count: option.count,
-      ...( option.submenu ? { submenu: option.submenu } : {} ),
+      ...option.submenus ? { submenus: option.submenus } : {},
     } ) );
 
     /* Sort Source filter alphabetically */
@@ -60,16 +60,22 @@ const FilterMenuItem = props => {
   /**
    * Reload results page with updated query params
    * @param {array|string} value - updated filter value
-   * @param {string} submenu - submenu filter value to update
+   * @param {string} submenus - submenu filters value to update if applicable
    */
-  const executeQuery = ( value, submenu = false ) => {
+  const executeQuery = ( value, submenus = false ) => {
     const filtered = props.name === 'postTypes' ? value.filter( val => val !== 'package' ) : value;
-    
+
+    const clearSubmenusObj = submenus && submenus.reduce( ( filterObj, submenu ) => {
+      filterObj[submenu] = [];
+
+      return filterObj;
+    }, {} );
+
     // Add term from search reducer to ensure that it does not get removed from the query string
     const query = fetchQueryString( {
       ...props.filterStore,
       [props.name]: filtered,
-      ...submenu ? { [submenu]: [] } : {},
+      ...submenus ? clearSubmenusObj : {},
       term: props.term,
       language: props.language,
     } );
@@ -80,7 +86,7 @@ const FilterMenuItem = props => {
     } );
   };
 
-  const handleCheckboxChange = async ( e, { value, checked, submenu } ) => {    
+  const handleCheckboxChange = async ( e, { value, checked, submenus } ) => {
     if ( selected.includes( value ) ) {
       setSelected( selected.filter( s => s !== value ) );
     } else {
@@ -105,7 +111,7 @@ const FilterMenuItem = props => {
       updatedArr = difference( arr, values );
     }
 
-    executeQuery( updatedArr, submenu );
+    executeQuery( updatedArr, submenus );
   };
 
   const handleRadioChange = async ( e, { value } ) => {
@@ -139,7 +145,7 @@ const FilterMenuItem = props => {
         value={ option.value }
         count={ option.count }
         checked={ checked }
-        { ...( option.submenu ? { submenu: option.submenu } : {} ) }
+        { ...( option.submenus ? { submenus: option.submenus } : {} ) }
         onChange={ handleCheckboxChange }
       />
     );

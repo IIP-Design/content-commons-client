@@ -108,12 +108,11 @@ describe( '<ReleaseTypeSubmenu', () => {
     expect( filterMenuItem.prop( 'name' ) ).toEqual( 'documentUses' );
   } );
 
-  it( 'renders the correct menu otpions', () => {
+  it( 'renders the correct menu options', () => {
     const formattedMockOptions = mocks[0].result.data.documentUses
       .map( use => ( {
         key: use.name,
         display_name: use.name,
-        submenu: 'document'
       } ) );
 
     expect( filterMenuItem.prop( 'options' ) ).toEqual( formattedMockOptions );
