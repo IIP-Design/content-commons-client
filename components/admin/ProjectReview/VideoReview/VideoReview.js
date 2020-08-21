@@ -4,6 +4,7 @@ import Router from 'next/router';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import usePublish from 'lib/hooks/usePublish';
 import useIsDirty from 'lib/hooks/useIsDirty';
+import { getCount, getHasSomeNonCleanVideos } from 'lib/utils';
 import {
   Button, Confirm, Grid, Icon, Loader,
 } from 'semantic-ui-react';
@@ -28,6 +29,7 @@ import './VideoReview.scss';
 
 const VideoReview = props => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
+  const [disablePublishBtn, setDisabledPublishBtn] = useState( false );
   const { id } = props;
 
   const {
@@ -59,10 +61,35 @@ const VideoReview = props => {
 
   const isDirty = useIsDirty( data?.project );
 
+  const getUnitsWithFiles = units => units.filter( unit => getCount( unit.files ) );
+
+  const getHasOnlyCleanVideos = ( units = [] ) => {
+    /**
+     * Filter for units with files since there could be
+     * an empty unit if all of its videos are changed
+     * to a different language.
+     */
+    const unitsWithFiles = getUnitsWithFiles( units );
+    const unitsWithOnlyClean = unitsWithFiles.filter( unit => {
+      const hasSomeNonClean = getHasSomeNonCleanVideos( unit );
+
+      return !hasSomeNonClean;
+    } );
+
+    const hasOnlyClean = getCount( unitsWithOnlyClean ) === getCount( unitsWithFiles );
+
+    return hasOnlyClean;
+  };
+
   useEffect( () => {
+    let hasOnlyCleanVideos = false;
+
     if ( data?.project ) {
       // When the data changes, check status
       handleStatusChange( data.project );
+
+      hasOnlyCleanVideos = getHasOnlyCleanVideos( data?.project?.units );
+      setDisabledPublishBtn( hasOnlyCleanVideos );
     }
   }, [data] );
 
@@ -143,6 +170,10 @@ const VideoReview = props => {
       return 'Not ready to share with the world yet?';
     }
 
+    if ( disablePublishBtn ) {
+      return 'Please upload at least one non-Clean video to publish.';
+    }
+
     return 'Your project looks great! Are you ready to Publish?';
   };
 
@@ -197,7 +228,7 @@ const VideoReview = props => {
         />
 
         { data.project.status === 'DRAFT' ? (
-          <Button className={ setButtonState( 'publish' ) } onClick={ handlePublish }>
+          <Button className={ setButtonState( 'publish' ) } onClick={ handlePublish } disabled={ disablePublishBtn }>
             Publish
           </Button>
         ) : (
@@ -242,7 +273,7 @@ const VideoReview = props => {
 
         { /* Project is in draft status and not published */ }
         { !isPublished && (
-          <Button className="project_button project_button--publish" onClick={ handlePublish }>
+          <Button className="project_button project_button--publish" onClick={ handlePublish } disabled={ disablePublishBtn }>
             Publish
           </Button>
         ) }

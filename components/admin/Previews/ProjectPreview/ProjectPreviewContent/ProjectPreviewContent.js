@@ -6,6 +6,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
+import Link from 'next/link';
 import { graphql } from 'react-apollo';
 import { Dropdown, Embed } from 'semantic-ui-react';
 
@@ -13,7 +14,6 @@ import ApolloError from 'components/errors/ApolloError';
 
 import DownloadVideo from 'components/admin/download/DownloadVideo/DownloadVideo';
 import DownloadCaption from 'components/admin/download/DownloadCaption/DownloadCaption';
-import DownloadThumbnail from 'components/admin/download/DownloadThumbnail/DownloadThumbnail';
 import DownloadOtherFiles from 'components/admin/download/DownloadOtherFiles/DownloadOtherFiles';
 import DownloadHelp from 'components/Video/Download/DownloadHelp';
 
@@ -37,7 +37,8 @@ import downloadIcon from 'static/icons/icon_download.svg';
 import embedIcon from 'static/icons/icon_embed.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 import {
-  getPreviewNotificationStyles, getStreamData, getVimeoId, getYouTubeId,
+  getPreviewNotificationStyles, getStreamData, getVimeoId,
+  getYouTubeId, getHasSomeNonCleanVideos, getUnitsWithNonCleanVideos,
 } from 'lib/utils';
 import { displayDOSLogo } from 'lib/sourceLogoUtils';
 import { UNIT_DETAILS_FRAGMENT } from 'lib/graphql/queries/video';
@@ -61,7 +62,8 @@ class ProjectPreviewContent extends React.PureComponent {
 
       if ( !units || units.length === 0 ) return;
 
-      const language = this.getUnitLanguage( units );
+      const unitsWithNonCleanVideos = getUnitsWithNonCleanVideos( units );
+      const language = this.getUnitLanguage( unitsWithNonCleanVideos );
 
       if ( !language && !Object.keys( language ).length ) {
         return;
@@ -74,7 +76,7 @@ class ProjectPreviewContent extends React.PureComponent {
         }
       } );
     }
-  }
+  };
 
   componentDidUpdate = ( _, prevState ) => {
     if ( this.props.data.project ) {
@@ -82,7 +84,8 @@ class ProjectPreviewContent extends React.PureComponent {
 
       if ( !units || units.length === 0 ) return;
 
-      const language = this.getUnitLanguage( units );
+      const unitsWithNonCleanVideos = getUnitsWithNonCleanVideos( units );
+      const language = this.getUnitLanguage( unitsWithNonCleanVideos );
 
       if ( !language || !Object.keys( language ).length ) {
         return;
@@ -92,27 +95,42 @@ class ProjectPreviewContent extends React.PureComponent {
         this.selectLanguage( language.displayName );
       }
     }
-  }
+  };
 
-  getLanguages = units => this.getUnitsWithFiles( units )
-    .map( unit => ( {
-      key: unit.language.languageCode,
-      value: unit.language.displayName,
-      text: unit.language.displayName,
-    } ) )
-  ;
+  getLanguages = units => units.reduce( ( acc, unit ) => {
+    const hasSomeNonCleanVideos = getHasSomeNonCleanVideos( unit );
 
-  getProjectUnits = units => units.reduce( ( acc, unit ) => ( {
-    ...acc,
-    [unit.language.displayName]: unit,
-  } ), {} )
-  ;
+    if ( hasSomeNonCleanVideos ) {
+      acc.push( {
+        key: unit.language.languageCode,
+        value: unit.language.displayName,
+        text: unit.language.displayName,
+      } );
+    }
 
-  getUnitsWithFiles = units => units.filter( u => u.files.length > 0 )
-  ;
+    return acc;
+  }, [] );
 
-  getEnglishIndex = units => units.findIndex( unit => unit.language.displayName === 'English' )
-  ;
+  getProjectUnits = units => units.reduce( ( acc, unit ) => {
+    const hasSomeNonCleanVideos = getHasSomeNonCleanVideos( unit );
+
+    if ( hasSomeNonCleanVideos ) {
+      acc[unit.language.displayName] = unit;
+    }
+
+    return acc;
+  }, {} );
+
+  getUnitsWithFiles = units => units.filter( u => {
+    const { files } = u;
+    const hasSomeNonCleanVideos = getHasSomeNonCleanVideos( u );
+
+    return files.length > 0 && hasSomeNonCleanVideos;
+  } );
+
+  getUnitWithCleanVideos = units => units.find( unit => unit.files.some( file => file?.use?.name === 'Clean' ) );
+
+  getEnglishIndex = units => units.findIndex( unit => unit.language.displayName === 'English' );
 
   getFilesCount = ( units, i ) => {
     if ( units[i] && units[i].files ) {
@@ -152,7 +170,7 @@ class ProjectPreviewContent extends React.PureComponent {
       default:
         return '';
     }
-  }
+  };
 
   getEmbedUrl = url => {
     if ( !url.includes( 'youtu' ) && !url.includes( 'vimeo' ) ) {
@@ -168,7 +186,7 @@ class ProjectPreviewContent extends React.PureComponent {
     }
 
     return `<iframe src="${embedSrc}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`;
-  }
+  };
 
   getTag = ( tag, unit ) => {
     const translation = tag.translations.find( t => t.language.locale === unit.language.locale );
@@ -181,21 +199,28 @@ class ProjectPreviewContent extends React.PureComponent {
   getTags = ( tags, unit ) => tags.reduce( ( acc, curr ) => [
     ...acc,
     { name: this.getTag( curr, unit ) },
-  ], [] )
-  ;
+  ], [] );
+
+  getDownloadItemInstructions = ( { editable } ) => (
+    <p>
+      { `By downloading these${editable ? ' editable' : ''} files, you agree to the ` }
+      <Link href="/about"><a>Terms of Use</a></Link>
+      .
+    </p>
+  );
 
   toggleArrow = () => {
     this.setState( prevState => ( {
       dropDownIsOpen: !prevState.dropDownIsOpen,
     } ) );
-  }
+  };
 
-  selectLanguage = language => this.setState( { selectedLanguage: language } )
+  selectLanguage = language => this.setState( { selectedLanguage: language } );
 
   handleChange = ( e, { value } ) => {
     this.toggleArrow();
     this.selectLanguage( value );
-  }
+  };
 
   render() {
     const { id } = this.props;
@@ -211,13 +236,18 @@ class ProjectPreviewContent extends React.PureComponent {
     } = project;
     const { dropDownIsOpen, selectedLanguage } = this.state;
 
+    const unitWithCleanVideos = this.getUnitWithCleanVideos( units );
     const projectUnits = this.getProjectUnits( units );
     const selectedUnit = projectUnits[String( selectedLanguage )];
 
     if ( !selectedUnit || !Object.keys( selectedUnit ).length ) {
+      const hasOnlyCleanVideos = !!unitWithCleanVideos && unitWithCleanVideos?.files.every( file => file?.use?.name === 'Clean' );
+
       return (
         <p style={ { fontSize: '1rem' } }>
-          This project does not have any units to preview.
+          { hasOnlyCleanVideos
+            ? 'This project consists of Clean videos only. Please upload at least one non-Clean video to preview or publish.'
+            : 'This project does not have any units to preview.' }
         </p>
       );
     }
@@ -230,19 +260,12 @@ class ProjectPreviewContent extends React.PureComponent {
     if ( files && files.length === 0 ) {
       return (
         <p style={ { fontSize: '1rem' } }>
-          This
-          {' '}
-          { language.displayName }
-          {' '}
-          language unit does not have any files to preview.
+          { `This ${language.displayName} language unit does not have any files to preview.` }
         </p>
       );
     }
 
-    const {
-      createdAt, updatedAt, stream, videoBurnedInStatus,
-    } = files[0];
-
+    const { createdAt, updatedAt, stream } = files[0];
     const youTubeUrl = getStreamData( stream, 'youtube', 'url' );
     const vimeoUrl = getStreamData( stream, 'vimeo', 'url' );
 
@@ -372,40 +395,41 @@ class ProjectPreviewContent extends React.PureComponent {
                 headline="Download this video."
                 tabs={ [
                   {
-                    title: 'Video File',
+                    title: 'Video Files',
                     content: (
                       <DownloadItem
                         instructions={ `Download the video and caption files in ${selectedLanguage}.
-                        This download option is best for uploading this video to web pages.` }
+                        This download option is best for uploading this video to web pages and social media.` }
                       >
                         <DownloadVideo
                           selectedLanguageUnit={ selectedUnit }
-                          burnedInCaptions={ videoBurnedInStatus === 'CAPTIONED' }
+                          burnedInCaptions
                           isPreview
                         />
                       </DownloadItem>
                     ),
                   },
                   {
-                    title: 'Caption File',
+                    title: 'For Translation',
                     content: (
                       <DownloadItem
-                        instructions="Download caption file(s) for this video."
+                        instructions="Download a clean version (no-text version) of the video, for adding translated subtitles."
+                      >
+                        <DownloadVideo
+                          selectedLanguageUnit={ unitWithCleanVideos || selectedUnit }
+                          burnedInCaptions={ false }
+                          isPreview
+                        />
+                      </DownloadItem>
+                    ),
+                  },
+                  {
+                    title: 'Caption Files',
+                    content: (
+                      <DownloadItem
+                        instructions={ this.getDownloadItemInstructions( { editable: true } ) }
                       >
                         <DownloadCaption
-                          id={ id }
-                          isPreview
-                        />
-                      </DownloadItem>
-                    ),
-                  },
-                  {
-                    title: 'Thumbnail',
-                    content: (
-                      <DownloadItem
-                        instructions="Download Transcripts"
-                      >
-                        <DownloadThumbnail
                           id={ id }
                           isPreview
                         />
@@ -416,7 +440,7 @@ class ProjectPreviewContent extends React.PureComponent {
                     title: 'Other',
                     content: (
                       <DownloadItem
-                        instructions="Download Other File(s)"
+                        instructions={ this.getDownloadItemInstructions( { editable: false } ) }
                       >
                         <DownloadOtherFiles
                           id={ id }

@@ -33,6 +33,28 @@ exports[`<DownloadOtherFiles /> renders final state without crashing 1`] = `
           },
         ],
         "id": "123",
+        "thumbnails": Array [
+          Object {
+            "filename": "thumbnail-1.jpg",
+            "filetype": "image/jpeg",
+            "id": "th765",
+            "language": Object {
+              "displayName": "English",
+              "id": "en23",
+            },
+            "url": "2019/06/123/thumbnail-1.jpg",
+          },
+          Object {
+            "filename": "thumbnail-2.jpg",
+            "filetype": "image/jpeg",
+            "id": "th865",
+            "language": Object {
+              "displayName": "English",
+              "id": "en23",
+            },
+            "url": "2019/06/123/thumbnail-2.jpg",
+          },
+        ],
       },
       "refetch": [Function],
       "startPolling": [Function],
@@ -49,7 +71,85 @@ exports[`<DownloadOtherFiles /> renders final state without crashing 1`] = `
   isPreview={false}
 >
   <DownloadItemContent
-    hoverText="Download English application/pdf file"
+    hoverText="Download English Thumbnail"
+    isAdminPreview={false}
+    key="fs_th765"
+    srcUrl="https://s3-url.com/2019/06/123/thumbnail-1.jpg"
+  >
+    <a
+      className="download-item"
+      download={true}
+      href="https://example.jpg"
+      key="https://example.jpg"
+      rel="noopener noreferrer"
+    >
+      <div
+        className="item-icon"
+      >
+        <img
+          alt="Download English Thumbnail"
+          src="downloadIconSVG"
+        />
+      </div>
+      <div
+        className="item-content"
+      >
+        <p
+          className="item-content__title"
+        >
+          <strong>
+            Download English Thumbnail
+          </strong>
+        </p>
+      </div>
+      <span
+        className="item-hover"
+      >
+        Download English Thumbnail
+      </span>
+    </a>
+  </DownloadItemContent>
+  <DownloadItemContent
+    hoverText="Download English Thumbnail"
+    isAdminPreview={false}
+    key="fs_th865"
+    srcUrl="https://s3-url.com/2019/06/123/thumbnail-2.jpg"
+  >
+    <a
+      className="download-item"
+      download={true}
+      href="https://example.jpg"
+      key="https://example.jpg"
+      rel="noopener noreferrer"
+    >
+      <div
+        className="item-icon"
+      >
+        <img
+          alt="Download English Thumbnail"
+          src="downloadIconSVG"
+        />
+      </div>
+      <div
+        className="item-content"
+      >
+        <p
+          className="item-content__title"
+        >
+          <strong>
+            Download English Thumbnail
+          </strong>
+        </p>
+      </div>
+      <span
+        className="item-hover"
+      >
+        Download English Thumbnail
+      </span>
+    </a>
+  </DownloadItemContent>
+  <DownloadItemContent
+    hoverText="Download \\"file-1.pdf\\" (Pdf)"
     isAdminPreview={false}
     key="fs_pdf89"
     srcUrl="https://s3-url.com/2019/06/123/file-1.pdf"
@@ -65,7 +165,7 @@ exports[`<DownloadOtherFiles /> renders final state without crashing 1`] = `
         className="item-icon"
       >
         <img
-          alt="Download English application/pdf file"
+          alt="Download \\"file-1.pdf\\" (Pdf)"
           src="downloadIconSVG"
         />
       </div>
@@ -76,19 +176,19 @@ exports[`<DownloadOtherFiles /> renders final state without crashing 1`] = `
           className="item-content__title"
         >
           <strong>
-            Download English application/pdf file
+            Download "file-1.pdf" (Pdf)
           </strong>
         </p>
       </div>
       <span
         className="item-hover"
       >
-        Download English application/pdf file
+        Download "file-1.pdf" (Pdf)
       </span>
     </a>
   </DownloadItemContent>
   <DownloadItemContent
-    hoverText="Download English audio/x-mpeg-3 file"
+    hoverText="Download \\"audio-1.mp3\\" (Mp3)"
     isAdminPreview={false}
     key="fs_au56"
     srcUrl="https://s3-url.com/2019/06/123/audio-1.mp3"
@@ -104,7 +204,7 @@ exports[`<DownloadOtherFiles /> renders final state without crashing 1`] = `
         className="item-icon"
       >
         <img
-          alt="Download English audio/x-mpeg-3 file"
+          alt="Download \\"audio-1.mp3\\" (Mp3)"
           src="downloadIconSVG"
         />
       </div>
@@ -115,14 +215,14 @@ exports[`<DownloadOtherFiles /> renders final state without crashing 1`] = `
           className="item-content__title"
         >
           <strong>
-            Download English audio/x-mpeg-3 file
+            Download "audio-1.mp3" (Mp3)
           </strong>
         </p>
       </div>
       <span
         className="item-hover"
       >
-        Download English audio/x-mpeg-3 file
+        Download "audio-1.mp3" (Mp3)
       </span>
     </a>
   </DownloadItemContent>

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Embed, Checkbox } from 'semantic-ui-react';
+import Link from 'next/link';
 import { withRouter } from 'next/router';
-
-import { updateUrl } from 'lib/browser';
-import { displayDOSLogo } from 'lib/sourceLogoUtils';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
@@ -24,11 +22,16 @@ import TabLayout from 'components/TabLayout/TabLayout';
 import DownloadVideo from './Download/DownloadVideo';
 import DownloadCaption from './Download/DownloadCaption';
 import DownloadTranscript from './Download/DownloadTranscript';
+import DownloadThumbnailsAndOtherFiles from './Download/DownloadThumbnailsAndOtherFiles';
 import DownloadHelp from './Download/DownloadHelp';
 import Share from '../Share/Share';
 import EmbedVideo from '../Embed';
 import EmbedHelp from './Download/EmbedHelp';
+
+import { updateUrl } from 'lib/browser';
 import useSignedUrl from 'lib/hooks/useSignedUrl';
+import { displayDOSLogo } from 'lib/sourceLogoUtils';
+import { useAuth } from 'context/authContext';
 import { fetchVideoPlayer, getCaptions, getLanguage, getVideoTranscript } from './utils';
 
 import './Video.scss';
@@ -37,6 +40,7 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
   const {
     id, logo, modified, owner, published, selectedLanguageUnit, site, type,
   } = item;
+  const { user } = useAuth();
 
   const [unit, setUnit] = useState( selectedLanguageUnit );
   const [selectedLanguage, setSelectedLanguage] = useState( getLanguage( selectedLanguageUnit ) );
@@ -85,10 +89,23 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
     willFetchVideoPlayer();
   }, [unit, captions] );
 
+  const getAuthorizedDownloadTabs = ( { tabs, unauthorizedTab } ) => {
+    const indexToRemove = tabs.findIndex( tab => tab.title === unauthorizedTab );
+
+    // remove specified tab if user is not logged in
+    if ( user && user.id === 'public' ) {
+      tabs.splice( indexToRemove, 1 );
+    }
+
+    return tabs;
+  };
+
   /**
    * Get the video data associated with currently selected language
    */
   const getSelectedUnit = ( language = 'English' ) => item.units.find( lang => lang.language.display_name === language );
+
+  const getUnitWithCleanVideos = units => units.find( u => u.source.some( file => file?.use === 'Clean' ) );
 
   const handleLanguageChange = value => {
     if ( value && value !== selectedLanguage.display_name ) {
@@ -126,6 +143,91 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
   const embedItem = shareLink
     ? `<iframe src="${shareLink}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`
     : '';
+
+  const unitWithCleanVideos = getUnitWithCleanVideos( item.units );
+
+  const downloadTabs = [
+    {
+      title: 'Video Files',
+      content: (
+        <DownloadItem
+          instructions={ `Download the video and caption files in ${unit.language.display_name}.
+          This download option is best for uploading this video to web pages and social media.` }
+        >
+          <DownloadVideo
+            selectedLanguageUnit={ unit }
+            burnedInCaptions
+            isAdminPreview={ isAdminPreview }
+          />
+        </DownloadItem>
+      ),
+    },
+    {
+      title: 'For Translation',
+      content: (
+        <DownloadItem
+          instructions="Download a clean version (no-text version) of the video, for adding translated subtitles."
+        >
+          <DownloadVideo
+            selectedLanguageUnit={ unitWithCleanVideos || unit }
+            burnedInCaptions={ false }
+            isAdminPreview={ isAdminPreview }
+          />
+        </DownloadItem>
+      ),
+    },
+    {
+      title: 'Caption Files',
+      content: (
+        <DownloadItem
+          instructions={ (
+            <p>
+              By downloading these editable files, you agree to the
+              { ' ' }
+              <Link href="/about"><a>Terms of Use</a></Link>
+              .
+            </p>
+          ) }
+        >
+          <DownloadCaption
+            selectedLanguageUnit={ unit }
+            item={ item }
+          />
+        </DownloadItem>
+      ),
+    },
+    {
+      title: 'Transcript',
+      content: (
+        <DownloadItem
+          instructions="Download Transcripts"
+        >
+          <DownloadTranscript item={ item } />
+        </DownloadItem>
+      ),
+    },
+    {
+      title: 'Other',
+      content: (
+        <DownloadItem
+          instructions={ (
+            <p>
+              By downloading these files, you agree to the
+              { ' ' }
+              <Link href="/about"><a>Terms of Use</a></Link>
+              .
+            </p>
+          ) }
+        >
+          <DownloadThumbnailsAndOtherFiles item={ item } />
+        </DownloadItem>
+      ),
+    },
+    {
+      title: 'Help',
+      content: <DownloadHelp />,
+    },
+  ];
 
   if ( unit && selectedLanguage ) {
     const toggleCaptions = [...new Set( unit.source.map( u => u.burnedInCaptions ) )];
@@ -222,50 +324,10 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
             >
               <TabLayout
                 headline="Download this video."
-                tabs={ [
-                  {
-                    title: 'Video File',
-                    content: (
-                      <DownloadItem
-                        instructions={ `Download the video and SRT files in ${unit.language.display_name}.
-                        This download option is best for uploading this video to web pages.` }
-                      >
-                        <DownloadVideo
-                          selectedLanguageUnit={ unit }
-                          burnedInCaptions={ captions }
-                          isAdminPreview={ isAdminPreview }
-                        />
-                      </DownloadItem>
-                    ),
-                  },
-                  {
-                    title: 'Caption File',
-                    content: (
-                      <DownloadItem
-                        instructions="Download caption file(s) for this video."
-                      >
-                        <DownloadCaption
-                          selectedLanguageUnit={ unit }
-                          item={ item }
-                        />
-                      </DownloadItem>
-                    ),
-                  },
-                  {
-                    title: 'Transcript',
-                    content: (
-                      <DownloadItem
-                        instructions="Download Transcripts"
-                      >
-                        <DownloadTranscript item={ item } />
-                      </DownloadItem>
-                    ),
-                  },
-                  {
-                    title: 'Help',
-                    content: <DownloadHelp />,
-                  },
-                ] }
+                tabs={ getAuthorizedDownloadTabs( {
+                  tabs: downloadTabs,
+                  unauthorizedTab: 'For Translation',
+                } ) }
               />
             </Popover>
           </div>
