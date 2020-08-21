@@ -126,6 +126,7 @@ const GraphicProjectDetailsFormContainer = props => {
               'GPA Design & Editorial',
               'Regional Media Hubs',
               'ShareAmerica',
+              'U.S. Missions',
             ],
           },
         },
