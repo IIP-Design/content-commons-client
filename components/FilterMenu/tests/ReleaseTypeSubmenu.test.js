@@ -113,6 +113,7 @@ describe( '<ReleaseTypeSubmenu', () => {
       .map( use => ( {
         key: use.name,
         display_name: use.name,
+        submenu: 'document'
       } ) );
 
     expect( filterMenuItem.prop( 'options' ) ).toEqual( formattedMockOptions );

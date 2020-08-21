@@ -13,10 +13,25 @@ const BureausOfficesSubmenu = ( { selected } ) => {
 
   if ( !bureaus || !getCount( bureaus ) ) return null;
 
-  const bureauOfficesOptions = bureaus.map( bureau => ( {
+  const bureausCollection = bureaus.map( bureau => ( {
     key: bureau.name,
     display_name: bureau.name,
+    submenu: 'document'
   } ) );
+
+  const officesCollection = bureaus
+    .filter( bureau => bureau.offices.length > 0 )
+    .reduce( ( offices, bureau ) => {
+      const formatOffices = bureau.offices.map( office => ( {
+        key: office.name,
+        display_name: office.name,
+        submenu: 'document'
+      } ) );
+
+      return [...offices, ...formatOffices];
+    }, [] );
+
+  const bureausOfficesOptions = [...bureausCollection, ...officesCollection];
 
   return (
     <FilterMenuItem
@@ -24,7 +39,7 @@ const BureausOfficesSubmenu = ( { selected } ) => {
       selected={ selected }
       filter="Bureaus & Offices"
       name="bureausOffices"
-      options={ bureauOfficesOptions }
+      options={ bureausOfficesOptions }
       formItem="checkbox"
     />
   );

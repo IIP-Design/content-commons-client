@@ -16,6 +16,7 @@ const ReleaseTypeSubmenu = ( { selected } ) => {
   const releaseTypeOptions = documentUses.map( use => ( {
     key: use.name,
     display_name: use.name,
+    submenu: 'document'
   } ) );
 
   return (

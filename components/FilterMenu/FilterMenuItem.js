@@ -23,7 +23,7 @@ const FilterMenuItem = props => {
       label: option.display_name,
       value: option.key,
       count: option.count,
-      ...option.submenu ? { submenu: option.submenu } : {},
+      ...( option.submenu ? { submenu: option.submenu } : {} ),
     } ) );
 
     /* Sort Source filter alphabetically */
@@ -64,7 +64,7 @@ const FilterMenuItem = props => {
    */
   const executeQuery = ( value, submenu = false ) => {
     const filtered = props.name === 'postTypes' ? value.filter( val => val !== 'package' ) : value;
-
+    
     // Add term from search reducer to ensure that it does not get removed from the query string
     const query = fetchQueryString( {
       ...props.filterStore,
@@ -80,7 +80,7 @@ const FilterMenuItem = props => {
     } );
   };
 
-  const handleCheckboxChange = async ( e, { value, checked, submenu } ) => {
+  const handleCheckboxChange = async ( e, { value, checked, submenu } ) => {    
     if ( selected.includes( value ) ) {
       setSelected( selected.filter( s => s !== value ) );
     } else {
@@ -133,7 +133,7 @@ const FilterMenuItem = props => {
 
     return (
       <Form.Checkbox
-        key={ option.value }
+        key={ `${option.value}_${option.label}` }
         name={ props.name }
         label={ option.label }
         value={ option.value }
