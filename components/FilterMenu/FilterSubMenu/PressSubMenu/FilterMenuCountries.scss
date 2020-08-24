@@ -1,11 +1,9 @@
-@import "styles/colors.scss";
+@import 'styles/colors.scss';
 
 .filterSubMenu .filterMenu {
-  
   .subfilter--countries {
-    
     .hide-visually + .field {
-      width: max-content;    
+      width: max-content;
       margin-top: -2px;
       padding-right: 3px;
       padding-left: 1px;
@@ -14,7 +12,7 @@
         width: 100%;
       }
     }
-  
+
     > div.fields {
       padding-top: 30px;
       margin-top: -28px;
@@ -24,16 +22,19 @@
 }
 
 #filter-countries {
-  padding: 3px 6px !important;
+  padding: 5px 6px 3px !important;
+  background-color: #ffffff;
   border-radius: 0;
   border: none;
   width: auto;
   margin: 3px auto;
   border-bottom: 1px solid rgba(34, 36, 38, 0.15);
+  z-index: 1;
 
   & + i.search.icon {
     width: 17px;
     font-size: 12px;
     color: $focus-gray;
+    z-index: 2;
   }
 }
