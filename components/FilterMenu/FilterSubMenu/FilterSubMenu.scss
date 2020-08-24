@@ -1,0 +1,44 @@
+@import "styles/colors.scss";
+
+.filterSubMenu {
+  --smallerFont: 14px;
+  display: flex;
+  justify-content: space-evenly;
+  font-size: var(--smallerFont);
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+  }
+
+  &_label {
+    align-self: flex-end;
+    font-weight: bold;
+    color: $blue;
+    @media screen and (max-width: 767px) {
+      align-self: center;
+    }
+  }
+
+  .filterMenu {
+
+    > span {
+      padding: 8px 8px 0 8px;
+      font-size: var(--smallerFont);
+
+      &:hover,
+      &.active {
+        font-weight: normal;
+
+        &:after {
+          border-bottom: 2px solid $light-blue;
+        }
+      }
+    }
+
+    .subfilter > .fields {
+      max-height: 16.667rem;
+      overflow-y: auto;
+      margin-top: -2px;
+      border-top: 2px solid $light-blue;
+    }
+  }
+}

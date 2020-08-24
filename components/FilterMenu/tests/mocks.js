@@ -1,9 +1,13 @@
-import { COUNTRIES_REGIONS_QUERY } from 'lib/graphql/queries/document';
+import {
+  COUNTRIES_REGIONS_QUERY,
+  DOCUMENT_USE_QUERY,
+  BUREAUS_OFFICES_QUERY,
+} from 'lib/graphql/queries/document';
 
 export const countriesQueryMocks = [
   {
     request: {
-      query: COUNTRIES_REGIONS_QUERY
+      query: COUNTRIES_REGIONS_QUERY,
     },
     result: {
       data: {
@@ -17,8 +21,8 @@ export const countriesQueryMocks = [
               __typename: 'Region',
               id: 'ck6krp96o3f3k0720aoufd395',
               name: 'Bureau of Western Hemisphere Affairs',
-              abbr: 'WHA'
-            }
+              abbr: 'WHA',
+            },
           },
           {
             __typename: 'Country',
@@ -29,8 +33,8 @@ export const countriesQueryMocks = [
               __typename: 'Region',
               id: 'ck6krp96g3f3c0720c1w09bx1',
               name: 'Bureau of African Affairs',
-              abbr: 'AF'
-            }
+              abbr: 'AF',
+            },
           },
           {
             __typename: 'Country',
@@ -41,8 +45,8 @@ export const countriesQueryMocks = [
               __typename: 'Region',
               id: 'ck6krp96o3f3i07201zo5ai59',
               name: 'Bureau of Near Eastern Affairs',
-              abbr: 'NEA'
-            }
+              abbr: 'NEA',
+            },
           },
           {
             __typename: 'Country',
@@ -53,13 +57,139 @@ export const countriesQueryMocks = [
               __typename: 'Region',
               id: 'ck6krp96o3f3h07201q3rj4n7',
               name: 'Bureau of European and Eurasian Affairs',
-              abbr: 'EUR'
-            }
-          }
-        ]
-      }
-    }
-  }
+              abbr: 'EUR',
+            },
+          },
+        ],
+      },
+    },
+  },
+];
+
+export const documentUsesQueryMock = [
+  {
+    request: {
+      query: DOCUMENT_USE_QUERY,
+    },
+    result: {
+      data: {
+        documentUses: [
+          {
+            id: 'ck2xf4dtd00ew0735yz37vkxm',
+            name: 'Background Briefing',
+          },
+          {
+            id: 'ck2xf4dtv00f30735hep3rysr',
+            name: 'Department Press Briefing',
+          },
+          {
+            id: 'ck2xf4dum00fa0735gzc1glw0',
+            name: 'Fact Sheet',
+          },
+          {
+            id: 'ck2xf4dvp00fj07357dhj48zu',
+            name: 'Interview',
+          },
+        ],
+      },
+    },
+  },
+];
+
+export const bureausOfficesQueryMock = [
+  {
+    request: {
+      query: BUREAUS_OFFICES_QUERY,
+    },
+    result: {
+      data: {
+        bureaus: [
+          {
+            "id": "ck52kids1093m0835latg8zzg",
+            "name": "Bureau of Administration",
+            "offices": [
+              {
+                "id": "ck52kidy209540835guafy5cu",
+                "name": "Office of Logistics Management"
+              },
+              {
+                "id": "ck52kidyo095d0835wjv2bbju",
+                "name": "Office of Procurement Executive"
+              }
+            ]
+          },
+          {
+            "id": "ck52kids8093p0835atpqri31",
+            "name": "Bureau of African Affairs",
+            "offices": []
+          },
+          {
+            "id": "ck52kids8093q08354wi55vnx",
+            "name": "Bureau of Budget and Planning",
+            "offices": []
+          },
+          {
+            "id": "ck52kids8093r0835xx5w8jwt",
+            "name": "Bureau of Consular Affairs",
+            "offices": []
+          },
+          {
+            "id": "ck52kidsd093x0835b43j0ar5",
+            "name": "Bureau of Diplomatic Security",
+            "offices": []
+          },
+          {
+            "id": "ck52kidse093y0835ii1iqirb",
+            "name": "Bureau of East Asian and Pacific Affairs",
+            "offices": []
+          },
+          {
+            "id": "ck52kidse093z0835kx2a59vk",
+            "name": "Bureau of Educational and Cultural Afairs",
+            "offices": []
+          },
+          {
+            "id": "ck52kidse09400835j77rsax2",
+            "name": "Bureau of Global Public Affairs",
+            "offices": [
+              {
+                "id": "ck52kidxf09500835rj1ult2z",
+                "name": "Office of Global Social Media"
+              },
+              {
+                "id": "ck52kidyl095b0835u2myl170",
+                "name": "Office of the Spokesperson"
+              },
+              {
+                "id": "ck52kidyo095c08356l36615v",
+                "name": "Office of Public Liaison"
+              }
+            ]
+          },
+          {
+            "id": "ck52kidse094108350vo7h40x",
+            "name": "Bureau of Human Resources",
+            "offices": []
+          },
+          {
+            "id": "ck52kidse094208354oztjyfw",
+            "name": "Bureau of Near Eastern Affairs",
+            "offices": []
+          },
+          {
+            "id": "ck52kidse09430835woniokoo",
+            "name": "Bureau of South and Central Asian Affairs",
+            "offices": []
+          },
+          {
+            "id": "ck52kidsf09440835lvl55c1q",
+            "name": "Bureau of Western Hemisphere Affairs",
+            "offices": []
+          },
+        ],
+      },
+    },
+  },
 ];
 
 export const noCategories = {
@@ -70,9 +200,7 @@ export const noCategories = {
     error: false,
     isFetching: false,
     pageSize: 12,
-    pages: [
-      1
-    ],
+    pages: [1],
     response: {
       took: 35,
       timed_out: false,
@@ -90,8 +218,8 @@ export const noCategories = {
               type: 'query_shard_exception',
               reason: 'No mapping found for [published] in order to sort on',
               index_uuid: 'tYZ4l-T_S-uyGbTjZFMFbA',
-              index: 'languages_20200225'
-            }
+              index: 'languages_20200225',
+            },
           },
           {
             shard: 0,
@@ -101,8 +229,8 @@ export const noCategories = {
               type: 'query_shard_exception',
               reason: 'No mapping found for [published] in order to sort on',
               index_uuid: '7RO59BSCQZu0H1ITi-4hfA',
-              index: 'owners_20200225'
-            }
+              index: 'owners_20200225',
+            },
           },
           {
             shard: 0,
@@ -112,8 +240,8 @@ export const noCategories = {
               type: 'query_shard_exception',
               reason: 'No mapping found for [published] in order to sort on',
               index_uuid: 'iaIL7TCIS_KRo-x5IPIzQA',
-              index: 'posts_20200225'
-            }
+              index: 'posts_20200225',
+            },
           },
           {
             shard: 0,
@@ -123,8 +251,8 @@ export const noCategories = {
               type: 'query_shard_exception',
               reason: 'No mapping found for [published] in order to sort on',
               index_uuid: 'sisQy2WZSO-D5Gv7fL4zHA',
-              index: 'taxonomy_20200225'
-            }
+              index: 'taxonomy_20200225',
+            },
           },
           {
             shard: 0,
@@ -134,10 +262,10 @@ export const noCategories = {
               type: 'query_shard_exception',
               reason: 'No mapping found for [published] in order to sort on',
               index_uuid: '-biq4uWtTwCg4zX5kvO_9g',
-              index: 'videos_20200225'
-            }
-          }
-        ]
+              index: 'videos_20200225',
+            },
+          },
+        ],
       },
       hits: {
         total: 3,
@@ -161,7 +289,7 @@ export const noCategories = {
                 locale: 'en-us',
                 text_direction: 'ltr',
                 display_name: 'English',
-                native_name: 'English'
+                native_name: 'English',
               },
               filename: 'EAP Voluntary Press Guidance.docx',
               filetype: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -171,26 +299,24 @@ export const noCategories = {
               tags: [],
               content: {
                 rawText: 'the text',
-                html: '<p>the text</p>'
+                html: '<p>the text</p>',
               },
               bureaus: [
                 {
                   id: 'ck5cvpjcw01ke0720l576an2h',
                   name: 'Bureau of Global Public Affairs',
-                  abbr: 'GPA'
-                }
+                  abbr: 'GPA',
+                },
               ],
               countries: [
                 {
                   id: 'ck6krp9723f3x07209et0evkp',
                   name: 'Australia',
-                  abbr: 'EAP'
-                }
-              ]
+                  abbr: 'EAP',
+                },
+              ],
             },
-            sort: [
-              1584385437263
-            ]
+            sort: [1584385437263],
           },
           {
             _index: 'packages_20200225',
@@ -210,17 +336,15 @@ export const noCategories = {
               items: [
                 {
                   id: 'ck7uu5fvh05hg0720xj2fzl60',
-                  type: 'document'
+                  type: 'document',
                 },
                 {
                   id: 'ck7uu5fvh05hh07208x01labm',
-                  type: 'document'
-                }
-              ]
+                  type: 'document',
+                },
+              ],
             },
-            sort: [
-              1584385437263
-            ]
+            sort: [1584385437263],
           },
           {
             _index: 'documents_20200225',
@@ -240,7 +364,7 @@ export const noCategories = {
                 locale: 'en-us',
                 text_direction: 'ltr',
                 display_name: 'English',
-                native_name: 'English'
+                native_name: 'English',
               },
               filename: 'Anti-Government Protests in Colombia.docx',
               filetype: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -250,50 +374,48 @@ export const noCategories = {
               tags: [],
               content: {
                 rawText: 'the text',
-                html: '<p>the text</p>'
+                html: '<p>the text</p>',
               },
               bureaus: [
                 {
                   id: 'ck5cvpjcu01k80720d2eouy43',
                   name: 'Bureau of African Affairs',
-                  abbr: 'AF'
-                }
+                  abbr: 'AF',
+                },
               ],
               countries: [
                 {
                   id: 'ck6krp97y3f5f07206fm9bso2',
                   name: 'Colombia',
-                  abbr: 'WHA'
-                }
-              ]
+                  abbr: 'WHA',
+                },
+              ],
             },
-            sort: [
-              1584385437263
-            ]
-          }
-        ]
-      }
+            sort: [1584385437263],
+          },
+        ],
+      },
     },
     sort: 'published',
     language: 'en-us',
     startIndex: 0,
     startPage: 1,
     total: 3,
-    totalPages: 1
+    totalPages: 1,
   },
   filter: {
     categories: [],
-    countries: [
-      'Australia'
-    ],
+    countries: ['Australia'],
+    documentUses: ['Background Briefing', 'Department Press Briefing'],
+    bureausOffices: ['Bureau of Administration', 'Bureau of African Affairs'],
     sources: [],
     postTypes: [
       'package',
-      'document'
+      'document',
     ],
     dateFrom: '2020-03-18T17:23:31.152Z',
     dateTo: '2020-03-18T17:23:31.152Z',
-    date: 'recent'
+    date: 'recent',
   },
   global: {
     languages: {
@@ -302,15 +424,15 @@ export const noCategories = {
         {
           key: 'en-us',
           display_name: 'English',
-          count: 3
-        }
+          count: 3,
+        },
       ],
-      loading: false
+      loading: false,
     },
     categories: {
       error: false,
       list: [],
-      loading: false
+      loading: false,
     },
     countries: {
       error: false,
@@ -318,15 +440,67 @@ export const noCategories = {
         {
           count: 1,
           display_name: 'Australia',
-          key: 'Australia'
+          key: 'Australia',
         },
         {
           count: 1,
           display_name: 'Colombia',
-          key: 'Colombia'
-        }
+          key: 'Colombia',
+        },
       ],
-      loading: false
+      loading: false,
+    },
+    documentUses: {
+      error: false,
+      list: [
+        {
+          display_name: 'Background Briefing',
+          key: 'Background Briefing',
+          submenu: 'document',
+        },
+        {
+          display_name: 'Department Press Briefing',
+          key: 'Department Press Briefing',
+          submenu: 'document',
+        },
+        {
+          display_name: 'Fact Sheet',
+          key: 'Fact Sheet',
+          submenu: 'document',
+        },
+        {
+          display_name: 'Interview',
+          key: 'Interview',
+          submenu: 'document',
+        },
+      ],
+      loading: false,
+    },
+    bureausOffices: {
+      error: false,
+      list: [
+        {
+          display_name: 'Bureau of Administration',
+          key: 'Bureau of Administration',
+          submenu: 'document',
+        },
+        {
+          display_name: 'Bureau of African Affairs',
+          key: 'Bureau of African Affairs',
+          submenu: 'document',
+        },
+        {
+          display_name: 'Bureau of Budget and Planning',
+          key: 'Bureau of Budget and Planning',
+          submenu: 'document',
+        },
+        {
+          display_name: 'Bureau of Consular Affairs',
+          key: 'Bureau of Consular Affairs',
+          submenu: 'document',
+        },
+      ],
+      loading: false,
     },
     postTypes: {
       error: false,
@@ -334,15 +508,15 @@ export const noCategories = {
         {
           key: 'document',
           display_name: 'Document',
-          count: 2
+          count: 2,
         },
         {
           key: 'package',
           display_name: 'Guidance Packages',
-          count: 1
-        }
+          count: 1,
+        },
       ],
-      loading: false
+      loading: false,
     },
     sources: {
       error: false,
@@ -350,36 +524,36 @@ export const noCategories = {
         {
           key: 'GPA Press Office',
           display_name: 'GPA Press Office',
-          count: 3
-        }
+          count: 3,
+        },
       ],
-      loading: false
+      loading: false,
     },
     dates: {
       list: [
         {
           key: 'recent',
-          display_name: 'Any Time'
+          display_name: 'Any Time',
         },
         {
           key: 'now-1d',
-          display_name: 'Past 24 Hours'
+          display_name: 'Past 24 Hours',
         },
         {
           key: 'now-1w',
-          display_name: 'Past Week'
+          display_name: 'Past Week',
         },
         {
           key: 'now-1M',
-          display_name: 'Past Month'
+          display_name: 'Past Month',
         },
         {
           key: 'now-1y',
-          display_name: 'Past Year'
-        }
-      ]
-    }
-  }
+          display_name: 'Past Year',
+        },
+      ],
+    },
+  },
 };
 
 export const noDocumentPostType = {
@@ -392,10 +566,10 @@ export const noDocumentPostType = {
         {
           key: 'video',
           display_name: 'Video',
-          count: 2
-        }
+          count: 2,
+        },
       ],
-      loading: false
+      loading: false,
     },
     categories: {
       error: false,
@@ -403,17 +577,17 @@ export const noDocumentPostType = {
         {
           count: 1,
           display_name: 'test-category-1',
-          key: 'test-category-1'
+          key: 'test-category-1',
         },
         {
           count: 1,
           display_name: 'test-category-2',
-          key: 'test-category-2'
-        }
+          key: 'test-category-2',
+        },
       ],
-      loading: false
+      loading: false,
     },
-  }
+  },
 };
 
 export const documentTypePlusCategories = {
@@ -426,20 +600,20 @@ export const documentTypePlusCategories = {
         {
           key: 'video',
           display_name: 'Video',
-          count: 2
+          count: 2,
         },
         {
           key: 'document',
           display_name: 'Document',
-          count: 2
+          count: 2,
         },
         {
           key: 'package',
           display_name: 'Guidance Packages',
-          count: 1
-        }
+          count: 1,
+        },
       ],
-      loading: false
+      loading: false,
     },
     categories: {
       error: false,
@@ -447,15 +621,15 @@ export const documentTypePlusCategories = {
         {
           count: 1,
           display_name: 'test-category-1',
-          key: 'test-category-1'
+          key: 'test-category-1',
         },
         {
           count: 1,
           display_name: 'test-category-2',
-          key: 'test-category-2'
-        }
+          key: 'test-category-2',
+        },
       ],
-      loading: false
+      loading: false,
     },
-  }
+  },
 };
