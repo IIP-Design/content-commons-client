@@ -23,7 +23,6 @@ const FilterMenuItem = props => {
       label: option.display_name,
       value: option.key,
       count: option.count,
-      ...option.submenus ? { submenus: option.submenus } : {},
     } ) );
 
     /* Sort Source filter alphabetically */
@@ -60,22 +59,14 @@ const FilterMenuItem = props => {
   /**
    * Reload results page with updated query params
    * @param {array|string} value - updated filter value
-   * @param {string} submenus - submenu filters value to update if applicable
    */
-  const executeQuery = ( value, submenus = false ) => {
+  const executeQuery = value => {
     const filtered = props.name === 'postTypes' ? value.filter( val => val !== 'package' ) : value;
-
-    const clearSubmenusObj = submenus && submenus.reduce( ( filterObj, submenu ) => {
-      filterObj[submenu] = [];
-
-      return filterObj;
-    }, {} );
 
     // Add term from search reducer to ensure that it does not get removed from the query string
     const query = fetchQueryString( {
       ...props.filterStore,
       [props.name]: filtered,
-      ...submenus ? clearSubmenusObj : {},
       term: props.term,
       language: props.language,
     } );
@@ -86,7 +77,7 @@ const FilterMenuItem = props => {
     } );
   };
 
-  const handleCheckboxChange = async ( e, { value, checked, submenus } ) => {
+  const handleCheckboxChange = async ( e, { value, checked } ) => {
     if ( selected.includes( value ) ) {
       setSelected( selected.filter( s => s !== value ) );
     } else {
@@ -111,12 +102,13 @@ const FilterMenuItem = props => {
       updatedArr = difference( arr, values );
     }
 
-    executeQuery( updatedArr, submenus );
+    executeQuery( updatedArr );
   };
 
   const handleRadioChange = async ( e, { value } ) => {
     executeQuery( value );
   };
+
 
   const renderRadio = option => (
     <Form.Radio
@@ -139,13 +131,12 @@ const FilterMenuItem = props => {
 
     return (
       <Form.Checkbox
-        key={ `${option.value}_${option.label}` }
+        key={ option.value }
         name={ props.name }
         label={ option.label }
         value={ option.value }
         count={ option.count }
         checked={ checked }
-        { ...( option.submenus ? { submenus: option.submenus } : {} ) }
         onChange={ handleCheckboxChange }
       />
     );
@@ -199,14 +190,10 @@ const FilterMenuItem = props => {
 
         <Form.Group>
           { formatOptions( options, filter ).map(
-            option => {
-              if ( formItem === 'checkbox' ) {
-                return renderCheckbox( option );
-              }
-
-              return renderRadio( option );
-            },
-          ) }
+            option => (formItem === 'checkbox'
+              ? renderCheckbox( option )
+              : renderRadio( option )),
+          )}
 
           { options.length === 0
             && (

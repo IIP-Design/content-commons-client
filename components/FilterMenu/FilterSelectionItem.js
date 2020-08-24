@@ -15,13 +15,14 @@ const FilterSelectionItem = props => {
   const handleOnClick = () => {
     onClick( {
       value,
-      name,
+      name
     } );
   };
 
   return (
     <Label
       key={ value }
+      data-label={ value }
       className={ single ? 'single' : '' }
       onClick={ !single ? handleOnClick : null }
     >

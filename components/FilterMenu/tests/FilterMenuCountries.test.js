@@ -1,11 +1,10 @@
 import { mount } from 'enzyme';
-import { MockedProvider } from '@apollo/react-testing';
-import FilterMenuCountries from '../FilterSubMenu/PressSubMenu/FilterMenuCountries';
+import FilterMenuCountries from '../FilterMenuCountries';
 import { countriesQueryMocks as mocks } from './mocks';
 
 jest.mock(
   'components/FilterMenu/FilterMenuItem',
-  () => function FilterMenuItem() { return ''; },
+  () => function FilterMenuItem() { return ''; }
 );
 jest.mock(
   '@apollo/react-hooks',
@@ -22,8 +21,8 @@ jest.mock(
               __typename: 'Region',
               id: 'ck6krp96o3f3k0720aoufd395',
               name: 'Bureau of Western Hemisphere Affairs',
-              abbr: 'WHA',
-            },
+              abbr: 'WHA'
+            }
           },
           {
             __typename: 'Country',
@@ -34,8 +33,8 @@ jest.mock(
               __typename: 'Region',
               id: 'ck6krp96g3f3c0720c1w09bx1',
               name: 'Bureau of African Affairs',
-              abbr: 'AF',
-            },
+              abbr: 'AF'
+            }
           },
           {
             __typename: 'Country',
@@ -46,8 +45,8 @@ jest.mock(
               __typename: 'Region',
               id: 'ck6krp96o3f3i07201zo5ai59',
               name: 'Bureau of Near Eastern Affairs',
-              abbr: 'NEA',
-            },
+              abbr: 'NEA'
+            }
           },
           {
             __typename: 'Country',
@@ -58,48 +57,48 @@ jest.mock(
               __typename: 'Region',
               id: 'ck6krp96o3f3h07201q3rj4n7',
               name: 'Bureau of European and Eurasian Affairs',
-              abbr: 'EUR',
-            },
-          },
-        ],
-      } ) ),
-    } ) ),
-  } ),
+              abbr: 'EUR'
+            }
+          }
+        ]
+      } ) )
+    } ) )
+  } )
 );
 
 const props = {
-  selected: ['Angola', 'Albania'],
+  selected: ['Angola', 'Albania']
 };
 
-const nullMocks = [
-  {
-    ...mocks[0],
-    result: {
-      data: { countries: null },
-    },
-  },
-];
+// const nullMocks = [
+//   {
+//     ...mocks[0],
+//     result: {
+//       data: { countries: null }
+//     }
+//   }
+// ];
 
-const emptyMocks = [
-  {
-    ...mocks[0],
-    result: {
-      data: { countries: [] },
-    },
-  },
-];
+// const emptyMocks = [
+//   {
+//     ...mocks[0],
+//     result: {
+//       data: { countries: [] }
+//     }
+//   }
+// ];
 
-const NullComponent = (
-  <MockedProvider mocks={ nullMocks } addTypename={ false }>
-    <FilterMenuCountries { ...props } />
-  </MockedProvider>
-);
+// const NullComponent = (
+//   <MockedProvider mocks={ nullMocks } addTypename={ false }>
+//     <FilterMenuCountries { ...props } />
+//   </MockedProvider>
+// );
 
-const EmptyComponent = (
-  <MockedProvider mocks={ emptyMocks } addTypename={ false }>
-    <FilterMenuCountries { ...props } />
-  </MockedProvider>
-);
+// const EmptyComponent = (
+//   <MockedProvider mocks={ emptyMocks } addTypename={ false }>
+//     <FilterMenuCountries { ...props } />
+//   </MockedProvider>
+// );
 
 describe( '<FilterMenuCountries />', () => {
   let wrapper;
@@ -114,24 +113,22 @@ describe( '<FilterMenuCountries />', () => {
     expect( wrapper.exists() ).toEqual( true );
   } );
 
-  it( 'does not crash if countries is null', () => {
-    const wrapperNull = mount( NullComponent );
-
-    expect( wrapperNull.html() ).toEqual( '' );
+  it.skip( 'does not crash if countries is null', () => {
+    // const wrapper = mount( NullComponent );
+    expect( wrapper.html() ).toEqual( '' );
   } );
 
-  it( 'does not crash if countries is []', () => {
-    const wrapperEmpty = mount( EmptyComponent );
-
-    expect( wrapperEmpty.html() ).toEqual( '' );
+  it.skip( 'does not crash if countries is []', () => {
+    // const wrapper = mount( EmptyComponent );
+    expect( wrapper.html() ).toEqual( '' );
   } );
 
   it( 'renders correct className prop value for FilterMenuItem', async () => {
-    expect( menuItem.prop( 'className' ) ).toEqual( 'subfilter subfilter--countries' );
+    expect( menuItem.prop( 'className' ) ).toEqual( 'clamped' );
   } );
 
   it( 'renders correct filter prop value for FilterMenuItem', () => {
-    expect( menuItem.prop( 'filter' ) ).toEqual( 'Countries & Areas' );
+    expect( menuItem.prop( 'filter' ) ).toEqual( 'Country' );
   } );
 
   it( 'renders correct name prop value for FilterMenuItem', () => {
@@ -149,21 +146,32 @@ describe( '<FilterMenuCountries />', () => {
   it( 'renders correct options prop value for FilterMenuItem', () => {
     const { countries } = mocks[0].result.data;
     const searchedCountry = '';
-    const getMenuOptions = () => countries.reduce( ( acc, country ) => {
-      const displayName = `${country.name} (${country.abbr})`;
-      const searchTerm = searchedCountry.toLowerCase().trim();
+    const getMenuOptions = () => (
+      countries.reduce( ( acc, country ) => {
+        const displayName = `${country.name} (${country.abbr})`;
+        const searchTerm = searchedCountry.toLowerCase().trim();
 
-      if ( displayName.toLowerCase().includes( searchTerm ) ) {
-        acc.push( {
-          display_name: displayName,
-          key: country.name,
-        } );
-      }
-
-      return acc;
-    }, [] );
+        if ( displayName.toLowerCase().includes( searchTerm ) ) {
+          acc.push( {
+            display_name: displayName,
+            key: country.name
+          } );
+        }
+        return acc;
+      }, [] )
+    );
 
     expect( menuItem.prop( 'options' ) ).toEqual( getMenuOptions() );
+  } );
+
+  it( 'renders correct searchInput prop value for FilterMenuItem', () => {
+    const searchInput = mount( menuItem.prop( 'searchInput' ) );
+
+    expect( searchInput.exists() ).toEqual( true );
+    expect( searchInput.prop( 'style' ) ).toEqual( {
+      margin: 0,
+      padding: '0.5em 1em'
+    } );
   } );
 
   it( 'renders searchInput > VisuallyHidden component with correct props', () => {
@@ -172,8 +180,10 @@ describe( '<FilterMenuCountries />', () => {
     const visuallyHiddenLabel = searchInput.find( 'label' );
 
     expect( visuallyHidden.exists() ).toEqual( true );
-    expect( visuallyHiddenLabel.prop( 'htmlFor' ) ).toEqual( 'filter-countries' );
-    expect( visuallyHiddenLabel.contains( 'Search countries' ) ).toEqual( true );
+    expect( visuallyHiddenLabel.prop( 'htmlFor' ) )
+      .toEqual( 'filter-countries' );
+    expect( visuallyHiddenLabel.contains( 'Search countries' ) )
+      .toEqual( true );
   } );
 
   it( 'renders searchInput > FormInput component with correct props', () => {
@@ -185,6 +195,7 @@ describe( '<FilterMenuCountries />', () => {
     expect( formInput.prop( 'placeholder' ) ).toEqual( 'Search countries' );
     expect( formInput.prop( 'name' ) ).toEqual( 'countries' );
     expect( formInput.prop( 'icon' ) ).toEqual( 'search' );
+    expect( formInput.prop( 'iconPosition' ) ).toEqual( 'left' );
     expect( typeof formInput.prop( 'onChange' ) ).toEqual( 'function' );
     expect( formInput.prop( 'onChange' ).name ).toEqual( 'handleChange' );
   } );
