@@ -6,15 +6,15 @@ import * as state from './mocks';
 
 jest.mock(
   '../FilterMenuItem',
-  () => function FilterMenuItem() { return ''; },
+  () => function FilterMenuItem() { return ''; }
 );
 jest.mock(
   '../FilterSelections',
-  () => function FilterSelections() { return ''; },
+  () => function FilterSelections() { return ''; }
 );
 jest.mock(
-  '../FilterSubMenu/FilterSubMenu',
-  () => function FilterSubMenu() { return ''; },
+  '../FilterMenuCountries',
+  () => function FilterMenuCountries() { return ''; }
 );
 
 const mockStore = configureStore( [] );
@@ -46,13 +46,11 @@ describe( '<FilterMenu />, if document postType but no categories in global stat
 
   it( 'renders section wrapper', () => {
     const section = wrapper.find( 'section.filterMenu_wrapper' );
-
     expect( section.exists() ).toEqual( true );
   } );
 
   it( 'renders main wrapper', () => {
     const div = wrapper.find( 'div.filterMenu_main' );
-
     expect( div.exists() ).toEqual( true );
   } );
 
@@ -66,7 +64,7 @@ describe( '<FilterMenu />, if document postType but no categories in global stat
       name: 'date',
       selected: filter.date,
       options: global.dates.list,
-      formItem: 'radio',
+      formItem: 'radio'
     } );
   } );
 
@@ -80,7 +78,7 @@ describe( '<FilterMenu />, if document postType but no categories in global stat
       name: 'postTypes',
       selected: filter.postTypes,
       options: global.postTypes.list,
-      formItem: 'checkbox',
+      formItem: 'checkbox'
     } );
   } );
 
@@ -94,18 +92,23 @@ describe( '<FilterMenu />, if document postType but no categories in global stat
       name: 'sources',
       selected: filter.sources,
       options: global.sources.list,
-      formItem: 'checkbox',
+      formItem: 'checkbox'
+    } );
+  } );
+
+  it( 'renders FilterMenuCountries', () => {
+    const countriesMenu = wrapper.find( 'FilterMenuCountries' );
+    const { filter } = props;
+
+    expect( countriesMenu.exists() ).toEqual( true );
+    expect( countriesMenu.props() ).toEqual( {
+      selected: filter.countries
     } );
   } );
 
   it( 'does not render Categories FilterMenuItem', () => {
     const catMenu = wrapper.find( 'FilterMenuItem[name="categories"]' );
     expect( catMenu.exists() ).toEqual( false );
-  } );
-
-  it( 'renders FilterSubMenu', () => {
-    const filterSubMenu = wrapper.find( 'FilterSubMenu' );
-    expect( filterSubMenu.exists() ).toEqual( true );
   } );
 } );
 
@@ -186,6 +189,11 @@ describe( '<FilterMenu />, if categories but no document postType in global stat
     } );
   } );
 
+  it( 'does not render FilterMenuCountries', () => {
+    const countriesMenu = wrapper.find( 'FilterMenuCountries' );
+    expect( countriesMenu.exists() ).toEqual( false );
+  } );
+
   it( 'renders Categories FilterMenuItem', () => {
     const catMenu = wrapper.find( 'FilterMenuItem[name="categories"]' );
     const { filter, global } = props;
@@ -198,11 +206,6 @@ describe( '<FilterMenu />, if categories but no document postType in global stat
       options: global.categories.list,
       formItem: 'checkbox'
     } );
-  } );
-
-  it( 'renders FilterSubMenu', () => {
-    const filterSubMenu = wrapper.find( 'FilterSubMenu' );
-    expect( filterSubMenu.exists() ).toEqual( true );
   } );
 } );
 
@@ -283,6 +286,16 @@ describe( '<FilterMenu />, if categories and document postType in global state',
     } );
   } );
 
+  it( 'renders FilterMenuCountries', () => {
+    const countriesMenu = wrapper.find( 'FilterMenuCountries' );
+    const { filter } = props;
+
+    expect( countriesMenu.exists() ).toEqual( true );
+    expect( countriesMenu.props() ).toEqual( {
+      selected: filter.countries
+    } );
+  } );
+
   it( 'renders Categories FilterMenuItem', () => {
     const catMenu = wrapper.find( 'FilterMenuItem[name="categories"]' );
     const { filter, global } = props;
@@ -295,10 +308,5 @@ describe( '<FilterMenu />, if categories and document postType in global state',
       options: global.categories.list,
       formItem: 'checkbox'
     } );
-  } );
-
-  it( 'renders FilterSubMenu', () => {
-    const filterSubMenu = wrapper.find( 'FilterSubMenu' );
-    expect( filterSubMenu.exists() ).toEqual( true );
   } );
 } );
