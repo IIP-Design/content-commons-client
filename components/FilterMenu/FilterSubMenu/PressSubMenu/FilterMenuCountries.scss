@@ -8,6 +8,7 @@
       padding-right: 3px;
       padding-left: 1px;
       border-top: 2px solid #0071bc;
+
       @media screen and (max-width: 767px) {
         width: 100%;
       }
@@ -31,10 +32,18 @@
   border-bottom: 1px solid rgba(34, 36, 38, 0.15);
   z-index: 1;
 
+  @media screen and (max-width: 767px) {
+    margin-right: 10px;
+  }
+
   & + i.search.icon {
     width: 17px;
     font-size: 12px;
     color: $focus-gray;
     z-index: 2;
+
+    @media screen and (max-width: 767px) {
+      margin-right: 10px;
+    }
   }
 }
