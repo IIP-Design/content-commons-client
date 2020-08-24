@@ -1,0 +1,49 @@
+@import 'styles/colors.scss';
+
+.filterSubMenu .filterMenu {
+  .subfilter--countries {
+    .hide-visually + .field {
+      width: max-content;
+      margin-top: -2px;
+      padding-right: 3px;
+      padding-left: 1px;
+      border-top: 2px solid #0071bc;
+
+      @media screen and (max-width: 767px) {
+        width: 100%;
+      }
+    }
+
+    > div.fields {
+      padding-top: 30px;
+      margin-top: -28px;
+      border-top: none;
+    }
+  }
+}
+
+#filter-countries {
+  padding: 5px 6px 3px !important;
+  background-color: #ffffff;
+  border-radius: 0;
+  border: none;
+  width: auto;
+  margin: 3px auto;
+  border-bottom: 1px solid rgba(34, 36, 38, 0.15);
+  z-index: 1;
+
+  @media screen and (max-width: 767px) {
+    margin-right: 10px;
+  }
+
+  & + i.search.icon {
+    width: 17px;
+    font-size: 12px;
+    color: $focus-gray;
+    z-index: 2;
+
+    @media screen and (max-width: 767px) {
+      margin-right: 10px;
+    }
+  }
+}
