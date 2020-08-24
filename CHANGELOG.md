@@ -13,6 +13,8 @@ _This sections lists changes committed since most recent release_
 - 'For Translation' tab with 'Clean' use videos to the video download popup on commons and publisher
 - 'Other' tab to the video download popup on commons
 - `DownloadThumbnailsAndOtherFiles` component
+- Internal option to visibility dropdown on video details project form
+- 'INTERNAL USE ONLY' display on video result card and project if project is internal
 
 **Changed:**
 - Remove English from the language dropdown in the video preview modal and commons page when the English unit consists of *only* 'Clean' use videos

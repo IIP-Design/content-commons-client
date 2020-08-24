@@ -28,6 +28,8 @@ import Share from '../Share/Share';
 import EmbedVideo from '../Embed';
 import EmbedHelp from './Download/EmbedHelp';
 
+import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
+
 import { updateUrl } from 'lib/browser';
 import useSignedUrl from 'lib/hooks/useSignedUrl';
 import { displayDOSLogo } from 'lib/sourceLogoUtils';
@@ -38,7 +40,7 @@ import './Video.scss';
 
 const Video = ( { item, router, isAdminPreview = false } ) => {
   const {
-    id, logo, modified, owner, published, selectedLanguageUnit, site, type,
+    id, logo, modified, owner, published, selectedLanguageUnit, site, type, visibility,
   } = item;
   const { user } = useAuth();
 
@@ -245,7 +247,7 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
               selected={ selectedLanguage.display_name }
               handleLanguageChange={ handleLanguageChange }
             />
-            { toggleCaptions.length > 1 && (
+            {toggleCaptions.length > 1 && (
               <Checkbox
                 className="modal_captions"
                 checked={ captions }
@@ -253,22 +255,18 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
                 label="Video with subtitles"
                 onChange={ handleCaptionChange }
               />
-            ) }
+            )}
           </div>
           <div className="trigger-container">
-            { embedItem && (
+            {visibility === 'INTERNAL'
+              && <InternalUseDisplay style={ { margin: '0 1em 0 1em' } } />}
+            {embedItem && (
               <Popover
                 toolTip="Embed video"
                 id={ `${id}_video-embed` }
                 className="video-project__popover video-project__popover--embed"
                 expandFromRight
-                trigger={ (
-                  <img
-                    src={ embedIcon }
-                    style={ { width: '20px', height: '20px' } }
-                    alt="embed icon"
-                  />
-                ) }
+                trigger={ <img src={ embedIcon } style={ { width: '20px', height: '20px' } } alt="embed icon" /> }
               >
                 <TabLayout
                   headline="Embed this video."
@@ -289,18 +287,12 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
                   ] }
                 />
               </Popover>
-            ) }
+            )}
             <Popover
               toolTip="Share video"
               id={ `${id}_video-share` }
               className="video-project__popover video-project__popover--share"
-              trigger={ (
-                <img
-                  src={ shareIcon }
-                  style={ { width: '20px', height: '20px' } }
-                  alt="share icon"
-                />
-              ) }
+              trigger={ <img src={ shareIcon } style={ { width: '20px', height: '20px' } } alt="share icon" /> }
               expandFromRight
             >
               <div className="popup_share">
@@ -319,7 +311,13 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
               toolTip="Download video"
               id={ `${id}_video-download` }
               className="video-project__popover video-project__popover--download"
-              trigger={ <img src={ downloadIcon } style={ { width: '18px', height: '18px' } } alt="download icon" /> }
+              trigger={ (
+                <img
+                  src={ downloadIcon }
+                  style={ { width: '18px', height: '18px' } }
+                  alt="download icon"
+                />
+              ) }
               expandFromRight
             >
               <TabLayout
