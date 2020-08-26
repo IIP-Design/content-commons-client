@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Loader } from 'semantic-ui-react';
 import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
-import { getS3Url } from 'lib/utils';
+import { capitalizeFirst, getFileExt, getS3Url } from 'lib/utils';
 import ApolloError from 'components/errors/ApolloError';
 
 
@@ -36,11 +36,24 @@ const DownloadOtherFiles = props => {
   if ( error ) return <ApolloError error={ error } />;
   if ( !project || !Object.keys( project ).length ) return null;
 
-  const { files } = project;
+  const { files, thumbnails } = project;
+  const allFiles = [...thumbnails, ...files];
+
+  const getInstructions = ( { language, filename, filetype } ) => {
+    const isImage = filetype.startsWith( 'image/' );
+    const extension = getFileExt( filename, false );
+    const capitalizedExt = capitalizeFirst( extension );
+
+    if ( isImage ) {
+      return `Download ${language} Thumbnail`;
+    }
+
+    return `Download "${filename}" (${capitalizedExt})`;
+  };
 
   const renderFormItem = file => {
     const {
-      id, filetype, url,
+      id, filename, filetype, url,
       language: { displayName },
     } = file;
 
@@ -48,13 +61,13 @@ const DownloadOtherFiles = props => {
       <DownloadItemContent
         key={ `fs_${id}` }
         srcUrl={ getS3Url( url ) }
-        hoverText={ `Download ${displayName} ${filetype} file` }
+        hoverText={ getInstructions( { language: displayName, filename, filetype } ) }
         isAdminPreview={ isPreview }
       >
         <div className="item-content">
           <p className="item-content__title">
             <strong>
-              { `Download ${displayName} ${filetype} file` }
+              { getInstructions( { language: displayName, filename, filetype } ) }
             </strong>
           </p>
         </div>
@@ -63,7 +76,7 @@ const DownloadOtherFiles = props => {
   };
 
   const renderFormItems = () => {
-    const otherFiles = files
+    const otherFiles = allFiles
       .filter( file => file && file.url )
       .map( file => renderFormItem( file ) );
 
@@ -88,6 +101,29 @@ const VIDEO_PROJECT_PREVIEW_OTHER_FILES_QUERY = gql`
             { filetype_not: "application/x-subrip" },
             { filename_not_ends_with: "vtt" }
           ]
+        },
+        orderBy: filename_ASC
+      ) {
+        id
+        filename
+        filetype
+        url
+        language {
+          id
+          displayName
+        }
+      }
+      thumbnails(
+        where: {
+          OR: [
+            { filetype: "image/jpeg" },
+            { filetype: "image/png" },
+            { filename_ends_with: "jpg" },
+            { filename_ends_with: "png" }
+          ],
+          AND: {
+            use: { name: "Thumbnail/Cover Image" }
+          }
         },
         orderBy: filename_ASC
       ) {

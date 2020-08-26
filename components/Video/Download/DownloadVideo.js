@@ -53,11 +53,10 @@ const DownloadVideo = ( { burnedInCaptions, selectedLanguageUnit, isAdminPreview
         <div className="item-content">
           <p className="item-content__title">
             <strong>
-              Download
-              { ` "${title}"` }
-              { ` for ${videoQuality}`}
+              { `Download "${title}" for ${videoQuality}` }
             </strong>
           </p>
+          <p className="item-content__meta">{ `${video.use} | ${video.use === 'Clean' ? 'No subtitles' : 'Subtitles'}` }</p>
           <p className="item-content__meta">{ `File size: ${size.weight}` }</p>
           <p className="item-content__meta">{ `Dimensions: ${size.label}` }</p>
         </div>
@@ -66,9 +65,13 @@ const DownloadVideo = ( { burnedInCaptions, selectedLanguageUnit, isAdminPreview
   };
 
   const renderFormItems = ( unit, captions ) => {
-    // fetch all source videos with NO burned in captions and then sort by file size
-    const videos = unit.source.filter( video => video.burnedInCaptions === 'true' === captions );
-    const videosWithSizeProp = unit.source.filter( video => video.size && video.size.filesize );
+    // fetch all source videos by Clean vs. non-Clean and then sort by file size
+    const videos = unit.source.filter( video => {
+      const isClean = video.use === 'Clean';
+
+      return captions ? !isClean : isClean;
+    } );
+    const videosWithSizeProp = videos.filter( video => video.filesize );
 
     // only sort the videos if each video has a filesize prop for comparison
     if ( videosWithSizeProp.length === videos.length ) {

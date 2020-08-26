@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Card, Image, Modal } from 'semantic-ui-react';
+import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 
 import PackageCard from 'components/Package/PackageCard/PackageCard';
 import DocumentCard from 'components/Document/DocumentCard/DocumentCard';
@@ -116,23 +117,21 @@ const ResultItem = ( { item } ) => {
           </div>
         ) }
       >
-        <Modal.Content>
-          { getModalContent( item ) }
-        </Modal.Content>
+        <Modal.Content>{getModalContent( item )}</Modal.Content>
       </Modal>
       <Card.Content className={ textDirection }>
         <Card.Header className="card_header">
-          <Modal closeIcon trigger={ <p data-action={ action }>{ item.title }</p> }>
-            <Modal.Content>
-              { getModalContent( item ) }
-            </Modal.Content>
+          {item?.visibility === 'INTERNAL'
+            && <InternalUseDisplay style={ { margin: '0.5em auto .5em 0', fontWeight: 'normal' } } />}
+          <Modal closeIcon trigger={ <p data-action={ action }>{item.title}</p> }>
+            <Modal.Content>{getModalContent( item )}</Modal.Content>
           </Modal>
         </Card.Header>
-        <Card.Description className="card_excerpt">{ item.description }</Card.Description>
+        <Card.Description className="card_excerpt">{item.description}</Card.Description>
         <div className="card_metadata">
-          <Card.Meta>{ moment( item.published ).format( 'MMMM DD, YYYY' ) }</Card.Meta>
-          <Card.Meta>{ item.categories && item.categories.map( renderCategory ) }</Card.Meta>
-          <Card.Meta>{ getItemSource( textDirection ) }</Card.Meta>
+          <Card.Meta>{moment( item.published ).format( 'MMMM DD, YYYY' )}</Card.Meta>
+          <Card.Meta>{item.categories && item.categories.map( renderCategory )}</Card.Meta>
+          <Card.Meta>{getItemSource( textDirection )}</Card.Meta>
         </div>
       </Card.Content>
     </Card>

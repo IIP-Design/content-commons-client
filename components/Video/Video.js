@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Embed, Checkbox } from 'semantic-ui-react';
+import Link from 'next/link';
 import { withRouter } from 'next/router';
-
-import { updateUrl } from 'lib/browser';
-import { displayDOSLogo } from 'lib/sourceLogoUtils';
 
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
@@ -24,19 +22,27 @@ import TabLayout from 'components/TabLayout/TabLayout';
 import DownloadVideo from './Download/DownloadVideo';
 import DownloadCaption from './Download/DownloadCaption';
 import DownloadTranscript from './Download/DownloadTranscript';
+import DownloadThumbnailsAndOtherFiles from './Download/DownloadThumbnailsAndOtherFiles';
 import DownloadHelp from './Download/DownloadHelp';
 import Share from '../Share/Share';
 import EmbedVideo from '../Embed';
 import EmbedHelp from './Download/EmbedHelp';
+
+import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
+
+import { updateUrl } from 'lib/browser';
 import useSignedUrl from 'lib/hooks/useSignedUrl';
+import { displayDOSLogo } from 'lib/sourceLogoUtils';
+import { useAuth } from 'context/authContext';
 import { fetchVideoPlayer, getCaptions, getLanguage, getVideoTranscript } from './utils';
 
 import './Video.scss';
 
 const Video = ( { item, router, isAdminPreview = false } ) => {
   const {
-    id, logo, modified, owner, published, selectedLanguageUnit, site, type,
+    id, logo, modified, owner, published, selectedLanguageUnit, site, type, visibility,
   } = item;
+  const { user } = useAuth();
 
   const [unit, setUnit] = useState( selectedLanguageUnit );
   const [selectedLanguage, setSelectedLanguage] = useState( getLanguage( selectedLanguageUnit ) );
@@ -85,10 +91,23 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
     willFetchVideoPlayer();
   }, [unit, captions] );
 
+  const getAuthorizedDownloadTabs = ( { tabs, unauthorizedTab } ) => {
+    const indexToRemove = tabs.findIndex( tab => tab.title === unauthorizedTab );
+
+    // remove specified tab if user is not logged in
+    if ( user && user.id === 'public' ) {
+      tabs.splice( indexToRemove, 1 );
+    }
+
+    return tabs;
+  };
+
   /**
    * Get the video data associated with currently selected language
    */
   const getSelectedUnit = ( language = 'English' ) => item.units.find( lang => lang.language.display_name === language );
+
+  const getUnitWithCleanVideos = units => units.find( u => u.source.some( file => file?.use === 'Clean' ) );
 
   const handleLanguageChange = value => {
     if ( value && value !== selectedLanguage.display_name ) {
@@ -127,6 +146,91 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
     ? `<iframe src="${shareLink}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>`
     : '';
 
+  const unitWithCleanVideos = getUnitWithCleanVideos( item.units );
+
+  const downloadTabs = [
+    {
+      title: 'Video Files',
+      content: (
+        <DownloadItem
+          instructions={ `Download the video and caption files in ${unit.language.display_name}.
+          This download option is best for uploading this video to web pages and social media.` }
+        >
+          <DownloadVideo
+            selectedLanguageUnit={ unit }
+            burnedInCaptions
+            isAdminPreview={ isAdminPreview }
+          />
+        </DownloadItem>
+      ),
+    },
+    {
+      title: 'For Translation',
+      content: (
+        <DownloadItem
+          instructions="Download a clean version (no-text version) of the video, for adding translated subtitles."
+        >
+          <DownloadVideo
+            selectedLanguageUnit={ unitWithCleanVideos || unit }
+            burnedInCaptions={ false }
+            isAdminPreview={ isAdminPreview }
+          />
+        </DownloadItem>
+      ),
+    },
+    {
+      title: 'Caption Files',
+      content: (
+        <DownloadItem
+          instructions={ (
+            <p>
+              By downloading these editable files, you agree to the
+              { ' ' }
+              <Link href="/about"><a>Terms of Use</a></Link>
+              .
+            </p>
+          ) }
+        >
+          <DownloadCaption
+            selectedLanguageUnit={ unit }
+            item={ item }
+          />
+        </DownloadItem>
+      ),
+    },
+    {
+      title: 'Transcript',
+      content: (
+        <DownloadItem
+          instructions="Download Transcripts"
+        >
+          <DownloadTranscript item={ item } />
+        </DownloadItem>
+      ),
+    },
+    {
+      title: 'Other',
+      content: (
+        <DownloadItem
+          instructions={ (
+            <p>
+              By downloading these files, you agree to the
+              { ' ' }
+              <Link href="/about"><a>Terms of Use</a></Link>
+              .
+            </p>
+          ) }
+        >
+          <DownloadThumbnailsAndOtherFiles item={ item } />
+        </DownloadItem>
+      ),
+    },
+    {
+      title: 'Help',
+      content: <DownloadHelp />,
+    },
+  ];
+
   if ( unit && selectedLanguage ) {
     const toggleCaptions = [...new Set( unit.source.map( u => u.burnedInCaptions ) )];
 
@@ -143,7 +247,7 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
               selected={ selectedLanguage.display_name }
               handleLanguageChange={ handleLanguageChange }
             />
-            { toggleCaptions.length > 1 && (
+            {toggleCaptions.length > 1 && (
               <Checkbox
                 className="modal_captions"
                 checked={ captions }
@@ -151,22 +255,18 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
                 label="Video with subtitles"
                 onChange={ handleCaptionChange }
               />
-            ) }
+            )}
           </div>
           <div className="trigger-container">
-            { embedItem && (
+            {visibility === 'INTERNAL'
+              && <InternalUseDisplay style={ { margin: '0 1em 0 1em' } } />}
+            {embedItem && (
               <Popover
                 toolTip="Embed video"
                 id={ `${id}_video-embed` }
                 className="video-project__popover video-project__popover--embed"
                 expandFromRight
-                trigger={ (
-                  <img
-                    src={ embedIcon }
-                    style={ { width: '20px', height: '20px' } }
-                    alt="embed icon"
-                  />
-                ) }
+                trigger={ <img src={ embedIcon } style={ { width: '20px', height: '20px' } } alt="embed icon" /> }
               >
                 <TabLayout
                   headline="Embed this video."
@@ -187,18 +287,12 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
                   ] }
                 />
               </Popover>
-            ) }
+            )}
             <Popover
               toolTip="Share video"
               id={ `${id}_video-share` }
               className="video-project__popover video-project__popover--share"
-              trigger={ (
-                <img
-                  src={ shareIcon }
-                  style={ { width: '20px', height: '20px' } }
-                  alt="share icon"
-                />
-              ) }
+              trigger={ <img src={ shareIcon } style={ { width: '20px', height: '20px' } } alt="share icon" /> }
               expandFromRight
             >
               <div className="popup_share">
@@ -217,55 +311,21 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
               toolTip="Download video"
               id={ `${id}_video-download` }
               className="video-project__popover video-project__popover--download"
-              trigger={ <img src={ downloadIcon } style={ { width: '18px', height: '18px' } } alt="download icon" /> }
+              trigger={ (
+                <img
+                  src={ downloadIcon }
+                  style={ { width: '18px', height: '18px' } }
+                  alt="download icon"
+                />
+              ) }
               expandFromRight
             >
               <TabLayout
                 headline="Download this video."
-                tabs={ [
-                  {
-                    title: 'Video File',
-                    content: (
-                      <DownloadItem
-                        instructions={ `Download the video and SRT files in ${unit.language.display_name}.
-                        This download option is best for uploading this video to web pages.` }
-                      >
-                        <DownloadVideo
-                          selectedLanguageUnit={ unit }
-                          burnedInCaptions={ captions }
-                          isAdminPreview={ isAdminPreview }
-                        />
-                      </DownloadItem>
-                    ),
-                  },
-                  {
-                    title: 'Caption File',
-                    content: (
-                      <DownloadItem
-                        instructions="Download caption file(s) for this video."
-                      >
-                        <DownloadCaption
-                          selectedLanguageUnit={ unit }
-                          item={ item }
-                        />
-                      </DownloadItem>
-                    ),
-                  },
-                  {
-                    title: 'Transcript',
-                    content: (
-                      <DownloadItem
-                        instructions="Download Transcripts"
-                      >
-                        <DownloadTranscript item={ item } />
-                      </DownloadItem>
-                    ),
-                  },
-                  {
-                    title: 'Help',
-                    content: <DownloadHelp />,
-                  },
-                ] }
+                tabs={ getAuthorizedDownloadTabs( {
+                  tabs: downloadTabs,
+                  unauthorizedTab: 'For Translation',
+                } ) }
               />
             </Popover>
           </div>

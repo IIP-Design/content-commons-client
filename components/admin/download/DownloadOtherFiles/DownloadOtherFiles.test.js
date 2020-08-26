@@ -151,11 +151,12 @@ describe( '<DownloadOtherFiles />', () => {
 
     const downloadOther = wrapper.find( 'DownloadOtherFiles' );
     const items = downloadOther.find( 'Item' );
-    const { files } = noFilesMocks[0].result.data.project;
+    const { files, thumbnails } = noFilesMocks[0].result.data.project;
+    const allFiles = [...thumbnails, ...files];
     const msg = 'There are no other files available for download at this time';
 
     expect( downloadOther.exists() ).toEqual( true );
-    expect( items.length ).toEqual( files.length );
+    expect( items.length ).toEqual( allFiles.length );
     expect( downloadOther.contains( msg ) ).toEqual( true );
   } );
 
@@ -166,12 +167,13 @@ describe( '<DownloadOtherFiles />', () => {
     wrapper.update();
 
     const items = wrapper.find( 'DownloadItemContent' );
-    const { files } = mocks[0].result.data.project;
+    const { files, thumbnails } = mocks[0].result.data.project;
+    const allFiles = [...thumbnails, ...files];
     const s3Bucket = 'https://s3-url.com';
 
-    expect( items.length ).toEqual( files.length );
+    expect( items.length ).toEqual( allFiles.length );
     items.forEach( ( item, i ) => {
-      const { url: assetPath } = files[i];
+      const { url: assetPath } = allFiles[i];
 
       expect( item.prop( 'srcUrl' ) ).toEqual( `${s3Bucket}/${assetPath}` );
       expect( item.find( '.download-item' ).prop( 'href' ) ).toEqual( 'https://example.jpg' );
@@ -192,9 +194,10 @@ describe( '<DownloadOtherFiles />', () => {
 
     const downloadOtherFiles = wrapper.find( 'DownloadOtherFiles' );
     const previews = downloadOtherFiles.find( '.preview-text' );
-    const { files } = mocks[0].result.data.project;
+    const { files, thumbnails } = mocks[0].result.data.project;
+    const allFiles = [...thumbnails, ...files];
 
-    expect( previews.length ).toEqual( files.length );
+    expect( previews.length ).toEqual( allFiles.length );
     previews.forEach( preview => {
       expect( preview.exists() )
         .toEqual( downloadOtherFiles.prop( 'isPreview' ) );

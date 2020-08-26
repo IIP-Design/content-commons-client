@@ -94,7 +94,7 @@ const props = {
         filetype: 'video/mp4',
         quality: 'WEB',
         url: `2019/06/${projectId}/video-file-1.mp4`,
-        videoBurnedInStatus: 'CLEAN',
+        videoBurnedInStatus: 'SUBTITLED',
         dimensions: {
           __typename: 'Dimensions',
           id: 'd21',
@@ -159,8 +159,8 @@ const props = {
         },
         use: {
           __typename: 'VideoUse',
-          id: 'us31',
-          name: 'Full Video',
+          id: 'us32',
+          name: 'Clean',
         },
         stream: [
           {
@@ -180,48 +180,48 @@ const props = {
     ],
   },
   burnedInCaptions: false,
-  isPreview: false,
+  isPreview: true,
 };
 
-const Component = <DownloadVideo { ...props } />;
+describe( '<DownloadVideo />, if used for Clean videos in the "For Translations" tab', () => {
+  let Component;
+  let wrapper;
 
-describe( '<DownloadVideo />', () => {
+  beforeEach( () => {
+    Component = <DownloadVideo { ...props } />;
+    wrapper = mount( Component );
+  } );
+
   it( 'renders without crashing', () => {
-    const wrapper = mount( Component );
-
     expect( wrapper.exists() ).toEqual( true );
     expect( toJSON( wrapper ) ).toMatchSnapshot();
   } );
 
-  it( 'renders <a> tags with the correct href & download values if !isPreview', () => {
-    const wrapper = mount( Component );
+  it( 'renders <a> tags with the correct href & download values', () => {
     const { files } = props.selectedLanguageUnit;
     const s3Bucket = 'https://s3-url.com';
-
     const downloadItems = wrapper.find( 'DownloadItemContent' );
 
-    expect( downloadItems.length ).toEqual( files.length );
-
+    // expecting 1 Clean use video
+    expect( downloadItems.length ).toEqual( 1 );
     downloadItems.forEach( ( item, i ) => {
       const assetPath = files[i].url;
-
-      expect( item.prop( 'srcUrl' ) ).toEqual( `${s3Bucket}/${assetPath}` );
-
       const anchorLink = item.find( 'a' );
 
-      expect( anchorLink.prop( 'href' ) ).toEqual( 'https://example.jpg' );
-      expect( anchorLink.prop( 'download' ) ).toEqual( true );
+      // Clean video is second in files array
+      if ( i === 1 ) {
+        expect( item.prop( 'srcUrl' ) ).toEqual( `${s3Bucket}/${assetPath}` );
+        expect( anchorLink.prop( 'href' ) ).toEqual( 'https://example.jpg' );
+        expect( anchorLink.prop( 'download' ) ).toEqual( true );
+      }
     } );
   } );
 
-  it( 'renders preview text if isPreview is true', () => {
-    const wrapper = mount( Component );
-
-    wrapper.setProps( { isPreview: true } );
+  it( 'renders preview text', () => {
     const previews = wrapper.find( '.preview-text' );
-    const { files } = props.selectedLanguageUnit;
 
-    expect( previews.length ).toEqual( files.length );
+    // expecting 1 Clean use video
+    expect( previews.length ).toEqual( 1 );
     previews.forEach( preview => {
       expect( preview.exists() )
         .toEqual( wrapper.prop( 'isPreview' ) );
@@ -230,25 +230,102 @@ describe( '<DownloadVideo />', () => {
         .toEqual( 'The link will be active after publishing.' );
     } );
   } );
+} );
 
-  it( 'does not render preview text if !isPreview', () => {
-    const wrapper = mount( Component );
+describe( '<DownloadVideo />, if used for non-Clean videos in the "Video Files" tab', () => {
+  let Component;
+  let wrapper;
+
+  const nonCleanProps = {
+    ...props,
+    burnedInCaptions: true,
+  };
+
+  beforeEach( () => {
+    Component = <DownloadVideo { ...nonCleanProps } />;
+    wrapper = mount( Component );
+  } );
+
+  it( 'renders without crashing', () => {
+    expect( wrapper.exists() ).toEqual( true );
+  } );
+
+  it( 'renders <a> tags with the correct href & download values', () => {
+    const { files } = nonCleanProps.selectedLanguageUnit;
+    const s3Bucket = 'https://s3-url.com';
+    const downloadItems = wrapper.find( 'DownloadItemContent' );
+
+    // expecting 1 non-Clean use video
+    expect( downloadItems.length ).toEqual( 1 );
+    downloadItems.forEach( ( item, i ) => {
+      const assetPath = files[i].url;
+      const anchorLink = item.find( 'a' );
+
+      // non-Clean video is first in files array
+      if ( i === 0 ) {
+        expect( item.prop( 'srcUrl' ) ).toEqual( `${s3Bucket}/${assetPath}` );
+        expect( anchorLink.prop( 'href' ) ).toEqual( 'https://example.jpg' );
+        expect( anchorLink.prop( 'download' ) ).toEqual( true );
+      }
+    } );
+  } );
+
+  it( 'renders preview text', () => {
+    const previews = wrapper.find( '.preview-text' );
+
+    // expecting 1 non-Clean use video
+    expect( previews.length ).toEqual( 1 );
+    previews.forEach( preview => {
+      expect( preview.exists() )
+        .toEqual( wrapper.prop( 'isPreview' ) );
+      expect( preview.name() ).toEqual( 'span' );
+      expect( preview.text() )
+        .toEqual( 'The link will be active after publishing.' );
+    } );
+  } );
+} );
+
+describe( '<DownloadVideo />, if !isPreview', () => {
+  let Component;
+  let wrapper;
+
+  const noPreviewProps = {
+    ...props,
+    isPreview: false,
+  };
+
+  beforeEach( () => {
+    Component = <DownloadVideo { ...noPreviewProps } />;
+    wrapper = mount( Component );
+  } );
+
+  it( 'does not render preview text', () => {
     const previews = wrapper.find( '.preview-text' );
 
     expect( previews.exists() )
       .toEqual( wrapper.prop( 'isPreview' ) );
     expect( previews.length ).toEqual( 0 );
   } );
+} );
+
+describe( '<DownloadVideo />, if there are no video files', () => {
+  let Component;
+  let wrapper;
+
+  const noFilesProps = {
+    ...props,
+    selectedLanguageUnit: {
+      ...props.selectedLanguageUnit,
+      files: [],
+    },
+  };
+
+  beforeEach( () => {
+    Component = <DownloadVideo { ...noFilesProps } />;
+    wrapper = mount( Component );
+  } );
 
   it( 'renders a "no video available message" if there are no video files', () => {
-    const noFilesProps = {
-      ...props,
-      selectedLanguageUnit: {
-        ...props.selectedLanguageUnit,
-        files: [],
-      },
-    };
-    const wrapper = mount( <DownloadVideo { ...noFilesProps } /> );
     const items = wrapper.find( 'a.item' );
     const { files } = noFilesProps.selectedLanguageUnit;
     const msg = 'There are no videos available for download at this time';

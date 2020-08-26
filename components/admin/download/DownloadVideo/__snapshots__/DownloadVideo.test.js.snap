@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DownloadVideo /> renders without crashing 1`] = `
+exports[`<DownloadVideo />, if used for Clean videos in the "For Translations" tab renders without crashing 1`] = `
 <DownloadVideo
   burnedInCaptions={false}
   instructions="Download the video file in English"
-  isPreview={false}
+  isPreview={true}
   selectedLanguageUnit={
     Object {
       "__typename": "VideoUnit",
@@ -55,7 +55,7 @@ exports[`<DownloadVideo /> renders without crashing 1`] = `
             "id": "us31",
             "name": "Full Video",
           },
-          "videoBurnedInStatus": "CLEAN",
+          "videoBurnedInStatus": "SUBTITLED",
         },
         Object {
           "__typename": "VideoFile",
@@ -99,8 +99,8 @@ exports[`<DownloadVideo /> renders without crashing 1`] = `
           "url": "2019/06/123/video-file-2.mp4",
           "use": Object {
             "__typename": "VideoUse",
-            "id": "us31",
-            "name": "Full Video",
+            "id": "us32",
+            "name": "Clean",
           },
           "videoBurnedInStatus": "CLEAN",
         },
@@ -162,63 +162,12 @@ exports[`<DownloadVideo /> renders without crashing 1`] = `
   <div>
     <DownloadItemContent
       hoverText="Download for web"
-      isAdminPreview={false}
-      key="fs_un91-f19"
-      srcUrl="https://s3-url.com/2019/06/123/video-file-1.mp4"
-    >
-      <a
-        className="download-item"
-        download={true}
-        href="https://example.jpg"
-        key="https://example.jpg"
-        rel="noopener noreferrer"
-      >
-        <div
-          className="item-icon"
-        >
-          <img
-            alt="Download for web"
-            src="downloadIconSVG"
-          />
-        </div>
-        <div
-          className="item-content"
-        >
-          <p
-            className="item-content__title"
-          >
-            <strong>
-              Download
-               "test project title"
-               for web
-            </strong>
-          </p>
-          <p
-            className="item-content__meta"
-          >
-            File size: 631.9 MB
-          </p>
-          <p
-            className="item-content__meta"
-          >
-            Dimensions: 1920 x 1080
-          </p>
-        </div>
-        <span
-          className="item-hover"
-        >
-          Download for web
-        </span>
-      </a>
-    </DownloadItemContent>
-    <DownloadItemContent
-      hoverText="Download for web"
-      isAdminPreview={false}
+      isAdminPreview={true}
       key="fs_un91-f20"
       srcUrl="https://s3-url.com/2019/06/123/video-file-2.mp4"
     >
       <a
-        className="download-item"
+        className="download-item download-item--preview"
         download={true}
         href="https://example.jpg"
         key="https://example.jpg"
@@ -239,10 +188,13 @@ exports[`<DownloadVideo /> renders without crashing 1`] = `
             className="item-content__title"
           >
             <strong>
-              Download
-               "test project title"
-               for web
+              Download "test project title" for web
             </strong>
+          </p>
+          <p
+            className="item-content__meta"
+          >
+            Clean | No subtitles
           </p>
           <p
             className="item-content__meta"
@@ -259,6 +211,11 @@ exports[`<DownloadVideo /> renders without crashing 1`] = `
           className="item-hover"
         >
           Download for web
+          <span
+            className="preview-text"
+          >
+            The link will be active after publishing.
+          </span>
         </span>
       </a>
     </DownloadItemContent>

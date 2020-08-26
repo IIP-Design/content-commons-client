@@ -1,4 +1,5 @@
 import { mount } from 'enzyme';
+import { useAuth } from 'context/authContext';
 import Video from './Video';
 import { mockItem } from './mocks';
 
@@ -24,6 +25,9 @@ jest.mock( 'next/router', () => ( {
     return component;
   },
 } ) );
+jest.mock( 'context/authContext', () => ( {
+  useAuth: jest.fn(),
+} ) );
 
 jest.mock( 'components/modals/ModalItem', () => 'modal-item' );
 jest.mock( 'components/modals/ModalLangDropdown/ModalLangDropdown', () => 'modal-lang-dropdown' );
@@ -47,6 +51,30 @@ const mockRouter = { pathname: '/video' };
 afterAll( () => { jest.restoreAllMocks(); } );
 
 describe( '<Video />', () => {
+  beforeEach( () => {
+    useAuth.mockImplementation( () => ( {
+      user: {
+        id: 'ck2m042xo0rnp0720nb4gxjix',
+        firstName: 'Joe',
+        lastName: 'Schmoe',
+        email: 'schmoej@america.gov',
+        jobTitle: '',
+        country: 'United States',
+        city: 'Washington, DC',
+        howHeard: '',
+        permissions: ['EDITOR'],
+        team: {
+          id: 'ck2lzfx6u0hkj0720f8n8mtda',
+          name: 'GPA Design & Editorial',
+          contentTypes: ['GRAPHIC'],
+          __typename: 'Team',
+        },
+        __typename: 'User',
+        esToken: 'eyasdljfakljsdfklj',
+      },
+    } ) );
+  } );
+
   it( 'renders without crashing', () => {
     const wrapper = mount( <Video item={ mockItem } router={ mockRouter } /> );
 
@@ -87,4 +115,54 @@ describe( '<Video />', () => {
 
   //   expect( modalItem.contains( 'Content Unavailable' ) ).toEqual( true );
   // } );
+} );
+
+describe( '<Video />, for a user not logged in', () => {
+  const props = {
+    item: mockItem,
+    router: mockRouter,
+    isAdminPreview: false,
+  };
+  let Component;
+  let wrapper;
+
+  beforeEach( () => {
+    Component = <Video { ...props } />;
+    wrapper = mount( Component );
+
+    useAuth.mockImplementation( () => ( {
+      user: {
+        id: 'public',
+        firstName: '',
+        lastName: '',
+        email: '',
+        jobTitle: null,
+        country: null,
+        city: null,
+        howHeard: null,
+        permissions: [],
+        team: null,
+        __typename: 'User',
+      },
+    } ) );
+  } );
+
+  it( 'renders without crashing', () => {
+    expect( wrapper.exists() ).toEqual( true );
+  } );
+
+  it( 'renders the correct download tabs', () => {
+    const { id } = props.item;
+    const popover = wrapper.find( `[id="${id}_video-download"]` );
+    const tabLayout = mount( popover.prop( 'children' ) );
+    const { tabs } = tabLayout.props();
+    const tabTitles = [
+      'Video Files', 'Caption Files', 'Transcript', 'Other', 'Help',
+    ];
+
+    expect( tabs.length ).toEqual( tabTitles.length );
+    tabs.forEach( ( tab, i ) => {
+      expect( tab.title ).toEqual( tabTitles[i] );
+    } );
+  } );
 } );
