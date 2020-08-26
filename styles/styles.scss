@@ -73,6 +73,14 @@ h6.ui.header {
   font-size: 1rem; // 18px;
 }
 
+a {
+  color: $light-blue;
+
+  &:not(.title):hover {
+    text-decoration: underline;
+  }
+}
+
 main {
   padding-bottom: 560px; // height of footer plus extra padding
   @media screen and (max-width: 767px) {
