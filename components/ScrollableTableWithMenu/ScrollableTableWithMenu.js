@@ -44,8 +44,16 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   const contentQuery = state.queries.content;
   const countQuery = state.queries.count;
 
+  // Get teams to include in query for a specific content type
+  // This is rather odd and the connection between teams and content
+  // types should be more fully thought out and absracted
+  const teams
+    = team.name === 'GPA Design & Editorial'
+      ? `${team.name}|Regional Media Hubs|ShareAmerica`
+      : team.name;
+
   // Set GraphQL query variables
-  const variables = { team: team.name, searchTerm };
+  const variables = { team: { name_in: teams.split( '|' ) }, searchTerm };
   const bodyPaginationVars = { first: itemsPerPage, orderBy, skip };
   const paginationVars = { first: itemsPerPage, skip };
 
