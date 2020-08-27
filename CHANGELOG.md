@@ -21,7 +21,7 @@ _This sections lists changes committed since most recent release_
 - 'GPA Editorial & Design' team name to 'GPA Design & Editorial'
 - Include thumbnails in the 'Other' tab in the video download popup
 - Download instructions text to match mockup changes
-- Remove Translations tab in the video download popup on Commons
+- Remove Transcripts tab in the video download popup on Commons
 
 **Fixed:**
 - Bug where a video unit's thumbnail was not being assigned to `unit.thumbnail` on the results page; This was preventing a video unit's thumbnails from being listed in its download popup.
