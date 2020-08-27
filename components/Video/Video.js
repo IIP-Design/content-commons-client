@@ -21,7 +21,6 @@ import TabLayout from 'components/TabLayout/TabLayout';
 
 import DownloadVideo from './Download/DownloadVideo';
 import DownloadCaption from './Download/DownloadCaption';
-import DownloadTranscript from './Download/DownloadTranscript';
 import DownloadThumbnailsAndOtherFiles from './Download/DownloadThumbnailsAndOtherFiles';
 import DownloadHelp from './Download/DownloadHelp';
 import Share from '../Share/Share';
@@ -195,16 +194,6 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
             selectedLanguageUnit={ unit }
             item={ item }
           />
-        </DownloadItem>
-      ),
-    },
-    {
-      title: 'Transcript',
-      content: (
-        <DownloadItem
-          instructions="Download Transcripts"
-        >
-          <DownloadTranscript item={ item } />
         </DownloadItem>
       ),
     },
