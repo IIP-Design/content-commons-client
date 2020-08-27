@@ -157,7 +157,7 @@ describe( '<Video />, for a user not logged in', () => {
     const tabLayout = mount( popover.prop( 'children' ) );
     const { tabs } = tabLayout.props();
     const tabTitles = [
-      'Video Files', 'Caption Files', 'Transcript', 'Other', 'Help',
+      'Video Files', 'Caption Files', 'Other', 'Help',
     ];
 
     expect( tabs.length ).toEqual( tabTitles.length );
