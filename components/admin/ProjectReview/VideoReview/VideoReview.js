@@ -162,7 +162,13 @@ const VideoReview = props => {
   };
 
   const getPublishMessage = () => {
+    const requireNonCleanMsg = 'Please upload at least one non-Clean video to publish';
+
     if ( data?.project?.status === 'PUBLISHED' ) {
+      if ( isDirty && disablePublishBtn ) {
+        return `${requireNonCleanMsg} your changes.`;
+      }
+
       if ( isDirty ) {
         return 'It looks like you made changes to your project. Do you want to publish changes?';
       }
@@ -171,7 +177,7 @@ const VideoReview = props => {
     }
 
     if ( disablePublishBtn ) {
-      return 'Please upload at least one non-Clean video to publish.';
+      return `${requireNonCleanMsg}.`;
     }
 
     return 'Your project looks great! Are you ready to Publish?';
@@ -234,7 +240,7 @@ const VideoReview = props => {
         ) : (
           <Fragment>
             { isDirty && (
-              <Button className={ setButtonState( 'edit' ) } onClick={ handlePublish }>
+              <Button className={ setButtonState( 'edit' ) } onClick={ handlePublish } disabled={ disablePublishBtn }>
                 Publish Changes
               </Button>
             ) }
@@ -280,7 +286,7 @@ const VideoReview = props => {
 
         { /* Project is published but changes have been made that have not been published */ }
         { isPublished && isDirty && (
-          <Button className="project_button project_button--edit" onClick={ handlePublish }>
+          <Button className="project_button project_button--edit" onClick={ handlePublish } disabled={ disablePublishBtn }>
             Publish Changes
           </Button>
         ) }

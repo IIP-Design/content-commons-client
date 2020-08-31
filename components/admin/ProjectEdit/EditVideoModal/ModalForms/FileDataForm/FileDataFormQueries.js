@@ -4,6 +4,7 @@ export const VIDEO_PROJECT_QUERY = gql`
   query VIDEO_PROJECT_QUERY( $id: ID! ) {
     project: videoProject( id: $id ) {
       id
+      projectTitle
       units {
         id
         language {

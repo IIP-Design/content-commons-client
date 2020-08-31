@@ -22,7 +22,7 @@ import {
   UPDATE_VIDEO_FILE_MUTATION,
   UPDATE_VIDEO_UNIT_MUTATION,
   DELETE_MANY_VIDEO_UNITS_MUTATION,
-  UPDATE_VIDEO_PROJECT_MUTATION
+  UPDATE_VIDEO_PROJECT_MUTATION,
 } from 'lib/graphql/queries/video';
 
 
@@ -44,7 +44,7 @@ const ProjectUnits = props => {
     updateVideoFile,
     projectUpdated,
     heading,
-    extensions
+    extensions,
   } = props;
 
   const [progress, setProgress] = useState( 0 );
@@ -54,6 +54,7 @@ const ProjectUnits = props => {
 
   const separateFilesByLanguage = files => {
     const languages = {};
+
     files.forEach( file => {
       if ( !languages[file.language] ) {
         languages[file.language] = [];
@@ -72,6 +73,7 @@ const ProjectUnits = props => {
   const hasFileChanged = ( unit, file ) => {
     const propChanges = [];
     const found = unit.files.find( f => f.id === file.id );
+
     if ( found ) {
       if ( file.language !== found.language.id ) {
         propChanges.push( 'language' );
@@ -89,6 +91,7 @@ const ProjectUnits = props => {
         propChanges.push( 'videoBurnedInStatus' );
       }
     }
+
     return propChanges;
   };
 
@@ -103,9 +106,11 @@ const ProjectUnits = props => {
    */
   const getFilesToEdit = () => {
     let filesToEdit = [];
+
     if ( hasProjectUnits() ) {
       videoProject.project.units.forEach( unit => {
         const unitFiles = ( unit && unit.files ) ? unit.files : [];
+
         filesToEdit = [...filesToEdit, ...unitFiles];
       } );
     }
@@ -124,6 +129,7 @@ const ProjectUnits = props => {
     videoProject.project.units.forEach( u => {
       // if a unit does not have any files then remove
       const found = files.find( file => file.language === u.language.id );
+
       if ( !found ) {
         unitsToRemove.push( u );
       }
@@ -153,14 +159,16 @@ const ProjectUnits = props => {
 
     // 2. Normalize data structure for consistent ui rendering (same structure as graphql unit)
     const entries = Object.entries( newUnits );
+
     return entries.map( entry => {
       const [language, fileObjs] = entry;
+
       return ( {
         files: fileObjs, // spread may break connection
         language: {
           id: language,
-          displayName: props.languageList.languages.find( l => l.id === language ).displayName
-        }
+          displayName: props.languageList.languages.find( l => l.id === language ).displayName,
+        },
       } );
     } );
   };
@@ -176,6 +184,7 @@ const ProjectUnits = props => {
     for ( let i = 0; i < len; i++ ) {
       const unit = videoProject.project.units[i];
       const found = unit.files.find( f => f.id === file.id );
+
       if ( found ) {
         return unit;
       }
@@ -191,9 +200,9 @@ const ProjectUnits = props => {
     variables: {
       data: updatedData,
       where: {
-        id
-      }
-    }
+        id,
+      },
+    },
   } );
 
   /**
@@ -205,6 +214,7 @@ const ProjectUnits = props => {
   const getLanguageThumbnail = language => {
     const { project: { thumbnails } } = videoProject;
     const thumbnail = thumbnails.find( tn => tn.language.id === language );
+
     if ( thumbnail ) {
       return thumbnail;
     }
@@ -227,8 +237,8 @@ const ProjectUnits = props => {
    */
   const disconnectFileFromUnit = async ( unit, file ) => updateVideoUnit( getQuery( unit.id, {
     files: {
-      disconnect: { id: file.id }
-    }
+      disconnect: { id: file.id },
+    },
   } ) );
 
   /**
@@ -238,16 +248,16 @@ const ProjectUnits = props => {
   const updateFile = async file => updateVideoFile( getQuery( file.id, {
     language: {
       connect: {
-        id: file.language
-      }
+        id: file.language,
+      },
     },
     quality: file.quality,
     videoBurnedInStatus: file.videoBurnedInStatus,
     use: {
       connect: {
-        id: file.use
-      }
-    }
+        id: file.use,
+      },
+    },
   } ) );
 
 
@@ -263,10 +273,11 @@ const ProjectUnits = props => {
         const res = deleteManyVideoUnits( {
           variables: {
             where: {
-              id_in: unitIds
-            }
-          }
+              id_in: unitIds,
+            },
+          },
         } );
+
         return res;
       } catch ( err ) {
         console.log( err );
@@ -304,7 +315,13 @@ const ProjectUnits = props => {
 
   const removeFiles = async files => {
     const { deleteVideoFile } = props;
-    return Promise.all( files.map( async file => deleteVideoFile( { variables: { id: file.id } } ) ) );
+
+    return Promise.all( files.map( async file => {
+      const { project: { projectTitle } } = videoProject;
+
+      deleteVideoFile( { variables: { id: file.id } } );
+      updateVideoProject( getQuery( projectId, { projectTitle } ) );
+    } ) );
   };
 
   /**
@@ -337,6 +354,7 @@ const ProjectUnits = props => {
 
           if ( unitFileBelongsTo ) {
             const fileChanged = hasFileChanged( unitFileBelongsTo, file );
+
             if ( fileChanged.length ) {
               update.push( file );
               await updateFile( file );
@@ -367,6 +385,7 @@ const ProjectUnits = props => {
     const [unitId, operations] = entry;
     const { create, update } = operations;
     const _files = {};
+
     if ( create.length ) {
       _files.create = buildVideoFileTree( create );
     }
@@ -391,8 +410,8 @@ const ProjectUnits = props => {
 
     return updateVideoProject( getQuery( projectId, {
       units: {
-        create: buildUnit( projectTitle, language, getTagIds( tags ), thumbnail, create, update )
-      }
+        create: buildUnit( projectTitle, language, getTagIds( tags ), thumbnail, create, update ),
+      },
     } ) );
   } ) );
 
@@ -408,6 +427,7 @@ const ProjectUnits = props => {
 
       // upload files
       const toUpload = files.filter( file => ( file.input ) );
+
       await uploadFiles( toUpload ).catch( err => console.log( err ) );
 
       const filesUploadSuccess = files.filter( file => !file.error );
@@ -417,14 +437,17 @@ const ProjectUnits = props => {
 
       // update unit and create or connect files
       const unitsToUpdate = Object.entries( unitUpdate );
+
       await updateUnits( unitsToUpdate );
 
       // create unit and create or connect files
       const unitsToCreate = Object.entries( unitCreate );
+
       await createUnits( unitsToCreate );
 
       // remove units that have no connected files
       const unitsToRemove = getUnitsToRemove( filesUploadSuccess );
+
       await removeUnits( unitsToRemove );
 
       // Notify redux state that Project updated, indexed by project id
@@ -456,7 +479,8 @@ const ProjectUnits = props => {
 
   return (
     <div className="project-units">
-      <h2 className="list-heading" style={ { marginBottom: '1rem' } }>{ heading }
+      <h2 className="list-heading" style={ { marginBottom: '1rem' } }>
+        { heading }
         { projectId
           && (
             <EditProjectFiles
@@ -497,12 +521,12 @@ ProjectUnits.propTypes = {
   updateVideoProject: PropTypes.func,
   updateVideoFile: PropTypes.func,
   deleteManyVideoUnits: PropTypes.func,
-  uploadExecute: PropTypes.func
+  uploadExecute: PropTypes.func,
 };
 
 
 const mapStateToProps = state => ( {
-  filesToUpload: state.upload.filesToUpload
+  filesToUpload: state.upload.filesToUpload,
 } );
 
 
@@ -515,14 +539,14 @@ export default compose(
     options: props => ( {
       partialRefetch: true,
       variables: {
-        id: props.projectId
-      }
+        id: props.projectId,
+      },
     } ),
-    skip: props => !props.projectId
+    skip: props => !props.projectId,
   } ),
   graphql( UPDATE_VIDEO_PROJECT_MUTATION, { name: 'updateVideoProject' } ),
   graphql( UPDATE_VIDEO_UNIT_MUTATION, { name: 'updateVideoUnit' } ),
   graphql( DELETE_MANY_VIDEO_UNITS_MUTATION, { name: 'deleteManyVideoUnits' } ),
   graphql( DELETE_VIDEO_FILE_MUTATION, { name: 'deleteVideoFile' } ),
-  graphql( UPDATE_VIDEO_FILE_MUTATION, { name: 'updateVideoFile' } )
+  graphql( UPDATE_VIDEO_FILE_MUTATION, { name: 'updateVideoFile' } ),
 )( ProjectUnits );
