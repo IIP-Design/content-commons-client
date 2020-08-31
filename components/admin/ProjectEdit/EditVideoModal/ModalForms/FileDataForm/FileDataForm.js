@@ -77,6 +77,15 @@ const FileDataForm = ( {
     startTimeout();
   };
 
+  const updateVideoProject = projectTitle => (
+    updateVideoProjectMutation( {
+      variables: {
+        data: { projectTitle },
+        where: { id: selectedProject },
+      },
+    } )
+  );
+
   const changeLanguage = ( value, id ) => {
     // Get array of units and the language they are in
     const unitsByLang = units.map( unit => ( { unitId: unit.id, langId: unit.language.id } ) );
@@ -109,6 +118,14 @@ const FileDataForm = ( {
                 query: VIDEO_UNIT_QUERY,
                 data: { unit: cachedData.unit },
               } );
+
+              const cachedProjectData = cache.readQuery( {
+                query: VIDEO_PROJECT_QUERY,
+                variables: { id: selectedProject },
+              } );
+
+              // update project to trigger display of Publish Changes button
+              updateVideoProject( cachedProjectData.project.projectTitle );
             } catch ( error ) {
               console.log( error );
             }
@@ -281,14 +298,7 @@ const FileDataForm = ( {
           } );
 
           // update project to trigger display of Publish Changes button
-          updateVideoProjectMutation( {
-            variables: {
-              data: {
-                projectTitle: cachedProjectData.project.projectTitle,
-              },
-              where: { id: selectedProject },
-            },
-          } );
+          updateVideoProject( cachedProjectData.project.projectTitle );
 
           console.log( `Deleted video: ${selectedFile}` );
 
