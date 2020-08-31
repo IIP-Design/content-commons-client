@@ -162,7 +162,13 @@ const VideoReview = props => {
   };
 
   const getPublishMessage = () => {
+    const requireNonCleanMsg = 'Please upload at least one non-Clean video to publish';
+
     if ( data?.project?.status === 'PUBLISHED' ) {
+      if ( isDirty && disablePublishBtn ) {
+        return `${requireNonCleanMsg} your changes.`;
+      }
+
       if ( isDirty ) {
         return 'It looks like you made changes to your project. Do you want to publish changes?';
       }
@@ -171,7 +177,7 @@ const VideoReview = props => {
     }
 
     if ( disablePublishBtn ) {
-      return 'Please upload at least one non-Clean video to publish.';
+      return `${requireNonCleanMsg}.`;
     }
 
     return 'Your project looks great! Are you ready to Publish?';
