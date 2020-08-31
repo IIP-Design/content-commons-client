@@ -208,6 +208,14 @@ const FileDataForm = ( {
             query: VIDEO_FILE_QUERY,
             data: { file: cachedData.file },
           } );
+
+          const cachedProjectData = cache.readQuery( {
+            query: VIDEO_PROJECT_QUERY,
+            variables: { id: selectedProject },
+          } );
+
+          // update project to trigger display of Publish Changes button
+          updateVideoProject( cachedProjectData.project.projectTitle );
         } catch ( error ) {
           console.log( error );
         }
