@@ -234,7 +234,7 @@ const VideoReview = props => {
         ) : (
           <Fragment>
             { isDirty && (
-              <Button className={ setButtonState( 'edit' ) } onClick={ handlePublish }>
+              <Button className={ setButtonState( 'edit' ) } onClick={ handlePublish } disabled={ disablePublishBtn }>
                 Publish Changes
               </Button>
             ) }
@@ -280,7 +280,7 @@ const VideoReview = props => {
 
         { /* Project is published but changes have been made that have not been published */ }
         { isPublished && isDirty && (
-          <Button className="project_button project_button--edit" onClick={ handlePublish }>
+          <Button className="project_button project_button--edit" onClick={ handlePublish } disabled={ disablePublishBtn }>
             Publish Changes
           </Button>
         ) }
