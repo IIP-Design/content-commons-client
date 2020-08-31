@@ -24,6 +24,7 @@ import { formatBytes, formatDate, secondsToHMS } from 'lib/utils';
 
 // eslint-disable-next-line import/no-cycle
 import { VIDEO_UNIT_QUERY } from 'components/admin/ProjectEdit/EditVideoModal/ModalSections/FileSection/FileSection';
+import { UPDATE_VIDEO_PROJECT_MUTATION } from 'lib/graphql/queries/video';
 import {
   VIDEO_PROJECT_QUERY, VIDEO_FILE_QUERY, VIDEO_FILE_LANG_MUTATION, VIDEO_UNIT_CONNECT_FILE_MUTATION,
   VIDEO_UNIT_DISCONNECT_FILE_MUTATION, VIDEO_FILE_SUBTITLES_MUTATION, VIDEO_FILE_USE_MUTATION,
@@ -44,6 +45,7 @@ const FileDataForm = ( {
   streamCreateVideoFileMutation,
   streamDeleteVideoFileMutation,
   streamUpdateVideoFileMutation,
+  updateVideoProjectMutation,
   useVideoFileMutation,
   values,
   videoBurnedInStatusVideoFileMutation,
@@ -273,6 +275,21 @@ const FileDataForm = ( {
             data: { unit: cachedData.unit },
           } );
 
+          const cachedProjectData = cache.readQuery( {
+            query: VIDEO_PROJECT_QUERY,
+            variables: { id: selectedProject },
+          } );
+
+          // update project to trigger display of Publish Changes button
+          updateVideoProjectMutation( {
+            variables: {
+              data: {
+                projectTitle: cachedProjectData.project.projectTitle,
+              },
+              where: { id: selectedProject },
+            },
+          } );
+
           console.log( `Deleted video: ${selectedFile}` );
 
           const newSelectedFile = cachedData.unit.files && cachedData.unit.files[0] && cachedData.unit.files[0].id
@@ -428,6 +445,7 @@ FileDataForm.propTypes = {
   streamCreateVideoFileMutation: propTypes.func,
   streamDeleteVideoFileMutation: propTypes.func,
   streamUpdateVideoFileMutation: propTypes.func,
+  updateVideoProjectMutation: propTypes.func,
   useVideoFileMutation: propTypes.func,
   values: propTypes.object,
   videoBurnedInStatusVideoFileMutation: propTypes.func,
@@ -447,6 +465,7 @@ export default compose(
       variables: { displayName: 'English' },
     } ),
   } ),
+  graphql( UPDATE_VIDEO_PROJECT_MUTATION, { name: 'updateVideoProjectMutation' } ),
   graphql( VIDEO_FILE_DELETE_MUTATION, { name: 'deleteVideoFileMutation' } ),
   graphql( VIDEO_FILE_DELETE_STREAM_MUTATION, { name: 'streamDeleteVideoFileMutation' } ),
   graphql( VIDEO_FILE_UPDATE_STREAM_MUTATION, { name: 'streamUpdateVideoFileMutation' } ),
