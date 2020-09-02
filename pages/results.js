@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Results from 'components/Results/Results/';
 import { fetchUser } from 'context/authContext';
-
 import {
   updateLanguage, updateSort, updateSearchTerm, createRequest,
 } from 'lib/redux/actions/search';
@@ -19,12 +18,10 @@ import { loadSources } from 'lib/redux/actions/source';
 import { loadCategories } from 'lib/redux/actions/category';
 import { loadCountries } from 'lib/redux/actions/country';
 import { loadDocumentUses } from 'lib/redux/actions/documentUses';
-import { loadBureausOffices } from 'lib/redux/actions/bureausOffices';
 import { loadLanguages } from 'lib/redux/actions/language';
 import {
   COUNTRIES_REGIONS_QUERY,
   DOCUMENT_USE_QUERY,
-  BUREAUS_OFFICES_QUERY,
 } from 'lib/graphql/queries/document';
 
 class ResultsPage extends Component {
@@ -91,11 +88,6 @@ class ResultsPage extends Component {
     } );
     const documentUsesCollection = store.dispatch( loadDocumentUses( gqlDocumentUses ) );
 
-    const gqlBureausOffices = ctx.apolloClient.query( {
-      query: BUREAUS_OFFICES_QUERY,
-    } );
-    const bureausOfficesCollection = store.dispatch( loadBureausOffices( gqlBureausOffices ) );
-
     let types;
     let langs;
 
@@ -113,7 +105,6 @@ class ResultsPage extends Component {
     if ( langs ) await langs;
     if ( countrieses ) await countrieses;
     if ( documentUsesCollection ) await documentUsesCollection;
-    if ( bureausOfficesCollection ) await bureausOfficesCollection;
 
     return {};
   }
