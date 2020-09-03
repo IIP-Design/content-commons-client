@@ -95,7 +95,7 @@ const LoggedInNav = props => {
       className="item feedback"
       rel="noopener noreferrer"
     >
-      { ' ' }
+      {' '}
       Feedback
     </a>
   );
@@ -139,9 +139,7 @@ const LoggedInNav = props => {
             </a>
           </Link>
         )
-        : (
-          getIcon( item )
-        ) }
+        : getIcon( item )}
     </li>
   );
 
@@ -150,16 +148,13 @@ const LoggedInNav = props => {
     const disabled = item.name === 'notifications';
 
     return (
-      <Menu.Item key={ item.key } name={ item.name } disabled={ disabled }>
-        { item.name === 'upload'
-          ? (
-            <Link href="/admin/upload" passHref>
-              { getIcon( item ) }
-            </Link>
-          )
-          : (
-            getIcon( item )
-          ) }
+      <Menu.Item as="li" key={ item.key } name={ item.name } disabled={ disabled }>
+        { item.name === 'upload' ? (
+          <Link href="/admin/upload" passHref>
+            { getIcon( item ) }
+          </Link>
+        )
+          : getIcon( item )}
       </Menu.Item>
     );
   };
@@ -193,7 +188,7 @@ const LoggedInNav = props => {
   };
 
   const renderDesktopNav = items => (
-    <Menu>
+    <Menu as="ul">
       { items.map( item => {
         if ( item.name === 'user_profile' ) {
           return renderPopUp( item, renderMenuItem );
