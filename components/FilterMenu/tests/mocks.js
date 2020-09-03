@@ -105,86 +105,86 @@ export const bureausOfficesQueryMock = [
       data: {
         bureaus: [
           {
-            "id": "ck52kids1093m0835latg8zzg",
-            "name": "Bureau of Administration",
-            "offices": [
+            id: 'ck52kids1093m0835latg8zzg',
+            name: 'Bureau of Administration',
+            offices: [
               {
-                "id": "ck52kidy209540835guafy5cu",
-                "name": "Office of Logistics Management"
+                id: 'ck52kidy209540835guafy5cu',
+                name: 'Office of Logistics Management',
               },
               {
-                "id": "ck52kidyo095d0835wjv2bbju",
-                "name": "Office of Procurement Executive"
-              }
-            ]
+                id: 'ck52kidyo095d0835wjv2bbju',
+                name: 'Office of Procurement Executive',
+              },
+            ],
           },
           {
-            "id": "ck52kids8093p0835atpqri31",
-            "name": "Bureau of African Affairs",
-            "offices": []
+            id: 'ck52kids8093p0835atpqri31',
+            name: 'Bureau of African Affairs',
+            offices: [],
           },
           {
-            "id": "ck52kids8093q08354wi55vnx",
-            "name": "Bureau of Budget and Planning",
-            "offices": []
+            id: 'ck52kids8093q08354wi55vnx',
+            name: 'Bureau of Budget and Planning',
+            offices: [],
           },
           {
-            "id": "ck52kids8093r0835xx5w8jwt",
-            "name": "Bureau of Consular Affairs",
-            "offices": []
+            id: 'ck52kids8093r0835xx5w8jwt',
+            name: 'Bureau of Consular Affairs',
+            offices: [],
           },
           {
-            "id": "ck52kidsd093x0835b43j0ar5",
-            "name": "Bureau of Diplomatic Security",
-            "offices": []
+            id: 'ck52kidsd093x0835b43j0ar5',
+            name: 'Bureau of Diplomatic Security',
+            offices: [],
           },
           {
-            "id": "ck52kidse093y0835ii1iqirb",
-            "name": "Bureau of East Asian and Pacific Affairs",
-            "offices": []
+            id: 'ck52kidse093y0835ii1iqirb',
+            name: 'Bureau of East Asian and Pacific Affairs',
+            offices: [],
           },
           {
-            "id": "ck52kidse093z0835kx2a59vk",
-            "name": "Bureau of Educational and Cultural Afairs",
-            "offices": []
+            id: 'ck52kidse093z0835kx2a59vk',
+            name: 'Bureau of Educational and Cultural Afairs',
+            offices: [],
           },
           {
-            "id": "ck52kidse09400835j77rsax2",
-            "name": "Bureau of Global Public Affairs",
-            "offices": [
+            id: 'ck52kidse09400835j77rsax2',
+            name: 'Bureau of Global Public Affairs',
+            offices: [
               {
-                "id": "ck52kidxf09500835rj1ult2z",
-                "name": "Office of Global Social Media"
+                id: 'ck52kidxf09500835rj1ult2z',
+                name: 'Office of Global Social Media',
               },
               {
-                "id": "ck52kidyl095b0835u2myl170",
-                "name": "Office of the Spokesperson"
+                id: 'ck52kidyl095b0835u2myl170',
+                name: 'Office of the Spokesperson',
               },
               {
-                "id": "ck52kidyo095c08356l36615v",
-                "name": "Office of Public Liaison"
-              }
-            ]
+                id: 'ck52kidyo095c08356l36615v',
+                name: 'Office of Public Liaison',
+              },
+            ],
           },
           {
-            "id": "ck52kidse094108350vo7h40x",
-            "name": "Bureau of Human Resources",
-            "offices": []
+            id: 'ck52kidse094108350vo7h40x',
+            name: 'Bureau of Human Resources',
+            offices: [],
           },
           {
-            "id": "ck52kidse094208354oztjyfw",
-            "name": "Bureau of Near Eastern Affairs",
-            "offices": []
+            id: 'ck52kidse094208354oztjyfw',
+            name: 'Bureau of Near Eastern Affairs',
+            offices: [],
           },
           {
-            "id": "ck52kidse09430835woniokoo",
-            "name": "Bureau of South and Central Asian Affairs",
-            "offices": []
+            id: 'ck52kidse09430835woniokoo',
+            name: 'Bureau of South and Central Asian Affairs',
+            offices: [],
           },
           {
-            "id": "ck52kidsf09440835lvl55c1q",
-            "name": "Bureau of Western Hemisphere Affairs",
-            "offices": []
+            id: 'ck52kidsf09440835lvl55c1q',
+            name: 'Bureau of Western Hemisphere Affairs',
+            offices: [],
           },
         ],
       },
@@ -480,23 +480,26 @@ export const noCategories = {
       error: false,
       list: [
         {
-          display_name: 'Bureau of Administration',
-          key: 'Bureau of Administration',
+          display_name: 'Office of the Chief of Protocol',
+          key: 'Office of the Chief of Protocol',
+          isBureau: true,
           submenu: 'document',
         },
         {
-          display_name: 'Bureau of African Affairs',
-          key: 'Bureau of African Affairs',
+          display_name: 'Office of the Coordinator for Cyber Issues',
+          key: 'Office of the Coordinator for Cyber Issues',
+          isBureau: true,
           submenu: 'document',
         },
         {
-          display_name: 'Bureau of Budget and Planning',
-          key: 'Bureau of Budget and Planning',
+          display_name: 'Office of the Legal Adviser',
+          key: 'Office of the Legal Adviser',
+          isBureau: true,
           submenu: 'document',
         },
         {
-          display_name: 'Bureau of Consular Affairs',
-          key: 'Bureau of Consular Affairs',
+          display_name: 'Office of Procurement Executive',
+          key: 'Office of Procurement Executive',
           submenu: 'document',
         },
       ],
