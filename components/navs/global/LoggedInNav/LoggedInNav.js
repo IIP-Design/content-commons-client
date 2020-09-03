@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import {
-  Menu, Popup, Icon
+  Menu, Popup, Icon,
 } from 'semantic-ui-react';
 import UserProfileMenu from 'components/menus/UserProfile/UserProfile';
 import NotificationsMenu from 'components/menus/Notifications/Notifications';
@@ -26,7 +26,7 @@ const menuItems = [
     icon: uploadIcon,
     width: 34,
     height: 34,
-    alt: 'Upload content'
+    alt: 'Upload content',
   },
   {
     key: 2,
@@ -34,7 +34,7 @@ const menuItems = [
     icon: notifyIcon,
     width: 30,
     height: 30,
-    alt: 'View notifications'
+    alt: 'View notifications',
   },
   {
     key: 3,
@@ -43,13 +43,13 @@ const menuItems = [
     width: 26,
     height: 26,
     alt: 'View user profile',
-    subscriber: true
-  }
+    subscriber: true,
+  },
 ];
 
 const LoggedInNav = props => {
   const {
-    mobileMenuVisible, toggleMobileMenu, keyUp, user
+    mobileMenuVisible, toggleMobileMenu, keyUp, user,
   } = props;
 
   // const [hasNotifications, setHasNotifications] = useState( false );
@@ -71,6 +71,7 @@ const LoggedInNav = props => {
 
   useEffect( () => {
     window.addEventListener( 'resize', closeMobileMenu );
+
     return () => {
       window.removeEventListener( 'resize', closeMobileMenu );
     };
@@ -93,7 +94,9 @@ const LoggedInNav = props => {
       target="_blank"
       className="item feedback"
       rel="noopener noreferrer"
-    > Feedback
+    >
+      {' '}
+      Feedback
     </a>
   );
 
@@ -134,9 +137,8 @@ const LoggedInNav = props => {
             </span>
           </a>
         </Link>
-      ) : (
-        getIcon( item )
-      ) }
+      )
+        : getIcon( item )}
     </li>
   );
 
@@ -145,14 +147,13 @@ const LoggedInNav = props => {
     const disabled = item.name === 'notifications';
 
     return (
-      <Menu.Item key={ item.key } name={ item.name } disabled={ disabled }>
+      <Menu.Item as="li" key={ item.key } name={ item.name } disabled={ disabled }>
         { item.name === 'upload' ? (
           <Link href="/admin/upload" passHref>
             { getIcon( item ) }
           </Link>
-        ) : (
-          getIcon( item )
-        ) }
+        )
+          : getIcon( item )}
       </Menu.Item>
     );
   };
@@ -177,6 +178,7 @@ const LoggedInNav = props => {
           if ( item.name === 'user_profile' ) {
             return renderPopUp( item, renderListItem );
           }
+
           return renderListItem( item );
         } ) }
         { renderFeedbackButton() }
@@ -185,11 +187,12 @@ const LoggedInNav = props => {
   };
 
   const renderDesktopNav = items => (
-    <Menu>
+    <Menu as="ul">
       { items.map( item => {
         if ( item.name === 'user_profile' ) {
           return renderPopUp( item, renderMenuItem );
         }
+
         return renderMenuItem( item );
       } ) }
       { renderFeedbackButton() }
@@ -221,7 +224,7 @@ LoggedInNav.propTypes = {
   mobileMenuVisible: PropTypes.bool,
   toggleMobileMenu: PropTypes.func,
   keyUp: PropTypes.func,
-  user: PropTypes.object
+  user: PropTypes.object,
 };
 
 export default LoggedInNav;
