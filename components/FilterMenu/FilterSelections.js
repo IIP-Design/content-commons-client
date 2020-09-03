@@ -199,7 +199,7 @@ const FilterSelections = props => {
           </div>
         ) }
       </div>
-      <hr />
+      <span className="hr" />
     </Fragment>
   );
 };

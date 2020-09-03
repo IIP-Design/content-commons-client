@@ -7,8 +7,11 @@
     max-width: 768px;
     margin: 0 auto 0 auto;
 
-    hr {
+    .hr {
+      display: block;
       height: 1px;
+      margin-top: 9px;
+      margin-bottom: 9px;
       margin-left: calc( (100% - 100vw) / 2 );
       margin-right: calc( (100% - 100vw) / 2 );
       border: none;

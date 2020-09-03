@@ -23,8 +23,11 @@ const FileListDisplay = ( { files, fileType, error } ) => (
 
 FileListDisplay.propTypes = {
   error: PropTypes.object,
-  files: PropTypes.array,
-  fileType: PropTypes.string
+  files: PropTypes.oneOfType( [
+    PropTypes.array,
+    PropTypes.object,
+  ] ),
+  fileType: PropTypes.string,
 };
 
 export default FileListDisplay;

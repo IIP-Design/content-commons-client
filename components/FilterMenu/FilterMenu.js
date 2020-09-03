@@ -63,7 +63,7 @@ const FilterMenu = props => {
             />
           ) }
       </div>
-      <hr />
+      <span className="hr" />
       <FilterSubMenu />
     </section>
   );
