@@ -15,6 +15,7 @@ _This sections lists changes committed since most recent release_
 - `DownloadThumbnailsAndOtherFiles` component
 - Internal option to visibility dropdown on video details project form
 - 'INTERNAL USE ONLY' display on video result card and project if project is internal
+- Skip to content link for improved accessibility
 
 **Changed:**
 - Remove English from the language dropdown in the video preview modal and commons page when the English unit consists of *only* 'Clean' use videos
@@ -22,6 +23,7 @@ _This sections lists changes committed since most recent release_
 - Include thumbnails in the 'Other' tab in the video download popup
 - Download instructions text to match mockup changes
 - Remove Transcripts tab in the video download popup on Commons
+- Default link color and hover styling for improved accessibility
 
 **Fixed:**
 - Bug where a video unit's thumbnail was not being assigned to `unit.thumbnail` on the results page; This was preventing a video unit's thumbnails from being listed in its download popup.
