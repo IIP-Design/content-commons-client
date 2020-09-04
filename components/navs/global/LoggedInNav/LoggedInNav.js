@@ -7,9 +7,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import {
-  Menu, Popup, Icon,
-} from 'semantic-ui-react';
+import { Popup, Icon } from 'semantic-ui-react';
 import UserProfileMenu from 'components/menus/UserProfile/UserProfile';
 import NotificationsMenu from 'components/menus/Notifications/Notifications';
 import notifyIcon from 'static/icons/icon_notifications.svg';
@@ -89,15 +87,16 @@ const LoggedInNav = props => {
 
 
   const renderFeedbackButton = () => (
-    <a
-      href={ config.FEEDBACK_FORM_URL }
-      target="_blank"
-      className="item feedback"
-      rel="noopener noreferrer"
-    >
-      {' '}
-      Feedback
-    </a>
+    <li className="item feedback-item">
+      <a
+        href={ config.FEEDBACK_FORM_URL }
+        target="_blank"
+        className="feedback"
+        rel="noopener noreferrer"
+      >
+        Feedback
+      </a>
+    </li>
   );
 
   const renderMenu = menu => {
@@ -147,14 +146,19 @@ const LoggedInNav = props => {
     const disabled = item.name === 'notifications';
 
     return (
-      <Menu.Item as="li" key={ item.key } name={ item.name } disabled={ disabled }>
+      <li
+        key={ item.key }
+        className={ `item${disabled ? ' disabled' : ''}` }
+        name={ item.name }
+        disabled={ disabled }
+      >
         { item.name === 'upload' ? (
           <Link href="/admin/upload" passHref>
             { getIcon( item ) }
           </Link>
         )
           : getIcon( item )}
-      </Menu.Item>
+      </li>
     );
   };
 
@@ -187,7 +191,7 @@ const LoggedInNav = props => {
   };
 
   const renderDesktopNav = items => (
-    <Menu as="ul">
+    <ul className="ui menu">
       { items.map( item => {
         if ( item.name === 'user_profile' ) {
           return renderPopUp( item, renderMenuItem );
@@ -196,7 +200,7 @@ const LoggedInNav = props => {
         return renderMenuItem( item );
       } ) }
       { renderFeedbackButton() }
-    </Menu>
+    </ul>
   );
 
 

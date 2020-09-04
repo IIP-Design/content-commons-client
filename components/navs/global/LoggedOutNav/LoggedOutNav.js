@@ -7,9 +7,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import {
-  Menu, Icon,
-} from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import config from 'config';
 import useTimeout from 'lib/hooks/useTimeout';
 import HamburgerIcon from '../HamburgerIcon';
@@ -63,15 +61,16 @@ const LoggedOutNav = props => {
 
 
   const renderFeedbackButton = () => (
-    <a
-      href={ config.FEEDBACK_FORM_URL }
-      target="_blank"
-      className="item feedback"
-      rel="noopener noreferrer"
-    >
-      { ' ' }
-      Feedback
-    </a>
+    <li className="item feedback-item">
+      <a
+        href={ config.FEEDBACK_FORM_URL }
+        target="_blank"
+        className="feedback"
+        rel="noopener noreferrer"
+      >
+        Feedback
+      </a>
+    </li>
   );
 
 
@@ -88,11 +87,11 @@ const LoggedOutNav = props => {
   );
 
   const renderMenuItem = item => (
-    <Menu.Item as="li" key={ item.key } name={ item.name }>
+    <li key={ item.key } className="item" name={ item.name }>
       <Link href={ item.to } passHref>
         <a>{ item.label }</a>
       </Link>
-    </Menu.Item>
+    </li>
   );
 
 
@@ -125,11 +124,11 @@ const LoggedOutNav = props => {
   };
 
   const renderDesktopNav = items => (
-    <Menu as="ul" className="nav_loggedout">
+    <ul className="ui nav_loggedout menu">
       { items.map( item => renderMenuItem( item ) ) }
-      <Menu.Item as="li" key="4" name="login">
+      <li key="4" className="item" name="login">
         <a href="/login">Login</a>
-      </Menu.Item>
+      </li>
       { reminder && (
         <li className="login_reminder">
           DOS employees, you can log in to see more content.
@@ -139,7 +138,7 @@ const LoggedOutNav = props => {
         </li>
       ) }
       { renderFeedbackButton() }
-    </Menu>
+    </ul>
   );
 
 

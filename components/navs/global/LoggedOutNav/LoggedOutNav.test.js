@@ -75,9 +75,9 @@ describe( '<LoggedOutNav />', () => {
     expect( feedback.props() ).toEqual( {
       href: 'https://goo.gl/forms/9cJ3IBHH9QTld2Mj2',
       target: '_blank',
-      className: 'item feedback',
+      className: 'feedback',
       rel: 'noopener noreferrer',
-      children: [' ', 'Feedback'],
+      children: 'Feedback',
     } );
   } );
 } );
