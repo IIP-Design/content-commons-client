@@ -30,6 +30,7 @@ class MyDocument extends Document {
               title="Google Analytics"
             />
           </noscript>
+          <a className="skip-to-content" href="#content">Skip to main content</a>
           <Main />
           <NextScript />
         </body>

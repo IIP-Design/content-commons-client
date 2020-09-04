@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _This sections lists changes committed since most recent release_
 
+**Added:**
+- Skip to content link for improved accessibility
+- 
+**Changed:**
+- Default link color and hover styling for improved accessibility
+
 # [5.4.1](https://github.com/IIP-Design/content-commons-client/compare/v5.4.0...5.4.1)(2021-02-01)
 **Added:**
 - Support for login from Okta dahsboard 
