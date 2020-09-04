@@ -11,9 +11,10 @@ _This sections lists changes committed since most recent release_
 
 **Added:**
 - Skip to content link for improved accessibility
-- 
+  
 **Changed:**
 - Default link color and hover styling for improved accessibility
+- Wrap navigation menu items in `li` elements
 
 # [5.4.1](https://github.com/IIP-Design/content-commons-client/compare/v5.4.0...5.4.1)(2021-02-01)
 **Added:**
