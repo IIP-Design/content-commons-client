@@ -23,6 +23,7 @@ _This sections lists changes committed since most recent release_
 - Include thumbnails in the 'Other' tab in the video download popup
 - Download instructions text to match mockup changes
 - Remove Transcripts tab in the video download popup on Commons
+- Wrap navigation menu items in `li` elements
 - Default link color and hover styling for improved accessibility
 
 **Fixed:**
