@@ -26,7 +26,7 @@ const Page = ( { children, router } ) => {
     <div style={ { position: 'relative', minHeight: '100vh' } }>
       <Meta title={ title } />
       <Header />
-      <main className={ bodyCls }>
+      <main id="content" className={ bodyCls }>
         { children }
       </main>
       <Footer />
