@@ -25,9 +25,14 @@ _This sections lists changes committed since most recent release_
 - Remove Transcripts tab in the video download popup on Commons
 - Wrap navigation menu items in `li` elements
 - Default link color and hover styling for improved accessibility
+- Disable the Publish Changes button on the video review screen if there are *only* 'Clean' use videos and the project has already been published
+- Adjust publish message on the video review screen to instruct the user to upload at least one non-clean video before publishing changes
 
 **Fixed:**
 - Bug where a video unit's thumbnail was not being assigned to `unit.thumbnail` on the results page; This was preventing a video unit's thumbnails from being listed in its download popup.
+- Bug where deleting a video file from a published video's details page would not display the Publish Changes button. Fixed by calling the `updateVideoProject` mutation and passing the `projectTile` as the updated data when a video file is removed.
+- Bug where changing a video file's language would not display the Publish Changes button. Fixed by calling the `updateVideoProject` mutation and passing the `projectTile` as the updated data when a video file's language is changed.
+- Bug where changing a video file's type would not display the Publish Changes button. Fixed by calling the `updateVideoProject` mutation and passing the `projectTile` as the updated data when a video file's dropdown value is changed.
 
 
 # [5.1.1](https://github.com/IIP-Design/content-commons-client/compare/v5.1.0...5.1.1)(2020-07-29)

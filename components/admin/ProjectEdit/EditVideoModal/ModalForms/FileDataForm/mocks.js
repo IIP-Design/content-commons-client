@@ -32,6 +32,7 @@ const mocks = [
       data: {
         project: {
           id: 'ckcoositc0biv0720dwlj4l0g',
+          projectTitle: 'the project title',
           units: [
             {
               id: 'ckcoospdp0bjc07207x6j8xhw',

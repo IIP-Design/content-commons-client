@@ -24,6 +24,7 @@ import { formatBytes, formatDate, secondsToHMS } from 'lib/utils';
 
 // eslint-disable-next-line import/no-cycle
 import { VIDEO_UNIT_QUERY } from 'components/admin/ProjectEdit/EditVideoModal/ModalSections/FileSection/FileSection';
+import { UPDATE_VIDEO_PROJECT_MUTATION } from 'lib/graphql/queries/video';
 import {
   VIDEO_PROJECT_QUERY, VIDEO_FILE_QUERY, VIDEO_FILE_LANG_MUTATION, VIDEO_UNIT_CONNECT_FILE_MUTATION,
   VIDEO_UNIT_DISCONNECT_FILE_MUTATION, VIDEO_FILE_SUBTITLES_MUTATION, VIDEO_FILE_USE_MUTATION,
@@ -44,6 +45,7 @@ const FileDataForm = ( {
   streamCreateVideoFileMutation,
   streamDeleteVideoFileMutation,
   streamUpdateVideoFileMutation,
+  updateVideoProjectMutation,
   useVideoFileMutation,
   values,
   videoBurnedInStatusVideoFileMutation,
@@ -74,6 +76,15 @@ const FileDataForm = ( {
     setShowNotification( true );
     startTimeout();
   };
+
+  const updateVideoProject = projectTitle => (
+    updateVideoProjectMutation( {
+      variables: {
+        data: { projectTitle },
+        where: { id: selectedProject },
+      },
+    } )
+  );
 
   const changeLanguage = ( value, id ) => {
     // Get array of units and the language they are in
@@ -107,6 +118,14 @@ const FileDataForm = ( {
                 query: VIDEO_UNIT_QUERY,
                 data: { unit: cachedData.unit },
               } );
+
+              const cachedProjectData = cache.readQuery( {
+                query: VIDEO_PROJECT_QUERY,
+                variables: { id: selectedProject },
+              } );
+
+              // update project to trigger display of Publish Changes button
+              updateVideoProject( cachedProjectData.project.projectTitle );
             } catch ( error ) {
               console.log( error );
             }
@@ -189,6 +208,14 @@ const FileDataForm = ( {
             query: VIDEO_FILE_QUERY,
             data: { file: cachedData.file },
           } );
+
+          const cachedProjectData = cache.readQuery( {
+            query: VIDEO_PROJECT_QUERY,
+            variables: { id: selectedProject },
+          } );
+
+          // update project to trigger display of Publish Changes button
+          updateVideoProject( cachedProjectData.project.projectTitle );
         } catch ( error ) {
           console.log( error );
         }
@@ -272,6 +299,14 @@ const FileDataForm = ( {
             query: VIDEO_UNIT_QUERY,
             data: { unit: cachedData.unit },
           } );
+
+          const cachedProjectData = cache.readQuery( {
+            query: VIDEO_PROJECT_QUERY,
+            variables: { id: selectedProject },
+          } );
+
+          // update project to trigger display of Publish Changes button
+          updateVideoProject( cachedProjectData.project.projectTitle );
 
           console.log( `Deleted video: ${selectedFile}` );
 
@@ -428,6 +463,7 @@ FileDataForm.propTypes = {
   streamCreateVideoFileMutation: propTypes.func,
   streamDeleteVideoFileMutation: propTypes.func,
   streamUpdateVideoFileMutation: propTypes.func,
+  updateVideoProjectMutation: propTypes.func,
   useVideoFileMutation: propTypes.func,
   values: propTypes.object,
   videoBurnedInStatusVideoFileMutation: propTypes.func,
@@ -447,6 +483,7 @@ export default compose(
       variables: { displayName: 'English' },
     } ),
   } ),
+  graphql( UPDATE_VIDEO_PROJECT_MUTATION, { name: 'updateVideoProjectMutation' } ),
   graphql( VIDEO_FILE_DELETE_MUTATION, { name: 'deleteVideoFileMutation' } ),
   graphql( VIDEO_FILE_DELETE_STREAM_MUTATION, { name: 'streamDeleteVideoFileMutation' } ),
   graphql( VIDEO_FILE_UPDATE_STREAM_MUTATION, { name: 'streamUpdateVideoFileMutation' } ),
