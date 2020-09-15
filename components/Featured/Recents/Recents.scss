@@ -1,4 +1,5 @@
 @import "styles/colors.scss";
+@import "styles/mixins.scss";
 
 .recents {
   padding: 3em 0;
@@ -111,12 +112,11 @@
 
     &_title {
       width: 80%;
-      word-break: break-all; // Safari
-      overflow-wrap: anywhere;
       -webkit-hyphens: auto;
       -ms-hyphens: auto;
       -moz-hyphens: auto;
       hyphens: auto;
+      @include wrap-text;
     }
 
     &_icon {
