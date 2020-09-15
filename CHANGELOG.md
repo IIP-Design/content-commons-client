@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _This sections lists changes committed since most recent release_
 
+**Fixed:**
+- Query on Home page to return public video projects when user is not logged in.
+
 # [5.2.0](https://github.com/IIP-Design/content-commons-client/compare/v5.1.1...5.2.0)(2020-09-14)
 
 **Added:**
