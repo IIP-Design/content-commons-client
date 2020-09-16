@@ -1,4 +1,5 @@
 @import "styles/colors.scss";
+@import "styles/mixins.scss";
 
 .project_units {
   &_headline {
@@ -60,10 +61,7 @@
     }
 
     &.tags p {
-      overflow-wrap: break-word;
-      word-wrap: break-word;
-      -ms-word-break: break-all;
-      word-break: break-word;
+      @include wrap-text;
     }
   }
 

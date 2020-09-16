@@ -112,10 +112,7 @@
 
     &_title {
       width: 80%;
-      -webkit-hyphens: auto;
-      -ms-hyphens: auto;
-      -moz-hyphens: auto;
-      hyphens: auto;
+      @include hyphenate;
       @include wrap-text;
     }
 

@@ -1,9 +1,9 @@
 @import "styles/colors.scss";
+@import "styles/mixins.scss";
 
 .modal_section--description {
   margin-top: 1em;
-  word-break: break-all; // Safari
-  overflow-wrap: anywhere;
+  @include wrap-text;
 }
 
 .modal_description {
