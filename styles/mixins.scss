@@ -163,6 +163,13 @@
   @include text-shadow;
 }
 
+@mixin hyphenate {
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
 @mixin wrap-text {
   overflow-wrap: break-word;
   word-wrap: break-word;

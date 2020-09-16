@@ -72,8 +72,7 @@ $image-height: 25rem;
 
   &__content {
     margin-top: 2em;
-    word-break: break-all; // Safari
-    overflow-wrap: anywhere;
+    @include wrap-text;
     
     &__title {
       margin-bottom: 3px;
