@@ -14,6 +14,9 @@ _This sections lists changes committed since most recent release_
 
 # [5.2.0](https://github.com/IIP-Design/content-commons-client/compare/v5.1.1...5.2.0)(2020-09-14)
 
+**Changed:**
+- Check for a logged in user before calling `getItemRequest` on graphic and video project pages
+
 **Added:**
 - 'For Translation' tab with 'Clean' use videos to the video download popup on commons and publisher
 - 'Other' tab to the video download popup on commons
