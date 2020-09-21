@@ -22,10 +22,14 @@ GraphicPage.getInitialProps = async ctx => {
     : '';
 
   if ( query && query.site && query.id ) {
-    const response = await getItemRequest( query.site, query.id, true, user );
+    const response = user?.id && user.id !== 'public'
+      ? await getItemRequest( query.site, query.id, true, user )
+      : null;
 
-    if ( response.internal ) {
+    if ( !response || response?.internal ) {
       redirectTo( `/login?return=${ctx.asPath}`, ctx );
+
+      return {};
     }
 
     const item = getDataFromHits( response );
