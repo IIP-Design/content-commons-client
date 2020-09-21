@@ -5,6 +5,7 @@ import ContentPage from 'components/PageTypes/ContentPage/ContentPage';
 import Video from 'components/Video/Video';
 import { fetchUser } from 'context/authContext';
 import { getItemRequest } from 'lib/elastic/api';
+import { redirectTo } from 'lib/browser';
 import { normalizeItem, getDataFromHits } from 'lib/elastic/parser';
 
 const VideoPage = ( { item, url } ) => (
@@ -22,7 +23,16 @@ VideoPage.getInitialProps = async ctx => {
     : '';
 
   if ( query && query.site && query.id ) {
-    const response = await getItemRequest( query.site, query.id, false, user ) || {};
+    const response = user?.id && user.id !== 'public'
+      ? await getItemRequest( query.site, query.id, false, user )
+      : null;
+
+    if ( !response || response?.internal ) {
+      redirectTo( `/login?return=${ctx.asPath}`, ctx );
+
+      return {};
+    }
+
     const item = getDataFromHits( response );
 
     if ( item && item[0] ) {
