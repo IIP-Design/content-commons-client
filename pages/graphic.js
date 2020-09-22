@@ -22,9 +22,15 @@ GraphicPage.getInitialProps = async ctx => {
     : '';
 
   if ( query && query.site && query.id ) {
-    const response = user?.id && user.id !== 'public'
-      ? await getItemRequest( query.site, query.id, true, user )
-      : null;
+    // Do not need to check for the user here as the server will strip internal content
+    // if a token is not present on the user param. Letting the server handle it will mitigate
+    // use case that occurs when the user is null.
+    const response = await getItemRequest(
+      query.site,
+      query.id,
+      true,
+      user,
+    );
 
     if ( !response || response?.internal ) {
       redirectTo( `/login?return=${ctx.asPath}`, ctx );
