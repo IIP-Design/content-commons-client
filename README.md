@@ -32,13 +32,7 @@ Client available at [http://localhost:3000/](http://localhost:3000/)
 
 ## CSS Modules
 
-The following components use [CSS Modules](https://github.com/css-modules/css-modules) to scope styles their styles locally.
-
-- AddGraphicFiles.js
-- EditFileGrid.js
-- EditFileGridRow.js
-- Filename.js
-- GraphicUpload.js
+Some components use [CSS Modules](https://github.com/css-modules/css-modules) to scope styles their styles locally.
 
 To convert other components to CSS modules, rename a component's SCSS file:
 
