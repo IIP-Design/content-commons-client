@@ -1,6 +1,6 @@
 # Content Commons Frontend
 
-Handles the public Content Commons as well as the client side adminstative interfaces (Publisher).
+Handles the public Content Commons as well as the client side administrative interfaces (Publisher).
 
 ### Getting Started
 
@@ -30,11 +30,43 @@ Handles the public Content Commons as well as the client side adminstative inter
 
 Client available at [http://localhost:3000/](http://localhost:3000/)
 
+## CSS Modules
+
+The following components use [CSS Modules](https://github.com/css-modules/css-modules) to scope styles their styles locally.
+
+- AddGraphicFiles.js
+- EditFileGrid.js
+- EditFileGridRow.js
+- Filename.js
+- GraphicUpload.js
+
+To convert other components to CSS modules, rename a component's SCSS file:
+
+```
+// to
+[ComponentName].module.scss
+ 
+// from
+[ComponentName].scss
+```
+
+Then change the `import` of the component's SCSS file:
+
+```
+// to
+import styles from './[ComponentName].module.scss';
+
+// from
+import './[ComponentName].scss';
+```
+
+To apply CSS module styles, add a `className` value that matches the relevant `className` value from the `styles` object imported from the stylesheet, e.g., `<div className={ styles.someClassName }>...</div>`.
+
 ## Running Tests
 
 Tests are executed using [Jest](https://jestjs.io/en/) and [Enzyme](https://airbnb.io/enzyme/)
 
-Ensure that your files following the [component name].test.js naming convention and execute:
+Ensure that your files following the [ComponentName].test.js naming convention and execute:
 
 ```
 npm run test
