@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _This sections lists changes committed since most recent release_
 
+**Added:**
+- CSS modules documentation
+
 # [5.2.1](https://github.com/IIP-Design/content-commons-client/compare/v5.2.0...5.2.1)(2020-09-23)
 
 **Fixed:**
