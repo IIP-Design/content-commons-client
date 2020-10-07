@@ -34,7 +34,7 @@ Client available at [http://localhost:3000/](http://localhost:3000/)
 
 Some components use [CSS Modules](https://github.com/css-modules/css-modules) to scope styles their styles locally.
 
-To convert other components to CSS modules, rename a component's SCSS file:
+To convert other components to CSS modules, rename its SCSS file:
 
 ```
 // to
