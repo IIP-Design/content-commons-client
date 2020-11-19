@@ -1,7 +1,7 @@
 const withStyles = require( '@webdeb/next-styles' );
 
 const withBundleAnalyzer = require( '@next/bundle-analyzer' )( {
-  enabled: process.env.ANALYZE === 'true'
+  enabled: process.env.ANALYZE === 'true',
 } );
 
 require( 'dotenv' ).config();
@@ -28,14 +28,24 @@ module.exports = withBundleAnalyzer(
       REACT_APP_AWS_S3_PRODUCTION_BUCKET: process.env.REACT_APP_AWS_S3_PRODUCTION_BUCKET,
       REACT_APP_SINGLE_ARTICLE_MODULE: process.env.REACT_APP_SINGLE_ARTICLE_MODULE,
       REACT_APP_CDP_MODULES_URL: process.env.REACT_APP_CDP_MODULES_URL,
-      REACT_APP_GOOGLE_ANALYTICS_ID: process.env.REACT_APP_GOOGLE_ANALYTICS_ID
+      REACT_APP_GOOGLE_ANALYTICS_ID: process.env.REACT_APP_GOOGLE_ANALYTICS_ID,
+      REACT_APP_AWS_COGNITO_REGION: process.env.REACT_APP_AWS_COGNITO_REGION,
+      REACT_APP_AWS_COGNITO_USER_POOLS_ID: process.env.REACT_APP_AWS_COGNITO_USER_POOLS_ID,
+      REACT_APP_AWS_COGNITO_IDENTITY_POOL_ID: process.env.REACT_APP_AWS_COGNITO_IDENTITY_POOL_ID,
+      REACT_APP_AWS_COGNITO_USER_POOL_WEB_CLIENT_ID:
+        process.env.REACT_APP_AWS_COGNITO_USER_POOL_WEB_CLIENT_ID,
+      REACT_APP_AWS_COGNITO_CLIENT_DOMAIN: process.env.REACT_APP_AWS_COGNITO_CLIENT_DOMAIN,
+      REACT_APP_AWS_COGNITO_CLIENT_REDIRECT_SIGNIN:
+        process.env.REACT_APP_AWS_COGNITO_CLIENT_REDIRECT_SIGNIN,
+      REACT_APP_AWS_COGNITO_CLIENT_REDIRECT_SIGNOUT:
+        process.env.REACT_APP_AWS_COGNITO_CLIENT_REDIRECT_SIGNOUT,
     },
     serverRuntimeConfig: {},
     poweredByHeader: false,
     sass: true,
     modules: true,
     miniCssExtractOptions: {
-      ignoreOrder: true
+      ignoreOrder: true,
     },
     webpack( config ) {
       config.module.rules.push( {
@@ -46,12 +56,12 @@ module.exports = withBundleAnalyzer(
             limit: 100000,
             publicPath: './',
             outputPath: 'static/css',
-            name: '[name].[ext]'
-          }
-        }
+            name: '[name].[ext]',
+          },
+        },
       } );
 
       return config;
-    }
-  } )
+    },
+  } ),
 );

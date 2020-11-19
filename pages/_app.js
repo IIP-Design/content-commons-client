@@ -11,6 +11,12 @@ import Page from 'components/Page';
 import makeStore from 'lib/redux/store';
 import 'styles/styles.scss';
 
+
+import Amplify from 'aws-amplify';
+import awsconfig from '../aws-exports';
+
+Amplify.configure( awsconfig );
+
 class Commons extends App {
   static async getInitialProps( { Component, ctx } ) {
     let pageProps = {};
