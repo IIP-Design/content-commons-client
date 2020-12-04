@@ -9,13 +9,14 @@ import isEmpty from 'lodash/isEmpty';
 import withApollo from 'hocs/withApollo';
 import Page from 'components/Page';
 import makeStore from 'lib/redux/store';
-import 'styles/styles.scss';
-
-
 import Amplify from 'aws-amplify';
 import awsconfig from '../aws-exports';
+import 'styles/styles.scss';
 
-Amplify.configure( awsconfig );
+Amplify.configure( {
+  ...awsconfig,
+  ssr: true,
+} );
 
 class Commons extends App {
   static async getInitialProps( { Component, ctx } ) {

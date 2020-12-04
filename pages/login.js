@@ -1,95 +1,59 @@
 /* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { useRouter } from 'next/router';
-// import { Loader } from 'semantic-ui-react';
-
-// import Login from 'components/Login/Login';
-// import { useAuth } from 'context/authContext';
-// import { isDevEnvironment } from 'lib/browser';
-
-import { Button } from 'semantic-ui-react';
-import { Auth } from 'aws-amplify';
-
-const LoginPage = () => {
-  const checkUser = () => {
-    Auth.currentAuthenticatedUser()
-      .then( user => console.log( { user } ) )
-      .catch( err => console.log( err ) );
-  };
-  const signOut = () => {
-    Auth.signOut()
-      .then( data => console.log( data ) )
-      .catch( err => console.log( err ) );
-  };
-
-  return (
-    <div>
-      <div>
-        <Button className="btn primary" onClick={ () => Auth.federatedSignIn( { provider: 'Google' } ) }>
-          {' '}
-          Sign in with Google
-          {' '}
-        </Button>
-        <Button className="btn primary" onClick={ () => Auth.federatedSignIn() }>
-          Sign in with Hosted UI
-        </Button>
-
-        <Button className="btn primary" onClick={ () => checkUser() }>
-          Check User
-        </Button>
-
-        <Button className="btn primary" onClick={ () => signOut() }>
-          Sign Out
-        </Button>
+import { Loader } from 'semantic-ui-react';
+import cookies from 'next-cookies';
+import { redirectTo } from 'lib/browser';
+import Login from 'components/Login/Login'
+ 
+/**
+ * Takes a destructured object as a param containing:
+ * @param redirect url to redirected to
+ * @param code code that amplify sends on redirect after validation 
+ */
+const LoginPage = ( { redirect = '/', code } ) => {    
+  // if code is defined then we are in the Commons signin process, show loader
+  if ( code ) {
+    return (
+      <div style={{ height: '30vh', paddingTop: '6rem' }}>
+        <Loader size="medium" active inline="centered">
+          Loading
+        </Loader>
       </div>
-    </div>
-  );
+    );
+  }
+
+  return  <Login redirect={ redirect } />
 };
 
-// const LoginPage = ( { redirect } ) => {
-//   const router = useRouter();
+LoginPage.getInitialProps = async ( ctx ) => {  
+  const  {req, asPath, isServer } = ctx;
 
-//   const { user, login, loading } = useAuth();
+  // if user is already logged in, redirect to home
+  // TO Do: use Cognito token so only have to manage 1
+  if( isServer ) {
+    const { americaCommonsToken } = cookies( ctx );
+    if ( americaCommonsToken ) {
+      redirectTo( '/', ctx )
+    }
+  }
 
-//   // if we have a user, redirect
-//   if ( user && user.id !== 'public' ) {
-//     const _redirect = redirect || '/';
+  // Check to see if this is a redirect after login
+  // A 'return' query param is added to login url in _app if attempting
+  // to access a protected page prior to authentication
+  const re = /login\?return={1}(?<redirect>\/.+)$/;
+  const match = re.exec( asPath );
 
-//     router.push( _redirect );
-//   }
-
-//   // if waiting on user, show loader
-//   if ( loading ) {
-//     return (
-//       <div style={ { height: '30vh', paddingTop: '6rem' } }>
-//         <Loader size="medium" active inline="centered">
-//           Loading
-//         </Loader>
-//       </div>
-//     );
-//   }
-
-//   // we do not have a user or are waiting on one
-//   // if in the local or dev environment, login with Google
-//   // as these environments do not have CloudFlare access
-//   if ( isDevEnvironment() ) {
-//     return <Login />;
-//   }
-//   // login with CloudFlare
-//   login();
-
-//   return null;
-// };
-
-// LoginPage.getInitialProps = async ( { res, status, asPath, query } ) => {
-//   const re = /login\?return={1}(?<redirect>\/.+)$/;
-//   const match = re.exec( asPath );
-
-//   // return redirect url so user can be redirected client side
-//   // after successful login and user obj is populated
-//   return { redirect: match?.groups?.redirect };
-// };
+  // Return redirect url to be passed to Cognito authentication as customState
+  // The customState event is listened for in authContext via amplify Hub obj
+  // The redirect happens when the customState event occurs
+  // code is sent to indicate whether we are in sign in process -- will trigger the loading screen
+  // if code !== undefined, we are in signin process (code is sent by amplify after successful login)
+  return {
+    redirect: match?.groups?.redirect,
+    code: req?.query?.code
+  };
+};
 
 LoginPage.propTypes = {
   redirect: PropTypes.string,

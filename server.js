@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const express = require( 'express' );
 const next = require( 'next' );
 
@@ -19,6 +20,21 @@ app.prepare()
 
       const actualPage = '/admin/project';
       const queryParams = { id, content, action };
+
+      app.render( req, res, actualPage, queryParams );
+    } );
+
+    /**
+     * Add the optional param code to login path to handle
+     * the redirect from Cognito. If this is not added, the
+     * added 'code' param will cause route to fail with 4040
+     */
+    server.get( '/login/:code?', ( req, res ) => {
+      const { code } = req.params;
+
+      const actualPage = '/login';
+      const queryParams = { code };
+
       app.render( req, res, actualPage, queryParams );
     } );
 

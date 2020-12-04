@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import cookie from 'js-cookie';
 import cookies from 'next-cookies';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { useRouter } from 'next/router';
+import { Auth, Hub } from 'aws-amplify';
 
 import {
-  CLOUDFLARE_SIGNIN_MUTATION,
+  COGNITO_SIGNIN_MUTATION,
   USER_SIGN_OUT_MUTATION,
   CURRENT_USER_QUERY,
 } from 'lib/graphql/queries/user';
-import { isDevEnvironment } from 'lib/browser';
 import { isRestrictedPage } from 'lib/authentication';
 
 const AuthContext = React.createContext();
@@ -26,40 +26,17 @@ export const hasPagePermissions = user => user.permissions.some(
   permission => allowedRolesForRestrictedPages.includes( permission ),
 );
 
-/**
- * Return the cookie that CloudFlare sets upon successful sign in to
- * @param {*} ctx next.js context object
- */
-const getCloudFlareToken = ctx => {
-  // CloudFlare is not connected to the dev environment
-  // so send replacement
-  if ( isDevEnvironment() ) {
-    return 'cfToken';
-  }
-
-  /* eslint-disable camelcase */
-  const { CF_Authorization } = cookies( ctx );
-
-  return CF_Authorization;
-  /* eslint-enable */
-};
 
 /**
- * Returns a user if both a CloudFlare token AND
- * valid user exist, else return null
+ * Returns a user if valid user exist, else return null
  * Exported to make available for SSR and outside
  * of react components
+ * NOTE: Do we need a valid cognito session here?
  * @param {obj} ctx next.js context object
  */
 export const fetchUser = async ctx => {
-  const cfAuth = getCloudFlareToken( ctx );
-
-  // CloudFlare token MUST be available, if not return null
-  if ( !cfAuth ) {
-    return null;
-  }
-
   try {
+    // do we have a valid session?
     const {
       data: { user },
     } = await ctx.apolloClient.query( { query: CURRENT_USER_QUERY, fetchPolicy: 'network-only' } );
@@ -112,58 +89,67 @@ const AuthProvider = props => {
   const client = useApolloClient();
   const router = useRouter();
 
-  // ensure signIn only called once
-  const [attemptToSignIntoCF, setAttemptToSignIntoCF] = useState( false );
-
-  // Attempt to fetch user
-  const { data, loading: userLoading } = useQuery( CURRENT_USER_QUERY, {
-    ssr: false,
-    fetchPolicy: 'network-only',
+  // Sign in mutation
+  const [signIn] = useMutation( COGNITO_SIGNIN_MUTATION, {
+    refetchQueries: [{ query: CURRENT_USER_QUERY }],
   } );
 
-  // Sign in mutation
-  const [signIn] = useMutation(
-    CLOUDFLARE_SIGNIN_MUTATION, {
-      refetchQueries: [{ query: CURRENT_USER_QUERY }],
+  /**
+   * Sign In mutation. Send cognito idToken
+   * @param {Object} session Cognito session
+  */
+  const login = async session => {
+    // Get jwt token from Cognito session
+    const token = session?.idToken?.jwtToken;
+
+    // Send cognito token for verification on commons server
+    signIn( { variables: { token } } ).catch( err => {} );
+  };
+
+  /*
+   Login is initiated from the Login screen via Auth.federatedSignIn()
+   We listen for a successful signin event and then initiate Commons login,
+   passing Cognito token. If a redirect is provided, i.e. an unauthenticated user
+   attempts to access a protected page, they must 1st signin before being directed
+   to original protected page. The redirect is added to the
+   Auth.federatedSignIn( { provider: 'Google', customState: redirect }) method and
+   listened for via the 'customOAuthState' event.
+   */
+  useEffect( () => {
+    // eslint-disable-next-line no-shadow
+    Hub.listen( 'auth', ( { payload: { event, data } } ) => {
+      if ( event === 'signIn' ) {
+        login( data?.signInUserSession );
+      }
+      if ( event === 'customOAuthState' ) {
+        router.push( data );
+      }
+    } );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [] );
+
+  // Attempt to fetch user
+  const { data, loading: userLoading } = useQuery(
+    CURRENT_USER_QUERY,
+    {
+      ssr: false,
+      fetchPolicy: 'network-only',
     },
   );
 
   // Sign out mutation
   const [signOut] = useMutation( USER_SIGN_OUT_MUTATION, {
-    onCompleted: () => {
-      setAttemptToSignIntoCF( false );
+    onCompleted: async () => {
       client.resetStore();
 
-      // sign out of CF
-      const {
-        location: { protocol, hostname, port },
-      } = window;
+      // sign out of Cognito
+      await Auth.signOut();
 
-      // Only do CloudFlare logout if on staging, beta or prod
-      if ( !isDevEnvironment() ) {
-        const url = `${protocol}//${hostname}:${port}`;
-
-        window.location = `https://america.cloudflareaccess.com/cdn-cgi/access/logout?returnTo=${url}`;
-      }
-      cookie.remove( 'CF_Authorization' );
+      // Remove elastic api access token
       cookie.remove( 'ES_TOKEN' );
       router.push( '/' );
     },
   } );
-
-
-  const login = async () => {
-    // do we have a CloudFlare token?
-    const cfAuth = cookie.get( 'CF_Authorization' );
-
-    if ( cfAuth ) {
-      // ensure signIn only called once
-      if ( !attemptToSignIntoCF ) {
-        signIn( { variables: { token: cfAuth } } ).catch( err => {} );
-        setAttemptToSignIntoCF( true );
-      }
-    }
-  };
 
   const logout = async () => signOut();
   const register = () => {};

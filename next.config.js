@@ -39,6 +39,8 @@ module.exports = withBundleAnalyzer(
         process.env.REACT_APP_AWS_COGNITO_CLIENT_REDIRECT_SIGNIN,
       REACT_APP_AWS_COGNITO_CLIENT_REDIRECT_SIGNOUT:
         process.env.REACT_APP_AWS_COGNITO_CLIENT_REDIRECT_SIGNOUT,
+      REACT_APP_AWS_COGNITO_OKTA_PROVIDER_NAME:
+        process.env.REACT_APP_AWS_COGNITO_OKTA_PROVIDER_NAME,
     },
     serverRuntimeConfig: {},
     poweredByHeader: false,
