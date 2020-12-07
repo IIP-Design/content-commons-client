@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import cookie from 'js-cookie';
 import cookies from 'next-cookies';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
@@ -86,18 +86,37 @@ export const canAccessPage = async ctx => {
 
 
 const AuthProvider = props => {
+  const [authenticatedUser, setAuthenticatedUser] = useState( null );
   const client = useApolloClient();
   const router = useRouter();
 
   // Sign in mutation
   const [signIn] = useMutation( COGNITO_SIGNIN_MUTATION, {
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
+    onCompleted: () => {
+      console.log( 'commons sign in complete' );
+    },
+  } );
+
+  // Sign out mutation
+  const [signOut] = useMutation( USER_SIGN_OUT_MUTATION, {
+    onCompleted: async () => {
+      client.resetStore();
+      setAuthenticatedUser( null );
+
+      // sign out of Cognito
+      await Auth.signOut();
+
+      // Remove elastic api access token
+      cookie.remove( 'ES_TOKEN' );
+      router.push( '/' );
+    },
   } );
 
   /**
    * Sign In mutation. Send cognito idToken
    * @param {Object} session Cognito session
-  */
+   */
   const login = async session => {
     // Get jwt token from Cognito session
     const token = session?.idToken?.jwtToken;
@@ -116,56 +135,45 @@ const AuthProvider = props => {
    listened for via the 'customOAuthState' event.
    */
   useEffect( () => {
-    // eslint-disable-next-line no-shadow
-    Hub.listen( 'auth', ( { payload: { event, data } } ) => {
+    Hub.listen( 'auth', ( { payload: { event, data: _data } } ) => {
       if ( event === 'signIn' ) {
         console.log( 'Sign in event from Hub' );
-        console.dir( data );
-        login( data?.signInUserSession );
+        console.dir( _data );
+        login( _data?.signInUserSession );
       }
       if ( event === 'customOAuthState' ) {
         console.log( 'customOAuthState event from Hub' );
-        console.dir( data );
-        router.push( data );
+        console.dir( _data );
+        router.push( _data );
       }
     } );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [] );
 
   // Attempt to fetch user
   const { data, loading: userLoading } = useQuery(
-    CURRENT_USER_QUERY,
-    {
+    CURRENT_USER_QUERY, {
       ssr: false,
       fetchPolicy: 'network-only',
     },
   );
 
-  // Sign out mutation
-  const [signOut] = useMutation( USER_SIGN_OUT_MUTATION, {
-    onCompleted: async () => {
-      client.resetStore();
+  useEffect( () => {
+    if ( data?.user ) {
+      const _authenticatedUser = data.user;
 
-      // sign out of Cognito
-      await Auth.signOut();
-
-      // Remove elastic api access token
-      cookie.remove( 'ES_TOKEN' );
-      router.push( '/' );
-    },
-  } );
+      if ( _authenticatedUser.id !== 'public' ) _authenticatedUser.esToken = cookie.get( 'ES_TOKEN' );
+      setAuthenticatedUser( data.user );
+    }
+  }, [data] );
 
   const logout = async () => signOut();
   const register = () => {};
 
-  if ( data?.user && data.user.id !== 'public' ) {
-    data.user.esToken = cookie.get( 'ES_TOKEN' );
-  }
-
   return (
     <AuthContext.Provider
       value={ {
-        user: data?.user,
+        user: authenticatedUser,
         loading: userLoading,
         login,
         logout,
