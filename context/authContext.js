@@ -119,9 +119,13 @@ const AuthProvider = props => {
     // eslint-disable-next-line no-shadow
     Hub.listen( 'auth', ( { payload: { event, data } } ) => {
       if ( event === 'signIn' ) {
+        console.log( 'Sign in event from Hub' );
+        console.dir( data );
         login( data?.signInUserSession );
       }
       if ( event === 'customOAuthState' ) {
+        console.log( 'customOAuthState event from Hub' );
+        console.dir( data );
         router.push( data );
       }
     } );
