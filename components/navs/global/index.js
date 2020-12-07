@@ -16,14 +16,6 @@ const GlobalNav = () => {
   const [mobileMenuVisible, setMobileMenuVisible] = useState( false );
   const { user, loading } = useAuth();
 
-  console.log( 'IN nav' );
-  if ( user && user.id !== 'public' ) {
-    console.dir( user );
-  } else {
-    console.log( 'user is NUL' );
-  }
-
-
   const toggleMobileMenu = flag => {
     setMobileMenuVisible( flag );
   };

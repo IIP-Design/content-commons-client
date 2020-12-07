@@ -91,21 +91,18 @@ const AuthProvider = props => {
   const router = useRouter();
 
   // Sign in mutation
-  const [signIn] = useMutation( COGNITO_SIGNIN_MUTATION, {
-    refetchQueries: [{ query: CURRENT_USER_QUERY }],
-    onCompleted: () => {
-      console.log( 'commons sign in complete' );
-    },
-  } );
+  const [signIn] = useMutation( COGNITO_SIGNIN_MUTATION );
 
   // Sign out mutation
   const [signOut] = useMutation( USER_SIGN_OUT_MUTATION, {
     onCompleted: async () => {
       client.resetStore();
-      setAuthenticatedUser( null );
 
       // sign out of Cognito
       await Auth.signOut();
+
+      // set user to null
+      setAuthenticatedUser( null );
 
       // Remove elastic api access token
       cookie.remove( 'ES_TOKEN' );
@@ -122,7 +119,12 @@ const AuthProvider = props => {
     const token = session?.idToken?.jwtToken;
 
     // Send cognito token for verification on commons server
-    signIn( { variables: { token } } ).catch( err => {} );
+    const { data: _data } = await signIn( { variables: { token } } ).catch( err => {} );
+
+    // if we have valid signin (user is returned), set authenticate user
+    if ( _data?.cognitoSignin ) {
+      setAuthenticatedUser( _data.cognitoSignin );
+    }
   };
 
   /*
@@ -137,13 +139,9 @@ const AuthProvider = props => {
   useEffect( () => {
     Hub.listen( 'auth', ( { payload: { event, data: _data } } ) => {
       if ( event === 'signIn' ) {
-        console.log( 'Sign in event from Hub' );
-        console.dir( _data );
         login( _data?.signInUserSession );
       }
       if ( event === 'customOAuthState' ) {
-        console.log( 'customOAuthState event from Hub' );
-        console.dir( _data );
         router.push( _data );
       }
     } );
@@ -158,12 +156,14 @@ const AuthProvider = props => {
     },
   );
 
+  // listen for data change to to user query
+  // if we have a vaild user, set authenticated user
   useEffect( () => {
-    if ( data?.user ) {
-      const _authenticatedUser = data.user;
+    const _user = data?.user;
 
-      if ( _authenticatedUser.id !== 'public' ) _authenticatedUser.esToken = cookie.get( 'ES_TOKEN' );
-      setAuthenticatedUser( data.user );
+    if ( _user && _user.id !== 'public ' ) {
+      _user.esToken = cookie.get( 'ES_TOKEN' );
+      setAuthenticatedUser( _user );
     }
   }, [data] );
 
