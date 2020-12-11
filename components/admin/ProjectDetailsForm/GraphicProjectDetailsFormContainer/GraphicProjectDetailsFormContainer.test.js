@@ -50,7 +50,11 @@ const config = {
     variables: {
       where: {
         name_in: [
-          'GPA Design & Editorial', 'Regional Media Hubs', 'ShareAmerica', 'U.S. Missions',
+          'GPA Design & Editorial',
+          'Regional Media Hubs',
+          'ShareAmerica',
+          'U.S. Missions',
+          'ECA PASC',
         ],
       },
     },
