@@ -11,6 +11,10 @@ _This sections lists changes committed since most recent release_
 
 **Added:**
 - CSS modules documentation
+- AWS Congito integration via amplify
+
+**Removed**
+ - CloudFlare integration
 
 # [5.2.2](https://github.com/IIP-Design/content-commons-client/compare/v5.2.1...5.2.2)(2020-12-11)
 **Added:**
