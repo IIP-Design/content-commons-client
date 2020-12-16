@@ -127,6 +127,7 @@ const GraphicProjectDetailsFormContainer = props => {
               'Regional Media Hubs',
               'ShareAmerica',
               'U.S. Missions',
+              'ECA PASC',
             ],
           },
         },
