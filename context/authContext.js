@@ -161,7 +161,7 @@ const AuthProvider = props => {
   useEffect( () => {
     const _user = data?.user;
 
-    if ( _user && _user.id !== 'public ' ) {
+    if ( _user && _user.id !== 'public' ) {
       _user.esToken = cookie.get( 'ES_TOKEN' );
       setAuthenticatedUser( _user );
     }
