@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import cookie from 'js-cookie';
+import Cookies from 'js-cookie';
 import cookies from 'next-cookies';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { useRouter } from 'next/router';
@@ -90,6 +90,18 @@ const AuthProvider = props => {
   const client = useApolloClient();
   const router = useRouter();
 
+  /**
+   * Adds the ES_TOKEN to the user object. NOTE: This should be removed and the token pulled from cookie
+   * within the API. Would require a longer testing period so will refactor based on what happned
+   * with Commons
+   * @param {Object} user user object returned from either Cognito (on signin) or graphQL (on load)
+   */
+  const setUser = user => {
+    const ES_TOKEN = Cookies.get( 'ES_TOKEN' );
+
+    setAuthenticatedUser( { ...user, esToken: ES_TOKEN } );
+  };
+
   // Sign in mutation
   const [signIn] = useMutation( COGNITO_SIGNIN_MUTATION );
 
@@ -105,7 +117,6 @@ const AuthProvider = props => {
       setAuthenticatedUser( null );
 
       // Remove elastic api access token
-      cookie.remove( 'ES_TOKEN' );
       router.push( '/' );
     },
   } );
@@ -123,7 +134,7 @@ const AuthProvider = props => {
 
     // if we have valid signin (user is returned), set authenticate user
     if ( _data?.cognitoSignin ) {
-      setAuthenticatedUser( _data.cognitoSignin );
+      setUser( _data.cognitoSignin );
     }
   };
 
@@ -162,8 +173,7 @@ const AuthProvider = props => {
     const _user = data?.user;
 
     if ( _user && _user.id !== 'public' ) {
-      _user.esToken = cookie.get( 'ES_TOKEN' );
-      setAuthenticatedUser( _user );
+      setUser( _user );
     }
   }, [data] );
 

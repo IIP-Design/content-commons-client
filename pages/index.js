@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+import Featured from 'components/Featured/Featured';
+import { useAuth } from 'context/authContext';
+import { useDispatch } from 'react-redux';
+import { clearFilters } from 'lib/redux/actions/filter';
 import { v4 } from 'uuid';
 
-import Featured from 'components/Featured/Featured';
-import { clearFilters } from 'lib/redux/actions/filter';
-import { fetchUser } from 'context/authContext';
-
-const featuredData = [
+const privateData = [
   {
     key: v4(),
     component: 'packages',
@@ -16,6 +15,9 @@ const featuredData = [
       locale: 'en-us',
     },
   },
+];
+
+const publicData = [
   {
     key: v4(),
     component: 'priorities',
@@ -108,43 +110,22 @@ const featuredData = [
   },
 ];
 
-class Landing extends Component {
-  static async getInitialProps( ctx ) {
-    const { store } = ctx;
-    let featuredDataForLanding;
 
-    const user = await fetchUser( ctx );
+const Landing = () => {
+  const dispatch = useDispatch();
+  const { user } = useAuth();
 
-    if ( !user ) {
-      // remove internal packages (internal content) from query if user is not present
-      featuredDataForLanding = featuredData.filter( item => item.component !== 'packages' );
-    } else {
-      featuredDataForLanding = [...featuredData];
-    }
+  const data = user?.esToken ? [...publicData, ...privateData] : [...publicData];
 
-    // trigger parallel loading calls
-    const resetFilters = store.dispatch( clearFilters() );
+  // trigger parallel loading calls to reset filters
+  dispatch( clearFilters() );
 
-    // await completion
-    await Promise.all( [resetFilters] );
-
-    return { featuredDataForLanding, user };
-  }
-
-  render() {
-    const { featuredDataForLanding, user } = this.props;
-
-    return (
-      <section>
-        <Featured data={ featuredDataForLanding } user={ user } />
-      </section>
-    );
-  }
-}
-
-Landing.propTypes = {
-  featuredDataForLanding: PropTypes.array,
-  user: PropTypes.object,
+  return (
+    <section>
+      <Featured data={ data } user={ user } />
+    </section>
+  );
 };
+
 
 export default Landing;

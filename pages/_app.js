@@ -20,8 +20,6 @@ Amplify.configure( {
 
 class Commons extends App {
   static async getInitialProps( { Component, ctx } ) {
-    let pageProps = {};
-
     // if user does not have appropriate page permissions redirect
     if ( !await canAccessPage( ctx ) ) {
       // only set redirect url to a non login url
@@ -32,16 +30,18 @@ class Commons extends App {
       }
     }
 
-    if ( Component.getInitialProps ) {
-      pageProps = await Component.getInitialProps( ctx );
-    }
+    const pageProps = Component.getInitialProps ? await Component.getInitialProps( ctx ) : {};
 
     // exposes apollo query to component
     if ( !isEmpty( ctx.query ) ) {
       pageProps.query = ctx.query;
     }
 
-    return { pageProps };
+    if ( Object.keys( pageProps ).length > 0 ) {
+      return { pageProps };
+    }
+
+    return {};
   }
 
   render() {
