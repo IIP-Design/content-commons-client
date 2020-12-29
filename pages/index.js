@@ -116,9 +116,19 @@ const Landing = () => {
   const { user } = useAuth();
   const [data, setData] = useState( null );
 
+  console.log( 'ON LOAD' );
+  console.dir( user );
+  console.dir( data );
+  console.log( 'END ON LOAD' );
+
   useEffect( () => {
     const _data = user?.esToken ? [...publicData, ...privateData] : [...publicData];
 
+
+    console.log( 'ON USER CHANGE' );
+    console.dir( user );
+    console.dir( data );
+    console.log( 'END ON USER CHANGE' );
     setData( _data );
   }, [user] );
 
