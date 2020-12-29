@@ -11,7 +11,6 @@ import { getFeatured, loadPostTypes } from './utils';
 
 import { FeaturedContext, featuredReducer } from 'context/featuredContext';
 import { PostTypeContext, postTypeReducer } from 'context/postTypeContext';
-import { isDataStale } from 'lib/utils';
 import { typePrioritiesRequest, typeRecentsRequest, typeRequestDesc } from 'lib/elastic/api';
 
 const Featured = ( { data, user } ) => {
@@ -21,10 +20,8 @@ const Featured = ( { data, user } ) => {
   const [state, dispatch] = useReducer( featuredReducer );
   const [postTypeState, postTypeDispatch] = useReducer( postTypeReducer );
 
-  const isStale = state?.lastLoad ? isDataStale( state.lastLoad ) : true;
-
   useEffect( () => {
-    if ( data && isStale ) {
+    if ( data ) {
       dispatch( { type: 'LOAD_FEATURED_PENDING' } );
 
       const promiseArr = data.map( async d => {
@@ -65,9 +62,7 @@ const Featured = ( { data, user } ) => {
 
       getFeatured( promiseArr, dispatch );
     }
-  }, [
-    data, isStale, user,
-  ] );
+  }, [data, user] );
 
   useEffect( () => {
     loadPostTypes( postTypeDispatch, user );
