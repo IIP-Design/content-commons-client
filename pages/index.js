@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Featured from 'components/Featured/Featured';
 import { useAuth } from 'context/authContext';
 import { useDispatch } from 'react-redux';
@@ -114,8 +114,14 @@ const publicData = [
 const Landing = () => {
   const dispatch = useDispatch();
   const { user } = useAuth();
+  const [data, setData] = useState( null );
 
-  const data = user?.esToken ? [...publicData, ...privateData] : [...publicData];
+  useEffect( () => {
+    const _data = user?.esToken ? [...publicData, ...privateData] : [...publicData];
+
+    setData( _data );
+  }, [user] );
+
 
   // trigger parallel loading calls to reset filters
   dispatch( clearFilters() );
