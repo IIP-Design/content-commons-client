@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Featured from 'components/Featured/Featured';
-import { useAuth } from 'context/authContext';
-import { useDispatch } from 'react-redux';
+import { fetchUser } from 'context/authContext';
 import { clearFilters } from 'lib/redux/actions/filter';
 import { v4 } from 'uuid';
 
@@ -110,38 +110,42 @@ const publicData = [
   },
 ];
 
+class Landing extends Component {
+  static async getInitialProps( ctx ) {
+    const { store } = ctx;
 
-const Landing = () => {
-  const dispatch = useDispatch();
-  const { user } = useAuth();
-  const [data, setData] = useState( null );
+    const user = await fetchUser( ctx );
 
-  console.log( 'ON LOAD' );
-  console.dir( user );
-  console.dir( data );
-  console.log( 'END ON LOAD' );
+    const data = user && user.id !== 'public' ? [...publicData, ...privateData] : [...publicData];
 
-  useEffect( () => {
-    const _data = user?.esToken ? [...publicData, ...privateData] : [...publicData];
+    // trigger parallel loading calls
+    const resetFilters = store.dispatch( clearFilters() );
+
+    // await completion
+    await Promise.all( [resetFilters] );
+
+    return { data, user };
+  }
 
 
-    console.log( 'ON USER CHANGE' );
+  render() {
+    const { data, user } = this.props;
+
     console.dir( user );
     console.dir( data );
-    console.log( 'END ON USER CHANGE' );
-    setData( _data );
-  }, [user] );
+    console.log( '---------' );
 
+    return (
+      <section>
+        <Featured data={ data } user={ user } />
+      </section>
+    );
+  }
+}
 
-  // trigger parallel loading calls to reset filters
-  dispatch( clearFilters() );
-
-  return (
-    <section>
-      <Featured data={ data } user={ user } />
-    </section>
-  );
+Landing.propTypes = {
+  data: PropTypes.array,
+  user: PropTypes.object,
 };
-
 
 export default Landing;
