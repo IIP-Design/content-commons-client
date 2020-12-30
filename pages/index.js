@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import Featured from 'components/Featured/Featured';
-import { fetchUser } from 'context/authContext';
+import { useAuth } from 'context/authContext';
+import { useDispatch } from 'react-redux';
 import { clearFilters } from 'lib/redux/actions/filter';
 import { v4 } from 'uuid';
 
@@ -110,42 +110,38 @@ const publicData = [
   },
 ];
 
-class Landing extends Component {
-  static async getInitialProps( ctx ) {
-    const { store } = ctx;
+const Landing = () => {
+  const dispatch = useDispatch();
+  const { user } = useAuth();
 
-    const user = await fetchUser( ctx );
+  // const data = user && user.id !== 'public' ? [...publicData, ...privateData] : [...publicData];
+  // const [data, setData] = useState( null );
 
-    const data = user && user.id !== 'public' ? [...publicData, ...privateData] : [...publicData];
+  // console.log( 'on load' );
+  // console.dir( user );
+  // console.log( '----------' );
 
-    // trigger parallel loading calls
-    const resetFilters = store.dispatch( clearFilters() );
+  // useEffect( () => {
+  //   const _data = user && user.esToken ? [...publicData, ...privateData] : [...publicData];
 
-    // await completion
-    await Promise.all( [resetFilters] );
+  //   console.log( 'use effect' );
+  //   console.dir( user );
+  //   console.log( '----------' );
+  //   console.log( _data );
+  //   setData( _data );
+  // }, [user] );
 
-    return { data, user };
-  }
+  // trigger parallel loading calls to reset filters
+  dispatch( clearFilters() );
 
-
-  render() {
-    const { data, user } = this.props;
-
-    console.dir( user );
-    console.dir( data );
-    console.log( '---------' );
-
-    return (
-      <section>
-        <Featured data={ data } user={ user } />
-      </section>
-    );
-  }
-}
-
-Landing.propTypes = {
-  data: PropTypes.array,
-  user: PropTypes.object,
+  return (
+    <section>
+      <Featured
+        data={ user && user.id !== 'public' ? [...publicData, ...privateData] : [...publicData] }
+        user={ user }
+      />
+    </section>
+  );
 };
 
 export default Landing;
