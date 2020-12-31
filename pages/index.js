@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Featured from 'components/Featured/Featured';
 import { useAuth } from 'context/authContext';
 import { useDispatch } from 'react-redux';
@@ -113,23 +113,13 @@ const publicData = [
 const Landing = () => {
   const dispatch = useDispatch();
   const { user } = useAuth();
+  const [data, setData] = useState( [] );
 
-  // const data = user && user.id !== 'public' ? [...publicData, ...privateData] : [...publicData];
-  // const [data, setData] = useState( null );
+  useEffect( () => {
+    const _data = user && user.id !== 'public' ? [...publicData, ...privateData] : [...publicData];
 
-  // console.log( 'on load' );
-  // console.dir( user );
-  // console.log( '----------' );
-
-  // useEffect( () => {
-  //   const _data = user && user.esToken ? [...publicData, ...privateData] : [...publicData];
-
-  //   console.log( 'use effect' );
-  //   console.dir( user );
-  //   console.log( '----------' );
-  //   console.log( _data );
-  //   setData( _data );
-  // }, [user] );
+    setData( _data );
+  }, [user] );
 
   // trigger parallel loading calls to reset filters
   dispatch( clearFilters() );
@@ -137,7 +127,7 @@ const Landing = () => {
   return (
     <section>
       <Featured
-        data={ user && user.id !== 'public' ? [...publicData, ...privateData] : [...publicData] }
+        data={ data }
         user={ user }
       />
     </section>
