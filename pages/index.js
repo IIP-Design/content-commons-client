@@ -1,13 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Featured from 'components/Featured/Featured';
-import { fetchUser } from 'context/authContext';
+import { useAuth } from 'context/authContext';
 import { useDispatch } from 'react-redux';
 import { clearFilters } from 'lib/redux/actions/filter';
 
 
-const Landing = ( { user } ) => {
+const Landing = () => {
   const dispatch = useDispatch();
+  const { user } = useAuth();
 
   // trigger parallel loading calls to reset filters
   dispatch( clearFilters() );
@@ -21,16 +22,16 @@ const Landing = ( { user } ) => {
   );
 };
 
-Landing.propTypes = {
-  user: PropTypes.object,
-};
+// Landing.propTypes = {
+//   user: PropTypes.object,
+// };
 
 // Prefer to use getServerSideProps but context does not
 // have access to the apolloClient.
-Landing.getInitialProps = async ctx => {
-  const user = await fetchUser( ctx );
+// Landing.getInitialProps = async ctx => {
+//   const user = await fetchUser( ctx );
 
-  return { user };
-};
+//   return { user };
+// };
 
 export default Landing;
