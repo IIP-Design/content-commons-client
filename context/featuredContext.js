@@ -13,9 +13,8 @@ export const FeaturedContext = React.createContext( initialState );
 export const featuredReducer = ( state, action ) => {
   const { payload } = action;
 
-  console.log( 'featuredReducer' );
+  console.log( '---  featuredReducer ---' );
   console.log( action );
-  console.dir( payload );
 
   switch ( action.type ) {
     case 'LOAD_FEATURED_FAILED':
