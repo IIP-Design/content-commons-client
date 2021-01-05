@@ -23,6 +23,7 @@ export const getCategories = item => {
  * @param {dispatch} dispatch A reducer dispatch function
  */
 export const getFeatured = async ( array, dispatch ) => {
+  console.log( `getFeatured ${array.length}` );
   await Promise.all( array )
     .then( resArr => {
       const priorities = {};

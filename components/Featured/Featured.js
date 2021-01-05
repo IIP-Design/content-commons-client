@@ -13,9 +13,6 @@ import { PostTypeContext, postTypeReducer } from 'context/postTypeContext';
 import { typePrioritiesRequest, typeRecentsRequest, typeRequestDesc } from 'lib/elastic/api';
 
 const Featured = ( { data, user } ) => {
-  console.log( 'Featured' );
-  console.dir( data );
-  console.dir( user );
   const sorted = sortBy( data, 'order' );
   const featuredComponents = [];
 
@@ -23,9 +20,6 @@ const Featured = ( { data, user } ) => {
   const [postTypeState, postTypeDispatch] = useReducer( postTypeReducer );
 
   useEffect( () => {
-    console.log( 'Featured Use Effect - data, user' );
-    console.dir( data );
-    console.dir( user );
     if ( data ) {
       dispatch( { type: 'LOAD_FEATURED_PENDING' } );
 
@@ -70,9 +64,6 @@ const Featured = ( { data, user } ) => {
   }, [data, user] );
 
   useEffect( () => {
-    console.log( 'Featured Use Effect - postTypeDispatch, user' );
-    console.dir( data );
-    console.dir( user );
     loadPostTypes( postTypeDispatch, user );
   }, [postTypeDispatch, user] );
 
