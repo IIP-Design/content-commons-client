@@ -1,7 +1,6 @@
 import React, { useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import sortBy from 'lodash/sortBy';
-import { v4 } from 'uuid';
 import { Loader, Message } from 'semantic-ui-react';
 
 import Packages from './Packages/Packages';
@@ -14,6 +13,9 @@ import { PostTypeContext, postTypeReducer } from 'context/postTypeContext';
 import { typePrioritiesRequest, typeRecentsRequest, typeRequestDesc } from 'lib/elastic/api';
 
 const Featured = ( { data, user } ) => {
+  console.log( 'Featured' );
+  console.dir( data );
+  console.dir( user );
   const sorted = sortBy( data, 'order' );
   const featuredComponents = [];
 
@@ -21,6 +23,9 @@ const Featured = ( { data, user } ) => {
   const [postTypeState, postTypeDispatch] = useReducer( postTypeReducer );
 
   useEffect( () => {
+    console.log( 'Featured Use Effect - data, user' );
+    console.dir( data );
+    console.dir( user );
     if ( data ) {
       dispatch( { type: 'LOAD_FEATURED_PENDING' } );
 
@@ -34,7 +39,7 @@ const Featured = ( { data, user } ) => {
                 component,
                 ...p,
                 data: res,
-                key: v4(),
+                key: d.key,
               } ) );
 
           case 'packages':
@@ -43,7 +48,7 @@ const Featured = ( { data, user } ) => {
                 component,
                 ...p,
                 data: res,
-                key: v4(),
+                key: d.key,
               } ) );
 
           case 'recents':
@@ -52,7 +57,7 @@ const Featured = ( { data, user } ) => {
                 component,
                 ...p,
                 data: res,
-                key: v4(),
+                key: d.key,
               } ) );
 
           default:
@@ -65,6 +70,9 @@ const Featured = ( { data, user } ) => {
   }, [data, user] );
 
   useEffect( () => {
+    console.log( 'Featured Use Effect - postTypeDispatch, user' );
+    console.dir( data );
+    console.dir( user );
     loadPostTypes( postTypeDispatch, user );
   }, [postTypeDispatch, user] );
 
@@ -73,13 +81,13 @@ const Featured = ( { data, user } ) => {
 
     switch ( component ) {
       case 'priorities':
-        featuredComponents.push( <Priorities key={ v4() } { ...props } /> );
+        featuredComponents.push( <Priorities key={ d.key } { ...props } /> );
         break;
       case 'recents':
-        featuredComponents.push( <Recents key={ v4() } { ...props } /> );
+        featuredComponents.push( <Recents key={ d.key } { ...props } /> );
         break;
       case 'packages':
-        featuredComponents.push( <Packages key={ v4() } { ...props } /> );
+        featuredComponents.push( <Packages key={ d.key } { ...props } /> );
         break;
       default:
         break;

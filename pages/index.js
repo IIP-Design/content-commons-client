@@ -3,11 +3,10 @@ import Featured from 'components/Featured/Featured';
 import { useAuth } from 'context/authContext';
 import { useDispatch } from 'react-redux';
 import { clearFilters } from 'lib/redux/actions/filter';
-import { v4 } from 'uuid';
 
 const privateData = [
   {
-    key: v4(),
+    key: 'packages_1',
     component: 'packages',
     order: 1,
     props: {
@@ -19,7 +18,7 @@ const privateData = [
 
 const publicData = [
   {
-    key: v4(),
+    key: 'priorities_1',
     component: 'priorities',
     order: 2,
     props: {
@@ -30,7 +29,7 @@ const publicData = [
     },
   },
   {
-    key: v4(),
+    key: 'priorities_2',
     component: 'priorities',
     order: 3,
     props: {
@@ -41,7 +40,7 @@ const publicData = [
     },
   },
   {
-    key: v4(),
+    key: 'priorities_3',
     component: 'priorities',
     order: 4,
     props: {
@@ -56,7 +55,7 @@ const publicData = [
     },
   },
   {
-    key: v4(),
+    key: 'priorities_4',
     component: 'priorities',
     order: 5,
     props: {
@@ -67,7 +66,7 @@ const publicData = [
     },
   },
   {
-    key: v4(),
+    key: 'priorities_5',
     component: 'priorities',
     order: 6,
     props: {
@@ -82,7 +81,7 @@ const publicData = [
     },
   },
   {
-    key: v4(),
+    key: 'recents_1',
     component: 'recents',
     order: 7,
     props: {
@@ -91,7 +90,7 @@ const publicData = [
     },
   },
   {
-    key: v4(),
+    key: 'recents_2',
     component: 'recents',
     order: 8,
     props: {
@@ -100,7 +99,7 @@ const publicData = [
     },
   },
   {
-    key: v4(),
+    key: 'recents_3',
     component: 'recents',
     order: 9,
     props: {
