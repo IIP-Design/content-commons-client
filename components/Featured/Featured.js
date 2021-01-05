@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useRef, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import sortBy from 'lodash/sortBy';
 import { Loader, Message } from 'semantic-ui-react';
@@ -12,62 +12,169 @@ import { FeaturedContext, featuredReducer } from 'context/featuredContext';
 import { PostTypeContext, postTypeReducer } from 'context/postTypeContext';
 import { typePrioritiesRequest, typeRecentsRequest, typeRequestDesc } from 'lib/elastic/api';
 
-const Featured = ( { data, user } ) => {
-  const sorted = sortBy( data, 'order' );
+const privateData = [
+  {
+    key: 'packages_1',
+    component: 'packages',
+    order: 1,
+    props: {
+      postType: 'package',
+      locale: 'en-us',
+    },
+  },
+];
+
+const publicData = [
+  {
+    key: 'priorities_1',
+    component: 'priorities',
+    order: 2,
+    props: {
+      term: 'china',
+      label: 'China',
+      categories: [],
+      locale: 'en-us',
+    },
+  },
+  {
+    key: 'priorities_2',
+    component: 'priorities',
+    order: 3,
+    props: {
+      term: 'coronavirus covid',
+      label: 'Coronavirus (COVID-19)',
+      categories: [],
+      locale: 'en-us',
+    },
+  },
+  {
+    key: 'priorities_3',
+    component: 'priorities',
+    order: 4,
+    props: {
+      term: 'iran',
+      label: 'Iran',
+      categories: [
+        { key: 'dLWWJ2MBCLPpGnLD3D-N', display_name: 'Economic Opportunity' },
+        { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' },
+        { key: 'JFqWJ2MBNxuyMP4E5Cgn', display_name: 'Global Issues' },
+      ],
+      locale: 'en-us',
+    },
+  },
+  {
+    key: 'priorities_4',
+    component: 'priorities',
+    order: 5,
+    props: {
+      term: '5G',
+      label: '5G',
+      categories: [],
+      locale: 'en-us',
+    },
+  },
+  {
+    key: 'priorities_5',
+    component: 'priorities',
+    order: 6,
+    props: {
+      term: 'venezuela',
+      label: 'Venezuela',
+      categories: [
+        { key: 'JFqWJ2MBNxuyMP4E5Cgn', display_name: 'Global Issues' },
+        { key: 'MVqWJ2MBNxuyMP4E6Ci0', display_name: 'Good Governance' },
+        { key: 'lLWWJ2MBCLPpGnLD5z8X', display_name: 'Human Rights' },
+      ],
+      locale: 'en-us',
+    },
+  },
+  {
+    key: 'recents_1',
+    component: 'recents',
+    order: 7,
+    props: {
+      postType: 'video',
+      locale: 'en-us',
+    },
+  },
+  {
+    key: 'recents_2',
+    component: 'recents',
+    order: 8,
+    props: {
+      postType: 'post',
+      locale: 'en-us',
+    },
+  },
+  {
+    key: 'recents_3',
+    component: 'recents',
+    order: 9,
+    props: {
+      postType: 'graphic',
+      locale: 'en-us',
+    },
+  },
+];
+
+const Featured = ( { user } ) => {
+  // useRef to maintain value between renders
+  const sorted = useRef( [] );
   const featuredComponents = [];
 
   const [state, dispatch] = useReducer( featuredReducer );
   const [postTypeState, postTypeDispatch] = useReducer( postTypeReducer );
 
   useEffect( () => {
-    if ( data?.length ) {
-      dispatch( { type: 'LOAD_FEATURED_PENDING' } );
+    dispatch( { type: 'LOAD_FEATURED_PENDING' } );
+    const data = user && user.id !== 'user' ? [...publicData, ...privateData] : [...publicData];
 
-      const promiseArr = data.map( async d => {
-        const { component, props: p } = d;
+    sorted.current = sortBy( data, 'order' );
 
-        switch ( component ) {
-          case 'priorities':
-            return typePrioritiesRequest( p.term, p.categories, p.locale, user )
-              .then( res => ( {
-                component,
-                ...p,
-                data: res,
-                key: d.key,
-              } ) );
+    const promiseArr = data.map( async d => {
+      const { component, props: p } = d;
 
-          case 'packages':
-            return typeRequestDesc( p.postType, user )
-              .then( res => ( {
-                component,
-                ...p,
-                data: res,
-                key: d.key,
-              } ) );
+      switch ( component ) {
+        case 'priorities':
+          return typePrioritiesRequest( p.term, p.categories, p.locale, user )
+            .then( res => ( {
+              component,
+              ...p,
+              data: res,
+              key: d.key,
+            } ) );
 
-          case 'recents':
-            return typeRecentsRequest( p.postType, p.locale, user )
-              .then( res => ( {
-                component,
-                ...p,
-                data: res,
-                key: d.key,
-              } ) );
+        case 'packages':
+          return typeRequestDesc( p.postType, user )
+            .then( res => ( {
+              component,
+              ...p,
+              data: res,
+              key: d.key,
+            } ) );
 
-          default:
-            return {};
-        }
-      } );
+        case 'recents':
+          return typeRecentsRequest( p.postType, p.locale, user )
+            .then( res => ( {
+              component,
+              ...p,
+              data: res,
+              key: d.key,
+            } ) );
 
-      getFeatured( promiseArr, dispatch );
-    }
-  }, [data, user] );
+        default:
+          return {};
+      }
+    } );
+
+    getFeatured( promiseArr, dispatch );
+  }, [user] );
 
   useEffect( () => {
     loadPostTypes( postTypeDispatch, user );
   }, [postTypeDispatch, user] );
 
-  sorted.forEach( d => {
+  sorted.current.forEach( d => {
     const { component, props } = d;
 
     switch ( component ) {
@@ -104,6 +211,7 @@ const Featured = ( { data, user } ) => {
   }
 
   if ( !featuredComponents.length ) return null;
+
 
   return (
     <div className="featured">
