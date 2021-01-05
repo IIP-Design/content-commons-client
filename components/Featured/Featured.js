@@ -20,7 +20,7 @@ const Featured = ( { data, user } ) => {
   const [postTypeState, postTypeDispatch] = useReducer( postTypeReducer );
 
   useEffect( () => {
-    if ( data ) {
+    if ( data?.length ) {
       dispatch( { type: 'LOAD_FEATURED_PENDING' } );
 
       const promiseArr = data.map( async d => {
