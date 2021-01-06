@@ -21,12 +21,16 @@ export const featuredReducer = ( state, action ) => {
         error: true,
       };
     case 'LOAD_FEATURED_PENDING':
+      console.log( action );
+
       return {
         ...state,
         loading: true,
         error: false,
       };
     case 'LOAD_FEATURED_SUCCESS':
+      console.log( action );
+
       return {
         ...state,
         priorities: payload.priorities,

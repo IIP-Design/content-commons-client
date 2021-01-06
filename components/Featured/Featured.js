@@ -125,10 +125,12 @@ const Featured = ( { user } ) => {
   const [state, dispatch] = useReducer( featuredReducer );
   const [postTypeState, postTypeDispatch] = useReducer( postTypeReducer );
 
-  console.dir( state );
-
   useEffect( () => {
     dispatch( { type: 'LOAD_FEATURED_PENDING' } );
+
+    console.log( 'USER' );
+    console.dir( user );
+
     const data = user && user.id !== 'user' ? [...publicData, ...privateData] : [...publicData];
 
     sorted.current = sortBy( data, 'order' );
@@ -137,32 +139,38 @@ const Featured = ( { user } ) => {
       const { component, props: p } = d;
 
       switch ( component ) {
-        case 'priorities':
-          return typePrioritiesRequest( p.term, p.categories, p.locale, user )
-            .then( res => ( {
-              component,
-              ...p,
-              data: res,
-              key: d.key,
-            } ) );
+        case 'priorities': {
+          const res = await typePrioritiesRequest( p.term, p.categories, p.locale, user );
 
-        case 'packages':
-          return typeRequestDesc( p.postType, user )
-            .then( res => ( {
-              component,
-              ...p,
-              data: res,
-              key: d.key,
-            } ) );
+          return {
+            component,
+            ...p,
+            data: res,
+            key: d.key,
+          };
+        }
 
-        case 'recents':
-          return typeRecentsRequest( p.postType, p.locale, user )
-            .then( res => ( {
-              component,
-              ...p,
-              data: res,
-              key: d.key,
-            } ) );
+        case 'packages': {
+          const res = await typeRequestDesc( p.postType, user );
+
+          return {
+            component,
+            ...p,
+            data: res,
+            key: d.key,
+          };
+        }
+
+        case 'recents': {
+          const res = await typeRecentsRequest( p.postType, p.locale, user );
+
+          return {
+            component,
+            ...p,
+            data: res,
+            key: d.key,
+          };
+        }
 
         default:
           return {};
