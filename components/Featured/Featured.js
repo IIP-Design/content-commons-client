@@ -125,6 +125,8 @@ const Featured = ( { user } ) => {
   const [state, dispatch] = useReducer( featuredReducer );
   const [postTypeState, postTypeDispatch] = useReducer( postTypeReducer );
 
+  console.dir( state );
+
   useEffect( () => {
     dispatch( { type: 'LOAD_FEATURED_PENDING' } );
     const data = user && user.id !== 'user' ? [...publicData, ...privateData] : [...publicData];
@@ -211,7 +213,6 @@ const Featured = ( { user } ) => {
   }
 
   if ( !featuredComponents.length ) return null;
-
 
   return (
     <div className="featured">
