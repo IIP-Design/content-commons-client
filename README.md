@@ -13,7 +13,7 @@ Handles the public Content Commons as well as the client side administrative int
 - Run `npm install`
 - Create an .env file and add the following variables (use .env.tmpl as a guide)
 
-  - **REACT_APP_WEBSITE_NAME**=Content Commons
+  - **REACT_APP_WEBSITE_NAME** : Content Commons
   - **REACT_APP_PUBLIC_API** : elasticsearch public api endpoint
   - **REACT_APP_CDP_MODULES_URL** : url to content commons modules
   - **REACT_APP_SINGLE_ARTICLE_MODULE** : url to content commons single article module
@@ -25,6 +25,15 @@ Handles the public Content Commons as well as the client side administrative int
   - **REACT_APP_AWS_S3_AUTHORING_BUCKET**: S3 bucket for authoring uploads
   - **REACT_APP_AWS_S3_PRODUCTION_BUCKET**: S3 bucket for storing production assets
   - **REACT_APP_GOOGLE_ANALYTICS_ID**: Google Analytics Tracking ID
+
+  - **REACT_APP_AWS_COGNITO_REGION**: AWS Cognito region
+  - **REACT_APP_AWS_COGNITO_USER_POOLS_ID** :  AWS Cognito user pool id
+  - **REACT_APP_AWS_COGNITO_IDENTITY_POOL_ID** : AWS Cognito identity pool id
+  - **REACT_APP_AWS_COGNITO_USER_POOL_WEB_CLIENT_ID** : AWS Cognito web client id
+  - **REACT_APP_AWS_COGNITO_CLIENT_DOMAIN** :  AWS Cognito client domain
+  - **REACT_APP_AWS_COGNITO_CLIENT_REDIRECT_SIGNIN** : url to redirect to after signin
+  - **REACT_APP_AWS_COGNITO_CLIENT_REDIRECT_SIGNOUT** : url to redirect to after signout
+  - **REACT_APP_AWS_COGNITO_OKTA_PROVIDER_NAME** : AWS Cognito okta provider name
 
 - Start dev server: `npm run dev`
 
