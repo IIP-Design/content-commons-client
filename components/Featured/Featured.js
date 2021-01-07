@@ -128,9 +128,6 @@ const Featured = ( { user } ) => {
   useEffect( () => {
     dispatch( { type: 'LOAD_FEATURED_PENDING' } );
 
-    console.log( 'USER' );
-    console.dir( user );
-
     const data = user && user.id !== 'user' ? [...publicData, ...privateData] : [...publicData];
 
     sorted.current = sortBy( data, 'order' );

@@ -29,8 +29,6 @@ export const getFeatured = async ( array, dispatch ) => {
     } );
   } );
 
-  console.dir( resArr );
-
   const priorities = {};
   const recents = {};
   let items;
