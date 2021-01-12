@@ -125,6 +125,9 @@ const Featured = ( { user } ) => {
 
   useEffect( () => {
     dispatch( { type: 'LOAD_FEATURED_PENDING' } );
+    console.log( 'LOAD_FEATURED_PENDING' );
+    console.log( 'USER' );
+    console.dir( user );
 
     const getDataBasedOnUser = _user => {
       const data
@@ -217,8 +220,13 @@ const Featured = ( { user } ) => {
       const components = getComponents( data );
       const { priorities, recents } = getFeatured( await getDocumentsForEachSection( data ) );
 
+
+      console.log( 'SET FEATURED COMPONENTS' );
+      console.dir( data );
+      console.dir( components );
       setFeaturedComponents( components );
 
+      console.log( 'LOAD_FEATURED_SUCCESS' );
       dispatch( {
         type: 'LOAD_FEATURED_SUCCESS',
         payload: {
