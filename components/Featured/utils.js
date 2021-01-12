@@ -22,44 +22,33 @@ export const getCategories = item => {
  * @param {Promise[]} array Group of promises that resolve the recents properties
  * @param {dispatch} dispatch A reducer dispatch function
  */
-export const getFeatured = async ( array, dispatch ) => {
-  const resArr = await Promise.all( array ).catch( err => {
-    dispatch( {
-      type: 'LOAD_FEATURED_FAILED',
-    } );
-  } );
-
+export const getFeatured = array => {
   const priorities = {};
   const recents = {};
   let items;
 
-  if ( resArr ) {
-    resArr.forEach( res => {
-      if ( res?.data?.hits?.hits ) {
-        items = res.data.hits.hits.map( item => normalizeItem( item, res.locale ) );
+  array.forEach( res => {
+    if ( res?.data?.hits?.hits ) {
+      items = res.data.hits.hits.map( item => normalizeItem( item, res.locale ) );
 
-        switch ( res.component ) {
-          case 'priorities':
-            priorities[res.term] = items;
-            break;
-          case 'packages':
-          case 'recents':
-            recents[res.postType] = items;
-            break;
-          default:
-            break;
-        }
+      switch ( res.component ) {
+        case 'priorities':
+          priorities[res.term] = items;
+          break;
+        case 'packages':
+        case 'recents':
+          recents[res.postType] = items;
+          break;
+        default:
+          break;
       }
-    } );
+    }
+  } );
 
-    dispatch( {
-      type: 'LOAD_FEATURED_SUCCESS',
-      payload: {
-        priorities,
-        recents,
-      },
-    } );
-  }
+  return {
+    priorities,
+    recents,
+  };
 };
 
 

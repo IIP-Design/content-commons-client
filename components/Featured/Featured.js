@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import sortBy from 'lodash/sortBy';
 import { Loader, Message } from 'semantic-ui-react';
@@ -118,86 +118,123 @@ const publicData = [
 ];
 
 const Featured = ( { user } ) => {
-  // useRef to maintain value between renders
-  const sorted = useRef( [] );
-  const featuredComponents = [];
-
+  const [featuredComponents, setFeaturedComponents] = useState( [] );
   const [state, dispatch] = useReducer( featuredReducer );
   const [postTypeState, postTypeDispatch] = useReducer( postTypeReducer );
+
 
   useEffect( () => {
     dispatch( { type: 'LOAD_FEATURED_PENDING' } );
 
-    const data = user && user.id !== 'user' ? [...publicData, ...privateData] : [...publicData];
+    const getDataBasedOnUser = _user => {
+      const data
+         = _user && _user.id !== 'user' ? [...publicData, ...privateData] : [...publicData];
 
-    sorted.current = sortBy( data, 'order' );
+      return sortBy( data, 'order' );
+    };
 
-    const promiseArr = data.map( async d => {
-      const { component, props: p } = d;
+    /**
+     * Fetches and return documents for each content type based
+     * on the data array
+     * @param {object} data list of content to display
+     */
+    const getDocumentsForEachSection = async data => {
+      const response = await Promise.all(
+        data.map( async d => {
+          const { component, props: p } = d;
+
+          switch ( component ) {
+            case 'priorities': {
+              const res = await typePrioritiesRequest( p.term, p.categories, p.locale, user );
+
+              return {
+                component,
+                ...p,
+                data: res,
+                key: d.key,
+              };
+            }
+
+            case 'packages': {
+              const res = await typeRequestDesc( p.postType, user );
+
+              return {
+                component,
+                ...p,
+                data: res,
+                key: d.key,
+              };
+            }
+
+            case 'recents': {
+              const res = await typeRecentsRequest( p.postType, p.locale, user );
+
+              return {
+                component,
+                ...p,
+                data: res,
+                key: d.key,
+              };
+            }
+
+            default:
+              return {};
+          }
+        } ),
+      );
+
+      return response;
+    };
+
+    /**
+     * Returns components based on the data array
+     * @param {object} data list of content to display
+     */
+    const getComponents = data => data.reduce( ( acc, val ) => {
+      const { component, props } = val;
 
       switch ( component ) {
-        case 'priorities': {
-          const res = await typePrioritiesRequest( p.term, p.categories, p.locale, user );
+        case 'priorities':
+          return [...acc, <Priorities key={ val.key } { ...props } />];
 
-          return {
-            component,
-            ...p,
-            data: res,
-            key: d.key,
-          };
-        }
+        case 'recents':
+          return [...acc, <Recents key={ val.key } { ...props } />];
 
-        case 'packages': {
-          const res = await typeRequestDesc( p.postType, user );
-
-          return {
-            component,
-            ...p,
-            data: res,
-            key: d.key,
-          };
-        }
-
-        case 'recents': {
-          const res = await typeRecentsRequest( p.postType, p.locale, user );
-
-          return {
-            component,
-            ...p,
-            data: res,
-            key: d.key,
-          };
-        }
+        case 'packages':
+          return [...acc, <Packages key={ val.key } { ...props } />];
 
         default:
-          return {};
+          return acc;
       }
-    } );
+    }, [] );
 
-    getFeatured( promiseArr, dispatch );
+    /**
+     * Wrapper function that executes fetching user, components and data
+     * @param {object} _user authenticated user
+     */
+    const loadFeaturedItems = async _user => {
+      const data = getDataBasedOnUser( _user );
+      const components = getComponents( data );
+      const { priorities, recents } = getFeatured( await getDocumentsForEachSection( data ) );
+
+      setFeaturedComponents( components );
+
+      dispatch( {
+        type: 'LOAD_FEATURED_SUCCESS',
+        payload: {
+          priorities,
+          recents,
+        },
+      } );
+    };
+
+    loadFeaturedItems( user );
   }, [user] );
 
   useEffect( () => {
     loadPostTypes( postTypeDispatch, user );
   }, [postTypeDispatch, user] );
 
-  sorted.current.forEach( d => {
-    const { component, props } = d;
-
-    switch ( component ) {
-      case 'priorities':
-        featuredComponents.push( <Priorities key={ d.key } { ...props } /> );
-        break;
-      case 'recents':
-        featuredComponents.push( <Recents key={ d.key } { ...props } /> );
-        break;
-      case 'packages':
-        featuredComponents.push( <Packages key={ d.key } { ...props } /> );
-        break;
-      default:
-        break;
-    }
-  } );
 
   if ( state?.error ) {
     return (
@@ -231,7 +268,6 @@ const Featured = ( { user } ) => {
 };
 
 Featured.propTypes = {
-  data: PropTypes.array,
   user: PropTypes.object,
 };
 

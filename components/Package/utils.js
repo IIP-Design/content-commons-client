@@ -32,10 +32,10 @@ export const normalizeDocumentItemByAPI = ( { file, useGraphQl = false } ) => {
       created: file.createdAt || '',
       published: file.publishedAt || '',
       modified: file.updatedAt || '',
-      author: ( file.author ? `${file.author.firstname} ${file.author.lastname}` : '' ),
-      owner: ( file.team?.name ) || '',
+      author: file.author ? `${file.author.firstname} ${file.author.lastname}` : '',
+      owner: file.team?.name || '',
       documentUrl: file.url || '',
-      documentUse: ( file?.use?.name ) || '',
+      documentUse: file?.use?.name || '',
       excerpt: file?.excerpt || '',
       tags: getTransformedLangTaxArray( file.tags ) || [],
     };
@@ -58,12 +58,13 @@ export const getDateTimeTerms = ( createdAt, updatedAt, format ) => {
   // published and modified are equal, so setting label to 'Updated
   // TO DO: Add createdAt to transform
   const label = 'Updated';
+
   return [
     {
       definition: <time dateTime={ dateTimeStamp }>{ `${moment( dateTimeStamp ).format( format )}` }</time>,
       displayName: label,
-      name: label
-    }
+      name: label,
+    },
   ];
 };
 
@@ -72,13 +73,17 @@ export const getDateTimeTerms = ( createdAt, updatedAt, format ) => {
  * @param docs array of objects w shape { id, item }
  */
 export const getElasticPkgDocs = async ( documents, user ) => {
-  try {
-    const docIds = documents.map( doc => doc.id );
-    const responseHits = await packageDocumentsRequest( docIds, user );
-    const docs = getDataFromHits( responseHits ).map( hit => hit._source );
-    return docs;
-  } catch ( error ) {
-    console.log( error );
-    return error;
+  if ( user && user.id !== 'public' ) {
+    try {
+      const docIds = documents.map( doc => doc.id );
+      const responseHits = await packageDocumentsRequest( docIds, user );
+      const docs = getDataFromHits( responseHits )?.map( hit => hit._source );
+
+      return docs;
+    } catch ( error ) {
+      console.log( error );
+
+      return error;
+    }
   }
 };
