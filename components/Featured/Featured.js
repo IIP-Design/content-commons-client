@@ -12,6 +12,8 @@ import { FeaturedContext, featuredReducer } from 'context/featuredContext';
 import { PostTypeContext, postTypeReducer } from 'context/postTypeContext';
 import { typePrioritiesRequest, typeRecentsRequest, typeRequestDesc } from 'lib/elastic/api';
 
+import { useAuth } from 'context/authContext';
+
 const privateData = [
   {
     key: 'packages_1',
@@ -117,11 +119,11 @@ const publicData = [
   },
 ];
 
-const Featured = ( { user } ) => {
+const Featured = () => {
+  const { user } = useAuth();
   const [featuredComponents, setFeaturedComponents] = useState( [] );
   const [state, dispatch] = useReducer( featuredReducer );
   const [postTypeState, postTypeDispatch] = useReducer( postTypeReducer );
-
 
   useEffect( () => {
     dispatch( { type: 'LOAD_FEATURED_PENDING' } );
