@@ -126,6 +126,8 @@ const Featured = () => {
   const [postTypeState, postTypeDispatch] = useReducer( postTypeReducer );
 
   useEffect( () => {
+    let isMounted = true;
+
     dispatch( { type: 'LOAD_FEATURED_PENDING' } );
     console.log( 'LOAD_FEATURED_PENDING' );
     console.log( 'USER' );
@@ -238,7 +240,14 @@ const Featured = () => {
       } );
     };
 
-    loadFeaturedItems( user );
+    console.log( `isSubscribed ${isMounted}` );
+    if ( isMounted ) {
+      loadFeaturedItems( user );
+    }
+
+    return () => {
+      isMounted = false;
+    };
   }, [user] );
 
   useEffect( () => {
