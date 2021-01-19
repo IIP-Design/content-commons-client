@@ -33,6 +33,12 @@ const menuItems = [
     to: '/documentation',
     label: 'Documentation',
   },
+  {
+    key: 4,
+    name: 'login',
+    to: '/login',
+    label: 'Login',
+  },
 ];
 
 const LoggedOutNav = props => {
@@ -112,13 +118,6 @@ const LoggedOutNav = props => {
           <Icon name="close" onClick={ () => toggleMobileMenu( false ) } onKeyUp={ keyUp } tabIndex={ 0 } />
         </li>
         {items.map( item => renderListItem( item ) )}
-        <li>
-          <a href="/login">
-            <span onClick={ () => toggleMobileMenu( false ) } onKeyUp={ keyUp } role="presentation">
-              Login
-            </span>
-          </a>
-        </li>
         {renderFeedbackButton()}
       </ul>
     );
@@ -126,19 +125,22 @@ const LoggedOutNav = props => {
 
   const renderDesktopNav = items => (
     <Menu as="ul" className="nav_loggedout">
-      { items.map( item => renderMenuItem( item ) ) }
-      <Menu.Item as="li" key="4" name="login">
-        <a href="/login">Login</a>
-      </Menu.Item>
-      { reminder && (
+      {items.map( item => renderMenuItem( item ) )}
+      {reminder && (
         <li className="login_reminder">
           DOS employees, you can log in to see more content.
-          <button type="button" aria-label="Close Login Reminder" className="login_reminder_close" onClick={ () => setReminder( false ) }>
+          {' '}
+          <button
+            type="button"
+            aria-label="Close Login Reminder"
+            className="login_reminder_close"
+            onClick={ () => setReminder( false ) }
+          >
             Got it
           </button>
         </li>
-      ) }
-      { renderFeedbackButton() }
+      )}
+      {renderFeedbackButton()}
     </Menu>
   );
 
