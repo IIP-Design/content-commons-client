@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import cookies from 'next-cookies';
-import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
+import { useLazyQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { useRouter } from 'next/router';
 import { Auth, Hub } from 'aws-amplify';
 
@@ -102,6 +102,17 @@ const AuthProvider = props => {
     setAuthenticatedUser( { ...user, esToken: ES_TOKEN } );
   };
 
+  // Attempt to fetch user from Commons server
+  const [getUser, { loading }] = useLazyQuery( CURRENT_USER_QUERY, {
+    ssr: false,
+    fetchPolicy: 'network-only',
+    onCompleted: data => {
+      if ( data?.user ) {
+        setUser( data?.user );
+      }
+    },
+  } );
+
   // Sign in mutation
   const [signIn] = useMutation( COGNITO_SIGNIN_MUTATION );
 
@@ -159,23 +170,12 @@ const AuthProvider = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [] );
 
-  // Attempt to fetch user
-  const { data, loading: userLoading } = useQuery(
-    CURRENT_USER_QUERY, {
-      ssr: false,
-      fetchPolicy: 'network-only',
-    },
-  );
-
-  // listen for data change to to user query
-  // if we have a vaild user, set authenticated user
   useEffect( () => {
-    const _user = data?.user;
+    getUser();
 
-    if ( _user && _user.id !== 'public' ) {
-      setUser( _user );
-    }
-  }, [data] );
+    return () => {};
+  }, [getUser] );
+
 
   const logout = async () => signOut();
   const register = () => {};
@@ -184,7 +184,7 @@ const AuthProvider = props => {
     <AuthContext.Provider
       value={ {
         user: authenticatedUser,
-        loading: userLoading,
+        loading,
         login,
         logout,
         register,

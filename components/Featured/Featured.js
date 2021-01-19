@@ -126,16 +126,11 @@ const Featured = () => {
   const [postTypeState, postTypeDispatch] = useReducer( postTypeReducer );
 
   useEffect( () => {
-    let isMounted = true;
-
-    dispatch( { type: 'LOAD_FEATURED_PENDING' } );
     console.log( 'LOAD_FEATURED_PENDING' );
-    console.log( 'USER' );
-    console.dir( user );
 
     const getDataBasedOnUser = _user => {
       const data
-         = _user && _user.id !== 'user' ? [...publicData, ...privateData] : [...publicData];
+         = _user && _user.id !== 'public' ? [...publicData, ...privateData] : [...publicData];
 
       return sortBy( data, 'order' );
     };
@@ -220,15 +215,13 @@ const Featured = () => {
      * @param {object} _user authenticated user
      */
     const loadFeaturedItems = async _user => {
+      dispatch( { type: 'LOAD_FEATURED_PENDING' } );
+
       const data = getDataBasedOnUser( _user );
+
+      console.dir( data );
       const components = getComponents( data );
       const { priorities, recents } = getFeatured( await getDocumentsForEachSection( data ) );
-
-
-      console.log( 'SET FEATURED COMPONENTS' );
-      console.dir( data );
-      console.dir( components );
-      setFeaturedComponents( components );
 
       console.log( 'LOAD_FEATURED_SUCCESS' );
       dispatch( {
@@ -238,22 +231,16 @@ const Featured = () => {
           recents,
         },
       } );
+
+      setFeaturedComponents( components );
     };
 
-    console.log( `isSubscribed ${isMounted}` );
-    if ( isMounted ) {
-      loadFeaturedItems( user );
-    }
-
-    return () => {
-      isMounted = false;
-    };
+    loadFeaturedItems( user );
   }, [user] );
 
   useEffect( () => {
     loadPostTypes( postTypeDispatch, user );
   }, [postTypeDispatch, user] );
-
 
   if ( state?.error ) {
     return (
