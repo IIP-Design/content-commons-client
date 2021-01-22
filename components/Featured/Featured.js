@@ -126,8 +126,6 @@ const Featured = () => {
   const [postTypeState, postTypeDispatch] = useReducer( postTypeReducer );
 
   useEffect( () => {
-    console.log( 'LOAD_FEATURED_PENDING' );
-
     const getDataBasedOnUser = _user => {
       const data
          = _user && _user.id !== 'public' ? [...publicData, ...privateData] : [...publicData];
@@ -218,12 +216,9 @@ const Featured = () => {
       dispatch( { type: 'LOAD_FEATURED_PENDING' } );
 
       const data = getDataBasedOnUser( _user );
-
-      console.dir( data );
       const components = getComponents( data );
       const { priorities, recents } = getFeatured( await getDocumentsForEachSection( data ) );
 
-      console.log( 'LOAD_FEATURED_SUCCESS' );
       dispatch( {
         type: 'LOAD_FEATURED_SUCCESS',
         payload: {

@@ -5,9 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v5.3.0...HEAD)
+## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v5.3.1...HEAD)
 
 _This sections lists changes committed since most recent release_
+
+# [5.3.1](https://github.com/IIP-Design/content-commons-client/compare/v5.3.0...5.3.1)(2021-01-22)
+**Changed:**
+- Login link on nav no longer needs to use the <a> tag as CloudFlare no longer initiating the login
 
 # [5.3.0](https://github.com/IIP-Design/content-commons-client/compare/v5.2.1...5.2.2)(2021-01-07)
 **Added:**
