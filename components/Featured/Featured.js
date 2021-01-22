@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useRef, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import sortBy from 'lodash/sortBy';
 import { Loader, Message } from 'semantic-ui-react';
@@ -13,6 +13,7 @@ import { PostTypeContext, postTypeReducer } from 'context/postTypeContext';
 import { typePrioritiesRequest, typeRecentsRequest, typeRequestDesc } from 'lib/elastic/api';
 
 import { useAuth } from 'context/authContext';
+
 
 const privateData = [
   {
@@ -122,7 +123,7 @@ const publicData = [
 const Featured = () => {
   const { user } = useAuth();
   const [featuredComponents, setFeaturedComponents] = useState( [] );
-  const [state, dispatch] = useReducer( featuredReducer );
+  const [state, dispatch] = useReducer( featuredReducer, { id: 0 } );
   const [postTypeState, postTypeDispatch] = useReducer( postTypeReducer );
 
   useEffect( () => {
@@ -213,22 +214,31 @@ const Featured = () => {
      * @param {object} _user authenticated user
      */
     const loadFeaturedItems = async _user => {
-      dispatch( { type: 'LOAD_FEATURED_PENDING' } );
+      console.log( 'LOAD_FEATURED_PENDING' );
+      dispatch( { type: 'LOAD_FEATURED_PENDING',
+        payload: { id: Math.random() } } );
 
       const data = getDataBasedOnUser( _user );
-      const components = getComponents( data );
+
+      // console.dir( data );
       const { priorities, recents } = getFeatured( await getDocumentsForEachSection( data ) );
 
       dispatch( {
         type: 'LOAD_FEATURED_SUCCESS',
         payload: {
+          id: state?.id,
           priorities,
           recents,
+          components: getComponents( data ),
         },
       } );
+      // console.dir( components );
 
-      setFeaturedComponents( components );
+      // setFeaturedComponents( components );
     };
+
+    // console.log( `state.id ${state?.id}` );
+    // console.log( `id.current ${id.current}` );
 
     loadFeaturedItems( user );
   }, [user] );
@@ -255,13 +265,13 @@ const Featured = () => {
     );
   }
 
-  if ( !featuredComponents.length ) return null;
+  if ( !state?.components?.length ) return null;
 
   return (
     <div className="featured">
       <FeaturedContext.Provider value={ { dispatch, state } }>
         <PostTypeContext.Provider value={ { dispatch: postTypeDispatch, state: postTypeState } }>
-          { featuredComponents }
+          {state.components}
         </PostTypeContext.Provider>
       </FeaturedContext.Provider>
     </div>
