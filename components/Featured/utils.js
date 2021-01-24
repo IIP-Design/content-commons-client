@@ -1,5 +1,4 @@
 import { capitalizeFirst } from 'lib/utils';
-import { normalizeItem } from 'lib/elastic/parser';
 import { postTypeAggRequest } from 'lib/elastic/api';
 
 /**
@@ -16,41 +15,6 @@ export const getCategories = item => {
 
   return cats;
 };
-
-/**
- * Updates the the featured context
- * @param {Promise[]} array Group of promises that resolve the recents properties
- * @param {dispatch} dispatch A reducer dispatch function
- */
-export const getFeatured = array => {
-  const priorities = {};
-  const recents = {};
-  let items;
-
-  array.forEach( res => {
-    if ( res?.data?.hits?.hits ) {
-      items = res.data.hits.hits.map( item => normalizeItem( item, res.locale ) );
-
-      switch ( res.component ) {
-        case 'priorities':
-          priorities[res.term] = items;
-          break;
-        case 'packages':
-        case 'recents':
-          recents[res.postType] = items;
-          break;
-        default:
-          break;
-      }
-    }
-  } );
-
-  return {
-    priorities,
-    recents,
-  };
-};
-
 
 /**
  *

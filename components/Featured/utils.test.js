@@ -1,7 +1,6 @@
-import { getFeatured, getCategories, loadPostTypes } from './utils';
-import { manyCategoriesItem, mockPromises, oneCategoriesItem, twoCategoriesItem } from './mocks';
+import { getCategories, loadPostTypes } from './utils';
+import { manyCategoriesItem, oneCategoriesItem, twoCategoriesItem } from './mocks';
 import * as api from 'lib/elastic/api';
-import * as parser from 'lib/elastic/parser';
 
 jest.mock( 'next/config', () => () => ( {
   publicRuntimeConfig: {},
@@ -28,58 +27,6 @@ describe( 'getCategories', () => {
     expect( manyCategoriesItem.categories.length ).toEqual( 4 );
     expect( categories.split( ' · ' ).length ).toEqual( 3 );
     expect( categories ).toEqual( 'geography · global issues · democracy & civil society' );
-  } );
-} );
-
-describe( 'getFeatured', () => {
-  const { promise1, promise2, promise3, promise4, promise5 } = mockPromises;
-
-  it( 'sends a "LOAD_FEATURED_SUCCESS" dispatch with expected priorities and recents', async () => {
-    const normalizeSpy = jest.spyOn( parser, 'normalizeItem' )
-      .mockResolvedValue( { item: 'item' } );
-
-    const promises = [
-      promise1, promise2, promise3, promise4,
-    ];
-    const dispatch = jest.fn();
-
-    await getFeatured( promises, dispatch );
-
-    const expectedDispatch = {
-      type: 'LOAD_FEATURED_SUCCESS',
-      payload: {
-        priorities: { 'coronavirus covid': [promise1] },
-        recents: {
-          video: [promise2],
-          'package': [promise3],
-        },
-      },
-    };
-
-    expect( dispatch ).toHaveBeenCalledTimes( 1 );
-    expect( dispatch ).toHaveBeenCalledWith( expectedDispatch );
-
-    normalizeSpy.mockReset();
-  } );
-
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip( 'sends a "LOAD_FEATURED_FAILED" dispatch when a promise returns an error', async () => {
-    const normalizeSpy = jest.spyOn( parser, 'normalizeItem' )
-      .mockResolvedValue( { item: 'item' } );
-
-    const promises = [
-      promise1, promise2, promise5,
-    ];
-    const dispatch = jest.fn();
-
-    await getFeatured( promises, dispatch );
-
-    const errorDispatch = { type: 'LOAD_FEATURED_FAILED' };
-
-    expect( dispatch ).toHaveBeenCalledTimes( 1 );
-    expect( dispatch ).toHaveBeenCalledWith( errorDispatch );
-
-    normalizeSpy.mockReset();
   } );
 } );
 

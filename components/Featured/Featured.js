@@ -1,24 +1,14 @@
-import React, { useState, useRef, useEffect, useReducer } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import sortBy from 'lodash/sortBy';
-import { Loader, Message } from 'semantic-ui-react';
-
 import Packages from './Packages/Packages';
 import Recents from './Recents/Recents';
 import Priorities from './Priorities/Priorities';
-import { getFeatured, loadPostTypes } from './utils';
-
-import { FeaturedContext, featuredReducer } from 'context/featuredContext';
-import { PostTypeContext, postTypeReducer } from 'context/postTypeContext';
-import { typePrioritiesRequest, typeRecentsRequest, typeRequestDesc } from 'lib/elastic/api';
-
 import { useAuth } from 'context/authContext';
-
 
 const privateData = [
   {
     key: 'packages_1',
-    component: 'packages',
+    component: Packages,
     order: 1,
     props: {
       postType: 'package',
@@ -30,7 +20,7 @@ const privateData = [
 const publicData = [
   {
     key: 'priorities_1',
-    component: 'priorities',
+    component: Priorities,
     order: 2,
     props: {
       term: 'china',
@@ -41,7 +31,7 @@ const publicData = [
   },
   {
     key: 'priorities_2',
-    component: 'priorities',
+    component: Priorities,
     order: 3,
     props: {
       term: 'coronavirus covid',
@@ -52,7 +42,7 @@ const publicData = [
   },
   {
     key: 'priorities_3',
-    component: 'priorities',
+    component: Priorities,
     order: 4,
     props: {
       term: 'iran',
@@ -67,7 +57,7 @@ const publicData = [
   },
   {
     key: 'priorities_4',
-    component: 'priorities',
+    component: Priorities,
     order: 5,
     props: {
       term: '5G',
@@ -78,7 +68,7 @@ const publicData = [
   },
   {
     key: 'priorities_5',
-    component: 'priorities',
+    component: Priorities,
     order: 6,
     props: {
       term: 'venezuela',
@@ -93,7 +83,7 @@ const publicData = [
   },
   {
     key: 'recents_1',
-    component: 'recents',
+    component: Recents,
     order: 7,
     props: {
       postType: 'video',
@@ -102,7 +92,7 @@ const publicData = [
   },
   {
     key: 'recents_2',
-    component: 'recents',
+    component: Recents,
     order: 8,
     props: {
       postType: 'post',
@@ -111,7 +101,7 @@ const publicData = [
   },
   {
     key: 'recents_3',
-    component: 'recents',
+    component: Recents,
     order: 9,
     props: {
       postType: 'graphic',
@@ -122,164 +112,21 @@ const publicData = [
 
 const Featured = () => {
   const { user } = useAuth();
-  const [featuredComponents, setFeaturedComponents] = useState( [] );
-  const [state, dispatch] = useReducer( featuredReducer, { id: 0 } );
-  const [postTypeState, postTypeDispatch] = useReducer( postTypeReducer );
 
-  useEffect( () => {
-    const getDataBasedOnUser = _user => {
-      const data
-         = _user && _user.id !== 'public' ? [...publicData, ...privateData] : [...publicData];
+  const renderSection = data => {
+    const { key, props } = data;
+    const ComponentName = data.component;
 
-      return sortBy( data, 'order' );
-    };
-
-    /**
-     * Fetches and return documents for each content type based
-     * on the data array
-     * @param {object} data list of content to display
-     */
-    const getDocumentsForEachSection = async data => {
-      const response = await Promise.all(
-        data.map( async d => {
-          const { component, props: p } = d;
-
-          switch ( component ) {
-            case 'priorities': {
-              const res = await typePrioritiesRequest( p.term, p.categories, p.locale, user );
-
-              return {
-                component,
-                ...p,
-                data: res,
-                key: d.key,
-              };
-            }
-
-            case 'packages': {
-              const res = await typeRequestDesc( p.postType, user );
-
-              return {
-                component,
-                ...p,
-                data: res,
-                key: d.key,
-              };
-            }
-
-            case 'recents': {
-              const res = await typeRecentsRequest( p.postType, p.locale, user );
-
-              return {
-                component,
-                ...p,
-                data: res,
-                key: d.key,
-              };
-            }
-
-            default:
-              return {};
-          }
-        } ),
-      );
-
-      return response;
-    };
-
-    /**
-     * Returns components based on the data array
-     * @param {object} data list of content to display
-     */
-    const getComponents = data => data.reduce( ( acc, val ) => {
-      const { component, props } = val;
-
-      switch ( component ) {
-        case 'priorities':
-          return [...acc, <Priorities key={ val.key } { ...props } />];
-
-        case 'recents':
-          return [...acc, <Recents key={ val.key } { ...props } />];
-
-        case 'packages':
-          return [...acc, <Packages key={ val.key } { ...props } />];
-
-        default:
-          return acc;
-      }
-    }, [] );
-
-    /**
-     * Wrapper function that executes fetching user, components and data
-     * @param {object} _user authenticated user
-     */
-    const loadFeaturedItems = async _user => {
-      console.log( 'LOAD_FEATURED_PENDING' );
-      dispatch( { type: 'LOAD_FEATURED_PENDING',
-        payload: { id: Math.random() } } );
-
-      const data = getDataBasedOnUser( _user );
-
-      // console.dir( data );
-      const { priorities, recents } = getFeatured( await getDocumentsForEachSection( data ) );
-
-      dispatch( {
-        type: 'LOAD_FEATURED_SUCCESS',
-        payload: {
-          id: state?.id,
-          priorities,
-          recents,
-          components: getComponents( data ),
-        },
-      } );
-      // console.dir( components );
-
-      // setFeaturedComponents( components );
-    };
-
-    // console.log( `state.id ${state?.id}` );
-    // console.log( `id.current ${id.current}` );
-
-    loadFeaturedItems( user );
-  }, [user] );
-
-  useEffect( () => {
-    loadPostTypes( postTypeDispatch, user );
-  }, [postTypeDispatch, user] );
-
-  if ( state?.error ) {
-    return (
-      <div style={ { padding: '5rem 2rem', textAlign: 'center' } }>
-        <Message>
-          Oops, something went wrong. We are unable to load the most recent content.
-        </Message>
-      </div>
-    );
-  }
-
-  if ( state?.loading ) {
-    return (
-      <div style={ { padding: '5rem 2rem', textAlign: 'center' } }>
-        <Loader active={ state?.loading } />
-      </div>
-    );
-  }
-
-  if ( !state?.components?.length ) return null;
+    return <ComponentName key={ key } { ...props } user={ user } />;
+  };
 
   return (
     <div className="featured">
-      <FeaturedContext.Provider value={ { dispatch, state } }>
-        <PostTypeContext.Provider value={ { dispatch: postTypeDispatch, state: postTypeState } }>
-          {state.components}
-        </PostTypeContext.Provider>
-      </FeaturedContext.Provider>
+      {user && user.id !== 'public' && sortBy( privateData, 'order' ).map( d => renderSection( d ) )}
+
+      { sortBy( publicData, 'order' ).map( d => renderSection( d ) ) }
     </div>
   );
-};
-
-Featured.propTypes = {
-  user: PropTypes.object,
 };
 
 export default Featured;
