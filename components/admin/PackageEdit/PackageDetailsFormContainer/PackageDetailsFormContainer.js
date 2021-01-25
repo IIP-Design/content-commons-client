@@ -58,7 +58,7 @@ const PackageDetailsFormContainer = props => {
    * @param {*} values
    */
   const isUpdateNeeded = ( values, prevValues ) => {
-    if ( values.title !== prevValues.title ) return true;
+    if ( values.title !== prevValues.title || values.desc !== prevValues.desc ) return true;
 
     const { documents } = pkg;
     const hasChanged = documents.map( document => {
@@ -92,7 +92,8 @@ const PackageDetailsFormContainer = props => {
     }
   };
 
-  const getDropdownIds = property => ( ( property && Array.isArray( property ) ) ? property.map( p => p.id ) : [] );
+  // eslint-disable-next-line no-confusing-arrow
+  const getDropdownIds = property => property && Array.isArray( property ) ? property.map( p => p.id ) : [];
 
   const getFiles = _pkg => {
     if ( _pkg ) {
@@ -102,25 +103,23 @@ const PackageDetailsFormContainer = props => {
     return [];
   };
 
-  const getFileValues = array => (
-    array.reduce( ( acc, file ) => {
-      const {
-        id, bureaus, filename, countries, title, use, visibility,
-      } = file;
+  const getFileValues = array => array.reduce( ( acc, file ) => {
+    const {
+      id, bureaus, filename, countries, title, use, visibility,
+    } = file;
 
-      return {
-        ...acc,
-        [id]: {
-          id,
-          title: title || filename,
-          bureaus: getDropdownIds( bureaus ),
-          countries: getDropdownIds( countries ),
-          use: use?.id || '',
-          visibility,
-        },
-      };
-    }, {} )
-  );
+    return {
+      ...acc,
+      [id]: {
+        id,
+        title: title || filename,
+        bureaus: getDropdownIds( bureaus ),
+        countries: getDropdownIds( countries ),
+        use: use?.id || '',
+        visibility,
+      },
+    };
+  }, {} );
 
   const getInitialValues = () => {
     let initialValues = {};
@@ -131,6 +130,7 @@ const PackageDetailsFormContainer = props => {
       initialValues = {
         title: pkg.title || '',
         type: pkg.type || '',
+        desc: pkg.desc || '',
         termsConditions: false,
         ...getFileValues( files ),
       };
@@ -179,10 +179,11 @@ const PackageDetailsFormContainer = props => {
 
 PackageDetailsFormContainer.propTypes = {
   id: PropTypes.string,
-  children: PropTypes.node, // eslint-disable-line 
+  children: PropTypes.node, // eslint-disable-line
   pkg: PropTypes.shape( {
     id: PropTypes.string,
     title: PropTypes.string,
+    desc: PropTypes.string,
     type: PropTypes.string,
     documents: PropTypes.array,
   } ),

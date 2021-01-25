@@ -40,8 +40,30 @@
     }
   }
 
+  .package-description-container {
+    border-top: 1px solid $alt-grey;
+    margin-top: -5px;
+
+   .package-description {
+      width: 90%;
+      margin: 0 auto;
+      padding-top: 1rem;
+      padding-bottom: 1.5rem;
+    
+      font-size: .89rem;
+      line-height: 1.6;
+    
+      .header {
+        color: $blue;
+        font-size: 1.3em;
+        font-weight: bold;
+        padding-bottom: .2rem;
+      }
+    }
+  }
+
   .package-items {
-    border-top: 1px solid $light-grey;
+    border-top: 1px solid $alt-grey;
     padding-top: 1.5em;
     padding-bottom: 1.5em;
     font-size: 0.777777778rem;

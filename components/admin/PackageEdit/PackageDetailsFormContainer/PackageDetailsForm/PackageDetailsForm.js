@@ -6,7 +6,7 @@
 import React, { useState, createContext, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
-import { Form, Grid, Input } from 'semantic-ui-react';
+import { Form, Grid, Input, TextArea } from 'semantic-ui-react';
 import { getCount, getPluralStringOrNot } from 'lib/utils';
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
@@ -37,7 +37,7 @@ const PackageDetailsForm = props => {
   const router = useRouter();
   const { createFile } = useCrudActionsDocument( {
     pollQuery: PACKAGE_QUERY,
-    variables: { id: pkg.id }
+    variables: { id: pkg.id },
   } );
 
   const { modalOpen, handleOpenModel, handleCloseModal } = useToggleModal();
@@ -54,12 +54,12 @@ const PackageDetailsForm = props => {
     router.replace(
       router.pathname,
       `/admin/package/${pkg.id}`,
-      { shallow: true }
+      { shallow: true },
     );
   };
 
   const handleOnChange = ( e, {
-    name, value, type, checked
+    name, value, type, checked,
   } ) => {
     if ( type === 'checkbox' ) {
       setFieldValue( name, checked );
@@ -71,6 +71,7 @@ const PackageDetailsForm = props => {
 
   const handleAddFiles = e => {
     const fileList = Array.from( e.target.files );
+
     setFiles( fileList );
     handleOpenModel();
   };
@@ -98,13 +99,14 @@ const PackageDetailsForm = props => {
           return type;
       }
     }
+
     return '';
   };
 
   return (
     <Fragment>
-      { /* Only use autosave with existing project */ }
-      { pkg.id && <FormikAutoSave save={ save } /> }
+      {/* Only use autosave with existing project */}
+      {pkg.id && <FormikAutoSave save={ save } />}
       <Form className="package-data">
         <Grid stackable>
           <Grid.Row>
@@ -130,7 +132,7 @@ const PackageDetailsForm = props => {
                     onChange={ handleOnChange }
                     error={ touched && touched.title && !!errors.title }
                   />
-                  <p className="error-message">{ touched.title ? errors.title : '' }</p>
+                  <p className="error-message">{touched.title ? errors.title : ''}</p>
                 </div>
               </Form.Group>
             </Grid.Column>
@@ -158,8 +160,22 @@ const PackageDetailsForm = props => {
               />
             </Grid.Column>
           </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+              <Form.Field
+                id="desc"
+                name="desc"
+                control={ TextArea }
+                label="Background"
+                value={ values.desc }
+                onChange={ handleOnChange }
+                rows={ 6 }
+              />
+              <span className="note">Describe the content of this package and how to use it.</span>
+            </Grid.Column>
+          </Grid.Row>
 
-          { !hasInitialUploadCompleted && (
+          {!hasInitialUploadCompleted && (
             <Grid.Row reversed="computer">
               <Grid.Column mobile={ 11 }>
                 <TermsConditions
@@ -182,7 +198,10 @@ const PackageDetailsForm = props => {
                       Save draft & upload files
                     </ButtonAddFiles>
                   ) }
-                  title={ `Preparing ${getCount( files )} ${getPluralStringOrNot( files, 'file' )} for upload... ` }
+                  title={ `Preparing ${getCount( files )} ${getPluralStringOrNot(
+                    files,
+                    'file',
+                  )} for upload... ` }
                   headerStyles={ { fontSize: '1em', marginBottom: '.8em' } }
                   modalOpen={ modalOpen }
                   onClose={ handleCloseModal }
@@ -191,12 +210,12 @@ const PackageDetailsForm = props => {
                 />
               </Grid.Column>
             </Grid.Row>
-          ) }
+          )}
 
           <Grid.Row>
             <Grid.Column width="16">
               <HandleOnChangeContext.Provider value={ handleOnChange }>
-                { children }
+                {children}
               </HandleOnChangeContext.Provider>
             </Grid.Column>
           </Grid.Row>
@@ -216,7 +235,7 @@ PackageDetailsForm.propTypes = {
   touched: PropTypes.object,
   setFieldValue: PropTypes.func,
   setFieldTouched: PropTypes.func,
-  save: PropTypes.func
+  save: PropTypes.func,
 };
 
 export default PackageDetailsForm;

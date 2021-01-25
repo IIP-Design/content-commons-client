@@ -15,7 +15,7 @@ const PackagePreview = ( { id } ) => {
     partialRefetch: true,
     variables: { id },
     displayName: 'PackageQuery',
-    skip: !id
+    skip: !id,
   } );
 
   if ( error ) return <ApolloError error={ error } />;
@@ -28,7 +28,7 @@ const PackagePreview = ( { id } ) => {
   if ( !getCount( pkg ) ) return null;
 
   const {
-    createdAt, updatedAt, title, team, type, documents
+    createdAt, updatedAt, title, desc, team, type, documents,
   } = pkg;
 
   // Structure obj for use in Package component
@@ -39,14 +39,15 @@ const PackagePreview = ( { id } ) => {
     team,
     type,
     title,
-    documents
+    desc,
+    documents,
   };
 
   return <Package item={ pkgItem } displayAsModal isAdminPreview useGraphQl />;
 };
 
 PackagePreview.propTypes = {
-  id: PropTypes.string
+  id: PropTypes.string,
 };
 
 export default PackagePreview;

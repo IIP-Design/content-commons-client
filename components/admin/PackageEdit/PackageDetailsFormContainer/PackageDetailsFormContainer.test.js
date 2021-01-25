@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-disabled-tests */
 import { mount } from 'enzyme';
 import { MockedProvider, wait } from '@apollo/react-testing';
 
@@ -324,6 +325,7 @@ describe( '<PackageDetailsFormContainer />', () => {
     const initialValues = {
       title: pkg.title || '',
       type: pkg.type || '',
+      desc: pkg.desc || '',
       termsConditions: false,
       ...fileValues,
     };

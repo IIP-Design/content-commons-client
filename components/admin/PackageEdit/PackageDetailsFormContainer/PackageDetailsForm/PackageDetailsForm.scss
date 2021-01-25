@@ -18,9 +18,16 @@
     padding-bottom: 0;
   }
 
+  .note {
+    font-size: .80rem;
+    position: relative;
+    top: -15px;
+  }
+
   input#type[value="DAILY_GUIDANCE"] {
     border: 0;
     padding-left: 0;
     padding-right: 0;
   }
+  
 }

@@ -22,7 +22,13 @@ import {
   normalizeDocumentItemByAPI, getDateTimeTerms,
 } from './utils';
 import { updateUrl } from 'lib/browser';
-import { getCount, getPluralStringOrNot, getPreviewNotificationStyles } from 'lib/utils';
+import {
+  getCount,
+  getPluralStringOrNot,
+  getPreviewNotificationStyles,
+  parseToParagraphs,
+} from 'lib/utils';
+import Linkify from 'react-linkify';
 
 import './Package.scss';
 
@@ -37,6 +43,7 @@ const Package = props => {
     modified,
     type,
     title,
+    desc,
     site,
     documents,
   } = props.item;
@@ -158,7 +165,13 @@ const Package = props => {
             toolTip={ getPluralStringOrNot( documents, 'Download file' ) }
             id={ `${id}_package-download` }
             className="package-project__popover package-project__popover--download"
-            trigger={ <img src={ downloadIcon } style={ { width: '18px', height: '18px' } } alt="download icon" /> }
+            trigger={ (
+              <img
+                src={ downloadIcon }
+                style={ { width: '18px', height: '18px' } }
+                alt="download icon"
+              />
+            ) }
             expandFromRight
           >
             <TabLayout
@@ -187,16 +200,27 @@ const Package = props => {
             />
           </Popover>
           <span className="file-count">
-            { ' ' }
+            {' '}
             {`(${getCount( documents )})`}
             <VisuallyHidden> documents in this package</VisuallyHidden>
           </span>
         </div>
       </div>
 
+      {desc && (
+        <div className="package-description-container">
+          <div className="package-description">
+            <div className="header">Background</div>
+            <div>
+              <Linkify>{parseToParagraphs( desc )}</Linkify>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="package-items">
         <Card.Group>
-          { getCount( documents )
+          {getCount( documents )
             ? collatedDocuments.map( file => (
               <PackageItem
                 key={ file.id }
