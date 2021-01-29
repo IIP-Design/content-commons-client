@@ -1,27 +1,42 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Loader } from 'semantic-ui-react';
 import cookies from 'next-cookies';
 import { redirectTo } from 'lib/browser';
-import Login from 'components/Login/Login'
+import { useAuth  } from 'context/authContext'
+
+import Login from 'components/Login/Login';
+
  
 /**
  * Takes a destructured object as a param containing:
  * @param redirect url to redirected to
  * @param code code that amplify sends on redirect after validation 
  */
-const LoginPage = ( { redirect = '/', code } ) => {    
-  // if code is defined then we are in the Commons signin process, show loader
+const LoginPage = ( { redirect = '/', code, state} ) => {  
+  // redirectAfterLogin is set after Cognito customAuthState is set in authContext
+  // for some reason, the redirect does not work correctly when logging via Commons icon on okta dashboard
+  const { user, redirectAfterLogin } = useAuth(); 
+
   if ( code ) {
-    return (
-      <div style={{ height: '30vh', paddingTop: '6rem' }}>
-        <Loader size="medium" active inline="centered">
-          Loading
-        </Loader>
-      </div>
-    );
-  }
+      // if code is defined then we are in the Commons signin process, show loader
+      // if a user is set while we have a Cognito code, redirect to home
+      // this can happen if log is initiated outside of Commons, either by
+      // clicking the Commons icon from the Okta dashboard or by pasting the
+      // Cognito login link directly in the browser
+      if ( user?.id ) { 
+        redirectTo( redirectAfterLogin  || redirect, {});
+      }
+
+      return (
+        <div style={{ height: '30vh', paddingTop: '6rem' }}>
+          <Loader size="medium" active inline="centered">
+            Loading
+          </Loader>
+        </div>
+      );
+    }
 
   return  <Login redirect={ redirect } />
 };
@@ -51,12 +66,20 @@ LoginPage.getInitialProps = async ( ctx ) => {
   // if code !== undefined, we are in signin process (code is sent by amplify after successful login)
   return {
     redirect: match?.groups?.redirect,
-    code: req?.query?.code
+    code: req?.query?.code,
+    state: req?.query?.state, 
   };
 };
 
 LoginPage.propTypes = {
   redirect: PropTypes.string,
+  code: PropTypes.string,
+  state: PropTypes.string,
 };
 
 export default LoginPage;
+
+
+// https://commons-dev.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=SAML-OKTA&state=dfruE43v44sPoeb&client_id=5ms50i409idno1i7ukcgr16v9s&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+profile&redirect_uri=https://commons-stage.america.gov/login/
+// http://localhost:3000/package?id=ckagl81nb07rj0865d6blqfwr&site=commons.america.gov&language=en-us
+// http://localhost:3000/package?id=ckagl81nb07rj0865d6blqfwr&site=commons.america.gov&language=en-us

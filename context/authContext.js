@@ -87,6 +87,7 @@ export const canAccessPage = async ctx => {
 
 const AuthProvider = props => {
   const [authenticatedUser, setAuthenticatedUser] = useState( null );
+  const [redirectAfterLogin, setRedirectAfterLogin] = useState( null );
   const client = useApolloClient();
   const router = useRouter();
 
@@ -164,6 +165,8 @@ const AuthProvider = props => {
         login( _data?.signInUserSession );
       }
       if ( event === 'customOAuthState' ) {
+        // set redirect to redirect from login page after user is set and Cognito code is still available
+        setRedirectAfterLogin( _data );
         router.push( _data );
       }
     } );
@@ -188,6 +191,7 @@ const AuthProvider = props => {
         login,
         logout,
         register,
+        redirectAfterLogin,
       } }
       { ...props }
     />
@@ -206,3 +210,4 @@ function useAuth() {
 }
 
 export { AuthProvider, useAuth };
+
