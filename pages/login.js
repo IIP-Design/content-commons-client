@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Loader } from 'semantic-ui-react';
 import cookies from 'next-cookies';
