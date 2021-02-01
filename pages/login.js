@@ -78,8 +78,3 @@ LoginPage.propTypes = {
 };
 
 export default LoginPage;
-
-
-// https://commons-dev.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=SAML-OKTA&state=dfruE43v44sPoeb&client_id=5ms50i409idno1i7ukcgr16v9s&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+profile&redirect_uri=https://commons-stage.america.gov/login/
-// http://localhost:3000/package?id=ckagl81nb07rj0865d6blqfwr&site=commons.america.gov&language=en-us
-// http://localhost:3000/package?id=ckagl81nb07rj0865d6blqfwr&site=commons.america.gov&language=en-us
