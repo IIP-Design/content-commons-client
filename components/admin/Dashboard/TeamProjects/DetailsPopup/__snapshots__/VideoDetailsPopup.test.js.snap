@@ -12,11 +12,9 @@ exports[`<VideoDetailsPopup /> renders the final state 1`] = `
         key="f281"
       >
         Full Video
-         
-        |
+         | 
         BROADCAST
-         
-        |
+         | 
         English
          
         (
@@ -27,11 +25,9 @@ exports[`<VideoDetailsPopup /> renders the final state 1`] = `
         key="f294"
       >
         Full Video
-         
-        |
+         | 
         BROADCAST
-         
-        |
+         | 
         French
          
         (
@@ -41,19 +37,17 @@ exports[`<VideoDetailsPopup /> renders the final state 1`] = `
       <li
         key="v832"
       >
-        SRT |
+        SRT | 
         English
-         
-        |
+         | 
         6.27  KB
       </li>
       <li
         key="v238"
       >
-        SRT |
+        SRT | 
         French
-         
-        |
+         | 
         6.27  KB
       </li>
     </ul>

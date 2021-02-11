@@ -25,16 +25,15 @@ const FormInstructions = props => {
     <Fragment>
       <p style={ baseStyles }>
         <strong>
-          Fill out the required fields to finish setting up this
+          { 'Fill out the required fields to finish setting up this ' }
           { props.type }
           .
         </strong>
       </p>
       <p style={ draftMsgStyles }>
-        Your files will not be uploaded until the
+        { 'Your files will not be uploaded until the ' }
         { props.type }
-        { ' ' }
-        is saved as a draft.
+        { ' is saved as a draft.' }
       </p>
     </Fragment>
   );

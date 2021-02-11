@@ -83,11 +83,9 @@ const VideoDetailsPopup = props => {
             return (
               <li key={ vidFile.id }>
                 { vidFile.use && vidFile.use.name }
-                { ' ' }
-                |
+                { ' | ' }
                 { vidFile.quality }
-                { ' ' }
-                |
+                { ' | ' }
                 { vidFile.language && vidFile.language.displayName }
                 { ' ' }
                 (
@@ -101,10 +99,9 @@ const VideoDetailsPopup = props => {
 
             return (
               <li key={ sprtFile.id }>
-                SRT |
+                { 'SRT | ' }
                 { sprtFile.language && sprtFile.language.displayName }
-                { ' ' }
-                |
+                { ' | ' }
                 { formatBytes( sprtFile.filesize ) }
               </li>
             );

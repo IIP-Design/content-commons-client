@@ -82,11 +82,9 @@ const VideoDetailsPopup = props => (
                   return (
                     <li key={ vidFile.id }>
                       { vidFile.use && vidFile.use.name }
-                      { ' ' }
-                      |
+                      { ' | ' }
                       <a href={ getS3Url( vidFile.url ) }>{ vidFile.quality }</a>
-                      { ' ' }
-                      |
+                      { ' | ' }
                       <a href={ getS3Url( vidFile.url ) }>
                         { vidFile.language && vidFile.language.displayName }
                         { ' ' }
@@ -104,7 +102,7 @@ const VideoDetailsPopup = props => (
                     <li key={ sprtFile.id }>
                       { 'SRT | ' }
                       <a href={ getS3Url( sprtFile.url ) }>{ sprtFile.language && sprtFile.language.displayName }</a>
-                      { ' |' }
+                      { ' | ' }
                       <a href={ getS3Url( sprtFile.url ) }>{ formatBytes( sprtFile.filesize ) }</a>
                     </li>
                   );
