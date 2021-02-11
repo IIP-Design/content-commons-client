@@ -17,7 +17,7 @@ const ProjectSupportFiles = props => {
     heading,
     projectId,
     config,
-    save
+    save,
   } = props;
 
   const fileTypes = Object.keys( config.types );

@@ -15,7 +15,7 @@ const AddFilesSectionHeading = props => {
 
   return (
     <div className={ `add-files-section-heading ${projectId ? 'available' : 'unavailable'}` }>
-      <HeadlineElement className="headline uppercase">{title}</HeadlineElement>
+      <HeadlineElement className="headline uppercase">{ title }</HeadlineElement>
 
       { children || (
         <ButtonAddFiles
@@ -25,7 +25,7 @@ const AddFilesSectionHeading = props => {
         >
           + Add Files
         </ButtonAddFiles>
-      )}
+      ) }
     </div>
   );
 };

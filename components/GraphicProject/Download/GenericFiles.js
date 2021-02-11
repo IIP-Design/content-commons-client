@@ -26,7 +26,7 @@ const GenericFiles = ( { file, isAdminPreview } ) => {
         <p className="item-content__title">
           <strong>Download </strong>
           { `"${fileName}"` }
-          <strong>{` (${fileType})`}</strong>
+          <strong>{ ` (${fileType})` }</strong>
         </p>
       </div>
     </DownloadItemContent>

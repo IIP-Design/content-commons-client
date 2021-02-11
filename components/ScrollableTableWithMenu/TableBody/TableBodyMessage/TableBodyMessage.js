@@ -32,7 +32,7 @@ const TableBodyMessage = ( { error, searchTerm, type } ) => {
       <Table.Body>
         <Table.Row>
           <Table.Cell>
-            {setMessage( type, error, searchTerm ) }
+            { setMessage( type, error, searchTerm ) }
           </Table.Cell>
         </Table.Row>
       </Table.Body>
@@ -45,7 +45,7 @@ const TableBodyMessage = ( { error, searchTerm, type } ) => {
 TableBodyMessage.propTypes = {
   error: PropTypes.object,
   searchTerm: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
 };
 
 export default TableBodyMessage;

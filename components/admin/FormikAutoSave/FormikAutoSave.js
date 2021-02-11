@@ -1,5 +1,5 @@
 import {
-  useEffect, useCallback, useState
+  useEffect, useCallback, useState,
 } from 'react';
 import debounce from 'lodash/debounce';
 import useIsMounted from 'lib/hooks/useIsMounted';
@@ -16,8 +16,8 @@ const FormikAutoSave = props => {
 
   const {
     save, debounceMs, formik: {
-      validateForm, values
-    }
+      validateForm, values,
+    },
   } = props;
 
   // Stores last saved form values. Helpful when values need to be removed from form
@@ -45,12 +45,13 @@ const FormikAutoSave = props => {
       async updatedValues => {
         const errors = await validateForm( updatedValues );
         const hasErrors = Object.keys( errors ).length > 0;
+
         if ( hasErrors ) { return; }
         _save( updatedValues );
       },
-      debounceMs
+      debounceMs,
     ),
-    [save, debounceMs]
+    [save, debounceMs],
   );
 
   useEffect( () => {
@@ -65,7 +66,7 @@ const FormikAutoSave = props => {
 };
 
 FormikAutoSave.defaultProps = {
-  debounceMs: 500
+  debounceMs: 500,
 };
 
 export default connect( FormikAutoSave );

@@ -10,7 +10,7 @@ class ClipboardCopy extends Component {
     this.timeoutID = null;
     this.state = {
       label: 'Copy',
-      cls: ''
+      cls: '',
     };
   }
 
@@ -63,9 +63,7 @@ class ClipboardCopy extends Component {
             </label>
           </div>
           <div
-            className={
-              `clipboardcopy_item${isPreview ? ' preview' : ''}`
-            }
+            className={ `clipboardcopy_item${isPreview ? ' preview' : ''}` }
           >
             <input
               id="clipboardcopy_item_text"
@@ -96,7 +94,7 @@ class ClipboardCopy extends Component {
 ClipboardCopy.propTypes = {
   copyItem: PropTypes.string,
   isPreview: PropTypes.bool,
-  label: PropTypes.string
+  label: PropTypes.string,
 };
 
 export default ClipboardCopy;

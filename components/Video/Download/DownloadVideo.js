@@ -85,7 +85,7 @@ const DownloadVideo = ( { burnedInCaptions, selectedLanguageUnit, isAdminPreview
       <div>
         { videosArr.length
           ? videosArr
-          : <p className="download-item__noContent">There are no videos available for download at this time</p>}
+          : <p className="download-item__noContent">There are no videos available for download at this time</p> }
       </div>
     );
   };

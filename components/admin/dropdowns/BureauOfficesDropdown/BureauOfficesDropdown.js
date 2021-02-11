@@ -32,11 +32,12 @@ const BureauOfficesDropdown = props => (
       if ( error ) return `Error! ${error.message}`;
 
       let options = [];
+
       if ( data && data.bureaus ) {
         options = sortBy( data.bureaus, bureau => bureau.name ).map( bureau => ( {
           key: bureau.id,
           text: `${bureau.name} (${bureau.abbr})`,
-          value: bureau.id
+          value: bureau.id,
         } ) );
       }
 
@@ -70,12 +71,12 @@ const BureauOfficesDropdown = props => (
 
 
 BureauOfficesDropdown.defaultProps = {
-  id: ''
+  id: '',
 };
 
 BureauOfficesDropdown.propTypes = {
   id: PropTypes.string,
-  label: PropTypes.string
+  label: PropTypes.string,
 };
 
 export default React.memo( BureauOfficesDropdown, areEqual );

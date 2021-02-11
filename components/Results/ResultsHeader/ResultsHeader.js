@@ -86,9 +86,9 @@ const ResultsHeader = ( {
           { resultItemsStart }
           -
           { resultItemsEnd }
-          {' '}
+          { ' ' }
           of
-          {' '}
+          { ' ' }
           { numberWithCommas( total ) }
           <span style={ total > 12 ? { display: 'inline' } : { display: 'none' } }> | Show: </span>
           <Dropdown

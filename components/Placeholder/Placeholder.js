@@ -12,7 +12,7 @@ const Placeholder = props => {
     parentEl,
     childEl,
     parentStyles,
-    childStyles
+    childStyles,
   } = props;
 
   const Parent = parentEl;
@@ -21,7 +21,7 @@ const Placeholder = props => {
     height: '0.875em',
     width: 'auto',
     marginBottom: '0.625em',
-    backgroundColor: '#d6d7d9'
+    backgroundColor: '#d6d7d9',
   };
 
   const childStylesKeys = Object.keys( childStyles );
@@ -44,14 +44,14 @@ Placeholder.propTypes = {
   parentEl: string,
   childEl: string,
   parentStyles: object,
-  childStyles: object
+  childStyles: object,
 };
 
 Placeholder.defaultProps = {
   parentEl: 'li',
   childEl: 'div',
   parentStyles: {},
-  childStyles: { default: { width: 'auto' } }
+  childStyles: { 'default': { width: 'auto' } },
 };
 
 export default Placeholder;

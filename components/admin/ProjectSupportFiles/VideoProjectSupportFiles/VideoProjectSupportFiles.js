@@ -9,12 +9,12 @@ import {
   UPDATE_SUPPORT_FILE_MUTATION,
   UPDATE_IMAGE_FILE_MUTATION,
   DELETE_SUPPORT_FILE_MUTATION,
-  DELETE_IMAGE_FILE_MUTATION
+  DELETE_IMAGE_FILE_MUTATION,
 } from 'lib/graphql/queries/common';
 import {
   UPDATE_VIDEO_PROJECT_MUTATION,
   UPDATE_VIDEO_UNIT_MUTATION,
-  VIDEO_PROJECT_QUERY
+  VIDEO_PROJECT_QUERY,
 } from 'lib/graphql/queries/video';
 import { buildSupportFile, buildImageFile, buildThumbnailTree } from 'lib/graphql/builders/common';
 import { getFileExt } from 'lib/utils';
@@ -33,19 +33,21 @@ const VideoProjectSupportFiles = props => {
     variables: {
       data,
       where: {
-        id
-      }
-    }
+        id,
+      },
+    },
   } );
 
   const hasAcceptedExtension = ext => {
     // const allAcceptedExts = [...srt.extensions, ...other.extensions];
     const allAcceptedExts = [...captions.extensions, ...other.extensions];
+
     return allAcceptedExts.includes( ext );
   };
 
   const isSupportFile = name => {
     const ext = getFileExt( name );
+
     // return srt.extensions.includes( ext );
     return captions.extensions.includes( ext );
   };
@@ -64,9 +66,9 @@ const VideoProjectSupportFiles = props => {
       filename: file.name.trim(),
       language: {
         connect: {
-          id: file.language
-        }
-      }
+          id: file.language,
+        },
+      },
     } );
 
     if ( isSupportFile( file.name ) ) {
@@ -83,8 +85,8 @@ const VideoProjectSupportFiles = props => {
     if ( isSupportFile( file.name ) ) {
       return updateVideoProject( getQuery( projectId, {
         supportFiles: {
-          create: buildSupportFile( file )
-        }
+          create: buildSupportFile( file ),
+        },
       } ) );
     }
 
@@ -93,8 +95,8 @@ const VideoProjectSupportFiles = props => {
 
     return updateVideoProject( getQuery( projectId, {
       thumbnails: {
-        create: buildImageFile( file )
-      }
+        create: buildImageFile( file ),
+      },
     } ) );
   };
 
@@ -109,13 +111,13 @@ const VideoProjectSupportFiles = props => {
         variables: {
           data: {
             thumbnails: {
-              delete: ids,
-            }
+              'delete': ids,
+            },
           },
           where: {
-            id: unit.id
-          }
-        }
+            id: unit.id,
+          },
+        },
 
       } );
     }
@@ -125,6 +127,7 @@ const VideoProjectSupportFiles = props => {
     const { updateVideoUnit } = props;
 
     const languageThumbnail = thumbnails.find( tn => tn.language.id === unit.language.id );
+
     if ( languageThumbnail ) {
       return Promise.all( thumbnails.map( async tn => {
         if ( tn.language.id === unit.language.id ) {
@@ -132,23 +135,24 @@ const VideoProjectSupportFiles = props => {
             variables: {
               data: buildThumbnailTree( tn ),
               where: {
-                id: unit.id
-              }
-            }
+                id: unit.id,
+              },
+            },
           } );
         }
       } ) );
     }
 
     const englishThumbnail = thumbnails.find( tn => tn.language.locale === 'en-us' );
+
     if ( englishThumbnail ) {
       return updateVideoUnit( {
         variables: {
           data: buildThumbnailTree( englishThumbnail ),
           where: {
-            id: unit.id
-          }
-        }
+            id: unit.id,
+          },
+        },
       } );
     }
   };
@@ -161,6 +165,7 @@ const VideoProjectSupportFiles = props => {
     if ( units.length ) {
       return Promise.all( units.map( async unit => {
         await clearUnitThumbnails( unit );
+
         return addUnitThumbnails( unit, thumbnails );
       } ) );
     }
@@ -176,6 +181,7 @@ const VideoProjectSupportFiles = props => {
       }
 
       const { data } = props;
+
       if ( data && data.project ) {
         uploadDir = searchTreeForS3FileDirectories( data.project );
         uploadDir = uploadDir.length ? uploadDir[0] : '';
@@ -203,13 +209,14 @@ const VideoProjectSupportFiles = props => {
   };
 
   const removeFromDataBase = async ( files = [] ) => {
-    const { deleteSupportFile, deleteImageFile, } = props;
+    const { deleteSupportFile, deleteImageFile } = props;
 
     // todo: should use delete many so ony have 1 call
     return Promise.all( files.map( async file => {
       if ( isSupportFile( file.name ) ) {
         return deleteSupportFile( { variables: { id: file.id } } ).catch( err => console.dir( err ) );
       }
+
       return deleteImageFile( { variables: { id: file.id } } ).catch( err => console.dir( err ) );
     } ) );
   };
@@ -224,6 +231,7 @@ const VideoProjectSupportFiles = props => {
     // Notify redux state that Project updated, indexed by project id
     // Used for conditionally displaying Publish buttons & msgs (bottom of screen) on VideoReview
     const { projectId, projectUpdated } = props;
+
     projectUpdated( projectId, true );
 
     return props.data.refetch();
@@ -253,7 +261,7 @@ VideoProjectSupportFiles.propTypes = {
   uploadExecute: PropTypes.func,
   imagesUsesData: PropTypes.object,
   data: PropTypes.object,
-  projectUpdated: PropTypes.func
+  projectUpdated: PropTypes.func,
 };
 
 
@@ -269,8 +277,8 @@ export default compose(
   graphql( UPDATE_VIDEO_PROJECT_MUTATION, { name: 'updateVideoProject' } ),
   graphql( VIDEO_PROJECT_QUERY, {
     options: props => ( {
-      variables: { id: props.projectId }
+      variables: { id: props.projectId },
     } ),
-    skip: props => !props.projectId
+    skip: props => !props.projectId,
   } ),
 )( VideoProjectSupportFiles );

@@ -5,7 +5,7 @@ import './ModalItemRTL.scss';
 
 const ModalItem = props => {
   const {
-    className, headline, children, subHeadline, textDirection, lang
+    className, headline, children, subHeadline, textDirection, lang,
   } = props;
 
   return (

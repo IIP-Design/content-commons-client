@@ -14,7 +14,7 @@ import useTimeout from 'lib/hooks/useTimeout';
 
 import './EditSingleProjectItem.scss';
 
-const EditVideoModal = dynamic( () => import( /* webpackChunkName: "editVideoModal" */ 'components/admin/ProjectEdit/EditVideoModal/EditVideoModal' ) );
+const EditVideoModal = dynamic( () => import( /* webpackChunkName: "editVideoModal" */ 'components/admin/ProjectEdit/EditVideoModal/EditVideoModal' ) ); // eslint-disable-line import/no-cycle
 const ModalItem = dynamic( () => import( /* webpackChunkName: "modalItem" */ 'components/modals/ModalItem/ModalItem' ) );
 
 const VIDEO_PROJECT_QUERY = gql`

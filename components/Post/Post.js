@@ -145,7 +145,7 @@ const Post = ( { item, router } ) => {
               </div>
             </Popover>
 
-            {/* <PopupTrigger
+            { /* <PopupTrigger
               toolTip="Embed this article"
               icon={ { img: embedIcon, dim: 24 } }
               show
@@ -183,7 +183,7 @@ const Post = ( { item, router } ) => {
                   />
                 </Popup>
               ) }
-            /> */}
+            /> */ }
           </div>
         </div>
         <ModalImage thumbnail={ selectedItem?.thumbnail || '' } thumbnailMeta={ selectedItem.thumbnailMeta } />

@@ -21,7 +21,7 @@ describe( 'getCategories', () => {
     expect( categories ).toEqual( 'geography' );
   } );
 
-  it( 'it only returns the first three categories provided', () => {
+  it( 'only returns the first three categories provided', () => {
     const categories = getCategories( manyCategoriesItem );
 
     expect( manyCategoriesItem.categories.length ).toEqual( 4 );

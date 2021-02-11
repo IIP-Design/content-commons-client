@@ -16,7 +16,8 @@ exports[`<VideoDetailsPopup /> renders the final state 1`] = `
         BROADCAST
          | 
         English
-         (
+         
+        (
         6.13  MB
         )
       </li>
@@ -28,7 +29,8 @@ exports[`<VideoDetailsPopup /> renders the final state 1`] = `
         BROADCAST
          | 
         French
-         (
+         
+        (
         6.13  MB
         )
       </li>

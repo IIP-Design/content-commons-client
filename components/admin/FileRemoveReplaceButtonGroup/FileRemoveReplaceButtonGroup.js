@@ -26,13 +26,13 @@ const FileRemoveReplaceButtonGroup = props => {
 
 FileRemoveReplaceButtonGroup.defaultProps = {
   disableRemove: false,
-  icon: ''
+  icon: '',
 };
 
 FileRemoveReplaceButtonGroup.propTypes = {
   onRemove: PropTypes.func,
   disableRemove: PropTypes.bool,
-  icon: PropTypes.string
+  icon: PropTypes.string,
 };
 
 export default FileRemoveReplaceButtonGroup;

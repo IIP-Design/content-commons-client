@@ -13,18 +13,21 @@ const Component = (
 describe( '<ProjectHeader />', () => {
   it( 'renders without crashing', () => {
     const wrapper = shallow( Component );
+
     expect( wrapper.exists() ).toEqual( true );
     expect( toJSON( wrapper ) ).toMatchSnapshot();
   } );
 
   it( 'renders children', () => {
     const wrapper = shallow( Component );
+
     expect( wrapper.children() ).toHaveLength( 2 );
   } );
 
   it( 'renders buttons', () => {
     const wrapper = shallow( Component );
     const buttons = wrapper.find( '.project_buttons' );
+
     expect( buttons.children() ).toHaveLength( 2 );
     buttons.children().forEach( node => {
       expect( node.name() ).toEqual( 'Button' );

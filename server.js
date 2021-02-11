@@ -49,5 +49,5 @@ app.prepare()
   } )
   .catch( ex => {
     console.error( ex.stack );
-    process.exit( 1 );
+    process.exit( 1 ); // eslint-disable-line node/no-process-exit
   } );

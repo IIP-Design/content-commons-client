@@ -6,10 +6,10 @@ export const packageItemGraph = {
   type: 'DAILY_GUIDANCE',
   author: {
     firstName: 'Shawn',
-    lastName: 'Mathew'
+    lastName: 'Mathew',
   },
   team: {
-    name: 'GPA Press Office'
+    name: 'GPA Press Office',
   },
   title: 'Guidance Package 01-22-20',
   desc: null,
@@ -29,9 +29,9 @@ export const packageItemGraph = {
             displayName: 'English',
             textDirection: 'LTR',
             nativeName: 'English',
-            __typename: 'Language'
+            __typename: 'Language',
           },
-          __typename: 'LanguageTranslation'
+          __typename: 'LanguageTranslation',
         },
         {
           id: 'ck2lzg81z0l2907209nhmfzce',
@@ -43,9 +43,9 @@ export const packageItemGraph = {
             displayName: 'Spanish',
             textDirection: 'LTR',
             nativeName: 'Español',
-            __typename: 'Language'
+            __typename: 'Language',
           },
-          __typename: 'LanguageTranslation'
+          __typename: 'LanguageTranslation',
         },
         {
           id: 'ck2lzg82k0l2g0720yojg47ku',
@@ -57,12 +57,12 @@ export const packageItemGraph = {
             displayName: 'French',
             textDirection: 'LTR',
             nativeName: 'Français',
-            __typename: 'Language'
+            __typename: 'Language',
           },
-          __typename: 'LanguageTranslation'
-        }
+          __typename: 'LanguageTranslation',
+        },
       ],
-      __typename: 'Tag'
+      __typename: 'Tag',
     },
     {
       id: 'ck2lzgu5b0rho07207cqfeya0',
@@ -77,9 +77,9 @@ export const packageItemGraph = {
             displayName: 'English',
             textDirection: 'LTR',
             nativeName: 'English',
-            __typename: 'Language'
+            __typename: 'Language',
           },
-          __typename: 'LanguageTranslation'
+          __typename: 'LanguageTranslation',
         },
         {
           id: 'ck2lzghvp0nnl0720ddbyim3m',
@@ -91,9 +91,9 @@ export const packageItemGraph = {
             displayName: 'Spanish',
             textDirection: 'LTR',
             nativeName: 'Español',
-            __typename: 'Language'
+            __typename: 'Language',
           },
-          __typename: 'LanguageTranslation'
+          __typename: 'LanguageTranslation',
         },
         {
           id: 'ck2lzghwb0nns07207xjmveqe',
@@ -105,13 +105,13 @@ export const packageItemGraph = {
             displayName: 'French',
             textDirection: 'LTR',
             nativeName: 'Français',
-            __typename: 'Language'
+            __typename: 'Language',
           },
-          __typename: 'LanguageTranslation'
-        }
+          __typename: 'LanguageTranslation',
+        },
       ],
-      __typename: 'Tag'
-    }
+      __typename: 'Tag',
+    },
   ],
   documents: [
     {
@@ -133,12 +133,12 @@ export const packageItemGraph = {
         id: 'ck391csz01yrw07205d7xr8iw',
         rawText: 'U.S. DEPARTMENT OF STATE Office of the Spokesperson For Immediate Release Statement by ROBERT PALLADINO, DEPUTY SPOKESPERSON Month Date, 2018 100th Anniversary of the U.S.-Canada Boundary Waters Treaty &lt;Not in CAPS&gt; A statement provides the official U.S. policy/view or comment on a particular foreign policy issue usually in the name of the Spokesperson, Deputy Spokesperson, and sometimes from the Secretary of State.',
         html: '<p>U.S. DEPARTMENT OF STATE</p><p>Office of the Spokesperson</p><p>For Immediate Release </p><p>Statement by ROBERT PALLADINO, DEPUTY SPOKESPERSON</p><p>Month Date, 2018</p><p>100th Anniversary of the U.S.-Canada Boundary Waters Treaty &lt;Not in CAPS&gt;</p><p>A statement provides the official U.S. policy/view or comment on a particular foreign policy issue usually in the name of the Spokesperson, Deputy Spokesperson, and sometimes from the Secretary of State.</p>',
-        __typename: 'DocumentConversionFormat'
+        __typename: 'DocumentConversionFormat',
       },
       use: {
         id: 'ck2wbvj6010kz0720c358mbrt',
         name: 'Department Press Briefing',
-        __typename: 'DocumentUse'
+        __typename: 'DocumentUse',
       },
       bureaus: [],
       image: [],
@@ -149,7 +149,7 @@ export const packageItemGraph = {
         displayName: 'English',
         textDirection: 'LTR',
         nativeName: 'English',
-        __typename: 'Language'
+        __typename: 'Language',
       },
       categories: [],
       tags: [
@@ -166,9 +166,9 @@ export const packageItemGraph = {
                 displayName: 'English',
                 textDirection: 'LTR',
                 nativeName: 'English',
-                __typename: 'Language'
+                __typename: 'Language',
               },
-              __typename: 'LanguageTranslation'
+              __typename: 'LanguageTranslation',
             },
             {
               id: 'ck2lzg81z0l2907209nhmfzce',
@@ -180,9 +180,9 @@ export const packageItemGraph = {
                 displayName: 'Spanish',
                 textDirection: 'LTR',
                 nativeName: 'Español',
-                __typename: 'Language'
+                __typename: 'Language',
               },
-              __typename: 'LanguageTranslation'
+              __typename: 'LanguageTranslation',
             },
             {
               id: 'ck2lzg82k0l2g0720yojg47ku',
@@ -194,12 +194,12 @@ export const packageItemGraph = {
                 displayName: 'French',
                 textDirection: 'LTR',
                 nativeName: 'Français',
-                __typename: 'Language'
+                __typename: 'Language',
               },
-              __typename: 'LanguageTranslation'
-            }
+              __typename: 'LanguageTranslation',
+            },
           ],
-          __typename: 'Tag'
+          __typename: 'Tag',
         },
         {
           id: 'ck2lzgu5b0rho07207cqfeya0',
@@ -214,9 +214,9 @@ export const packageItemGraph = {
                 displayName: 'English',
                 textDirection: 'LTR',
                 nativeName: 'English',
-                __typename: 'Language'
+                __typename: 'Language',
               },
-              __typename: 'LanguageTranslation'
+              __typename: 'LanguageTranslation',
             },
             {
               id: 'ck2lzghvp0nnl0720ddbyim3m',
@@ -228,9 +228,9 @@ export const packageItemGraph = {
                 displayName: 'Spanish',
                 textDirection: 'LTR',
                 nativeName: 'Español',
-                __typename: 'Language'
+                __typename: 'Language',
               },
-              __typename: 'LanguageTranslation'
+              __typename: 'LanguageTranslation',
             },
             {
               id: 'ck2lzghwb0nns07207xjmveqe',
@@ -242,13 +242,13 @@ export const packageItemGraph = {
                 displayName: 'French',
                 textDirection: 'LTR',
                 nativeName: 'Français',
-                __typename: 'Language'
+                __typename: 'Language',
               },
-              __typename: 'LanguageTranslation'
-            }
+              __typename: 'LanguageTranslation',
+            },
           ],
-          __typename: 'Tag'
-        }
+          __typename: 'Tag',
+        },
       ],
       countries: [
         {
@@ -260,8 +260,8 @@ export const packageItemGraph = {
             __typename: 'Region',
             id: 'ck6krp96g3f3c0720c1w09bx1',
             name: 'Bureau of African Affairs',
-            abbr: 'AF'
-          }
+            abbr: 'AF',
+          },
         },
         {
           __typename: 'Country',
@@ -272,10 +272,10 @@ export const packageItemGraph = {
             __typename: 'Region',
             id: 'ck6krp96g3f3c0720c1w09bx1',
             name: 'Bureau of African Affairs',
-            abbr: 'AF'
-          }
-        }
-      ]
-    }
-  ]
+            abbr: 'AF',
+          },
+        },
+      ],
+    },
+  ],
 };

@@ -7,14 +7,14 @@ jest.mock(
   './SupportFileTypeList/SupportFileTypeList',
   () => function SupportFileTypeList() {
     return '';
-  }
+  },
 );
 
 const props = {
   heading: 'Support Files',
   projectId: '123',
   save: jest.fn(),
-  config: config.supportFiles
+  config: config.supportFiles,
 };
 
 const Component = <ProjectSupportFiles { ...props } />;
@@ -22,6 +22,7 @@ const Component = <ProjectSupportFiles { ...props } />;
 describe( '<ProjectSupportFiles />', () => {
   it( 'renders without crashing', () => {
     const wrapper = shallow( Component );
+
     expect( wrapper.exists() ).toEqual( true );
     expect( toJSON( wrapper ) ).toMatchSnapshot();
   } );
@@ -29,6 +30,7 @@ describe( '<ProjectSupportFiles />', () => {
   it( 'renders the heading', () => {
     const wrapper = shallow( Component );
     const heading = wrapper.find( '.heading' );
+
     expect( heading.name() ).toEqual( 'h2' );
     expect( heading.text() ).toEqual( props.heading );
   } );
@@ -37,6 +39,7 @@ describe( '<ProjectSupportFiles />', () => {
     const wrapper = shallow( Component );
     const lists = wrapper.find( 'SupportFileTypeList' );
     const typesCount = Object.keys( props.config.types ).length;
+
     expect( lists ).toHaveLength( typesCount );
   } );
 } );

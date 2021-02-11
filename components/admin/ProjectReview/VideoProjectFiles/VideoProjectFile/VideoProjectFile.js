@@ -71,7 +71,7 @@ const VideoProjectFile = ( { file, thumbnail } ) => {
       <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } className="file_meta">
         <p>
           <b className="label">File Name:</b>
-          { ` ${filename}`}
+          { ` ${filename}` }
         </p>
         <p>
           <b className="label">Filesize:</b>
@@ -83,7 +83,7 @@ const VideoProjectFile = ( { file, thumbnail } ) => {
         </p>
         <p>
           <b className="label">Uploaded:</b>
-          {' '}
+          { ' ' }
           <time dateTime={ createdAt }>{ `${moment( createdAt ).format( 'LL' )}` }</time>
         </p>
         <p>
@@ -104,9 +104,9 @@ const VideoProjectFile = ( { file, thumbnail } ) => {
         </p>
         <p>
           <b className="label">
-            { ` ${youTubeUrl ? 'YouTube' : 'Vimeo'} URL:`}
+            { ` ${youTubeUrl ? 'YouTube' : 'Vimeo'} URL:` }
           </b>
-          { ` ${youTubeUrl || vimeoUrl}`}
+          { ` ${youTubeUrl || vimeoUrl}` }
         </p>
       </Grid.Column>
     </Grid.Row>

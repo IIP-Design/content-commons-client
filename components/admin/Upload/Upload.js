@@ -186,7 +186,7 @@ const Upload = () => {
         onClick={ onClick }
       >
         <img src={ icon } alt={ alt } />
-        <span>{label}</span>
+        <span>{ label }</span>
       </Button>
     );
   };
@@ -213,13 +213,13 @@ const Upload = () => {
       <h1>Upload Content</h1>
       <section className="upload-content">
         <div className="contentTypes">
-          {/* Audios */}
+          { /* Audios */ }
           <Button className="type disabled" aria-label="Upload Audio Content">
             <img src={ audioIcon } alt="Upload Audio Content" />
             <span>Audio</span>
           </Button>
 
-          {/* Videos */}
+          { /* Videos */ }
           <Modal
             className={ modalClassname }
             open={ state.video.open }
@@ -237,7 +237,7 @@ const Upload = () => {
             ) }
           />
 
-          {/* Graphics */}
+          { /* Graphics */ }
           <Modal
             className={ modalClassname }
             open={ state.graphic.open }
@@ -263,20 +263,20 @@ const Upload = () => {
             ) }
           />
 
-          {/* Documents */}
+          { /* Documents */ }
           <Button className="type disabled" aria-label="Upload Document Content">
             <img src={ docIcon } alt="Upload document content" />
             <span>Documents</span>
           </Button>
 
-          {/* Teaching Materials */}
+          { /* Teaching Materials */ }
           <Button className="type disabled" aria-label="Upload Teaching Material Content">
             <img src={ eduIcon } alt="Upload teaching material content" />
             <span>Teaching Materials</span>
           </Button>
         </div>
 
-        {/* Packages */}
+        { /* Packages */ }
         <div className="upload-content_package">
           <p className="conjunction">- OR -</p>
           <Button
@@ -317,9 +317,9 @@ const Upload = () => {
           <h3>For best results:</h3>
           <p>
             We recommend naming files descriptively using keywords or languages, ex: &quot;
-            {' '}
+            { ' ' }
             <i>project-tile_arabic.jpg</i>
-            {' '}
+            { ' ' }
             &quot;, to help pre-populate metadata fields and save you
             time when uploading content!
           </p>

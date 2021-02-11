@@ -24,7 +24,7 @@ describe( '<TablePagination />', () => {
     expect( pagination.contains( 'Loading....' ) ).toEqual( true );
   } );
 
-  it( 'renders error message if an error is returned', async() => {
+  it( 'renders error message if an error is returned', async () => {
     const errorMock = { message: 'There was an error.' };
     const newProps = { ...props, error: errorMock };
 

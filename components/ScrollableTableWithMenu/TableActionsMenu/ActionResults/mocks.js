@@ -11,7 +11,7 @@ export const apolloError = {
     { message: errorStrings[1] },
   ],
   networkError: errorStrings[2],
-  otherError: errorStrings[3]
+  otherError: errorStrings[3],
 };
 
 export const failure = {
@@ -20,5 +20,5 @@ export const failure = {
     projectTitle: 'ABC',
   },
   action: 'delete',
-  error: apolloError
+  error: apolloError,
 };

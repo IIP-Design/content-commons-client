@@ -114,18 +114,18 @@ const Priorities = ( { categories, label, term, user, locale } ) => {
                 trigger={ (
                   <SignedUrlImage className="prioritiesleft" url={ items[0].thumbnail }>
                     <div className="prioritiesoverlay">
-                      <div className="prioritiesoverlay_title">{items[0].title}</div>
+                      <div className="prioritiesoverlay_title">{ items[0].title }</div>
                       <img src={ items[0].icon } className="prioritiesoverlay_icon" alt="icon" />
                     </div>
                   </SignedUrlImage>
                 ) }
               >
-                <Modal.Content>{getModalContent( items[0] )}</Modal.Content>
+                <Modal.Content>{ getModalContent( items[0] ) }</Modal.Content>
               </Modal>
-            )}
+            ) }
           </Grid.Column>
           <Grid.Column width={ 8 } className="prioritiesgridright">
-            <Item.Group>{items && renderPrioritiesWithMeta( items )}</Item.Group>
+            <Item.Group>{ items && renderPrioritiesWithMeta( items ) }</Item.Group>
           </Grid.Column>
         </Grid>
       </div>

@@ -116,7 +116,7 @@ const ProjectDetailsForm = props => {
                         control={ Input }
                         label={ config.projectTitle?.label || 'Project Title' }
                         { ...( config.projectTitle?.required && { required: true } ) }
-                        autoFocus
+                        autoFocus // eslint-disable-line jsx-a11y/no-autofocus
                         value={ values.projectTitle }
                         onChange={ handleOnChange }
                         error={ touched.projectTitle && !!errors.projectTitle }
@@ -200,7 +200,7 @@ const ProjectDetailsForm = props => {
                         : (
                           <p className="field__helper-text">
                             Select up to
-                            {' '}
+                            { ' ' }
                             { maxCategories }
                             .
                           </p>

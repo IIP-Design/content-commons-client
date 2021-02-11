@@ -236,7 +236,7 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
               selected={ selectedLanguage.display_name }
               handleLanguageChange={ handleLanguageChange }
             />
-            {toggleCaptions.length > 1 && (
+            { toggleCaptions.length > 1 && (
               <Checkbox
                 className="modal_captions"
                 checked={ captions }
@@ -244,12 +244,12 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
                 label="Video with subtitles"
                 onChange={ handleCaptionChange }
               />
-            )}
+            ) }
           </div>
           <div className="trigger-container">
-            {visibility === 'INTERNAL'
-              && <InternalUseDisplay style={ { margin: '0 1em 0 1em' } } />}
-            {embedItem && (
+            { visibility === 'INTERNAL'
+              && <InternalUseDisplay style={ { margin: '0 1em 0 1em' } } /> }
+            { embedItem && (
               <Popover
                 toolTip="Embed video"
                 id={ `${id}_video-embed` }
@@ -276,7 +276,7 @@ const Video = ( { item, router, isAdminPreview = false } ) => {
                   ] }
                 />
               </Popover>
-            )}
+            ) }
             <Popover
               toolTip="Share video"
               id={ `${id}_video-share` }

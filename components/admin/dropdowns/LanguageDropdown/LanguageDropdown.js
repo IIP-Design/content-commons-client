@@ -152,7 +152,7 @@ const LanguageDropdown = props => {
         }
       } }
     >
-      {( { data, loading, error } ) => {
+      { ( { data, loading, error } ) => {
         if ( error ) return `Error! ${error.message}`;
 
         let options = [];
@@ -177,11 +177,11 @@ const LanguageDropdown = props => {
 
         return (
           <Fragment>
-            {!props.label && (
+            { !props.label && (
               <VisuallyHidden>
-                <label htmlFor={ props.id }>{`${props.id} language`}</label>
+                <label htmlFor={ props.id }>{ `${props.id} language` }</label>
               </VisuallyHidden>
-            )}
+            ) }
 
             <Form.Dropdown
               id={ props.id }
@@ -196,7 +196,7 @@ const LanguageDropdown = props => {
             />
           </Fragment>
         );
-      }}
+      } }
     </Query>
   );
 };

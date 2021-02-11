@@ -14,7 +14,7 @@ const ConfirmModalContent = props => {
     children,
     className,
     headline,
-    style
+    style,
   } = props;
 
   return (
@@ -29,11 +29,11 @@ ConfirmModalContent.propTypes = {
   children: node,
   className: string,
   headline: string,
-  style: object
+  style: object,
 };
 
 ConfirmModalContent.defaultProps = {
-  style: {}
+  style: {},
 };
 
 export default ConfirmModalContent;

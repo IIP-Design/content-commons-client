@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import {
-  Form, Button, Modal, Header, Dimmer
+  Form, Button, Modal, Header, Dimmer,
 } from 'semantic-ui-react';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import { useFileStateManager } from 'lib/hooks/useFileStateManager';
@@ -13,9 +13,7 @@ import FileUploadProgressBar from '../../FileUploadProgressBar/FileUploadProgres
 
 import './EditPackageFilesModal.scss';
 
-const EditPressOfficeFilesGrid = dynamic( () => import(
-  /* webpackChunkName: "editPressOfficeFilesGrid" */ './EditPressOfficeFilesGrid/EditPressOfficeFilesGrid'
-) );
+const EditPressOfficeFilesGrid = dynamic( () => import( /* webpackChunkName: "editPressOfficeFilesGrid" */ './EditPressOfficeFilesGrid/EditPressOfficeFilesGrid' ) );
 
 const EditPackageFilesModal = ( {
   title,
@@ -25,7 +23,7 @@ const EditPackageFilesModal = ( {
   onClose,
   save,
   trigger,
-  headerStyles
+  headerStyles,
 } ) => {
   const [open, setOpen] = useState( modalOpen );
   const [saving, setSaving] = useState( false );
@@ -38,7 +36,7 @@ const EditPackageFilesModal = ( {
     reset,
     updateFileField,
     addFiles,
-    removeFile
+    removeFile,
   } = useFileStateManager( normalize );
 
   useEffect( () => {
@@ -55,11 +53,11 @@ const EditPackageFilesModal = ( {
   const notificationStyles = {
     position: 'absolute',
     top: '15px',
-    right: '40px'
+    right: '40px',
   };
 
   const uploadProgessStyles = {
-    margin: '-10px 15px 15px 15px'
+    margin: '-10px 15px 15px 15px',
   };
 
   useEffect( () => {
@@ -85,6 +83,7 @@ const EditPackageFilesModal = ( {
       // if duplicates are present, ask user if they are indeed duplicates
       if ( duplicates.length ) {
         const dups = duplicates.reduce( ( acc, cur ) => `${acc} ${cur.name}\n`, '' );
+
         setConfirm( {
           open: true,
           headline: 'It appears that duplicate files are being added.',
@@ -98,7 +97,7 @@ const EditPackageFilesModal = ( {
           onConfirm: () => {
             addFiles( filesToAdd );
             closeConfirm();
-          }
+          },
         } );
       } else {
         addFiles( filesToAdd );
@@ -121,6 +120,7 @@ const EditPackageFilesModal = ( {
   const showFileErrors = uploadedFileErrors => {
     const errors = uploadedFileErrors.reduce( ( acc, cur ) => `${acc} ${cur.name}\n`, '' );
     const multiple = uploadedFileErrors.length > 1;
+
     setConfirm( {
       open: true,
       headline: `There was an error processing the following file ${multiple ? 's' : ''}`,
@@ -134,7 +134,7 @@ const EditPackageFilesModal = ( {
       onConfirm: () => {
         closeConfirm();
         closeModal();
-      }
+      },
     } );
   };
 
@@ -149,6 +149,7 @@ const EditPackageFilesModal = ( {
    */
   const handleRemove = ( id, name ) => {
     const matches = id.match( /-/gi );
+
     if ( !matches ) {
       setConfirm( {
         open: true,
@@ -160,7 +161,7 @@ const EditPackageFilesModal = ( {
         onConfirm: () => {
           removeFile( id );
           closeConfirm();
-        }
+        },
       } );
     } else {
       removeFile( id );
@@ -169,8 +170,10 @@ const EditPackageFilesModal = ( {
 
   const handleAddFiles = e => {
     const filesToAdd = Array.from( e.target.files );
+
     if ( files.length ) {
       const currentFiles = files.map( file => file.name );
+
       checkForDuplicates( currentFiles, filesToAdd );
     } else {
       addFiles( filesToAdd );
@@ -191,6 +194,7 @@ const EditPackageFilesModal = ( {
     setSaving( false );
 
     const uploadedFileErrors = uploadedFiles.filter( file => file.error );
+
     if ( uploadedFileErrors.length ) {
       showFileErrors( uploadedFileErrors );
     } else {
@@ -248,7 +252,11 @@ const EditPackageFilesModal = ( {
         <Dimmer inverted simple />
 
         <Modal.Content>
-          <Form> { renderGrid() } </Form>
+          <Form>
+            { ' ' }
+            { renderGrid() }
+            { ' ' }
+          </Form>
         </Modal.Content>
         <Modal.Actions>
           <Button className="secondary alternative" content="Cancel" onClick={ closeModal } />
@@ -286,7 +294,7 @@ EditPackageFilesModal.propTypes = {
   onClose: PropTypes.func,
   modalOpen: PropTypes.bool,
   trigger: PropTypes.node,
-  headerStyles: PropTypes.object
+  headerStyles: PropTypes.object,
 };
 
 

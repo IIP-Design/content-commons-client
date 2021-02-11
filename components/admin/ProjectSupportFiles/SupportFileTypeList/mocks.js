@@ -5,12 +5,12 @@ export const srtProps = {
   heading: 'Support Files',
   projectId: '123',
   save: jest.fn(),
-  type: 'srt'
+  type: 'srt',
 };
 
 export const otherProps = {
   ...srtProps,
-  type: 'other'
+  type: 'other',
 };
 
 export const filesToUpload = [
@@ -24,10 +24,10 @@ export const filesToUpload = [
       lastModified: 1517162382000,
       size: 1030591,
       type: 'image/jpeg',
-      webkitRelativePath: ''
+      webkitRelativePath: '',
     },
     id: '05db5362-9357-4995-9457-acc14bc35125',
-    loaded: 0
+    loaded: 0,
   },
   {
     language: 'cjsq439dz005607560gwe7k3m',
@@ -39,10 +39,10 @@ export const filesToUpload = [
       lastModified: 1517162382000,
       size: 1030591,
       type: 'image/jpeg',
-      webkitRelativePath: ''
+      webkitRelativePath: '',
     },
     id: '52ec3a2f-bff8-4a50-b8a4-45cff8ab002f',
-    loaded: 0
+    loaded: 0,
   },
   {
     language: 'cjsq4565v005c0756f0lqbfe4',
@@ -54,10 +54,10 @@ export const filesToUpload = [
       lastModified: 1560876777094,
       size: 0,
       type: '',
-      webkitRelativePath: ''
+      webkitRelativePath: '',
     },
     id: '54e26f28-847b-4dd4-82a6-da7069bb1cff',
-    loaded: 0
+    loaded: 0,
   },
   {
     language: 'cjsq4565v005c0756f0lqbfe4',
@@ -69,11 +69,11 @@ export const filesToUpload = [
       lastModified: 1560876777094,
       size: 0,
       type: '',
-      webkitRelativePath: ''
+      webkitRelativePath: '',
     },
     id: 'ef578be9-8ad5-404b-8b89-5c11f49f3856',
-    loaded: 0
-  }
+    loaded: 0,
+  },
 ];
 
 export const data = {
@@ -95,10 +95,10 @@ export const data = {
           displayName: 'English',
           textDirection: 'LTR',
           nativeName: 'English',
-          __typename: 'Language'
+          __typename: 'Language',
         },
         use: null,
-        __typename: 'SupportFile'
+        __typename: 'SupportFile',
       },
       {
         id: 'cjzts1nf01afe0720psq9ouj1',
@@ -115,11 +115,11 @@ export const data = {
           displayName: 'French',
           textDirection: 'LTR',
           nativeName: 'Français',
-          __typename: 'Language'
+          __typename: 'Language',
         },
         use: null,
-        __typename: 'SupportFile'
-      }
+        __typename: 'SupportFile',
+      },
     ],
     thumbnails: [
       {
@@ -134,7 +134,7 @@ export const data = {
         use: {
           id: 'cjtkdq8kr0knf07569goo9eqe',
           name: 'Thumbnail/Cover Image',
-          __typename: 'ImageUse'
+          __typename: 'ImageUse',
         },
         language: {
           id: 'cjsq439dz005607560gwe7k3m',
@@ -143,9 +143,9 @@ export const data = {
           displayName: 'English',
           textDirection: 'LTR',
           nativeName: 'English',
-          __typename: 'Language'
+          __typename: 'Language',
         },
-        __typename: 'ImageFile'
+        __typename: 'ImageFile',
       },
       {
         id: 'cjzts1nfm1afh0720grpc5d5n',
@@ -159,7 +159,7 @@ export const data = {
         use: {
           id: 'cjtkdq8kr0knf07569goo9eqe',
           name: 'Thumbnail/Cover Image',
-          __typename: 'ImageUse'
+          __typename: 'ImageUse',
         },
         language: {
           id: 'cjsq4565v005c0756f0lqbfe4',
@@ -168,11 +168,11 @@ export const data = {
           displayName: 'French',
           textDirection: 'LTR',
           nativeName: 'Français',
-          __typename: 'Language'
+          __typename: 'Language',
         },
-        __typename: 'ImageFile'
-      }
+        __typename: 'ImageFile',
+      },
     ],
-    __typename: 'VideoProject'
-  }
+    __typename: 'VideoProject',
+  },
 };

@@ -233,22 +233,24 @@ const VideoReview = props => {
           options={ { closeIcon: true } }
         />
 
-        { data.project.status === 'DRAFT' ? (
-          <Button className={ setButtonState( 'publish' ) } onClick={ handlePublish } disabled={ disablePublishBtn }>
-            Publish
-          </Button>
-        ) : (
-          <Fragment>
-            { isDirty && (
-              <Button className={ setButtonState( 'edit' ) } onClick={ handlePublish } disabled={ disablePublishBtn }>
-                Publish Changes
-              </Button>
-            ) }
-            <Button className="project_button project_button--publish" onClick={ handleUnPublish }>
-              Unpublish
+        { data.project.status === 'DRAFT'
+          ? (
+            <Button className={ setButtonState( 'publish' ) } onClick={ handlePublish } disabled={ disablePublishBtn }>
+              Publish
             </Button>
-          </Fragment>
-        ) }
+          )
+          : (
+            <Fragment>
+              { isDirty && (
+                <Button className={ setButtonState( 'edit' ) } onClick={ handlePublish } disabled={ disablePublishBtn }>
+                  Publish Changes
+                </Button>
+              ) }
+              <Button className="project_button project_button--publish" onClick={ handleUnPublish }>
+                Unpublish
+              </Button>
+            </Fragment>
+          ) }
       </ProjectHeader>
 
       <div className="centered" style={ { top: '1em' } }>

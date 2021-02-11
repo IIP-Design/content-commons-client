@@ -8,7 +8,7 @@ class PopupTrigger extends Component {
     super( props );
 
     this.state = {
-      isMobile: false
+      isMobile: false,
     };
   }
 
@@ -38,7 +38,7 @@ class PopupTrigger extends Component {
               />
               { ' ' }
             </Button>
-) }
+          ) }
           on="click"
           onOpen={ this.handleOnOpen }
           onClose={ this.handleOnClose }
@@ -56,7 +56,7 @@ PopupTrigger.propTypes = {
   toolTip: PropTypes.string,
   icon: PropTypes.object,
   content: PropTypes.node,
-  show: PropTypes.bool
+  show: PropTypes.bool,
 };
 
 export default PopupTrigger;

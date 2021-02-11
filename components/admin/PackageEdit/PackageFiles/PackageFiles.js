@@ -18,7 +18,7 @@ const PackageFiles = props => {
 
   const { saveFiles } = useCrudActionsDocument( {
     pollQuery: PACKAGE_QUERY,
-    variables: { id: pkg.id }
+    variables: { id: pkg.id },
   } );
 
   const { modalOpen, handleOpenModel, handleCloseModal } = useToggleModal();
@@ -39,6 +39,7 @@ const PackageFiles = props => {
    */
   const handleSave = async ( toSave, toRemove ) => {
     const files = { toSave, toRemove };
+
     saveFiles( pkg, files, handleUploadProgress );
   };
 
@@ -83,6 +84,7 @@ const PackageFiles = props => {
           if ( pkg.type === 'DAILY_GUIDANCE' ) {
             return <PressPackageFile key={ unit.id } document={ unit } />;
           }
+
           return null;
           // return <SomeOtherPackageFile key={ unit.id } id={ unit.id } />;
         } ) }
@@ -93,7 +95,7 @@ const PackageFiles = props => {
 
 PackageFiles.propTypes = {
   pkg: PropTypes.object,
-  hasInitialUploadCompleted: PropTypes.bool
+  hasInitialUploadCompleted: PropTypes.bool,
 };
 
 export default PackageFiles;

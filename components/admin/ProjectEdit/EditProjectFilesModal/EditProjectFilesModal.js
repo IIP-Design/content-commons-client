@@ -94,7 +94,7 @@ const EditProjectFilesModal = ( {
   };
 
   const toggleStep = () => {
-    setStep( s => (s === 1 ? 2 : 1) );
+    setStep( s => ( s === 1 ? 2 : 1 ) );
   };
 
   const closeConfirm = () => {
@@ -297,9 +297,9 @@ const EditProjectFilesModal = ( {
         <Modal.Content>
           <FilesContext.Provider value={ files }>
             <Form>
-              {' '}
+              { ' ' }
               { renderGrid() }
-              {' '}
+              { ' ' }
             </Form>
           </FilesContext.Provider>
         </Modal.Content>

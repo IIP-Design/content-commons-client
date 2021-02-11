@@ -7,11 +7,13 @@ const Component = <UploadSuccessMsg />;
 describe( '<UploadSuccessMsg />', () => {
   it( 'renders without crashing', () => {
     const wrapper = shallow( Component );
+
     expect( wrapper.exists() ).toEqual( true );
   } );
 
   it( 'renders a paragraph element', () => {
     const wrapper = shallow( Component );
+
     expect( wrapper.name() ).toEqual( 'p' );
   } );
 
@@ -24,6 +26,7 @@ describe( '<UploadSuccessMsg />', () => {
 
   it( 'renders a "Files uploaded successfully!"', () => {
     const wrapper = shallow( Component );
+
     expect( wrapper.contains( 'Files uploaded successfully!' ) )
       .toEqual( true );
   } );

@@ -6,7 +6,7 @@ export const mocks = [
   {
     request: {
       query: VIDEO_PROJECT_REVIEW_DATA_QUERY,
-      variables: { id: props.id }
+      variables: { id: props.id },
     },
     result: {
       data: {
@@ -16,11 +16,11 @@ export const mocks = [
           author: {
             id: 'au438',
             firstName: 'Jane',
-            lastName: 'Doe'
+            lastName: 'Doe',
           },
           team: {
             id: 't11',
-            name: 'IIP Video Production'
+            name: 'IIP Video Production',
           },
           visibility: 'PUBLIC',
           descPublic: 'The public description',
@@ -31,14 +31,14 @@ export const mocks = [
               translations: [
                 {
                   id: 'ct7',
-                  name: 'about america'
+                  name: 'about america',
                 },
                 {
                   id: 'ct8',
-                  name: 'Amérique'
-                }
-              ]
-            }
+                  name: 'Amérique',
+                },
+              ],
+            },
           ],
           tags: [
             {
@@ -46,37 +46,37 @@ export const mocks = [
               translations: [
                 {
                   id: 'tt4',
-                  name: 'american culture'
+                  name: 'american culture',
                 },
                 {
                   id: 'tt5',
-                  name: 'Culture américaine'
-                }
-              ]
-            }
-          ]
-        }
-      }
-    }
-  }
+                  name: 'Culture américaine',
+                },
+              ],
+            },
+          ],
+        },
+      },
+    },
+  },
 ];
 
 export const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 export const nullMocks = [
   {
     ...mocks[0],
     result: {
-      data: { project: null }
-    }
-  }
+      data: { project: null },
+    },
+  },
 ];
 
 export const nullCatTagsMocks = [
@@ -87,11 +87,11 @@ export const nullCatTagsMocks = [
         project: {
           ...mocks[0].result.data.project,
           categories: null,
-          tags: null
-        }
-      }
-    }
-  }
+          tags: null,
+        },
+      },
+    },
+  },
 ];
 
 export const emptyCatTagsMocks = [
@@ -102,11 +102,11 @@ export const emptyCatTagsMocks = [
         project: {
           ...mocks[0].result.data.project,
           categories: [],
-          tags: []
-        }
-      }
-    }
-  }
+          tags: [],
+        },
+      },
+    },
+  },
 ];
 
 export const nullAuthorTeamMocks = [
@@ -117,11 +117,11 @@ export const nullAuthorTeamMocks = [
         project: {
           ...mocks[0].result.data.project,
           author: null,
-          team: null
-        }
-      }
-    }
-  }
+          team: null,
+        },
+      },
+    },
+  },
 ];
 
 export const emptyAuthorTeamMocks = [
@@ -132,9 +132,9 @@ export const emptyAuthorTeamMocks = [
         project: {
           ...mocks[0].result.data.project,
           author: {},
-          team: {}
-        }
-      }
-    }
-  }
+          team: {},
+        },
+      },
+    },
+  },
 ];

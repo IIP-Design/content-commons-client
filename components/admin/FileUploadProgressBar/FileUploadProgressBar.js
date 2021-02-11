@@ -25,7 +25,7 @@ const FileUploadProgressBar = props => {
   const [uploadCompleted, setUploadCompleted] = useState( -1 );
   const [numCompleted, setNumCompleted] = useState( 0 );
 
-  const percentComplete = () => `${Math.round( uploadCompleted / size * 100 )}%`;
+  const percentComplete = () => `${Math.round( ( uploadCompleted / size ) * 100 )}%`;
 
   useEffect( () => {
     const loaded = filesToUpload?.reduce( ( acc, curr ) => acc + curr.loaded, 0 );
@@ -53,20 +53,20 @@ const FileUploadProgressBar = props => {
     return (
       <div style={ { marginTop: '15px' } }>
         <b>Uploading files:</b>
-        {' '}
-        {numCompleted + 1}
-        {' '}
+        { ' ' }
+        { numCompleted + 1 }
+        { ' ' }
         of
-        {' '}
-        {uploadCount}
+        { ' ' }
+        { uploadCount }
       </div>
     );
   };
 
   const renderLabel = () => (
     <Fragment>
-      {fileProgressMessage && renderFileOnProgress()}
-      <div>{label}</div>
+      { fileProgressMessage && renderFileOnProgress() }
+      <div>{ label }</div>
     </Fragment>
   );
 
@@ -82,8 +82,8 @@ const FileUploadProgressBar = props => {
         />
       </div>
       <div className={ `file-progress--label ${labelAlign}` }>
-        {showPercent && <span>{percentComplete()}</span>}
-        {label && <div>{renderLabel()}</div>}
+        { showPercent && <span>{ percentComplete() }</span> }
+        { label && <div>{ renderLabel() }</div> }
       </div>
     </>
   );

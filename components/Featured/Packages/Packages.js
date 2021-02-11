@@ -74,19 +74,19 @@ const Packages = ( { postType, user } ) => {
           </Link>
         </div>
         <Grid className="latestPackages_grid">
-          {items.map( pkg => (
+          { items.map( pkg => (
             <Grid.Column
               key={ pkg.id }
               className={ items.length > 3 ? 'flex-column' : 'card-min-width' }
             >
               <PackageCard item={ pkg } />
             </Grid.Column>
-          ) )}
+          ) ) }
         </Grid>
         <p className="latestPackages_guidance_link">
-          {'For press guidance and releases from before 04/27/2020, please visit the '}
-          {archiveLink()}
-          {'.'}
+          { 'For press guidance and releases from before 04/27/2020, please visit the ' }
+          { archiveLink() }
+          { '.' }
         </p>
       </div>
     </section>

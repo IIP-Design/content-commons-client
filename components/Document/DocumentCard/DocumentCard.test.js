@@ -7,32 +7,32 @@ import DocumentCard from './DocumentCard';
 jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_PUBLIC_API: 'http://localhost:8080' } } ) );
 jest.mock(
   'components/InternalUseDisplay/InternalUseDisplay',
-  () => function InternalUseDisplay() { return ''; }
+  () => function InternalUseDisplay() { return ''; },
 );
 jest.mock(
   'components/MediaObject/MediaObject',
-  () => function MediaObject() { return ''; }
+  () => function MediaObject() { return ''; },
 );
 jest.mock(
   'components/admin/MetaTerms/MetaTerms',
-  () => function MetaTerms() { return ''; }
+  () => function MetaTerms() { return ''; },
 );
 jest.mock(
   'components/modals/ModalPostTags/ModalPostTags',
-  () => function TagsList() { return ''; }
+  () => function TagsList() { return ''; },
 );
 jest.mock(
   'react-markdown',
-  () => function ReactMarkdown() { return ''; }
+  () => function ReactMarkdown() { return ''; },
 );
 jest.mock(
   '../Document',
-  () => function Document() { return ''; }
+  () => function Document() { return ''; },
 );
 jest.mock(
   'lib/browser', () => ( {
-    hasCssSupport: jest.fn( () => true )
-  } )
+    hasCssSupport: jest.fn( () => true ),
+  } ),
 );
 
 const props = {
@@ -54,12 +54,12 @@ const props = {
       id: 'ck391csz01yrw07205d7xr8iw',
       rawText: 'U.S. DEPARTMENT OF STATE Office of the Spokesperson For Immediate Release Statement by ROBERT PALLADINO, DEPUTY SPOKESPERSON Month Date, 2018 100th Anniversary of the U.S.-Canada Boundary Waters Treaty &lt;Not in CAPS&gt; A statement provides the official U.S. policy/view or comment on a particular foreign policy issue usually in the name of the Spokesperson, Deputy Spokesperson, and sometimes from the Secretary of State.',
       html: '<p>U.S. DEPARTMENT OF STATE</p><p>Office of the Spokesperson</p><p>For Immediate Release </p><p>Statement by ROBERT PALLADINO, DEPUTY SPOKESPERSON</p><p>Month Date, 2018</p><p>100th Anniversary of the U.S.-Canada Boundary Waters Treaty &lt;Not in CAPS&gt;</p><p>A statement provides the official U.S. policy/view or comment on a particular foreign policy issue usually in the name of the Spokesperson, Deputy Spokesperson, and sometimes from the Secretary of State.</p>',
-      __typename: 'DocumentConversionFormat'
+      __typename: 'DocumentConversionFormat',
     },
     use: {
       id: 'ck2wbvj6010kz0720c358mbrt',
       name: 'Department Press Briefing',
-      __typename: 'DocumentUse'
+      __typename: 'DocumentUse',
     },
     bureaus: [],
     image: [],
@@ -70,7 +70,7 @@ const props = {
       displayName: 'English',
       textDirection: 'LTR',
       nativeName: 'English',
-      __typename: 'Language'
+      __typename: 'Language',
     },
     categories: [],
     tags: [
@@ -87,9 +87,9 @@ const props = {
               displayName: 'English',
               textDirection: 'LTR',
               nativeName: 'English',
-              __typename: 'Language'
+              __typename: 'Language',
             },
-            __typename: 'LanguageTranslation'
+            __typename: 'LanguageTranslation',
           },
           {
             id: 'ck2lzg81z0l2907209nhmfzce',
@@ -101,9 +101,9 @@ const props = {
               displayName: 'Spanish',
               textDirection: 'LTR',
               nativeName: 'Español',
-              __typename: 'Language'
+              __typename: 'Language',
             },
-            __typename: 'LanguageTranslation'
+            __typename: 'LanguageTranslation',
           },
           {
             id: 'ck2lzg82k0l2g0720yojg47ku',
@@ -115,12 +115,12 @@ const props = {
               displayName: 'French',
               textDirection: 'LTR',
               nativeName: 'Français',
-              __typename: 'Language'
+              __typename: 'Language',
             },
-            __typename: 'LanguageTranslation'
-          }
+            __typename: 'LanguageTranslation',
+          },
         ],
-        __typename: 'Tag'
+        __typename: 'Tag',
       },
       {
         id: 'ck2lzgu5b0rho07207cqfeya0',
@@ -135,9 +135,9 @@ const props = {
               displayName: 'English',
               textDirection: 'LTR',
               nativeName: 'English',
-              __typename: 'Language'
+              __typename: 'Language',
             },
-            __typename: 'LanguageTranslation'
+            __typename: 'LanguageTranslation',
           },
           {
             id: 'ck2lzghvp0nnl0720ddbyim3m',
@@ -149,9 +149,9 @@ const props = {
               displayName: 'Spanish',
               textDirection: 'LTR',
               nativeName: 'Español',
-              __typename: 'Language'
+              __typename: 'Language',
             },
-            __typename: 'LanguageTranslation'
+            __typename: 'LanguageTranslation',
           },
           {
             id: 'ck2lzghwb0nns07207xjmveqe',
@@ -163,17 +163,17 @@ const props = {
               displayName: 'French',
               textDirection: 'LTR',
               nativeName: 'Français',
-              __typename: 'Language'
+              __typename: 'Language',
             },
-            __typename: 'LanguageTranslation'
-          }
+            __typename: 'LanguageTranslation',
+          },
         ],
-        __typename: 'Tag'
-      }
+        __typename: 'Tag',
+      },
     ],
-    __typename: 'DocumentFile'
+    __typename: 'DocumentFile',
   },
-  handleClick: jest.fn()
+  handleClick: jest.fn(),
 };
 
 const normalizedDocFile = normalizeDocumentItemByAPI( { file: props.file, useGraphQl: true } );
@@ -208,12 +208,13 @@ describe( '<DocumentCard />', () => {
     expect( mediaObject.prop( 'img' ) ).toEqual( {
       src: 'image-stub',
       alt: 'document icon',
-      style: { height: '30px', width: '30px' }
+      style: { height: '30px', width: '30px' },
     } );
   } );
 
   it( 'renders InternalUseDisplay', () => {
     const internalUse = wrapper.find( 'InternalUseDisplay' );
+
     expect( internalUse.exists() ).toEqual( true );
   } );
 
@@ -281,8 +282,8 @@ describe( '<DocumentCard />', () => {
     wrapper.setProps( {
       file: {
         ...props.file,
-        excerpt: ''
-      }
+        excerpt: '',
+      },
     } );
     const content = wrapper.find( 'CardContent > div.content' );
     const markupElem = content.find( 'div.excerpt' );
@@ -328,12 +329,12 @@ describe( '<DocumentCard />', () => {
     expect( tagsList.prop( 'tags' ) ).toEqual( [
       {
         id: 'ck2lzgu500rgb0720scmree6q',
-        name: 'business and entrepreneurship'
+        name: 'business and entrepreneurship',
       },
       {
         id: 'ck2lzgu5b0rho07207cqfeya0',
-        name: 'armed conflict'
-      }
+        name: 'armed conflict',
+      },
     ] );
   } );
 
@@ -342,8 +343,8 @@ describe( '<DocumentCard />', () => {
       ...props,
       file: {
         ...props.file.tags,
-        tags: []
-      }
+        tags: [],
+      },
     } );
     const tagsList = wrapper.find( 'CardMeta TagsList' );
 
@@ -359,7 +360,7 @@ describe( '<DocumentCard />', () => {
     expect( mount( mediaObject.prop( 'body' ) ) ).toEqual( body );
     expect( mediaObject.prop( 'img' ) ).toEqual( {
       src: 'image-stub',
-      alt: 'U.S. Department of State seal'
+      alt: 'U.S. Department of State seal',
     } );
   } );
 } );

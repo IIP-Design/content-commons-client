@@ -1,11 +1,11 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
-import ClipboardCopy from './index';
+import ClipboardCopy from '.';
 
 const props = {
   copyItem: 'the item to be copied',
   isPreview: false,
-  label: 'Direct Link'
+  label: 'Direct Link',
 };
 
 const Component = <ClipboardCopy { ...props } />;
@@ -35,6 +35,7 @@ describe( '<ClipboardCopy />', () => {
   it( 'componentWillUnmount calls clearTimeout', () => {
     const wrapper = mount( Component );
     const inst = wrapper.instance();
+
     window.clearTimeout = jest.fn();
 
     inst.componentWillUnmount();
@@ -46,6 +47,7 @@ describe( '<ClipboardCopy />', () => {
     const inst = wrapper.instance();
     const toggleClsSpy = jest.spyOn( inst, 'toggleCls' );
     const copyInputSpy = jest.spyOn( inst.copyInput, 'select' );
+
     document.execCommand = jest.fn();
 
     inst.handleCopyClick();
@@ -80,6 +82,7 @@ describe( '<ClipboardCopy />', () => {
     const inst = wrapper.instance();
     const toggleClsSpy = jest.spyOn( inst, 'toggleCls' );
     const copyInputSpy = jest.spyOn( inst.copyInput, 'select' );
+
     document.execCommand = jest.fn();
 
     button.simulate( 'click' );
@@ -101,6 +104,7 @@ describe( '<ClipboardCopy />', () => {
 
   it( 'disables the input and button if isPreview is true', () => {
     const wrapper = mount( Component );
+
     wrapper.setProps( { isPreview: true } );
     const button = wrapper.find( 'Button' );
     const input = wrapper.find( 'input.clipboardcopy_item_text' );
@@ -112,6 +116,7 @@ describe( '<ClipboardCopy />', () => {
 
   it( 'renders the correct class values if isPreview is true', () => {
     const wrapper = mount( Component );
+
     wrapper.setProps( { isPreview: true } );
     const item = wrapper.find( 'div.clipboardcopy_item' );
 

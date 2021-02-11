@@ -2,11 +2,11 @@ export const fileMocks = [
   { bureaus: [
     { abbr: 'APEC',
       id: 'ck80ddy2200l20888mya4o86u',
-      name: 'Asia-Pacific Economic Cooperation' }
+      name: 'Asia-Pacific Economic Cooperation' },
   ],
   content: {
     rawText: 'IWMDC92KS8;A291 Odkeia as Adeiaidw Skeia;kl sdlijf…c. # # # LOREM IPSUM: Sdf Asdf Asdf Ewiuqe Qewil;',
-    html: '<p>IWMDC92KS8;A291</p><p>Odkeia as Adeiaidw</p><p>…><p>Asdf</p><p>Asdf</p><p>Ewiuqe</p><p>Qewil;</p>'
+    html: '<p>IWMDC92KS8;A291</p><p>Odkeia as Adeiaidw</p><p>…><p>Asdf</p><p>Asdf</p><p>Ewiuqe</p><p>Qewil;</p>',
   },
   excerpt: '<p>All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
   filename: 'sample.docx',
@@ -22,5 +22,5 @@ export const fileMocks = [
   type: 'document',
   url: 'https://amgov-publisher-dev.s3.amazonaws.com/daily_guidance/2020/04/commons.america.gov_ck906dlgg00ve0788ry6teb30/sample.docx',
   use: 'Background Briefing',
-  visibility: 'INTERNAL' }
+  visibility: 'INTERNAL' },
 ];

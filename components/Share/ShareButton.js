@@ -5,7 +5,7 @@ import { openWindow, isMobile } from 'lib/browser';
 
 const ShareButton = props => {
   const {
-    url, icon, isPreview, label
+    url, icon, isPreview, label,
   } = props;
 
   /**
@@ -19,6 +19,7 @@ const ShareButton = props => {
   const willOpenWindow = ( e, data = {} ) => {
     if ( isPreview ) {
       e.preventDefault();
+
       return;
     }
 
@@ -48,7 +49,7 @@ ShareButton.propTypes = {
   url: PropTypes.string,
   icon: PropTypes.string,
   isPreview: PropTypes.bool,
-  label: PropTypes.string
+  label: PropTypes.string,
 };
 
 export default ShareButton;

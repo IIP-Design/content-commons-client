@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Form,
-  Button
+  Button,
 } from 'semantic-ui-react';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import CancelUpload from '../../../CancelUpload/CancelUpload';
@@ -19,7 +19,7 @@ const VideoProjectFilesMobile = () => (
       allFieldsSelected,
       handleAddFilesToUpload,
       compareFileNames,
-      accept
+      accept,
     } ) => (
       <div className="videoProjectFilesMobile__wrapper">
         <Form>

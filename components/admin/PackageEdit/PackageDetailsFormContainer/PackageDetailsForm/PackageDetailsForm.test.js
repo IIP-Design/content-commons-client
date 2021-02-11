@@ -13,7 +13,7 @@ const props = {
   values: {
     title: 'xyz.docx',
     type: 'Guidance',
-    termsConditions: false
+    termsConditions: false,
   },
   errors: {},
   touched: {},
@@ -23,30 +23,30 @@ const props = {
   router: {
     query: {
       id: 'test-123',
-      action: 'create'
-    }
+      action: 'create',
+    },
   },
-  pkg: { ...mocks[0].result.data.pkg }
+  pkg: { ...mocks[0].result.data.pkg },
 };
 
 jest.mock(
   'components/admin/PackageEdit/EditPackageFilesModal/EditPackageFilesModal',
-  () => function EditPackageFilesModal() { return ''; }
+  () => function EditPackageFilesModal() { return ''; },
 );
 
 jest.mock(
   'components/admin/TermsConditions/TermsConditions',
-  () => function TermsConditions() { return ''; }
+  () => function TermsConditions() { return ''; },
 );
 jest.mock(
   'components/ButtonAddFiles/ButtonAddFiles',
   () => function ButtonAddFiles() {
     return 'Save draft & upload files';
-  }
+  },
 );
 jest.mock(
   'components/admin/FormikAutoSave/FormikAutoSave',
-  () => function FormikAutoSave() { return ''; }
+  () => function FormikAutoSave() { return ''; },
 );
 jest.mock(
   'formik',
@@ -56,14 +56,14 @@ jest.mock(
       touched: {},
       values: {
         title: 'xyz.docx',
-        type: 'Guidance'
-      }
-    } ) )
-  } )
+        type: 'Guidance',
+      },
+    } ) ),
+  } ),
 );
 
 jest.mock( 'lib/hooks/useCrudActionsDocument', () => ( {
-  useCrudActionsDocument: jest.fn( () => true )
+  useCrudActionsDocument: jest.fn( () => true ),
 } ) );
 
 describe( '<PackageDetailsForm />', () => {
@@ -73,6 +73,7 @@ describe( '<PackageDetailsForm />', () => {
     const wrapper = mount( Component );
     // unwrapped form
     const form = wrapper.find( 'PackageDetailsForm' );
+
     expect( form.exists() ).toEqual( true );
   } );
 
@@ -113,7 +114,7 @@ describe( '<PackageDetailsForm />', () => {
     const data = {
       name: 'title',
       value: 'a new title',
-      type: 'text'
+      type: 'text',
     };
 
     titleField.prop( 'onChange' )( e, data );
@@ -130,7 +131,7 @@ describe( '<PackageDetailsForm />', () => {
     const data = {
       name: 'termsConditions',
       type: 'checkbox',
-      checked: true
+      checked: true,
     };
 
     termsConditions.prop( 'handleOnChange' )( e, data );
@@ -200,16 +201,16 @@ describe( '<PackageDetailsForm />, if form field errors', () => {
     ...props,
     values: {
       ...props.values,
-      title: ''
+      title: '',
     },
     errors: {
       title: 'A package title is required.',
-      termsConditions: 'You have to agree with our Terms of Use!'
+      termsConditions: 'You have to agree with our Terms of Use!',
     },
     touched: {
       title: true,
-      termsConditions: true
-    }
+      termsConditions: true,
+    },
   };
   const Component = <PackageDetailsForm { ...errorsProps } />;
 
@@ -255,8 +256,8 @@ describe( '<PackageDetailsForm />, if termsConditions === true', () => {
     ...props,
     values: {
       ...props.values,
-      termsConditions: true
-    }
+      termsConditions: true,
+    },
   };
   const Component = <PackageDetailsForm { ...acceptedTermsProps } />;
 
@@ -266,6 +267,7 @@ describe( '<PackageDetailsForm />, if termsConditions === true', () => {
 
     const editPkgFilesModal = wrapper.find( 'EditPackageFilesModal' ); // ButtonAddFiles parent
     const btnAddFilesProps = editPkgFilesModal.props( 'trigger' ).trigger.props;
+
     expect( editPkgFilesModal.exists() ).toEqual( true );
     expect( btnAddFilesProps.children ).toEqual( msg );
     expect( btnAddFilesProps.accept ).toEqual( '.doc, .docx' );
@@ -280,9 +282,9 @@ describe( '<PackageDetailsForm />, if uploads have been completed', () => {
     ...props,
     values: {
       ...props.values,
-      termsConditions: true
+      termsConditions: true,
     },
-    hasInitialUploadCompleted: true
+    hasInitialUploadCompleted: true,
   };
   const Component = <PackageDetailsForm { ...completedUploadsProps } />;
 

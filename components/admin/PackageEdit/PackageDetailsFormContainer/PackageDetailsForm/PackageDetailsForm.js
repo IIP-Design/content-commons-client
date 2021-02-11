@@ -105,8 +105,8 @@ const PackageDetailsForm = props => {
 
   return (
     <Fragment>
-      {/* Only use autosave with existing project */}
-      {pkg.id && <FormikAutoSave save={ save } />}
+      { /* Only use autosave with existing project */ }
+      { pkg.id && <FormikAutoSave save={ save } /> }
       <Form className="package-data">
         <Grid stackable>
           <Grid.Row>
@@ -127,12 +127,12 @@ const PackageDetailsForm = props => {
                     control={ Input }
                     label="Package Title"
                     required
-                    autoFocus
+                    autoFocus // eslint-disable-line
                     value={ values.title }
                     onChange={ handleOnChange }
                     error={ touched && touched.title && !!errors.title }
                   />
-                  <p className="error-message">{touched.title ? errors.title : ''}</p>
+                  <p className="error-message">{ touched.title ? errors.title : '' }</p>
                 </div>
               </Form.Group>
             </Grid.Column>
@@ -175,7 +175,7 @@ const PackageDetailsForm = props => {
             </Grid.Column>
           </Grid.Row>
 
-          {!hasInitialUploadCompleted && (
+          { !hasInitialUploadCompleted && (
             <Grid.Row reversed="computer">
               <Grid.Column mobile={ 11 }>
                 <TermsConditions
@@ -210,12 +210,12 @@ const PackageDetailsForm = props => {
                 />
               </Grid.Column>
             </Grid.Row>
-          )}
+          ) }
 
           <Grid.Row>
             <Grid.Column width="16">
               <HandleOnChangeContext.Provider value={ handleOnChange }>
-                {children}
+                { children }
               </HandleOnChangeContext.Provider>
             </Grid.Column>
           </Grid.Row>

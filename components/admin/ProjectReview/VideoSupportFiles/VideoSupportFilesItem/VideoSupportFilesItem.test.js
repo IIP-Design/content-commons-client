@@ -8,9 +8,9 @@ const props = {
     filetype: 'application/pdf',
     language: {
       id: 'en22',
-      displayName: 'English'
-    }
-  }
+      displayName: 'English',
+    },
+  },
 };
 
 const Component = <VideoSupportFilesItem { ...props } />;

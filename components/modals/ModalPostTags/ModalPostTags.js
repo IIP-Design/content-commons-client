@@ -28,7 +28,7 @@ const ModalPostTags = ( { tags } ) => {
   if ( typeof tags === 'string' ) {
     const tagsWithEllipses = tags.replace( ',', '  · ' );
 
-    postTags = <span className="modal_postTag">{tagsWithEllipses}</span>;
+    postTags = <span className="modal_postTag">{ tagsWithEllipses }</span>;
   } else {
     postTags = tags.map( renderCategory );
   }

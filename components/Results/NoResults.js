@@ -11,14 +11,14 @@ const NoResults = props => (
     <div className="results_help">
       <i className="results_help--nomatch">{ message( props.searchTerm ) }</i>
       <p>
-        We are working to enhance the search functionality of Content Commons. If you continue to
-        experience issues with your search results or are having trouble with a particular search term,
+        { 'We are working to enhance the search functionality of Content Commons. If you continue to experience issues with your search results or are having trouble with a particular search term, ' }
         <a
           href={ config.FEEDBACK_FORM_URL }
           target="_blank"
           className="footer_link"
           rel="noopener noreferrer"
-        > let us know!
+        >
+          let us know!
         </a>
       </p>
       <p>
@@ -38,7 +38,7 @@ const NoResults = props => (
 );
 
 NoResults.propTypes = {
-  searchTerm: string
+  searchTerm: string,
 };
 
 export default NoResults;

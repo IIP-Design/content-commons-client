@@ -117,19 +117,19 @@ const LoggedOutNav = props => {
         <li>
           <Icon name="close" onClick={ () => toggleMobileMenu( false ) } onKeyUp={ keyUp } tabIndex={ 0 } />
         </li>
-        {items.map( item => renderListItem( item ) )}
-        {renderFeedbackButton()}
+        { items.map( item => renderListItem( item ) ) }
+        { renderFeedbackButton() }
       </ul>
     );
   };
 
   const renderDesktopNav = items => (
     <Menu as="ul" className="nav_loggedout">
-      {items.map( item => renderMenuItem( item ) )}
-      {reminder && (
+      { items.map( item => renderMenuItem( item ) ) }
+      { reminder && (
         <li className="login_reminder">
           DOS employees, you can log in to see more content.
-          {' '}
+          { ' ' }
           <button
             type="button"
             aria-label="Close Login Reminder"
@@ -139,8 +139,8 @@ const LoggedOutNav = props => {
             Got it
           </button>
         </li>
-      )}
-      {renderFeedbackButton()}
+      ) }
+      { renderFeedbackButton() }
     </Menu>
   );
 

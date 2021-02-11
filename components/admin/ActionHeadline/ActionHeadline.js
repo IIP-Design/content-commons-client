@@ -7,7 +7,7 @@ const ActionHeadline = props => {
     el: Element,
     type,
     published,
-    updated
+    updated,
   } = props;
 
   return (
@@ -21,7 +21,7 @@ const ActionHeadline = props => {
 
 ActionHeadline.defaultProps = {
   el: 'h3',
-  type: 'project'
+  type: 'project',
 };
 
 ActionHeadline.propTypes = {
@@ -29,7 +29,7 @@ ActionHeadline.propTypes = {
   el: PropTypes.string,
   type: PropTypes.string,
   published: PropTypes.bool,
-  updated: PropTypes.bool
+  updated: PropTypes.bool,
 };
 
 export default ActionHeadline;

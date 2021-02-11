@@ -9,6 +9,7 @@ const MetaTerms = props => {
     <dl className={ `terms ${className}` }>
       { terms.map( term => {
         const { definition, displayName, name } = term;
+
         return (
           <div key={ `${name}-${unitId}` }>
             <dt id={ `${name}-${unitId}` }>{ displayName }</dt>
@@ -23,13 +24,13 @@ const MetaTerms = props => {
 };
 
 MetaTerms.defaultProps = {
-  className: ''
+  className: '',
 };
 
 MetaTerms.propTypes = {
   className: PropTypes.string,
   terms: PropTypes.array,
-  unitId: PropTypes.string
+  unitId: PropTypes.string,
 };
 
 export default MetaTerms;

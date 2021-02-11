@@ -4,7 +4,7 @@ import { countriesQueryMocks as mocks } from './mocks';
 
 jest.mock(
   'components/FilterMenu/FilterMenuItem',
-  () => function FilterMenuItem() { return ''; }
+  () => function FilterMenuItem() { return ''; },
 );
 jest.mock(
   '@apollo/react-hooks',
@@ -21,8 +21,8 @@ jest.mock(
               __typename: 'Region',
               id: 'ck6krp96o3f3k0720aoufd395',
               name: 'Bureau of Western Hemisphere Affairs',
-              abbr: 'WHA'
-            }
+              abbr: 'WHA',
+            },
           },
           {
             __typename: 'Country',
@@ -33,8 +33,8 @@ jest.mock(
               __typename: 'Region',
               id: 'ck6krp96g3f3c0720c1w09bx1',
               name: 'Bureau of African Affairs',
-              abbr: 'AF'
-            }
+              abbr: 'AF',
+            },
           },
           {
             __typename: 'Country',
@@ -45,8 +45,8 @@ jest.mock(
               __typename: 'Region',
               id: 'ck6krp96o3f3i07201zo5ai59',
               name: 'Bureau of Near Eastern Affairs',
-              abbr: 'NEA'
-            }
+              abbr: 'NEA',
+            },
           },
           {
             __typename: 'Country',
@@ -57,17 +57,17 @@ jest.mock(
               __typename: 'Region',
               id: 'ck6krp96o3f3h07201q3rj4n7',
               name: 'Bureau of European and Eurasian Affairs',
-              abbr: 'EUR'
-            }
-          }
-        ]
-      } ) )
-    } ) )
-  } )
+              abbr: 'EUR',
+            },
+          },
+        ],
+      } ) ),
+    } ) ),
+  } ),
 );
 
 const props = {
-  selected: ['Angola', 'Albania']
+  selected: ['Angola', 'Albania'],
 };
 
 // const nullMocks = [
@@ -154,9 +154,10 @@ describe( '<FilterMenuCountries />', () => {
         if ( displayName.toLowerCase().includes( searchTerm ) ) {
           acc.push( {
             display_name: displayName,
-            key: country.name
+            key: country.name,
           } );
         }
+
         return acc;
       }, [] )
     );
@@ -170,7 +171,7 @@ describe( '<FilterMenuCountries />', () => {
     expect( searchInput.exists() ).toEqual( true );
     expect( searchInput.prop( 'style' ) ).toEqual( {
       margin: 0,
-      padding: '0.5em 1em'
+      padding: '0.5em 1em',
     } );
   } );
 

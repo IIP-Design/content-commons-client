@@ -23,16 +23,17 @@ const GOOGLE_SIGNIN_MUTATION = gql`
 class GoogleLoginComponent extends Component {
   state = {
     googleError: '',
-    accessToken: ''
+    accessToken: '',
   }
 
   failureGoogle = response => {
     const { error, details } = response;
+
     console.log( details );
     // do show an error if user closes window w/o logging in
     if ( error !== 'popup_closed_by_user' ) {
       this.setState( {
-        googleError: error
+        googleError: error,
       } );
     }
   };
@@ -46,7 +47,7 @@ class GoogleLoginComponent extends Component {
   // as the mutate function returns a promise
   willGoogleSignin = googleSigninMutation => {
     try {
-     googleSigninMutation();
+      googleSigninMutation();
       /* eslint-disable no-empty */
     } catch ( err ) {}
   }
@@ -57,11 +58,13 @@ class GoogleLoginComponent extends Component {
       <Mutation
         mutation={ GOOGLE_SIGNIN_MUTATION }
         variables={ { token: this.state.accessToken } }
-        refetchQueries={ [{
-          query: CURRENT_USER_QUERY,
-          fetchPolicy: 'network-only',
-          ssr: false
-        }] }
+        refetchQueries={ [
+          {
+            query: CURRENT_USER_QUERY,
+            fetchPolicy: 'network-only',
+            ssr: false,
+          },
+        ] }
       >
         { ( googleSignin, { loading, error } ) => (
           <div>

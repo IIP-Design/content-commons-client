@@ -41,17 +41,17 @@ class Register extends Component {
         id: '', // this will be different
         name: '',
         organization: '',
-        contentTypes: []
-      }
+        contentTypes: [],
+      },
     },
-    consentChecked: false
+    consentChecked: false,
   }
 
   emptyTeam = {
     id: '',
     name: '',
     organization: '',
-    contentTypes: []
+    contentTypes: [],
   }
 
   panes = [
@@ -68,7 +68,7 @@ class Register extends Component {
             goNext={ this.goNext }
           />
         </Tab.Pane>
-      )
+      ),
     },
     {
       menuItem: 'Team Details',
@@ -81,7 +81,7 @@ class Register extends Component {
             goNext={ this.goNext }
           />
         </Tab.Pane>
-      )
+      ),
     },
     {
       menuItem: 'User Details',
@@ -96,7 +96,7 @@ class Register extends Component {
             isWhitelisted={ this.isWhitelisted }
           />
         </Tab.Pane>
-      )
+      ),
     },
     {
       menuItem: 'Review & Submit',
@@ -110,11 +110,11 @@ class Register extends Component {
             handleSignUpUserSuccess={ this.handleSignUpUserSuccess }
           />
         </Tab.Pane>
-      )
+      ),
     },
   ]
 
-  getPanes () {
+  getPanes() {
     return this.panes.filter( pane => ( pane.menuItem !== 'Team Details' || this.state.showTeamDetails ) );
   }
 
@@ -125,30 +125,30 @@ class Register extends Component {
 
   toggleConsentChecked = () => {
     this.setState( prevState => ( {
-      consentChecked: !prevState.consentChecked
+      consentChecked: !prevState.consentChecked,
     } ) );
   }
 
   hideTeamDetails = () => {
     this.setState( {
-      showTeamDetails: false
+      showTeamDetails: false,
     } );
 
     // TeamDetails has been removed, reset team state
     this.updateState( {
-      team: { ...this.emptyTeam }
+      team: { ...this.emptyTeam },
     } );
   }
 
   showTeamDetails = () => {
     if ( !this.state.showTeamDetails ) {
       this.setState( {
-        showTeamDetails: true
+        showTeamDetails: true,
       } );
 
       this.updateState( {
         permissions: 'TEAM_ADMIN',
-        team: { ...this.emptyTeam }
+        team: { ...this.emptyTeam },
       } );
     }
 
@@ -166,17 +166,19 @@ class Register extends Component {
 
   handleSignUpUserSuccess = () => {
     this.setState( {
-      view: 'confirmation'
+      view: 'confirmation',
     } );
   }
 
   isWhitelisted = async email => {
     const { client } = this.props;
+
     try {
       const result = await client.query( {
         query: WHITELIST_QUERY,
-        variables: { email }
+        variables: { email },
       } );
+
       return result.data.isWhitelisted;
     } catch ( err ) {
       return false;
@@ -212,7 +214,7 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-  client: PropTypes.object
+  client: PropTypes.object,
 };
 
 export default withApollo( Register );

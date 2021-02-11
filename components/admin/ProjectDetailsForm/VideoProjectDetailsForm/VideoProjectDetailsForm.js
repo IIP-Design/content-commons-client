@@ -164,7 +164,7 @@ const VideoProjectDetailsForm = props => {
       validationSchema={ props.id ? baseSchema : initialSchema }
       onSubmit={ onHandleSubmit }
     >
-      {renderContent}
+      { renderContent }
     </Formik>
   );
 };

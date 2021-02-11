@@ -12,32 +12,39 @@ const FormInstructions = props => {
     margin: '0',
     padding: '0.625em 1.75em',
     backgroundColor: '#d6d7d9',
-    textAlign: 'center'
+    textAlign: 'center',
   };
 
   const draftMsgStyles = {
     ...baseStyles,
     padding: '0.625em 1.75em 1.5em',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   };
 
   return (
     <Fragment>
       <p style={ baseStyles }>
-        <strong>Fill out the required fields to finish setting up this { props.type }.</strong>
+        <strong>
+          { 'Fill out the required fields to finish setting up this ' }
+          { props.type }
+          .
+        </strong>
       </p>
-      <p style={ draftMsgStyles }>Your files will not be uploaded until the { props.type } is saved as a draft.
+      <p style={ draftMsgStyles }>
+        { 'Your files will not be uploaded until the ' }
+        { props.type }
+        { ' is saved as a draft.' }
       </p>
     </Fragment>
   );
 };
 
 FormInstructions.defaultProps = {
-  type: 'project'
+  type: 'project',
 };
 
 FormInstructions.propTypes = {
-  type: PropTypes.string
+  type: PropTypes.string,
 };
 
 export default FormInstructions;

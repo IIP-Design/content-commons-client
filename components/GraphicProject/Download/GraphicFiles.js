@@ -39,7 +39,7 @@ const GraphicFiles = ( { file, isAdminPreview } ) => {
           <strong>
             Download
             { ` "${title}"` }
-            { ` for ${getSocialPlatform()}`}
+            { ` for ${getSocialPlatform()}` }
           </strong>
         </p>
         <p className="item-content__meta">{ `File type: ${fileType}` }</p>

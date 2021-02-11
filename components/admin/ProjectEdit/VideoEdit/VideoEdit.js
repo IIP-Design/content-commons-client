@@ -121,12 +121,7 @@ const VideoEdit = props => {
     const { videoProjectQuery } = props;
 
     // disable delete project button if either there is no project id OR project has been published
-    return (
-      !projectId
-      || videoProjectQuery
-        && videoProjectQuery.project
-        && videoProjectQuery.project.status !== 'DRAFT'
-    );
+    return ( !projectId || videoProjectQuery?.project?.status !== 'DRAFT' );
   };
 
   const handleExit = () => {
@@ -281,7 +276,7 @@ const VideoEdit = props => {
         <ApolloError error={ error } />
       </div>
 
-      {/* Form data saved notification */}
+      { /* Form data saved notification */ }
       <Notification
         el="p"
         customStyles={ centeredStyles }
@@ -289,17 +284,17 @@ const VideoEdit = props => {
         msg={ notificationMessage }
       />
 
-      {/* Video file notification */}
-      {!isUploading && disableBtns && (
+      { /* Video file notification */ }
+      { !isUploading && disableBtns && (
         <Notification
           el="p"
           classes="includeVideoFileNotification"
           customStyles={ uploadVideoFileNotificationStyles }
           msg="Please include a Video file to your project."
         />
-      )}
+      ) }
 
-      {/* upload progress  */}
+      { /* upload progress  */ }
       <UploadProgress
         className="edit-project__status alpha"
         projectId={ projectId }
@@ -307,7 +302,7 @@ const VideoEdit = props => {
         isUploading={ isUploading }
       />
 
-      {/* project details form */}
+      { /* project details form */ }
       <div className="edit-project__content" style={ contentStyle }>
         <VideoProjectDetailsForm
           id={ projectId }
@@ -319,7 +314,7 @@ const VideoEdit = props => {
         />
       </div>
 
-      {/* upload progress */}
+      { /* upload progress */ }
       <UploadProgress
         className="edit-project__status beta"
         projectId={ projectId }
@@ -328,12 +323,12 @@ const VideoEdit = props => {
       />
 
       <UploadContext.Provider value={ isUploading }>
-        {/* support files */}
+        { /* support files */ }
         <div className="edit-project__support-files">
           <VideoProjectSupportFiles projectId={ projectId } heading="Support Files" />
         </div>
 
-        {/* project thumbnails */}
+        { /* project thumbnails */ }
         <div className="edit-project__items">
           <ProjectUnits
             projectId={ projectId }

@@ -200,25 +200,27 @@ const TeamProjectPrimaryCol = ( { d, header } ) => {
          * page transition animation, but err on side
          * of better accessibility.
          */ }
-        { projectTitleLength ? (
-          <Popup
-            trigger={ (
-              <Trigger href={ getEditUrl( 'pretty' ) } className={ getTitleCls() }>
-                <span aria-hidden>{ truncate( d[header.name], { length: 35 } ) }</span>
-                <VisuallyHidden el="span">{ d[header.name] }</VisuallyHidden>
-              </Trigger>
-            ) }
-            content={ d[header.name] }
-            hideOnScroll
-            inverted
-            on={ ['hover', 'focus'] }
-            size="mini"
-          />
-        ) : (
-          <Title as={ getEditUrl( 'pretty' ) } href={ getEditUrl( 'long' ) } prefetch={ false }>
-            <Trigger className={ getTitleCls() }>{ d[header.name] }</Trigger>
-          </Title>
-        ) }
+        { projectTitleLength
+          ? (
+            <Popup
+              trigger={ (
+                <Trigger href={ getEditUrl( 'pretty' ) } className={ getTitleCls() }>
+                  <span aria-hidden>{ truncate( d[header.name], { length: 35 } ) }</span>
+                  <VisuallyHidden el="span">{ d[header.name] }</VisuallyHidden>
+                </Trigger>
+              ) }
+              content={ d[header.name] }
+              hideOnScroll
+              inverted
+              on={ ['hover', 'focus'] }
+              size="mini"
+            />
+          )
+          : (
+            <Title as={ getEditUrl( 'pretty' ) } href={ getEditUrl( 'long' ) } prefetch={ false }>
+              <Trigger className={ getTitleCls() }>{ d[header.name] }</Trigger>
+            </Title>
+          ) }
         <div className="projects_data_actions">
           <div className="projects_data_actions_wrapper">
             { isPublishing

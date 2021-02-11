@@ -40,10 +40,11 @@ const QualityDropdown = props => (
       if ( data && data.__type && data.__type.enumValues ) {
         options = data.__type.enumValues.map( quality => {
           const { name } = quality;
+
           return {
             key: name,
             text: `For ${name.toLowerCase()}`,
-            value: name
+            value: name,
           };
         } );
       }
@@ -62,7 +63,7 @@ const QualityDropdown = props => (
           ) }
 
           { props.infotip && (
-            <div style={ { float: 'right', marginTop: '-35px', transform: 'translateY(35px)' } }>
+            <div style={ { 'float': 'right', marginTop: '-35px', transform: 'translateY(35px)' } }>
               <IconPopup
                 iconSize="small"
                 iconType="info circle"
@@ -92,7 +93,7 @@ const QualityDropdown = props => (
 );
 
 QualityDropdown.defaultProps = {
-  id: ''
+  id: '',
 };
 
 
@@ -100,7 +101,7 @@ QualityDropdown.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
   infotip: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
 };
 
 export default React.memo( QualityDropdown, areEqual );

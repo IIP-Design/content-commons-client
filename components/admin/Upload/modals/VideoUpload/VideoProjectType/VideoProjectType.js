@@ -8,6 +8,7 @@ const VideoProjectType = props => {
   // since we are using a stateless function, use a hook for mouunting/unmouting calls
   useEffect( () => {
     props.updateModalClassname( 'upload_modal project-type-active' );
+
     return () => props.updateModalClassname( 'upload_modal' );
   }, [] );
 
@@ -19,14 +20,20 @@ const VideoProjectType = props => {
 
   return (
     <Form>
-      <p>A video project consists of <strong>at least one video file</strong>, optional translations of the video, and any support files associated with it.</p>
+      <p>
+        { 'A video project consists of ' }
+        <strong>at least one video file</strong>
+        { /**/ }
+        , optional translations of the video, and any support files associated with it.
+      </p>
       <p>Acceptable file types include .mp4 and .mov, .srt, and .jpg or .png files that may be used for thumbnails.</p>
       <div className="upload_actions">
         <Button
           type="button"
           onClick={ props.closeModal }
           className="secondary alternative"
-        >Cancel
+        >
+          Cancel
         </Button>
         <ButtonAddFiles accept={ props.accept } onChange={ handleOnChangeFiles } multiple>Add Files</ButtonAddFiles>
       </div>
@@ -39,7 +46,7 @@ VideoProjectType.propTypes = {
   addAssetFiles: PropTypes.func,
   updateModalClassname: PropTypes.func,
   goNext: PropTypes.func,
-  accept: PropTypes.string
+  accept: PropTypes.string,
 };
 
 export default VideoProjectType;

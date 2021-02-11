@@ -15,7 +15,7 @@ const PasswordResetPage = props => {
 
 
 PasswordResetPage.propTypes = {
-  query: PropTypes.object
+  query: PropTypes.object,
 };
 
 

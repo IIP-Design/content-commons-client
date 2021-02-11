@@ -152,9 +152,9 @@ const EditFileGrid = ( {
   const renderStep = index => (
     <div key={ `step${index}` }>
       <span className={ `${styles.step} ${isActive( index ) ? styles.active : ''}` }>
-        {`Step ${index + 1}`}
+        { `Step ${index + 1}` }
       </span>
-      {!isLast( index ) && <span className={ styles.arrow }>&gt;</span>}
+      { !isLast( index ) && <span className={ styles.arrow }>&gt;</span> }
     </div>
   );
 
@@ -180,8 +180,8 @@ const EditFileGrid = ( {
 
   const renderScreen = ( screen, i ) => (
     <div key={ `screen${i}` } className={ activeScreen === i ? styles.show : styles.hide }>
-      {showHeader && renderHeaderRow( screen )}
-      {files.map( file => renderRow( screen, file ) )}
+      { showHeader && renderHeaderRow( screen ) }
+      { files.map( file => renderRow( screen, file ) ) }
     </div>
   );
 
@@ -230,13 +230,13 @@ const EditFileGrid = ( {
 
   return (
     <div>
-      {screens?.length > 1
-        && <div className={ styles.steps }>{screens?.map( ( screen, index ) => renderStep( index ) )}</div>}
+      { screens?.length > 1
+        && <div className={ styles.steps }>{ screens?.map( ( screen, index ) => renderStep( index ) ) }</div> }
 
-      {/* grid(s) */}
-      {screens?.map( ( screen, i ) => renderScreen( screen, i ) )}
+      { /* grid(s) */ }
+      { screens?.map( ( screen, i ) => renderScreen( screen, i ) ) }
 
-      {typeof onAdd === 'function' && (
+      { typeof onAdd === 'function' && (
         /*
          Kind of screwy here as this button is using semantic and
          not a commons button.  Pulling in 'secondary' class and
@@ -251,17 +251,17 @@ const EditFileGrid = ( {
         >
           + Add Files
         </ButtonAddFiles>
-      )}
+      ) }
 
-      {/* optional actions bar */}
-      {hasActions() && (
+      { /* optional actions bar */ }
+      { hasActions() && (
         <div className={ styles.actions }>
-          {typeof onCancel === 'function' && (
+          { typeof onCancel === 'function' && (
             <Button className={ styles.link } onClick={ cancel }>
               Cancel
             </Button>
-          )}
-          {screens?.length > 1 && (
+          ) }
+          { screens?.length > 1 && (
             <Fragment>
               <Button
                 className="primary"
@@ -279,20 +279,20 @@ const EditFileGrid = ( {
                 Previous
               </Button>
             </Fragment>
-          )}
+          ) }
 
-          {typeof onContinue === 'function' && (
+          { typeof onContinue === 'function' && (
             <Button
               className="primary"
               disabled={ allScreensFieldsCompleted() }
               style={ { display: `${activeScreen === screens.length - 1 ? 'flex' : 'none'}` } }
               onClick={ onContinue }
             >
-              {continueBtn}
+              { continueBtn }
             </Button>
-          )}
+          ) }
         </div>
-      )}
+      ) }
 
       <DynamicConfirm { ...confirm } />
     </div>

@@ -5,7 +5,7 @@ import { Form, Button } from 'semantic-ui-react';
 import {
   optionFormatter,
   formikHandleOnChange,
-  formikHandleCheckboxOnChange
+  formikHandleCheckboxOnChange,
 } from 'lib/form';
 import organizations from 'static/data/organizations.json';
 import { validationSchema } from './validationSchema';
@@ -20,32 +20,32 @@ const contentOptions = [
     key: 1,
     value: 'AUDIO',
     label: 'Audio',
-    content: 'Audio files of podcasts, music, b-roll audio, etc.'
+    content: 'Audio files of podcasts, music, b-roll audio, etc.',
   },
   {
     key: 2,
     value: 'DOCUMENT',
     label: 'Documents and Resources',
-    content: 'Word documents, PowerPoint decks, PDFs, reports, training guides, etc.'
+    content: 'Word documents, PowerPoint decks, PDFs, reports, training guides, etc.',
   },
   {
     key: 3,
     value: 'IMAGE',
     label: 'Imagery',
-    content: 'Photos, social media graphics, posters, web graphics, etc.'
+    content: 'Photos, social media graphics, posters, web graphics, etc.',
   },
   {
     key: 4,
     value: 'TEACHING_MATERIAL',
     label: 'Teaching Materials',
-    content: 'Courses, lessons, glossaries, quizzes, etc'
+    content: 'Courses, lessons, glossaries, quizzes, etc',
   },
   {
     key: 5,
     value: 'VIDEO',
     label: 'Video',
-    content: 'Video files for web and broadcast use.'
-  }
+    content: 'Video files for web and broadcast use.',
+  },
 ];
 
 const TeamDetails = ( {
@@ -56,7 +56,7 @@ const TeamDetails = ( {
   setFieldValue,
   isSubmitting,
   updateState,
-  goBack
+  goBack,
 } ) => {
   const handleOnChange = ( e, { name, value } ) => formikHandleOnChange( name, value, setFieldValue );
 
@@ -118,14 +118,16 @@ const TeamDetails = ( {
           onClick={ handleBackClick }
           disabled={ isSubmitting }
           className="secondary"
-        >Previous
+        >
+          Previous
         </Button>
         <Button
           type="submit"
           onClick={ handleSubmit }
           disabled={ isSubmitting }
           className="primary"
-        >Next
+        >
+          Next
         </Button>
       </div>
     </Form>
@@ -140,7 +142,7 @@ TeamDetails.propTypes = {
   setFieldValue: PropTypes.func,
   isSubmitting: PropTypes.bool,
   updateState: PropTypes.func,
-  goBack: PropTypes.func
+  goBack: PropTypes.func,
 };
 
 export default withFormik( {
@@ -150,7 +152,7 @@ export default withFormik( {
     return ( {
       name: user.team.name,
       organization: user.team.organization,
-      contentTypes: user.team.contentTypes
+      contentTypes: user.team.contentTypes,
     } );
   },
 
@@ -162,6 +164,6 @@ export default withFormik( {
     setSubmitting( false );
     props.updateState( { team: { ...values } } );
     props.goNext();
-  }
+  },
 
 } )( TeamDetails );

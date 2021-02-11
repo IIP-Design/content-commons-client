@@ -88,7 +88,7 @@ const DetailsPopup = props => {
 
 DetailsPopup.propTypes = {
   id: PropTypes.string,
-  team: PropTypes.object
+  team: PropTypes.object,
 };
 
 export default DetailsPopup;

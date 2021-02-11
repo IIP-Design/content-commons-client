@@ -15,6 +15,7 @@ describe( '<ActionResultsError />', () => {
   it( 'renders without crashing', () => {
     const wrapper = mount( component );
     const item = wrapper.find( ActionResultsError );
+
     expect( item.exists() ).toEqual( true );
   } );
 
@@ -22,6 +23,7 @@ describe( '<ActionResultsError />', () => {
     const wrapper = mount( component );
     const item = wrapper.find( ActionResultsError );
     const msg = `Project '${failure.project.projectTitle}' ${failure.action} failed with errors:`;
+
     expect( item.find( '.header' ).text() ).toEqual( msg );
   } );
 
@@ -29,6 +31,7 @@ describe( '<ActionResultsError />', () => {
     const wrapper = mount( component );
     const item = wrapper.find( ActionResultsError );
     const list = item.find( List );
+
     expect( list.prop( 'items' ) ).toEqual( errorStrings );
   } );
 } );

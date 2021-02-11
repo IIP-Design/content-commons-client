@@ -11,6 +11,7 @@ import { Modal } from 'semantic-ui-react';
 
 const withModal = ( props, Trigger, Content, options ) => {
   const { triggerProps, contentProps } = props;
+
   return (
     <Modal
       { ...options }
@@ -26,7 +27,7 @@ const withModal = ( props, Trigger, Content, options ) => {
 withModal.propTypes = {
   triggerProps: object,
   contentProps: object,
-  options: object
+  options: object,
 };
 
 export default withModal;

@@ -16,7 +16,7 @@ const TabPanel = ( { title, content } ) => (
 
 TabPanel.propTypes = {
   title: PropTypes.string,
-  content: PropTypes.object
+  content: PropTypes.object,
 };
 
 export default TabPanel;

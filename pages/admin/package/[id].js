@@ -15,7 +15,7 @@ const PackagePage = props => {
 };
 
 PackagePage.propTypes = {
-  query: PropTypes.object
+  query: PropTypes.object,
 };
 
 export default PackagePage;

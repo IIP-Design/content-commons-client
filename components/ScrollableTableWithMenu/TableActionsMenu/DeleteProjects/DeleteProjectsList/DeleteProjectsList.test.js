@@ -5,12 +5,12 @@ import { drafts, nonDrafts } from '../mocks';
 const draftProps = {
   headline: 'the drafts list headline',
   isDrafts: true,
-  projects: drafts
+  projects: drafts,
 };
 
 const nonDraftProps = {
   headline: 'the non-drafts list headline',
-  projects: nonDrafts
+  projects: nonDrafts,
 };
 
 const DraftsComponent = <DeleteProjectsList { ...draftProps } />;

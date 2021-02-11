@@ -7,7 +7,7 @@ const PasswordResetRequest = () => {
     body: 'Reset your password by using the following link:',
     link: 'Reset your Password',
     reply: 'A reset link has been sent to your email',
-    page: 'passwordreset'
+    page: 'passwordreset',
   };
 
   return (

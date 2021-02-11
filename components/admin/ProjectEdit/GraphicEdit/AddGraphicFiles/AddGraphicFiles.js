@@ -47,7 +47,7 @@ const AddGraphicFiles = ( { files, closeModal, save } ) => {
   return (
     <div className={ styles.container }>
       <h1 style={ { fontSize: '1rem' } }>SOCIAL MEDIA GRAPHIC PROJECT</h1>
-      <p className={ styles.files }>{`Adding ${state.files.length} files.`}</p>
+      <p className={ styles.files }>{ `Adding ${state.files.length} files.` }</p>
 
       <EditFileGrid
         files={ state.files }

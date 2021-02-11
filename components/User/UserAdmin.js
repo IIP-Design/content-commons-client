@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import {
-  Form, Button, Modal, Select
+  Form, Button, Modal, Select,
 } from 'semantic-ui-react';
 import { USERS_QUERY } from 'components/admin/dropdowns/UserDropdown/UserDropdown';
 import { titleCase } from 'lib/utils';
@@ -62,7 +62,7 @@ const UserAdmin = () => {
   const [values, setValues] = useState( {
     user: '',
     team: '',
-    permission: ''
+    permission: '',
   } );
 
   useEffect( () => {
@@ -70,7 +70,7 @@ const UserAdmin = () => {
       const userOptions = usersData.users.map( _user => ( {
         key: _user.id,
         text: `${_user.lastName}, ${_user.firstName} [${_user.email}]`,
-        value: _user.id
+        value: _user.id,
       } ) );
 
       setUsers( userOptions );
@@ -82,7 +82,7 @@ const UserAdmin = () => {
       const teamOptions = teamData.teams.map( team => ( {
         key: team.id,
         text: team.name,
-        value: team.id
+        value: team.id,
       } ) );
 
       setTeams( teamOptions );
@@ -94,7 +94,7 @@ const UserAdmin = () => {
       const permissionOptions = permissionData.__type.enumValues.map( value => ( {
         key: value.name,
         text: titleCase( value.name ).replace( '_', ' ' ),
-        value: value.name
+        value: value.name,
       } ) );
 
       setPermissions( permissionOptions );
@@ -113,16 +113,16 @@ const UserAdmin = () => {
       variables: {
         data: {
           permissions: {
-            set: [values.permission]
+            set: [values.permission],
           },
           team: {
-            connect: { id: values.team }
-          }
+            connect: { id: values.team },
+          },
         },
         where: {
-          id: values.user
-        }
-      }
+          id: values.user,
+        },
+      },
     } ).catch( err => console.dir( err ) );
 
     setSuccessMessage( 'User updated' );
@@ -135,7 +135,7 @@ const UserAdmin = () => {
     setValues( {
       user: value,
       team: _user.team ? _user.team.id : '',
-      permission: _user.permissions && _user.permissions.length ? _user.permissions[0] : ''
+      permission: _user.permissions && _user.permissions.length ? _user.permissions[0] : '',
     } );
   };
 
@@ -160,31 +160,40 @@ const UserAdmin = () => {
 
           <Form>
             <Form.Field>
-              <label>User</label>
-              <Select
-                placeholder="Select user"
-                options={ users }
-                value={ values.user }
-                onChange={ handleChangeUser }
-              />
+              <label htmlFor="user">
+                User
+                <Select
+                  id="user"
+                  placeholder="Select user"
+                  options={ users }
+                  value={ values.user }
+                  onChange={ handleChangeUser }
+                />
+              </label>
             </Form.Field>
             <Form.Field>
-              <label>Team</label>
-              <Select
-                placeholder="Select team"
-                options={ teams }
-                value={ values.team }
-                onChange={ ( e, { value } ) => setValues( { ...values, team: value } ) }
-              />
+              <label htmlFor="team">
+                Team
+                <Select
+                  id="team"
+                  placeholder="Select team"
+                  options={ teams }
+                  value={ values.team }
+                  onChange={ ( e, { value } ) => setValues( { ...values, team: value } ) }
+                />
+              </label>
             </Form.Field>
             <Form.Field>
-              <label>Role</label>
-              <Select
-                placeholder="Select role"
-                options={ permissions }
-                value={ values.permission }
-                onChange={ ( e, { value } ) => setValues( { ...values, permission: value } ) }
-              />
+              <label htmlFor="role">
+                Role
+                <Select
+                  id="role"
+                  placeholder="Select role"
+                  options={ permissions }
+                  value={ values.permission }
+                  onChange={ ( e, { value } ) => setValues( { ...values, permission: value } ) }
+                />
+              </label>
             </Form.Field>
             <Button className="btn primary" onClick={ handleSave }>
               Save

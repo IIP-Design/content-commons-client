@@ -15,7 +15,7 @@ const FilterSelectionItem = props => {
   const handleOnClick = () => {
     onClick( {
       value,
-      name
+      name,
     } );
   };
 

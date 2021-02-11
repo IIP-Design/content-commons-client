@@ -76,7 +76,7 @@ const DownloadPkgFiles = ( { files, id, isPreview, title } ) => {
             <span style={ styles.dot } />
           </div>
         </Fragment>
-      )}
+      ) }
       { items?.length > 0 && items.map(
         item => <SignedUrlLink key={ item.id } file={ item } isPreview={ isPreview } />,
       ) }

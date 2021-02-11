@@ -8,7 +8,7 @@ const english = {
   locale: 'en-us',
   textDirection: 'LTR',
   displayName: 'English',
-  nativeName: 'English'
+  nativeName: 'English',
 };
 
 const image = {
@@ -20,7 +20,7 @@ const image = {
     __typename: 'Dimensions',
     id: 'd21',
     width: 224,
-    height: 290
+    height: 290,
   },
   longdesc: 'the longdesc',
   caption: 'the image caption',
@@ -30,7 +30,7 @@ const image = {
   use: {
     __typename: 'ImageUse',
     id: 'ck2lzfx510hhj07205mal3e4l',
-    name: 'Thumbnail/Cover Image'
+    name: 'Thumbnail/Cover Image',
   },
   md5: 'gggg7777',
   alt: 'thumbnail of guidance document',
@@ -40,78 +40,78 @@ const documentUses = [
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj5h10kq0720hr0nkfgz',
-    name: 'Background Briefing'
+    name: 'Background Briefing',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj6010kz0720c358mbrt',
-    name: 'Department Press Briefing'
+    name: 'Department Press Briefing',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj6w10l80720gzhwlr9s',
-    name: 'Fact Sheet'
+    name: 'Fact Sheet',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj7b10lg0720htdvmgru',
-    name: 'Interview'
+    name: 'Interview',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj7u10lo07207aa55qmz',
-    name: 'Media Note'
+    name: 'Media Note',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj8810lx0720ruj5eylz',
-    name: 'Notice to the Press'
+    name: 'Notice to the Press',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj8n10m50720eu2ob3pq',
-    name: 'On-the-record Briefing'
+    name: 'On-the-record Briefing',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj8y10md0720vsuqxq87',
-    name: 'Press Guidance'
+    name: 'Press Guidance',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj9b10ml0720245vk3uy',
-    name: 'Remarks'
+    name: 'Remarks',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvj9v10mt0720hwq7013q',
-    name: 'Speeches'
+    name: 'Speeches',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvjaa10n20720fg5ayhn9',
-    name: 'Statement'
+    name: 'Statement',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvjao10na0720ncwefnm6',
-    name: 'Taken Questions'
+    name: 'Taken Questions',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvjb210nj07205m16k3xx',
-    name: 'Travel Alert'
+    name: 'Travel Alert',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvjbf10nr0720o6zpopyt',
-    name: 'Readout'
+    name: 'Readout',
   },
   {
     __typename: 'DocumentUse',
     id: 'ck2wbvjbu10nz072060p67wk5',
-    name: 'Travel Warning'
-  }
+    name: 'Travel Warning',
+  },
 ];
 
 const bureaus = [
@@ -130,11 +130,11 @@ const bureaus = [
           __typename: 'Bureau',
           id: 'sdfq',
           name: 'Bureau of Global Public Affairs',
-          abbr: 'GPA'
-        }
-      }
-    ]
-  }
+          abbr: 'GPA',
+        },
+      },
+    ],
+  },
 ];
 
 const globalIssues = {
@@ -145,7 +145,7 @@ const globalIssues = {
       __typename: 'LanguageTranslation',
       id: 'ck2lzfyja0hze072082syb27d',
       name: 'global issues',
-      language: english
+      language: english,
     },
     {
       __typename: 'LanguageTranslation',
@@ -158,8 +158,8 @@ const globalIssues = {
         locale: 'es-es',
         textDirection: 'LTR',
         displayName: 'Spanish',
-        nativeName: 'Español'
-      }
+        nativeName: 'Español',
+      },
     },
     {
       __typename: 'LanguageTranslation',
@@ -172,10 +172,10 @@ const globalIssues = {
         locale: 'fr-fr',
         textDirection: 'LTR',
         displayName: 'French',
-        nativeName: 'Français'
-      }
-    }
-  ]
+        nativeName: 'Français',
+      },
+    },
+  ],
 };
 
 const humanRights = {
@@ -186,7 +186,7 @@ const humanRights = {
       __typename: 'LanguageTranslation',
       id: 'ck2lzfyud0i3a0720hko7y2a9',
       name: 'human rights',
-      language: english
+      language: english,
     },
     {
       __typename: 'LanguageTranslation',
@@ -199,8 +199,8 @@ const humanRights = {
         locale: 'es-es',
         textDirection: 'LTR',
         displayName: 'Spanish',
-        nativeName: 'Español'
-      }
+        nativeName: 'Español',
+      },
     },
     {
       __typename: 'LanguageTranslation',
@@ -213,10 +213,10 @@ const humanRights = {
         locale: 'fr-fr',
         textDirection: 'LTR',
         displayName: 'French',
-        nativeName: 'Français'
-      }
-    }
-  ]
+        nativeName: 'Français',
+      },
+    },
+  ],
 };
 
 export const tag1 = {
@@ -227,9 +227,9 @@ export const tag1 = {
       __typename: 'LanguageTranslation',
       id: 'ck2lzfzwr0iey0720hrigffxo',
       name: 'american culture',
-      language: english
-    }
-  ]
+      language: english,
+    },
+  ],
 };
 
 export const tag2 = {
@@ -240,9 +240,9 @@ export const tag2 = {
       __typename: 'LanguageTranslation',
       id: 'ck2lzg1900iui0720q28le4rs',
       name: 'leadership',
-      language: english
-    }
-  ]
+      language: english,
+    },
+  ],
 };
 
 const getDocumentUseObj = ( val, property = 'name' ) => (
@@ -250,6 +250,7 @@ const getDocumentUseObj = ( val, property = 'name' ) => (
 );
 
 const id = 'test-123';
+
 export const props = {
   pkg: {
     __typename: 'Package',
@@ -274,7 +275,7 @@ export const props = {
           id: 'ccc1',
           rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
           html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
-          markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
+          markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
         },
         url: `2019/11/${id}/lesotho_national_day.docx`,
         signedUrl: `${AWS_URL}/2019/11/${id}/lesotho_national_day.docx${AWS_SIGNED_URL_QUERY_STRING}`,
@@ -285,13 +286,13 @@ export const props = {
             id: 'th1',
             filename: 'lesotho_national_day.png',
             url: `2019/11/${id}/lesotho_national_day.png`,
-            signedUrl: `${AWS_URL}/2019/11/${id}/lesotho_national_day.png${AWS_SIGNED_URL_QUERY_STRING}`
-          }
+            signedUrl: `${AWS_URL}/2019/11/${id}/lesotho_national_day.png${AWS_SIGNED_URL_QUERY_STRING}`,
+          },
         ],
         use: getDocumentUseObj( 'Statement' ),
         bureaus,
         categories: [globalIssues],
-        tags: [tag1]
+        tags: [tag1],
       },
       {
         __typename: 'DocumentFile',
@@ -310,7 +311,7 @@ export const props = {
           id: 'ccc1',
           rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
           html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
-          markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
+          markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
         },
         url: `2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx`,
         signedUrl: `${AWS_URL}/2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.docx${AWS_SIGNED_URL_QUERY_STRING}`,
@@ -321,13 +322,13 @@ export const props = {
             id: 'th2',
             filename: 'us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png',
             url: `2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png`,
-            signedUrl: `${AWS_URL}/2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png${AWS_SIGNED_URL_QUERY_STRING}`
-          }
+            signedUrl: `${AWS_URL}/2019/11/${id}/us_pakistan_womens_council_advances_womens_economic_empowerment_at_houston_event.png${AWS_SIGNED_URL_QUERY_STRING}`,
+          },
         ],
         use: getDocumentUseObj( 'Media Note' ),
         bureaus,
         categories: [globalIssues, humanRights],
-        tags: []
+        tags: [],
       },
       {
         __typename: 'DocumentFile',
@@ -346,7 +347,7 @@ export const props = {
           id: 'ccc1',
           rawText: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
           html: '<p>The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.</p>',
-          markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.'
+          markdown: 'The guidance text. The guidance text. The guidance text. The guidance text. The guidance text. The guidance text.',
         },
         url: `2019/11/${id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.docx`,
         signedUrl: `${AWS_URL}/2019/11/${id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.docx${AWS_SIGNED_URL_QUERY_STRING}`,
@@ -357,15 +358,15 @@ export const props = {
             id: 'th3',
             filename: 'rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png',
             url: `2019/11/${id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png`,
-            signedUrl: `${AWS_URL}/2019/11/${id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png${AWS_SIGNED_URL_QUERY_STRING}`
-          }
+            signedUrl: `${AWS_URL}/2019/11/${id}/rewards_for_justice_reward_offer_for_those_involved_in_the_2017_tongo_tongo_ambush_in_niger.png${AWS_SIGNED_URL_QUERY_STRING}`,
+          },
         ],
         use: getDocumentUseObj( 'Media Note' ),
         bureaus,
         categories: [globalIssues],
-        tags: [tag2]
-      }
-    ]
+        tags: [tag2],
+      },
+    ],
   },
-  hasInitialUploadCompleted: true
+  hasInitialUploadCompleted: true,
 };

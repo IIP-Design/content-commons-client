@@ -8,6 +8,7 @@ const ActionResultsError = ( { action, error, project: { projectTitle } } ) => {
   const errors = getApolloErrors( error );
   const withErrors = errors.length >= 1 ? ` with ${getPluralStringOrNot( errors, 'error' )}:` : '';
   const header = `Project '${projectTitle}' ${action} failed${withErrors}`;
+
   return (
     <ActionResultsItem isError>
       <List.Header>{ header }</List.Header>
@@ -23,7 +24,7 @@ const ActionResultsError = ( { action, error, project: { projectTitle } } ) => {
 ActionResultsError.propTypes = {
   action: PropTypes.string,
   error: PropTypes.object,
-  project: PropTypes.object
+  project: PropTypes.object,
 };
 
 export default ActionResultsError;

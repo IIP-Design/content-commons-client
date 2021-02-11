@@ -27,7 +27,7 @@ PackagePageIndex.getInitialProps = async ( { query, res } ) => {
 
 PackagePageIndex.propTypes = {
   query: PropTypes.object,
-  router: PropTypes.object
+  router: PropTypes.object,
 };
 
 export default withRouter( PackagePageIndex );

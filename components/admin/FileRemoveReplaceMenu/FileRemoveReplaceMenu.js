@@ -25,6 +25,7 @@ const FileRemoveReplaceMenu = props => {
   // menu position becomes incorrect on resize so hide
   useEffect( () => {
     window.addEventListener( 'resize', onResize );
+
     return () => window.removeEventListener( 'resize', onResize );
   }, [isOpen] );
 
@@ -40,7 +41,8 @@ const FileRemoveReplaceMenu = props => {
         className="FileRemoveReplaceMenu__btn-delete no-background"
         onClick={ onRemove }
         disabled={ disableRemove }
-      >Remove File
+      >
+        Remove File
       </Button>
     </div>
   );
@@ -66,13 +68,13 @@ const FileRemoveReplaceMenu = props => {
 };
 
 FileRemoveReplaceMenu.defaultProps = {
-  disableRemove: false
+  disableRemove: false,
 };
 
 FileRemoveReplaceMenu.propTypes = {
   onRemove: PropTypes.func,
   setDuplicateFiles: PropTypes.func,
-  disableRemove: PropTypes.bool
+  disableRemove: PropTypes.bool,
 };
 
 export default FileRemoveReplaceMenu;

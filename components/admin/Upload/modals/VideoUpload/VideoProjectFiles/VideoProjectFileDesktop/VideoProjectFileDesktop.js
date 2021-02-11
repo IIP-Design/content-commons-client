@@ -69,19 +69,19 @@ const VideoProjectFilesDesktop = () => {
               <Grid.Row className="videoProjectFilesDesktop__row-header">
                 <Grid.Column width={ 6 }>Files Selected</Grid.Column>
                 <Grid.Column width={ 4 } style={ show( 1 ) }>
-                  Language
+                  { 'Language ' }
                   <span className="required">*</span>
                 </Grid.Column>
                 <Grid.Column width={ 4 } style={ show( 1 ) }>
-                  On-Screen Text
+                  { 'On-Screen Text ' }
                   <span className="required">*</span>
                 </Grid.Column>
                 <Grid.Column width={ 4 } style={ show( 2 ) }>
-                  Type / Use
+                  { 'Type / Use ' }
                   <span className="required">*</span>
                 </Grid.Column>
                 <Grid.Column width={ 4 } style={ show( 2 ) }>
-                  Quality
+                  { 'Quality ' }
                   <span className="required">*</span>
                 </Grid.Column>
                 <Grid.Column width={ 2 } />

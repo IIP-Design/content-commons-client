@@ -16,6 +16,7 @@ jest.mock( 'lib/hooks/useSignedUrl', () => jest.fn( () => ( { signedUrl: 'https:
 describe( '<DownloadCaption />', () => {
   it( 'renders without crashing', () => {
     const wrapper = mount( <DownloadCaption item={ mockItem } /> );
+
     expect( wrapper.exists() ).toEqual( true );
   } );
 

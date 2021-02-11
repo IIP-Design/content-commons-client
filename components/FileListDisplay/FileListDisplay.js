@@ -17,14 +17,14 @@ const FileListDisplay = ( { files, fileType, error } ) => (
     { files?.map( file => <li key={ file.id }>{ file.filename }</li>
        ) }
     { error
-        && <li className="error-message">{ `Error occurred with ${fileType} request.` }</li>}
+        && <li className="error-message">{ `Error occurred with ${fileType} request.` }</li> }
   </ul>
 );
 
 FileListDisplay.propTypes = {
   error: PropTypes.object,
   files: PropTypes.array,
-  fileType: PropTypes.string
+  fileType: PropTypes.string,
 };
 
 export default FileListDisplay;

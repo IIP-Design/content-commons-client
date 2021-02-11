@@ -28,9 +28,11 @@ describe( '<withFiledownload />', () => {
     const url = `2019/09/${id}/file name.srt`;
     const locale = 'en';
     const filename = `project_title.${locale}.${id}.srt`;
+
     inst.ENDPOINT = 'test-endpoint';
 
     const response = { data: { key: 'value' } };
+
     mockAxios.post = jest.fn();
     mockAxios.post.mockResolvedValue( response );
 
@@ -49,10 +51,12 @@ describe( '<withFiledownload />', () => {
     const url = `2019/09/${id}/file name.srt`;
     const locale = 'en';
     const filename = `project_title.${locale}.${id}.srt`;
+
     inst.ENDPOINT = 'test-endpoint';
 
     const err = { message: 'there was an error' };
     const errorMsg = `Oops there was a problem downloading your file: ${err.message}`;
+
     mockAxios.post = jest.fn();
     mockAxios.post.mockRejectedValue( err );
 

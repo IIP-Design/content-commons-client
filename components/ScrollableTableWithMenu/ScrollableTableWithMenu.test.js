@@ -9,9 +9,11 @@ jest.mock( 'next/config', () => () => ( {
 } ) );
 
 // mock these components since they are tested separately
+// eslint-disable-next-line react/function-component-definition
 jest.mock( './TableHeader/TableHeader', () => function TableHeader() {
   return <thead><tr><th>TableHeader</th></tr></thead>;
 } );
+// eslint-disable-next-line react/function-component-definition
 jest.mock( './TableBody/TableBody', () => function TableBody() {
   return <tbody><tr><td>TableBody</td></tr></tbody>;
 } );

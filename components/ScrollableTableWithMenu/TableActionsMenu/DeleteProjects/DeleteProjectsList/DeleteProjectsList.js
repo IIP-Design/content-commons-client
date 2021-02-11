@@ -24,12 +24,12 @@ const DeleteProjectsList = ( { headline, isDrafts, projects } ) => (
 DeleteProjectsList.propTypes = {
   headline: PropTypes.string,
   isDrafts: PropTypes.bool,
-  projects: PropTypes.array
+  projects: PropTypes.array,
 };
 
 DeleteProjectsList.defaultProps = {
   isDrafts: false,
-  projects: []
+  projects: [],
 };
 
 export default DeleteProjectsList;

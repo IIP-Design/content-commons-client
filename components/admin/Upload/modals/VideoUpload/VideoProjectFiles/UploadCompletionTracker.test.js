@@ -2,7 +2,9 @@ import { mount } from 'enzyme';
 import UploadCompletionTracker from './UploadCompletionTracker';
 
 const props = {
-  fields: ['', '', '']
+  fields: [
+    '', '', '',
+  ],
 };
 
 const Component = <UploadCompletionTracker { ...props } />;
@@ -23,12 +25,16 @@ describe( '<UploadCompletionTracker />', () => {
     expect( label().contains( toComplete().length ) ).toEqual( true );
 
     // partial completion: 1 remaining
-    wrapper.setProps( { fields: ['a', 'b', ''] } );
+    wrapper.setProps( { fields: [
+      'a', 'b', '',
+    ] } );
     wrapper.update();
     expect( label().contains( toComplete().length ) ).toEqual( true );
 
     // completion: 0 remaining
-    wrapper.setProps( { fields: ['a', 'b', 'c'] } );
+    wrapper.setProps( { fields: [
+      'a', 'b', 'c',
+    ] } );
     wrapper.update();
     expect( label().contains( toComplete().length ) ).toEqual( false );
   } );
@@ -45,12 +51,16 @@ describe( '<UploadCompletionTracker />', () => {
     expect( icon().prop( 'style' ) ).toEqual( hide );
 
     // partial completion
-    wrapper.setProps( { fields: ['a', 'b', ''] } );
+    wrapper.setProps( { fields: [
+      'a', 'b', '',
+    ] } );
     expect( label().prop( 'style' ) ).toEqual( show );
     expect( icon().prop( 'style' ) ).toEqual( hide );
 
     // completion
-    wrapper.setProps( { fields: ['a', 'b', 'c'] } );
+    wrapper.setProps( { fields: [
+      'a', 'b', 'c',
+    ] } );
     wrapper.update();
     expect( label().prop( 'style' ) ).toEqual( hide );
     expect( icon().prop( 'style' ) ).toEqual( show );

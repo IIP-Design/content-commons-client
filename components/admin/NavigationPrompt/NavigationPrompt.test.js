@@ -4,7 +4,7 @@ import NavigationPrompt from './NavigationPrompt';
 
 const Content = () => (
   <div className="content">
-    Confirmation Message
+    { 'Confirmation Message ' }
     <button type="button">Cancel</button>
     <button type="button">Confirm</button>
   </div>
@@ -12,7 +12,7 @@ const Content = () => (
 const props = {
   when: true,
   children: Content,
-  history: {}
+  history: {},
 };
 
 const Component = <NavigationPrompt { ...props } />;
@@ -20,6 +20,7 @@ const Component = <NavigationPrompt { ...props } />;
 describe( '<NavigationPrompt />', () => {
   it( 'renders without crashing', () => {
     const wrapper = shallow( Component );
+
     expect( wrapper.exists() ).toEqual( true );
   } );
 } );

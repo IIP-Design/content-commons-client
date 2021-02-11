@@ -7,6 +7,7 @@ jest.mock( 'lib/hooks/useSignedUrl', () => jest.fn( () => ( { signedUrl: 'https:
 describe( '<DownloadTranscript />', () => {
   it( 'renders without crashing', () => {
     const wrapper = mount( <DownloadTranscript item={ mockItem } /> );
+
     expect( wrapper.exists() ).toEqual( true );
   } );
 
@@ -18,6 +19,7 @@ describe( '<DownloadTranscript />', () => {
     const wrapper = mount( <DownloadTranscript item={ mockItem } /> );
 
     const downloadItem = wrapper.find( 'DownloadItemContent' );
+
     expect( downloadItem.exists() ).toEqual( true );
     expect( downloadItem.find( '.item-content__title' ).text() ).toEqual( expectedHeader );
     expect( downloadItem.find( '.item-hover' ).text() ).toEqual( expectedHover );

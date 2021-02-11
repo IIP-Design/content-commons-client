@@ -59,7 +59,7 @@ const EditFileGridRow = ( {
       key={ select.label }
       className={ `${styles.selectBox} ${isLast( select, i ) ? '' : styles.marginRight}` }
     >
-      {select.label}
+      { select.label }
       <span className={ styles.required }>*</span>
     </div>
   );
@@ -120,9 +120,9 @@ const EditFileGridRow = ( {
           showCompletionTracker ? styles.completion : ''
         }` }
       >
-        {showCompletionTracker && <div />}
+        { showCompletionTracker && <div /> }
         <div className={ styles.filename }>Filename</div>
-        <div className={ styles.label }>{screen?.map( ( _screen, i ) => renderLabel( _screen, i ) )}</div>
+        <div className={ styles.label }>{ screen?.map( ( _screen, i ) => renderLabel( _screen, i ) ) }</div>
         <div />
       </div>
     );
@@ -130,8 +130,8 @@ const EditFileGridRow = ( {
 
   return (
     <div className={ `${styles.grid}  ${showCompletionTracker ? styles.completion : ''}` }>
-      {/* number of fields left to conplete  */}
-      {showCompletionTracker && (
+      { /* number of fields left to conplete  */ }
+      { showCompletionTracker && (
         <div>
           <span
             className={ styles.indicator }
@@ -139,7 +139,7 @@ const EditFileGridRow = ( {
             aria-hidden={ !!fieldsToComplete }
             aria-label="Fields left to complete"
           >
-            {fieldsToComplete}
+            { fieldsToComplete }
           </span>
           <Icon
             className={ styles.indicator }
@@ -152,15 +152,15 @@ const EditFileGridRow = ( {
             aria-label="All fields completed"
           />
         </div>
-      )}
+      ) }
 
-      <Filename className={ styles.filename }>{file?.name}</Filename>
+      <Filename className={ styles.filename }>{ file?.name }</Filename>
 
       <div className={ styles.selectBoxesContainer }>
-        {screen?.map( ( _screen, i ) => renderSelectBox( _screen, i ) )}
+        { screen?.map( ( _screen, i ) => renderSelectBox( _screen, i ) ) }
       </div>
 
-      {/* delete file  */}
+      { /* delete file  */ }
       <Button onClick={ remove } className={ styles.cancel }>
         <span tooltip="Remove">
           <img src={ removeIcon } alt="Remove File Button" />

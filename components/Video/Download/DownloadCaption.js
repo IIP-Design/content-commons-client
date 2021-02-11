@@ -30,7 +30,7 @@ const DownloadCaption = ( { item } ) => {
   return (
     <div>
       { srts.length < 1
-        && <p className="download-item__noContent">There are no caption files available for download at this time</p>}
+        && <p className="download-item__noContent">There are no caption files available for download at this time</p> }
 
       { srts.length > 0 && srts.map( srt => {
         const lang = srt?.language?.display_name || ''; // eslint-disable-line camelcase

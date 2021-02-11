@@ -41,7 +41,7 @@ const CategoryDropdown = props => (
           value: category.id,
           text: category.translations.length
             ? titleCase( category.translations[0].name )
-            : ''
+            : '',
         } ) );
       }
 
@@ -75,14 +75,14 @@ const CategoryDropdown = props => (
 
 CategoryDropdown.defaultProps = {
   id: '',
-  locale: 'en-us'
+  locale: 'en-us',
 };
 
 
 CategoryDropdown.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
-  locale: PropTypes.string
+  locale: PropTypes.string,
 };
 
 

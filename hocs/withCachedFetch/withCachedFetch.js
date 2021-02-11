@@ -40,7 +40,7 @@ const withCachedFetch = ( WrappedComponent, url ) => {
   HOC.propTypes = {
     data: PropTypes.string,
     isServerRendered: PropTypes.bool,
-    error: PropTypes.oneOfType( [PropTypes.number, PropTypes.bool] )
+    error: PropTypes.oneOfType( [PropTypes.number, PropTypes.bool] ),
   };
 
 

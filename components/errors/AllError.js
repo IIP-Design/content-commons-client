@@ -6,6 +6,7 @@ class Error extends Component {
     const { error, graphQLError } = this.props;
 
     let errors = [];
+
     if ( graphQLError ) {
       errors = graphQLError.graphQLErrors.map( error => error.message );
     }
@@ -16,8 +17,9 @@ class Error extends Component {
     return errors;
   };
 
-  render () {
+  render() {
     const { error, graphQLError } = this.props;
+
     if ( !error && !graphQLError ) {
       return <div />;
     }
@@ -27,11 +29,12 @@ class Error extends Component {
     const buttonStyle = {
       color: 'red',
       fontSize: '14px',
-      marginBottom: '1rem'
+      marginBottom: '1rem',
     };
 
     return (
-      <div style={ buttonStyle }>{ errors.map( ( error, i ) => <div key={ i }>{ error }</div> ) }
+      <div style={ buttonStyle }>
+        { errors.map( ( error, i ) => <div key={ i }>{ error }</div> ) }
       </div>
     );
   }
@@ -40,7 +43,7 @@ class Error extends Component {
 
 Error.propTypes = {
   error: PropTypes.string,
-  graphQLError: PropTypes.object
+  graphQLError: PropTypes.object,
 };
 
 export default Error;

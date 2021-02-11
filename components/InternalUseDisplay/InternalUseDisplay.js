@@ -6,6 +6,7 @@ const renderInternalUseText = ( className, expanded, style ) => {
   if ( expanded ) {
     return <p className={ `internal-use expanded ${className}` } style={ style }>INTERNAL USE ONLY - NOT FOR PUBLIC DISTRIBUTION</p>;
   }
+
   return <p className={ `internal-use brief ${className}` } style={ style }>INTERNAL USE ONLY</p>;
 };
 
@@ -15,13 +16,13 @@ const InternalUseDisplay = ( { className, expanded, style } ) => (
 
 InternalUseDisplay.defaultProps = {
   className: '',
-  style: {}
+  style: {},
 };
 
 InternalUseDisplay.propTypes = {
   className: PropTypes.string,
   expanded: PropTypes.bool,
-  style: PropTypes.object
+  style: PropTypes.object,
 };
 
 export default InternalUseDisplay;

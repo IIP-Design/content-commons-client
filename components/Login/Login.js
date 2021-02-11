@@ -21,19 +21,19 @@ const Login = ( { redirect } ) => (
       <h1>Log In</h1>
       <p>Content publishers should sign in using their america.gov accounts.</p>
 
-      {/* Login via google (america.gov) */}
+      { /* Login via google (america.gov) */ }
       <Button
         className="btn secondary"
         onClick={ () => Auth.federatedSignIn( { provider: 'Google', customState: redirect } ) }
       >
         <img src={ googleIcon } alt="Log in with America.gov" width="24" />
-        {' '}
+        { ' ' }
         Log in with America.gov
       </Button>
 
       <div className="or">or</div>
 
-      {/* Login via okta */}
+      { /* Login via okta */ }
       <Button
         className="btn primary"
         onClick={ () => Auth.federatedSignIn( {
@@ -42,7 +42,7 @@ const Login = ( { redirect } ) => (
         } ) }
       >
         <img src={ oktaIcon } alt=" Okta Single Sign-On" width="24" />
-        {' '}
+        { ' ' }
         Okta Single Sign-On
       </Button>
     </div>

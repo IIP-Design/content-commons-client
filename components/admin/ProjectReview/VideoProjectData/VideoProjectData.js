@@ -17,13 +17,14 @@ const VideoProjectData = props => {
 
   if ( loading ) {
     return (
-      <div style={ {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '200px'
-      } }
+      <div
+        style={ {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '200px',
+        } }
       >
         <Loader
           active
@@ -56,17 +57,33 @@ const VideoProjectData = props => {
     categories,
     tags,
     descPublic,
-    descInternal
+    descInternal,
   } = project;
 
   return (
     <section className="section section--project_data">
       <h3 className="uppercase">Project Data</h3>
       <section className="project-data_meta section">
-        <p><b className="label">Video Title:</b> { projectTitle }</p>
-        <p><b className="label">Author:</b> { ( author && Object.keys( author ).length > 0 ) && `${author.firstName} ${author.lastName}` }</p>
-        <p><b className="label">Team:</b> { ( team && Object.keys( team ).length > 0 ) && team.name }</p>
-        <p><b className="label">Visibility Setting:</b> { visibility }</p>
+        <p>
+          <b className="label">Video Title:</b>
+          { ' ' }
+          { projectTitle }
+        </p>
+        <p>
+          <b className="label">Author:</b>
+          { ' ' }
+          { ( author && Object.keys( author ).length > 0 ) && `${author.firstName} ${author.lastName}` }
+        </p>
+        <p>
+          <b className="label">Team:</b>
+          { ' ' }
+          { ( team && Object.keys( team ).length > 0 ) && team.name }
+        </p>
+        <p>
+          <b className="label">Visibility Setting:</b>
+          { ' ' }
+          { visibility }
+        </p>
       </section>
 
       <section className="project-data_taxonomy section">
@@ -91,15 +108,23 @@ const VideoProjectData = props => {
       </section>
 
       <section className="project-data_description section">
-        <p><b className="label">Public Description:</b> { descPublic }</p>
-        <p><b className="label">Internal Description:</b> { descInternal }</p>
+        <p>
+          <b className="label">Public Description:</b>
+          { ' ' }
+          { descPublic }
+        </p>
+        <p>
+          <b className="label">Internal Description:</b>
+          { ' ' }
+          { descInternal }
+        </p>
       </section>
     </section>
   );
 };
 
 VideoProjectData.propTypes = {
-  data: object
+  data: object,
 };
 
 const VIDEO_PROJECT_REVIEW_DATA_QUERY = gql`
@@ -140,9 +165,9 @@ const VIDEO_PROJECT_REVIEW_DATA_QUERY = gql`
 export default graphql( VIDEO_PROJECT_REVIEW_DATA_QUERY, {
   options: props => ( {
     variables: {
-      id: props.id
+      id: props.id,
     },
-  } )
+  } ),
 } )( VideoProjectData );
 
 export { VIDEO_PROJECT_REVIEW_DATA_QUERY };

@@ -66,7 +66,7 @@ const SocialPlatformDropdown = props => {
         }
       } }
     >
-      {( { data, loading, error } ) => {
+      { ( { data, loading, error } ) => {
         if ( error ) return `Error! ${error.message}`;
 
         let options = [];
@@ -83,11 +83,11 @@ const SocialPlatformDropdown = props => {
 
         return (
           <Fragment>
-            {!props.label && (
+            { !props.label && (
               <VisuallyHidden>
-                <label htmlFor={ props.id }>{`${props.id} social platforms`}</label>
+                <label htmlFor={ props.id }>{ `${props.id} social platforms` }</label>
               </VisuallyHidden>
-            )}
+            ) }
 
             <Form.Dropdown
               id={ props.id }
@@ -102,7 +102,7 @@ const SocialPlatformDropdown = props => {
             />
           </Fragment>
         );
-      }}
+      } }
     </Query>
   );
 };

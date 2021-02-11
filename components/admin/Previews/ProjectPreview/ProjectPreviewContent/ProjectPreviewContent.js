@@ -497,7 +497,7 @@ class ProjectPreviewContent extends React.PureComponent {
         />
 
         { categories && categories.length > 0
-          && <ModalPostTags tags={ this.getTags( categories, selectedUnit ) } />}
+          && <ModalPostTags tags={ this.getTags( categories, selectedUnit ) } /> }
       </ModalItem>
     );
   }

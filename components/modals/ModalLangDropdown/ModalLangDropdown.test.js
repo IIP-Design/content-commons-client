@@ -6,7 +6,7 @@ import ModalLangDropdown from './ModalLangDropdown';
 const props = {
   item,
   selected: 'English',
-  handleLanguageChange: jest.fn()
+  handleLanguageChange: jest.fn(),
 };
 
 const singleProps = {
@@ -14,14 +14,14 @@ const singleProps = {
   item: {
     ...props.item,
     units: props.item.units.filter(
-      u => u.language.display_name === props.selected
-    )
-  }
+      u => u.language.display_name === props.selected,
+    ),
+  },
 };
 
 const noUnitsProps = {
   ...props,
-  item: { ...props.items, units: [] }
+  item: { ...props.items, units: [] },
 };
 
 const languages = [
@@ -29,7 +29,7 @@ const languages = [
   { key: 'en-us', value: 'English', text: 'English' },
   { key: 'fr-fr', value: 'French', text: 'French' },
   { key: 'ru-ru', value: 'Russian', text: 'Russian' },
-  { key: 'es-es', value: 'Spanish', text: 'Spanish' }
+  { key: 'es-es', value: 'Spanish', text: 'Spanish' },
 ];
 
 const Component = <ModalLangDropdown { ...props } />;

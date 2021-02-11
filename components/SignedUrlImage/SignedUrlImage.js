@@ -11,7 +11,7 @@ const SignedUrlImage = ( { children, url, ...rest } ) => {
       style={ { backgroundImage: `url( ${signedUrl} )` } }
       { ...rest }
     >
-      {children}
+      { children }
     </div>
   );
 };

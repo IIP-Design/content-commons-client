@@ -40,6 +40,7 @@ const ImageDetailsPopup = props => (
         if ( error ) return <ApolloError error={ error } />;
 
         const { supportFiles } = data.videoProject;
+
         if ( supportFiles.length ) {
           return (
             <div>
@@ -53,11 +54,22 @@ const ImageDetailsPopup = props => (
                     filetype,
                     filesize,
                     language: { displayName },
-                    use
+                    use,
                   } = file;
+
                   return (
                     <li key={ id }>
-                      { use && use.name } | <a href={ getS3Url( url ) }>{ filetype }</a> | <a href={ getS3Url( url ) }>{ displayName } { formatBytes( filesize ) }</a>
+                      { use && use.name }
+                      { ' ' }
+                      |
+                      <a href={ getS3Url( url ) }>{ filetype }</a>
+                      { ' ' }
+                      |
+                      <a href={ getS3Url( url ) }>
+                        { displayName }
+                        { ' ' }
+                        { formatBytes( filesize ) }
+                      </a>
                     </li>
                   );
                 } ) }
@@ -73,7 +85,7 @@ const ImageDetailsPopup = props => (
 );
 
 ImageDetailsPopup.propTypes = {
-  id: PropTypes.string
+  id: PropTypes.string,
 };
 
 export default ImageDetailsPopup;

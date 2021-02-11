@@ -227,7 +227,7 @@ const TableActionsMenu = ( {
             <img src={ archiveIcon } alt="Archive Selection(s)" title="Archive Selection(s)" />
           </Button>
 
-          {/* Keep UnpublishProjects mounted so polling is not stopped prematurely */}
+          { /* Keep UnpublishProjects mounted so polling is not stopped prematurely */ }
           { !hasSelectedAllDrafts() && <span className="separator">|</span> }
           <UnpublishProjects
             team={ team }

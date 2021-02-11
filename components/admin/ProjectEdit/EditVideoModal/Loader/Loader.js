@@ -12,12 +12,12 @@ const Loader = ( { text, height } ) => (
 
 Loader.propTypes = {
   height: propTypes.string,
-  text: propTypes.string
+  text: propTypes.string,
 };
 
 Loader.defaultProps = {
   height: 'auto',
-  text: ''
+  text: '',
 };
 
 export default Loader;

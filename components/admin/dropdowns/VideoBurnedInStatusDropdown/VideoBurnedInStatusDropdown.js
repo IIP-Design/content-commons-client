@@ -44,7 +44,7 @@ const VideoBurnedInStatusDropdown = ( { id, label, ...rest } ) => {
     <Fragment>
       { !label && (
         <VisuallyHidden>
-          <label htmlFor={ id }>on-screen text</label>
+          <label htmlFor={ id }>on-screen text</label> {/* eslint-disable-line */}
         </VisuallyHidden>
       ) }
 

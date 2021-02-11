@@ -400,7 +400,8 @@ exports[`<VideoDetailsPopup /> renders the final state 1`] = `
             href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/video-1.mp4"
           >
             English
-             (
+             
+            (
             6.13  MB
             )
           </a>
@@ -420,7 +421,8 @@ exports[`<VideoDetailsPopup /> renders the final state 1`] = `
             href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/video-2.mp4"
           >
             French
-             (
+             
+            (
             6.13  MB
             )
           </a>

@@ -6,7 +6,7 @@ import { fileMocks } from './mocks';
 const props = {
   error: null,
   files: fileMocks,
-  fileType: 'document'
+  fileType: 'document',
 };
 
 describe( 'FileListDisplay', () => {

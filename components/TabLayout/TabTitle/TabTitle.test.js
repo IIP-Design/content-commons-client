@@ -5,7 +5,7 @@ import TabTitle from './TabTitle';
 const props = {
   title: 'Test Title',
   isActiveTab: true,
-  handleOnClick: jest.fn()
+  handleOnClick: jest.fn(),
 };
 
 describe( 'TabTitle', () => {

@@ -14,6 +14,7 @@ const ComponentError = <ActionResults { ...props } />;
 describe( '<ActionResults />', () => {
   it( 'renders without crashing', () => {
     const wrapper = shallow( Component );
+
     expect( wrapper.exists() ).toEqual( true );
   } );
 
@@ -21,10 +22,12 @@ describe( '<ActionResults />', () => {
     const wrapper = mount( Component );
 
     const item = wrapper.find( ActionResultsItem );
+
     expect( item.exists() ).toEqual( true );
     expect( item.length ).toBe( 1 );
 
     const error = wrapper.find( ActionResultsError );
+
     expect( error.exists() ).toEqual( false );
   } );
 
@@ -32,6 +35,7 @@ describe( '<ActionResults />', () => {
     const wrapper = mount( ComponentError );
 
     const error = wrapper.find( ActionResultsError );
+
     expect( error.props() ).toEqual( failure );
 
     expect( error.exists() ).toEqual( true );

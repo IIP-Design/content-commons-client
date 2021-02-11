@@ -698,7 +698,7 @@ const GraphicEdit = ( { id } ) => {
       <div style={ centeredStyles }>
         <ApolloError error={ error } />
       </div>
-      {/* Form data saved notification */}
+      { /* Form data saved notification */ }
       <Notification
         el="p"
         customStyles={ centeredStyles }
@@ -706,7 +706,7 @@ const GraphicEdit = ( { id } ) => {
         msg={ notificationMessage }
       />
 
-      {/* upload progress  */}
+      { /* upload progress  */ }
       <UploadProgress
         className="alpha"
         projectId={ projectId }
@@ -715,7 +715,7 @@ const GraphicEdit = ( { id } ) => {
         uploadComplete={ handleUploadComplete }
       />
 
-      {/* project details form */}
+      { /* project details form */ }
       <GraphicProjectDetailsFormContainer
         id={ projectId }
         contentStyle={ contentStyle }
@@ -726,7 +726,7 @@ const GraphicEdit = ( { id } ) => {
         setIsFormValid={ setIsFormValid }
       />
 
-      {/* upload progress */}
+      { /* upload progress */ }
       <UploadProgress
         className="beta"
         projectId={ projectId }
@@ -734,7 +734,7 @@ const GraphicEdit = ( { id } ) => {
         isUploading={ state.isUploading }
       />
 
-      {/* project support files */}
+      { /* project support files */ }
       <div className="support-files">
         <AddFilesSectionHeading
           projectId={ projectId }
@@ -750,7 +750,7 @@ const GraphicEdit = ( { id } ) => {
         />
       </div>
 
-      {/* project graphic files */}
+      { /* project graphic files */ }
       <div className="graphic-files">
         <AddFilesSectionHeading projectId={ projectId } title="Graphics in Project">
           <Modal
@@ -784,7 +784,7 @@ const GraphicEdit = ( { id } ) => {
         />
       </div>
 
-      {/* bottom buttons */}
+      { /* bottom buttons */ }
       { projectId && (
         <div className="actions">
           <ActionHeadline

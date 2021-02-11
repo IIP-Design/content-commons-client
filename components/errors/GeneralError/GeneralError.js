@@ -5,7 +5,7 @@ import './GeneralError.scss';
 
 const GeneralError = props => {
   const {
-    children, el: Element, icon, msg, style
+    children, el: Element, icon, msg, style,
   } = props;
 
   return (
@@ -25,16 +25,16 @@ GeneralError.propTypes = {
   icon: PropTypes.bool,
   msg: PropTypes.oneOfType( [
     PropTypes.node,
-    PropTypes.string
+    PropTypes.string,
   ] ),
-  style: PropTypes.object
+  style: PropTypes.object,
 };
 
 GeneralError.defaultProps = {
   el: 'div',
   icon: true,
   msg: '',
-  style: {}
+  style: {},
 };
 
 export default GeneralError;

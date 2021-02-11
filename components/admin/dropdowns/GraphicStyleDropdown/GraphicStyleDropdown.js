@@ -77,7 +77,7 @@ const GraphicStyleDropdown = props => {
         }
       } }
     >
-      {( { data, loading, error } ) => {
+      { ( { data, loading, error } ) => {
         if ( error ) return `Error! ${error.message}`;
 
         let options = [];
@@ -108,11 +108,11 @@ const GraphicStyleDropdown = props => {
 
         return (
           <Fragment>
-            {!props.label && (
+            { !props.label && (
               <VisuallyHidden>
-                <label htmlFor={ props.id }>{`${props.id} graphic styles`}</label>
+                <label htmlFor={ props.id }>{ `${props.id} graphic styles` }</label>
               </VisuallyHidden>
-            )}
+            ) }
 
             <Form.Dropdown
               id={ props.id }
@@ -126,7 +126,7 @@ const GraphicStyleDropdown = props => {
             />
           </Fragment>
         );
-      }}
+      } }
     </Query>
   );
 };
