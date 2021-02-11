@@ -2,6 +2,7 @@ import { mount } from 'enzyme';
 import DownloadItem from '../DownloadItem';
 
 const mockSignedUrl = 'https://example-asset-url-signed.jpg';
+
 jest.mock( 'lib/hooks/useSignedUrl', () => jest.fn( () => ( { signedUrl: mockSignedUrl } ) ) );
 
 const props = {

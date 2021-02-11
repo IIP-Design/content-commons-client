@@ -14,7 +14,7 @@ export const props = {
       thumbnail: {},
       updatedAt: '2020-04-22T13:22:42.672Z',
       visibility: 'INTERNAL',
-      __typename: 'Package'
+      __typename: 'Package',
     },
     {
       author: 'Marek',
@@ -27,8 +27,8 @@ export const props = {
       thumbnail: {},
       updatedAt: '2020-04-20T16:31:14.936Z',
       visibility: 'INTERNAL',
-      __typename: 'Package'
-    }
+      __typename: 'Package',
+    },
   ],
   error: null,
   handleResetSelections: jest.fn(),
@@ -40,8 +40,8 @@ export const props = {
     team: 'IIP Video Production',
     searchTerm: '',
     first: 4,
-    skip: 0
-  }
+    skip: 0,
+  },
 };
 
 export const mocks = [
@@ -50,8 +50,8 @@ export const mocks = [
       // query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
       variables: {
         team: props.variables.team,
-        searchTerm: props.variables.searchTerm
-      }
+        searchTerm: props.variables.searchTerm,
+      },
     },
     result: {
       data: {
@@ -60,32 +60,32 @@ export const mocks = [
           { id: 'ud98' },
           { id: 'ud64' },
           { id: 'ud23' },
-          { id: 'ud74' }
-        ]
-      }
-    }
+          { id: 'ud74' },
+        ],
+      },
+    },
   },
   {
     request: {
       // query: TEAM_VIDEO_PROJECTS_COUNT_QUERY,
       variables: {
         team: props.variables.team,
-        searchTerm: props.variables.searchTerm
-      }
+        searchTerm: props.variables.searchTerm,
+      },
     },
     result: {
       data: {
         videoProjects: [
           { id: 'ud64' },
-          { id: 'ud23' }
-        ]
-      }
-    }
+          { id: 'ud23' },
+        ],
+      },
+    },
   },
   {
     request: {
       // query: TEAM_VIDEO_PROJECTS_QUERY,
-      variables: { ...props.variables }
+      variables: { ...props.variables },
     },
     result: {
       data: {
@@ -97,12 +97,12 @@ export const mocks = [
             team: {
               id: 't888',
               name: 'IIP Video Production',
-              organization: 'Department of State'
+              organization: 'Department of State',
             },
             author: {
               id: 'a928',
               firstName: 'Jane',
-              lastName: 'Doe'
+              lastName: 'Doe',
             },
             projectTitle: 'Test Title 1',
             status: 'PUBLISHED',
@@ -110,7 +110,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text'
+              alt: 'some alt text',
             },
             categories: [
               {
@@ -121,12 +121,12 @@ export const mocks = [
                     name: 'about america',
                     language: {
                       id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
+                      locale: 'en-us',
+                    },
+                  },
+                ],
+              },
+            ],
           },
           {
             id: 'ud98',
@@ -135,12 +135,12 @@ export const mocks = [
             team: {
               id: 't888',
               name: 'IIP Video Production',
-              organization: 'Department of State'
+              organization: 'Department of State',
             },
             author: {
               id: 'a287',
               firstName: 'Joe',
-              lastName: 'Schmoe'
+              lastName: 'Schmoe',
             },
             projectTitle: 'Test Title 2',
             status: 'PUBLISHED',
@@ -148,7 +148,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text'
+              alt: 'some alt text',
             },
             categories: [
               {
@@ -159,12 +159,12 @@ export const mocks = [
                     name: 'about america',
                     language: {
                       id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
+                      locale: 'en-us',
+                    },
+                  },
+                ],
+              },
+            ],
           },
           {
             id: 'ud64',
@@ -173,12 +173,12 @@ export const mocks = [
             team: {
               id: 't888',
               name: 'IIP Video Production',
-              organization: 'Department of State'
+              organization: 'Department of State',
             },
             author: {
               id: 'a287',
               firstName: 'Joe',
-              lastName: 'Schmoe'
+              lastName: 'Schmoe',
             },
             projectTitle: 'Test Title 2',
             status: 'PUBLISHED',
@@ -186,7 +186,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text'
+              alt: 'some alt text',
             },
             categories: [
               {
@@ -197,12 +197,12 @@ export const mocks = [
                     name: 'about america',
                     language: {
                       id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
+                      locale: 'en-us',
+                    },
+                  },
+                ],
+              },
+            ],
           },
           {
             id: 'ud23',
@@ -211,12 +211,12 @@ export const mocks = [
             team: {
               id: 't888',
               name: 'IIP Video Production',
-              organization: 'Department of State'
+              organization: 'Department of State',
             },
             author: {
               id: 'a287',
               firstName: 'Joe',
-              lastName: 'Schmoe'
+              lastName: 'Schmoe',
             },
             projectTitle: 'Test Title 2',
             status: 'DRAFT',
@@ -224,7 +224,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text'
+              alt: 'some alt text',
             },
             categories: [
               {
@@ -235,12 +235,12 @@ export const mocks = [
                     name: 'about america',
                     language: {
                       id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
+                      locale: 'en-us',
+                    },
+                  },
+                ],
+              },
+            ],
           },
           {
             id: 'ud74',
@@ -249,12 +249,12 @@ export const mocks = [
             team: {
               id: 't888',
               name: 'IIP Video Production',
-              organization: 'Department of State'
+              organization: 'Department of State',
             },
             author: {
               id: 'a287',
               firstName: 'Joe',
-              lastName: 'Schmoe'
+              lastName: 'Schmoe',
             },
             projectTitle: 'Test Title 2',
             status: 'DRAFT',
@@ -262,7 +262,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text'
+              alt: 'some alt text',
             },
             categories: [
               {
@@ -273,21 +273,21 @@ export const mocks = [
                     name: 'about america',
                     language: {
                       id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    }
+                      locale: 'en-us',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    },
   },
   {
     request: {
       // query: TEAM_VIDEO_PROJECTS_QUERY,
-      variables: { ...props.variables }
+      variables: { ...props.variables },
     },
     result: {
       data: {
@@ -299,12 +299,12 @@ export const mocks = [
             team: {
               id: 't888',
               name: 'IIP Video Production',
-              organization: 'Department of State'
+              organization: 'Department of State',
             },
             author: {
               id: 'a928',
               firstName: 'Jane',
-              lastName: 'Doe'
+              lastName: 'Doe',
             },
             projectTitle: 'Test Title 1',
             status: 'PUBLISHED',
@@ -312,7 +312,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text'
+              alt: 'some alt text',
             },
             categories: [
               {
@@ -323,12 +323,12 @@ export const mocks = [
                     name: 'about america',
                     language: {
                       id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
+                      locale: 'en-us',
+                    },
+                  },
+                ],
+              },
+            ],
           },
           {
             id: 'ud98',
@@ -337,12 +337,12 @@ export const mocks = [
             team: {
               id: 't888',
               name: 'IIP Video Production',
-              organization: 'Department of State'
+              organization: 'Department of State',
             },
             author: {
               id: 'a287',
               firstName: 'Joe',
-              lastName: 'Schmoe'
+              lastName: 'Schmoe',
             },
             projectTitle: 'Test Title 2',
             status: 'PUBLISHED',
@@ -350,7 +350,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text'
+              alt: 'some alt text',
             },
             categories: [
               {
@@ -361,12 +361,12 @@ export const mocks = [
                     name: 'about america',
                     language: {
                       id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
+                      locale: 'en-us',
+                    },
+                  },
+                ],
+              },
+            ],
           },
           {
             id: 'ud64',
@@ -375,12 +375,12 @@ export const mocks = [
             team: {
               id: 't888',
               name: 'IIP Video Production',
-              organization: 'Department of State'
+              organization: 'Department of State',
             },
             author: {
               id: 'a287',
               firstName: 'Joe',
-              lastName: 'Schmoe'
+              lastName: 'Schmoe',
             },
             projectTitle: 'Test Title 2',
             status: 'PUBLISHED',
@@ -388,7 +388,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text'
+              alt: 'some alt text',
             },
             categories: [
               {
@@ -399,12 +399,12 @@ export const mocks = [
                     name: 'about america',
                     language: {
                       id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
+                      locale: 'en-us',
+                    },
+                  },
+                ],
+              },
+            ],
           },
           {
             id: 'ud74',
@@ -413,12 +413,12 @@ export const mocks = [
             team: {
               id: 't888',
               name: 'IIP Video Production',
-              organization: 'Department of State'
+              organization: 'Department of State',
             },
             author: {
               id: 'a287',
               firstName: 'Joe',
-              lastName: 'Schmoe'
+              lastName: 'Schmoe',
             },
             projectTitle: 'Test Title 2',
             status: 'DRAFT',
@@ -426,7 +426,7 @@ export const mocks = [
             thumbnails: {
               id: 't34',
               url: 'https://thumbnailurl.com',
-              alt: 'some alt text'
+              alt: 'some alt text',
             },
             categories: [
               {
@@ -437,44 +437,44 @@ export const mocks = [
                     name: 'about america',
                     language: {
                       id: 'en23',
-                      locale: 'en-us'
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    }
-  }
+                      locale: 'en-us',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
 ];
 
 export const errorMocks = [
   {
     ...mocks[2],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 export const nullMocks = [
   {
     ...mocks[2],
     result: {
-      data: { videoProjects: null }
-    }
-  }
+      data: { videoProjects: null },
+    },
+  },
 ];
 
 export const emptyMocks = [
   {
     ...mocks[2],
     result: {
-      data: { videoProjects: [] }
-    }
-  }
+      data: { videoProjects: [] },
+    },
+  },
 ];
 
 export const allCheckedMocks = [
@@ -483,10 +483,10 @@ export const allCheckedMocks = [
     result: {
       data: {
         videoProjects: mocks[2].result.data.videoProjects
-          .filter( project => project.id === 'ud78' || project.id === 'ud98' )
-      }
-    }
-  }
+          .filter( project => project.id === 'ud78' || project.id === 'ud98' ),
+      },
+    },
+  },
 ];
 
 export const actionResult = {
@@ -494,6 +494,6 @@ export const actionResult = {
   action: 'delete',
   project: {
     id: '123abc',
-    projectTitle: 'Title'
-  }
+    projectTitle: 'Title',
+  },
 };

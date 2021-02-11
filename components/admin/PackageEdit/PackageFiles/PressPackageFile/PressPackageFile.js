@@ -31,7 +31,7 @@ const PressPackageFile = props => {
   if ( !document || !getCount( document ) ) return null;
 
   const {
-    id, filename, image, language
+    id, filename, image, language,
   } = document;
 
   const metaData = [

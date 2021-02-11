@@ -9,8 +9,8 @@ const props = {
   icon: true,
   msg: 'An error occurred',
   style: {
-    color: 'blue'
-  }
+    color: 'blue',
+  },
 };
 
 const Component = <GeneralError { ...props } />;

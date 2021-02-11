@@ -51,9 +51,9 @@ const GraphicDetailsPopup = ( { id } ) => {
             return (
               <li key={ fileId }>
                 { filename && filename }
-                {'  |  '}
+                { '  |  ' }
                 { filetype && filetype }
-                {'  |  '}
+                { '  |  ' }
                 { `${displayName} ${formatBytes( filesize )}` }
               </li>
             );

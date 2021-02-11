@@ -10,16 +10,18 @@ import { Icon } from 'semantic-ui-react';
 import './Carousel.scss';
 
 const Carousel = ( {
-  children, legend, selectedItem, vertical
+  children, legend, selectedItem, vertical,
 } ) => {
   // Get the index of the initially selected item based on the id of the selectedItem prop
   const getSelectedIndex = elems => {
     let initialItem = 0;
+
     elems.forEach( ( elem, index ) => {
       if ( elem.props.id === selectedItem ) {
         initialItem = index;
       }
     } );
+
     return initialItem;
   };
   // Get number of items in items list
@@ -32,6 +34,7 @@ const Carousel = ( {
   const [disablePrev, setDisablePrev] = useState( () => {
     const num = getSelectedIndex( children ) + 1;
     const disable = num < 4;
+
     return disable;
   } );
 
@@ -39,6 +42,7 @@ const Carousel = ( {
   const [disableNext, setDisableNext] = useState( () => {
     const num = getSelectedIndex( children ) + 1;
     const disable = ( itemCount - num ) === 0;
+
     return disable;
   } );
 
@@ -90,6 +94,7 @@ const Carousel = ( {
     const countPrev = index;
     const countNext = items - ( index + 1 );
     let num;
+
     if ( countPrev > 2 ) {
       num = countPrev - 2;
     } else if ( countNext > 2 ) {
@@ -112,6 +117,7 @@ const Carousel = ( {
   // Bring item into view if selected
   const scrollToSelected = index => {
     const list = carouselItems.current;
+
     if ( index === undefined || !list ) { return; }
 
     const items = list.children.length;
@@ -119,6 +125,7 @@ const Carousel = ( {
 
     if ( num ) {
       const offset = calcOffset( list, num );
+
       manipulateList( list, offset );
     }
   };
@@ -126,11 +133,13 @@ const Carousel = ( {
   // Sets the selected carousel item
   const [selected, setSelected] = useState( () => {
     const selectedIndex = getSelectedIndex( children );
+
     return selectedIndex;
   } );
 
   useEffect( () => {
     const selectedIndex = getSelectedIndex( children );
+
     scrollToSelected( selectedIndex );
   }, [children] );
 
@@ -250,12 +259,12 @@ Carousel.propTypes = {
   children: propTypes.array,
   legend: propTypes.bool,
   selectedItem: propTypes.string,
-  vertical: propTypes.bool
+  vertical: propTypes.bool,
 };
 
 Carousel.defaultProps = {
   legend: true,
-  vertical: false
+  vertical: false,
 };
 
 export default Carousel;

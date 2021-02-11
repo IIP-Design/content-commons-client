@@ -13,7 +13,9 @@ const SearchTerm = props => {
       <Header as="h1" className="searchTermQuery">
         { currentTerm && `${currentTerm}` }
         <Header.Subheader className="searchTermTotal">
-          { numberWithCommas( total ) } { total === 1 ? 'item' : 'items' }
+          { numberWithCommas( total ) }
+          { ' ' }
+          { total === 1 ? 'item' : 'items' }
         </Header.Subheader>
       </Header>
     </section>
@@ -21,11 +23,11 @@ const SearchTerm = props => {
 };
 
 const mapStateToProps = state => ( {
-  search: state.search
+  search: state.search,
 } );
 
 SearchTerm.propTypes = {
-  search: object
+  search: object,
 };
 
 export default connect( mapStateToProps )( SearchTerm );

@@ -14,7 +14,7 @@ import { withFormik } from 'formik';
 
 import { EditSingleProjectItemContext } from 'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 import {
-  getStreamData, getVimeoId, getYouTubeId
+  getStreamData, getVimeoId, getYouTubeId,
 } from 'lib/utils';
 import Loader from 'components/admin/ProjectEdit/EditVideoModal/Loader/Loader';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
@@ -24,7 +24,7 @@ import {
   VIDEO_FILE_QUERY,
   VIDEO_UNIT_TITLE_MUTATION,
   VIDEO_UNIT_DESC_MUTATION,
-  VIDEO_UNIT_REMOVE_TAG_MUTATION
+  VIDEO_UNIT_REMOVE_TAG_MUTATION,
 } from './UnitDataFormQueries';
 
 const UnitDataForm = ( {
@@ -43,9 +43,9 @@ const UnitDataForm = ( {
   const { loading, unit } = videoUnitQuery;
   const { file } = videoFileQuery;
   const {
-    setShowNotification, startTimeout
+    setShowNotification, startTimeout,
   } = useContext(
-    EditSingleProjectItemContext
+    EditSingleProjectItemContext,
   );
 
   if ( !unit || loading ) return <Loader height="340px" text="Loading the video data..." />;
@@ -53,6 +53,7 @@ const UnitDataForm = ( {
   const updateUnit = e => {
     const { name, value } = e.target;
     let mutation;
+
     if ( name === 'descPublic' ) {
       mutation = descPublicVideoUnitMutation;
     } else if ( name === 'title' ) {
@@ -62,19 +63,19 @@ const UnitDataForm = ( {
     mutation( {
       variables: {
         id: unitId,
-        [name]: value
+        [name]: value,
       },
       update: cache => {
         try {
           const cachedData = cache.readQuery( {
             query: VIDEO_UNIT_QUERY,
-            variables: { id: unitId }
+            variables: { id: unitId },
           } );
 
           cachedData.unit[name] = value;
           cache.writeQuery( {
             query: VIDEO_UNIT_QUERY,
-            data: { unit: cachedData.unit }
+            data: { unit: cachedData.unit },
           } );
         } catch ( error ) {
           console.log( error );
@@ -83,13 +84,14 @@ const UnitDataForm = ( {
         try {
           const cachedProjectData = cache.readQuery( {
             query: VIDEO_PROJECT_UNITS_QUERY,
-            variables: { id: projectId }
+            variables: { id: projectId },
           } );
 
           const newUnits = cachedProjectData.projectUnits.units.map( u => {
             if ( u.id === unitId ) {
               u[name] = value;
             }
+
             return u;
           } );
 
@@ -97,12 +99,12 @@ const UnitDataForm = ( {
 
           cache.writeQuery( {
             query: VIDEO_PROJECT_UNITS_QUERY,
-            data: { projectUnits: cachedProjectData.projectUnits }
+            data: { projectUnits: cachedProjectData.projectUnits },
           } );
         } catch ( error ) {
           console.log( error );
         }
-      }
+      },
     } );
 
     // Update projectUpdate Redux state
@@ -127,24 +129,24 @@ const UnitDataForm = ( {
         mutation( {
           variables: {
             id: unitId,
-            tagId: tag
+            tagId: tag,
           },
           update: cache => {
             try {
               const cachedData = cache.readQuery( {
                 query: VIDEO_UNIT_QUERY,
-                variables: { id: unitId }
+                variables: { id: unitId },
               } );
 
               cachedData.unit.tags = newTagsArr;
               cache.writeQuery( {
                 query: VIDEO_UNIT_QUERY,
-                data: { unit: cachedData.unit }
+                data: { unit: cachedData.unit },
               } );
             } catch ( error ) {
               console.log( error );
             }
-          }
+          },
         } )
       ) );
     };
@@ -174,6 +176,7 @@ const UnitDataForm = ( {
 
   let youTubeUrl = '';
   let vimeoUrl = '';
+
   if ( file && file.stream ) {
     youTubeUrl = getStreamData( file.stream, 'youtube', 'url' );
     vimeoUrl = getStreamData( file.stream, 'vimeo', 'url' );
@@ -181,6 +184,7 @@ const UnitDataForm = ( {
 
   let thumbnailUrl = '';
   let thumbnailAlt = '';
+
   if ( unit.thumbnails && unit.thumbnails.length ) {
     thumbnailUrl = unit.thumbnails[0].image.signedUrl;
     thumbnailAlt = unit.thumbnails[0].image.alt || '';
@@ -275,13 +279,13 @@ export default compose(
     name: 'videoFileQuery',
     options: props => ( {
       variables: { id: props.fileId },
-    } )
+    } ),
   } ),
   graphql( VIDEO_UNIT_QUERY, {
     name: 'videoUnitQuery',
     options: props => ( {
       variables: { unitId: props.unitId },
-    } )
+    } ),
   } ),
   withFormik( {
     mapPropsToValues: props => {
@@ -292,9 +296,9 @@ export default compose(
       return {
         descPublic: videoUnit.descPublic || '',
         tags,
-        title: videoUnit.title || ''
+        title: videoUnit.title || '',
       };
     },
-    enableReinitialize: true
-  } )
+    enableReinitialize: true,
+  } ),
 )( UnitDataForm );

@@ -66,11 +66,11 @@ const ProjectPage = props => {
 
   const { action: actionQry } = props.query;
 
-  return (
-    <Fragment>
-      { actionQry === 'edit' ? loadEditComponent() : loadReviewComponent() }
-    </Fragment>
-  );
+  if ( actionQry === 'edit' ) {
+    return loadEditComponent();
+  }
+
+  loadReviewComponent();
 };
 
 // Executes before page renders
@@ -90,7 +90,7 @@ ProjectPage.getInitialProps = async ( { query, res, apolloClient } ) => {
   await apolloClient
     .query( {
       query: getProjectQuery( query.content ),
-      variables: { id: query.id }
+      variables: { id: query.id },
     } )
     .catch( err => console.dir( err ) );
 
@@ -99,7 +99,7 @@ ProjectPage.getInitialProps = async ( { query, res, apolloClient } ) => {
 
 ProjectPage.propTypes = {
   query: PropTypes.object,
-  router: PropTypes.object
+  router: PropTypes.object,
 };
 
 export default withRouter( ProjectPage );

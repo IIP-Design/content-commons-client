@@ -26,7 +26,7 @@ const SelectRole = ( {
   isSubmitting,
   teamDetails,
   // showTeamDetails,
-  hideTeamDetails
+  hideTeamDetails,
 } ) => {
   const handleOnChange = ( e, { name, value, options } ) => {
     if ( name === 'permissions' && value !== 'TEAM_ADMIN' ) {
@@ -37,8 +37,10 @@ const SelectRole = ( {
     // the team changes, update the team id
     if ( name === 'team' ) {
       const selectedOption = options.filter( option => option.value === value );
+
       setFieldValue( 'teamId', selectedOption[0].key );
     }
+
     return formikHandleOnChange( name, value, setFieldValue );
   };
 
@@ -112,7 +114,8 @@ const SelectRole = ( {
           onClick={ handleSubmit }
           disabled={ isSubmitting }
           className="primary init"
-        >Next
+        >
+          Next
         </Button>
       </div>
 
@@ -128,7 +131,7 @@ SelectRole.propTypes = {
   isSubmitting: PropTypes.bool,
   // showTeamDetails: PropTypes.func,
   hideTeamDetails: PropTypes.func,
-  teamDetails: PropTypes.bool
+  teamDetails: PropTypes.bool,
 };
 
 // Set the initial form values with the state props
@@ -141,7 +144,7 @@ export default withFormik( {
     return {
       permissions: user.permissions,
       team: user.team.name,
-      teamId: user.team.id
+      teamId: user.team.id,
     };
   },
 
@@ -157,9 +160,9 @@ export default withFormik( {
         ...props.user.team,
         id: values.teamId,
         name: values.team,
-      }
+      },
     } );
     props.goNext();
-  }
+  },
 
 } )( SelectRole );

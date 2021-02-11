@@ -21,7 +21,7 @@ const TabTitle = ( { title, isActiveTab, handleOnClick } ) => (
 TabTitle.propTypes = {
   title: PropTypes.string,
   isActiveTab: PropTypes.bool,
-  handleOnClick: PropTypes.func
+  handleOnClick: PropTypes.func,
 };
 
 export default TabTitle;

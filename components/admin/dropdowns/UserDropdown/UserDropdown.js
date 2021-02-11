@@ -31,6 +31,7 @@ const UserDropdown = props => (
       if ( error ) return `Error! ${error.message}`;
 
       let options = [];
+
       if ( data && data.users ) {
         options = sortBy( data.users, user => user.lastName )
           .map( user => ( { key: user.id, text: `${user.lastName}, ${user.firstName}`, value: user.id } ) );
@@ -65,13 +66,13 @@ const UserDropdown = props => (
 );
 
 UserDropdown.defaultProps = {
-  id: ''
+  id: '',
 };
 
 
 UserDropdown.propTypes = {
   id: PropTypes.string,
-  label: PropTypes.string
+  label: PropTypes.string,
 };
 
 export default React.memo( UserDropdown, areEqual );

@@ -36,7 +36,7 @@ const Footer = () => {
     <footer className="ui">
       <div className="footer-feedback">
         <p>
-          Help us improve{ ' ' }
+          { 'Help us improve ' }
           <Link href="/">
             <a className="footer_link">Content Commons</a>
           </Link>
@@ -49,14 +49,17 @@ const Footer = () => {
           >
             Feedback
           </a>
+          { /**/ }
           !
         </p>
       </div>
       <Container text className="footer-content">
         <Header as="div">
           <Header.Subheader className="subtitle">
-            Join the conversation on{ ' ' }
-            <img src={ slackLogo } alt="Slack" className="footer_img footer_img--slack" />{ ' ' }
+            Join the conversation on
+            { ' ' }
+            <img src={ slackLogo } alt="Slack" className="footer_img footer_img--slack" />
+            { ' ' }
             #content-commons
           </Header.Subheader>
         </Header>
@@ -77,16 +80,25 @@ const Footer = () => {
         <Header as="div">
           <Header.Subheader className="subtext">
             Can&rsquo;t find what you are looking for? To ask questions or provide feedback send us
-            an email at <a href="mailto:gpadigitalhelp@state.gov">gpadigitalhelp@state.gov</a>.
+            an email at
+            { ' ' }
+            <a href="mailto:gpadigitalhelp@state.gov">gpadigitalhelp@state.gov</a>
+            { /**/ }
+            .
           </Header.Subheader>
           <Header.Subheader className="smalltext">
-            This site is managed by the{ ' ' }
+            { 'This site is managed by the ' }
             <a href="https://www.state.gov/bureaus-offices/under-secretary-for-public-diplomacy-and-public-affairs/bureau-of-global-public-affairs/">
               Bureau of Global Public Affairs
-            </a>{ ' ' }
-            within the <a href="https://state.gov">U.S. Department of State</a>. External links to
+            </a>
+            { ' within the ' }
+            <a href="https://state.gov">U.S. Department of State</a>
+            . External links to
             other Internet sites should not be construed as an endorsement of the views or privacy
-            policies contained therein. GPA &copy; { new Date().getFullYear() }.
+            policies contained therein. GPA &copy;
+            { ' ' }
+            { new Date().getFullYear() }
+            .
           </Header.Subheader>
         </Header>
         <img src={ flagImage } alt="United States Flag" className="footer_img footer_img--usflag" />

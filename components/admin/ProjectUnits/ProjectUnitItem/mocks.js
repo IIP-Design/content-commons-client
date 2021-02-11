@@ -8,19 +8,19 @@ export const filesToUpload = [
       name: 'Mexico City 1.mp4',
       lastModified: 1517162208000,
       size: 15829673,
-      type: 'video/mp4'
+      type: 'video/mp4',
     },
     id: '5c8a0402-6326-4361-a0df-bd334242bfb4',
-    loaded: 0
-  }
+    loaded: 0,
+  },
 ];
 
 export const preUploadUnit = {
   files: [...filesToUpload],
   language: {
     id: 'cjsq439dz005607560gwe7k3m',
-    displayName: 'English'
-  }
+    displayName: 'English',
+  },
 };
 
 export const postUploadUnit = {
@@ -42,7 +42,7 @@ export const postUploadUnit = {
       dimensions: {
         id: 'cjzy5mcsg1bf40720p9jxyixl',
         width: 1920,
-        height: 1080
+        height: 1080,
       },
       url: '2019/08/commons.america.gov_cjzy5lpzv1bef07207s354cbw/mexico_city_1.mp4',
       language: {
@@ -51,20 +51,20 @@ export const postUploadUnit = {
         languageCode: 'en',
         displayName: 'English',
         textDirection: 'LTR',
-        nativeName: 'English'
+        nativeName: 'English',
       },
       use: {
         id: 'cjsw78q6p00lp07566znbyatd',
-        name: 'Full Video'
+        name: 'Full Video',
       },
       stream: [
         {
           id: 'cjzy5mcsj1bf50720wxk4bdsf',
           site: 'vimeo',
-          url: 'https://vimeo.com/356893849'
-        }
-      ]
-    }
+          url: 'https://vimeo.com/356893849',
+        },
+      ],
+    },
   ],
   language: {
     id: 'cjsq439dz005607560gwe7k3m',
@@ -72,7 +72,7 @@ export const postUploadUnit = {
     languageCode: 'en',
     displayName: 'English',
     textDirection: 'LTR',
-    nativeName: 'English'
+    nativeName: 'English',
   },
   thumbnails: [
     {
@@ -90,7 +90,7 @@ export const postUploadUnit = {
         alt: null,
         use: {
           id: 'cjtkdq8kr0knf07569goo9eqe',
-          name: 'Thumbnail/Cover Image'
+          name: 'Thumbnail/Cover Image',
         },
         language: {
           id: 'cjsq439dz005607560gwe7k3m',
@@ -98,10 +98,10 @@ export const postUploadUnit = {
           languageCode: 'en',
           displayName: 'English',
           textDirection: 'LTR',
-          nativeName: 'English'
-        }
-      }
-    }
+          nativeName: 'English',
+        },
+      },
+    },
   ],
-  tags: []
+  tags: [],
 };

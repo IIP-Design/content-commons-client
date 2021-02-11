@@ -16,7 +16,7 @@ const CancelUpload = props => {
           className="secondary alternative"
           onClick={ () => setModalOpen( true ) }
         />
-  ) }
+      ) }
     >
       <Modal.Content>
         <h3>Are you sure you want to cancel uploading these files?</h3>
@@ -39,7 +39,7 @@ const CancelUpload = props => {
 };
 
 CancelUpload.propTypes = {
-  closeModal: PropTypes.func
+  closeModal: PropTypes.func,
 };
 
 export default CancelUpload;

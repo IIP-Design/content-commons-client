@@ -3,10 +3,10 @@ import Results from 'components/Results/Results/';
 import { fetchUser } from 'context/authContext';
 
 import {
-  updateLanguage, updateSort, updateSearchTerm, createRequest
+  updateLanguage, updateSort, updateSearchTerm, createRequest,
 } from 'lib/redux/actions/search';
 import {
-  postTypeUpdate, dateUpdate, categoryUpdate, countryUpdate, sourceUpdate
+  postTypeUpdate, dateUpdate, categoryUpdate, countryUpdate, sourceUpdate,
 } from 'lib/redux/actions/filter';
 import { loadPostTypes } from 'lib/redux/actions/postType';
 import { loadSources } from 'lib/redux/actions/source';
@@ -20,8 +20,8 @@ class ResultsPage extends Component {
   static async getInitialProps( ctx ) {
     const {
       query: {
-        language, term, sortBy, postTypes, date, categories, sources, countries
-      }, store
+        language, term, sortBy, postTypes, date, categories, sources, countries,
+      }, store,
     } = ctx;
 
     const user = await fetchUser( ctx );
@@ -56,7 +56,7 @@ class ResultsPage extends Component {
     const cats = store.dispatch( loadCategories() );
 
     const gqlCountries = ctx.apolloClient.query( {
-      query: COUNTRIES_REGIONS_QUERY
+      query: COUNTRIES_REGIONS_QUERY,
     } );
     const countrieses = store.dispatch( loadCountries( gqlCountries ) );
 

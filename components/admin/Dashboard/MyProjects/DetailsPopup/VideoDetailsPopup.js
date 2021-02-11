@@ -52,6 +52,7 @@ const getVideoFiles = units => (
   units.reduce( ( acc, unit ) => {
     if ( !unit.files ) return;
     const validFiles = getValidFiles( unit.files );
+
     return [...acc, ...validFiles];
   }, [] )
 );
@@ -66,7 +67,7 @@ const VideoDetailsPopup = props => (
 
         const {
           units,
-          supportFiles
+          supportFiles,
         } = data.videoProject;
 
         const videoFiles = getVideoFiles( units );
@@ -77,22 +78,42 @@ const VideoDetailsPopup = props => (
               <ul>
                 { videoFiles && videoFiles.map( vidFile => {
                   if ( !vidFile || getCount( vidFile ) === 0 ) return null;
+
                   return (
                     <li key={ vidFile.id }>
-                      { vidFile.use && vidFile.use.name } | <a href={ getS3Url( vidFile.url ) }>{ vidFile.quality }</a> | <a href={ getS3Url( vidFile.url ) }>{ vidFile.language && vidFile.language.displayName } ({ formatBytes( vidFile.filesize ) })</a>
+                      { vidFile.use && vidFile.use.name }
+                      { ' ' }
+                      |
+                      <a href={ getS3Url( vidFile.url ) }>{ vidFile.quality }</a>
+                      { ' ' }
+                      |
+                      <a href={ getS3Url( vidFile.url ) }>
+                        { vidFile.language && vidFile.language.displayName }
+                        { ' ' }
+                        (
+                        { formatBytes( vidFile.filesize ) }
+                        )
+                      </a>
                     </li>
                   );
                 } ) }
                 { supportFiles && supportFiles.map( sprtFile => {
                   if ( !sprtFile || getCount( sprtFile ) === 0 ) return null;
+
                   return (
-                    <li key={ sprtFile.id }>SRT | <a href={ getS3Url( sprtFile.url ) }>{ sprtFile.language && sprtFile.language.displayName }</a> | <a href={ getS3Url( sprtFile.url ) }>{ formatBytes( sprtFile.filesize ) }</a></li>
+                    <li key={ sprtFile.id }>
+                      { 'SRT | ' }
+                      <a href={ getS3Url( sprtFile.url ) }>{ sprtFile.language && sprtFile.language.displayName }</a>
+                      { ' |' }
+                      <a href={ getS3Url( sprtFile.url ) }>{ formatBytes( sprtFile.filesize ) }</a>
+                    </li>
                   );
                 } ) }
               </ul>
             </div>
           );
         }
+
         return <p>There are no supporting video files.</p>;
       }
     }
@@ -100,7 +121,7 @@ const VideoDetailsPopup = props => (
 );
 
 VideoDetailsPopup.propTypes = {
-  id: PropTypes.string
+  id: PropTypes.string,
 };
 
 export default VideoDetailsPopup;

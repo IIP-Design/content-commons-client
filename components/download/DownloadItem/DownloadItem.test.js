@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import DownloadItem from './DownloadItem';
 
 const props = {
-  instructions: 'Here are the download item instructions.'
+  instructions: 'Here are the download item instructions.',
 };
 
 const Component

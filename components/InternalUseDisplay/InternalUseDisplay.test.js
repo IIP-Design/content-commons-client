@@ -6,8 +6,8 @@ const props = {
   // expanded: false,
   style: {
     margin: '1em 1em 0 1em',
-    width: 'fit-content'
-  }
+    width: 'fit-content',
+  },
 };
 
 const Component = <InternalUseDisplay { ...props } />;
@@ -15,6 +15,7 @@ const Component = <InternalUseDisplay { ...props } />;
 describe( '<InternalUseDisplay />', () => {
   it( 'renders without crashing', () => {
     const wrapper = mount( Component );
+
     expect( wrapper.exists() ).toEqual( true );
   } );
 
@@ -31,6 +32,7 @@ describe( '<InternalUseDisplay />', () => {
 
   it( 'renders the expanded paragraph and message', () => {
     const wrapper = mount( Component );
+
     wrapper.setProps( { expanded: true } );
 
     const paragraph = wrapper.find( 'p' );

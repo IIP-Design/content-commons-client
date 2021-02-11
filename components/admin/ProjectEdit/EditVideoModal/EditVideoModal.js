@@ -14,9 +14,9 @@ import './EditVideoModal.scss';
 
 const EditVideoModal = () => {
   const {
-    language, selectedFile, selectedProject, selectedUnit, showNotication
+    language, selectedFile, selectedProject, selectedUnit, showNotication,
   } = useContext(
-    EditSingleProjectItemContext
+    EditSingleProjectItemContext,
   );
 
   return (
@@ -26,7 +26,7 @@ const EditVideoModal = () => {
           position: 'absolute',
           top: '2em',
           left: '50%',
-          transform: 'translateX(-50%)'
+          transform: 'translateX(-50%)',
         } }
         el="p"
         icon

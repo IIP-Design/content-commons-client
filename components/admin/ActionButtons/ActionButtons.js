@@ -40,7 +40,7 @@ const ActionButtons = ( {
                 headline={ `Are you sure you want to delete this ${contentType}?` }
               >
                 <p>
-                  {`This ${contentType} will be removed permanently from the Content Cloud. Any files uploaded in this ${contentType} will also be removed permanently.`}
+                  { `This ${contentType} will be removed permanently from the Content Cloud. Any files uploaded in this ${contentType} will also be removed permanently.` }
                 </p>
               </ConfirmModalContent>
             ) }

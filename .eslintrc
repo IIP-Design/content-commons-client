@@ -2,6 +2,33 @@
   "extends": ["@gpa-lab/eslint-config", "@gpa-lab/eslint-config/react"],
   "ignorePatterns": [".next/", "coverage/", "node_modules/"],
   "parser": "babel-eslint",
+  "rules": {
+    "jest/no-conditional-expect": "off",
+    "jest/no-done-callback": "off",
+    "jest/no-mocks-import": "off",
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "assert": "both",
+        "controlComponents": ["Select"],
+        "depth": 3
+      }
+    ],
+    "node/no-unpublished-import": [
+      "error",
+      {
+        "allowModules": [
+          "@apollo/react-testing",
+          "@testing-library/cypress",
+          "@testing-library/react",
+          "enzyme-to-json",
+          "prop-types",
+          "redux-mock-store",
+          "waait"
+        ]
+      }
+    ]
+  },
   "settings": {
     "import/resolver": {
       "babel-module": {

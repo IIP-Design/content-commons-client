@@ -26,7 +26,7 @@ class NotificationsMenu extends Component {
 }
 
 NotificationsMenu.propTypes = {
-  closePopup: PropTypes.func
+  closePopup: PropTypes.func,
 };
 
 export default NotificationsMenu;

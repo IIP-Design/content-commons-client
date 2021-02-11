@@ -38,17 +38,17 @@ const UploadProgress = ( {
 
   return (
     <div className={ `upload-progress-status ${className}` }>
-      {!projectId && !initialized && !isUploading && <FormInstructions />}
-      {complete && !isUploading && <UploadSuccessMsg />}
+      { !projectId && !initialized && !isUploading && <FormInstructions /> }
+      { complete && !isUploading && <UploadSuccessMsg /> }
 
-      {isUploading && (
+      { isUploading && (
         <FileUploadProgressBar
           filesToUpload={ filesToUpload }
           label="Please keep this page open until upload is complete"
           fileProgressMessage
           onComplete={ onUploadComplete }
         />
-      )}
+      ) }
     </div>
   );
 };

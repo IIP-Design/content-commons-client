@@ -389,18 +389,21 @@ exports[`<VideoDetailsPopup /> renders the final state 1`] = `
           key="f281"
         >
           Full Video
-           | 
+           
+          |
           <a
             href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/video-1.mp4"
           >
             BROADCAST
           </a>
-           | 
+           
+          |
           <a
             href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/video-1.mp4"
           >
             English
-             (
+             
+            (
             6.13  MB
             )
           </a>
@@ -409,18 +412,21 @@ exports[`<VideoDetailsPopup /> renders the final state 1`] = `
           key="f294"
         >
           Full Video
-           | 
+           
+          |
           <a
             href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/video-2.mp4"
           >
             BROADCAST
           </a>
-           | 
+           
+          |
           <a
             href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/video-2.mp4"
           >
             French
-             (
+             
+            (
             6.13  MB
             )
           </a>
@@ -434,7 +440,7 @@ exports[`<VideoDetailsPopup /> renders the final state 1`] = `
           >
             English
           </a>
-           | 
+           |
           <a
             href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/srt-1.srt"
           >
@@ -450,7 +456,7 @@ exports[`<VideoDetailsPopup /> renders the final state 1`] = `
           >
             French
           </a>
-           | 
+           |
           <a
             href="https://s3-bucket-url.s3.amazonaws.com/2019/06/123/srt-2.srt"
           >

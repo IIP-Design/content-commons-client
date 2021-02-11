@@ -9,9 +9,11 @@ const ShareProjectItem = props => {
   const { id } = props;
 
   const [projectReviewURL, setProjectReviewURL] = useState( '' );
+
   useEffect( () => {
     const { protocol, host } = window.location;
     const link = `${protocol}//${host}/admin/project/video/${id}/review`;
+
     setProjectReviewURL( link );
   } );
 
@@ -32,6 +34,7 @@ const ShareProjectItem = props => {
     window.addEventListener( 'resize', handleResize );
 
     const itemsTable = document.querySelector( '.items_table' );
+
     itemsTable.addEventListener( 'scroll', handleTableScroll );
   };
 
@@ -40,6 +43,7 @@ const ShareProjectItem = props => {
     window.removeEventListener( 'resize', handleResize );
 
     const itemsTable = document.querySelector( '.items_table' );
+
     itemsTable.removeEventListener( 'scroll', handleTableScroll );
   };
 
@@ -68,7 +72,7 @@ const ShareProjectItem = props => {
 };
 
 ShareProjectItem.propTypes = {
-  id: PropTypes.string
+  id: PropTypes.string,
 };
 
 export default ShareProjectItem;

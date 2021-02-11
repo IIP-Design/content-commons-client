@@ -52,13 +52,14 @@ const getVideoFiles = units => (
   units.reduce( ( acc, unit ) => {
     if ( !unit.files ) return;
     const validFiles = getValidFiles( unit.files );
+
     return [...acc, ...validFiles];
   }, [] )
 );
 
 const VideoDetailsPopup = props => {
   const { loading, error, data } = useQuery( VIDEO_PROJECT_FILES_QUERY, {
-    variables: { id: props.id }
+    variables: { id: props.id },
   } );
 
   if ( loading ) return <p>Loading....</p>;
@@ -67,7 +68,7 @@ const VideoDetailsPopup = props => {
 
   const {
     units,
-    supportFiles
+    supportFiles,
   } = data.videoProject;
 
   const videoFiles = getVideoFiles( units );
@@ -78,27 +79,46 @@ const VideoDetailsPopup = props => {
         <ul>
           { videoFiles && videoFiles.map( vidFile => {
             if ( !vidFile || getCount( vidFile ) === 0 ) return null;
+
             return (
               <li key={ vidFile.id }>
-                { vidFile.use && vidFile.use.name } | { vidFile.quality } | { vidFile.language && vidFile.language.displayName } ({ formatBytes( vidFile.filesize ) })
+                { vidFile.use && vidFile.use.name }
+                { ' ' }
+                |
+                { vidFile.quality }
+                { ' ' }
+                |
+                { vidFile.language && vidFile.language.displayName }
+                { ' ' }
+                (
+                { formatBytes( vidFile.filesize ) }
+                )
               </li>
             );
           } ) }
           { supportFiles && supportFiles.map( sprtFile => {
             if ( !sprtFile || getCount( sprtFile ) === 0 ) return null;
+
             return (
-              <li key={ sprtFile.id }>SRT | { sprtFile.language && sprtFile.language.displayName } | { formatBytes( sprtFile.filesize ) }</li>
+              <li key={ sprtFile.id }>
+                SRT |
+                { sprtFile.language && sprtFile.language.displayName }
+                { ' ' }
+                |
+                { formatBytes( sprtFile.filesize ) }
+              </li>
             );
           } ) }
         </ul>
       </div>
     );
   }
+
   return <p>There are no supporting video files.</p>;
 };
 
 VideoDetailsPopup.propTypes = {
-  id: PropTypes.string
+  id: PropTypes.string,
 };
 
 export default VideoDetailsPopup;

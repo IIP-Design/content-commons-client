@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button, Form, Grid, Input
+  Button, Form, Grid, Input,
 } from 'semantic-ui-react';
 
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
@@ -66,7 +66,7 @@ const TableSearch = ( { handleSearchSubmit } ) => {
 };
 
 TableSearch.propTypes = {
-  handleSearchSubmit: PropTypes.func
+  handleSearchSubmit: PropTypes.func,
 };
 
 export default TableSearch;

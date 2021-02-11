@@ -10,12 +10,12 @@ class PopupTabbed extends Component {
     this.state = {
       sliderStyle: {
         width: 0,
-        left: 0
+        left: 0,
       },
       panes: this.props.panes.map( pane => ( {
         menuItem: pane.title,
-        render: () => <Tab.Pane attached={ false }>{ pane.component }</Tab.Pane>
-      } ) )
+        render: () => <Tab.Pane attached={ false }>{ pane.component }</Tab.Pane>,
+      } ) ),
     };
   }
 
@@ -27,8 +27,8 @@ class PopupTabbed extends Component {
     this.setState( {
       sliderStyle: {
         width: e.target.clientWidth,
-        left: e.target.offsetLeft
-      }
+        left: e.target.offsetLeft,
+      },
     } );
   };
 
@@ -39,8 +39,8 @@ class PopupTabbed extends Component {
     this.setState( {
       sliderStyle: {
         width: initActiveMenuItem.clientWidth,
-        left: initActiveMenuItem.offsetLeft
-      }
+        left: initActiveMenuItem.offsetLeft,
+      },
     } );
   }
 
@@ -57,7 +57,7 @@ class PopupTabbed extends Component {
 
 PopupTabbed.propTypes = {
   panes: PropTypes.array,
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 
 export default PopupTabbed;

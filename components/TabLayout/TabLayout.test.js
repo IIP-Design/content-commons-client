@@ -9,13 +9,13 @@ const props = {
     { title: 'Graphic Files', content: <div /> },
     { title: 'Editable Files', content: <div /> },
     { title: 'Other', content: <div /> },
-    { title: 'Help', content: <div /> }
-  ]
+    { title: 'Help', content: <div /> },
+  ],
 };
 
 jest.mock( 'react', () => ( {
   ...jest.requireActual( 'react' ),
-  useEffect: () => ( {} )
+  useEffect: () => ( {} ),
 } ) );
 
 describe( 'TabLayout', () => {

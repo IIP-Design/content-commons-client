@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { withFormik } from 'formik';
 import Link from 'next/link';
 import {
-  Form, List, Button
+  Form, List, Button,
 } from 'semantic-ui-react';
 import Error from 'components/errors/ApolloError';
 import { validationSchema } from './validationSchema';
@@ -30,7 +30,7 @@ const ReviewSubmit = ( {
   isSubmitting,
   goBack,
   user,
-  toggleConsentChecked
+  toggleConsentChecked,
 } ) => {
   // Permissions data has only the value stored, i.e. EDITOR, so pull in option to
   // fetch label for display
@@ -42,20 +42,60 @@ const ReviewSubmit = ( {
     <Form onSubmit={ handleSubmit }>
       <div style={ { marginBottom: '1rem' } }>Review and submit your information below to request a Content Commons account.</div>
       <List className="register_review">
-        <List.Item><span><strong>Name:</strong></span>{ ' ' } { user.firstName }{ ' ' }{ user.lastName }</List.Item>
-        <List.Item><span><strong>Email:</strong></span>{ ' ' }{ user.email }</List.Item>
-        <List.Item><span><strong>Role:</strong></span>{ ' ' }{ role.label }</List.Item>
-        <List.Item><span><strong>Team:</strong></span>{ ' ' }{ user.team.name }</List.Item>
-        <List.Item><span><strong>Job Title:</strong></span>{ ' ' }{ user.jobTitle }</List.Item>
-        <List.Item><span><strong>Country:</strong></span>{ ' ' }{ user.country }</List.Item>
-        <List.Item><span><strong>City:</strong></span>{ ' ' }{ user.city }</List.Item>
-        <List.Item><span><strong>How did you hear about the Content Commons? </strong></span>{ ' ' }{ user.howHeard }</List.Item>
+        <List.Item>
+          <span><strong>Name:</strong></span>
+          { ' ' }
+          { ' ' }
+          { user.firstName }
+          { ' ' }
+          { user.lastName }
+        </List.Item>
+        <List.Item>
+          <span><strong>Email:</strong></span>
+          { ' ' }
+          { user.email }
+        </List.Item>
+        <List.Item>
+          <span><strong>Role:</strong></span>
+          { ' ' }
+          { role.label }
+        </List.Item>
+        <List.Item>
+          <span><strong>Team:</strong></span>
+          { ' ' }
+          { user.team.name }
+        </List.Item>
+        <List.Item>
+          <span><strong>Job Title:</strong></span>
+          { ' ' }
+          { user.jobTitle }
+        </List.Item>
+        <List.Item>
+          <span><strong>Country:</strong></span>
+          { ' ' }
+          { user.country }
+        </List.Item>
+        <List.Item>
+          <span><strong>City:</strong></span>
+          { ' ' }
+          { user.city }
+        </List.Item>
+        <List.Item>
+          <span><strong>How did you hear about the Content Commons? </strong></span>
+          { ' ' }
+          { user.howHeard }
+        </List.Item>
       </List>
       <Form.Checkbox
         id="consent"
         name="consent"
         className="register_review-label"
-        label={ <label>I agree to the Content Commons <Link href="/about"><a target="_blank">Terms of Service</a></Link></label> }
+        label={ (
+          <label> { /* eslint-disable-line */}
+            I agree to the Content Commons
+            <Link href="/about"><a target="_blank">Terms of Service</a></Link>
+          </label>
+        ) }
         checked={ consent }
         onChange={ e => {
           toggleConsentChecked();
@@ -72,14 +112,16 @@ const ReviewSubmit = ( {
             onClick={ goBack }
             disabled={ isSubmitting }
             className="secondary"
-          >Previous
+          >
+            Previous
           </Button>
           <Button
             type="submit"
             loading={ isSubmitting }
             disabled={ isSubmitting }
             className="primary"
-          >Submit
+          >
+            Submit
           </Button>
         </div>
       </div>
@@ -119,25 +161,25 @@ export default compose(
               city: user.city,
               howHeard: user.howHeard,
               permissions: {
-                set: [user.permissions]
+                set: [user.permissions],
               },
               team: {
                 connect: {
-                  id: user.team.id
-                }
-              }
-            }
-          }
+                  id: user.team.id,
+                },
+              },
+            },
+          },
         } );
 
         handleSignUpUserSuccess();
       } catch ( err ) {
         setErrors( {
-          submit: err
+          submit: err,
         } );
       }
 
       setSubmitting( false );
-    }
-  } )
+    },
+  } ),
 )( ReviewSubmit );

@@ -3,14 +3,14 @@ import { VIDEO_PROJECT_PREVIEW_THUMBNAILS_QUERY } from './DownloadThumbnail';
 export const props = {
   id: '123',
   instructions: 'Download Thumbnail(s)',
-  isPreview: false
+  isPreview: false,
 };
 
 export const mocks = [
   {
     request: {
       query: VIDEO_PROJECT_PREVIEW_THUMBNAILS_QUERY,
-      variables: { id: props.id }
+      variables: { id: props.id },
     },
     result: {
       data: {
@@ -22,38 +22,38 @@ export const mocks = [
               url: `2019/06/${props.id}/thumbnail-1.jpg`,
               language: {
                 id: 'en23',
-                displayName: 'English'
-              }
+                displayName: 'English',
+              },
             },
             {
               id: 'th865',
               url: `2019/06/${props.id}/thumbnail-2.jpg`,
               language: {
                 id: 'en23',
-                displayName: 'English'
-              }
-            }
-          ]
-        }
-      }
-    }
-  }
+                displayName: 'English',
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
 ];
 
 export const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }]
-    }
-  }
+      errors: [{ message: 'There was an error.' }],
+    },
+  },
 ];
 
 export const nullProjectMocks = [
   {
     ...mocks[0],
-    result: { data: { project: null } }
-  }
+    result: { data: { project: null } },
+  },
 ];
 
 export const noFilesMocks = [
@@ -63,16 +63,16 @@ export const noFilesMocks = [
       data: {
         project: {
           ...mocks[0].result.data.project,
-          thumbnails: []
-        }
-      }
-    }
-  }
+          thumbnails: [],
+        },
+      },
+    },
+  },
 ];
 
 export const emptyProjectMocks = [
   {
     ...mocks[0],
-    result: { data: { project: {} } }
-  }
+    result: { data: { project: {} } },
+  },
 ];

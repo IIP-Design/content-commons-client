@@ -15,7 +15,7 @@ const displaySizeOptions = [
   { key: 25, value: 25, text: '25' },
   { key: 50, value: 50, text: '50' },
   { key: 75, value: 75, text: '75' },
-  { key: 100, value: 100, text: '100' }
+  { key: 100, value: 100, text: '100' },
 ];
 
 const TableItemsDisplay = ( {
@@ -25,7 +25,7 @@ const TableItemsDisplay = ( {
   handleChange,
   itemsPerPage,
   searchTerm,
-  skip
+  skip,
 } ) => {
   if ( loading && !count ) {
     return (
@@ -62,17 +62,19 @@ const TableItemsDisplay = ( {
           onChange={ ( e, { value } ) => handleChange( value ) }
         />
         { ' | ' }
-        { count > 0 ? (
-          <span>
-            {`${firstPageItem} - ${lastPageItem} of ${count}`}
-            { searchTerm && ` for "${searchTerm}"`}
-          </span>
-        ) : (
-          <span>
-            {`No ${searchTerm ? 'results' : 'projects'}` }
-            { searchTerm && ` for "${searchTerm}"` }
-          </span>
-        ) }
+        { count > 0
+          ? (
+            <span>
+              { `${firstPageItem} - ${lastPageItem} of ${count}` }
+              { searchTerm && ` for "${searchTerm}"` }
+            </span>
+          )
+          : (
+            <span>
+              { `No ${searchTerm ? 'results' : 'projects'}` }
+              { searchTerm && ` for "${searchTerm}"` }
+            </span>
+          ) }
       </span>
     </Grid.Column>
   );
@@ -85,7 +87,7 @@ TableItemsDisplay.propTypes = {
   itemsPerPage: PropTypes.number,
   loading: PropTypes.bool,
   searchTerm: PropTypes.string,
-  skip: PropTypes.number
+  skip: PropTypes.number,
 };
 
 export default TableItemsDisplay;

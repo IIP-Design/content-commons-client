@@ -7,14 +7,14 @@ const props = {
     {
       definition: 'xyz-file',
       displayName: 'File Name',
-      name: 'file-name'
+      name: 'file-name',
     },
     {
       definition: 'abc-file',
       displayName: 'Release Type',
-      name: 'release-type'
-    }
-  ]
+      name: 'release-type',
+    },
+  ],
 };
 
 const Component = <MetaTerms { ...props } />;
@@ -33,6 +33,7 @@ describe( '<MetaTerms />', () => {
 
     dt.forEach( ( el, i ) => {
       const { name } = props.terms[i];
+
       expect( el.prop( 'id' ) ).toEqual( `${name}-${unitId}` );
     } );
   } );
@@ -44,6 +45,7 @@ describe( '<MetaTerms />', () => {
 
     dd.forEach( ( el, i ) => {
       const { name } = props.terms[i];
+
       expect( el.prop( 'aria-labelledby' ) ).toEqual( `${name}-${unitId}` );
     } );
   } );
@@ -54,6 +56,7 @@ describe( '<MetaTerms />', () => {
 
     dt.forEach( ( el, i ) => {
       const { displayName } = props.terms[i];
+
       expect( el.text() ).toEqual( displayName );
     } );
   } );
@@ -64,6 +67,7 @@ describe( '<MetaTerms />', () => {
 
     dd.forEach( ( el, i ) => {
       const { definition } = props.terms[i];
+
       expect( el.text() ).toEqual( definition );
     } );
   } );

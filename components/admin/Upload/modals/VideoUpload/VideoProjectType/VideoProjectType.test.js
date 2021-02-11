@@ -3,7 +3,7 @@ import VideoProjectType from './VideoProjectType';
 
 jest.mock(
   'components/ButtonAddFiles/ButtonAddFiles',
-  () => function ButtonAddFiles() { return 'Add Files'; }
+  () => function ButtonAddFiles() { return 'Add Files'; },
 );
 
 const props = {
@@ -11,7 +11,7 @@ const props = {
   addAssetFiles: jest.fn(),
   updateModalClassname: jest.fn(),
   goNext: jest.fn(),
-  accept: 'mp4'
+  accept: 'mp4',
 };
 
 const Component = <VideoProjectType { ...props } />;

@@ -140,7 +140,7 @@ const GraphicProject = ( {
           instructions={ `Download the graphic files in ${selectedUnitLanguage.display_name}. This download option is best for uploading this graphic to web pages and social media.` }
         >
           { !selectedUnitImages.length
-            && <p className="download-item__noContent">There are no graphic files available for download at this time.</p>}
+            && <p className="download-item__noContent">There are no graphic files available for download at this time.</p> }
           { selectedUnitImages.map(
             img => <GraphicFiles key={ img.url } file={ img } isAdminPreview={ isAdminPreview } />,
           ) }
@@ -162,7 +162,7 @@ const GraphicProject = ( {
           ) }
         >
           { !selectedUnitSupportFiles.length
-            && <p className="download-item__noContent">There are no editable files available for download at this time.</p>}
+            && <p className="download-item__noContent">There are no editable files available for download at this time.</p> }
           { selectedUnitSupportFiles.map(
             file => <GenericFiles key={ file.url } file={ file } isAdminPreview={ isAdminPreview } />,
           ) }
@@ -181,7 +181,7 @@ const GraphicProject = ( {
           ) }
         >
           { !selectedUnitOtherFiles.length
-            && <p className="download-item__noContent">There are no other files available for download at this time.</p>}
+            && <p className="download-item__noContent">There are no other files available for download at this time.</p> }
           { selectedUnitOtherFiles.map(
             file => <GenericFiles key={ file.url } file={ file } isAdminPreview={ isAdminPreview } />,
           ) }
@@ -215,14 +215,14 @@ const GraphicProject = ( {
       lang={ selectedUnitLanguage.language_code }
       textDirection={ selectedUnitLanguage.text_direction }
     >
-      {isAdminPreview && (
+      { isAdminPreview && (
         <Notification
           el="p"
           show
           customStyles={ getPreviewNotificationStyles() }
           msg="This is a preview of your graphics project on Content Commons."
         />
-      )}
+      ) }
       <div className="modal_options">
         <div className="modal_options_left">
           <ModalLangDropdown
@@ -232,7 +232,7 @@ const GraphicProject = ( {
           />
         </div>
 
-        {visibility === 'INTERNAL' && <InternalUseDisplay style={ { marginLeft: 'auto' } } />}
+        { visibility === 'INTERNAL' && <InternalUseDisplay style={ { marginLeft: 'auto' } } /> }
 
         <div className="trigger-container">
           <Popover
@@ -276,8 +276,8 @@ const GraphicProject = ( {
         </div>
       </div>
 
-      {selectedUnit?.url
-        && <ModalImage thumbnail={ selectedUnitURL } thumbnailMeta={ { alt: getAlt() } } />}
+      { selectedUnit?.url
+        && <ModalImage thumbnail={ selectedUnitURL } thumbnailMeta={ { alt: getAlt() } } /> }
 
       <ModalContentMeta
         type={ `${projectType.toLowerCase().replace( '_', ' ' )} graphic` }
@@ -286,16 +286,16 @@ const GraphicProject = ( {
 
       <ModalDescription description={ desc } />
 
-      {user && user.id !== 'public' && descInternal && (
+      { user && user.id !== 'public' && descInternal && (
         <section className="graphic-project__content internal-desc">
           <h2 className="graphic-project__content__title">Internal Description:</h2>
-          <p>{descInternal}</p>
+          <p>{ descInternal }</p>
         </section>
-      )}
+      ) }
 
       <section className="graphic-project__content alt">
         <h2 className="graphic-project__content__title">Alt (Alternative) Text:</h2>
-        <p>{getAlt()}</p>
+        <p>{ getAlt() }</p>
       </section>
 
       <ModalPostMeta

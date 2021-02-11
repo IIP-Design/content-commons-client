@@ -11,17 +11,18 @@ import { withRouter, Router } from 'next/router';
 class NavigationPrompt extends React.PureComponent {
   state = {
     nextLocation: null,
-    displayPrompt: false
+    displayPrompt: false,
   }
 
   componentDidMount = () => {
     this.unblock = this.props.history.block( nextLocation => {
       if ( this.props.when ) {
-        this.setState( {
+        this.setState( { // eslint-disable-line react/no-did-mount-set-state
           displayPrompt: true,
-          nextLocation
+          nextLocation,
         } );
       }
+
       return !this.props.when;
     } );
   }
@@ -33,7 +34,7 @@ class NavigationPrompt extends React.PureComponent {
   onCancel = () => {
     this.setState( {
       nextLocation: null,
-      displayPrompt: false
+      displayPrompt: false,
     } );
   }
 
@@ -56,7 +57,7 @@ class NavigationPrompt extends React.PureComponent {
 NavigationPrompt.propTypes = {
   when: bool.isRequired,
   children: func.isRequired,
-  history: object
+  history: object,
 };
 
 export default withRouter( NavigationPrompt );

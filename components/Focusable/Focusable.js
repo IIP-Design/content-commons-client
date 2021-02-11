@@ -18,11 +18,11 @@ const Focusable = props => (
 
 Focusable.propTypes = {
   children: node,
-  order: number
+  order: number,
 };
 
 Focusable.defaultProps = {
-  order: 0
+  order: 0,
 };
 
 export default Focusable;

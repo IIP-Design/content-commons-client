@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/react-testing';
 import TableActionsMenu from './TableActionsMenu';
-// import { TEAM_VIDEO_PROJECTS_QUERY } from '../TableBody/TableBody';
+import { TEAM_VIDEO_PROJECTS_QUERY } from 'lib/graphql/queries/video';
 
 import { DashboardContext } from 'context/dashboardContext';
 
@@ -22,9 +22,9 @@ jest.mock( './DeleteIconButton/DeleteIconButton', () => 'delete-icon-button' );
 jest.mock( './DeleteProjects/DeleteProjects', () => 'delete-projects' );
 jest.mock( './UnpublishProjects/UnpublishProjects', () => 'unpublish-projects' );
 
-// const findProjectById = ( array, projectId ) => (
-//   array.find( n => n.id === projectId )
-// );
+const findProjectById = ( array, projectId ) => (
+  array.find( n => n.id === projectId )
+);
 
 jest.mock( 'react', () => ( {
   ...jest.requireActual( 'react' ),

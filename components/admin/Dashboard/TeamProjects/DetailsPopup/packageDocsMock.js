@@ -3,7 +3,7 @@ const props = { id: 'packageID123' };
 export const packageDocsMock = {
   request: {
     query: 'PACKAGE_QUERY',
-    variables: { id: props.id }
+    variables: { id: props.id },
   },
   result: {
     data: [
@@ -19,7 +19,7 @@ export const packageDocsMock = {
           languageCode: 'en',
           locale: 'en-us',
           nativeName: 'English',
-          textDirection: 'LTR'
+          textDirection: 'LTR',
         },
         filetype: '.docx',
         filename: 'Document_File_1.docx',
@@ -31,7 +31,7 @@ export const packageDocsMock = {
         use: {
           __typename: 'DocumentUse',
           id: 'ck2xf4e0a00gh07355ztwyj32',
-          name: 'Press Guidance'
+          name: 'Press Guidance',
         },
         categories: [
           {
@@ -44,11 +44,11 @@ export const packageDocsMock = {
                 name: 'about america',
                 language: {
                   id: 'en23',
-                  locale: 'en-us'
-                }
-              }
-            ]
-          }
+                  locale: 'en-us',
+                },
+              },
+            ],
+          },
         ],
         tags: [
           {
@@ -66,8 +66,8 @@ export const packageDocsMock = {
                   languageCode: 'en',
                   locale: 'en-us',
                   nativeName: 'English',
-                  textDirection: 'LTR'
-                }
+                  textDirection: 'LTR',
+                },
               },
               {
                 __typename: 'LanguageTranslation',
@@ -80,11 +80,11 @@ export const packageDocsMock = {
                   languageCode: 'fr',
                   locale: 'fr-fr',
                   nativeName: 'French',
-                  textDirection: 'LTR'
-                }
-              }
-            ]
-          }
+                  textDirection: 'LTR',
+                },
+              },
+            ],
+          },
         ],
       },
       {
@@ -99,7 +99,7 @@ export const packageDocsMock = {
           languageCode: 'en',
           locale: 'en-us',
           nativeName: 'English',
-          textDirection: 'LTR'
+          textDirection: 'LTR',
         },
         filetype: '.docx',
         filename: 'Document_File_2.docx',
@@ -111,7 +111,7 @@ export const packageDocsMock = {
         use: {
           __typename: 'DocumentUse',
           id: 'ck2xf4e0a00gh07355ztwyj32',
-          name: 'Press Guidance'
+          name: 'Press Guidance',
         },
         categories: [],
         tags: [
@@ -130,13 +130,13 @@ export const packageDocsMock = {
                   languageCode: 'en',
                   locale: 'en-us',
                   nativeName: 'English',
-                  textDirection: 'LTR'
-                }
-              }
-            ]
-          }
+                  textDirection: 'LTR',
+                },
+              },
+            ],
+          },
         ],
-      }
-    ]
-  }
+      },
+    ],
+  },
 };

@@ -4,7 +4,7 @@ import './MediaObject.scss';
 
 const MediaObject = props => {
   const {
-    body, className, el: Element, img, style
+    body, className, el: Element, img, style,
   } = props;
 
   return (
@@ -28,9 +28,9 @@ MediaObject.defaultProps = {
     src: '',
     alt: '',
     className: '',
-    style: {}
+    style: {},
   },
-  style: {}
+  style: {},
 };
 
 MediaObject.propTypes = {
@@ -41,9 +41,9 @@ MediaObject.propTypes = {
     src: PropTypes.string,
     alt: PropTypes.string,
     className: PropTypes.string,
-    style: PropTypes.object
+    style: PropTypes.object,
   } ),
-  style: PropTypes.object
+  style: PropTypes.object,
 };
 
 export default MediaObject;

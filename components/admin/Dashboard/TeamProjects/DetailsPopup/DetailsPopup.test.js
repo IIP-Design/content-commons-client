@@ -3,7 +3,8 @@ import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import { act } from 'react-dom/test-utils';
 import { MockedProvider } from '@apollo/react-testing';
-import DetailsPopup, { CHECK_PROJECT_TYPE_QUERY } from './DetailsPopup';
+import DetailsPopup from './DetailsPopup';
+import { CHECK_PROJECT_TYPE_QUERY } from '../../MyProjects/DetailsPopup/DetailsPopup';
 
 /**
  * Use custom element for VideoDetailsPopup to avoid

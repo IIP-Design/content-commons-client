@@ -18,13 +18,17 @@ class UserProfileMenu extends Component {
       textAlign: 'left',
       fontSize: '16px',
       color: '#112e51',
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
     };
 
     return (
       <div className="nav_submenu">
         <div className="nav_submenu_header">
-          <p className="nav_submenu_header_item nav_submenu_header_item--title">Welcome { name }!</p>
+          <p className="nav_submenu_header_item nav_submenu_header_item--title">
+            Welcome
+            { name }
+            !
+          </p>
         </div>
         <section className="nav_submenu_section">
           { !isSubscriber && (
@@ -88,7 +92,7 @@ class UserProfileMenu extends Component {
 
 UserProfileMenu.propTypes = {
   closePopup: PropTypes.func,
-  user: PropTypes.object
+  user: PropTypes.object,
 };
 
 export default UserProfileMenu;

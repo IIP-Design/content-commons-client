@@ -11,7 +11,7 @@ const persistentTableHeaders = [
   { name: 'projectTitle', label: 'PROJECT TITLE' },
   { name: 'visibility', label: 'VISIBILITY' },
   { name: 'createdAt', label: 'CREATED' },
-  { name: 'team', label: 'TEAM' }
+  { name: 'team', label: 'TEAM' },
 ];
 
 const menuItems = [
@@ -30,7 +30,7 @@ const MyProjects = props => (
 );
 
 MyProjects.propTypes = {
-  user: PropTypes.object
+  user: PropTypes.object,
 };
 
 export default MyProjects;

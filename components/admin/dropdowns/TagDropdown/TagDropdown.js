@@ -40,13 +40,15 @@ const TagDropdown = props => (
           text: tag.translations.length
             ? titleCase( tag.translations[0].name )
             : '',
-          value: tag.id
+          value: tag.id,
         } ) )
           .sort( ( tagA, tagB ) => {
             const textA = tagA.text.toLowerCase();
             const textB = tagB.text.toLowerCase();
+
             if ( textA < textB ) return -1;
             if ( textA > textB ) return 1;
+
             return 0;
           } );
       }
@@ -79,13 +81,13 @@ const TagDropdown = props => (
 
 TagDropdown.defaultProps = {
   id: '',
-  locale: 'en-us'
+  locale: 'en-us',
 };
 
 TagDropdown.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
-  locale: PropTypes.string
+  locale: PropTypes.string,
 };
 
 export default React.memo( TagDropdown, areEqual );

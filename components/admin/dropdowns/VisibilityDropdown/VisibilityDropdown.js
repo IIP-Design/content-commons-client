@@ -34,7 +34,7 @@ const VisibilityDropdown = props => (
             return {
               key: enumValue.name,
               text,
-              value: enumValue.name
+              value: enumValue.name,
             };
           } );
       }
@@ -73,13 +73,13 @@ const VisibilityDropdown = props => (
 );
 
 VisibilityDropdown.defaultProps = {
-  id: ''
+  id: '',
 };
 
 VisibilityDropdown.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
-  hide: PropTypes.string
+  hide: PropTypes.string,
 };
 
 export default React.memo( VisibilityDropdown, areEqual );

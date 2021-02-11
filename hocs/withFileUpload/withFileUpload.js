@@ -6,7 +6,7 @@ import compose from 'lodash.flowright';
 import {
   SIGNED_S3_URL_PUT_MUTATION,
   SIGNED_S3_URL_GET_MUTATION,
-  FILE_INFO_MUTATION
+  FILE_INFO_MUTATION,
 } from 'lib/graphql/queries/util';
 
 const withFileUpload = WrappedComponent => {
@@ -15,7 +15,7 @@ const withFileUpload = WrappedComponent => {
     static propTypes = {
       getSignedS3UrlGet: PropTypes.func.isRequired,
       getSignedS3UrlPut: PropTypes.func.isRequired,
-      getFileInfo: PropTypes.func
+      getFileInfo: PropTypes.func,
     };
 
     /**
@@ -60,8 +60,9 @@ const withFileUpload = WrappedComponent => {
 
               if ( result ) {
                 const {
-                  duration, bitrate, width, height
+                  duration, bitrate, width, height,
                 } = result;
+
                 file.duration = duration;
                 file.bitrate = bitrate;
                 file.width = width;
@@ -76,7 +77,7 @@ const withFileUpload = WrappedComponent => {
           }
 
           return file;
-        } )
+        } ),
       );
     };
 
@@ -88,7 +89,7 @@ const withFileUpload = WrappedComponent => {
   return compose(
     graphql( SIGNED_S3_URL_PUT_MUTATION, { name: 'getSignedS3UrlPut' } ),
     graphql( SIGNED_S3_URL_GET_MUTATION, { name: 'getSignedS3UrlGet' } ),
-    graphql( FILE_INFO_MUTATION, { name: 'getFileInfo' } )
+    graphql( FILE_INFO_MUTATION, { name: 'getFileInfo' } ),
   )( _withFileUpload );
 };
 

@@ -85,7 +85,7 @@ const Recents = ( { postType, locale, user } ) => {
       <div className="recentswrapper">
         <div className="recentstitle">
           <Header as="h1" size="large">
-            {postTypeLabel && `Latest ${postTypeLabel}`}
+            { postTypeLabel && `Latest ${postTypeLabel}` }
           </Header>
           <Link
             href={ {
@@ -102,13 +102,13 @@ const Recents = ( { postType, locale, user } ) => {
         </div>
         <Grid columns="equal" stackable stretched>
           <Grid.Column width={ 8 } className="recentsgridleft">
-            {items && items[0] && (
+            { items && items[0] && (
               <Modal
                 closeIcon
                 trigger={ (
                   <SignedUrlImage className="recentsleft" url={ items[0].thumbnail }>
                     <div className="recentsoverlay">
-                      <div className="recentsoverlay_title">{items[0].title}</div>
+                      <div className="recentsoverlay_title">{ items[0].title }</div>
                       <img
                         src={ items[0].icon }
                         className="recentsoverlay_icon"
@@ -118,13 +118,13 @@ const Recents = ( { postType, locale, user } ) => {
                   </SignedUrlImage>
                 ) }
               >
-                <Modal.Content>{getModalContent( items[0] )}</Modal.Content>
+                <Modal.Content>{ getModalContent( items[0] ) }</Modal.Content>
               </Modal>
-            )}
+            ) }
           </Grid.Column>
           <Grid.Column width={ 8 } className="recentsgridright">
             <Item.Group>
-              {items
+              { items
                 && items.slice( 1 ).map( recent => (
                   <Modal
                     key={ v4() }
@@ -135,20 +135,20 @@ const Recents = ( { postType, locale, user } ) => {
                           <img src={ recent.icon } className="metaicon" alt={ `${postType} icon` } />
                         </SignedUrlImage>
                         <Item.Content>
-                          <Item.Header>{recent.title}</Item.Header>
+                          <Item.Header>{ recent.title }</Item.Header>
                           <div className="meta">
                             <span className="date">
-                              {moment( recent.published ).format( 'MMMM DD, YYYY' )}
+                              { moment( recent.published ).format( 'MMMM DD, YYYY' ) }
                             </span>
-                            <span className="categories">{getCategories( recent )}</span>
+                            <span className="categories">{ getCategories( recent ) }</span>
                           </div>
                         </Item.Content>
                       </Item>
                     ) }
                   >
-                    <Modal.Content>{getModalContent( recent )}</Modal.Content>
+                    <Modal.Content>{ getModalContent( recent ) }</Modal.Content>
                   </Modal>
-                ) )}
+                ) ) }
             </Item.Group>
           </Grid.Column>
         </Grid>

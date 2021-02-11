@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import ClipboardCopy from '../ClipboardCopy';
-import Embed from './index';
+import Embed from '.';
 
 const props = {
   instructions: 'the embed instructions',
@@ -9,7 +9,7 @@ const props = {
     <div key="2" className="some-child two">second child component</div>,
   ],
   embedItem: '<iframe src="https://the-source-url.com/99999" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>',
-  isPreview: false
+  isPreview: false,
 };
 
 const Component = <Embed { ...props } />;
@@ -47,9 +47,10 @@ describe( '<Embed />', () => {
 
   it( 'renders a disabled input element with placeholder text if isPreview', () => {
     const wrapper = mount( Component );
+
     wrapper.setProps( {
       isPreview: true,
-      embedItem: 'The video embed code will appear here.'
+      embedItem: 'The video embed code will appear here.',
     } );
     const input = wrapper.find( 'input[type="text"]' );
 
@@ -70,6 +71,7 @@ describe( '<Embed />', () => {
 
   it( 'renders a disabled copy Button if isPreview', () => {
     const wrapper = mount( Component );
+
     wrapper.setProps( { isPreview: true } );
     const copyBtn = wrapper.find( 'Button' );
 

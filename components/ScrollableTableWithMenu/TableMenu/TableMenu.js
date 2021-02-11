@@ -188,7 +188,7 @@ const TableMenu = ( { columnMenu, tableMenuOnChange } ) => {
               id="show-more-btn"
             >
               Show More
-              {' '}
+              { ' ' }
               <VisuallyHidden el="span">columns</VisuallyHidden>
               <Icon
                 data-tablemenu

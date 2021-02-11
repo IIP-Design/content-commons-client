@@ -3,7 +3,7 @@ import ContentHeightClamp from './ContentHeightClamp';
 
 const props = {
   children: <p>child node</p>,
-  className: 'excerpt'
+  className: 'excerpt',
 };
 
 describe( '<ContentHeightClamp />', () => {
@@ -24,7 +24,7 @@ describe( '<ContentHeightClamp />', () => {
       ...props,
       el: 'div',
       maxHeight: 144,
-      style: {}
+      style: {},
     } );
   } );
 
@@ -45,6 +45,7 @@ describe( '<ContentHeightClamp />', () => {
 
   it.skip( 'renders the correct className values if > props.maxHeight - TBD', () => {
     const div = wrapper.find( 'div' );
+
     // jsdom doesn't do rendering, so height will always be 0
     // div.getBoundingClientRect = jest.fn( () => ( { height: 200 } ) );
     // console.log( div.getBoundingClientRect() );

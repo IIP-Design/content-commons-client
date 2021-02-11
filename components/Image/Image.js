@@ -4,13 +4,14 @@ import './Image.scss';
 
 const Image = props => {
   const { item } = props;
+
   return (
     <section>{ item.title || 'Image Item' }</section>
   );
 };
 
 Image.propTypes = {
-  item: object
+  item: object,
 };
 
 export default Image;

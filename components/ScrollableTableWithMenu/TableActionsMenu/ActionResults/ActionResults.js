@@ -6,20 +6,21 @@ import ActionResultsItem from './ActionResultsItem/ActionResultsItem';
 
 const ActionResults = ( { failures } ) => {
   const isError = failures && failures.length > 0;
+
   return (
     <List>
       { !isError && (
         <ActionResultsItem />
       ) }
       { isError && failures.map( failure => (
-        <ActionResultsError { ...failure } key={ failure.project.id } />
+        <ActionResultsError key={ failure.project.id } { ...failure } />
       ) ) }
     </List>
   );
 };
 
 ActionResults.propTypes = {
-  failures: PropTypes.arrayOf( PropTypes.object )
+  failures: PropTypes.arrayOf( PropTypes.object ),
 };
 
 export default ActionResults;

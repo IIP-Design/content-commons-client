@@ -37,7 +37,7 @@ const validationSchema = Yup.object().shape( {
 } );
 
 class EmailRequest extends Component {
-  render () {
+  render() {
     const {
       errors,
       values,
@@ -46,7 +46,7 @@ class EmailRequest extends Component {
       isSubmitting,
       title,
       instructions,
-      button
+      button,
     } = this.props;
 
 
@@ -77,7 +77,8 @@ class EmailRequest extends Component {
             loading={ isSubmitting }
             disabled={ isSubmitting }
             className="primary"
-          >{ button }
+          >
+            { button }
           </Button>
         </Form>
       </div>
@@ -101,7 +102,7 @@ export default compose(
   graphql( REQUEST_ACCOUNT_ACTION_MUTATION ),
   withFormik( {
     mapPropsToValues: () => ( {
-      email: ''
+      email: '',
     } ),
 
     validationSchema,
@@ -117,18 +118,18 @@ export default compose(
             body: email.body,
             link: email.link,
             reply: email.reply,
-            page: email.page
-          }
+            page: email.page,
+          },
         } );
 
         // after sending reset request, redirect to login screen
         Router.push( '/login' );
       } catch ( err ) {
         setErrors( {
-          submit: err
+          submit: err,
         } );
       }
       setSubmitting( false );
-    }
-  } )
+    },
+  } ),
 )( EmailRequest );

@@ -21,7 +21,7 @@ const UPDATE_PASSWORD_MUTATION = gql`
 `;
 
 class ConfirmRegistration extends Component {
-  render () {
+  render() {
     const {
       errors,
       values,
@@ -72,7 +72,8 @@ class ConfirmRegistration extends Component {
             loading={ isSubmitting }
             disabled={ isSubmitting }
             className="primary"
-          >Confirm Registration
+          >
+            Confirm Registration
           </Button>
         </Form>
       </div>
@@ -85,7 +86,7 @@ ConfirmRegistration.propTypes = {
   errors: PropTypes.object,
   handleSubmit: PropTypes.func,
   handleChange: PropTypes.func,
-  isSubmitting: PropTypes.bool
+  isSubmitting: PropTypes.bool,
 };
 
 
@@ -94,7 +95,7 @@ export default compose(
   withFormik( {
     mapPropsToValues: () => ( {
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
     } ),
 
     validate: validate( getValidationSchema ),
@@ -107,19 +108,19 @@ export default compose(
           variables: {
             tempToken,
             password: values.password,
-            confirmPassword: values.confirmPassword
+            confirmPassword: values.confirmPassword,
           },
-          refetchQueries: [{ query: CURRENT_USER_QUERY }]
+          refetchQueries: [{ query: CURRENT_USER_QUERY }],
         } );
 
         // if confirmation is successful, send user to login screen
         Router.push( '/' );
       } catch ( err ) {
         setErrors( {
-          submit: err
+          submit: err,
         } );
       }
       setSubmitting( false );
-    }
-  } )
+    },
+  } ),
 )( ConfirmRegistration );

@@ -15,7 +15,7 @@ const ConfirmPage = props => {
 
 
 ConfirmPage.propTypes = {
-  query: PropTypes.object
+  query: PropTypes.object,
 };
 
 

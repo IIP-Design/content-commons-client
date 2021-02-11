@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import truncate from 'lodash/truncate';
 import {
-  Checkbox, Icon, Modal, Popup
+  Checkbox, Icon, Modal, Popup,
 } from 'semantic-ui-react';
 
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
@@ -62,7 +62,7 @@ const toggleDataActions = e => {
 const MyProjectPrimaryCol = ( {
   d,
   d: { id },
-  header
+  header,
 } ) => {
   const { dispatch, state } = useContext( DashboardContext );
 
@@ -71,7 +71,7 @@ const MyProjectPrimaryCol = ( {
   const isDraft = d.status === 'DRAFT';
   const isPublishing = d.status === 'PUBLISHING';
   const actions = [
-    'Edit', 'Preview', 'Files'
+    'Edit', 'Preview', 'Files',
   ];
   const Trigger = isPublishing ? 'span' : 'a';
   const Title = isPublishing ? 'span' : Link;
@@ -165,25 +165,27 @@ const MyProjectPrimaryCol = ( {
          * page transition animation, but err on side
          * of better accessibility.
          */ }
-        { projectTitleLength ? (
-          <Popup
-            trigger={ (
-              <Trigger href={ getEditUrl( 'pretty' ) } className={ getTitleCls() }>
-                <span aria-hidden>{ truncate( d[header.name], { length: 35 } ) }</span>
-                <VisuallyHidden el="span">{ d[header.name] }</VisuallyHidden>
-              </Trigger>
-            ) }
-            content={ d[header.name] }
-            hideOnScroll
-            inverted
-            on={ ['hover', 'focus'] }
-            size="mini"
-          />
-        ) : (
-          <Title as={ getEditUrl( 'pretty' ) } href={ getEditUrl( 'long' ) } prefetch={ false }>
-            <Trigger className={ getTitleCls() }>{ d[header.name] }</Trigger>
-          </Title>
-        ) }
+        { projectTitleLength
+          ? (
+            <Popup
+              trigger={ (
+                <Trigger href={ getEditUrl( 'pretty' ) } className={ getTitleCls() }>
+                  <span aria-hidden>{ truncate( d[header.name], { length: 35 } ) }</span>
+                  <VisuallyHidden el="span">{ d[header.name] }</VisuallyHidden>
+                </Trigger>
+              ) }
+              content={ d[header.name] }
+              hideOnScroll
+              inverted
+              on={ ['hover', 'focus'] }
+              size="mini"
+            />
+          )
+          : (
+            <Title as={ getEditUrl( 'pretty' ) } href={ getEditUrl( 'long' ) } prefetch={ false }>
+              <Trigger className={ getTitleCls() }>{ d[header.name] }</Trigger>
+            </Title>
+          ) }
         <div className="projects_data_actions">
           <div className="projects_data_actions_wrapper">
             { isPublishing
@@ -233,7 +235,7 @@ MyProjectPrimaryCol.propTypes = {
   d: PropTypes.object,
   header: PropTypes.object,
   selectedItems: PropTypes.instanceOf( Map ),
-  toggleItemSelection: PropTypes.func
+  toggleItemSelection: PropTypes.func,
 };
 
 export default MyProjectPrimaryCol;

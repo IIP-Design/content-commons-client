@@ -16,7 +16,7 @@ const UserDetails = ( {
   setFieldValue,
   isSubmitting,
   updateState,
-  goBack
+  goBack,
 } ) => {
   // Need to use this callback instead of the standard formik handleChange
   // to deal with selects, dropdowns, radio, checkbox groups
@@ -122,14 +122,16 @@ const UserDetails = ( {
           onClick={ handleBackClick }
           disabled={ isSubmitting }
           className="secondary"
-        >Previous
+        >
+          Previous
         </Button>
         <Button
           type="submit"
           onClick={ handleSubmit }
           disabled={ isSubmitting }
           className="primary"
-        >Next
+        >
+          Next
         </Button>
       </div>
     </Form>
@@ -144,7 +146,7 @@ UserDetails.propTypes = {
   setFieldValue: PropTypes.func,
   isSubmitting: PropTypes.bool,
   updateState: PropTypes.func,
-  goBack: PropTypes.func
+  goBack: PropTypes.func,
 };
 
 // Set the initial form values with the state props
@@ -161,7 +163,7 @@ export default withFormik( {
       jobTitle: user.jobTitle,
       country: user.country,
       city: user.city,
-      howHeard: user.howHeard
+      howHeard: user.howHeard,
     } );
   },
 
@@ -173,5 +175,5 @@ export default withFormik( {
     props.updateState( values );
     props.goNext();
     setSubmitting( false );
-  }
+  },
 } )( UserDetails );

@@ -37,20 +37,22 @@ const GlobalNav = () => {
 
   return (
     <nav>
-      { user && user.id !== 'public' ? (
-        <LoggedInNav
-          mobileMenuVisible={ mobileMenuVisible }
-          toggleMobileMenu={ toggleMobileMenu }
-          keyUp={ handleKeyUp }
-          user={ user }
-        />
-      ) : (
-        <LoggedOutNav
-          mobileMenuVisible={ mobileMenuVisible }
-          toggleMobileMenu={ toggleMobileMenu }
-          keyUp={ handleKeyUp }
-        />
-      ) }
+      { user && user.id !== 'public'
+        ? (
+          <LoggedInNav
+            mobileMenuVisible={ mobileMenuVisible }
+            toggleMobileMenu={ toggleMobileMenu }
+            keyUp={ handleKeyUp }
+            user={ user }
+          />
+        )
+        : (
+          <LoggedOutNav
+            mobileMenuVisible={ mobileMenuVisible }
+            toggleMobileMenu={ toggleMobileMenu }
+            keyUp={ handleKeyUp }
+          />
+        ) }
     </nav>
   );
 };

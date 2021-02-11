@@ -12,8 +12,9 @@ import Focusable from 'components/Focusable/Focusable';
 
 const IconPopup = props => {
   const {
-    message, iconSize, iconType, popupSize
+    message, iconSize, iconType, popupSize,
   } = props;
+
   return (
     <Popup
       trigger={ (
@@ -28,7 +29,7 @@ const IconPopup = props => {
       on={ [
         'hover',
         'click',
-        'focus'
+        'focus',
       ] }
       inverted
     />
@@ -39,7 +40,7 @@ IconPopup.propTypes = {
   message: string.isRequired,
   iconSize: string,
   iconType: string.isRequired,
-  popupSize: string
+  popupSize: string,
 };
 
 export default IconPopup;

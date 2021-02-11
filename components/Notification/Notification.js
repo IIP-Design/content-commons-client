@@ -6,27 +6,29 @@
 
 import React from 'react';
 import {
-  object, string, bool
+  object, string, bool,
 } from 'prop-types';
 import { Icon } from 'semantic-ui-react';
 
 const Notification = props => {
   const {
-    el, classes, msg, customStyles, icon
+    el, classes, msg, customStyles, icon,
   } = props;
   const El = el;
   const defaultStyle = {
     padding: '1em 1.5em',
     fontSize: '0.75em',
     backgroundColor: '#aee02d',
-    display: props.show ? 'block' : 'none'
+    display: props.show ? 'block' : 'none',
   };
 
   const style = { ...defaultStyle, ...customStyles };
 
   return (
     <El className={ classes } style={ style }>
-      <Icon loading name="spinner" style={ { display: icon ? 'inline-block' : 'none' } } /> { msg }
+      <Icon loading name="spinner" style={ { display: icon ? 'inline-block' : 'none' } } />
+      { ' ' }
+      { msg }
     </El>
   );
 };
@@ -41,7 +43,7 @@ Notification.propTypes = {
 };
 
 Notification.defaultProps = {
-  el: 'p'
+  el: 'p',
 };
 
 export default Notification;

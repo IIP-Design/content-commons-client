@@ -14,19 +14,16 @@ const ButtonPublish = props => {
 
   const setButtonState = btn => `action-btn btn--${btn} ${publishing ? 'loading' : ''}`;
 
+  if ( status === 'DRAFT' ) {
+    return <Button className={ setButtonState( 'publish' ) } onClick={ handlePublish } disabled={ disabled }>Publish</Button>;
+  }
+
   return (
     <Fragment>
-      { status === 'DRAFT'
-        ? <Button className={ setButtonState( 'publish' ) } onClick={ handlePublish } disabled={ disabled }>Publish</Button>
-        : (
-          <Fragment>
-            { ( ( status === 'PUBLISHED' || status === 'PUBLISHING' ) && updated )
-              && (
-                <Button className={ setButtonState( 'edit basic' ) } onClick={ handlePublish } disabled={ disabled }>Publish Changes</Button>
-              ) }
-            <Button className="action-btn btn--publish" onClick={ handleUnPublish } disabled={ disabled }>Unpublish</Button>
-          </Fragment>
-        ) }
+      { ( ( status === 'PUBLISHED' || status === 'PUBLISHING' ) && updated ) && (
+        <Button className={ setButtonState( 'edit basic' ) } onClick={ handlePublish } disabled={ disabled }>Publish Changes</Button>
+      ) }
+      <Button className="action-btn btn--publish" onClick={ handleUnPublish } disabled={ disabled }>Unpublish</Button>
     </Fragment>
   );
 };

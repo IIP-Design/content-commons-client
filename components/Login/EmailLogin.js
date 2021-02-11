@@ -27,7 +27,7 @@ class EmailLogin extends Component {
       values,
       isSubmitting,
       handleChange,
-      handleSubmit
+      handleSubmit,
     } = this.props;
 
     return (
@@ -60,19 +60,27 @@ class EmailLogin extends Component {
         <p className="error-message">{ errors.password }</p>
         <div className="login_email">
           <div className="login_email--account resend">
-            <p>{ 'Haven\'t received the confirmation email yet? ' }<Link href="/confirm"><a>Resend the email?</a></Link></p>
+            <p>
+              { 'Haven\'t received the confirmation email yet? ' }
+              <Link href="/confirm"><a>Resend the email?</a></Link>
+            </p>
           </div>
           <div className="login_email--button">
             <Button
               type="submit"
               disabled={ isSubmitting }
               loading={ isSubmitting }
-            >Log in
+            >
+              Log in
             </Button>
           </div>
           <div className="login_email--account">
             <Link href="/passwordreset"><a>Forgot your password?</a></Link>
-            <p>{ 'Don\'t have an account? ' } <Link href="/register"><a>Register</a></Link></p>
+            <p>
+              { 'Don\'t have an account? ' }
+              { ' ' }
+              <Link href="/register"><a>Register</a></Link>
+            </p>
           </div>
         </div>
       </Form>
@@ -85,7 +93,7 @@ EmailLogin.propTypes = {
   values: PropTypes.object,
   isSubmitting: PropTypes.bool,
   handleChange: PropTypes.func,
-  handleSubmit: PropTypes.func
+  handleSubmit: PropTypes.func,
 };
 
 export default compose(
@@ -93,7 +101,7 @@ export default compose(
   withFormik( {
     mapPropsToValues: () => ( {
       email: '',
-      password: ''
+      password: '',
     } ),
 
     validationSchema,
@@ -105,26 +113,26 @@ export default compose(
         await mutate( {
           variables: {
             password: values.password,
-            email: values.email
+            email: values.email,
           },
           refetchQueries: [
             {
               query: CURRENT_USER_QUERY,
               fetchPolicy: 'network-only',
-              ssr: false
-            }
-          ]
+              ssr: false,
+            },
+          ],
         } );
 
         // if confirmation is successful, send user to login screen
         Router.push( '/' );
       } catch ( err ) {
         setErrors( {
-          submit: err
+          submit: err,
         } );
       }
       setSubmitting( false );
-    }
+    },
 
-  } )
+  } ),
 )( EmailLogin );

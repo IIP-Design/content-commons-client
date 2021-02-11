@@ -34,7 +34,7 @@ const ResultsToggleView = props => {
 
 ResultsToggleView.propTypes = {
   toggle: func,
-  currentView: string
+  currentView: string,
 };
 
 export default ResultsToggleView;

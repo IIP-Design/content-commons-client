@@ -13,7 +13,7 @@ const props = {
   handleChange: jest.fn(),
   itemsPerPage: 5,
   searchTerm: '',
-  skip: 0
+  skip: 0,
 };
 
 const options = [
@@ -21,7 +21,7 @@ const options = [
   { key: 25, value: 25, text: '25' },
   { key: 50, value: 50, text: '50' },
   { key: 75, value: 75, text: '75' },
-  { key: 100, value: 100, text: '100' }
+  { key: 100, value: 100, text: '100' },
 ];
 
 describe( '<TableItemsDisplay />', () => {

@@ -7,40 +7,40 @@ const EditVideoFilesGrid = ( { files, update, removeFile, accept, step } ) => (
   <Grid>
     <Grid.Row>
       <Grid.Column width={ 6 }>Files Selected</Grid.Column>
-      {step === 1 && (
+      { step === 1 && (
         <Fragment>
           <Grid.Column width={ 4 }>
             Language
-            {' '}
+            { ' ' }
             <span className="required"> *</span>
           </Grid.Column>
           <Grid.Column width={ 4 }>
             On-Screen Text
-            {' '}
+            { ' ' }
             <span className="required"> *</span>
           </Grid.Column>
         </Fragment>
-      )}
+      ) }
 
-      {step === 2 && (
+      { step === 2 && (
         <Fragment>
           <Grid.Column width={ 4 }>
             Type/Use
-            {' '}
+            { ' ' }
             <span className="required"> *</span>
           </Grid.Column>
           <Grid.Column width={ 4 }>
             Quality
-            {' '}
+            { ' ' }
             <span className="required"> *</span>
           </Grid.Column>
         </Fragment>
-      )}
+      ) }
 
       <Grid.Column width={ 2 } />
     </Grid.Row>
 
-    {files.map( file => (
+    { files.map( file => (
       <EditVideoFileRow
         key={ file.id }
         file={ file }
@@ -49,7 +49,7 @@ const EditVideoFilesGrid = ( { files, update, removeFile, accept, step } ) => (
         accept={ accept }
         step={ step }
       />
-    ) )}
+    ) ) }
   </Grid>
 );
 

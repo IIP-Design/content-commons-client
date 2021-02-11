@@ -6,6 +6,7 @@ import './Embed.scss';
 const Embed = props => {
   const { children, instructions, isPreview } = props;
   const embedItem = props.embedItem ? props.embedItem : '';
+
   return (
     <div>
       <div className="form-group_instructions">{ instructions }</div>
@@ -23,7 +24,7 @@ Embed.propTypes = {
   instructions: PropTypes.string,
   children: PropTypes.array,
   embedItem: PropTypes.string,
-  isPreview: PropTypes.bool
+  isPreview: PropTypes.bool,
 };
 
 export default Embed;

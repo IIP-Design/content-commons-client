@@ -21,7 +21,7 @@ const PackageCard = ( { item, stretch } ) => {
     modified,
     owner,
     title,
-    documents
+    documents,
   } = item;
 
   const { response: fetchedDocs, error } = useAPIRequest( getElasticPkgDocs, [documents] );
@@ -68,7 +68,7 @@ const PackageCard = ( { item, stretch } ) => {
             img={ {
               src: DosSeal,
               alt: `${owner} Seal`,
-              style: { height: '16px', width: '16px' }
+              style: { height: '16px', width: '16px' },
             } }
           />
         </Card.Meta>
@@ -79,7 +79,7 @@ const PackageCard = ( { item, stretch } ) => {
 
 PackageCard.propTypes = {
   stretch: PropTypes.bool,
-  item: PropTypes.object
+  item: PropTypes.object,
 };
 
 export default PackageCard;

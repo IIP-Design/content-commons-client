@@ -17,7 +17,7 @@ const HamburgerIcon = ( { mobileMenuVisible, toggleMobileMenu } ) => (
 
 HamburgerIcon.propTypes = {
   mobileMenuVisible: PropTypes.bool,
-  toggleMobileMenu: PropTypes.func
+  toggleMobileMenu: PropTypes.func,
 };
 
 

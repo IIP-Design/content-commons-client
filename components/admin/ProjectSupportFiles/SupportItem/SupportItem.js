@@ -50,7 +50,7 @@ const SupportItem = props => {
     if ( mounted.current ) {
       setWidths( {
         listItem: ( listEl.current && listEl.current.offsetWidth ) || 0,
-        itemLang: ( languageEl.current && languageEl.current.offsetWidth ) || 0
+        itemLang: ( languageEl.current && languageEl.current.offsetWidth ) || 0,
       } );
     }
   };
@@ -218,9 +218,7 @@ const SupportItem = props => {
       <span className="item-name" style={ error ? { color: '#cd2026' } : {} }>
         { isLongFileName && <VisuallyHidden>{ filename }</VisuallyHidden> }
         <span
-          className={
-            `item-name-wrap${isLongFileName ? ' hasEllipsis' : ''}`
-          }
+          className={ `item-name-wrap${isLongFileName ? ' hasEllipsis' : ''}` }
           aria-hidden={ isLongFileName }
         >
           { error
@@ -242,9 +240,7 @@ const SupportItem = props => {
           )
           : (
             <b
-              className={
-                `item-lang-wrap${isLongLangName ? ' hasEllipsis' : ''}`
-              }
+              className={ `item-lang-wrap${isLongLangName ? ' hasEllipsis' : ''}` }
               ref={ languageEl }
             >
               { renderName( language.displayName, true ) }

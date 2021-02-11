@@ -142,7 +142,7 @@ const GraphicUpload = ( { files, closeModal } ) => {
   return (
     <div className={ styles.container }>
       <h1 style={ { fontSize: '1rem' } }>SOCIAL MEDIA GRAPHIC PROJECT</h1>
-      <p className={ styles.files }>{`Preparing ${state.files.length} files for upload...`}</p>
+      <p className={ styles.files }>{ `Preparing ${state.files.length} files for upload...` }</p>
 
       <EditFileGrid
         files={ state.files }

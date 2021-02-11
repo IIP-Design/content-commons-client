@@ -12,14 +12,14 @@ export const packagesMock = [
       items: [
         {
           id: 'es_doc_id1',
-          type: 'document'
+          type: 'document',
         },
         {
           id: 'es_doc_id2',
-          type: 'document'
-        }
-      ]
-    }
+          type: 'document',
+        },
+      ],
+    },
   },
   {
     _id: 'xmtc_mkBT73GdEj6qL2X',
@@ -34,14 +34,14 @@ export const packagesMock = [
       items: [
         {
           id: 'es_doc_id3',
-          type: 'document'
+          type: 'document',
         },
         {
           id: 'es_doc_id4',
-          type: 'document'
-        }
-      ]
-    }
+          type: 'document',
+        },
+      ],
+    },
   },
   {
     _id: 'xmtc_mkBT73GdEj6qL3X',
@@ -56,10 +56,10 @@ export const packagesMock = [
       items: [
         {
           id: 'es_doc_id5',
-          type: 'document'
+          type: 'document',
         },
-      ]
-    }
+      ],
+    },
   },
   {
     _id: 'xmtc_mkBT73GdEj6qL4X',
@@ -74,21 +74,21 @@ export const packagesMock = [
       items: [
         {
           id: 'es_doc_id7',
-          type: 'document'
+          type: 'document',
         },
         {
           id: 'es_doc_id8',
-          type: 'document'
+          type: 'document',
         },
         {
           id: 'es_doc_id9',
-          type: 'document'
+          type: 'document',
         },
         {
           id: 'es_doc_id10',
-          type: 'document'
-        }
-      ]
-    }
-  }
+          type: 'document',
+        },
+      ],
+    },
+  },
 ];

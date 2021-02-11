@@ -19,6 +19,7 @@ class Error extends React.Component {
     if ( statusCode && statusCode === 404 ) {
       if ( asPath.match( /\/$/ ) ) {
         const withoutTrailingSlash = asPath.substr( 0, asPath.length - 1 );
+
         redirectTo( withoutTrailingSlash, { res } );
       }
     }
@@ -30,6 +31,7 @@ class Error extends React.Component {
     if ( statusCode === 404 ) {
       return <NotFound404 />;
     }
+
     return <p>{ `An error ${statusCode} occurred on the server` }</p>;
   }
 
@@ -38,7 +40,7 @@ class Error extends React.Component {
   render() {
     const styleObj = {
       textAlign: 'center',
-      margin: '180px auto 120px auto'
+      margin: '180px auto 120px auto',
     };
 
     const { statusCode } = this.props;
@@ -56,7 +58,7 @@ class Error extends React.Component {
 }
 
 Error.propTypes = {
-  statusCode: PropTypes.number
+  statusCode: PropTypes.number,
 };
 
 export default withRouter( Error );

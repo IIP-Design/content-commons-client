@@ -14,7 +14,7 @@ describe( '<TableBodyMessage>', () => {
   it( 'renders error message if set to type error', () => {
     const messageProps = {
       error: { message: 'There was an error.' },
-      type: 'error'
+      type: 'error',
     };
 
     const wrapper = mount( createTable( messageProps ) );
@@ -44,7 +44,7 @@ describe( '<TableBodyMessage>', () => {
 
     const wrapper = mount( createTable( {
       searchTerm: term,
-      type: 'no-results'
+      type: 'no-results',
     } ) );
 
     expect( wrapper.contains( `No results for &ldquo;${term}&rdquo;` ) ).toEqual( true );

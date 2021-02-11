@@ -6,7 +6,7 @@ const props = {
   toolTip: 'Share Project',
   icon: { img: 'shareIcon.svg', dim: 18 },
   content: <div>content</div>,
-  show: true
+  show: true,
 };
 
 const Component = <PopupTrigger { ...props } />;
@@ -43,6 +43,7 @@ describe( '<PopupTrigger />', () => {
     expect( inst.state.isMobile ).toEqual( false );
 
     const windowOuterWidth = window.outerWidth;
+
     window.outerWidth = 500;
     inst.isMobile();
     expect( window.outerWidth ).toEqual( 500 );
@@ -67,6 +68,7 @@ describe( '<PopupTrigger />', () => {
 
   it( 'sets inline display value to none if !props.show', () => {
     const wrapper = mount( Component );
+
     wrapper.setProps( { show: false } );
     const span = wrapper.find( 'span' );
 

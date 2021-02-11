@@ -4,18 +4,20 @@ import { Grid } from 'semantic-ui-react';
 import EditPressOfficeFileRow from '../EditPressOfficeFileRow/EditPressOfficeFileRow';
 
 const EditPressOfficeFilesGrid = ( {
-  files, update, removeFile, accept
+  files, update, removeFile, accept,
 } ) => (
   <Grid>
     <Grid.Row>
       <Grid.Column width={ 6 }>Files Selected</Grid.Column>
       <Grid.Column width={ 4 }>
-        Release Type<span className="required"> *</span>
+        { 'Release Type ' }
+        <span className="required"> *</span>
       </Grid.Column>
       <Grid.Column width={ 5 }>
-        Lead Bureau(s)<span className="required"> *</span>
+        { 'Lead Bureau(s) ' }
+        <span className="required"> *</span>
       </Grid.Column>
-      <Grid.Column width={ 1 }></Grid.Column>
+      <Grid.Column width={ 1 } />
     </Grid.Row>
 
     { files.map( file => (
@@ -35,7 +37,7 @@ EditPressOfficeFilesGrid.propTypes = {
   files: PropTypes.array,
   update: PropTypes.func,
   removeFile: PropTypes.func,
-  accept: PropTypes.string
+  accept: PropTypes.string,
 };
 
 export default EditPressOfficeFilesGrid;

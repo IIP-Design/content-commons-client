@@ -10,13 +10,13 @@ const props = {
     className: 'yet-another-custom-className',
     style: {
       height: '30px',
-      width: '30px'
-    }
+      width: '30px',
+    },
   },
   style: {
     color: '#ffffff',
-    backgroundColor: '#112e51'
-  }
+    backgroundColor: '#112e51',
+  },
 };
 
 const Component = <MediaObject { ...props } />;
@@ -24,6 +24,7 @@ const Component = <MediaObject { ...props } />;
 describe( '<MediaObject />', () => {
   it( 'renders without crashing', () => {
     const wrapper = mount( Component );
+
     expect( wrapper.exists() ).toEqual( true );
   } );
 
@@ -46,7 +47,7 @@ describe( '<MediaObject />', () => {
       src: props.img.src,
       alt: props.img.alt,
       className: `media-figure ${props.img.className}`,
-      style: props.img.style
+      style: props.img.style,
     } );
   } );
 

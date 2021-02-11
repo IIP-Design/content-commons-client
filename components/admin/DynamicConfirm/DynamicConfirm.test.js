@@ -3,7 +3,7 @@ import DynamicConfirm from './DynamicConfirm';
 
 const props = {
   onCancel: jest.fn(),
-  onConfirm: jest.fn()
+  onConfirm: jest.fn(),
 };
 
 const Component = <DynamicConfirm { ...props } />;
@@ -25,6 +25,7 @@ describe( '<DynamicConfirm />', () => {
 
   it( 'calls onConfirm/onCancel when the Confirm/Cancel button is clicked', () => {
     const wrapper = mount( Component );
+
     // open the modal
     wrapper.setProps( { open: true } );
     wrapper.update();

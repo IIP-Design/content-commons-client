@@ -108,6 +108,9 @@
     "waait": "^1.0.5",
     "webpack-filter-warnings-plugin": "^1.2.1"
   },
+  "engines": {
+    "node": "10"
+  },
   "lint-staged": {
     "*.js": "eslint --fix"
   },

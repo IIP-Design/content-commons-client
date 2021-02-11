@@ -16,7 +16,7 @@ const FilterMenuCountries = props => {
 
   const client = useApolloClient();
   const { countries } = client.readQuery( {
-    query: COUNTRIES_REGIONS_QUERY
+    query: COUNTRIES_REGIONS_QUERY,
   } );
 
   if ( !countries || !getCount( countries ) ) return null;
@@ -29,9 +29,10 @@ const FilterMenuCountries = props => {
       if ( displayName.toLowerCase().includes( searchTerm ) ) {
         acc.push( {
           display_name: displayName,
-          key: country.name
+          key: country.name,
         } );
       }
+
       return acc;
     }, [] )
   );
@@ -51,6 +52,7 @@ const FilterMenuCountries = props => {
       searchInput={ (
         <div style={ { margin: 0, padding: '0.5em 1em' } }>
           <VisuallyHidden>
+            { /* eslint-disable-next-line jsx-a11y/label-has-associated-control */ }
             <label htmlFor="filter-countries">Search countries</label>
           </VisuallyHidden>
           <Form.Input
@@ -69,7 +71,7 @@ const FilterMenuCountries = props => {
 };
 
 FilterMenuCountries.propTypes = {
-  selected: PropTypes.array
+  selected: PropTypes.array,
 };
 
 export default FilterMenuCountries;

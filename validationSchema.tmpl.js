@@ -1,4 +1,3 @@
-
 import * as Yup from 'yup';
 
 // Used when we need access to the form values so that we can do
@@ -30,5 +29,5 @@ export const validationSchema = Yup.object().shape( {
     .required( 'E-mail is required!' ),
   password: Yup.string()
     .min( 6, 'Password has to be longer than 6 characters!' )
-    .required( 'Password is required!' )
+    .required( 'Password is required!' ),
 } );

@@ -4,7 +4,7 @@ import TabPanel from './TabPanel';
 
 const props = {
   title: 'Test title',
-  content: <div id="test">Test content</div>
+  content: <div id="test">Test content</div>,
 };
 
 describe( 'TabPanel', () => {

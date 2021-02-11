@@ -181,7 +181,7 @@ const FilterMenuItem = props => {
         tabIndex={ 0 }
       >
         { filter }
-        {' '}
+        { ' ' }
         <Icon name={ filterItemOpen ? 'chevron up' : 'chevron down' } />
       </span>
       <Form className={ `${filterItemOpen ? 'filterMenu_options show' : 'filterMenu_options'} ${className}` }>
@@ -190,10 +190,10 @@ const FilterMenuItem = props => {
 
         <Form.Group>
           { formatOptions( options, filter ).map(
-            option => (formItem === 'checkbox'
+            option => ( formItem === 'checkbox'
               ? renderCheckbox( option )
-              : renderRadio( option )),
-          )}
+              : renderRadio( option ) ),
+          ) }
 
           { options.length === 0
             && (

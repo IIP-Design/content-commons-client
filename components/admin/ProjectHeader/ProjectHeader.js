@@ -31,7 +31,7 @@ const ProjectHeader = props => {
 ProjectHeader.propTypes = {
   children: node,
   text: string,
-  icon: string
+  icon: string,
 };
 
 export default ProjectHeader;

@@ -15,7 +15,7 @@ const DeleteProjects = ( {
   handleDeleteCancel,
   handleDeleteConfirm,
   handleResetSelections,
-  selections
+  selections,
 } ) => {
   const { state } = useContext( DashboardContext );
 
@@ -57,13 +57,13 @@ const DeleteProjects = ( {
     const result = await deleteDashboardProject( { variables: { id: project.id } } ).catch( error => ( {
       error,
       project,
-      action: 'delete'
+      action: 'delete',
     } ) );
 
     handleActionResult( result );
   };
 
-  const handleDeleteProjects = async() => {
+  const handleDeleteProjects = async () => {
     await Promise.all( getDrafts().map( deleteProject ) );
     handleResetSelections();
     handleDeleteConfirm();
@@ -143,7 +143,7 @@ DeleteProjects.propTypes = {
   handleDeleteCancel: PropTypes.func,
   handleDeleteConfirm: PropTypes.func,
   handleResetSelections: PropTypes.func,
-  selections: PropTypes.array
+  selections: PropTypes.array,
 };
 
 export default DeleteProjects;

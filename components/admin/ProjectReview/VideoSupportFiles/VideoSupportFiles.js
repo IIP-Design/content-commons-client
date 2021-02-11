@@ -14,13 +14,14 @@ const VideoSupportFiles = props => {
 
   if ( loading ) {
     return (
-      <div style={ {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '200px'
-      } }
+      <div
+        style={ {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '200px',
+        } }
       >
         <Loader
           active
@@ -106,7 +107,7 @@ const VideoSupportFiles = props => {
 
 VideoSupportFiles.propTypes = {
   id: PropTypes.string, // eslint-disable-line
-  data: PropTypes.object
+  data: PropTypes.object,
 };
 
 const VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY = gql`
@@ -161,10 +162,10 @@ const VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY = gql`
 export default graphql( VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY, {
   options: props => ( {
     variables: {
-      id: props.id
+      id: props.id,
     },
-    fetchPolicy: 'no-cache'
-  } )
+    fetchPolicy: 'no-cache',
+  } ),
 } )( VideoSupportFiles );
 
 export { VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY };

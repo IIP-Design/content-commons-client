@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import PackageItem from './PackageItem';
 
 import { suppressActWarning } from 'lib/utils';
-import { normalizeDocumentItemByAPI } from '../utils.js';
+import { normalizeDocumentItemByAPI } from '../utils';
 
 jest.mock( 'components/Document/DocumentCard/DocumentCard', () => 'document-card' );
 jest.mock( 'next/config', () => () => ( {

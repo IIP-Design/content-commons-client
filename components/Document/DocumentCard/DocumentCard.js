@@ -43,13 +43,14 @@ const DocumentCard = props => {
 
   // disallow <script></script> tags
   const parseHtml = htmlParser( {
-    isValidNode: node => node.type !== 'script'
+    isValidNode: node => node.type !== 'script',
   } );
 
   const setLangAttr = () => {
     if ( language?.languageCode ) return language.languageCode;
     // eslint-disable-next-line
     if ( language?.language_code ) return language.language_code;
+
     return 'en';
   };
 
@@ -68,7 +69,7 @@ const DocumentCard = props => {
           img={ {
             src: iconDocument,
             alt: 'document icon',
-            style: { height: '30px', width: '30px' }
+            style: { height: '30px', width: '30px' },
           } }
         />
 
@@ -133,7 +134,7 @@ const DocumentCard = props => {
             className="seal"
             img={ {
               src: DosSeal,
-              alt: `${owner || 'U.S. Department of State'} seal`
+              alt: `${owner || 'U.S. Department of State'} seal`,
             } }
           />
         </Card.Meta>
@@ -145,7 +146,7 @@ const DocumentCard = props => {
 DocumentCard.propTypes = {
   isAdminPreview: PropTypes.bool,
   file: PropTypes.object,
-  handleClick: PropTypes.func
+  handleClick: PropTypes.func,
 };
 
 export default DocumentCard;

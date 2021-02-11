@@ -116,7 +116,7 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
   return (
     <section className="search_bar">
       <Form onSubmit={ handleSubmit }>
-        {isUser && pathname === '/' && (
+        { isUser && pathname === '/' && (
           <Form.Group inline>
             <div className="radio-flex">
               <Radio
@@ -135,7 +135,7 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
               />
             </div>
           </Form.Group>
-        )}
+        ) }
         <Input
           label={ (
             <Dropdown

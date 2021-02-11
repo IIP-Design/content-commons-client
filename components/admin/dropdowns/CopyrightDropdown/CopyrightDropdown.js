@@ -35,7 +35,7 @@ const CopyrightDropdown = props => (
           return {
             key: obj.name,
             text,
-            value: obj.name
+            value: obj.name,
           };
         } );
       }
@@ -68,12 +68,12 @@ const CopyrightDropdown = props => (
 );
 
 CopyrightDropdown.defaultProps = {
-  id: ''
+  id: '',
 };
 
 CopyrightDropdown.propTypes = {
   id: PropTypes.string,
-  label: PropTypes.string
+  label: PropTypes.string,
 };
 
 export default React.memo( CopyrightDropdown, areEqual );

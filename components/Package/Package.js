@@ -125,14 +125,14 @@ const Package = props => {
       headline={ title }
       textDirection="LTR" // use LTR since pkg have no lang field
     >
-      {isAdminPreview && (
+      { isAdminPreview && (
         <Notification
           el="p"
           show
           customStyles={ getPreviewNotificationStyles() }
           msg="This is a preview of your package on Content Commons."
         />
-      )}
+      ) }
       <MetaTerms
         className="date-time"
         unitId={ id }
@@ -200,27 +200,27 @@ const Package = props => {
             />
           </Popover>
           <span className="file-count">
-            {' '}
-            {`(${getCount( documents )})`}
+            { ' ' }
+            { `(${getCount( documents )})` }
             <VisuallyHidden> documents in this package</VisuallyHidden>
           </span>
         </div>
       </div>
 
-      {desc && (
+      { desc && (
         <div className="package-description-container">
           <div className="package-description">
             <div className="header">Background</div>
             <div>
-              <Linkify>{parseToParagraphs( desc )}</Linkify>
+              <Linkify>{ parseToParagraphs( desc ) }</Linkify>
             </div>
           </div>
         </div>
-      )}
+      ) }
 
       <div className="package-items">
         <Card.Group>
-          {getCount( documents )
+          { getCount( documents )
             ? collatedDocuments.map( file => (
               <PackageItem
                 key={ file.id }
@@ -229,7 +229,7 @@ const Package = props => {
                 isAdminPreview={ isAdminPreview }
               />
             ) )
-            : 'There are no files associated with this package.'}
+            : 'There are no files associated with this package.' }
         </Card.Group>
       </div>
     </ModalItem>

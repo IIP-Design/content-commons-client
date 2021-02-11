@@ -9,25 +9,29 @@ const DocumentationSidebar = () => {
     {
       name: 'downloadingcontent',
       to: '/documentation/download',
-      label: 'Downloading Content'
+      label: 'Downloading Content',
     },
     {
       name: 'embeddingcontent',
       to: '/documentation/embed',
-      label: 'Embedding Content'
+      label: 'Embedding Content',
     },
     {
       name: 'searchingcontent',
       to: '/documentation/search',
-      label: 'Searching for Content'
-    }
+      label: 'Searching for Content',
+    },
   ];
+
   return (
     <List horizontal divided className="documentation-nav">
       { sidebarItems.map( item => (
         <List.Item key={ item.name }>
           <Link href={ item.to }>
-            <a className="footer_link"> { item.label }</a>
+            <a className="footer_link">
+              { ' ' }
+              { item.label }
+            </a>
           </Link>
         </List.Item>
       ) ) }

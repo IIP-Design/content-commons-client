@@ -22,11 +22,11 @@ const ActionResultsItem = ( { isError, children } ) => (
 
 ActionResultsItem.propTypes = {
   isError: PropTypes.bool,
-  children: PropTypes.oneOfType( [PropTypes.array, PropTypes.element] )
+  children: PropTypes.oneOfType( [PropTypes.array, PropTypes.element] ),
 };
 
 ActionResultsItem.defaultProps = {
-  isError: false
+  isError: false,
 };
 
 export default ActionResultsItem;

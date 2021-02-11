@@ -30,7 +30,7 @@ const DownloadTranscript = ( { item } ) => {
   return (
     <div>
       { transcripts.length < 1
-        && <p className="download-item__noContent">There are no transcripts available for download at this time</p>}
+        && <p className="download-item__noContent">There are no transcripts available for download at this time</p> }
       { transcripts.length > 0 && transcripts.map( trans => {
         const lang = trans?.language?.display_name ? trans.language.display_name : ''; // eslint-disable-line camelcase
         const src = trans?.srcUrl ? trans.srcUrl : '';

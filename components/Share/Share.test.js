@@ -70,7 +70,7 @@ describe( '<Share />', () => {
     jest.resetModules();
     wrapper.setProps( { link: 'content.america.gov', type: 'post' } );
 
-    /* eslint-disable global-require */
+    /* eslint-disable-next-line node/global-require, node/no-missing-require */
     const libBrowser = require( 'lib/browser' );
 
     libBrowser.stringifyQueryString = jest.fn( () => (
@@ -94,6 +94,7 @@ describe( '<Share />', () => {
     const clipboardCopy = wrapper.find( 'ClipboardCopy' );
     const type = wrapper.prop( 'type' );
 
+    /* eslint-disable-next-line node/global-require, node/no-missing-require */
     const libBrowser = require( 'lib/browser' );
 
     libBrowser.stringifyQueryString = jest.fn( () => (
@@ -119,6 +120,7 @@ describe( '<Share />', () => {
     wrapper.setProps( { link: 'content.america.gov', type: 'post' } );
     const clipboardCopy = wrapper.find( 'ClipboardCopy' );
 
+    /* eslint-disable-next-line node/global-require, node/no-missing-require */
     const libBrowser = require( 'lib/browser' );
 
     libBrowser.stringifyQueryString = jest.fn( () => (
@@ -137,6 +139,7 @@ describe( '<Share />', () => {
     const clipboardCopy = wrapper.find( 'ClipboardCopy' );
     const type = wrapper.prop( 'type' );
 
+    /* eslint-disable-next-line node/global-require, node/no-missing-require */
     const libBrowser = require( 'lib/browser' );
 
     libBrowser.stringifyQueryString = jest.fn( () => (

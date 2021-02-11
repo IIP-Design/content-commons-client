@@ -12,10 +12,10 @@ const startUploadProps = {
         name: 'Mexico City 1.jpg',
         lastModified: 1517162382000,
         size: 1030591,
-        type: 'image/jpeg'
+        type: 'image/jpeg',
       },
       id: '3ecbfa03-a821-4e20-b593-bf17cb4d695d',
-      loaded: 0
+      loaded: 0,
     },
     {
       language: 'cjsq439dz005607560gwe7k3m',
@@ -26,10 +26,10 @@ const startUploadProps = {
         name: 'Mexico City 1.mp4',
         lastModified: 1517162208000,
         size: 15829673,
-        type: 'video/mp4'
+        type: 'video/mp4',
       },
       id: 'af1557de-c2ad-4107-bcd3-369f05779320',
-      loaded: 0
+      loaded: 0,
     },
     {
       language: 'cjsq439dz005607560gwe7k3m',
@@ -40,15 +40,15 @@ const startUploadProps = {
         name: 'Mexico City 1.srt',
         lastModified: 1560876777094,
         size: 5000,
-        type: ''
+        type: '',
       },
       id: '41fe4a83-892c-47a4-b96f-adbe93811290',
-      loaded: 0
-    }
+      loaded: 0,
+    },
   ],
   fileProgressMessage: true,
   label: 'just another label',
-  onComplete: jest.fn()
+  onComplete: jest.fn(),
 };
 
 const partialUploadProps = {
@@ -57,7 +57,7 @@ const partialUploadProps = {
     { ...startUploadProps.filesToUpload[0], loaded: 1019591 },
     { ...startUploadProps.filesToUpload[1], loaded: 4748902 },
     { ...startUploadProps.filesToUpload[2], loaded: 5000 },
-  ]
+  ],
 };
 
 const completedUploadProps = {
@@ -66,7 +66,7 @@ const completedUploadProps = {
     { ...startUploadProps.filesToUpload[0], loaded: 1030591 },
     { ...startUploadProps.filesToUpload[1], loaded: 15829673 },
     { ...startUploadProps.filesToUpload[2], loaded: 5000 },
-  ]
+  ],
 };
 
 const StartUploadComponent = <FileUploadProgressBar { ...startUploadProps } />;
@@ -89,7 +89,7 @@ describe( '<FileUploadProgressBar /> at upload start', () => {
       label,
       'Uploading files:',
       String( completed + 1 ),
-      String( filesToUpload.length )
+      String( filesToUpload.length ),
     ];
 
     values.forEach( val => {
@@ -102,7 +102,7 @@ describe( '<FileUploadProgressBar /> at upload start', () => {
     const progress = wrapper.find( 'Progress' );
     const size = startUploadProps.filesToUpload.reduce(
       // 1030591 + 15829673 + 5000 = 16865264
-      ( acc, curr ) => acc + curr.input.size, 0
+      ( acc, curr ) => acc + curr.input.size, 0,
     );
 
     expect( progress.prop( 'total' ) ).toEqual( size );
@@ -115,11 +115,11 @@ describe( '<FileUploadProgressBar /> at upload start', () => {
     const { filesToUpload } = startUploadProps;
     const size = filesToUpload.reduce(
       // 1030591 + 15829673 + 5000 = 16865264
-      ( acc, curr ) => acc + curr.input.size, 0
+      ( acc, curr ) => acc + curr.input.size, 0,
     );
     const value = filesToUpload.reduce(
       // 0 + 0 + 0 = 0
-      ( acc, curr ) => acc + curr.loaded, 0
+      ( acc, curr ) => acc + curr.loaded, 0,
     );
     const percent = Math.round( ( value / size ) * 100 );
 
@@ -134,11 +134,11 @@ describe( '<FileUploadProgressBar /> at upload start', () => {
     const { filesToUpload } = startUploadProps;
     const size = filesToUpload.reduce(
       // 1030591 + 15829673 + 5000 = 16865264
-      ( acc, curr ) => acc + curr.input.size, 0
+      ( acc, curr ) => acc + curr.input.size, 0,
     );
     const value = filesToUpload.reduce(
       // 0 + 0 + 0 = 0
-      ( acc, curr ) => acc + curr.loaded, 0
+      ( acc, curr ) => acc + curr.loaded, 0,
     );
     const percent = <span>{ `${Math.round( ( value / size ) * 100 )}%` }</span>;
 
@@ -163,7 +163,7 @@ describe( '<FileUploadProgressBar /> during upload', () => {
       label,
       'Uploading files:',
       String( completed + 1 ),
-      String( filesToUpload.length )
+      String( filesToUpload.length ),
     ];
 
     values.forEach( val => {
@@ -176,7 +176,7 @@ describe( '<FileUploadProgressBar /> during upload', () => {
     const progress = wrapper.find( 'Progress' );
     const size = partialUploadProps.filesToUpload.reduce(
       // 1030591 + 15829673 + 5000 = 16865264
-      ( acc, curr ) => acc + curr.input.size, 0
+      ( acc, curr ) => acc + curr.input.size, 0,
     );
 
     expect( progress.prop( 'total' ) ).toEqual( size );
@@ -189,11 +189,11 @@ describe( '<FileUploadProgressBar /> during upload', () => {
     const { filesToUpload } = partialUploadProps;
     const size = filesToUpload.reduce(
       // 1030591 + 15829673 + 5000 = 16865264
-      ( acc, curr ) => acc + curr.input.size, 0
+      ( acc, curr ) => acc + curr.input.size, 0,
     );
     const value = filesToUpload.reduce(
       // 1019591 + 4748902 + 5000 = 5773493
-      ( acc, curr ) => acc + curr.loaded, 0
+      ( acc, curr ) => acc + curr.loaded, 0,
     );
     const percent = Math.round( ( value / size ) * 100 );
 
@@ -208,11 +208,11 @@ describe( '<FileUploadProgressBar /> during upload', () => {
     const { filesToUpload } = partialUploadProps;
     const size = filesToUpload.reduce(
       // 1030591 + 15829673 + 5000 = 16865264
-      ( acc, curr ) => acc + curr.input.size, 0
+      ( acc, curr ) => acc + curr.input.size, 0,
     );
     const value = filesToUpload.reduce(
       // 1019591 + 4748902 + 5000 = 5773493
-      ( acc, curr ) => acc + curr.loaded, 0
+      ( acc, curr ) => acc + curr.loaded, 0,
     );
     const percent = <span>{ `${Math.round( ( value / size ) * 100 )}%` }</span>;
 
@@ -245,11 +245,11 @@ describe( '<FileUploadProgressBar /> after completed upload', () => {
     const { filesToUpload } = completedUploadProps;
     const size = filesToUpload.reduce(
       // 1030591 + 15829673 + 5000 = 16865264
-      ( acc, curr ) => acc + curr.input.size, 0
+      ( acc, curr ) => acc + curr.input.size, 0,
     );
     const value = filesToUpload.reduce(
       // 1030591 + 15829673 + 5000 = 16865264
-      ( acc, curr ) => acc + curr.loaded, 0
+      ( acc, curr ) => acc + curr.loaded, 0,
     );
     const percent = Math.round( ( value / size ) * 100 );
 
@@ -264,11 +264,11 @@ describe( '<FileUploadProgressBar /> after completed upload', () => {
     const { filesToUpload } = completedUploadProps;
     const size = filesToUpload.reduce(
       // 1030591 + 15829673 + 5000 = 16865264
-      ( acc, curr ) => acc + curr.input.size, 0
+      ( acc, curr ) => acc + curr.input.size, 0,
     );
     const value = filesToUpload.reduce(
       // 1030591 + 15829673 + 5000 = 16865264
-      ( acc, curr ) => acc + curr.loaded, 0
+      ( acc, curr ) => acc + curr.loaded, 0,
     );
     const percent = <span>{ `${Math.round( ( value / size ) * 100 )}%` }</span>;
 

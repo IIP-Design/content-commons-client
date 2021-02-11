@@ -33,12 +33,12 @@ const ResultsPagination = ( { targetRequest, search } ) => {
 };
 
 const mapStateToProps = state => ( {
-  search: state.search
+  search: state.search,
 } );
 
 ResultsPagination.propTypes = {
   search: object,
-  targetRequest: func
+  targetRequest: func,
 };
 
 export default connect( mapStateToProps, actions )( ResultsPagination );

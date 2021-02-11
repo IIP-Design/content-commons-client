@@ -101,7 +101,7 @@ const VideoProjectFiles = ( { data, id } ) => {
                 <Grid.Column width={ 16 }>
                   <p>
                     <b className="label">Language:</b>
-                    { ` ${language.displayName} `}
+                    { ` ${language.displayName} ` }
                   </p>
                 </Grid.Column>
               </Grid.Row>

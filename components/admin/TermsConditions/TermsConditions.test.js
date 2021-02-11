@@ -3,7 +3,7 @@ import TermsConditions from './TermsConditions';
 
 const props = {
   error: false,
-  handleOnChange: jest.fn()
+  handleOnChange: jest.fn(),
 };
 
 const Component = <TermsConditions { ...props } />;

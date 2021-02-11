@@ -122,7 +122,7 @@ const Featured = () => {
 
   return (
     <div className="featured">
-      {user && user.id !== 'public' && sortBy( privateData, 'order' ).map( d => renderSection( d ) )}
+      { user && user.id !== 'public' && sortBy( privateData, 'order' ).map( d => renderSection( d ) ) }
 
       { sortBy( publicData, 'order' ).map( d => renderSection( d ) ) }
     </div>

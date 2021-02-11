@@ -21,17 +21,18 @@ const UploadCompletionTracker = props => {
   // valid value
   useEffect( () => {
     const toComplete = fields.filter( field => !field );
+
     setFieldsToComplete( toComplete.length );
   }, [fields] );
 
 
   // following styles used to display either completion OR number of fields to complete
   const show = {
-    display: 'inline-block'
+    display: 'inline-block',
   };
 
   const hide = {
-    display: 'none'
+    display: 'none',
   };
 
   return (
@@ -43,12 +44,12 @@ const UploadCompletionTracker = props => {
 };
 
 UploadCompletionTracker.defaultProps = {
-  display: 'show'
+  display: 'show',
 };
 
 UploadCompletionTracker.propTypes = {
   fields: PropTypes.array,
-  display: PropTypes.string
+  display: PropTypes.string,
 };
 
 export default UploadCompletionTracker;

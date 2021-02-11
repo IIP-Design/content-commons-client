@@ -21,7 +21,7 @@ const PageMeta = ( { item, url } ) => {
 
         return <meta key={ property } property={ property } content={ content } />;
       } ) }
-      { signedUrl && <meta property="og:image" content={ signedUrl } />}
+      { signedUrl && <meta property="og:image" content={ signedUrl } /> }
     </Head>
   );
 };

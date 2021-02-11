@@ -9,7 +9,7 @@ import { Query } from 'react-apollo';
 
 import './DetailsPopup.scss';
 
-const CHECK_PROJECT_TYPE_QUERY = gql`
+export const CHECK_PROJECT_TYPE_QUERY = gql`
   query CheckProjectType($id: ID!) {
     videoProject(id: $id) {
       id

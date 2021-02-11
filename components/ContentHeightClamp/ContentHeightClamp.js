@@ -4,7 +4,7 @@ import './ContentHeightClamp.scss';
 
 const ContentHeightClamp = props => {
   const {
-    children, className, el: Element, maxHeight, style
+    children, className, el: Element, maxHeight, style,
   } = props;
   const [height, setHeight] = useState( 0 );
   const isLong = height > maxHeight;
@@ -31,7 +31,7 @@ const ContentHeightClamp = props => {
 ContentHeightClamp.defaultProps = {
   el: 'div',
   maxHeight: 144,
-  style: {}
+  style: {},
 };
 
 ContentHeightClamp.propTypes = {
@@ -39,7 +39,7 @@ ContentHeightClamp.propTypes = {
   className: PropTypes.string,
   el: PropTypes.string,
   maxHeight: PropTypes.number,
-  style: PropTypes.object
+  style: PropTypes.object,
 };
 
 export default ContentHeightClamp;

@@ -9,7 +9,7 @@ import { Icon } from 'semantic-ui-react';
 import { Query } from 'react-apollo';
 
 import FileSidebar from 'components/admin/ProjectEdit/EditVideoModal/ModalSections/FileSidebar/FileSidebar';
-import FileDataForm from 'components/admin/ProjectEdit/EditVideoModal/ModalForms/FileDataForm/FileDataForm';
+import FileDataForm from 'components/admin/ProjectEdit/EditVideoModal/ModalForms/FileDataForm/FileDataForm'; // eslint-disable-line import/no-cycle
 import Loader from 'components/admin/ProjectEdit/EditVideoModal/Loader/Loader';
 import { EditSingleProjectItemContext } from 'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
 
@@ -33,7 +33,7 @@ const VIDEO_UNIT_QUERY = gql`
 
 const FileSection = () => {
   const {
-    language, selectedFile, selectedProject, selectedUnit, setLanguage, setSelectedFile
+    language, selectedFile, selectedProject, selectedUnit, setLanguage, setSelectedFile,
   } = useContext( EditSingleProjectItemContext );
 
   return (
@@ -44,9 +44,11 @@ const FileSection = () => {
 
         const { unit } = data;
         const lang = unit && unit.language ? unit.language : { id: '', displayName: '', locale: '' };
+
         if ( lang && !language ) setLanguage( lang );
 
         const files = unit && unit.files ? unit.files : [];
+
         if ( Array.isArray( files ) && files.length === 0 ) {
           return (
             <div className="commons-loader-container" style={ { height: '402px' } }>

@@ -17,14 +17,16 @@ const areEqual = ( prevProps, nextProps ) => {
     if ( prop === 'id' ) {
       return true;
     }
+
     return nextFile[prop] === value;
   } );
+
   return same;
 };
 
 const EditSupportFileRow = props => {
   const {
-    file: { id, name, language }, update, removeFile, accept
+    file: { id, name, language }, update, removeFile, accept,
   } = props;
 
   // extract file type, i.e. get 'image' from the incoming type 'image/*' for example
@@ -46,8 +48,7 @@ const EditSupportFileRow = props => {
                 <VisuallyHidden el="span">{ name }</VisuallyHidden>
               </Fragment>
             )
-            : <span>{ name }</span>
-          }
+            : <span>{ name }</span> }
         </div>
       </Grid.Column>
 
@@ -77,7 +78,7 @@ EditSupportFileRow.propTypes = {
   } ),
   accept: PropTypes.string,
   update: PropTypes.func,
-  removeFile: PropTypes.func
+  removeFile: PropTypes.func,
 };
 
 

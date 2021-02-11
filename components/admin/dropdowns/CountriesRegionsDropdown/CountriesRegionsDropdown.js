@@ -15,11 +15,12 @@ const CountriesRegionsDropdown = props => (
       if ( error ) return `Error! ${error.message}`;
 
       let options = [];
+
       if ( data && data.countries ) {
         options = sortBy( data.countries, country => country.name ).map( country => ( {
           key: country.id,
           text: `${country.name} (${country.abbr})`,
-          value: country.id
+          value: country.id,
         } ) );
       }
 
@@ -53,12 +54,12 @@ const CountriesRegionsDropdown = props => (
 
 
 CountriesRegionsDropdown.defaultProps = {
-  id: ''
+  id: '',
 };
 
 CountriesRegionsDropdown.propTypes = {
   id: PropTypes.string,
-  label: PropTypes.string
+  label: PropTypes.string,
 };
 
 export default React.memo( CountriesRegionsDropdown, areEqual );

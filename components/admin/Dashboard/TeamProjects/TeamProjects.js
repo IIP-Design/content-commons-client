@@ -50,7 +50,7 @@ const TeamProjects = () => {
     return (
       <Fragment>
         <p>There aren&apos;t any team projects available to view.</p>
-        <p>{`You can ${uploadLink} or ${browseLink}.`}</p>
+        <p>{ `You can ${uploadLink} or ${browseLink}.` }</p>
       </Fragment>
     );
   }

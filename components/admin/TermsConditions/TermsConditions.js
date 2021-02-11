@@ -6,6 +6,7 @@ import './TermsConditions.scss';
 
 const TermsConditions = props => {
   const { error, handleOnChange } = props;
+
   return (
     <Form.Checkbox
       id="termsConditions"
@@ -13,7 +14,11 @@ const TermsConditions = props => {
       name="termsConditions"
       label={ (
         <label htmlFor="termsConditions">
-          By uploading these files I agree to the Content Commons <Link href="/privacy"><a>Terms of Use</a></Link> and licensing agreements. By selecting Public visibility, I understand that my content will be available to the public for general use.
+          By uploading these files I agree to the Content Commons
+          { ' ' }
+          <Link href="/privacy"><a>Terms of Use</a></Link>
+          { ' ' }
+          and licensing agreements. By selecting Public visibility, I understand that my content will be available to the public for general use.
         </label>
       ) }
       type="checkbox"
@@ -26,7 +31,7 @@ const TermsConditions = props => {
 
 TermsConditions.propTypes = {
   error: PropTypes.bool,
-  handleOnChange: PropTypes.func
+  handleOnChange: PropTypes.func,
 };
 
 export default TermsConditions;

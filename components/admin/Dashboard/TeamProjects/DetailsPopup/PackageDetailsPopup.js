@@ -7,7 +7,7 @@ import { PACKAGE_FILES_QUERY } from 'lib/graphql/queries/package';
 
 const PackageDetailsPopup = ( { id } ) => {
   const { loading, error, data } = useQuery( PACKAGE_FILES_QUERY, {
-    variables: { id }
+    variables: { id },
   } );
 
   if ( loading ) return <p>Loading....</p>;
@@ -26,7 +26,7 @@ const PackageDetailsPopup = ( { id } ) => {
 };
 
 PackageDetailsPopup.propTypes = {
-  id: PropTypes.string
+  id: PropTypes.string,
 };
 
 export default PackageDetailsPopup;

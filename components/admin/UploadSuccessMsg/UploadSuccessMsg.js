@@ -16,19 +16,19 @@ const UploadSuccessMsg = props => {
     backgroundColor: '#d6d7d9',
     textAlign: 'center',
     fontSize: '.77rem',
-    fontWeight: 600
+    fontWeight: 600,
   };
 
   const successStyles = {
     ...baseStyles,
     backgroundColor: '#aee02d',
     textAlign: 'initial',
-    ...style
+    ...style,
   };
 
   const iconStyles = {
     fontSize: '1.2em',
-    fontWeight: 600
+    fontWeight: 600,
   };
 
   return (
@@ -41,11 +41,11 @@ const UploadSuccessMsg = props => {
 };
 
 UploadSuccessMsg.propTypes = {
-  style: object
+  style: object,
 };
 
 UploadSuccessMsg.defaultProps = {
-  style: {}
+  style: {},
 };
 
 export default UploadSuccessMsg;
