@@ -138,7 +138,7 @@ const LoggedInNav = props => {
             </a>
           </Link>
         )
-        : getIcon( item )}
+        : getIcon( item ) }
     </li>
   );
 
@@ -153,12 +153,13 @@ const LoggedInNav = props => {
         name={ item.name }
         disabled={ disabled }
       >
-        { item.name === 'upload' ? (
-          <Link href="/admin/upload" passHref>
-            { getIcon( item ) }
-          </Link>
-        )
-          : getIcon( item )}
+        { item.name === 'upload'
+          ? (
+            <Link href="/admin/upload" passHref>
+              { getIcon( item ) }
+            </Link>
+          )
+          : getIcon( item ) }
       </li>
     );
   };
