@@ -24,7 +24,7 @@ const publicData = [
     order: 1,
     props: {
       label: 'COVID-19 and Global Health',
-      categories: ['health', 'sports'],
+      categories: ['health'],
       tags: [
         'biomedical science',
         'covid-19',
