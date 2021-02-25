@@ -89,7 +89,7 @@ const publicData = [
     component: Priorities,
     order: 4,
     props: {
-      term: 'asylum refugee',
+      term: 'immigration',
       label: 'Immigration',
       categories: [],
       tags: ['immigration'],
