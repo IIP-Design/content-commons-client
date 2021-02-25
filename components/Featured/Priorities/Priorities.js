@@ -16,7 +16,7 @@ import FeaturedError from '../FeaturedError';
 
 import './Priorities.scss';
 
-const Priorities = ( { categories, label, term, user, locale } ) => {
+const Priorities = ( { categories, tags, label, term, user, locale } ) => {
   const [items, setItems] = useState( [] );
   const [state, setState] = useState( { loading: false, error: false } );
 
@@ -25,7 +25,7 @@ const Priorities = ( { categories, label, term, user, locale } ) => {
 
     setState( { loading: true, error: false } );
 
-    typePrioritiesRequest( term, categories, locale, user )
+    typePrioritiesRequest( term, categories, tags, locale, user )
       .then( res => {
         // check to ensure we are mounted in the event we unmounted before request returned
         if ( mounted ) {
@@ -45,7 +45,7 @@ const Priorities = ( { categories, label, term, user, locale } ) => {
       mounted = false;
     };
   }, [
-    categories, label, term, user, locale,
+    categories, tags, label, term, user, locale,
   ] );
 
   if ( state.error ) {
@@ -137,6 +137,7 @@ Priorities.propTypes = {
   term: PropTypes.string,
   label: PropTypes.string,
   categories: PropTypes.array,
+  tags: PropTypes.array,
   locale: PropTypes.string,
   user: PropTypes.object,
 };
