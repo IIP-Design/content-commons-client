@@ -9,7 +9,7 @@ import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
 import { getModalContent } from 'components/modals/utils';
 import { getCategories } from '../utils';
 import { normalizeItem } from 'lib/elastic/parser';
-import { typePrioritiesRequest } from 'lib/elastic/api';
+import { typePrioritiesRequest, categoryNameIdRequest } from 'lib/elastic/api';
 
 import FeaturedLoading from '../FeaturedLoading';
 import FeaturedError from '../FeaturedError';
@@ -18,12 +18,23 @@ import './Priorities.scss';
 
 const Priorities = ( { categories, tags, label, term, user, locale } ) => {
   const [items, setItems] = useState( [] );
+  const [categoryIds, setCategoryIds] = useState( [] );
   const [state, setState] = useState( { loading: false, error: false } );
 
   useEffect( () => {
     let mounted = true;
 
     setState( { loading: true, error: false } );
+
+    categoryNameIdRequest().then(res => {
+     const cats = res.hits.hits;
+     const ids = cats
+      .filter( cat =>  categories.includes(cat._source.language.en) ) 
+      .map( cat => cat._id);
+
+     setCategoryIds(ids)
+    })
+    
 
     typePrioritiesRequest( term, categories, tags, locale, user )
       .then( res => {
@@ -83,7 +94,7 @@ const Priorities = ( { categories, tags, label, term, user, locale } ) => {
 
   if ( items.length < 3 ) return null;
 
-  const categoryIds = categories?.map( cat => cat.key );
+  //const categoryIds = categories?.map( cat => cat.key );
 
   return (
     <section className="priorities">
