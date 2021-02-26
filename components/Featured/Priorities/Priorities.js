@@ -16,7 +16,7 @@ import FeaturedError from '../FeaturedError';
 
 import './Priorities.scss';
 
-const Priorities = ( { categories, tags, label, term, user, locale } ) => {
+const Priorities = ( { categories, label, term, user, locale, tags } ) => {
   const [items, setItems] = useState( [] );
   const [categoryIds, setCategoryIds] = useState( [] );
   const [state, setState] = useState( { loading: false, error: false } );
@@ -26,6 +26,8 @@ const Priorities = ( { categories, tags, label, term, user, locale } ) => {
 
     setState( { loading: true, error: false } );
 
+    // Load categories to obtain category id to pass
+    // to results page as a search param
     categoryNameIdRequest().then( res => {
       const cats = res.hits.hits;
       const ids = cats
@@ -93,8 +95,6 @@ const Priorities = ( { categories, tags, label, term, user, locale } ) => {
   ) );
 
   if ( items.length < 3 ) return null;
-
-  // const categoryIds = categories?.map( cat => cat.key );
 
   return (
     <section className="priorities">
