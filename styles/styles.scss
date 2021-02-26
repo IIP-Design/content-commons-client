@@ -10,6 +10,7 @@ $flags-image-path: "~semantic-ui-sass/images";
 
 @import "~semantic-ui-sass/semantic-ui.scss";
 @import "colors.scss";
+@import "mixins.scss";
 
 /*---------------------------------
   Override some semantic defaults
@@ -157,7 +158,7 @@ main {
   font-size: 0.888rem;
 
   &:focus {
-    outline: 2px dotted $focus-gray;
+    @include focus-styling;
   }
 
   &.primary {
