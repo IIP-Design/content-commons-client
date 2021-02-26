@@ -9,15 +9,16 @@ import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
 import { getModalContent } from 'components/modals/utils';
 import { getCategories } from '../utils';
 import { normalizeItem } from 'lib/elastic/parser';
-import { typePrioritiesRequest } from 'lib/elastic/api';
+import { typePrioritiesRequest, categoryNameIdRequest } from 'lib/elastic/api';
 
 import FeaturedLoading from '../FeaturedLoading';
 import FeaturedError from '../FeaturedError';
 
 import './Priorities.scss';
 
-const Priorities = ( { categories, label, term, user, locale } ) => {
+const Priorities = ( { categories, tags, label, term, user, locale } ) => {
   const [items, setItems] = useState( [] );
+  const [categoryIds, setCategoryIds] = useState( [] );
   const [state, setState] = useState( { loading: false, error: false } );
 
   useEffect( () => {
@@ -25,7 +26,17 @@ const Priorities = ( { categories, label, term, user, locale } ) => {
 
     setState( { loading: true, error: false } );
 
-    typePrioritiesRequest( term, categories, locale, user )
+    categoryNameIdRequest().then( res => {
+      const cats = res.hits.hits;
+      const ids = cats
+        .filter( cat => categories.includes( cat._source.language.en ) )
+        .map( cat => cat._id );
+
+      setCategoryIds( ids );
+    } );
+
+
+    typePrioritiesRequest( term, categories, tags, locale, user )
       .then( res => {
         // check to ensure we are mounted in the event we unmounted before request returned
         if ( mounted ) {
@@ -45,7 +56,7 @@ const Priorities = ( { categories, label, term, user, locale } ) => {
       mounted = false;
     };
   }, [
-    categories, label, term, user, locale,
+    categories, tags, label, term, user, locale,
   ] );
 
   if ( state.error ) {
@@ -83,7 +94,7 @@ const Priorities = ( { categories, label, term, user, locale } ) => {
 
   if ( items.length < 3 ) return null;
 
-  const categoryIds = categories?.map( cat => cat.key );
+  // const categoryIds = categories?.map( cat => cat.key );
 
   return (
     <section className="priorities">
@@ -137,6 +148,7 @@ Priorities.propTypes = {
   term: PropTypes.string,
   label: PropTypes.string,
   categories: PropTypes.array,
+  tags: PropTypes.array,
   locale: PropTypes.string,
   user: PropTypes.object,
 };
