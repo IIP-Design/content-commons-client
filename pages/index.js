@@ -1,17 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import fetch from 'isomorphic-unfetch';
+import getConfig from 'next/config';
+
 import Featured from 'components/Featured/Featured';
+
 import { useDispatch } from 'react-redux';
 import { clearFilters } from 'lib/redux/actions/filter';
 
+const { publicRuntimeConfig: { REACT_APP_UI_CONFIG } } = getConfig();
+
 const Landing = () => {
   const dispatch = useDispatch();
+  const [config, setConfig] = useState( {} );
 
-  // trigger parallel loading calls to reset filters
-  dispatch( clearFilters() );
+  useEffect( () => {
+    // Load ui config for landing page
+    // NOTE: ui.json file located in iip-static-assets repo:
+    // https://github.com/IIP-Design/iip-static-assets
+    const fetchConfig = async () => {
+      const result = await fetch( REACT_APP_UI_CONFIG );
+
+      setConfig( await result.json() );
+    };
+
+    fetchConfig();
+  }, [] );
+
+
+  useEffect( () => {
+    dispatch( clearFilters() );
+  }, [dispatch] );
 
   return (
     <section>
-      <Featured />
+      <Featured config={ config } />
     </section>
   );
 };
