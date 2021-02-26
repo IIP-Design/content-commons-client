@@ -48,7 +48,7 @@
         cursor: pointer;
 
         &:focus {
-          @include focus-styling;
+          @include focus-styling($color: #fff);
         }
 
         h2,
