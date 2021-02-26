@@ -25,6 +25,31 @@
     }
   }
 
+  .ribbon {
+    position: absolute;
+    left: 13px;
+    top: 30px;
+    width: 35%;
+    height: 20px; 
+    background: $gold; 
+    font-size: .65rem;
+    text-transform: uppercase;
+    &:before { 
+      content: "";
+      position: absolute;
+      height: 0;
+      width: 0;  
+      top: -5px;
+      left: 0;
+      border-bottom: 5px solid darken($gold, 15%);  
+      border-left:  5px solid  transparent;  
+    } 
+    span {
+      position: relative; 
+      top: -5px;
+    }
+  }
+
   .content {
     display: flex;
     flex-direction: column;

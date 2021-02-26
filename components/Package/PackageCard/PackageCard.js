@@ -22,6 +22,7 @@ const PackageCard = ( { item, stretch } ) => {
     owner,
     title,
     documents,
+    pin,
   } = item;
 
   const { response: fetchedDocs, error } = useAPIRequest( getElasticPkgDocs, [documents] );
@@ -35,6 +36,12 @@ const PackageCard = ( { item, stretch } ) => {
           size="fullscreen"
           trigger={ (
             <Card.Header>
+              { pin
+                && (
+                  <div className="ribbon">
+                    <span>Featured</span>
+                  </div>
+                ) }
               <button id={ `packageCard_trigger_${id}` } className="title" type="button">
                 <h2>{ title }</h2>
               </button>
