@@ -125,9 +125,6 @@ const LoggedOutNav = props => {
   const renderDesktopNav = items => (
     <ul className="ui nav_loggedout menu">
       { items.map( item => renderMenuItem( item ) ) }
-      <li key="4" className="item" name="login">
-        <a href="/login">Login</a>
-      </li>
       { reminder && (
         <li className="login_reminder">
           DOS employees, you can log in to see more content.
