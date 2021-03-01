@@ -1,6 +1,6 @@
 @import 'styles/colors.scss';
 
-@mixin focus-styling($color: $grey) {
+@mixin focus-styling($color: $focus-grey) {
   outline: 2px dotted $color;
   outline-offset: 2px;
 }
