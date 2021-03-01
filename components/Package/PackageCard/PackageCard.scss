@@ -68,6 +68,10 @@
     line-height: 1.428;
     color: $dark-grey;
 
+    .popover_trigger:hover {
+      text-decoration: underline;
+    }
+
     dl.terms.date-time {
       margin-bottom: 0.5em;
 

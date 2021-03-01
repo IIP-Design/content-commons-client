@@ -108,6 +108,10 @@
         padding: 0;
         border: none;
         background-color: transparent;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
 
       &_wrapper {
