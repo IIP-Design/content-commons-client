@@ -1,4 +1,5 @@
-@import "./colors.scss";
+@import './colors.scss';
+@import './mixins.scss';
 
 .static_page {
   max-width: 1200px;
@@ -35,5 +36,9 @@
 
   img {
     max-width: 100%;
+  }
+
+  :focus {
+    @include focus-styling;
   }
 }
