@@ -1,5 +1,5 @@
-@import "styles/mixins.scss";
-@import "styles/colors.scss";
+@import 'styles/mixins.scss';
+@import 'styles/colors.scss';
 
 .bar--home nav {
   position: absolute;
@@ -53,6 +53,12 @@
       top: 2em;
       right: 1.5em;
     }
+  }
+}
+
+.bar:not(.bar--home) nav {
+  :focus {
+    @include focus-styling($color: $blue);
   }
 }
 
