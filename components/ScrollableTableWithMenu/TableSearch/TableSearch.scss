@@ -1,4 +1,5 @@
-@import '../../../styles/colors.scss';
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
 
 .ui.grid .row.items_tableSearch {
   padding-bottom: 0;
@@ -16,6 +17,11 @@
     > input {
       font-size: 12px;
       border-color: #5b616b !important;
+
+      &::placeholder {
+        color: $focus-grey !important;
+        opacity: 1 !important;
+      }
     }
 
     > button.ui.button {
