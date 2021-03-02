@@ -5,54 +5,78 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v5.4.1...HEAD)
+## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v5.4.2...HEAD)
 
 _This sections lists changes committed since most recent release_
 
-**Added:**
-- Skip to content link for improved accessibility
-  
 **Changed:**
-- Default link color and hover styling for improved accessibility
+
 - Wrap navigation menu items in `li` elements
 
+**Fixed:**
+
+- Skip to content link for improved accessibility
+- Default link color and hover styling for improved accessibility
+- Focus outline color to meet accessibility contrast requirement
+  
+# [5.4.2](https://github.com/IIP-Design/content-commons-client/compare/v5.4.1...5.4.2)(2021-02-25)
+
+**Changed:**
+
+- Priority sections on the landing page
+
 # [5.4.1](https://github.com/IIP-Design/content-commons-client/compare/v5.4.0...5.4.1)(2021-02-01)
+
 **Added:**
-- Support for login from Okta dahsboard 
+
+- Support for login from Okta dashboard
 
 # [5.4.0](https://github.com/IIP-Design/content-commons-client/compare/v5.3.1...5.4.0)(2021-01-25)
+
 **Added:**
+
 - Text box to display background information to the PackageDetailsForm component on the backend and to the Package component on the frontend
 - Utility functions to replace '\n' characters with applicable html tags, <p> or <span>
 
 # [5.3.1](https://github.com/IIP-Design/content-commons-client/compare/v5.3.0...5.3.1)(2021-01-22)
+
 **Changed:**
+
 - Login link on nav no longer needs to use the <a> tag as CloudFlare no longer initiating the login
 
 # [5.3.0](https://github.com/IIP-Design/content-commons-client/compare/v5.2.1...5.2.2)(2021-01-07)
+
 **Added:**
+
 - CSS modules documentation
 - AWS Congito integration via amplify
 
 **Removed**
- - CloudFlare integration
+
+- CloudFlare integration
 
 # [5.2.2](https://github.com/IIP-Design/content-commons-client/compare/v5.2.1...5.2.2)(2020-12-11)
+
 **Added:**
+
 - ECA PASC option to source dropdown
+
 # [5.2.1](https://github.com/IIP-Design/content-commons-client/compare/v5.2.0...5.2.1)(2020-09-23)
 
 **Fixed:**
+
 - Query on Home page to return public video projects when user is not logged in.
 - Issue with non English projects appearing on home page.
-- Title text wrapping on result item thumnbail. 
+- Title text wrapping on result item thumnbail.
 
 # [5.2.0](https://github.com/IIP-Design/content-commons-client/compare/v5.1.1...5.2.0)(2020-09-14)
 
 **Changed:**
+
 - Check for a logged in user before calling `getItemRequest` on graphic and video project pages
 
 **Added:**
+
 - 'For Translation' tab with 'Clean' use videos to the video download popup on commons and publisher
 - 'Other' tab to the video download popup on commons
 - `DownloadThumbnailsAndOtherFiles` component
@@ -60,38 +84,41 @@ _This sections lists changes committed since most recent release_
 - 'INTERNAL USE ONLY' display on video result card and project if project is internal
 
 **Changed:**
-- Remove English from the language dropdown in the video preview modal and commons page when the English unit consists of *only* 'Clean' use videos
+
+- Remove English from the language dropdown in the video preview modal and commons page when the English unit consists of _only_ 'Clean' use videos
 - 'GPA Editorial & Design' team name to 'GPA Design & Editorial'
 - Include thumbnails in the 'Other' tab in the video download popup
 - Download instructions text to match mockup changes
 - Remove Transcripts tab in the video download popup on Commons
-- Disable the Publish Changes button on the video review screen if there are *only* 'Clean' use videos and the project has already been published
+- Disable the Publish Changes button on the video review screen if there are _only_ 'Clean' use videos and the project has already been published
 - Adjust publish message on the video review screen to instruct the user to upload at least one non-clean video before publishing changes
 
 **Fixed:**
+
 - Bug where a video unit's thumbnail was not being assigned to `unit.thumbnail` on the results page; This was preventing a video unit's thumbnails from being listed in its download popup.
 - Bug where deleting a video file from a published video's details page would not display the Publish Changes button. Fixed by calling the `updateVideoProject` mutation and passing the `projectTile` as the updated data when a video file is removed.
 - Bug where changing a video file's language would not display the Publish Changes button. Fixed by calling the `updateVideoProject` mutation and passing the `projectTile` as the updated data when a video file's language is changed.
 - Bug where changing a video file's type would not display the Publish Changes button. Fixed by calling the `updateVideoProject` mutation and passing the `projectTile` as the updated data when a video file's dropdown value is changed.
 
-
 # [5.1.1](https://github.com/IIP-Design/content-commons-client/compare/v5.1.0...5.1.1)(2020-07-29)
 
 **Fixed:**
-- Issue causing some video downloads to fail. Use filename and not title for download filename  
+
+- Issue causing some video downloads to fail. Use filename and not title for download filename
 
 # [5.1.0](https://github.com/IIP-Design/content-commons-client/compare/v5.0.0...5.1.0)(2020-07-15)
 
 **Added:**
+
 - A reminder to the Home page to prompt the user to login to see internal content
 - 'Regional Media Hubs' to graphic details form source dropdown and dashboard graphic queries
 
 **Changed:**
+
 - Package 'Browse All' link sorts packages by created date
 - Lists of Documents within a Package are displayed in the order of releases, guidances, transcripts
 - Delete button is disabled for published graphic projects
 - Display DoS logo and 'Regional Media Hubs' as the source in the graphics card and preview modal
-
 
 # [5.0.0](https://github.com/IIP-Design/content-commons-client/compare/v4.2.0...5.0.0)(2020-07-10)
 
@@ -166,7 +193,7 @@ _This sections lists changes committed since most recent release_
 - Adjust modal stylesheets for consistency
 - Update unit tests for ActionButtons, GraphicEdit, GraphicProject, and ModalContentMeta
 - Move the fetching of featured item results and post types from Redux to Context
-- Update unit tests and mock data to address console messages 
+- Update unit tests and mock data to address console messages
 - Refactor collating of graphic project files in GraphicEdit to address clean shell files being displayed in the wrong column
 - Refactor tests for GraphicEdit and add additional mock data
 - The footer questions and feedback link to "gpadigitalhelp@state.gov" from "design@america.gov"
@@ -176,11 +203,11 @@ _This sections lists changes committed since most recent release_
 - Rename to IncludeRequiredFileMsg from IncludeVideoFileMsg for reusability
 - Use TeamDropdown instead of an input field in ProjectDetailsForm for graphic projects
 - Connect team.id in the graphic buildFormTree function to allow graphic users to change a graphic project's team
-- Adjust the graphic project team queries to handle GPA Editorial & Design or ShareAmerica, i.e., the two TeamDropdown options for graphic 
+- Adjust the graphic project team queries to handle GPA Editorial & Design or ShareAmerica, i.e., the two TeamDropdown options for graphic
 - Use updateGraphicProject mutation to handle deletion of graphic support files
 - Update test data for GraphicSupportFiles to use updateGraphicProject
-- Remove the Social Media Share functionality for Graphics 
-- Use API URL to download video caption files 
+- Remove the Social Media Share functionality for Graphics
+- Use API URL to download video caption files
 - Display the ShareAmerica logo in the graphic project preview and graphic project results card if the project's owner is ShareAmerica
 - Disable unpublish button on graphic project details page if there are no graphic files
 - Set disableBtns state based on the presence of graphic files

@@ -249,7 +249,6 @@ exports[`<TeamProjectPrimaryCol /> renders without crashing 1`] = `
         className="projects_data_title"
         href="/admin/project/video/111/edit"
         onClick={[Function]}
-        onMouseEnter={[Function]}
       >
         Test Project
       </a>
@@ -269,7 +268,6 @@ exports[`<TeamProjectPrimaryCol /> renders without crashing 1`] = `
             className="linkStyle projects_data_actions_action"
             href="/admin/project/video/111/edit"
             onClick={[Function]}
-            onMouseEnter={[Function]}
           >
             Edit
           </a>

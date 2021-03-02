@@ -81,6 +81,7 @@ Array [
             Graphic Title
           </label>
           <Input
+            aria-describedby={null}
             disabled={false}
             id="title-cka5di41430i10720v06c52ic"
             name="cka5di41430i10720v06c52ic.title"
@@ -92,6 +93,7 @@ Array [
               className="ui input"
             >
               <input
+                aria-describedby={null}
                 disabled={false}
                 id="title-cka5di41430i10720v06c52ic"
                 name="cka5di41430i10720v06c52ic.title"
@@ -252,6 +254,7 @@ Array [
             Graphic Title
           </label>
           <Input
+            aria-describedby={null}
             disabled={false}
             id="title-cka5di48r30ig072003dqjffb"
             name="cka5di48r30ig072003dqjffb.title"
@@ -263,6 +266,7 @@ Array [
               className="ui input"
             >
               <input
+                aria-describedby={null}
                 disabled={false}
                 id="title-cka5di48r30ig072003dqjffb"
                 name="cka5di48r30ig072003dqjffb.title"
