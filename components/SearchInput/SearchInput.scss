@@ -85,31 +85,23 @@
         display: none;
       }
 
-      i {
-        color: $light-blue;
-        font-size: 18px;
-        
-        &.search {
-          position: relative;
-          height: auto;
-          color: $light-grey;          
-          background: $blue;
-          opacity: 1;
+      button[type="submit"] {
+        border: 1px solid $blue;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        width: 48px;
+        background: $blue;
 
-          &:before {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            margin-top: 0;
-          }
+        > i.search.icon {
+          margin-right: 0;
         }
 
-        &.search:hover {
+        &:hover {
+          border-color: $light-blue;
           background: $light-blue;
+          cursor: pointer;
         }
       }
-
 
       &.right {
         input[type="text"] {

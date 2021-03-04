@@ -6,6 +6,8 @@ import {
   Form, Input, Icon, Dropdown, Radio,
 } from 'semantic-ui-react';
 
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+
 import { getDirection } from 'lib/language';
 import { fetchQueryString } from 'lib/searchQueryString';
 import { useAuth } from 'context/authContext';
@@ -155,12 +157,14 @@ const SearchInput = ( { filter,
           value={ search?.term ? search.term : '' }
           size="large"
           icon={ (
-            <Icon
-              tabIndex="0"
-              name="search"
+            <button
+              type="submit"
               onClick={ handleSearchClick }
               onKeyUp={ handleSearchKeyUp }
-            />
+            >
+              <VisuallyHidden>submit search</VisuallyHidden>
+              <Icon inverted name="search" />
+            </button>
           ) }
           placeholder="Type in keywords to search"
           { ...inputProps }
