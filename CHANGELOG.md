@@ -14,6 +14,7 @@ _This sections lists changes committed since most recent release_
 **Changed:**
 
 - Priority sections on the landing page
+- Add as UI configuration environmental variable
 
 # [5.4.1](https://github.com/IIP-Design/content-commons-client/compare/v5.4.0...5.4.1)(2021-02-01)
 
