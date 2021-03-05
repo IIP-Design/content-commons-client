@@ -2,7 +2,6 @@
 @import "styles/mixins.scss";
 
 .review-project {
-  @include kbd-only-focus-ring;
   @include uppercase;
 
   .section--project_header {

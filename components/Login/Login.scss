@@ -1,5 +1,6 @@
-@import "../../styles/colors.scss";
-@import "../../styles/form.scss";
+@import 'styles/colors.scss';
+@import 'styles/form.scss';
+@import 'styles/mixins.scss';
 
 .login { 
   display: flex;
@@ -50,5 +51,9 @@
       text-align: center;
       font-weight: bold;
     }
+  }
+
+  :focus {
+    @include focus-styling;
   }
 }

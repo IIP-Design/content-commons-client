@@ -2,10 +2,6 @@
 @import 'styles/mixins.scss';
 
 .focusable {
-  :focus:not(:focus-visible) {
-    outline: none
-  }
-
   &:focus {
     @include focus-styling;
   }

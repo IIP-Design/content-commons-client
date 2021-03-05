@@ -1,7 +1,6 @@
 @import "styles/mixins.scss";
 
 .edit-graphic-project {
-  @include kbd-only-focus-ring;
   @include uppercase;
 
   @media screen and (max-width: 550px) {
