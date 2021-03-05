@@ -143,6 +143,7 @@ const SearchInput = ( { filter,
 
         <div className={ `ui large icon left labeled input search_input${direction === 'right' ? ' right' : ''}` }>
           <Dropdown
+            aria-label="select language"
             className="label"
             value={ locale }
             options={ langOptions }
