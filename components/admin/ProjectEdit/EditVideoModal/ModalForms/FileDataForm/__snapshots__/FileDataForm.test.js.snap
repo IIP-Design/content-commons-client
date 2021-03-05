@@ -121,7 +121,6 @@ exports[`<FileDataForm />, when the video use is Clean renders video links 1`] =
           YouTube URL
         </label>
         <Input
-          aria-describedby={null}
           id="video-youtube"
           name="youtube"
           onBlur={[Function]}
@@ -133,7 +132,6 @@ exports[`<FileDataForm />, when the video use is Clean renders video links 1`] =
             className="ui input"
           >
             <input
-              aria-describedby={null}
               id="video-youtube"
               name="youtube"
               onBlur={[Function]}
@@ -186,7 +184,6 @@ exports[`<FileDataForm />, when the video use is Clean renders video links 1`] =
           Vimeo URL
         </label>
         <Input
-          aria-describedby={null}
           id="video-vimeo"
           name="vimeo"
           onBlur={[Function]}
@@ -209,7 +206,6 @@ exports[`<FileDataForm />, when the video use is Clean renders video links 1`] =
             }
           >
             <input
-              aria-describedby={null}
               id="video-vimeo"
               name="vimeo"
               onBlur={[Function]}
