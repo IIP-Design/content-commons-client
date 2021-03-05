@@ -119,67 +119,72 @@ const SearchInput = ( { filter,
 
   return (
     <section className="search_bar">
-      <form className="ui form" onSubmit={ handleSubmit }>
-        { isUser && pathname === '/' && (
-          <div className="inline fields">
-            <label htmlFor="multiple" className="radio">
-              <span className="radio-input">
-                <input
-                  id="multiple"
-                  type="radio"
-                  name="radioGroup"
-                  value="multiple"
-                  checked={ selectedRadio === 'multiple' }
-                  onChange={ handleRadioChange }
-                />
-                <span className="radio-control" />
-              </span>
-              <span className="radio-label">Articles, Graphics, Videos</span>
-            </label>
-            <label htmlFor="document" className="radio">
-              <span className="radio-input">
-                <input
-                  id="document"
-                  type="radio"
-                  name="radioGroup"
-                  value="document"
-                  checked={ selectedRadio === 'document' }
-                  onChange={ handleRadioChange }
-                />
-                <span className="radio-control" />
-              </span>
-              <span className="radio-label">Press Materials</span>
-            </label>
-          </div>
-        ) }
+      <form className="ui form" onSubmit={ handleSubmit } aria-describedby="description">
+        <fieldset>
+          <legend id="description">
+            <VisuallyHidden>search public diplomacy content</VisuallyHidden>
+          </legend>
+          { isUser && pathname === '/' && (
+            <div className="inline fields">
+              <label htmlFor="multiple" className="radio">
+                <span className="radio-input">
+                  <input
+                    id="multiple"
+                    type="radio"
+                    name="radioGroup"
+                    value="multiple"
+                    checked={ selectedRadio === 'multiple' }
+                    onChange={ handleRadioChange }
+                  />
+                  <span className="radio-control" />
+                </span>
+                <span className="radio-label">Articles, Graphics, Videos</span>
+              </label>
+              <label htmlFor="document" className="radio">
+                <span className="radio-input">
+                  <input
+                    id="document"
+                    type="radio"
+                    name="radioGroup"
+                    value="document"
+                    checked={ selectedRadio === 'document' }
+                    onChange={ handleRadioChange }
+                  />
+                  <span className="radio-control" />
+                </span>
+                <span className="radio-label">Press Materials</span>
+              </label>
+            </div>
+          ) }
 
-        <div className={ `ui large icon left labeled input search_input${direction === 'right' ? ' right' : ''}` }>
-          <Dropdown
-            aria-label="select language"
-            className="label"
-            value={ locale }
-            options={ langOptions }
-            onChange={ handleLangOnChange }
-          />
-          <label htmlFor="search-input">
-            <VisuallyHidden>search</VisuallyHidden>
-            <input
-              id="search-input"
-              type="text"
-              onChange={ handleQueryOnChange }
-              value={ search?.term || '' }
-              placeholder="Type in keywords to search"
+          <div className={ `ui large icon left labeled input search_input${direction === 'right' ? ' right' : ''}` }>
+            <Dropdown
+              aria-label="select language"
+              className="label"
+              value={ locale }
+              options={ langOptions }
+              onChange={ handleLangOnChange }
             />
-          </label>
-          <button
-            type="submit"
-            onClick={ handleSearchClick }
-            onKeyUp={ handleSearchKeyUp }
-          >
-            <VisuallyHidden>submit search</VisuallyHidden>
-            <Icon inverted name="search" />
-          </button>
-        </div>
+            <label htmlFor="search-input">
+              <VisuallyHidden>search</VisuallyHidden>
+              <input
+                id="search-input"
+                type="text"
+                onChange={ handleQueryOnChange }
+                value={ search?.term || '' }
+                placeholder="Type in keywords to search"
+              />
+            </label>
+            <button
+              type="submit"
+              onClick={ handleSearchClick }
+              onKeyUp={ handleSearchKeyUp }
+            >
+              <VisuallyHidden>submit search</VisuallyHidden>
+              <Icon inverted name="search" />
+            </button>
+          </div>
+        </fieldset>
       </form>
     </section>
   );
