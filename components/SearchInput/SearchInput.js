@@ -119,7 +119,12 @@ const SearchInput = ( { filter,
 
   return (
     <section className="search_bar">
-      <form className="ui form" onSubmit={ handleSubmit } aria-describedby="description">
+      <form
+        aria-describedby="description"
+        className="ui form"
+        onSubmit={ handleSubmit }
+        role="search"
+      >
         <fieldset>
           <legend id="description">
             <VisuallyHidden>search public diplomacy content</VisuallyHidden>
