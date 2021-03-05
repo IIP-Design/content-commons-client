@@ -140,7 +140,7 @@
         flex-grow: 1;
 
         > input {
-          height: inherit;
+          height: 100%;
           width: 100%;
           padding: 0.5em !important;
           @media screen and (max-width: 425px) {
