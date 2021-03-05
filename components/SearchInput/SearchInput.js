@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
-import { Form, Icon, Dropdown } from 'semantic-ui-react';
+import { Icon, Dropdown } from 'semantic-ui-react';
 
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
@@ -119,7 +119,7 @@ const SearchInput = ( { filter,
 
   return (
     <section className="search_bar">
-      <Form onSubmit={ handleSubmit }>
+      <form className="ui form" onSubmit={ handleSubmit }>
         { isUser && pathname === '/' && (
           <div className="inline fields">
             <label htmlFor="multiple" className="radio">
@@ -180,7 +180,7 @@ const SearchInput = ( { filter,
             <Icon inverted name="search" />
           </button>
         </div>
-      </Form>
+      </form>
     </section>
   );
 };
