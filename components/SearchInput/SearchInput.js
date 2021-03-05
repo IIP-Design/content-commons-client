@@ -2,9 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
-import {
-  Form, Icon, Dropdown, Radio,
-} from 'semantic-ui-react';
+import { Form, Icon, Dropdown } from 'semantic-ui-react';
 
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
@@ -71,7 +69,9 @@ const SearchInput = ( { filter,
     updateSearchTerm( e.target.value );
   };
 
-  const handleRadioChange = ( e, { value } ) => {
+  const handleRadioChange = e => {
+    const { value } = e.target;
+
     setSelectedRadio( value );
 
     if ( value === 'multiple' ) postTypeUpdate( [
@@ -121,24 +121,36 @@ const SearchInput = ( { filter,
     <section className="search_bar">
       <Form onSubmit={ handleSubmit }>
         { isUser && pathname === '/' && (
-          <Form.Group inline>
-            <div className="radio-flex">
-              <Radio
-                label="Articles, Graphics, Videos"
-                name="radioGroup"
-                value="multiple"
-                checked={ selectedRadio === 'multiple' }
-                onChange={ handleRadioChange }
-              />
-              <Radio
-                label="Press Materials"
-                name="radioGroup"
-                value="document"
-                checked={ selectedRadio === 'document' }
-                onChange={ handleRadioChange }
-              />
-            </div>
-          </Form.Group>
+          <div className="inline fields">
+            <label htmlFor="multiple" className="radio">
+              <span className="radio-input">
+                <input
+                  id="multiple"
+                  type="radio"
+                  name="radioGroup"
+                  value="multiple"
+                  checked={ selectedRadio === 'multiple' }
+                  onChange={ handleRadioChange }
+                />
+                <span className="radio-control" />
+              </span>
+              <span className="radio-label">Articles, Graphics, Videos</span>
+            </label>
+            <label htmlFor="document" className="radio">
+              <span className="radio-input">
+                <input
+                  id="document"
+                  type="radio"
+                  name="radioGroup"
+                  value="document"
+                  checked={ selectedRadio === 'document' }
+                  onChange={ handleRadioChange }
+                />
+                <span className="radio-control" />
+              </span>
+              <span className="radio-label">Press Materials</span>
+            </label>
+          </div>
         ) }
 
         <div className={ `ui large icon left labeled input search_input${direction === 'right' ? ' right' : ''}` }>
