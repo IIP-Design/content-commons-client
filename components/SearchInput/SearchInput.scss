@@ -54,6 +54,10 @@
           &:focus + .radio-control {
             @include focus-styling($color: #fff);
           }
+
+          &:focus:not(:focus-visible) + .radio-control {
+            outline: none;
+          }
         }
       }
     
