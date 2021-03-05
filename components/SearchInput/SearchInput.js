@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 import {
-  Form, Input, Icon, Dropdown, Radio,
+  Form, Icon, Dropdown, Radio,
 } from 'semantic-ui-react';
 
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
@@ -67,8 +67,8 @@ const SearchInput = ( { filter,
     setDirection( getDirection( value ) );
   };
 
-  const handleQueryOnChange = ( e, { value } ) => {
-    updateSearchTerm( value );
+  const handleQueryOnChange = e => {
+    updateSearchTerm( e.target.value );
   };
 
   const handleRadioChange = ( e, { value } ) => {
@@ -109,10 +109,6 @@ const SearchInput = ( { filter,
     }
   };
 
-  const inputProps = {
-    className: `search_input${direction === 'right' ? ' right' : ''}`,
-  };
-
   const getLangOptions = () => langList.map( l => ( {
     key: l.key,
     text: l.display_name,
@@ -144,31 +140,33 @@ const SearchInput = ( { filter,
             </div>
           </Form.Group>
         ) }
-        <Input
-          label={ (
-            <Dropdown
-              value={ locale }
-              options={ langOptions }
-              onChange={ handleLangOnChange }
+
+        <div className={ `ui large icon left labeled input search_input${direction === 'right' ? ' right' : ''}` }>
+          <Dropdown
+            className="label"
+            value={ locale }
+            options={ langOptions }
+            onChange={ handleLangOnChange }
+          />
+          <label htmlFor="search-input">
+            <VisuallyHidden>search</VisuallyHidden>
+            <input
+              id="search-input"
+              type="text"
+              onChange={ handleQueryOnChange }
+              value={ search?.term || '' }
+              placeholder="Type in keywords to search"
             />
-          ) }
-          labelPosition="left"
-          onChange={ handleQueryOnChange }
-          value={ search?.term ? search.term : '' }
-          size="large"
-          icon={ (
-            <button
-              type="submit"
-              onClick={ handleSearchClick }
-              onKeyUp={ handleSearchKeyUp }
-            >
-              <VisuallyHidden>submit search</VisuallyHidden>
-              <Icon inverted name="search" />
-            </button>
-          ) }
-          placeholder="Type in keywords to search"
-          { ...inputProps }
-        />
+          </label>
+          <button
+            type="submit"
+            onClick={ handleSearchClick }
+            onKeyUp={ handleSearchKeyUp }
+          >
+            <VisuallyHidden>submit search</VisuallyHidden>
+            <Icon inverted name="search" />
+          </button>
+        </div>
       </Form>
     </section>
   );
@@ -183,7 +181,6 @@ const mapStateToProps = state => ( {
 SearchInput.propTypes = {
   router: PropTypes.object,
   filter: PropTypes.object,
-  isUser: PropTypes.bool,
   search: PropTypes.object,
   languages: PropTypes.object,
   loadLanguages: PropTypes.func,

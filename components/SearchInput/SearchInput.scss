@@ -55,6 +55,9 @@
       }
 
       .ui.label.dropdown {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        margin-right: 0;
         padding: 0.5em;
       }
 
@@ -74,18 +77,23 @@
         }        
       }
 
-      > input {
-        padding: 0.5em !important;
-        @media screen and (max-width: 425px) {
-          padding: 0.3em !important;
+      > label[for="search-input"] {
+        flex-grow: 1;
+
+        > input {
+          width: 100%;
+          padding: 0.5em !important;
+          @media screen and (max-width: 425px) {
+            padding: 0.3em !important;
+          }
+        }
+
+        > input[type="text"]::-ms-clear {
+          display: none;
         }
       }
 
-      > input[type="text"]::-ms-clear {
-        display: none;
-      }
-
-      button[type="submit"] {
+      > button[type="submit"] {
         border: 1px solid $blue;
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
