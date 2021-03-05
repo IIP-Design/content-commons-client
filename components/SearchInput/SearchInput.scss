@@ -52,7 +52,7 @@
           height: 0;
     
           &:focus + .radio-control {
-            @include focus-styling;
+            @include focus-styling($color: #fff);
           }
         }
       }
