@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 import { Icon, Dropdown } from 'semantic-ui-react';
 
+import SearchInputRadio from 'components/SearchInput/SearchInputRadio/SearchInputRadio';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
 import { getDirection } from 'lib/language';
@@ -117,6 +118,23 @@ const SearchInput = ( { filter,
 
   const langOptions = langList.length === 0 ? [{ key: 'en-us', text: 'English', value: 'en-us' }] : getLangOptions();
 
+  const radioConfig = [
+    {
+      checked: selectedRadio === 'multiple',
+      label: 'Articles, Graphics, Videos',
+      name: 'radioGroup',
+      onChange: handleRadioChange,
+      value: 'multiple',
+    },
+    {
+      checked: selectedRadio === 'document',
+      label: 'Press Materials',
+      name: 'radioGroup',
+      onChange: handleRadioChange,
+      value: 'document',
+    },
+  ];
+
   return (
     <section className="search_bar">
       <form
@@ -131,34 +149,7 @@ const SearchInput = ( { filter,
           </legend>
           { isUser && pathname === '/' && (
             <div className="inline fields">
-              <label htmlFor="multiple" className="radio">
-                <span className="radio-input">
-                  <input
-                    id="multiple"
-                    type="radio"
-                    name="radioGroup"
-                    value="multiple"
-                    checked={ selectedRadio === 'multiple' }
-                    onChange={ handleRadioChange }
-                  />
-                  <span className="radio-control" />
-                </span>
-                <span className="radio-label">Articles, Graphics, Videos</span>
-              </label>
-              <label htmlFor="document" className="radio">
-                <span className="radio-input">
-                  <input
-                    id="document"
-                    type="radio"
-                    name="radioGroup"
-                    value="document"
-                    checked={ selectedRadio === 'document' }
-                    onChange={ handleRadioChange }
-                  />
-                  <span className="radio-control" />
-                </span>
-                <span className="radio-label">Press Materials</span>
-              </label>
+              { radioConfig.map( config => <SearchInputRadio key={ config.value } config={ config } /> ) }
             </div>
           ) }
 
