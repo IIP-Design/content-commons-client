@@ -87,7 +87,7 @@
         height: 0.5em;
         box-shadow: inset 0.5rem 0.5rem currentColor;
         border-radius: 50%;
-        transition: 180ms transform ease-in-out;
+        transition: 50ms transform ease-in-out;
         transform: scale(0);
       }
     
@@ -99,7 +99,7 @@
         color: #fff;
         font-size: 1rem;
         font-weight: 400;
-        transition: 180ms all ease-in-out;
+        transition: 50ms all ease-in-out;
       }
     }
 
