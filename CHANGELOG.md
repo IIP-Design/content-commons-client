@@ -5,8 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v5.4.3...HEAD)
+## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v5.4.4...HEAD)
+
 _This sections lists changes committed since most recent release_
+
+# [5.4.4](https://github.com/IIP-Design/content-commons-client/compare/v5.4.3...5.4.4)(2021-03-08)
+
+**Fixed:**
+
+- Properly load the review video component on the video project page
 
 # [5.4.3](https://github.com/IIP-Design/content-commons-client/compare/v5.4.2...5.4.3)(2021-03-05)
 
@@ -15,7 +22,9 @@ _This sections lists changes committed since most recent release_
 - Pinned packages to landing page
 
 **Changed:**
+
 - Move landing page configuration to an external file that loads from a S3 bucket
+
 # [5.4.2](https://github.com/IIP-Design/content-commons-client/compare/v5.4.1...5.4.2)(2021-02-25)
 
 **Changed:**
@@ -23,6 +32,7 @@ _This sections lists changes committed since most recent release_
 - Priority sections on the landing page
 
 **Added:**
+
 - `REACT_APP_UI_CONFIG` configuration environmental variable
 
 # [5.4.1](https://github.com/IIP-Design/content-commons-client/compare/v5.4.0...5.4.1)(2021-02-01)
