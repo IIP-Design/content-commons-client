@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { redirectTo } from 'lib/browser';
 import { withRouter } from 'next/router';
@@ -34,43 +34,46 @@ const getProjectQuery = content => {
   }
 };
 
-const ProjectPage = props => {
+const ProjectPage = ( { query, router } ) => {
   // Handles client side route checking
-  const isValidPath = query => query && allowedContentTypes( query.content );
+  const isValidPath = q => q && allowedContentTypes( q.content );
 
   const loadEditComponent = () => {
-    switch ( props.query.content ) {
+    switch ( query.content ) {
       case 'video':
-        return <VideoEdit id={ props.query.id } />;
+        return <VideoEdit id={ query.id } />;
 
       case 'graphic':
-        return <GraphicEdit id={ props.query.id } />;
+        return <GraphicEdit id={ query.id } />;
 
       default:
         return null;
     }
-    // if ( props.query.content === 'video' ) {
-    //   return <VideoEdit id={ props.query.id } />;
-    // }
   };
 
   const loadReviewComponent = () => {
-    if ( props.query.content === 'video' ) {
-      return <VideoReview id={ props.query.id } />;
+    if ( query.content === 'video' ) {
+      return <VideoReview id={ query.id } />;
     }
+
+    return null;
   };
 
-  if ( !isValidPath( props.query ) ) {
-    props.router.push( '/admin/dashboard' );
+  if ( !isValidPath( query ) ) {
+    router.push( '/admin/dashboard' );
   }
 
-  const { action: actionQry } = props.query;
+  const { action: actionQry } = query;
 
   if ( actionQry === 'edit' ) {
     return loadEditComponent();
   }
 
-  loadReviewComponent();
+  if ( actionQry === 'review' ) {
+    return loadReviewComponent();
+  }
+
+  return null;
 };
 
 // Executes before page renders

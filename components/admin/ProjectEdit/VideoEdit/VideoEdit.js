@@ -153,6 +153,7 @@ const VideoEdit = props => {
       {
         pathname: '/admin/project',
         query: {
+          action: 'review',
           content: 'video',
           id: projectId,
         },

@@ -35,7 +35,7 @@ const VideoReview = props => {
   const {
     loading, error, data, startPolling, stopPolling,
   } = useQuery( VIDEO_PROJECT_QUERY, {
-    variables: { id: props.id },
+    variables: { id },
     // using network-only here to ensure that we have the latest to determine
     // if the project has unpublished changes
     // todo - verify update mutation is returning necessary data to avoid
