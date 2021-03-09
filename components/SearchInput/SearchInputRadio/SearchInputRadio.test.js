@@ -50,9 +50,8 @@ describe( '<SearchInputRadio />', () => {
     expect( radioControl.exists() ).toEqual( true );
   } );
 
-  it( 'renders the .radio-label', () => {
-    const radioLabel = searchInputRadio.find( '.radio-label' );
-
-    expect( radioLabel.text() ).toEqual( props.config.label );
+  it( 'renders the label text', () => {
+    expect( searchInputRadio.contains( props.config.label ) )
+      .toEqual( true );
   } );
 } );
