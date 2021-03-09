@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import './SearchInputRadio.scss';
+
 const SearchInputRadio = ( { config } ) => {
   const {
     checked, label, name, onChange, value,
   } = config;
 
   return (
-    <label htmlFor={ value } className="radio">
+    <label htmlFor={ value } className="cdp-radio">
       <span className="radio-input">
         <input
           id={ value }
