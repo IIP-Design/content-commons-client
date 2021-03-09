@@ -27,7 +27,13 @@ const SearchInputRadio = ( { config } ) => {
 };
 
 SearchInputRadio.propTypes = {
-  config: PropTypes.object,
+  config: PropTypes.shape( {
+    checked: PropTypes.bool,
+    label: PropTypes.string,
+    name: PropTypes.string,
+    onChange: PropTypes.func,
+    value: PropTypes.string,
+  } ),
 };
 
 export default SearchInputRadio;
