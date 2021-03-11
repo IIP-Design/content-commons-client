@@ -25,9 +25,10 @@ class UserProfileMenu extends Component {
       <div className="nav_submenu">
         <div className="nav_submenu_header">
           <p className="nav_submenu_header_item nav_submenu_header_item--title">
-            Welcome
+            { 'Welcome ' }
             { name }
-            !
+            { name && '!' }
+
           </p>
         </div>
         <section className="nav_submenu_section">
