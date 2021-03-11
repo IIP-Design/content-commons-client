@@ -6,11 +6,13 @@ import Featured from 'components/Featured/Featured';
 
 import { useDispatch } from 'react-redux';
 import { clearFilters } from 'lib/redux/actions/filter';
+import useIsMounted from 'lib/hooks/useIsMounted';
 
 const { publicRuntimeConfig: { REACT_APP_UI_CONFIG } } = getConfig();
 
 const Landing = () => {
   const dispatch = useDispatch();
+  const isMounted = useIsMounted();
   const [config, setConfig] = useState( {} );
 
   useEffect( () => {
@@ -20,11 +22,15 @@ const Landing = () => {
     const fetchConfig = async () => {
       const result = await fetch( REACT_APP_UI_CONFIG );
 
-      setConfig( await result.json() );
+      if ( isMounted ) {
+        setConfig( await result.json() );
+      }
+
+      return {};
     };
 
     fetchConfig();
-  }, [] );
+  }, [isMounted] );
 
 
   useEffect( () => {
