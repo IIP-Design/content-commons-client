@@ -42,6 +42,7 @@ const ResultItem = ( { item } ) => {
       'GPA Media Strategy',
       'GPA Design & Editorial',
       'U.S. Missions',
+      'Bureau of African Affairs (AF)',
     ];
 
     if ( !source && item.type === 'video' && dosOwners.includes( item.owner ) ) {
