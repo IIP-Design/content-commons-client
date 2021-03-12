@@ -28,7 +28,8 @@ const HeaderGlobal = ( { router: { pathname } } ) => {
   const isHome = pagePath[0] === '';
   const barClass = `bar ${isHome ? 'bar--home' : pagePath.map( path => `bar--${path}` ).join( ' ' )}`;
 
-  const showSearchInput = _pathname => ( ( _pathname === '/' || _pathname !== '/results' ) ? <SearchInput /> : null );
+
+  // const showSearchInput = _pathname => ( ( _pathname === '/' || _pathname !== '/results' ) ? <SearchInput /> : null );
 
   return (
     <div className={ barClass }>
@@ -44,7 +45,7 @@ const HeaderGlobal = ( { router: { pathname } } ) => {
               Content Commons is a U.S. Department of State portal helping public diplomacy practitioners find what they need.
             </Header.Subheader>
           </Header>
-          { showSearchInput( pathname ) }
+          <SearchInput />
           <GlobalNav />
         </header>
       </div>
