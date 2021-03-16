@@ -10,6 +10,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 _This sections lists changes committed since most recent release_
 
 # [5.4.5](https://github.com/IIP-Design/content-commons-client/compare/v5.4.4...5.4.5)(2021-03-16)
+**Fixed:**
+- Duplicate packages appearing on landing page for a pinned recent package
+- [object Object] display on dashboard for teams with no assigned contentTypes
+
+**Added:**
+- Additional search fields to priority query
+- Press documents to Priorities section
+- Bureau of African Affairs (A/F) to source dropdown on GraphicEdit screen
+
+**Changed**
+- Priorities query on landing page to return results no older than 90 days
+- Manually tracking mount status to useIsMounted hook
 
 # [5.4.4](https://github.com/IIP-Design/content-commons-client/compare/v5.4.3...5.4.4)(2021-03-08)
 
