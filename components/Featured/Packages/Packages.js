@@ -82,11 +82,21 @@ const Packages = ( { pin: idsToPin, user } ) => {
 
   if ( !items.length ) return null;
 
+  const accessibleLabel = 'latest-packages-title';
+
   return (
-    <section className="latestPackages_section">
+    <section
+      className="latestPackages_section"
+      aria-labelledby={ accessibleLabel }
+    >
       <div className="latestPackages_container">
         <div className="latestPackages_header">
-          <h2 className="latestPackages_header_title">Latest Guidance Packages</h2>
+          <h2
+            id={ accessibleLabel }
+            className="latestPackages_header_title"
+          >
+            Latest Guidance Packages
+          </h2>
           <Link
             href={ {
               pathname: '/results',

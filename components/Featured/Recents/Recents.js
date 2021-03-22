@@ -80,11 +80,16 @@ const Recents = ( { postType, locale, user } ) => {
 
   if ( items.length < 3 ) return null;
 
+  const accessibleLabel = `latest-${postType}s-title`;
+
   return (
-    <section className="ui container recents">
+    <section
+      className="ui container recents"
+      aria-labelledby={ accessibleLabel }
+    >
       <div className="recentswrapper">
         <div className="recentstitle">
-          <h2 className="ui large header">
+          <h2 id={ accessibleLabel } className="ui large header">
             { postTypeLabel && `Latest ${postTypeLabel}` }
           </h2>
           <Link

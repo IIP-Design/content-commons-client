@@ -120,11 +120,16 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
 
   if ( items.length < 3 ) return null;
 
+  const accessibleLabel = `${term.join( '-' ).replaceAll( ' ', '-' )}-priorities-title`;
+
   return (
-    <section className="priorities">
+    <section
+      className="priorities"
+      aria-labelledby={ accessibleLabel }
+    >
       <div className="prioritiescontainer">
         <div className="prioritiestitle">
-          <h2 className="ui large header">
+          <h2 id={ accessibleLabel } className="ui large header">
             { `Department Priority: ${label}` }
           </h2>
           <Link
