@@ -1,4 +1,4 @@
-@import "./colors.scss";
+@import './colors.scss';
 
 /*----------------------------------
   Override form semantic defaults
@@ -76,7 +76,8 @@
   color: $blue;
 
   &::placeholder {
-    color: $focus-gray;
+    color: $focus-grey;
+    opacity: 1;
   }
 }
 
@@ -152,6 +153,7 @@
   }
 
   &::placeholder {
-    color: $focus-gray;
+    color: $focus-grey;
+    opacity: 1;
   }
 }

@@ -56,8 +56,7 @@
           cursor: pointer;
 
           &:focus {
-            outline: 2px dotted $medium-grey; 
-            outline-offset: 2px;
+            @include focus-styling;
           }
         }   
       }

@@ -1,4 +1,4 @@
-@import "../../../../../styles/colors.scss";
+@import 'styles/colors.scss';
 
 .projects {
 
@@ -100,6 +100,10 @@
         padding: 0;
         border: none;
         background-color: transparent; 
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
 
       &_wrapper {

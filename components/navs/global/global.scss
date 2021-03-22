@@ -1,5 +1,5 @@
-@import "styles/mixins.scss";
-@import "styles/colors.scss";
+@import 'styles/mixins.scss';
+@import 'styles/colors.scss';
 
 .bar--home nav {
   position: absolute;
@@ -29,7 +29,7 @@
     }
   }
 
-  .ui.menu .item:not(.feedback) a {
+  .ui.menu .item:not(.feedback-item) a {
     border-radius: 0;
     color: white;
 
@@ -53,6 +53,12 @@
       top: 2em;
       right: 1.5em;
     }
+  }
+}
+
+.bar:not(.bar--home) nav {
+  :focus {
+    @include focus-styling($color: $blue);
   }
 }
 
@@ -251,25 +257,38 @@ nav {
 
       a {
         color: #fff;
+
+        &:hover {
+          text-decoration: none;
+        }
       }
 
       &:before {
         background: none;
       }
 
-      &.feedback {
-        margin-left: 0.5em;
-        padding: 0.8em;
-        border-radius: 0 !important;
-        color: $blue !important;
-        background-color: $orange;
-        @media screen and (min-width: 769px) and (max-width: 1024px) {
-          padding: 0.5em;
-        }
+      &.feedback-item {
+        margin-right: 0;
+        padding-top: 0;
+        padding-right: 0;
+        padding-bottom: 0;
 
-        &:hover {
-          border-bottom: none !important;
+        .feedback {
+          margin-right: 0;
+          margin-left: 0.5em;
+          padding: 0.8em;
+          border-radius: 0 !important;
+          color: $blue !important;
+          line-height: 1;
           background-color: $orange;
+          @media screen and (min-width: 769px) and (max-width: 1024px) {
+            padding: 0.5em;
+          }
+  
+          &:hover {
+            border-bottom: none !important;
+            background-color: $orange;
+          }
         }
       }
 

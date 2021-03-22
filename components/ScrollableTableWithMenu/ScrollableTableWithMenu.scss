@@ -1,13 +1,9 @@
-@import "../../styles/colors.scss";
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
 
 .ui.grid {
-  :focus:not(:focus-visible) {
-    outline: none
-  }
-
   :focus {
-    outline: 2px dotted $medium-grey;
-    outline-offset: 2px;
+    @include focus-styling;
   }
 
   .row.items_tableMenus_wrapper {

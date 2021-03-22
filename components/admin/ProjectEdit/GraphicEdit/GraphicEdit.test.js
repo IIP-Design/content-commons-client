@@ -189,7 +189,7 @@ describe( '<GraphicEdit />, when there is an existing DRAFT graphic project', ()
       el: 'p',
       customStyles: {
         position: 'absolute',
-        top: '1em',
+        top: '8em',
         left: '50%',
         transform: 'translateX(-50%)',
       },
@@ -394,7 +394,7 @@ describe( '<GraphicEdit />, when there is an existing PUBLISHED graphic project'
       el: 'p',
       customStyles: {
         position: 'absolute',
-        top: '1em',
+        top: '8em',
         left: '50%',
         transform: 'translateX(-50%)',
       },
@@ -565,7 +565,7 @@ describe( '<GraphicEdit />, when there is no props.id and local files have been 
       el: 'p',
       customStyles: {
         position: 'absolute',
-        top: '1em',
+        top: '8em',
         left: '50%',
         transform: 'translateX(-50%)',
       },

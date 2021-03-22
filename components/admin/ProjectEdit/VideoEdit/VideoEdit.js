@@ -280,7 +280,7 @@ const VideoEdit = props => {
       { /* Form data saved notification */ }
       <Notification
         el="p"
-        customStyles={ centeredStyles }
+        customStyles={ { ...centeredStyles, top: '8em' } }
         show={ showNotification }
         msg={ notificationMessage }
       />

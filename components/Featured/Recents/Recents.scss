@@ -1,5 +1,5 @@
-@import "styles/colors.scss";
-@import "styles/mixins.scss";
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
 
 .recents {
   padding: 3em 0;
@@ -15,6 +15,10 @@
   &wrapper {    
     max-width: 1200px;
     margin: 0 auto;
+
+    :focus {
+      @include focus-styling;
+    }
   }
 
   &title {    
@@ -58,6 +62,10 @@
     position: relative;
     @media screen and (max-width: 767px) {
       height: 300px;
+    }
+
+    :focus {
+      @include focus-styling($color: #fff);
     }
   }
 

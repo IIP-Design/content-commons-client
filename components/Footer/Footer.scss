@@ -1,4 +1,5 @@
-@import "../../styles/colors.scss";
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
 
 footer {
   position: absolute;
@@ -17,6 +18,10 @@ footer {
   a:visited,
   a:active {
     color: #fff;
+  }
+
+  a:focus {
+    @include focus-styling($color: #fff);
   }
 
   p {
@@ -52,11 +57,19 @@ footer {
       padding: 9px;
 
       a,
-      a:hover,
-      a:visited,
-      a:active {
-        color: $blue;
+      a:visited {
+        color: currentColor;
+        font-size: inherit;
         text-decoration: underline;
+      }
+
+      a:hover,
+      a:active {
+        text-decoration: none;
+      }
+
+      a:focus {
+        @include focus-styling($color: currentColor);
       }
     }
   }
@@ -129,6 +142,10 @@ footer {
         height: auto;
         margin-top: 0;
         transform: translateY(33%);
+      }
+
+      a:hover {
+        text-decoration: none;
       }
     }
   }

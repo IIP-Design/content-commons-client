@@ -1,8 +1,17 @@
-@import "styles/colors.scss";
+@import 'styles/colors.scss';
 
-@mixin focus-styling {
-  outline: 2px dotted $medium-grey;
+// Remove outline for non-keyboard :focus
+@mixin kbd-only-focus-ring {
+  &:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+@mixin focus-styling($color: $focus-grey) {
+  outline: 2px dotted $color;
   outline-offset: 2px;
+
+  @include kbd-only-focus-ring;
 }
 
 // base button styles to override Semantic
@@ -99,13 +108,6 @@
   display: grid;
   grid-template-columns: repeat($length, $flex);
   gap: $gap;
-}
-
-// Remove outline for non-keyboard :focus
-@mixin kbd-only-focus-ring {
-  *:focus:not(:focus-visible) {
-    outline: none;
-  }
 }
 
 // used for "Required Fields *"

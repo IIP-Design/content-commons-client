@@ -9,7 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _This sections lists changes committed since most recent release_
 
+**Changed:**
+- Wrap navigation menu items in `li` elements
+
+**Fixed:**
+
+- Skip to content link for improved accessibility
+- Default link color and hover styling for improved accessibility
+- Focus outline color to meet accessibility contrast requirement
+  
 # [5.4.5](https://github.com/IIP-Design/content-commons-client/compare/v5.4.4...5.4.5)(2021-03-16)
+
 **Fixed:**
 - Duplicate packages appearing on landing page for a pinned recent package
 - [object Object] display on dashboard for teams with no assigned contentTypes

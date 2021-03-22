@@ -1,5 +1,5 @@
-@import "styles/colors.scss";
-@import "styles/mixins.scss";
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
 
 .priorities {
   background: url("../../../static/images/wavy-bg.jpg") repeat;
@@ -14,6 +14,10 @@
     margin: 0 auto;
     background: white;    
     box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+
+    :focus {
+      @include focus-styling;
+    }
   }
 
   &title {
@@ -64,6 +68,9 @@
       height: 300px;
     }
 
+    :focus {
+      @include focus-styling($color: #fff);
+      
     &.text {
       background: $blue; 
     }

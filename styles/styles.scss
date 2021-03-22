@@ -10,6 +10,7 @@ $flags-image-path: "~semantic-ui-sass/images";
 
 @import "~semantic-ui-sass/semantic-ui.scss";
 @import "colors.scss";
+@import "mixins.scss";
 
 /*---------------------------------
   Override some semantic defaults
@@ -25,6 +26,10 @@ body {
 
 html {
   font-size: $font-size;
+
+  @media screen and (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
@@ -73,6 +78,33 @@ h6.ui.header {
   font-size: 1rem; // 18px;
 }
 
+a {
+  color: $light-blue;
+
+  &:not(.title):hover {
+    text-decoration: underline;
+  }
+}
+
+.skip-to-content {
+  position: absolute;
+  top: 0;
+  z-index: 500; // place above the header
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  color: $light-blue;
+  font-size: 0.89rem;
+  font-weight: 700;
+  line-height: 1.5;
+  background-color: #fff;
+  transform: translateY(-100%);
+  transition: transform 0.1s linear;
+}
+
+.skip-to-content:focus {
+  transform: translateY(0%);
+}
+
 main {
   padding-bottom: 560px; // height of footer plus extra padding
   @media screen and (max-width: 767px) {
@@ -94,11 +126,12 @@ main {
     margin-right: auto !important;
   }
 
-  /* Non home pages need margin to clear the fixed header */
+  /* Non home pages need padding to clear the fixed header */
   &.inside {
-    margin-top: 6.7rem;
+    position: relative;
+    padding-top: 6.7rem;
     @media only screen and (min-width: 768px) {
-      margin-top: 5rem;
+      padding-top: 5rem;
     }
   }
 
@@ -116,7 +149,7 @@ main {
   font-size: 0.888rem;
 
   &:focus {
-    outline: 2px dotted $focus-gray;
+    @include focus-styling;
   }
 
   &.primary {

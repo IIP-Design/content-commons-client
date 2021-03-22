@@ -1,4 +1,5 @@
 @import 'styles/colors.scss';
+@import 'styles/mixins.scss';
 
 .ui.card.package_card {
   height: 100%;
@@ -72,8 +73,7 @@
         cursor: pointer;
 
         &:focus {
-          outline: 2px dotted $medium-grey;
-          outline-offset: 2px;
+          @include focus-styling($color: #fff);
         }
 
         h2,
@@ -92,6 +92,10 @@
     font-size: 11px;
     line-height: 1.428;
     color: $dark-grey;
+
+    .popover_trigger:hover {
+      text-decoration: underline;
+    }
 
     dl.terms.date-time {
       margin-bottom: 0.5em;

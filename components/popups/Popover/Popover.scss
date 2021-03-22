@@ -1,5 +1,5 @@
-@import "styles/colors.scss";
-@import "styles/mixins.scss";
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
 
 .popover {
   position: relative;
@@ -15,8 +15,7 @@
     cursor: pointer;
 
     &:focus {
-      outline: 2px dotted $medium-grey; 
-      outline-offset: 2px;
+      @include focus-styling;
     }    
 
     &[tooltip] {
