@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Grid } from 'semantic-ui-react';
 import { normalizeItem } from 'lib/elastic/parser';
 import { typeRequestDesc, getTermsRequest } from 'lib/elastic/api';
+import useIsMounted from 'lib/hooks/useIsMounted';
 
 import config from 'config';
 import PackageCard from 'components/Package/PackageCard/PackageCard';
@@ -17,10 +18,9 @@ const archiveLink = () => <a href={ config.PRESS_GUIDANCE_DB_URL } rel="noopener
 const Packages = ( { pin: idsToPin, user } ) => {
   const [items, setItems] = useState( [] );
   const [state, setState] = useState( { loading: false, error: false } );
+  const isMounted = useIsMounted();
 
   useEffect( () => {
-    let mounted = true;
-
     setState( { loading: true, error: false } );
 
     /**
@@ -44,18 +44,23 @@ const Packages = ( { pin: idsToPin, user } ) => {
       const [pinned, recents] = await getPinnedAndRecents( idsToPin );
 
       const pinnedItems = Array.isArray( pinned?.hits?.hits ) ? pinned.hits.hits : [];
-      const recentItems = Array.isArray( recents?.hits?.hits ) ? recents.hits.hits.slice( 0, 4 - idsToPin.length ) : [];
+      const recentItems = Array.isArray( recents?.hits?.hits ) ? recents.hits.hits : [];
 
       let packages = [...pinnedItems, ...recentItems];
+
+      // Remove any pinned packages that may apear in recentItems. Ensure array length is at most 4
+      packages = [...new Map( packages.map( pkg => [pkg._id, pkg] ) ).values()].slice( 0, 4 );
 
       if ( packages?.length ) {
         packages = packages.map( item => {
           const _item = normalizeItem( item );
 
-          return ( idsToPin.includes( _item.id ) ) ? { ..._item, pin: true } : _item;
+          // if item is to be pinned, add pin prop to item so render method
+          // knows to display featured ribbon
+          return ( idsToPin?.includes( _item.id ) ) ? { ..._item, pin: true } : _item;
         } );
 
-        if ( mounted ) {
+        if ( isMounted ) {
           setState( { loading: false, error: false } );
           setItems( packages );
         }
@@ -65,10 +70,6 @@ const Packages = ( { pin: idsToPin, user } ) => {
     };
 
     getPackages();
-
-    return () => {
-      mounted = false;
-    };
   }, [user, idsToPin] );
 
   if ( state.error ) {

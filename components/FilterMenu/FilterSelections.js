@@ -29,6 +29,9 @@ const getSelection = ( values, name, list, isRadio = false ) => {
     };
   } );
 
+  // don't add if label is not present as it indicates no content avaialble for that filter type
+  filterSelections = filterSelections.filter( sel => sel.label );
+
   // remove any possible duplicates (needed as some filters have multiple values, i.e YALI or YLAI)
   // eslint-disable-next-line no-extra-parens
   filterSelections = filterSelections.reduce( ( acc, val ) => (

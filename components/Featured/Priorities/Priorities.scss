@@ -70,6 +70,9 @@
 
     :focus {
       @include focus-styling($color: #fff);
+      
+    &.text {
+      background: $blue; 
     }
   }
 
@@ -85,7 +88,7 @@
     }
   }
 
-  &gridleft {
+  &gridleft { 
     &.column {
       padding-right: 0 !important;
       padding-bottom: 0 !important;
@@ -125,6 +128,12 @@
     text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3), 1px -1px 0 rgba(0, 0, 0, 0.3),
       -1px 1px 0 rgba(0, 0, 0, 0.3), 1px 1px 0 rgba(0, 0, 0, 0.3);
 
+    &_use {
+     font-size: .5em;
+     text-transform: uppercase;
+     font-weight: normal;
+    }
+
     &_title {
       width: 80%;
       @include hyphenate;
@@ -148,7 +157,7 @@
 }
 
 .ui.items .item.prioritiesItem {
-  border: 1px solid $light-grey;
+  border: 1px solid $light-grey;   
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   @media only screen 
@@ -166,6 +175,33 @@
     min-height: calc( 100vh - 2em );
   }
 
+  .metaicon {
+    position: absolute;
+    right: 5px;
+    bottom: 10px;
+  }
+
+  .prioritiesItem_text {
+    position: relative;
+    min-width: 195px;
+    color: #fff;
+    background-color: $blue;
+    font-size: .7em;
+    text-transform: uppercase; 
+    @media screen and (max-width: 767px) {
+      min-height: 195px;
+      height: 100%;
+    }
+
+    .use {
+      position: absolute;
+      width: 120px;
+      line-height: 1.5;
+      left: 10px;
+      top: 12px;
+    }  
+  }
+  
   .prioritiesItem_img {
     position: relative;
     min-width: 195px;
@@ -177,11 +213,11 @@
       height: 100%;
     }
 
-    .metaicon {
-      position: absolute;
-      right: 5px;
-      bottom: 10px;
-    }
+    .prioritiesItem_use {
+      background-color: $blue;
+      color: #fff;
+      height: 45px;
+    } 
   }
 
   .content {

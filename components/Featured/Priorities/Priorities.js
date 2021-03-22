@@ -26,18 +26,18 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
 
     setState( { loading: true, error: false } );
 
-    // Load categories to obtain category id to pass
-    // to results page as a search param
-    categoryNameIdRequest().then( res => {
-      const cats = res.hits.hits;
-      const ids = cats
-        .filter( cat => categories.includes( cat._source.language.en ) )
-        .map( cat => cat._id );
+    // If config has categories, load categories to obtain
+    // category id to pass to results page as a search param
+    if ( categories?.length ) {
+      categoryNameIdRequest().then( res => {
+        const cats = res.hits.hits;
+        const ids = cats
+          .filter( cat => categories.includes( cat._source.language.en ) )
+          .map( cat => cat._id );
 
-      setCategoryIds( ids );
-    } );
-
-
+        setCategoryIds( ids );
+      } );
+    }
     typePrioritiesRequest( term, categories, tags, locale, user )
       .then( res => {
         // check to ensure we are mounted in the event we unmounted before request returned
@@ -75,9 +75,20 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
       closeIcon
       trigger={ (
         <Item className="prioritiesItem">
-          <SignedUrlImage className="prioritiesItem_img" url={ priority.thumbnail }>
-            <img src={ priority.icon } className="metaicon" alt="icon" />
-          </SignedUrlImage>
+          {
+            priority.type === 'document'
+              ? (
+                <div className="prioritiesItem_text">
+                  <div className="use">{ priority.use }</div>
+                  <img src={ priority.icon } className="metaicon" alt="icon" />
+                </div>
+              )
+              : (
+                <SignedUrlImage className="prioritiesItem_img" url={ priority.thumbnail }>
+                  <img src={ priority.icon } className="metaicon" alt="icon" />
+                </SignedUrlImage>
+              )
+          }
           <Item.Content>
             <Item.Header>{ priority.title }</Item.Header>
             <div className="meta">
@@ -94,6 +105,19 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
     </Modal>
   ) );
 
+  /**
+   * Puts quotes around search phrases to ensure search is
+   * executed on a phrase and not tokenized into separate words
+   * Assumes if array has single element, it is considered a phrase
+   * @param {string} _term Selected post types
+   * @return Quoted/unquoted string
+   */
+  const getTermQry = _term => {
+    if ( !_term.length ) return '';
+
+    return _term?.length === 1 ? `"${_term?.join( ' ' )}"` : _term?.join( ' ' );
+  };
+
   if ( items.length < 3 ) return null;
 
   return (
@@ -108,7 +132,7 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
               pathname: '/results',
               query: {
                 language: 'en-us',
-                term,
+                term: getTermQry( term ),
                 categories: categoryIds,
                 sortBy: 'relevance',
               },
@@ -122,14 +146,27 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
             { items && items[0] && (
               <Modal
                 closeIcon
-                trigger={ (
-                  <SignedUrlImage className="prioritiesleft" url={ items[0].thumbnail }>
-                    <div className="prioritiesoverlay">
-                      <div className="prioritiesoverlay_title">{ items[0].title }</div>
-                      <img src={ items[0].icon } className="prioritiesoverlay_icon" alt="icon" />
-                    </div>
-                  </SignedUrlImage>
-                ) }
+                trigger={
+                  items[0].type === 'document'
+                    ? (
+                      <div className="prioritiesleft text">
+                        <div className="prioritiesoverlay">
+                          <div className="prioritiesoverlay_use">{ items[0].use }</div>
+                          <div className="prioritiesoverlay_title">{ items[0].title }</div>
+                          <img src={ items[0].icon } className="prioritiesoverlay_icon" alt="icon" />
+                        </div>
+                      </div>
+                    )
+                    : (
+                      <SignedUrlImage className="prioritiesleft" url={ items[0].thumbnail }>
+                        <div className="prioritiesoverlay">
+                          <div className="prioritiesoverlay_title">{ items[0].title }</div>
+                          <img src={ items[0].icon } className="prioritiesoverlay_icon" alt="icon" />
+                        </div>
+                      </SignedUrlImage>
+                    // eslint-disable-next-line react/jsx-indent
+                    )
+                }
               >
                 <Modal.Content>{ getModalContent( items[0] ) }</Modal.Content>
               </Modal>
@@ -145,7 +182,7 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
 };
 
 Priorities.propTypes = {
-  term: PropTypes.string,
+  term: PropTypes.array,
   label: PropTypes.string,
   categories: PropTypes.array,
   tags: PropTypes.array,

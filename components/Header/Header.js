@@ -23,10 +23,13 @@ Router.onRouteChangeError = () => {
   NProgress.done();
 };
 
-const HeaderGlobal = ( { router } ) => {
-  const pagePath = router.pathname.split( '/' ).slice( 1 );
+const HeaderGlobal = ( { router: { pathname } } ) => {
+  const pagePath = pathname.split( '/' ).slice( 1 );
   const isHome = pagePath[0] === '';
   const barClass = `bar ${isHome ? 'bar--home' : pagePath.map( path => `bar--${path}` ).join( ' ' )}`;
+
+
+  // const showSearchInput = _pathname => ( ( _pathname === '/' || _pathname !== '/results' ) ? <SearchInput /> : null );
 
   return (
     <div className={ barClass }>

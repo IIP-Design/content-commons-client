@@ -5,12 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v5.4.2...HEAD)
+## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v5.4.5...HEAD)
 
 _This sections lists changes committed since most recent release_
 
 **Changed:**
-
 - Wrap navigation menu items in `li` elements
 
 **Fixed:**
@@ -19,11 +18,46 @@ _This sections lists changes committed since most recent release_
 - Default link color and hover styling for improved accessibility
 - Focus outline color to meet accessibility contrast requirement
   
+# [5.4.5](https://github.com/IIP-Design/content-commons-client/compare/v5.4.4...5.4.5)(2021-03-16)
+
+**Fixed:**
+- Duplicate packages appearing on landing page for a pinned recent package
+- [object Object] display on dashboard for teams with no assigned contentTypes
+
+**Added:**
+- Additional search fields to priority query
+- Press documents to Priorities section
+- Bureau of African Affairs (A/F) to source dropdown on GraphicEdit screen
+
+**Changed**
+- Priorities query on landing page to return results no older than 90 days
+- Manually tracking mount status to useIsMounted hook
+
+# [5.4.4](https://github.com/IIP-Design/content-commons-client/compare/v5.4.3...5.4.4)(2021-03-08)
+
+**Fixed:**
+
+- Properly load the review video component on the video project page
+
+# [5.4.3](https://github.com/IIP-Design/content-commons-client/compare/v5.4.2...5.4.3)(2021-03-05)
+
+**Added:**
+
+- Pinned packages to landing page
+
+**Changed:**
+
+- Move landing page configuration to an external file that loads from a S3 bucket
+
 # [5.4.2](https://github.com/IIP-Design/content-commons-client/compare/v5.4.1...5.4.2)(2021-02-25)
 
 **Changed:**
 
 - Priority sections on the landing page
+
+**Added:**
+
+- `REACT_APP_UI_CONFIG` configuration environmental variable
 
 # [5.4.1](https://github.com/IIP-Design/content-commons-client/compare/v5.4.0...5.4.1)(2021-02-01)
 
@@ -36,13 +70,13 @@ _This sections lists changes committed since most recent release_
 **Added:**
 
 - Text box to display background information to the PackageDetailsForm component on the backend and to the Package component on the frontend
-- Utility functions to replace '\n' characters with applicable html tags, <p> or <span>
+- Utility functions to replace '\n' characters with applicable html tags
 
 # [5.3.1](https://github.com/IIP-Design/content-commons-client/compare/v5.3.0...5.3.1)(2021-01-22)
 
 **Changed:**
 
-- Login link on nav no longer needs to use the <a> tag as CloudFlare no longer initiating the login
+- Login link on nav no longer needs to use the `<a>` tag as CloudFlare no longer initiating the login
 
 # [5.3.0](https://github.com/IIP-Design/content-commons-client/compare/v5.2.1...5.2.2)(2021-01-07)
 

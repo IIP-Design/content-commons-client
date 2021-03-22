@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
@@ -13,7 +13,12 @@ import * as actions from 'lib/redux/actions';
 
 import './SearchInput.scss';
 
-const SearchInput = ( { filter, languages, loadLanguages, search, router, updateSearchTerm, postTypeUpdate } ) => {
+const SearchInput = ( { filter,
+  languages,
+  loadLanguages,
+  search, router,
+  updateSearchTerm,
+  postTypeUpdate } ) => {
   const [locale, setLocale] = useState( search.language );
   const [direction, setDirection] = useState( 'left' );
   const [selectedRadio, setSelectedRadio] = useState( 'multiple' );
@@ -23,7 +28,8 @@ const SearchInput = ( { filter, languages, loadLanguages, search, router, update
 
   const isUser = user?.id && user.id !== 'public';
   const pathname = router?.pathname ? router.pathname : '';
-  const langList = languages?.list ? languages.list : [];
+  const langList = useMemo( () => languages?.list || [], [languages] );
+
   const { language } = search?.language ? search.language : {};
 
   // Check if viewing guidance packages 'Browse All' results page
