@@ -86,7 +86,7 @@ const Packages = ( { pin: idsToPin, user } ) => {
     <section className="latestPackages_section">
       <div className="latestPackages_container">
         <div className="latestPackages_header">
-          <h1 className="latestPackages_header_title">Latest Guidance Packages</h1>
+          <h2 className="latestPackages_header_title">Latest Guidance Packages</h2>
           <Link
             href={ {
               pathname: '/results',

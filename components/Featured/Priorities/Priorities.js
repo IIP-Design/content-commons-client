@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
 import { v4 } from 'uuid';
-import { Grid, Header, Item, Modal } from 'semantic-ui-react';
+import { Grid, Item, Modal } from 'semantic-ui-react';
 
 import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
 import { getModalContent } from 'components/modals/utils';
@@ -124,9 +124,9 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
     <section className="priorities">
       <div className="prioritiescontainer">
         <div className="prioritiestitle">
-          <Header as="h1" size="large">
+          <h2 className="ui large header">
             { `Department Priority: ${label}` }
-          </Header>
+          </h2>
           <Link
             href={ {
               pathname: '/results',

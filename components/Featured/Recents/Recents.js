@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
 import { v4 } from 'uuid';
-import { Grid, Header, Item, Modal } from 'semantic-ui-react';
+import { Grid, Item, Modal } from 'semantic-ui-react';
 
 import { getModalContent } from 'components/modals/utils';
 import { getCategories } from '../utils';
@@ -84,9 +84,9 @@ const Recents = ( { postType, locale, user } ) => {
     <section className="ui container recents">
       <div className="recentswrapper">
         <div className="recentstitle">
-          <Header as="h1" size="large">
+          <h2 className="ui large header">
             { postTypeLabel && `Latest ${postTypeLabel}` }
-          </Header>
+          </h2>
           <Link
             href={ {
               pathname: '/results',
