@@ -145,7 +145,7 @@ const SearchInput = ( { filter,
       >
         <fieldset>
           <legend>
-            <VisuallyHidden>select the content type to search</VisuallyHidden>
+            <VisuallyHidden>select the content type</VisuallyHidden>
           </legend>
           { isUser && pathname === '/' && (
             <div className="inline fields">
@@ -156,14 +156,14 @@ const SearchInput = ( { filter,
 
         <div className={ `ui large icon left labeled input search_input${direction === 'right' ? ' right' : ''}` }>
           <Dropdown
-            aria-label="select language"
+            aria-label="select a content language"
             className="label"
             value={ locale }
             options={ langOptions }
             onChange={ handleLangOnChange }
           />
           <label htmlFor="search-input">
-            <VisuallyHidden>search</VisuallyHidden>
+            <VisuallyHidden>search terms</VisuallyHidden>
             <input
               id="search-input"
               type="text"
@@ -177,7 +177,7 @@ const SearchInput = ( { filter,
             onClick={ handleSearchClick }
             onKeyUp={ handleSearchKeyUp }
           >
-            <VisuallyHidden>submit search</VisuallyHidden>
+            <VisuallyHidden>submit</VisuallyHidden>
             <Icon inverted name="search" />
           </button>
         </div>
