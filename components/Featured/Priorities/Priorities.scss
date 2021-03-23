@@ -70,7 +70,8 @@
 
     :focus {
       @include focus-styling($color: #fff);
-      
+    }
+
     &.text {
       background: $blue; 
     }
