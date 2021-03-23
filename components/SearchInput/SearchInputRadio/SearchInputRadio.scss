@@ -24,7 +24,7 @@
       height: 0;
 
       &:focus + .radio-control {
-        @include focus-styling($color: #fff);
+        @include focus-styling($color: #fff, $kbd_only: false);
       }
 
       &:focus:not(:focus-visible) + .radio-control {
