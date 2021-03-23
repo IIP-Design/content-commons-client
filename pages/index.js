@@ -1,47 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import fetch from 'isomorphic-unfetch';
 import getConfig from 'next/config';
 
 import Featured from 'components/Featured/Featured';
 
-import { useDispatch } from 'react-redux';
-import { clearFilters } from 'lib/redux/actions/filter';
-import useIsMounted from 'lib/hooks/useIsMounted';
-
 const { publicRuntimeConfig: { REACT_APP_UI_CONFIG } } = getConfig();
 
-const Landing = () => {
-  const dispatch = useDispatch();
-  const isMounted = useIsMounted();
-  const [config, setConfig] = useState( {} );
+const Landing = ( { config } ) => (
+  <section>
+    <Featured config={ config } />
+  </section>
+);
 
-  useEffect( () => {
-    // Load ui config for landing page
-    // NOTE: ui.json file located in iip-static-assets repo:
-    // https://github.com/IIP-Design/iip-static-assets
-    const fetchConfig = async () => {
-      const result = await fetch( REACT_APP_UI_CONFIG );
+export async function getServerSideProps() {
+  const result = await fetch( REACT_APP_UI_CONFIG );
+  const config = await result.json();
 
-      if ( isMounted ) {
-        setConfig( await result.json() );
-      }
+  return {
+    props: { config },
+  };
+}
 
-      return {};
-    };
-
-    fetchConfig();
-  }, [isMounted] );
-
-
-  useEffect( () => {
-    dispatch( clearFilters() );
-  }, [dispatch] );
-
-  return (
-    <section>
-      <Featured config={ config } />
-    </section>
-  );
+Landing.propTypes = {
+  config: PropTypes.shape( {
+    landing: PropTypes.shape( {
+      'private': PropTypes.array,
+      'public': PropTypes.array,
+    } ),
+  } ),
 };
 
 export default Landing;
