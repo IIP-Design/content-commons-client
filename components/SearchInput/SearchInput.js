@@ -138,49 +138,49 @@ const SearchInput = ( { filter,
   return (
     <section className="search_bar">
       <form
-        aria-describedby="description"
+        aria-label="search public diplomacy content"
         className="ui form"
         onSubmit={ handleSubmit }
         role="search"
       >
         <fieldset>
-          <legend id="description">
-            <VisuallyHidden>search public diplomacy content</VisuallyHidden>
+          <legend>
+            <VisuallyHidden>select the content type to search</VisuallyHidden>
           </legend>
           { isUser && pathname === '/' && (
             <div className="inline fields">
               { radioConfig.map( config => <SearchInputRadio key={ config.value } config={ config } /> ) }
             </div>
           ) }
-
-          <div className={ `ui large icon left labeled input search_input${direction === 'right' ? ' right' : ''}` }>
-            <Dropdown
-              aria-label="select language"
-              className="label"
-              value={ locale }
-              options={ langOptions }
-              onChange={ handleLangOnChange }
-            />
-            <label htmlFor="search-input">
-              <VisuallyHidden>search</VisuallyHidden>
-              <input
-                id="search-input"
-                type="text"
-                onChange={ handleQueryOnChange }
-                value={ search?.term || '' }
-                placeholder="Type in keywords to search"
-              />
-            </label>
-            <button
-              type="submit"
-              onClick={ handleSearchClick }
-              onKeyUp={ handleSearchKeyUp }
-            >
-              <VisuallyHidden>submit search</VisuallyHidden>
-              <Icon inverted name="search" />
-            </button>
-          </div>
         </fieldset>
+
+        <div className={ `ui large icon left labeled input search_input${direction === 'right' ? ' right' : ''}` }>
+          <Dropdown
+            aria-label="select language"
+            className="label"
+            value={ locale }
+            options={ langOptions }
+            onChange={ handleLangOnChange }
+          />
+          <label htmlFor="search-input">
+            <VisuallyHidden>search</VisuallyHidden>
+            <input
+              id="search-input"
+              type="text"
+              onChange={ handleQueryOnChange }
+              value={ search?.term || '' }
+              placeholder="Type in keywords to search"
+            />
+          </label>
+          <button
+            type="submit"
+            onClick={ handleSearchClick }
+            onKeyUp={ handleSearchKeyUp }
+          >
+            <VisuallyHidden>submit search</VisuallyHidden>
+            <Icon inverted name="search" />
+          </button>
+        </div>
       </form>
     </section>
   );
