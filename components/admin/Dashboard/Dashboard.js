@@ -79,7 +79,7 @@ const Dashboard = () => {
     <section className="dashboard">
       <Grid stackable>
         <Grid.Column width={ 3 }>
-          <Image src={ userIcon } avatar className="dashboard__avatar-img" />
+          <Image src={ userIcon } avatar className="dashboard__avatar-img" alt="user icon" />
           <span className="dashboard__avatar-label">Dashboard</span>
         </Grid.Column>
         <Grid.Column width={ 13 }>

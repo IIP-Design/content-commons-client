@@ -101,7 +101,10 @@ const TeamProjectPrimaryCol = ( { d, header } ) => {
 
     if ( item?.thumbnail?.signedUrl ) {
       url = item.thumbnail.signedUrl;
-      alt = item.thumbnail.alt;
+
+      if ( item.thumbnail?.alt ) {
+        alt = item.thumbnail.alt;
+      }
     } else if ( type?.toLowerCase() === 'package' ) {
       url = packageThumbnail;
       alt = 'Package';
