@@ -120,16 +120,14 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
 
   if ( items.length < 3 ) return null;
 
-  const accessibleLabel = `${term.join( '-' ).replaceAll( ' ', '-' )}-priorities-title`;
-
   return (
     <section
       className="priorities"
-      aria-labelledby={ accessibleLabel }
+      aria-label={ `Department Priority: ${label}` }
     >
       <div className="prioritiescontainer">
         <div className="prioritiestitle">
-          <h2 id={ accessibleLabel } className="ui large header">
+          <h2 className="ui large header">
             { `Department Priority: ${label}` }
           </h2>
           <Link
@@ -143,7 +141,7 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
               },
             } }
           >
-            <a className="browseAll">Browse All</a>
+            <a className="browseAll" aria-label={ `Browse all ${label} content` }>Browse All</a>
           </Link>
         </div>
         <Grid columns="equal" stackable stretched>

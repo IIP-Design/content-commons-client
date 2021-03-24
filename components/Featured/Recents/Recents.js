@@ -80,16 +80,14 @@ const Recents = ( { postType, locale, user } ) => {
 
   if ( items.length < 3 ) return null;
 
-  const accessibleLabel = `latest-${postType}s-title`;
-
   return (
     <section
       className="ui container recents"
-      aria-labelledby={ accessibleLabel }
+      aria-label={ `Latest ${postTypeLabel}` }
     >
       <div className="recentswrapper">
         <div className="recentstitle">
-          <h2 id={ accessibleLabel } className="ui large header">
+          <h2 className="ui large header">
             { postTypeLabel && `Latest ${postTypeLabel}` }
           </h2>
           <Link
@@ -102,7 +100,7 @@ const Recents = ( { postType, locale, user } ) => {
               },
             } }
           >
-            <a className="browseAll">Browse All</a>
+            <a className="browseAll" aria-label={ `Browse all ${postTypeLabel}` }>Browse All</a>
           </Link>
         </div>
         <Grid columns="equal" stackable stretched>
