@@ -143,16 +143,16 @@ const SearchInput = ( { filter,
         onSubmit={ handleSubmit }
         role="search"
       >
-        <fieldset>
-          <legend>
-            <VisuallyHidden>select the content type</VisuallyHidden>
-          </legend>
-          { isUser && pathname === '/' && (
+        { isUser && pathname === '/' && (
+          <fieldset>
+            <legend>
+              <VisuallyHidden>select the content type</VisuallyHidden>
+            </legend>
             <div className="inline fields">
               { radioConfig.map( config => <SearchInputRadio key={ config.value } config={ config } /> ) }
             </div>
-          ) }
-        </fieldset>
+          </fieldset>
+        ) }
 
         <div className={ `ui large icon left labeled input search_input${direction === 'right' ? ' right' : ''}` }>
           <Dropdown
