@@ -1,6 +1,6 @@
 @import "styles/mixins.scss";
 
-.cdp-radio {
+.radio {
   display: grid !important;
   align-items: center;
   grid-template-columns: min-content auto;
@@ -8,14 +8,14 @@
   font-size: 0.89rem !important;
 
   &:first-child {
-    margin-right: 1rem;
+    margin-right: 1rem !important;
   }
 
   &:hover {
     cursor: pointer;
   }
 
-  .radio-input {
+  .input {
     display: flex;
 
     [type="radio"] {
@@ -23,17 +23,17 @@
       width: 0;
       height: 0;
 
-      &:focus + .radio-control {
+      &:focus + .control {
         @include focus-styling($color: #fff, $kbd_only: false);
       }
 
-      &:focus:not(:focus-visible) + .radio-control {
+      &:focus:not(:focus-visible) + .control {
         outline: none;
       }
     }
   }
 
-  .radio-control {
+  .control {
     display: grid;
     place-items: center;
     width: 1rem;
@@ -43,7 +43,7 @@
     background-color: #fff;
   }
 
-  [type="radio"] + .radio-control::before {
+  [type="radio"] + .control::before {
     content: "";
     width: 0.5em;
     height: 0.5em;
@@ -53,11 +53,11 @@
     transform: scale(0);
   }
 
-  [type="radio"]:checked + .radio-control::before {
+  [type="radio"]:checked + .control::before {
     transform: scale(1);
   }
 
-  .radio-label {
+  .label {
     color: #fff;
     font-size: 1rem;
     font-weight: 400;

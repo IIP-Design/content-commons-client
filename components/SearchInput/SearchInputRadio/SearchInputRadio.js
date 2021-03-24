@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './SearchInputRadio.scss';
+import styles from './SearchInputRadio.module.scss';
 
 const SearchInputRadio = ( { config } ) => {
   const {
@@ -9,8 +9,8 @@ const SearchInputRadio = ( { config } ) => {
   } = config;
 
   return (
-    <label htmlFor={ value } className="cdp-radio">
-      <span className="radio-input">
+    <label htmlFor={ value } className={ styles.radio }>
+      <span className={ styles.input }>
         <input
           id={ value }
           type="radio"
@@ -19,9 +19,9 @@ const SearchInputRadio = ( { config } ) => {
           checked={ checked }
           onChange={ onChange }
         />
-        <span className="radio-control" />
+        <span className={ styles.control } />
       </span>
-      <span className="radio-label">{ label }</span>
+      <span className={ styles.label }>{ label }</span>
     </label>
   );
 };
