@@ -56,7 +56,7 @@ const Post = ( { item, router } ) => {
           } );
       }
     }
-  }, [selectedLanguage] );
+  }, [selectedLanguage, selectedItem] );
 
   useEffect( () => {
     const { pathname } = router;
@@ -69,7 +69,7 @@ const Post = ( { item, router } ) => {
         updateUrl( `/article?id=${id}&site=${site}` );
       }
     }
-  }, [selectedItem, router] );
+  }, [selectedItem] );
 
   if ( selectedItem ) {
     const embedItem
