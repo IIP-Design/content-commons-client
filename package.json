@@ -8,6 +8,7 @@
     "cy": "cypress open",
     "dev": "node server.js",
     "build": "next build",
+    "postinstall": "husky install config/husky",
     "start": "NODE_ENV=production node -r newrelic server.js",
     "test": "NODE_ENV=test jest",
     "lint": "eslint --ext .js --quiet ./",
@@ -101,11 +102,11 @@
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "graphql-tools": "^4.0.6",
-    "husky": "^3.1.0",
+    "husky": "^5.2.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
     "jest-transform-graphql": "^2.1.0",
-    "lint-staged": "^9.4.3",
+    "lint-staged": "^10.5.4",
     "redux-mock-store": "^1.5.4",
     "waait": "^1.0.5",
     "webpack-filter-warnings-plugin": "^1.2.1"
@@ -205,11 +206,6 @@
           ]
         ]
       }
-    }
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
     }
   }
 }
