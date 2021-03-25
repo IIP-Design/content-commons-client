@@ -12,7 +12,7 @@ import { fetchQueryString } from 'lib/searchQueryString';
 import { useAuth } from 'context/authContext';
 import * as actions from 'lib/redux/actions';
 
-import './SearchInput.scss';
+import styles from './SearchInput.module.scss';
 
 const SearchInput = ( { filter,
   languages,
@@ -136,28 +136,28 @@ const SearchInput = ( { filter,
   ];
 
   return (
-    <section className="search_bar">
+    <section className={ `${styles.searchBar} search_bar` }>
       <form
         aria-label="search public diplomacy content"
-        className="ui form"
+        className={ styles.form }
         onSubmit={ handleSubmit }
         role="search"
       >
         { isUser && pathname === '/' && (
-          <fieldset>
+          <fieldset className={ styles.fieldset }>
             <legend>
               <VisuallyHidden>select the content type</VisuallyHidden>
             </legend>
-            <div className="inline fields">
+            <div className={ styles.inlineFields }>
               { radioConfig.map( config => <SearchInputRadio key={ config.value } config={ config } /> ) }
             </div>
           </fieldset>
         ) }
 
-        <div className={ `ui large icon left labeled input search_input${direction === 'right' ? ' right' : ''}` }>
+        <div className={ `ui icon left labeled input ${direction === 'right' ? styles.right : ''} ${styles.searchInput}` }>
           <Dropdown
             aria-label="select a content language"
-            className="label"
+            className={ styles.dropdown }
             value={ locale }
             options={ langOptions }
             onChange={ handleLangOnChange }
@@ -178,7 +178,7 @@ const SearchInput = ( { filter,
             onKeyUp={ handleSearchKeyUp }
           >
             <VisuallyHidden>submit</VisuallyHidden>
-            <Icon inverted name="search" />
+            <Icon inverted name="search" className={ styles.searchIcon } />
           </button>
         </div>
       </form>
