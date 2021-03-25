@@ -28,6 +28,7 @@
       border: none;
       border-radius: 0;
 
+      @include focus-styling($color: #fff);
       &:focus {
         border-radius: 0;
       }
@@ -110,6 +111,8 @@
           background: $light-blue;
           cursor: pointer;
         }
+
+        @include focus-styling($color: #fff);
       }
 
       &.right {
