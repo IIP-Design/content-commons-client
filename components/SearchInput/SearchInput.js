@@ -2,8 +2,9 @@ import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
-import { Icon, Dropdown } from 'semantic-ui-react';
+import { Dropdown } from 'semantic-ui-react';
 
+import searchIcon from 'static/icons/icon_search.svg';
 import SearchInputRadio from 'components/SearchInput/SearchInputRadio/SearchInputRadio';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
@@ -178,7 +179,13 @@ const SearchInput = ( { filter,
             onKeyUp={ handleSearchKeyUp }
           >
             <VisuallyHidden>submit</VisuallyHidden>
-            <Icon inverted name="search" className={ styles.searchIcon } />
+            <img
+              src={ searchIcon }
+              alt=""
+              height="18"
+              width="18"
+              className={ styles.searchIcon }
+            />
           </button>
         </div>
       </form>
