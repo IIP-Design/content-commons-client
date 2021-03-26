@@ -44,8 +44,8 @@ describe( '<SearchInputRadio />', () => {
     expect( input.prop( 'value' ) ).toEqual( value );
   } );
 
-  it( 'renders the .radio-control', () => {
-    const radioControl = searchInputRadio.find( '.radio-control' );
+  it( 'renders the .control', () => {
+    const radioControl = searchInputRadio.find( '.control' );
 
     expect( radioControl.exists() ).toEqual( true );
   } );
