@@ -9,14 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _This sections lists changes committed since most recent release_
 
+**Added**
+- `SearchInputRadio` component
+
 **Changed:**
 - Wrap navigation menu items in `li` elements
+- Use CSS modules for `SearchInput` component styling
 
 **Fixed:**
-
 - Skip to content link for improved accessibility
 - Default link color and hover styling for improved accessibility
 - Focus outline color to meet accessibility contrast requirement
+- Add accessible names to `SearchInput` form elements
   
 # [5.4.6](https://github.com/IIP-Design/content-commons-client/compare/v5.4.5...5.4.6)(2021-03-24)
 **Fixed:**
