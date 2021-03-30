@@ -7,11 +7,13 @@
   }
 }
 
-@mixin focus-styling($color: $focus-grey) {
+@mixin focus-styling($color: $focus-grey, $kbd_only: true) {
   outline: 2px dotted $color;
   outline-offset: 2px;
 
-  @include kbd-only-focus-ring;
+  @if $kbd_only {
+    @include kbd-only-focus-ring;
+  }
 }
 
 // base button styles to override Semantic

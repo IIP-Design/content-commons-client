@@ -1,4 +1,5 @@
 /* eslint-disable jest/no-disabled-tests */
+/* eslint-disable no-undef */
 import { mount } from 'enzyme';
 
 import Recents from './Recents';
@@ -31,7 +32,7 @@ describe.skip( '<Recents />', () => {
     locale: 'en-us',
   };
   const Component = <Recents { ...props } />;
-  const wrapper = mount( Component );
+  // const wrapper = mount( Component );
 
   const types = [
     'graphic', 'post', 'video',
@@ -111,7 +112,7 @@ describe.skip( '<Recents /> with insufficient items', () => {
     locale: 'en-us',
   };
   const Component = <Recents { ...props } />;
-  const wrapper = mount( Component );
+  // const wrapper = mount( Component );
 
   const types = [
     'graphic', 'post', 'video',
