@@ -92,7 +92,7 @@ DownloadOtherFiles.propTypes = {
 };
 
 const VIDEO_PROJECT_PREVIEW_OTHER_FILES_QUERY = gql`
-  query VideoProjectPreviewOtherfiles($id: ID!) {
+  query VideoProjectPreviewOtherFiles($id: ID!) {
     project: videoProject(id: $id) {
       id
       files: supportFiles(

@@ -28,9 +28,9 @@ const TableBody = ( {
   if ( searchTerm && !data.length ) return <TableBodyMessage searchTerm={ searchTerm } type="no-results" />;
   if ( !data.length ) return <TableBodyMessage type="no-projects" />;
 
-  // No option exisiting in schema to order by author or team
+  // No option existing in schema to order by author or team
   // When author column is clicked, a query is sent to the server without pagination variables
-  // This results in an overfetch that has to be filtered on the the client side
+  // This results in an over fetch that has to be filtered on the the client side
   const order = direction ? `${direction === 'ascending' ? 'asc' : 'desc'}` : 'desc';
 
   const legacySorting = col => orderBy(

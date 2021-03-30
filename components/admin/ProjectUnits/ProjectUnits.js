@@ -68,7 +68,7 @@ const ProjectUnits = props => {
   /**
    * Check to see if the file has changed by comparing file props
    * @param {*} unit unit containing files
-   * @param {*} file file to checl
+   * @param {*} file file to check
    */
   const hasFileChanged = ( unit, file ) => {
     const propChanges = [];
@@ -206,7 +206,7 @@ const ProjectUnits = props => {
   } );
 
   /**
-  * We are assumng a single thumbnail per language although the data
+  * We are assuming a single thumbnail per language although the data
   * model can support multiple thumbnails per language (in diff sizes)
   * todo: refactor to to support multiple thumbnails per language
   * @param {*} language language d of file
@@ -301,7 +301,7 @@ const ProjectUnits = props => {
           uploadDir = uploadDir.length ? uploadDir[0] : '';
         }
 
-        // if new file use projectId to create new dir on S3, else use exisiting dir
+        // if new file use projectId to create new dir on S3, else use existing dir
         const projectIdPath = uploadDir || projectId;
 
         // 3. Upload file
@@ -341,7 +341,7 @@ const ProjectUnits = props => {
 
     entries.forEach( entry => {
       const [language, _files] = entry;
-      const unitExistsinLanguage = project.units.find( unit => unit.language.id === language );
+      const unitExistingLanguage = project.units.find( unit => unit.language.id === language );
 
       const create = [];
       const update = [];
@@ -367,8 +367,8 @@ const ProjectUnits = props => {
         }
       } );
 
-      if ( unitExistsinLanguage ) {
-        unitUpdate[unitExistsinLanguage.id] = { create, update }; // unit exists, create and update (upsert)
+      if ( unitExistingLanguage ) {
+        unitUpdate[unitExistingLanguage.id] = { create, update }; // unit exists, create and update (upsert)
       } else {
         unitCreate[language] = { create, update }; // create unit and create and connect
       }

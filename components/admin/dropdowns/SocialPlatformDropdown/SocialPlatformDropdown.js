@@ -55,7 +55,7 @@ const SocialPlatformDropdown = props => {
     <Query
       query={ SOCIAL_PLATFORMS_QUERY }
       onCompleted={ data => {
-        // if filename present, attempt to autoselect based on filename
+        // if filename present, attempt to auto-select based on filename
         if ( filename ) {
           const value = getSocialPlatform( filename ).ids( data.socialPlatforms );
 
@@ -97,7 +97,7 @@ const SocialPlatformDropdown = props => {
               loading={ loading }
               fluid
               selection
-              multiple  // hardocded here as facebook selection returns both fb and instagram
+              multiple  // hardcoded here as facebook selection returns both fb and instagram
               { ...props }
             />
           </Fragment>

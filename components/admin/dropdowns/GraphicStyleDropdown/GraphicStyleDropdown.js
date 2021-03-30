@@ -65,7 +65,7 @@ const GraphicStyleDropdown = props => {
     <Query
       query={ GRAPHIC_STYLES_QUERY }
       onCompleted={ data => {
-        // if filename present, attempt to autoselect based on filename
+        // if filename present, attempt to auto-select based on filename
         if ( filename ) {
           const value = getGraphicStyle( filename ).id( data.graphicStyles );
 
@@ -85,7 +85,7 @@ const GraphicStyleDropdown = props => {
 
         // TO DO : use useQuery hook and put this in variables
         if ( omit?.length ) {
-          // faster way to lowercase all items for comparision purposes
+          // faster way to lowercase all items for comparison purposes
           _omit = omit
             .join( '|' )
             .toLowerCase()

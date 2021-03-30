@@ -79,7 +79,7 @@ class GoogleLoginComponent extends Component {
                 // 1. Fetch token from google and set on state to send to mutation
                 this.setToken( response.tokenId );
 
-                // 2. Send google token server to verfiy and fetch User
+                // 2. Send google token server to verify and fetch User
                 await this.willGoogleSignin( googleSignin );
               } }
               onFailure={ this.failureGoogle }

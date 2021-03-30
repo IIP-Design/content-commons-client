@@ -64,7 +64,7 @@ const DetailsPopup = props => {
     // 06/10/19 - Updating button text from "Details" to "Files"
     // if DetailsPopup will contain content other than files in future,
     // will add conditional to display "Details" text along with "Files"/"Other Content"
-    // subheaders within popup
+    // sub-headers within popup
     <Popup
       className="detailsFiles_popup"
       trigger={ (

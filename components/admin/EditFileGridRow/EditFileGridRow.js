@@ -130,7 +130,7 @@ const EditFileGridRow = ( {
 
   return (
     <div className={ `${styles.grid}  ${showCompletionTracker ? styles.completion : ''}` }>
-      { /* number of fields left to conplete  */ }
+      { /* number of fields left to complete  */ }
       { showCompletionTracker && (
         <div>
           <span

@@ -6,7 +6,7 @@ const RegisterConfirmationRequest = () => {
     subject: 'Confirm Your Account',
     body: 'Complete your registration by using the following link:',
     link: 'Complete your Registration',
-    reply: 'A confirmation link has been sent to your enail',
+    reply: 'A confirmation link has been sent to your email',
     page: 'confirm',
   };
 

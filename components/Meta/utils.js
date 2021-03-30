@@ -22,7 +22,7 @@ const _filterEmpty = meta => {
 };
 
 /**
- * Converts the content item object into a metavalues array using the checkAndPush method
+ * Converts the content item object into a meta values array using the checkAndPush method
  *
  * @param {object} item Object of metadata for a given content item
  * @param {string} url The URL of the page to be rendered

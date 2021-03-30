@@ -210,7 +210,7 @@ const VideoEdit = props => {
       // 3. clean up upload process
       handleUploadComplete();
 
-      // 4. set project id to newly created project (what if exsiting project?)
+      // 4. set project id to newly created project (what if existing project?)
       setProjectId( id );
 
       // 5. update url to reflect a new project (only new)
@@ -393,7 +393,7 @@ const refetchVideoProject = result => {
   // This intermittently throws an error due to a null result
   // null result results in returning a null query
 
-  // rerun sub queries, form, units, supportfiles
+  // rerun sub queries, form, units, support files
   try {
     const { data } = result;
     const node = data.updateVideoProject || data.updateVideoUnit;

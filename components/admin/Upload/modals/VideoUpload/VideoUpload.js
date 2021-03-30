@@ -98,7 +98,7 @@ const VideoUpload = props => {
     setActiveIndex( 1 );
   };
 
-  const setDefaultQuality = file => (file.type === 'video/mp4' ? 'WEB' : '');
+  const setDefaultQuality = file => ( file.type === 'video/mp4' ? 'WEB' : '' );
 
   /**
    * Compares file object file names for use in sorting.

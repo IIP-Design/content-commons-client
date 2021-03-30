@@ -35,7 +35,7 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
   const [selectedProject, setSelectedProject] = useState( projectId );
   const [selectedUnit, setSelectedUnit] = useState( itemId );
   const [language, setLanguage] = useState( null );
-  const [showNotication, setShowNotification] = useState( false );
+  const [showNotification, setShowNotification] = useState( false );
 
   const updateSelectedUnit = ( unit, file ) => {
     setLanguage( null );
@@ -78,7 +78,7 @@ const EditSingleProjectItem = ( { itemId, projectId, videoProjectQuery } ) => {
         setSelectedUnit,
         setSelectedProject,
         setShowNotification,
-        showNotication,
+        showNotification,
         startTimeout,
         updateSelectedUnit,
       } }

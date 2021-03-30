@@ -10,7 +10,7 @@ import { VideoUploadContext } from '../../VideoUploadContext';
 import './VideoProjectFilesMobile.scss';
 
 const VideoProjectFilesMobile = () => (
-  // Context API is used to avoind having to pass props down multiple levels
+  // Context API is used to avoid having to pass props down multiple levels
   <VideoUploadContext.Consumer>
     { ( {
       files,

@@ -50,7 +50,7 @@ const VisibilityDropdown = props => (
 
             <VisuallyHidden>
               <label htmlFor={ props.id }>
-                { `${props.id} visibilty` }
+                { `${props.id} visibility` }
               </label>
             </VisuallyHidden>
           ) }

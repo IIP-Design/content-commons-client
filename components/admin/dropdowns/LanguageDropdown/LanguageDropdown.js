@@ -141,7 +141,7 @@ const LanguageDropdown = props => {
     <Query
       query={ LANGUAGES_QUERY }
       onCompleted={ data => {
-        // if filename present, attempt to autoselect based on filename
+        // if filename present, attempt to auto-select based on filename
         if ( filename ) {
           const value = getLanguage( filename ).id( data.languages );
 

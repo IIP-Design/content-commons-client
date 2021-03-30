@@ -33,7 +33,7 @@ const Upload = () => {
 
   // Reducer to manage the modal state for multiple modals
   const reducer = ( _state, action ) => {
-    // content types are uppercased to match graphQL enum
+    // content types are upper-cased to match graphQL enum
     const key = action.contentType.toLowerCase();
 
     switch ( action.type ) {

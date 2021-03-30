@@ -48,7 +48,7 @@ const EditProjectFilesModal = ( {
     right: '40px',
   };
 
-  const uploadProgessStyles = {
+  const uploadProgressStyles = {
     margin: '-10px 15px 15px 15px',
   };
 
@@ -285,7 +285,7 @@ const EditProjectFilesModal = ( {
                 filesToUpload={ files.filter( file => file.input ) }
                 fileProgressMessage
                 barSize="small"
-                customStyles={ uploadProgessStyles }
+                customStyles={ uploadProgressStyles }
               />
             ) }
           </Fragment>

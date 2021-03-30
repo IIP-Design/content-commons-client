@@ -10,7 +10,7 @@ require( 'dotenv' ).config();
  * Next 9.3 now has built in css/scss module support. However, using the native
  * support requires that all global style sheets be imported in the _app file and NOT
  * within each component file. Using the 'withStyles' library allows the continued use
- * of gobal styles within each components and modules as we incrementally move to using
+ * of global styles within each components and modules as we incrementally move to using
  * modules as a matter of course.
  */
 

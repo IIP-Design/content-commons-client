@@ -205,7 +205,7 @@ const GraphicEdit = ( { id } ) => {
    */
   const addProjectIdToUrl = useCallback(
     pId => {
-      // Don't add id if it is aleady present
+      // Don't add id if it is already present
       const path = router.asPath.includes( '&id=' ) ? router.asPath : `${router.asPath}&id=${pId}`;
 
       router.replace( router.asPath, path, { shallow: true } );
@@ -458,7 +458,7 @@ const GraphicEdit = ( { id } ) => {
    * @param {*} file file to save
    * @return <Promise>
    */
-  const handleIntialSave = async ( pId, file ) => {
+  const handleInitialSave = async ( pId, file ) => {
     const fileExt = getFileExt( file.input.name );
     const isClean = file.style === getStyleId( 'Clean' );
 
@@ -502,7 +502,7 @@ const GraphicEdit = ( { id } ) => {
       project.id,
       state.filesToAdd,
       project.assetPath,
-      handleIntialSave,
+      handleInitialSave,
       handleUploadProgress,
     );
 

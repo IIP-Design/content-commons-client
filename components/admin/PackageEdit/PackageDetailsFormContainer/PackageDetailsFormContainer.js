@@ -54,7 +54,7 @@ const PackageDetailsFormContainer = props => {
    * This is a workaround as the Formik prev values are getting out of sync
    * with the previously saved values.  When the modal is opened and changes are
    * made to the values, these saved/updated values are lost along the way.
-   * Need to investigate futher and fix
+   * Need to investigate further and fix
    * @param {*} values
    */
   const isUpdateNeeded = ( values, prevValues ) => {

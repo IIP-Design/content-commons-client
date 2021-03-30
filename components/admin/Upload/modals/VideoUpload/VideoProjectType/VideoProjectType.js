@@ -5,7 +5,7 @@ import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import './VideoProjectType.scss';
 
 const VideoProjectType = props => {
-  // since we are using a stateless function, use a hook for mouunting/unmouting calls
+  // since we are using a stateless function, use a hook for mounting/un-mounting calls
   useEffect( () => {
     props.updateModalClassname( 'upload_modal project-type-active' );
 

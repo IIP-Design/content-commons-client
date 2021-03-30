@@ -48,7 +48,7 @@ const Packages = ( { pin: idsToPin, user } ) => {
 
       let packages = [...pinnedItems, ...recentItems];
 
-      // Remove any pinned packages that may apear in recentItems. Ensure array length is at most 4
+      // Remove any pinned packages that may appear in recentItems. Ensure array length is at most 4
       packages = [...new Map( packages.map( pkg => [pkg._id, pkg] ) ).values()].slice( 0, 4 );
 
       if ( packages?.length ) {

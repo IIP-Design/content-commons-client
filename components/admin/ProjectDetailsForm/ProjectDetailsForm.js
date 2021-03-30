@@ -26,7 +26,7 @@ import './ProjectDetailsForm.scss';
 import isEmpty from 'lodash/isEmpty';
 
 /**
- * Form component only.  Form is wrapped in specifc content type HOC to handle
+ * Form component only.  Form is wrapped in specific content type HOC to handle
  * queries, validation, etc
  * @param {object} props
  */

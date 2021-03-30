@@ -14,7 +14,7 @@ import './EditVideoModal.scss';
 
 const EditVideoModal = () => {
   const {
-    language, selectedFile, selectedProject, selectedUnit, showNotication,
+    language, selectedFile, selectedProject, selectedUnit, showNotification,
   } = useContext(
     EditSingleProjectItemContext,
   );
@@ -31,7 +31,7 @@ const EditVideoModal = () => {
         el="p"
         icon
         msg="Saving changes"
-        show={ showNotication }
+        show={ showNotification }
       />
       <UnitDataForm
         language={ language }

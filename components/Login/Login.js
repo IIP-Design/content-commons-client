@@ -12,7 +12,7 @@ const {
 } = getConfig();
 
 /**
- * functiom takes a destructured object as a param containing:
+ * Function takes a destructured object as a param containing:
  * @param redirect url to redirected to after login
  */
 const Login = ( { redirect } ) => (

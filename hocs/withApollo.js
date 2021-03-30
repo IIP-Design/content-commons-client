@@ -32,7 +32,7 @@ const getWsLink = () => {
 
   const _wsLink = new WebSocketLink( client );
 
-  // fixes the intial disconnection issue
+  // fixes the initial disconnection issue
   // eslint-disable-next-line max-len
   _wsLink.subscriptionClient.maxConnectTimeGenerator.duration = () => _wsLink.subscriptionClient.maxConnectTimeGenerator.max;
 
@@ -90,7 +90,7 @@ const createClient = ( { headers, initialState } ) => new ApolloClient( {
         let handle;
 
         Promise.resolve( operation )
-          .then( oper => request( headers, oper ) )
+          .then( op => request( headers, op ) )
           .then( () => {
             handle = forward( operation ).subscribe( {
               next: observer.next.bind( observer ),

@@ -68,7 +68,7 @@ const GraphicUpload = ( { files, closeModal } ) => {
         const { input: { type }, styleSelection } = file;
 
         const isRequiredFileType = type.includes( 'gif' ) || type.includes( 'jpeg' ) || type.includes( 'png' );
-        // Do not allow reqd file types with 'Clean' style to be added as graphic files
+        // Do not allow required file types with 'Clean' style to be added as graphic files
         const isReqdFileWithCleanStyle = isRequiredFileType && styleSelection === 'Clean';
 
         return isRequiredFileType && !isReqdFileWithCleanStyle;

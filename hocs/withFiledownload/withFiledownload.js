@@ -14,8 +14,8 @@ const withFileDownload = WrappedComponent => {
 
     download = ( url, title, locale, id = '' ) => {
       const ext = url.substr( url.lastIndexOf( '.' ) );
-      const downloadiId = ( id ) ? `.${id}` : '';
-      let filename = `${title}.${locale}${downloadiId}${ext}`;
+      const downloadId = ( id ) ? `.${id}` : '';
+      let filename = `${title}.${locale}${downloadId}${ext}`;
 
       filename = filename.replace( /(\s|-)/g, '_' ).toLowerCase();
       axios

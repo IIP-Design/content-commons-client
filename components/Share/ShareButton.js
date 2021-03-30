@@ -12,7 +12,7 @@ const ShareButton = props => {
    * Opens a new window. If mobile, go a new window, else open popup window
    * Calling this function as opposed to directly calling openWindow allows
    * us to fetch window config if present on the element. It also does not force
-   * deaking with the event object in the openWindow method
+   * dealing with the event object in the openWindow method
    * @param {*} e event object
    * @param {*} data element data attributes
    */

@@ -36,7 +36,7 @@ const ReviewSubmit = ( {
   // fetch label for display
   const role = permissionOptions.find( option => option.value === user.permissions );
 
-  // Using user from state and NOT values from formik to popluate page as this is static info
+  // Using user from state and NOT values from formik to populate page as this is static info
   // and does not need validation
   return (
     <Form onSubmit={ handleSubmit }>
