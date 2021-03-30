@@ -320,7 +320,7 @@ const Upload = () => {
             { ' ' }
             <i>project-tile_arabic.jpg</i>
             { ' ' }
-            &quot;, to help pre-populate metadata fields and save you
+            &quot;, to help pre-populate metadata fields and save you
             time when uploading content!
           </p>
         </div>

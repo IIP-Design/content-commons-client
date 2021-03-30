@@ -14,8 +14,7 @@ const FileListDisplay = ( { files, fileType, error } ) => (
       </Segment>
     ) }
     { !files?.length && <li>{ `There are no ${fileType}s for this package.` }</li> }
-    { files?.map( file => <li key={ file.id }>{ file.filename }</li>
-       ) }
+    { files?.map( file => <li key={ file.id }>{ file.filename }</li> ) }
     { error
         && <li className="error-message">{ `Error occurred with ${fileType} request.` }</li> }
   </ul>

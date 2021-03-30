@@ -109,7 +109,7 @@ const VideoProjectFiles = ( { data, id } ) => {
               <Grid.Row className="project_unit_meta description">
                 <Grid.Column computer={ 8 }>
                   <p className="public_description">
-                    <b className="label">Public Description:</b>
+                    <b className="label">Public Description:</b>
                     <span
                       className={ `content ${language.textDirection}` }
                       style={

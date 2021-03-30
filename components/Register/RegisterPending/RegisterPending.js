@@ -15,7 +15,7 @@ const PageRegistrationPendingApproval = () => (
     <section className="register_pending_section">
       <p className="register_pending_section_header">Your account is now pending approval.</p>
       <p>Once your account is approved you will be notified via email with an activation link where you can finish setting up your account and set a password.</p>
-      <p>Please note that the approval process can take between 1-2 business days and logging into your account and uploading content to the Commons will only be accessible after your account is approved and activated.</p>
+      <p>Please note that the approval process can take between 1-2 business days and logging into your account and uploading content to the Commons will only be accessible after your account is approved and activated.</p>
     </section>
     <section className="register_pending_section">
       <p className="register_pending_section_header">Why do we do this?</p>
