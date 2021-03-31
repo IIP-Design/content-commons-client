@@ -11,6 +11,7 @@ _This sections lists changes committed since most recent release_
 
 **Added**
 - `SearchInputRadio` component
+- New Relic monitoring
 
 **Changed:**
 - Wrap navigation menu items in `li` elements
