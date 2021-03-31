@@ -1,7 +1,7 @@
 /* eslint-disable */
-require( 'dotenv' ).config();
+import dotenv from 'dotenv';
 
-'use strict';
+dotenv.config();
 
 /**
  * New Relic agent configuration.
