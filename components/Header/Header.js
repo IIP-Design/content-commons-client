@@ -34,7 +34,7 @@ const HeaderGlobal = ( { router: { pathname } } ) => {
   return (
     <div className={ barClass }>
       <div className="ui container">
-        <header>
+        <header role="banner">
           <Header as="h1">
             <div>
               <Image className="seal" src={ DosSeal } centered alt="Department of State Seal" />

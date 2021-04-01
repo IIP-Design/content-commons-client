@@ -33,7 +33,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="ui">
+    <footer role="contentinfo" className="ui">
       <div className="footer-feedback">
         <p>
           { 'Help us improve ' }

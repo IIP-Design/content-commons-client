@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
 import { v4 } from 'uuid';
-import { Grid, Header, Item, Modal } from 'semantic-ui-react';
+import { Grid, Item, Modal } from 'semantic-ui-react';
 
 import { getModalContent } from 'components/modals/utils';
 import { getCategories } from '../utils';
@@ -81,12 +81,15 @@ const Recents = ( { postType, locale, user } ) => {
   if ( items.length < 3 ) return null;
 
   return (
-    <section className="ui container recents">
+    <section
+      className="ui container recents"
+      aria-label={ `Latest ${postTypeLabel}` }
+    >
       <div className="recentswrapper">
         <div className="recentstitle">
-          <Header as="h1" size="large">
+          <h2 className="ui large header">
             { postTypeLabel && `Latest ${postTypeLabel}` }
-          </Header>
+          </h2>
           <Link
             href={ {
               pathname: '/results',
@@ -97,7 +100,7 @@ const Recents = ( { postType, locale, user } ) => {
               },
             } }
           >
-            <a className="browseAll">Browse All</a>
+            <a className="browseAll" aria-label={ `Browse all ${postTypeLabel}` }>Browse All</a>
           </Link>
         </div>
         <Grid columns="equal" stackable stretched>

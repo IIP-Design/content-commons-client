@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
 import { v4 } from 'uuid';
-import { Grid, Header, Item, Modal } from 'semantic-ui-react';
+import { Grid, Item, Modal } from 'semantic-ui-react';
 
 import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
 import { getModalContent } from 'components/modals/utils';
@@ -121,12 +121,15 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
   if ( items.length < 3 ) return null;
 
   return (
-    <section className="priorities">
+    <section
+      className="priorities"
+      aria-label={ `Department Priority: ${label}` }
+    >
       <div className="prioritiescontainer">
         <div className="prioritiestitle">
-          <Header as="h1" size="large">
+          <h2 className="ui large header">
             { `Department Priority: ${label}` }
-          </Header>
+          </h2>
           <Link
             href={ {
               pathname: '/results',
@@ -138,7 +141,7 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
               },
             } }
           >
-            <a className="browseAll">Browse All</a>
+            <a className="browseAll" aria-label={ `Browse all ${label} content` }>Browse All</a>
           </Link>
         </div>
         <Grid columns="equal" stackable stretched>
