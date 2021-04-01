@@ -29,7 +29,7 @@
       flex-direction: column-reverse;
     }
 
-    > h1.ui.large.header {
+    > .ui.large.header {
       @media screen and (max-width: 900px) {        
         margin-bottom: 8px;
         font-size: 20px;

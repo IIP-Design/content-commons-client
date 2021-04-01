@@ -74,6 +74,7 @@
     -ms-overflow-y: hidden;
 
     > img {
+      display: block;
       height: auto !important;
     }
   }

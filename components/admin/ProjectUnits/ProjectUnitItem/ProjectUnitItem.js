@@ -67,7 +67,7 @@ const ProjectUnitItem = props => {
 
       if ( thumbnails && thumbnails[0] && thumbnails[0].image ) {
         return (
-          <Image src={ thumbnails[0].image.signedUrl } fluid />
+          <Image src={ thumbnails[0].image.signedUrl } fluid alt={ unit?.title || '' } />
         );
       }
     }

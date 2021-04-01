@@ -21,6 +21,12 @@ _This sections lists changes committed since most recent release_
 - Default link color and hover styling for improved accessibility
 - Focus outline color to meet accessibility contrast requirement
 - Add accessible names to `SearchInput` form elements
+- Missing image alt attribute values
+- Accessible label for the "Browse All" links in each home page featured `section` so that additional context can be conveyed to screen reader software
+- Missing accessible label for each featured home page `section`
+- Featured section heading levels so there's only one `h1` on the home page
+- Missing landmark roles for the `header`, `main`, and `footer` wider compatibility with screen readers' rotor/element list
+
   
 # [5.4.6](https://github.com/IIP-Design/content-commons-client/compare/v5.4.5...5.4.6)(2021-03-24)
 **Fixed:**

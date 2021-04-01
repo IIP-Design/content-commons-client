@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Card, Image, Modal } from 'semantic-ui-react';
+import { Card, Modal } from 'semantic-ui-react';
 import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 
 import PackageCard from 'components/Package/PackageCard/PackageCard';
@@ -113,8 +113,8 @@ const ResultItem = ( { item } ) => {
         closeIcon
         trigger={ (
           <div className="card_imgWrapper">
-            <Image data-action={ action } src={ signedUrl } width="100%" height="100%" />
-            <Image data-action={ action } src={ item.icon } className="card_postIcon" />
+            <img data-action={ action } src={ signedUrl } width="100%" height="100%" alt={ item?.title || '' } />
+            <img data-action={ action } src={ item.icon } className="card_postIcon" alt={ item?.type ? `${item.type} icon` : '' } />
           </div>
         ) }
       >

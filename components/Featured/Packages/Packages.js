@@ -83,10 +83,15 @@ const Packages = ( { pin: idsToPin, user } ) => {
   if ( !items.length ) return null;
 
   return (
-    <section className="latestPackages_section">
+    <section
+      className="latestPackages_section"
+      aria-label="Latest Guidance Packages"
+    >
       <div className="latestPackages_container">
         <div className="latestPackages_header">
-          <h1 className="latestPackages_header_title">Latest Guidance Packages</h1>
+          <h2 className="latestPackages_header_title">
+            Latest Guidance Packages
+          </h2>
           <Link
             href={ {
               pathname: '/results',
@@ -97,7 +102,7 @@ const Packages = ( { pin: idsToPin, user } ) => {
               },
             } }
           >
-            <a className="latestPackages_header_link">Browse All</a>
+            <a className="latestPackages_header_link" aria-label="Browse all guidance packages">Browse All</a>
           </Link>
         </div>
         <Grid className="latestPackages_grid">
