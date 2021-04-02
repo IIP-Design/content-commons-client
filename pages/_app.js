@@ -3,18 +3,18 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 /* eslint-enable */
 
-import App from 'next/app';
-import { ApolloProvider } from '@apollo/client';
-import { Provider } from 'react-redux';
-import { AuthProvider, canAccessPage } from 'context/authContext';
-import { redirectTo } from 'lib/browser';
-import withRedux from 'next-redux-wrapper';
-import isEmpty from 'lodash/isEmpty';
-import withApollo from 'hocs/withApollo';
-import Page from 'components/Page';
-import makeStore from 'lib/redux/store';
 import Amplify from 'aws-amplify';
+import { ApolloProvider } from '@apollo/client';
+import App from 'next/app';
+import isEmpty from 'lodash/isEmpty';
+
+import Page from 'components/Page';
+
+import { AuthProvider, canAccessPage } from 'context/authContext';
 import awsconfig from '../aws-exports';
+import { redirectTo } from 'lib/browser';
+import storeWrapper from 'lib/redux/store';
+import withApollo from 'hocs/withApollo';
 
 import 'styles/styles.scss';
 
@@ -24,7 +24,7 @@ Amplify.configure( {
 } );
 
 class Commons extends App {
-  static async getInitialProps( { Component, ctx } ) {
+  static getStaticProps = async ( { Component, ctx } ) => {
     // if user does not have appropriate page permissions redirect
     if ( !await canAccessPage( ctx ) ) {
       // only set redirect url to a non login url
@@ -51,21 +51,19 @@ class Commons extends App {
 
   render() {
     const {
-      Component, apollo, store, pageProps,
+      Component, apollo, pageProps,
     } = this.props;
 
     return (
       <ApolloProvider client={ apollo }>
         <AuthProvider>
-          <Provider store={ store }>
-            <Page>
-              <Component { ...pageProps } />
-            </Page>
-          </Provider>
+          <Page>
+            <Component { ...pageProps } />
+          </Page>
         </AuthProvider>
       </ApolloProvider>
     );
   }
 }
 
-export default withApollo( withRedux( makeStore )( Commons ) );
+export default withApollo( storeWrapper.withRedux( Commons ) );
