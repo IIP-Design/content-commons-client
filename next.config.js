@@ -56,6 +56,7 @@ module.exports = withBundleAnalyzer(
         use: {
           loader: 'url-loader',
           options: {
+            esModule: false,
             limit: 100000,
             publicPath: './',
             outputPath: 'static/css',
