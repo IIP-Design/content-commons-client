@@ -1,4 +1,8 @@
-import '@babel/polyfill';
+/* eslint-disable import/no-unassigned-import */
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+/* eslint-enable */
+
 import App from 'next/app';
 import { ApolloProvider } from '@apollo/client';
 import { Provider } from 'react-redux';
@@ -11,6 +15,7 @@ import Page from 'components/Page';
 import makeStore from 'lib/redux/store';
 import Amplify from 'aws-amplify';
 import awsconfig from '../aws-exports';
+
 import 'styles/styles.scss';
 
 Amplify.configure( {
