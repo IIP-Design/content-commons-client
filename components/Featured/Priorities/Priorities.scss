@@ -134,9 +134,17 @@
     }
 
     &_title {
+      margin-bottom: 0;
       width: 80%;
+      color: inherit;
+      font-size: inherit;
       @include hyphenate;
       @include wrap-text;
+
+      > button {
+        width: 100%;
+        @include button-style-reset($font-size: inherit, $cursor: pointer);
+      }
     }
 
     &_icon {
@@ -221,11 +229,18 @@
       font-size: 1.1rem;
       line-height: 1.2em;
       color: $blue;
+      @include hyphenate;
+      @include wrap-text;
       @media screen and (max-width: 991px) {
         font-size: 1em;
       }
       @media screen and (max-width: 767px) {
         margin-bottom: 1em;
+      }
+
+      > button {
+        width: 100%;
+        @include button-style-reset($font-size: inherit, $cursor: pointer);
       }
     }
 

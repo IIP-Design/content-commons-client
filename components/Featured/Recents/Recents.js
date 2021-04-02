@@ -111,7 +111,11 @@ const Recents = ( { postType, locale, user } ) => {
                 trigger={ (
                   <SignedUrlImage className="recentsleft" url={ items[0].thumbnail }>
                     <div className="recentsoverlay">
-                      <div className="recentsoverlay_title">{ items[0].title }</div>
+                      <h3 className="recentsoverlay_title">
+                        <button type="button">
+                          { items[0].title }
+                        </button>
+                      </h3>
                       <img
                         src={ items[0].icon }
                         className="recentsoverlay_icon"
@@ -138,7 +142,11 @@ const Recents = ( { postType, locale, user } ) => {
                           <img src={ recent.icon } className="metaicon" alt={ `${postType} icon` } />
                         </SignedUrlImage>
                         <Item.Content>
-                          <Item.Header>{ recent.title }</Item.Header>
+                          <h3 className="header">
+                            <button type="button">
+                              { recent.title }
+                            </button>
+                          </h3>
                           <div className="meta">
                             <span className="date">
                               { moment( recent.published ).format( 'MMMM DD, YYYY' ) }

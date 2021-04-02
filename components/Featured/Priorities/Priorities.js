@@ -90,7 +90,11 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
               )
           }
           <Item.Content>
-            <Item.Header>{ priority.title }</Item.Header>
+            <h3 className="header">
+              <button type="button">
+                { priority.title }
+              </button>
+            </h3>
             <div className="meta">
               <span className="date">{ moment( priority.published ).format( 'MMMM DD, YYYY' ) }</span>
               <span className="categories">{ getCategories( priority ) }</span>
@@ -155,7 +159,11 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
                       <div className="prioritiesleft text">
                         <div className="prioritiesoverlay">
                           <div className="prioritiesoverlay_use">{ items[0].use }</div>
-                          <div className="prioritiesoverlay_title">{ items[0].title }</div>
+                          <h3 className="prioritiesoverlay_title">
+                            <button type="button">
+                              { items[0].title }
+                            </button>
+                          </h3>
                           <img src={ items[0].icon } className="prioritiesoverlay_icon" alt="icon" />
                         </div>
                       </div>
@@ -163,7 +171,11 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
                     : (
                       <SignedUrlImage className="prioritiesleft" url={ items[0].thumbnail }>
                         <div className="prioritiesoverlay">
-                          <div className="prioritiesoverlay_title">{ items[0].title }</div>
+                          <h3 className="prioritiesoverlay_title">
+                            <button type="button">
+                              { items[0].title }
+                            </button>
+                          </h3>
                           <img src={ items[0].icon } className="prioritiesoverlay_icon" alt="icon" />
                         </div>
                       </SignedUrlImage>
