@@ -1,15 +1,18 @@
-# dependencies
-node_modules
- 
-# misc
-.DS_Store
-
-# config
+# Config
 .env
 .next
 .vscode
 
-# testing
+# Dependencies
+node_modules
+ 
+# Error Logs
+*.log
+
+# Misc
+.DS_Store
+
+# Testing
 coverage/
 cypress/screenshots/
 cypress/videos/
