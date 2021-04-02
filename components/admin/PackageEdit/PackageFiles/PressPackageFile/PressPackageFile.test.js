@@ -9,7 +9,7 @@ jest.mock(
   () => function CountriesRegionsDropdown() { return ''; },
 );
 jest.mock(
-  'components/Placeholder/DocumentPaceholder',
+  'components/Placeholder/DocumentPlaceholder',
   () => function DocumentPaceholder() { return ''; },
 );
 jest.mock(

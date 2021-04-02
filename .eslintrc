@@ -21,7 +21,9 @@
           "@apollo/react-testing",
           "@testing-library/cypress",
           "@testing-library/react",
+          "enzyme",
           "enzyme-to-json",
+          "enzyme-adapter-react-16",
           "prop-types",
           "redux-mock-store",
           "waait"
