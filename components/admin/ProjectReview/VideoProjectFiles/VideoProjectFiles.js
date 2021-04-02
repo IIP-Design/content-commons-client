@@ -6,7 +6,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import { Button, Grid, Loader } from 'semantic-ui-react';
 
 import ApolloError from 'components/errors/ApolloError';

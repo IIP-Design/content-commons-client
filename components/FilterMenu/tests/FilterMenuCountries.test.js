@@ -6,8 +6,9 @@ jest.mock(
   'components/FilterMenu/FilterMenuItem',
   () => function FilterMenuItem() { return ''; },
 );
+
 jest.mock(
-  '@apollo/react-hooks',
+  '@apollo/client',
   () => ( {
     useApolloClient: jest.fn( () => ( {
       readQuery: jest.fn( () => ( {

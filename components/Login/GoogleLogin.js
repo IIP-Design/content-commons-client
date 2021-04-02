@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { Button } from 'semantic-ui-react';
 import getConfig from 'next/config';
-import Router from 'next/router';
-import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
-import Error from '../errors/AllError';
+import { Mutation } from '@apollo/client/react/components';
+import { gql } from '@apollo/client';
 
+import Error from '../errors/AllError';
 import { CURRENT_USER_QUERY } from '../User/User';
+
 import './Login.scss';
 
 const { publicRuntimeConfig } = getConfig();

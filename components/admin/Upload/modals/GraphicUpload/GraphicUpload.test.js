@@ -2,6 +2,7 @@ import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import { useFileStateManager } from 'lib/hooks/useFileStateManager';
 import { suppressActWarning } from 'lib/utils';
+
 import GraphicUpload from './GraphicUpload';
 
 jest.mock(
@@ -28,7 +29,7 @@ jest.mock(
 jest.mock( 'lib/hooks/useFileStateManager' );
 
 jest.mock(
-  '@apollo/react-hooks',
+  '@apollo/client',
   () => ( {
     useApolloClient: jest.fn( () => ( {
       writeData: jest.fn(),

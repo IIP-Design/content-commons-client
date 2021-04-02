@@ -1,12 +1,10 @@
 /* eslint-disable no-console */
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
-import { WebSocketLink } from 'apollo-link-ws';
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, Observable, split } from '@apollo/client';
+import { WebSocketLink } from '@apollo/client/link/ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
-import { onError } from 'apollo-link-error';
-import { ApolloLink, Observable, split } from 'apollo-link';
-import { getMainDefinition } from 'apollo-utilities';
+import { onError } from '@apollo/client/link/error';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { getDataFromTree } from '@apollo/client/react/ssr';
 import withApollo from 'next-with-apollo';
 import getConfig from 'next/config';
 
@@ -115,4 +113,4 @@ const createClient = ( { headers, initialState } ) => new ApolloClient( {
 
 // Second argument: { getDataFromTree: 'ssr' } : should the apollo store be hydrated before the first render ?,
 // allowed values are always, never or ssr (don't hydrate on client side navigation)
-export default withApollo( createClient, { getDataFromTree: 'ssr' } );
+export default withApollo( createClient, { getDataFromTree } );

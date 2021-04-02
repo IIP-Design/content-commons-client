@@ -89,6 +89,8 @@ exports[`<FileDataForm />, when the video use is Clean renders the Confirm modal
 </Confirm>
 `;
 
+exports[`<FileDataForm />, when the video use is Clean renders the LanguageDropdown 1`] = `null`;
+
 exports[`<FileDataForm />, when the video use is Clean renders video links 1`] = `
 <div
   className="video-links"

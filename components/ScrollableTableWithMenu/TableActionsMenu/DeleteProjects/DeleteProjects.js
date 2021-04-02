@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { Button, Modal } from 'semantic-ui-react';
 
 import { getPluralStringOrNot } from 'lib/utils';

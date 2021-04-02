@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 import { Form } from 'semantic-ui-react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
 
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { getDirection } from 'lib/language';

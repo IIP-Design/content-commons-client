@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
 import toJSON from 'enzyme-to-json';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { Button, Popup } from 'semantic-ui-react';
 import UnpublishProjects from './UnpublishProjects';
 import { mocks, unpublishMocks } from './mocks';

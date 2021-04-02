@@ -5,9 +5,9 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 import Link from 'next/link';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import { Dropdown, Embed } from 'semantic-ui-react';
 
 import ApolloError from 'components/errors/ApolloError';

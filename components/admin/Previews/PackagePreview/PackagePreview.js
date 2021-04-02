@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 
 import { PACKAGE_QUERY } from 'lib/graphql/queries/package';
 import { getCount } from 'lib/utils';

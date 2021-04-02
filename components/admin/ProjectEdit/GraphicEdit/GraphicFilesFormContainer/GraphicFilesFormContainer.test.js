@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import GraphicFilesFormContainer from './GraphicFilesFormContainer';
 
 jest.mock(

@@ -1,6 +1,6 @@
 import '@babel/polyfill';
 import App from 'next/app';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider } from '@apollo/client';
 import { Provider } from 'react-redux';
 import { AuthProvider, canAccessPage } from 'context/authContext';
 import { redirectTo } from 'lib/browser';

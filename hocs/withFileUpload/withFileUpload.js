@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { uploadToS3, uploadToVimeo, getFileMetadata } from 'lib/upload';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import compose from 'lodash.flowright';
 import {
   SIGNED_S3_URL_PUT_MUTATION,

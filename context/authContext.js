@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import cookies from 'next-cookies';
-import { useLazyQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
+import { useLazyQuery, useMutation, useApolloClient } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { Auth, Hub } from 'aws-amplify';
 

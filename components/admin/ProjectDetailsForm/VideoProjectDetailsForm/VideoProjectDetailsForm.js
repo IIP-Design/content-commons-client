@@ -15,7 +15,7 @@ import {
   UPDATE_VIDEO_PROJECT_MUTATION,
   VIDEO_PROJECT_FORM_QUERY,
 } from 'lib/graphql/queries/video';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import compose from 'lodash.flowright';
 import { buildCreateVideoProjectTree, buildFormTree } from 'lib/graphql/builders/video';
 import { Formik } from 'formik';

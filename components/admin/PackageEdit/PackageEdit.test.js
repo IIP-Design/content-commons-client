@@ -1,7 +1,8 @@
 import { mount } from 'enzyme';
-import { MockedProvider, wait } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import PackageEdit from './PackageEdit';
+import wait from 'waait';
 
 import { suppressActWarning } from 'lib/utils';
 import {

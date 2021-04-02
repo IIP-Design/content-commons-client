@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import sortBy from 'lodash/sortBy';
 import SocialPlatformDropdown, { SOCIAL_PLATFORMS_QUERY } from './SocialPlatformDropdown';
 import { addEmptyOption, suppressActWarning } from 'lib/utils';

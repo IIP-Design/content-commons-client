@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
 import sortBy from 'lodash/sortBy';
 import { COUNTRIES_REGIONS_QUERY } from 'lib/graphql/queries/document';
 import '../dropdown.scss';

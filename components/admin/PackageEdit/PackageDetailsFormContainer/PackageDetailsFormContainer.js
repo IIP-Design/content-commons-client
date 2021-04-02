@@ -5,7 +5,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { Formik } from 'formik';
 import useTimeout from 'lib/hooks/useTimeout';
 import { buildUpdatePackageTree } from 'lib/graphql/builders/package';

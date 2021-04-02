@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/client';
 import { Form } from 'semantic-ui-react';
 import FilterMenuItem from 'components/FilterMenu/FilterMenuItem';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';

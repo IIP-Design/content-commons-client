@@ -1,16 +1,15 @@
-import './VideoProjectData.scss';
-
-import { Icon, Loader } from 'semantic-ui-react';
-
 /**
  *
  * VideoProjectData
  *
  */
 import React from 'react';
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { gql } from '@apollo/client';
+import { graphql } from '@apollo/client/react/hoc';
 import { object } from 'prop-types';
+import { Icon, Loader } from 'semantic-ui-react';
+
+import './VideoProjectData.scss';
 
 const VideoProjectData = props => {
   const { error, loading, project } = props.data;

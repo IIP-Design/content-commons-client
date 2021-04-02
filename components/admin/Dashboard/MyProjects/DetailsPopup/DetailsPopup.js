@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import ApolloError from 'components/errors/ApolloError';
 import debounce from 'lodash/debounce';
 import dynamic from 'next/dynamic';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 import { Popup } from 'semantic-ui-react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
+
+import ApolloError from 'components/errors/ApolloError';
 
 import './DetailsPopup.scss';
 

@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { suppressActWarning } from 'lib/utils';
 import User, { CURRENT_USER_QUERY } from './User';
 

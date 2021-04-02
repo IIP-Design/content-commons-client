@@ -1,7 +1,8 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
-import { MockedProvider, wait } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
+import wait from 'waait';
 
 import GraphicEdit from './GraphicEdit';
 

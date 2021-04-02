@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { suppressActWarning, titleCase } from 'lib/utils';
 import CategoryDropdown, { CATEGORIES_QUERY } from './CategoryDropdown';
 import { categories } from './mocks';

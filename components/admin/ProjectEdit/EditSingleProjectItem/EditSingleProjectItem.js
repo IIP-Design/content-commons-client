@@ -5,8 +5,8 @@
  */
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { gql } from '@apollo/client';
+import { graphql } from '@apollo/client/react/hoc';
 import propTypes from 'prop-types';
 import { Loader } from 'semantic-ui-react';
 

@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import Router from 'next/router';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { Loader } from 'semantic-ui-react';
 
 import VideoProjectFiles from './VideoProjectFiles';

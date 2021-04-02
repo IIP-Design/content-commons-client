@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import CopyrightDropdown, { COPYRIGHT_QUERY } from './CopyrightDropdown';
 
 import { suppressActWarning } from 'lib/utils';

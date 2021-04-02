@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { formatBytes, suppressActWarning, truncateAndReplaceStr } from 'lib/utils';
 import { mocks, props } from './mocks';
 import GraphicFilesForm from './GraphicFilesForm';

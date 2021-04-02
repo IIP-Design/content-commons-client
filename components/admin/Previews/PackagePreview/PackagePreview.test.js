@@ -1,6 +1,7 @@
 import { mount } from 'enzyme';
-import { MockedProvider, wait } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import PackagePreview from './PackagePreview';
+import wait from 'waait';
 
 import { suppressActWarning } from 'lib/utils';
 import { errorMocks, mocks, undefinedDataMocks } from 'components/admin/PackageEdit/mocks';

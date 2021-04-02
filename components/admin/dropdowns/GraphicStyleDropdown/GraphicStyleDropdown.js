@@ -1,12 +1,14 @@
 /* eslint-disable no-bitwise */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
 import sortBy from 'lodash/sortBy';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
+
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { addEmptyOption } from 'lib/utils';
+
 import '../dropdown.scss';
 
 const GRAPHIC_STYLES_QUERY = gql`

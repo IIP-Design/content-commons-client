@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { titleCase, suppressActWarning } from 'lib/utils';
 import TagDropdown, { TAG_QUERY } from './TagDropdown';
 import { rtlTags, tags } from './mocks';

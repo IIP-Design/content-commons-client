@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'lodash.flowright';
 import dynamic from 'next/dynamic';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import {
   Form, Button, Modal, Header, Dimmer,
 } from 'semantic-ui-react';

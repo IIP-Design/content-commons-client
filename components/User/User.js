@@ -1,9 +1,9 @@
 /**
  * Reusable component that returns an authenticated user
  */
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 import PropTypes from 'prop-types';
+import { Query } from '@apollo/client/react/components';
 
 const CURRENT_USER_QUERY = gql`
   query {

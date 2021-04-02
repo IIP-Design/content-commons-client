@@ -2,7 +2,7 @@ import React, { useEffect, useState, useReducer, useCallback, useRef } from 'rea
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/client';
 import { Button, Loader, Modal } from 'semantic-ui-react';
 import sortBy from 'lodash/sortBy';
 
@@ -217,7 +217,8 @@ const GraphicEdit = ( { id } ) => {
    * Clears local data cache
    */
   const clearLocalGraphicFiles = useCallback( () => {
-    client.writeData( {
+    client.writeQuery( {
+      query: LOCAL_GRAPHIC_FILES,
       data: {
         localGraphicProject: null,
       },

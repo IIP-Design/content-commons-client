@@ -1,7 +1,9 @@
 import { mount } from 'enzyme';
-import { HandleOnChangeContext } from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsForm/PackageDetailsForm';
+
 import { suppressActWarning } from 'lib/utils';
 import { AWS_URL, AWS_SIGNED_URL_QUERY_STRING } from '../mocks';
+
+import { HandleOnChangeContext } from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsForm/PackageDetailsForm';
 import PressPackageFile from './PressPackageFile';
 
 jest.mock(
@@ -10,7 +12,7 @@ jest.mock(
 );
 jest.mock(
   'components/Placeholder/DocumentPlaceholder',
-  () => function DocumentPaceholder() { return ''; },
+  () => function DocumentPlaceholder() { return ''; },
 );
 jest.mock(
   'components/admin/dropdowns/UseDropdown/UseDropdown',

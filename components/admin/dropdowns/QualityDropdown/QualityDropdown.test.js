@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { addEmptyOption, suppressActWarning } from 'lib/utils';
 import QualityDropdown, { VIDEO_QUALITY_QUERY, IMAGE_QUALITY_QUERY } from './QualityDropdown';
 
@@ -151,6 +151,8 @@ describe( '<QualityDropdown /> for video type', () => {
     const dropdown = wrapper.find( 'QualityDropdown' );
     const error = errorMocks[0].result.errors[0];
     const errorMsg = `Error! GraphQL error: ${error.message}`;
+
+    console.log( dropdown.debug() );
 
     expect( dropdown.contains( errorMsg ) ).toEqual( true );
   } );

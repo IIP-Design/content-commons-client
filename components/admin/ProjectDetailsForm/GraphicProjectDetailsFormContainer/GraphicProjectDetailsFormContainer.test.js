@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { initialSchema, baseSchema } from './validationSchema';
 import GraphicProjectDetailsFormContainer from './GraphicProjectDetailsFormContainer';
 import { data } from './mocks';

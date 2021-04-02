@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import compose from 'lodash.flowright';
 import { Loader, Popup } from 'semantic-ui-react';
 import debounce from 'lodash/debounce';

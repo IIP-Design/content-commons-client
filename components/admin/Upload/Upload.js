@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic';
 import moment from 'moment';
 import Router from 'next/router';
 import { Button, Modal, Icon } from 'semantic-ui-react';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 
 import ApolloError from 'components/errors/ApolloError';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';

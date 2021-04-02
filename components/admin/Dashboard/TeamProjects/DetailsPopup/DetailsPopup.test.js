@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import { act } from 'react-dom/test-utils';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import DetailsPopup from './DetailsPopup';
 import { CHECK_PROJECT_TYPE_QUERY } from '../../MyProjects/DetailsPopup/DetailsPopup';
 

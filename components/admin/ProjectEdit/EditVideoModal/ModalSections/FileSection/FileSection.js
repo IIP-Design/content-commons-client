@@ -4,9 +4,9 @@
  *
  */
 import React, { useContext } from 'react';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 import { Icon } from 'semantic-ui-react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
 
 import FileSidebar from 'components/admin/ProjectEdit/EditVideoModal/ModalSections/FileSidebar/FileSidebar';
 import FileDataForm from 'components/admin/ProjectEdit/EditVideoModal/ModalForms/FileDataForm/FileDataForm'; // eslint-disable-line import/no-cycle
