@@ -28,8 +28,8 @@
       border: none;
       border-radius: 0;
 
-      @include focus-styling($color: #fff);
       &:focus {
+        @include focus-styling($color: #fff);
         border-radius: 0;
       }
     }
@@ -111,7 +111,9 @@
           cursor: pointer;
         }
 
-        @include focus-styling($color: #fff);
+        &:focus {
+          @include focus-styling($color: #fff);
+        }
       }
 
       &.right {
