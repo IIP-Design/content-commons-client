@@ -9,6 +9,7 @@ exports[`<VideoProjectFiles /> renders the final state 1`] = `
       "fetchMore": [Function],
       "loading": false,
       "networkStatus": 7,
+      "previousData": undefined,
       "refetch": [Function],
       "startPolling": [Function],
       "stopPolling": [Function],

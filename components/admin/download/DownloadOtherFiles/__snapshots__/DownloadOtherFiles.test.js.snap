@@ -9,6 +9,7 @@ exports[`<DownloadOtherFiles /> renders final state without crashing 1`] = `
       "fetchMore": [Function],
       "loading": false,
       "networkStatus": 7,
+      "previousData": undefined,
       "project": Object {
         "files": Array [
           Object {
@@ -238,6 +239,7 @@ exports[`<DownloadOtherFiles /> renders initial loading state without crashing 1
       "fetchMore": [Function],
       "loading": true,
       "networkStatus": 1,
+      "previousData": undefined,
       "refetch": [Function],
       "startPolling": [Function],
       "stopPolling": [Function],
