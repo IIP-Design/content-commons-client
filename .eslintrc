@@ -23,7 +23,7 @@
           "@testing-library/react",
           "enzyme",
           "enzyme-to-json",
-          "enzyme-adapter-react-16",
+          "@wojtekmaj/enzyme-adapter-react-17",
           "prop-types",
           "redux-mock-store",
           "waait"
