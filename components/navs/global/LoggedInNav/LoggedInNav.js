@@ -155,8 +155,8 @@ const LoggedInNav = props => {
       >
         { item.name === 'upload'
           ? (
-            <Link href="/admin/upload" passHref>
-              { getIcon( item ) }
+            <Link href="/admin/upload">
+              <a>{ getIcon( item ) }</a>
             </Link>
           )
           : getIcon( item ) }

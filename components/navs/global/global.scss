@@ -3,8 +3,6 @@
 
 .bar--home nav {
   position: absolute;
-  // top: 1rem;
-  // right: 1rem;
   top: 1em;
   right: 2em;
   @media screen and (max-width: 992px) {
@@ -31,8 +29,11 @@
 
   .ui.menu .item:not(.feedback-item) a {
     border-radius: 0;
-    color: white;
+    color: #fff;
+    line-height: 1;
+  }
 
+  .ui.menu.nav_loggedout .item:not(.feedback-item) a {
     &:hover,
     &:focus {
       &:after {
@@ -143,7 +144,6 @@ nav {
       letter-spacing: 0.5px;
       color: $blue;
       border-radius: 0;
-      color: $blue;
       padding: 0.7em 2em;
       background-color: $orange;
     }
@@ -154,6 +154,7 @@ nav {
     border: none;
     box-shadow: none;
     background: transparent;
+    max-height: 3rem;
     position: relative;
     padding: 0;
     @media screen and (min-width: 993px) {
