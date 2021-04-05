@@ -159,7 +159,11 @@ const LoggedInNav = props => {
               <a>{ getIcon( item ) }</a>
             </Link>
           )
-          : getIcon( item ) }
+          : (
+            <button type="button" disabled={ disabled }>
+              { getIcon( item ) }
+            </button>
+          ) }
       </li>
     );
   };
