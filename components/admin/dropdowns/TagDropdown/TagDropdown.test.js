@@ -1,8 +1,10 @@
+import { MockedProvider } from '@apollo/client/testing';
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/client/testing';
-import { titleCase, suppressActWarning } from 'lib/utils';
+
 import TagDropdown, { TAG_QUERY } from './TagDropdown';
+
+import { titleCase, suppressActWarning } from 'lib/utils';
 import { rtlTags, tags } from './mocks';
 
 jest.mock( 'next/config', () => () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
@@ -116,8 +118,9 @@ describe( '<TagDropdown />', () => {
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const tagDropdown = wrapper.find( 'TagDropdown' );
     const errorMsg = 'Error!';
 

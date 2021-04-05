@@ -1,8 +1,10 @@
+import { MockedProvider } from '@apollo/client/testing';
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/client/testing';
-import { addEmptyOption, suppressActWarning } from 'lib/utils';
+
 import UseDropdown from './UseDropdown';
+
+import { addEmptyOption, suppressActWarning } from 'lib/utils';
 import {
   emptyMocks, errorMocks, mocks, nullMocks,
 } from './mocks';
@@ -59,11 +61,12 @@ describe( '<UseDropdown /> for video type', () => {
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const dropdown = wrapper.find( 'UseDropdown' );
     const error = errorMocks[0].result.errors[0];
-    const errorMsg = `Error! GraphQL error: ${error.message}`;
+    const errorMsg = `Error! ${error.message}`;
 
     expect( dropdown.contains( errorMsg ) ).toEqual( true );
   } );
@@ -156,11 +159,12 @@ describe( '<UseDropdown /> for image type', () => {
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const dropdown = wrapper.find( 'UseDropdown' );
     const error = errorMocks[1].result.errors[0];
-    const errorMsg = `Error! GraphQL error: ${error.message}`;
+    const errorMsg = `Error! ${error.message}`;
 
     expect( dropdown.contains( errorMsg ) ).toEqual( true );
   } );
@@ -253,11 +257,12 @@ describe( '<UseDropdown /> for document type', () => {
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const dropdown = wrapper.find( 'UseDropdown' );
     const error = errorMocks[2].result.errors[0];
-    const errorMsg = `Error! GraphQL error: ${error.message}`;
+    const errorMsg = `Error! ${error.message}`;
 
     expect( dropdown.contains( errorMsg ) ).toEqual( true );
   } );

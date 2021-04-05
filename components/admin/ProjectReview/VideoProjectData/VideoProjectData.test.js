@@ -1,12 +1,11 @@
+import { Icon, Loader } from 'semantic-ui-react';
+import { MockedProvider } from '@apollo/client/testing';
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/client/testing';
-import { Icon, Loader } from 'semantic-ui-react';
 
 import VideoProjectData from './VideoProjectData';
 
-import { suppressActWarning } from 'lib/utils';
 import {
   emptyAuthorTeamMocks,
   emptyCatTagsMocks,
@@ -17,6 +16,7 @@ import {
   nullMocks,
   props,
 } from './mocks';
+import { suppressActWarning } from 'lib/utils';
 
 const Component = (
   <MockedProvider mocks={ mocks } addTypename={ false }>
@@ -32,7 +32,7 @@ describe( '<VideoProjectData />', () => {
     console.error = consoleError;
   } );
 
-  it.skip( 'renders initial loading state without crashing', () => {
+  it( 'renders initial loading state without crashing', () => {
     const wrapper = mount( Component );
     const videoProjectData = wrapper.find( 'VideoProjectData' );
     const loader = (
@@ -57,7 +57,7 @@ describe( '<VideoProjectData />', () => {
     );
 
     // wait for the data and !loading
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
 
     const videoProjectData = wrapper.find( 'VideoProjectData' );
@@ -88,7 +88,7 @@ describe( '<VideoProjectData />', () => {
     expect( videoProjectData.html() ).toEqual( null );
   } );
 
-  it.skip( 'renders the final state', async () => {
+  it( 'renders the final state', async () => {
     const wrapper = mount( Component );
 
     await wait( 0 );

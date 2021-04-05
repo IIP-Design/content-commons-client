@@ -1,7 +1,8 @@
-import { mount } from 'enzyme';
-import wait from 'waait';
 import { MockedProvider } from '@apollo/client/testing';
+import { mount } from 'enzyme';
 import sortBy from 'lodash/sortBy';
+import wait from 'waait';
+
 import TeamDropdown from './TeamDropdown';
 
 import { suppressActWarning } from 'lib/utils';
@@ -55,11 +56,12 @@ describe( '<TeamDropdown />, when receiving no query variables', () => {
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const dropdown = wrapper.find( 'TeamDropdown' );
     const error = errorMocks[0].result.errors[0];
-    const errorMsg = `Error! GraphQL error: ${error.message}`;
+    const errorMsg = `Error! ${error.message}`;
 
     expect( dropdown.contains( errorMsg ) ).toEqual( true );
   } );
@@ -150,11 +152,12 @@ describe( '<TeamDropdown />, when receiving query variables', () => {
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const dropdown = wrapper.find( 'TeamDropdown' );
     const error = errorMocks[0].result.errors[0];
-    const errorMsg = `Error! GraphQL error: ${error.message}`;
+    const errorMsg = `Error! ${error.message}`;
 
     expect( dropdown.contains( errorMsg ) ).toEqual( true );
   } );

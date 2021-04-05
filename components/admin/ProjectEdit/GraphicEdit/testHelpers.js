@@ -1,3 +1,4 @@
+import { GraphQLError } from 'graphql';
 import sortBy from 'lodash/sortBy';
 
 import {
@@ -809,7 +810,7 @@ const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }],
+      errors: [new GraphQLError( 'There was an error.' )],
     },
   },
   {

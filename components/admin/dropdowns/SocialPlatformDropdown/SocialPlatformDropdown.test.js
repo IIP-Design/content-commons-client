@@ -1,3 +1,4 @@
+import { GraphQLError } from 'graphql';
 import { mount } from 'enzyme';
 import wait from 'waait';
 import { MockedProvider } from '@apollo/client/testing';
@@ -52,7 +53,8 @@ const errorMocks = [
   {
     ...mocks[0],
     result: {
-      errors: [{ message: 'There was an error.' }],
+      ...mocks[0].result,
+      errors: [new GraphQLError( 'There was an error.' )],
     },
   },
 ];
@@ -119,11 +121,12 @@ describe( '<SocialPlatformDropdown />', () => {
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const dropdown = wrapper.find( 'SocialPlatformDropdown' );
     const error = errorMocks[0].result.errors[0];
-    const errorMsg = `Error! GraphQL error: ${error.message}`;
+    const errorMsg = `Error! ${error.message}`;
 
     expect( dropdown.contains( errorMsg ) ).toEqual( true );
   } );
@@ -131,8 +134,9 @@ describe( '<SocialPlatformDropdown />', () => {
   it( 'does not crash if socialPlatforms is null', async () => {
     const wrapper = mount( NullComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const formDropdown = wrapper.find( 'FormDropdown' );
     const options = addEmptyOption( [] );
 
@@ -142,8 +146,9 @@ describe( '<SocialPlatformDropdown />', () => {
   it( 'does not crash if socialPlatforms is []', async () => {
     const wrapper = mount( EmptyComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const formDropdown = wrapper.find( 'FormDropdown' );
     const options = addEmptyOption( [] );
 
@@ -153,8 +158,9 @@ describe( '<SocialPlatformDropdown />', () => {
   it( 'renders the final state without crashing', async () => {
     const wrapper = mount( Component );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const formDropdown = wrapper.find( 'FormDropdown' );
     const dropdownItems = wrapper.find( 'DropdownItem' );
     const { socialPlatforms } = mocks[0].result.data;
@@ -173,8 +179,9 @@ describe( '<SocialPlatformDropdown />', () => {
   it( 'assigns a matching id & htmlFor value to the Dropdown and label, respectively', async () => {
     const wrapper = mount( Component );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const dropdown = wrapper.find( 'Dropdown div[name="social"]' );
     const label = wrapper.find( 'label' );
 

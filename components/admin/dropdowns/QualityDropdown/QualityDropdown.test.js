@@ -146,13 +146,12 @@ describe( '<QualityDropdown /> for video type', () => {
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const dropdown = wrapper.find( 'QualityDropdown' );
     const error = errorMocks[0].result.errors[0];
-    const errorMsg = `Error! GraphQL error: ${error.message}`;
-
-    console.log( dropdown.debug() );
+    const errorMsg = `Error! ${error.message}`;
 
     expect( dropdown.contains( errorMsg ) ).toEqual( true );
   } );
@@ -271,11 +270,12 @@ describe( '<QualityDropdown /> for image type', () => {
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const dropdown = wrapper.find( 'QualityDropdown' );
     const error = errorMocks[1].result.errors[0];
-    const errorMsg = `Error! GraphQL error: ${error.message}`;
+    const errorMsg = `Error! ${error.message}`;
 
     expect( dropdown.contains( errorMsg ) ).toEqual( true );
   } );

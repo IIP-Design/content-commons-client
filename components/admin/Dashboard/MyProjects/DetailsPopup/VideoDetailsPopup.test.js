@@ -208,7 +208,7 @@ describe( '<VideoDetailsPopup />', () => {
     );
 
     // wait for the data and !loading
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
 
     const popup = wrapper.find( VideoDetailsPopup );

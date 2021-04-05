@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button } from 'semantic-ui-react';
+
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
+
 import './VideoProjectType.scss';
 
 const VideoProjectType = props => {

@@ -1,7 +1,8 @@
 import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/client/testing';
-import PackagePreview from './PackagePreview';
 import wait from 'waait';
+
+import PackagePreview from './PackagePreview';
 
 import { suppressActWarning } from 'lib/utils';
 import { errorMocks, mocks, undefinedDataMocks } from 'components/admin/PackageEdit/mocks';
@@ -29,11 +30,12 @@ describe( '<PackagePreview />', () => {
   const Component = getComponent( mocks );
   const ErrorComponent = getComponent( errorMocks );
 
-  it.skip( 'renders initial loading state without crashing', () => {
+  it( 'renders initial loading state without crashing', () => {
     const wrapper = mount( Component );
+
     const pkgPreview = wrapper.find( 'PackagePreview' );
     const loader = wrapper.find( 'Loader' );
-    const msg = 'Loading the package preview...';
+    const msg = 'Loading the project preview...';
 
     expect( pkgPreview.exists() ).toEqual( true );
     expect( loader.exists() ).toEqual( true );
@@ -43,7 +45,7 @@ describe( '<PackagePreview />', () => {
   it( 'renders error message if a GraphQL error is returned', async () => {
     const wrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 3 );
     wrapper.update();
 
     const apolloError = wrapper.find( 'ApolloError' );
@@ -63,7 +65,7 @@ describe( '<PackagePreview />', () => {
     expect( pkgPreview.exists() ).toEqual( true );
   } );
 
-  it.skip( 'renders Package with correct props', async () => {
+  it( 'renders Package with correct props', async () => {
     const wrapper = mount( Component );
 
     await wait( 0 );
@@ -73,7 +75,9 @@ describe( '<PackagePreview />', () => {
     const {
       createdAt, updatedAt, title, team, type, documents,
     } = mocks[0].result.data.pkg;
+
     const item = {
+      desc: '',
       id: 'test-123',
       published: createdAt,
       modified: updatedAt,
@@ -86,6 +90,7 @@ describe( '<PackagePreview />', () => {
     expect( pkg.exists() ).toEqual( true );
     expect( pkg.props() ).toEqual( {
       item,
+      displayAsModal: true,
       isAdminPreview: true,
       useGraphQl: true,
     } );
@@ -106,8 +111,9 @@ describe( '<PackagePreview />, if data === undefined is returned,', () => {
   it( 'renders ApolloError', async () => {
     const wrapper = mount( Component );
 
-    await wait( 0 );
+    await wait( 10 );
     wrapper.update();
+
     const apolloError = wrapper.find( 'ApolloError' );
 
     expect( apolloError.exists() ).toEqual( true );

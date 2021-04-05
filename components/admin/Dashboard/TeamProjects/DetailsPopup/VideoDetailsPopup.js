@@ -57,9 +57,9 @@ const getVideoFiles = units => (
   }, [] )
 );
 
-const VideoDetailsPopup = props => {
+const VideoDetailsPopup = ( { id } ) => {
   const { loading, error, data } = useQuery( VIDEO_PROJECT_FILES_QUERY, {
-    variables: { id: props.id },
+    variables: { id },
   } );
 
   if ( loading ) return <p>Loading....</p>;

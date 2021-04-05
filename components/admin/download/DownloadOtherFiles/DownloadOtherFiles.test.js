@@ -1,12 +1,11 @@
+import { Loader } from 'semantic-ui-react';
+import { MockedProvider } from '@apollo/client/testing';
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/client/testing';
-import { Loader } from 'semantic-ui-react';
 
 import DownloadOtherFiles from './DownloadOtherFiles';
 
-import { suppressActWarning } from 'lib/utils';
 import {
   emptyProjectMocks,
   errorMocks,
@@ -15,6 +14,7 @@ import {
   nullProjectMocks,
   props,
 } from './mocks';
+import { suppressActWarning } from 'lib/utils';
 
 jest.mock( 'lib/hooks/useSignedUrl', () => jest.fn( () => ( { signedUrl: 'https://example.jpg' } ) ) );
 
@@ -81,7 +81,7 @@ describe( '<DownloadOtherFiles />', () => {
     );
 
     // wait for the data and !loading
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
 
     const downloadOther = wrapper.find( 'DownloadOtherFiles' );

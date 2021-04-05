@@ -1,13 +1,14 @@
+import { Icon, Loader } from 'semantic-ui-react';
+import { MockedProvider } from '@apollo/client/testing';
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/client/testing';
-import { Icon, Loader } from 'semantic-ui-react';
 
-import { getCount, suppressActWarning } from 'lib/utils';
 import VideoSupportFiles, {
   VIDEO_PROJECT_REVIEW_SUPPORT_FILES_QUERY,
 } from './VideoSupportFiles';
+
+import { getCount, suppressActWarning } from 'lib/utils';
 
 const props = { id: '123' };
 
@@ -142,7 +143,7 @@ describe( '<VideoSupportFiles />', () => {
     );
 
     // wait for the data and !loading
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
 
     const videoSupportFiles = wrapper.find( 'VideoSupportFiles' );

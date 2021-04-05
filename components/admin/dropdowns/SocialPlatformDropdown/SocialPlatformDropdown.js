@@ -1,11 +1,11 @@
 /* eslint-disable no-bitwise */
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
+import { gql } from '@apollo/client';
+import PropTypes from 'prop-types';
 import { Query } from '@apollo/client/react/components';
 import sortBy from 'lodash/sortBy';
-import { gql } from '@apollo/client';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
 import { addEmptyOption } from 'lib/utils';
 

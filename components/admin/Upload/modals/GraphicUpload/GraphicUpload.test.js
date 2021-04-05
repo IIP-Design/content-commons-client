@@ -1,9 +1,10 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
-import { useFileStateManager } from 'lib/hooks/useFileStateManager';
-import { suppressActWarning } from 'lib/utils';
 
 import GraphicUpload from './GraphicUpload';
+
+import { useFileStateManager } from 'lib/hooks/useFileStateManager';
+import { suppressActWarning } from 'lib/utils';
 
 jest.mock(
   'components/admin/EditFileGrid/EditFileGrid',
@@ -32,8 +33,15 @@ jest.mock(
   '@apollo/client',
   () => ( {
     useApolloClient: jest.fn( () => ( {
-      writeData: jest.fn(),
+      writeQuery: jest.fn(),
     } ) ),
+  } ),
+);
+
+jest.mock(
+  'lib/graphql/queries/graphic',
+  () => ( {
+    LOCAL_GRAPHIC_FILES: '',
   } ),
 );
 

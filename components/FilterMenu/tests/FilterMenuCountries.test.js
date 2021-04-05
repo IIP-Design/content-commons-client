@@ -1,5 +1,7 @@
 import { mount } from 'enzyme';
+
 import FilterMenuCountries from '../FilterMenuCountries';
+
 import { countriesQueryMocks as mocks } from './mocks';
 
 jest.mock(
@@ -64,6 +66,13 @@ jest.mock(
         ],
       } ) ),
     } ) ),
+  } ),
+);
+
+jest.mock(
+  'lib/graphql/queries/document',
+  () => ( {
+    COUNTRIES_REGIONS_QUERY: '',
   } ),
 );
 

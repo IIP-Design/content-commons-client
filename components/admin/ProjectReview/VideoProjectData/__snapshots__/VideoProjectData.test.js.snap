@@ -89,10 +89,12 @@ exports[`<VideoProjectData /> renders initial loading state without crashing 1`]
 <VideoProjectData
   data={
     Object {
+      "called": true,
       "error": undefined,
       "fetchMore": [Function],
       "loading": true,
       "networkStatus": 1,
+      "previousData": undefined,
       "refetch": [Function],
       "startPolling": [Function],
       "stopPolling": [Function],
@@ -145,10 +147,12 @@ exports[`<VideoProjectData /> renders the final state 1`] = `
 <VideoProjectData
   data={
     Object {
+      "called": true,
       "error": undefined,
       "fetchMore": [Function],
       "loading": false,
       "networkStatus": 7,
+      "previousData": undefined,
       "project": Object {
         "author": Object {
           "firstName": "Jane",

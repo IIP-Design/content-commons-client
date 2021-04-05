@@ -92,7 +92,7 @@ describe( '<ProjectPreviewContent />', () => {
     );
 
     // wait for the data and !loading
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
 
     const preview = wrapper.find( 'ProjectPreviewContent' );

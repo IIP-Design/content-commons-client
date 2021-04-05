@@ -102,7 +102,7 @@ describe( '<VideoReview />', () => {
     );
 
     // wait for the data and !loading
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
 
     const videoReview = wrapper.find( 'VideoReview' );

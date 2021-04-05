@@ -78,6 +78,7 @@ describe( '<GraphicEdit />, when there is an existing DRAFT graphic project', ()
 
   let Component;
   let ErrorComponent;
+  let errorWrapper;
   let wrapper;
   let graphicEdit;
 
@@ -97,7 +98,10 @@ describe( '<GraphicEdit />, when there is an existing DRAFT graphic project', ()
         </RouterContext.Provider>
       </MockedProvider>
     );
+
     wrapper = mount( Component );
+    errorWrapper = mount( ErrorComponent );
+
     graphicEdit = () => wrapper.find( 'GraphicEdit' );
   } );
 
@@ -111,9 +115,7 @@ describe( '<GraphicEdit />, when there is an existing DRAFT graphic project', ()
   } );
 
   it( 'renders error message if a queryError is returned', async () => {
-    const errorWrapper = mount( ErrorComponent );
-
-    await wait( 0 );
+    await wait( 2 );
     errorWrapper.update();
 
     const apolloError = errorWrapper.find( 'ApolloError' );
@@ -318,7 +320,7 @@ describe( '<GraphicEdit />, when there is an existing PUBLISHED graphic project'
   it( 'renders error message if a queryError is returned', async () => {
     const errorWrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     errorWrapper.update();
 
     const apolloError = errorWrapper.find( 'ApolloError' );

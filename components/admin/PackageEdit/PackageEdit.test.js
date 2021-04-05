@@ -1,8 +1,9 @@
 import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/client/testing';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
-import PackageEdit from './PackageEdit';
 import wait from 'waait';
+
+import PackageEdit from './PackageEdit';
 
 import { suppressActWarning } from 'lib/utils';
 import {
@@ -79,7 +80,7 @@ describe( '<PackageEdit />, if DRAFT status', () => {
   it( 'renders error message if a queryError is returned', async () => {
     const errorWrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     errorWrapper.update();
 
     const apolloError = errorWrapper.find( 'ApolloError' );
@@ -401,7 +402,7 @@ describe( '<PackageEdit />, if there are no documents & router.query.action !== 
   it( 'renders error message if a queryError is returned', async () => {
     const errorWrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     errorWrapper.update();
 
     const apolloError = errorWrapper.find( 'ApolloError' );
@@ -566,7 +567,7 @@ describe( '<PackageEdit />, if there are no documents', () => {
   it( 'renders error message if a queryError is returned', async () => {
     const errorWrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     errorWrapper.update();
 
     const apolloError = errorWrapper.find( 'ApolloError' );
@@ -707,8 +708,9 @@ describe( '<PackageEdit />, if data === undefined is returned', () => {
   it( 'renders ApolloError', async () => {
     const wrapper = mount( Component );
 
-    await wait( 0 );
+    await wait( 5 );
     wrapper.update();
+
     const apolloError = wrapper.find( 'ApolloError' );
 
     expect( apolloError.exists() ).toEqual( true );
