@@ -6,7 +6,8 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { gql, withApollo } from '@apollo/client';
+import { gql } from '@apollo/client';
+import { withApollo } from '@apollo/client/react/hoc';
 import { Tab } from 'semantic-ui-react';
 import SelectRole from './SelectRole/SelectRole';
 import UserDetails from './UserDetails/UserDetails';
