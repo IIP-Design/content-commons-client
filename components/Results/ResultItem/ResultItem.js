@@ -113,7 +113,9 @@ const ResultItem = ( { item } ) => {
         closeIcon
         trigger={ (
           <div className="card_imgWrapper">
-            <img data-action={ action } src={ signedUrl } width="100%" height="100%" alt={ item?.title || '' } />
+            <button type="button">
+              <img data-action={ action } src={ signedUrl } width="100%" height="100%" alt={ item?.title || '' } />
+            </button>
             <img data-action={ action } src={ item.icon } className="card_postIcon" alt={ item?.type ? `${item.type} icon` : '' } />
           </div>
         ) }

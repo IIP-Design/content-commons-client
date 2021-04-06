@@ -1,4 +1,5 @@
-@import "../../../styles/colors.scss";
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
 
 .ui.grid.results_wrapper > .column:not(.row) {
   padding: 0.77rem;
@@ -70,10 +71,18 @@
 
   .card_imgWrapper {
     position: relative;
-    cursor: pointer;
     -ms-overflow-y: hidden;
 
-    > img {
+    > button {
+      display: block;
+      @include button-style-reset($cursor: pointer);
+
+      &:focus {
+        @include focus-styling;
+      }
+    }
+
+    img {
       display: block;
       height: auto !important;
     }
