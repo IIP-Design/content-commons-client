@@ -60,15 +60,12 @@
     }
   }
 
-  .close.icon {
-    @media screen and (min-width: 768px) {
-      top: 2em;
-      right: 1.5em;
-    }
-  }
-
   :focus {
     @include focus-styling($color: #fff);
+  }
+
+  .mobile :focus {
+    @include focus-styling($color: $blue);
   }
 }
 
@@ -140,21 +137,28 @@ nav {
       }
     }
 
-    .close.icon {
-      position: absolute;
-      top: 0.8em;
-      right: 0.5em;
-      font-size: 1.2em;
-      cursor: pointer;
-
-      @media screen and (min-width: 768px) {
-        top: 0.8em;
-        right: 1.3em;
-      }
-    }
-
     a.feedback {
       @include feedback-styles;
+    }
+
+    button {
+      @include button-style-reset($cursor: pointer);
+      line-height: 1;
+    }
+
+    .disabled {
+      opacity: 0.4;
+    }
+
+    .mobile-toggle {
+      display: flex;
+      margin-bottom: 1em;
+
+      > button {
+        margin-top: -1em;
+        margin-left: auto;
+        margin-right: 1.3em;
+      }
     }
   }
 
@@ -273,11 +277,6 @@ nav {
         }
       }
 
-      button {
-        @include button-style-reset($cursor: pointer);
-        line-height: 1;
-      }
-
       &:before {
         background: none;
       }
@@ -296,10 +295,6 @@ nav {
             padding: 0.5em;
           }
         }
-      }
-
-      &.disabled {
-        opacity: 0.4;
       }
 
       img:hover {

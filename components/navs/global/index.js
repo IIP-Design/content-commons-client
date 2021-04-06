@@ -22,7 +22,7 @@ const GlobalNav = () => {
 
   const handleKeyUp = e => {
     if ( e.key === 'Enter' ) {
-      toggleMobileMenu();
+      toggleMobileMenu( false );
     }
   };
 

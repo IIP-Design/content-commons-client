@@ -7,9 +7,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import { Popup, Icon } from 'semantic-ui-react';
+import { Popup } from 'semantic-ui-react';
 import UserProfileMenu from 'components/menus/UserProfile/UserProfile';
 import NotificationsMenu from 'components/menus/Notifications/Notifications';
+import closeIcon from 'static/icons/icon_close.svg';
 import notifyIcon from 'static/icons/icon_notifications.svg';
 import userIcon from 'static/icons/icon_user_profile.svg';
 import uploadIcon from 'static/icons/icon_upload.svg';
@@ -125,22 +126,18 @@ const LoggedInNav = props => {
     />
   );
 
+  const renderMenuLink = item => {
+    if ( mobileMenuVisible ) {
+      return (
+        /* eslint-disable jsx-a11y/no-static-element-interactions */
+        <a onKeyUp={ keyUp } onClick={ () => toggleMobileMenu( false ) }>
+          { getIcon( item ) }
+        </a>
+      );
+    }
 
-  const renderListItem = item => (
-    <li key={ item.key }>
-      { item.name === 'upload'
-        ? (
-          <Link href="/admin/upload">
-            <a className="item">
-              <span onClick={ () => toggleMobileMenu( false ) } onKeyUp={ keyUp } role="presentation">
-                { getIcon( item ) }
-              </span>
-            </a>
-          </Link>
-        )
-        : getIcon( item ) }
-    </li>
-  );
+    return <a>{ getIcon( item ) }</a>;
+  };
 
   const renderMenuItem = item => {
     // const active = hasNotifications ? 'active' : '';
@@ -156,7 +153,7 @@ const LoggedInNav = props => {
         { item.name === 'upload'
           ? (
             <Link href="/admin/upload">
-              <a>{ getIcon( item ) }</a>
+              { renderMenuLink( item ) }
             </Link>
           )
           : (
@@ -180,16 +177,23 @@ const LoggedInNav = props => {
     }
 
     return (
-      <ul>
-        <li>
-          <Icon name="close" onClick={ () => toggleMobileMenu( false ) } onKeyUp={ keyUp } tabIndex={ 0 } />
+      <ul className="mobile">
+        <li className="mobile-toggle">
+          <button type="button" onClick={ () => toggleMobileMenu( false ) } onKeyUp={ keyUp }>
+            <img
+              src={ closeIcon }
+              alt="close menu"
+              height="24"
+              width="24"
+            />
+          </button>
         </li>
         { items.map( item => {
           if ( item.name === 'user_profile' ) {
-            return renderPopUp( item, renderListItem );
+            return renderPopUp( item, renderMenuItem );
           }
 
-          return renderListItem( item );
+          return renderMenuItem( item );
         } ) }
         { renderFeedbackButton() }
       </ul>
