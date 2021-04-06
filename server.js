@@ -50,7 +50,6 @@ app.prepare()
 
         // Transaction Name: (w/o this new relic shows "/*" for all transaction)
         // https://docs.newrelic.com/docs/agents/nodejs-agent/api-guides/guide-using-nodejs-agent-api
-        console.log( `path ${pathname}` );
         newrelic.setTransactionName( pathname );
       } catch ( err ) {
         console.log( err );
