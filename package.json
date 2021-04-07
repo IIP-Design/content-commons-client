@@ -115,7 +115,7 @@
       ".*": "babel-jest"
     },
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|svg)$": "<rootDir>/static/__mocks__/fileMock.js",
+      "\\.(jpg|jpeg|png|gif|svg)$": "<rootDir>/public/static/__mocks__/fileMock.js",
       "\\.(s?css)$": "identity-obj-proxy"
     }
   },
@@ -135,7 +135,7 @@
                 "components": "./components",
                 "hocs": "./hocs",
                 "lib": "./lib",
-                "static": "./static",
+                "static": "./public/static",
                 "styles": "./styles"
               }
             }
@@ -156,7 +156,7 @@
                 "components": "./components",
                 "hocs": "./hocs",
                 "lib": "./lib",
-                "static": "./static",
+                "static": "./public/static",
                 "styles": "./styles"
               }
             }
@@ -184,7 +184,7 @@
                 "components": "./components",
                 "hocs": "./hocs",
                 "lib": "./lib",
-                "static": "./static",
+                "static": "./public/static",
                 "styles": "./styles"
               }
             }

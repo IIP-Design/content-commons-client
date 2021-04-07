@@ -39,7 +39,7 @@
           "context": "./context",
           "hocs": "./hocs",
           "lib": "./lib",
-          "static": "./static",
+          "static": "./public/static",
           "styles": "./styles"
         }
       }
