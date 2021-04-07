@@ -10,7 +10,7 @@
     "build": "next build",
     "cy": "cypress open",
     "deploy": "npm run build && npm run start",
-    "dev": "node server.js",
+    "dev": "node --max-old-space-size=4096 --optimize-for-size server.js",
     "lint": "eslint --ext .js --quiet ./",
     "prepare": "husky install config/husky",
     "start": "NODE_ENV=production node -r newrelic server.js",
