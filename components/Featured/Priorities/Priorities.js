@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
 import { v4 } from 'uuid';
-import { Grid, Item, Modal } from 'semantic-ui-react';
+import { Grid, Modal } from 'semantic-ui-react';
 
 import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
 import { getModalContent } from 'components/modals/utils';
@@ -74,7 +74,7 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
       key={ v4() }
       closeIcon
       trigger={ (
-        <Item className="prioritiesItem">
+        <div className="item prioritiesItem">
           {
             priority.type === 'document'
               ? (
@@ -89,7 +89,7 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
                 </SignedUrlImage>
               )
           }
-          <Item.Content>
+          <div className="content">
             <h3 className="header">
               <button type="button">
                 { priority.title }
@@ -99,8 +99,8 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
               <span className="date">{ moment( priority.published ).format( 'MMMM DD, YYYY' ) }</span>
               <span className="categories">{ getCategories( priority ) }</span>
             </div>
-          </Item.Content>
-        </Item>
+          </div>
+        </div>
       ) }
     >
       <Modal.Content>
@@ -188,7 +188,9 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
             ) }
           </Grid.Column>
           <Grid.Column width={ 8 } className="prioritiesgridright">
-            <Item.Group>{ items && renderPrioritiesWithMeta( items ) }</Item.Group>
+            <div className="ui items">
+              { items && renderPrioritiesWithMeta( items ) }
+            </div>
           </Grid.Column>
         </Grid>
       </div>

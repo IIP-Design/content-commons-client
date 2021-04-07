@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
 import { v4 } from 'uuid';
-import { Grid, Item, Modal } from 'semantic-ui-react';
+import { Grid, Modal } from 'semantic-ui-react';
 
 import { getModalContent } from 'components/modals/utils';
 import { getCategories } from '../utils';
@@ -130,18 +130,18 @@ const Recents = ( { postType, locale, user } ) => {
             ) }
           </Grid.Column>
           <Grid.Column width={ 8 } className="recentsgridright">
-            <Item.Group>
+            <div className="ui items">
               { items
                 && items.slice( 1 ).map( recent => (
                   <Modal
                     key={ v4() }
                     closeIcon
                     trigger={ (
-                      <Item className="recentsItem">
+                      <div className="item recentsItem">
                         <SignedUrlImage className="recentsItem_img" url={ recent.thumbnail }>
                           <img src={ recent.icon } className="metaicon" alt={ `${postType} icon` } />
                         </SignedUrlImage>
-                        <Item.Content>
+                        <div className="content">
                           <h3 className="header">
                             <button type="button">
                               { recent.title }
@@ -153,14 +153,14 @@ const Recents = ( { postType, locale, user } ) => {
                             </span>
                             <span className="categories">{ getCategories( recent ) }</span>
                           </div>
-                        </Item.Content>
-                      </Item>
+                        </div>
+                      </div>
                     ) }
                   >
                     <Modal.Content>{ getModalContent( recent ) }</Modal.Content>
                   </Modal>
                 ) ) }
-            </Item.Group>
+            </div>
           </Grid.Column>
         </Grid>
       </div>
