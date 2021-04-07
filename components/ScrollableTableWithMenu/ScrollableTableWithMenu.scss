@@ -1,7 +1,7 @@
 @import 'styles/colors.scss';
 @import 'styles/mixins.scss';
 
-.ui.grid {
+.dashboard-grid.ui.grid {
   :focus {
     @include focus-styling;
   }
@@ -34,6 +34,7 @@
     }
   }  
 }
+
 
 .items {
 
