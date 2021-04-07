@@ -2,19 +2,9 @@ import React, { useEffect } from 'react';
 import propTypes from 'prop-types';
 import { withRouter } from 'next/router';
 
-import NotFound404 from 'components/errors/NotFound404/NotFound404';
+import ErrorSection from 'components/errors/ErrorSection';
 
 import { redirectTo } from 'lib/browser';
-
-const renderServerError = statusCode => {
-  if ( statusCode === 404 ) {
-    return <NotFound404 />;
-  }
-
-  return <p>{ `An error ${statusCode} occurred on the server` }</p>;
-};
-
-const renderClientError = () => <p> An error occurred on client</p>;
 
 const Error = ( { statusCode, withoutTrailingSlash } ) => {
   useEffect( () => {
@@ -23,17 +13,8 @@ const Error = ( { statusCode, withoutTrailingSlash } ) => {
     }
   }, [withoutTrailingSlash] );
 
-  const styleObj = {
-    textAlign: 'center',
-    margin: '180px auto 120px auto',
-  };
-
   return (
-    <section style={ styleObj }>
-      <h1>Oops</h1>
-      <h4 className="confirm_subtext">This usually isn&apos;t a common occurrence.</h4>
-      { statusCode ? renderServerError( statusCode ) : renderClientError() }
-    </section>
+    <ErrorSection statusCode={ statusCode } />
   );
 };
 
