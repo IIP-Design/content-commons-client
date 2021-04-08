@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import compose from 'lodash.flowright';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 import { withFormik } from 'formik';
 import Link from 'next/link';
 import {
   Form, List, Button,
 } from 'semantic-ui-react';
+
 import Error from 'components/errors/ApolloError';
 import { validationSchema } from './validationSchema';
 import { permissionOptions } from '../permissionOptions';
@@ -36,7 +37,7 @@ const ReviewSubmit = ( {
   // fetch label for display
   const role = permissionOptions.find( option => option.value === user.permissions );
 
-  // Using user from state and NOT values from formik to popluate page as this is static info
+  // Using user from state and NOT values from formik to populate page as this is static info
   // and does not need validation
   return (
     <Form onSubmit={ handleSubmit }>

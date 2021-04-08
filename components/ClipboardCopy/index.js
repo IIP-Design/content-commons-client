@@ -16,7 +16,7 @@ class ClipboardCopy extends Component {
 
   /**
    * CLear timer created in handleCopyClick method in the
-   * event component is unmoumted before timer has completed
+   * event component is unmounted before timer has completed
    */
   componentWillUnmount() {
     window.clearTimeout( this.timeoutID );

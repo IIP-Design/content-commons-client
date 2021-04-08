@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const VIDEO_UNIT_QUERY = gql`
   query VIDEO_UNIT_QUERY($unitId: ID!) {

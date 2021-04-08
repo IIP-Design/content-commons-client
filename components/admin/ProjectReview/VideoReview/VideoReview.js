@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/client';
 import usePublish from 'lib/hooks/usePublish';
 import useIsDirty from 'lib/hooks/useIsDirty';
 import { getCount, getHasSomeNonCleanVideos } from 'lib/utils';

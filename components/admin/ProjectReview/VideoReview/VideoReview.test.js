@@ -2,7 +2,7 @@ import { mount, shallow } from 'enzyme';
 import Link from 'next/link';
 import wait from 'waait';
 import Router from 'next/router';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { Icon, Loader } from 'semantic-ui-react';
 
 import ProjectNotFound from 'components/admin/ProjectNotFound/ProjectNotFound';
@@ -102,7 +102,7 @@ describe( '<VideoReview />', () => {
     );
 
     // wait for the data and !loading
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
 
     const videoReview = wrapper.find( 'VideoReview' );

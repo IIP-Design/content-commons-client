@@ -7,7 +7,6 @@ exports[`<TeamProjectPrimaryCol /> renders a Popup with a truncated project titl
   eventsEnabled={true}
   hideOnScroll={true}
   inverted={true}
-  offset={0}
   on={
     Array [
       "hover",
@@ -15,6 +14,7 @@ exports[`<TeamProjectPrimaryCol /> renders a Popup with a truncated project titl
     ]
   }
   pinned={false}
+  popperModifiers={Array []}
   position="top left"
   size="mini"
   trigger={

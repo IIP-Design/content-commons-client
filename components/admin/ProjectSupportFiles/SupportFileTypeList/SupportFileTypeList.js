@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import compose from 'lodash.flowright';
 import { getFileExt } from 'lib/utils';
 import isEmpty from 'lodash/isEmpty';
@@ -51,7 +51,7 @@ const SupportFileTypeList = props => {
     return files.filter( file => extensions.includes( getFileExt( file.filename ) ) );
   };
 
-  const getNoFilesMessage = ( hl = 'files' ) => (projectId ? `Click the 'Edit' link to add ${hl.toLowerCase()}` : 'No files to upload');
+  const getNoFilesMessage = ( hl = 'files' ) => ( projectId ? `Click the 'Edit' link to add ${hl.toLowerCase()}` : 'No files to upload' );
 
   const fetchFiles = data => {
     const { filesToUpload } = props;

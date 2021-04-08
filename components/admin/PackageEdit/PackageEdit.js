@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/client';
 import usePublish from 'lib/hooks/usePublish';
 import useIsDirty from 'lib/hooks/useIsDirty';
 import PropTypes from 'prop-types';
@@ -54,8 +54,8 @@ const PackageEdit = props => {
   const [error, setError] = useState( {} );
   const [progress, setProgress] = useState( 0 );
 
-  // publishOperation tells the action buttons which operation is excuting so that it can
-  // set its loading indcator on the right button
+  // publishOperation tells the action buttons which operation is executing so that it can
+  // set its loading indicator on the right button
   const [publishOperation, setPublishOperation] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [hasInitialUploadCompleted, setHasInitialUploadCompleted] = useState( false );
@@ -86,7 +86,7 @@ const PackageEdit = props => {
        * closes. Use the create query param to track action button display.
        * This param is removed after initial save.
        * We cannot rely on using the existence of documents as all documents
-       * could be removed after intial upload and we may need to delete the package
+       * could be removed after initial upload and we may need to delete the package
        * Perhaps, it'd be better display files after all thumbnails have
        * resolved.
        */

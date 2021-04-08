@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 // import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/client';
 import { useRouter } from 'next/router';
 
 import { normalize } from 'lib/graphql/normalizers/graphic';
 import { useFileStateManager } from 'lib/hooks/useFileStateManager';
 import { serializeFile } from 'lib/utils';
+import { LOCAL_GRAPHIC_FILES } from 'lib/graphql/queries/graphic';
 
 import EditFileGrid from 'components/admin/EditFileGrid/EditFileGrid';
 import GraphicStyleDropdown from 'components/admin/dropdowns/GraphicStyleDropdown/GraphicStyleDropdown';
@@ -68,7 +69,7 @@ const GraphicUpload = ( { files, closeModal } ) => {
         const { input: { type }, styleSelection } = file;
 
         const isRequiredFileType = type.includes( 'gif' ) || type.includes( 'jpeg' ) || type.includes( 'png' );
-        // Do not allow reqd file types with 'Clean' style to be added as graphic files
+        // Do not allow required file types with 'Clean' style to be added as graphic files
         const isReqdFileWithCleanStyle = isRequiredFileType && styleSelection === 'Clean';
 
         return isRequiredFileType && !isReqdFileWithCleanStyle;
@@ -119,7 +120,8 @@ const GraphicUpload = ( { files, closeModal } ) => {
 
     // If there are images, Write files to apollo cache
     if ( fileList?.length ) {
-      client.writeData( {
+      client.writeQuery( {
+        query: LOCAL_GRAPHIC_FILES,
         data: {
           localGraphicProject: {
             __typename: 'LocalGraphicProject',

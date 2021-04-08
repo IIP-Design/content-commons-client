@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { Query } from '@apollo/client/react/components';
+import { gql } from '@apollo/client';
 import sortBy from 'lodash/sortBy';
 import { withFormik } from 'formik';
 import { Form, Input, Button } from 'semantic-ui-react';

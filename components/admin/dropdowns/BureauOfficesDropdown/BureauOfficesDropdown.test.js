@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import sortBy from 'lodash/sortBy';
 import BureauOfficesDropdown, { BUREAU_OFFICES_QUERY } from './BureauOfficesDropdown';
 import { suppressActWarning } from 'lib/utils';
@@ -153,11 +153,12 @@ describe( '<BureauOfficesDropdown />', () => {
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const dropdown = wrapper.find( 'BureauOfficesDropdown' );
     const error = errorMocks[0].result.errors[0];
-    const errorMsg = `Error! GraphQL error: ${error.message}`;
+    const errorMsg = `Error! ${error.message}`;
 
     expect( dropdown.contains( errorMsg ) ).toEqual( true );
   } );

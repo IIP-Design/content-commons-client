@@ -1,7 +1,8 @@
+import { MockedProvider } from '@apollo/client/testing';
 import { mount } from 'enzyme';
-import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
+import wait from 'waait';
+
 import UserDropdown, { USERS_QUERY } from './UserDropdown';
 
 import { suppressActWarning } from 'lib/utils';
@@ -118,11 +119,12 @@ describe( '<UserDropdown />', () => {
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const userDropdown = wrapper.find( 'UserDropdown' );
     const error = errorMocks[0].result.errors[0];
-    const errorMsg = `Error! GraphQL error: ${error.message}`;
+    const errorMsg = `Error! ${error.message}`;
 
     expect( userDropdown.contains( errorMsg ) ).toEqual( true );
   } );

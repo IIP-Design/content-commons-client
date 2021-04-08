@@ -7,21 +7,22 @@ import React, {
   useState, useEffect, useRef, useContext,
 } from 'react';
 import axios from 'axios';
-import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
 import compose from 'lodash.flowright';
-import { Loader, Popup } from 'semantic-ui-react';
 import debounce from 'lodash/debounce';
-import Focusable from 'components/Focusable/Focusable';
+import { graphql } from '@apollo/client/react/hoc';
+import { Loader, Popup } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+
 import ApolloError from 'components/errors/ApolloError';
+import Focusable from 'components/Focusable/Focusable';
 import GeneralError from 'components/errors/GeneralError/GeneralError';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 // import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
 import { LANGUAGES_QUERY } from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
+
 import { getCount } from 'lib/utils';
 import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import { UploadContext } from '../../ProjectEdit/VideoEdit/UploadContext';
-
 
 import './SupportItem.scss';
 

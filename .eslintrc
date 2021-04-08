@@ -21,7 +21,9 @@
           "@apollo/react-testing",
           "@testing-library/cypress",
           "@testing-library/react",
+          "enzyme",
           "enzyme-to-json",
+          "@wojtekmaj/enzyme-adapter-react-17",
           "prop-types",
           "redux-mock-store",
           "waait"
@@ -37,7 +39,7 @@
           "context": "./context",
           "hocs": "./hocs",
           "lib": "./lib",
-          "static": "./static",
+          "static": "./public/static",
           "styles": "./styles"
         }
       }

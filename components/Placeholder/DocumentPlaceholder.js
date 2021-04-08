@@ -1,7 +1,7 @@
 import React from 'react';
 import { Placeholder } from 'semantic-ui-react';
 
-const DocumentPaceholder = () => (
+const DocumentPlaceholder = () => (
   <div style={ { border: '2px solid #eee' } }>
     <div style={ { margin: '20px' } }>
       <Placeholder>
@@ -28,4 +28,4 @@ const DocumentPaceholder = () => (
   </div>
 );
 
-export default DocumentPaceholder;
+export default DocumentPlaceholder;

@@ -21,7 +21,7 @@ const FormikAutoSave = props => {
   } = props;
 
   // Stores last saved form values. Helpful when values need to be removed from form
-  // i.e. disconnecting nodes in grqaphql
+  // i.e. disconnecting nodes in graphql
   const [prevValues, setPrevValues] = useState( values );
 
   /**

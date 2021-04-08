@@ -4,7 +4,7 @@ import DownloadItemContent from 'components/download/DownloadItem/DownloadItemCo
 import { formatBytes, getS3Url } from 'lib/utils';
 
 // NOTE: Using the 'download' attribute to trigger downloads
-// Need to research more robust options depending on browser supprt
+// Need to research more robust options depending on browser support
 const DownloadVideo = props => {
   const { selectedLanguageUnit, burnedInCaptions, isPreview } = props;
 

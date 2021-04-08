@@ -35,6 +35,7 @@ exports[`<PopupTrigger /> renders without crashing 1`] = `
       offset={4}
       on="click"
       pinned={false}
+      popperModifiers={Array []}
       position="bottom right"
       trigger={
         <Button

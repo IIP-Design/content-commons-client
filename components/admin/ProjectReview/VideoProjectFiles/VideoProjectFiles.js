@@ -6,7 +6,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import { Button, Grid, Loader } from 'semantic-ui-react';
 
 import ApolloError from 'components/errors/ApolloError';
@@ -109,7 +109,7 @@ const VideoProjectFiles = ( { data, id } ) => {
               <Grid.Row className="project_unit_meta description">
                 <Grid.Column computer={ 8 }>
                   <p className="public_description">
-                    <b className="label">Public Description:</b>
+                    <b className="label">Public Description:</b>
                     <span
                       className={ `content ${language.textDirection}` }
                       style={

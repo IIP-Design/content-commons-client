@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from 'react-apollo';
+import { gql, useQuery } from '@apollo/client';
 import { Form } from 'semantic-ui-react';
-import gql from 'graphql-tag';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { addEmptyOption } from 'lib/utils';
 

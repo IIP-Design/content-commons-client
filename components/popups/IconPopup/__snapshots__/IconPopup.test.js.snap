@@ -6,7 +6,6 @@ exports[`<IconPopup /> renders without crashing 1`] = `
   disabled={false}
   eventsEnabled={true}
   inverted={true}
-  offset={0}
   on={
     Array [
       "hover",
@@ -15,6 +14,7 @@ exports[`<IconPopup /> renders without crashing 1`] = `
     ]
   }
   pinned={false}
+  popperModifiers={Array []}
   position="top left"
   size="mini"
   trigger={

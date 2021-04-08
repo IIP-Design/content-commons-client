@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import gql from 'graphql-tag';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { gql, useQuery, useMutation } from '@apollo/client';
 import {
   Form, Button, Modal, Select,
 } from 'semantic-ui-react';
+
 import { USERS_QUERY } from 'components/admin/dropdowns/UserDropdown/UserDropdown';
+
 import { titleCase } from 'lib/utils';
 import { useAuth } from 'context/authContext';
 

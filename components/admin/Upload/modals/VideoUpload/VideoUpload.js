@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import compose from 'lodash.flowright';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import { Tab, Dimmer, Loader } from 'semantic-ui-react';
 import { v4 } from 'uuid';
 import { withRouter } from 'next/router';
@@ -98,7 +98,7 @@ const VideoUpload = props => {
     setActiveIndex( 1 );
   };
 
-  const setDefaultQuality = file => (file.type === 'video/mp4' ? 'WEB' : '');
+  const setDefaultQuality = file => ( file.type === 'video/mp4' ? 'WEB' : '' );
 
   /**
    * Compares file object file names for use in sorting.

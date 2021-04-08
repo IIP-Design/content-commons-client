@@ -39,12 +39,12 @@ const EditFileGrid = ( {
     return duplicates;
   };
 
-  // Close confirm dialgue
+  // Close confirm dialogue
   const close = () => {
     setConfirm( { open: false } );
   };
 
-  // Display applicabe screen
+  // Display applicable screen
   const go = screen => {
     setActiveScreen( screen );
   };

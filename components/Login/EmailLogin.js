@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import { Form, Button } from 'semantic-ui-react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import compose from 'lodash.flowright';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 import { withFormik } from 'formik';
+
 import ApolloError from '../errors/ApolloError';
 import { CURRENT_USER_QUERY } from '../User/User';
 import { validationSchema } from './validationSchema';
+
 import './Login.scss';
 
 const SIGNIN_MUTATION = gql`

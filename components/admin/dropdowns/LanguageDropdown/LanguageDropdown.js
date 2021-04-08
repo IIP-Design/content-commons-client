@@ -3,12 +3,13 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
 import sortBy from 'lodash/sortBy';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
+
+import { addEmptyOption } from 'lib/utils';
 
 import '../dropdown.scss';
-import { addEmptyOption } from 'lib/utils';
 
 const LANGUAGES_QUERY = gql`
   query LANGUAGES_QUERY {
@@ -141,7 +142,7 @@ const LanguageDropdown = props => {
     <Query
       query={ LANGUAGES_QUERY }
       onCompleted={ data => {
-        // if filename present, attempt to autoselect based on filename
+        // if filename present, attempt to auto-select based on filename
         if ( filename ) {
           const value = getLanguage( filename ).id( data.languages );
 

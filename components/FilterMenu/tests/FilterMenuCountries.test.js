@@ -1,13 +1,16 @@
 import { mount } from 'enzyme';
+
 import FilterMenuCountries from '../FilterMenuCountries';
+
 import { countriesQueryMocks as mocks } from './mocks';
 
 jest.mock(
   'components/FilterMenu/FilterMenuItem',
   () => function FilterMenuItem() { return ''; },
 );
+
 jest.mock(
-  '@apollo/react-hooks',
+  '@apollo/client',
   () => ( {
     useApolloClient: jest.fn( () => ( {
       readQuery: jest.fn( () => ( {
@@ -63,6 +66,13 @@ jest.mock(
         ],
       } ) ),
     } ) ),
+  } ),
+);
+
+jest.mock(
+  'lib/graphql/queries/document',
+  () => ( {
+    COUNTRIES_REGIONS_QUERY: '',
   } ),
 );
 

@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic';
 import moment from 'moment';
 import Router from 'next/router';
 import { Button, Modal, Icon } from 'semantic-ui-react';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 
 import ApolloError from 'components/errors/ApolloError';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
@@ -33,7 +33,7 @@ const Upload = () => {
 
   // Reducer to manage the modal state for multiple modals
   const reducer = ( _state, action ) => {
-    // content types are uppercased to match graphQL enum
+    // content types are upper-cased to match graphQL enum
     const key = action.contentType.toLowerCase();
 
     switch ( action.type ) {
@@ -320,7 +320,7 @@ const Upload = () => {
             { ' ' }
             <i>project-tile_arabic.jpg</i>
             { ' ' }
-            &quot;, to help pre-populate metadata fields and save you
+            &quot;, to help pre-populate metadata fields and save you
             time when uploading content!
           </p>
         </div>

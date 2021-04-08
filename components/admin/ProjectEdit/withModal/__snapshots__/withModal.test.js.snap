@@ -18,31 +18,41 @@ exports[`withModal() renders without crashing 1`] = `
     />
   }
 >
-  <div
-    className="ui page modals dimmer transition visible active"
-  >
-    <Ref
-      innerRef={
-        Object {
-          "current": null,
-        }
+  <Ref
+    innerRef={
+      Object {
+        "current": null,
       }
+    }
+  >
+    <ModalDimmer
+      blurring={false}
+      centered={true}
+      inverted={false}
+      mountNode={<body />}
     >
-      <div
-        className="ui modal transition visible active"
-        one="option1"
-        style={Object {}}
-        two="option2"
+      <Ref
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
       >
-        <MountNode />
-        <ModalContent>
-          <Content
-            one="prop3"
-            two="prop4"
-          />
-        </ModalContent>
-      </div>
-    </Ref>
-  </div>
+        <div
+          className="ui modal transition visible active"
+          one="option1"
+          style={Object {}}
+          two="option2"
+        >
+          <ModalContent>
+            <Content
+              one="prop3"
+              two="prop4"
+            />
+          </ModalContent>
+        </div>
+      </Ref>
+    </ModalDimmer>
+  </Ref>
 </Portal>
 `;

@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { gql } from '@apollo/client';
+import { graphql } from '@apollo/client/react/hoc';
 import orderBy from 'lodash/orderBy';
 import { Icon, Loader } from 'semantic-ui-react';
+
 import { getCount } from 'lib/utils';
 import VideoSupportFilesItem from './VideoSupportFilesItem/VideoSupportFilesItem';
 

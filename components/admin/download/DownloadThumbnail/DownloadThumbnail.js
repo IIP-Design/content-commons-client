@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { gql } from '@apollo/client';
+import { graphql } from '@apollo/client/react/hoc';
 import { Loader } from 'semantic-ui-react';
+
+import ApolloError from 'components/errors/ApolloError';
 import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
 import { getS3Url } from 'lib/utils';
-import ApolloError from 'components/errors/ApolloError';
 
 const DownloadThumbnail = props => {
   const { data, isPreview } = props;

@@ -28,8 +28,8 @@ const ResultsHeader = ( {
 
   // Check if Result page is from Guidance Packages 'Browse All' link on homepage
   // packages not included in search results
-  // Sort dropdown menu not relevant to pkgs
-  // Check for package postTypes param if coming from pkgs Browse All link
+  // Sort dropdown menu not relevant to packages
+  // Check for package postTypes param if coming from packages Browse All link
   const { postTypes } = filter;
   const viewingAllPkgs = postTypes?.includes( 'package' );
 

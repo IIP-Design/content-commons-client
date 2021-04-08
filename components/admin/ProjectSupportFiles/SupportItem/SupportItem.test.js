@@ -1,11 +1,12 @@
-import { mount } from 'enzyme';
 import mockAxios from 'axios';
+import { MockedProvider } from '@apollo/client/testing';
+import { mount } from 'enzyme';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
+
+import SupportItem from './SupportItem';
 
 import { isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import { UploadContext } from '../../ProjectEdit/VideoEdit/UploadContext';
-import SupportItem from './SupportItem';
 
 import {
   emptyItemProps,
@@ -157,8 +158,9 @@ describe( '<SupportItem />', () => {
   it( 'does not crash if server returns a GraphQL error', async () => {
     const wrapper = mount( ErrorMocksComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const supportItem = wrapper.find( 'SupportItem' );
     const apolloError = supportItem.find( 'ApolloError' );
     const { error } = supportItem.prop( 'data' );

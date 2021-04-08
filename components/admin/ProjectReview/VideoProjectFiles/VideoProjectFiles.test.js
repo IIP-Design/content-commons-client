@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
 import Router from 'next/router';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { Loader } from 'semantic-ui-react';
 
 import VideoProjectFiles from './VideoProjectFiles';
@@ -77,7 +77,7 @@ describe( '<VideoProjectFiles />', () => {
     );
 
     // wait for the data and !loading
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
 
     const videoProjectFiles = wrapper.find( 'VideoProjectFiles' );

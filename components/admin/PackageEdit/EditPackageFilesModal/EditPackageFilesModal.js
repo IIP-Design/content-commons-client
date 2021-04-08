@@ -56,7 +56,7 @@ const EditPackageFilesModal = ( {
     right: '40px',
   };
 
-  const uploadProgessStyles = {
+  const uploadProgressStyles = {
     margin: '-10px 15px 15px 15px',
   };
 
@@ -140,11 +140,11 @@ const EditPackageFilesModal = ( {
 
   /**
    * Puts file in queue to remove
-   * Only show confirm dialgue for files that have already been saved to db
+   * Only show confirm dialogue for files that have already been saved to db
    * For new files, the id is generated using uuid and therefore will
-   * have the '-' character in it. Ff '-' exists, assume new file and do not show dialgue
+   * have the '-' character in it. Ff '-' exists, assume new file and do not show dialogue
    *
-   * @param {string} id id of fiile
+   * @param {string} id id of file
    * @param {string} name name of file
    */
   const handleRemove = ( id, name ) => {
@@ -242,7 +242,7 @@ const EditPackageFilesModal = ( {
               filesToUpload={ files.filter( file => file.input ) }
               fileProgressMessage
               barSize="small"
-              customStyles={ uploadProgessStyles }
+              customStyles={ uploadProgressStyles }
             />
           ) }
         </Fragment>

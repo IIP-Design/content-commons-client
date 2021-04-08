@@ -8,7 +8,7 @@ import { getCount } from 'lib/utils';
 import thumbnailUnavailable from 'static/images/thumbnail_document_unavailable.png';
 import thumbnail from 'static/images/thumbnail_document.png';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
-import DocumentPaceholder from 'components/Placeholder/DocumentPaceholder';
+import DocumentPlaceholder from 'components/Placeholder/DocumentPlaceholder';
 import CountriesRegionsDropdown from 'components/admin/dropdowns/CountriesRegionsDropdown/CountriesRegionsDropdown';
 import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
@@ -19,7 +19,7 @@ import './PressPackageFile.scss';
 
 
 // todo: write props comparison
-// use memo here to avoid rerending this files
+// use memo here to avoid re-rending this files
 // when it is not re-rendered
 // const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
@@ -74,7 +74,7 @@ const PressPackageFile = props => {
       }
     }
 
-    return <DocumentPaceholder />;
+    return <DocumentPlaceholder />;
   };
 
   return (

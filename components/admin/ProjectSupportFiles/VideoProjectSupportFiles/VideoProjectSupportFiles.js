@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import compose from 'lodash.flowright';
 import { connect } from 'react-redux';
 import * as actions from 'lib/redux/actions/projectUpdate';

@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import compose from 'lodash.flowright';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 import { withFormik } from 'formik';
 import { Form, Button } from 'semantic-ui-react';
 import * as Yup from 'yup';
+
 import Error from '../errors/ApolloError';
+
 import './EmailRequest.scss';
 
 const REQUEST_ACCOUNT_ACTION_MUTATION = gql`

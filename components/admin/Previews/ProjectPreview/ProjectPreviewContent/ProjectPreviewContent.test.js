@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import { Loader } from 'semantic-ui-react';
 
 import ProjectPreviewContent from './ProjectPreviewContent';
@@ -92,7 +92,7 @@ describe( '<ProjectPreviewContent />', () => {
     );
 
     // wait for the data and !loading
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
 
     const preview = wrapper.find( 'ProjectPreviewContent' );

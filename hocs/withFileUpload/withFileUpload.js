@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { uploadToS3, uploadToVimeo, getFileMetadata } from 'lib/upload';
-import { graphql } from 'react-apollo';
+import { graphql } from '@apollo/client/react/hoc';
 import compose from 'lodash.flowright';
 import {
   SIGNED_S3_URL_PUT_MUTATION,
@@ -23,7 +23,7 @@ const withFileUpload = WrappedComponent => {
      * @param {string} projectId Either a assetPath (w/o trailing /) or an id from which to construct an assetPath on the server
      * @param {array} files files to upload
      * @param {func} callback Callback to send upload progress events to
-     * @param {func} updateFn Functioin to run on successful file upload
+     * @param {func} updateFn Function to run on successful file upload
      */
     upload = async ( projectId, files, callback, updateFn ) => {
       const { getSignedS3UrlPut, getSignedS3UrlGet, getFileInfo } = this.props;

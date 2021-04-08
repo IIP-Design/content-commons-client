@@ -1,12 +1,14 @@
 /* eslint-disable no-bitwise */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { Form } from 'semantic-ui-react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
 import sortBy from 'lodash/sortBy';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
+
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { addEmptyOption } from 'lib/utils';
+
 import '../dropdown.scss';
 
 const GRAPHIC_STYLES_QUERY = gql`
@@ -65,7 +67,7 @@ const GraphicStyleDropdown = props => {
     <Query
       query={ GRAPHIC_STYLES_QUERY }
       onCompleted={ data => {
-        // if filename present, attempt to autoselect based on filename
+        // if filename present, attempt to auto-select based on filename
         if ( filename ) {
           const value = getGraphicStyle( filename ).id( data.graphicStyles );
 
@@ -85,7 +87,7 @@ const GraphicStyleDropdown = props => {
 
         // TO DO : use useQuery hook and put this in variables
         if ( omit?.length ) {
-          // faster way to lowercase all items for comparision purposes
+          // faster way to lowercase all items for comparison purposes
           _omit = omit
             .join( '|' )
             .toLowerCase()

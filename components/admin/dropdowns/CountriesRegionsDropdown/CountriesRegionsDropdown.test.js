@@ -1,10 +1,12 @@
+import { MockedProvider } from '@apollo/client/testing';
 import { mount } from 'enzyme';
-import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
+import wait from 'waait';
+
+import CountriesRegionsDropdown from './CountriesRegionsDropdown';
+
 import { COUNTRIES_REGIONS_QUERY } from 'lib/graphql/queries/document';
 import { suppressActWarning } from 'lib/utils';
-import CountriesRegionsDropdown from './CountriesRegionsDropdown';
 
 const props = {
   id: '123xyz',
@@ -144,11 +146,12 @@ describe( '<CountriesRegionsDropdown />', () => {
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const dropdown = wrapper.find( 'CountriesRegionsDropdown' );
     const error = errorMocks[0].result.errors[0];
-    const errorMsg = `Error! GraphQL error: ${error.message}`;
+    const errorMsg = `Error! ${error.message}`;
 
     expect( dropdown.contains( errorMsg ) ).toEqual( true );
   } );

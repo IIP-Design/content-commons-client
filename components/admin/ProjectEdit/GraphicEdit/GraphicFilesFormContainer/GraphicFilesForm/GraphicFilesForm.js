@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { Confirm, Form, Input, Loader } from 'semantic-ui-react';
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import Filename from 'components/admin/Filename/Filename';
@@ -122,7 +122,7 @@ const GraphicFilesForm = props => {
       <Form className="form-fields">
         { /* We may have to pull the fieldset into a separate component and memoize it
         as all forms are rendered on each keystroke when updating the title
-        Check perfomance before optimizing */ }
+        Check performance before optimizing */ }
         { files.map( file => {
           const { id, filename, filesize, input, language } = file;
           const _filename = projectId ? filename : input?.name;

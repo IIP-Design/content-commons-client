@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/client';
 import { DashboardContext } from 'context/dashboardContext';
 
 const UnpublishProjects = ( {
@@ -19,7 +19,7 @@ const UnpublishProjects = ( {
   // 1 - Using new 'metaContent' query - only fetches id, publishedAt & status fields
   // - prior query for all content causes a network strain, browser has to download all content type files again which are not needed here
   // - Ensures that ScrollableTableWithMenu re-renders
-  // 2 - Not using stopPolling, calling stopPolling does not allow bulk unpublishing to finish
+  // 2 - Not using stopPolling, calling stopPolling does not allow bulk un-publishing to finish
   const { data, startPolling, stopPolling } = useQuery(
     state.queries.metaContent,
     { variables: { ...variables } },

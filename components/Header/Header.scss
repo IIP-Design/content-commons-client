@@ -6,7 +6,7 @@
     display: flex;
     justify-content: space-between;
     text-align: center;
-    flex-direction: column;    
+    flex-direction: column;
     margin: 8px 0;
     @media screen and (min-width: 768px) {
       align-items: center;
@@ -33,8 +33,8 @@
     }
   }
 
-  &--home {    
-    background: url("../../static/images/cdp_home_hero.jpg");
+  &--home {
+    background: url('/static/images/cdp_home_hero.jpg');
     background-size: cover;
 
     header {
@@ -83,7 +83,6 @@
   }
 
   &:not(.bar--home) {
-    
     .ui.centered.image.seal {
       display: inline-block;
       width: 30px;
@@ -113,7 +112,7 @@
       }
       @media screen and (min-width: 993px) {
         margin-right: 0.3em;
-      }      
+      }
       @media screen and (max-width: 960px) {
         min-width: auto;
       }
@@ -184,6 +183,7 @@
   /*** 
     Login - no searchbar, only feedback nav item 
   ***/
+  &--404,
   &--login,
   &--register,
   &--confirm,
@@ -198,6 +198,7 @@
   /***  
     Blue bG bar 
   ***/
+  &--404,
   &--results,
   &--video,
   &--article,

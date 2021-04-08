@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { gql, useQuery } from '@apollo/client';
+
 import ApolloError from 'components/errors/ApolloError';
 import { formatBytes, getCount } from 'lib/utils';
 
@@ -57,9 +57,9 @@ const getVideoFiles = units => (
   }, [] )
 );
 
-const VideoDetailsPopup = props => {
+const VideoDetailsPopup = ( { id } ) => {
   const { loading, error, data } = useQuery( VIDEO_PROJECT_FILES_QUERY, {
-    variables: { id: props.id },
+    variables: { id },
   } );
 
   if ( loading ) return <p>Loading....</p>;

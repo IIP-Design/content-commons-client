@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import cookies from 'next-cookies';
-import { useLazyQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
+import { useLazyQuery, useMutation, useApolloClient } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { Auth, Hub } from 'aws-amplify';
 
@@ -93,9 +93,9 @@ const AuthProvider = props => {
 
   /**
    * Adds the ES_TOKEN to the user object. NOTE: This should be removed and the token pulled from cookie
-   * within the API. Would require a longer testing period so will refactor based on what happned
+   * within the API. Would require a longer testing period so will refactor based on what happened
    * with Commons
-   * @param {Object} user user object returned from either Cognito (on signin) or graphQL (on load)
+   * @param {Object} user user object returned from either Cognito (on sign-in) or graphQL (on load)
    */
   const setUser = user => {
     const ES_TOKEN = Cookies.get( 'ES_TOKEN' );
@@ -144,7 +144,7 @@ const AuthProvider = props => {
     // Send cognito token for verification on commons server
     const { data: _data } = await signIn( { variables: { token } } ).catch( err => {} );
 
-    // if we have valid signin (user is returned), set authenticate user
+    // if we have valid sign-in (user is returned), set authenticate user
     if ( _data?.cognitoSignin ) {
       setUser( _data.cognitoSignin );
     }
@@ -152,9 +152,9 @@ const AuthProvider = props => {
 
   /*
    Login is initiated from the Login screen via Auth.federatedSignIn()
-   We listen for a successful signin event and then initiate Commons login,
+   We listen for a successful sign-in event and then initiate Commons login,
    passing Cognito token. If a redirect is provided, i.e. an unauthenticated user
-   attempts to access a protected page, they must 1st signin before being directed
+   attempts to access a protected page, they must 1st sign-in before being directed
    to original protected page. The redirect is added to the
    Auth.federatedSignIn( { provider: 'Google', customState: redirect }) method and
    listened for via the 'customOAuthState' event.

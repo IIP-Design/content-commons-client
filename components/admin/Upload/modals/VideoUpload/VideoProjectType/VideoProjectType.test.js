@@ -1,4 +1,6 @@
 import { mount } from 'enzyme';
+import wait from 'waait';
+
 import VideoProjectType from './VideoProjectType';
 
 jest.mock(
@@ -29,10 +31,12 @@ describe( '<VideoProjectType />', () => {
       .toHaveBeenCalledWith( 'upload_modal project-type-active' );
   } );
 
-  it( 'calls updateModalClassname on unmount', () => {
+  it( 'calls updateModalClassname on unmount', async () => {
     const wrapper = mount( Component );
 
     wrapper.unmount();
+    await wait( 2 );
+
     expect( props.updateModalClassname )
       .toHaveBeenCalledWith( 'upload_modal' );
   } );

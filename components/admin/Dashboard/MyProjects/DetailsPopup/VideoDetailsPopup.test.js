@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
+import { MockedProvider } from '@apollo/client/testing';
 import ApolloError from 'components/errors/ApolloError';
 import { formatBytes, getCount, suppressActWarning } from 'lib/utils';
 import VideoDetailsPopup, {
@@ -208,7 +208,7 @@ describe( '<VideoDetailsPopup />', () => {
     );
 
     // wait for the data and !loading
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
 
     const popup = wrapper.find( VideoDetailsPopup );

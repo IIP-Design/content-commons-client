@@ -1,8 +1,10 @@
+import { MockedProvider } from '@apollo/client/testing';
 import { mount } from 'enzyme';
-import wait from 'waait';
-import { MockedProvider } from '@apollo/react-testing';
 import sortBy from 'lodash/sortBy';
+import wait from 'waait';
+
 import GraphicStyleDropdown, { GRAPHIC_STYLES_QUERY } from './GraphicStyleDropdown';
+
 import { addEmptyOption, suppressActWarning } from 'lib/utils';
 
 const props = {
@@ -118,11 +120,12 @@ describe( '<GraphicStyleDropdown />', () => {
   it( 'renders an error message if there is a GraphQL error', async () => {
     const wrapper = mount( ErrorComponent );
 
-    await wait( 0 );
+    await wait( 2 );
     wrapper.update();
+
     const dropdown = wrapper.find( 'GraphicStyleDropdown' );
     const error = errorMocks[0].result.errors[0];
-    const errorMsg = `Error! GraphQL error: ${error.message}`;
+    const errorMsg = `Error! ${error.message}`;
 
     expect( dropdown.contains( errorMsg ) ).toEqual( true );
   } );
