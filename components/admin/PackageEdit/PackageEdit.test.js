@@ -708,7 +708,7 @@ describe( '<PackageEdit />, if data === undefined is returned', () => {
   it( 'renders ApolloError', async () => {
     const wrapper = mount( Component );
 
-    await wait( 5 );
+    await wait( 10 );
     wrapper.update();
 
     const apolloError = wrapper.find( 'ApolloError' );
