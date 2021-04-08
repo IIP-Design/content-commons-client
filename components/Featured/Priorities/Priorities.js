@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
 import { v4 } from 'uuid';
-import { Grid, Modal } from 'semantic-ui-react';
+import { Modal } from 'semantic-ui-react';
 
 import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
 import { getModalContent } from 'components/modals/utils';
@@ -148,51 +148,47 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
             <a className="browseAll" aria-label={ `Browse all ${label} content` }>Browse All</a>
           </Link>
         </div>
-        <Grid columns="equal" stackable stretched>
-          <Grid.Column width={ 8 } className="prioritiesgridleft">
-            { items && items[0] && (
-              <Modal
-                closeIcon
-                trigger={
-                  items[0].type === 'document'
-                    ? (
-                      <div className="prioritiesleft text">
-                        <div className="prioritiesoverlay">
-                          <div className="prioritiesoverlay_use">{ items[0].use }</div>
-                          <h3 className="prioritiesoverlay_title">
-                            <button type="button">
-                              { items[0].title }
-                            </button>
-                          </h3>
-                          <img src={ items[0].icon } className="prioritiesoverlay_icon" alt="icon" />
-                        </div>
+
+        <div className="priorityItems">
+          { items && items[0] && (
+            <Modal
+              closeIcon
+              trigger={
+                items[0].type === 'document'
+                  ? (
+                    <div className="prioritiesleft text">
+                      <div className="prioritiesoverlay">
+                        <div className="prioritiesoverlay_use">{ items[0].use }</div>
+                        <h3 className="prioritiesoverlay_title">
+                          <button type="button">
+                            { items[0].title }
+                          </button>
+                        </h3>
+                        <img src={ items[0].icon } className="prioritiesoverlay_icon" alt="icon" />
                       </div>
-                    )
-                    : (
-                      <SignedUrlImage className="prioritiesleft" url={ items[0].thumbnail }>
-                        <div className="prioritiesoverlay">
-                          <h3 className="prioritiesoverlay_title">
-                            <button type="button">
-                              { items[0].title }
-                            </button>
-                          </h3>
-                          <img src={ items[0].icon } className="prioritiesoverlay_icon" alt="icon" />
-                        </div>
-                      </SignedUrlImage>
-                    // eslint-disable-next-line react/jsx-indent
-                    )
-                }
-              >
-                <Modal.Content>{ getModalContent( items[0] ) }</Modal.Content>
-              </Modal>
-            ) }
-          </Grid.Column>
-          <Grid.Column width={ 8 } className="prioritiesgridright">
-            <div className="ui items">
-              { items && renderPrioritiesWithMeta( items ) }
-            </div>
-          </Grid.Column>
-        </Grid>
+                    </div>
+                  )
+                  : (
+                    <SignedUrlImage className="prioritiesleft" url={ items[0].thumbnail }>
+                      <div className="prioritiesoverlay">
+                        <h3 className="prioritiesoverlay_title">
+                          <button type="button">
+                            { items[0].title }
+                          </button>
+                        </h3>
+                        <img src={ items[0].icon } className="prioritiesoverlay_icon" alt="icon" />
+                      </div>
+                    </SignedUrlImage>
+                  // eslint-disable-next-line react/jsx-indent
+                  )
+              }
+            >
+              <Modal.Content>{ getModalContent( items[0] ) }</Modal.Content>
+            </Modal>
+          ) }
+
+          { items && renderPrioritiesWithMeta( items ) }
+        </div>
       </div>
     </section>
   );

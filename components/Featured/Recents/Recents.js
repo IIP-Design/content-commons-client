@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
 import { v4 } from 'uuid';
-import { Grid, Modal } from 'semantic-ui-react';
+import { Modal } from 'semantic-ui-react';
 
 import { getModalContent } from 'components/modals/utils';
 import { getCategories } from '../utils';
@@ -103,66 +103,62 @@ const Recents = ( { postType, locale, user } ) => {
             <a className="browseAll" aria-label={ `Browse all ${postTypeLabel}` }>Browse All</a>
           </Link>
         </div>
-        <Grid columns="equal" stackable stretched>
-          <Grid.Column width={ 8 } className="recentsgridleft">
-            { items && items[0] && (
+        
+        <div className="recentItems">
+          { items && items[0] && (
+            <Modal
+              closeIcon
+              trigger={ (
+                <SignedUrlImage className="recentsleft" url={ items[0].thumbnail }>
+                  <div className="recentsoverlay">
+                    <h3 className="recentsoverlay_title">
+                      <button type="button">
+                        { items[0].title }
+                      </button>
+                    </h3>
+                    <img
+                      src={ items[0].icon }
+                      className="recentsoverlay_icon"
+                      alt={ `${postType} icon` }
+                    />
+                  </div>
+                </SignedUrlImage>
+              ) }
+            >
+              <Modal.Content>{ getModalContent( items[0] ) }</Modal.Content>
+            </Modal>
+          ) }
+
+          { items
+            && items.slice( 1 ).map( recent => (
               <Modal
+                key={ v4() }
                 closeIcon
                 trigger={ (
-                  <SignedUrlImage className="recentsleft" url={ items[0].thumbnail }>
-                    <div className="recentsoverlay">
-                      <h3 className="recentsoverlay_title">
+                  <div className="item recentsItem">
+                    <SignedUrlImage className="recentsItem_img" url={ recent.thumbnail }>
+                      <img src={ recent.icon } className="metaicon" alt={ `${postType} icon` } />
+                    </SignedUrlImage>
+                    <div className="content">
+                      <h3 className="header">
                         <button type="button">
-                          { items[0].title }
+                          { recent.title }
                         </button>
                       </h3>
-                      <img
-                        src={ items[0].icon }
-                        className="recentsoverlay_icon"
-                        alt={ `${postType} icon` }
-                      />
+                      <div className="meta">
+                        <span className="date">
+                          { moment( recent.published ).format( 'MMMM DD, YYYY' ) }
+                        </span>
+                        <span className="categories">{ getCategories( recent ) }</span>
+                      </div>
                     </div>
-                  </SignedUrlImage>
+                  </div>
                 ) }
               >
-                <Modal.Content>{ getModalContent( items[0] ) }</Modal.Content>
+                <Modal.Content>{ getModalContent( recent ) }</Modal.Content>
               </Modal>
-            ) }
-          </Grid.Column>
-          <Grid.Column width={ 8 } className="recentsgridright">
-            <div className="ui items">
-              { items
-                && items.slice( 1 ).map( recent => (
-                  <Modal
-                    key={ v4() }
-                    closeIcon
-                    trigger={ (
-                      <div className="item recentsItem">
-                        <SignedUrlImage className="recentsItem_img" url={ recent.thumbnail }>
-                          <img src={ recent.icon } className="metaicon" alt={ `${postType} icon` } />
-                        </SignedUrlImage>
-                        <div className="content">
-                          <h3 className="header">
-                            <button type="button">
-                              { recent.title }
-                            </button>
-                          </h3>
-                          <div className="meta">
-                            <span className="date">
-                              { moment( recent.published ).format( 'MMMM DD, YYYY' ) }
-                            </span>
-                            <span className="categories">{ getCategories( recent ) }</span>
-                          </div>
-                        </div>
-                      </div>
-                    ) }
-                  >
-                    <Modal.Content>{ getModalContent( recent ) }</Modal.Content>
-                  </Modal>
-                ) ) }
-            </div>
-          </Grid.Column>
-        </Grid>
+            ) ) }
+        </div>
       </div>
     </section>
   );
