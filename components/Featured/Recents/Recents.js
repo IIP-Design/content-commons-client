@@ -14,7 +14,7 @@ import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
 import FeaturedLoading from '../FeaturedLoading';
 import FeaturedError from '../FeaturedError';
 
-import './Recents.scss';
+import styles from './Recents.module.scss';
 
 const Recents = ( { postType, locale, user } ) => {
   const [items, setItems] = useState( [] );
@@ -82,12 +82,12 @@ const Recents = ( { postType, locale, user } ) => {
 
   return (
     <section
-      className="ui container recents"
+      className={ styles.recents }
       aria-label={ `Latest ${postTypeLabel}` }
     >
-      <div className="recentswrapper">
-        <div className="recentstitle">
-          <h2 className="ui large header">
+      <div className={ styles.container }>
+        <div className={ styles.title }>
+          <h2 className={ styles.section_heading }>
             { postTypeLabel && `Latest ${postTypeLabel}` }
           </h2>
           <Link
@@ -100,25 +100,25 @@ const Recents = ( { postType, locale, user } ) => {
               },
             } }
           >
-            <a className="browseAll" aria-label={ `Browse all ${postTypeLabel}` }>Browse All</a>
+            <a className={ styles.browseAll } aria-label={ `Browse all ${postTypeLabel}` }>Browse All</a>
           </Link>
         </div>
-        
-        <div className="recentItems">
+
+        <div className={ styles.items }>
           { items && items[0] && (
             <Modal
               closeIcon
               trigger={ (
-                <SignedUrlImage className="recentsleft" url={ items[0].thumbnail }>
-                  <div className="recentsoverlay">
-                    <h3 className="recentsoverlay_title">
+                <SignedUrlImage className={ styles.primary } url={ items[0].thumbnail }>
+                  <div className={ styles.overlay }>
+                    <h3 className={ styles.overlay_heading }>
                       <button type="button">
                         { items[0].title }
                       </button>
                     </h3>
                     <img
                       src={ items[0].icon }
-                      className="recentsoverlay_icon"
+                      className={ styles.overlay_icon }
                       alt={ `${postType} icon` }
                     />
                   </div>
@@ -135,21 +135,21 @@ const Recents = ( { postType, locale, user } ) => {
                 key={ v4() }
                 closeIcon
                 trigger={ (
-                  <div className="item recentsItem">
-                    <SignedUrlImage className="recentsItem_img" url={ recent.thumbnail }>
-                      <img src={ recent.icon } className="metaicon" alt={ `${postType} icon` } />
+                  <div className={ styles.item }>
+                    <SignedUrlImage className={ styles.item_img } url={ recent.thumbnail }>
+                      <img src={ recent.icon } className={ styles.metaicon } alt={ `${postType} icon` } />
                     </SignedUrlImage>
-                    <div className="content">
-                      <h3 className="header">
+                    <div className={ styles.content }>
+                      <h3 className={ styles.content_heading }>
                         <button type="button">
                           { recent.title }
                         </button>
                       </h3>
-                      <div className="meta">
-                        <span className="date">
+                      <div className={ styles.meta }>
+                        <span className={ styles.date }>
                           { moment( recent.published ).format( 'MMMM DD, YYYY' ) }
                         </span>
-                        <span className="categories">{ getCategories( recent ) }</span>
+                        <span className={ styles.categories }>{ getCategories( recent ) }</span>
                       </div>
                     </div>
                   </div>
