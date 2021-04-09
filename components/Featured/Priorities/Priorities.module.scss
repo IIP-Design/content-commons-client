@@ -1,5 +1,6 @@
 @import 'styles/colors.scss';
 @import 'styles/mixins.scss';
+@import '../featured-mixins.scss';
 
 .priorities {
   background: url('/static/images/wavy-bg.jpg') repeat;
@@ -22,12 +23,7 @@
 }
 
 .title {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  @media screen and (max-width: 900px) {
-    flex-direction: column-reverse;
-  }
+  @include featured-section-title;
 }
 
 .section_heading {
@@ -35,38 +31,16 @@
   left: -1rem;
   padding: 0.5em 1em;
   color: #fff;
-  font-size: 1.33em;
   background: $blue;
-  @media screen and (max-width: 900px) {
-    margin-bottom: 8px;
-    font-size: 20px;
-  }
-  @media screen and (min-width: 768px) and (max-width: 900px) {
-    margin-bottom: 1em;
-  }
+  @include featured-section-heading;
 }
 
 .browseAll {
-  position: absolute;
-  right: 0;
-  bottom: 0.5em;
-  font-size: 0.8em;
-  @media screen and (max-width: 900px) {
-    position: relative;
-    margin-bottom: 8px;
-    text-align: right;
-  }
+  @include featured-browse-all;
 }
 
 .primary {
-  position: relative;
-  cursor: pointer;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  @media screen and (max-width: 767px) {
-    height: 300px;
-  }
+  @include featured-primary-item;
 
   :focus {
     @include focus-styling($color: #fff);
@@ -78,23 +52,7 @@
 }
 
 .overlay {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: auto;
-  padding: 2em 0 0.5em 0.5em;
-  color: #fff;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.5) 50%,
-    rgba(0, 0, 0, 0.75) 100%
-  );
-  font-size: 1.6em;
-  font-weight: 600;
-  line-height: 1.2em;
-  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3), 1px -1px 0 rgba(0, 0, 0, 0.3),
-    -1px 1px 0 rgba(0, 0, 0, 0.3), 1px 1px 0 rgba(0, 0, 0, 0.3);
+  @include featured-item-overlay;
 
   &_use {
     font-size: 0.5em;
@@ -103,90 +61,29 @@
   }
 
   &_heading {
-    margin-bottom: 0;
-    width: 80%;
-    color: inherit;
-    font-size: inherit;
-    @include hyphenate;
-    @include wrap-text;
-
-    > button {
-      width: 100%;
-      @include button-style-reset($font-size: inherit, $cursor: pointer);
-    }
+    @include featured-item-overlay-heading;
   }
-
+  
   &_icon {
-    position: absolute;
-    bottom: 0.5em;
-    right: 0.5em;
+    @include featured-item-overlay-icon;
   }
 }
 
 .items {
-  > :nth-child(1) {
-    padding-top: 1rem;
-  }
-
-  > :nth-child(2) {
-    margin-top: 3rem;
-  }
-
-  > :nth-child(3) {
-    margin-top: 3rem;
-  }
-
-  @media screen and (min-width: 768px) {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(2, 0.5fr);
-    grid-template-rows: repeat(2, 140px);
-    grid-template-areas: "primary secondary"
-                         "primary tertiary";
-  
-    > :nth-child(1) {
-      grid-area: primary;
-      padding-top: 0;
-    }
-  
-    > :nth-child(2) {
-      grid-area: secondary;
-      margin-top: 0;
-    }
-  
-    > :nth-child(3) {
-      grid-area: tertiary;
-      margin-top: 0;
-    }
-  }
+  @include featured-section-layout;
 }
 
 .item {
-  @media screen and (min-width: 768px) {
-    display: flex;
-  }
-  border: 1px solid $light-grey;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  @media only screen 
-  and (min-width: 375px) 
-  and (max-width: 667px) 
-  and (-webkit-min-device-pixel-ratio: 2)
-  and (orientation: portrait) {
-    min-height: calc( 100vw - 2em );
-  }
-  @media only screen 
-  and (min-width: 375px) 
-  and (max-width: 667px) 
-  and (-webkit-min-device-pixel-ratio: 2)
-  and (orientation: landscape)  { 
-    min-height: calc( 100vh - 2em );
-  }
+  @include featured-item;
 
-  .metaicon {
-    position: absolute;
-    right: 5px;
-    bottom: 10px;
+  &_img {
+    @include featured-item-img;
+  }
+  
+  &_use {
+    height: 45px;
+    background-color: $blue;
+    color: #fff;
   }
 }
 
@@ -211,71 +108,26 @@
   }
 }
 
-.item_img {
-  position: relative;
-  height: 100%;
-  @media screen and (max-width: 767px) {
-    min-height: 195px;
-    height: 100%;
-  }
-  min-width: 195px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-
-  .item_use {
-    height: 45px;
-    background-color: $blue;
-    color: #fff;
-  }
+.metaicon {
+  @include featured-item-metaicon;
 }
 
 .content {
-  display: flex;
-  flex-flow: column;
-  flex-grow: 1;
-  padding: 0.8em 0.8em 0.5em 0.8em;
+  @include featured-item-content;
 
   &_heading {
-    margin-bottom: 1rem;
-    @media screen and (max-width: 767px) {
-      margin-bottom: 1em;
-    }
-    color: $blue;
-    font-size: 1.1rem;
-    @media screen and (max-width: 991px) {
-      font-size: 1em;
-    }
-    line-height: 1.2em;
-    @include hyphenate;
-    @include wrap-text;
-
-    > button {
-      width: 100%;
-      @include button-style-reset($font-size: inherit, $cursor: pointer);
-    }
+    @include featured-item-content-heading;
   }
 }
 
 .meta {
-  @media screen and (max-width: 991px) {
-    position: relative;
-  }
-  margin-top: auto;
-  //margin-bottom: 1em;
-  font-size: 0.77rem;
-  line-height: 1.2em;
+  @include meta;
+}
 
-  .date {
-    display: block;
-    color: $blue;
-  }
+.date {
+  @include date;
+}
 
-  .categories {
-    display: block;
-    color: $grey;
-    @media screen and (max-width: 991px) {
-      font-size: 0.8em;
-    }
-  }
+.categories {
+  @include categories;
 }
