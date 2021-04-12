@@ -13,7 +13,7 @@ import { useMutation } from '@apollo/react-hooks';
 
 import ApolloError from 'components/errors/ApolloError';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
-import { CREATE_PACKAGE_MUTATION, PACKAGE_EXISTS_QUERY } from 'lib/graphql/queries/package';
+import { CREATE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
 import { buildCreatePackageTree } from 'lib/graphql/builders/package';
 import { useAuth } from 'context/authContext';
 
@@ -62,40 +62,14 @@ const Upload = () => {
     CREATE_PACKAGE_MUTATION,
   );
 
-  const [packageExists] = useMutation( PACKAGE_EXISTS_QUERY );
-
-  /**
-   * Checks whether a package exists with the supplied field name and values
-   * @param {object} where clause containing fields to test existence against, i.e. { title: Daily Guidance }
-   */
-  const doesPackageExist = async where => {
-    const res = await packageExists( {
-      variables: {
-        where,
-      },
-    } );
-
-    return res.data.packageExists;
-  };
-
   /**
   * Create daily guidance packages and sends user to
-  * package details screen on success
+  * package details screen on success.
   */
   const createPressOfficePackage = async () => {
-    // to do: verify that user is on press team
+    // Generate the daily standard title
     const title = `Guidance Package ${moment().format( 'MM-D-YY' )}`;
 
-    // One Daily Guidance package is created for each day
-    // to do: since packages can be renamed, using the title is not
-    // a full proof way to check to ensure only 1 package is created/per day
-    if ( await doesPackageExist( { title } ) ) {
-      setCreationError( `A Guidance Package with the name "${title}" already exists.` );
-
-      return;
-    }
-
-    // unique title, create package
     try {
       const res = await createPackage( {
         variables: {
@@ -120,6 +94,7 @@ const Upload = () => {
  */
   const teamCanCreateContentType = contentType => {
     const team = user?.team;
+
     const type = contentType.toUpperCase();
 
     if ( team && team.contentTypes ) {
@@ -149,20 +124,12 @@ const Upload = () => {
   };
 
   /**
-  * Wrapper function that farms out package creation to a
-  * function that handles specific team's use case
+  * Verify that a team can create a package before executing the
+  * create handler.
   */
   const handleCreateNewPackage = async () => {
-    const { team } = user;
-
-    if ( team ) {
-      switch ( team.name ) {
-        case 'GPA Press Office':
-          createPressOfficePackage();
-          break;
-
-        default:
-      }
+    if ( teamCanCreateContentType( 'PACKAGE' ) ) {
+      createPressOfficePackage();
     }
   };
 
@@ -320,7 +287,7 @@ const Upload = () => {
             { ' ' }
             <i>project-tile_arabic.jpg</i>
             { ' ' }
-            &quot;, to help pre-populate metadata fields and save you
+            &quot;, to help pre-populate metadata fields and save you
             time when uploading content!
           </p>
         </div>
