@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Card, Modal } from 'semantic-ui-react';
+import { Modal } from 'semantic-ui-react';
 import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 
 import PackageCard from 'components/Package/PackageCard/PackageCard';
@@ -108,7 +108,7 @@ const ResultItem = ( { item } ) => {
   }
 
   return (
-    <Card>
+    <div className="ui card">
       <Modal
         closeIcon
         trigger={ (
@@ -122,22 +122,24 @@ const ResultItem = ( { item } ) => {
       >
         <Modal.Content>{ getModalContent( item ) }</Modal.Content>
       </Modal>
-      <Card.Content className={ textDirection }>
-        <Card.Header className="card_header">
+      <div className={ `content ${textDirection}` }>
+        <div className="header card_header">
           { item?.visibility === 'INTERNAL'
             && <InternalUseDisplay style={ { margin: '0.5em auto .5em 0', fontWeight: 'normal' } } /> }
           <Modal closeIcon trigger={ <p data-action={ action }>{ item.title }</p> }>
             <Modal.Content>{ getModalContent( item ) }</Modal.Content>
           </Modal>
-        </Card.Header>
-        <Card.Description className="card_excerpt">{ item.description }</Card.Description>
-        <div className="card_metadata">
-          <Card.Meta>{ moment( item.published ).format( 'MMMM DD, YYYY' ) }</Card.Meta>
-          <Card.Meta>{ item.categories && item.categories.map( renderCategory ) }</Card.Meta>
-          <Card.Meta>{ getItemSource( textDirection ) }</Card.Meta>
         </div>
-      </Card.Content>
-    </Card>
+        <p className="description card_excerpt">
+          { item.description }
+        </p>
+        <div className="card_metadata">
+          <time className="meta" dateTime={ item.published }>{ moment( item.published ).format( 'MMMM DD, YYYY' ) }</time>
+          <div className="meta">{ item.categories && item.categories.map( renderCategory ) }</div>
+          <div className="meta">{ getItemSource( textDirection ) }</div>
+        </div>
+      </div>
+    </div>
   );
 };
 
