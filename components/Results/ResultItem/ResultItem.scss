@@ -71,18 +71,10 @@
 
   .card_imgWrapper {
     position: relative;
+    cursor: pointer;
     -ms-overflow-y: hidden;
 
-    > button {
-      display: block;
-      @include button-style-reset($cursor: pointer);
-
-      &:focus {
-        @include focus-styling;
-      }
-    }
-
-    img {
+    > img {
       display: block;
       height: auto !important;
     }
@@ -104,8 +96,19 @@
         font-weight: 700;
         color: $blue;
 
-        > p {
-          cursor: pointer;
+        h2 {
+          margin: 0;
+          font-size: inherit;
+          line-height: 1.4285em;
+        }
+
+        button {
+          display: block;
+          @include button-style-reset($cursor: pointer);
+
+          &:focus {
+            @include focus-styling;
+          }
         }
       }
 

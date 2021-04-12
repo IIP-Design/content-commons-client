@@ -113,9 +113,7 @@ const ResultItem = ( { item } ) => {
         closeIcon
         trigger={ (
           <div className="card_imgWrapper">
-            <button type="button">
-              <img data-action={ action } src={ signedUrl } width="100%" height="100%" alt={ item?.title || '' } />
-            </button>
+            <img src={ signedUrl } width="100%" height="100%" alt={ item?.title || '' } />
             <img data-action={ action } src={ item.icon } className="card_postIcon" alt={ item?.type ? `${item.type} icon` : '' } />
           </div>
         ) }
@@ -126,7 +124,7 @@ const ResultItem = ( { item } ) => {
         <div className="header card_header">
           { item?.visibility === 'INTERNAL'
             && <InternalUseDisplay style={ { margin: '0.5em auto .5em 0', fontWeight: 'normal' } } /> }
-          <Modal closeIcon trigger={ <p data-action={ action }>{ item.title }</p> }>
+          <Modal closeIcon trigger={ <h2><button data-action={ action } type="button">{ item.title }</button></h2> }>
             <Modal.Content>{ getModalContent( item ) }</Modal.Content>
           </Modal>
         </div>
