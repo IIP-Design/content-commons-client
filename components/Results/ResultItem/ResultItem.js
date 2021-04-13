@@ -7,6 +7,7 @@ import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay
 import PackageCard from 'components/Package/PackageCard/PackageCard';
 import DocumentCard from 'components/Document/DocumentCard/DocumentCard';
 import GraphicCard from 'components/GraphicProject/GraphicCard/GraphicCard';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import useSignedUrl from 'lib/hooks/useSignedUrl';
 import { getModalContent } from 'components/modals/utils';
 import { contentRegExp } from 'lib/utils';
@@ -132,9 +133,18 @@ const ResultItem = ( { item } ) => {
           { item.description }
         </p>
         <footer className="card_metadata">
-          <time className="meta" dateTime={ item.published }>{ moment( item.published ).format( 'MMMM DD, YYYY' ) }</time>
-          <div className="meta">{ item.categories && item.categories.map( renderCategory ) }</div>
-          <div className="meta">{ getItemSource( textDirection ) }</div>
+          <dl>
+            <dt><VisuallyHidden>Published on:</VisuallyHidden></dt>
+            <dd className="meta">
+              <time dateTime={ item.published }>{ moment( item.published ).format( 'MMMM DD, YYYY' ) }</time>
+            </dd>
+
+            <dt><VisuallyHidden>Categories:</VisuallyHidden></dt>
+            <dd className="meta">{ item.categories && item.categories.map( renderCategory ) }</dd>
+
+            <dt><VisuallyHidden>Published by:</VisuallyHidden></dt>
+            <dd className="meta">{ getItemSource( textDirection ) }</dd>
+          </dl>
         </footer>
       </div>
     </article>
