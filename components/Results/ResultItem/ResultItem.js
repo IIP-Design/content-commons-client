@@ -108,7 +108,7 @@ const ResultItem = ( { item } ) => {
   }
 
   return (
-    <div className="ui card">
+    <article className="ui card">
       <Modal
         closeIcon
         trigger={ (
@@ -121,23 +121,23 @@ const ResultItem = ( { item } ) => {
         <Modal.Content>{ getModalContent( item ) }</Modal.Content>
       </Modal>
       <div className={ `content ${textDirection}` }>
-        <div className="header card_header">
+        <header className="header card_header">
           { item?.visibility === 'INTERNAL'
             && <InternalUseDisplay style={ { margin: '0.5em auto .5em 0', fontWeight: 'normal' } } /> }
           <Modal closeIcon trigger={ <h2><button data-action={ action } type="button">{ item.title }</button></h2> }>
             <Modal.Content>{ getModalContent( item ) }</Modal.Content>
           </Modal>
-        </div>
+        </header>
         <p className="description card_excerpt">
           { item.description }
         </p>
-        <div className="card_metadata">
+        <footer className="card_metadata">
           <time className="meta" dateTime={ item.published }>{ moment( item.published ).format( 'MMMM DD, YYYY' ) }</time>
           <div className="meta">{ item.categories && item.categories.map( renderCategory ) }</div>
           <div className="meta">{ getItemSource( textDirection ) }</div>
-        </div>
+        </footer>
       </div>
-    </div>
+    </article>
   );
 };
 
