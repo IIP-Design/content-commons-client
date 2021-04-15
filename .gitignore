@@ -4,6 +4,9 @@ node_modules
 # misc
 .DS_Store
 
+# logs
+newrelic_agent.log
+
 # config
 .env
 .next
