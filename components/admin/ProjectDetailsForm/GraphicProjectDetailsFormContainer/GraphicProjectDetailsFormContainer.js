@@ -128,6 +128,7 @@ const GraphicProjectDetailsFormContainer = props => {
               'ShareAmerica',
               'U.S. Missions',
               'ECA PASC',
+              'OES',
               'Bureau of African Affairs (AF)',
             ],
           },
