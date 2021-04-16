@@ -1,10 +1,19 @@
 @import 'styles/mixins.scss';
 @import 'styles/colors.scss';
 
+@mixin feedback-styles {
+  border-radius: 0 !important;
+  padding: 0.8em;
+  color: $blue !important;
+  background-color: $orange;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
 .bar--home nav {
   position: absolute;
-  // top: 1rem;
-  // right: 1rem;
   top: 1em;
   right: 2em;
   @media screen and (max-width: 992px) {
@@ -31,8 +40,11 @@
 
   .ui.menu .item:not(.feedback-item) a {
     border-radius: 0;
-    color: white;
+    color: #fff;
+    line-height: 1;
+  }
 
+  .ui.menu.nav_loggedout .item:not(.feedback-item) a {
     &:hover,
     &:focus {
       &:after {
@@ -48,11 +60,12 @@
     }
   }
 
-  .close.icon {
-    @media screen and (min-width: 768px) {
-      top: 2em;
-      right: 1.5em;
-    }
+  :focus {
+    @include focus-styling($color: #fff);
+  }
+
+  .mobile :focus {
+    @include focus-styling($color: $blue);
   }
 }
 
@@ -124,28 +137,28 @@ nav {
       }
     }
 
-    .close.icon {
-      position: absolute;
-      top: 0.8em;
-      right: 0.5em;
-      font-size: 1.2em;
-      cursor: pointer;
-
-      @media screen and (min-width: 768px) {
-        top: 0.8em;
-        right: 1.3em;
-      }
+    a.feedback {
+      @include feedback-styles;
     }
 
-    a.feedback {
-      font-size: 16px;
-      font-weight: bold;
-      letter-spacing: 0.5px;
-      color: $blue;
-      border-radius: 0;
-      color: $blue;
-      padding: 0.7em 2em;
-      background-color: $orange;
+    button {
+      @include button-style-reset($cursor: pointer);
+      line-height: 1;
+    }
+
+    .disabled {
+      opacity: 0.4;
+    }
+
+    .mobile-toggle {
+      display: flex;
+      margin-bottom: 1em;
+
+      > button {
+        margin-top: -1em;
+        margin-left: auto;
+        margin-right: 1.3em;
+      }
     }
   }
 
@@ -154,6 +167,7 @@ nav {
     border: none;
     box-shadow: none;
     background: transparent;
+    max-height: 3rem;
     position: relative;
     padding: 0;
     @media screen and (min-width: 993px) {
@@ -180,7 +194,7 @@ nav {
       text-align: left;
       width: 11rem;
       right: 30%;
-      color: #046b99;
+      color: $bahama-blue;
       box-shadow: 0px 1px 2px rgba(0,0,0,0.2);
 
       // animate the reminder
@@ -228,7 +242,7 @@ nav {
         cursor: pointer;
 
         &:focus {
-          @include focus-styling;
+          @include focus-styling($color: $bahama-blue);
         }
       }
     }
@@ -241,7 +255,7 @@ nav {
     }
 
     .item {
-      padding: 0.92857143em 0.4em;
+      padding: 0.92857143em 0.666666667em;
       font-size: 16px;
       margin: 0;
       font-weight: bold;
@@ -276,24 +290,11 @@ nav {
         .feedback {
           margin-right: 0;
           margin-left: 0.5em;
-          padding: 0.8em;
-          border-radius: 0 !important;
-          color: $blue !important;
-          line-height: 1;
-          background-color: $orange;
+          @include feedback-styles;
           @media screen and (min-width: 769px) and (max-width: 1024px) {
             padding: 0.5em;
           }
-  
-          &:hover {
-            border-bottom: none !important;
-            background-color: $orange;
-          }
         }
-      }
-
-      &.disabled {
-        opacity: 0.4;
       }
 
       img:hover {

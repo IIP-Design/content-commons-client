@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
 const HamburgerIcon = ( { mobileMenuVisible, toggleMobileMenu } ) => (
   <button
@@ -7,8 +8,8 @@ const HamburgerIcon = ( { mobileMenuVisible, toggleMobileMenu } ) => (
     className={ `hamburger ${mobileMenuVisible ? 'hide' : ''}` }
     onClick={ toggleMobileMenu }
     onKeyUp={ toggleMobileMenu }
-    tabIndex={ 0 }
   >
+    <VisuallyHidden el="span">menu</VisuallyHidden>
     <span className="bar" />
     <span className="bar" />
     <span className="bar" />

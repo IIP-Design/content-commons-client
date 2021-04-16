@@ -1,15 +1,17 @@
-@import '../../styles/colors.scss';
+@import 'styles/colors.scss';
 
 .nav_submenu {
   min-width: 240px;
   font-size: 16px;
 
   &_popup.ui.popup {
+    top: -8px !important;
     padding: 0;
     border-radius: 0;
     border: none;
 
     &:before {
+      right: 0.5em !important;
       top: -8px !important;
       transform: translateX(-50%);
       -ms-transform: rotate(5deg) !important;

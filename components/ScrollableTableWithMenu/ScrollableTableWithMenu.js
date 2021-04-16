@@ -245,7 +245,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   const projectRefetch = state?.content?.refetch || ( () => {} );
 
   return (
-    <Grid>
+    <Grid className="dashboard-grid">
       <Grid.Row className="items_tableSearch">
         <TableSearch handleSearchSubmit={ handleSearchSubmit } />
       </Grid.Row>

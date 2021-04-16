@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Card, Modal } from 'semantic-ui-react';
+import { Modal } from 'semantic-ui-react';
 import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 
 import PackageCard from 'components/Package/PackageCard/PackageCard';
 import DocumentCard from 'components/Document/DocumentCard/DocumentCard';
 import GraphicCard from 'components/GraphicProject/GraphicCard/GraphicCard';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import useSignedUrl from 'lib/hooks/useSignedUrl';
 import { getModalContent } from 'components/modals/utils';
 import { contentRegExp } from 'lib/utils';
@@ -108,34 +109,45 @@ const ResultItem = ( { item } ) => {
   }
 
   return (
-    <Card>
+    <article className="ui card">
       <Modal
         closeIcon
         trigger={ (
           <div className="card_imgWrapper">
-            <img data-action={ action } src={ signedUrl } width="100%" height="100%" alt={ item?.title || '' } />
+            <img src={ signedUrl } width="100%" height="100%" alt={ item?.title || '' } />
             <img data-action={ action } src={ item.icon } className="card_postIcon" alt={ item?.type ? `${item.type} icon` : '' } />
           </div>
         ) }
       >
         <Modal.Content>{ getModalContent( item ) }</Modal.Content>
       </Modal>
-      <Card.Content className={ textDirection }>
-        <Card.Header className="card_header">
+      <div className={ `content ${textDirection}` }>
+        <header className="header card_header">
           { item?.visibility === 'INTERNAL'
             && <InternalUseDisplay style={ { margin: '0.5em auto .5em 0', fontWeight: 'normal' } } /> }
-          <Modal closeIcon trigger={ <p data-action={ action }>{ item.title }</p> }>
+          <Modal closeIcon trigger={ <h2><button data-action={ action } type="button">{ item.title }</button></h2> }>
             <Modal.Content>{ getModalContent( item ) }</Modal.Content>
           </Modal>
-        </Card.Header>
-        <Card.Description className="card_excerpt">{ item.description }</Card.Description>
-        <div className="card_metadata">
-          <Card.Meta>{ moment( item.published ).format( 'MMMM DD, YYYY' ) }</Card.Meta>
-          <Card.Meta>{ item.categories && item.categories.map( renderCategory ) }</Card.Meta>
-          <Card.Meta>{ getItemSource( textDirection ) }</Card.Meta>
-        </div>
-      </Card.Content>
-    </Card>
+        </header>
+        <p className="description card_excerpt">
+          { item.description }
+        </p>
+        <footer className="card_metadata">
+          <dl>
+            <dt><VisuallyHidden>Published on:</VisuallyHidden></dt>
+            <dd className="meta">
+              <time dateTime={ item.published }>{ moment( item.published ).format( 'MMMM DD, YYYY' ) }</time>
+            </dd>
+
+            <dt><VisuallyHidden>Categories:</VisuallyHidden></dt>
+            <dd className="meta">{ item.categories && item.categories.map( renderCategory ) }</dd>
+
+            <dt><VisuallyHidden>Published by:</VisuallyHidden></dt>
+            <dd className="meta">{ getItemSource( textDirection ) }</dd>
+          </dl>
+        </footer>
+      </div>
+    </article>
   );
 };
 

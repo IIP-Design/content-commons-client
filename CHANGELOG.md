@@ -16,6 +16,11 @@ _This sections lists changes committed since most recent release_
 **Changed:**
 - Wrap navigation menu items in `li` elements
 - Use CSS modules for `SearchInput` component styling
+- Use CSS modules for `Priorities` and `Recents` component styling
+- Replace Semantic UI Grid in `Priorities` and `Recents` with CSS grid
+- Replace Semantic UI Item in `Priorities` and `Recents` with native HTML elements
+- Replace Semantic UI Card in `ResultItem` with native HTML elements
+- Remove the `tabindex` attribute from the mobile hamburger menu
 
 **Fixed:**
 - Skip to content link for improved accessibility
@@ -27,6 +32,12 @@ _This sections lists changes committed since most recent release_
 - Missing accessible label for each featured home page `section`
 - Featured section heading levels so there's only one `h1` on the home page
 - Missing landmark roles for the `header`, `main`, and `footer` wider compatibility with screen readers' rotor/element list
+- Priority and recent items' heading level to expose their titles to screen readers
+- Keyboard accessibility of priority and recent items on the home page
+- Keyboard accessibility of logged in navigation menu icons
+- Keyboard accessibility of video and document cards
+- Visually hidden, but accessible content name, for the mobile hamburger menu
+- Visually hidden text content for video and document card meta data items
 
   
 # [5.4.6](https://github.com/IIP-Design/content-commons-client/compare/v5.4.5...5.4.6)(2021-03-24)

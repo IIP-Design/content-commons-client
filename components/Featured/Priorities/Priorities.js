@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import moment from 'moment';
 import { v4 } from 'uuid';
-import { Grid, Item, Modal } from 'semantic-ui-react';
+import { Modal } from 'semantic-ui-react';
 
 import SignedUrlImage from 'components/SignedUrlImage/SignedUrlImage';
 import { getModalContent } from 'components/modals/utils';
@@ -14,7 +14,7 @@ import { typePrioritiesRequest, categoryNameIdRequest } from 'lib/elastic/api';
 import FeaturedLoading from '../FeaturedLoading';
 import FeaturedError from '../FeaturedError';
 
-import './Priorities.scss';
+import styles from './Priorities.module.scss';
 
 const Priorities = ( { categories, label, term, user, locale, tags } ) => {
   const [items, setItems] = useState( [] );
@@ -74,29 +74,33 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
       key={ v4() }
       closeIcon
       trigger={ (
-        <Item className="prioritiesItem">
+        <div className={ styles.item }>
           {
             priority.type === 'document'
               ? (
-                <div className="prioritiesItem_text">
-                  <div className="use">{ priority.use }</div>
-                  <img src={ priority.icon } className="metaicon" alt="icon" />
+                <div className={ styles.item_text }>
+                  <div className={ styles.use }>{ priority.use }</div>
+                  <img src={ priority.icon } className={ styles.metaicon } alt="icon" />
                 </div>
               )
               : (
-                <SignedUrlImage className="prioritiesItem_img" url={ priority.thumbnail }>
-                  <img src={ priority.icon } className="metaicon" alt="icon" />
+                <SignedUrlImage className={ styles.item_img } url={ priority.thumbnail }>
+                  <img src={ priority.icon } className={ styles.metaicon } alt="icon" />
                 </SignedUrlImage>
               )
           }
-          <Item.Content>
-            <Item.Header>{ priority.title }</Item.Header>
-            <div className="meta">
-              <span className="date">{ moment( priority.published ).format( 'MMMM DD, YYYY' ) }</span>
-              <span className="categories">{ getCategories( priority ) }</span>
+          <div className={ styles.content }>
+            <h3 className={ styles.content_heading }>
+              <button type="button">
+                { priority.title }
+              </button>
+            </h3>
+            <div className={ styles.meta }>
+              <span className={ styles.date }>{ moment( priority.published ).format( 'MMMM DD, YYYY' ) }</span>
+              <span className={ styles.categories }>{ getCategories( priority ) }</span>
             </div>
-          </Item.Content>
-        </Item>
+          </div>
+        </div>
       ) }
     >
       <Modal.Content>
@@ -122,12 +126,12 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
 
   return (
     <section
-      className="priorities"
+      className={ styles.priorities }
       aria-label={ `Department Priority: ${label}` }
     >
-      <div className="prioritiescontainer">
-        <div className="prioritiestitle">
-          <h2 className="ui large header">
+      <div className={ styles.container }>
+        <div className={ styles.title }>
+          <h2 className={ styles.section_heading }>
             { `Department Priority: ${label}` }
           </h2>
           <Link
@@ -141,44 +145,50 @@ const Priorities = ( { categories, label, term, user, locale, tags } ) => {
               },
             } }
           >
-            <a className="browseAll" aria-label={ `Browse all ${label} content` }>Browse All</a>
+            <a className={ styles.browseAll } aria-label={ `Browse all ${label} content` }>Browse All</a>
           </Link>
         </div>
-        <Grid columns="equal" stackable stretched>
-          <Grid.Column width={ 8 } className="prioritiesgridleft">
-            { items && items[0] && (
-              <Modal
-                closeIcon
-                trigger={
-                  items[0].type === 'document'
-                    ? (
-                      <div className="prioritiesleft text">
-                        <div className="prioritiesoverlay">
-                          <div className="prioritiesoverlay_use">{ items[0].use }</div>
-                          <div className="prioritiesoverlay_title">{ items[0].title }</div>
-                          <img src={ items[0].icon } className="prioritiesoverlay_icon" alt="icon" />
-                        </div>
+
+        <div className={ styles.items }>
+          { items && items[0] && (
+            <Modal
+              closeIcon
+              trigger={
+                items[0].type === 'document'
+                  ? (
+                    <div className={ `${styles.primary} ${styles.text}` }>
+                      <div className={ styles.overlay }>
+                        <div className={ styles.overlay_use }>{ items[0].use }</div>
+                        <h3 className={ styles.overlay_heading }>
+                          <button type="button">
+                            { items[0].title }
+                          </button>
+                        </h3>
+                        <img src={ items[0].icon } className={ styles.overlay_icon } alt="icon" />
                       </div>
-                    )
-                    : (
-                      <SignedUrlImage className="prioritiesleft" url={ items[0].thumbnail }>
-                        <div className="prioritiesoverlay">
-                          <div className="prioritiesoverlay_title">{ items[0].title }</div>
-                          <img src={ items[0].icon } className="prioritiesoverlay_icon" alt="icon" />
-                        </div>
-                      </SignedUrlImage>
-                    // eslint-disable-next-line react/jsx-indent
-                    )
-                }
-              >
-                <Modal.Content>{ getModalContent( items[0] ) }</Modal.Content>
-              </Modal>
-            ) }
-          </Grid.Column>
-          <Grid.Column width={ 8 } className="prioritiesgridright">
-            <Item.Group>{ items && renderPrioritiesWithMeta( items ) }</Item.Group>
-          </Grid.Column>
-        </Grid>
+                    </div>
+                  )
+                  : (
+                    <SignedUrlImage className={ styles.primary } url={ items[0].thumbnail }>
+                      <div className={ styles.overlay }>
+                        <h3 className={ styles.overlay_heading }>
+                          <button type="button">
+                            { items[0].title }
+                          </button>
+                        </h3>
+                        <img src={ items[0].icon } className={ styles.overlay_icon } alt="icon" />
+                      </div>
+                    </SignedUrlImage>
+                  // eslint-disable-next-line react/jsx-indent
+                  )
+              }
+            >
+              <Modal.Content>{ getModalContent( items[0] ) }</Modal.Content>
+            </Modal>
+          ) }
+
+          { items && renderPrioritiesWithMeta( items ) }
+        </div>
       </div>
     </section>
   );
