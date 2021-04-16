@@ -5,8 +5,8 @@ import { Header } from 'semantic-ui-react';
 import { numberWithCommas } from 'lib/utils';
 import './SearchTerm.scss';
 
-const SearchTerm = props => {
-  const { currentTerm, total } = props.search;
+const SearchTerm = ( { search } ) => {
+  const { currentTerm, total } = search;
 
   return (
     <section className="searchTerm">
