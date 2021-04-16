@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-const newrelic = require( 'newrelic' );
 const express = require( 'express' );
 const next = require( 'next' );
 
@@ -39,24 +38,7 @@ app.prepare()
       app.render( req, res, actualPage, queryParams );
     } );
 
-    /**
-     * Add new relic transaction name to server side
-     */
-    server.get( '*', ( req, res ) => {
-      try {
-        const baseURL = `${req.protocol}://${req.headers.host}/`;
-        const parsedUrl = new URL( req.url, baseURL );
-        const { pathname } = parsedUrl;
-
-        // Transaction Name: (w/o this new relic shows "/*" for all transaction)
-        // https://docs.newrelic.com/docs/agents/nodejs-agent/api-guides/guide-using-nodejs-agent-api
-        newrelic.setTransactionName( pathname );
-      } catch ( err ) {
-        console.log( err );
-      }
-
-      return handle( req, res );
-    } );
+    server.get( '*', ( req, res ) => handle( req, res ) );
 
     const port = process.env.PORT || 3000;
 
