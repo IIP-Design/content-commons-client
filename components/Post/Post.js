@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import getConfig from 'next/config';
 
 import { getItemRequest } from 'lib/elastic/api';
-import { normalizeItem } from 'lib/elastic/parser';
+import { normalizeItem, getElasticHitTotal } from 'lib/elastic/parser';
 import { updateUrl } from 'lib/browser';
 import { withRouter } from 'next/router';
 
@@ -50,7 +50,7 @@ const Post = ( { item, router } ) => {
       if ( language && language.post_id ) {
         getItemRequest( selectedItem.site, language.post_id )
           .then( response => {
-            if ( response && response.hits.total > 0 ) {
+            if ( response && getElasticHitTotal( response ) > 0 ) {
               setSelectedItem( normalizeItem( response.hits.hits[0] ) );
             }
           } );
