@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon } from 'semantic-ui-react';
+import closeIcon from 'static/icons/icon_close.svg';
 
 const FilterSelectionItem = props => {
   const {
@@ -31,7 +31,10 @@ const FilterSelectionItem = props => {
         : {} ) }
     >
       { label }
-      { !single && <Icon name="delete" filter={ filter } /> }
+      { !single
+        && (
+          <img src={ closeIcon } alt="" height="12" width="9" />
+        ) }
     </Component>
   );
 };

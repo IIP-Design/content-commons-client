@@ -25,18 +25,16 @@
     vertical-align: baseline;
     transition: background 0.1s ease;
 
-    i {
-      height: 1em;
-      width: auto;
-      margin: 0 0 0 0.5em;
-      font-size: 0.92857143em;
+    img {
+      margin-left: 5.5px;
+      margin-bottom: -1.5px;
       opacity: 0.5;
       transition: opacity 0.1s ease;
     }
 
     &:hover,
     &:focus {
-      i {
+      img {
         opacity: 1;
       }
     }
