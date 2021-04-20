@@ -1,6 +1,6 @@
 {
-  "name": "@gpa-lab/content-commons-client",
-  "version": "5.4.6",
+  "name": "@gpa-lab/content-commons-client", 
+  "version": "5.4.7",  
   "main": "index.js",
   "author": "U.S. Department of State, Bureau of Global Public Affairs Digital Lab <gpa-lab@america.gov>",
   "description": "Frontend interface for the public Content Commons site and it's administrative interface.",

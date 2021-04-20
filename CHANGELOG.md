@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v5.4.6...HEAD)
+## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v5.4.7...HEAD)
 
 _This sections lists changes committed since most recent release_
 
@@ -40,9 +40,17 @@ _This sections lists changes committed since most recent release_
 - Visually hidden text content for video and document card meta data items
 
   
+# [5.4.7](https://github.com/IIP-Design/content-commons-client/compare/v5.4.6...5.4.7)(2021-04-19)
+**Added:**
+- OES to graphic edit screen source dropdown
+
+**Changed:**
+- A unique title for press guidance is no longer a required
+- Remove document content type from priority search query when user is logged out
+
 # [5.4.6](https://github.com/IIP-Design/content-commons-client/compare/v5.4.5...5.4.6)(2021-03-24)
 **Fixed:**
-- Press documents appearing in the search results when the Aricles, Graphics & Video radio button selected
+- Press documents appearing in the search results when the Articles, Graphics & Video radio button selected
 - Article page repeatedly re-rendering to infinity
 
 # [5.4.5](https://github.com/IIP-Design/content-commons-client/compare/v5.4.4...5.4.5)(2021-03-16)
@@ -128,7 +136,7 @@ _This sections lists changes committed since most recent release_
 
 - Query on Home page to return public video projects when user is not logged in.
 - Issue with non English projects appearing on home page.
-- Title text wrapping on result item thumnbail.
+- Title text wrapping on result item thumbnail.
 
 # [5.2.0](https://github.com/IIP-Design/content-commons-client/compare/v5.1.1...5.2.0)(2020-09-14)
 

@@ -84,7 +84,7 @@ export const mocks = [
             id: 'ck5cvpjdf01kq0720i4ovjo49',
             name: 'U.S. Missions',
             organization: 'Department of State',
-            contentTypes: [],
+            contentTypes: ['GRAPHIC'],
           },
         ],
       },
