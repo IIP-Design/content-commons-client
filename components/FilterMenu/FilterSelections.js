@@ -161,7 +161,7 @@ const FilterSelections = props => {
         <div
           className="ui label clear_filter"
           onClick={ handleClearAllFilters }
-          onKeyDown={ handleClearAllFilters }
+          onKeyDown={ null }
           role="button"
           tabIndex={ 0 }
         >
