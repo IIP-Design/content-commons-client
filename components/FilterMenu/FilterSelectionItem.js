@@ -10,6 +10,7 @@ const FilterSelectionItem = props => {
     filter,
     single,
     onClick,
+    className,
   } = props;
 
   const handleOnClick = () => {
@@ -24,12 +25,10 @@ const FilterSelectionItem = props => {
   return (
     <Component
       key={ value }
-      data-label={ value }
-      className="ui label"
+      className={ className }
       { ...( !single
         ? { onClick: handleOnClick, type: 'button' }
-        : {}
-      ) }
+        : {} ) }
     >
       { label }
       { !single && <Icon name="delete" filter={ filter } /> }
@@ -44,6 +43,7 @@ FilterSelectionItem.propTypes = {
   filter: PropTypes.string,
   single: PropTypes.bool,
   onClick: PropTypes.func,
+  className: PropTypes.string,
 };
 
 export default FilterSelectionItem;
