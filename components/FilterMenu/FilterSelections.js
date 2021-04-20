@@ -158,15 +158,13 @@ const FilterSelections = props => {
         />
       ) ) }
       { selections.length > 1 && ( // need to update to > 2 as defaults to 2
-        <div
+        <button
           className="ui label clear_filter"
           onClick={ handleClearAllFilters }
-          onKeyDown={ null }
-          role="button"
-          tabIndex={ 0 }
+          type="button"
         >
           CLEAR ALL
-        </div>
+        </button>
       ) }
     </div>
   );

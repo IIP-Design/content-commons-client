@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Label, Icon } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 
 const FilterSelectionItem = props => {
   const {
@@ -19,16 +19,21 @@ const FilterSelectionItem = props => {
     } );
   };
 
+  const Component = single ? 'span' : 'button';
+
   return (
-    <Label
+    <Component
       key={ value }
       data-label={ value }
-      className={ single ? 'single' : '' }
-      onClick={ !single ? handleOnClick : null }
+      className="ui label"
+      { ...( !single
+        ? { onClick: handleOnClick, type: 'button' }
+        : {}
+      ) }
     >
       { label }
       { !single && <Icon name="delete" filter={ filter } /> }
-    </Label>
+    </Component>
   );
 };
 

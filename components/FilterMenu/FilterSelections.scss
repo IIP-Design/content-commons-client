@@ -1,4 +1,5 @@
-@import "../../styles/colors.scss";
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
 
 .filterMenu {
   &_selections {
@@ -13,33 +14,36 @@
     .ui.label {
       margin: 0.14285714em;
       font-weight: 100;
-      font-size: 0.667em;      
+      font-size: 0.667em;
 
-      &:hover {
-        
+      &:hover,
+      &:focus {
         i.delete {
           opacity: 1;
         }
       }
 
+      &:focus {
+        @include focus-styling;
+      }
+
       &:not(.clear_filter) {
-        border: 1px solid #d6d7d9;
+        border: 1px solid $blue-green;
         background-color: #fff;
       }
 
-      &:not(.single) {
-        cursor: pointer;
-      }
-
-      &.single {
+      &[data-label="recent"] {
         background-color: $light-grey;
+        cursor: default;
       }
     }
 
-    .clear_filter {
-      color: $light-blue;
-      background-color: #fff;
-      cursor: pointer;
+    button {
+      @include button-style-reset(
+        $color: $light-blue,
+        $background-color: #fff,
+        $cursor: pointer
+      );
     }
   }
 }
