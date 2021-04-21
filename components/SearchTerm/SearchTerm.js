@@ -3,20 +3,18 @@ import { object } from 'prop-types';
 import { connect } from 'react-redux';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { numberWithCommas } from 'lib/utils';
-import './SearchTerm.scss';
+import styles from './SearchTerm.module.scss';
 
 const SearchTerm = ( { search } ) => {
   const { currentTerm, total } = search;
 
   return (
-    <section className="searchTerm">
+    <section className={ styles.searchTerm }>
       <VisuallyHidden><h1>search results</h1></VisuallyHidden>
-      <div className="ui header searchTermQuery">
+      <div className={ styles.searchTermQuery }>
         { currentTerm && `${currentTerm}` }
-        <div className="sub header searchTermTotal">
-          { numberWithCommas( total ) }
-          { ' ' }
-          { total === 1 ? 'item' : 'items' }
+        <div className={ styles.searchTermTotal }>
+          { `${numberWithCommas( total )} item${total === 1 ? '' : 's'}` }
         </div>
       </div>
     </section>
