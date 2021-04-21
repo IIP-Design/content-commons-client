@@ -17,6 +17,10 @@
     font-size: 1.6rem;
   }
   font-weight: 700;
+
+  [role="status"]:first-of-type {
+    line-height: 1;
+  }
 }
 
 .searchTermTotal {

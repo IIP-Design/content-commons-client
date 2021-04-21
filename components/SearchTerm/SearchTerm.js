@@ -12,8 +12,8 @@ const SearchTerm = ( { search } ) => {
     <section className={ styles.searchTerm }>
       <VisuallyHidden><h1>search results</h1></VisuallyHidden>
       <div className={ styles.searchTermQuery }>
-        { currentTerm && `${currentTerm}` }
-        <div className={ styles.searchTermTotal }>
+        <div role="status" aria-live="polite">{ currentTerm && `${currentTerm}` }</div>
+        <div className={ styles.searchTermTotal } role="status" aria-live="polite">
           { `${numberWithCommas( total )} item${total === 1 ? '' : 's'}` }
         </div>
       </div>
