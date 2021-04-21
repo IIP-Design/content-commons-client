@@ -2,7 +2,10 @@
 @import 'styles/mixins.scss';
 
 .filterMenuSelections {
+  display: flex;
   margin-top: 1em;
+  padding-left: 0;
+  list-style: none;
   transition: opacity 0.8s ease, max-height 1s ease;
 
   &.display {

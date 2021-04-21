@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import closeIcon from 'static/icons/icon_close.svg';
 
 const FilterSelectionItem = props => {
@@ -29,11 +30,11 @@ const FilterSelectionItem = props => {
         ? { onClick: handleOnClick, type: 'button' }
         : {} ) }
     >
+      <VisuallyHidden el="span">
+        { single ? 'date range ' : 'remove filter for ' }
+      </VisuallyHidden>
       { label }
-      { !single
-        && (
-          <img src={ closeIcon } alt="" height="12" width="9" />
-        ) }
+      { !single && <img src={ closeIcon } alt="" height="12" width="9" /> }
     </Component>
   );
 };

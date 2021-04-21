@@ -146,28 +146,31 @@ const FilterSelections = props => {
   if ( selections.length === 0 ) return null;
 
   return (
-    <div className={ styles.filterMenuSelections }>
+    <ul className={ styles.filterMenuSelections } aria-label="applied filters">
       { selections.map( selection => (
-        <FilterSelectionItem
-          key={ v4() }
-          value={ selection.value }
-          label={ selection.label }
-          name={ selection.name }
-          single={ selection.single }
-          onClick={ handleOnClick }
-          className={ styles.label }
-        />
+        <li key={ v4() }>
+          <FilterSelectionItem
+            value={ selection.value }
+            label={ selection.label }
+            name={ selection.name }
+            single={ selection.single }
+            onClick={ handleOnClick }
+            className={ styles.label }
+          />
+        </li>
       ) ) }
       { selections.length > 1 && ( // need to update to > 2 as defaults to 2
-        <button
-          className={ `${styles.label} ${styles.clear_filter}` }
-          onClick={ handleClearAllFilters }
-          type="button"
-        >
-          CLEAR ALL
-        </button>
+        <li>
+          <button
+            className={ `${styles.label} ${styles.clear_filter}` }
+            onClick={ handleClearAllFilters }
+            type="button"
+          >
+            CLEAR ALL
+          </button>
+        </li>
       ) }
-    </div>
+    </ul>
   );
 };
 
