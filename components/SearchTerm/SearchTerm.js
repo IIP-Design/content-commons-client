@@ -1,7 +1,6 @@
 import React from 'react';
 import { object } from 'prop-types';
 import { connect } from 'react-redux';
-import { Header } from 'semantic-ui-react';
 import { numberWithCommas } from 'lib/utils';
 import './SearchTerm.scss';
 
@@ -10,14 +9,14 @@ const SearchTerm = ( { search } ) => {
 
   return (
     <section className="searchTerm">
-      <Header as="h1" className="searchTermQuery">
+      <h1 className="ui header searchTermQuery">
         { currentTerm && `${currentTerm}` }
-        <Header.Subheader className="searchTermTotal">
+        <div className="sub header searchTermTotal">
           { numberWithCommas( total ) }
           { ' ' }
           { total === 1 ? 'item' : 'items' }
-        </Header.Subheader>
-      </Header>
+        </div>
+      </h1>
     </section>
   );
 };
