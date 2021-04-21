@@ -1,6 +1,7 @@
 import React from 'react';
 import { object } from 'prop-types';
 import { connect } from 'react-redux';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { numberWithCommas } from 'lib/utils';
 import './SearchTerm.scss';
 
@@ -9,14 +10,15 @@ const SearchTerm = ( { search } ) => {
 
   return (
     <section className="searchTerm">
-      <h1 className="ui header searchTermQuery">
+      <VisuallyHidden><h1>search results</h1></VisuallyHidden>
+      <div className="ui header searchTermQuery">
         { currentTerm && `${currentTerm}` }
         <div className="sub header searchTermTotal">
           { numberWithCommas( total ) }
           { ' ' }
           { total === 1 ? 'item' : 'items' }
         </div>
-      </h1>
+      </div>
     </section>
   );
 };
