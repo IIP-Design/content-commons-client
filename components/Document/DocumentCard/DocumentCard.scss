@@ -37,9 +37,8 @@
       }
 
       > .header {
-
         h2 {
-          font-size: inherit;          
+          font-size: inherit;
         }
 
         button.title {
@@ -52,18 +51,17 @@
           @include hyphenate;
           @include wrap-text;
           background: transparent;
-          color: $blue;          
+          color: $blue;
           cursor: pointer;
 
           &:focus {
-            outline: 2px dotted $medium-grey; 
+            outline: 2px dotted $medium-grey;
             outline-offset: 2px;
           }
-        }   
+        }
       }
 
       > .internal-use {
-        
         &.brief {
           margin: 1em 1em 0 0.77778rem;
           width: 123px;
@@ -90,6 +88,10 @@
           ol {
             margin: 0 0 0 1.25em;
             padding-left: 0;
+          }
+
+          img {
+            max-width: 100%;
           }
         }
       }

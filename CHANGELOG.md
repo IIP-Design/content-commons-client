@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v5.4.7...HEAD)
 
 _This sections lists changes committed since most recent release_
+**Fixed:**
+- Images extending beyond their parent container for Documents
 
 # [5.4.7](https://github.com/IIP-Design/content-commons-client/compare/v5.4.6...5.4.7)(2021-04-19)
 **Added:**

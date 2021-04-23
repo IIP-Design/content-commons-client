@@ -63,7 +63,7 @@ const Document = ( { isAdminPreview, displayAsModal, item } ) => {
   };
 
   return (
-    <ModalItem headline={ title } className={ isAdminPreview ? 'document--preview' : '' } lang={ setLangAttr() }>
+    <ModalItem headline={ title } className={ isAdminPreview ? 'document--preview' : 'document' } lang={ setLangAttr() }>
       <div className="modal_options modal_options--noLanguage">
         { isAdminPreview
           && (
