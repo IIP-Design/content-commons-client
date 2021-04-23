@@ -6,6 +6,7 @@ import getConfig from 'next/config';
 const {
   publicRuntimeConfig: {
     REACT_APP_GOOGLE_ANALYTICS_ID,
+    REACT_NEW_RELIC_LICENSE_KEY,
   },
 } = getConfig();
 
@@ -23,7 +24,10 @@ const Meta = ( { title } ) => (
       `,
       } }
     />
-    <script type="text/javascript" src="/static/js/newrelicsnippet.js" />
+    { /* Only load new relic snippet if an api key exists */ }
+    { REACT_NEW_RELIC_LICENSE_KEY
+      ? <script type="text/javascript" src="/static/js/newrelicsnippet.js" />
+      : null }
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charSet="utf-8" />
     <meta property="og:site_name" content="Content Commons" />
