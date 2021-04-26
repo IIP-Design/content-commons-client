@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Icon } from 'semantic-ui-react';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { isMobile } from 'lib/browser';
-import './ResultsToggleView.scss';
+import styles from './ResultsToggleView.module.scss';
 import 'styles/tooltip.scss';
 
 const ResultsToggleView = ( { currentView, toggle } ) => {
@@ -12,7 +12,7 @@ const ResultsToggleView = ( { currentView, toggle } ) => {
   useEffect( () => setIsMobileDevice( isMobile() ) );
 
   return (
-    <div className="results_toggleView" aria-label="set gallery/list view">
+    <div className={ styles.toggleView } aria-label="set gallery/list view">
       <VisuallyHidden>
         <div role="status" aria-live="polite">{ `${currentView} view` }</div>
       </VisuallyHidden>
@@ -25,12 +25,12 @@ const ResultsToggleView = ( { currentView, toggle } ) => {
         <VisuallyHidden>set to gallery view</VisuallyHidden>
         <span
           aria-hidden="true"
-          className={ isMobileDevice ? 'noTooltip' : '' }
+          className={ isMobileDevice ? styles.noTooltip : '' }
           tooltip="Gallery View"
         >
           <Icon
             name="grid layout"
-            className={ currentView === 'gallery' ? 'active' : '' }
+            className={ currentView === 'gallery' ? styles.active : '' }
           />
         </span>
       </button>
@@ -44,12 +44,12 @@ const ResultsToggleView = ( { currentView, toggle } ) => {
         <VisuallyHidden>set to list view</VisuallyHidden>
         <span
           aria-hidden="true"
-          className={ isMobileDevice ? 'noTooltip' : '' }
+          className={ isMobileDevice ? styles.noTooltip : '' }
           tooltip="List View"
         >
           <Icon
             name="list"
-            className={ currentView === 'list' ? 'active' : '' }
+            className={ currentView === 'list' ? styles.active : '' }
           />
         </span>
       </button>

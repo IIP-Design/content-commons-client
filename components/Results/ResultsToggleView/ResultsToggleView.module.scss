@@ -1,7 +1,7 @@
 @import 'styles/colors.scss';
 @import 'styles/mixins.scss';
 
-.results_toggleView {
+.toggleView {
   display: flex;
   justify-content: flex-end;
   @media screen and (max-width: 767px) {
@@ -28,7 +28,7 @@
     }
   }
 
-  span {
+  [tooltip] {
     margin: 0;
     pointer-events: none;
 
@@ -38,7 +38,7 @@
     }
   }
 
-  .icon {
+  i {
     font-size: 1.3em;
 
     &.active {
