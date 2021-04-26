@@ -1,4 +1,5 @@
-@import "../../../styles/colors.scss";
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
 
 .results_toggleView {
   display: flex;
@@ -8,8 +9,28 @@
     margin-top: 1em;
   }
 
+  > button {
+    @include button-style-reset($cursor: pointer);
+
+    &:hover {
+      [tooltip]::after,
+      [tooltip]::before {
+        opacity: 1;
+      }
+    }
+
+    &:focus {
+      @include focus-styling;
+    }
+
+    &[disabled] {
+      cursor: default;
+    }
+  }
+
   span {
     margin: 0;
+    pointer-events: none;
 
     &.noTooltip:before,
     &.noTooltip:after {
@@ -19,11 +40,9 @@
 
   .icon {
     font-size: 1.3em;
-    cursor: pointer;
 
     &.active {
       color: $medium-grey;
-      cursor: default;
     }
   }
 }
