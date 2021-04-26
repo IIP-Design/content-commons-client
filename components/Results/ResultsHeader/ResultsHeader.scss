@@ -1,64 +1,39 @@
-@import "../../../styles/colors.scss";
+@import 'styles/colors.scss';
 
-.results {
-  &_header {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 0.8em;
-    margin-bottom: 0.8em;
-    font-size: 0.77rem;
-    @media (max-width: 767px) {
-      flex-direction: column;
-    }
-  }
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.77rem;
 
-  &_total {
-    @media (max-width: 767px) {
-      order: 2;
-    }
-
-    &_numOfResults {
-      &.ui.dropdown .menu {
-        border: none;
-        border-radius: 0;
-      }
-    }
-  }
-
-  &_sort {
-    @media (max-width: 767px) {
-      width: 100% !important;
-      order: 1;
-    }
-
+  .results_sort {
     &.ui.form {
-      margin: 0;
+      margin: 0 1rem 0 0;
       font-size: inherit;
 
       .fields {
+        position: relative;
+        display: flex;
+        align-items: baseline;
+        border: 1px solid $blue;
+        border-radius: 0.28571429rem;
         margin: 0;
+        padding: 0 0.25rem;
+
+        :first-child {
+          margin-right: 0.125rem;
+        }
       }
 
-      .field {
-        flex: 1;
-      }
-
-      label {
-        margin: 0;
-        color: $medium-grey;
-        font-weight: normal;
-      }
-
-      .ui.selection.dropdown {
+      .ui.dropdown {
+        position: unset;
         padding: 0;
         margin: 0;
         min-height: 0;
         border: none;
         border-radius: 0;
-
-        .item {
-          font-size: 0.77rem;
-        }
 
         .dropdown.icon {
           position: relative;
@@ -67,7 +42,6 @@
           float: none;
           display: inline-block;
           padding: 0;
-          margin: 0 0 0 1em;
         }
 
         &.active {
@@ -78,6 +52,22 @@
             border-color: transparent;
           }
         }
+      }
+    }
+  }
+}
+
+.results {
+  &_total {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.8em;
+    font-size: 0.77rem;
+
+    &_numOfResults {
+      &.ui.dropdown .menu {
+        border: none;
+        border-radius: 0;
       }
     }
   }

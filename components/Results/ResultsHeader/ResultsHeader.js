@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { object, func, string } from 'prop-types';
 import { connect } from 'react-redux';
-import { Form, Select, Dropdown } from 'semantic-ui-react';
+import { Dropdown } from 'semantic-ui-react';
 import { numberWithCommas } from 'lib/utils';
 import * as actions from 'lib/redux/actions/search';
 import { useAuth } from 'context/authContext';
@@ -68,37 +68,42 @@ const ResultsHeader = ( {
 
   return (
     <div>
-      <ResultsToggleView toggle={ toggleView } currentView={ currentView } />
-      <div className="results_header">
-        <Form className="results_sort">
-          <Form.Group>
+      <div className="controls">
+        <div className="ui form results_sort">
+          <div className="fields">
             { !viewingAllPkgs && (
-              <Form.Field
-                control={ Select }
-                value={ sort }
-                options={ options }
-                onChange={ handleOnChange }
-              />
+              <Fragment>
+                <span aria-hidden="true">Sort by</span>
+                <Dropdown
+                  aria-label="sort results by recent or relevance"
+                  inline
+                  options={ options }
+                  onChange={ handleOnChange }
+                  value={ sort }
+                />
+              </Fragment>
             ) }
-          </Form.Group>
-        </Form>
-        <div className="results_total">
-          { resultItemsStart }
-          -
-          { resultItemsEnd }
-          { ' ' }
-          of
-          { ' ' }
-          { numberWithCommas( total ) }
-          <span style={ total > 12 ? { display: 'inline' } : { display: 'none' } }> | Show: </span>
-          <Dropdown
-            style={ total > 12 ? { display: 'inline' } : { display: 'none' } }
-            defaultValue={ pageSize }
-            options={ getPageSizes() }
-            className="results_total_numOfResults"
-            onChange={ toggleNumberOfResults }
-          />
+          </div>
         </div>
+        <ResultsToggleView toggle={ toggleView } currentView={ currentView } />
+      </div>
+
+      <div className="results_total">
+        { resultItemsStart }
+        -
+        { resultItemsEnd }
+        { ' ' }
+        of
+        { ' ' }
+        { numberWithCommas( total ) }
+        <span style={ total > 12 ? { display: 'inline' } : { display: 'none' } }> | Show: </span>
+        <Dropdown
+          style={ total > 12 ? { display: 'inline' } : { display: 'none' } }
+          defaultValue={ pageSize }
+          options={ getPageSizes() }
+          className="results_total_numOfResults"
+          onChange={ toggleNumberOfResults }
+        />
       </div>
     </div>
   );
