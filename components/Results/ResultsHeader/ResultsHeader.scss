@@ -64,6 +64,11 @@
     margin-bottom: 0.8em;
     font-size: 0.77rem;
 
+    [aria-hidden] {
+      margin-left: 0.25em;
+      margin-right: 0.25em;
+    }
+
     &_numOfResults {
       &.ui.dropdown .menu {
         border: none;

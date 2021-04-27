@@ -89,20 +89,17 @@ const ResultsHeader = ( {
       </div>
 
       <div className="results_total">
-        { resultItemsStart }
-        -
-        { resultItemsEnd }
-        { ' ' }
-        of
-        { ' ' }
-        { numberWithCommas( total ) }
-        <span style={ total > 12 ? { display: 'inline' } : { display: 'none' } }> | Show: </span>
+        <span role="status" aria-live="polite">
+          { `${resultItemsStart} to ${resultItemsEnd} of ${numberWithCommas( total )}` }
+        </span>
+        <span aria-hidden="true" style={ total > 12 ? { display: 'inline' } : { display: 'none' } }>| Show:</span>
         <Dropdown
-          style={ total > 12 ? { display: 'inline' } : { display: 'none' } }
-          defaultValue={ pageSize }
-          options={ getPageSizes() }
+          aria-label="set results per page"
           className="results_total_numOfResults"
+          defaultValue={ pageSize }
           onChange={ toggleNumberOfResults }
+          options={ getPageSizes() }
+          style={ total > 12 ? { display: 'inline' } : { display: 'none' } }
         />
       </div>
     </div>
