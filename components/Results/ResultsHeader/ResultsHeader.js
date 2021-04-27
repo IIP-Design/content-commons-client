@@ -6,7 +6,7 @@ import { numberWithCommas } from 'lib/utils';
 import * as actions from 'lib/redux/actions/search';
 import { useAuth } from 'context/authContext';
 import ResultsToggleView from '../ResultsToggleView/ResultsToggleView';
-import './ResultsHeader.scss';
+import styles from './ResultsHeader.module.scss';
 
 const options = [
   { key: 1, text: 'Relevance', value: 'relevance' },
@@ -68,14 +68,15 @@ const ResultsHeader = ( {
 
   return (
     <div>
-      <div className="controls">
-        <div className="ui form results_sort">
-          <div className="fields">
+      <div className={ styles.controls }>
+        <div className={ styles.sortResults }>
+          <div className={ styles.fields }>
             { !viewingAllPkgs && (
               <Fragment>
                 <span aria-hidden="true">Sort by</span>
                 <Dropdown
                   aria-label="sort results by recent or relevance"
+                  className={ styles.sortDropdown }
                   inline
                   options={ options }
                   onChange={ handleOnChange }
@@ -88,14 +89,14 @@ const ResultsHeader = ( {
         <ResultsToggleView toggle={ toggleView } currentView={ currentView } />
       </div>
 
-      <div className="results_total">
+      <div className={ styles.perPage }>
         <span role="status" aria-live="polite">
           { `${resultItemsStart} to ${resultItemsEnd} of ${numberWithCommas( total )}` }
         </span>
         <span aria-hidden="true" style={ total > 12 ? { display: 'inline' } : { display: 'none' } }>| Show:</span>
         <Dropdown
           aria-label="set results per page"
-          className="results_total_numOfResults"
+          className={ styles.perPageDropdown }
           defaultValue={ pageSize }
           onChange={ toggleNumberOfResults }
           options={ getPageSizes() }
