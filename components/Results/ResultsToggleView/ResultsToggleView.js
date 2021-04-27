@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from 'semantic-ui-react';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
@@ -8,8 +8,23 @@ import 'styles/tooltip.scss';
 
 const ResultsToggleView = ( { currentView, toggle } ) => {
   const [isMobileDevice, setIsMobileDevice] = useState( null );
+  const galleryBtn = useRef( null );
+  const listBtn = useRef( null );
 
   useEffect( () => setIsMobileDevice( isMobile() ) );
+
+  const handleFocus = e => {
+    const btnRef = e.target.dataset.view === 'gallery' ? listBtn : galleryBtn;
+
+    btnRef.current.focus();
+  };
+
+  const handleClick = e => {
+    if ( e.target.getAttribute( 'tabindex' ) === null ) {
+      toggle( e );
+      handleFocus( e );
+    }
+  };
 
   return (
     <div className={ styles.toggleView } aria-label="set gallery/list view">
@@ -18,9 +33,10 @@ const ResultsToggleView = ( { currentView, toggle } ) => {
       </VisuallyHidden>
       <button
         type="button"
-        onClick={ toggle }
-        disabled={ currentView === 'gallery' }
+        onClick={ handleClick }
+        { ...( currentView === 'gallery' ? { tabIndex: -1 } : {} ) }
         data-view="gallery"
+        ref={ galleryBtn }
       >
         <VisuallyHidden>set to gallery view</VisuallyHidden>
         <span
@@ -37,9 +53,10 @@ const ResultsToggleView = ( { currentView, toggle } ) => {
 
       <button
         type="button"
-        onClick={ toggle }
-        disabled={ currentView === 'list' }
+        onClick={ handleClick }
+        { ...( currentView === 'list' ? { tabIndex: -1 } : {} ) }
         data-view="list"
+        ref={ listBtn }
       >
         <VisuallyHidden>set to list view</VisuallyHidden>
         <span

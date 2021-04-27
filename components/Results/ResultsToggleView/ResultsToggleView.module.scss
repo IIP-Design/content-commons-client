@@ -22,7 +22,7 @@
       @include focus-styling;
     }
 
-    &[disabled] {
+    &[tabindex="-1"] {
       cursor: default;
     }
   }
