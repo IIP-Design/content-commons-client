@@ -30,7 +30,7 @@ describe( '<ResultsToggleView />', () => {
   it( 'renders a visually hidden live region', () => {
     const liveRegion = wrapper.find( '.hide-visually [role="status"][aria-live="polite"]' );
 
-    expect( liveRegion.contains( `${props.currentView} view` ) ).toEqual( true );
+    expect( liveRegion.contains( `current view is ${props.currentView}` ) ).toEqual( true );
   } );
 
   it( 'renders the view buttons with the correct tabIndex and aria-hidden values', () => {

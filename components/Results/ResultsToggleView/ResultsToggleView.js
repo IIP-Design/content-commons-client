@@ -29,7 +29,7 @@ const ResultsToggleView = ( { currentView, toggle } ) => {
   return (
     <div className={ styles.toggleView } aria-label="set gallery/list view">
       <VisuallyHidden>
-        <div role="status" aria-live="polite">{ `${currentView} view` }</div>
+        <div role="status" aria-live="polite">{ `current view is ${currentView}` }</div>
       </VisuallyHidden>
       <button
         type="button"
