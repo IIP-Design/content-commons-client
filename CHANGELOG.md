@@ -5,13 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v5.4.7...HEAD)
+## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v5.4.8...HEAD)
 
 _This sections lists changes committed since most recent release_
-**Fixed:**
-- Images extending beyond their parent container for Documents
 
-# [5.4.7](https://github.com/IIP-Design/content-commons-client/compare/v5.4.6...5.4.7)(2021-04-19)
+# [5.4.8](https://github.com/IIP-Design/content-commons-client/compare/v5.4.7...v5.4.8)(2021-04-29)
+**Fixed:**
+- Images that extend beyond their parent container for Document cards and content
+
+# [5.4.7](https://github.com/IIP-Design/content-commons-client/compare/v5.4.6...v5.4.7)(2021-04-19)
 **Added:**
 - OES to graphic edit screen source dropdown
 
@@ -19,12 +21,12 @@ _This sections lists changes committed since most recent release_
 - A unique title for press guidance is no longer a required
 - Remove document content type from priority search query when user is logged out
 
-# [5.4.6](https://github.com/IIP-Design/content-commons-client/compare/v5.4.5...5.4.6)(2021-03-24)
+# [5.4.6](https://github.com/IIP-Design/content-commons-client/compare/v5.4.5...v5.4.6)(2021-03-24)
 **Fixed:**
 - Press documents appearing in the search results when the Articles, Graphics & Video radio button selected
 - Article page repeatedly re-rendering to infinity
 
-# [5.4.5](https://github.com/IIP-Design/content-commons-client/compare/v5.4.4...5.4.5)(2021-03-16)
+# [5.4.5](https://github.com/IIP-Design/content-commons-client/compare/v5.4.4...v5.4.5)(2021-03-16)
 **Fixed:**
 - Duplicate packages appearing on landing page for a pinned recent package
 - [object Object] display on dashboard for teams with no assigned contentTypes
@@ -38,13 +40,13 @@ _This sections lists changes committed since most recent release_
 - Priorities query on landing page to return results no older than 90 days
 - Manually tracking mount status to useIsMounted hook
 
-# [5.4.4](https://github.com/IIP-Design/content-commons-client/compare/v5.4.3...5.4.4)(2021-03-08)
+# [5.4.4](https://github.com/IIP-Design/content-commons-client/compare/v5.4.3...v5.4.4)(2021-03-08)
 
 **Fixed:**
 
 - Properly load the review video component on the video project page
 
-# [5.4.3](https://github.com/IIP-Design/content-commons-client/compare/v5.4.2...5.4.3)(2021-03-05)
+# [5.4.3](https://github.com/IIP-Design/content-commons-client/compare/v5.4.2...v5.4.3)(2021-03-05)
 
 **Added:**
 
@@ -54,7 +56,7 @@ _This sections lists changes committed since most recent release_
 
 - Move landing page configuration to an external file that loads from a S3 bucket
 
-# [5.4.2](https://github.com/IIP-Design/content-commons-client/compare/v5.4.1...5.4.2)(2021-02-25)
+# [5.4.2](https://github.com/IIP-Design/content-commons-client/compare/v5.4.1...v5.4.2)(2021-02-25)
 
 **Changed:**
 
@@ -64,26 +66,26 @@ _This sections lists changes committed since most recent release_
 
 - `REACT_APP_UI_CONFIG` configuration environmental variable
 
-# [5.4.1](https://github.com/IIP-Design/content-commons-client/compare/v5.4.0...5.4.1)(2021-02-01)
+# [5.4.1](https://github.com/IIP-Design/content-commons-client/compare/v5.4.0...v5.4.1)(2021-02-01)
 
 **Added:**
 
 - Support for login from Okta dashboard
 
-# [5.4.0](https://github.com/IIP-Design/content-commons-client/compare/v5.3.1...5.4.0)(2021-01-25)
+# [5.4.0](https://github.com/IIP-Design/content-commons-client/compare/v5.3.1...v5.4.0)(2021-01-25)
 
 **Added:**
 
 - Text box to display background information to the PackageDetailsForm component on the backend and to the Package component on the frontend
 - Utility functions to replace '\n' characters with applicable html tags
 
-# [5.3.1](https://github.com/IIP-Design/content-commons-client/compare/v5.3.0...5.3.1)(2021-01-22)
+# [5.3.1](https://github.com/IIP-Design/content-commons-client/compare/v5.3.0...v5.3.1)(2021-01-22)
 
 **Changed:**
 
 - Login link on nav no longer needs to use the `<a>` tag as CloudFlare no longer initiating the login
 
-# [5.3.0](https://github.com/IIP-Design/content-commons-client/compare/v5.2.1...5.2.2)(2021-01-07)
+# [5.3.0](https://github.com/IIP-Design/content-commons-client/compare/v5.2.1...v5.2.2)(2021-01-07)
 
 **Added:**
 
@@ -94,13 +96,13 @@ _This sections lists changes committed since most recent release_
 
 - CloudFlare integration
 
-# [5.2.2](https://github.com/IIP-Design/content-commons-client/compare/v5.2.1...5.2.2)(2020-12-11)
+# [5.2.2](https://github.com/IIP-Design/content-commons-client/compare/v5.2.1...v5.2.2)(2020-12-11)
 
 **Added:**
 
 - ECA PASC option to source dropdown
 
-# [5.2.1](https://github.com/IIP-Design/content-commons-client/compare/v5.2.0...5.2.1)(2020-09-23)
+# [5.2.1](https://github.com/IIP-Design/content-commons-client/compare/v5.2.0...v5.2.1)(2020-09-23)
 
 **Fixed:**
 
@@ -108,7 +110,7 @@ _This sections lists changes committed since most recent release_
 - Issue with non English projects appearing on home page.
 - Title text wrapping on result item thumbnail.
 
-# [5.2.0](https://github.com/IIP-Design/content-commons-client/compare/v5.1.1...5.2.0)(2020-09-14)
+# [5.2.0](https://github.com/IIP-Design/content-commons-client/compare/v5.1.1...v5.2.0)(2020-09-14)
 
 **Changed:**
 
@@ -139,13 +141,13 @@ _This sections lists changes committed since most recent release_
 - Bug where changing a video file's language would not display the Publish Changes button. Fixed by calling the `updateVideoProject` mutation and passing the `projectTile` as the updated data when a video file's language is changed.
 - Bug where changing a video file's type would not display the Publish Changes button. Fixed by calling the `updateVideoProject` mutation and passing the `projectTile` as the updated data when a video file's dropdown value is changed.
 
-# [5.1.1](https://github.com/IIP-Design/content-commons-client/compare/v5.1.0...5.1.1)(2020-07-29)
+# [5.1.1](https://github.com/IIP-Design/content-commons-client/compare/v5.1.0...v5.1.1)(2020-07-29)
 
 **Fixed:**
 
 - Issue causing some video downloads to fail. Use filename and not title for download filename
 
-# [5.1.0](https://github.com/IIP-Design/content-commons-client/compare/v5.0.0...5.1.0)(2020-07-15)
+# [5.1.0](https://github.com/IIP-Design/content-commons-client/compare/v5.0.0...v5.1.0)(2020-07-15)
 
 **Added:**
 
@@ -159,7 +161,7 @@ _This sections lists changes committed since most recent release_
 - Delete button is disabled for published graphic projects
 - Display DoS logo and 'Regional Media Hubs' as the source in the graphics card and preview modal
 
-# [5.0.0](https://github.com/IIP-Design/content-commons-client/compare/v4.2.0...5.0.0)(2020-07-10)
+# [5.0.0](https://github.com/IIP-Design/content-commons-client/compare/v4.2.0...v5.0.0)(2020-07-10)
 
 **Added:**
 
