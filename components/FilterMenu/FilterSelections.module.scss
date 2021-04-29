@@ -1,0 +1,67 @@
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
+
+.filterMenuSelections {
+  display: flex;
+  margin-top: 1em;
+  padding-left: 0;
+  list-style: none;
+  transition: opacity 0.8s ease, max-height 1s ease;
+
+  &.display {
+    max-height: 1000px;
+    opacity: 1;
+  }
+
+  .label {
+    display: inline-block;
+    border: 1px solid $blue-green;
+    border-radius: 0.28571429rem;
+    margin: 0.14285714em;
+    padding: 0.5833em 0.833em;
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: 100;
+    font-size: 0.667em;
+    line-height: 1;
+    text-transform: none;
+    background-image: none;
+    vertical-align: baseline;
+    transition: background 0.1s ease;
+
+    img {
+      margin-left: 5.5px;
+      margin-bottom: -1.5px;
+      opacity: 0.5;
+      transition: opacity 0.1s ease;
+    }
+
+    &:hover,
+    &:focus {
+      img {
+        opacity: 1;
+      }
+    }
+
+    &:focus {
+      @include focus-styling;
+    }
+
+    &:not(button) {
+      background-color: $light-grey;
+      cursor: default;
+    }
+  }
+
+  .clear_filter {
+    border-color: transparent;
+    background-color: #fff;
+    color: $light-blue;
+  }
+
+  button {
+    @include button-style-reset(
+      $background-color: #fff,
+      $cursor: pointer
+    );
+  }
+}
