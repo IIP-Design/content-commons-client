@@ -1,0 +1,31 @@
+@import 'styles/colors.scss';
+
+.searchTerm {
+  padding: 1em 0 1.6em 0;
+  @media screen and (min-width: 1100px) {
+    padding-top: 0;
+  }
+  text-align: center;
+}
+
+.searchTermQuery {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: $blue;
+  font-size: 1.4rem;
+  @media screen and (min-width: 768px) {
+    font-size: 1.6rem;
+  }
+  font-weight: 700;
+
+  [role="status"]:first-of-type {
+    line-height: 1;
+  }
+}
+
+.searchTermTotal {
+  margin-bottom: 0;
+  color: $grey;
+  font-size: 0.9rem;
+  font-weight: 400;
+}

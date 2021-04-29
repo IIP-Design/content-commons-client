@@ -7,7 +7,7 @@ import * as actions from 'lib/redux/actions/filter';
 import { fetchQueryString } from 'lib/searchQueryString';
 import difference from 'lodash/difference';
 import FilterSelectionItem from './FilterSelectionItem';
-import './FilterSelections.scss';
+import styles from './FilterSelections.module.scss';
 
 /**
  * Format and return selection object to be used for tag display
@@ -146,29 +146,31 @@ const FilterSelections = props => {
   if ( selections.length === 0 ) return null;
 
   return (
-    <div className="filterMenu_selections">
+    <ul className={ styles.filterMenuSelections } aria-label="applied filters">
       { selections.map( selection => (
-        <FilterSelectionItem
-          key={ v4() }
-          value={ selection.value }
-          label={ selection.label }
-          name={ selection.name }
-          single={ selection.single }
-          onClick={ handleOnClick }
-        />
+        <li key={ v4() }>
+          <FilterSelectionItem
+            value={ selection.value }
+            label={ selection.label }
+            name={ selection.name }
+            single={ selection.single }
+            onClick={ handleOnClick }
+            className={ styles.label }
+          />
+        </li>
       ) ) }
       { selections.length > 1 && ( // need to update to > 2 as defaults to 2
-        <div
-          className="ui label clear_filter"
-          onClick={ handleClearAllFilters }
-          onKeyDown={ handleClearAllFilters }
-          role="button"
-          tabIndex={ 0 }
-        >
-          CLEAR ALL
-        </div>
+        <li>
+          <button
+            className={ `${styles.label} ${styles.clear_filter}` }
+            onClick={ handleClearAllFilters }
+            type="button"
+          >
+            CLEAR ALL
+          </button>
+        </li>
       ) }
-    </div>
+    </ul>
   );
 };
 
