@@ -33,13 +33,15 @@ describe( '<ResultsToggleView />', () => {
     expect( liveRegion.contains( `${props.currentView} view` ) ).toEqual( true );
   } );
 
-  it( 'renders the view buttons with the correct tabIndex values', () => {
+  it( 'renders the view buttons with the correct tabIndex and aria-hidden values', () => {
     const btns = wrapper.find( 'button[data-view]' );
 
     btns.forEach( ( btn, i ) => {
       const value = i === 0 ? -1 : undefined;
+      const ariaHiddenValue = i === 0 ? true : undefined;
 
       expect( btn.prop( 'tabIndex' ) ).toEqual( value );
+      expect( btn.prop( 'aria-hidden' ) ).toEqual( ariaHiddenValue );
     } );
   } );
 

@@ -34,7 +34,9 @@ const ResultsToggleView = ( { currentView, toggle } ) => {
       <button
         type="button"
         onClick={ handleClick }
-        { ...( currentView === 'gallery' ? { tabIndex: -1 } : {} ) }
+        { ...( currentView === 'gallery'
+          ? { tabIndex: -1, 'aria-hidden': true }
+          : {} ) }
         data-view="gallery"
         ref={ galleryBtn }
       >
@@ -54,7 +56,9 @@ const ResultsToggleView = ( { currentView, toggle } ) => {
       <button
         type="button"
         onClick={ handleClick }
-        { ...( currentView === 'list' ? { tabIndex: -1 } : {} ) }
+        { ...( currentView === 'list'
+          ? { tabIndex: -1, 'aria-hidden': true }
+          : {} ) }
         data-view="list"
         ref={ listBtn }
       >
