@@ -1,23 +1,22 @@
 import React from 'react';
 import { object } from 'prop-types';
 import { connect } from 'react-redux';
-import { Header } from 'semantic-ui-react';
+import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import { numberWithCommas } from 'lib/utils';
-import './SearchTerm.scss';
+import styles from './SearchTerm.module.scss';
 
 const SearchTerm = ( { search } ) => {
   const { currentTerm, total } = search;
 
   return (
-    <section className="searchTerm">
-      <Header as="h1" className="searchTermQuery">
-        { currentTerm && `${currentTerm}` }
-        <Header.Subheader className="searchTermTotal">
-          { numberWithCommas( total ) }
-          { ' ' }
-          { total === 1 ? 'item' : 'items' }
-        </Header.Subheader>
-      </Header>
+    <section className={ styles.searchTerm }>
+      <VisuallyHidden><h1>search results</h1></VisuallyHidden>
+      <div className={ styles.searchTermQuery }>
+        <div role="status" aria-live="polite">{ currentTerm && `${currentTerm}` }</div>
+        <div className={ styles.searchTermTotal } role="status" aria-live="polite">
+          { `${numberWithCommas( total )} item${total === 1 ? '' : 's'}` }
+        </div>
+      </div>
     </section>
   );
 };
