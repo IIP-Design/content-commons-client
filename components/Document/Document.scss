@@ -1,6 +1,13 @@
 @import "styles/colors.scss";
 
+@mixin img-max-width {
+  img {
+    max-width: 100%;
+  }
+}
+
 .document {
+  @include img-max-width;
 
   &-project__popover {
 
@@ -41,6 +48,7 @@
   }
 
   &--preview {
+    @include img-max-width;
   
     .modal_headline {
       margin-top: 1.5em;
