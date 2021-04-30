@@ -12,6 +12,10 @@ _This sections lists changes committed since most recent release_
 **Added**
 - `SearchInputRadio` component
 - New Relic monitoring
+- Tests for `FilterSelectionItem` component
+- Tests for `FilterSelections` component
+- Tests for `ResultsToggleView` component
+- Tests for `ResultsHeader` component
 
 **Changed:**
 - Wrap navigation menu items in `li` elements
@@ -21,6 +25,15 @@ _This sections lists changes committed since most recent release_
 - Replace Semantic UI Item in `Priorities` and `Recents` with native HTML elements
 - Replace Semantic UI Card in `ResultItem` with native HTML elements
 - Remove the `tabindex` attribute from the mobile hamburger menu
+- Replace Semantic UI Header in `SearchTerm` with native HTML elements
+- Create live regions on the search results page for the search term and number of hits so that changes get announced by screen readers
+- Use CSS modules for `FilterSelections` component styling
+- Replace Semantic UI delete Icon in `FilterSelectionItem` with an SVG
+- Replace Semantic UI Label in `FilterSelectionItem` with native HTML elements
+- Set dropdowns in `RecentsHeader` to not open on focus
+- Use CSS modules for `ResultsHeader` component styling
+- Use CSS modules for `ResultsToggleView` component styling
+- Implement redesigned recent/relevance dropdown 
 
 **Fixed:**
 - Skip to content link for improved accessibility
@@ -38,6 +51,15 @@ _This sections lists changes committed since most recent release_
 - Keyboard accessibility of video and document cards
 - Visually hidden, but accessible content name, for the mobile hamburger menu
 - Visually hidden text content for video and document card meta data items
+- Heading on the search results page so that its content is "search results" rather than the search term and number of hits, which are dynamic
+- Clearing of search filters when the "CLEAR ALL" button loses focus
+- Keyboard accessibility of applied filters on the search results page
+- Keyboard accessibility of gallery/list view on search results page
+- Accessible label to the recent/relevance dropdown on the search results page
+- Prevent opening of recent/relevance dropdown when focused
+- Accessible label to the results per page dropdown on the search results page
+- Prevent opening of results per page dropdown when focused
+- Live region for the results per page dropdown that gets announced by screen readers when changed
 
 # [5.4.8](https://github.com/IIP-Design/content-commons-client/compare/v5.4.7...v5.4.8)(2021-04-29)
 **Fixed:**
