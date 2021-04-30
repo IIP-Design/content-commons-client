@@ -80,6 +80,7 @@ const ResultsHeader = ( {
                   inline
                   options={ options }
                   onChange={ handleOnChange }
+                  openOnFocus={ false }
                   value={ sort }
                 />
               </Fragment>
@@ -99,6 +100,7 @@ const ResultsHeader = ( {
           className={ styles.perPageDropdown }
           defaultValue={ pageSize }
           onChange={ toggleNumberOfResults }
+          openOnFocus={ false }
           options={ getPageSizes() }
           style={ total > 12 ? { display: 'inline' } : { display: 'none' } }
         />

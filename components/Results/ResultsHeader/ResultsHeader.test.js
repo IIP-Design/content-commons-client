@@ -77,4 +77,12 @@ describe( '<ResultsHeader />', () => {
 
     expect( dropdown.exists() ).toEqual( true );
   } );
+
+  it( 'renders dropdowns that do not open on focus', () => {
+    const dropdowns = resultsHeader.find( 'Dropdown' );
+
+    dropdowns.forEach( dropdown => {
+      expect( dropdown.prop( 'openOnFocus' ) ).toEqual( false );
+    } );
+  } );
 } );
