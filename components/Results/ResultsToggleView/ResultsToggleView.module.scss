@@ -1,0 +1,47 @@
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
+
+.toggleView {
+  display: flex;
+  justify-content: flex-end;
+  @media screen and (max-width: 767px) {
+    z-index: 3;
+  }
+
+  > button {
+    @include button-style-reset($cursor: pointer);
+
+    &:hover {
+      [tooltip]::after,
+      [tooltip]::before {
+        opacity: 1;
+      }
+    }
+
+    &:focus {
+      @include focus-styling;
+    }
+
+    &[tabindex="-1"] {
+      cursor: default;
+    }
+  }
+
+  [tooltip] {
+    margin: 0;
+    pointer-events: none;
+
+    &.noTooltip:before,
+    &.noTooltip:after {
+      display: none;
+    }
+  }
+
+  i {
+    font-size: 1.3em;
+
+    &.active {
+      color: $medium-grey;
+    }
+  }
+}

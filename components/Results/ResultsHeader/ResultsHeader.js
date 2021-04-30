@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { object, func, string } from 'prop-types';
 import { connect } from 'react-redux';
-import { Form, Select, Dropdown } from 'semantic-ui-react';
+import { Dropdown } from 'semantic-ui-react';
 import { numberWithCommas } from 'lib/utils';
 import * as actions from 'lib/redux/actions/search';
 import { useAuth } from 'context/authContext';
 import ResultsToggleView from '../ResultsToggleView/ResultsToggleView';
-import './ResultsHeader.scss';
+import styles from './ResultsHeader.module.scss';
 
 const options = [
   { key: 1, text: 'Relevance', value: 'relevance' },
@@ -68,37 +68,42 @@ const ResultsHeader = ( {
 
   return (
     <div>
-      <ResultsToggleView toggle={ toggleView } currentView={ currentView } />
-      <div className="results_header">
-        <Form className="results_sort">
-          <Form.Group>
+      <div className={ styles.controls }>
+        <div className={ styles.sortResults }>
+          <div className={ styles.fields }>
             { !viewingAllPkgs && (
-              <Form.Field
-                control={ Select }
-                value={ sort }
-                options={ options }
-                onChange={ handleOnChange }
-              />
+              <Fragment>
+                <span aria-hidden="true">Sort by</span>
+                <Dropdown
+                  aria-label="sort results by recent or relevance"
+                  className={ styles.sortDropdown }
+                  inline
+                  options={ options }
+                  onChange={ handleOnChange }
+                  openOnFocus={ false }
+                  value={ sort }
+                />
+              </Fragment>
             ) }
-          </Form.Group>
-        </Form>
-        <div className="results_total">
-          { resultItemsStart }
-          -
-          { resultItemsEnd }
-          { ' ' }
-          of
-          { ' ' }
-          { numberWithCommas( total ) }
-          <span style={ total > 12 ? { display: 'inline' } : { display: 'none' } }> | Show: </span>
-          <Dropdown
-            style={ total > 12 ? { display: 'inline' } : { display: 'none' } }
-            defaultValue={ pageSize }
-            options={ getPageSizes() }
-            className="results_total_numOfResults"
-            onChange={ toggleNumberOfResults }
-          />
+          </div>
         </div>
+        <ResultsToggleView toggle={ toggleView } currentView={ currentView } />
+      </div>
+
+      <div className={ styles.perPage }>
+        <span role="status" aria-live="polite">
+          { `${resultItemsStart} to ${resultItemsEnd} of ${numberWithCommas( total )}` }
+        </span>
+        <span aria-hidden="true" style={ total > 12 ? { display: 'inline' } : { display: 'none' } }>| Show:</span>
+        <Dropdown
+          aria-label="set results per page"
+          className={ styles.perPageDropdown }
+          defaultValue={ pageSize }
+          onChange={ toggleNumberOfResults }
+          openOnFocus={ false }
+          options={ getPageSizes() }
+          style={ total > 12 ? { display: 'inline' } : { display: 'none' } }
+        />
       </div>
     </div>
   );
