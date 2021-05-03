@@ -77,21 +77,19 @@ const getAllSelections = ( filter, global ) => {
   return selectedFilters;
 };
 
-const FilterSelections = props => {
-  const {
-    router,
-    filter,
-    global,
-    term,
-    language,
-    clearFilters,
-  } = props;
-
+const FilterSelections = ( {
+  router,
+  filter,
+  global,
+  term,
+  language,
+  clearFilters,
+} ) => {
   const [selections, setSelections] = useState( [] );
 
   useEffect( () => {
     setSelections( [...getAllSelections( filter, global )] );
-  }, [filter] );
+  }, [filter, global] );
 
   /**
    * Reload results page with updated query params
