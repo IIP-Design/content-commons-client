@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Router, { withRouter } from 'next/router';
-import { Header, Image } from 'semantic-ui-react';
+import { Header } from 'semantic-ui-react';
 import NProgress from 'nprogress';
 
 import DosSeal from 'static/images/dos_seal.svg';
@@ -27,7 +27,7 @@ const HeaderGlobal = ( { router: { pathname } } ) => {
   const pagePath = pathname.split( '/' ).slice( 1 );
   const isHome = pagePath[0] === '';
   const barClass = `bar ${isHome ? 'bar--home' : pagePath.map( path => `bar--${path}` ).join( ' ' )}`;
-
+  const imgDimensions = isHome ? 60 : 34;
 
   // const showSearchInput = _pathname => ( ( _pathname === '/' || _pathname !== '/results' ) ? <SearchInput /> : null );
 
@@ -37,7 +37,13 @@ const HeaderGlobal = ( { router: { pathname } } ) => {
         <header role="banner">
           <Header as="h1">
             <div>
-              <Image className="seal" src={ DosSeal } centered alt="Department of State Seal" />
+              <img
+                src={ DosSeal }
+                alt="Department of State Seal"
+                height={ imgDimensions }
+                width={ imgDimensions }
+                className="ui centered image seal"
+              />
               <Link href="/"><a className="title">Content Commons</a></Link>
             </div>
             <Header.Subheader className="subtitle">Making it easier to find public diplomacy content</Header.Subheader>
