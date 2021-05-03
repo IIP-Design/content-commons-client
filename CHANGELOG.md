@@ -16,6 +16,7 @@ _This sections lists changes committed since most recent release_
 - Tests for `FilterSelections` component
 - Tests for `ResultsToggleView` component
 - Tests for `ResultsHeader` component
+- Tests for `Header` component
 
 **Changed:**
 - Wrap navigation menu items in `li` elements
@@ -33,7 +34,8 @@ _This sections lists changes committed since most recent release_
 - Set dropdowns in `RecentsHeader` to not open on focus
 - Use CSS modules for `ResultsHeader` component styling
 - Use CSS modules for `ResultsToggleView` component styling
-- Implement redesigned recent/relevance dropdown 
+- Implement redesigned recent/relevance dropdown
+- Replace Semantic UI Header and Img in `Header` with native HTML elements
 
 **Fixed:**
 - Skip to content link for improved accessibility
@@ -60,6 +62,7 @@ _This sections lists changes committed since most recent release_
 - Accessible label to the results per page dropdown on the search results page
 - Prevent opening of results per page dropdown when focused
 - Live region for the results per page dropdown that gets announced by screen readers when changed
+- Add image dimensions to the DoS seal in the `Header`
 
 # [5.4.8](https://github.com/IIP-Design/content-commons-client/compare/v5.4.7...v5.4.8)(2021-04-29)
 **Fixed:**
