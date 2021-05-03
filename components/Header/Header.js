@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Router, { withRouter } from 'next/router';
-import { Header } from 'semantic-ui-react';
 import NProgress from 'nprogress';
 
 import DosSeal from 'static/images/dos_seal.svg';
@@ -35,7 +34,7 @@ const HeaderGlobal = ( { router: { pathname } } ) => {
     <div className={ barClass }>
       <div className="ui container">
         <header role="banner">
-          <Header as="h1">
+          <h1 className="ui header">
             <div>
               <img
                 src={ DosSeal }
@@ -46,11 +45,11 @@ const HeaderGlobal = ( { router: { pathname } } ) => {
               />
               <Link href="/"><a className="title">Content Commons</a></Link>
             </div>
-            <Header.Subheader className="subtitle">Making it easier to find public diplomacy content</Header.Subheader>
-            <Header.Subheader className="subtext">
+            <div className="sub header subtitle">Making it easier to find public diplomacy content</div>
+            <div className="sub header subtext">
               Content Commons is a U.S. Department of State portal helping public diplomacy practitioners find what they need.
-            </Header.Subheader>
-          </Header>
+            </div>
+          </h1>
           <SearchInput />
           <GlobalNav />
         </header>
