@@ -17,6 +17,8 @@ _This sections lists changes committed since most recent release_
 - Tests for `ResultsToggleView` component
 - Tests for `ResultsHeader` component
 - Tests for `Header` component
+- `PolicyPriorityDropdown` component
+- Tests for `PolicyPriorityDropdown` component
 
 **Changed:**
 - Wrap navigation menu items in `li` elements
