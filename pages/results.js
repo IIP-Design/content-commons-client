@@ -1,88 +1,96 @@
-import React, { Component } from 'react';
-import Results from 'components/Results/Results/';
-import { fetchUser } from 'context/authContext';
+import React, { useEffect } from 'react';
+import propTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { useQuery } from '@apollo/client';
 
+import Results from 'components/Results/Results/';
+
+import { COUNTRIES_REGIONS_QUERY } from 'lib/graphql/queries/document';
 import {
-  updateLanguage, updateSort, updateSearchTerm, createRequest,
-} from 'lib/redux/actions/search';
-import {
-  postTypeUpdate, dateUpdate, categoryUpdate, countryUpdate, sourceUpdate,
+  categoryUpdate, countryUpdate, dateUpdate, postTypeUpdate, sourceUpdate,
 } from 'lib/redux/actions/filter';
-import { loadPostTypes } from 'lib/redux/actions/postType';
-import { loadSources } from 'lib/redux/actions/source';
+import {
+  createRequest, updateLanguage, updateSearchTerm, updateSort,
+} from 'lib/redux/actions/search';
+import { fetchUser } from 'context/authContext';
 import { loadCategories } from 'lib/redux/actions/category';
 import { loadCountries } from 'lib/redux/actions/country';
 import { loadLanguages } from 'lib/redux/actions/language';
-import { COUNTRIES_REGIONS_QUERY } from 'lib/graphql/queries/document';
+import { loadPostTypes } from 'lib/redux/actions/postType';
+import { loadSources } from 'lib/redux/actions/source';
+import storeWrapper from 'lib/redux/store';
 
-class ResultsPage extends Component {
-  // Get search params from url
-  static async getInitialProps( ctx ) {
-    const {
-      query: {
-        language, term, sortBy, postTypes, date, categories, sources, countries,
-      }, store,
-    } = ctx;
+const ResultsPage = ( {
+  filter, loaders, sendRequest, user,
+} ) => {
+  const gqlCountries = useQuery( COUNTRIES_REGIONS_QUERY, {
+    fetchPolicy: 'cache-and-network',
+  } );
 
-    const user = await fetchUser( ctx );
+  useEffect( () => {
+    sendRequest( user );
+    loaders.loadCategories();
+    loaders.loadCountries( gqlCountries );
+    loaders.loadLanguages();
+    loaders.loadPostTypes( user );
+    loaders.loadSources();
+  }, [
+    filter, gqlCountries, loaders, sendRequest, user,
+  ] );
 
-    // trigger parallel loading calls
-    const languageUpdate = store.dispatch( updateLanguage( language || 'en-us' ) );
-    const sortByUpdate = store.dispatch( updateSort( sortBy || 'published' ) );
-    const typeUpdate = store.dispatch( postTypeUpdate( postTypes ) );
-    const termUpdate = store.dispatch( updateSearchTerm( term ) );
-    const dateChange = store.dispatch( dateUpdate( date ) );
-    const categoryChange = store.dispatch( categoryUpdate( categories ) );
-    const countryChange = store.dispatch( countryUpdate( countries ) );
-    const sourceChange = store.dispatch( sourceUpdate( sources ) );
+  return (
+    <Results />
+  );
+};
 
-    await languageUpdate;
-    await sortByUpdate;
-    await typeUpdate;
-    await termUpdate;
-    await dateChange;
-    await categoryChange;
-    await countryChange;
-    await sourceChange;
+export const getServerSideProps = storeWrapper.getServerSideProps( async context => {
+  // Get search params from URL.
+  const { store, query } = context;
 
-    // after all search values are updated, execute search request
-    store.dispatch( createRequest( user ) );
+  const {
+    categories, countries, date, language, postTypes, sortBy, sources, term,
+  } = query;
 
-    // load filter menus if needed
-    const { global } = store.getState();
+  const user = await fetchUser( context );
 
-    // Always load srcs and cats based on query
-    const srcs = store.dispatch( loadSources() );
-    const cats = store.dispatch( loadCategories() );
+  // Trigger parallel loading calls
+  store.dispatch( updateLanguage( language || 'en-us' ) );
+  store.dispatch( updateSort( sortBy || 'published' ) );
+  store.dispatch( postTypeUpdate( postTypes ) );
+  store.dispatch( updateSearchTerm( term || null ) );
+  store.dispatch( dateUpdate( date ) );
+  store.dispatch( categoryUpdate( categories ) );
+  store.dispatch( countryUpdate( countries ) );
+  store.dispatch( sourceUpdate( sources ) );
 
-    const gqlCountries = ctx.apolloClient.query( {
-      query: COUNTRIES_REGIONS_QUERY,
-    } );
-    const countrieses = store.dispatch( loadCountries( gqlCountries ) );
+  store.dispatch( createRequest( user ) );
 
-    let types;
-    let langs;
+  return {
+    props: { user },
+  };
+} );
 
-    if ( !global.postTypes.list.length ) {
-      types = store.dispatch( loadPostTypes( user ) );
-    }
+const mapDispatchToProps = dispatch => ( {
+  sendRequest: bindActionCreators( createRequest, dispatch ),
+  loaders: {
+    loadCategories: bindActionCreators( loadCategories, dispatch ),
+    loadCountries: bindActionCreators( loadCountries, dispatch ),
+    loadLanguages: bindActionCreators( loadLanguages, dispatch ),
+    loadPostTypes: bindActionCreators( loadPostTypes, dispatch ),
+    loadSources: bindActionCreators( loadSources, dispatch ),
+  },
+} );
 
-    if ( !global.languages.list.length ) {
-      langs = store.dispatch( loadLanguages() );
-    }
+const mapStateToProps = state => ( {
+  filter: state.filter,
+} );
 
-    if ( types ) await types;
-    if ( srcs ) await srcs;
-    if ( cats ) await cats;
-    if ( langs ) await langs;
-    if ( countrieses ) await countrieses;
+ResultsPage.propTypes = {
+  filter: propTypes.object,
+  loaders: propTypes.object,
+  sendRequest: propTypes.func,
+  user: propTypes.object,
+};
 
-    return {};
-  }
-
-  render() {
-    return <Results />;
-  }
-}
-
-export default ResultsPage;
+export default connect( mapStateToProps, mapDispatchToProps )( ResultsPage );

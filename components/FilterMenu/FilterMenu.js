@@ -9,9 +9,7 @@ import FilterMenuCountries from './FilterMenuCountries';
 
 import './FilterMenu.scss';
 
-const FilterMenu = props => {
-  const { filter, global } = props;
-
+const FilterMenu = ( { filter, global } ) => {
   const showMenuItem = item => {
     if ( item === 'document' ) {
       return global?.postTypes?.list.some( type => type.key === item ) || false;

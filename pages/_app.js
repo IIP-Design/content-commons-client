@@ -69,7 +69,10 @@ Commons.getInitialProps = async appContext => {
 
 Commons.propTypes = {
   apollo: propTypes.object,
-  Component: propTypes.func,
+  Component: propTypes.oneOfType( [
+    propTypes.func,
+    propTypes.object,
+  ] ),
   pageProps: propTypes.object,
   router: propTypes.object,
 };
