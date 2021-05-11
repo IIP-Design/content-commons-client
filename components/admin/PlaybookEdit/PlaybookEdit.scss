@@ -1,0 +1,28 @@
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
+
+.edit-playbook {
+  @media screen and (max-width: 550px) {
+    .project_buttons {
+      @include multi-column-layout;
+    }
+  }
+
+  .ui.button {
+    @include base-button;
+  }
+
+  > .actions {
+    padding-top: 2em;
+    text-align: center;
+
+    .action-btn {
+      &.btn--add-more,
+      &.btn--edit {
+        &.ui.basic.button {
+          @include ghost-button;
+        }
+      }
+    }
+  }
+}
