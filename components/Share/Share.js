@@ -33,7 +33,9 @@ const Share = ( {
 
   // video, document, package types
   if ( !isPreview && type !== 'post' ) {
-    directLink = `${window.location.protocol}//${window.location.host}/${type}?${queryStr}`;
+    const t = type === 'package' ? 'package/guidance' : type;
+
+    directLink = `${window.location.protocol}//${window.location.host}/${t}?${queryStr}`;
 
     if ( link?.includes( 'youtu' ) ) {
       shareLink = `https://youtu.be/${getYouTubeId( link )}`;
