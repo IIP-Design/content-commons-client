@@ -112,8 +112,28 @@ export const mockItem = {
   content: mockContent,
   // status: PublishStatus @default(value: DRAFT),
   // visibility: Visibility @default(value: INTERNAL),
-  // policy: PolicyPriority,
+  policy: {
+    id: '5678',
+    name: 'COVID-19 Recovery',
+    theme: '#dd7533',
+  },
   categories: [],
   tags: [],
-  supportFiles: [],
+  supportFiles: [
+    {
+      id: '9012',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      // language: Language!
+      url: 'http://blahblah.dev',
+      signedUrl: 'http://blahblah.dev',
+      md5: 'nqnfnfewkjnfewlknknwef',
+      filename: '5G-Promise-Risk.pdf',
+      filetype: 'pdf',
+      filesize: 10000,
+      visibility: 'PUBLIC',
+      editable: true,
+      // use: SupportFileUse
+    },
+  ],
 };

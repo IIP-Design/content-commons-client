@@ -1,0 +1,44 @@
+@import 'styles/colors.scss';
+
+.container {
+  background-color: $blue;
+  padding-top: 5rem;
+}
+
+.content {
+  max-width: 976px;
+  padding: 2rem 5rem 2.5rem;
+}
+
+.header {
+  background-color: $blue;
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.title {
+  color: white;
+}
+
+.policy {
+  color: white;
+  margin: 0 auto;
+  padding: 0.3rem 1rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  transform: translateY(1rem);
+
+  &-container {
+    display: flex;
+  }
+}
+
+.resources {
+  &-title {
+    color: white;
+    font-size: 1.1rem;
+    padding: 0.35rem;
+    text-align: center;
+  }
+}
