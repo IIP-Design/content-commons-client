@@ -34,7 +34,7 @@ const Share = ( {
       queryStr = stringifyQueryString( { id } );
       break;
     default:
-      stringifyQueryString( { id, site, language } );
+      queryStr = stringifyQueryString( { id, site, language } );
   }
 
   let directLink = link;
