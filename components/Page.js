@@ -19,14 +19,21 @@ const Page = ( { children, router } ) => {
 
     path = parts[parts.length - 2];
   }
+
+  const isFullWidth = pathname === '/' || path === 'playbook';
+
   const title = path ? `${capitalizeFirst( path )} | Content Commons` : 'Content Commons';
-  const bodyCls = pathname === '/' ? '' : 'ui container inside';
+  const bodyCls = isFullWidth ? '' : 'ui container inside';
 
   return (
     <div style={ { position: 'relative', minHeight: '100vh' } }>
       <Meta title={ title } />
       <Header />
-      <main id="content" role="main" className={ bodyCls }>
+      <main
+        className={ bodyCls }
+        id="content"
+        role="main"
+      >
         { children }
       </main>
       <Footer />
