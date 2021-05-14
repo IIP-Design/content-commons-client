@@ -1,5 +1,20 @@
 @import 'styles/colors.scss';
 
+.back {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 0.6rem;
+  left: 0;
+  position: absolute;
+  text-transform: uppercase;
+
+  &:hover {
+    cursor: pointer;
+    color: white;
+  }
+}
+
 .container {
   background-color: $blue;
   padding-top: 5rem;
@@ -15,6 +30,44 @@
   color: white;
   padding: 2rem;
   text-align: center;
+
+  &-contents {
+    position: relative;
+    margin: 0 auto;
+    max-width: 976px;
+    width: 100%;
+  }
+}
+
+:global {
+  .playbook-project__popover {
+    color: #000000de;
+    position: absolute;
+    right: 0;
+  }
+
+  .playbook-project__popover--share .popover_content {
+    font-size: 1rem;
+    box-shadow: 0px 2px 4px 0px #5b6168;
+  }
+
+  .playbook-project__popover .popover_content::before {
+    top: -8px;
+    width: 15px;
+    height: 8px;
+    margin-right: 2px;
+    background: #02bfe7;
+  }
+
+  .playbook-project__popover .popover_content::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-top: 5px;
+    background-image: linear-gradient(90deg, #0071bc 3%, #02bfe7 100%);
+  }
 }
 
 .title {
