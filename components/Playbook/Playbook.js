@@ -1,7 +1,9 @@
 import moment from 'moment';
 import propTypes from 'prop-types';
 
+import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
 import TexturedSection from 'components/TexturedSection/TexturedSection';
+import { formatBytes } from 'lib/utils';
 
 import styles from './Playbook.module.scss';
 
@@ -31,16 +33,38 @@ const Playbook = ( { item } ) => (
         dangerouslySetInnerHTML={ { __html: item.content } } // eslint-disable-line react/no-danger
       />
     </TexturedSection>
-    <div>
-      <h3 className={ styles['resources-title'] }>Additional Resources</h3>
-      <div>
-        <div>
-          <h4>Downloadable attachments.</h4>
-          <em>Download the attached files related to this Playbook.</em>
-          { }
+    { item.supportFiles && item.supportFiles.length && (
+      <div className={ styles['resources-container'] }>
+        <h3 className={ styles['resources-title'] }>Additional Resources</h3>
+        <div className={ styles['resources-content'] }>
+          <h4 className={ styles['resources-attachment-title'] }>Downloadable attachments.</h4>
+          <small className={ styles['resources-instructions'] }>
+            <em>Download the attached files related to this Playbook.</em>
+          </small>
+          <ul className={ styles['resources-list'] }>
+            { item.supportFiles.map( file => (
+              <li key={ file.id }>
+                <DownloadItemContent
+                  hoverText={ `Download ${file.filename}` }
+                  srcUrl={ file.url }
+                  downloadFilename={ file.filename }
+                >
+                  <div className="item-content">
+                    <p className="item-content__title">
+                      <strong>
+                        { `Download "${file.filename}"` }
+                      </strong>
+                    </p>
+                    <p className="item-content__meta">{ `File type: ${file.filetype}` }</p>
+                    <p className="item-content__meta">{ `File size: ${formatBytes( file.filesize )}` }</p>
+                  </div>
+                </DownloadItemContent>
+              </li>
+            ) ) }
+          </ul>
         </div>
       </div>
-    </div>
+    ) }
   </div>
 );
 

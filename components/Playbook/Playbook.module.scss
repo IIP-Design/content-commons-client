@@ -35,7 +35,29 @@
 }
 
 .resources {
+  &-attachment-title {
+    font-size: 24px;
+    font-weight: normal;
+    margin-bottom: 0;
+  }
+
+  &-container {
+    background-color: white;
+  }
+
+  &-content {
+    max-width: 976px;
+    margin: 0 auto;
+    padding: 2rem 5rem 2.5rem;
+  }
+
+  &-list {
+    list-style: none;
+    padding: 0;
+  }
+
   &-title {
+    background-color: $blue;
     color: white;
     font-size: 1.1rem;
     padding: 0.35rem;
