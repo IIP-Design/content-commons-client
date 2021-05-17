@@ -19,21 +19,43 @@ const Share = ( {
   type,
 } ) => {
   const internalTypes = [
-    'document', 'graphic', 'package',
+    'document', 'graphic', 'package', 'playbook',
   ];
   const internalOnly = internalTypes.some( t => t === type );
   const video = type === 'video';
 
-  const queryStr = type === 'post'
-    ? stringifyQueryString( { id, site } )
-    : stringifyQueryString( { id, site, language } );
+  let queryStr;
+
+  switch ( type ) {
+    case 'post':
+      queryStr = stringifyQueryString( { id, site } );
+      break;
+    case 'playbook':
+      queryStr = stringifyQueryString( { id } );
+      break;
+    default:
+      queryStr = stringifyQueryString( { id, site, language } );
+  }
 
   let directLink = link;
   let shareLink = link;
 
   // video, document, package types
   if ( !isPreview && type !== 'post' ) {
-    directLink = `${window.location.protocol}//${window.location.host}/${type}?${queryStr}`;
+    let t;
+
+    switch ( type ) {
+      case 'package':
+        t = 'package/guidance';
+        break;
+      case 'playbook':
+        t = 'package/playbook';
+        break;
+      default:
+        t = type;
+    }
+
+    directLink = `${window.location.protocol}//${window.location.host}/${t}?${queryStr}`;
 
     if ( link?.includes( 'youtu' ) ) {
       shareLink = `https://youtu.be/${getYouTubeId( link )}`;

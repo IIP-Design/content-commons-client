@@ -32,11 +32,7 @@ import Linkify from 'react-linkify';
 
 import './Package.scss';
 
-const Package = props => {
-  const {
-    displayAsModal, isAdminPreview, useGraphQl,
-  } = props;
-
+const Package = ( { displayAsModal, isAdminPreview, item, useGraphQl } ) => {
   const {
     id,
     published,
@@ -46,11 +42,11 @@ const Package = props => {
     desc,
     site,
     documents,
-  } = props.item;
+  } = item;
 
   useEffect( () => {
     if ( !displayAsModal ) {
-      updateUrl( `/package?id=${id}&site=${site}&language=en-us` );
+      updateUrl( `/package/guidance?id=${id}&site=${site}&language=en-us` );
     }
   }, [] );
 

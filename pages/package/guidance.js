@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ContentPage from 'components/PageTypes/ContentPage/ContentPage';
-import Package from 'components/Package/Package';
+import Package from '../../components/Package/Package';
 import { fetchUser } from 'context/authContext';
 import { getElasticPkgDocs } from 'components/Package/utils';
 import { getItemRequest } from 'lib/elastic/api';
@@ -31,6 +31,8 @@ PackagePage.getInitialProps = async ctx => {
     if ( item && item[0] ) {
       const documents = await getElasticPkgDocs( item[0]._source.items, user );
       const _item = normalizeItem( item[0], query.language );
+
+      console.log( url );
 
       return {
         item: { ..._item, documents },

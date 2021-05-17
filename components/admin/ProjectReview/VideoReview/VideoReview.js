@@ -296,7 +296,7 @@ const VideoReview = props => {
         { /* Project is published  */ }
         { isPublished && (
           <Button className="project_button project_button--publish" onClick={ handleUnPublish }>
-            UnPublish
+            Unpublish
           </Button>
         ) }
       </section>

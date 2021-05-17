@@ -1,0 +1,32 @@
+@import 'styles/mixins.scss';
+
+.texture {
+  background: url('/static/images/wavy-bg.jpg') repeat;
+  padding: 2em;
+  @media screen and (max-width: 767px) {
+    padding: 1em;
+  }
+}
+
+.container {
+  max-width: 1340px;
+  margin: 0 auto;
+  padding: 1em;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+  :focus {
+    @include focus-styling;
+  }
+}
+
+.narrow {
+  max-width: 976px;
+}
+
+.description {
+  display: block;
+  margin: 0.5rem auto;
+  text-align: center;
+  white-space: break-spaces;
+}

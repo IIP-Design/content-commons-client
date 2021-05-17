@@ -152,13 +152,13 @@
   /*** 
     Results, Video - searchbar  
   ***/
-  &--results,
-  &--video,
   &--article,
-  &--image,
   &--document,
+  &--graphic,
+  &--image,
   &--package,
-  &--graphic {
+  &--results,
+  &--video {
     header {
       @media screen and (max-width: 767px) {
         text-align: left;
@@ -182,14 +182,14 @@
 
   /*** 
     Login - no searchbar, only feedback nav item 
-  ***/
+    ***/
   &--404,
-  &--login,
-  &--register,
+  &--admin,
   &--confirm,
-  &--_error,
+  &--login,
   &--passwordreset,
-  &--admin {
+  &--register,
+  &--_error {
     .search_bar {
       display: none;
     }
@@ -199,19 +199,19 @@
     Blue bG bar 
   ***/
   &--404,
-  &--results,
-  &--video,
+  &--admin,
   &--article,
+  &--confirm,
   &--document,
-  &--package,
   &--graphic,
   &--image,
   &--login,
+  &--package,
+  &--passwordreset,
   &--register,
-  &--admin,
-  &--confirm,
-  &--_error,
-  &--passwordreset {
+  &--results,
+  &--video,
+  &--_error {
     position: fixed;
     top: 0;
     z-index: 400;
