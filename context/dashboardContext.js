@@ -84,7 +84,7 @@ export const dashboardReducer = ( state, action ) => {
       return {
         ...state,
         content: {
-          data: normalizeDashboardData( payload.data, payload.type ),
+          data: normalizeDashboardData( payload.data ),
           error: payload.error,
           loading: payload.loading,
           refetch: payload.refetch,

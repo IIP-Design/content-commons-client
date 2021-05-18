@@ -18,6 +18,7 @@ import TableMenu from './TableMenu/TableMenu';
 import TableActionsMenu from './TableActionsMenu/TableActionsMenu';
 import TablePagination from './TablePagination/TablePagination';
 import { DashboardContext } from 'context/dashboardContext';
+import { TEAM_PROJECTS_QUERY } from 'lib/graphql/queries/teams';
 
 import './ScrollableTableWithMenu.scss';
 
@@ -46,7 +47,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
 
   // Get teams to include in query for a specific content type
   // This is rather odd and the connection between teams and content
-  // types should be more fully thought out and absracted
+  // types should be more fully thought out and abstracted
   const teams
     = team.name === 'GPA Design & Editorial'
       ? `${team.name}|Regional Media Hubs|ShareAmerica`
@@ -72,8 +73,9 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
    * Get data for each project from GraphQL, if can be sorted by the GraphQL query send pagination vars
    * Otherwise, return all results for client-side sorting within the TableBody Component
    */
-  const contentData = useQuery( contentQuery, {
-    variables: isLegacySort ? { ...variables } : { ...variables, ...bodyPaginationVars },
+  const contentData = useQuery( TEAM_PROJECTS_QUERY, {
+    variables: { team: team.id },
+    // variables: isLegacySort ? { ...variables } : { ...variables, ...bodyPaginationVars },
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
   } );
@@ -96,7 +98,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
     const { data, error, loading, refetch } = contentData;
 
     // Save project data in context
-    dispatch( { type: 'UPDATE_CONTENT', payload: { data, error, loading, refetch, type: projectType } } );
+    dispatch( { type: 'UPDATE_CONTENT', payload: { data, error, loading, refetch } } );
   }, [
     contentData, dispatch, projectType,
   ] );
