@@ -3,20 +3,6 @@ import { normalizeDashboardData } from 'lib/graphql/util';
 import { getContentTypesFromTeam, setQueries } from 'components/admin/Dashboard/utils';
 
 /**
- * Checks whether there are and projects of a given type and returns their count
- *
- * @param {Object} queryData project data received from GraphQL
- * @param {Object} team team data received from GraphQL
- */
-const parseCount = ( queryData, team ) => {
-  const type = getContentTypesFromTeam( team );
-
-  const count = queryData?.[type] ? queryData[type].length : 0;
-
-  return count;
-};
-
-/**
  * Toggles an item on/off when clicked
  *
  * @param {Object} data information from the click event
@@ -70,19 +56,12 @@ export const dashboardReducer = ( state, action ) => {
         column: payload.column,
         direction: payload.direction,
       };
-    case 'UPDATE_COUNT':
-      return {
-        ...state,
-        count: {
-          count: parseCount( payload.count.data, payload.team ),
-          error: payload.count.error,
-          loading: payload.count.loading,
-          refetch: payload.count.refetch,
-        },
-      };
     case 'UPDATE_CONTENT':
       return {
         ...state,
+        count: {
+          count: payload?.data?.teamProjects?.count || 0,
+        },
         content: {
           data: normalizeDashboardData( payload.data ),
           error: payload.error,

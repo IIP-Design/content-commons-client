@@ -9,7 +9,6 @@ import debounce from 'lodash/debounce';
 import { Table, Grid } from 'semantic-ui-react';
 import { useQuery } from '@apollo/client';
 
-import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import TableHeader from './TableHeader/TableHeader';
 import TableBody from './TableBody/TableBody';
 import TableItemsDisplay from './TableItemsDisplay/TableItemsDisplay';
@@ -17,7 +16,9 @@ import TableSearch from './TableSearch/TableSearch';
 import TableMenu from './TableMenu/TableMenu';
 import TableActionsMenu from './TableActionsMenu/TableActionsMenu';
 import TablePagination from './TablePagination/TablePagination';
+
 import { DashboardContext } from 'context/dashboardContext';
+import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import { TEAM_PROJECTS_QUERY } from 'lib/graphql/queries/teams';
 
 import './ScrollableTableWithMenu.scss';
@@ -37,13 +38,8 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
 
   const { dispatch, state } = useContext( DashboardContext );
 
-  const projectType = state?.projectType || '';
   const column = state?.column || 'createdAt';
   const direction = state?.direction || 'descending';
-
-  // Get the content data
-  const contentQuery = state.queries.content;
-  const countQuery = state.queries.count;
 
   // Get teams to include in query for a specific content type
   // This is rather odd and the connection between teams and content
@@ -57,14 +53,6 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   const variables = { team: { name_in: teams.split( '|' ) }, searchTerm };
   const bodyPaginationVars = { first: itemsPerPage, orderBy, skip };
   const paginationVars = { first: itemsPerPage, skip };
-
-  /**
-   * Get count of projects from GraphQL
-   */
-  const countData = useQuery( countQuery, {
-    variables: { ...variables },
-    fetchPolicy: 'cache-and-network',
-  } );
 
   // The data for following columns cannot by sort within the GraphQL query
   const isLegacySort = column === 'author' || column === 'categories' || column === 'team';
@@ -81,27 +69,11 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   } );
 
   useEffect( () => {
-    const { data, error, loading, refetch } = countData;
-
-    // Save project count in context
-    dispatch( {
-      type: 'UPDATE_COUNT',
-      payload: {
-        count: { data, error, loading, refetch }, team, type: projectType,
-      },
-    } );
-  }, [
-    countData, dispatch, projectType, team,
-  ] );
-
-  useEffect( () => {
     const { data, error, loading, refetch } = contentData;
 
     // Save project data in context
     dispatch( { type: 'UPDATE_CONTENT', payload: { data, error, loading, refetch } } );
-  }, [
-    contentData, dispatch, projectType,
-  ] );
+  }, [contentData, dispatch] );
 
   /**
    * Set the table headers on mobile
@@ -237,10 +209,6 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   };
 
   const count = state?.count?.count || null;
-  const countError = state?.count?.error || null;
-  const countLoading = state?.count?.loading || false;
-  const countRefetch = state?.count?.refetch || ( () => {} );
-
   const projectData = state?.content?.data || null;
   const projectError = state?.content?.error || null;
   const projectLoading = state?.content?.loading || false;
@@ -259,7 +227,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
             handleResetSelections={ handleResetSelections }
             loading={ projectLoading }
             refetch={ projectRefetch }
-            refetchCount={ countRefetch }
+            refetchCount={ projectRefetch }
             toggleAllItemsSelection={ toggleAllItemsSelection }
             variables={ { ...variables, ...paginationVars } }
           />
@@ -267,8 +235,8 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
         <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 } className="items_tableMenus">
           <TableItemsDisplay
             count={ count }
-            error={ countError }
-            loading={ countLoading }
+            error={ projectError }
+            loading={ projectLoading }
             handleChange={ setItemsPerPage }
             itemsPerPage={ itemsPerPage }
             searchTerm={ searchTerm }
@@ -308,8 +276,8 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
           <TablePagination
             activePage={ activePage }
             count={ count }
-            error={ countError }
-            loading={ countLoading }
+            error={ projectError }
+            loading={ projectLoading }
             handlePageChange={ handlePageChange }
             itemsPerPage={ itemsPerPage }
           />
