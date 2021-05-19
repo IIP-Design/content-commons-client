@@ -61,7 +61,7 @@ const TeamProjects = () => {
   const setMenuItems = () => {
     let columnMenuItems = menuItems;
 
-    if ( team.contentTypes.includes( 'PACKAGE' ) ) {
+    if ( team.contentTypes.length <= 1 && team.contentTypes.includes( 'PACKAGE' ) ) {
       columnMenuItems = menuItems.filter( item => item.name !== 'categories' );
     }
 
