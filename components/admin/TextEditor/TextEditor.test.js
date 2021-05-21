@@ -1,12 +1,12 @@
 import { mount } from 'enzyme';
-import PlaybookTextEditor from './PlaybookTextEditor';
+import TextEditor from './TextEditor';
 
-describe( '<PlaybookTextEditor />', () => {
+describe( '<TextEditor />', () => {
   let Component;
   let wrapper;
 
   beforeEach( () => {
-    Component = <PlaybookTextEditor />;
+    Component = <TextEditor />;
     wrapper = mount( Component );
   } );
 
