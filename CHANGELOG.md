@@ -19,6 +19,16 @@ _This sections lists changes committed since most recent release_
 - Tests for `Header` component
 - `PolicyPriorityDropdown` component
 - Tests for `PolicyPriorityDropdown` component
+- Create `PackageForm` component
+- Create `ButtonCreatePackage` component
+- Create `PackageType` component
+- Create `PackageTypeDropdown` component
+- Create `Checkbox` component
+- Create `TextInput` component
+- Playbook query, createPlaybook mutation and associated builders
+- Playbook admin route
+- Admin and package "catch all" routes
+
 
 **Changed:**
 - Wrap navigation menu items in `li` elements
@@ -29,7 +39,7 @@ _This sections lists changes committed since most recent release_
 - Replace Semantic UI Card in `ResultItem` with native HTML elements
 - Remove the `tabindex` attribute from the mobile hamburger menu
 - Replace Semantic UI Header in `SearchTerm` with native HTML elements
-- Create live regions on the search results page for the search term and number of hits so that changes get announced by screen readers
+- Create live regions on the search results page for the search term and number of hits so that changes get announced by∏ screen readers
 - Use CSS modules for `FilterSelections` component styling
 - Replace Semantic UI delete Icon in `FilterSelectionItem` with an SVG
 - Replace Semantic UI Label in `FilterSelectionItem` with native HTML elements
@@ -38,6 +48,12 @@ _This sections lists changes committed since most recent release_
 - Use CSS modules for `ResultsToggleView` component styling
 - Implement redesigned recent/relevance dropdown
 - Replace Semantic UI Header and Img in `Header` with native HTML elements
+- Replace `PlaybookDetailsForm` and `PackageDetailsForm` with `PackageForm`
+- Remove initialSchema from `PlaybookDetailsForm` and `PackageDetailsForm` validation schemas
+- Route package edit screen to admin/package/guidance
+- Move package creation to intermediary create page
+- Replace Semantic UI Form, Grid, Input in `PressPackageFile` with native HTML elements
+- Use CSS modules for `ProjectHeader` component styling
 
 **Fixed:**
 - Skip to content link for improved accessibility
