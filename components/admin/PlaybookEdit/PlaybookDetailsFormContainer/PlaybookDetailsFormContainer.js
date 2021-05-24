@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 // import { useMutation } from '@apollo/client';
 import { Formik } from 'formik';
+import { baseSchema } from './validationSchema';
+
+import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 import Notification from 'components/Notification/Notification';
-import PlaybookDetailsForm from './PlaybookDetailsForm/PlaybookDetailsForm';
-import { initialSchema, baseSchema } from './validationSchema';
+import PackageForm from 'components/admin/PackageCreate/PackageForm/PackageForm';
+
 import useTimeout from 'lib/hooks/useTimeout';
 
 const PlaybookDetailsFormContainer = props => {
@@ -44,13 +47,12 @@ const PlaybookDetailsFormContainer = props => {
       initialValues = {
         title: playbook.title || '',
         type: playbook.type || '',
-        team: playbook.team.id || '',
+        team: playbook.team?.name || '',
         categories,
         tags,
-        policy: playbook.policy.id || '',
+        policy: playbook.policy?.id || '',
         visibility: playbook.visibility || 'INTERNAL',
         desc: playbook.desc || '',
-        termsConditions: false,
       };
     }
 
@@ -98,13 +100,13 @@ const PlaybookDetailsFormContainer = props => {
           show={ showNotification }
           msg="Changes saved"
         />
-        <PlaybookDetailsForm
+        <FormikAutoSave save={ save } />
+        <PackageForm
           { ...formikProps }
           { ...props }
-          save={ save }
         >
           { props.children }
-        </PlaybookDetailsForm>
+        </PackageForm>
       </div>
     );
   };
@@ -113,7 +115,7 @@ const PlaybookDetailsFormContainer = props => {
     <Formik
       initialValues={ getInitialValues() }
       enableReinitialize={ reinitialize }
-      validationSchema={ playbook.id ? baseSchema : initialSchema }
+      validationSchema={ baseSchema }
     >
       { renderContent }
     </Formik>
@@ -126,7 +128,7 @@ PlaybookDetailsFormContainer.propTypes = {
     id: PropTypes.string,
     title: PropTypes.string,
     type: PropTypes.string,
-    team: PropTypes.string,
+    team: PropTypes.object,
     categories: PropTypes.array,
     tags: PropTypes.array,
     policy: PropTypes.string,

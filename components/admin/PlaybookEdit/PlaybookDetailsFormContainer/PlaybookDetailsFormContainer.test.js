@@ -2,8 +2,8 @@ import { mount } from 'enzyme';
 import PlaybookDetailsFormContainer from './PlaybookDetailsFormContainer';
 
 jest.mock(
-  './PlaybookDetailsForm/PlaybookDetailsForm',
-  () => function PlaybookDetailsForm() { return ''; },
+  'components/admin/PackageCreate/PackageForm/PackageForm',
+  () => function PlaybookForm() { return ''; },
 );
 
 describe( '<PlaybookDetailsFormContainer />', () => {
