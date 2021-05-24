@@ -13,7 +13,6 @@ import BureauOfficesDropdown from 'components/admin/dropdowns/BureauOfficesDropd
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import TextInput from 'components/admin/PackageCreate/PackageForm/TextInput/TextInput';
 import { HandleOnChangeContext } from 'components/admin/PackageCreate/PackageForm/PackageForm';
-// import { HandleOnChangeContext } from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsForm/PackageDetailsForm';
 import styles from './PressPackageFile.module.scss';
 
 // todo: write props comparison
