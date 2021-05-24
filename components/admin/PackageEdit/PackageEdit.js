@@ -35,7 +35,6 @@ const PackageEdit = props => {
     partialRefetch: true,
     variables: { id: packageId },
     displayName: 'PackageQuery',
-    skip: !packageId,
   } );
 
   const { saveFiles } = useCrudActionsDocument( {
@@ -44,7 +43,6 @@ const PackageEdit = props => {
   } );
 
   const { modalOpen, handleOpenModel, handleCloseModal } = useToggleModal();
-
 
   const [deletePackage] = useMutation( DELETE_PACKAGE_MUTATION );
   const [publishPackage] = useMutation( PUBLISH_PACKAGE_MUTATION );
@@ -58,7 +56,6 @@ const PackageEdit = props => {
   // set its loading indicator on the right button
   const [publishOperation, setPublishOperation] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
-  const [hasInitialUploadCompleted, setHasInitialUploadCompleted] = useState( false );
   const [isFormValid, setIsFormValid] = useState( true );
 
   const [notification, setNotification] = useState( {
@@ -81,17 +78,6 @@ const PackageEdit = props => {
 
   useEffect( () => {
     if ( data && data.pkg ) {
-      /**
-       * Display files after initial upload is saved and upload modal
-       * closes. Use the create query param to track action button display.
-       * This param is removed after initial save.
-       * We cannot rely on using the existence of documents as all documents
-       * could be removed after initial upload and we may need to delete the package
-       * Perhaps, it'd be better display files after all thumbnails have
-       * resolved.
-       */
-      setHasInitialUploadCompleted( router.query.action !== 'create' );
-
       // When the data changes, check status
       handleStatusChange( data.pkg );
     }
@@ -192,6 +178,7 @@ const PackageEdit = props => {
     );
   }
 
+
   if ( !data ) return null;
   const { pkg } = data;
 
@@ -218,8 +205,8 @@ const PackageEdit = props => {
             } }
             show={ {
               'delete': true, // package has been completed, show delete in the event user wants to delete instead of uploading files
-              save: hasInitialUploadCompleted,
-              publish: hasInitialUploadCompleted && pkg?.status === 'DRAFT',
+              save: true,
+              publish: pkg?.status === 'DRAFT',
               publishChanges: pkg?.publishedAt && isDirty,
               unpublish: pkg?.status === 'PUBLISHED',
             } }
@@ -246,53 +233,47 @@ const PackageEdit = props => {
       <PackageDetailsFormContainer
         pkg={ pkg }
         updateNotification={ updateNotification }
-        hasInitialUploadCompleted={ hasInitialUploadCompleted }
         setIsFormValid={ setIsFormValid }
       >
-        <PackageFiles pkg={ pkg } hasInitialUploadCompleted={ hasInitialUploadCompleted } />
+        <PackageFiles pkg={ pkg } handleSave={ handleSave } progress={ progress } />
       </PackageDetailsFormContainer>
-      { /**
-       * can possibly be shared with VideoReview
-       * with a little modification
-       */ }
-      { hasInitialUploadCompleted && (
-        <section className="actions">
-          <ActionHeadline
-            className="headline"
-            type="package"
-            published={ pkg && pkg.status === 'PUBLISHED' }
-            updated={ isDirty }
-          />
 
-          <EditPackageFiles
-            filesToEdit={ pkg?.documents }
-            extensions={ ['.doc', '.docx'] }
-            trigger={ (
-              <Button
-                className="basic action-btn btn--add-more"
-                onClick={ handleOpenModel }
-                size="small"
-                basic
-              >
-                + Add Files
-              </Button>
-            ) }
-            title="Edit Package Files"
-            modalOpen={ modalOpen }
-            onClose={ handleCloseModal }
-            save={ handleSave }
-            progress={ progress } // use here to re-render modal
-          />
+      <section className="actions">
+        <ActionHeadline
+          className="headline"
+          type="package"
+          published={ pkg && pkg.status === 'PUBLISHED' }
+          updated={ isDirty }
+        />
 
-          <ButtonPublish
-            handlePublish={ handlePublish }
-            handleUnPublish={ handleUnPublish }
-            status={ ( pkg && pkg.status ) || 'DRAFT' }
-            updated={ isDirty }
-            disabled={ !packageId || !pkg.documents.length }
-          />
-        </section>
-      ) }
+        <EditPackageFiles
+          filesToEdit={ pkg?.documents }
+          extensions={ ['.doc', '.docx'] }
+          trigger={ (
+            <Button
+              className="basic action-btn btn--add-more"
+              onClick={ handleOpenModel }
+              size="small"
+              basic
+            >
+              + Add Files
+            </Button>
+          ) }
+          title="Edit Package Files"
+          modalOpen={ modalOpen }
+          onClose={ handleCloseModal }
+          save={ handleSave }
+          progress={ progress }
+        />
+
+        <ButtonPublish
+          handlePublish={ handlePublish }
+          handleUnPublish={ handleUnPublish }
+          status={ ( pkg && pkg.status ) || 'DRAFT' }
+          updated={ isDirty }
+          disabled={ !packageId || !pkg.documents.length }
+        />
+      </section>
     </div>
   );
 };
