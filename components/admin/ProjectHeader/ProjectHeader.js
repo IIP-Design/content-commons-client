@@ -5,23 +5,23 @@
  */
 
 import React from 'react';
-import { node, string } from 'prop-types';
+import PropTypes from 'prop-types';
 import { Icon } from 'semantic-ui-react';
-import './ProjectHeader.scss';
+import styles from './ProjectHeader.module.scss';
 
 const ProjectHeader = props => {
   const { text, icon } = props;
 
   return (
-    <header className="section section--project_header">
-      <div className="project_header">
-        <h2 className="headline">
+    <header className={ `${styles.section} ${styles['section--project_header']}` }>
+      <div className={ styles.project_header }>
+        <h2 className={ styles.headline }>
           { icon && <Icon name={ icon } size="tiny" circular inverted /> }
-          <span className="project_header_text">{ text }</span>
+          <span className={ styles.project_header_text }>{ text }</span>
         </h2>
       </div>
 
-      <div className="project_buttons">
+      <div className={ styles.project_buttons }>
         { props.children }
       </div>
     </header>
@@ -29,9 +29,9 @@ const ProjectHeader = props => {
 };
 
 ProjectHeader.propTypes = {
-  children: node,
-  text: string,
-  icon: string,
+  children: PropTypes.node,
+  text: PropTypes.string,
+  icon: PropTypes.string,
 };
 
 export default ProjectHeader;
