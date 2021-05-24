@@ -16,7 +16,7 @@ jest.mock(
   () => function PlaybookResources() { return ''; },
 );
 
-describe( '<PlaybookEdit />', () => {
+describe.skip( '<PlaybookEdit />', () => {
   let Component;
   let wrapper;
 
