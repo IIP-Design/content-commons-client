@@ -1,9 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useFormikContext } from 'formik';
-import {
-  Form, Grid, Input,
-} from 'semantic-ui-react';
 import { getCount } from 'lib/utils';
 import thumbnailUnavailable from 'static/images/thumbnail_document_unavailable.png';
 import thumbnail from 'static/images/thumbnail_document.png';
@@ -14,9 +11,10 @@ import UseDropdown from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
 import BureauOfficesDropdown from 'components/admin/dropdowns/BureauOfficesDropdown/BureauOfficesDropdown';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import { HandleOnChangeContext } from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsForm/PackageDetailsForm';
-import './PressPackageFile.scss';
-
+import TextInput from 'components/admin/PackageCreate/PackageForm/TextInput/TextInput';
+import { HandleOnChangeContext } from 'components/admin/PackageCreate/PackageForm/PackageForm';
+// import { HandleOnChangeContext } from 'components/admin/PackageEdit/PackageDetailsFormContainer/PackageDetailsForm/PackageDetailsForm';
+import styles from './PressPackageFile.module.scss';
 
 // todo: write props comparison
 // use memo here to avoid re-rending this files
@@ -78,105 +76,84 @@ const PressPackageFile = props => {
   };
 
   return (
-    <div id={ id } className="package-file">
-      <Grid>
-        <Grid.Row>
-          <Grid.Column mobile={ 16 } tablet={ 3 } computer={ 3 } className="thumbnail">
-            { getThumbnail( image ) }
-          </Grid.Column>
+    <div id={ id } className={ styles.package_file }>
+      <div className={ styles.thumbnail }>
+        { ' ' }
+        { getThumbnail( image ) }
+      </div>
+      <fieldset className={ styles.fieldset } name={ filename }>
+        <VisuallyHidden el="legend">{ `edit fields for ${filename}` }</VisuallyHidden>
+        <div>
+          <TextInput
+            label="Title"
+            id={ `title-${id}` }
+            name={ `${id}.title` }
+            type="text"
+            value={ value.title || '' }
+            required
+          />
+        </div>
+        <div className={ styles.dropdown_required }>
+          <BureauOfficesDropdown
+            id={ `bureaus-${id}` }
+            name={ `${id}.bureaus` }
+            label="Lead Bureau(s)"
+            value={ value.bureaus || [] }
+            onChange={ handleOnChange }
+            error={ isTouched( 'bureaus' ) && hasError( 'bureaus' ) }
+            multiple
+            search
+            required
+          />
+          <p className={ styles['field__helper-text'] }>
+            Begin typing bureau name and separate by commas.
+          </p>
+          <p className="error-message">{ showErrorMsg( 'bureaus' ) }</p>
+        </div>
+        <div className={ styles.dropdown_required }>
+          <UseDropdown
+            id={ `use-${id}` }
+            name={ `${id}.use` }
+            label="Release Type"
+            onChange={ handleOnChange }
+            type="document"
+            value={ value.use || '' }
+            error={ isTouched( 'use' ) && !value.use }
+            required
+          />
+          <p className="error-message">{ showErrorMsg( 'use' ) }</p>
+        </div>
+        <div className={ styles.dropdown_required }>
+          <VisibilityDropdown
+            id={ `visibility-${id}` }
+            name={ `${id}.visibility` }
+            label="Visibility Setting"
+            value={ value.visibility || '' }
+            onChange={ handleOnChange }
+            error={ isTouched( 'visibility' ) && hasError( 'visibility' ) }
+            required
+            hide="public"
+          />
+          <p className="error-message">{ showErrorMsg( 'visibility' ) }</p>
+        </div>
+        <div className="data" lang={ language.languageCode }>
+          <MetaTerms unitId={ id } terms={ metaData } />
+        </div>
+        <div>
+          <CountriesRegionsDropdown
+            id={ `countries-${id}` }
+            name={ `${id}.countries` }
+            label="Countries/Regions Tags"
+            value={ value.countries || [] }
+            onChange={ handleOnChange }
+            error={ isTouched( 'countries' ) && hasError( 'countries' ) }
+            multiple
+            search
+          />
+          <p className={ styles['field__helper-text'] }>Enter keywords separated by commas.</p>
+        </div>
 
-          <Grid.Column mobile={ 16 } tablet={ 13 } computer={ 13 }>
-            <fieldset className="form-fields" name={ filename }>
-              <VisuallyHidden el="legend">{ `edit fields for ${filename}` }</VisuallyHidden>
-              <Form.Group widths="equal">
-                <div className="field">
-                  <Form.Field
-                    id={ `title-${id}` }
-                    name={ `${id}.title` }
-                    control={ Input }
-                    label="Title"
-                    required
-                    value={ value.title || '' }
-                    onChange={ handleOnChange }
-                    error={ isTouched( 'title' ) && hasError( 'title' ) }
-                  />
-                  <p className="error-message">{ showErrorMsg( 'title' ) }</p>
-                </div>
-
-                <Form.Field>
-                  <BureauOfficesDropdown
-                    id={ `bureaus-${id}` }
-                    name={ `${id}.bureaus` }
-                    label="Lead Bureau(s)"
-                    value={ value.bureaus || [] }
-                    onChange={ handleOnChange }
-                    error={ isTouched( 'bureaus' ) && hasError( 'bureaus' ) }
-                    multiple
-                    search
-                    required
-                  />
-                  <p className="field__helper-text">
-                    Begin typing bureau name and separate by commas.
-                  </p>
-                  <p className="error-message">{ showErrorMsg( 'bureaus' ) }</p>
-                </Form.Field>
-              </Form.Group>
-
-              <Form.Group widths="equal">
-                <Form.Field>
-                  <UseDropdown
-                    id={ `use-${id}` }
-                    name={ `${id}.use` }
-                    label="Release Type"
-                    onChange={ handleOnChange }
-                    type="document"
-                    value={ value.use || '' }
-                    error={ isTouched( 'use' ) && !value.use }
-                    required
-                  />
-                  <p className="error-message">{ showErrorMsg( 'use' ) }</p>
-                </Form.Field>
-
-                <Form.Field>
-                  <VisibilityDropdown
-                    id={ `visibility-${id}` }
-                    name={ `${id}.visibility` }
-                    label="Visibility Setting"
-                    value={ value.visibility || '' }
-                    onChange={ handleOnChange }
-                    error={ isTouched( 'visibility' ) && hasError( 'visibility' ) }
-                    required
-                    hide="public"
-                  />
-                  <p className="error-message">{ showErrorMsg( 'visibility' ) }</p>
-                </Form.Field>
-              </Form.Group>
-
-              <Form.Group widths="equal">
-                <Form.Field>
-                  <div className="data" lang={ language.languageCode }>
-                    <MetaTerms unitId={ id } terms={ metaData } />
-                  </div>
-                </Form.Field>
-
-                <Form.Field>
-                  <CountriesRegionsDropdown
-                    id={ `countries-${id}` }
-                    name={ `${id}.countries` }
-                    label="Countries/Regions Tags"
-                    value={ value.countries || [] }
-                    onChange={ handleOnChange }
-                    error={ isTouched( 'countries' ) && hasError( 'countries' ) }
-                    multiple
-                    search
-                  />
-                  <p className="field__helper-text">Enter keywords separated by commas.</p>
-                </Form.Field>
-              </Form.Group>
-            </fieldset>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      </fieldset>
     </div>
   );
 };
