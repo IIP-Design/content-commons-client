@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
-// import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Loader } from 'semantic-ui-react';
 import useIsDirty from 'lib/hooks/useIsDirty';
 // import usePublish from 'lib/hooks/usePublish';
@@ -14,13 +14,13 @@ import PlaybookDetailsFormContainer from 'components/admin/PlaybookEdit/Playbook
 import PlaybookTextEditor from 'components/admin/PlaybookEdit/PlaybookTextEditor/PlaybookTextEditor';
 import PlaybookResources from 'components/admin/PlaybookEdit/PlaybookResources/PlaybookResources';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
-// import {
-//   PLAYBOOK_QUERY,
-//   DELETE_PLAYBOOK_MUTATION,
-//   PUBLISH_PLAYBOOK_MUTATION,
-//   UNPUBLISH_PLAYBOOK_MUTATION,
-//   UPDATE_PLAYBOOK_STATUS_MUTATION,
-// } from 'lib/graphql/queries/playbook';
+import {
+  PLAYBOOK_QUERY,
+  // DELETE_PLAYBOOK_MUTATION,
+  // PUBLISH_PLAYBOOK_MUTATION,
+  // UNPUBLISH_PLAYBOOK_MUTATION,
+  // UPDATE_PLAYBOOK_STATUS_MUTATION,
+} from 'lib/graphql/queries/playbook';
 
 import './PlaybookEdit.scss';
 
@@ -28,9 +28,6 @@ const PlaybookEdit = ( { id: playbookId } ) => {
   const router = useRouter();
 
   // temp
-  const data = { playbook: {} };
-  const loading = false;
-  const queryError = false;
   const publishError = {};
   const publishing = false;
   const deletePlaybook = async () => {};
@@ -38,14 +35,13 @@ const PlaybookEdit = ( { id: playbookId } ) => {
   const unpublishPlaybook = () => {};
   const executePublishOperation = () => {};
 
-  // const {
-  //   loading, error: queryError, data, startPolling, stopPolling,
-  // } = useQuery( PLAYBOOK_QUERY, {
-  //   partialRefetch: true,
-  //   variables: { id: playbookId },
-  //   displayName: 'playbookQuery',
-  //   skip: !playbookId,
-  // } );
+  const {
+    loading, error: queryError, data, startPolling, stopPolling,
+  } = useQuery( PLAYBOOK_QUERY, {
+    partialRefetch: true,
+    variables: { id: playbookId },
+    displayName: 'playbookQuery',
+  } );
 
   // const [deletePlaybook] = useMutation( DELETE_PLAYBOOK_MUTATION );
   // const [publishPlaybook] = useMutation( PUBLISH_PLAYBOOK_MUTATION );
@@ -54,7 +50,6 @@ const PlaybookEdit = ( { id: playbookId } ) => {
 
   const [publishOperation, setPublishOperation] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
-  const [hasInitialUploadCompleted, setHasInitialUploadCompleted] = useState( false );
   const [error, setError] = useState( {} );
   const [isFormValid, setIsFormValid] = useState( true );
 
@@ -184,8 +179,8 @@ const PlaybookEdit = ( { id: playbookId } ) => {
             } }
             show={ {
               'delete': true, // playbook has been completed, show delete in the event user wants to delete instead of uploading files
-              save: hasInitialUploadCompleted,
-              publish: hasInitialUploadCompleted && playbook?.status === 'DRAFT',
+              save: true,
+              publish: playbook?.status === 'DRAFT',
               publishChanges: playbook?.publishedAt && isDirty,
               unpublish: playbook?.status === 'PUBLISHED',
             } }
@@ -213,7 +208,6 @@ const PlaybookEdit = ( { id: playbookId } ) => {
 
       <PlaybookDetailsFormContainer
         playbook={ data.playbook }
-        hasInitialUploadCompleted={ hasInitialUploadCompleted }
         updateNotification={ updateNotification }
         setIsFormValid={ setIsFormValid }
       />
@@ -235,7 +229,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
           handleUnPublish={ handleUnPublish }
           status={ ( playbook && playbook.status ) || 'DRAFT' }
           updated={ isDirty }
-          disabled={ !playbookId || !playbook.supportFiles.length }
+          disabled={ !playbookId || !playbook.supportFiles?.length }
         />
       </div>
     </div>
