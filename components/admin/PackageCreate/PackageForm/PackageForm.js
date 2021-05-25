@@ -24,8 +24,9 @@ const PackageForm = ( {
 } ) => {
   const { user } = useAuth();
 
-  const isGuidance = type => type === 'DAILY_GUIDANCE';
-  const [guidance, setGuidance] = useState( isGuidance( values.type ) );
+  const isGuidance = type => type === 'DAILY_GUIDANCE' || type === 'PACKAGE';
+
+  const [guidance, setGuidance] = useState( !values.type || isGuidance( values.type ) );
 
   const handleOnChange = ( e, {
     name, value, type, checked,
