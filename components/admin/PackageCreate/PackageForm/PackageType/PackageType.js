@@ -1,18 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
+import intersection from 'lodash/intersection';
 
 import TextInput from 'components/admin/PackageCreate/PackageForm/TextInput/TextInput';
 import PackageTypeDropdown from 'components/admin/dropdowns/PackageTypeDropdown/PackageTypeDropdown';
 
-import intersection from 'lodash/intersection';
 import { titleCase } from 'lib/utils';
-
-const packageTypes = [
-  'PACKAGE',
-  'TOOLKIT',
-  'PLAYBOOK',
-];
 
 /**
  * Displays a readonly input for a team with a single content type
@@ -28,13 +22,21 @@ const PackageType = ( { contentTypes, value, onChange, required } ) => {
   const router = useRouter();
   const isCreate = router.route.includes( '/package/create' );
 
-  const renderTextInput = () => (
+  const packageTypes = [
+    'PACKAGE',
+    'TOOLKIT',
+    'PLAYBOOK',
+  ];
+
+  const types = intersection( packageTypes, contentTypes );
+
+  const renderTextInput = val => (
     <TextInput
       label="Package Type"
       id="type"
       name="type"
       type="text"
-      value={ value === 'DAILY_GUIDANCE' ? 'Guidance' : titleCase( value ) }
+      value={ val === 'DAILY_GUIDANCE' || val === 'PACKAGE' ? 'Guidance' : titleCase( val ) }
       required={ required }
       readOnly="readOnly"
     />
@@ -42,13 +44,13 @@ const PackageType = ( { contentTypes, value, onChange, required } ) => {
 
   // if on edit screen, always return readonly text field
   if ( !isCreate ) {
-    return renderTextInput();
+    return renderTextInput( value || '' );
   }
 
   // if on create screen, return either input or dropdown based
   // on num content types in packageTypes type array above
   return (
-    ( intersection( packageTypes, contentTypes ).length > 1 )
+    ( types.length > 1 )
       ? (
         <PackageTypeDropdown
           id="type"
@@ -56,10 +58,10 @@ const PackageType = ( { contentTypes, value, onChange, required } ) => {
           label="Package Type"
           value={ value }
           onChange={ onChange }
-          contentTypes={ contentTypes }
+          contentTypes={ types }
         />
       )
-      : renderTextInput()
+      : renderTextInput( types[0] || '' )
   );
 };
 
