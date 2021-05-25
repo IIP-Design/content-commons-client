@@ -1,0 +1,61 @@
+@import "styles/mixins.scss";
+@import "styles/colors.scss";
+
+@include required-asterisk;
+@include required-error;
+
+.checkbox {
+  display: grid !important; 
+  grid-template-columns: min-content auto;
+  grid-gap: 0.5rem;
+  align-items: start;
+  font-size: 0.89rem !important;
+  line-height: 1.2;
+  user-select: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  [type="checkbox"] {
+    position:absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+
+    &:focus + .control {
+      @include focus-styling($color: $blue, $kbd_only: false);
+      border: 2px solid $half-baked;
+    }
+
+    &:focus:not(:focus-visible) + .control {
+      outline: none;
+    }
+
+    &:checked + .control::before {
+      content: ""; 
+      position: relative;
+      left: 4px; 
+      width: .4rem;
+      height: .7rem;
+      border: 3px solid $blue;
+      border-left: 0;
+      border-top: 0;  
+      transform: rotate(45deg); 
+    }
+  }
+   
+  .control { 
+    display: flex;  
+    width: 1rem;
+    height: 1rem; 
+    border-radius: 4px;
+    border: 0.1rem solid $alt-grey;
+    background-color: #fff;
+  }
+ 
+  .label {
+    padding: 0;
+  }
+ 
+}

@@ -131,7 +131,7 @@ const TeamProjectPrimaryCol = ( { d, header } ) => {
   const getEditUrl = ( format = '' ) => {
     if ( isPublishing || !format ) return null;
 
-    if ( d.__typename === 'Package' ) return `/admin/package/${id}`;
+    if ( d.__typename === 'Package' ) return `/admin/package/guidance/${id}`;
     if ( d.__typename === 'DocumentFile' ) return `/admin/document/${id}`;
 
     if ( format === 'pretty' ) {

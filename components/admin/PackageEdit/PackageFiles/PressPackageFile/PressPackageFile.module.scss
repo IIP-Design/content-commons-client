@@ -1,0 +1,124 @@
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
+
+.package_file {
+  display: grid; 
+  grid-template-columns: 1fr;
+  align-items: start;
+  grid-gap: 2em;
+  padding-top: 2em;
+  padding-bottom: 2em;
+
+  @media (min-width: 767px) {
+    grid-template-columns: 18% 1fr;
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid $light-grey;
+  }
+
+  .thumbnail {
+    > img {
+      width: 225px;
+      margin-bottom: 1em;
+      height: auto;
+      max-width: 100%;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+      @media screen and (min-width: 767px) {
+        width: 100%;
+      }
+    }
+  }
+
+  .fieldset {
+    display: grid; 
+    grid-template-columns: 1fr;
+    grid-gap: 1.2em 2rem; 
+    border: 0;
+    margin: 0;
+    padding: 0; 
+
+    @media (min-width: 960px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    > .data {
+      // for long strings in title - break word w/ hyphens if browser support, otherwise fallback to wrap
+      @include hyphenate;
+      @include wrap-text;
+      margin-top: 4em;
+    } 
+
+    // add required * and format label for semantic dropdown
+    .dropdown_required {
+      label {
+       @include label; 
+        &::after {
+          @include asterisk;
+        } 
+      } 
+    }
+
+    .dropdown  {
+      label {
+        @include label;
+      }  
+    }
+  }
+
+  @include field-helper-text
+}
+
+// .package-file2 {
+//   padding-top: 2em;
+//   padding-bottom: 2em;
+//   @media screen and (min-width: 768px) {
+//     padding-bottom: 2.5em;
+//   }
+
+//   &:not(:last-child) {
+//     border-bottom: 1px solid $light-grey;
+//   }
+
+//   fieldset {
+//     &.form-fields {
+//       border: 0;
+//       margin: 0;
+//       padding: 0;
+
+//       .field > .data {
+//         // for long strings in title - break word w/ hyphens if browser support, otherwise fallback to wrap
+//         @include hyphenate;
+//         @include wrap-text;
+//       }
+//     }
+//   }
+
+//   @media screen and (max-width: 767px) {
+//     .ui.form .fields:not(:last-child),
+//     .ui.form .fields .field:not(:last-child) {
+//       margin-bottom: 1em;
+//     }
+//   }
+
+//   .thumbnail {
+//     > img {
+//       width: 225px;
+//       margin-bottom: 1em;
+//       height: auto;
+//       max-width: 100%;
+//       box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+//       @media screen and (min-width: 767px) {
+//         width: 100%;
+//       }
+//     }
+//   }
+
+//   .meta {
+//     > .data {
+//       margin-bottom: 1.5em;      
+//     }
+//   }
+
+//   @include field-helper-text;
+// }

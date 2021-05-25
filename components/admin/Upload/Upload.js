@@ -3,18 +3,15 @@
  * PageUpload
  *
  */
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer, useRef } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import moment from 'moment';
 import Router from 'next/router';
-import { Button, Modal, Icon } from 'semantic-ui-react';
-import { useMutation } from '@apollo/client';
+import intersection from 'lodash/intersection';
 
-import ApolloError from 'components/errors/ApolloError';
+import { Button, Modal, Icon } from 'semantic-ui-react';
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
-import { CREATE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
-import { buildCreatePackageTree } from 'lib/graphql/builders/package';
+
 import { useAuth } from 'context/authContext';
 
 import imageIcon from 'static/icons/icon_150px_images_blue.png';
@@ -30,6 +27,9 @@ const GraphicUpload = dynamic( () => import( /* webpackChunkName: "graphicUpload
 
 const Upload = () => {
   const { user } = useAuth();
+
+  // prop to allow multiple content type creation
+  const enableAll = useRef( false );
 
   // Reducer to manage the modal state for multiple modals
   const reducer = ( _state, action ) => {
@@ -57,48 +57,16 @@ const Upload = () => {
 
   const handleModalClassname = updatedModalClassname => setModalClassname( updatedModalClassname );
 
-  const [creationError, setCreationError] = useState( '' );
-  const [createPackage, { loading: createPackageLoading }] = useMutation(
-    CREATE_PACKAGE_MUTATION,
-  );
-
-  /**
-  * Create daily guidance packages and sends user to
-  * package details screen on success.
-  */
-  const createPressOfficePackage = async () => {
-    // Generate the daily standard title
-    const title = `Guidance Package ${moment().format( 'MM-D-YY' )}`;
-
-    try {
-      const res = await createPackage( {
-        variables: {
-          data: buildCreatePackageTree( user, {
-            type: 'DAILY_GUIDANCE',
-            title,
-          } ),
-        },
-      } );
-
-      const { id } = res.data.createPackage;
-
-      Router.push( `/admin/package/${id}?action=create` );
-    } catch ( err ) {
-      setCreationError( err );
-    }
-  };
-
   /**
  * Checks whether team has permission to create provided content type
  * @param {string} contentType content type to verify, i.e. VIDEO
  */
   const teamCanCreateContentType = contentType => {
     const team = user?.team;
-
-    const type = contentType.toUpperCase();
+    const types = !Array.isArray( contentType ) ? [contentType] : contentType;
 
     if ( team && team.contentTypes ) {
-      return team.contentTypes.includes( type );
+      return ( intersection( team.contentTypes, types ).length );
     }
 
     return false;
@@ -112,25 +80,17 @@ const Upload = () => {
   const setButtonState = contentType => {
     let cls = 'disabled'; // disabled is default state
 
-    if ( teamCanCreateContentType( contentType ) ) {
+    if ( enableAll.current || teamCanCreateContentType( contentType ) ) {
       // enable button
       cls = '';
-    }
-    if ( createPackageLoading ) {
-      cls = `${cls} loading`;
     }
 
     return cls;
   };
 
-  /**
-  * Verify that a team can create a package before executing the
-  * create handler.
-  */
-  const handleCreateNewPackage = async () => {
-    if ( teamCanCreateContentType( 'PACKAGE' ) ) {
-      createPressOfficePackage();
-    }
+
+  const gotoPackageCreatePage = () => {
+    Router.push( '/admin/package/create' );
   };
 
 
@@ -143,8 +103,12 @@ const Upload = () => {
       contentType, icon, label, alt,
     } = options;
 
+    let onClick = null;
+
     // enable button by adding click handler as opposed to simply setting 'disabled' attr as this could be easily changed
-    const onClick = teamCanCreateContentType( contentType ) ? () => dispatch( { type: 'open', contentType } ) : null;
+    if ( enableAll.current || teamCanCreateContentType( contentType ) ) {
+      onClick = () => dispatch( { type: 'open', contentType } );
+    }
 
     return (
       <Button
@@ -247,14 +211,13 @@ const Upload = () => {
         <div className="upload-content_package">
           <p className="conjunction">- OR -</p>
           <Button
-            className={ `btn primary ${setButtonState( 'PACKAGE' )}` }
+            className={ `btn primary ${setButtonState( ['PACKAGE', 'PLAYBOOK'] )}` }
             aria-label="Create New Package"
-            onClick={ handleCreateNewPackage }
+            onClick={ gotoPackageCreatePage }
           >
             <Icon name="plus circle" style={ { opacity: 1 } } />
             Create New Package
           </Button>
-          <ApolloError error={ { otherError: creationError } } />
         </div>
       </section>
 

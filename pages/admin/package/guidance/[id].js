@@ -8,14 +8,14 @@ import PackageEdit from 'components/admin/PackageEdit/PackageEdit';
  * 2. Execute a SSR query for initial page population from server
  * @param {*} props
  */
-const PackagePage = props => {
+const GuidancePage = props => {
   const { query: { id } } = props;
 
   return <PackageEdit id={ id } />;
 };
 
-PackagePage.propTypes = {
+GuidancePage.propTypes = {
   query: PropTypes.object,
 };
 
-export default PackagePage;
+export default GuidancePage;

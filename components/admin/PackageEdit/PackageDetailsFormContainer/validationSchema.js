@@ -17,8 +17,8 @@ const buildFileSchema = value => {
 
   delete schema.title;
   delete schema.type;
+  delete schema.team;
   delete schema.desc;
-  delete schema.termsConditions;
 
   return schema;
 };
@@ -28,13 +28,7 @@ const _baseSchema = {
     .required( 'A package title is required.' ),
 };
 
-const _initialSchema = {
-  termsConditions: Yup.bool()
-    .test( 'consent', 'You have to agree with our Terms of Use!', value => value === true )
-    .required( 'You have to agree with our Terms of Use!' ),
-};
 
-export const initialSchema = Yup.object().shape( { ..._baseSchema, ..._initialSchema } );
 export const baseSchema = Yup.lazy( value => {
   const _fileSchema = buildFileSchema( value );
 

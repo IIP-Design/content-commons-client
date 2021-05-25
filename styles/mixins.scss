@@ -121,6 +121,39 @@
   }
 }
 
+// used to add * after label, "Title *"
+@mixin asterisk($color: $red) { 
+  margin: -.2em 0 0 .2em;
+  content: "*";
+  color: $color; 
+}
+
+// used to add * after label, "Title *"
+@mixin required-asterisk($color: $red) {
+  .required {
+    &::after {
+      @include asterisk($color); 
+    } 
+  }
+}
+
+// used for form errors
+@mixin required-error($color: $red) {
+  .required_error { 
+    font-size: 0.8rem;
+    font-style: italic;
+    color: $red; 
+  }
+}
+
+// used for form labels
+@mixin label($display: block) {
+  display: $display;
+  font-size: 1rem;
+  color: $blue;
+  margin: 0 0 .28571429rem;
+}
+
 // used for helper text under a form input, e.g.,
 // ProjectDetailsForm, PressPackageFile
 @mixin field-helper-text($color: $blue) {

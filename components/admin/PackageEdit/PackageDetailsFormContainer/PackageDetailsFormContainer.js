@@ -10,9 +10,12 @@ import { Formik } from 'formik';
 import useTimeout from 'lib/hooks/useTimeout';
 import { buildUpdatePackageTree } from 'lib/graphql/builders/package';
 import { UPDATE_PACKAGE_MUTATION } from 'lib/graphql/queries/package';
+
+import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 import Notification from 'components/Notification/Notification';
-import PackageDetailsForm from './PackageDetailsForm/PackageDetailsForm';
-import { initialSchema, baseSchema } from './validationSchema';
+import PackageForm from 'components/admin/PackageCreate/PackageForm/PackageForm';
+
+import { baseSchema } from './validationSchema';
 
 const PackageDetailsFormContainer = props => {
   const { pkg, setIsFormValid } = props;
@@ -33,8 +36,6 @@ const PackageDetailsFormContainer = props => {
   const [showNotification, setShowNotification] = useState( false );
   const hideNotification = () => setShowNotification( false );
   const { startTimeout } = useTimeout( hideNotification, 2000 );
-
-  if ( !pkg ) return null;
 
   const update = async ( values, prevValues ) => {
     const { id } = pkg;
@@ -131,7 +132,7 @@ const PackageDetailsFormContainer = props => {
         title: pkg.title || '',
         type: pkg.type || '',
         desc: pkg.desc || '',
-        termsConditions: false,
+        team: pkg.team.name || '',
         ...getFileValues( files ),
       };
     }
@@ -155,22 +156,25 @@ const PackageDetailsFormContainer = props => {
           show={ showNotification }
           msg="Changes saved"
         />
-        <PackageDetailsForm
+
+        <FormikAutoSave save={ save } />
+        <PackageForm
           { ...formikProps }
           { ...props }
-          save={ save }
         >
           { props.children }
-        </PackageDetailsForm>
+        </PackageForm>
       </div>
     );
   };
+
+  if ( !pkg ) return null;
 
   return (
     <Formik
       initialValues={ getInitialValues() }
       enableReinitialize={ reinitialize }
-      validationSchema={ pkg.id ? baseSchema : initialSchema }
+      validationSchema={ baseSchema }
     >
       { renderContent }
     </Formik>
@@ -183,6 +187,7 @@ PackageDetailsFormContainer.propTypes = {
   pkg: PropTypes.shape( {
     id: PropTypes.string,
     title: PropTypes.string,
+    team: PropTypes.object,
     desc: PropTypes.string,
     type: PropTypes.string,
     documents: PropTypes.array,

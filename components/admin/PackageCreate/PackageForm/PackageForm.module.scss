@@ -1,0 +1,59 @@
+@import "styles/colors.scss";
+@import "styles/mixins.scss";
+
+@include required-text;
+
+//hidden] { display: none !important; }
+
+.form_container {
+  padding: 1.75em 0;
+  @media screen and (min-width: 768px) {
+    padding: 1.75em;
+  }
+
+  h3 {
+    display: flex; 
+    flex-direction: column;
+    margin-bottom: 1rem;
+    @include uppercase;
+  }
+
+  .form {
+    display: grid; 
+    grid-template-columns: 1fr;
+    grid-gap: 1rem;
+
+    @media (min-width: 700px ) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (min-width: 1000px ) {
+      grid-template-columns: repeat( 4, 1fr); 
+    }
+ 
+    &.hide {
+      display: none;  
+    }
+   
+    .title,
+    .description {
+      @media ( min-width: 700px ) {
+        grid-column: span 2;
+      }
+    } 
+    
+    .dropdown-required {
+      label {
+       @include label; 
+        &::after {
+          @include asterisk;
+        } 
+      } 
+    }
+ 
+    label {
+      @include label;  
+    } 
+  } 
+ 
+}
