@@ -19,12 +19,41 @@ const TextEditor = ( { id, content } ) => {
     }
   };
 
+  // temp: mock mutation
+  const updatePlaybook = async obj => ( {
+    id,
+    type: 'PLAYBOOK',
+    content: {
+      id: 'contentId123',
+      html: obj.variables.data.content.update.html,
+    },
+  } );
+
   const autoSaveConfig = {
     autosave: {
       waitingTime: 5000,
-      save: editor => {
-        if ( editor.getData() ) {
-          console.log( 'Saved: ', editor.getData() );
+      save: async editor => {
+        if ( !editor.getData() ) return;
+
+        try {
+          const response = await updatePlaybook( {
+            variables: {
+              data: {
+                content: {
+                  update: {
+                    html: editor.getData(),
+                  },
+                },
+              },
+              where: { id },
+            },
+          } );
+
+          if ( response ) {
+            console.log( 'Saved: ', response );
+          }
+        } catch ( err ) {
+          console.log( err );
         }
       },
     },
