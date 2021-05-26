@@ -1,0 +1,71 @@
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
+
+.container {
+  border-top: 1px solid $light-grey;
+  padding: 1.75rem 0;
+
+  @media screen and (min-width: 768px) {
+    padding: 1.75rem;
+  }
+
+  > h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+  }
+}
+
+.editor {
+  * {
+    color: #000;
+  }
+
+  [role="textbox"] {
+    min-height: 18rem;
+  }
+
+  [class*="ck-content"] {
+    * {
+      max-width: 42.222222222rem; // 760px to match front end
+    }
+
+    > * + * {
+      margin-top: 1rem;
+    }
+
+    h1, h2, h3, h4 {
+      margin: calc(2rem - 0.142857em) 0 1rem;
+      color: $blue;
+    }
+  
+    h1, h2 {
+      font-size: 1.555555556em;
+    }
+  
+    h3 {
+      font-size: 1.333333333em;
+    }
+  
+    h4 {
+      font-size: 1em;
+    }
+  
+    ol, ul {
+      margin-left: 1.111111111em;
+      padding-left: 0;
+    }
+  
+    a {
+      color: $light-blue;
+      text-decoration: underline;
+    }
+    
+    a:hover {
+      text-decoration: none;
+    }
+
+    a:focus {
+      @include focus-styling($kbd_only: false);
+    }
+  }
+}

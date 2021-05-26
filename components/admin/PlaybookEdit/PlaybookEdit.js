@@ -212,7 +212,10 @@ const PlaybookEdit = ( { id: playbookId } ) => {
         setIsFormValid={ setIsFormValid }
       />
 
-      <TextEditor />
+      <TextEditor
+        id={ playbookId }
+        content={ playbook?.content?.html || '' }
+      />
 
       <PlaybookResources />
 
