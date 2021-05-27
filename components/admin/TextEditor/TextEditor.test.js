@@ -23,6 +23,7 @@ describe( '<TextEditor />', () => {
       markdown: '',
     },
     type: 'PLAYBOOK',
+    updateMutation: jest.fn(),
   };
 
   beforeEach( () => {

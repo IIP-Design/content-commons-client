@@ -216,6 +216,15 @@ const PlaybookEdit = ( { id: playbookId } ) => {
         id={ playbookId }
         content={ playbook?.content || {} }
         type={ playbook.type }
+        updateMutation={ async obj => ( {
+          // temp: mock mutation
+          id: playbookId,
+          type: playbook.type,
+          content: {
+            id: playbook.content.id,
+            html: obj.variables.data.content.update.html,
+          },
+        } ) }
       />
 
       <PlaybookResources />
