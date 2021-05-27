@@ -214,7 +214,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
 
       <TextEditor
         id={ playbookId }
-        content={ playbook?.content?.html || '' }
+        content={ playbook?.content || {} }
       />
 
       <PlaybookResources />

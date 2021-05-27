@@ -14,8 +14,8 @@ const TextEditor = ( { id, content } ) => {
   );
 
   const handleReady = editor => {
-    if ( content ) {
-      editor.setData( content );
+    if ( content?.html ) {
+      editor.setData( content.html );
     }
   };
 
@@ -24,7 +24,7 @@ const TextEditor = ( { id, content } ) => {
     id,
     type: 'PLAYBOOK',
     content: {
-      id: 'contentId123',
+      id: content.id,
       html: obj.variables.data.content.update.html,
     },
   } );
@@ -84,7 +84,7 @@ const TextEditor = ( { id, content } ) => {
 
 TextEditor.propTypes = {
   id: PropTypes.string,
-  content: PropTypes.string,
+  content: PropTypes.object,
 };
 
 export default TextEditor;

@@ -16,7 +16,12 @@ describe( '<TextEditor />', () => {
 
   const props = {
     id: 'playbook123',
-    content: '<p>test content</p>',
+    content: {
+      id: 'contentId123',
+      rawText: '',
+      html: '<p>test content</p>',
+      markdown: '',
+    },
   };
 
   beforeEach( () => {
