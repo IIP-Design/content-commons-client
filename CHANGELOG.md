@@ -30,7 +30,7 @@ _This sections lists changes committed since most recent release_
 - Admin and package "catch all" routes
 - CKEditor5 and custom editor build directory
 - CKEditor5 setup to `TextEditor`
-- CKEditor5 custom build directory to Babel `exclude` config option
+- CKEditor5 custom build file to eslint `ignorePattern`
 
 
 **Changed:**

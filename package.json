@@ -124,7 +124,6 @@
   "babel": {
     "env": {
       "development": {
-        "exclude": ["ckeditor5-custom-build/"],
         "presets": [
           "next/babel"
         ],
@@ -146,7 +145,6 @@
         ]
       },
       "production": {
-        "exclude": ["ckeditor5-custom-build/"],
         "presets": [
           "next/babel"
         ],
@@ -168,7 +166,6 @@
         ]
       },
       "test": {
-        "exclude": ["ckeditor5-custom-build/"],
         "presets": [
           [
             "next/babel",
