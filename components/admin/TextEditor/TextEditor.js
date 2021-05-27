@@ -31,7 +31,7 @@ const TextEditor = ( { id, content } ) => {
 
   const autoSaveConfig = {
     autosave: {
-      waitingTime: 5000,
+      waitingTime: 500,
       save: async editor => {
         if ( !editor.getData() ) return;
 
