@@ -1,4 +1,4 @@
-@import "styles/mixins.scss";
+@import 'styles/mixins.scss';
 
 .graphic-project-support-files {
   .list-heading {
@@ -16,37 +16,5 @@
     padding-top: 0.625rem;
     padding-bottom: 0.625rem;
     font-size: 0.888888889rem;
-  }
-
-  .support-files-list {
-    list-style: none;
-    padding-left: 0;
-    font-size: 0.888888889rem;
-
-    > .support-file-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      &.unavailable {
-        .filename {
-          span,
-          [tooltip] {
-            color: $medium-grey;
-          }
-        }
-
-        .FileRemoveReplaceButtonGroup__btn-group {
-          visibility: hidden;
-        }
-      }
-
-      [tooltip] {
-        margin: 0;
-        &:focus {
-          @include focus-styling;
-        }
-      }
-    }
   }
 }

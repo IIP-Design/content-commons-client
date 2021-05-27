@@ -1,0 +1,33 @@
+@import 'styles/mixins.scss';
+
+.list {
+  list-style: none;
+  padding-left: 0;
+  font-size: 0.888888889rem;
+
+  > .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & [tooltip] {
+      margin: 0;
+      &:focus {
+        @include focus-styling;
+      }
+    }
+  }
+}
+
+.unavailable {
+  .filename {
+    span,
+    [tooltip] {
+      color: $medium-grey;
+    }
+  }
+
+  .FileRemoveReplaceButtonGroup__btn-group {
+    visibility: hidden;
+  }
+}

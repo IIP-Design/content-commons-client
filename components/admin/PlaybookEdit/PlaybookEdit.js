@@ -214,7 +214,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
 
       <PlaybookTextEditor />
 
-      <PlaybookResources />
+      <PlaybookResources projectId={ playbookId } />
 
       <div className="actions">
         <ActionHeadline
