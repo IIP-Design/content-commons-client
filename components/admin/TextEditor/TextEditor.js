@@ -4,7 +4,7 @@ import useCKEditor from 'lib/hooks/useCKEditor';
 import { config } from './config';
 import styles from './TextEditor.module.scss';
 
-const TextEditor = ( { id, content } ) => {
+const TextEditor = ( { id, content, type } ) => {
   // useCKEditor allows CKEditor to work with SSR
   const { CKEditor, Editor, isEditorLoaded } = useCKEditor();
   const [editorData, setEditorData] = useState( '' );
@@ -22,7 +22,7 @@ const TextEditor = ( { id, content } ) => {
   // temp: mock mutation
   const updatePlaybook = async obj => ( {
     id,
-    type: 'PLAYBOOK',
+    type,
     content: {
       id: content.id,
       html: obj.variables.data.content.update.html,
@@ -85,6 +85,7 @@ const TextEditor = ( { id, content } ) => {
 TextEditor.propTypes = {
   id: PropTypes.string,
   content: PropTypes.object,
+  type: PropTypes.string,
 };
 
 export default TextEditor;

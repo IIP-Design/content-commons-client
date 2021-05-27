@@ -22,6 +22,7 @@ describe( '<TextEditor />', () => {
       html: '<p>test content</p>',
       markdown: '',
     },
+    type: 'PLAYBOOK',
   };
 
   beforeEach( () => {
