@@ -2,10 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 
-const ButtonAddFiles = props => {
-  const {
-    onChange, disabled, className, children, accept, multiple, fluid,
-  } = props;
+const ButtonAddFiles = ( { onChange, disabled, className, children, accept, multiple, fluid } ) => {
   const fileInput = React.createRef();
 
   // Trigger files dialogue on button click
