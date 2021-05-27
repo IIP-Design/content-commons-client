@@ -20,6 +20,12 @@
     color: #000;
   }
 
+  [class="ck ck-sticky-panel"] {
+    [class*="ck-sticky-panel__content_sticky"] {
+      position: unset;
+    }
+  }
+
   [role="textbox"] {
     min-height: 18rem;
   }
