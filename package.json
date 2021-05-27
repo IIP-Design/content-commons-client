@@ -26,7 +26,6 @@
     "aws-amplify": "^3.3.26",
     "axios": "^0.21.1",
     "bodybuilder": "^2.4.0",
-    "ckeditor5-custom-build": "file:ckeditor5-custom-build",
     "core-js": "^3.10.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
