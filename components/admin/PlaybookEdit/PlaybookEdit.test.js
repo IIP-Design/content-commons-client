@@ -7,7 +7,7 @@ jest.mock(
 );
 
 jest.mock(
-  'components/admin/PlaybookEdit/TextEditor/TextEditor',
+  'components/admin/TextEditor/TextEditor',
   () => function TextEditor() { return ''; },
 );
 
