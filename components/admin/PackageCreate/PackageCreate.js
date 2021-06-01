@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import Router from 'next/router';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Formik } from 'formik';
-import { guidanceSchema, packageSchema } from './PackageForm/validationSchema';
 import moment from 'moment';
 
 import ApolloError from 'components/errors/ApolloError';
@@ -10,117 +9,68 @@ import PackageForm from './PackageForm/PackageForm';
 import ButtonPackageCreate from './ButtonPackageCreate/ButtonPackageCreate';
 import Checkbox from './PackageForm/Checkbox/Checkbox';
 
-import { useMutation } from '@apollo/client';
-import {
-  CREATE_PACKAGE_MUTATION,
-  PACKAGE_EXISTS_QUERY,
-} from 'lib/graphql/queries/package';
-import { CREATE_PLAYBOOK_MUTATION } from 'lib/graphql/queries/playbook';
-import { buildCreatePlaybookTree } from 'lib/graphql/builders/playbook';
-import { buildCreatePackageTree } from 'lib/graphql/builders/package';
+import { guidanceSchema, packageSchema } from './PackageForm/validationSchema';
+import { useAuth } from 'context/authContext';
+import { useQuery } from '@apollo/client';
+import { PACKAGE_TYPE_QUERY } from 'components/admin/dropdowns/PackageTypeDropdown/PackageTypeDropdown';
 
 import styles from './PackageCreate.module.scss';
-import { useAuth } from 'context/authContext';
-
 
 const PackageCreate = () => {
+  const router = useRouter();
   const { user } = useAuth();
-  const [pkg, setPkg] = useState( null );
+  const [teamPackageTypes, setTeamPackageTypes] = useState( [] );
+  const [schema, setSchema] = useState( guidanceSchema );
 
   const [creationError, setCreationError] = useState( '' );
-  const [createPlaybook] = useMutation( CREATE_PLAYBOOK_MUTATION );
-  const [createPackage] = useMutation( CREATE_PACKAGE_MUTATION );
-  const [packageExists] = useMutation( PACKAGE_EXISTS_QUERY );
+  const { data, loading } = useQuery( PACKAGE_TYPE_QUERY );
 
-  /**
-   * Checks whether a package exists with the supplied field name and values
-   * @param {object} where clause containing fields to test existence against, i.e. { title: Daily Guidance }
-   * @returns bool
-   */
-  const doesPackageExist = async where => {
-    const res = await packageExists( {
-      variables: {
-        where,
-      },
-    } );
+  useEffect( () => {
+    const getTeamPackageTypes = ( types = [] ) => {
+      const packageTypes = data?.__type.enumValues.map( value => value.name );
+      const _types = types.filter( type => type === 'PACKAGE' || packageTypes.includes( type ) );
 
-    return res.data.packageExists;
-  };
-
-  /**
-   * Convenience func to execute graphql create mutations
-   * @param {func} creator create mutation
-   * @param {func} builder func to transform form values to applicable package type format
-   * @param {object} values form values
-   * @returns Promise
-   */
-  const executeCreate = async ( creator, builder, values ) => creator( {
-    variables: {
-      data: builder( values ),
-    },
-  } );
-
-  /**
-  * Create guidance package and send user to
-  * package edit screen on success.
-  * @returns void
-  */
-  const createGuidancePackage = async values => {
-    const { title, type } = values;
-    const _values = {
-      title,
-      type,
-      userId: user.id,
-      teamId: user.team.id,
+      return _types;
     };
 
-    if ( await doesPackageExist( { title } ) ) {
-      setCreationError( `A Guidance Package with the name "${title}" already exists.` );
+    if ( data ) {
+      const _teamPackageTypes = getTeamPackageTypes( user?.team?.contentTypes );
+      const _schema = _teamPackageTypes.length === 1 && _teamPackageTypes[0] === 'PACKAGE'
+        ? guidanceSchema
+        : packageSchema;
 
-      return;
+      setTeamPackageTypes( _teamPackageTypes );
+      setSchema( _schema );
     }
+  }, [data, user] );
 
-    try {
-      const res = await executeCreate( createPackage, buildCreatePackageTree, _values );
 
-      setPkg( res.data.createPackage );
+  /**
+   * Changes schema when package type is switched
+   * @param {string} type package type, e.g. PLAYBOOK
+   */
+  const updateSchema = type => {
+    const _schema = type === 'DAILY_GUIDANCE' ? guidanceSchema : packageSchema;
 
-      return res.data.createPackage;
-    } catch ( err ) {
-      setCreationError( err );
-    }
+    setSchema( _schema );
   };
 
   /**
-  * Create playbook package and send user to
-  * playbook edit screen on success.
-  * @returns void
-  */
-  const createPlaybookPackage = async values => {
-    const _values = { ...values };
-
-    // Remove values
-    delete _values.visibility;
-    delete _values.termsConditions;
-
-    _values.userId = user.id;
-    _values.teamId = user.team.id;
-
-    try {
-      const res = await executeCreate( createPlaybook, buildCreatePlaybookTree, _values );
-
-      Router.push( `/admin/package/playbook/${res.data.createPlaybook.id}` );
-    } catch ( err ) {
-      setCreationError( err );
-    }
+   * Display errors message
+   * @param {string} error
+   */
+  const setError = error => {
+    setCreationError( error );
   };
+
 
   /**
    * Send user back to upload screen
    */
   const returnToUpload = () => {
-    Router.push( '/admin/upload' );
+    router.push( '/admin/upload' );
   };
+
 
   /**
    * Seed initial form values based on team and content types
@@ -130,16 +80,12 @@ const PackageCreate = () => {
   const getInitialValues = () => {
     let title = '';
     let type = '';
-    const contentTypes = user?.team?.contentTypes ? user.team.contentTypes : [];
 
-    // if press office, pre-populate the title and type
-    if ( user?.team?.name === 'GPA Press Office' ) {
-      title = `Guidance Package ${moment().format( 'MM-D-YY' )}`;
-      type = 'DAILY_GUIDANCE';
+    if ( teamPackageTypes.length === 1 ) {
+      [type] = teamPackageTypes;
 
-    // if team can only author 1 contentType, set type
-    } else if ( contentTypes.length === 1 ) {
-      [type] = contentTypes;
+      // if Package type, e.g. 'DAILY_GUIDANCE', pre-populate title
+      title = type === 'PACKAGE' ? `Guidance Package ${moment().format( 'MM-D-YY' )}` : '';
     }
 
     return {
@@ -154,6 +100,11 @@ const PackageCreate = () => {
       termsConditions: false,
     };
   };
+
+
+  if ( loading ) {
+    return 'Loading form...';
+  }
 
   return (
     <div className={ styles['package-create'] }>
@@ -174,19 +125,24 @@ const PackageCreate = () => {
 
       <Formik
         initialValues={ getInitialValues() }
-        validationSchema={ user?.team?.name === 'GPA Press Office' ? guidanceSchema : packageSchema }
+        enableReinitialize
+        validationSchema={ schema }
         validateOnMount
       >
         { formikProps => (
-          <PackageForm { ...formikProps }>
-            <div className={ styles['form-child'] }>
-              <ButtonPackageCreate
-                pkg={ pkg }
-                formikProps={ formikProps }
-                createGuidancePackage={ createGuidancePackage }
-                createPlaybookPackage={ createPlaybookPackage }
-              />
-              <div className={ styles.terms }>
+          <PackageForm
+            { ...formikProps }
+            packageTypes={ teamPackageTypes }
+            updateSchema={ updateSchema }
+          >
+            <div className={ styles.container }>
+              <div className={ styles['container-btn'] }>
+                <ButtonPackageCreate
+                  user={ user }
+                  setError={ setError }
+                />
+              </div>
+              <div className={ styles['container-terms'] }>
                 <Checkbox
                   id="termsConditions"
                   name="termsConditions"
