@@ -1,11 +1,11 @@
 import * as Yup from 'yup';
 
 const _packageSchema = {
-  categories: Yup.array()
-    .max( 2, 'Maximum of 2 categories can be selected' )
-    .required( 'At least 1 category is required.' ),
   desc: Yup.string()
     .required( 'An internal description is required.' ),
+  categories: Yup.array()
+    .min( 1, 'At least 1 category is required.' )
+    .max( 2, 'Maximum of 2 categories can be selected' ),
 };
 
 const _guidanceSchema = {
