@@ -1,32 +1,43 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import PropTypes from 'prop-types';
 
 import CategoryDropdown from 'components/admin/dropdowns/CategoryDropdown/CategoryDropdown';
 import PolicyPriorityDropdown from 'components/admin/dropdowns/PolicyPriorityDropdown/PolicyPriorityDropdown';
 import TagDropdown from 'components/admin/dropdowns/TagDropdown/TagDropdown';
 import VisibilityDropdown from 'components/admin/dropdowns/VisibilityDropdown/VisibilityDropdown';
-
 import TextInput from './TextInput/TextInput';
 import PackageType from './PackageType/PackageType';
 
-import { useAuth } from 'context/authContext';
 import styles from './PackageForm.module.scss';
 
 export const HandleOnChangeContext = createContext();
 
 const PackageForm = ( {
+  validateForm,
   setFieldValue,
   setFieldTouched,
   touched,
   values,
   errors,
   children,
+  packageTypes,
+  updateSchema,
 } ) => {
-  const { user } = useAuth();
-
+  const [hideFields, setHideFields] = useState( true );
   const isGuidance = type => type === 'DAILY_GUIDANCE' || type === 'PACKAGE';
 
-  const [guidance, setGuidance] = useState( !values.type || isGuidance( values.type ) );
+  /**
+   * Hide or shows additional playbook/toolkit fields
+   * If a type is not set, implies multiple package types available so show default
+   * view (hide additional fields). Else check type = guidance package and hide if true
+   * @param {string} type package type
+   * @returns bool
+   */
+  const hideAdditionalFields = type => ( ( !type ) ? true : isGuidance( type ) );
+
+  useEffect( () => {
+    setHideFields( hideAdditionalFields( values.type ) );
+  }, [values?.type] );
 
   const handleOnChange = ( e, {
     name, value, type, checked,
@@ -39,7 +50,13 @@ const PackageForm = ( {
     setFieldTouched( name, true, false );
 
     if ( name === 'type' ) {
-      setGuidance( isGuidance( value ) );
+      setHideFields( hideAdditionalFields( value ) );
+
+      // update schema when package type changes
+      updateSchema( value );
+
+      // validate form against new schema on next 'tick' to give schema time to update
+      setTimeout( () => validateForm(), 0 );
     }
   };
 
@@ -61,13 +78,13 @@ const PackageForm = ( {
             />
           </div>
           <PackageType
+            label="Package Type"
             id="type"
             name="type"
-            label="Package Type"
             value={ values.type }
             onChange={ handleOnChange }
             required
-            contentTypes={ user?.team?.contentTypes }
+            packageTypes={ packageTypes }
           />
           <TextInput
             label="Team"
@@ -78,12 +95,12 @@ const PackageForm = ( {
             readOnly="readonly"
           />
         </div>
-        <div className={ `${styles.form} ${guidance ? styles.hide : ''}` }>
+        <div className={ `${styles.form} ${hideFields && styles.hide}` }>
           <div className={ styles['dropdown-required'] }>
             <CategoryDropdown
+              label="Categories"
               id="categories"
               name="categories"
-              label="Categories"
               value={ values.categories }
               onChange={ handleOnChange }
               error={ touched.categories && ( !values.categories.length || values.categories.length > 2 ) }
@@ -93,29 +110,30 @@ const PackageForm = ( {
               closeOnBlur
               closeOnChange
             />
+            <p className={ styles['field__helper-text'] }>Select up to two (2) categories. </p>
             <p className={ styles.required_error }>{ touched.categories ? errors.categories : '' }</p>
           </div>
           <TagDropdown
-            id="tags"
             label="Tags"
+            id="tags"
             name="tags"
             locale="en-us"
             value={ values.tags }
+            required
             onChange={ handleOnChange }
           />
           <PolicyPriorityDropdown
+            label="Policy Priority"
             id="policy"
             name="policy"
-            label="Policy Priority"
-            required
             value={ values.policy }
             onChange={ handleOnChange }
             error={ touched.policy && !!errors.policy }
           />
           <VisibilityDropdown
+            label="Visibility Setting"
             id="visibility"
             name="visibility"
-            label="Visibility Setting"
             value={ values.visibility }
             onChange={ handleOnChange }
             disabled
@@ -128,9 +146,10 @@ const PackageForm = ( {
               type="textarea"
               rows="3"
               required
+              helperTxt="Briefly describe this Playbook. This text will only appear in search results."
+              maxLength={ 100 }
             />
           </div>
-
         </div>
         <div>
           <HandleOnChangeContext.Provider value={ handleOnChange }>
@@ -143,12 +162,15 @@ const PackageForm = ( {
 };
 
 PackageForm.propTypes = {
+  validateForm: PropTypes.func,
   setFieldValue: PropTypes.func,
   setFieldTouched: PropTypes.func,
   touched: PropTypes.object,
   values: PropTypes.object,
   errors: PropTypes.object,
   children: PropTypes.node,
+  packageTypes: PropTypes.array,
+  updateSchema: PropTypes.func,
 };
 
 export default PackageForm;

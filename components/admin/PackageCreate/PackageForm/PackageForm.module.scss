@@ -2,8 +2,7 @@
 @import "styles/mixins.scss";
 
 @include required-text;
-
-//hidden] { display: none !important; }
+@include field-helper-text;
 
 .form_container {
   padding: 1.75em 0;
@@ -21,7 +20,11 @@
   .form {
     display: grid; 
     grid-template-columns: 1fr;
-    grid-gap: 1rem;
+    grid-gap: 1.5rem 1rem;
+
+    &:first-child {
+      margin-bottom: 1.5em;
+    }
 
     @media (min-width: 700px ) {
       grid-template-columns: 1fr 1fr;
