@@ -146,8 +146,8 @@
   }
 }
 
-// used for form labels
-@mixin label($display: block) {
+// used for form field labels
+@mixin form-field-label($display: block) {
   display: $display;
   font-size: 1rem;
   color: $blue;

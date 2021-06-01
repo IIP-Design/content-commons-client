@@ -12,27 +12,22 @@
     transition: all 0.1s ease 0s,
   } 
 
-  .form-child { 
-    display: grid;
-    grid-template-columns: 1fr; 
-    grid-gap: 1rem;
-    align-items: start;
-    margin-top: 1em; 
-
-    @media (min-width: 700px ) {  
-      grid-column: span 2; 
-      grid-template-columns: 1fr 1fr; 
-      margin-top: 2em;
+  .container { 
+    display: flex; 
+    flex-wrap: wrap;
+    gap: 1.5em;
+    margin-top: 1em;
+    
+    &-btn {
+     flex: 1 0 8em;
+     
+     > * {
+       width: 100%;
+     } 
     }
 
-    @media (min-width: 1000px ) {
-      grid-column: span 4;
-      grid-template-columns: repeat( 4, 1fr); 
-
-      .terms {
-        grid-column: span 2;
-      } 
-    }
+    &-terms {
+      flex: 2 1 auto;
+    } 
   } 
- 
 }
