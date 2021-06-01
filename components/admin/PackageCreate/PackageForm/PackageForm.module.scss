@@ -44,7 +44,7 @@
     
     .dropdown-required {
       label {
-       @include label; 
+       @include form-field-label; 
         &::after {
           @include asterisk;
         } 
@@ -52,7 +52,7 @@
     }
  
     label {
-      @include label;  
+      @include form-field-label;  
     } 
   } 
  

@@ -3,7 +3,7 @@
 .textInput {
   @include required-asterisk;
   @include required-error;
-  @include label;
+  @include form-field-label;
 
   [type="text"],
   textarea {
@@ -31,6 +31,5 @@
   }
 
   label span {
-    @include label;  
-  } 
+    @include form-field-label;  
 }
