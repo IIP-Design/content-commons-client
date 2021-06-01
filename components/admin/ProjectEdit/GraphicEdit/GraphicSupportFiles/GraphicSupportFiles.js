@@ -2,19 +2,18 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
 import { Confirm } from 'semantic-ui-react';
+
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
 import IconPopup from 'components/popups/IconPopup/IconPopup';
-import Filename from 'components/admin/Filename/Filename';
-import FileRemoveReplaceButtonGroup from 'components/admin/FileRemoveReplaceButtonGroup/FileRemoveReplaceButtonGroup';
+import FileList from 'components/admin/FileList/FileList';
+
 import { GRAPHIC_PROJECT_QUERY, UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import useTimeout from 'lib/hooks/useTimeout';
 import { getCount } from 'lib/utils';
+
 import './GraphicSupportFiles.scss';
 
-const GraphicSupportFiles = props => {
-  const {
-    projectId, headline, helperText, files, updateNotification,
-  } = props;
+const GraphicSupportFiles = ( { projectId, headline, helperText, files, updateNotification } ) => {
   const [fileIdToDelete, setFileIdToDelete] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
   const [updateGraphicProject] = useMutation( UPDATE_GRAPHIC_PROJECT_MUTATION );
@@ -64,34 +63,10 @@ const GraphicSupportFiles = props => {
       .catch( err => console.dir( err ) );
   };
 
-  const renderList = () => (
-    <ul className="support-files-list">
-      { files.map( file => {
-        const { id, filename, input } = file;
-        const _filename = projectId ? filename : input?.name;
-
-        return (
-          <li key={ id } className={ `support-file-item ${projectId ? 'available' : 'unavailable'}` }>
-            <span className="filename">
-              <Filename
-                children={ _filename }
-                filenameLength={ 48 }
-                numCharsBeforeBreak={ 20 }
-                numCharsAfterBreak={ 28 }
-              />
-            </span>
-
-            <FileRemoveReplaceButtonGroup
-              onRemove={ () => {
-                setDeleteConfirmOpen( true );
-                setFileIdToDelete( id );
-              } }
-            />
-          </li>
-        );
-      } ) }
-    </ul>
-  );
+  const onRemove = id => {
+    setDeleteConfirmOpen( true );
+    setFileIdToDelete( id );
+  };
 
   return (
     <div className={ `graphic-project-support-files ${headline.replace( ' ', '-' )}` }>
@@ -124,7 +99,7 @@ const GraphicSupportFiles = props => {
       />
 
       { getCount( files )
-        ? renderList()
+        ? <FileList files={ files } onRemove={ onRemove } projectId={ projectId } />
         : <p className="no-files">No files to upload</p> }
     </div>
   );
