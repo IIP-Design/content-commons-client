@@ -1,8 +1,10 @@
 @import "styles/mixins.scss";
+@import "styles/colors.scss";
 
-.textInput {
+.text-input {
   @include required-asterisk;
   @include required-error;
+  @include field-helper-text;
   @include form-field-label;
 
   [type="text"],
@@ -17,7 +19,7 @@
     &:focus {  
       border: 1px solid $half-baked; 
       outline: none;
-      //@include focus-styling($kbd_only: false);
+      //@include focus-styling();
     }
   
     &[aria-invalid] {
@@ -32,4 +34,14 @@
 
   label span {
     @include form-field-label;  
+  } 
+
+  &-helper {
+    display: flex;
+    justify-content:space-between;
+  }
+
+  .max-char {
+    color: $red;
+  }
 }
