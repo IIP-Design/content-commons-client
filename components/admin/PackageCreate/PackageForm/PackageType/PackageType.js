@@ -10,12 +10,12 @@ import { titleCase } from 'lib/utils';
 /**
  * Displays a readonly input for a team with a single content type
  * or a dropdown for a team with multiple content types
- * @params {}
- *  contentTypes: teams' associated content types
- *  value: field current value
- *  onChange: formik change handler
- *  required: is field required
- * @returns PackageTypeDropdown | TextInput
+ * @param {Object} props
+ * @param {string[]} props.packageTypes The package types that are associated with the current team. Array should only include 'PACKAGE', 'PLAYBOOK', and/or 'TOOLKIT'.
+ * @param {string} props.value The field's current value.
+ * @param {func} props.onChange The formik change handler callback function.
+ * @param {bool} props.required Whether or not the given field is required.
+ * @returns {PackageTypeDropdown|TextInput}
  */
 const PackageType = ( { packageTypes, value, onChange, required } ) => {
   const router = useRouter();
