@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
-import intersection from 'lodash/intersection';
 
 import TextInput from 'components/admin/PackageCreate/PackageForm/TextInput/TextInput';
 import PackageTypeDropdown from 'components/admin/dropdowns/PackageTypeDropdown/PackageTypeDropdown';
@@ -18,17 +17,9 @@ import { titleCase } from 'lib/utils';
  *  required: is field required
  * @returns PackageTypeDropdown | TextInput
  */
-const PackageType = ( { contentTypes, value, onChange, required } ) => {
+const PackageType = ( { packageTypes, value, onChange, required } ) => {
   const router = useRouter();
   const isCreate = router.route.includes( '/package/create' );
-
-  const packageTypes = [
-    'PACKAGE',
-    'TOOLKIT',
-    'PLAYBOOK',
-  ];
-
-  const types = intersection( packageTypes, contentTypes );
 
   const renderTextInput = val => (
     <TextInput
@@ -50,7 +41,7 @@ const PackageType = ( { contentTypes, value, onChange, required } ) => {
   // if on create screen, return either input or dropdown based
   // on num content types in packageTypes type array above
   return (
-    ( types.length > 1 )
+    ( packageTypes.length > 1 )
       ? (
         <PackageTypeDropdown
           id="type"
@@ -58,16 +49,19 @@ const PackageType = ( { contentTypes, value, onChange, required } ) => {
           label="Package Type"
           value={ value }
           onChange={ onChange }
-          contentTypes={ types }
+          contentTypes={ packageTypes }
         />
       )
-      : renderTextInput( types[0] || '' )
+      : renderTextInput( packageTypes[0] || '' )
   );
 };
 
+PackageTypeDropdown.defaultProps = {
+  contentTypes: [],
+};
 
 PackageType.propTypes = {
-  contentTypes: PropTypes.array,
+  packageTypes: PropTypes.array,
   value: PropTypes.string,
   required: PropTypes.bool,
   onChange: PropTypes.func,
