@@ -123,6 +123,7 @@
   "babel": {
     "env": {
       "development": {
+        "exclude": ["./components/admin/TextEditor/custom-build/"],
         "presets": [
           "next/babel"
         ],
@@ -144,6 +145,7 @@
         ]
       },
       "production": {
+        "exclude": ["./components/admin/TextEditor/custom-build/"],
         "presets": [
           "next/babel"
         ],
@@ -165,6 +167,7 @@
         ]
       },
       "test": {
+        "exclude": ["./components/admin/TextEditor/custom-build/"],
         "presets": [
           [
             "next/babel",
