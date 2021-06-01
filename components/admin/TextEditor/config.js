@@ -62,6 +62,8 @@ export const config = {
       'outdent',
       'indent',
       '|',
+      'imageUpload',
+      '|',
       'undo',
       'redo',
     ],
