@@ -11,9 +11,9 @@ import ApolloError from 'components/errors/ApolloError';
 import ButtonPublish from 'components/admin/ButtonPublish/ButtonPublish';
 import Notification from 'components/Notification/Notification';
 import PlaybookDetailsFormContainer from 'components/admin/PlaybookEdit/PlaybookDetailsFormContainer/PlaybookDetailsFormContainer';
-import PlaybookTextEditor from 'components/admin/PlaybookEdit/PlaybookTextEditor/PlaybookTextEditor';
 import PlaybookResources from 'components/admin/PlaybookEdit/PlaybookResources/PlaybookResources';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
+import TextEditor from 'components/admin/TextEditor/TextEditor';
 import {
   PLAYBOOK_QUERY,
   // DELETE_PLAYBOOK_MUTATION,
@@ -212,7 +212,20 @@ const PlaybookEdit = ( { id: playbookId } ) => {
         setIsFormValid={ setIsFormValid }
       />
 
-      <PlaybookTextEditor />
+      <TextEditor
+        id={ playbookId }
+        content={ playbook?.content || {} }
+        type={ playbook.type }
+        updateMutation={ async obj => ( {
+          // temp: mock mutation
+          id: playbookId,
+          type: playbook.type,
+          content: {
+            id: playbook.content.id,
+            html: obj.variables.data.content.update.html,
+          },
+        } ) }
+      />
 
       <PlaybookResources />
 

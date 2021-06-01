@@ -1,6 +1,6 @@
 {
   "extends": ["@gpa-lab/eslint-config", "@gpa-lab/eslint-config/react"],
-  "ignorePatterns": [".next/", "coverage/", "node_modules/"],
+  "ignorePatterns": [".next/", "coverage/", "node_modules/", "ckeditor.js"],
   "parser": "@babel/eslint-parser",
   "rules": {
     "jest/no-conditional-expect": "off",

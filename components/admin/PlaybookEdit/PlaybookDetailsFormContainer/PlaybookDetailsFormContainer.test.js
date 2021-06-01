@@ -17,7 +17,10 @@ describe( '<PlaybookDetailsFormContainer />', () => {
       id: 'playbook123',
       title: 'COVID-19 Recovery',
       type: 'Playbook',
-      team: 'team789',
+      team: {
+        id: 'team789',
+        name: 'team name',
+      },
       categories: ['category123', 'category456'],
       tags: [],
       policy: 'policy456',

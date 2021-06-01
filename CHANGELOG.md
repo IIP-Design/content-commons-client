@@ -28,6 +28,9 @@ _This sections lists changes committed since most recent release_
 - Playbook query, createPlaybook mutation and associated builders
 - Playbook admin route
 - Admin and package "catch all" routes
+- CKEditor5 and custom editor build directory
+- CKEditor5 setup to `TextEditor`
+- CKEditor5 custom build file to eslint `ignorePattern`
 
 
 **Changed:**
@@ -54,6 +57,8 @@ _This sections lists changes committed since most recent release_
 - Move package creation to intermediary create page
 - Replace Semantic UI Form, Grid, Input in `PressPackageFile` with native HTML elements
 - Use CSS modules for `ProjectHeader` component styling
+- Rename `PlaybookTextEditor` to `TextEditor` and move up one level
+- Update tests for `TextEditor`
 
 **Fixed:**
 - Skip to content link for improved accessibility
