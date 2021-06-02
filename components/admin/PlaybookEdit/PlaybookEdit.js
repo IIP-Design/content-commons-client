@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { Loader } from 'semantic-ui-react';
 import useIsDirty from 'lib/hooks/useIsDirty';
 // import usePublish from 'lib/hooks/usePublish';
@@ -19,6 +19,7 @@ import {
   // DELETE_PLAYBOOK_MUTATION,
   // PUBLISH_PLAYBOOK_MUTATION,
   // UNPUBLISH_PLAYBOOK_MUTATION,
+  UPDATE_PLAYBOOK_MUTATION,
   // UPDATE_PLAYBOOK_STATUS_MUTATION,
 } from 'lib/graphql/queries/playbook';
 
@@ -47,6 +48,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
   // const [publishPlaybook] = useMutation( PUBLISH_PLAYBOOK_MUTATION );
   // const [unpublishPlaybook] = useMutation( UNPUBLISH_PLAYBOOK_MUTATION );
   // const [updatePlaybookStatus] = useMutation( UPDATE_PLAYBOOK_STATUS_MUTATION );
+  const [updatePlaybook] = useMutation( UPDATE_PLAYBOOK_MUTATION );
 
   const [publishOperation, setPublishOperation] = useState( '' );
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState( false );
@@ -216,15 +218,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
         id={ playbookId }
         content={ playbook?.content || {} }
         type={ playbook.type }
-        updateMutation={ async obj => ( {
-          // temp: mock mutation
-          id: playbookId,
-          type: playbook.type,
-          content: {
-            id: playbook.content.id,
-            html: obj.variables.data.content.update.html,
-          },
-        } ) }
+        updateMutation={ updatePlaybook }
       />
 
       <PlaybookResources projectId={ playbookId } />
