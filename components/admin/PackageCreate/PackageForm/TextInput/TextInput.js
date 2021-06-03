@@ -31,12 +31,20 @@ const TextInput = ( { label, helperTxt, maxLength, ...props } ) => {
   };
 
   // append additional props to forward to native input control
-  const _props = {
-    ...props,
-    'aria-describedby': `describedby${props.id}`,
-    onChange: handleOnChange,
-    maxLength,
-  };
+  let _props = { ...props };
+
+
+  if ( helperTxt ) {
+    _props['aria-describedby'] = `describedby_${props.id}`;
+  }
+
+  if ( maxLength ) {
+    _props = {
+      ..._props,
+      onChange: handleOnChange,
+      maxLength,
+    };
+  }
 
   return (
     <div className={ styles['text-input'] }>
