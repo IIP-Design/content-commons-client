@@ -4,7 +4,7 @@ import { MockedProvider } from '@apollo/client/testing';
 import { act } from 'react-dom/test-utils';
 import { UPDATE_GRAPHIC_PROJECT_MUTATION } from 'lib/graphql/queries/graphic';
 import GraphicSupportFiles from './GraphicSupportFiles';
-import { truncateAndReplaceStr } from 'lib/utils';
+
 
 jest.mock(
   'components/admin/ConfirmModalContent/ConfirmModalContent',
@@ -496,22 +496,6 @@ describe( '<GraphicSupportFiles />, for editable files', () => {
 
     deleteConfirmTest();
   } );
-
-  it( 'renders the correct file list items', () => {
-    const list = listContainer.find( '.support-files-list' );
-    const listItems = list.find( '.support-file-item' );
-
-    expect( listItems.length ).toEqual( props.files.length );
-    listItems.forEach( ( item, i ) => {
-      const file = props.files[i];
-      const filename = item.find( 'span.filename' );
-      const removeBtn = item.find( 'FileRemoveReplaceButtonGroup' );
-
-      expect( item.hasClass( 'available' ) ).toEqual( true );
-      expect( filename.text() ).toEqual( file.filename );
-      expect( removeBtn.exists() ).toEqual( true );
-    } );
-  } );
 } );
 
 describe( '<GraphicSupportFiles />, for additional files', () => {
@@ -713,22 +697,6 @@ describe( '<GraphicSupportFiles />, for additional files', () => {
 
     deleteConfirmTest();
   } );
-
-  it( 'renders the correct file list items', () => {
-    const list = listContainer.find( '.support-files-list' );
-    const listItems = list.find( '.support-file-item' );
-
-    expect( listItems.length ).toEqual( newProps.files.length );
-    listItems.forEach( ( item, i ) => {
-      const file = newProps.files[i];
-      const filename = item.find( 'span.filename' );
-      const removeBtn = item.find( 'FileRemoveReplaceButtonGroup' );
-
-      expect( item.hasClass( 'available' ) ).toEqual( true );
-      expect( filename.text() ).toEqual( file.filename );
-      expect( removeBtn.exists() ).toEqual( true );
-    } );
-  } );
 } );
 
 describe( '<GraphicSupportFiles />, when no files are received', () => {
@@ -753,7 +721,7 @@ describe( '<GraphicSupportFiles />, when no files are received', () => {
   } );
 
   it( 'renders a No Files message', () => {
-    const list = listContainer.find( '.support-files-list' );
+    const list = listContainer.find( 'FileList' );
     const noFilesWrapper = listContainer.find( '.no-files' );
     const msg = 'No files to upload';
 
@@ -764,114 +732,3 @@ describe( '<GraphicSupportFiles />, when no files are received', () => {
   } );
 } );
 
-describe( '<GraphicSupportFiles />, when a projectId does not exist & local files have been selected for uploading', () => {
-  let Component;
-  let wrapper;
-  let listContainer;
-
-  const newProps = {
-    ...props,
-    projectId: undefined,
-    files: [
-      {
-        id: 'd2dcba4b-9d72-4533-b8fe-e90469ccf870',
-        name: 'OpenSans-regular.ttf',
-        loaded: 0,
-        input: {
-          dataUrl: 'the-data-url',
-          name: 'OpenSans-regular.ttf',
-          size: 217360,
-          __typename: 'LocalInputFile',
-        },
-        language: 'ck2lzfx710hkq07206thus6pt',
-        style: '',
-        social: [],
-        __typename: 'LocalImageFile',
-      },
-      {
-        id: '47b1c17d-41c2-4f5e-a2a8-914f8e31c106',
-        name: 'transcript.docx',
-        loaded: 0,
-        input: {
-          dataUrl: 'the-data-url',
-          name: 'transcript.docx',
-          size: 9000,
-          __typename: 'LocalInputFile',
-        },
-        language: 'ck2lzfx710hkq07206thus6pt',
-        style: '',
-        social: [],
-        __typename: 'LocalImageFile',
-      },
-    ],
-  };
-
-  beforeEach( () => {
-    Component = (
-      <MockedProvider mocks={ [] } addTypename>
-        <GraphicSupportFiles { ...newProps } />
-      </MockedProvider>
-    );
-
-    wrapper = mount( Component );
-    listContainer = wrapper.find( 'GraphicSupportFiles' );
-  } );
-
-  it( 'renders the correct list className value', () => {
-    const listItems = listContainer.find( '.support-file-item' );
-
-    listItems.forEach( item => {
-      expect( item.hasClass( 'unavailable' ) ).toEqual( true );
-    } );
-  } );
-
-  it( 'renders the filename', () => {
-    const filenames = listContainer.find( 'Filename > .filename' );
-
-    filenames.forEach( ( filename, i ) => {
-      const inputName = newProps.files[i].input.name;
-
-      expect( filename.contains( inputName ) ).toEqual( true );
-    } );
-  } );
-} );
-
-describe( '<GraphicSupportFiles />, when there is a long file name', () => {
-  let Component;
-  let wrapper;
-  let listContainer;
-
-  const newProps = {
-    ...props,
-    files: [
-      {
-        ...props.files[0],
-        filename: 's-secure-rights_aieaue_kaienwiz_ke8akcua_aeicaie_eiamwyz_shell.png',
-      },
-    ],
-  };
-
-  const { filename } = newProps.files[0];
-
-  beforeEach( () => {
-    Component = (
-      <MockedProvider mocks={ [] } addTypename>
-        <GraphicSupportFiles { ...newProps } />
-      </MockedProvider>
-    );
-
-    wrapper = mount( Component );
-    listContainer = wrapper.find( 'GraphicSupportFiles' );
-  } );
-
-  it( 'renders a truncated filename with the full filename visually hidden', () => {
-    const listItem = listContainer.find( '.support-file-item' );
-    const focusable = listItem.find( '[tooltip]' );
-    const visuallyHidden = listItem.find( '.hide-visually' );
-    const shortName = truncateAndReplaceStr( filename, 20, 28 );
-
-    expect( focusable.prop( 'tooltip' ) ).toEqual( filename );
-    expect( focusable.text() ).toEqual( shortName );
-    expect( visuallyHidden.text() ).toEqual( filename );
-  } );
-} );

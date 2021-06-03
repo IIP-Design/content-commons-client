@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
@@ -31,7 +31,7 @@ const PlaybookResources = ( { projectId } ) => {
 
   return (
     <section aria-label="Available Resources" className={ styles.container }>
-      <h2>Available Resources</h2>
+      <h2 className={ styles['section-title'] }>Available Resources</h2>
       <span>Upload Files</span>
 
       <div className={ styles.instructions }>
@@ -44,10 +44,10 @@ const PlaybookResources = ( { projectId } ) => {
       </div>
 
       { files && files.length > 0 && (
-        <Fragment>
+        <div className={ styles.files }>
           <strong>{ `Files Uploaded (${files.length})` }</strong>
           <FileList files={ files } projectId={ projectId } onRemove={ onRemove } />
-        </Fragment>
+        </div>
       ) }
 
       <ButtonAddFiles
