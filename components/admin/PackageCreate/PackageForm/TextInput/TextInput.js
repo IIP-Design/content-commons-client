@@ -4,14 +4,46 @@ import { useField } from 'formik';
 
 import styles from './TextInput.module.scss';
 
-const TextArea = props => (
-  <textarea { ...props } />
+/**
+ * Creates native textarea with forwarded props. Sets value to '' if not present to
+ * to avoid the 'A component is changing an uncontrolled input to be controlled.' warning
+ * @param {object} props
+ * @param {string} props.value field value
+ *
+ * @returns <textarea>
+ */
+const TextArea = ( { value, ...props } ) => (
+  <textarea { ...props } value={ value || '' } />
 );
 
-const Input = props => (
-  <input autoComplete="off" { ...props } />
+TextArea.propTypes = {
+  value: PropTypes.string,
+};
+
+/**
+ * Creates native input with forwarded props. Sets value to '' if not present to
+ * to avoid the 'A component is changing an uncontrolled input to be controlled.' warning
+ * @param {object} props
+ * @param {string} props.value field value
+ *
+ * @returns <input>
+ */
+const Input = ( { value, ...props } ) => (
+  <input autoComplete="off" { ...props } value={ value || '' } />
 );
 
+Input.propTypes = {
+  value: PropTypes.string,
+};
+
+/**
+ * Creates a either a formik-connected input or textarea and adds
+ * optional helper text, error display & field character count tracking/display
+ * @param {object} props
+ * @param {string} props.label form field label
+ * @param {string} props.helperTxt additional text to describe field, e.g 'Briefly describe playbook..'
+ * @param {number} props.maxLength max number of allowed characters for field
+ */
 const TextInput = ( { label, helperTxt, maxLength, ...props } ) => {
   const [chars, setChars] = useState( 0 );
   const [field, meta] = useField( props.name );
@@ -57,7 +89,7 @@ const TextInput = ( { label, helperTxt, maxLength, ...props } ) => {
         />
       </label>
       <div className={ styles['text-input-helper'] }>
-        <p id={ `describedby${props.id}` } className={ styles['field__helper-text'] }>{ helperTxt }</p>
+        <p id={ `describedby_${props.id}` } className={ styles['field__helper-text'] }>{ helperTxt }</p>
         { !!maxLength && (
           <p
             aria-live="polite"
