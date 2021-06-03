@@ -71,26 +71,23 @@ const PackageCreate = () => {
     router.push( '/admin/upload' );
   };
 
+  const getPackageType = types => ( ( types.length === 1 ) ? types[0] : '' );
+  const getPackageTitle = type => ( ( type === 'PACKAGE' || type === 'DAILY_GUIDANCE' )
+    ? `Guidance Package ${moment().format( 'MM-D-YY' )}`
+    : '' );
 
   /**
    * Seed initial form values based on team and content types
    * @param {object} team object
    * @returns object
    */
-  const getInitialValues = () => {
-    let title = '';
-    let type = '';
-
-    if ( teamPackageTypes.length === 1 ) {
-      [type] = teamPackageTypes;
-
-      // if Package type, e.g. 'DAILY_GUIDANCE', pre-populate title
-      title = type === 'PACKAGE' ? `Guidance Package ${moment().format( 'MM-D-YY' )}` : '';
-    }
+  const getInitialValues = type => {
+    const packageType = type || getPackageType( teamPackageTypes );
+    const title = getPackageTitle( packageType );
 
     return {
       title,
-      type,
+      type: packageType,
       team: user?.team?.name,
       categories: [],
       tags: [],
