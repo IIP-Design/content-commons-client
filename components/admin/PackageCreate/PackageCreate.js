@@ -98,6 +98,25 @@ const PackageCreate = () => {
     };
   };
 
+  const reset = ( type, setValues, setTouched ) => {
+    updateSchema( type );
+
+    setTouched( {
+      title: false,
+      categories: false,
+      termsConditions: false,
+    } );
+
+    setValues( {
+      team: user?.team?.name,
+      title: getPackageTitle( type ),
+      type,
+      categories: [],
+      tags: [],
+      policy: '',
+      desc: '',
+    } );
+  };
 
   if ( loading ) {
     return 'Loading form...';
@@ -130,7 +149,7 @@ const PackageCreate = () => {
           <PackageForm
             { ...formikProps }
             packageTypes={ teamPackageTypes }
-            updateSchema={ updateSchema }
+            reset={ reset }
           >
             <div className={ styles.container }>
               <div className={ styles['container-btn'] }>
