@@ -31,6 +31,7 @@ _This sections lists changes committed since most recent release_
 - CKEditor5 and custom editor build directory
 - CKEditor5 setup to `TextEditor`
 - CKEditor5 custom build file to eslint `ignorePattern`
+- Mutation for updating a playbook: `UPDATE_PLAYBOOK_MUTATION`
 
 
 **Changed:**
@@ -59,6 +60,7 @@ _This sections lists changes committed since most recent release_
 - Use CSS modules for `ProjectHeader` component styling
 - Rename `PlaybookTextEditor` to `TextEditor` and move up one level
 - Update tests for `TextEditor`
+- Replace mock mutation with `updatePlaybook` mutation in `PlaybookEdit`
 
 **Fixed:**
 - Skip to content link for improved accessibility
