@@ -209,7 +209,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
       />
 
       <PlaybookDetailsFormContainer
-        playbook={ data.playbook }
+        playbook={ playbook }
         updateNotification={ updateNotification }
         setIsFormValid={ setIsFormValid }
       />
@@ -222,7 +222,11 @@ const PlaybookEdit = ( { id: playbookId } ) => {
         updateMutation={ updatePlaybook }
       />
 
-      <PlaybookResources projectId={ playbookId } />
+      <PlaybookResources
+        assetPath={ playbook.assetPath || '' }
+        projectId={ playbookId }
+        updateMutation={ updatePlaybook }
+      />
 
       <div className="actions">
         <ActionHeadline
