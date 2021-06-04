@@ -4,7 +4,7 @@ import useCKEditor from 'lib/hooks/useCKEditor';
 import { config } from './config';
 import styles from './TextEditor.module.scss';
 
-const TextEditor = ( { id, content, type, updateMutation } ) => {
+const TextEditor = ( { id, content, query, type, updateMutation } ) => {
   // useCKEditor allows CKEditor to work with SSR
   const { CKEditor, Editor, isEditorLoaded } = useCKEditor();
   const [editorData, setEditorData] = useState( '' );
@@ -26,23 +26,38 @@ const TextEditor = ( { id, content, type, updateMutation } ) => {
         if ( !editor.getData() ) return;
 
         try {
-          const response = await updateMutation( {
+          await updateMutation( {
             variables: {
               data: {
                 type,
                 content: {
-                  update: {
-                    html: editor.getData(),
+                  upsert: {
+                    create: {
+                      html: editor.getData(),
+                    },
+                    update: {
+                      html: editor.getData(),
+                    },
                   },
                 },
               },
               where: { id },
             },
+            update: cache => {
+              try {
+                cache.writeQuery( {
+                  query,
+                  data: {
+                    content: {
+                      html: editor.getData(),
+                    },
+                  },
+                } );
+              } catch ( error ) {
+                console.log( error );
+              }
+            },
           } );
-
-          if ( response ) {
-            console.log( 'Saved: ', response );
-          }
         } catch ( err ) {
           console.log( err );
         }
@@ -76,6 +91,7 @@ const TextEditor = ( { id, content, type, updateMutation } ) => {
 TextEditor.propTypes = {
   id: PropTypes.string,
   content: PropTypes.object,
+  query: PropTypes.object,
   type: PropTypes.string,
   updateMutation: PropTypes.func,
 };

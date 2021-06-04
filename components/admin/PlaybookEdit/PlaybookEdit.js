@@ -217,6 +217,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
       <TextEditor
         id={ playbookId }
         content={ playbook?.content || {} }
+        query={ PLAYBOOK_QUERY }
         type={ playbook.type }
         updateMutation={ updatePlaybook }
       />
