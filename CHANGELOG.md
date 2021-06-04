@@ -88,6 +88,7 @@ _This sections lists changes committed since most recent release_
 - Prevent opening of results per page dropdown when focused
 - Live region for the results per page dropdown that gets announced by screen readers when changed
 - Add image dimensions to the DoS seal in the `Header`
+- Use `upsert` for the `TextEditor` `updateMutation` to prevent `the relation has no node...` GraphQL error
 
 # [5.4.8](https://github.com/IIP-Design/content-commons-client/compare/v5.4.7...v5.4.8)(2021-04-29)
 **Fixed:**
