@@ -60,7 +60,7 @@ const Playbook = ( { item } ) => {
       <TexturedSection description={ desc } narrow>
         <div
           className={ styles.content }
-          dangerouslySetInnerHTML={ { __html: item.content } } // eslint-disable-line react/no-danger
+          dangerouslySetInnerHTML={ { __html: item.content.html } } // eslint-disable-line react/no-danger
         />
       </TexturedSection>
       { item.supportFiles && item.supportFiles.length && (
