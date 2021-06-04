@@ -92,6 +92,7 @@ const TextInput = ( { label, helperTxt, maxLength, ...props } ) => {
         <p id={ `describedby_${props.id}` } className={ styles['field__helper-text'] }>{ helperTxt }</p>
         { !!maxLength && (
           <p
+            role="status"
             aria-live="polite"
             className={ `${styles['field__helper-text']} ${chars === maxLength && styles['max-char']}` }
           >
@@ -100,7 +101,13 @@ const TextInput = ( { label, helperTxt, maxLength, ...props } ) => {
         ) }
       </div>
 
-      <p aria-live="polite" className={ styles.required_error }>{ meta.touched ? meta.error : '' }</p>
+      <p
+        role="status"
+        aria-live="polite"
+        className={ styles.required_error }
+      >
+        { meta.touched ? meta.error : '' }
+      </p>
     </div>
   );
 };
