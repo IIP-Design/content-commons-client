@@ -224,6 +224,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
 
       <PlaybookResources
         assetPath={ playbook.assetPath || '' }
+        files={ playbook.supportFiles || [] }
         projectId={ playbookId }
         updateMutation={ updatePlaybook }
       />

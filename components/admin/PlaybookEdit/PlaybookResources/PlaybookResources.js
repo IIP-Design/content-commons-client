@@ -11,7 +11,7 @@ import { LANGUAGE_BY_NAME_QUERY } from 'components/admin/dropdowns/LanguageDropd
 
 import styles from './PlaybookResources.module.scss';
 
-const PlaybookResources = ( { assetPath, projectId, updateMutation } ) => {
+const PlaybookResources = ( { assetPath, files, projectId, updateMutation } ) => {
   const { uploadFile } = useFileUpload();
 
   /**
@@ -24,14 +24,14 @@ const PlaybookResources = ( { assetPath, projectId, updateMutation } ) => {
   /**
    * Uploads and saves files. If error occurs, set 'error' prop on file object
    * @param {string} id project id
-   * @param {array} files files to save
+   * @param {array} fileList files to save
    * @param {string} savePath path to S3 directory to save
    * @param {func} saveFn save function
    * @param {func} progress progress callback function
    * @return {Promise}
    */
-  const uploadAndSaveFiles = ( id, files, savePath, saveFn, progress ) => Promise.all(
-    files.map( async file => {
+  const uploadAndSaveFiles = ( id, fileList, savePath, saveFn, progress ) => Promise.all(
+    fileList.map( async file => {
       const _file = await uploadFile( savePath, file, progress );
 
       if ( _file.error ) {
@@ -100,12 +100,12 @@ const PlaybookResources = ( { assetPath, projectId, updateMutation } ) => {
         </p>
       </div>
 
-      { /* { files && files.length > 0 && (
+      { files && files.length > 0 && (
         <div className={ styles.files }>
           <strong>{ `Files Uploaded (${files.length})` }</strong>
           <FileList files={ files } projectId={ projectId } onRemove={ onRemove } />
         </div>
-      ) } */ }
+      ) }
 
       <ButtonAddFiles
         accept=".docx, .pdf"
@@ -121,6 +121,7 @@ const PlaybookResources = ( { assetPath, projectId, updateMutation } ) => {
 
 PlaybookResources.propTypes = {
   assetPath: PropTypes.string,
+  files: PropTypes.array,
   projectId: PropTypes.string,
   updateMutation: PropTypes.func,
 };
