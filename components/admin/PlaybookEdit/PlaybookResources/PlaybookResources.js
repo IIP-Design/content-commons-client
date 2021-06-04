@@ -67,7 +67,6 @@ const PlaybookResources = ( { assetPath, files, projectId, updateMutation } ) =>
     } );
   };
 
-  /** This portion simulates the data returned from a file upload, should be replaced with an actual support file mutation */
   const addFiles = async e => {
     const fileList = Array.from( e.target.files ).map( file => ( { input: file } ) );
 
@@ -79,12 +78,16 @@ const PlaybookResources = ( { assetPath, files, projectId, updateMutation } ) =>
     );
   };
 
-  const onRemove = id => {
-    // const updated = files.filter( file => file.id !== id );
-
-    // setFiles( updated );
-  };
-  /** End simulated portion */
+  const onRemove = id => updateMutation( {
+    variables: {
+      data: {
+        supportFiles: {
+          'delete': { id },
+        },
+      },
+      where: { id: projectId },
+    },
+  } );
 
   return (
     <section aria-label="Available Resources" className={ styles.container }>
