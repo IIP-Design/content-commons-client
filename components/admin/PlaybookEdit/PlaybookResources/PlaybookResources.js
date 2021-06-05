@@ -19,7 +19,8 @@ const PlaybookResources = ( { assetPath, files, projectId, updateMutation } ) =>
   } );
 
   /**
-   * Uploads and saves files. If error occurs, set 'error' prop on file object
+   * Iterates of a provided list of files, uploading each to S3 and initiating the callback function to save the file connect in GraphQL.
+   * If error occurs during upload, it sets and 'error' prop on the file object
    * @param {string} id project id
    * @param {array} fileList files to save
    * @param {string} savePath path to S3 directory to save
@@ -40,7 +41,7 @@ const PlaybookResources = ( { assetPath, files, projectId, updateMutation } ) =>
   );
 
   /**
-   * Save support file.
+   * Save a support file's data to GraphQL.
    * @param {string} id project id
    * @param {object} file file to save
    * @return {Promise}
@@ -64,6 +65,10 @@ const PlaybookResources = ( { assetPath, files, projectId, updateMutation } ) =>
     } );
   };
 
+  /**
+   * Handles the file uploads, generating an array of files and passing it to the upload function.
+   * @param {Event} e A React synthetic file upload event.
+   */
   const addFiles = async e => {
     const fileList = Array.from( e.target.files ).map( file => ( { input: file } ) );
 
@@ -75,6 +80,11 @@ const PlaybookResources = ( { assetPath, files, projectId, updateMutation } ) =>
     );
   };
 
+  /**
+   * Disconnects the given support file from the current playbook.
+   * @param {string} id The id of the file to be disconnected from the playbook.
+   * @returns {Object} The updated playbook data.
+   */
   const onRemove = id => updateMutation( {
     variables: {
       data: {
