@@ -1,22 +1,19 @@
 import PropTypes from 'prop-types';
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 
 import ButtonAddFiles from 'components/ButtonAddFiles/ButtonAddFiles';
 import FileList from 'components/admin/FileList/FileList';
 
 import { buildSupportFile } from 'lib/graphql/builders/common';
-import { useFileUpload } from 'lib/hooks/useFileUpload';
-import { PLAYBOOK_QUERY } from 'lib/graphql/queries/playbook';
 import { LANGUAGE_BY_NAME_QUERY } from 'components/admin/dropdowns/LanguageDropdown/LanguageDropdown';
+import { useFileUpload } from 'lib/hooks/useFileUpload';
 
 import styles from './PlaybookResources.module.scss';
 
 const PlaybookResources = ( { assetPath, files, projectId, updateMutation } ) => {
   const { uploadFile } = useFileUpload();
 
-  /**
-   * Get the English language data.
-   */
+  // Get the English language data, needed when adding supportFiles.
   const { data: languageData } = useQuery( LANGUAGE_BY_NAME_QUERY, {
     variables: { displayName: 'English' },
   } );
