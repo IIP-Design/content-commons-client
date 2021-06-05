@@ -1,5 +1,8 @@
 import { mount } from 'enzyme';
 import PlaybookEdit from './PlaybookEdit';
+import { MockedProvider } from '@apollo/client/testing';
+
+const mocks = [];
 
 jest.mock(
   'components/admin/PlaybookEdit/PlaybookDetailsFormContainer/PlaybookDetailsFormContainer',
@@ -16,13 +19,15 @@ jest.mock(
   () => function PlaybookResources() { return ''; },
 );
 
-describe.skip( '<PlaybookEdit />', () => {
-  let Component;
+describe( '<PlaybookEdit />', () => {
   let wrapper;
 
   beforeEach( () => {
-    Component = <PlaybookEdit />;
-    wrapper = mount( Component );
+    wrapper = mount( (
+      <MockedProvider mocks={ mocks } addTypename={ false }>
+        <PlaybookEdit />
+      </MockedProvider>
+    ) );
   } );
 
   it( 'renders without crashing', () => {
