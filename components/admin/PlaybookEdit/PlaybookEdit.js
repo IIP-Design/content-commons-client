@@ -162,7 +162,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
       <div className="header">
         <ProjectHeader icon="file" text="Package Details">
           <ActionButtons
-            type="package"
+            type="playbook"
             deleteConfirmOpen={ deleteConfirmOpen }
             setDeleteConfirmOpen={ setDeleteConfirmOpen }
             disabled={ {
