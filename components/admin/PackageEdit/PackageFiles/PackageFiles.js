@@ -14,6 +14,8 @@ const PackageFiles = ( { pkg, handleSave, progress } ) => {
   const { modalOpen, handleOpenModel, handleCloseModal } = useToggleModal();
   const units = pkg.documents || [];
 
+  if ( !pkg || !getCount( pkg ) ) return null;
+
   return (
     <section className="edit-package__files package-files">
       <div className="heading">
