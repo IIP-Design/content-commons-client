@@ -15,8 +15,8 @@ import PlaybookResources from 'components/admin/PlaybookEdit/PlaybookResources/P
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import TextEditor from 'components/admin/TextEditor/TextEditor';
 import {
+  DELETE_PLAYBOOK_MUTATION,
   PLAYBOOK_QUERY,
-  // DELETE_PLAYBOOK_MUTATION,
   // PUBLISH_PLAYBOOK_MUTATION,
   // UNPUBLISH_PLAYBOOK_MUTATION,
   UPDATE_PLAYBOOK_MUTATION,
@@ -31,7 +31,6 @@ const PlaybookEdit = ( { id: playbookId } ) => {
   // temp
   const publishError = {};
   const publishing = false;
-  const deletePlaybook = async () => {};
   const publishPlaybook = () => {};
   const unpublishPlaybook = () => {};
   const executePublishOperation = () => {};
@@ -44,7 +43,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
     displayName: 'playbookQuery',
   } );
 
-  // const [deletePlaybook] = useMutation( DELETE_PLAYBOOK_MUTATION );
+  const [deletePlaybook] = useMutation( DELETE_PLAYBOOK_MUTATION );
   // const [publishPlaybook] = useMutation( PUBLISH_PLAYBOOK_MUTATION );
   // const [unpublishPlaybook] = useMutation( UNPUBLISH_PLAYBOOK_MUTATION );
   // const [updatePlaybookStatus] = useMutation( UPDATE_PLAYBOOK_STATUS_MUTATION );
