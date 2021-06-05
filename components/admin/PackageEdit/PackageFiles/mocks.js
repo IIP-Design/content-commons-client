@@ -368,5 +368,6 @@ export const props = {
       },
     ],
   },
-  hasInitialUploadCompleted: true,
+  handleSave: () => jest.fn(),
+  progress: 0,
 };
