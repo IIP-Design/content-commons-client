@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useRouter } from 'next/router';
-import { useMutation, useQuery } from '@apollo/client';
 import { Loader } from 'semantic-ui-react';
-import useIsDirty from 'lib/hooks/useIsDirty';
-// import usePublish from 'lib/hooks/usePublish';
+import PropTypes from 'prop-types';
+import { useMutation, useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import ActionHeadline from 'components/admin/ActionHeadline/ActionHeadline';
 import ApolloError from 'components/errors/ApolloError';
@@ -14,6 +13,9 @@ import PlaybookDetailsFormContainer from 'components/admin/PlaybookEdit/Playbook
 import PlaybookResources from 'components/admin/PlaybookEdit/PlaybookResources/PlaybookResources';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import TextEditor from 'components/admin/TextEditor/TextEditor';
+
+import useIsDirty from 'lib/hooks/useIsDirty';
+// import usePublish from 'lib/hooks/usePublish';
 import {
   DELETE_PLAYBOOK_MUTATION,
   PLAYBOOK_QUERY,
