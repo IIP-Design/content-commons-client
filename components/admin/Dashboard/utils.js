@@ -83,8 +83,6 @@ export const setQueries = team => {
       return queries;
 
     case 'playbooks':
-      // These are really just placeholder queries so that the dashboard doesn't break.
-      // They return the content/count of all playbooks, not just those added by the given team.
       queries.content = TEAM_PLAYBOOKS_QUERY;
       queries.count = TEAM_PLAYBOOKS_COUNT_QUERY;
       // The following queries are placeholders and for the wrong content type
