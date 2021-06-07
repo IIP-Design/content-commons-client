@@ -1,0 +1,37 @@
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
+
+@mixin hover-color {
+  border-color: $hover-blue !important;
+  background-color: $hover-blue !important;
+}
+
+.link {
+  display: inline-block;
+  border: 2px solid $light-blue !important;
+  border-radius: 4px;
+  margin-right: 0.25em;
+  padding: 0.785714em 1.5em;
+  background-color: $light-blue !important;
+  color: #fff !important;
+  font-size: 0.777778rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: border-color 0.1s ease 0s,
+              background-color 0.1s ease 0s;
+
+  &:hover {
+    @include hover-color;
+    text-decoration: none !important;
+  }
+
+  &:focus {
+    @include focus-styling;
+    @include hover-color;
+  }
+
+  &.disabled {
+    opacity: 0.45 !important;
+    cursor: not-allowed;
+  }
+}

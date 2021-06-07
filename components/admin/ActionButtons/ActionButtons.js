@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { Button, Confirm, Modal } from 'semantic-ui-react';
 
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
+import PreviewLink from 'components/admin/PreviewLink/PreviewLink';
 
 import './ActionButtons.scss';
 
 const ActionButtons = ( {
+  id,
   type,
   deleteConfirmOpen,
   setDeleteConfirmOpen,
@@ -16,7 +18,7 @@ const ActionButtons = ( {
   show,
   loading,
 } ) => {
-  const isPackage = type.toLowerCase() === 'package';
+  const isPackage = ['package', 'playbook'].includes( type.toLowerCase() );
   const contentType = isPackage ? type : 'project';
 
   return (
@@ -62,21 +64,30 @@ const ActionButtons = ( {
         />
       ) }
 
-      { show.preview && (
-        <Modal
-          trigger={ (
-            <Button
-              className="action-btn btn--preview"
-              content="Preview"
-              primary
-              disabled={ disabled.preview }
-            />
-          ) }
-          closeIcon
-        >
-          <Modal.Content>{ previewNode }</Modal.Content>
-        </Modal>
-      ) }
+      { show.preview && type.toLowerCase() !== 'playbook'
+        && (
+          <Modal
+            trigger={ (
+              <Button
+                className="action-btn btn--preview"
+                content="Preview"
+                primary
+                disabled={ disabled.preview }
+              />
+            ) }
+            closeIcon
+          >
+            <Modal.Content>{ previewNode }</Modal.Content>
+          </Modal>
+        ) }
+
+      { show.preview && type.toLowerCase() === 'playbook'
+        && (
+          <PreviewLink
+            disabled={ disabled.preview }
+            url={ `/admin/package/playbook/${id}/preview` }
+          />
+        ) }
 
       { show.publishChanges && (
         <Button
@@ -119,6 +130,7 @@ const ActionButtons = ( {
 };
 
 ActionButtons.defaultProps = {
+  id: '',
   type: 'project',
   deleteConfirmOpen: false,
   setDeleteConfirmOpen: () => {},
@@ -128,6 +140,7 @@ ActionButtons.defaultProps = {
 };
 
 ActionButtons.propTypes = {
+  id: PropTypes.string,
   type: PropTypes.string,
   deleteConfirmOpen: PropTypes.bool,
   setDeleteConfirmOpen: PropTypes.func,

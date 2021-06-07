@@ -12,6 +12,7 @@ import ButtonPublish from 'components/admin/ButtonPublish/ButtonPublish';
 import Notification from 'components/Notification/Notification';
 import PlaybookDetailsFormContainer from 'components/admin/PlaybookEdit/PlaybookDetailsFormContainer/PlaybookDetailsFormContainer';
 import PlaybookResources from 'components/admin/PlaybookEdit/PlaybookResources/PlaybookResources';
+import PreviewLink from 'components/admin/PreviewLink/PreviewLink';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import TextEditor from 'components/admin/TextEditor/TextEditor';
 import {
@@ -157,18 +158,21 @@ const PlaybookEdit = ( { id: playbookId } ) => {
 
   if ( !data ) return null;
   const { playbook } = data;
+  const isDisabled = !playbookId || !isFormValid;
 
   return (
     <div className="edit-playbook">
       <div className="header">
         <ProjectHeader icon="file" text="Package Details">
           <ActionButtons
-            type="package"
+            id={ playbookId }
+            type="playbook"
             deleteConfirmOpen={ deleteConfirmOpen }
             setDeleteConfirmOpen={ setDeleteConfirmOpen }
             disabled={ {
               'delete': deletePlaybookEnabled(),
-              save: !playbookId || !isFormValid,
+              save: isDisabled,
+              preview: isDisabled,
               publishChanges: !playbookId || !playbook?.supportFiles?.length,
               publish: !playbookId || !playbook?.supportFiles?.length,
             } }
@@ -182,6 +186,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
             show={ {
               'delete': true, // playbook has been completed, show delete in the event user wants to delete instead of uploading files
               save: true,
+              preview: true,
               publish: playbook?.status === 'DRAFT',
               publishChanges: playbook?.publishedAt && isDirty,
               unpublish: playbook?.status === 'PUBLISHED',
@@ -235,6 +240,11 @@ const PlaybookEdit = ( { id: playbookId } ) => {
           type="package"
           published={ playbook && playbook.status === 'PUBLISHED' }
           updated={ isDirty }
+        />
+
+        <PreviewLink
+          disabled={ isDisabled }
+          url={ `/admin/package/playbook/${playbookId}/preview` }
         />
 
         <ButtonPublish

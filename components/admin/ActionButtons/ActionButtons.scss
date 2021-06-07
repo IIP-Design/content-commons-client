@@ -35,4 +35,31 @@
   &.btn--final-review {
     @include go-button($light-blue, $hover-blue);
   }
+
+  &.btn--preview.link {
+    display: inline-block;
+    border-radius: 4px;
+    margin-right: 0.25em;
+    padding: 0.785714em 1.5em;
+    background-color: $light-blue !important;
+    font-size: 0.777778rem;
+    font-weight: 700;
+    line-height: 1;
+    transition: background-color 0.1s ease 0s;
+
+    &:hover {
+      background-color: $hover-blue !important;
+      text-decoration: none;
+    }
+
+    &:focus {
+      @include focus-styling;
+      background-color: $hover-blue !important;
+    }
+  }
+
+  &.btn--preview.disabled {
+    opacity: 0.45 !important;
+    cursor: not-allowed;
+  }
 }
