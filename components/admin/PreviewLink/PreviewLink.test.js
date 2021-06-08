@@ -21,19 +21,19 @@ describe( '<PreviewLink />', () => {
   } );
 
   it( 'renders a link with correct href when enabled', () => {
-    const link = wrapper.find( 'a' );
-    const span = wrapper.find( 'span' );
+    const link = wrapper.find( 'a[href]' );
+    const placeholderLink = wrapper.find( '.placeholder' );
 
     expect( link.prop( 'href' ) ).toEqual( props.url );
-    expect( span.exists() ).toEqual( false );
+    expect( placeholderLink.exists() ).toEqual( false );
   } );
 
-  it( 'renders a span when disabled', () => {
+  it( 'renders a placeholder link if disabled', () => {
     wrapper.setProps( { disabled: true } );
-    const link = wrapper.find( 'a' );
-    const span = wrapper.find( 'span' );
+    const link = wrapper.find( 'a[href]' );
+    const placeholderLink = wrapper.find( '.placeholder' );
 
     expect( link.exists() ).toEqual( false );
-    expect( span.contains( '(disabled)' ) ).toEqual( true );
+    expect( placeholderLink.contains( '(disabled link)' ) ).toEqual( true );
   } );
 } );

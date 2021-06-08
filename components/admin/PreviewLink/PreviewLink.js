@@ -6,7 +6,7 @@ import styles from './PreviewLink.module.scss';
 const PreviewLink = ( { content, disabled, url } ) => {
   if ( disabled ) {
     return (
-      <a className={ `${styles.link} ${styles.disabled}` }>
+      <a className={ `${styles.link} ${styles.placeholder}` }>
         { `${content} ` }
         <VisuallyHidden el="span">(disabled link)</VisuallyHidden>
       </a>

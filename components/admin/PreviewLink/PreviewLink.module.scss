@@ -30,7 +30,7 @@
     @include hover-color;
   }
 
-  &.disabled {
+  &.placeholder {
     opacity: 0.45 !important;
     cursor: not-allowed;
   }
