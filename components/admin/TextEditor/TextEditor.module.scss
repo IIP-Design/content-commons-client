@@ -22,10 +22,10 @@
 
   [class="ck ck-sticky-panel"] {
     [class*="ck-sticky-panel__content_sticky"] {
-      top: 50px;
+      top: 50px !important;
 
       @media screen and (min-width: 993px) {
-        top: 70px;
+        top: 70px !important;
       }
     }
   }
