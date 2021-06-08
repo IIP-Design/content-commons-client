@@ -21,12 +21,11 @@ const PreviewLink = ( { content, disabled, url } ) => {
 };
 
 PreviewLink.defaultProps = {
-  content: 'Preview',
   disabled: false,
 };
 
 PreviewLink.propTypes = {
-  content: PropTypes.string,
+  content: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   url: PropTypes.string.isRequired,
 };

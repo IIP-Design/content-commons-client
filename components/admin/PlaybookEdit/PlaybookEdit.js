@@ -243,6 +243,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
         />
 
         <PreviewLink
+          content="Preview"
           disabled={ isDisabled }
           url={ `/admin/package/playbook/${playbookId}/preview` }
         />

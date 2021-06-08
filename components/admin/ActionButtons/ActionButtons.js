@@ -84,6 +84,7 @@ const ActionButtons = ( {
       { show.preview && type.toLowerCase() === 'playbook'
         && (
           <PreviewLink
+            content="Preview"
             disabled={ disabled.preview }
             url={ `/admin/package/playbook/${id}/preview` }
           />
