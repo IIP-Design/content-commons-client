@@ -38,10 +38,7 @@
     background-color: $bg-color !important;
     color: $text-color !important;
 
-    &:hover {
-      @include hover-styling;
-    }
-
+    &:hover,
     &:focus {
       @include hover-styling;
     }
