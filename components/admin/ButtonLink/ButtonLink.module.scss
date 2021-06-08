@@ -1,9 +1,15 @@
 @import 'styles/colors.scss';
 @import 'styles/mixins.scss';
 
+@mixin theme-styling($theme-color: $light-blue, $text-color: #fff) {
+  border: 2px solid $theme-color;
+  background-color: $theme-color;
+  color: $text-color;
+}
+
 @mixin hover-styling($hover-color: $hover-blue) {
-  border-color: $hover-color !important;
-  background-color: $hover-color !important;
+  border-color: $hover-color;
+  background-color: $hover-color;
 }
 
 .link {
@@ -27,16 +33,12 @@
   }
 
   &.placeholder {
-    opacity: 0.45 !important;
+    opacity: 0.45;
     cursor: not-allowed;
   }
 
   &.primary {
-    $bg-color: $light-blue;
-    $text-color: #fff;
-    border: 2px solid $bg-color !important;
-    background-color: $bg-color !important;
-    color: $text-color !important;
+    @include theme-styling;
 
     &:hover,
     &:focus {
