@@ -24,7 +24,7 @@ import {
   // UPDATE_PLAYBOOK_STATUS_MUTATION,
 } from 'lib/graphql/queries/playbook';
 
-import './PlaybookEdit.scss';
+import styles from './PlaybookEdit.module.scss';
 
 const PlaybookEdit = ( { id: playbookId } ) => {
   const router = useRouter();
@@ -161,7 +161,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
   const isDisabled = !playbookId || !isFormValid;
 
   return (
-    <div className="edit-playbook">
+    <div className={ styles.playbook }>
       <div className="header">
         <ProjectHeader icon="file" text="Package Details">
           <ActionButtons
@@ -234,7 +234,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
         updateMutation={ updatePlaybook }
       />
 
-      <div className="actions">
+      <div className={ styles.actions }>
         <ActionHeadline
           className="headline"
           type="package"
