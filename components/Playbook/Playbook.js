@@ -8,6 +8,7 @@ import Share from 'components/Share/Share';
 import TexturedSection from 'components/TexturedSection/TexturedSection';
 
 import { formatBytes } from 'lib/utils';
+import cautionIcon from 'static/icons/icon_caution.svg';
 import shareIconWhite from 'static/icons/icon_share_white.svg';
 
 import styles from './Playbook.module.scss';
@@ -19,6 +20,12 @@ const Playbook = ( { item } ) => {
 
   return (
     <div className={ styles.container }>
+      { router.asPath.includes( 'preview' ) && (
+        <div className={ styles.preview }>
+          <img src={ cautionIcon } alt="" height="18" width="18" />
+          <p>This is a preview of how your Playbook will appear on Content Commons</p>
+        </div>
+      ) }
       <header className={ styles.header }>
         <div className={ styles['header-contents'] }>
           <button className={ styles.back } type="button" onClick={ () => router.back() }>

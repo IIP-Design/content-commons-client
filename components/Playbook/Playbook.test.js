@@ -11,6 +11,12 @@ jest.mock( 'next/config', () => () => ( {
   },
 } ) );
 
+jest.mock( 'next/router', () => ( {
+  useRouter: jest.fn( () => ( {
+    asPath: '/admin/package/playbook/id123/preview',
+  } ) ),
+} ) );
+
 jest.mock( 'components/download/DownloadItem/DownloadItemContent', () => 'download-item-content' );
 jest.mock( 'components/Share/Share', () => 'share' );
 jest.mock( 'components/popups/Popover/Popover', () => 'popover' );
