@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
-import styles from './PreviewLink.module.scss';
+import styles from './ButtonLink.module.scss';
 
-const PreviewLink = ( { content, disabled, url } ) => {
+const ButtonLink = ( { content, disabled, theme, url } ) => {
   if ( disabled ) {
     return (
-      <a className={ `${styles.link} ${styles.placeholder}` }>
+      <a className={ `${styles.link} ${styles[theme]} ${styles.placeholder}` }>
         { `${content} ` }
         <VisuallyHidden el="span">(disabled link)</VisuallyHidden>
       </a>
@@ -15,19 +15,21 @@ const PreviewLink = ( { content, disabled, url } ) => {
 
   return (
     <Link href={ url }>
-      <a className={ styles.link }>{ content }</a>
+      <a className={ `${styles.link} ${styles[theme]}` }>{ content }</a>
     </Link>
   );
 };
 
-PreviewLink.defaultProps = {
+ButtonLink.defaultProps = {
   disabled: false,
+  theme: 'primary',
 };
 
-PreviewLink.propTypes = {
+ButtonLink.propTypes = {
   content: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
+  theme: PropTypes.oneOf( ['primary'] ),
   url: PropTypes.string.isRequired,
 };
 
-export default PreviewLink;
+export default ButtonLink;

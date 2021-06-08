@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Confirm, Modal } from 'semantic-ui-react';
 
 import ConfirmModalContent from 'components/admin/ConfirmModalContent/ConfirmModalContent';
-import PreviewLink from 'components/admin/PreviewLink/PreviewLink';
+import ButtonLink from 'components/admin/ButtonLink/ButtonLink';
 
 import './ActionButtons.scss';
 
@@ -83,7 +83,7 @@ const ActionButtons = ( {
 
       { show.preview && type.toLowerCase() === 'playbook'
         && (
-          <PreviewLink
+          <ButtonLink
             content="Preview"
             disabled={ disabled.preview }
             url={ `/admin/package/playbook/${id}/preview` }

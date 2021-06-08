@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
-import PreviewLink from './PreviewLink';
+import ButtonLink from './ButtonLink';
 
-describe( '<PreviewLink />', () => {
+describe( '<ButtonLink />', () => {
   let Component;
   let wrapper;
 
@@ -12,7 +12,7 @@ describe( '<PreviewLink />', () => {
   };
 
   beforeEach( () => {
-    Component = <PreviewLink { ...props } />;
+    Component = <ButtonLink { ...props } />;
     wrapper = mount( Component );
   } );
 

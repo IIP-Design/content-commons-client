@@ -12,7 +12,7 @@ import ButtonPublish from 'components/admin/ButtonPublish/ButtonPublish';
 import Notification from 'components/Notification/Notification';
 import PlaybookDetailsFormContainer from 'components/admin/PlaybookEdit/PlaybookDetailsFormContainer/PlaybookDetailsFormContainer';
 import PlaybookResources from 'components/admin/PlaybookEdit/PlaybookResources/PlaybookResources';
-import PreviewLink from 'components/admin/PreviewLink/PreviewLink';
+import ButtonLink from 'components/admin/ButtonLink/ButtonLink';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import TextEditor from 'components/admin/TextEditor/TextEditor';
 import {
@@ -242,7 +242,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
           updated={ isDirty }
         />
 
-        <PreviewLink
+        <ButtonLink
           content="Preview"
           disabled={ isDisabled }
           url={ `/admin/package/playbook/${playbookId}/preview` }
