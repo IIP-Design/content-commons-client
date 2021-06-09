@@ -16,7 +16,7 @@ const PlaybookEdit = dynamic( () => import( /* webpackChunkName: "playbookEdit" 
 const PlaybookPage = ( { playbook, query } ) => {
   const [id, action] = query.slug;
 
-  if ( action === 'preview' ) {
+  if ( action === 'preview' && playbook ) {
     return <Playbook item={ playbook } />;
   }
 
