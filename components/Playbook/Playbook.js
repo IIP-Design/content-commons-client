@@ -18,18 +18,9 @@ const desc = 'This Playbook is for use by U.S. diplomatic missions and senior St
 const Playbook = ( { item } ) => {
   const router = useRouter();
 
-  /**
-   * Return null to prevent `GraphQL error occurred [getDataFromTree]
-   * TypeError: Cannot read property 'title' of undefined`
-   * in client terminal on initial load.
-   */
-  if ( !item ) {
-    return null;
-  }
-
   return (
     <div className={ styles.container }>
-      { router.asPath.includes( 'preview' ) && (
+      { router.asPath.startsWith( '/admin' ) && (
         <div className={ styles.preview }>
           <img src={ cautionIcon } alt="" height="18" width="18" />
           <p>This is a preview of how your Playbook will appear on Content Commons</p>
