@@ -200,7 +200,7 @@ describe( '<ActionButtons />, if not disabled', () => {
     const confirmModal = wrapper.find( 'Confirm' );
     const confirmModalContent = mount( confirmModal.prop( 'content' ) );
     const headline = 'Are you sure you want to delete this package?';
-    const msg = `This ${props.type} will be removed permanently from the Content Cloud. Any files uploaded in this ${props.type} will also be removed permanently.`;
+    const msg = `This ${props.type} will be removed permanently from the Content Commons. Any files uploaded in this ${props.type} will also be removed permanently.`;
 
     expect( confirmModalContent.contains( headline ) ).toEqual( true );
     expect( confirmModalContent.find( 'p' ).text() ).toEqual( msg );

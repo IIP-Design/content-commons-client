@@ -16,8 +16,23 @@ const ActionButtons = ( {
   show,
   loading,
 } ) => {
-  const isPackage = type.toLowerCase() === 'package';
-  const contentType = isPackage ? type : 'project';
+  let contentType;
+
+  switch ( type.toLowerCase() ) {
+    case 'package':
+      contentType = 'package';
+      break;
+    case 'playbook':
+      contentType = 'playbook';
+      break;
+    case 'toolkit':
+      contentType = 'toolkit';
+      break;
+    default:
+      contentType = 'project';
+  }
+
+  const capitalizeFirst = string => `${string.charAt( 0 ).toUpperCase()}${string.slice( 1 )}`;
 
   return (
     <Fragment>
@@ -25,7 +40,7 @@ const ActionButtons = ( {
         <Fragment>
           <Button
             className="action-btn btn--delete"
-            content={ `Delete ${type === 'package' ? 'Package' : 'Project'}` }
+            content={ `Delete ${capitalizeFirst( contentType )}` }
             basic
             onClick={ () => setDeleteConfirmOpen( true ) }
             disabled={ disabled.delete }
@@ -40,7 +55,7 @@ const ActionButtons = ( {
                 headline={ `Are you sure you want to delete this ${contentType}?` }
               >
                 <p>
-                  { `This ${contentType} will be removed permanently from the Content Cloud. Any files uploaded in this ${contentType} will also be removed permanently.` }
+                  { `This ${contentType} will be removed permanently from the Content Commons. Any files uploaded in this ${contentType} will also be removed permanently.` }
                 </p>
               </ConfirmModalContent>
             ) }
