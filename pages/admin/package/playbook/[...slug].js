@@ -1,34 +1,57 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/client';
-import ApolloError from 'components/errors/ApolloError';
-import Playbook from 'components/Playbook/Playbook';
-import PlaybookEdit from 'components/admin/PlaybookEdit/PlaybookEdit';
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+import dynamic from 'next/dynamic';
+import fetch from 'isomorphic-unfetch';
 import { PLAYBOOK_QUERY } from 'lib/graphql/queries/playbook';
+
+const Playbook = dynamic( () => import( /* webpackChunkName: "playbook" */ 'components/Playbook/Playbook' ) );
+const PlaybookEdit = dynamic( () => import( /* webpackChunkName: "playbookEdit" */ 'components/admin/PlaybookEdit/PlaybookEdit' ) );
 
 /**
  * 1. Redirect to dashboard if id is not present
  * 2. Execute a SSR query for initial page population from server
  * @param {*} props
  */
-const PlaybookPage = ( { query } ) => {
-  const [id, param] = query.slug;
-  const { loading, error, data } = useQuery( PLAYBOOK_QUERY, {
-    variables: { id },
-    skip: param !== 'preview',
-  } );
+const PlaybookPage = ( { playbook, query } ) => {
+  const [id, action] = query.slug;
 
-  if ( loading ) return <p>Loading...</p>;
-  if ( error ) return <ApolloError error={ error } />;
-
-  if ( param && data?.playbook ) {
-    return <Playbook item={ data.playbook } />;
+  if ( action === 'preview' ) {
+    return <Playbook item={ playbook } />;
   }
 
-  return <PlaybookEdit id={ id } />;
+  return <PlaybookEdit id={ id } playbook={ playbook } />;
 };
 
+export async function getServerSideProps( { query } ) {
+  const [id] = query.slug;
+
+  const apolloClient = new ApolloClient( {
+    cache: new InMemoryCache(),
+    link: new HttpLink( {
+      uri: process.env.REACT_APP_APOLLO_ENDPOINT,
+      fetch,
+    } ),
+  } );
+
+  try {
+    const { data } = await apolloClient.query( {
+      query: PLAYBOOK_QUERY,
+      variables: { id },
+    } );
+
+    return {
+      props: {
+        playbook: data.playbook,
+      },
+    };
+  } catch ( err ) {
+    console.log( err );
+  }
+}
+
 PlaybookPage.propTypes = {
+  playbook: PropTypes.object,
   query: PropTypes.object,
 };
 
