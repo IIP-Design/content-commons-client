@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useRouter } from 'next/router';
-import { useMutation, useQuery } from '@apollo/client';
 import { Loader } from 'semantic-ui-react';
-import useIsDirty from 'lib/hooks/useIsDirty';
-// import usePublish from 'lib/hooks/usePublish';
+import PropTypes from 'prop-types';
+import { useMutation, useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import ActionHeadline from 'components/admin/ActionHeadline/ActionHeadline';
 import ApolloError from 'components/errors/ApolloError';
@@ -15,9 +14,12 @@ import PlaybookResources from 'components/admin/PlaybookEdit/PlaybookResources/P
 import ButtonLink from 'components/admin/ButtonLink/ButtonLink';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import TextEditor from 'components/admin/TextEditor/TextEditor';
+
+import useIsDirty from 'lib/hooks/useIsDirty';
+// import usePublish from 'lib/hooks/usePublish';
 import {
+  DELETE_PLAYBOOK_MUTATION,
   PLAYBOOK_QUERY,
-  // DELETE_PLAYBOOK_MUTATION,
   // PUBLISH_PLAYBOOK_MUTATION,
   // UNPUBLISH_PLAYBOOK_MUTATION,
   UPDATE_PLAYBOOK_MUTATION,
@@ -32,7 +34,6 @@ const PlaybookEdit = ( { id: playbookId } ) => {
   // temp
   const publishError = {};
   const publishing = false;
-  const deletePlaybook = async () => {};
   const publishPlaybook = () => {};
   const unpublishPlaybook = () => {};
   const executePublishOperation = () => {};
@@ -45,7 +46,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
     displayName: 'playbookQuery',
   } );
 
-  // const [deletePlaybook] = useMutation( DELETE_PLAYBOOK_MUTATION );
+  const [deletePlaybook] = useMutation( DELETE_PLAYBOOK_MUTATION );
   // const [publishPlaybook] = useMutation( PUBLISH_PLAYBOOK_MUTATION );
   // const [unpublishPlaybook] = useMutation( UNPUBLISH_PLAYBOOK_MUTATION );
   // const [updatePlaybookStatus] = useMutation( UPDATE_PLAYBOOK_STATUS_MUTATION );
