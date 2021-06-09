@@ -25,6 +25,9 @@ const ActionButtons = ( {
     case 'playbook':
       contentType = 'playbook';
       break;
+    case 'toolkit':
+      contentType = 'toolkit';
+      break;
     default:
       contentType = 'project';
   }
