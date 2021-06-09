@@ -107,7 +107,43 @@ const createClient = ( { headers, initialState } ) => new ApolloClient( {
     httpLink, // link  - disable web socket link for now
   ] ),
 
-  cache: new InMemoryCache().restore( initialState || {} ),
+  cache: new InMemoryCache( {
+    typePolicies: {
+      Playbook: {
+        fields: {
+          supportFiles: {
+            merge( existing, incoming, { readField, mergeObjects } ) {
+              const merged = existing ? existing.slice( 0 ) : [];
+              const fileToIndex = Object.create( null );
+
+              if ( existing ) {
+                existing.forEach( ( file, index ) => {
+                  fileToIndex[readField( 'id', file )] = index;
+                } );
+              }
+
+              incoming.forEach( file => {
+                const id = readField( 'id', file );
+                const index = fileToIndex[id];
+
+                if ( typeof index === 'number' ) {
+                  // Merge the new file data with the existing file data.
+                  merged[index] = mergeObjects( merged[index], file );
+                } else {
+                  // First time we've seen this file in this array.
+                  fileToIndex[id] = merged.length;
+                  merged.push( file );
+                }
+              } );
+
+              // If incoming file list is shorter than the merged file list we know files have been deleted and should not be returned
+              return merged.length > incoming.length ? incoming : merged;
+            },
+          },
+        },
+      },
+    },
+  } ).restore( initialState || {} ),
   resolvers: {},
 } );
 
