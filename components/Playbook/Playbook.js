@@ -19,10 +19,6 @@ const desc = 'This Playbook is for use by U.S. diplomatic missions and senior St
 const Playbook = ( { item } ) => {
   const router = useRouter();
 
-  if ( !item ) {
-    return <p>Loading...</p>;
-  }
-
   return (
     <div className={ styles.container }>
       { router.asPath.startsWith( '/admin' ) && (
