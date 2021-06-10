@@ -1,6 +1,7 @@
 import moment from 'moment';
 import propTypes from 'prop-types';
 import { useRouter } from 'next/router';
+import DOMPurify from 'dompurify';
 
 import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
 import Popover from 'components/popups/Popover/Popover';
@@ -67,7 +68,7 @@ const Playbook = ( { item } ) => {
       <TexturedSection description={ desc } narrow>
         <div
           className={ styles.content }
-          dangerouslySetInnerHTML={ { __html: item.content.html } } // eslint-disable-line react/no-danger
+          dangerouslySetInnerHTML={ { __html: DOMPurify.sanitize( item.content.html ) } } // eslint-disable-line react/no-danger
         />
       </TexturedSection>
       { item.supportFiles && item.supportFiles.length && (
