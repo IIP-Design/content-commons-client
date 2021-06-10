@@ -68,7 +68,7 @@ const Playbook = ( { item } ) => {
       <TexturedSection description={ desc } narrow>
         <div
           className={ styles.content }
-          dangerouslySetInnerHTML={ { __html: DOMPurify.sanitize( item.content.html ) } } // eslint-disable-line react/no-danger
+          dangerouslySetInnerHTML={ { __html: DOMPurify.sanitize( item?.content?.html || '' ) } } // eslint-disable-line react/no-danger
         />
       </TexturedSection>
       { item.supportFiles && item.supportFiles.length && (
