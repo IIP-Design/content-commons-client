@@ -14,6 +14,7 @@ import {
 
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import packageThumbnail from 'static/images/thumbnail_package.svg';
+import playbookThumbnail from 'static/images/thumbnail_playbook.svg';
 import DetailsPopup from '../DetailsPopup/DetailsPopup';
 import { DashboardContext } from 'context/dashboardContext';
 
@@ -108,6 +109,9 @@ const TeamProjectPrimaryCol = ( { d, header } ) => {
     } else if ( type?.toLowerCase() === 'package' ) {
       url = packageThumbnail;
       alt = 'Package';
+    } else if ( type?.toLowerCase() === 'playbook' ) {
+      url = playbookThumbnail;
+      alt = 'Playbook';
     }
 
     if ( url ) {
@@ -132,6 +136,7 @@ const TeamProjectPrimaryCol = ( { d, header } ) => {
     if ( isPublishing || !format ) return null;
 
     if ( d.__typename === 'Package' ) return `/admin/package/guidance/${id}`;
+    if ( d.__typename === 'Playbook' ) return `/admin/package/playbook/${id}`;
     if ( d.__typename === 'DocumentFile' ) return `/admin/document/${id}`;
 
     if ( format === 'pretty' ) {
@@ -239,20 +244,27 @@ const TeamProjectPrimaryCol = ( { d, header } ) => {
                     <a className={ getActionCls() }>Edit</a>
                   </Link>
                   <span className="separator">|</span>
-                  <Modal
-                    trigger={ (
-                      <button type="button" className={ getActionCls() }>
-                        Preview
-                      </button>
-                    ) }
-                    closeIcon
-                    className={ `${d.__typename}-preview` }
-                    { ...getPkgModalSize( 'fullscreen' ) }
-                  >
-                    <Modal.Content>
-                      <ContentPreview data={ d } id={ id } />
-                    </Modal.Content>
-                  </Modal>
+                  { d.__typename === 'Playbook' && (
+                    <Link as={ `${getEditUrl( 'pretty' )}/preview` } href={ `${getEditUrl( 'pretty' )}/preview` } prefetch={ false }>
+                      <a className={ getActionCls() }>Preview</a>
+                    </Link>
+                  ) }
+                  { d.__typename !== 'Playbook' && (
+                    <Modal
+                      trigger={ (
+                        <button type="button" className={ getActionCls() }>
+                          Preview
+                        </button>
+                      ) }
+                      closeIcon
+                      className={ `${d.__typename}-preview` }
+                      { ...getPkgModalSize( 'fullscreen' ) }
+                    >
+                      <Modal.Content>
+                        <ContentPreview data={ d } id={ id } />
+                      </Modal.Content>
+                    </Modal>
+                  ) }
                   { d.__typename !== 'DocumentFile' && (
                     <Fragment>
                       <span className="separator">|</span>

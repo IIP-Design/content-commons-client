@@ -26,7 +26,12 @@ import {
   VIDEO_PROJECT_FILES_QUERY,
   VIDEO_PROJECTS_META_QUERY,
 } from 'lib/graphql/queries/video';
-import { TEAM_PLAYBOOKS_QUERY, TEAM_PLAYBOOKS_COUNT_QUERY } from 'lib/graphql/queries/playbook';
+import {
+  DELETE_PLAYBOOK_MUTATION,
+  PLAYBOOKS_META_QUERY,
+  TEAM_PLAYBOOKS_QUERY,
+  TEAM_PLAYBOOKS_COUNT_QUERY,
+} from 'lib/graphql/queries/playbook';
 
 /**
  * Returns the project type based off of the content type available to a team
@@ -85,11 +90,11 @@ export const setQueries = team => {
     case 'playbooks':
       queries.content = TEAM_PLAYBOOKS_QUERY;
       queries.count = TEAM_PLAYBOOKS_COUNT_QUERY;
+      queries.remove = DELETE_PLAYBOOK_MUTATION;
+      queries.metaContent = PLAYBOOKS_META_QUERY;
       // The following queries are placeholders and for the wrong content type
       // As such, these operations will not work properly
       queries.files = PACKAGE_FILES_QUERY;
-      queries.metaContent = PACKAGES_META_QUERY;
-      queries.remove = DELETE_PACKAGE_MUTATION;
       queries.status = UPDATE_PACKAGE_STATUS_MUTATION;
       queries.unpublish = UNPUBLISH_PACKAGE_MUTATION;
 
