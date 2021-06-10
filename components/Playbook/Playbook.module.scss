@@ -1,4 +1,5 @@
 @import 'styles/colors.scss';
+@import 'styles/mixins.scss';
 
 .back {
   background: transparent;
@@ -20,6 +21,23 @@
   padding-top: 5rem;
 }
 
+.preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-top: -2.2rem !important;
+  @media screen and (min-width: 993px) {
+    margin-top: -1.1rem !important;
+  }
+  margin-bottom: 0;
+  padding: 0.5rem 1.5rem;
+  background-color: $gold;
+  color: $blue;
+  font-size: 0.888888889rem;
+  font-style: italic;
+}
+
 .content {
   max-width: 976px;
   padding: 2rem 5rem 2.5rem;
@@ -36,6 +54,10 @@
     margin: 0 auto;
     max-width: 976px;
     width: 100%;
+  }
+
+  button:focus {
+    @include focus-styling($color: #fff);
   }
 }
 

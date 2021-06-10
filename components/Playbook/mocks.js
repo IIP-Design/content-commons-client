@@ -109,7 +109,12 @@ export const mockItem = {
   // author: User,
   // team: Team,
   // desc:  String,
-  content: mockContent,
+  content: {
+    id: '9876',
+    rawText: '',
+    html: mockContent,
+    markdown: '',
+  },
   // status: PublishStatus @default(value: DRAFT),
   // visibility: Visibility @default(value: INTERNAL),
   policy: {

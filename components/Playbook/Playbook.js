@@ -1,6 +1,7 @@
 import moment from 'moment';
 import propTypes from 'prop-types';
 import { useRouter } from 'next/router';
+import DOMPurify from 'dompurify';
 
 import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
 import Popover from 'components/popups/Popover/Popover';
@@ -8,6 +9,7 @@ import Share from 'components/Share/Share';
 import TexturedSection from 'components/TexturedSection/TexturedSection';
 
 import { formatBytes } from 'lib/utils';
+import cautionIcon from 'static/icons/icon_caution.svg';
 import shareIconWhite from 'static/icons/icon_share_white.svg';
 
 import styles from './Playbook.module.scss';
@@ -19,6 +21,12 @@ const Playbook = ( { item } ) => {
 
   return (
     <div className={ styles.container }>
+      { router.asPath.startsWith( '/admin' ) && (
+        <div className={ styles.preview }>
+          <img src={ cautionIcon } alt="" height="18" width="18" />
+          <p>This is a preview of how your Playbook will appear on Content Commons</p>
+        </div>
+      ) }
       <header className={ styles.header }>
         <div className={ styles['header-contents'] }>
           <button className={ styles.back } type="button" onClick={ () => router.back() }>
@@ -60,7 +68,7 @@ const Playbook = ( { item } ) => {
       <TexturedSection description={ desc } narrow>
         <div
           className={ styles.content }
-          dangerouslySetInnerHTML={ { __html: item.content } } // eslint-disable-line react/no-danger
+          dangerouslySetInnerHTML={ { __html: DOMPurify.sanitize( item?.content?.html || '' ) } } // eslint-disable-line react/no-danger
         />
       </TexturedSection>
       { item.supportFiles && item.supportFiles.length && (

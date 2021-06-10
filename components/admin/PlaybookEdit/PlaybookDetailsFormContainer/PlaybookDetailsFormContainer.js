@@ -131,7 +131,7 @@ PlaybookDetailsFormContainer.propTypes = {
     team: PropTypes.object,
     categories: PropTypes.array,
     tags: PropTypes.array,
-    policy: PropTypes.string,
+    policy: PropTypes.object,
     visibility: PropTypes.string,
     desc: PropTypes.string,
     supportFiles: PropTypes.array,

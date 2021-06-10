@@ -1,0 +1,48 @@
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
+
+@mixin theme-styling($theme-color: $light-blue, $text-color: #fff) {
+  border: 2px solid $theme-color;
+  background-color: $theme-color;
+  color: $text-color;
+}
+
+@mixin hover-styling($hover-color: $hover-blue) {
+  border-color: $hover-color;
+  background-color: $hover-color;
+}
+
+.link {
+  $animation-options: 0.1s ease 0s;
+  display: inline-block;
+  border-radius: 4px;
+  margin-right: 0.25em;
+  padding: 0.785714em 1.5em;
+  font-size: 0.777778rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: border-color $animation-options,
+              background-color $animation-options;
+
+  &:hover {
+    text-decoration: none !important;
+  }
+
+  &:focus {
+    @include focus-styling;
+  }
+
+  &.placeholder {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  &.primary {
+    @include theme-styling;
+
+    &:hover,
+    &:focus {
+      @include hover-styling;
+    }
+  }
+}

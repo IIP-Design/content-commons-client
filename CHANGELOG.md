@@ -32,6 +32,9 @@ _This sections lists changes committed since most recent release_
 - CKEditor5 setup to `TextEditor`
 - CKEditor5 custom build file to eslint `ignorePattern`
 - Mutation for updating a playbook: `UPDATE_PLAYBOOK_MUTATION`
+- `ButtonLink` component for links styled as buttons
+- Preview playbook links to `PlaybookEdit`
+- Admin preview banner message to `Playbook`
 
 
 **Changed:**
@@ -61,6 +64,9 @@ _This sections lists changes committed since most recent release_
 - Rename `PlaybookTextEditor` to `TextEditor` and move up one level
 - Update tests for `TextEditor`
 - Replace mock mutation with `updatePlaybook` mutation in `PlaybookEdit`
+- Switch to `[...slug]` catch all route from `[id]` for `admin/package/playbook` route to allow for `preview` param
+- Use CSS modules for `PlaybookEdit` component
+- Adjust focus styling for `Playbook` header buttons
 
 **Fixed:**
 - Skip to content link for improved accessibility
@@ -89,6 +95,7 @@ _This sections lists changes committed since most recent release_
 - Live region for the results per page dropdown that gets announced by screen readers when changed
 - Add image dimensions to the DoS seal in the `Header`
 - Use `upsert` for the `TextEditor` `updateMutation` to prevent `the relation has no node...` GraphQL error
+- PropType for `policy` in `PlaybookDetailsFormContainer`
 
 # [5.4.8](https://github.com/IIP-Design/content-commons-client/compare/v5.4.7...v5.4.8)(2021-04-29)
 **Fixed:**

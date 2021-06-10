@@ -11,6 +11,7 @@ import ButtonPublish from 'components/admin/ButtonPublish/ButtonPublish';
 import Notification from 'components/Notification/Notification';
 import PlaybookDetailsFormContainer from 'components/admin/PlaybookEdit/PlaybookDetailsFormContainer/PlaybookDetailsFormContainer';
 import PlaybookResources from 'components/admin/PlaybookEdit/PlaybookResources/PlaybookResources';
+import ButtonLink from 'components/admin/ButtonLink/ButtonLink';
 import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import TextEditor from 'components/admin/TextEditor/TextEditor';
 
@@ -25,7 +26,7 @@ import {
   // UPDATE_PLAYBOOK_STATUS_MUTATION,
 } from 'lib/graphql/queries/playbook';
 
-import './PlaybookEdit.scss';
+import styles from './PlaybookEdit.module.scss';
 
 const PlaybookEdit = ( { id: playbookId } ) => {
   const router = useRouter();
@@ -158,18 +159,21 @@ const PlaybookEdit = ( { id: playbookId } ) => {
 
   if ( !data ) return null;
   const { playbook } = data;
+  const isDisabled = !playbookId || !isFormValid;
 
   return (
-    <div className="edit-playbook">
+    <div className={ styles.playbook }>
       <div className="header">
         <ProjectHeader icon="file" text="Package Details">
           <ActionButtons
+            id={ playbookId }
             type="playbook"
             deleteConfirmOpen={ deleteConfirmOpen }
             setDeleteConfirmOpen={ setDeleteConfirmOpen }
             disabled={ {
               'delete': deletePlaybookEnabled(),
-              save: !playbookId || !isFormValid,
+              save: isDisabled,
+              preview: isDisabled,
               publishChanges: !playbookId || !playbook?.supportFiles?.length,
               publish: !playbookId || !playbook?.supportFiles?.length,
             } }
@@ -183,6 +187,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
             show={ {
               'delete': true, // playbook has been completed, show delete in the event user wants to delete instead of uploading files
               save: true,
+              preview: true,
               publish: playbook?.status === 'DRAFT',
               publishChanges: playbook?.publishedAt && isDirty,
               unpublish: playbook?.status === 'PUBLISHED',
@@ -230,12 +235,18 @@ const PlaybookEdit = ( { id: playbookId } ) => {
         updateMutation={ updatePlaybook }
       />
 
-      <div className="actions">
+      <div className={ styles.actions }>
         <ActionHeadline
           className="headline"
           type="package"
           published={ playbook && playbook.status === 'PUBLISHED' }
           updated={ isDirty }
+        />
+
+        <ButtonLink
+          content="Preview"
+          disabled={ isDisabled }
+          url={ `/admin/package/playbook/${playbookId}/preview` }
         />
 
         <ButtonPublish

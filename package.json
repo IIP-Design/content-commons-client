@@ -27,6 +27,7 @@
     "axios": "^0.21.1",
     "bodybuilder": "^2.4.0",
     "core-js": "^3.10.0",
+    "dompurify": "^2.2.9",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "formik": "^2.2.6",
@@ -123,7 +124,9 @@
   "babel": {
     "env": {
       "development": {
-        "exclude": ["./components/admin/TextEditor/custom-build/"],
+        "exclude": [
+          "./components/admin/TextEditor/custom-build/"
+        ],
         "presets": [
           "next/babel"
         ],
@@ -145,7 +148,9 @@
         ]
       },
       "production": {
-        "exclude": ["./components/admin/TextEditor/custom-build/"],
+        "exclude": [
+          "./components/admin/TextEditor/custom-build/"
+        ],
         "presets": [
           "next/babel"
         ],
@@ -167,7 +172,9 @@
         ]
       },
       "test": {
-        "exclude": ["./components/admin/TextEditor/custom-build/"],
+        "exclude": [
+          "./components/admin/TextEditor/custom-build/"
+        ],
         "presets": [
           [
             "next/babel",

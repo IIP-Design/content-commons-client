@@ -4,6 +4,7 @@ import ActionButtons from './ActionButtons';
 jest.mock( 'next/config', () => ( { publicRuntimeConfig: {} } ) );
 
 const props = {
+  id: 'p123',
   type: 'package',
   deleteConfirmOpen: false,
   setDeleteConfirmOpen: jest.fn( bool => bool ),
