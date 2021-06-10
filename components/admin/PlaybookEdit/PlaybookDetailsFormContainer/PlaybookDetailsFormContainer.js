@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 // import { useMutation } from '@apollo/client';
 import { Formik } from 'formik';
-import { baseSchema } from './validationSchema';
 
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 import Notification from 'components/Notification/Notification';
 import PackageForm from 'components/admin/PackageCreate/PackageForm/PackageForm';
 
+import { packageSchema } from 'components/admin/PackageCreate/PackageForm/validationSchema';
 import useTimeout from 'lib/hooks/useTimeout';
 
 const PlaybookDetailsFormContainer = props => {
@@ -115,7 +115,7 @@ const PlaybookDetailsFormContainer = props => {
     <Formik
       initialValues={ getInitialValues() }
       enableReinitialize={ reinitialize }
-      validationSchema={ baseSchema }
+      validationSchema={ packageSchema }
     >
       { renderContent }
     </Formik>
