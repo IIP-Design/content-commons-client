@@ -1,7 +1,7 @@
 import moment from 'moment';
 import propTypes from 'prop-types';
 import { useRouter } from 'next/router';
-import DOMPurify from 'dompurify';
+import DOMPurify from 'isomorphic-dompurify';
 
 import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
 import Popover from 'components/popups/Popover/Popover';
