@@ -19,7 +19,7 @@ jest.mock( 'lib/hooks/useCrudActionsDocument', () => ( {
 
 jest.mock( 'next/config', () => ( { publicRuntimeConfig: { REACT_APP_AWS_S3_AUTHORING_BUCKET: 's3-bucket-url' } } ) );
 
-describe.skip( '<PackageFiles />', () => {
+describe( '<PackageFiles />', () => {
   const consoleError = console.error;
 
   beforeAll( () => suppressActWarning( consoleError ) );
@@ -58,6 +58,7 @@ describe.skip( '<PackageFiles />', () => {
 
   it( 'renders EditPackageFiles with correct props', () => {
     const editPkgFiles = wrapper.find( 'EditPackageFiles' );
+
     const units = props.pkg.documents || [];
 
     expect( editPkgFiles.exists() ).toEqual( true );
@@ -88,11 +89,6 @@ describe.skip( '<PackageFiles />', () => {
     editPkgFiles().prop( 'onClose' )();
     wrapper.update();
     expect( editPkgFiles().prop( 'modalOpen' ) ).toEqual( false );
-  } );
-
-  it( 'renders null if !hasInitialUploadCompleted', () => {
-    wrapper.setProps( { hasInitialUploadCompleted: false } );
-    expect( wrapper.html() ).toEqual( null );
   } );
 
   it( 'renders null if pkg === {}', () => {

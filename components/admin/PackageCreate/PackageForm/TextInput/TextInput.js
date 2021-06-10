@@ -4,14 +4,46 @@ import { useField } from 'formik';
 
 import styles from './TextInput.module.scss';
 
-const TextArea = props => (
-  <textarea { ...props } />
+/**
+ * Creates native textarea with forwarded props. Sets value to '' if not present to
+ * to avoid the 'A component is changing an uncontrolled input to be controlled.' warning
+ * @param {object} props
+ * @param {string} props.value field value
+ *
+ * @returns <textarea>
+ */
+const TextArea = ( { value, ...props } ) => (
+  <textarea { ...props } value={ value || '' } />
 );
 
-const Input = props => (
-  <input autoComplete="off" { ...props } />
+TextArea.propTypes = {
+  value: PropTypes.string,
+};
+
+/**
+ * Creates native input with forwarded props. Sets value to '' if not present to
+ * to avoid the 'A component is changing an uncontrolled input to be controlled.' warning
+ * @param {object} props
+ * @param {string} props.value field value
+ *
+ * @returns <input>
+ */
+const Input = ( { value, ...props } ) => (
+  <input autoComplete="off" { ...props } value={ value || '' } />
 );
 
+Input.propTypes = {
+  value: PropTypes.string,
+};
+
+/**
+ * Creates a either a formik-connected input or textarea and adds
+ * optional helper text, error display & field character count tracking/display
+ * @param {object} props
+ * @param {string} props.label form field label
+ * @param {string} props.helperTxt additional text to describe field, e.g 'Briefly describe playbook..'
+ * @param {number} props.maxLength max number of allowed characters for field
+ */
 const TextInput = ( { label, helperTxt, maxLength, ...props } ) => {
   const [chars, setChars] = useState( 0 );
   const [field, meta] = useField( props.name );
@@ -31,12 +63,20 @@ const TextInput = ( { label, helperTxt, maxLength, ...props } ) => {
   };
 
   // append additional props to forward to native input control
-  const _props = {
-    ...props,
-    'aria-describedby': `describedby${props.id}`,
-    onChange: handleOnChange,
-    maxLength,
-  };
+  let _props = { ...props };
+
+
+  if ( helperTxt ) {
+    _props['aria-describedby'] = `describedby_${props.id}`;
+  }
+
+  if ( maxLength ) {
+    _props = {
+      ..._props,
+      onChange: handleOnChange,
+      maxLength,
+    };
+  }
 
   return (
     <div className={ styles['text-input'] }>
@@ -49,9 +89,10 @@ const TextInput = ( { label, helperTxt, maxLength, ...props } ) => {
         />
       </label>
       <div className={ styles['text-input-helper'] }>
-        <p id={ `describedby${props.id}` } className={ styles['field__helper-text'] }>{ helperTxt }</p>
+        <p id={ `describedby_${props.id}` } className={ styles['field__helper-text'] }>{ helperTxt }</p>
         { !!maxLength && (
           <p
+            role="status"
             aria-live="polite"
             className={ `${styles['field__helper-text']} ${chars === maxLength && styles['max-char']}` }
           >
@@ -60,7 +101,13 @@ const TextInput = ( { label, helperTxt, maxLength, ...props } ) => {
         ) }
       </div>
 
-      <p aria-live="polite" className={ styles.required_error }>{ meta.touched ? meta.error : '' }</p>
+      <p
+        role="status"
+        aria-live="polite"
+        className={ styles.required_error }
+      >
+        { meta.touched ? meta.error : '' }
+      </p>
     </div>
   );
 };

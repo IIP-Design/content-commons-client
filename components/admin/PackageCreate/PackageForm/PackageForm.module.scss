@@ -2,6 +2,7 @@
 @import "styles/mixins.scss";
 
 @include required-text;
+@include required-error;
 @include field-helper-text;
 
 .form_container {

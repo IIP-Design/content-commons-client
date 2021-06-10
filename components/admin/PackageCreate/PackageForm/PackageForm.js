@@ -13,7 +13,8 @@ import styles from './PackageForm.module.scss';
 export const HandleOnChangeContext = createContext();
 
 const PackageForm = ( {
-  validateForm,
+  setValues,
+  setTouched,
   setFieldValue,
   setFieldTouched,
   touched,
@@ -21,7 +22,7 @@ const PackageForm = ( {
   errors,
   children,
   packageTypes,
-  updateSchema,
+  reset,
 } ) => {
   const [hideFields, setHideFields] = useState( true );
   const isGuidance = type => type === 'DAILY_GUIDANCE' || type === 'PACKAGE';
@@ -50,13 +51,7 @@ const PackageForm = ( {
     setFieldTouched( name, true, false );
 
     if ( name === 'type' ) {
-      setHideFields( hideAdditionalFields( value ) );
-
-      // update schema when package type changes
-      updateSchema( value );
-
-      // validate form against new schema on next 'tick' to give schema time to update
-      setTimeout( () => validateForm(), 0 );
+      reset( value, setValues, setTouched );
     }
   };
 
@@ -162,15 +157,16 @@ const PackageForm = ( {
 };
 
 PackageForm.propTypes = {
-  validateForm: PropTypes.func,
+  setValues: PropTypes.func,
   setFieldValue: PropTypes.func,
+  setTouched: PropTypes.func,
   setFieldTouched: PropTypes.func,
   touched: PropTypes.object,
   values: PropTypes.object,
   errors: PropTypes.object,
   children: PropTypes.node,
   packageTypes: PropTypes.array,
-  updateSchema: PropTypes.func,
+  reset: PropTypes.func,
 };
 
 export default PackageForm;
