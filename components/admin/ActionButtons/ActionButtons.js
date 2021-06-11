@@ -101,7 +101,7 @@ const ActionButtons = ( {
           <ButtonLink
             content="Preview"
             disabled={ disabled.preview }
-            url={ `/admin/package/playbook/${id}/preview` }
+            url={ `/admin/package/playbook/preview/${id}` }
           />
         ) }
 

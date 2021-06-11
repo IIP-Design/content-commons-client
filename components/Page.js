@@ -20,7 +20,7 @@ const Page = ( { children, router } ) => {
     path = parts[parts.length - 2];
   }
 
-  const isFullWidth = pathname === '/' || path === 'playbook';
+  const isFullWidth = pathname === '/' || path === 'playbook' || pathname.startsWith( '/admin/package/playbook' );
 
   const title = path ? `${capitalizeFirst( path )} | Content Commons` : 'Content Commons';
   const bodyCls = isFullWidth ? '' : 'ui container inside';

@@ -1,30 +1,25 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
-import dynamic from 'next/dynamic';
 import fetch from 'isomorphic-unfetch';
+import Playbook from 'components/Playbook/Playbook';
 import { PLAYBOOK_QUERY } from 'lib/graphql/queries/playbook';
-
-const Playbook = dynamic( () => import( /* webpackChunkName: "playbook" */ 'components/Playbook/Playbook' ) );
-const PlaybookEdit = dynamic( () => import( /* webpackChunkName: "playbookEdit" */ 'components/admin/PlaybookEdit/PlaybookEdit' ) );
 
 /**
  * 1. Redirect to dashboard if id is not present
  * 2. Execute a SSR query for initial page population from server
  * @param {*} props
  */
-const PlaybookPage = ( { playbook, query } ) => {
-  const [id, action] = query.slug;
+const PlaybookPage = props => {
+  const {
+    playbook,
+    query: { id },
+  } = props;
 
-  if ( action === 'preview' ) {
-    return <Playbook item={ playbook } />;
-  }
-
-  return <PlaybookEdit id={ id } playbook={ playbook } />;
+  return <Playbook id={ id } item={ playbook } />;
 };
 
 export async function getServerSideProps( { query } ) {
-  const [id] = query.slug;
+  const { id } = query;
 
   const apolloClient = new ApolloClient( {
     cache: new InMemoryCache(),

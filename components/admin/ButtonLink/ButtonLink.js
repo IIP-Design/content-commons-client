@@ -14,7 +14,7 @@ const ButtonLink = ( { content, disabled, theme, url } ) => {
   }
 
   return (
-    <Link href={ url }>
+    <Link href={ url } prefetch={ false }>
       <a className={ `${styles.link} ${styles[theme]}` }>{ content }</a>
     </Link>
   );
