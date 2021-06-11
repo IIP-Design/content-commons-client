@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-// import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Formik } from 'formik';
 
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
@@ -8,17 +8,14 @@ import Notification from 'components/Notification/Notification';
 import PackageForm from 'components/admin/PackageCreate/PackageForm/PackageForm';
 
 import { packageSchema } from 'components/admin/PackageCreate/PackageForm/validationSchema';
+import { buildUpdatePlaybookTree } from 'lib/graphql/builders/playbook';
+import { UPDATE_PLAYBOOK_MUTATION } from 'lib/graphql/queries/playbook';
 import useTimeout from 'lib/hooks/useTimeout';
 
 const PlaybookDetailsFormContainer = props => {
-  // temp
-  const updatePlaybook = async () => {};
-  const buildUpdatePlaybookTree = () => {};
-  const isUpdateNeeded = () => {};
-
   const { playbook, setIsFormValid } = props;
 
-  // const [updatePlaybook] = useMutation( UPDATE_PLAYBOOK_MUTATION );
+  const [updatePlaybook] = useMutation( UPDATE_PLAYBOOK_MUTATION );
   const [fileCount, setFileCount] = useState( playbook?.supportFiles ? playbook.supportFiles.length : null );
   const [reinitialize, setReinitialize] = useState( false );
   const [showNotification, setShowNotification] = useState( false );
@@ -76,12 +73,12 @@ const PlaybookDetailsFormContainer = props => {
     }
   };
 
-  const save = async ( values, prevValues ) => {
-    if ( isUpdateNeeded( values, prevValues ) ) {
-      await update( values, playbook.supportFiles );
-      setShowNotification( true );
-      startTimeout();
-    }
+  const save = async values => {
+    const prevValues = getInitialValues();
+
+    await update( values, prevValues );
+    setShowNotification( true );
+    startTimeout();
   };
 
   const renderContent = formikProps => {
