@@ -245,7 +245,7 @@ const TeamProjectPrimaryCol = ( { d, header } ) => {
                   </Link>
                   <span className="separator">|</span>
                   { d.__typename === 'Playbook' && (
-                    <Link as={ `${getEditUrl( 'pretty' )}/preview` } href={ `${getEditUrl( 'pretty' )}/preview` } prefetch={ false }>
+                    <Link as={ `/admin/package/playbook/preview/${id}` } href={ `/admin/package/playbook/preview/${id}` } prefetch={ false }>
                       <a className={ getActionCls() }>Preview</a>
                     </Link>
                   ) }

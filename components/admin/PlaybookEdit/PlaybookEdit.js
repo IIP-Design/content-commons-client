@@ -246,7 +246,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
         <ButtonLink
           content="Preview"
           disabled={ isDisabled }
-          url={ `/admin/package/playbook/${playbookId}/preview` }
+          url={ `/admin/package/playbook/preview/${playbookId}` }
         />
 
         <ButtonPublish
