@@ -33,13 +33,13 @@ const Playbook = ( { item } ) => {
             { '< back' }
           </button>
         </div>
-        <h1 className={ styles.title }>{ item.title }</h1>
-        { item.updatedAt && (
+        <h1 className={ styles.title }>{ item?.title }</h1>
+        { item?.updatedAt && (
           <p>{ `Updated: ${moment( item.updatedAt ).format( 'MMMM DD, YYYY \\a\\t hh:mm A' )}` }</p>
         ) }
         <div className={ styles['header-contents'] }>
           <Popover
-            id={ `${item.id}_playbook-share` }
+            id={ `${item?.id}_playbook-share` }
             className="playbook-project__popover playbook-project__popover--share"
             trigger={ <img src={ shareIconWhite } style={ { width: '20px', height: '20px' } } alt="share icon" /> }
             expandFromRight
@@ -48,20 +48,20 @@ const Playbook = ( { item } ) => {
             <div className="popup_share">
               <h2 className="ui header" style={ { textAlign: 'left' } }>Share this playbook.</h2>
               <Share
-                id={ item.id }
+                id={ item?.id }
                 type="playbook"
               />
             </div>
           </Popover>
         </div>
       </header>
-      { item.policy && (
+      { item?.policy && (
         <div className={ styles['policy-container'] }>
           <span
             className={ styles.policy }
-            style={ { backgroundColor: item.policy.theme } }
+            style={ { backgroundColor: item.policy?.theme } }
           >
-            { item.policy.name }
+            { item.policy?.name }
           </span>
         </div>
       ) }
@@ -71,7 +71,7 @@ const Playbook = ( { item } ) => {
           dangerouslySetInnerHTML={ { __html: DOMPurify.sanitize( item?.content?.html || '' ) } } // eslint-disable-line react/no-danger
         />
       </TexturedSection>
-      { item.supportFiles && item.supportFiles.length && (
+      { item?.supportFiles && item?.supportFiles?.length && (
         <div className={ styles['resources-container'] }>
           <h3 className={ styles['resources-title'] }>Additional Resources</h3>
           <div className={ styles['resources-content'] }>
