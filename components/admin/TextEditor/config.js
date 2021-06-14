@@ -41,6 +41,11 @@ export const config = {
     ],
   },
   language: 'en',
+  mediaEmbed: {
+    removeProviders: [
+      'dailymotion', 'spotify', 'youtube', 'vimeo',
+    ],
+  },
   toolbar: {
     items: [
       'heading',
@@ -61,8 +66,8 @@ export const config = {
       '|',
       'outdent',
       'indent',
-      '|',
-      'imageUpload',
+      // '|',
+      // 'imageUpload',
       '|',
       'undo',
       'redo',
