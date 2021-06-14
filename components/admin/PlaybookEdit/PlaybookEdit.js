@@ -157,7 +157,8 @@ const PlaybookEdit = ( { id: playbookId } ) => {
     );
   }
 
-  if ( !data ) return null;
+  if ( !data?.playbook ) return null;
+
   const { playbook } = data;
   const isDisabled = !playbookId || !isFormValid;
 
