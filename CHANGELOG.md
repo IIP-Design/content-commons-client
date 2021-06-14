@@ -67,7 +67,7 @@ _This sections lists changes committed since most recent release_
 - Switch to `[...slug]` catch all route from `[id]` for `admin/package/playbook` route to allow for `preview` param
 - Use CSS modules for `PlaybookEdit` component
 - Adjust focus styling for `Playbook` header buttons
-- Remove image upload and video embed functionality from `TextEditor`
+- Remove media embed functionality from `TextEditor`
 
 **Fixed:**
 - Skip to content link for improved accessibility
