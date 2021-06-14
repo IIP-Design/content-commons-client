@@ -31,7 +31,7 @@ const Share = ( {
       queryStr = stringifyQueryString( { id, site } );
       break;
     case 'playbook':
-      queryStr = stringifyQueryString( { id } );
+      queryStr = null;
       break;
     default:
       queryStr = stringifyQueryString( { id, site, language } );
@@ -49,13 +49,13 @@ const Share = ( {
         t = 'package/guidance';
         break;
       case 'playbook':
-        t = 'package/playbook';
+        t = `package/playbook/${id}`;
         break;
       default:
         t = type;
     }
 
-    directLink = `${window.location.protocol}//${window.location.host}/${t}?${queryStr}`;
+    directLink = `${window.location.protocol}//${window.location.host}/${t}${queryStr ? `?${queryStr}` : ''}`;
 
     if ( link?.includes( 'youtu' ) ) {
       shareLink = `https://youtu.be/${getYouTubeId( link )}`;

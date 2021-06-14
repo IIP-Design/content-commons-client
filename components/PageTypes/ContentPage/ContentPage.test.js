@@ -32,6 +32,6 @@ describe( '<ContentPage />', () => {
 
     expect( wrapper.contains( 'page-meta' ) ).toEqual( false );
     expect( section.exists() ).toEqual( true );
-    expect( section.find( 'p' ).text() ).toEqual( 'Content Unavailable' );
+    expect( section.find( 'h1' ).text() ).toEqual( 'Content Unavailable' );
   } );
 } );

@@ -32,8 +32,6 @@ PackagePage.getInitialProps = async ctx => {
       const documents = await getElasticPkgDocs( item[0]._source.items, user );
       const _item = normalizeItem( item[0], query.language );
 
-      console.log( url );
-
       return {
         item: { ..._item, documents },
         url,
