@@ -100,9 +100,9 @@ const mockContent = `
 
 export const mockItem = {
   id: '1234',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  publishedAt: new Date(),
+  createdAt: '2021-05-26T11:12:34.140Z',
+  updatedAt: '2021-05-27T11:12:34.140Z',
+  publishedAt: '2021-05-28T11:12:34.140Z',
   type: 'PLAYBOOK',
   title: 'COVAX Deliveries and Announcement Guidance Playbook',
   // assetPath: String,
@@ -127,8 +127,8 @@ export const mockItem = {
   supportFiles: [
     {
       id: '9012',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: '2021-05-26T11:12:34.140Z',
+      updatedAt: '2021-05-27T11:12:34.140Z',
       // language: Language!
       url: 'http://blahblah.dev',
       signedUrl: 'http://blahblah.dev',

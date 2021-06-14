@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
-import fetch from 'isomorphic-unfetch';
-import Playbook from 'components/Playbook/Playbook';
+import PlaybookPreview from 'components/admin/Previews/PlaybookPreview/PlaybookPreview';
 import { PLAYBOOK_QUERY } from 'lib/graphql/queries/playbook';
 
 /**
@@ -9,13 +8,10 @@ import { PLAYBOOK_QUERY } from 'lib/graphql/queries/playbook';
  * 2. Execute a SSR query for initial page population from server
  * @param {*} props
  */
-const PlaybookPage = props => {
-  const {
-    playbook,
-    query: { id },
-  } = props;
+const PlaybookPage = ( { playbook, query } ) => {
+  const { id } = query;
 
-  return <Playbook id={ id } item={ playbook } />;
+  return <PlaybookPreview id={ id } item={ playbook } />;
 };
 
 export async function getServerSideProps( { query } ) {
