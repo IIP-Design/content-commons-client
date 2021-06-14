@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
 
@@ -11,7 +12,17 @@ import { useFileUpload } from 'lib/hooks/useFileUpload';
 import styles from './PlaybookResources.module.scss';
 
 const PlaybookResources = ( { assetPath, files, projectId, updateMutation } ) => {
+  const [temp, setTemp] = useState( [] );
+  const [remove, removeTemp] = useState( null );
   const { uploadFile } = useFileUpload();
+
+  useEffect( () => {
+    if ( remove ) {
+      const filtered = temp.filter( f => f.input.name !== remove );
+
+      setTemp( filtered );
+    }
+  }, [remove] );
 
   // Get the English language data, needed when adding supportFiles.
   const { data: languageData } = useQuery( LANGUAGE_BY_NAME_QUERY, {
@@ -31,6 +42,8 @@ const PlaybookResources = ( { assetPath, files, projectId, updateMutation } ) =>
   const uploadAndSaveFiles = ( id, fileList, savePath, saveFn, progress ) => Promise.all(
     fileList.map( async file => {
       const _file = await uploadFile( savePath, file, progress );
+
+      removeTemp( file?.input?.name );
 
       if ( _file.error ) {
         return Promise.resolve( { ...file, error: true } );
@@ -71,6 +84,8 @@ const PlaybookResources = ( { assetPath, files, projectId, updateMutation } ) =>
    */
   const addFiles = async e => {
     const fileList = Array.from( e.target.files ).map( file => ( { input: file } ) );
+
+    setTemp( fileList );
 
     await uploadAndSaveFiles(
       projectId,
@@ -115,6 +130,14 @@ const PlaybookResources = ( { assetPath, files, projectId, updateMutation } ) =>
           <strong>{ `Files Uploaded (${files.length})` }</strong>
           <FileList files={ files } projectId={ projectId } onRemove={ onRemove } />
         </div>
+      ) }
+
+      { temp && temp.length > 0 && (
+        <ul className={ `${styles.files} ${styles.placeholders}` }>
+          { temp.map( file => (
+            <li key={ `temp-${file?.input?.name}` } className={ styles.placeholder } />
+          ) ) }
+        </ul>
       ) }
 
       <ButtonAddFiles
