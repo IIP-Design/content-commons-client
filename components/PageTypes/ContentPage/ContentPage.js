@@ -1,23 +1,14 @@
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
+import ErrorSection from 'components/errors/ErrorSection';
 import PageMeta from 'components/Meta/PageMeta';
-
-const style = {
-  // page: {
-  //   marginTop: '90px',
-  // },
-  paragraph: {
-    fontSize: '2em',
-    fontWeight: '700',
-  },
-};
 
 const ContentPage = ( { children, fullWidth, item, url } ) => {
   if ( !item ) {
     return (
       <section className="max_width_1200">
-        <p style={ style.paragraph }>Content Unavailable</p>
+        <ErrorSection statusCode={ 404 } title="Content Unavailable" />
       </section>
     );
   }
