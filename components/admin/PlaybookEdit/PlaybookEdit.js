@@ -176,7 +176,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
               save: isDisabled,
               preview: isDisabled,
               publishChanges: !playbookId || !playbook?.supportFiles?.length,
-              publish: !playbookId || !playbook?.supportFiles?.length,
+              publish: playbook?.status !== 'DRAFT' || !isFormValid,
             } }
             handle={ {
               deleteConfirm: handleDeleteConfirm,
