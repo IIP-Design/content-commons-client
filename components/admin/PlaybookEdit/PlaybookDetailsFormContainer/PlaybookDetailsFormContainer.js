@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
 import { Formik } from 'formik';
@@ -16,20 +16,9 @@ const PlaybookDetailsFormContainer = props => {
   const { playbook, setIsFormValid } = props;
 
   const [updatePlaybook] = useMutation( UPDATE_PLAYBOOK_MUTATION );
-  const [fileCount, setFileCount] = useState( playbook?.supportFiles ? playbook.supportFiles.length : null );
-  const [reinitialize, setReinitialize] = useState( false );
   const [showNotification, setShowNotification] = useState( false );
   const hideNotification = () => setShowNotification( false );
   const { startTimeout } = useTimeout( hideNotification, 2000 );
-
-  useEffect( () => {
-    if ( playbook?.supportFiles && playbook.supportFiles.length !== fileCount ) {
-      setReinitialize( true );
-      setFileCount( playbook.supportFiles.length );
-    } else {
-      setReinitialize( false );
-    }
-  }, [playbook, fileCount] );
 
   const getInitialValues = () => {
     let initialValues = {};
@@ -55,6 +44,7 @@ const PlaybookDetailsFormContainer = props => {
 
     return initialValues;
   };
+
 
   const update = async ( values, prevValues ) => {
     const { id } = playbook;
@@ -111,7 +101,6 @@ const PlaybookDetailsFormContainer = props => {
   return (
     <Formik
       initialValues={ getInitialValues() }
-      enableReinitialize={ reinitialize }
       validationSchema={ packageSchema }
     >
       { renderContent }
