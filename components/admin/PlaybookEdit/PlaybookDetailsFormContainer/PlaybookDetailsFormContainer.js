@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
 import { Formik } from 'formik';
+import isEqual from 'lodash/isEqual';
 
 import FormikAutoSave from 'components/admin/FormikAutoSave/FormikAutoSave';
 import Notification from 'components/Notification/Notification';
@@ -63,12 +64,13 @@ const PlaybookDetailsFormContainer = props => {
     }
   };
 
-  const save = async values => {
-    const prevValues = getInitialValues();
 
-    await update( values, prevValues );
-    setShowNotification( true );
-    startTimeout();
+  const save = async ( values, prevValues ) => {
+    if ( !isEqual( values, prevValues ) ) {
+      await update( values, prevValues );
+      setShowNotification( true );
+      startTimeout();
+    }
   };
 
   const renderContent = formikProps => {
