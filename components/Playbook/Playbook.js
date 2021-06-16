@@ -89,6 +89,7 @@ const Playbook = ( { item } ) => {
                 <li key={ file.id }>
                   <DownloadItemContent
                     hoverText={ `Download ${file.filename}` }
+                    isAdminPreview={ isAdminPreview }
                     srcUrl={ file.url }
                     downloadFilename={ file.filename }
                   >
