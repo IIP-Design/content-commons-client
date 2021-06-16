@@ -6,10 +6,10 @@ import Playbook from 'components/Playbook/Playbook';
 import { PLAYBOOK_QUERY } from 'lib/graphql/queries/playbook';
 import styles from './PlaybookPreview.module.scss';
 
-const PlaybookPreview = ( { id, item } ) => {
+const PlaybookPreview = ( { id, item: itemFromServer } ) => {
   const { data, error, loading } = useQuery( PLAYBOOK_QUERY, {
     variables: { id },
-    skip: !!item,
+    skip: !!itemFromServer,
   } );
 
   if ( loading ) {
@@ -26,11 +26,11 @@ const PlaybookPreview = ( { id, item } ) => {
   }
 
   if ( error ) return <ApolloError error={ error } />;
-  if ( !item && !data?.playbook ) {
+  if ( !itemFromServer && !data?.playbook ) {
     return <p className={ styles.unavailable }>Preview is unavailable.</p>;
   }
 
-  return <Playbook item={ item || data.playbook } />;
+  return <Playbook item={ itemFromServer || data.playbook } />;
 };
 
 PlaybookPreview.propTypes = {
