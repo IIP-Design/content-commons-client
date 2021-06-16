@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
 import { Loader } from 'semantic-ui-react';
 import ApolloError from 'components/errors/ApolloError';
+import ErrorSection from 'components/errors/ErrorSection';
 import Playbook from 'components/Playbook/Playbook';
 import { PLAYBOOK_QUERY } from 'lib/graphql/queries/playbook';
 import styles from './PlaybookPreview.module.scss';
@@ -27,7 +28,7 @@ const PlaybookPreview = ( { id, item: itemFromServer } ) => {
 
   if ( error ) return <ApolloError error={ error } />;
   if ( !itemFromServer && !data?.playbook ) {
-    return <p className={ styles.unavailable }>Preview is unavailable.</p>;
+    return <ErrorSection statusCode={ 404 } title="Preview is unavailable." />;
   }
 
   return <Playbook item={ itemFromServer || data.playbook } />;
