@@ -19,6 +19,45 @@
   }
 }
 
+.placeholders {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.placeholder {
+  border: 1px solid #e6e6e6;
+  background: #e6e6e6;
+  height: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: -150px;
+    top: 0;
+    height: 100%;
+    width: 150px;
+    background: linear-gradient(0.25turn, transparent, #fff, transparent);
+    pointer-events: none;
+    opacity: 0.8;
+    animation: uploading-animation 2s infinite;
+    z-index: 1;
+  }
+}
+
+@keyframes uploading-animation {
+  from {
+    left: -150px;
+  }
+  to {
+    left: 100%;
+  }
+}
+
 .instructions {
   margin: 0.5rem 0 1rem;
 
