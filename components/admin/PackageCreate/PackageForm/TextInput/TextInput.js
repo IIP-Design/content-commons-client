@@ -45,8 +45,8 @@ Input.propTypes = {
  * @param {number} props.maxLength max number of allowed characters for field
  */
 const TextInput = ( { label, helperTxt, maxLength, ...props } ) => {
-  const [chars, setChars] = useState( 0 );
   const [field, meta] = useField( props.name );
+  const [chars, setChars] = useState( field?.value?.length || 0 );
 
   const Component = props.type === 'text' ? Input : TextArea;
 

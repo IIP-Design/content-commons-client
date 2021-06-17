@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react';
 import { Loader } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import ActionButtons from 'components/admin/ActionButtons/ActionButtons';
 import ActionHeadline from 'components/admin/ActionHeadline/ActionHeadline';
@@ -16,27 +16,20 @@ import ProjectHeader from 'components/admin/ProjectHeader/ProjectHeader';
 import TextEditor from 'components/admin/TextEditor/TextEditor';
 
 import useIsDirty from 'lib/hooks/useIsDirty';
-// import usePublish from 'lib/hooks/usePublish';
+import usePublish from 'lib/hooks/usePublish';
 import {
   DELETE_PLAYBOOK_MUTATION,
   PLAYBOOK_QUERY,
-  // PUBLISH_PLAYBOOK_MUTATION,
-  // UNPUBLISH_PLAYBOOK_MUTATION,
+  PUBLISH_PLAYBOOK_MUTATION,
+  UNPUBLISH_PLAYBOOK_MUTATION,
   UPDATE_PLAYBOOK_MUTATION,
-  // UPDATE_PLAYBOOK_STATUS_MUTATION,
+  UPDATE_PLAYBOOK_STATUS_MUTATION,
 } from 'lib/graphql/queries/playbook';
 
 import styles from './PlaybookEdit.module.scss';
 
 const PlaybookEdit = ( { id: playbookId } ) => {
   const router = useRouter();
-
-  // temp
-  const publishError = {};
-  const publishing = false;
-  const publishPlaybook = () => {};
-  const unpublishPlaybook = () => {};
-  const executePublishOperation = () => {};
 
   const {
     loading, error: queryError, data, startPolling, stopPolling,
@@ -47,9 +40,9 @@ const PlaybookEdit = ( { id: playbookId } ) => {
   } );
 
   const [deletePlaybook] = useMutation( DELETE_PLAYBOOK_MUTATION );
-  // const [publishPlaybook] = useMutation( PUBLISH_PLAYBOOK_MUTATION );
-  // const [unpublishPlaybook] = useMutation( UNPUBLISH_PLAYBOOK_MUTATION );
-  // const [updatePlaybookStatus] = useMutation( UPDATE_PLAYBOOK_STATUS_MUTATION );
+  const [publishPlaybook] = useMutation( PUBLISH_PLAYBOOK_MUTATION );
+  const [unpublishPlaybook] = useMutation( UNPUBLISH_PLAYBOOK_MUTATION );
+  const [updatePlaybookStatus] = useMutation( UPDATE_PLAYBOOK_STATUS_MUTATION );
   const [updatePlaybook] = useMutation( UPDATE_PLAYBOOK_MUTATION );
 
   const [publishOperation, setPublishOperation] = useState( '' );
@@ -62,16 +55,22 @@ const PlaybookEdit = ( { id: playbookId } ) => {
     showNotification: false,
   } );
 
-  // const {
-  //   publishing,
-  //   publishError,
-  //   executePublishOperation,
-  //   handleStatusChange,
-  // } = usePublish(
-  //   startPolling,
-  //   stopPolling,
-  //   updatePackageStatus,
-  // );
+  const {
+    publishing,
+    publishError,
+    executePublishOperation,
+    handleStatusChange,
+  } = usePublish(
+    startPolling,
+    stopPolling,
+    updatePlaybookStatus,
+  );
+
+  useEffect( () => {
+    if ( data?.playbook ) {
+      handleStatusChange( data.playbook );
+    }
+  }, [data, handleStatusChange] );
 
   const isDirty = useIsDirty( data?.playbook );
 
@@ -175,8 +174,8 @@ const PlaybookEdit = ( { id: playbookId } ) => {
               'delete': deletePlaybookEnabled(),
               save: isDisabled,
               preview: isDisabled,
-              publishChanges: !playbookId || !playbook?.supportFiles?.length,
-              publish: !playbookId || !playbook?.supportFiles?.length,
+              publishChanges: isDisabled,
+              publish: playbook?.status !== 'DRAFT' || isDisabled,
             } }
             handle={ {
               deleteConfirm: handleDeleteConfirm,
@@ -186,7 +185,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
               unpublish: handleUnPublish,
             } }
             show={ {
-              'delete': true, // playbook has been completed, show delete in the event user wants to delete instead of uploading files
+              'delete': true,
               save: true,
               preview: true,
               publish: playbook?.status === 'DRAFT',
@@ -255,7 +254,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
           handleUnPublish={ handleUnPublish }
           status={ ( playbook && playbook.status ) || 'DRAFT' }
           updated={ isDirty }
-          disabled={ !playbookId || !playbook.supportFiles?.length }
+          disabled={ isDisabled }
         />
       </div>
     </div>

@@ -11,10 +11,15 @@ const _packageSchema = {
 const _guidanceSchema = {
   title: Yup.string()
     .required( 'A package title is required.' ),
+};
+
+const termsSchema = {
   termsConditions: Yup.bool()
     .test( 'consent', 'You have to agree with our Terms of Use!', value => value === true )
     .required( 'You have to agree with our Terms of Use!' ),
 };
 
 export const packageSchema = Yup.object().shape( { ..._guidanceSchema, ..._packageSchema } );
-export const guidanceSchema = Yup.object().shape( { ..._guidanceSchema } );
+export const createPackageSchema = Yup.object().shape( { ..._guidanceSchema, ..._packageSchema, ...termsSchema } );
+
+export const guidanceSchema = Yup.object().shape( { ..._guidanceSchema, ...termsSchema } );

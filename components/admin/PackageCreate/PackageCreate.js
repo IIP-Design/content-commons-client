@@ -10,7 +10,7 @@ import Checkbox from './PackageForm/Checkbox/Checkbox';
 import PackageForm from './PackageForm/PackageForm';
 import ProjectHeader from '../ProjectHeader/ProjectHeader';
 
-import { guidanceSchema, packageSchema } from './PackageForm/validationSchema';
+import { guidanceSchema, createPackageSchema } from './PackageForm/validationSchema';
 import { PACKAGE_TYPE_QUERY } from 'components/admin/dropdowns/PackageTypeDropdown/PackageTypeDropdown';
 import { useAuth } from 'context/authContext';
 
@@ -37,7 +37,7 @@ const PackageCreate = () => {
       const _teamPackageTypes = getTeamPackageTypes( user?.team?.contentTypes );
       const _schema = _teamPackageTypes.length === 1 && _teamPackageTypes[0] === 'PACKAGE'
         ? guidanceSchema
-        : packageSchema;
+        : createPackageSchema;
 
       setTeamPackageTypes( _teamPackageTypes );
       setSchema( _schema );
@@ -50,7 +50,7 @@ const PackageCreate = () => {
    * @param {string} type package type, e.g. PLAYBOOK
    */
   const updateSchema = type => {
-    const _schema = type === 'DAILY_GUIDANCE' ? guidanceSchema : packageSchema;
+    const _schema = type === 'DAILY_GUIDANCE' ? guidanceSchema : createPackageSchema;
 
     setSchema( _schema );
   };
