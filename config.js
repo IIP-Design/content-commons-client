@@ -21,6 +21,7 @@ const config = {
   TIME_TO_STALE: 300000, // 5 minutes in milliseconds
   FEEDBACK_FORM_URL: 'https://goo.gl/forms/9cJ3IBHH9QTld2Mj2',
   PRESS_GUIDANCE_DB_URL: 'https://pressguidance2.state.gov/',
+  INFO_CENTRAL_URL: 'https://infocentral.state.gov/',
 };
 
 export default config;
