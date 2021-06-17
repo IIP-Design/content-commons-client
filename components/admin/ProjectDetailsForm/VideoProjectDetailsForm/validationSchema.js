@@ -6,8 +6,8 @@ const _baseSchema = {
   visibility: Yup.string()
     .required( 'A visibility setting is required.' ),
   categories: Yup.array()
-    .max( 2, 'Maximum of 2 categories can be selected' )
-    .required( 'At least 1 category is required.' ),
+    .min( 1, 'At least 1 category is required.' )
+    .max( 2, 'Maximum of 2 categories can be selected' ),
 };
 
 const _initialSchema = {
