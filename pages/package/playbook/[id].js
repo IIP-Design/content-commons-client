@@ -6,7 +6,7 @@ import Playbook from 'components/Playbook/Playbook';
 
 import { PLAYBOOK_QUERY } from 'lib/graphql/queries/playbook';
 
-const PlaybookPage = ( { id, playbook } ) => {
+const PlaybookPage = ( { id = null, playbook = null } ) => {
   const playbookExists = id && playbook;
 
   return (
@@ -19,7 +19,7 @@ const PlaybookPage = ( { id, playbook } ) => {
 };
 
 export async function getServerSideProps( { query: { id } } ) {
-  const props = { id };
+  const props = {};
 
   const apolloClient = new ApolloClient( {
     cache: new InMemoryCache(),
@@ -30,6 +30,8 @@ export async function getServerSideProps( { query: { id } } ) {
   } );
 
   if ( id ) {
+    props.id = id;
+
     try {
       const { data } = await apolloClient.query( {
         query: PLAYBOOK_QUERY,
@@ -39,6 +41,8 @@ export async function getServerSideProps( { query: { id } } ) {
       props.playbook = data.playbook;
     } catch ( err ) {
       console.log( err );
+
+      return { props };
     }
   }
 
