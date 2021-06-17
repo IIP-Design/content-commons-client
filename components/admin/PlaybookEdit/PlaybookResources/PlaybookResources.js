@@ -106,7 +106,7 @@ const PlaybookResources = ( { assetPath, files, projectId, updateMutation } ) =>
           Upload files specific to this Playbook that are not available on Commons.
         </p>
         <p>
-          These files will not appear in any Commons search results.
+          These files will not appear in any Commons search results. File types acceptable for upload include .docx and PDF.
         </p>
       </div>
 
