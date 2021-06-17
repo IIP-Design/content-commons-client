@@ -2,20 +2,18 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 
-const ButtonPublish = props => {
-  const {
-    handlePublish,
-    handleUnPublish,
-    publishing,
-    status,
-    updated,
-    disabled,
-  } = props;
-
+const ButtonPublish = ( {
+  handlePublish,
+  handleUnPublish,
+  publishing,
+  status,
+  updated,
+  disabled,
+} ) => {
   const setButtonState = btn => `action-btn btn--${btn} ${publishing ? 'loading' : ''}`;
 
   if ( status === 'DRAFT' ) {
-    return <Button className={ setButtonState( 'publish' ) } onClick={ handlePublish } disabled={ disabled }>Publish</Button>;
+    return <Button className={ setButtonState( 'publish' ) } onClick={ handlePublish } disabled={ disabled || status !== 'DRAFT' }>Publish</Button>;
   }
 
   return (
@@ -23,7 +21,7 @@ const ButtonPublish = props => {
       { ( ( status === 'PUBLISHED' || status === 'PUBLISHING' ) && updated ) && (
         <Button className={ setButtonState( 'edit basic' ) } onClick={ handlePublish } disabled={ disabled }>Publish Changes</Button>
       ) }
-      <Button className="action-btn btn--publish" onClick={ handleUnPublish } disabled={ disabled }>Unpublish</Button>
+      <Button className="action-btn btn--publish" onClick={ handleUnPublish }>Unpublish</Button>
     </Fragment>
   );
 };

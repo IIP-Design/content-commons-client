@@ -174,8 +174,8 @@ const PlaybookEdit = ( { id: playbookId } ) => {
               'delete': deletePlaybookEnabled(),
               save: isDisabled,
               preview: isDisabled,
-              publishChanges: !playbookId || !playbook?.supportFiles?.length,
-              publish: playbook?.status !== 'DRAFT' || !isFormValid,
+              publishChanges: isDisabled,
+              publish: playbook?.status !== 'DRAFT' || isDisabled,
             } }
             handle={ {
               deleteConfirm: handleDeleteConfirm,
@@ -254,7 +254,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
           handleUnPublish={ handleUnPublish }
           status={ ( playbook && playbook.status ) || 'DRAFT' }
           updated={ isDirty }
-          disabled={ !playbookId || !playbook.supportFiles?.length }
+          disabled={ isDisabled }
         />
       </div>
     </div>
