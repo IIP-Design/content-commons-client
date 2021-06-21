@@ -17,6 +17,20 @@
   box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
+.grid {
+  @media screen and (min-width: 600px) {
+    --column-count: 2;
+  }
+  @media screen and (min-width: 1064px) {
+    --column-count: 4;
+  }
+  display: grid;
+  grid-template-columns: repeat( var(--column-count, 1), 1fr );
+  gap: 0.5556rem;
+  margin: -1rem;
+  padding: 1rem;
+}
+
 .header {
   display: flex;
   justify-content: space-between;

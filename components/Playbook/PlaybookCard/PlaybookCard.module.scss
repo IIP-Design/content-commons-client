@@ -1,0 +1,146 @@
+@import 'styles/colors.scss';
+@import 'styles/mixins.scss';
+
+.card {
+  --light: #fff;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--secondary-color);
+  box-shadow: 0px 1px 3px 0px #d4d4d5, 0px 0px 0px 1px #d4d4d5;
+
+  > * {
+    padding-left: 1.4444rem;
+    padding-right: 0.7778rem;
+  }
+
+  &::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0.6667rem;
+    content: '';
+    width: 0.2222rem;
+    background-color: var(--policy-theme, transparent);
+  }
+
+  &.dark {
+    --primary-color: #{$blue};
+    --secondary-color: var(--light);
+  }
+
+  &.light {
+    --primary-color: var(--light);
+    --secondary-color: #{$blue};
+
+    .footer {
+      color: var(--primary-color);
+    }
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  min-height: 250px;
+  padding-bottom: 0.25rem;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+}
+
+.type {
+  order: -1;
+  margin: 0;
+  color: inherit;
+  font-size: 0.5556rem;
+  letter-spacing: 0.2222rem;
+  line-height: 1.5556rem;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  color: inherit;
+  font-size: 0.8333rem;
+  @media screen and (min-width: 993px) {
+    font-size: 1rem;
+  }
+  line-height: 1rem;
+  @include wrap-text;
+
+  a {
+    color: inherit;
+
+    &::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      content: '';
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus-within {
+      &::after {
+        @include focus-styling;
+      }
+    }
+  }
+}
+
+.description {
+  margin-top: 0.25rem;
+  color: inherit;
+  font-size: 0.6667rem;
+  line-height: 0.7778rem;
+}
+
+.date-time {
+  font-size: 0.6111rem;
+
+  &[class*="terms"] {
+    margin-top: auto;
+    margin-bottom: 0;
+
+    dt {
+      font-weight: 400;
+    }
+  }
+}
+
+.wave {
+  width: 100%;
+  margin-top: -0.25px; // addresses Safari display bug
+  padding: 0;
+
+  path {
+    fill: var(--primary-color);
+    stroke: none;
+  }
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  padding-bottom: 0.25rem;
+}
+
+.policy {
+  margin: 0;
+  font-size: 0.6111rem;
+}
+
+.source {
+  [class*="media-figure"] {
+    margin-right: 0.25rem;
+  }
+}

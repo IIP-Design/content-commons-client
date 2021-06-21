@@ -7,6 +7,7 @@ import useIsMounted from 'lib/hooks/useIsMounted';
 import config from 'config';
 import FeaturedLoading from '../FeaturedLoading';
 import FeaturedError from '../FeaturedError';
+import PlaybookCard from 'components/Playbook/PlaybookCard/PlaybookCard';
 
 import styles from './Playbooks.module.scss';
 
@@ -100,9 +101,9 @@ const Playbooks = ( { pin: idsToPin, user } ) => {
           </Link>
         </div>
 
-        <div className="grid">
+        <div className={ styles.grid }>
           { items.map( playbook => (
-            <div key={ playbook.id }>{ playbook.title }</div>
+            <PlaybookCard key={ playbook.id } heading="h3" item={ playbook } />
           ) ) }
         </div>
 
