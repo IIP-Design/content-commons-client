@@ -1,8 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
 import { useMutation, useQuery } from '@apollo/client';
+
 import { DashboardContext } from 'context/dashboardContext';
+
+import styles from './UnpublishProjects.module.scss';
 
 const UnpublishProjects = ( {
   handleResetSelections,
@@ -107,12 +110,12 @@ const UnpublishProjects = ( {
     <Popup
       trigger={ (
         <Button
-          className="unpublish"
+          className={ styles.unpublish }
           size="mini"
           basic
           onClick={ handleUnpublishProjects }
         >
-          <span className="unpublish--text">Unpublish</span>
+          <span className={ styles['unpublish--text'] }>Unpublish</span>
         </Button>
       ) }
       content="Unpublish Selection(s)"

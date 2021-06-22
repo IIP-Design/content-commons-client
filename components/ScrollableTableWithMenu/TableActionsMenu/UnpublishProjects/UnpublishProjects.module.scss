@@ -1,0 +1,12 @@
+@import 'styles/colors.scss';
+
+:global(.ui) button.unpublish {
+  vertical-align: top;
+  display: inline-block;
+}
+
+.unpublish--text {
+  display: inline-block;
+  padding: 0.4rem 0.6rem;
+  color: $light-blue;
+}

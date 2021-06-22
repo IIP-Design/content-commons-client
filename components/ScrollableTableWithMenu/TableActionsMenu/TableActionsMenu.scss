@@ -1,4 +1,4 @@
-@import "../../../styles/colors.scss";
+@import 'styles/colors.scss';
 
 .actionsMenu {
   z-index: 3;
@@ -42,7 +42,6 @@
     }
 
     &--active {
-
       &:after {
         content: '';
       }
@@ -53,17 +52,6 @@
     margin-right: 0.5em;
     margin-left: 0.5em;
     cursor: pointer;
-  }
-
-  .unpublish {
-    vertical-align: top;
-    display: inline-block;
-
-    &--text {
-      display: inline-block;
-      padding: 0.4rem 0.6rem;
-      color: $light-blue;
-    }
   }
 
   .separator {

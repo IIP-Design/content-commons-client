@@ -31,6 +31,8 @@ import {
   PLAYBOOKS_META_QUERY,
   TEAM_PLAYBOOKS_QUERY,
   TEAM_PLAYBOOKS_COUNT_QUERY,
+  UNPUBLISH_PLAYBOOK_MUTATION,
+  UPDATE_PLAYBOOK_STATUS_MUTATION,
 } from 'lib/graphql/queries/playbook';
 
 /**
@@ -92,11 +94,11 @@ export const setQueries = team => {
       queries.count = TEAM_PLAYBOOKS_COUNT_QUERY;
       queries.remove = DELETE_PLAYBOOK_MUTATION;
       queries.metaContent = PLAYBOOKS_META_QUERY;
+      queries.unpublish = UNPUBLISH_PLAYBOOK_MUTATION;
+      queries.status = UPDATE_PLAYBOOK_STATUS_MUTATION;
       // The following queries are placeholders and for the wrong content type
       // As such, these operations will not work properly
       queries.files = PACKAGE_FILES_QUERY;
-      queries.status = UPDATE_PACKAGE_STATUS_MUTATION;
-      queries.unpublish = UNPUBLISH_PACKAGE_MUTATION;
 
       return queries;
     default:
