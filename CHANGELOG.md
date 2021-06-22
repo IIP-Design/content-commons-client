@@ -64,7 +64,8 @@ _This sections lists changes committed since most recent release_
 - Rename `PlaybookTextEditor` to `TextEditor` and move up one level
 - Update tests for `TextEditor`
 - Replace mock mutation with `updatePlaybook` mutation in `PlaybookEdit`
-- Switch to `[...slug]` catch all route from `[id]` for `admin/package/playbook` route to allow for `preview` param
+- Create `admin/package/playbook/preview/[id]` route
+- Use `PlaybookPreview` component to fetch playbook data
 - Use CSS modules for `PlaybookEdit` component
 - Adjust focus styling for `Playbook` header buttons
 - Remove media embed functionality from `TextEditor`

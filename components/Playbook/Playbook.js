@@ -18,10 +18,11 @@ const desc = 'This Playbook is for use by U.S. diplomatic missions and senior St
 
 const Playbook = ( { item } ) => {
   const router = useRouter();
+  const isAdminPreview = router.asPath.startsWith( '/admin' );
 
   return (
     <div className={ styles.container }>
-      { router.asPath.startsWith( '/admin' ) && (
+      { isAdminPreview && (
         <div className={ styles.preview }>
           <img src={ cautionIcon } alt="" height="18" width="18" />
           <p>This is a preview of how your Playbook will appear on Content Commons</p>
@@ -49,7 +50,11 @@ const Playbook = ( { item } ) => {
               <h2 className="ui header" style={ { textAlign: 'left' } }>Share this playbook.</h2>
               <Share
                 id={ item?.id }
+                isPreview={ isAdminPreview }
                 type="playbook"
+                { ...( isAdminPreview
+                  ? { link: 'The direct link to the playbook will appear here.' }
+                  : null ) }
               />
             </div>
           </Popover>
@@ -84,6 +89,7 @@ const Playbook = ( { item } ) => {
                 <li key={ file.id }>
                   <DownloadItemContent
                     hoverText={ `Download ${file.filename}` }
+                    isAdminPreview={ isAdminPreview }
                     srcUrl={ file.url }
                     downloadFilename={ file.filename }
                   >
