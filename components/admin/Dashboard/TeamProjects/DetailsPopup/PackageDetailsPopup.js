@@ -1,9 +1,8 @@
-import React from 'react';
+import ApolloError from 'components/errors/ApolloError';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
-import ApolloError from 'components/errors/ApolloError';
-import { PACKAGE_FILES_QUERY } from 'lib/graphql/queries/package';
 
+import { PACKAGE_FILES_QUERY } from 'lib/graphql/queries/package';
 
 const PackageDetailsPopup = ( { id } ) => {
   const { loading, error, data } = useQuery( PACKAGE_FILES_QUERY, {
