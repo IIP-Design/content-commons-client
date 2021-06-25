@@ -204,7 +204,7 @@ describe( '<ButtonPublish />, for PUBLISHED status & updated', () => {
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
     const { className } = publishChangesBtn.props();
 
-    expect( className.includes( 'action-btn btn--edit' ) )
+    expect( className.includes( 'action-btn btn--publish-changes' ) )
       .toEqual( newProps.status === 'PUBLISHED' && newProps.updated );
     expect( className.includes( 'loading' ) ).toEqual( newProps.publishing );
   } );
@@ -276,7 +276,7 @@ describe( '<ButtonPublish />, for PUBLISHED status, updated, & disabled', () => 
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
     const { className } = publishChangesBtn.props();
 
-    expect( className.includes( 'action-btn btn--edit' ) )
+    expect( className.includes( 'action-btn btn--publish-changes' ) )
       .toEqual( newProps.status === 'PUBLISHED' && newProps.updated );
     expect( className.includes( 'loading' ) ).toEqual( newProps.publishing );
   } );
@@ -401,7 +401,7 @@ describe( '<ButtonPublish />, for PUBLISHING status, publishing, and updated', (
     const publishChangesBtn = getBtn( 'Publish Changes', btns );
     const { className } = publishChangesBtn.props();
 
-    expect( className.includes( 'action-btn btn--edit' ) )
+    expect( className.includes( 'action-btn btn--publish-changes' ) )
       .toEqual( ( newProps.status === 'PUBLISHED' || newProps.status === 'PUBLISHING' ) && newProps.updated );
     expect( className.includes( 'loading' ) ).toEqual( newProps.publishing );
   } );

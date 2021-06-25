@@ -19,7 +19,7 @@ const ButtonPublish = ( {
   return (
     <Fragment>
       { ( ( status === 'PUBLISHED' || status === 'PUBLISHING' ) && updated ) && (
-        <Button className={ setButtonState( 'edit basic' ) } onClick={ handlePublish } disabled={ disabled }>Publish Changes</Button>
+        <Button className={ setButtonState( 'publish-changes basic' ) } onClick={ handlePublish } disabled={ disabled }>Publish Changes</Button>
       ) }
       <Button className="action-btn btn--publish" onClick={ handleUnPublish }>Unpublish</Button>
     </Fragment>
