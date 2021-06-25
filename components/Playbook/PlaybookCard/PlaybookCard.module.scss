@@ -1,6 +1,13 @@
 @import 'styles/colors.scss';
 @import 'styles/mixins.scss';
 
+// results page list view 
+[class*="list"] {
+  .card {
+    max-width: 18rem;
+  }
+}
+
 .card {
   --light: #fff;
 
