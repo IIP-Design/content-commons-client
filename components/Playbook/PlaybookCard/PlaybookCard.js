@@ -3,7 +3,7 @@ import Link from 'next/link';
 import MediaObject from 'components/MediaObject/MediaObject';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import DosSeal from 'static/images/dos_seal.svg';
-import { getDateTimeTerms } from 'components/Package/utils';
+import { getDateTimeTerms } from 'lib/utils';
 
 import styles from './PlaybookCard.module.scss';
 

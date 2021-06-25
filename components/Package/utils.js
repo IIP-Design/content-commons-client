@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { getTransformedLangTaxArray } from 'lib/utils';
 import { packageDocumentsRequest } from 'lib/elastic/api';
 import { getDataFromHits } from 'lib/elastic/parser';
@@ -44,28 +43,6 @@ export const normalizeDocumentItemByAPI = ( { file, useGraphQl = false } ) => {
   }
 
   return documentObj;
-};
-
-/*
- * Format date/time for package, document cards display
- *
- */
-export const getDateTimeTerms = ( createdAt, updatedAt, format ) => {
-  const isDocUpdated = updatedAt > createdAt;
-
-  const dateTimeStamp = isDocUpdated ? updatedAt : createdAt;
-  // const label = isDocUpdated ? 'Updated' : 'Created';
-  // published and modified are equal, so setting label to 'Updated
-  // TO DO: Add createdAt to transform
-  const label = 'Updated';
-
-  return [
-    {
-      definition: <time dateTime={ dateTimeStamp }>{ `${moment( dateTimeStamp ).format( format )}` }</time>,
-      displayName: label,
-      name: label,
-    },
-  ];
 };
 
 /*

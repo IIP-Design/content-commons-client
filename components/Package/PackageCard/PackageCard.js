@@ -7,10 +7,10 @@ import Popover from 'components/popups/Popover/Popover';
 import FileListDisplay from 'components/FileListDisplay/FileListDisplay';
 import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import MediaObject from 'components/MediaObject/MediaObject';
-import { getPluralStringOrNot } from 'lib/utils';
+import { getDateTimeTerms, getPluralStringOrNot } from 'lib/utils';
 import useAPIRequest from 'lib/hooks/useAPIRequest';
 import DosSeal from 'static/images/dos_seal.svg';
-import { getDateTimeTerms, getElasticPkgDocs } from '../utils';
+import { getElasticPkgDocs } from '../utils';
 
 import './PackageCard.scss';
 
