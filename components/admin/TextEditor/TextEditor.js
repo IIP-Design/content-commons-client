@@ -23,7 +23,9 @@ const TextEditor = ( { id, content, query, type, updateMutation } ) => {
     autosave: {
       waitingTime: 500,
       save: async editor => {
-        if ( !editor.getData() ) return;
+        const isInitializing = editor.getData() === content?.html;
+
+        if ( !editor.getData() || isInitializing ) return;
 
         try {
           await updateMutation( {
