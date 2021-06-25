@@ -138,16 +138,14 @@
 .footer {
   margin-top: auto;
   padding-top: 0.5rem;
-  padding-bottom: 0.25rem;
+  padding-bottom: 0.5rem;
 }
 
 .policy {
-  margin: 0;
+  margin: 0 0 0.25rem;
   font-size: 0.6111rem;
 }
 
-.source {
-  [class*="media-figure"] {
-    margin-right: 0.25rem;
-  }
+.source img {
+  margin-right: 0.25rem;
 }
