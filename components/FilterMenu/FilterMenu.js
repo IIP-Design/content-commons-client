@@ -6,6 +6,9 @@ import { getCount } from 'lib/utils';
 import FilterMenuItem from './FilterMenuItem';
 import FilterSelections from './FilterSelections';
 import FilterMenuCountries from './FilterMenuCountries';
+import {
+  categoryUpdate, countryUpdate, dateUpdate, postTypeUpdate, sourceUpdate,
+} from 'lib/redux/actions/filter';
 
 import './FilterMenu.scss';
 
@@ -32,6 +35,7 @@ const FilterMenu = ( { filter, global } ) => {
           selected={ filter.date }
           options={ global.dates.list }
           formItem="radio"
+          updater={ dateUpdate }
         />
         { /* Format */ }
         <FilterMenuItem
@@ -40,6 +44,7 @@ const FilterMenu = ( { filter, global } ) => {
           selected={ filter.postTypes }
           options={ global.postTypes.list }
           formItem="checkbox"
+          updater={ postTypeUpdate }
         />
         { /* Source */ }
         <FilterMenuItem
@@ -48,6 +53,7 @@ const FilterMenu = ( { filter, global } ) => {
           selected={ filter.sources }
           options={ global.sources.list }
           formItem="checkbox"
+          updater={ sourceUpdate }
         />
         { /* Category */ }
         { showMenuItem( 'categories' )
@@ -58,10 +64,11 @@ const FilterMenu = ( { filter, global } ) => {
               selected={ filter.categories }
               options={ global.categories.list }
               formItem="checkbox"
+              updater={ categoryUpdate }
             />
           ) }
         { /* Countries */ }
-        { showMenuItem( 'document' ) && <FilterMenuCountries selected={ filter.countries } /> }
+        { showMenuItem( 'document' ) && <FilterMenuCountries selected={ filter.countries } updater={ countryUpdate } /> }
       </div>
     </section>
   );

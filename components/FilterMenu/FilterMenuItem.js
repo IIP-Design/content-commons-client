@@ -5,13 +5,16 @@ import intersection from 'lodash/intersection';
 import union from 'lodash/union';
 import { connect } from 'react-redux';
 import { Form, Icon } from 'semantic-ui-react';
-import { withRouter } from 'next/router';
+import { useRouter } from 'next/router';
 
 import { fetchQueryString } from 'lib/searchQueryString';
 
 import './FilterMenuItem.scss';
 
-const FilterMenuItem = props => {
+const FilterMenuItem = ( { dispatch,
+  updater,
+  ...props } ) => {
+  const router = useRouter();
   const [filterItemOpen, setFilterItemOpen] = useState( false );
   const [selected, setSelected] = useState( [] );
 
@@ -71,10 +74,13 @@ const FilterMenuItem = props => {
       language: props.language,
     } );
 
-    props.router.replace( {
+    // use shallow routing to update url w/o executing any getServerSideProps calls
+    router.replace( {
       pathname: '/results',
       query,
-    } );
+    }, undefined, { shallow: true } );
+
+    dispatch( updater( filtered ) );
   };
 
   const handleCheckboxChange = async ( e, { value, checked } ) => {
@@ -224,7 +230,6 @@ FilterMenuItem.propTypes = {
   formItem: PropTypes.string,
   filter: PropTypes.string,
   options: PropTypes.array,
-  router: PropTypes.object,
   filterStore: PropTypes.object,
   name: PropTypes.string,
   term: PropTypes.string,
@@ -232,6 +237,8 @@ FilterMenuItem.propTypes = {
   searchInput: PropTypes.oneOfType( [PropTypes.node, () => null] ),
   /* eslint-disable-next-line react/no-unused-prop-types */
   selected: PropTypes.oneOfType( [PropTypes.string, PropTypes.array] ),
+  dispatch: PropTypes.func,
+  updater: PropTypes.func,
 };
 
 const mapStateToProps = state => ( {
@@ -240,4 +247,4 @@ const mapStateToProps = state => ( {
   language: state.search.language,
 } );
 
-export default withRouter( connect( mapStateToProps )( FilterMenuItem ) );
+export default connect( mapStateToProps )( FilterMenuItem );
