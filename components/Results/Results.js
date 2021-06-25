@@ -10,6 +10,7 @@ import ResultItem from './ResultItem/ResultItem';
 import ResultsHeader from './ResultsHeader/ResultsHeader';
 import NoResults from './NoResults';
 import ResultsPagination from './ResultsPagination/ResultsPagination';
+import loadingIcon from 'static/icons/icon_loader.svg';
 
 import styles from './Results.module.scss';
 
@@ -27,6 +28,14 @@ const Results = ( { search } ) => {
   };
 
   const items = getDataFromHits( search.response );
+
+  if ( !items ) {
+    return (
+      <div className={ styles.loader }>
+        <img src={ loadingIcon } alt="Loading" />
+      </div>
+    );
+  }
 
   return (
     <section className={ styles.results }>
