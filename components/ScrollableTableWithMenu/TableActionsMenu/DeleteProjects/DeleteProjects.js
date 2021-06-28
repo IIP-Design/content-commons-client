@@ -28,6 +28,7 @@ const DeleteProjects = ( {
     if ( types.includes( 'GRAPHIC' ) ) return 'graphic';
     if ( types.includes( 'VIDEO' ) ) return 'video';
     if ( types.includes( 'PACKAGE' ) ) return 'package';
+    if ( types.includes( 'PLAYBOOK' ) ) return 'playbook';
 
     return '';
   };
@@ -82,7 +83,13 @@ const DeleteProjects = ( {
   const messageFragment = isDraft => {
     const getFunc = isDraft === 'draft' ? getDrafts() : getNonDrafts();
 
-    return `${displayProjectTypeText()} ${getPluralStringOrNot( getFunc, 'project' )}`;
+    const type = displayProjectTypeText();
+
+    if ( type === 'graphic' || type === 'video' ) {
+      return `${type} ${getPluralStringOrNot( getFunc, 'project' )}`;
+    }
+
+    return getPluralStringOrNot( getFunc, type );
   };
 
   return (
