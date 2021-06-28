@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import dynamic from 'next/dynamic';
 import debounce from 'lodash/debounce';
+import dynamic from 'next/dynamic';
 import { Popup } from 'semantic-ui-react';
+
 import './DetailsPopup.scss';
 
 const VideoDetailsPopup = dynamic( () => import( './VideoDetailsPopup' ) );
-const PackageDetailsPopup = dynamic( () => import( './PackageDetailsPopup' ) );
 const GraphicDetailsPopup = dynamic( () => import( './GraphicDetailsPopup' ) );
+const PackageDetailsPopup = dynamic( () => import( './PackageDetailsPopup' ) );
+const PlaybookDetailsPopup = dynamic( () => import( './PlaybookDetailsPopup' ) );
 
 const DetailsPopup = props => {
   const { id, team } = props;
@@ -58,6 +60,7 @@ const DetailsPopup = props => {
     if ( contentTypes.includes( 'VIDEO' ) ) return <VideoDetailsPopup id={ id } />;
     if ( contentTypes.includes( 'PACKAGE' ) ) return <PackageDetailsPopup id={ id } />;
     if ( contentTypes.includes( 'GRAPHIC' ) ) return <GraphicDetailsPopup id={ id } />;
+    if ( contentTypes.includes( 'PLAYBOOK' ) ) return <PlaybookDetailsPopup id={ id } />;
   };
 
   return (

@@ -28,6 +28,7 @@ import {
 } from 'lib/graphql/queries/video';
 import {
   DELETE_PLAYBOOK_MUTATION,
+  PLAYBOOK_FILES_QUERY,
   PLAYBOOKS_META_QUERY,
   TEAM_PLAYBOOKS_QUERY,
   TEAM_PLAYBOOKS_COUNT_QUERY,
@@ -92,13 +93,11 @@ export const setQueries = team => {
     case 'playbooks':
       queries.content = TEAM_PLAYBOOKS_QUERY;
       queries.count = TEAM_PLAYBOOKS_COUNT_QUERY;
+      queries.files = PLAYBOOK_FILES_QUERY;
       queries.remove = DELETE_PLAYBOOK_MUTATION;
       queries.metaContent = PLAYBOOKS_META_QUERY;
       queries.unpublish = UNPUBLISH_PLAYBOOK_MUTATION;
       queries.status = UPDATE_PLAYBOOK_STATUS_MUTATION;
-      // The following queries are placeholders and for the wrong content type
-      // As such, these operations will not work properly
-      queries.files = PACKAGE_FILES_QUERY;
 
       return queries;
     default:
