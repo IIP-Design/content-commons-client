@@ -2,6 +2,9 @@ import { mount } from 'enzyme';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import FilterMenu from '../FilterMenu';
+import {
+  categoryUpdate, countryUpdate, dateUpdate, postTypeUpdate, sourceUpdate,
+} from 'lib/redux/actions/filter';
 import * as state from './mocks';
 
 jest.mock(
@@ -65,6 +68,7 @@ describe( '<FilterMenu />, if document postType but no categories in global stat
       filter: 'Date Range',
       name: 'date',
       selected: filter.date,
+      updater: dateUpdate,
       options: global.dates.list,
       formItem: 'radio',
     } );
@@ -79,6 +83,7 @@ describe( '<FilterMenu />, if document postType but no categories in global stat
       filter: 'Format',
       name: 'postTypes',
       selected: filter.postTypes,
+      updater: postTypeUpdate,
       options: global.postTypes.list,
       formItem: 'checkbox',
     } );
@@ -93,6 +98,7 @@ describe( '<FilterMenu />, if document postType but no categories in global stat
       filter: 'Source',
       name: 'sources',
       selected: filter.sources,
+      updater: sourceUpdate,
       options: global.sources.list,
       formItem: 'checkbox',
     } );
@@ -105,6 +111,7 @@ describe( '<FilterMenu />, if document postType but no categories in global stat
     expect( countriesMenu.exists() ).toEqual( true );
     expect( countriesMenu.props() ).toEqual( {
       selected: filter.countries,
+      updater: countryUpdate,
     } );
   } );
 
@@ -161,6 +168,7 @@ describe( '<FilterMenu />, if categories but no document postType in global stat
       filter: 'Date Range',
       name: 'date',
       selected: filter.date,
+      updater: dateUpdate,
       options: global.dates.list,
       formItem: 'radio',
     } );
@@ -175,6 +183,7 @@ describe( '<FilterMenu />, if categories but no document postType in global stat
       filter: 'Format',
       name: 'postTypes',
       selected: filter.postTypes,
+      updater: postTypeUpdate,
       options: global.postTypes.list,
       formItem: 'checkbox',
     } );
@@ -189,6 +198,7 @@ describe( '<FilterMenu />, if categories but no document postType in global stat
       filter: 'Source',
       name: 'sources',
       selected: filter.sources,
+      updater: sourceUpdate,
       options: global.sources.list,
       formItem: 'checkbox',
     } );
@@ -209,6 +219,7 @@ describe( '<FilterMenu />, if categories but no document postType in global stat
       filter: 'Category',
       name: 'categories',
       selected: filter.categories,
+      updater: categoryUpdate,
       options: global.categories.list,
       formItem: 'checkbox',
     } );
@@ -261,6 +272,7 @@ describe( '<FilterMenu />, if categories and document postType in global state',
       filter: 'Date Range',
       name: 'date',
       selected: filter.date,
+      updater: dateUpdate,
       options: global.dates.list,
       formItem: 'radio',
     } );
@@ -275,6 +287,7 @@ describe( '<FilterMenu />, if categories and document postType in global state',
       filter: 'Format',
       name: 'postTypes',
       selected: filter.postTypes,
+      updater: postTypeUpdate,
       options: global.postTypes.list,
       formItem: 'checkbox',
     } );
@@ -289,6 +302,7 @@ describe( '<FilterMenu />, if categories and document postType in global state',
       filter: 'Source',
       name: 'sources',
       selected: filter.sources,
+      updater: sourceUpdate,
       options: global.sources.list,
       formItem: 'checkbox',
     } );
@@ -301,6 +315,7 @@ describe( '<FilterMenu />, if categories and document postType in global state',
     expect( countriesMenu.exists() ).toEqual( true );
     expect( countriesMenu.props() ).toEqual( {
       selected: filter.countries,
+      updater: countryUpdate,
     } );
   } );
 
@@ -313,6 +328,7 @@ describe( '<FilterMenu />, if categories and document postType in global state',
       filter: 'Category',
       name: 'categories',
       selected: filter.categories,
+      updater: categoryUpdate,
       options: global.categories.list,
       formItem: 'checkbox',
     } );
