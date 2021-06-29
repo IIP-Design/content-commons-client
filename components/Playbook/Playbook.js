@@ -76,7 +76,7 @@ const Playbook = ( { item } ) => {
           dangerouslySetInnerHTML={ { __html: DOMPurify.sanitize( item?.content?.html || '' ) } } // eslint-disable-line react/no-danger
         />
       </TexturedSection>
-      { item?.supportFiles && item?.supportFiles?.length && (
+      { item?.supportFiles && item?.supportFiles?.length > 0 && (
         <div className={ styles['resources-container'] }>
           <h3 className={ styles['resources-title'] }>Additional Resources</h3>
           <div className={ styles['resources-content'] }>
