@@ -104,7 +104,7 @@ const DeleteProjects = ( {
       >
         { hasDrafts && (
           <DeleteProjectsList
-            headline={ `The following DRAFT ${messageFragment( 'draft' )} will be removed permanently from the Content Cloud:` }
+            headline={ `The following DRAFT ${messageFragment( 'draft' )} will be removed permanently from Content Commons:` }
             projects={ getDrafts() }
             isDrafts
           />
