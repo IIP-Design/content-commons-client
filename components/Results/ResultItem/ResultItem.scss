@@ -1,68 +1,6 @@
 @import 'styles/colors.scss';
 @import 'styles/mixins.scss';
 
-.ui.grid.results_wrapper > .column:not(.row) {
-  padding: 0.77rem;
-}
-
-.ui.grid > .column:not(.row).card_wrapper,
-.card_inner {
-  display: flex;
-}
-
-.ui.grid > .column:not(.row).card_wrapper {
-  @media screen and (max-width: 425px) {
-    padding: 0 !important;
-    margin-top: 1em !important;
-  }
-
-  &--gallery {
-    @media screen and (min-width: 992px) and (max-width: 1199px) {
-      width: 33.33% !important;
-    }
-  }
-}
-
-.card_wrapper--list {
-  .card {
-    &.ui {
-      display: block;
-      border-left: none;
-      border-right: none;
-      box-shadow: none;
-    }
-
-    &_imgWrapper {
-      display: inline-block;
-      width: 25%;
-      margin-top: 1em;
-      margin-bottom: 1em;
-      vertical-align: top;
-
-      .card_postIcon {
-        @media screen and (max-width: 500px) {
-          right: 50% !important;
-          bottom: 50% !important;
-          transform: translate(50%, 50%);
-          width: 25px;
-        }
-      }
-    }
-
-    .content {
-      display: inline-block !important;
-      width: 75%;
-      border-top: none;
-
-      .card_excerpt {
-        @media screen and (max-width: 425px) {
-          display: none;
-        }
-      }
-    }
-  }
-}
-
 .ui.card {
   width: 100%;
   border: 1px solid $light-grey;

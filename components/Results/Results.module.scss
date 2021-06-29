@@ -31,5 +31,62 @@
       }
     }
   } 
-   
+
+  :global(.ui.grid) .card_wrapper {
+    display: flex !important; 
+    padding: 0.77rem; 
+
+    @media screen and (max-width: 425px) {
+      padding: 0 !important;
+      margin-top: 1em !important;
+    }
+
+    &--gallery {
+      @media screen and (min-width: 992px) and (max-width: 1199px) {
+        width: 33.33% !important;
+      }
+    }
+
+    &--list {
+      :global(.card) {
+        display: flex;
+
+        &.ui {
+          display: block;
+          border-left: none;
+          border-right: none;
+          box-shadow: none;
+        }
+    
+        &_imgWrapper {
+          display: inline-block !important;
+          width: 25%;
+          //margin-top: 1em;
+          //margin-bottom: 1em;
+          //vertical-align: top;
+    
+          .card_postIcon {
+            @media screen and (max-width: 500px) {
+              right: 50% !important;
+              bottom: 50% !important;
+              transform: translate(50%, 50%);
+              width: 25px;
+            }
+          }
+        }
+    
+        .content {
+         display: inline-block !important;
+          width: 75%;
+          border-top: none;
+    
+          .card_excerpt {
+            @media screen and (max-width: 425px) {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }  
 }
