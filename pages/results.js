@@ -1,19 +1,16 @@
 import React, { useEffect } from 'react';
 import propTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { useQuery } from '@apollo/client';
 
 import Results from 'components/Results/Results/';
 
 import { COUNTRIES_REGIONS_QUERY } from 'lib/graphql/queries/document';
-import {
-  categoryUpdate, countryUpdate, dateUpdate, postTypeUpdate, sourceUpdate,
-} from 'lib/redux/actions/filter';
+import { filterUpdate } from 'lib/redux/actions/filter';
 import {
   createRequest, updateLanguage, updateSearchTerm, updateSort,
 } from 'lib/redux/actions/search';
-import { fetchUser } from 'context/authContext';
+import { useAuth } from 'context/authContext';
 import { loadCategories } from 'lib/redux/actions/category';
 import { loadCountries } from 'lib/redux/actions/country';
 import { loadLanguages } from 'lib/redux/actions/language';
@@ -22,21 +19,24 @@ import { loadSources } from 'lib/redux/actions/source';
 import storeWrapper from 'lib/redux/store';
 
 const ResultsPage = ( {
-  filter, loaders, sendRequest, user,
+  filter, dispatch,
 } ) => {
+  const { user } = useAuth();
+
   const gqlCountries = useQuery( COUNTRIES_REGIONS_QUERY, {
     fetchPolicy: 'cache-and-network',
   } );
 
   useEffect( () => {
-    sendRequest( user );
-    loaders.loadCategories();
-    loaders.loadCountries( gqlCountries );
-    loaders.loadLanguages();
-    loaders.loadPostTypes( user );
-    loaders.loadSources();
+    dispatch( loadCategories() );
+    dispatch( loadLanguages() );
+    dispatch( loadSources() );
+    dispatch( loadCountries( gqlCountries ) );
+    dispatch( loadPostTypes( user ) );
+
+    dispatch( createRequest( user ) );
   }, [
-    filter, gqlCountries, loaders, sendRequest, user,
+    filter, gqlCountries, user, dispatch,
   ] );
 
   return (
@@ -52,35 +52,25 @@ export const getServerSideProps = storeWrapper.getServerSideProps( async context
     categories, countries, date, language, postTypes, sortBy, sources, term,
   } = query;
 
-  const user = await fetchUser( context );
+  const filterUpdates = {
+    postTypes,
+    date,
+    categories,
+    countries,
+    sources,
+  };
 
-  // Trigger parallel loading calls
+  // update filter state
   store.dispatch( updateLanguage( language || 'en-us' ) );
   store.dispatch( updateSort( sortBy || 'published' ) );
-  store.dispatch( postTypeUpdate( postTypes ) );
   store.dispatch( updateSearchTerm( term || null ) );
-  store.dispatch( dateUpdate( date ) );
-  store.dispatch( categoryUpdate( categories ) );
-  store.dispatch( countryUpdate( countries ) );
-  store.dispatch( sourceUpdate( sources ) );
-
-  store.dispatch( createRequest( user ) );
+  store.dispatch( filterUpdate( filterUpdates ) );
 
   return {
-    props: { user },
+    props: {},
   };
 } );
 
-const mapDispatchToProps = dispatch => ( {
-  sendRequest: bindActionCreators( createRequest, dispatch ),
-  loaders: {
-    loadCategories: bindActionCreators( loadCategories, dispatch ),
-    loadCountries: bindActionCreators( loadCountries, dispatch ),
-    loadLanguages: bindActionCreators( loadLanguages, dispatch ),
-    loadPostTypes: bindActionCreators( loadPostTypes, dispatch ),
-    loadSources: bindActionCreators( loadSources, dispatch ),
-  },
-} );
 
 const mapStateToProps = state => ( {
   filter: state.filter,
@@ -88,9 +78,7 @@ const mapStateToProps = state => ( {
 
 ResultsPage.propTypes = {
   filter: propTypes.object,
-  loaders: propTypes.object,
-  sendRequest: propTypes.func,
-  user: propTypes.object,
+  dispatch: propTypes.func,
 };
 
-export default connect( mapStateToProps, mapDispatchToProps )( ResultsPage );
+export default connect( mapStateToProps )( ResultsPage );

@@ -15,10 +15,16 @@ const FilterMenuCountries = props => {
   }, [props.selected] );
 
   const client = useApolloClient();
-  const { countries } = client.readQuery( {
+  const res = client.readQuery( {
     query: COUNTRIES_REGIONS_QUERY,
   } );
 
+  // query is not yet available in cache, return
+  if ( !res ) return null;
+
+  const { countries } = res;
+
+  // query is available in cache but has no entries, return
   if ( !countries || !getCount( countries ) ) return null;
 
   const getMenuOptions = () => (

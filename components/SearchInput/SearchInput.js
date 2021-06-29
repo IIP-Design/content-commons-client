@@ -79,7 +79,7 @@ const SearchInput = ( { filter,
     if ( value === 'multiple' ) postTypeUpdate( [
       'video', 'post', 'graphic',
     ] );
-    if ( value === 'document' ) postTypeUpdate( 'document' );
+    if ( value === 'document' ) postTypeUpdate( ['document', 'playbook'] );
   };
 
   const handleSubmit = async () => {
@@ -129,7 +129,7 @@ const SearchInput = ( { filter,
     },
     {
       checked: selectedRadio === 'document',
-      label: 'Press Materials',
+      label: 'Press Materials, Playbooks',
       name: 'radioGroup',
       onChange: handleRadioChange,
       value: 'document',

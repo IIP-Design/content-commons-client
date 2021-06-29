@@ -10,8 +10,9 @@ import ResultItem from './ResultItem/ResultItem';
 import ResultsHeader from './ResultsHeader/ResultsHeader';
 import NoResults from './NoResults';
 import ResultsPagination from './ResultsPagination/ResultsPagination';
+import loadingIcon from 'static/icons/icon_loader.svg';
 
-import './Results.scss';
+import styles from './Results.module.scss';
 
 /**
  * NOTE: Getting error: chunk styles [mini-css-extract-plugin] Conflicting order between:
@@ -28,8 +29,16 @@ const Results = ( { search } ) => {
 
   const items = getDataFromHits( search.response );
 
+  if ( !items ) {
+    return (
+      <div className={ styles.loader }>
+        <img src={ loadingIcon } alt="Loading" />
+      </div>
+    );
+  }
+
   return (
-    <section className="results">
+    <section className={ styles.results }>
       { search.currentPage !== -1 && (
         <div>
           <SearchTerm />
@@ -39,13 +48,15 @@ const Results = ( { search } ) => {
           <section>
             <ResultsHeader toggleView={ toggleView } currentView={ view } />
           </section>
-          <Grid className="results_wrapper">
+          <Grid className={ styles.results_wrapper }>
             { items.map( item => (
               <Grid.Column
                 mobile={ 16 }
                 tablet={ view === 'gallery' ? 8 : 16 }
                 computer={ view === 'gallery' ? 4 : 16 }
-                className={ view === 'gallery' ? 'card_wrapper card_wrapper--gallery' : 'card_wrapper card_wrapper--list' }
+                className={ view === 'gallery'
+                  ? `${styles.card_wrapper} ${styles['card_wrapper--gallery']}`
+                  : `${styles.card_wrapper} ${styles['card_wrapper--list']}` }
                 key={ item._id }
               >
                 <ResultItem key={ item._id } item={ normalizeItem( item, search.language ) } />
