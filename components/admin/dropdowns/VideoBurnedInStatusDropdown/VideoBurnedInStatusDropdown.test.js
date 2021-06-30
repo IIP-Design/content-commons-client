@@ -16,12 +16,15 @@ const mocks = [
     },
     result: {
       data: {
-        __type: {
-          enumValues: [
-            { name: 'SUBTITLED' },
-            { name: 'CAPTIONED' },
-            { name: 'CLEAN' },
-          ],
+        videoBurnedInStatusEnum: {
+          __type:
+          {
+            enumValues: [
+              { name: 'SUBTITLED' },
+              { name: 'CAPTIONED' },
+              { name: 'CLEAN' },
+            ],
+          },
         },
       },
     },
@@ -42,7 +45,9 @@ const nullMocks = [
     ...mocks[0],
     result: {
       data: {
-        __type: { enumValues: null },
+        videoBurnedInStatusEnum: {
+          __type: { enumValues: null },
+        },
       },
     },
   },
@@ -53,7 +58,9 @@ const emptyMocks = [
     ...mocks[0],
     result: {
       data: {
-        __type: { enumValues: [] },
+        videoBurnedInStatusEnum: {
+          __type: { enumValues: [] },
+        },
       },
     },
   },
@@ -153,7 +160,7 @@ describe( '<VideoBurnedInStatusDropdown />', () => {
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
     const dropdownItems = wrapper.find( 'DropdownItem' );
-    const { enumValues } = mocks[0].result.data.__type;
+    const { enumValues } = mocks[0].result.data.videoBurnedInStatusEnum.__type;
     const semanticUIValues = enumValues.filter( enumValue => enumValue.name !== 'CAPTIONED' )
       .map( ( { name } ) => ( {
         key: name,
