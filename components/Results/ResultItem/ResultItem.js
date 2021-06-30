@@ -5,9 +5,9 @@ import { Modal } from 'semantic-ui-react';
 import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
 
 import PackageCard from 'components/Package/PackageCard/PackageCard';
+import PlaybookCard from 'components/Playbook/PlaybookCard/PlaybookCard';
 import DocumentCard from 'components/Document/DocumentCard/DocumentCard';
 import GraphicCard from 'components/GraphicProject/GraphicCard/GraphicCard';
-import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 import useSignedUrl from 'lib/hooks/useSignedUrl';
 import { getModalContent } from 'components/modals/utils';
 import { contentRegExp } from 'lib/utils';
@@ -100,6 +100,10 @@ const ResultItem = ( { item } ) => {
     return <PackageCard item={ item } stretch />;
   }
 
+  if ( item.type === 'playbook' ) {
+    return <PlaybookCard item={ item } />;
+  }
+
   if ( item.type === 'document' ) {
     return <DocumentCard file={ item } />;
   }
@@ -133,18 +137,9 @@ const ResultItem = ( { item } ) => {
           { item.description }
         </p>
         <footer className="card_metadata">
-          <dl>
-            <dt><VisuallyHidden>Published on:</VisuallyHidden></dt>
-            <dd className="meta">
-              <time dateTime={ item.published }>{ moment( item.published ).format( 'MMMM DD, YYYY' ) }</time>
-            </dd>
-
-            <dt><VisuallyHidden>Categories:</VisuallyHidden></dt>
-            <dd className="meta">{ item.categories && item.categories.map( renderCategory ) }</dd>
-
-            <dt><VisuallyHidden>Published by:</VisuallyHidden></dt>
-            <dd className="meta">{ getItemSource( textDirection ) }</dd>
-          </dl>
+          <time className="meta" dateTime={ item.published }>{ moment( item.published ).format( 'MMMM DD, YYYY' ) }</time>
+          <p className="meta">{ item.categories && item.categories.map( renderCategory ) }</p>
+          <p className="meta">{ getItemSource( textDirection ) }</p>
         </footer>
       </div>
     </article>

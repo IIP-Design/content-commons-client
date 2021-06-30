@@ -26,30 +26,6 @@ describe( '<MetaTerms />', () => {
     expect( wrapper.exists() ).toEqual( true );
   } );
 
-  it( 'renders the correct id attribute value', () => {
-    const wrapper = mount( Component );
-    const dt = wrapper.find( 'dt' );
-    const { unitId } = props;
-
-    dt.forEach( ( el, i ) => {
-      const { name } = props.terms[i];
-
-      expect( el.prop( 'id' ) ).toEqual( `${name}-${unitId}` );
-    } );
-  } );
-
-  it( 'renders the correct aria-labelledby attribute value', () => {
-    const wrapper = mount( Component );
-    const dd = wrapper.find( 'dd' );
-    const { unitId } = props;
-
-    dd.forEach( ( el, i ) => {
-      const { name } = props.terms[i];
-
-      expect( el.prop( 'aria-labelledby' ) ).toEqual( `${name}-${unitId}` );
-    } );
-  } );
-
   it( 'renders the correct dt term', () => {
     const wrapper = mount( Component );
     const dt = wrapper.find( 'dt' );

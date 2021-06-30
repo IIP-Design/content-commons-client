@@ -18,12 +18,11 @@ import TabLayout from 'components/TabLayout/TabLayout';
 import downloadIcon from 'static/icons/icon_download.svg';
 import shareIcon from 'static/icons/icon_share.svg';
 
-import {
-  normalizeDocumentItemByAPI, getDateTimeTerms,
-} from './utils';
+import { normalizeDocumentItemByAPI } from './utils';
 import { updateUrl } from 'lib/browser';
 import {
   getCount,
+  getDateTimeTerms,
   getPluralStringOrNot,
   getPreviewNotificationStyles,
   parseToParagraphs,

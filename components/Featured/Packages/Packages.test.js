@@ -54,7 +54,7 @@ describe( '<Packages />', () => {
 
   it.skip( 'renders a link to the press guidance archive', () => {
     const linkText = 'archived press guidance database';
-    const fullText = `For press guidance and releases from before 04/27/2020, please visit the ${linkText}.`;
+    const fullText = `For press guidance and releases from before April 27, 2020, please visit the ${linkText}.`;
 
     const guidanceLink = wrapper.find( 'p.latestPackages_guidance_link' );
 

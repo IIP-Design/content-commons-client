@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './MediaObject.scss';
+import styles from './MediaObject.module.scss';
 
 const MediaObject = props => {
   const {
@@ -8,9 +8,9 @@ const MediaObject = props => {
   } = props;
 
   return (
-    <Element className={ `media ${className}` } style={ style }>
+    <Element className={ `${styles.media} ${className}` } style={ style }>
       <img
-        className={ `media-figure ${img.className}` }
+        className={ `${styles['media-figure']} ${img.className}` }
         src={ img.src }
         alt={ img.alt }
         style={ img.style }

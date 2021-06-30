@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import sortBy from 'lodash/sortBy';
 
 import Packages from './Packages/Packages';
+import Playbooks from './Playbooks/Playbooks';
 import Recents from './Recents/Recents';
 import Priorities from './Priorities/Priorities';
 
@@ -10,6 +11,7 @@ import { useAuth } from 'context/authContext';
 
 const components = {
   Packages,
+  Playbooks,
   Recents,
   Priorities,
 };

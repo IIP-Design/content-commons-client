@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Modal, Card } from 'semantic-ui-react';
 import ReactMarkdown from 'react-markdown';
 import htmlParser from 'react-markdown/plugins/html-parser';
-import { getDateTimeTerms } from 'components/Package/utils';
 
 import ContentHeightClamp from 'components/ContentHeightClamp/ContentHeightClamp';
 import InternalUseDisplay from 'components/InternalUseDisplay/InternalUseDisplay';
@@ -15,7 +14,7 @@ import DosSeal from 'static/images/dos_seal.svg';
 import iconDocument from 'static/icons/icon_32px_document-white.png';
 
 import { hasCssSupport } from 'lib/browser';
-import { getCount } from 'lib/utils';
+import { getCount, getDateTimeTerms } from 'lib/utils';
 import Document from '../Document';
 
 import './DocumentCard.scss';

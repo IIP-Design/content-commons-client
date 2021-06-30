@@ -12,10 +12,8 @@ const MetaTerms = props => {
 
         return (
           <div key={ `${name}-${unitId}` }>
-            <dt id={ `${name}-${unitId}` }>{ displayName }</dt>
-            <dd role="definition" aria-labelledby={ `${name}-${unitId}` }>
-              { definition }
-            </dd>
+            <dt>{ displayName }</dt>
+            <dd>{ definition }</dd>
           </div>
         );
       } ) }
