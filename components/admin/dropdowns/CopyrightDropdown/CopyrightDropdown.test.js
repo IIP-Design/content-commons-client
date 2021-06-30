@@ -17,11 +17,13 @@ const mocks = [
     },
     result: {
       data: {
-        __type: {
-          enumValues: [
-            { name: 'COPYRIGHT' },
-            { name: 'NO_COPYRIGHT' },
-          ],
+        copyrightEnum: {
+          __type: {
+            enumValues: [
+              { name: 'COPYRIGHT' },
+              { name: 'NO_COPYRIGHT' },
+            ],
+          },
         },
       },
     },
@@ -42,7 +44,9 @@ const nullMocks = [
     ...mocks[0],
     result: {
       data: {
-        __type: { enumValues: null },
+        copyrightEnum: {
+          __type: { enumValues: null },
+        },
       },
     },
   },
@@ -53,7 +57,9 @@ const emptyMocks = [
     ...mocks[0],
     result: {
       data: {
-        __type: { enumValues: [] },
+        copyrightEnum: {
+          __type: { enumValues: [] },
+        },
       },
     },
   },
@@ -139,7 +145,7 @@ describe( '<CopyrightDropdown />', () => {
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
     const dropdownItems = wrapper.find( 'DropdownItem' );
-    const { enumValues } = mocks[0].result.data.__type;
+    const { enumValues } = mocks[0].result.data.copyrightEnum.__type;
     const options = enumValues.map( obj => {
       const text = obj.name === 'COPYRIGHT'
         ? 'Copyright terms outlined in internal description'
