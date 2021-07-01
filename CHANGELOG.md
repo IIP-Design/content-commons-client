@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v5.4.8...HEAD)
+## [Unreleased](https://github.com/IIP-Design/content-commons-client/compare/v5.5.0...HEAD)
 
 _This sections lists changes committed since most recent release_
 
@@ -98,6 +98,11 @@ _This sections lists changes committed since most recent release_
 - Add image dimensions to the DoS seal in the `Header`
 - Use `upsert` for the `TextEditor` `updateMutation` to prevent `the relation has no node...` GraphQL error
 - PropType for `policy` in `PlaybookDetailsFormContainer`
+# [5.5.0](https://github.com/IIP-Design/content-commons-client/compare/v5.4.8...v5.5.0)(2021-07-01)
+
+**Changed:**
+
+- Replace queries dependant on introspection with dedicated enum queries
 
 # [5.4.8](https://github.com/IIP-Design/content-commons-client/compare/v5.4.7...v5.4.8)(2021-04-29)
 **Fixed:**

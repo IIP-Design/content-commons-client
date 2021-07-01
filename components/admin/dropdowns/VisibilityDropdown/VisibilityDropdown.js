@@ -7,11 +7,7 @@ import { gql } from '@apollo/client';
 
 const VISIBILITY_QUERY = gql`
   query VISIBILITY_QUERY {
-    __type(name: "Visibility"){
-     enumValues {
-       name
-     }
-    }
+    visibilityEnum
   }
  `;
 
@@ -24,8 +20,8 @@ const VisibilityDropdown = props => (
 
       let options = [];
 
-      if ( data && data.__type && data.__type.enumValues ) {
-        options = data.__type.enumValues
+      if ( data?.visibilityEnum?.__type?.enumValues ) {
+        options = data.visibilityEnum.__type.enumValues
           .map( enumValue => {
             const text = enumValue.name === 'PUBLIC'
               ? 'Public (displayed on Content Commons)'

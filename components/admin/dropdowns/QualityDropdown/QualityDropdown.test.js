@@ -23,11 +23,13 @@ const mocks = [
     },
     result: {
       data: {
-        __type: {
-          enumValues: [
-            { name: 'WEB' },
-            { name: 'BROADCAST' },
-          ],
+        videoQualityEnum: {
+          __type: {
+            enumValues: [
+              { name: 'WEB' },
+              { name: 'BROADCAST' },
+            ],
+          },
         },
       },
     },
@@ -38,11 +40,13 @@ const mocks = [
     },
     result: {
       data: {
-        __type: {
-          enumValues: [
-            { name: 'WEB' },
-            { name: 'PRINT' },
-          ],
+        imageQualityEnum: {
+          __type: {
+            enumValues: [
+              { name: 'WEB' },
+              { name: 'PRINT' },
+            ],
+          },
         },
       },
     },
@@ -69,7 +73,9 @@ const nullMocks = [
     ...mocks[0],
     result: {
       data: {
-        __type: { enumValues: null },
+        videoQualityEnum: {
+          __type: { enumValues: null },
+        },
       },
     },
   },
@@ -77,7 +83,9 @@ const nullMocks = [
     ...mocks[1],
     result: {
       data: {
-        __type: { enumValues: null },
+        imageQualityEnum: {
+          __type: { enumValues: null },
+        },
       },
     },
   },
@@ -88,7 +96,9 @@ const emptyMocks = [
     ...mocks[0],
     result: {
       data: {
-        __type: { enumValues: [] },
+        videoQualityEnum: {
+          __type: { enumValues: [] },
+        },
       },
     },
   },
@@ -96,7 +106,9 @@ const emptyMocks = [
     ...mocks[1],
     result: {
       data: {
-        __type: { enumValues: [] },
+        imageQualityEnum: {
+          __type: { enumValues: [] },
+        },
       },
     },
   },
@@ -197,7 +209,7 @@ describe( '<QualityDropdown /> for video type', () => {
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
     const dropdownItems = wrapper.find( 'DropdownItem' );
-    const { enumValues } = mocks[0].result.data.__type;
+    const { enumValues } = mocks[0].result.data.videoQualityEnum.__type;
     const semanticUIValues = enumValues.map( quality => {
       const { name } = quality;
 
@@ -323,7 +335,7 @@ describe( '<QualityDropdown /> for image type', () => {
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
     const dropdownItems = wrapper.find( 'DropdownItem' );
-    const { enumValues } = mocks[1].result.data.__type;
+    const { enumValues } = mocks[1].result.data.imageQualityEnum.__type;
     const semanticUIValues = enumValues.map( quality => {
       const { name } = quality;
 

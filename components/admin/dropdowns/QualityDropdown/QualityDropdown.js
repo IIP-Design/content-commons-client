@@ -10,22 +10,14 @@ import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
 
 const VIDEO_QUALITY_QUERY = gql`
   query VIDEO_QUALITY_QUERY {
-    __type(name: "VideoQuality"){
-     enumValues {
-       name
-     }
-    }
+    videoQualityEnum
   }
  `;
 
 const IMAGE_QUALITY_QUERY = gql`
-query IMAGE_QUALITY_QUERY {
-  __type(name: "ImageQuality"){
-   enumValues {
-     name
-   }
+  query IMAGE_QUALITY_QUERY {
+    imageQualityEnum
   }
-}
 `;
 
 const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
@@ -37,8 +29,10 @@ const QualityDropdown = props => (
 
       let options = [];
 
-      if ( data && data.__type && data.__type.enumValues ) {
-        options = data.__type.enumValues.map( quality => {
+      const queryType = props.type.toLowerCase() === 'video' ? 'videoQualityEnum' : 'imageQualityEnum';
+
+      if ( data?.[queryType]?.__type?.enumValues ) {
+        options = data.[queryType].__type.enumValues.map( quality => {
           const { name } = quality;
 
           return {

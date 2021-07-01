@@ -18,11 +18,13 @@ const mocks = [
     },
     result: {
       data: {
-        __type: {
-          enumValues: [
-            { name: 'INTERNAL' },
-            { name: 'PUBLIC' },
-          ],
+        visibilityEnum: {
+          __type: {
+            enumValues: [
+              { name: 'INTERNAL' },
+              { name: 'PUBLIC' },
+            ],
+          },
         },
       },
     },
@@ -54,7 +56,9 @@ const emptyMocks = [
     ...mocks[0],
     result: {
       data: {
-        __type: { enumValues: [] },
+        visibilityEnum: {
+          __type: { enumValues: [] },
+        },
       },
     },
   },
@@ -141,7 +145,7 @@ describe( '<VisibilityDropdown />', () => {
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
     const dropdownItems = wrapper.find( 'DropdownItem' );
-    const { enumValues } = mocks[0].result.data.__type;
+    const { enumValues } = mocks[0].result.data.visibilityEnum.__type;
     const semanticUIValues = enumValues.map( enumValue => {
       const text = enumValue.name === 'PUBLIC'
         ? 'Public (displayed on Content Commons)'

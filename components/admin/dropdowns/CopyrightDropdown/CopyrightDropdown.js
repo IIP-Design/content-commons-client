@@ -10,11 +10,7 @@ import '../dropdown.scss';
 
 const COPYRIGHT_QUERY = gql`
   query COPYRIGHT_QUERY {
-    __type(name: "Copyright"){
-     enumValues {
-       name
-     }
-    }
+    copyrightEnum
   }
 `;
 
@@ -27,8 +23,8 @@ const CopyrightDropdown = props => (
 
       let options = [];
 
-      if ( data?.__type?.enumValues ) {
-        options = data.__type.enumValues.map( obj => {
+      if ( data?.copyrightEnum?.__type?.enumValues ) {
+        options = data.copyrightEnum.__type.enumValues.map( obj => {
           const text = obj.name === 'COPYRIGHT'
             ? 'Copyright terms outlined in internal description'
             : 'No copyright beyond provided watermark attribution';

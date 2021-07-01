@@ -21,11 +21,7 @@ const GET_TEAMS_QUERY = gql`
 
 const PERMISSION_QUERY = gql`
   query PERMISSION_QUERY {
-    __type(name: "Permission") {
-      enumValues {
-        name
-      }
-    }
+    permissionEnum
   }
 `;
 
@@ -92,7 +88,7 @@ const UserAdmin = () => {
 
   useEffect( () => {
     if ( permissionData ) {
-      const permissionOptions = permissionData.__type.enumValues.map( value => ( {
+      const permissionOptions = permissionData.permissionEnum.__type.enumValues.map( value => ( {
         key: value.name,
         text: titleCase( value.name ).replace( '_', ' ' ),
         value: value.name,

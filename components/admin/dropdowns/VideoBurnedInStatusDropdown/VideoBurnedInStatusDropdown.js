@@ -7,11 +7,7 @@ import { addEmptyOption } from 'lib/utils';
 
 const VIDEO_BURNED_IN_STATUS_QUERY = gql`
   query VIDEO_BURNED_IN_STATUS_QUERY {
-    __type(name: "VideoBurnedInStatus"){
-     enumValues {
-       name
-     }
-    }
+    videoBurnedInStatusEnum
   }
 `;
 
@@ -26,8 +22,8 @@ const VideoBurnedInStatusDropdown = ( { id, label, ...rest } ) => {
 
   let options = [];
 
-  if ( data && data.__type && data.__type.enumValues ) {
-    options = data.__type.enumValues
+  if ( data?.videoBurnedInStatusEnum?.__type?.enumValues ) {
+    options = data.videoBurnedInStatusEnum?.__type.enumValues
       // currently not using CAPTIONED
       .filter( enumValue => enumValue.name !== 'CAPTIONED' )
       .map( ( { name } ) => ( {
