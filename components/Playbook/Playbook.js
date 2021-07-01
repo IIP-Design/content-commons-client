@@ -1,4 +1,3 @@
-import moment from 'moment';
 import propTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import DOMPurify from 'isomorphic-dompurify';
@@ -8,7 +7,7 @@ import Popover from 'components/popups/Popover/Popover';
 import Share from 'components/Share/Share';
 import TexturedSection from 'components/TexturedSection/TexturedSection';
 
-import { formatBytes, maybeGetUrlToProdS3 } from 'lib/utils';
+import { formatBytes, formatDateTime, maybeGetUrlToProdS3 } from 'lib/utils';
 import cautionIcon from 'static/icons/icon_caution.svg';
 import shareIconWhite from 'static/icons/icon_share_white.svg';
 
@@ -27,6 +26,26 @@ const needsDarkText = [
 const Playbook = ( { item } ) => {
   const router = useRouter();
   const isAdminPreview = router.asPath.startsWith( '/admin' );
+  const dateArgs = {
+    dateString: item.updatedAt,
+    options: {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      timeZone: 'America/New_York',
+    },
+  };
+
+  const timeArgs = {
+    ...dateArgs,
+    options: {
+      hour12: true,
+      hour: 'numeric',
+      minute: 'numeric',
+      timeZone: 'America/New_York',
+    },
+    timeStringOnly: true,
+  };
 
   return (
     <div className={ styles.container }>
@@ -44,7 +63,12 @@ const Playbook = ( { item } ) => {
         </div>
         <h1 className={ styles.title }>{ item?.title }</h1>
         { item?.updatedAt && (
-          <p>{ `Updated: ${moment( item.updatedAt ).format( 'MMMM DD, YYYY \\a\\t hh:mm A' )}` }</p>
+          <p>
+            Updated:
+            <time dateTime={ item.updatedAt }>
+              { ` ${formatDateTime( dateArgs )} at ${formatDateTime( timeArgs )} (Washington, DC)` }
+            </time>
+          </p>
         ) }
         <div className={ styles['header-contents'] }>
           <Popover

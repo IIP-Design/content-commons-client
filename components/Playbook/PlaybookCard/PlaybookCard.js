@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import MediaObject from 'components/MediaObject/MediaObject';
-import MetaTerms from 'components/admin/MetaTerms/MetaTerms';
 import DosSeal from 'static/images/dos_seal.svg';
-import { getDateTimeTerms } from 'lib/utils';
+import { formatDateTime } from 'lib/utils';
 
 import styles from './PlaybookCard.module.scss';
 
@@ -14,10 +13,20 @@ const PlaybookCard = ( { cardTheme, heading: Heading, item } ) => {
     title,
     desc,
     modified,
-    published,
+    // published,
     policy,
     owner,
   } = item;
+
+  const dateArgs = {
+    dateString: modified,
+    options: {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      timeZone: 'America/New_York',
+    },
+  };
 
   return (
     <article
@@ -33,11 +42,12 @@ const PlaybookCard = ( { cardTheme, heading: Heading, item } ) => {
         </Heading>
         <p className={ styles.type }>{ type }</p>
         <p className={ styles.description }>{ desc }</p>
-        <MetaTerms
-          className={ styles['date-time'] }
-          unitId={ id }
-          terms={ getDateTimeTerms( published, modified, 'MMMM D, YYYY' ) }
-        />
+        <p className={ styles['date-time'] }>
+          Updated:
+          <time dateTime={ modified }>
+            { ` ${formatDateTime( dateArgs )}` }
+          </time>
+        </p>
       </div>
 
       <svg
