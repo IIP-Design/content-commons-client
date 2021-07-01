@@ -20,7 +20,7 @@ import QualityDropdown from 'components/admin/dropdowns/QualityDropdown/QualityD
 import UseDropdown, { VIDEO_USE_QUERY } from 'components/admin/dropdowns/UseDropdown/UseDropdown';
 import VideoBurnedInStatusDropdown from 'components/admin/dropdowns/VideoBurnedInStatusDropdown/VideoBurnedInStatusDropdown';
 import { EditSingleProjectItemContext } from 'components/admin/ProjectEdit/EditSingleProjectItem/EditSingleProjectItem';
-import { formatBytes, formatDate, secondsToHMS } from 'lib/utils';
+import { formatBytes, formatDateTime, secondsToHMS } from 'lib/utils';
 
 // eslint-disable-next-line import/no-cycle
 import { VIDEO_UNIT_QUERY } from 'components/admin/ProjectEdit/EditVideoModal/ModalSections/FileSection/FileSection';
@@ -347,7 +347,15 @@ const FileDataForm = ( {
                 </span>
               ) }
               <span className="file_meta_content file_meta_content--uploaded">
-                { `Uploaded: ${formatDate( file.createdAt )}` }
+                { `Uploaded: ${formatDateTime( {
+                  dateString: file.createdAt,
+                  options: {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                    timeZone: 'America/New_York',
+                  },
+                } )}` }
               </span>
               { file.duration && (
                 <span className="file_meta_content file_meta_content--duration">

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import { Table } from 'semantic-ui-react';
 
-import { formatDate } from 'lib/utils';
+import { formatDateTime } from 'lib/utils';
 import TableMobileDataToggleIcon from 'components/ScrollableTableWithMenu/TableMobileDataToggleIcon/TableMobileDataToggleIcon';
 
 const MyProjectPrimaryCol = dynamic( () => import( /* webpackChunkName: "myProjectPrimaryCol" */ 'components/admin/Dashboard/MyProjects/MyProjectPrimaryCol/MyProjectPrimaryCol' ) );
@@ -69,7 +69,17 @@ const TableRow = ( { d, tableHeaders, projectTab } ) => {
                   <div className="items_table_mobileHeader">{ header.label }</div>
                   {
                     header.name === 'createdAt' || header.name === 'updatedAt'
-                      ? formatDate( d[header.name] )
+                      ? (
+                        formatDateTime( {
+                          dateString: d[header.name],
+                          options: {
+                            month: 'long',
+                            day: 'numeric',
+                            year: 'numeric',
+                            timeZone: 'America/New_York',
+                          },
+                        } )
+                      )
                       : d[header.name]
                   }
                 </span>
