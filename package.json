@@ -1,6 +1,6 @@
 {
   "name": "@gpa-lab/content-commons-client",
-  "version": "5.4.8",
+  "version": "5.5.0",
   "description": "Frontend interface for the public Content Commons site and it's administrative interface.",
   "main": "index.js",
   "scripts": {
