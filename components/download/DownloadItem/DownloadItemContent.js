@@ -1,7 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+
 import useSignedUrl from 'lib/hooks/useSignedUrl';
+
 import downloadIcon from 'static/icons/icon_download.svg';
+
 import './DownloadItemContent.scss';
 
 const DownloadItemContent = ( {

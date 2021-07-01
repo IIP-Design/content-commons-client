@@ -1,13 +1,12 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+
 import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
+
 import { formatBytes, getS3Url } from 'lib/utils';
 
 // NOTE: Using the 'download' attribute to trigger downloads
 // Need to research more robust options depending on browser support
-const DownloadVideo = props => {
-  const { selectedLanguageUnit, burnedInCaptions, isPreview } = props;
-
+const DownloadVideo = ( { selectedLanguageUnit, burnedInCaptions, isPreview } ) => {
   const getSizeInfo = ( dimensions, filesize ) => {
     if ( !Object.keys( dimensions ) || !filesize ) return null;
 
@@ -16,7 +15,6 @@ const DownloadVideo = props => {
       weight: formatBytes( filesize ),
     };
   };
-
 
   const sortByFilesize = ( a, b ) => {
     if ( a.filesize && b.filesize ) {

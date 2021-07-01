@@ -8,7 +8,7 @@ import Popover from 'components/popups/Popover/Popover';
 import Share from 'components/Share/Share';
 import TexturedSection from 'components/TexturedSection/TexturedSection';
 
-import { formatBytes } from 'lib/utils';
+import { formatBytes, maybeGetUrlToProdS3 } from 'lib/utils';
 import cautionIcon from 'static/icons/icon_caution.svg';
 import shareIconWhite from 'static/icons/icon_share_white.svg';
 
@@ -90,7 +90,7 @@ const Playbook = ( { item } ) => {
                   <DownloadItemContent
                     hoverText={ `Download ${file.filename}` }
                     isAdminPreview={ isAdminPreview }
-                    srcUrl={ file.url }
+                    srcUrl={ maybeGetUrlToProdS3( file.url ) }
                     downloadFilename={ file.filename }
                   >
                     <div className="item-content">
