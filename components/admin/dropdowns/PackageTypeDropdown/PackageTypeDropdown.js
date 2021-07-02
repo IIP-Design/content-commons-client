@@ -7,13 +7,9 @@ import { titleCase } from 'lib/utils';
 
 const PACKAGE_TYPE_QUERY = gql`
   query PACKAGE_TYPE_QUERY {
-    __type(name: "PackageType"){
-     enumValues {
-       name
-     }
-    }
+    packageTypeEnum
   }
- `;
+`;
 
 const areEqual = ( prevProps, nextProps ) => prevProps.value === nextProps.value;
 
@@ -30,8 +26,8 @@ const PackageTypeDropdown = ( {
 
   let options = [];
 
-  if ( data?.__type?.enumValues ) {
-    options = data.__type.enumValues
+  if ( data?.packageTypeEnum?.__type?.enumValues ) {
+    options = data.packageTypeEnum.__type.enumValues
       .filter( enumValue => {
         const type = enumValue.name === 'DAILY_GUIDANCE' ? 'PACKAGE' : enumValue.name;
 
