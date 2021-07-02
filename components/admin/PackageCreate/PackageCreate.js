@@ -27,7 +27,7 @@ const PackageCreate = () => {
 
   useEffect( () => {
     const getTeamPackageTypes = ( types = [] ) => {
-      const packageTypes = data?.__type.enumValues.map( value => value.name );
+      const packageTypes = data?.packageTypeEnum?.__type.enumValues.map( value => value.name );
       const _types = types.filter( type => type === 'PACKAGE' || packageTypes.includes( type ) );
 
       return _types;
