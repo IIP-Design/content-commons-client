@@ -1,6 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+
 import DownloadItemContent from 'components/download/DownloadItem/DownloadItemContent';
+
 import useSignedUrl from 'lib/hooks/useSignedUrl';
 
 const SignedUrlLink = ( { file, isPreview } ) => {

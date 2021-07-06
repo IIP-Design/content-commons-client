@@ -1,9 +1,12 @@
-import React, { useState, Fragment } from 'react';
+import { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import downloadIcon from 'static/icons/icon_download.svg';
-import { downloadPackage } from 'lib/utils';
+
 import SignedUrlLink from './SignedUrlLink/SignedUrlLink';
+
+import { downloadPackage } from 'lib/utils';
 import { useAuth } from 'context/authContext';
+
+import downloadIcon from 'static/icons/icon_download.svg';
 
 const DownloadPkgFiles = ( { files, id, isPreview, title } ) => {
   const [loading, setLoading] = useState( false );
