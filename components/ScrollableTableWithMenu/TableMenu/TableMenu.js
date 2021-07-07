@@ -4,11 +4,12 @@
  *
  */
 
-import React, { useRef, useState, createRef, useEffect } from 'react';
+import { createRef, Fragment, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Accordion, Checkbox, Icon, Menu } from 'semantic-ui-react';
 
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+
 import { isMobile, isWindowWidthLessThanOrEqualTo } from 'lib/browser';
 import { titleCase } from 'lib/utils';
 
@@ -35,7 +36,6 @@ const TableMenu = ( { columnMenu, tableMenuOnChange } ) => {
   const handleCloseMenu = () => setDisplayTableMenu( false );
 
   const handleKbdAccess = e => {
-    // console.log( displayTableMenu );
     if ( !displayTableMenu ) return;
 
     if ( [
@@ -104,9 +104,6 @@ const TableMenu = ( { columnMenu, tableMenuOnChange } ) => {
     const isTableMenuItem = parentNode && ( !!parentNode.dataset.tablemenuitem || !!dataset.tablemenuitem );
     const isShowMoreColumns = id === 'show-more-columns';
 
-    // console.log( dataset, id, parentNode );
-    // console.log( 'table menu: ', isTableMenu );
-
     if ( isTableMenu ) {
       const displayState = displayTableMenu;
 
@@ -171,7 +168,21 @@ const TableMenu = ( { columnMenu, tableMenuOnChange } ) => {
     };
   }, [] );
 
-  const isTableScrollable = menuHeaders.length >= 2;
+  // The table will always have at least three columns - created, visibility, & author
+  // Add to this the number of selected optional show more columns.
+  const totalColumns = 3 + menuHeaders.length;
+
+  // Calculate the minimum width of the content.
+  // Each column has a minimum width of 150px.
+  // Add to this the project title column which has a minimum width of 300px.
+  const contentWidth = totalColumns * 150 + 300;
+
+  // Get the width of the table that this menu controls.
+  const table = document.querySelector( '.items_table' );
+  const tableWidth = table ? table.clientWidth : 0;
+
+  // If the minimum width of the content is smaller than the table width the table is scrollable.
+  const isTableScrollable = contentWidth > tableWidth;
 
   return (
     <div className="items_menu_wrapper">
@@ -194,58 +205,61 @@ const TableMenu = ( { columnMenu, tableMenuOnChange } ) => {
                 name={ `angle ${displayTableMenu ? 'up' : 'down'}` }
               />
             </Accordion.Title>
-            { displayTableMenu
-                && (
-                  <Accordion.Content
-                    active={ displayTableMenu }
-                    aria-hidden={ !displayTableMenu }
-                    aria-labelledby="show-more-btn"
-                    as="ul"
-                    id="show-more-columns"
-                    role="menu"
-                  >
-                    { columnMenu.map( ( item, idx ) => (
-                      <li key={ item.name }>
-                        <Checkbox
-                          checked={ menuHeaders.includes( item.label ) }
-                          data-proplabel={ item.label }
-                          data-propname={ item.name }
-                          data-tablemenuitem
-                          id={ item.label }
-                          label={ titleCase( item.label ) }
-                          onChange={ tableMenuOnChange }
-                          onClick={ toggleCheckbox }
-                          ref={ refs.current[idx] }
-                          role="menuitem"
-                          tabIndex="-1"
-                        />
-                      </li>
-                    ) ) }
-                  </Accordion.Content>
-                ) }
+            { displayTableMenu && (
+              <Accordion.Content
+                active={ displayTableMenu }
+                aria-hidden={ !displayTableMenu }
+                aria-labelledby="show-more-btn"
+                as="ul"
+                id="show-more-columns"
+                role="menu"
+              >
+                { columnMenu.map( ( item, idx ) => (
+                  <li key={ item.name }>
+                    <Checkbox
+                      checked={ menuHeaders.includes( item.label ) }
+                      data-proplabel={ item.label }
+                      data-propname={ item.name }
+                      data-tablemenuitem
+                      id={ item.label }
+                      label={ titleCase( item.label ) }
+                      onChange={ tableMenuOnChange }
+                      onClick={ toggleCheckbox }
+                      ref={ refs.current[idx] }
+                      role="menuitem"
+                      tabIndex="-1"
+                    />
+                  </li>
+                ) ) }
+              </Accordion.Content>
+            ) }
           </Menu.Item>
         </Accordion>
 
-        <button
-          data-tablearrow="left"
-          onClick={ handleTableScroll }
-          onFocus={ displayTableMenu ? toggleTableMenu : null }
-          type="button"
-          disabled={ !isTableScrollable }
-        >
-          <VisuallyHidden el="span">scroll table left</VisuallyHidden>
-          <Icon name="angle left" data-tablearrow="left" />
-        </button>
-        <button
-          data-tablearrow="right"
-          onClick={ handleTableScroll }
-          onFocus={ displayTableMenu ? toggleTableMenu : null }
-          type="button"
-          disabled={ !isTableScrollable }
-        >
-          <VisuallyHidden el="span">scroll table right</VisuallyHidden>
-          <Icon name="angle right" data-tablearrow="right" />
-        </button>
+        { isTableScrollable && (
+          <Fragment>
+            <button
+              data-tablearrow="left"
+              onClick={ handleTableScroll }
+              onFocus={ displayTableMenu ? toggleTableMenu : null }
+              type="button"
+              disabled={ !isTableScrollable }
+            >
+              <VisuallyHidden el="span">scroll table left</VisuallyHidden>
+              <Icon name="angle left" data-tablearrow="left" />
+            </button>
+            <button
+              data-tablearrow="right"
+              onClick={ handleTableScroll }
+              onFocus={ displayTableMenu ? toggleTableMenu : null }
+              type="button"
+              disabled={ !isTableScrollable }
+            >
+              <VisuallyHidden el="span">scroll table right</VisuallyHidden>
+              <Icon name="angle right" data-tablearrow="right" />
+            </button>
+          </Fragment>
+        ) }
       </div>
     </div>
   );
