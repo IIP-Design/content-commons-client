@@ -86,7 +86,7 @@ const Playbook = ( { item } ) => {
             </small>
             <ul className={ styles['resources-list'] }>
               { item.supportFiles.map( file => (
-                <li key={ file.id }>
+                <li key={ file.filename }>
                   <DownloadItemContent
                     hoverText={ `Download ${file.filename}` }
                     isAdminPreview={ isAdminPreview }
