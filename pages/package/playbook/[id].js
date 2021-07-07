@@ -1,18 +1,51 @@
-import { ApolloClient, HttpLink, InMemoryCache, useQuery } from '@apollo/client';
+import { useEffect, useState } from 'react';
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+import cookies from 'next-cookies';
 import { Loader } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-import ApolloError from 'components/errors/ApolloError';
 import ContentPage from 'components/PageTypes/ContentPage/ContentPage';
 import Playbook from 'components/Playbook/Playbook';
 
-import { PLAYBOOK_QUERY } from 'lib/graphql/queries/playbook';
+import { CURRENT_USER_QUERY } from 'lib/graphql/queries/user';
+import { getDataFromHits, normalizeItem } from 'lib/elastic/parser';
+import { getItemByIdRequest } from 'lib/elastic/api';
+import { useAuth } from 'context/authContext';
+
+const getPlaybook = async ( id, user ) => {
+  const response = await getItemByIdRequest( id, user );
+  const item = getDataFromHits( response );
+
+  if ( item && item[0] ) {
+    const _locale = item[0]?._source?.language?.locale ? item[0]._source.language.locale : 'en-us';
+    const _item = normalizeItem( item[0], _locale );
+
+    return {
+      item: _item,
+    };
+  }
+
+  return {};
+};
 
 const PlaybookPage = ( { id, playbook } ) => {
-  const { data, error, loading } = useQuery( PLAYBOOK_QUERY, {
-    variables: { id },
-    skip: !!playbook,
-  } );
+  const [loading, setLoading] = useState( true );
+  const [item, setItem] = useState( playbook || {} );
+
+  const { user } = useAuth();
+
+  useEffect( () => {
+    const fetchData = async ( i, u ) => {
+      const { item: data } = await getPlaybook( i, u );
+
+      setItem( data );
+    };
+
+    if ( id && user ) {
+      fetchData( id, user );
+      setLoading( false );
+    }
+  }, [id, user] );
 
   if ( loading ) {
     return (
@@ -27,21 +60,19 @@ const PlaybookPage = ( { id, playbook } ) => {
     );
   }
 
-  if ( error ) return <ApolloError error={ error } />;
-
-  const item = playbook || data?.playbook;
-
   return (
     <ContentPage fullWidth item={ item }>
-      { item && (
-        <Playbook item={ item } />
-      ) }
+      <Playbook item={ item } />
     </ContentPage>
   );
 };
 
-export async function getServerSideProps( { query: { id } } ) {
-  const props = {};
+export async function getServerSideProps( ctx ) {
+  const id = ctx?.query?.id;
+
+  const props = {
+    id,
+  };
 
   const apolloClient = new ApolloClient( {
     cache: new InMemoryCache(),
@@ -51,21 +82,23 @@ export async function getServerSideProps( { query: { id } } ) {
     } ),
   } );
 
-  if ( id ) {
-    props.id = id;
+  try {
+    // Check for a valid session?
+    const {
+      data: { user },
+    } = await apolloClient.query( { query: CURRENT_USER_QUERY, fetchPolicy: 'network-only' } );
 
-    try {
-      const { data } = await apolloClient.query( {
-        query: PLAYBOOK_QUERY,
-        variables: { id },
-      } );
 
-      props.playbook = data.playbook;
-    } catch ( err ) {
-      console.log( err );
+    if ( user && user.id !== 'public' ) {
+      // Add token to authenticate to elastic api to user.
+      const { ES_TOKEN } = cookies( ctx );
 
-      return { props };
+      props.playbook = getPlaybook( id, { ...user, esToken: ES_TOKEN } );
     }
+
+    props.playbook = {};
+  } catch ( err ) {
+    props.playbook = {};
   }
 
   return { props };
