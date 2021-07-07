@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import MediaObject from 'components/MediaObject/MediaObject';
 import DosSeal from 'static/images/dos_seal.svg';
+import useInitialStatus from 'lib/hooks/useInitialStatus';
 import { formatDateTime } from 'lib/utils';
 
 import styles from './PlaybookCard.module.scss';
@@ -12,14 +13,23 @@ const PlaybookCard = ( { cardTheme, heading: Heading, item } ) => {
     type,
     title,
     desc,
+    created,
     modified,
-    // published,
+    published,
+    initialPublished,
     policy,
     owner,
   } = item;
 
+  const { isInitialPublish } = useInitialStatus( {
+    created,
+    updated: modified,
+    published,
+    initialPublished,
+  } );
+
   const dateArgs = {
-    dateString: modified,
+    dateString: isInitialPublish ? initialPublished : modified,
     options: {
       month: 'long',
       day: 'numeric',
@@ -43,9 +53,11 @@ const PlaybookCard = ( { cardTheme, heading: Heading, item } ) => {
         <p className={ styles.type }>{ type }</p>
         <p className={ styles.description }>{ desc }</p>
         <p className={ styles['date-time'] }>
-          Updated:
-          <time dateTime={ modified }>
-            { ` ${formatDateTime( dateArgs )}` }
+          { ( isInitialPublish )
+            ? 'Published: '
+            : 'Updated: ' }
+          <time dateTime={ dateArgs.dateString }>
+            { formatDateTime( dateArgs ) }
           </time>
         </p>
       </div>

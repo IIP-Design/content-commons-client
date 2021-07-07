@@ -8,6 +8,7 @@ import Share from 'components/Share/Share';
 import TexturedSection from 'components/TexturedSection/TexturedSection';
 
 import { formatBytes, formatDateTime, maybeGetUrlToProdS3 } from 'lib/utils';
+import useInitialStatus from 'lib/hooks/useInitialStatus';
 import cautionIcon from 'static/icons/icon_caution.svg';
 import shareIconWhite from 'static/icons/icon_share_white.svg';
 
@@ -26,8 +27,17 @@ const needsDarkText = [
 const Playbook = ( { item } ) => {
   const router = useRouter();
   const isAdminPreview = router.asPath.startsWith( '/admin' );
+  const updated = item?.modified || item?.updatedAt;
+  const published = item?.published || item?.publishedAt;
+  const { isInitialCreation, isInitialPublish } = useInitialStatus( {
+    created: item?.created || item?.createdAt,
+    updated,
+    published,
+    initialPublished: item?.initialPublished || item?.initialPublishedAt,
+  } );
+
   const dateArgs = {
-    dateString: item.updatedAt,
+    dateString: isInitialPublish ? published : updated,
     options: {
       month: 'long',
       day: 'numeric',
@@ -62,12 +72,18 @@ const Playbook = ( { item } ) => {
           </button>
         </div>
         <h1 className={ styles.title }>{ item?.title }</h1>
-        { item?.updatedAt && (
+        { updated && (
           <p>
-            Updated:
-            <time dateTime={ item.updatedAt }>
-              { ` ${formatDateTime( dateArgs )} at ${formatDateTime( timeArgs )} (Washington, DC)` }
-            </time>
+            { ( isInitialCreation || isInitialPublish )
+              ? 'Published: '
+              : 'Updated: ' }
+            { isInitialCreation
+              ? '(date will appear here)'
+              : (
+                <time dateTime={ dateArgs.dateString }>
+                  { `${formatDateTime( dateArgs )} at ${formatDateTime( timeArgs )} (Washington, DC)` }
+                </time>
+              ) }
           </p>
         ) }
         <div className={ styles['header-contents'] }>
