@@ -27,14 +27,14 @@ const getPlaybook = async ( id, user ) => {
     };
   }
 
-  return { item: {} };
+  return { item: null };
 };
 
 const PlaybookPage = ( { query, user } ) => {
   const id = query?.id;
 
   const [loading, setLoading] = useState( true );
-  const [item, setItem] = useState( {} );
+  const [item, setItem] = useState( null );
 
   useEffect( () => {
     const fetchData = async ( i, u ) => {
