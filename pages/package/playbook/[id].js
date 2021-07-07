@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
-import cookies from 'next-cookies';
 import { Loader } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 import ContentPage from 'components/PageTypes/ContentPage/ContentPage';
 import Playbook from 'components/Playbook/Playbook';
 
-import { CURRENT_USER_QUERY } from 'lib/graphql/queries/user';
 import { getDataFromHits, normalizeItem } from 'lib/elastic/parser';
 import { getItemByIdRequest } from 'lib/elastic/api';
-import { useAuth } from 'context/authContext';
 
+/**
+ * Queries the public API for a given playbook.
+ * @param {string} id The id of the desired playbook.
+ * @param {Object} user The current user object.
+ * @returns {Object} The playbook data.
+ */
 const getPlaybook = async ( id, user ) => {
   const response = await getItemByIdRequest( id, user );
   const item = getDataFromHits( response );
@@ -25,14 +27,14 @@ const getPlaybook = async ( id, user ) => {
     };
   }
 
-  return {};
+  return { item: {} };
 };
 
-const PlaybookPage = ( { id, playbook } ) => {
-  const [loading, setLoading] = useState( true );
-  const [item, setItem] = useState( playbook || {} );
+const PlaybookPage = ( { query, user } ) => {
+  const id = query?.id;
 
-  const { user } = useAuth();
+  const [loading, setLoading] = useState( true );
+  const [item, setItem] = useState( {} );
 
   useEffect( () => {
     const fetchData = async ( i, u ) => {
@@ -67,46 +69,11 @@ const PlaybookPage = ( { id, playbook } ) => {
   );
 };
 
-export async function getServerSideProps( ctx ) {
-  const id = ctx?.query?.id;
-
-  const props = {
-    id,
-  };
-
-  const apolloClient = new ApolloClient( {
-    cache: new InMemoryCache(),
-    link: new HttpLink( {
-      uri: process.env.REACT_APP_APOLLO_ENDPOINT,
-      fetch,
-    } ),
-  } );
-
-  try {
-    // Check for a valid session?
-    const {
-      data: { user },
-    } = await apolloClient.query( { query: CURRENT_USER_QUERY, fetchPolicy: 'network-only' } );
-
-
-    if ( user && user.id !== 'public' ) {
-      // Add token to authenticate to elastic api to user.
-      const { ES_TOKEN } = cookies( ctx );
-
-      props.playbook = getPlaybook( id, { ...user, esToken: ES_TOKEN } );
-    }
-
-    props.playbook = {};
-  } catch ( err ) {
-    props.playbook = {};
-  }
-
-  return { props };
-}
-
 PlaybookPage.propTypes = {
-  playbook: PropTypes.object,
-  id: PropTypes.string,
+  query: PropTypes.shape( {
+    id: PropTypes.string,
+  } ),
+  user: PropTypes.object,
 };
 
 export default PlaybookPage;
