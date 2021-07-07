@@ -53,7 +53,7 @@ FileConfirm.propTypes = {
 FileConfirm.defaultProps = {
   open: false,
   headline: 'Are you sure you want to delete this video project?',
-  content: 'This video project will be permanently removed from the Content Cloud. Any videos that you uploaded here will not be uploaded.',
+  content: 'This video project will be permanently removed from the Content Commons. Any videos that you uploaded here will not be uploaded.',
   cancelButton: 'Cancel',
   confirmButton: 'OK',
 };
