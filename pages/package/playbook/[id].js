@@ -53,7 +53,7 @@ const PlaybookPage = ( { id, playbook } ) => {
         <Loader
           active
           inline="centered"
-          style={ { marginBottom: '1em' } }
+          style={ { margin: '6em 0 1em' } }
           content="Loading Playbook preview..."
         />
       </div>
