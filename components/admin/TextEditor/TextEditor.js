@@ -5,11 +5,20 @@ import useTimeout from 'lib/hooks/useTimeout';
 import { config } from './config';
 import styles from './TextEditor.module.scss';
 
-const TextEditor = ( { id, content, query, type, updateMutation } ) => {
+const TextEditor = ( {
+  id,
+  content,
+  query,
+  type,
+  updateMutation,
+  updateNotification,
+} ) => {
   // useCKEditor allows CKEditor to work with SSR
   const { CKEditor, Editor, isEditorLoaded } = useCKEditor();
   const [editorData, setEditorData] = useState( '' );
   const [initializing, setIsInitializing] = useState( true );
+  const hideNotification = () => updateNotification( '' );
+  const { startTimeout: hideNotificationTimeout } = useTimeout( hideNotification, 2000 );
 
   const handleChange = ( _, editor ) => (
     setEditorData( editor.getData() )
@@ -22,7 +31,7 @@ const TextEditor = ( { id, content, query, type, updateMutation } ) => {
 
   const handleSave = useCallback( async () => {
     try {
-      await updateMutation( {
+      const response = await updateMutation( {
         variables: {
           data: {
             type,
@@ -54,11 +63,22 @@ const TextEditor = ( { id, content, query, type, updateMutation } ) => {
           }
         },
       } );
+
+      if ( response ) {
+        updateNotification( 'Changes saved' );
+        hideNotificationTimeout();
+      }
     } catch ( err ) {
       console.log( err );
     }
   }, [
-    id, editorData, query, type, updateMutation,
+    editorData,
+    hideNotificationTimeout,
+    id,
+    query,
+    type,
+    updateMutation,
+    updateNotification,
   ] );
 
   const { startTimeout } = useTimeout( handleSave, 500 );
@@ -68,7 +88,10 @@ const TextEditor = ( { id, content, query, type, updateMutation } ) => {
 
     startTimeout();
   }, [
-    content, editorData, initializing, startTimeout,
+    content,
+    editorData,
+    initializing,
+    startTimeout,
   ] );
 
   return (
@@ -100,6 +123,7 @@ TextEditor.propTypes = {
   query: PropTypes.object,
   type: PropTypes.string,
   updateMutation: PropTypes.func,
+  updateNotification: PropTypes.func,
 };
 
 export default TextEditor;
