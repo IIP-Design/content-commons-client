@@ -1,33 +1,31 @@
-import React from 'react';
+import { Fragment } from 'react';
 import PropTypes from 'prop-types';
+
 import GraphicSupportFiles from 'components/admin/ProjectEdit/GraphicEdit/GraphicSupportFiles/GraphicSupportFiles';
+
 import './SupportFiles.scss';
 
-const SupportFiles = props => {
-  const { projectId, updateNotification, fileTypes } = props;
+const SupportFiles = ( { projectId, updateNotification, fileTypes } ) => (
+  <div className="support-files-container">
+    { fileTypes.map( ( fileType, i ) => {
+      const { files, headline, helperText } = fileType;
 
-  return (
-    <div className="support-files-container">
-      { fileTypes.map( ( fileType, i ) => {
-        const { files, headline, helperText } = fileType;
+      return (
+        <Fragment key={ `${projectId}-${headline}` }>
+          <GraphicSupportFiles
+            projectId={ projectId }
+            headline={ headline }
+            helperText={ helperText }
+            files={ files }
+            updateNotification={ updateNotification }
+          />
 
-        return (
-          <React.Fragment key={ `${projectId}-${headline}` }>
-            <GraphicSupportFiles
-              projectId={ projectId }
-              headline={ headline }
-              helperText={ helperText }
-              files={ files }
-              updateNotification={ updateNotification }
-            />
-
-            { i !== fileTypes.length - 1 && <div className="separator" /> }
-          </React.Fragment>
-        );
-      } ) }
-    </div>
-  );
-};
+          { i !== fileTypes.length - 1 && <div className="separator" /> }
+        </Fragment>
+      );
+    } ) }
+  </div>
+);
 
 SupportFiles.propTypes = {
   projectId: PropTypes.string,
