@@ -70,7 +70,7 @@ const ResultsHeader = ( {
     <div>
       <div className={ styles.controls }>
         <div className={ styles.sortResults }>
-          <div className={ styles.fields }>
+          <div className={ `${styles.fields} ${viewingAllPkgs ? styles['no-border'] : ''}` }>
             { !viewingAllPkgs && (
               <Fragment>
                 <span aria-hidden="true">Sort by</span>
