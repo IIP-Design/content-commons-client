@@ -87,7 +87,7 @@ const ResultsHeader = ( {
             ) }
           </div>
         </div>
-        <ResultsToggleView toggle={ toggleView } currentView={ currentView } />
+        { /* <ResultsToggleView toggle={ toggleView } currentView={ currentView } /> */ }
       </div>
 
       <div className={ styles.perPage }>
