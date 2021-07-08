@@ -46,7 +46,7 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
 
   // Get teams to include in query for a specific content type
   // This is rather odd and the connection between teams and content
-  // types should be more fully thought out and absracted
+  // types should be more fully thought out and abstracted
   const teams
     = team.name === 'GPA Design & Editorial'
       ? `${team.name}|Regional Media Hubs|ShareAmerica`
