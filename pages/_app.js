@@ -2,12 +2,13 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 /* eslint-enable */
+
 import { useEffect } from 'react';
 import Amplify from 'aws-amplify';
 import { ApolloProvider } from '@apollo/client';
 import App from 'next/app';
 import isEmpty from 'lodash/isEmpty';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import Page from 'components/Page';
 
@@ -68,14 +69,13 @@ Commons.getInitialProps = async appContext => {
 };
 
 Commons.propTypes = {
-  apollo: propTypes.object,
-  Component: propTypes.oneOfType( [
-    propTypes.func,
-    propTypes.object,
+  apollo: PropTypes.object,
+  Component: PropTypes.oneOfType( [
+    PropTypes.func,
+    PropTypes.object,
   ] ),
-  pageProps: propTypes.object,
-  router: propTypes.object,
-  user: propTypes.object,
+  pageProps: PropTypes.object,
+  router: PropTypes.object,
 };
 
 export default withApollo( storeWrapper.withRedux( Commons ) );
