@@ -205,7 +205,7 @@ const VideoReview = props => {
               headline="Are you sure you want to delete this video project?"
             >
               <p>
-                This video project will be permanently removed from the Content Cloud. Any videos
+                This video project will be permanently removed from the Content Commons. Any videos
                 that you uploaded here will not be uploaded.
               </p>
             </ConfirmModalContent>
