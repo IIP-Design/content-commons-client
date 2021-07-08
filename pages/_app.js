@@ -11,7 +11,7 @@ import propTypes from 'prop-types';
 
 import Page from 'components/Page';
 
-import { AuthProvider, canAccessPage, fetchUser } from 'context/authContext';
+import { AuthProvider, canAccessPage } from 'context/authContext';
 import awsconfig from '../aws-exports';
 import storeWrapper from 'lib/redux/store';
 import withApollo from 'hocs/withApollo';
@@ -23,7 +23,7 @@ Amplify.configure( {
   ssr: true,
 } );
 
-const Commons = ( { apollo, Component, pageProps, router, user } ) => {
+const Commons = ( { apollo, Component, pageProps, router } ) => {
   const { redirect } = pageProps;
 
   useEffect( () => {
@@ -36,7 +36,7 @@ const Commons = ( { apollo, Component, pageProps, router, user } ) => {
     <ApolloProvider client={ apollo }>
       <AuthProvider>
         <Page redirect={ pageProps.redirect }>
-          <Component { ...pageProps } user={ user } />
+          <Component { ...pageProps } />
         </Page>
       </AuthProvider>
     </ApolloProvider>
@@ -64,9 +64,7 @@ Commons.getInitialProps = async appContext => {
     appProps.pageProps.query = ctx.query;
   }
 
-  const user = await fetchUser( ctx );
-
-  return { ...appProps, user };
+  return { ...appProps };
 };
 
 Commons.propTypes = {

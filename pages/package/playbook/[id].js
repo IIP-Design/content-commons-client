@@ -7,6 +7,7 @@ import Playbook from 'components/Playbook/Playbook';
 
 import { getDataFromHits, normalizeItem } from 'lib/elastic/parser';
 import { getItemByIdRequest } from 'lib/elastic/api';
+import { useAuth } from 'context/authContext';
 
 /**
  * Queries the public API for a given playbook.
@@ -30,8 +31,9 @@ const getPlaybook = async ( id, user ) => {
   return { item: null };
 };
 
-const PlaybookPage = ( { query, user } ) => {
+const PlaybookPage = ( { query } ) => {
   const id = query?.id;
+  const { user } = useAuth();
 
   const [loading, setLoading] = useState( true );
   const [item, setItem] = useState( null );
@@ -73,7 +75,6 @@ PlaybookPage.propTypes = {
   query: PropTypes.shape( {
     id: PropTypes.string,
   } ),
-  user: PropTypes.object,
 };
 
 export default PlaybookPage;
