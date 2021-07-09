@@ -16,7 +16,6 @@ const PlaybookCard = ( { cardTheme, heading: Heading, item } ) => {
     modified,
     published,
     policy,
-    theme: policyTheme,
     owner,
   } = item;
 
@@ -24,7 +23,7 @@ const PlaybookCard = ( { cardTheme, heading: Heading, item } ) => {
     <article
       key={ id }
       className={ `${styles.card} ${styles[cardTheme]}` }
-      style={ { '--policy-theme': policyTheme } }
+      style={ { '--policy-theme': policy?.theme } }
     >
       <div className={ styles.header }>
         <Heading className={ styles.title }>
@@ -53,7 +52,7 @@ const PlaybookCard = ( { cardTheme, heading: Heading, item } ) => {
       </svg>
 
       <div className={ styles.footer }>
-        <p className={ styles.policy }>{ policy }</p>
+        <p className={ styles.policy }>{ policy?.name }</p>
         <MediaObject
           body={ <span style={ { fontSize: '11px' } }>{ owner }</span> }
           className={ styles.source }

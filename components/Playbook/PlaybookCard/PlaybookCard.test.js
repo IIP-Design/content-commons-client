@@ -33,8 +33,10 @@ describe( '<PlaybookCard />', () => {
       visibility: 'INTERNAL',
       title: 'Vivamus sagittis lacus',
       desc: 'Nullam quis risus eget urna mollis ornare vel eu leo. Cras justo odio, dapibus ac facilisis in, eges',
-      policy: 'Covid-19 Recovery',
-      theme: '#dd7533',
+      policy: {
+        name: 'Covid-19 Recovery',
+        theme: '#dd7533',
+      },
       supportFiles: [],
     },
   };
