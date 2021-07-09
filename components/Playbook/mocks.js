@@ -101,8 +101,9 @@ const mockContent = `
 export const mockItem = {
   id: '1234',
   createdAt: '2021-05-26T11:12:34.140Z',
-  updatedAt: '2021-05-27T11:12:34.140Z',
+  updatedAt: '2021-05-28T11:12:34.740Z',
   publishedAt: '2021-05-28T11:12:34.140Z',
+  initialPublishedAt: '2021-05-27T08:18:44.410Z',
   type: 'PLAYBOOK',
   title: 'COVAX Deliveries and Announcement Guidance Playbook',
   // assetPath: String,
