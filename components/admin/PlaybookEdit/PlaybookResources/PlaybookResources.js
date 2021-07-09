@@ -106,6 +106,7 @@ const PlaybookResources = ( { assetPath, files, projectId, updateMutation } ) =>
         supportFiles: {
           'delete': { id },
         },
+        type: 'PLAYBOOK', // This property is included to ensure that the updatedAt date on the playbook is updated
       },
       where: { id: projectId },
     },
