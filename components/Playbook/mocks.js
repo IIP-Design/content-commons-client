@@ -117,8 +117,10 @@ export const mockItem = {
   },
   // status: PublishStatus @default(value: DRAFT),
   // visibility: Visibility @default(value: INTERNAL),
-  policy: 'COVID-19 Recovery',
-  theme: '#dd7533',
+  policy: {
+    name: 'COVID-19 Recovery',
+    theme: '#dd7533',
+  },
   categories: [],
   tags: [],
   supportFiles: [

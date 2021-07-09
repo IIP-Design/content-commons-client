@@ -68,18 +68,18 @@ const Playbook = ( { item } ) => {
           </Popover>
         </div>
       </header>
-      { item?.policy && (
+      { item?.policy?.name && (
         <div className={ styles['policy-container'] }>
           <span
             className={ styles.policy }
             style={ {
-              backgroundColor: item?.theme,
-              color: needsDarkText.includes( item?.theme )
+              backgroundColor: item?.policy?.theme || '#0071bc',
+              color: needsDarkText.includes( item?.policy?.theme )
                 ? '#112e51'
                 : 'white',
             } }
           >
-            { item.policy }
+            { item.policy.name }
           </span>
         </div>
       ) }
