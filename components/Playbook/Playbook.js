@@ -73,13 +73,13 @@ const Playbook = ( { item } ) => {
           <span
             className={ styles.policy }
             style={ {
-              backgroundColor: item.policy?.theme,
-              color: needsDarkText.includes( item.policy?.theme )
+              backgroundColor: item?.theme,
+              color: needsDarkText.includes( item?.theme )
                 ? '#112e51'
                 : 'white',
             } }
           >
-            { item.policy?.name }
+            { item.policy }
           </span>
         </div>
       ) }
