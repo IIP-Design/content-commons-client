@@ -226,6 +226,7 @@ const PlaybookEdit = ( { id: playbookId } ) => {
         query={ PLAYBOOK_QUERY }
         type={ playbook.type }
         updateMutation={ updatePlaybook }
+        updateNotification={ updateNotification }
       />
 
       <PlaybookResources

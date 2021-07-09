@@ -24,6 +24,7 @@ describe( '<TextEditor />', () => {
     },
     type: 'PLAYBOOK',
     updateMutation: jest.fn(),
+    updateNotification: jest.fn(),
   };
 
   beforeEach( () => {
