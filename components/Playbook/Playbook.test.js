@@ -34,4 +34,31 @@ describe( '<Playbook />', () => {
 
     expect( resources.children() ).toHaveLength( mockItem.supportFiles.length );
   } );
+
+  it( 'has a policy badge', () => {
+    const policyBadge = wrapper.find( '.policy-container' );
+
+    expect( policyBadge.exists() ).toEqual( true );
+    expect( policyBadge.contains( mockItem.policy ) ).toEqual( true );
+  } );
+} );
+
+describe( '<Playbook /> without policy', () => {
+  const noPolicyMocks = {
+    ...mockItem,
+    policy: undefined,
+    theme: undefined,
+  };
+
+  const wrapper = mount( <Playbook item={ noPolicyMocks } /> );
+
+  it( 'renders without crashing', () => {
+    expect( wrapper.exists() ).toEqual( true );
+  } );
+
+  it( 'does not contain a policy badge', () => {
+    const policyBadge = wrapper.find( '.policy-container' );
+
+    expect( policyBadge.exists() ).toEqual( false );
+  } );
 } );

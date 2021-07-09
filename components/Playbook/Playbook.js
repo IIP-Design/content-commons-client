@@ -16,6 +16,14 @@ import styles from './Playbook.module.scss';
 
 const desc = 'This Playbook is for use by U.S. diplomatic missions and senior State Department officials.\nPlease treat this document as you would Daily Press Guidance.';
 
+const needsDarkText = [
+  '#94bfa2',
+  '#fff1d2',
+  '#a3e4e8',
+  '#f9c642',
+  '#fff1d2',
+];
+
 const Playbook = ( { item } ) => {
   const router = useRouter();
   const isAdminPreview = router.asPath.startsWith( '/admin' );
@@ -64,9 +72,14 @@ const Playbook = ( { item } ) => {
         <div className={ styles['policy-container'] }>
           <span
             className={ styles.policy }
-            style={ { backgroundColor: item.policy?.theme } }
+            style={ {
+              backgroundColor: item?.theme,
+              color: needsDarkText.includes( item?.theme )
+                ? '#112e51'
+                : 'white',
+            } }
           >
-            { item.policy?.name }
+            { item.policy }
           </span>
         </div>
       ) }

@@ -19,6 +19,17 @@
 .container {
   background-color: $blue;
   padding-top: 5rem;
+
+  margin-bottom: -250px;
+  @media screen and (min-width: 560px) {
+    margin-bottom: -266px;
+  }
+  @media screen and (min-width: 736px) {
+    margin-bottom: -283px;
+  }
+  @media screen and (min-width: 768px) {
+    margin-bottom: -190px;
+  }
 }
 
 .preview {
@@ -26,15 +37,15 @@
   align-items: center;
   justify-content: center;
   gap: 0.25rem;
-  margin-top: -2.2rem !important;
+  margin-top: -2.2rem;
   @media screen and (min-width: 993px) {
-    margin-top: -1.1rem !important;
+    margin-top: -1.1rem;
   }
   margin-bottom: 0;
   padding: 0.5rem 1.5rem;
   background-color: $gold;
   color: $blue;
-  font-size: 0.888888889rem;
+  font-size: 0.8889rem;
   font-style: italic;
 }
 
@@ -100,9 +111,10 @@
 }
 
 .policy {
-  color: white;
   margin: 0 auto;
   padding: 0.3rem 1rem;
+  font-size: 1.1111rem;
+  font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 3px;
   transform: translateY(1rem);
