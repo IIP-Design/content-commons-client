@@ -27,17 +27,17 @@ const needsDarkText = [
 const Playbook = ( { item } ) => {
   const router = useRouter();
   const isAdminPreview = router.asPath.startsWith( '/admin' );
-  const updated = item?.modified || item?.updatedAt;
-  const published = item?.published || item?.publishedAt;
-  const { isInitialCreation, isInitialPublish } = useInitialStatus( {
-    created: item?.created || item?.createdAt,
-    updated,
-    published,
+
+  const dates = {
+    updated: item?.modified || item?.updatedAt,
+    published: item?.published || item?.publishedAt,
     initialPublished: item?.initialPublished || item?.initialPublishedAt,
-  } );
+  };
+
+  const { isNeverPublished, isInitialPublish, isSavedUpdate } = useInitialStatus( dates );
 
   const dateArgs = {
-    dateString: isInitialPublish ? published : updated,
+    dateString: isInitialPublish ? dates.published : dates.updated,
     options: {
       month: 'long',
       day: 'numeric',
@@ -57,6 +57,12 @@ const Playbook = ( { item } ) => {
     timeStringOnly: true,
   };
 
+  // If the item has never been published or is the initial published version, show "Published".
+  // If previewing and item with unpublished changes to the initial publish show "Updated".
+  const showPublished = isAdminPreview
+    ? isNeverPublished || ( isInitialPublish && !isSavedUpdate )
+    : isNeverPublished || isInitialPublish;
+
   return (
     <div className={ styles.container }>
       { isAdminPreview && (
@@ -72,12 +78,10 @@ const Playbook = ( { item } ) => {
           </button>
         </div>
         <h1 className={ styles.title }>{ item?.title }</h1>
-        { updated && (
+        { dates.updated && (
           <p>
-            { ( isInitialCreation || isInitialPublish )
-              ? 'Published: '
-              : 'Updated: ' }
-            { isInitialCreation
+            { showPublished ? 'Published: ' : 'Updated: ' }
+            { isNeverPublished
               ? '(date will appear here)'
               : (
                 <time dateTime={ dateArgs.dateString }>
