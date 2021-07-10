@@ -8,6 +8,7 @@ import Share from 'components/Share/Share';
 import TexturedSection from 'components/TexturedSection/TexturedSection';
 
 import { formatBytes, formatDateTime, maybeGetUrlToProdS3 } from 'lib/utils';
+import { getBadgeStyle } from './Playbook.controller';
 import useInitialStatus from 'lib/hooks/useInitialStatus';
 import cautionIcon from 'static/icons/icon_caution.svg';
 import shareIconWhite from 'static/icons/icon_share_white.svg';
@@ -15,14 +16,6 @@ import shareIconWhite from 'static/icons/icon_share_white.svg';
 import styles from './Playbook.module.scss';
 
 const desc = 'This Playbook is for use by U.S. diplomatic missions and senior State Department officials.\nPlease treat this document as you would Daily Press Guidance.';
-
-const needsDarkText = [
-  '#94bfa2',
-  '#fff1d2',
-  '#a3e4e8',
-  '#f9c642',
-  '#fff1d2',
-];
 
 const Playbook = ( { item } ) => {
   const router = useRouter();
@@ -116,12 +109,7 @@ const Playbook = ( { item } ) => {
         <div className={ styles['policy-container'] }>
           <span
             className={ styles.policy }
-            style={ {
-              backgroundColor: item?.policy?.theme || '#0071bc',
-              color: needsDarkText.includes( item?.policy?.theme )
-                ? '#112e51'
-                : 'white',
-            } }
+            style={ getBadgeStyle( item?.policy?.theme ) }
           >
             { item.policy.name }
           </span>
