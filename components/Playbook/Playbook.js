@@ -126,8 +126,12 @@ const Playbook = ( { item } ) => {
                           { `Download "${file.filename}"` }
                         </strong>
                       </p>
-                      <p className="item-content__meta">{ `File type: ${file.filetype}` }</p>
-                      <p className="item-content__meta">{ `File size: ${formatBytes( file.filesize )}` }</p>
+                      { file.filetype && (
+                        <p className="item-content__meta">{ `File type: ${file.filetype}` }</p>
+                      ) }
+                      { file.filesize && (
+                        <p className="item-content__meta">{ `File size: ${formatBytes( file.filesize )}` }</p>
+                      ) }
                     </div>
                   </DownloadItemContent>
                 </li>
