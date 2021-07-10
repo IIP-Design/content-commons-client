@@ -8,7 +8,7 @@ import Share from 'components/Share/Share';
 import TexturedSection from 'components/TexturedSection/TexturedSection';
 
 import { formatBytes, formatDateTime, maybeGetUrlToProdS3 } from 'lib/utils';
-import { getBadgeStyle } from './Playbook.controller';
+import { getBadgeStyle, getDateTimeArgs } from './Playbook.controller';
 import useInitialStatus from 'lib/hooks/useInitialStatus';
 import cautionIcon from 'static/icons/icon_caution.svg';
 import shareIconWhite from 'static/icons/icon_share_white.svg';
@@ -29,26 +29,8 @@ const Playbook = ( { item } ) => {
 
   const { isNeverPublished, isInitialPublish, isSavedUpdate } = useInitialStatus( dates );
 
-  const dateArgs = {
-    dateString: isInitialPublish ? dates.published : dates.updated,
-    options: {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-      timeZone: 'America/New_York',
-    },
-  };
-
-  const timeArgs = {
-    ...dateArgs,
-    options: {
-      hour12: true,
-      hour: 'numeric',
-      minute: 'numeric',
-      timeZone: 'America/New_York',
-    },
-    timeStringOnly: true,
-  };
+  const dateString = isInitialPublish ? dates.published : dates.updated;
+  const { dateArgs, timeArgs } = getDateTimeArgs( dateString );
 
   // If the item has never been published or is the initial published version, show "Published".
   // If previewing and item with unpublished changes to the initial publish show "Updated".
@@ -77,7 +59,7 @@ const Playbook = ( { item } ) => {
             { isNeverPublished
               ? '(date will appear here)'
               : (
-                <time dateTime={ dateArgs.dateString }>
+                <time dateTime={ dateString }>
                   { `${formatDateTime( dateArgs )} at ${formatDateTime( timeArgs )} (Washington, DC)` }
                 </time>
               ) }

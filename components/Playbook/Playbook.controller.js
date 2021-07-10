@@ -32,3 +32,38 @@ export const getBadgeStyle = theme => {
     color: needsDarkText( theme ) ? blue : 'white',
   } );
 };
+
+/* ---- Date and time argument helpers. ---- */
+
+/**
+ * Generates the options needed to get a properly formatted date and/or time.
+ * @param {string} dateString An ISO 8601 date string.
+ * @returns {Object} The arguments needed to get a formatted date or time in Eastern time.
+ */
+export const getDateTimeArgs = dateString => {
+  const dateArgs = {
+    dateString,
+    options: {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      timeZone: 'America/New_York',
+    },
+  };
+
+  const timeArgs = {
+    ...dateArgs,
+    options: {
+      hour12: true,
+      hour: 'numeric',
+      minute: 'numeric',
+      timeZone: 'America/New_York',
+    },
+    timeStringOnly: true,
+  };
+
+  return {
+    dateArgs,
+    timeArgs,
+  };
+};
