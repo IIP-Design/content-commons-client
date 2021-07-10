@@ -5,7 +5,7 @@ import VideoProjectFile from './VideoProjectFile';
 
 jest.mock( 'lib/utils', () => ( {
   formatBytes: jest.fn( () => '631.9 MB' ),
-  formatDate: jest.fn( () => 'May 5, 2019' ),
+  formatDateTime: jest.fn( () => 'May 5, 2019' ),
   getStreamData: jest.fn( ( stream, site = 'youtube', field = 'url' ) => {
     const uri = stream.find( s => s.site.toLowerCase() === site );
 

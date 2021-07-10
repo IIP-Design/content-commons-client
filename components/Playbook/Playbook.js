@@ -1,4 +1,3 @@
-import moment from 'moment';
 import propTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import DOMPurify from 'isomorphic-dompurify';
@@ -8,7 +7,9 @@ import Popover from 'components/popups/Popover/Popover';
 import Share from 'components/Share/Share';
 import TexturedSection from 'components/TexturedSection/TexturedSection';
 
-import { formatBytes, maybeGetUrlToProdS3 } from 'lib/utils';
+import { formatBytes, formatDateTime, maybeGetUrlToProdS3 } from 'lib/utils';
+import { getBadgeStyle, getDateTimeArgs } from './Playbook.controller';
+import useInitialStatus from 'lib/hooks/useInitialStatus';
 import cautionIcon from 'static/icons/icon_caution.svg';
 import shareIconWhite from 'static/icons/icon_share_white.svg';
 
@@ -16,17 +17,26 @@ import styles from './Playbook.module.scss';
 
 const desc = 'This Playbook is for use by U.S. diplomatic missions and senior State Department officials.\nPlease treat this document as you would Daily Press Guidance.';
 
-const needsDarkText = [
-  '#94bfa2',
-  '#fff1d2',
-  '#a3e4e8',
-  '#f9c642',
-  '#fff1d2',
-];
-
 const Playbook = ( { item } ) => {
   const router = useRouter();
   const isAdminPreview = router.asPath.startsWith( '/admin' );
+
+  const dates = {
+    updated: item?.modified || item?.updatedAt,
+    published: item?.published || item?.publishedAt,
+    initialPublished: item?.initialPublished || item?.initialPublishedAt,
+  };
+
+  const { isNeverPublished, isInitialPublish, isSavedUpdate } = useInitialStatus( dates );
+
+  const dateString = isInitialPublish ? dates.published : dates.updated;
+  const { dateArgs, timeArgs } = getDateTimeArgs( dateString );
+
+  // If the item has never been published or is the initial published version, show "Published".
+  // If previewing and item with unpublished changes to the initial publish show "Updated".
+  const showPublished = isAdminPreview
+    ? isNeverPublished || ( isInitialPublish && !isSavedUpdate )
+    : isNeverPublished || isInitialPublish;
 
   return (
     <div className={ styles.container }>
@@ -43,8 +53,17 @@ const Playbook = ( { item } ) => {
           </button>
         </div>
         <h1 className={ styles.title }>{ item?.title }</h1>
-        { item?.updatedAt && (
-          <p>{ `Updated: ${moment( item.updatedAt ).format( 'MMMM DD, YYYY \\a\\t hh:mm A' )}` }</p>
+        { dates.updated && (
+          <p>
+            { showPublished ? 'Published: ' : 'Updated: ' }
+            { isNeverPublished
+              ? '(date will appear here)'
+              : (
+                <time dateTime={ dateString }>
+                  { `${formatDateTime( dateArgs )} at ${formatDateTime( timeArgs )} (Washington, DC)` }
+                </time>
+              ) }
+          </p>
         ) }
         <div className={ styles['header-contents'] }>
           <Popover
@@ -72,12 +91,7 @@ const Playbook = ( { item } ) => {
         <div className={ styles['policy-container'] }>
           <span
             className={ styles.policy }
-            style={ {
-              backgroundColor: item?.policy?.theme || '#0071bc',
-              color: needsDarkText.includes( item?.policy?.theme )
-                ? '#112e51'
-                : 'white',
-            } }
+            style={ getBadgeStyle( item?.policy?.theme ) }
           >
             { item.policy.name }
           </span>
