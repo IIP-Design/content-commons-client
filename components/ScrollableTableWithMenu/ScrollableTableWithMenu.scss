@@ -32,12 +32,10 @@
         }
       }
     }
-  }  
+  }
 }
 
-
 .items {
-
   &_table {
     position: relative;
     overflow: auto;
@@ -77,7 +75,7 @@
           display: none;
         }
       }
-      
+
       th {
         letter-spacing: 0.5px;
       }
@@ -91,7 +89,8 @@
         }
       }
 
-      td, th {
+      td,
+      th {
         &:first-child {
           position: sticky;
           left: 0;
@@ -107,10 +106,10 @@
         z-index: 1;
         font-size: 12px;
         background-color: #fff;
-        box-shadow: 3px 0 3px 1px rgba(0,0,0,0.1);
-        
+        box-shadow: 3px 0 3px 1px rgba(0, 0, 0, 0.1);
+
         &.items_table_item {
-          @media screen and (max-width: 767px){
+          @media screen and (max-width: 767px) {
             position: relative;
             z-index: 2;
             width: auto !important;
@@ -127,7 +126,7 @@
           // Mobile - Display data actions menu
           &.displayDataActions {
             z-index: 3 !important;
-          
+
             .projects_data_actions_wrapper {
               display: block;
             }
@@ -148,6 +147,17 @@
         display: none;
       }
     }
+  }
+}
 
+// Override Semantic UI for table header.
+.ui.celled.table thead tr:first-child {
+  > th:first-child {
+    border-radius: 0;
+  }
+
+  > th:last-child {
+    border-radius: 0;
+    border-right: none;
   }
 }
