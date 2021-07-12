@@ -211,8 +211,8 @@ const ScrollableTableWithMenu = ( { columnMenu, persistentTableHeaders, projectT
   const tableMenuOnChange = e => {
     e.persist();
     const menuItem = {
-      name: e.target.parentNode.dataset.propname,
-      label: e.target.parentNode.dataset.proplabel,
+      name: e.target.parentNode.dataset.propname || e.target.dataset.propname,
+      label: e.target.parentNode.dataset.proplabel || e.target.dataset.proplabel,
     };
 
     if ( tableHeaders.map( h => h.name ).includes( menuItem.name ) ) {
