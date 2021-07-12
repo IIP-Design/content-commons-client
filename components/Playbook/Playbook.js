@@ -7,7 +7,7 @@ import Popover from 'components/popups/Popover/Popover';
 import Share from 'components/Share/Share';
 import TexturedSection from 'components/TexturedSection/TexturedSection';
 
-import { formatBytes, formatDateTime, maybeGetUrlToProdS3 } from 'lib/utils';
+import { formatBytes, formatDateTime, getColloquialFiletype, maybeGetUrlToProdS3 } from 'lib/utils';
 import { getBadgeStyle, getDateTimeArgs } from './Playbook.controller';
 import useInitialStatus from 'lib/hooks/useInitialStatus';
 import cautionIcon from 'static/icons/icon_caution.svg';
@@ -126,8 +126,12 @@ const Playbook = ( { item } ) => {
                           { `Download "${file.filename}"` }
                         </strong>
                       </p>
-                      <p className="item-content__meta">{ `File type: ${file.filetype}` }</p>
-                      <p className="item-content__meta">{ `File size: ${formatBytes( file.filesize )}` }</p>
+                      { file.filetype && (
+                        <p className="item-content__meta">{ `File type: ${getColloquialFiletype( file.filetype )}` }</p>
+                      ) }
+                      { file.filesize && (
+                        <p className="item-content__meta">{ `File size: ${formatBytes( file.filesize )}` }</p>
+                      ) }
                     </div>
                   </DownloadItemContent>
                 </li>
