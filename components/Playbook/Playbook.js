@@ -106,7 +106,7 @@ const Playbook = ( { item } ) => {
       </TexturedSection>
       { item?.supportFiles && item?.supportFiles?.length > 0 && (
         <div className={ styles['resources-container'] }>
-          <h3 className={ styles['resources-title'] }>Additional Resources</h3>
+          <h3 className={ styles['resources-title'] }>Available Resources</h3>
           <div className={ styles['resources-content'] }>
             <h4 className={ styles['resources-attachment-title'] }>Downloadable attachments.</h4>
             <small className={ styles['resources-instructions'] }>
