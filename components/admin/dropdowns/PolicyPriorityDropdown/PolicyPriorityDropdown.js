@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { gql, useQuery } from '@apollo/client';
 import { Form } from 'semantic-ui-react';
 import VisuallyHidden from 'components/VisuallyHidden/VisuallyHidden';
+import { addEmptyOption } from 'lib/utils';
 
 const POLICY_PRIORITIES_QUERY = gql`
   query POLICY_PRIORITIES_QUERY {
@@ -38,6 +39,8 @@ const PolicyPriorityDropdown = ( {
       value: priority.id,
     } ) );
   }
+
+  addEmptyOption( options );
 
   return (
     <Fragment>

@@ -4,7 +4,7 @@ import wait from 'waait';
 
 import PolicyPriorityDropdown from './PolicyPriorityDropdown';
 
-import { suppressActWarning } from 'lib/utils';
+import { addEmptyOption, suppressActWarning } from 'lib/utils';
 import {
   emptyMocks, errorMocks, mocks, nullMocks,
 } from './mocks';
@@ -71,7 +71,13 @@ describe( '<PolicyPriorityDropdown />, when receiving no query variables', () =>
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
 
-    expect( formDropdown.prop( 'options' ) ).toEqual( [] );
+    expect( formDropdown.prop( 'options' ) ).toEqual( [
+      {
+        key: '-',
+        text: '-',
+        value: null,
+      },
+    ] );
   } );
 
   it( 'does not crash if policyPriorities is []', async () => {
@@ -81,7 +87,13 @@ describe( '<PolicyPriorityDropdown />, when receiving no query variables', () =>
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
 
-    expect( formDropdown.prop( 'options' ) ).toEqual( [] );
+    expect( formDropdown.prop( 'options' ) ).toEqual( [
+      {
+        key: '-',
+        text: '-',
+        value: null,
+      },
+    ] );
   } );
 
   it( 'renders the final state without crashing', async () => {
@@ -98,8 +110,10 @@ describe( '<PolicyPriorityDropdown />, when receiving no query variables', () =>
       value: p.id,
     } ) );
 
+    addEmptyOption( options );
+
     expect( formDropdown.prop( 'options' ) ).toEqual( options );
-    expect( dropdownItems.length ).toEqual( policyPriorities.length );
+    expect( dropdownItems.length ).toEqual( policyPriorities.length + 1 );
   } );
 } );
 
@@ -167,7 +181,13 @@ describe( '<PolicyPriorityDropdown />, when receiving query variables', () => {
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
 
-    expect( formDropdown.prop( 'options' ) ).toEqual( [] );
+    expect( formDropdown.prop( 'options' ) ).toEqual( [
+      {
+        key: '-',
+        text: '-',
+        value: null,
+      },
+    ] );
   } );
 
   it( 'does not crash if policyPriorities is []', async () => {
@@ -177,7 +197,13 @@ describe( '<PolicyPriorityDropdown />, when receiving query variables', () => {
     wrapper.update();
     const formDropdown = wrapper.find( 'FormDropdown' );
 
-    expect( formDropdown.prop( 'options' ) ).toEqual( [] );
+    expect( formDropdown.prop( 'options' ) ).toEqual( [
+      {
+        key: '-',
+        text: '-',
+        value: null,
+      },
+    ] );
   } );
 
   it( 'renders the final state without crashing', async () => {
@@ -194,8 +220,10 @@ describe( '<PolicyPriorityDropdown />, when receiving query variables', () => {
       value: p.id,
     } ) );
 
+    addEmptyOption( options );
+
     expect( formDropdown.prop( 'options' ) ).toEqual( options );
-    expect( dropdownItems.length ).toEqual( policyPriorities.length );
+    expect( dropdownItems.length ).toEqual( policyPriorities.length + 1 );
   } );
 
   it( 'assigns a matching id & htmlFor value to the Dropdown and label, respectively', async () => {
