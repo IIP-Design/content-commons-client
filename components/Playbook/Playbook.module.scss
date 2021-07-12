@@ -5,9 +5,10 @@
   background: transparent;
   border: none;
   color: white;
+  display: flex;
+  gap: 0.3889rem;
   font-size: 0.6rem;
-  left: 0;
-  position: absolute;
+  letter-spacing: 1px;
   text-transform: uppercase;
 
   &:hover {
@@ -18,7 +19,13 @@
 
 .container {
   background-color: $blue;
-  padding-top: 5rem;
+  padding-top: 6rem;
+  @media screen and (min-width: 768px) {
+    padding-top: 4rem;
+  }
+  @media screen and (min-width: 993px) {
+    padding-top: 5rem;
+  }
 
   margin-bottom: -250px;
   @media screen and (min-width: 560px) {
@@ -29,6 +36,35 @@
   }
   @media screen and (min-width: 768px) {
     margin-bottom: -190px;
+  }
+
+  &.admin {
+    .header {
+      padding-top: 1.25rem;
+    }
+  }
+
+  &.no-policy {
+    .header {
+      padding-bottom: 1rem;
+
+      + section {
+        padding-top: 1rem;
+      }
+    }
+
+    [class*="playbook-project__popover"] {
+      bottom: -0.5rem;
+    }
+  }
+
+  small {
+    @media screen and (min-width: 768px) {
+      margin-top: -0.25rem;
+    }
+    margin-bottom: 0.75rem;
+    font-size: 0.6667rem;
+    line-height: 1.5;
   }
 }
 
@@ -57,12 +93,15 @@
 .header {
   background-color: $blue;
   color: white;
-  padding: 2rem;
   text-align: center;
 
   &-contents {
     position: relative;
     margin: 0 auto;
+    @media screen and (max-width: 992px) {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
     max-width: 976px;
     width: 100%;
   }
@@ -76,16 +115,21 @@
   .playbook-project__popover {
     color: #000000de;
     position: absolute;
-    right: 0;
+    right: 1rem;
+    @media screen and (min-width: 993px) {
+      right: 0;
+    }
+    bottom: -1.25rem;
   }
 
   .playbook-project__popover--share .popover_content {
+    top: 2rem;
     font-size: 1rem;
     box-shadow: 0px 2px 4px 0px #5b6168;
   }
 
   .playbook-project__popover .popover_content::before {
-    top: -8px;
+    top: -7px;
     width: 15px;
     height: 8px;
     margin-right: 2px;
@@ -105,9 +149,13 @@
 
 .title {
   max-width: 50ch;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0.5rem auto 0.25rem;
   color: white;
+
+  + p {
+    margin-bottom: 0;
+    font-size: 0.8889rem;
+  }
 }
 
 .policy {
