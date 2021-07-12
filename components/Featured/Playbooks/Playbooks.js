@@ -108,7 +108,7 @@ const Playbooks = ( { pin: idsToPin, user } ) => {
         </div>
 
         <p className={ styles['archive-link'] }>
-          { 'For playbooks from before June 28, 2021, please visit ' }
+          { 'For playbooks from before July 23, 2021, please visit ' }
           { archiveLink() }
           .
         </p>

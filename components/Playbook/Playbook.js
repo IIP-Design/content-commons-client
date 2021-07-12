@@ -39,7 +39,7 @@ const Playbook = ( { item } ) => {
     : isNeverPublished || isInitialPublish;
 
   return (
-    <div className={ styles.container }>
+    <div className={ `${styles.container} ${!item?.policy?.name ? styles['no-policy'] : ''} ${isAdminPreview ? styles.admin : ''}` }>
       { isAdminPreview && (
         <div className={ styles.preview }>
           <img src={ cautionIcon } alt="" height="18" width="18" />
@@ -49,7 +49,8 @@ const Playbook = ( { item } ) => {
       <header className={ styles.header }>
         <div className={ styles['header-contents'] }>
           <button className={ styles.back } type="button" onClick={ () => router.back() }>
-            { '< back' }
+            <span>❮</span>{ /* eslint-disable-line */ }
+            back
           </button>
         </div>
         <h1 className={ styles.title }>{ item?.title }</h1>
