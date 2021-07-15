@@ -55,6 +55,7 @@ const PackageForm = ( {
     }
   };
 
+
   return (
     <div className={ styles.form_container }>
       <h3>
@@ -133,18 +134,22 @@ const PackageForm = ( {
             onChange={ handleOnChange }
             disabled
           />
-          <div className={ styles.description }>
-            <TextInput
-              label="Internal Description"
-              id="desc"
-              name="desc"
-              type="textarea"
-              rows="3"
-              required
-              helperTxt="Briefly describe this Playbook. This text will only appear in search results."
-              maxLength={ 100 }
-            />
-          </div>
+        </div>
+        <div className={ `${styles.form} ${styles.description}` }>
+          <TextInput
+            label={ values.type === 'PLAYBOOK'
+              ? 'Internal Description'
+              : 'Background' }
+            id="desc"
+            name="desc"
+            type="textarea"
+            rows="3"
+            required={ values.type === 'PLAYBOOK' }
+            helperTxt={ values.type === 'PLAYBOOK'
+              ? 'Briefly describe this Playbook. This text will only appear in search results.'
+              : 'Describe the content of this package and how to use it.' }
+            { ...( values.type === 'PLAYBOOK' && { maxLength: 100 } ) }
+          />
         </div>
         <div>
           <HandleOnChangeContext.Provider value={ handleOnChange }>

@@ -22,10 +22,7 @@
     display: grid; 
     grid-template-columns: 1fr;
     grid-gap: 1.5rem 1rem;
-
-    &:first-child {
-      margin-bottom: 1.5em;
-    }
+    margin-bottom: 1.5em;
 
     @media (min-width: 700px ) {
       grid-template-columns: 1fr 1fr;
@@ -38,13 +35,23 @@
     &.hide {
       display: none;  
     }
-   
-    .title,
-    .description {
+ 
+    .title {
       @media ( min-width: 700px ) {
         grid-column: span 2;
       }
     } 
+
+    &.description {
+      @media ( min-width: 700px ) {
+        grid-template-columns: 1fr;
+      }
+
+      @media ( min-width: 1000px ) {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
     
     .dropdown-required {
       label {
