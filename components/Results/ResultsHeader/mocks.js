@@ -38,7 +38,7 @@ export const mocks = {
         hits: [
           {
             _index: 'graphics_20200624',
-            _type: 'graphic',
+            _type: '_doc',
             _id: 'dDoFsngB3NQyV_fD5EZV',
             _score: 17.204853,
             _source: {
@@ -93,7 +93,7 @@ export const mocks = {
           },
           {
             _index: 'videos_20200225',
-            _type: 'video',
+            _type: '_doc',
             _id: '8l5LW3gBW8ACTXPZZzxO',
             _score: 10.589139,
             _source: {

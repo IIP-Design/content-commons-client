@@ -143,7 +143,7 @@ export const noCategories = {
         hits: [
           {
             _index: 'documents_20200225',
-            _type: 'document',
+            _type: '_doc',
             _id: 'rN275HABgFNJoTSTL0hX',
             _score: null,
             _source: {
@@ -190,7 +190,7 @@ export const noCategories = {
           },
           {
             _index: 'packages_20200225',
-            _type: 'package',
+            _type: '_doc',
             _id: 'rd275HABgFNJoTSTMEiK',
             _score: null,
             _source: {
@@ -218,7 +218,7 @@ export const noCategories = {
           },
           {
             _index: 'documents_20200225',
-            _type: 'document',
+            _type: '_doc',
             _id: 'q9275HABgFNJoTSTL0hY',
             _score: null,
             _source: {
