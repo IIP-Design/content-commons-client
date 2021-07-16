@@ -117,9 +117,10 @@ const ButtonPackageCreate = ( { user, setError } ) => {
   * @returns void
   */
   const createGuidancePackage = async vals => {
-    const { title } = vals;
+    const { title, desc } = vals;
     const _values = {
       title,
+      desc,
       type: 'DAILY_GUIDANCE',
       userId: user.id,
       teamId: user.team.id,
