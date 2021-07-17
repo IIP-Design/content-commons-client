@@ -27,7 +27,7 @@ const PackageFiles = ( { pkg, handleSave, progress } ) => {
             filesToEdit={ units }
             extensions={ ['.doc', '.docx'] }
             trigger={ (
-              <Button className="btn--edit" onClick={ handleOpenModel } size="small" basic>
+              <Button type="button" className="btn--edit" onClick={ handleOpenModel } size="small" basic>
                 Edit
               </Button>
             ) }
